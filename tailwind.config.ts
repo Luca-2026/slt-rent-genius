@@ -57,6 +57,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // SLT Custom Colors
+        headline: "hsl(var(--headline))",
+        body: "hsl(var(--body-text))",
+        "cta-orange": {
+          DEFAULT: "hsl(var(--cta-orange))",
+          hover: "hsl(var(--cta-orange-hover))",
+        },
+        "slt-blue": {
+          DEFAULT: "hsl(var(--slt-blue))",
+          hover: "hsl(var(--slt-blue-hover))",
+        },
+        surface: {
+          light: "hsl(var(--surface-light))",
+          medium: "hsl(var(--surface-medium))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
