@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, MapPin, ShoppingCart, Percent } from "lucide-react";
+import { Menu, X, Phone, MapPin, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,26 +33,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      {/* Weekend Tariffs Bar */}
-      <div className="bg-primary text-primary-foreground">
-        <div className="section-container py-2 flex items-center justify-center text-sm">
-          <div className="flex items-center gap-2 sm:gap-6 flex-wrap justify-center">
-            <div className="flex items-center gap-1.5 font-semibold">
-              <Percent className="h-4 w-4" />
-              <span>Wochenendtarife</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-1.5">
-              <span className="font-medium">WE:</span>
-              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
-            </div>
-            <span className="hidden sm:block text-primary-foreground/50">•</span>
-            <div className="hidden md:flex items-center gap-1.5">
-              <span className="font-medium">Langes WE:</span>
-              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Info Bar */}
       <div className="bg-muted border-b border-border">
@@ -95,7 +75,7 @@ export function Header() {
             <img 
               src={sltLogo} 
               alt="SLT Rental - Baumaschinen & Equipment" 
-              className="h-16 sm:h-20 lg:h-24 w-auto"
+              className="h-32 sm:h-40 lg:h-48 w-auto"
             />
           </Link>
 
