@@ -14,6 +14,8 @@ const locations = [
     city: "47807 Krefeld-Fichtenhain",
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
+    lat: 51.3127,
+    lng: 6.5511,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
@@ -30,6 +32,8 @@ const locations = [
     city: "53179 Bonn",
     phone: "0228 50466061",
     email: "bonn@slt-rental.de",
+    lat: 50.6879,
+    lng: 7.1591,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
@@ -47,6 +51,8 @@ const locations = [
     city: "45478 Mülheim an der Ruhr",
     phone: "02151 417 99 04",
     email: "krefeld@slt-rental.de",
+    lat: 51.4171,
+    lng: 6.8711,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
@@ -55,6 +61,9 @@ const locations = [
     mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+100+45478+Mülheim",
   },
 ];
+
+// Center of NRW (roughly between the three locations)
+const mapCenter = { lat: 51.1, lng: 6.9 };
 
 export default function Locations() {
   return (
@@ -72,11 +81,60 @@ export default function Locations() {
         </div>
       </section>
 
-      {/* Map Placeholder */}
-      <section className="bg-muted h-64 lg:h-96 flex items-center justify-center">
-        <div className="text-center text-muted-foreground">
-          <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
-          <p>Karten-Integration (Google Maps / Mapbox)</p>
+      {/* Google Maps */}
+      <section className="h-96 lg:h-[500px] relative">
+        <iframe
+          src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=${mapCenter.lat},${mapCenter.lng}&zoom=9`}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="SLT Rental Standorte"
+          className="w-full h-full"
+        />
+        {/* Custom Markers Overlay */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Krefeld Marker */}
+          <a 
+            href="#krefeld" 
+            className="absolute pointer-events-auto"
+            style={{ top: '35%', left: '42%' }}
+          >
+            <div className="flex flex-col items-center">
+              <div className="bg-primary text-primary-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
+                Krefeld (Hauptsitz)
+              </div>
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
+            </div>
+          </a>
+          {/* Mülheim Marker */}
+          <a 
+            href="#muelheim" 
+            className="absolute pointer-events-auto"
+            style={{ top: '28%', left: '52%' }}
+          >
+            <div className="flex flex-col items-center">
+              <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
+                Mülheim a.d. Ruhr
+              </div>
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
+            </div>
+          </a>
+          {/* Bonn Marker */}
+          <a 
+            href="#bonn" 
+            className="absolute pointer-events-auto"
+            style={{ top: '72%', left: '48%' }}
+          >
+            <div className="flex flex-col items-center">
+              <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
+                Bonn
+              </div>
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
+            </div>
+          </a>
         </div>
       </section>
 
