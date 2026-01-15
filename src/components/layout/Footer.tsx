@@ -50,7 +50,7 @@ export function Footer() {
             <img 
               src={sltLogo} 
               alt="SLT Rental" 
-              className="h-20 lg:h-24 w-auto brightness-0 invert"
+              className="h-44 sm:h-52 lg:h-60 w-auto brightness-0 invert"
             />
           </Link>
 
@@ -58,7 +58,7 @@ export function Footer() {
           <div className="flex flex-wrap gap-8 lg:gap-12">
             {locations.map((loc) => (
               <div key={loc.name} className="text-white">
-                <h4 className="font-semibold text-sm mb-2">{loc.name}</h4>
+                <h4 className="font-bold text-white text-sm mb-2">{loc.name}</h4>
                 <div className="space-y-1 text-xs text-white/70">
                   <div className="flex items-start gap-2">
                     <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" />
