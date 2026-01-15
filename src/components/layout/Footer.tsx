@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin } from "lucide-react";
+import sltLogo from "@/assets/slt-logo.png";
 
 const footerLinks = {
   produkte: [
@@ -53,14 +54,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                <span className="text-accent-foreground font-bold text-lg">SLT</span>
-              </div>
-              <div>
-                <span className="font-bold text-xl">SLT Rental</span>
-                <span className="block text-xs text-primary-foreground/70">Baumaschinen & Equipment</span>
-              </div>
+            <Link to="/" className="mb-4 inline-block">
+              <img 
+                src={sltLogo} 
+                alt="SLT Rental - Baumaschinen & Equipment" 
+                className="h-12 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="text-primary-foreground/80 text-sm mb-6 max-w-sm">
               Dein zuverlässiger Partner für Baumaschinen, Anhänger und Equipment-Vermietung in NRW. 

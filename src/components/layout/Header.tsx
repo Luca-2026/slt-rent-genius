@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import sltLogo from "@/assets/slt-logo.png";
 
 const locations = [
   { id: "krefeld", name: "Krefeld", address: "Oberschlesienstr. 16, 47807 Krefeld" },
@@ -71,14 +72,12 @@ export function Header() {
       <div className="section-container py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">SLT</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-headline font-bold text-xl">SLT Rental</span>
-              <span className="block text-xs text-muted-foreground">Baumaschinen & Equipment</span>
-            </div>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={sltLogo} 
+              alt="SLT Rental - Baumaschinen & Equipment" 
+              className="h-10 sm:h-12 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
