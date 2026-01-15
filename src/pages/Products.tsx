@@ -13,10 +13,18 @@ import iconBagger from "@/assets/icons/category-bagger.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
 import iconBuehne from "@/assets/icons/category-buehne.png";
 import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
-import iconGeschirr from "@/assets/icons/category-geschirr.png";
+import iconGeschirr from "@/assets/icons/category-geschirr-neu.png";
+import iconBesteck from "@/assets/icons/category-besteck.png";
 import iconHuepfburg from "@/assets/icons/category-huepfburg.png";
 import iconSpezialeffekte from "@/assets/icons/category-spezialeffekte.png";
 import iconAbsperrgitter from "@/assets/icons/category-absperrgitter.png";
+import iconAggregat from "@/assets/icons/category-aggregat.png";
+import iconBeleuchtung from "@/assets/icons/category-beleuchtung.png";
+import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
+import iconHeizung from "@/assets/icons/category-heizung.png";
+import iconKabel from "@/assets/icons/category-kabel.png";
+import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
+import iconLedSpots from "@/assets/icons/category-ledspots.png";
 
 const categories = [
   {
@@ -32,6 +40,18 @@ const categories = [
     image: iconVerdichtung,
   },
   {
+    id: "anhaenger",
+    title: "Anhänger",
+    description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
+    image: iconAnhaenger,
+  },
+  {
+    id: "hebebuehnen",
+    title: "Hebebühnen & Arbeitsbühnen",
+    description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
+    image: iconHebebuehne,
+  },
+  {
     id: "buehnen-podeste",
     title: "Bühnen & Podeste",
     description: "Event-Bühnen, Podeste und Laufstege für Veranstaltungen.",
@@ -44,10 +64,16 @@ const categories = [
     image: iconMoebelZelte,
   },
   {
-    id: "geschirr-besteck",
-    title: "Geschirr & Besteck",
-    description: "Geschirr, Besteck, Gläser und Tassen für Ihre Veranstaltung.",
+    id: "geschirr",
+    title: "Geschirr",
+    description: "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung.",
     image: iconGeschirr,
+  },
+  {
+    id: "besteck",
+    title: "Besteck",
+    description: "Messer, Gabeln und Löffel für Events und Feiern.",
+    image: iconBesteck,
   },
   {
     id: "huepfburgen",
@@ -60,6 +86,36 @@ const categories = [
     title: "Spezialeffekte",
     description: "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth.",
     image: iconSpezialeffekte,
+  },
+  {
+    id: "led-spots",
+    title: "LED Spots & Effektlicht",
+    description: "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events.",
+    image: iconLedSpots,
+  },
+  {
+    id: "beleuchtung",
+    title: "Beleuchtung & Flutlicht",
+    description: "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung.",
+    image: iconBeleuchtung,
+  },
+  {
+    id: "stromerzeuger",
+    title: "Stromerzeuger",
+    description: "Aggregate und Notstromgeräte für Baustelle und Event.",
+    image: iconAggregat,
+  },
+  {
+    id: "heizung-klima",
+    title: "Heizung & Klima",
+    description: "Heizlüfter, Heizpilze und Klimageräte für jede Situation.",
+    image: iconHeizung,
+  },
+  {
+    id: "kabel-leitungen",
+    title: "Kabel & Leitungen",
+    description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
+    image: iconKabel,
   },
   {
     id: "absperrung-sicherheit",
