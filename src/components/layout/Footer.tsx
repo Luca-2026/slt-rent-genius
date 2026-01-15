@@ -31,18 +31,21 @@ const footerLinks = {
 const locations = [
   {
     name: "Krefeld (Hauptsitz)",
-    address: "Oberschlesienstr. 16, 47807 Krefeld",
-    phone: "02151 / 932 89 53",
+    address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain",
+    phone: "02151 417 990 4",
+    email: "krefeld@slt-rental.de",
   },
   {
     name: "Bonn",
-    address: "Siemensstr. 27, 53121 Bonn",
-    phone: "0228 / 850 777 53",
+    address: "Drachenburgstraße 8, 53179 Bonn",
+    phone: "0228 50466061",
+    email: "bonn@slt-rental.de",
   },
   {
     name: "Mülheim an der Ruhr",
-    address: "Weseler Str. 161, 45478 Mülheim",
-    phone: "0208 / 740 788 52",
+    address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
+    phone: "02151 417 99 04",
+    email: "muelheim@slt-rental.de",
   },
 ];
 
@@ -177,15 +180,15 @@ export function Footer() {
                       {loc.phone}
                     </a>
                   </div>
+                  <div className="flex items-center gap-2 mt-1 text-primary-foreground/70">
+                    <Mail className="h-3.5 w-3.5 shrink-0" />
+                    <a href={`mailto:${loc.email}`} className="hover:text-accent transition-colors">
+                      {loc.email}
+                    </a>
+                  </div>
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex items-center gap-2 text-sm text-primary-foreground/70">
-              <Mail className="h-3.5 w-3.5" />
-              <a href="mailto:info@slt-rental.de" className="hover:text-accent transition-colors">
-                info@slt-rental.de
-              </a>
-            </div>
             <div className="mt-2 flex items-center gap-2 text-sm text-primary-foreground/70">
               <Clock className="h-3.5 w-3.5" />
               <span>Mo-Fr: 7:00-17:00 Uhr</span>
