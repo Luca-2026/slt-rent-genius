@@ -44,7 +44,7 @@ export function Footer() {
       {/* Main Footer */}
       <div className="section-container py-6">
         {/* Top Row: Logo + Locations */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12">
           {/* Logo - clipped to remove margins */}
           <Link to="/" className="shrink-0 h-16 lg:h-20 overflow-hidden flex items-center">
             <img 
