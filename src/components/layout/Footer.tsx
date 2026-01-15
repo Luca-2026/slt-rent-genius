@@ -45,7 +45,7 @@ const locations = [
     name: "Mülheim an der Ruhr",
     address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
     phone: "02151 417 99 04",
-    email: "muelheim@slt-rental.de",
+    email: "krefeld@slt-rental.de",
   },
 ];
 
