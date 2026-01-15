@@ -11,9 +11,9 @@ import {
 import sltLogo from "@/assets/slt-logo.png";
 
 const locations = [
-  { id: "krefeld", name: "Krefeld", address: "Oberschlesienstr. 16, 47807 Krefeld" },
-  { id: "bonn", name: "Bonn", address: "Siemensstr. 27, 53121 Bonn" },
-  { id: "muelheim", name: "Mülheim", address: "Weseler Str. 161, 45478 Mülheim" },
+  { id: "krefeld", name: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld", phone: "02151 417 990 4", email: "krefeld@slt-rental.de" },
+  { id: "bonn", name: "Bonn", address: "Drachenburgstraße 8, 53179 Bonn", phone: "0228 50466061", email: "bonn@slt-rental.de" },
+  { id: "muelheim", name: "Mülheim", address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr", phone: "02151 417 99 04", email: "muelheim@slt-rental.de" },
 ];
 
 const navLinks = [
@@ -58,9 +58,9 @@ export function Header() {
       <div className="bg-muted border-b border-border">
         <div className="section-container py-1.5 flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
-            <a href="tel:+4921519328953" className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <a href={`tel:${selectedLocation.phone.replace(/\s/g, "")}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
               <Phone className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">02151 / 932 89 53</span>
+              <span className="hidden sm:inline">{selectedLocation.phone}</span>
             </a>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1.5 hover:text-primary transition-colors">
