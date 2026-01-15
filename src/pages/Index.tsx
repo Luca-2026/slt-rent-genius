@@ -335,7 +335,7 @@ export default function Index() {
               </Button>
             </Link>
             <Link to="/b2b">
-              <Button variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 px-8 py-3">
+              <Button className="bg-white text-primary hover:bg-white/90 px-8 py-3">
                 B2B-Konditionen anfragen
               </Button>
             </Link>
