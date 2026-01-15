@@ -42,20 +42,20 @@ export function Footer() {
   return (
     <footer className="bg-primary">
       {/* Main Footer */}
-      <div className="section-container py-10">
+      <div className="section-container py-6">
         {/* Top Row: Logo + Locations */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-8">
-          {/* Logo */}
-          <Link to="/" className="shrink-0">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* Logo - clipped to remove margins */}
+          <Link to="/" className="shrink-0 h-16 lg:h-20 overflow-hidden flex items-center">
             <img 
               src={sltLogo} 
               alt="SLT Rental" 
-              className="h-44 sm:h-52 lg:h-60 w-auto brightness-0 invert"
+              className="h-32 lg:h-40 w-auto brightness-0 invert max-w-none -my-4"
             />
           </Link>
 
           {/* Locations Row */}
-          <div className="flex flex-wrap gap-8 lg:gap-12">
+          <div className="flex flex-wrap gap-6 lg:gap-10">
             {locations.map((loc) => (
               <div key={loc.name} className="text-white">
                 <h4 className="font-bold text-white text-sm mb-2">{loc.name}</h4>
@@ -83,10 +83,10 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/10 my-6" />
+        <div className="border-t border-white/10 my-4" />
 
         {/* Bottom Row: Links + Social */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {/* Quick Links */}
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
             {quickLinks.map((link) => (
