@@ -26,8 +26,8 @@ const locations = [
 const quickLinks = [
   { to: "/produkte", label: "Produkte" },
   { to: "/so-funktionierts", label: "So funktioniert's" },
+  { to: "/lieferung", label: "Lieferkosten" },
   { to: "/standorte", label: "Standorte" },
-  { to: "/ueber-uns", label: "Über uns" },
   { to: "/kontakt", label: "Kontakt" },
   { to: "/faq", label: "FAQ" },
 ];
