@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, MapPin, ShoppingCart, User } from "lucide-react";
+import { Menu, X, Phone, MapPin, ShoppingCart, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,16 +33,37 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      {/* Top Bar */}
+      {/* Weekend Tariffs Bar */}
       <div className="bg-primary text-primary-foreground">
-        <div className="section-container py-2 flex items-center justify-between text-sm">
+        <div className="section-container py-2 flex items-center justify-center text-sm">
+          <div className="flex items-center gap-2 sm:gap-6 flex-wrap justify-center">
+            <div className="flex items-center gap-1.5 font-semibold">
+              <Percent className="h-4 w-4" />
+              <span>Wochenendtarife</span>
+            </div>
+            <div className="hidden sm:flex items-center gap-1.5">
+              <span className="font-medium">WE:</span>
+              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
+            </div>
+            <span className="hidden sm:block text-primary-foreground/50">•</span>
+            <div className="hidden md:flex items-center gap-1.5">
+              <span className="font-medium">Langes WE:</span>
+              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Info Bar */}
+      <div className="bg-muted border-b border-border">
+        <div className="section-container py-1.5 flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
-            <a href="tel:+4921519328953" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+4921519328953" className="flex items-center gap-1.5 hover:text-primary transition-colors">
               <Phone className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">02151 / 932 89 53</span>
             </a>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 hover:text-accent transition-colors">
+              <DropdownMenuTrigger className="flex items-center gap-1.5 hover:text-primary transition-colors">
                 <MapPin className="h-3.5 w-3.5" />
                 <span>{selectedLocation.name}</span>
               </DropdownMenuTrigger>
@@ -60,23 +81,21 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/b2b" className="hover:text-accent transition-colors">
-              B2B-Portal
-            </Link>
-          </div>
+          <Link to="/b2b" className="hover:text-primary transition-colors font-medium">
+            B2B-Portal
+          </Link>
         </div>
       </div>
 
       {/* Main Header */}
-      <div className="section-container py-3">
+      <div className="section-container py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src={sltLogo} 
               alt="SLT Rental - Baumaschinen & Equipment" 
-              className="h-12 sm:h-14 lg:h-16 w-auto"
+              className="h-16 sm:h-20 lg:h-24 w-auto"
             />
           </Link>
 
@@ -107,9 +126,8 @@ export function Header() {
             </Button>
 
             <Link to="/b2b/login">
-              <Button variant="outline" size="sm" className="hidden sm:flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Login
+              <Button variant="outline" size="sm" className="hidden sm:flex">
+                zum B2B Portal
               </Button>
             </Link>
 
