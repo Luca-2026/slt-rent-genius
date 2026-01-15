@@ -14,16 +14,197 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      b2b_profiles: {
+        Row: {
+          city: string
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone: string
+          contact_position: string | null
+          country: string | null
+          created_at: string
+          document_filename: string | null
+          document_url: string | null
+          house_number: string | null
+          id: string
+          internal_notes: string | null
+          legal_form: string | null
+          postal_code: string
+          rejection_reason: string | null
+          status: Database["public"]["Enums"]["b2b_status"]
+          status_changed_at: string | null
+          status_changed_by: string | null
+          street: string
+          tax_id: string | null
+          trade_register_number: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city: string
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone: string
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string
+          document_filename?: string | null
+          document_url?: string | null
+          house_number?: string | null
+          id?: string
+          internal_notes?: string | null
+          legal_form?: string | null
+          postal_code: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["b2b_status"]
+          status_changed_at?: string | null
+          status_changed_by?: string | null
+          street: string
+          tax_id?: string | null
+          trade_register_number?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string
+          company_name?: string
+          contact_email?: string
+          contact_first_name?: string
+          contact_last_name?: string
+          contact_phone?: string
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string
+          document_filename?: string | null
+          document_url?: string | null
+          house_number?: string | null
+          id?: string
+          internal_notes?: string | null
+          legal_form?: string | null
+          postal_code?: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["b2b_status"]
+          status_changed_at?: string | null
+          status_changed_by?: string | null
+          street?: string
+          tax_id?: string | null
+          trade_register_number?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      project_requests: {
+        Row: {
+          additional_services: string | null
+          attachment_urls: string[] | null
+          created_at: string
+          delivery_required: boolean | null
+          end_date: string | null
+          equipment_needed: string
+          id: string
+          internal_notes: string | null
+          pickup_required: boolean | null
+          preferred_callback_date: string | null
+          preferred_callback_time: string | null
+          project_description: string | null
+          project_name: string
+          site_city: string
+          site_postal_code: string
+          site_street: string
+          start_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          additional_services?: string | null
+          attachment_urls?: string[] | null
+          created_at?: string
+          delivery_required?: boolean | null
+          end_date?: string | null
+          equipment_needed: string
+          id?: string
+          internal_notes?: string | null
+          pickup_required?: boolean | null
+          preferred_callback_date?: string | null
+          preferred_callback_time?: string | null
+          project_description?: string | null
+          project_name: string
+          site_city: string
+          site_postal_code: string
+          site_street: string
+          start_date: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          additional_services?: string | null
+          attachment_urls?: string[] | null
+          created_at?: string
+          delivery_required?: boolean | null
+          end_date?: string | null
+          equipment_needed?: string
+          id?: string
+          internal_notes?: string | null
+          pickup_required?: boolean | null
+          preferred_callback_date?: string | null
+          preferred_callback_time?: string | null
+          project_description?: string | null
+          project_name?: string
+          site_city?: string
+          site_postal_code?: string
+          site_street?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      b2b_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +331,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      b2b_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
