@@ -33,27 +33,41 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      {/* Weekend Tariffs Bar */}
-      <div className="bg-primary text-primary-foreground">
-        <div className="section-container py-1.5 flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2 sm:gap-6">
+      {/* Weekend Tariffs Bar - Scrolling */}
+      <div className="bg-primary text-primary-foreground overflow-hidden">
+        <div className="py-1.5 text-sm">
+          <div className="animate-marquee whitespace-nowrap flex items-center gap-8">
             <div className="flex items-center gap-1.5 font-semibold">
               <Percent className="h-4 w-4" />
               <span>Wochenendtarife</span>
             </div>
-            <div className="hidden sm:flex items-center gap-1.5">
+            <span className="text-primary-foreground/50">•</span>
+            <div className="flex items-center gap-1.5">
               <span className="font-medium">WE:</span>
               <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
             </div>
-            <span className="hidden sm:block text-primary-foreground/50">•</span>
-            <div className="hidden md:flex items-center gap-1.5">
+            <span className="text-primary-foreground/50">•</span>
+            <div className="flex items-center gap-1.5">
               <span className="font-medium">Langes WE:</span>
               <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
             </div>
+            <span className="text-primary-foreground/50">•</span>
+            <div className="flex items-center gap-1.5 font-semibold">
+              <Percent className="h-4 w-4" />
+              <span>Wochenendtarife</span>
+            </div>
+            <span className="text-primary-foreground/50">•</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-medium">WE:</span>
+              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
+            </div>
+            <span className="text-primary-foreground/50">•</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-medium">Langes WE:</span>
+              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
+            </div>
+            <span className="text-primary-foreground/50">•</span>
           </div>
-          <Link to="/b2b" className="hover:text-accent transition-colors font-medium">
-            B2B-Portal
-          </Link>
         </div>
       </div>
 
