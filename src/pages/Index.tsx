@@ -5,10 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Search, 
   Truck, 
-  Building2, 
-  Forklift, 
-  PartyPopper, 
-  Thermometer,
   CheckCircle2,
   ArrowRight,
   MapPin,
@@ -16,41 +12,50 @@ import {
   Phone
 } from "lucide-react";
 
+// Category Icons
+import iconBagger from "@/assets/icons/category-bagger.png";
+import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
+import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
+import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
+import iconHuepfburg from "@/assets/icons/category-huepfburg.png";
+import iconHeizung from "@/assets/icons/category-heizung.png";
+
 const categories = [
   {
-    id: "baumaschinen",
-    title: "Baumaschinen",
-    description: "Bagger, Radlader, Verdichter & mehr",
-    icon: Building2,
-    image: "/placeholder.svg",
+    id: "bagger-radlader",
+    title: "Bagger & Radlader",
+    description: "Minibagger, Radlader & Erdbaumaschinen",
+    image: iconBagger,
   },
   {
     id: "anhaenger",
     title: "Anhänger",
     description: "Pkw-Anhänger, Kipper, Transportanhänger",
-    icon: Truck,
-    image: "/placeholder.svg",
+    image: iconAnhaenger,
   },
   {
-    id: "arbeitsbuehnen",
+    id: "hebebuehnen",
     title: "Arbeitsbühnen",
-    description: "Scherenbühnen, Teleskopbühnen, Mastbühnen",
-    icon: Forklift,
-    image: "/placeholder.svg",
+    description: "Scherenbühnen, Teleskopbühnen, Gelenkbühnen",
+    image: iconHebebuehne,
   },
   {
-    id: "event",
+    id: "moebel-zelte",
     title: "Event-Equipment",
-    description: "Zelte, Bühnen, Veranstaltungstechnik",
-    icon: PartyPopper,
-    image: "/placeholder.svg",
+    description: "Zelte, Möbel, Bühnen & Technik",
+    image: iconMoebelZelte,
   },
   {
-    id: "trocknung",
-    title: "Trocknung & Heizung",
-    description: "Bautrockner, Heizgeräte, Lüfter",
-    icon: Thermometer,
-    image: "/placeholder.svg",
+    id: "huepfburgen",
+    title: "Hüpfburgen",
+    description: "Aufblasbare Attraktionen für Events",
+    image: iconHuepfburg,
+  },
+  {
+    id: "heizung-klima",
+    title: "Heizung & Klima",
+    description: "Heizlüfter, Heizpilze, Klimageräte",
+    image: iconHeizung,
   },
 ];
 
@@ -190,22 +195,20 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
             {categories.map((category) => (
               <Link key={category.id} to={`/produkte/${category.id}`}>
                 <Card className="h-full group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                  <div className="aspect-[4/3] bg-muted relative overflow-hidden rounded-t-lg">
+                  <div className="aspect-square bg-muted relative overflow-hidden rounded-t-lg flex items-center justify-center p-3">
                     <img
                       src={category.image}
                       alt={category.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <category.icon className="absolute bottom-4 left-4 h-8 w-8 text-white" />
                   </div>
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-headline mb-1">{category.title}</h3>
-                    <p className="text-sm text-muted-foreground">{category.description}</p>
+                    <h3 className="font-semibold text-headline mb-1 text-sm">{category.title}</h3>
+                    <p className="text-xs text-muted-foreground">{category.description}</p>
                   </CardContent>
                 </Card>
               </Link>
