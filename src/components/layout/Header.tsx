@@ -69,14 +69,14 @@ export function Header() {
       </div>
 
       {/* Main Header */}
-      <div className="section-container py-4">
+      <div className="section-container py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src={sltLogo} 
               alt="SLT Rental - Baumaschinen & Equipment" 
-              className="h-10 sm:h-12 w-auto"
+              className="h-12 sm:h-14 lg:h-16 w-auto"
             />
           </Link>
 
