@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, MapPin, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,49 +33,39 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-
-      {/* Info Bar */}
-      <div className="bg-muted border-b border-border">
+      {/* Weekend Tariffs Bar */}
+      <div className="bg-primary text-primary-foreground">
         <div className="section-container py-1.5 flex items-center justify-between text-sm">
-          <div className="flex items-center gap-4">
-            <a href={`tel:${selectedLocation.phone.replace(/\s/g, "")}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
-              <Phone className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{selectedLocation.phone}</span>
-            </a>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 hover:text-primary transition-colors">
-                <MapPin className="h-3.5 w-3.5" />
-                <span>{selectedLocation.name}</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                {locations.map((loc) => (
-                  <DropdownMenuItem
-                    key={loc.id}
-                    onClick={() => setSelectedLocation(loc)}
-                    className="flex flex-col items-start"
-                  >
-                    <span className="font-medium">{loc.name}</span>
-                    <span className="text-xs text-muted-foreground">{loc.address}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="flex items-center gap-2 sm:gap-6">
+            <div className="flex items-center gap-1.5 font-semibold">
+              <Percent className="h-4 w-4" />
+              <span>Wochenendtarife</span>
+            </div>
+            <div className="hidden sm:flex items-center gap-1.5">
+              <span className="font-medium">WE:</span>
+              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
+            </div>
+            <span className="hidden sm:block text-primary-foreground/50">•</span>
+            <div className="hidden md:flex items-center gap-1.5">
+              <span className="font-medium">Langes WE:</span>
+              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
+            </div>
           </div>
-          <Link to="/b2b" className="hover:text-primary transition-colors font-medium">
+          <Link to="/b2b" className="hover:text-accent transition-colors font-medium">
             B2B-Portal
           </Link>
         </div>
       </div>
 
       {/* Main Header */}
-      <div className="section-container py-4">
+      <div className="section-container py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src={sltLogo} 
               alt="SLT Rental - Baumaschinen & Equipment" 
-              className="h-32 sm:h-40 lg:h-48 w-auto"
+              className="h-16 sm:h-20 lg:h-24 w-auto"
             />
           </Link>
 
