@@ -45,12 +45,12 @@ export function Footer() {
       <div className="section-container py-6">
         {/* Top Row: Logo + Locations */}
         <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12">
-          {/* Logo - clipped to remove margins */}
-          <Link to="/" className="shrink-0 h-16 lg:h-20 overflow-hidden flex items-center">
+          {/* Logo - clipped to remove margins, aligned left */}
+          <Link to="/" className="shrink-0 h-16 lg:h-20 overflow-hidden flex items-center -ml-4">
             <img 
               src={sltLogo} 
               alt="SLT Rental" 
-              className="h-32 lg:h-40 w-auto brightness-0 invert max-w-none -my-4"
+              className="h-36 lg:h-44 w-auto brightness-0 invert max-w-none"
             />
           </Link>
 
