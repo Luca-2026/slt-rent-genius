@@ -158,10 +158,6 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Promo Badge */}
-        <div className="absolute top-4 right-4 lg:top-8 lg:right-8 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
-          🎉 Weekend-Tarife verfügbar!
-        </div>
       </section>
 
       {/* Trust Badges */}
