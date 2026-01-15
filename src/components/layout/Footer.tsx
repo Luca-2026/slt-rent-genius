@@ -57,11 +57,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <Link to="/" className="mb-4 inline-block">
+            <Link to="/" className="mb-6 inline-block">
               <img 
                 src={sltLogo} 
                 alt="SLT Rental - Baumaschinen & Equipment" 
-                className="h-12 w-auto brightness-0 invert"
+                className="h-24 sm:h-28 lg:h-32 w-auto brightness-0 invert"
               />
             </Link>
             <p className="text-primary-foreground/80 text-sm mb-6 max-w-sm">
@@ -119,7 +119,7 @@ export function Footer() {
 
           {/* Links Columns */}
           <div>
-            <h4 className="font-semibold mb-4">Produkte</h4>
+            <h4 className="font-semibold mb-4 text-white">Produkte</h4>
             <ul className="space-y-2">
               {footerLinks.produkte.map((link) => (
                 <li key={link.to}>
@@ -135,7 +135,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Service</h4>
+            <h4 className="font-semibold mb-4 text-white">Service</h4>
             <ul className="space-y-2">
               {footerLinks.service.map((link) => (
                 <li key={link.to}>
@@ -148,7 +148,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <h4 className="font-semibold mb-4 mt-6">Unternehmen</h4>
+            <h4 className="font-semibold mb-4 mt-6 text-white">Unternehmen</h4>
             <ul className="space-y-2">
               {footerLinks.unternehmen.map((link) => (
                 <li key={link.to}>
@@ -165,7 +165,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-semibold mb-4">Kontakt</h4>
+            <h4 className="font-semibold mb-4 text-white">Kontakt</h4>
             <ul className="space-y-4">
               {locations.map((loc) => (
                 <li key={loc.name} className="text-sm">
@@ -200,7 +200,7 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-primary-foreground/10">
         <div className="section-container py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-          <span>© {new Date().getFullYear()} SLT Rental GmbH. Alle Rechte vorbehalten.</span>
+          <span>© {new Date().getFullYear()} SLT Technology Group GmbH & Co. KG. Alle Rechte vorbehalten.</span>
           <div className="flex gap-4">
             {footerLinks.rechtliches.map((link) => (
               <Link key={link.to} to={link.to} className="hover:text-accent transition-colors">
