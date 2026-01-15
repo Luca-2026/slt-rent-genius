@@ -3,66 +3,79 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
-  Building2, 
-  Truck, 
-  Forklift, 
-  PartyPopper, 
-  Thermometer,
   Filter,
   Search,
   ArrowRight
 } from "lucide-react";
 
+// Category Icons
+import iconBagger from "@/assets/icons/category-bagger.png";
+import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
+import iconBuehne from "@/assets/icons/category-buehne.png";
+import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
+import iconGeschirr from "@/assets/icons/category-geschirr.png";
+import iconHuepfburg from "@/assets/icons/category-huepfburg.png";
+import iconSpezialeffekte from "@/assets/icons/category-spezialeffekte.png";
+import iconAbsperrgitter from "@/assets/icons/category-absperrgitter.png";
+
 const categories = [
   {
-    id: "baumaschinen",
-    title: "Baumaschinen",
-    description: "Bagger, Radlader, Verdichter, Rüttelplatten und mehr für jedes Bauvorhaben.",
-    icon: Building2,
-    products: 150,
-    image: "/placeholder.svg",
+    id: "bagger-radlader",
+    title: "Bagger & Radlader",
+    description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
+    image: iconBagger,
   },
   {
-    id: "anhaenger",
-    title: "Anhänger",
-    description: "Pkw-Anhänger, Kipper, Transportanhänger, Maschinentransporter.",
-    icon: Truck,
-    products: 80,
-    image: "/placeholder.svg",
+    id: "verdichtung",
+    title: "Verdichtung",
+    description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
+    image: iconVerdichtung,
   },
   {
-    id: "arbeitsbuehnen",
-    title: "Arbeitsbühnen",
-    description: "Scherenbühnen, Teleskopbühnen, Mastbühnen, Anhängerbühnen.",
-    icon: Forklift,
-    products: 120,
-    image: "/placeholder.svg",
+    id: "buehnen-podeste",
+    title: "Bühnen & Podeste",
+    description: "Event-Bühnen, Podeste und Laufstege für Veranstaltungen.",
+    image: iconBuehne,
   },
   {
-    id: "event",
-    title: "Event-Equipment",
-    description: "Zelte, Bühnen, Beleuchtung, Beschallung für dein Event.",
-    icon: PartyPopper,
-    products: 200,
-    image: "/placeholder.svg",
+    id: "moebel-zelte",
+    title: "Möbel & Zelte",
+    description: "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
+    image: iconMoebelZelte,
   },
   {
-    id: "trocknung",
-    title: "Trocknung & Heizung",
-    description: "Bautrockner, Heizgeräte, Lüfter, Klimageräte.",
-    icon: Thermometer,
-    products: 60,
-    image: "/placeholder.svg",
+    id: "geschirr-besteck",
+    title: "Geschirr & Besteck",
+    description: "Geschirr, Besteck, Gläser und Tassen für Ihre Veranstaltung.",
+    image: iconGeschirr,
+  },
+  {
+    id: "huepfburgen",
+    title: "Hüpfburgen",
+    description: "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen.",
+    image: iconHuepfburg,
+  },
+  {
+    id: "spezialeffekte",
+    title: "Spezialeffekte",
+    description: "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth.",
+    image: iconSpezialeffekte,
+  },
+  {
+    id: "absperrung-sicherheit",
+    title: "Absperrung & Sicherheit",
+    description: "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment.",
+    image: iconAbsperrgitter,
   },
 ];
 
 const featuredProducts = [
-  { id: "1", name: "Minibagger 1,5t", category: "Baumaschinen", price: "ab 120€/Tag", image: "/placeholder.svg" },
-  { id: "2", name: "Pkw-Anhänger 750kg", category: "Anhänger", price: "ab 25€/Tag", image: "/placeholder.svg" },
-  { id: "3", name: "Scherenbühne 8m", category: "Arbeitsbühnen", price: "ab 95€/Tag", image: "/placeholder.svg" },
-  { id: "4", name: "Bautrockner 80l", category: "Trocknung", price: "ab 35€/Tag", image: "/placeholder.svg" },
-  { id: "5", name: "Radlader 1,2t", category: "Baumaschinen", price: "ab 180€/Tag", image: "/placeholder.svg" },
-  { id: "6", name: "Partyzelt 6x12m", category: "Event", price: "ab 150€/Tag", image: "/placeholder.svg" },
+  { id: "1", name: "Minibagger 1,5t", category: "Bagger & Radlader", price: "ab 120€/Tag", image: "/placeholder.svg" },
+  { id: "2", name: "Rüttelplatte 90kg", category: "Verdichtung", price: "ab 45€/Tag", image: "/placeholder.svg" },
+  { id: "3", name: "Partyzelt 6x12m", category: "Möbel & Zelte", price: "ab 150€/Tag", image: "/placeholder.svg" },
+  { id: "4", name: "Hüpfburg Burg", category: "Hüpfburgen", price: "ab 120€/Tag", image: "/placeholder.svg" },
+  { id: "5", name: "Nebelmaschine Pro", category: "Spezialeffekte", price: "ab 35€/Tag", image: "/placeholder.svg" },
+  { id: "6", name: "Absperrgitter 10er Set", category: "Absperrung", price: "ab 25€/Tag", image: "/placeholder.svg" },
 ];
 
 export default function Products() {
@@ -114,13 +127,9 @@ export default function Products() {
                       alt={category.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4">
-                      <div className="flex items-center gap-2 text-white mb-2">
-                        <category.icon className="h-6 w-6" />
-                        <span className="font-bold text-lg">{category.title}</span>
-                      </div>
-                      <span className="text-white/80 text-sm">{category.products}+ Produkte</span>
+                      <span className="font-bold text-lg text-white">{category.title}</span>
                     </div>
                   </div>
                   <CardContent className="p-4">
