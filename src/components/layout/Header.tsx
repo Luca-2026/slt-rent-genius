@@ -73,13 +73,13 @@ export function Header() {
 
       {/* Main Header */}
       <div className="section-container py-2">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
+          {/* Logo - oversized and clipped */}
+          <Link to="/" className="flex items-center h-full overflow-hidden">
             <img 
               src={sltLogo} 
               alt="SLT Rental - Baumaschinen & Equipment" 
-              className="h-16 sm:h-20 lg:h-24 w-auto"
+              className="h-24 sm:h-28 lg:h-32 w-auto max-w-none"
             />
           </Link>
 
