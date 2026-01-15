@@ -177,19 +177,16 @@ export default function Products() {
             {categories.map((category) => (
               <Link key={category.id} to={`/produkte/${category.id}`}>
                 <Card className="category-card h-full group">
-                  <div className="aspect-[16/9] bg-muted relative overflow-hidden">
+                  <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-4">
                     <img
                       src={category.image}
                       alt={category.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <span className="font-bold text-lg text-white">{category.title}</span>
-                    </div>
                   </div>
                   <CardContent className="p-4">
-                    <p className="text-sm text-muted-foreground">{category.description}</p>
+                    <h3 className="font-bold text-headline">{category.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{category.description}</p>
                     <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
                       Kategorie ansehen <ArrowRight className="ml-1 h-4 w-4" />
                     </Button>
