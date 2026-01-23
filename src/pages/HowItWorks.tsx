@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { 
   Calendar, 
   Search, 
@@ -75,60 +76,73 @@ export default function HowItWorks() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-primary py-12 lg:py-16">
-        <div className="section-container">
-          <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-            So funktioniert's
-          </h1>
-          <p className="text-primary-foreground/80 max-w-2xl">
-            In 5 einfachen Schritten zu deinem Mietgerät – online buchen, vor Ort abholen 
-            oder direkt liefern lassen. Unkompliziert und schnell.
-          </p>
+      <section className="bg-gradient-to-br from-primary via-primary to-slt-blue-hover py-16 lg:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 right-20 w-64 h-64 border-4 border-primary-foreground rounded-full" />
+          <div className="absolute bottom-10 left-10 w-40 h-40 border-4 border-accent rounded-full" />
+        </div>
+        <div className="section-container relative">
+          <AnimatedSection>
+            <span className="inline-block bg-accent/20 text-accent-foreground px-4 py-1.5 rounded-full text-sm font-medium mb-4 backdrop-blur-sm border border-accent/30">
+              Einfach & unkompliziert
+            </span>
+            <h1 className="text-3xl lg:text-5xl font-bold text-primary-foreground mb-4">
+              So funktioniert's
+            </h1>
+            <p className="text-primary-foreground/80 max-w-2xl text-lg">
+              In 5 einfachen Schritten zu deinem Mietgerät – online buchen, vor Ort abholen 
+              oder direkt liefern lassen.
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Steps */}
-      <section className="py-12 lg:py-20">
+      <section className="py-16 lg:py-24">
         <div className="section-container">
-          <div className="space-y-12">
+          <div className="space-y-16">
             {steps.map((step, index) => (
-              <div key={step.number} className="relative">
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
-                  {/* Step Number & Icon */}
-                  <div className="flex items-center gap-4 lg:w-48 shrink-0">
-                    <div className="w-14 h-14 bg-accent text-accent-foreground rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg">
-                      {step.number}
+              <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
+                <div className="relative">
+                  <div className="flex flex-col lg:flex-row gap-8 items-start">
+                    {/* Step Number & Icon */}
+                    <div className="flex items-center gap-6 lg:w-56 shrink-0">
+                      <div className="w-16 h-16 bg-gradient-to-br from-accent to-cta-orange-hover text-accent-foreground rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg">
+                        {step.number}
+                      </div>
+                      <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center hidden lg:flex">
+                        <step.icon className="h-7 w-7 text-primary" />
+                      </div>
                     </div>
-                    <step.icon className="h-8 w-8 text-primary hidden lg:block" />
+
+                    {/* Content */}
+                    <div className="flex-1 bg-gradient-to-br from-surface-light to-background rounded-2xl p-6 lg:p-8 border border-border">
+                      <h2 className="text-xl lg:text-2xl font-bold text-headline mb-3">
+                        {step.title}
+                      </h2>
+                      <p className="text-muted-foreground mb-5 max-w-2xl">
+                        {step.description}
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        {step.tips.map((tip) => (
+                          <span
+                            key={tip}
+                            className="inline-flex items-center gap-2 bg-background px-4 py-2 rounded-full text-sm text-body border border-border hover:border-accent/50 transition-colors"
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-accent" />
+                            {tip}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h2 className="text-xl lg:text-2xl font-bold text-headline mb-3">
-                      {step.title}
-                    </h2>
-                    <p className="text-muted-foreground mb-4 max-w-2xl">
-                      {step.description}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {step.tips.map((tip) => (
-                        <span
-                          key={tip}
-                          className="inline-flex items-center gap-1.5 bg-surface-light px-3 py-1.5 rounded-full text-sm text-body"
-                        >
-                          <CheckCircle2 className="h-4 w-4 text-accent" />
-                          {tip}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Connector Line */}
+                  {index < steps.length - 1 && (
+                    <div className="hidden lg:block absolute left-8 top-24 w-0.5 h-20 bg-gradient-to-b from-accent to-transparent" />
+                  )}
                 </div>
-
-                {/* Connector Line */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute left-7 top-20 w-0.5 h-16 bg-border" />
-                )}
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -171,49 +185,55 @@ export default function HowItWorks() {
       </section>
 
       {/* Requirements */}
-      <section className="py-12 lg:py-16">
+      <section className="py-16 lg:py-20">
         <div className="section-container">
-          <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-8 text-center">
-            Was du für die Abholung brauchst
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {requirements.map((req) => (
-              <Card key={req.title} className="h-full">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                    <req.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-headline mb-2">{req.title}</h3>
-                  <p className="text-sm text-muted-foreground">{req.description}</p>
-                </CardContent>
-              </Card>
+          <AnimatedSection className="text-center mb-10">
+            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+              Was du für die Abholung brauchst
+            </h2>
+          </AnimatedSection>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {requirements.map((req, index) => (
+              <AnimatedSection key={req.title} delay={index * 100} animation="scale-in">
+                <Card className="h-full border-2 border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300 group">
+                  <CardContent className="p-8">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl flex items-center justify-center mb-5 group-hover:from-primary group-hover:to-primary/80 transition-all duration-300">
+                      <req.icon className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                    </div>
+                    <h3 className="font-bold text-headline text-lg mb-3">{req.title}</h3>
+                    <p className="text-muted-foreground">{req.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
       {/* FAQ Teaser */}
-      <section className="py-12 lg:py-16 bg-surface-light">
+      <section className="py-16 lg:py-20 bg-surface-light">
         <div className="section-container text-center">
-          <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
-            Noch Fragen?
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-            In unseren FAQ findest du Antworten auf die häufigsten Fragen rund um Miete, 
-            Buchung, Lieferung und Abrechnung.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/faq">
-              <Button variant="outline" size="lg">
-                Zu den FAQ <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/kontakt">
-              <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="lg">
-                Kontakt aufnehmen
-              </Button>
-            </Link>
-          </div>
+          <AnimatedSection>
+            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+              Noch Fragen?
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+              In unseren FAQ findest du Antworten auf die häufigsten Fragen rund um Miete, 
+              Buchung, Lieferung und Abrechnung.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/faq">
+                <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
+                  Zu den FAQ <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link to="/kontakt">
+                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="lg">
+                  Kontakt aufnehmen
+                </Button>
+              </Link>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </Layout>

@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { AnimatedSection } from "@/components/ui/animated-section";
+import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { 
   Search, 
   Truck, 
@@ -9,7 +11,11 @@ import {
   ArrowRight,
   MapPin,
   Clock,
-  Phone
+  Phone,
+  Calendar,
+  ShoppingCart,
+  CreditCard,
+  Package
 } from "lucide-react";
 
 // Category Icons
@@ -62,36 +68,41 @@ const categories = [
 const steps = [
   {
     number: "1",
-    title: "Zeitraum & Standort wählen",
-    description: "Wähle deinen Mietstandort und den gewünschten Zeitraum aus.",
+    icon: Calendar,
+    title: "Zeitraum wählen",
+    description: "Wähle deinen Standort und Mietzeitraum.",
   },
   {
     number: "2",
-    title: "Gerät auswählen",
-    description: "Finde das passende Equipment in unserem Katalog.",
+    icon: Search,
+    title: "Gerät finden",
+    description: "Durchsuche unseren Katalog nach Equipment.",
   },
   {
     number: "3",
-    title: "Verfügbarkeit prüfen",
-    description: "Prüfe die Verfügbarkeit in Echtzeit.",
+    icon: ShoppingCart,
+    title: "Online buchen",
+    description: "Schließe die Buchung einfach online ab.",
   },
   {
     number: "4",
-    title: "Buchen & Bezahlen",
-    description: "Schließe die Buchung online ab.",
+    icon: CreditCard,
+    title: "Bezahlen",
+    description: "Zahle sicher per Karte oder vor Ort.",
   },
   {
     number: "5",
-    title: "Abholen oder liefern lassen",
-    description: "Hole dein Equipment ab oder lass es dir liefern.",
+    icon: Package,
+    title: "Abholen",
+    description: "Hole ab oder lass liefern.",
   },
 ];
 
 const trustItems = [
-  { value: "+3.500", label: "zufriedene Kunden" },
-  { value: "+800", label: "Mietprodukte" },
-  { value: "3", label: "Standorte in NRW" },
-  { value: "seit 2016", label: "dein Partner" },
+  { value: 3500, label: "zufriedene Kunden", prefix: "+", isCounter: true },
+  { value: 800, label: "Mietprodukte", prefix: "+", isCounter: true },
+  { value: 3, label: "Standorte in NRW", prefix: "", isCounter: true },
+  { value: 2016, label: "dein Partner", prefix: "seit ", isCounter: false },
 ];
 
 const locations = [
@@ -168,15 +179,27 @@ export default function Index() {
 
       </section>
 
-      {/* Trust Badges */}
-      <section className="py-8 bg-muted border-b border-border">
+      {/* Trust Badges with CountUp */}
+      <section className="py-10 bg-background border-b border-border">
         <div className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {trustItems.map((item) => (
-              <div key={item.label} className="text-center">
-                <span className="block text-2xl lg:text-3xl font-bold text-primary">{item.value}</span>
-                <span className="text-sm text-muted-foreground">{item.label}</span>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {trustItems.map((item, index) => (
+              <AnimatedSection key={item.label} delay={index * 100} animation="fade-in-up">
+                {item.isCounter ? (
+                  <CountUpBadge
+                    value={item.value}
+                    label={item.label}
+                    prefix={item.prefix}
+                  />
+                ) : (
+                  <div className="text-center">
+                    <span className="block text-3xl lg:text-4xl font-bold text-primary tabular-nums">
+                      {item.prefix}{item.value}
+                    </span>
+                    <span className="text-sm text-muted-foreground mt-1 block">{item.label}</span>
+                  </div>
+                )}
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -185,7 +208,7 @@ export default function Index() {
       {/* Categories */}
       <section className="py-16 lg:py-20">
         <div className="section-container">
-          <div className="text-center mb-12">
+          <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
               Unsere Produktkategorien
             </h2>
@@ -193,83 +216,106 @@ export default function Index() {
               Von Baumaschinen über Anhänger bis hin zu Event-Equipment – 
               finde das passende Mietgerät für dein Projekt.
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {categories.map((category) => (
-              <Link key={category.id} to={`/produkte/${category.id}`}>
-                <Card className="h-full group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                  <div className="aspect-square bg-muted relative overflow-hidden rounded-t-lg flex items-center justify-center p-3">
-                    <img
-                      src={category.image}
-                      alt={category.title}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-headline mb-1 text-sm">{category.title}</h3>
-                    <p className="text-xs text-muted-foreground">{category.description}</p>
-                  </CardContent>
-                </Card>
-              </Link>
+            {categories.map((category, index) => (
+              <AnimatedSection key={category.id} delay={index * 50} animation="scale-in">
+                <Link to={`/produkte/${category.id}`}>
+                  <Card className="h-full group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-accent/20">
+                    <div className="aspect-square bg-gradient-to-br from-muted to-surface-light relative overflow-hidden rounded-t-lg flex items-center justify-center p-4">
+                      <img
+                        src={category.image}
+                        alt={category.title}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <CardContent className="p-4 bg-gradient-to-b from-transparent to-muted/30">
+                      <h3 className="font-semibold text-headline mb-1 text-sm group-hover:text-primary transition-colors">{category.title}</h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{category.description}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </AnimatedSection>
             ))}
           </div>
 
-          <div className="text-center mt-8">
+          <AnimatedSection className="text-center mt-10" delay={300}>
             <Link to="/produkte">
-              <Button variant="outline" size="lg" className="group">
+              <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                 Alle Produkte ansehen
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* How it Works */}
-      <section className="py-16 lg:py-20 bg-muted">
+      {/* How it Works - Redesigned */}
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary via-primary to-slt-blue-hover overflow-hidden">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
+          <AnimatedSection className="text-center mb-14">
+            <span className="inline-block bg-accent/20 text-accent-foreground px-4 py-1.5 rounded-full text-sm font-medium mb-4 backdrop-blur-sm border border-accent/30">
+              In 5 Schritten zum Mietgerät
+            </span>
+            <h2 className="text-2xl lg:text-4xl font-bold text-primary-foreground mb-3">
               So einfach funktioniert's
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              In 5 einfachen Schritten zu deinem Mietgerät – 
-              online buchen, vor Ort abholen oder liefern lassen.
+            <p className="text-primary-foreground/70 max-w-xl mx-auto">
+              Online buchen, vor Ort abholen oder liefern lassen.
             </p>
-          </div>
+          </AnimatedSection>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {steps.map((step, index) => (
-              <div key={step.number} className="relative">
-                <div className="bg-background rounded-xl p-6 h-full border border-border">
-                  <div className="w-10 h-10 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold text-lg mb-4">
-                    {step.number}
+          {/* Steps Timeline */}
+          <div className="relative">
+            {/* Connection Line */}
+            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-primary-foreground/10 -translate-y-1/2 rounded-full" />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative">
+              {steps.map((step, index) => (
+                <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
+                  <div className="relative group">
+                    {/* Step Card */}
+                    <div className="bg-background/10 backdrop-blur-sm rounded-2xl p-6 h-full border border-primary-foreground/10 hover:bg-background/20 transition-all duration-300 hover:-translate-y-1">
+                      {/* Icon Circle */}
+                      <div className="w-14 h-14 bg-accent text-accent-foreground rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <step.icon className="h-6 w-6" />
+                      </div>
+                      
+                      {/* Step Number */}
+                      <span className="text-xs font-bold text-accent uppercase tracking-wider mb-2 block">
+                        Schritt {step.number}
+                      </span>
+                      
+                      <h3 className="font-bold text-primary-foreground mb-2 text-lg">{step.title}</h3>
+                      <p className="text-sm text-primary-foreground/60">{step.description}</p>
+                    </div>
+                    
+                    {/* Arrow */}
+                    {index < steps.length - 1 && (
+                      <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 h-5 w-5 text-accent -translate-y-1/2 z-10" />
+                    )}
                   </div>
-                  <h3 className="font-semibold text-headline mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.description}</p>
-                </div>
-                {index < steps.length - 1 && (
-                  <ArrowRight className="hidden lg:block absolute top-1/2 -right-3 h-6 w-6 text-muted-foreground -translate-y-1/2" />
-                )}
-              </div>
-            ))}
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
 
-          <div className="text-center mt-8">
+          <AnimatedSection className="text-center mt-12" delay={500}>
             <Link to="/so-funktionierts">
-              <Button variant="link" className="text-primary">
-                Mehr erfahren <ArrowRight className="ml-1 h-4 w-4" />
+              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                Mehr erfahren
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Locations */}
-      <section className="py-16 lg:py-20">
+      <section className="py-16 lg:py-20 bg-surface-light">
         <div className="section-container">
-          <div className="text-center mb-12">
+          <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
               Unsere Standorte
             </h2>
@@ -277,91 +323,108 @@ export default function Index() {
               3 Standorte in NRW – immer in deiner Nähe. 
               Persönliche Beratung und schnelle Abholung garantiert.
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {locations.map((location) => (
-              <Link key={location.id} to={`/standorte/${location.id}`}>
-                <Card className="h-full hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="font-semibold text-lg text-headline">{location.name}</h3>
-                        <span className="text-sm text-accent font-medium">{location.subtitle}</span>
+            {locations.map((location, index) => (
+              <AnimatedSection key={location.id} delay={index * 100} animation="slide-in-left">
+                <Link to={`/standorte/${location.id}`}>
+                  <Card className="h-full hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-primary/20 overflow-hidden">
+                    <CardContent className="p-6 relative">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-6 -mt-6 group-hover:bg-primary/10 transition-colors" />
+                      <div className="flex items-start justify-between mb-4 relative">
+                        <div>
+                          <h3 className="font-bold text-lg text-headline group-hover:text-primary transition-colors">{location.name}</h3>
+                          <span className="text-sm text-accent font-medium">{location.subtitle}</span>
+                        </div>
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                          <MapPin className="h-5 w-5" />
+                        </div>
                       </div>
-                      <MapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="space-y-2 text-sm text-muted-foreground">
-                      <p>{location.address}</p>
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4" />
-                        <span>{location.phone}</span>
+                      <div className="space-y-3 text-sm text-muted-foreground">
+                        <p className="font-medium">{location.address}</p>
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-accent" />
+                          <span>{location.phone}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-accent" />
+                          <span>{location.hours}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{location.hours}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </AnimatedSection>
             ))}
           </div>
 
-          <div className="text-center mt-8">
+          <AnimatedSection className="text-center mt-10" delay={300}>
             <Link to="/standorte">
-              <Button variant="outline">
+              <Button variant="outline" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                 Alle Standorte anzeigen
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-20 bg-primary">
-        <div className="section-container text-center">
-          <h2 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-4">
-            Bereit für dein nächstes Projekt?
-          </h2>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-            Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. 
-            Jetzt online buchen oder persönlich beraten lassen.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/produkte">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-3">
-                Jetzt Equipment mieten
-              </Button>
-            </Link>
-            <Link to="/b2b">
-              <Button className="bg-white text-primary hover:bg-white/90 px-8 py-3">
-                B2B-Konditionen anfragen
-              </Button>
-            </Link>
-          </div>
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary to-slt-blue-hover relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-40 h-40 border-4 border-primary-foreground rounded-full" />
+          <div className="absolute bottom-10 right-10 w-60 h-60 border-4 border-primary-foreground rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border-4 border-accent rounded-full" />
+        </div>
+        
+        <div className="section-container text-center relative">
+          <AnimatedSection>
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+              Bereit für dein nächstes Projekt?
+            </h2>
+            <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-10 text-lg">
+              Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. 
+              Jetzt online buchen oder persönlich beraten lassen.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/produkte">
+                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 animate-pulse-glow">
+                  Jetzt Equipment mieten
+                </Button>
+              </Link>
+              <Link to="/b2b">
+                <Button size="lg" className="bg-white text-primary hover:bg-white/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  B2B-Konditionen anfragen
+                </Button>
+              </Link>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="py-16 lg:py-20 bg-muted">
+      <section className="py-16 lg:py-20 bg-background">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: CheckCircle2, title: "Faire Preise", text: "Transparente Tagessätze inkl. Weekend-Tarifen" },
               { icon: Truck, title: "Lieferung möglich", text: "Bequem direkt auf deine Baustelle" },
               { icon: Clock, title: "Flexible Mietzeiten", text: "Von einem Tag bis mehrere Wochen" },
               { icon: Phone, title: "Persönliche Beratung", text: "Kompetente Ansprechpartner vor Ort" },
-            ].map((benefit) => (
-              <div key={benefit.title} className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center shrink-0">
-                  <benefit.icon className="h-6 w-6 text-accent" />
+            ].map((benefit, index) => (
+              <AnimatedSection key={benefit.title} delay={index * 100} animation="fade-in-up">
+                <div className="flex items-start gap-4 group">
+                  <div className="w-14 h-14 bg-gradient-to-br from-accent/20 to-accent/5 rounded-xl flex items-center justify-center shrink-0 group-hover:from-accent group-hover:to-accent/80 transition-all duration-300">
+                    <benefit.icon className="h-7 w-7 text-accent group-hover:text-accent-foreground transition-colors" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-headline mb-1">{benefit.title}</h3>
+                    <p className="text-sm text-muted-foreground">{benefit.text}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-headline mb-1">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.text}</p>
-                </div>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
