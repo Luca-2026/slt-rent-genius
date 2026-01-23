@@ -252,16 +252,16 @@ export default function Index() {
       </section>
 
       {/* How it Works - Redesigned */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary via-primary to-slt-blue-hover overflow-hidden">
+      <section className="py-20 lg:py-28 bg-surface-light overflow-hidden">
         <div className="section-container">
           <AnimatedSection className="text-center mb-14">
-            <span className="inline-block bg-accent/20 text-accent-foreground px-4 py-1.5 rounded-full text-sm font-medium mb-4 backdrop-blur-sm border border-accent/30">
+            <span className="inline-block bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
               In 5 Schritten zum Mietgerät
             </span>
-            <h2 className="text-2xl lg:text-4xl font-bold text-primary-foreground mb-3">
+            <h2 className="text-2xl lg:text-4xl font-bold text-headline mb-3">
               So einfach funktioniert's
             </h2>
-            <p className="text-primary-foreground/70 max-w-xl mx-auto">
+            <p className="text-muted-foreground max-w-xl mx-auto">
               Online buchen, vor Ort abholen oder liefern lassen.
             </p>
           </AnimatedSection>
@@ -269,16 +269,16 @@ export default function Index() {
           {/* Steps Timeline */}
           <div className="relative">
             {/* Connection Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-primary-foreground/10 -translate-y-1/2 rounded-full" />
+            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-border -translate-y-1/2 rounded-full" />
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
               {steps.map((step, index) => (
                 <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
                   <div className="relative group">
                     {/* Step Card */}
-                    <div className="bg-background/10 backdrop-blur-sm rounded-2xl p-6 h-full border border-primary-foreground/10 hover:bg-background/20 transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-card rounded-2xl p-6 h-full border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                       {/* Icon Circle */}
-                      <div className="w-14 h-14 bg-accent text-accent-foreground rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-14 h-14 bg-primary text-primary-foreground rounded-xl flex items-center justify-center mb-4 shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300">
                         <step.icon className="h-6 w-6" />
                       </div>
                       
@@ -287,13 +287,13 @@ export default function Index() {
                         Schritt {step.number}
                       </span>
                       
-                      <h3 className="font-bold text-primary-foreground mb-2 text-lg">{step.title}</h3>
-                      <p className="text-sm text-primary-foreground/60">{step.description}</p>
+                      <h3 className="font-bold text-headline mb-2 text-lg">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground">{step.description}</p>
                     </div>
                     
                     {/* Arrow */}
                     {index < steps.length - 1 && (
-                      <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 h-5 w-5 text-accent -translate-y-1/2 z-10" />
+                      <ArrowRight className="hidden lg:block absolute top-1/2 -right-3 h-5 w-5 text-accent -translate-y-1/2 z-10" />
                     )}
                   </div>
                 </AnimatedSection>
@@ -303,7 +303,7 @@ export default function Index() {
 
           <AnimatedSection className="text-center mt-12" delay={500}>
             <Link to="/so-funktionierts">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 Mehr erfahren
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -371,31 +371,31 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary to-slt-blue-hover relative overflow-hidden">
+      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-40 h-40 border-4 border-primary-foreground rounded-full" />
-          <div className="absolute bottom-10 right-10 w-60 h-60 border-4 border-primary-foreground rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border-4 border-accent rounded-full" />
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-40 h-40 border border-border rounded-full opacity-50" />
+          <div className="absolute bottom-10 right-10 w-60 h-60 border border-border rounded-full opacity-50" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-accent/20 rounded-full opacity-30" />
         </div>
         
         <div className="section-container text-center relative">
           <AnimatedSection>
-            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-headline mb-4">
               Bereit für dein nächstes Projekt?
             </h2>
-            <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-10 text-lg">
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-10 text-lg">
               Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. 
               Jetzt online buchen oder persönlich beraten lassen.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/produkte">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 animate-pulse-glow">
+                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   Jetzt Equipment mieten
                 </Button>
               </Link>
               <Link to="/b2b">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1">
                   B2B-Konditionen anfragen
                 </Button>
               </Link>
