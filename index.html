@@ -1,26 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>SLT Rental - Baumaschinen & Event-Equipment mieten</title>
+    <meta name="description" content="SLT Rental: Baumaschinen, Anhänger, Event-Equipment und mehr mieten in Krefeld, Bonn und Mülheim. Über 800 Produkte online buchbar." />
+    <meta name="author" content="SLT Rental" />
 
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="SLT Rental - Baumaschinen & Event-Equipment mieten" />
+    <meta property="og:description" content="SLT Rental: Baumaschinen, Anhänger, Event-Equipment und mehr mieten in Krefeld, Bonn und Mülheim." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:site" content="@SLTRental" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Rentware Integration -->
+    <script type="module" src="https://cdn.rtr-io.com/widgets.js"></script>
+    <script>
+      window.RTR_ACCESS_TOKEN = 'W74e1e543828256d3b730a73f09c72c2d';
+    </script>
+    <rtr-checkout></rtr-checkout>
   </body>
 </html>
