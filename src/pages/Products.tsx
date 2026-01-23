@@ -23,145 +23,136 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 
-// Category mapping with Rentware tags
+// Category mapping with Rentware article IDs
 const categories = [
   {
     id: "bagger-radlader",
     title: "Bagger & Radlader",
     description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
     image: iconBagger,
-    rentwareTag: "Bagger, Radlader",
+    rentwareArticleId: "",
   },
   {
     id: "verdichtung",
     title: "Verdichtung",
     description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
     image: iconVerdichtung,
-    rentwareTag: "Verdichtung",
+    rentwareArticleId: "",
   },
   {
     id: "anhaenger",
     title: "Anhänger",
     description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
     image: iconAnhaenger,
-    rentwareTag: "Anhänger",
+    rentwareArticleId: "WWSMO3",
   },
   {
     id: "hebebuehnen",
     title: "Hebebühnen & Arbeitsbühnen",
     description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
     image: iconHebebuehne,
-    rentwareTag: "Hebebühne, Arbeitsbühne",
+    rentwareArticleId: "",
   },
   {
     id: "buehnen-podeste",
     title: "Bühnen & Podeste",
     description: "Event-Bühnen, Podeste und Laufstege für Veranstaltungen.",
     image: iconBuehne,
-    rentwareTag: "Bühne, Podest",
+    rentwareArticleId: "",
   },
   {
     id: "moebel-zelte",
     title: "Möbel & Zelte",
     description: "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
     image: iconMoebelZelte,
-    rentwareTag: "Möbel, Zelte",
+    rentwareArticleId: "",
   },
   {
     id: "geschirr",
     title: "Geschirr",
     description: "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung.",
     image: iconGeschirr,
-    rentwareTag: "Geschirr",
+    rentwareArticleId: "",
   },
   {
     id: "besteck",
     title: "Besteck",
     description: "Messer, Gabeln und Löffel für Events und Feiern.",
     image: iconBesteck,
-    rentwareTag: "Besteck",
+    rentwareArticleId: "",
   },
   {
     id: "huepfburgen",
     title: "Hüpfburgen",
     description: "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen.",
     image: iconHuepfburg,
-    rentwareTag: "Hüpfburg",
+    rentwareArticleId: "",
   },
   {
     id: "spezialeffekte",
     title: "Spezialeffekte",
     description: "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth.",
     image: iconSpezialeffekte,
-    rentwareTag: "Spezialeffekte",
+    rentwareArticleId: "",
   },
   {
     id: "led-spots",
     title: "LED Spots & Effektlicht",
     description: "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events.",
     image: iconLedSpots,
-    rentwareTag: "LED, Effektlicht",
+    rentwareArticleId: "",
   },
   {
     id: "beleuchtung",
     title: "Beleuchtung & Flutlicht",
     description: "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung.",
     image: iconBeleuchtung,
-    rentwareTag: "Beleuchtung, Flutlicht",
+    rentwareArticleId: "",
   },
   {
     id: "stromerzeuger",
     title: "Stromerzeuger",
     description: "Aggregate und Notstromgeräte für Baustelle und Event.",
     image: iconAggregat,
-    rentwareTag: "Stromerzeuger, Aggregat",
+    rentwareArticleId: "",
   },
   {
     id: "heizung-klima",
     title: "Heizung & Klima",
     description: "Heizlüfter, Heizpilze und Klimageräte für jede Situation.",
     image: iconHeizung,
-    rentwareTag: "Heizung, Klima",
+    rentwareArticleId: "",
   },
   {
     id: "kabel-leitungen",
     title: "Kabel & Leitungen",
     description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
     image: iconKabel,
-    rentwareTag: "Kabel, Leitungen",
+    rentwareArticleId: "",
   },
   {
     id: "absperrung-sicherheit",
     title: "Absperrung & Sicherheit",
     description: "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment.",
     image: iconAbsperrgitter,
-    rentwareTag: "Absperrung, Sicherheit",
+    rentwareArticleId: "",
   },
 ];
 
-// Rentware locations string
-const RENTWARE_LOCATIONS = "01929004-e24f-7cc0-83f0-0f3d3431395e, 01953e5f-614f-743d-8eb9-1a0e865da81d, 01961b40-d0ae-7851-b5ef-141eb74b5c2d, 0197324e-b97d-77ce-b915-79f392ad1408, 612aa84f-f7f5-4fe7-7e35-713f4bce48e5, 95e16e54-04d2-496a-6002-41e0289b53a3";
-
-// Rentware Search Widget Component
-function RentwareSearch({ tag }: { tag?: string }) {
+// Rentware Article Booking Widget Component
+function RentwareArticleBooking({ articleId }: { articleId: string }) {
   useEffect(() => {
-    // Force re-render of custom element when tag changes
-    const container = document.getElementById('rentware-search-container');
+    const container = document.getElementById('rentware-article-container');
     if (container) {
       container.innerHTML = '';
-      const searchElement = document.createElement('rtr-search');
-      searchElement.setAttribute('view', 'cards');
-      searchElement.setAttribute('show-location', 'on');
-      searchElement.setAttribute('load-behaviour', 'extended');
-      searchElement.setAttribute('locations', RENTWARE_LOCATIONS);
-      if (tag) {
-        searchElement.setAttribute('show-only-tags', tag);
-      }
-      container.appendChild(searchElement);
+      const articleElement = document.createElement('rtr-article-booking');
+      articleElement.setAttribute('article-id', articleId);
+      articleElement.setAttribute('view', 'cards');
+      container.appendChild(articleElement);
     }
-  }, [tag]);
+  }, [articleId]);
 
-  return <div id="rentware-search-container" className="min-h-[400px]" />;
+  return <div id="rentware-article-container" className="min-h-[400px]" />;
 }
 
 export default function Products() {
@@ -204,11 +195,13 @@ export default function Products() {
         </section>
 
         {/* Rentware Products */}
-        <section className="py-8 lg:py-12">
-          <div className="section-container">
-            <RentwareSearch tag={selectedCategory.rentwareTag} />
-          </div>
-        </section>
+        {selectedCategory.rentwareArticleId && (
+          <section className="py-8 lg:py-12">
+            <div className="section-container">
+              <RentwareArticleBooking articleId={selectedCategory.rentwareArticleId} />
+            </div>
+          </section>
+        )}
 
         {/* Other Categories */}
         <section className="py-8 lg:py-12 bg-surface-light">
@@ -257,13 +250,7 @@ export default function Products() {
         </div>
       </section>
 
-      {/* Rentware Full Search */}
-      <section className="py-8 lg:py-12 bg-surface-light">
-        <div className="section-container">
-          <h2 className="text-2xl font-bold text-headline mb-6">Produkte suchen & buchen</h2>
-          <RentwareSearch />
-        </div>
-      </section>
+      {/* Categories */}
 
       {/* Categories */}
       <section className="py-12 lg:py-16">
