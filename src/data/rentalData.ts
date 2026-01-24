@@ -247,7 +247,7 @@ const trailerProducts: Product[] = [
     sortOrder: 1,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "LNQBH7" } 
   },
   { 
     id: "planen-m-750", 
