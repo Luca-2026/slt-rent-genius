@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -20,6 +21,8 @@ export default function CategoryProducts() {
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [allSearchQuery, setAllSearchQuery] = useState("");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
   const [trailerFilters, setTrailerFilters] = useState<TrailerFilterState>({
     search: "",
     types: [],
@@ -41,6 +44,12 @@ export default function CategoryProducts() {
     return getProductsForLocationCategory(location.id, category.id);
   }, [location, category]);
 
+  // Get categories for quick filter (excluding "alle")
+  const availableCategories = useMemo(() => {
+    if (!location) return [];
+    return getCategoriesForLocation(location.id).filter((c) => c.id !== "alle");
+  }, [location]);
+
   const otherCategories = useMemo(() => {
     if (!location || !category) return [];
     return getCategoriesForLocation(location.id).filter(
@@ -51,6 +60,24 @@ export default function CategoryProducts() {
   // Filter and sort products
   const products = useMemo(() => {
     let filtered = [...allProducts];
+
+    // Apply "alle" category filters (search and category filter)
+    if (category?.id === "alle") {
+      // Search filter
+      if (allSearchQuery) {
+        const searchLower = allSearchQuery.toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.description?.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      // Category filter
+      if (selectedCategoryFilter) {
+        filtered = filtered.filter((p) => p.category === selectedCategoryFilter);
+      }
+    }
 
     // Apply trailer-specific filters only for anhänger category
     if (category?.id === "anhaenger") {
@@ -121,7 +148,7 @@ export default function CategoryProducts() {
     }
 
     return filtered;
-  }, [allProducts, trailerFilters, earthMovingFilters, category?.id]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, trailerFilters, earthMovingFilters, category?.id]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -344,6 +371,70 @@ export default function CategoryProducts() {
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-2 lg:order-1">
                 <div className="sticky top-4 space-y-6">
+                  {/* "Alle" category: Search + Category Filter + Delivery Calculator */}
+                  {category.id === "alle" && (
+                    <>
+                      {/* Search */}
+                      <div className="bg-card border border-border rounded-xl p-4">
+                        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                          <Search className="h-4 w-4" />
+                          Artikelsuche
+                        </h3>
+                        <div className="relative">
+                          <Input
+                            type="text"
+                            placeholder="Artikel suchen..."
+                            value={allSearchQuery}
+                            onChange={(e) => setAllSearchQuery(e.target.value)}
+                            className="pr-8"
+                          />
+                          {allSearchQuery && (
+                            <button
+                              onClick={() => setAllSearchQuery("")}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Category Quick Filter */}
+                      <div className="bg-card border border-border rounded-xl p-4">
+                        <h3 className="font-semibold text-foreground mb-3">
+                          Kategorien
+                        </h3>
+                        <div className="space-y-1">
+                          <button
+                            onClick={() => setSelectedCategoryFilter(null)}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                              selectedCategoryFilter === null
+                                ? "bg-primary text-primary-foreground font-medium"
+                                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            Alle Kategorien
+                          </button>
+                          {availableCategories.map((cat) => (
+                            <button
+                              key={cat.id}
+                              onClick={() => setSelectedCategoryFilter(cat.id === selectedCategoryFilter ? null : cat.id)}
+                              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                                selectedCategoryFilter === cat.id
+                                  ? "bg-primary text-primary-foreground font-medium"
+                                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                              }`}
+                            >
+                              {cat.title}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Delivery Calculator for all */}
+                      <DeliveryCalculatorCompact showAllCategories />
+                    </>
+                  )}
                   {category.id === "anhaenger" && (
                     <TrailerFilter onFilterChange={setTrailerFilters} />
                   )}
@@ -353,7 +444,7 @@ export default function CategoryProducts() {
                       <DeliveryCalculatorCompact productCategoryId={category.id} />
                     </>
                   )}
-                  {category.id !== "anhaenger" && category.id !== "erdbewegung" && (
+                  {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
                     <DeliveryCalculatorCompact productCategoryId={category.id} />
                   )}
                 </div>
@@ -374,9 +465,11 @@ export default function CategoryProducts() {
                 ) : (
                   <div className="text-center py-12 bg-muted/30 rounded-xl">
                     <p className="text-muted-foreground">
-                      {category.id === "anhaenger" 
-                        ? "Keine Anhänger gefunden. Bitte passe deine Filter an."
-                        : "Keine Maschinen gefunden. Bitte passe deine Filter an."}
+                      {category.id === "alle" 
+                        ? "Keine Artikel gefunden. Bitte passe deine Suche oder Filter an."
+                        : category.id === "anhaenger" 
+                          ? "Keine Anhänger gefunden. Bitte passe deine Filter an."
+                          : "Keine Maschinen gefunden. Bitte passe deine Filter an."}
                     </p>
                   </div>
                 )}

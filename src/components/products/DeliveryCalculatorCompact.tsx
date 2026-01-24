@@ -10,7 +10,7 @@ import { Truck, MapPin, Calculator, ArrowRight } from "lucide-react";
 
 const deliveryPrices = {
   "1t-bagger": {
-    name: "1t Bagger, Dumper",
+    name: "1t Bagger, Dumper & 8m Scherenbühne",
     multiplier: 1.5,
     distances: [
       { km: 15, brutto: 70 },
@@ -22,7 +22,7 @@ const deliveryPrices = {
     ],
   },
   "2t-bagger": {
-    name: "2t Bagger, Radlader",
+    name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
     multiplier: 1.5,
     distances: [
       { km: 15, brutto: 80 },
@@ -34,7 +34,7 @@ const deliveryPrices = {
     ],
   },
   "3t-bagger": {
-    name: "3t Bagger",
+    name: "3t Bagger & 12m Scherenbühne",
     multiplier: 1.7,
     distances: [
       { km: 15, brutto: 90 },
@@ -43,6 +43,19 @@ const deliveryPrices = {
       { km: 30, brutto: 139 },
       { km: 35, brutto: 150 },
       { km: 50, brutto: 165 },
+    ],
+  },
+  "geruest": {
+    name: "Gerüst bis 4,4m Arbeitshöhe",
+    multiplier: 1,
+    distances: [
+      { km: 10, brutto: 45 },
+      { km: 15, brutto: 55 },
+      { km: 20, brutto: 65 },
+      { km: 25, brutto: 75 },
+      { km: 30, brutto: 90 },
+      { km: 35, brutto: 115 },
+      { km: 50, brutto: 150 },
     ],
   },
   "event": {
@@ -61,6 +74,15 @@ const deliveryPrices = {
 };
 
 type CategoryKey = keyof typeof deliveryPrices;
+
+// All category options for the dropdown
+const allCategoryOptions: { value: CategoryKey; label: string }[] = [
+  { value: "1t-bagger", label: "1t Bagger, Dumper & 8m Scherenbühne" },
+  { value: "2t-bagger", label: "2t Bagger, Radlader & Anhängerarbeitsbühne" },
+  { value: "3t-bagger", label: "3t Bagger & 12m Scherenbühne" },
+  { value: "geruest", label: "Gerüst bis 4,4m Arbeitshöhe" },
+  { value: "event", label: "Heizung, Möbel, Zelte, Event-Equipment" },
+];
 
 // Machine type options for erdbewegung category
 const machineTypeOptions: { value: CategoryKey; label: string }[] = [
@@ -84,19 +106,25 @@ const categoryMapping: Record<string, CategoryKey> = {
   "beleuchtung": "event",
   "heizung-klima": "event",
   "buehnen-podeste": "event",
+  "gerueste": "geruest",
 };
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
+  showAllCategories?: boolean;
   className?: string;
 }
 
 export function DeliveryCalculatorCompact({ 
   productCategoryId,
+  showAllCategories = false,
   className = "" 
 }: DeliveryCalculatorCompactProps) {
   // Determine if this is erdbewegung category (show machine type selector)
   const isErdbewegung = productCategoryId === "erdbewegung";
+  
+  // Show all categories when showAllCategories is true (for "alle" page)
+  const showCategoryDropdown = showAllCategories || isErdbewegung;
   
   // Determine initial category based on product
   const initialCategory = productCategoryId 
@@ -109,6 +137,10 @@ export function DeliveryCalculatorCompact({
   const [twoMachines, setTwoMachines] = useState(false);
 
   const selectedCategory = deliveryPrices[selectedMachineType];
+  
+  // Check if multiplier option should be shown
+  const showMultiplierOption = isErdbewegung || 
+    (showAllCategories && (selectedMachineType === "1t-bagger" || selectedMachineType === "2t-bagger" || selectedMachineType === "3t-bagger"));
 
   const calculatedPrice = useMemo(() => {
     const distances = selectedCategory.distances;
@@ -137,6 +169,9 @@ export function DeliveryCalculatorCompact({
     };
   }, [distance, includeReturn, twoMachines, selectedCategory]);
 
+  // Determine which options to show in dropdown
+  const categoryOptions = showAllCategories ? allCategoryOptions : machineTypeOptions;
+
   return (
     <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
       <CardHeader className="pb-3">
@@ -146,8 +181,8 @@ export function DeliveryCalculatorCompact({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Machine Type Selector for Erdbewegung */}
-        {isErdbewegung && (
+        {/* Category Selector */}
+        {showCategoryDropdown && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">Gerätekategorie</Label>
             <Select
@@ -155,10 +190,10 @@ export function DeliveryCalculatorCompact({
               onValueChange={(value) => setSelectedMachineType(value as CategoryKey)}
             >
               <SelectTrigger className="w-full bg-background">
-                <SelectValue placeholder="Maschinentyp wählen" />
+                <SelectValue placeholder="Kategorie wählen" />
               </SelectTrigger>
               <SelectContent className="bg-background z-50">
-                {machineTypeOptions.map((option) => (
+                {categoryOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
@@ -168,8 +203,8 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
-        {/* Non-erdbewegung: show category name */}
-        {!isErdbewegung && (
+        {/* Non-dropdown: show category name */}
+        {!showCategoryDropdown && (
           <p className="text-sm text-muted-foreground">
             Für {selectedCategory.name}
           </p>
@@ -206,8 +241,8 @@ export function DeliveryCalculatorCompact({
           />
         </div>
 
-        {/* Two Machines Toggle - only for erdbewegung */}
-        {isErdbewegung && selectedCategory.multiplier > 1 && (
+        {/* Two Machines Toggle - for erdbewegung or all categories with multiplier */}
+        {showMultiplierOption && selectedCategory.multiplier > 1 && (
           <div className="flex items-center justify-between py-2 border-t border-border">
             <div>
               <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
