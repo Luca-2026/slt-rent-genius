@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Loader2 } from "lucide-react";
 import type { Product, LocationData } from "@/data/rentalData";
 
 interface ProductBookingDialogProps {
@@ -24,27 +24,54 @@ export function ProductBookingDialog({
 }: ProductBookingDialogProps) {
   const articleId = product?.rentwareCode?.[location?.id || ""];
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
+  const [widgetLoading, setWidgetLoading] = useState(true);
 
   // Inject Rentware widget when dialog opens
   useEffect(() => {
     if (!isOpen || !articleId) return;
     
-    // Small delay to ensure the DOM element exists
-    const timer = setTimeout(() => {
+    setWidgetLoading(true);
+    
+    // Wait for the rtr-article custom element to be defined
+    const mountWidget = () => {
       const container = document.getElementById(containerId);
       if (container) {
         container.innerHTML = `<rtr-article article-id="${articleId}" view="calendar"></rtr-article>`;
+        setWidgetLoading(false);
       }
-    }, 100);
+    };
     
-    return () => {
-      clearTimeout(timer);
+    // Check if custom element is already defined
+    if (customElements.get('rtr-article')) {
+      // Small delay for DOM to be ready
+      const timer = setTimeout(mountWidget, 50);
+      return () => clearTimeout(timer);
+    } else {
+      // Wait for custom element to be defined (max 5 seconds)
+      let attempts = 0;
+      const maxAttempts = 50;
+      const interval = setInterval(() => {
+        attempts++;
+        if (customElements.get('rtr-article') || attempts >= maxAttempts) {
+          clearInterval(interval);
+          mountWidget();
+        }
+      }, 100);
+      
+      return () => clearInterval(interval);
+    }
+  }, [isOpen, articleId, containerId]);
+
+  // Cleanup on close
+  useEffect(() => {
+    if (!isOpen) {
       const container = document.getElementById(containerId);
       if (container) {
         container.innerHTML = '';
       }
-    };
-  }, [isOpen, articleId, containerId]);
+      setWidgetLoading(true);
+    }
+  }, [isOpen, containerId]);
 
   if (!product || !location) return null;
 
@@ -52,11 +79,18 @@ export function ProductBookingDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
         {articleId ? (
-          // Only show Rentware widget when available
-          <div 
-            id={containerId}
-            className="min-h-[500px] p-4"
-          />
+          // Show Rentware widget when available
+          <div className="relative">
+            {widgetLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            )}
+            <div 
+              id={containerId}
+              className="min-h-[500px] p-4"
+            />
+          </div>
         ) : (
           // Fallback inquiry form when no Rentware code
           <>
