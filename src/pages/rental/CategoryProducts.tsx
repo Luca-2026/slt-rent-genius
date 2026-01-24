@@ -44,10 +44,15 @@ export default function CategoryProducts() {
     return getProductsForLocationCategory(location.id, category.id);
   }, [location, category]);
 
-  // Get categories for quick filter (excluding "alle")
+  // Get categories that actually have products for quick filter (excluding "alle")
   const availableCategories = useMemo(() => {
     if (!location) return [];
-    return getCategoriesForLocation(location.id).filter((c) => c.id !== "alle");
+    return getCategoriesForLocation(location.id).filter((c) => {
+      if (c.id === "alle") return false;
+      // Only show categories that have products
+      const products = getProductsForLocationCategory(location.id, c.id);
+      return products.length > 0;
+    });
   }, [location]);
 
   const otherCategories = useMemo(() => {
@@ -56,6 +61,20 @@ export default function CategoryProducts() {
       (c) => c.id !== category.id && c.id !== "alle"
     );
   }, [location, category]);
+  
+  // Create a mapping from product to its main category
+  const productCategoryMap = useMemo(() => {
+    if (!location) return new Map<string, string>();
+    const map = new Map<string, string>();
+    
+    for (const mainCategoryId of location.availableCategories) {
+      const products = location.products[mainCategoryId] || [];
+      for (const product of products) {
+        map.set(product.id, mainCategoryId);
+      }
+    }
+    return map;
+  }, [location]);
 
   // Filter and sort products
   const products = useMemo(() => {
@@ -73,9 +92,9 @@ export default function CategoryProducts() {
         );
       }
       
-      // Category filter
+      // Category filter - filter by main category, not product sub-category
       if (selectedCategoryFilter) {
-        filtered = filtered.filter((p) => p.category === selectedCategoryFilter);
+        filtered = filtered.filter((p) => productCategoryMap.get(p.id) === selectedCategoryFilter);
       }
     }
 
@@ -148,7 +167,7 @@ export default function CategoryProducts() {
     }
 
     return filtered;
-  }, [allProducts, allSearchQuery, selectedCategoryFilter, trailerFilters, earthMovingFilters, category?.id]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, category?.id]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -399,12 +418,12 @@ export default function CategoryProducts() {
                         </div>
                       </div>
                       
-                      {/* Category Quick Filter */}
+                      {/* Category Quick Filter with scroll */}
                       <div className="bg-card border border-border rounded-xl p-4">
                         <h3 className="font-semibold text-foreground mb-3">
-                          Kategorien
+                          Kategorien ({availableCategories.length})
                         </h3>
-                        <div className="space-y-1">
+                        <div className="space-y-1 max-h-[400px] overflow-y-auto pr-2">
                           <button
                             onClick={() => setSelectedCategoryFilter(null)}
                             className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
