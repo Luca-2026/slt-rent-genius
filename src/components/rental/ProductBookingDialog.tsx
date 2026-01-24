@@ -29,21 +29,21 @@ export function ProductBookingDialog({
     if (!isOpen || !product || !location || !widgetContainerRef.current) return;
     
     const container = widgetContainerRef.current;
-    container.innerHTML = '';
-
+    
     // Check if we have a Rentware article ID for this product and location
     const articleId = product.rentwareCode?.[location.id];
     
     if (articleId) {
-      // Create the rtr-article element with calendar view
-      const rtrArticle = document.createElement('rtr-article');
-      rtrArticle.setAttribute('article-id', articleId);
-      rtrArticle.setAttribute('view', 'calendar');
-      container.appendChild(rtrArticle);
+      // Inject the rtr-article element as HTML string
+      container.innerHTML = `<rtr-article article-id="${articleId}" view="calendar"></rtr-article>`;
+    } else {
+      container.innerHTML = '';
     }
     
     return () => {
-      container.innerHTML = '';
+      if (widgetContainerRef.current) {
+        widgetContainerRef.current.innerHTML = '';
+      }
     };
   }, [isOpen, product, location]);
 
