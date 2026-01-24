@@ -28,6 +28,7 @@ const quickLinks = [
   { to: "/so-funktionierts", label: "So funktioniert's" },
   { to: "/lieferung", label: "Lieferkosten" },
   { to: "/standorte", label: "Standorte" },
+  { to: "/karriere", label: "Karriere" },
   { to: "/kontakt", label: "Kontakt" },
   { to: "/faq", label: "FAQ" },
 ];

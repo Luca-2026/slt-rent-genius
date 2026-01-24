@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import About from "./pages/About";
 import Lieferung from "./pages/Lieferung";
+import Karriere from "./pages/Karriere";
 import B2BLogin from "./pages/b2b/Login";
 import B2BRegister from "./pages/b2b/Register";
 import B2BDashboard from "./pages/b2b/Dashboard";
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/lieferung" element={<Lieferung />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/ueber-uns" element={<About />} />
+            <Route path="/karriere" element={<Karriere />} />
             {/* B2B Portal */}
             <Route path="/b2b/login" element={<B2BLogin />} />
             <Route path="/b2b/registrieren" element={<B2BRegister />} />
