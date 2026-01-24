@@ -2,7 +2,11 @@ import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail } from "lucide-react";
+
+// Location images
+import imgKrefeld from "@/assets/locations/krefeld.jpg";
+import imgBonn from "@/assets/locations/bonn.webp";
 
 const locations = [
   {
@@ -14,13 +18,14 @@ const locations = [
     city: "47807 Krefeld-Fichtenhain",
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
+    image: imgKrefeld,
     lat: 51.3127,
     lng: 6.5511,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
     ],
-    features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort"],
+    features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
   },
   {
@@ -30,34 +35,34 @@ const locations = [
     description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
     address: "Drachenburgstraße 8",
     city: "53179 Bonn",
-    phone: "0228 50466061",
+    phone: "02151 417 990 4",
     email: "bonn@slt-rental.de",
+    image: imgBonn,
     lat: 50.6879,
     lng: 7.1591,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
     ],
-    features: ["Code-Übergabe möglich", "24/7 Abholung", "Kleingeräte-Fokus"],
+    features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
-    note: "Außerhalb der Öffnungszeiten ist eine Abholung per Code-Übergabe möglich. Bitte vorab anfragen.",
   },
   {
     id: "muelheim",
     name: "Mülheim an der Ruhr",
     subtitle: "Filiale",
-    description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
+    description: "Miete bei uns Minibagger, Anhänger und mehr für dein nächstes Projekt zum besten Preis!",
     address: "Ruhrorter Str. 100",
     city: "45478 Mülheim an der Ruhr",
-    phone: "02151 417 99 04",
-    email: "krefeld@slt-rental.de",
+    phone: "02151 417 990 4",
+    email: "muelheim@slt-rental.de",
     lat: 51.4171,
     lng: 6.8711,
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
     ],
-    features: ["Ruhrgebiet-Nähe", "Anhänger-Spezialist", "Schnelle Abwicklung"],
+    features: ["Bagger & Anhänger", "Ruhrgebiet-Nähe", "24/7 Anhänger-Buchung", "Schnelle Abwicklung"],
     mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+100+45478+Mülheim",
   },
 ];
@@ -143,7 +148,17 @@ export default function Locations() {
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {locations.map((location) => (
-              <Card key={location.id} className="h-full">
+              <Card key={location.id} className="h-full overflow-hidden">
+                {/* Location Image */}
+                {location.image && (
+                  <div className="h-40 overflow-hidden">
+                    <img 
+                      src={location.image} 
+                      alt={`Standort ${location.name}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
@@ -155,7 +170,7 @@ export default function Locations() {
                     </div>
                   </div>
 
-                  {/* Address */}
+                  {/* Address & Contact */}
                   <div className="space-y-3 mb-6">
                     <div className="flex items-start gap-3 text-sm">
                       <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
@@ -168,6 +183,12 @@ export default function Locations() {
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <a href={`tel:${location.phone.replace(/\s/g, "")}`} className="text-primary hover:text-accent">
                         {location.phone}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <a href={`mailto:${location.email}`} className="text-primary hover:text-accent">
+                        {location.email}
                       </a>
                     </div>
                   </div>
@@ -188,12 +209,7 @@ export default function Locations() {
                     </div>
                   </div>
 
-                  {/* Note */}
-                  {location.note && (
-                    <div className="bg-accent/10 rounded-lg p-3 mb-6">
-                      <p className="text-sm text-body">{location.note}</p>
-                    </div>
-                  )}
+                  {/* Note - removed as not needed anymore */}
 
                   {/* Features */}
                   <div className="mb-6">
