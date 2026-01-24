@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface RentwareSearchConfig {
   view?: string;
@@ -15,22 +15,26 @@ interface RentwareSearchProps {
 
 export function RentwareSearch({ config, categoryId }: RentwareSearchProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    // Force re-render when config changes
+    setKey(prev => prev + 1);
+  }, [config.showOnlyTags]);
 
   useEffect(() => {
     if (containerRef.current) {
+      // Clear previous content
       containerRef.current.innerHTML = '';
       
+      // Create new rtr-search element
       const searchElement = document.createElement('rtr-search');
       
-      if (config.view) {
-        searchElement.setAttribute('view', config.view);
-      }
-      if (config.showLocation) {
-        searchElement.setAttribute('show-location', config.showLocation);
-      }
-      if (config.loadBehaviour) {
-        searchElement.setAttribute('load-behaviour', config.loadBehaviour);
-      }
+      // Set all attributes
+      searchElement.setAttribute('view', config.view || 'cards');
+      searchElement.setAttribute('show-location', config.showLocation || 'on');
+      searchElement.setAttribute('load-behaviour', config.loadBehaviour || 'extended');
+      
       if (config.locations) {
         searchElement.setAttribute('locations', config.locations);
       }
@@ -40,11 +44,12 @@ export function RentwareSearch({ config, categoryId }: RentwareSearchProps) {
       
       containerRef.current.appendChild(searchElement);
     }
-  }, [config, categoryId]);
+  }, [config, categoryId, key]);
 
   return (
     <div 
       ref={containerRef} 
+      key={`rentware-search-${categoryId}-${key}`}
       id={`rentware-search-${categoryId}`} 
       className="min-h-[500px]" 
     />
