@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
+import { HeroSearch } from "@/components/home/HeroSearch";
 import { 
   Search, 
   Truck, 
@@ -151,29 +152,8 @@ export default function Index() {
               alles online buchbar mit Weekend-Tarifen.
             </p>
 
-            {/* Search Box */}
-            <div className="bg-background rounded-xl p-4 shadow-xl max-w-2xl">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Was möchtest du mieten? z.B. Minibagger, Anhänger..."
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                  />
-                </div>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-3">
-                  Suchen
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="text-xs text-muted-foreground">Beliebte Suchen:</span>
-                <Link to="/produkte/minibagger" className="text-xs text-primary hover:text-accent">Minibagger</Link>
-                <Link to="/produkte/anhaenger" className="text-xs text-primary hover:text-accent">Pkw-Anhänger</Link>
-                <Link to="/produkte/arbeitsbuehnen" className="text-xs text-primary hover:text-accent">Scherenbühne</Link>
-                <Link to="/produkte/bautrockner" className="text-xs text-primary hover:text-accent">Bautrockner</Link>
-              </div>
-            </div>
+            {/* Interactive Search with Location Selection */}
+            <HeroSearch />
           </div>
         </div>
 
