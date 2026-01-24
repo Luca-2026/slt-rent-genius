@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -209,16 +209,34 @@ export default function CategoryProducts() {
             </div>
             
             {/* Additional Info */}
-            <div className="mt-6 pt-6 border-t border-accent/20 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <p className="text-muted-foreground">
-                <span className="font-medium text-foreground">750kg bis 3500kg</span> – Nutz- und Pferdeanhänger in verschiedenen Größen
-              </p>
-              <p className="text-muted-foreground">
-                <span className="font-medium text-foreground">Verschiedene Aufbauten</span> – Planen-, Koffer- und weitere Aufbautypen
-              </p>
-              <p className="text-muted-foreground">
-                <span className="font-medium text-foreground">100 km/h Zulassung</span> – Alle PKW-Anhänger mit 13-Pol Stecker
-              </p>
+            <div className="mt-6 pt-6 border-t border-accent/20 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Scale className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">750 kg bis 3.500 kg</p>
+                  <p className="text-sm text-muted-foreground">Verschiedene Größen verfügbar</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Boxes className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Verschiedene Aufbauten</p>
+                  <p className="text-sm text-muted-foreground">Planen-, Koffer- u.v.m.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Gauge className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">100 km/h Zulassung</p>
+                  <p className="text-sm text-muted-foreground">Alle mit 13-Pol Stecker</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
