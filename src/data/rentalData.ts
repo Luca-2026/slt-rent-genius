@@ -86,6 +86,9 @@ import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
 import imgBobcatE10z_4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
+import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
+import imgCormidiC60_2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
+import imgCormidiC60_3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
 
 export interface Product {
   id: string;
@@ -585,6 +588,17 @@ const erdbewegungProducts: Product[] = [
     weightKg: 500,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500"],
+    rentwareCode: {}
+  },
+  {
+    id: "cormidi-c60-hitip",
+    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    description: "Nutzlast: 600 kg | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
+    image: imgCormidiC60_1,
+    images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
+    weightKg: 600,
+    category: "dumper",
+    tags: ["dumper", "benzin", "bis-1500"],
     rentwareCode: {}
   },
 ];
