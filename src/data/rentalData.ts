@@ -593,12 +593,12 @@ const erdbewegungProducts: Product[] = [
   {
     id: "cormidi-c60-hitip",
     name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
-    description: "Nutzlast: 600 kg | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
+    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidiC60_1,
     images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
     weightKg: 600,
     category: "dumper",
-    tags: ["dumper", "benzin", "bis-1500"],
+    tags: ["dumper", "diesel", "bis-1500"],
     rentwareCode: {}
   },
 ];
