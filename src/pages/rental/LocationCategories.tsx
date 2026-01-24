@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { CategoryGrid } from "@/components/rental/CategoryGrid";
 import { ProductSearch } from "@/components/rental/ProductSearch";
+import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MapPin, Phone, Mail, Navigation } from "lucide-react";
-import { getLocationById } from "@/data/rentalData";
+import { getLocationById, type Product } from "@/data/rentalData";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
 
 // Location images mapping
@@ -23,6 +25,8 @@ const locationDescriptions: Record<string, string> = {
 export default function LocationCategories() {
   const { locationId } = useParams<{ locationId: string }>();
   const navigate = useNavigate();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const location = locationId ? getLocationById(locationId) : undefined;
 
@@ -41,6 +45,16 @@ export default function LocationCategories() {
 
   const handleCategorySelect = (categoryId: string) => {
     navigate(`/mieten/${location.id}/${categoryId}`);
+  };
+
+  const handleProductSelect = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedProduct(null);
   };
 
   // Extract address parts
@@ -142,6 +156,7 @@ export default function LocationCategories() {
             <ProductSearch 
               locationId={location.id}
               onCategorySelect={handleCategorySelect}
+              onProductSelect={handleProductSelect}
               placeholder="Mietartikel suchen..."
             />
           </div>
@@ -179,6 +194,14 @@ export default function LocationCategories() {
           </div>
         </div>
       </section>
+
+      {/* Product Booking Dialog */}
+      <ProductBookingDialog
+        product={selectedProduct}
+        location={location}
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+      />
     </Layout>
   );
 }

@@ -66,8 +66,7 @@ export function ProductSearch({
     setIsFocused(false);
     
     if (result.type === "product") {
-      // Navigate to category and potentially open product
-      navigate(`/mieten/${locationId}/${result.categoryId}`);
+      // Open product dialog directly
       if (onProductSelect) {
         onProductSelect(result.product, result.categoryId);
       }
