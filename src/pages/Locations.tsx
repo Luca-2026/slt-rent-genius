@@ -22,9 +22,11 @@ const locations = [
     lat: 51.3127,
     lng: 6.5511,
     hours: [
-      { day: "Online-Buchung", time: "24/7 verfügbar" },
-      { day: "Abholung", time: "nach Vereinbarung" },
+      { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
+      { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
+      { day: "So.", time: "Geschlossen" },
     ],
+    hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
     features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
   },
@@ -41,9 +43,11 @@ const locations = [
     lat: 50.6879,
     lng: 7.1591,
     hours: [
-      { day: "Online-Buchung", time: "24/7 verfügbar" },
-      { day: "Abholung", time: "nach Vereinbarung" },
+      { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
+      { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
+      { day: "So.", time: "Geschlossen" },
     ],
+    hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
   },
@@ -199,7 +203,7 @@ export default function Locations() {
                       <Clock className="h-4 w-4" />
                       Öffnungszeiten
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1 min-h-[80px]">
                       {location.hours.map((h) => (
                         <div key={h.day} className="flex justify-between text-sm">
                           <span className="text-muted-foreground">{h.day}</span>
@@ -207,6 +211,9 @@ export default function Locations() {
                         </div>
                       ))}
                     </div>
+                    {"hoursNote" in location && location.hoursNote && (
+                      <p className="text-xs text-muted-foreground mt-2">{location.hoursNote}</p>
+                    )}
                   </div>
 
                   {/* Note - removed as not needed anymore */}
