@@ -84,6 +84,8 @@ import imgBobcatE10z_1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
 import imgBobcatE10z_2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
 import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
 import imgBobcatE10z_4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
+import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
+import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
 
 export interface Product {
   id: string;
@@ -572,6 +574,17 @@ const erdbewegungProducts: Product[] = [
     weightKg: 2700,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500"],
+    rentwareCode: {}
+  },
+  {
+    id: "knickdumper-kde550",
+    name: "Raddumper / Knickdumper KDe550 4x4 elektrisch",
+    description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
+    image: imgKnickdumperKde550_1,
+    images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
+    weightKg: 500,
+    category: "dumper",
+    tags: ["dumper", "elektro", "bis-1500"],
     rentwareCode: {}
   },
 ];
