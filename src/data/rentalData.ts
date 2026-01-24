@@ -80,6 +80,10 @@ import imgBobcatE19_3 from "@/assets/products/erdbewegung/bobcat-e19-3.jpg";
 import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
 import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
 import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
+import imgBobcatE10z_1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
+import imgBobcatE10z_2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
+import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
+import imgBobcatE10z_4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
 
 export interface Product {
   id: string;
@@ -526,6 +530,17 @@ const trailerProducts: Product[] = [
 
 // Erdbewegung products (shared across all locations)
 const erdbewegungProducts: Product[] = [
+  {
+    id: "bobcat-e10z",
+    name: "1t Bobcat E10Z Minibagger",
+    description: "Einsatzgewicht: 1.000 kg | Grabtiefe: 1.820 mm | Breite: 710 mm",
+    image: imgBobcatE10z_1,
+    images: [imgBobcatE10z_1, imgBobcatE10z_2, imgBobcatE10z_3, imgBobcatE10z_4],
+    weightKg: 1000,
+    category: "minibagger",
+    tags: ["minibagger", "diesel"],
+    rentwareCode: {}
+  },
   {
     id: "bobcat-e19",
     name: "1,8t Bobcat E19 Minibagger",
