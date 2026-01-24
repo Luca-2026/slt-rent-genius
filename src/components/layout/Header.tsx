@@ -115,7 +115,7 @@ export function Header() {
               </Button>
             </Link>
 
-            <Link to="/produkte" className="hidden md:block">
+            <Link to="/mieten" className="hidden md:block">
               <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
                 Jetzt mieten
               </Button>
@@ -162,7 +162,7 @@ export function Header() {
               B2B Login
             </Link>
             <Link
-              to="/produkte"
+              to="/mieten"
               className="mt-2"
               onClick={() => setIsMenuOpen(false)}
             >

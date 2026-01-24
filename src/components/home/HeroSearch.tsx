@@ -1,229 +1,92 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, ChevronRight, X } from "lucide-react";
+import { Search, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-// Category mapping with search keywords - including specific product names
-const categoryKeywords = [
-  {
-    id: "bagger-radlader",
-    title: "Bagger & Radlader",
-    keywords: [
-      "bagger", "minibagger", "radlader", "kettenbagger", "mobilbagger", "erdbau", "aushub", "graben",
-      // Specific excavator models
-      "xcmg", "xe20e", "xe20", "2t", "2,7t", "3t", "5t", "1t",
-      "kubota", "cat", "caterpillar", "hitachi", "komatsu", "volvo", "liebherr",
-      "elektrobagger", "elektro-bagger", "kompaktbagger"
-    ],
-  },
-  {
-    id: "verdichtung",
-    title: "Verdichtung",
-    keywords: ["rüttelplatte", "stampfer", "walze", "verdichtung", "boden"],
-  },
-  {
-    id: "anhaenger",
-    title: "Anhänger",
-    keywords: ["anhänger", "pkw-anhänger", "kipper", "transporter", "maschinentransporter", "transport"],
-  },
-  {
-    id: "hebebuehnen",
-    title: "Hebebühnen & Arbeitsbühnen",
-    keywords: ["hebebühne", "arbeitsbühne", "scherenbühne", "teleskopbühne", "gelenkbühne", "höhenarbeiten", "lift"],
-  },
-  {
-    id: "buehnen-podeste",
-    title: "Bühnen & Podeste",
-    keywords: ["bühne", "podest", "laufsteg", "eventbühne", "stage"],
-  },
-  {
-    id: "moebel-zelte",
-    title: "Möbel & Zelte",
-    keywords: ["zelt", "partyzelt", "pavillon", "bierzeltgarnitur", "stehtisch", "möbel", "tisch", "stuhl", "bank"],
-  },
-  {
-    id: "geschirr",
-    title: "Geschirr",
-    keywords: ["geschirr", "teller", "glas", "gläser", "tasse", "schale", "besteck", "porzellan"],
-  },
-  {
-    id: "besteck",
-    title: "Besteck",
-    keywords: ["besteck", "messer", "gabel", "löffel", "silber"],
-  },
-  {
-    id: "huepfburgen",
-    title: "Hüpfburgen",
-    keywords: ["hüpfburg", "aufblasbar", "kinder", "spielen", "springburg"],
-  },
-  {
-    id: "spezialeffekte",
-    title: "Spezialeffekte",
-    keywords: ["nebel", "nebelmaschine", "seifenblasen", "funken", "effekte", "fotobooth", "konfetti"],
-  },
-  {
-    id: "led-spots",
-    title: "LED Spots & Effektlicht",
-    keywords: ["led", "spot", "moving head", "par", "scheinwerfer", "licht", "beleuchtung", "disco"],
-  },
-  {
-    id: "beleuchtung",
-    title: "Beleuchtung & Flutlicht",
-    keywords: ["flutlicht", "strahler", "baustellenbeleuchtung", "lichtmast", "arbeitsscheinwerfer"],
-  },
-  {
-    id: "stromerzeuger",
-    title: "Stromerzeuger",
-    keywords: ["stromerzeuger", "aggregat", "generator", "notstrom", "strom"],
-  },
-  {
-    id: "heizung-klima",
-    title: "Heizung & Klima",
-    keywords: ["heizung", "heizlüfter", "heizpilz", "klima", "klimagerät", "kühlung", "wärme"],
-  },
-  {
-    id: "kabel-leitungen",
-    title: "Kabel & Leitungen",
-    keywords: ["kabel", "verlängerung", "kabelbrücke", "stromverteiler", "leitung"],
-  },
-  {
-    id: "absperrung-sicherheit",
-    title: "Absperrung & Sicherheit",
-    keywords: ["absperrung", "absperrgitter", "bauzaun", "warnbake", "sicherheit", "zaun"],
-  },
-];
-
-// Locations are now handled by Rentware widget directly
-
-type SearchStep = "search";
+import { locations } from "@/data/rentalData";
 
 export function HeroSearch() {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [matchedCategories, setMatchedCategories] = useState<typeof categoryKeywords>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close suggestions when clicking outside
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowLocationDropdown(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Find matching categories based on search term
-  const findMatchingCategories = (term: string) => {
-    if (!term.trim()) return [];
-    const lowerTerm = term.toLowerCase();
-    return categoryKeywords.filter((cat) =>
-      cat.keywords.some((keyword) => keyword.includes(lowerTerm)) ||
-      cat.title.toLowerCase().includes(lowerTerm)
-    );
+  const handleLocationSelect = (locationId: string) => {
+    navigate(`/mieten/${locationId}`);
+    setShowLocationDropdown(false);
   };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    const matches = findMatchingCategories(value);
-    setMatchedCategories(matches);
-    setShowSuggestions(value.length > 0);
-  };
-
-  const handleSearchSubmit = () => {
-    if (searchTerm.trim()) {
-      const matches = findMatchingCategories(searchTerm);
-      if (matches.length > 0) {
-        // Navigate directly to category page
-        navigate(`/produkte/${matches[0].id}`);
-      } else {
-        // No matches, go to products page with search
-        navigate(`/produkte?search=${encodeURIComponent(searchTerm)}`);
-      }
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSearchSubmit();
-    }
-  };
-
-  const handleCategorySelect = (categoryId: string) => {
-    // Navigate directly to category page
-    navigate(`/produkte/${categoryId}`);
-    setShowSuggestions(false);
-  };
-
-  const handleReset = () => {
-    setSearchTerm("");
-    setMatchedCategories([]);
-    setShowSuggestions(false);
-  };
-
 
   return (
-    <div ref={searchRef} className="bg-background rounded-xl p-4 shadow-xl max-w-2xl relative">
+    <div ref={dropdownRef} className="bg-background rounded-xl p-4 shadow-xl max-w-2xl relative">
       <div className="flex flex-col sm:flex-row gap-3">
+        {/* Location Selector */}
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyDown}
-            onFocus={() => searchTerm && setShowSuggestions(true)}
-            placeholder="Was möchtest du mieten? z.B. Bagger, Anhänger..."
-            className="w-full pl-10 pr-4 py-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-          />
+          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <button
+            onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+            className="w-full pl-10 pr-4 py-3 rounded-lg border border-input bg-background text-left text-foreground hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
+          >
+            Standort wählen...
+          </button>
         </div>
+        
         <Button 
-          onClick={handleSearchSubmit}
+          onClick={() => navigate("/mieten")}
           className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-3"
         >
-          Suchen
+          <Search className="h-4 w-4 mr-2" />
+          Produkte finden
         </Button>
       </div>
 
-      {/* Suggestions Dropdown */}
-      {showSuggestions && matchedCategories.length > 0 && (
+      {/* Location Dropdown */}
+      {showLocationDropdown && (
         <div className="absolute left-0 right-0 top-full mt-2 bg-card border border-border rounded-lg shadow-lg z-50 overflow-hidden">
           <div className="p-2">
-            <p className="text-xs text-muted-foreground px-3 py-1">Kategorien</p>
-            {matchedCategories.slice(0, 5).map((cat) => (
+            <p className="text-xs text-muted-foreground px-3 py-1 mb-1">Wähle deinen Standort</p>
+            {locations.map((location) => (
               <button
-                key={cat.id}
-                onClick={() => handleCategorySelect(cat.id)}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-md hover:bg-muted transition-colors text-left"
+                key={location.id}
+                onClick={() => handleLocationSelect(location.id)}
+                className="w-full flex items-center justify-between px-3 py-3 rounded-md hover:bg-muted transition-colors text-left group"
               >
-                <span className="font-medium text-foreground">{cat.title}</span>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <span className="font-bold text-primary text-sm">
+                      {location.shortName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-medium text-foreground block">{location.name}</span>
+                    <span className="text-xs text-muted-foreground">{location.address}</span>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Popular searches */}
+      {/* Quick location links */}
       <div className="flex flex-wrap gap-2 mt-3">
-        <span className="text-xs text-muted-foreground">Beliebte Suchen:</span>
-        {["Minibagger", "Pkw-Anhänger", "Scherenbühne", "Partyzelt"].map((term) => (
+        <span className="text-xs text-muted-foreground">Direkt zum Standort:</span>
+        {locations.map((location) => (
           <button
-            key={term}
-            onClick={() => {
-              setSearchTerm(term);
-              const matches = findMatchingCategories(term);
-              if (matches.length > 0) {
-                navigate(`/produkte/${matches[0].id}`);
-              }
-            }}
-            className="text-xs text-primary hover:text-accent transition-colors"
+            key={location.id}
+            onClick={() => handleLocationSelect(location.id)}
+            className="text-xs text-primary hover:text-accent transition-colors font-medium"
           >
-            {term}
+            {location.name}
           </button>
         ))}
       </div>
