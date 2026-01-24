@@ -152,18 +152,22 @@ export default function Locations() {
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {locations.map((location) => (
-              <Card key={location.id} className="h-full overflow-hidden">
-                {/* Location Image */}
-                {location.image && (
-                  <div className="h-40 overflow-hidden">
+              <Card key={location.id} className="h-full overflow-hidden flex flex-col">
+                {/* Location Image - fixed height placeholder for cards without image */}
+                <div className="h-40 overflow-hidden bg-muted">
+                  {location.image ? (
                     <img 
                       src={location.image} 
                       alt={`Standort ${location.name}`}
                       className="w-full h-full object-cover"
                     />
-                  </div>
-                )}
-                <CardContent className="p-6">
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <MapPin className="h-12 w-12 text-muted-foreground/30" />
+                    </div>
+                  )}
+                </div>
+                <CardContent className="p-6 flex flex-col flex-1">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h2 className="text-xl font-bold text-headline">{location.name}</h2>
@@ -197,13 +201,13 @@ export default function Locations() {
                     </div>
                   </div>
 
-                  {/* Hours */}
+                  {/* Hours - fixed height for alignment */}
                   <div className="mb-6">
                     <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                       <Clock className="h-4 w-4" />
                       Öffnungszeiten
                     </div>
-                    <div className="space-y-1 min-h-[80px]">
+                    <div className="space-y-1 min-h-[72px]">
                       {location.hours.map((h) => (
                         <div key={h.day} className="flex justify-between text-sm">
                           <span className="text-muted-foreground">{h.day}</span>
@@ -211,15 +215,15 @@ export default function Locations() {
                         </div>
                       ))}
                     </div>
-                    {"hoursNote" in location && location.hoursNote && (
-                      <p className="text-xs text-muted-foreground mt-2">{location.hoursNote}</p>
-                    )}
+                    <div className="min-h-[20px]">
+                      {"hoursNote" in location && location.hoursNote && (
+                        <p className="text-xs text-muted-foreground mt-2">{location.hoursNote}</p>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Note - removed as not needed anymore */}
-
-                  {/* Features */}
-                  <div className="mb-6">
+                  {/* Features - fixed height for alignment */}
+                  <div className="mb-6 min-h-[60px]">
                     <div className="flex flex-wrap gap-2">
                       {location.features.map((feature) => (
                         <span
@@ -233,8 +237,8 @@ export default function Locations() {
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex gap-3">
+                  {/* Actions - pushed to bottom with mt-auto */}
+                  <div className="flex gap-3 mt-auto">
                     <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                       <Button variant="outline" className="w-full" size="sm">
                         <Navigation className="h-4 w-4 mr-2" />
