@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -234,6 +234,68 @@ export default function CategoryProducts() {
                 <div>
                   <p className="font-semibold text-foreground">100 km/h Zulassung</p>
                   <p className="text-sm text-muted-foreground">Alle mit 13-Pol Stecker</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Info Banner for Erdbewegung */}
+      {category.id === "erdbewegung" && (
+        <section className="bg-accent/10 border-y border-accent/20">
+          <div className="section-container py-6">
+            {/* Main Description */}
+            <p className="text-foreground mb-6">
+              Egal ob Sie einen Minibagger, Dumper oder einen Radlader mieten wollen, wir haben die passende Lösung für Ihren Bedarf. 
+              Mieten Sie bei uns zuverlässige und leistungsstarke Maschinen, um Ihre Bauprojekte effizient und erfolgreich umzusetzen. 
+              Mit unseren Baggern und Dumpern sind Sie bestens ausgestattet, um schwere Lasten zu bewegen und Erdbewegungen durchzuführen.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Shovel className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Minibagger</p>
+                  <p className="text-sm text-muted-foreground">Von 1t bis 2,7t verfügbar</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Truck className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Dumper</p>
+                  <p className="text-sm text-muted-foreground">Für schwere Lasten</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Wrench className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Zuverlässig</p>
+                  <p className="text-sm text-muted-foreground">Top gewartete Maschinen</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Sustainability Highlight */}
+            <div className="mt-6 pt-6 border-t border-accent/20">
+              <div className="flex items-start gap-4 bg-accent/10 rounded-xl p-4">
+                <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                  <Leaf className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Zap className="h-4 w-4 text-accent" />
+                    <p className="font-semibold text-foreground">Nachhaltig bauen?</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Soll Ihr Projekt nachhaltig umgesetzt werden? Hierfür haben wir voll elektrische Dumper!
+                  </p>
                 </div>
               </div>
             </div>
