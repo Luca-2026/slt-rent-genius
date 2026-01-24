@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,42 +22,39 @@ export function ProductBookingDialog({
   isOpen, 
   onClose 
 }: ProductBookingDialogProps) {
-  const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const articleId = product?.rentwareCode?.[location?.id || ""];
+  const containerId = `rentware-dialog-${product?.id || "unknown"}`;
 
   // Inject Rentware widget when dialog opens
   useEffect(() => {
-    if (!isOpen || !product || !location || !widgetContainerRef.current) return;
+    if (!isOpen || !articleId) return;
     
-    const container = widgetContainerRef.current;
-    
-    // Check if we have a Rentware article ID for this product and location
-    const articleId = product.rentwareCode?.[location.id];
-    
-    if (articleId) {
-      // Inject the rtr-article element as HTML string
-      container.innerHTML = `<rtr-article article-id="${articleId}" view="calendar"></rtr-article>`;
-    } else {
-      container.innerHTML = '';
-    }
+    // Small delay to ensure the DOM element exists
+    const timer = setTimeout(() => {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.innerHTML = `<rtr-article article-id="${articleId}" view="calendar"></rtr-article>`;
+      }
+    }, 100);
     
     return () => {
-      if (widgetContainerRef.current) {
-        widgetContainerRef.current.innerHTML = '';
+      clearTimeout(timer);
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.innerHTML = '';
       }
     };
-  }, [isOpen, product, location]);
+  }, [isOpen, articleId, containerId]);
 
   if (!product || !location) return null;
-
-  const hasRentwareWidget = product.rentwareCode?.[location.id];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
-        {hasRentwareWidget ? (
+        {articleId ? (
           // Only show Rentware widget when available
           <div 
-            ref={widgetContainerRef} 
+            id={containerId}
             className="min-h-[500px] p-4"
           />
         ) : (
