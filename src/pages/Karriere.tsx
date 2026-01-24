@@ -1,12 +1,9 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { 
-  MapPin, 
-  Briefcase, 
-  Calendar, 
   Clock, 
   Laptop, 
   Coffee, 
@@ -16,44 +13,10 @@ import {
   Award, 
   MessageSquare,
   PiggyBank,
-  Flame,
-  ExternalLink
+  Flame
 } from "lucide-react";
-
-const jobListings = [
-  {
-    id: "lieferfahrer",
-    title: "Aushilfe / Lieferfahrer (m/w/d) für Vermietgegenstände",
-    location: "Krefeld",
-    type: "Vollzeit / Aushilfe",
-    startDate: "ab sofort",
-    url: "https://www.slt-rental.de/jobs/lieferfahrer-m-w-d-fuer-vermietgegenstande"
-  },
-  {
-    id: "ausbildung-buero",
-    title: "Ausbildung Kaufmann / Kauffrau für Büromanagement (m/w/d)",
-    location: "Krefeld oder Bonn",
-    type: "Ausbildung",
-    startDate: "01.08.2026",
-    url: "https://www.slt-rental.de/jobs/ausbildung-kaufmann-kauffrau-fur-buromanagement-m-w-d"
-  },
-  {
-    id: "servicetechniker",
-    title: "Baumaschinentechniker / Servicetechniker (m/w/d)",
-    location: "Krefeld",
-    type: "Vollzeit",
-    startDate: "ab sofort",
-    url: "https://www.slt-rental.de/jobs/baumaschinentechniker-servicetechniker-m-w-d"
-  },
-  {
-    id: "vertrieb",
-    title: "Vertriebsmitarbeiter (m/w/d) im Verkauf von Baumaschinen & Zubehör",
-    location: "Homeoffice oder Büro in Bonn / Krefeld",
-    type: "Vollzeit",
-    startDate: "01.02.2026",
-    url: "https://www.slt-rental.de/jobs/vertriebsmitarbeiter-m-w-d-im-verkauf-von-baumaschinen-zubehor"
-  }
-];
+import { JobCard } from "@/components/karriere/JobCard";
+import { jobListings } from "@/components/karriere/jobData";
 
 const benefits = [
   { icon: Clock, label: "Flexible Arbeitszeiten" },
@@ -103,37 +66,7 @@ export default function Karriere() {
           <div className="grid gap-6 max-w-4xl mx-auto">
             {jobListings.map((job, index) => (
               <AnimatedSection key={job.id} animation="fade-in-up" delay={index * 100}>
-                <Card className="hover:shadow-lg transition-shadow border-border hover:border-primary/30">
-                  <CardHeader className="pb-3">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                      <div>
-                        <CardTitle className="text-xl text-foreground mb-2">
-                          {job.title}
-                        </CardTitle>
-                        <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1.5">
-                            <MapPin className="h-4 w-4 text-primary" />
-                            {job.location}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <Briefcase className="h-4 w-4 text-primary" />
-                            {job.type}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <Calendar className="h-4 w-4 text-primary" />
-                            {job.startDate}
-                          </span>
-                        </div>
-                      </div>
-                      <a href={job.url} target="_blank" rel="noopener noreferrer">
-                        <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover whitespace-nowrap">
-                          Jetzt Bewerben
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </Button>
-                      </a>
-                    </div>
-                  </CardHeader>
-                </Card>
+                <JobCard job={job} index={index} />
               </AnimatedSection>
             ))}
           </div>
@@ -183,7 +116,7 @@ export default function Karriere() {
               Wir freuen uns auch über Initiativbewerbungen! Schick uns einfach deine Unterlagen 
               und erzähle uns, warum du zu SLT passt.
             </p>
-            <a href="mailto:bewerbung@slt-rental.de">
+            <a href="mailto:karriere@slt-rental.de">
               <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90">
                 Initiativbewerbung senden
               </Button>
