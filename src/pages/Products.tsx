@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { WeightFilter, weightRanges } from "@/components/products/WeightFilter";
 import { RentwareSearch } from "@/components/products/RentwareSearch";
+import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 
 // Category Icons
 import iconBagger from "@/assets/icons/category-bagger.png";
@@ -255,14 +256,26 @@ export default function Products() {
           </div>
         </section>
 
-        {/* Rentware Search Widget */}
+        {/* Rentware Search Widget with Delivery Calculator */}
         {selectedCategory.rentwareSearch && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
-              <RentwareSearch 
-                config={selectedCategory.rentwareSearch} 
-                categoryId={selectedCategory.id} 
-              />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Rentware Products */}
+                <div className="lg:col-span-2">
+                  <RentwareSearch 
+                    config={selectedCategory.rentwareSearch} 
+                    categoryId={selectedCategory.id} 
+                  />
+                </div>
+                
+                {/* Delivery Calculator Sidebar */}
+                <div className="lg:col-span-1">
+                  <div className="sticky top-4">
+                    <DeliveryCalculatorCompact productCategoryId={selectedCategory.id} />
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         )}
