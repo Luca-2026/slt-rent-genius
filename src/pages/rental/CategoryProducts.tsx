@@ -173,26 +173,20 @@ export default function CategoryProducts() {
           </Link>
 
           <div className="flex items-start gap-6">
-            {/* Category Icon - larger, no background for anhänger */}
-            {category.id === "anhaenger" ? (
+            {/* Category Icon - consistent across all categories */}
+            {category.id === "alle" ? (
+              <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
+                <Grid3X3 className="h-10 w-10 text-primary" />
+              </div>
+            ) : category.icon ? (
               <img 
                 src={category.icon} 
                 alt={category.title}
                 className="w-24 h-24 object-contain"
               />
             ) : (
-              <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
-                {category.id === "alle" ? (
-                  <Grid3X3 className="h-10 w-10 text-primary" />
-                ) : category.icon ? (
-                  <img 
-                    src={category.icon} 
-                    alt={category.title}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-muted rounded-lg" />
-                )}
+              <div className="w-20 h-20 bg-background rounded-xl flex items-center justify-center">
+                <div className="w-full h-full bg-muted rounded-lg" />
               </div>
             )}
 
