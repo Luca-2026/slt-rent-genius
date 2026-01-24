@@ -14,6 +14,7 @@ import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
+import { EarthMovingFilter, type EarthMovingFilterState } from "@/components/rental/EarthMovingFilter";
 
 export default function CategoryProducts() {
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
@@ -24,6 +25,12 @@ export default function CategoryProducts() {
     types: [],
     braking: [],
     axles: [],
+  });
+  const [earthMovingFilters, setEarthMovingFilters] = useState<EarthMovingFilterState>({
+    search: "",
+    types: [],
+    driveTypes: [],
+    weightRange: [],
   });
   
   const location = locationId ? getLocationById(locationId) : undefined;
@@ -41,7 +48,7 @@ export default function CategoryProducts() {
     );
   }, [location, category]);
 
-  // Filter and sort products for trailers
+  // Filter and sort products
   const products = useMemo(() => {
     let filtered = [...allProducts];
 
@@ -77,12 +84,44 @@ export default function CategoryProducts() {
           trailerFilters.axles.some((axle) => p.tags?.includes(axle))
         );
       }
+    }
 
-      // Products are already sorted in rentalData.ts - do not re-sort here
+    // Apply earth moving filters for erdbewegung category
+    if (category?.id === "erdbewegung") {
+      // Search filter
+      if (earthMovingFilters.search) {
+        const searchLower = earthMovingFilters.search.toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.description?.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Type filters (minibagger, radlader, dumper)
+      if (earthMovingFilters.types.length > 0) {
+        filtered = filtered.filter((p) =>
+          earthMovingFilters.types.some((type) => p.tags?.includes(type))
+        );
+      }
+
+      // Drive type filters (diesel, benzin, elektro)
+      if (earthMovingFilters.driveTypes.length > 0) {
+        filtered = filtered.filter((p) =>
+          earthMovingFilters.driveTypes.some((drive) => p.tags?.includes(drive))
+        );
+      }
+
+      // Weight range filters
+      if (earthMovingFilters.weightRange.length > 0) {
+        filtered = filtered.filter((p) =>
+          earthMovingFilters.weightRange.some((range) => p.tags?.includes(range))
+        );
+      }
     }
 
     return filtered;
-  }, [allProducts, trailerFilters, category?.id]);
+  }, [allProducts, trailerFilters, earthMovingFilters, category?.id]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -314,7 +353,13 @@ export default function CategoryProducts() {
                   {category.id === "anhaenger" && (
                     <TrailerFilter onFilterChange={setTrailerFilters} />
                   )}
-                  {category.id !== "anhaenger" && (
+                  {category.id === "erdbewegung" && (
+                    <>
+                      <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
+                      <DeliveryCalculatorCompact productCategoryId={category.id} />
+                    </>
+                  )}
+                  {category.id !== "anhaenger" && category.id !== "erdbewegung" && (
                     <DeliveryCalculatorCompact productCategoryId={category.id} />
                   )}
                 </div>
@@ -334,7 +379,11 @@ export default function CategoryProducts() {
                   </div>
                 ) : (
                   <div className="text-center py-12 bg-muted/30 rounded-xl">
-                    <p className="text-muted-foreground">Keine Anhänger gefunden. Bitte passe deine Filter an.</p>
+                    <p className="text-muted-foreground">
+                      {category.id === "anhaenger" 
+                        ? "Keine Anhänger gefunden. Bitte passe deine Filter an."
+                        : "Keine Maschinen gefunden. Bitte passe deine Filter an."}
+                    </p>
                   </div>
                 )}
               </div>

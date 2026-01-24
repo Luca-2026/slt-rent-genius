@@ -538,7 +538,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgBobcatE10z_1, imgBobcatE10z_2, imgBobcatE10z_3, imgBobcatE10z_4],
     weightKg: 1000,
     category: "minibagger",
-    tags: ["minibagger", "diesel"],
+    tags: ["minibagger", "diesel", "bis-1500"],
     rentwareCode: {}
   },
   {
@@ -549,7 +549,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
     weightKg: 1800,
     category: "minibagger",
-    tags: ["minibagger", "diesel"],
+    tags: ["minibagger", "diesel", "1500-2500"],
     rentwareCode: {}
   },
   {
@@ -560,7 +560,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
     weightKg: 2000,
     category: "minibagger",
-    tags: ["minibagger", "elektro"],
+    tags: ["minibagger", "diesel", "1500-2500"],
     rentwareCode: {}
   },
   {
@@ -571,7 +571,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgXcmgXe27e_1, imgXcmgXe27e_2, imgXcmgXe27e_3],
     weightKg: 2700,
     category: "minibagger",
-    tags: ["minibagger", "elektro"],
+    tags: ["minibagger", "diesel", "ab-2500"],
     rentwareCode: {}
   },
 ];
