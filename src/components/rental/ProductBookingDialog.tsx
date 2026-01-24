@@ -26,6 +26,9 @@ export function ProductBookingDialog({
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
 
+  // Debug logging
+  console.log("[ProductBookingDialog] product:", product?.id, "location:", location?.id, "articleId:", articleId, "rentwareCode:", product?.rentwareCode);
+
   // Inject Rentware widget when dialog opens
   useEffect(() => {
     if (!isOpen || !articleId) return;
