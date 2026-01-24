@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { WeightFilter, weightRanges } from "@/components/products/WeightFilter";
 
 // Category Icons
 import iconBagger from "@/assets/icons/category-bagger.png";
@@ -30,9 +31,10 @@ const categories = [
     title: "Bagger & Radlader",
     description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
     image: iconBagger,
+    hasWeightFilter: true,
     rentwareArticles: [
-      { id: "UZEDUY", view: "calendar", name: "Minibagger" },
-      { id: "QU4BYW", view: "calendar", name: "2,7t Bagger" },
+      { id: "UZEDUY", view: "calendar", name: "Minibagger 0,8t", weightKg: 800 },
+      { id: "QU4BYW", view: "calendar", name: "Bagger 2,7t", weightKg: 2700 },
     ],
   },
   {
@@ -161,14 +163,30 @@ function RentwareArticle({ articleId, view = "cards" }: { articleId: string; vie
   return <div id={`rentware-article-${articleId}`} className="min-h-[400px]" />;
 }
 
+// Article type definition
+interface RentwareArticle {
+  id: string;
+  view: string;
+  name: string;
+  weightKg?: number;
+}
+
 // Rentware Articles List Component
-function RentwareArticlesList({ articles }: { articles: Array<{ id: string; view: string; name: string }> }) {
+function RentwareArticlesList({ articles }: { articles: RentwareArticle[] }) {
   if (!articles || articles.length === 0) return null;
   
   return (
     <div className="space-y-8">
       {articles.map((article) => (
-        <div key={article.id}>
+        <div key={article.id} className="bg-card rounded-xl border border-border p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-lg text-headline">{article.name}</h3>
+            {article.weightKg && (
+              <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
+                {article.weightKg >= 1000 ? `${(article.weightKg / 1000).toFixed(1)}t` : `${article.weightKg}kg`}
+              </span>
+            )}
+          </div>
           <RentwareArticle articleId={article.id} view={article.view} />
         </div>
       ))}
@@ -179,6 +197,23 @@ function RentwareArticlesList({ articles }: { articles: Array<{ id: string; view
 export default function Products() {
   const { category } = useParams<{ category?: string }>();
   const selectedCategory = categories.find(c => c.id === category);
+  const [weightFilter, setWeightFilter] = useState("all");
+
+  // Filter articles by weight
+  const getFilteredArticles = () => {
+    if (!selectedCategory?.rentwareArticles) return [];
+    if (weightFilter === "all") return selectedCategory.rentwareArticles;
+    
+    const range = weightRanges.find(r => r.id === weightFilter);
+    if (!range) return selectedCategory.rentwareArticles;
+    
+    return selectedCategory.rentwareArticles.filter(article => {
+      if (!article.weightKg) return true;
+      return article.weightKg >= range.min && article.weightKg < range.max;
+    });
+  };
+
+  const filteredArticles = getFilteredArticles();
 
   // If a category is selected, show the category detail view with Rentware
   if (selectedCategory) {
@@ -219,7 +254,33 @@ export default function Products() {
         {selectedCategory.rentwareArticles && selectedCategory.rentwareArticles.length > 0 && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
-              <RentwareArticlesList articles={selectedCategory.rentwareArticles} />
+              {/* Weight Filter for Bagger category */}
+              {selectedCategory.hasWeightFilter && (
+                <div className="mb-6 flex items-center gap-4">
+                  <span className="text-muted-foreground">Filtern nach Größe:</span>
+                  <WeightFilter 
+                    selectedRange={weightFilter} 
+                    onRangeChange={setWeightFilter} 
+                  />
+                </div>
+              )}
+              
+              {filteredArticles.length > 0 ? (
+                <RentwareArticlesList articles={filteredArticles} />
+              ) : (
+                <div className="text-center py-12 bg-muted/50 rounded-xl">
+                  <p className="text-muted-foreground">
+                    Keine Bagger in dieser Gewichtsklasse verfügbar.
+                  </p>
+                  <Button 
+                    variant="link" 
+                    onClick={() => setWeightFilter("all")}
+                    className="mt-2"
+                  >
+                    Alle Bagger anzeigen
+                  </Button>
+                </div>
+              )}
             </div>
           </section>
         )}
