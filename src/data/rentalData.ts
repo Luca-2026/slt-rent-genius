@@ -74,6 +74,9 @@ import imgPlattform3500_6 from "@/assets/products/anhaenger/plattform-3500-6.jpg
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
+import imgBobcatE19_1 from "@/assets/products/erdbewegung/bobcat-e19-1.jpg";
+import imgBobcatE19_2 from "@/assets/products/erdbewegung/bobcat-e19-2.jpg";
+import imgBobcatE19_3 from "@/assets/products/erdbewegung/bobcat-e19-3.jpg";
 
 export interface Product {
   id: string;
@@ -520,6 +523,17 @@ const trailerProducts: Product[] = [
 
 // Erdbewegung products (shared across all locations)
 const erdbewegungProducts: Product[] = [
+  {
+    id: "bobcat-e19",
+    name: "1,8t Bobcat E19 Minibagger",
+    description: "Einsatzgewicht: 1.800 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
+    image: imgBobcatE19_1,
+    images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
+    weightKg: 1800,
+    category: "minibagger",
+    tags: ["minibagger", "diesel"],
+    rentwareCode: {}
+  },
   {
     id: "xcmg-xe20e",
     name: "2t XCMG XE20E Minibagger",
