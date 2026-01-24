@@ -142,7 +142,7 @@ export default function LocationCategories() {
             <ProductSearch 
               locationId={location.id}
               onCategorySelect={handleCategorySelect}
-              placeholder="Kategorie suchen..."
+              placeholder="Mietartikel suchen..."
             />
           </div>
         </div>
