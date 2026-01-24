@@ -77,6 +77,9 @@ import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
 import imgBobcatE19_1 from "@/assets/products/erdbewegung/bobcat-e19-1.jpg";
 import imgBobcatE19_2 from "@/assets/products/erdbewegung/bobcat-e19-2.jpg";
 import imgBobcatE19_3 from "@/assets/products/erdbewegung/bobcat-e19-3.jpg";
+import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
+import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
+import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
 
 export interface Product {
   id: string;
@@ -541,6 +544,17 @@ const erdbewegungProducts: Product[] = [
     image: imgXcmgXe20e_1,
     images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
     weightKg: 2000,
+    category: "minibagger",
+    tags: ["minibagger", "elektro"],
+    rentwareCode: {}
+  },
+  {
+    id: "xcmg-xe27e",
+    name: "2,7t XCMG XE27E Minibagger",
+    description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
+    image: imgXcmgXe27e_1,
+    images: [imgXcmgXe27e_1, imgXcmgXe27e_2, imgXcmgXe27e_3],
+    weightKg: 2700,
     category: "minibagger",
     tags: ["minibagger", "elektro"],
     rentwareCode: {}
