@@ -81,8 +81,9 @@ export interface Product {
   priceWeekend?: string;
   features?: string[];
   tags?: string[]; // Filter tags
-  category?: string; // Product sub-category for sorting: kasten, planen, koffer, baumaschine, autotransport, motorrad, laubgitter, urlaub, plattform
+  category?: string; // Product sub-category for sorting
   weightKg?: number;
+  sortOrder?: number; // Explicit sort order within category (lower = first)
   rentwareCode?: Record<string, string>;
 }
 
@@ -235,7 +236,7 @@ const trailerProducts: Product[] = [
     rentwareCode: {} 
   },
   
-  // === PLANEN ===
+  // === PLANEN === (S→M→L→XL→XXL→1300→3500→3500XXL)
   { 
     id: "planen-s-750", 
     name: "750 kg Planenanhänger S", 
@@ -243,6 +244,7 @@ const trailerProducts: Product[] = [
     image: imgPlanenS750, 
     images: [imgPlanenS750], 
     weightKg: 750, 
+    sortOrder: 1,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
     rentwareCode: {} 
@@ -254,6 +256,7 @@ const trailerProducts: Product[] = [
     image: imgPlanenM750, 
     images: [imgPlanenM750], 
     weightKg: 750, 
+    sortOrder: 2,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
     rentwareCode: {} 
@@ -265,6 +268,7 @@ const trailerProducts: Product[] = [
     image: imgPlanenL750, 
     images: [imgPlanenL750], 
     weightKg: 750, 
+    sortOrder: 3,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
     rentwareCode: {} 
@@ -276,6 +280,7 @@ const trailerProducts: Product[] = [
     image: imgPlanenXL750, 
     images: [imgPlanenXL750], 
     weightKg: 750, 
+    sortOrder: 4,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
     rentwareCode: {} 
@@ -287,6 +292,7 @@ const trailerProducts: Product[] = [
     image: imgPlanenXXL750, 
     images: [imgPlanenXXL750], 
     weightKg: 750, 
+    sortOrder: 5,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
     rentwareCode: {} 
@@ -298,6 +304,7 @@ const trailerProducts: Product[] = [
     image: imgPlanen1300, 
     images: [imgPlanen1300], 
     weightKg: 1300, 
+    sortOrder: 6,
     category: "planen",
     tags: ["geschlossen", "gebremst", "einachser"], 
     rentwareCode: {} 
@@ -309,6 +316,7 @@ const trailerProducts: Product[] = [
     image: imgPlanen3500_1, 
     images: [imgPlanen3500_1, imgPlanen3500_2, imgPlanen3500_3, imgPlanen3500_4], 
     weightKg: 3500, 
+    sortOrder: 7,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
     rentwareCode: {} 
@@ -320,6 +328,7 @@ const trailerProducts: Product[] = [
     image: imgPlanen3500_1, 
     images: [imgPlanen3500_1, imgPlanen3500_2, imgPlanen3500_3, imgPlanen3500_4], 
     weightKg: 3500, 
+    sortOrder: 8,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
     rentwareCode: {} 
@@ -505,12 +514,15 @@ const trailerProducts: Product[] = [
   },
 ];
 
-// Sort trailer products by category order then weight
+// Sort trailer products by category order, then sortOrder (if defined), then weight
 const sortedTrailerProducts = [...trailerProducts].sort((a, b) => {
   const catIndexA = trailerCategoryOrder.indexOf(a.category || "");
   const catIndexB = trailerCategoryOrder.indexOf(b.category || "");
   if (catIndexA !== catIndexB) return catIndexA - catIndexB;
-  return (a.weightKg || 0) - (b.weightKg || 0);
+  // Use explicit sortOrder if defined, otherwise fall back to weight
+  const sortA = a.sortOrder ?? (a.weightKg || 0);
+  const sortB = b.sortOrder ?? (b.weightKg || 0);
+  return sortA - sortB;
 });
 
 // Locations with their available categories and products

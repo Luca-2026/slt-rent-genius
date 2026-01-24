@@ -78,8 +78,7 @@ export default function CategoryProducts() {
         );
       }
 
-      // Sort by weight
-      filtered.sort((a, b) => (a.weightKg || 0) - (b.weightKg || 0));
+      // Products are already sorted in rentalData.ts - do not re-sort here
     }
 
     return filtered;
