@@ -19,6 +19,11 @@ import B2BDashboard from "./pages/b2b/Dashboard";
 import ProjectRequest from "./pages/b2b/ProjectRequest";
 import NotFound from "./pages/NotFound";
 
+// New rental flow pages
+import RentalStart from "./pages/rental/RentalStart";
+import LocationCategories from "./pages/rental/LocationCategories";
+import CategoryProducts from "./pages/rental/CategoryProducts";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -30,8 +35,16 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/produkte" element={<Products />} />
+            
+            {/* New rental flow: Location → Category → Products */}
+            <Route path="/mieten" element={<RentalStart />} />
+            <Route path="/mieten/:locationId" element={<LocationCategories />} />
+            <Route path="/mieten/:locationId/:categoryId" element={<CategoryProducts />} />
+            
+            {/* Legacy products route - redirects or keep for backwards compatibility */}
+            <Route path="/produkte" element={<RentalStart />} />
             <Route path="/produkte/:category" element={<Products />} />
+            
             <Route path="/so-funktionierts" element={<HowItWorks />} />
             <Route path="/standorte" element={<Locations />} />
             <Route path="/standorte/:id" element={<Locations />} />
@@ -40,12 +53,14 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/ueber-uns" element={<About />} />
             <Route path="/karriere" element={<Karriere />} />
+            
             {/* B2B Portal */}
             <Route path="/b2b/login" element={<B2BLogin />} />
             <Route path="/b2b/registrieren" element={<B2BRegister />} />
             <Route path="/b2b/dashboard" element={<B2BDashboard />} />
             <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
             <Route path="/b2b" element={<B2BLogin />} />
+            
             {/* Catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>

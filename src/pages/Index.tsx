@@ -201,7 +201,7 @@ export default function Index() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
             {categories.map((category, index) => (
               <AnimatedSection key={category.id} delay={index * 50} animation="scale-in">
-                <Link to={`/produkte/${category.id}`}>
+                <Link to="/mieten">
                   <Card className="h-full group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-accent/20">
                     <div className="aspect-square bg-gradient-to-br from-muted to-surface-light relative overflow-hidden rounded-t-lg flex items-center justify-center p-4">
                       <img
@@ -221,7 +221,7 @@ export default function Index() {
           </div>
 
           <AnimatedSection className="text-center mt-10" delay={300}>
-            <Link to="/produkte">
+            <Link to="/mieten">
               <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                 Alle Produkte ansehen
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -369,7 +369,7 @@ export default function Index() {
               Jetzt online buchen oder persönlich beraten lassen.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/produkte">
+              <Link to="/mieten">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   Jetzt Equipment mieten
                 </Button>
