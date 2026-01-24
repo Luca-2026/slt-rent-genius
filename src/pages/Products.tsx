@@ -38,7 +38,7 @@ const categories = [
       showLocation: "on",
       loadBehaviour: "extended",
       locations: "01929004-e24f-7cc0-83f0-0f3d3431395e, 01953e5f-614f-743d-8eb9-1a0e865da81d, 95e16e54-04d2-496a-6002-41e0289b53a3",
-      showOnlyTags: "Anhänger",
+      showOnlyTags: "Bagger",
     },
     rentwareArticles: [],
   },
