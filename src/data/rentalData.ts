@@ -25,6 +25,8 @@ export interface Product {
   pricePerDay?: string;
   priceWeekend?: string;
   features?: string[];
+  tags?: string[]; // Filter tags: geschlossen, baumaschine, autotransport, motorrad, laubgitter, urlaub, gebremst, ungebremst, einachser, zweiachser
+  weightKg?: number; // For sorting
   // Rentware widget code per location (will be added later)
   rentwareCode?: Record<string, string>; // { locationId: "rentware-code-snippet" }
 }
@@ -61,7 +63,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "anhaenger",
     title: "Anhänger",
-    description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
+    description: "24/7 mietbar per Codesystem – SMS-Code nach Zahlung, Schloss an Deichsel entsperren, Rückgabe am Abholort.",
     icon: iconAnhaenger,
   },
   {
@@ -193,30 +195,37 @@ export const locations: LocationData[] = [
     ],
     products: {
       "anhaenger": [
-        { id: "autotransportkipp-2700", name: "2700 kg Autotransportkippanhänger", description: "Ladefläche: 469 x 210 cm", image: "", rentwareCode: {} },
-        { id: "planen-xl-750", name: "750 kg Planenanhänger XL", description: "Ladefläche: 264 x 124 x 160 cm", image: "", rentwareCode: {} },
-        { id: "autotransport-1500", name: "1500 kg Autotransportanhänger", description: "Ladefläche: 301 x 165 x 17 cm", image: "", rentwareCode: {} },
-        { id: "rueckwaertskipp-2700", name: "2700 kg Rückwärtskippanhänger", description: "Ladefläche: 300 x 150 x 40 cm", image: "", rentwareCode: {} },
-        { id: "planen-m-750", name: "750 kg Planenanhänger M", description: "Ladefläche: 200 x 108 x 130 cm", image: "", rentwareCode: {} },
-        { id: "planen-s-750", name: "750 kg Planenanhänger S", description: "Ladefläche: 200 x 108 x 100 cm", image: "", rentwareCode: {} },
-        { id: "baumaschinen-1800", name: "1800 kg Baumaschinenanhänger", description: "Ladefläche: 2600 x 150 x 25 cm", image: "", rentwareCode: {} },
-        { id: "kasten-laubgitter-1300", name: "1300 kg Kastenanhänger & Laubgitter", description: "Ladefläche: 255 x 151 x 100 cm", image: "", rentwareCode: {} },
-        { id: "motorrad-1500", name: "1500 kg Motorradanhänger", description: "Ladefläche: 301 x 165 x 17 cm", image: "", rentwareCode: {} },
-        { id: "autotransport-2700", name: "2700 kg Autotransportanhänger", description: "Ladefläche: 452 x 205 cm", image: "", rentwareCode: {} },
-        { id: "planen-3500", name: "3500 kg Planenanhänger", description: "Ladefläche: 400 x 200 x 210 cm", image: "", rentwareCode: {} },
-        { id: "kasten-laubgitter-750", name: "750 kg Kastenanhänger & Laubgitter", description: "Ladefläche: 264 x 126 x 100 cm", image: "", rentwareCode: {} },
-        { id: "koffer-750", name: "750 kg Kofferanhänger", description: "Ladefläche: 223 x 147 x 147 cm", image: "", rentwareCode: {} },
-        { id: "kasten-750", name: "750 kg Kastenanhänger", description: "Ladefläche: 200 x 108 x 30 cm", image: "", rentwareCode: {} },
-        { id: "koffer-2000", name: "2000 kg Kofferanhänger", description: "Ladefläche: 300 x 155 x 185 cm", image: "", rentwareCode: {} },
-        { id: "planen-xxl-750", name: "750 kg Planenanhänger XXL", description: "Ladefläche: 300 x 150 x 180 cm", image: "", rentwareCode: {} },
-        { id: "motorrad-3fach-750", name: "750 kg Motorradanhänger 3-fach", description: "Ladefläche: 220 x 131 cm", image: "", rentwareCode: {} },
-        { id: "plattform-3500", name: "3500 kg Plattformanhänger", description: "Ladefläche: 512 x 211 cm", image: "", rentwareCode: {} },
-        { id: "planen-l-750", name: "750 kg Planenanhänger L", description: "Ladefläche: 200 x 108 x 160 cm", image: "", rentwareCode: {} },
-        { id: "baumaschinen-3500", name: "3500 kg Baumaschinenanhänger", description: "Ladefläche: 350 x 168 x 25 cm", image: "", rentwareCode: {} },
-        { id: "koffer-1500", name: "1500 kg Kofferanhänger", description: "Ladefläche: 300 x 150 x 180 cm", image: "", rentwareCode: {} },
-        { id: "planen-1300", name: "1300 kg Planenanhänger", description: "Ladefläche: 300 x 150 x 190 cm", image: "", rentwareCode: {} },
-        { id: "urlaub-750", name: "750 kg Urlaubanhänger", description: "Ladefläche: 150 x 106 x 70 cm", image: "", rentwareCode: {} },
-        { id: "planen-xxl-3500", name: "3500 kg Planenanhänger XXL", description: "Ladefläche: 600 x 250 x 250 cm", image: "", rentwareCode: {} },
+        // 750 kg - ungebremst, einachser
+        { id: "urlaub-750", name: "750 kg Urlaubanhänger", description: "Ladefläche: 150 x 106 x 70 cm", image: "", weightKg: 750, tags: ["urlaub", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "kasten-750", name: "750 kg Kastenanhänger", description: "Ladefläche: 200 x 108 x 30 cm", image: "", weightKg: 750, tags: ["ungebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-s-750", name: "750 kg Planenanhänger S", description: "Ladefläche: 200 x 108 x 100 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-m-750", name: "750 kg Planenanhänger M", description: "Ladefläche: 200 x 108 x 130 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-l-750", name: "750 kg Planenanhänger L", description: "Ladefläche: 200 x 108 x 160 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "motorrad-3fach-750", name: "750 kg Motorradanhänger 3-fach", description: "Ladefläche: 220 x 131 cm", image: "", weightKg: 750, tags: ["motorrad", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "koffer-750", name: "750 kg Kofferanhänger", description: "Ladefläche: 223 x 147 x 147 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "kasten-laubgitter-750", name: "750 kg Kastenanhänger & Laubgitter", description: "Ladefläche: 264 x 126 x 100 cm", image: "", weightKg: 750, tags: ["laubgitter", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-xl-750", name: "750 kg Planenanhänger XL", description: "Ladefläche: 264 x 124 x 160 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-xxl-750", name: "750 kg Planenanhänger XXL", description: "Ladefläche: 300 x 150 x 180 cm", image: "", weightKg: 750, tags: ["geschlossen", "ungebremst", "einachser"], rentwareCode: {} },
+        // 1300 kg - gebremst, einachser
+        { id: "kasten-laubgitter-1300", name: "1300 kg Kastenanhänger & Laubgitter", description: "Ladefläche: 255 x 151 x 100 cm", image: "", weightKg: 1300, tags: ["laubgitter", "gebremst", "einachser"], rentwareCode: {} },
+        { id: "planen-1300", name: "1300 kg Planenanhänger", description: "Ladefläche: 300 x 150 x 190 cm", image: "", weightKg: 1300, tags: ["geschlossen", "gebremst", "einachser"], rentwareCode: {} },
+        // 1500 kg - gebremst, einachser
+        { id: "autotransport-1500", name: "1500 kg Autotransportanhänger", description: "Ladefläche: 301 x 165 x 17 cm", image: "", weightKg: 1500, tags: ["autotransport", "gebremst", "einachser"], rentwareCode: {} },
+        { id: "motorrad-1500", name: "1500 kg Motorradanhänger", description: "Ladefläche: 301 x 165 x 17 cm", image: "", weightKg: 1500, tags: ["motorrad", "gebremst", "einachser"], rentwareCode: {} },
+        { id: "koffer-1500", name: "1500 kg Kofferanhänger", description: "Ladefläche: 300 x 150 x 180 cm", image: "", weightKg: 1500, tags: ["geschlossen", "gebremst", "einachser"], rentwareCode: {} },
+        // 1800 kg - gebremst, zweiachser
+        { id: "baumaschinen-1800", name: "1800 kg Baumaschinenanhänger", description: "Ladefläche: 260 x 150 x 25 cm", image: "", weightKg: 1800, tags: ["baumaschine", "gebremst", "zweiachser"], rentwareCode: {} },
+        // 2000 kg - gebremst, zweiachser
+        { id: "koffer-2000", name: "2000 kg Kofferanhänger", description: "Ladefläche: 300 x 155 x 185 cm", image: "", weightKg: 2000, tags: ["geschlossen", "gebremst", "zweiachser"], rentwareCode: {} },
+        // 2700 kg - gebremst, zweiachser
+        { id: "rueckwaertskipp-2700", name: "2700 kg Rückwärtskippanhänger", description: "Ladefläche: 300 x 150 x 40 cm", image: "", weightKg: 2700, tags: ["gebremst", "zweiachser"], rentwareCode: {} },
+        { id: "autotransport-2700", name: "2700 kg Autotransportanhänger", description: "Ladefläche: 452 x 205 cm", image: "", weightKg: 2700, tags: ["autotransport", "gebremst", "zweiachser"], rentwareCode: {} },
+        { id: "autotransportkipp-2700", name: "2700 kg Autotransportkippanhänger", description: "Ladefläche: 469 x 210 cm", image: "", weightKg: 2700, tags: ["autotransport", "gebremst", "zweiachser"], rentwareCode: {} },
+        // 3500 kg - gebremst, zweiachser
+        { id: "baumaschinen-3500", name: "3500 kg Baumaschinenanhänger", description: "Ladefläche: 350 x 168 x 25 cm", image: "", weightKg: 3500, tags: ["baumaschine", "gebremst", "zweiachser"], rentwareCode: {} },
+        { id: "planen-3500", name: "3500 kg Planenanhänger", description: "Ladefläche: 400 x 200 x 210 cm", image: "", weightKg: 3500, tags: ["geschlossen", "gebremst", "zweiachser"], rentwareCode: {} },
+        { id: "plattform-3500", name: "3500 kg Plattformanhänger", description: "Ladefläche: 512 x 211 cm", image: "", weightKg: 3500, tags: ["gebremst", "zweiachser"], rentwareCode: {} },
+        { id: "planen-xxl-3500", name: "3500 kg Planenanhänger XXL", description: "Ladefläche: 600 x 250 x 250 cm", image: "", weightKg: 3500, tags: ["geschlossen", "gebremst", "zweiachser"], rentwareCode: {} },
       ],
     },
   },
