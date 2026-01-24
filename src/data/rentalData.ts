@@ -70,7 +70,11 @@ import imgPlattform3500_4 from "@/assets/products/anhaenger/plattform-3500-4.jpg
 import imgPlattform3500_5 from "@/assets/products/anhaenger/plattform-3500-5.jpg";
 import imgPlattform3500_6 from "@/assets/products/anhaenger/plattform-3500-6.jpg";
 
-// Types
+// Product Images - Erdbewegung
+import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
+import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
+import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
+
 export interface Product {
   id: string;
   name: string;
@@ -514,6 +518,21 @@ const trailerProducts: Product[] = [
   },
 ];
 
+// Erdbewegung products (shared across all locations)
+const erdbewegungProducts: Product[] = [
+  {
+    id: "xcmg-xe20e",
+    name: "2t XCMG XE20E Minibagger",
+    description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
+    image: imgXcmgXe20e_1,
+    images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
+    weightKg: 2000,
+    category: "minibagger",
+    tags: ["minibagger", "elektro"],
+    rentwareCode: {}
+  },
+];
+
 // Sort trailer products by category order, then sortOrder (if defined), then weight
 const sortedTrailerProducts = [...trailerProducts].sort((a, b) => {
   const catIndexA = trailerCategoryOrder.indexOf(a.category || "");
@@ -556,6 +575,7 @@ export const locations: LocationData[] = [
     ],
     products: {
       "anhaenger": sortedTrailerProducts,
+      "erdbewegung": erdbewegungProducts,
     },
   },
   {
@@ -587,6 +607,7 @@ export const locations: LocationData[] = [
     ],
     products: {
       "anhaenger": sortedTrailerProducts,
+      "erdbewegung": erdbewegungProducts,
     },
   },
   {
@@ -618,6 +639,7 @@ export const locations: LocationData[] = [
     ],
     products: {
       "anhaenger": sortedTrailerProducts,
+      "erdbewegung": erdbewegungProducts,
     },
   },
 ];
