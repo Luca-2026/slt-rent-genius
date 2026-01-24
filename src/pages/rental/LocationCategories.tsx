@@ -4,8 +4,21 @@ import { CategoryGrid } from "@/components/rental/CategoryGrid";
 import { ProductSearch } from "@/components/rental/ProductSearch";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, MapPin, Phone, Mail, Navigation } from "lucide-react";
 import { getLocationById } from "@/data/rentalData";
+import krefeldImage from "@/assets/locations/krefeld.jpg";
+
+// Location images mapping
+const locationImages: Record<string, string> = {
+  krefeld: krefeldImage,
+};
+
+// Location descriptions
+const locationDescriptions: Record<string, string> = {
+  krefeld: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+  bonn: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+  muelheim: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+};
 
 export default function LocationCategories() {
   const { locationId } = useParams<{ locationId: string }>();
@@ -30,51 +43,107 @@ export default function LocationCategories() {
     navigate(`/mieten/${location.id}/${categoryId}`);
   };
 
+  // Extract address parts
+  const addressParts = location.address.split(", ");
+  const streetAddress = addressParts[0] || "";
+  const cityAddress = addressParts[1] || "";
+
+  // Google Maps URL
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.address)}`;
+
   return (
     <Layout>
-      {/* Header */}
+      {/* Header with Location Info */}
       <section className="bg-primary py-8 lg:py-12">
         <div className="section-container">
           <Link 
             to="/mieten" 
-            className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
+            className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Standort wechseln
           </Link>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Text Content */}
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary-foreground">
-                    {location.shortName}
-                  </span>
+              <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground mb-4">
+                SLT Rental in {location.name}
+              </h1>
+              <p className="text-primary-foreground/80 text-lg mb-8">
+                {locationDescriptions[location.id] || "Miete bei uns Equipment für dein nächstes Projekt!"}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                {/* Address */}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-primary-foreground mb-1">Adresse</p>
+                    <p className="text-primary-foreground/80 text-sm">
+                      {streetAddress}<br />
+                      {cityAddress}
+                    </p>
+                  </div>
                 </div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                  {location.name}
-                </h1>
+
+                {/* Contact */}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-primary-foreground mb-1">Kontakt</p>
+                    <p className="text-primary-foreground/80 text-sm">
+                      <a href={`mailto:${location.email}`} className="hover:text-primary-foreground transition-colors">
+                        {location.email}
+                      </a><br />
+                      <a href={`tel:${location.phone.replace(/\s/g, '')}`} className="hover:text-primary-foreground transition-colors">
+                        {location.phone}
+                      </a>
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-wrap gap-4 text-sm text-primary-foreground/80">
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4" />
-                  {location.address}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Phone className="h-4 w-4" />
-                  {location.phone}
-                </span>
-              </div>
+
+              {/* Route Button */}
+              <a 
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="secondary" className="gap-2">
+                  <Navigation className="h-4 w-4" />
+                  Route planen
+                </Button>
+              </a>
             </div>
 
-            {/* Search */}
-            <div className="lg:w-96">
-              <ProductSearch 
-                locationId={location.id}
-                onCategorySelect={handleCategorySelect}
-                placeholder="Kategorie suchen..."
-              />
+            {/* Location Image */}
+            <div className="relative">
+              {locationImages[location.id] ? (
+                <img 
+                  src={locationImages[location.id]} 
+                  alt={`SLT Rental Standort ${location.name}`}
+                  className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
+                />
+              ) : (
+                <div className="w-full h-64 lg:h-80 bg-primary-foreground/10 rounded-xl flex items-center justify-center">
+                  <MapPin className="h-16 w-16 text-primary-foreground/30" />
+                </div>
+              )}
             </div>
+          </div>
+
+          {/* Search */}
+          <div className="mt-8 lg:mt-12 max-w-xl">
+            <ProductSearch 
+              locationId={location.id}
+              onCategorySelect={handleCategorySelect}
+              placeholder="Kategorie suchen..."
+            />
           </div>
         </div>
       </section>
