@@ -233,7 +233,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "kasten",
     tags: ["ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "3EA6HE" } 
   },
   
   // === PLANEN === (S→M→L→XL→XXL→1300→3500→3500XXL)
@@ -259,7 +259,7 @@ const trailerProducts: Product[] = [
     sortOrder: 2,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "7RLWP2" } 
   },
   { 
     id: "planen-l-750", 
@@ -271,7 +271,7 @@ const trailerProducts: Product[] = [
     sortOrder: 3,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "YNWU3V" } 
   },
   { 
     id: "planen-xl-750", 
@@ -283,7 +283,7 @@ const trailerProducts: Product[] = [
     sortOrder: 4,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "7HD28M" } 
   },
   { 
     id: "planen-xxl-750", 
@@ -295,7 +295,7 @@ const trailerProducts: Product[] = [
     sortOrder: 5,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "86X7LN" } 
   },
   { 
     id: "planen-1300", 
@@ -307,7 +307,7 @@ const trailerProducts: Product[] = [
     sortOrder: 6,
     category: "planen",
     tags: ["geschlossen", "gebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "EZQM77" } 
   },
   { 
     id: "planen-3500", 
@@ -319,7 +319,7 @@ const trailerProducts: Product[] = [
     sortOrder: 7,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "5L3GWF" } 
   },
   { 
     id: "planen-xxl-3500", 
@@ -331,7 +331,7 @@ const trailerProducts: Product[] = [
     sortOrder: 8,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "SHR5LA" } 
   },
   
   // === KOFFER ===
@@ -344,7 +344,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "koffer",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "14KMC5" } 
   },
   { 
     id: "koffer-1500", 
@@ -355,7 +355,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "koffer",
     tags: ["geschlossen", "gebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "WWSMO3" } 
   },
   { 
     id: "koffer-2000", 
@@ -366,7 +366,7 @@ const trailerProducts: Product[] = [
     weightKg: 2000, 
     category: "koffer",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "WOH21S" } 
   },
 
   // === BAUMASCHINEN ===
@@ -379,7 +379,7 @@ const trailerProducts: Product[] = [
     weightKg: 1800, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "EDE97K" } 
   },
   { 
     id: "baumaschinen-3500", 
@@ -390,7 +390,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "7WW3IY" } 
   },
 
   // === AUTOTRANSPORT ===
@@ -403,7 +403,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "95OAGP" } 
   },
   { 
     id: "autotransport-2700", 
@@ -414,7 +414,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "OXUI12" } 
   },
   { 
     id: "autotransportkipp-2700", 
@@ -425,7 +425,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "4POSMU" } 
   },
   { 
     id: "rueckwaertskipp-2700", 
@@ -436,7 +436,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "rueckwaertskipp",
     tags: ["gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "Q9IXR8" } 
   },
 
   // === PLATTFORM ===
@@ -449,7 +449,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "plattform",
     tags: ["gebremst", "zweiachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "BOLUXJ" } 
   },
 
   // === LAUBGITTER ===
@@ -462,7 +462,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "laubgitter",
     tags: ["laubgitter", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "RTNVGC" } 
   },
   { 
     id: "kasten-laubgitter-1300", 
@@ -473,7 +473,7 @@ const trailerProducts: Product[] = [
     weightKg: 1300, 
     category: "laubgitter",
     tags: ["laubgitter", "gebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "2B9AK5" } 
   },
 
   // === MOTORRAD ===
@@ -486,7 +486,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "motorrad",
     tags: ["motorrad", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "9JL36T" } 
   },
   { 
     id: "motorrad-1500", 
@@ -497,7 +497,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "motorrad",
     tags: ["motorrad", "gebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "JT132X" } 
   },
 
   // === URLAUB ===
@@ -510,7 +510,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "urlaub",
     tags: ["urlaub", "ungebremst", "einachser"], 
-    rentwareCode: {} 
+    rentwareCode: { krefeld: "EM45ZK" } 
   },
 ];
 
