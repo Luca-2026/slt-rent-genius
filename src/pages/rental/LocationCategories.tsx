@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, MapPin, Phone, Mail, Navigation } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
+import bonnImage from "@/assets/locations/bonn.webp";
 
 // Location images mapping
 const locationImages: Record<string, string> = {
   krefeld: krefeldImage,
+  bonn: bonnImage,
 };
 
 // Location descriptions
