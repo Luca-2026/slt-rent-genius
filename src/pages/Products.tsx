@@ -30,121 +30,125 @@ const categories = [
     title: "Bagger & Radlader",
     description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
     image: iconBagger,
-    rentwareArticleId: "UZEDUY",
-    rentwareView: "calendar",
+    rentwareArticles: [
+      { id: "UZEDUY", view: "calendar", name: "Minibagger" },
+      { id: "QU4BYW", view: "calendar", name: "2,7t Bagger" },
+    ],
   },
   {
     id: "verdichtung",
     title: "Verdichtung",
     description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
     image: iconVerdichtung,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "anhaenger",
     title: "Anhänger",
     description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
     image: iconAnhaenger,
-    rentwareArticleId: "WWSMO3",
-    rentwareView: "cards",
+    rentwareArticles: [
+      { id: "WWSMO3", view: "cards", name: "Anhänger" },
+    ],
   },
   {
     id: "hebebuehnen",
     title: "Hebebühnen & Arbeitsbühnen",
     description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
     image: iconHebebuehne,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "buehnen-podeste",
     title: "Bühnen & Podeste",
     description: "Event-Bühnen, Podeste und Laufstege für Veranstaltungen.",
     image: iconBuehne,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "moebel-zelte",
     title: "Möbel & Zelte",
     description: "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
     image: iconMoebelZelte,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "geschirr",
     title: "Geschirr",
     description: "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung.",
     image: iconGeschirr,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "besteck",
     title: "Besteck",
     description: "Messer, Gabeln und Löffel für Events und Feiern.",
     image: iconBesteck,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "huepfburgen",
     title: "Hüpfburgen",
     description: "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen.",
     image: iconHuepfburg,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "spezialeffekte",
     title: "Spezialeffekte",
     description: "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth.",
     image: iconSpezialeffekte,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "led-spots",
     title: "LED Spots & Effektlicht",
     description: "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events.",
     image: iconLedSpots,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "beleuchtung",
     title: "Beleuchtung & Flutlicht",
     description: "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung.",
     image: iconBeleuchtung,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "stromerzeuger",
     title: "Stromerzeuger",
     description: "Aggregate und Notstromgeräte für Baustelle und Event.",
     image: iconAggregat,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "heizung-klima",
     title: "Heizung & Klima",
     description: "Heizlüfter, Heizpilze und Klimageräte für jede Situation.",
     image: iconHeizung,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "kabel-leitungen",
     title: "Kabel & Leitungen",
     description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
     image: iconKabel,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
   {
     id: "absperrung-sicherheit",
     title: "Absperrung & Sicherheit",
     description: "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment.",
     image: iconAbsperrgitter,
-    rentwareArticleId: "",
+    rentwareArticles: [],
   },
 ];
 
-// Rentware Article Booking Widget Component
-function RentwareArticleBooking({ articleId, view = "cards" }: { articleId: string; view?: string }) {
+// Rentware Article Widget Component
+function RentwareArticle({ articleId, view = "cards" }: { articleId: string; view?: string }) {
   useEffect(() => {
-    const container = document.getElementById('rentware-article-container');
+    const containerId = `rentware-article-${articleId}`;
+    const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = '';
       const articleElement = document.createElement('rtr-article');
@@ -154,7 +158,22 @@ function RentwareArticleBooking({ articleId, view = "cards" }: { articleId: stri
     }
   }, [articleId, view]);
 
-  return <div id="rentware-article-container" className="min-h-[400px]" />;
+  return <div id={`rentware-article-${articleId}`} className="min-h-[400px]" />;
+}
+
+// Rentware Articles List Component
+function RentwareArticlesList({ articles }: { articles: Array<{ id: string; view: string; name: string }> }) {
+  if (!articles || articles.length === 0) return null;
+  
+  return (
+    <div className="space-y-8">
+      {articles.map((article) => (
+        <div key={article.id}>
+          <RentwareArticle articleId={article.id} view={article.view} />
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function Products() {
@@ -197,13 +216,10 @@ export default function Products() {
         </section>
 
         {/* Rentware Products */}
-        {selectedCategory.rentwareArticleId && (
+        {selectedCategory.rentwareArticles && selectedCategory.rentwareArticles.length > 0 && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
-              <RentwareArticleBooking 
-                articleId={selectedCategory.rentwareArticleId} 
-                view={selectedCategory.rentwareView || "cards"} 
-              />
+              <RentwareArticlesList articles={selectedCategory.rentwareArticles} />
             </div>
           </section>
         )}
