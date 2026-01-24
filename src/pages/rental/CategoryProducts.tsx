@@ -267,7 +267,7 @@ export default function CategoryProducts() {
                   <Truck className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Dumper</p>
+                  <p className="font-semibold text-foreground">Dumper & Radlader</p>
                   <p className="text-sm text-muted-foreground">Für schwere Lasten</p>
                 </div>
               </div>
@@ -284,13 +284,13 @@ export default function CategoryProducts() {
             
             {/* Sustainability Highlight */}
             <div className="mt-6 pt-6 border-t border-accent/20">
-              <div className="flex items-start gap-4 bg-accent/10 rounded-xl p-4">
-                <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                  <Leaf className="h-6 w-6 text-accent" />
+              <div className="flex items-start gap-4 bg-green-50 dark:bg-green-900/20 rounded-xl p-4">
+                <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                  <Leaf className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <Zap className="h-4 w-4 text-accent" />
+                    <Zap className="h-4 w-4 text-green-600 dark:text-green-400" />
                     <p className="font-semibold text-foreground">Nachhaltig bauen?</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
