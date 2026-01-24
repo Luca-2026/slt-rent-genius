@@ -30,7 +30,8 @@ const categories = [
     title: "Bagger & Radlader",
     description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
     image: iconBagger,
-    rentwareArticleId: "",
+    rentwareArticleId: "UZEDUY",
+    rentwareView: "calendar",
   },
   {
     id: "verdichtung",
@@ -45,6 +46,7 @@ const categories = [
     description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
     image: iconAnhaenger,
     rentwareArticleId: "WWSMO3",
+    rentwareView: "cards",
   },
   {
     id: "hebebuehnen",
@@ -140,17 +142,17 @@ const categories = [
 ];
 
 // Rentware Article Booking Widget Component
-function RentwareArticleBooking({ articleId }: { articleId: string }) {
+function RentwareArticleBooking({ articleId, view = "cards" }: { articleId: string; view?: string }) {
   useEffect(() => {
     const container = document.getElementById('rentware-article-container');
     if (container) {
       container.innerHTML = '';
-      const articleElement = document.createElement('rtr-article-booking');
+      const articleElement = document.createElement('rtr-article');
       articleElement.setAttribute('article-id', articleId);
-      articleElement.setAttribute('view', 'cards');
+      articleElement.setAttribute('view', view);
       container.appendChild(articleElement);
     }
-  }, [articleId]);
+  }, [articleId, view]);
 
   return <div id="rentware-article-container" className="min-h-[400px]" />;
 }
@@ -198,7 +200,10 @@ export default function Products() {
         {selectedCategory.rentwareArticleId && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
-              <RentwareArticleBooking articleId={selectedCategory.rentwareArticleId} />
+              <RentwareArticleBooking 
+                articleId={selectedCategory.rentwareArticleId} 
+                view={selectedCategory.rentwareView || "cards"} 
+              />
             </div>
           </section>
         )}
