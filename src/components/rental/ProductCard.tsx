@@ -1,7 +1,8 @@
+import { useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Package } from "lucide-react";
+import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/rentalData";
 
 interface ProductCardProps {
@@ -10,19 +11,88 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onClick }: ProductCardProps) {
+  const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const hasMultipleImages = images.length > 1;
+
+  const handlePrev = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  }, [images.length]);
+
+  const handleNext = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]);
+
+  const goToSlide = useCallback((e: React.MouseEvent, index: number) => {
+    e.stopPropagation();
+    setCurrentIndex(index);
+  }, []);
+
   return (
     <Card 
       className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden"
       onClick={onClick}
     >
-      {/* Product Image */}
+      {/* Product Image Slider */}
       <div className="aspect-[4/3] bg-muted/50 flex items-center justify-center relative overflow-hidden">
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+        {images.length > 0 ? (
+          <>
+            <img
+              src={images[currentIndex]}
+              alt={`${product.name} - Bild ${currentIndex + 1}`}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            
+            {/* Navigation Arrows */}
+            {hasMultipleImages && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                  aria-label="Vorheriges Bild"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                  aria-label="Nächstes Bild"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </>
+            )}
+
+            {/* Dot Indicators */}
+            {hasMultipleImages && (
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => goToSlide(e, index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentIndex 
+                        ? "bg-primary w-4" 
+                        : "bg-background/70 hover:bg-background"
+                    }`}
+                    aria-label={`Bild ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Image Counter Badge */}
+            {hasMultipleImages && (
+              <Badge 
+                variant="secondary" 
+                className="absolute top-2 left-2 bg-background/80 text-xs font-medium"
+              >
+                {currentIndex + 1}/{images.length}
+              </Badge>
+            )}
+          </>
         ) : (
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
             <Package className="h-8 w-8 text-primary/50" />
