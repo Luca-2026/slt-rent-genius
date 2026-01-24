@@ -217,8 +217,8 @@ export const productCategories: ProductCategory[] = [
   },
 ];
 
-// Category sort order for trailers
-const trailerCategoryOrder = ["kasten", "planen", "koffer", "baumaschine", "autotransport", "plattform", "laubgitter", "motorrad", "urlaub"];
+// Category sort order for trailers (user-specified order)
+const trailerCategoryOrder = ["planen", "koffer", "kasten", "laubgitter", "urlaub", "motorrad", "autotransport", "baumaschine", "plattform", "rueckwaertskipp"];
 
 // Shared trailer products with all images - sorted by category then weight
 const trailerProducts: Product[] = [
@@ -425,7 +425,7 @@ const trailerProducts: Product[] = [
     image: imgRueckwaertskipp2700_1, 
     images: [imgRueckwaertskipp2700_1, imgRueckwaertskipp2700_2, imgRueckwaertskipp2700_3], 
     weightKg: 2700, 
-    category: "autotransport",
+    category: "rueckwaertskipp",
     tags: ["gebremst", "zweiachser"], 
     rentwareCode: {} 
   },
