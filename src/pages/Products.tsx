@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { WeightFilter, weightRanges } from "@/components/products/WeightFilter";
+import { RentwareSearch } from "@/components/products/RentwareSearch";
 
 // Category Icons
 import iconBagger from "@/assets/icons/category-bagger.png";
@@ -32,10 +33,14 @@ const categories = [
     description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
     image: iconBagger,
     hasWeightFilter: true,
-    rentwareArticles: [
-      { id: "UZEDUY", view: "calendar", name: "XCMG XE20E", weightKg: 2050 },
-      { id: "QU4BYW", view: "calendar", name: "Bagger 2,7t", weightKg: 2700 },
-    ],
+    rentwareSearch: {
+      view: "cards",
+      showLocation: "on",
+      loadBehaviour: "extended",
+      locations: "01929004-e24f-7cc0-83f0-0f3d3431395e, 01953e5f-614f-743d-8eb9-1a0e865da81d, 95e16e54-04d2-496a-6002-41e0289b53a3",
+      showOnlyTags: "Anhänger",
+    },
+    rentwareArticles: [],
   },
   {
     id: "verdichtung",
@@ -250,8 +255,20 @@ export default function Products() {
           </div>
         </section>
 
-        {/* Rentware Products */}
-        {selectedCategory.rentwareArticles && selectedCategory.rentwareArticles.length > 0 && (
+        {/* Rentware Search Widget */}
+        {selectedCategory.rentwareSearch && (
+          <section className="py-8 lg:py-12">
+            <div className="section-container">
+              <RentwareSearch 
+                config={selectedCategory.rentwareSearch} 
+                categoryId={selectedCategory.id} 
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Rentware Individual Articles (fallback) */}
+        {!selectedCategory.rentwareSearch && selectedCategory.rentwareArticles && selectedCategory.rentwareArticles.length > 0 && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
               {/* Weight Filter for Bagger category */}
@@ -270,14 +287,14 @@ export default function Products() {
               ) : (
                 <div className="text-center py-12 bg-muted/50 rounded-xl">
                   <p className="text-muted-foreground">
-                    Keine Bagger in dieser Gewichtsklasse verfügbar.
+                    Keine Produkte in dieser Kategorie verfügbar.
                   </p>
                   <Button 
                     variant="link" 
                     onClick={() => setWeightFilter("all")}
                     className="mt-2"
                   >
-                    Alle Bagger anzeigen
+                    Alle Produkte anzeigen
                   </Button>
                 </div>
               )}

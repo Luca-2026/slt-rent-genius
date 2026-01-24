@@ -4,12 +4,18 @@ import { Search, MapPin, ChevronRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Category mapping with search keywords
+// Category mapping with search keywords - including specific product names
 const categoryKeywords = [
   {
     id: "bagger-radlader",
     title: "Bagger & Radlader",
-    keywords: ["bagger", "minibagger", "radlader", "kettenbagger", "mobilbagger", "erdbau", "aushub", "graben"],
+    keywords: [
+      "bagger", "minibagger", "radlader", "kettenbagger", "mobilbagger", "erdbau", "aushub", "graben",
+      // Specific excavator models
+      "xcmg", "xe20e", "xe20", "2t", "2,7t", "3t", "5t", "1t",
+      "kubota", "cat", "caterpillar", "hitachi", "komatsu", "volvo", "liebherr",
+      "elektrobagger", "elektro-bagger", "kompaktbagger"
+    ],
   },
   {
     id: "verdichtung",
