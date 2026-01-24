@@ -98,6 +98,81 @@ export type Database = {
         }
         Relationships: []
       }
+      job_applications: {
+        Row: {
+          city: string | null
+          cover_letter_filename: string | null
+          cover_letter_url: string | null
+          created_at: string
+          earliest_start_date: string | null
+          email: string
+          first_name: string
+          id: string
+          internal_notes: string | null
+          job_id: string
+          job_specific_answers: Json | null
+          job_title: string
+          last_name: string
+          motivation: string | null
+          phone: string
+          postal_code: string | null
+          resume_filename: string | null
+          resume_url: string | null
+          salary_expectation: string | null
+          status: string
+          street: string | null
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          cover_letter_filename?: string | null
+          cover_letter_url?: string | null
+          created_at?: string
+          earliest_start_date?: string | null
+          email: string
+          first_name: string
+          id?: string
+          internal_notes?: string | null
+          job_id: string
+          job_specific_answers?: Json | null
+          job_title: string
+          last_name: string
+          motivation?: string | null
+          phone: string
+          postal_code?: string | null
+          resume_filename?: string | null
+          resume_url?: string | null
+          salary_expectation?: string | null
+          status?: string
+          street?: string | null
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          cover_letter_filename?: string | null
+          cover_letter_url?: string | null
+          created_at?: string
+          earliest_start_date?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          internal_notes?: string | null
+          job_id?: string
+          job_specific_answers?: Json | null
+          job_title?: string
+          last_name?: string
+          motivation?: string | null
+          phone?: string
+          postal_code?: string | null
+          resume_filename?: string | null
+          resume_url?: string | null
+          salary_expectation?: string | null
+          status?: string
+          street?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       project_requests: {
         Row: {
           additional_services: string | null
