@@ -89,6 +89,8 @@ import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kd
 import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
 import imgCormidiC60_2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
 import imgCormidiC60_3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
+import imgKramer5045_1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
+import imgKramer5045_2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
 
 export interface Product {
   id: string;
@@ -599,6 +601,17 @@ const erdbewegungProducts: Product[] = [
     weightKg: 600,
     category: "dumper",
     tags: ["dumper", "diesel", "bis-1500"],
+    rentwareCode: {}
+  },
+  {
+    id: "kramer-5045",
+    name: "3t Radlader Kramer 5045",
+    description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
+    image: imgKramer5045_1,
+    images: [imgKramer5045_1, imgKramer5045_2],
+    weightKg: 3000,
+    category: "radlader",
+    tags: ["radlader", "diesel", "ab-2500"],
     rentwareCode: {}
   },
 ];
