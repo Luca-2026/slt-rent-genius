@@ -1,20 +1,23 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Grid3X3 } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
   getCategoriesForLocation,
-  type LocationData,
-  type ProductCategory 
+  getProductsForLocationCategory,
+  type Product
 } from "@/data/rentalData";
-import { RentwareSearch } from "@/components/products/RentwareSearch";
+import { ProductCard } from "@/components/rental/ProductCard";
+import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
-import { CategoryGrid } from "@/components/rental/CategoryGrid";
 
 export default function CategoryProducts() {
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const location = locationId ? getLocationById(locationId) : undefined;
   const category = categoryId ? getCategoryById(categoryId) : undefined;
@@ -45,18 +48,20 @@ export default function CategoryProducts() {
     );
   }
 
-  // Build Rentware config for this location and category
-  const rentwareConfig = {
-    view: "cards" as const,
-    showLocation: "on" as const,
-    loadBehaviour: "extended" as const,
-    locations: location.rentwareLocationId,
-    showOnlyTags: category.id === "alle" ? "" : category.rentwareTag || category.title,
-  };
-
+  const products = getProductsForLocationCategory(location.id, category.id);
   const otherCategories = getCategoriesForLocation(location.id).filter(
     (c) => c.id !== category.id && c.id !== "alle"
   );
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <Layout>
@@ -106,22 +111,54 @@ export default function CategoryProducts() {
       {/* Products */}
       <section className="py-8 lg:py-12">
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Rentware Products */}
-            <div className="lg:col-span-2">
-              <RentwareSearch 
-                config={rentwareConfig} 
-                categoryId={`${location.id}-${category.id}`}
-              />
-            </div>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Product Grid */}
+              <div className="lg:col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {products.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onClick={() => handleProductClick(product)}
+                    />
+                  ))}
+                </div>
+              </div>
 
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-4 space-y-6">
-                <DeliveryCalculatorCompact productCategoryId={category.id} />
+              {/* Sidebar */}
+              <div className="lg:col-span-1">
+                <div className="sticky top-4 space-y-6">
+                  <DeliveryCalculatorCompact productCategoryId={category.id} />
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center py-16 bg-muted/30 rounded-2xl">
+              <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <Package className="h-10 w-10 text-muted-foreground" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Noch keine Produkte hinterlegt
+              </h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                Die Produkte für diese Kategorie werden in Kürze hinzugefügt. 
+                Kontaktiere uns gerne direkt für eine Anfrage.
+              </p>
+              <div className="flex justify-center gap-4">
+                <a href={`tel:${location.phone.replace(/\s/g, '')}`}>
+                  <Button>
+                    {location.phone}
+                  </Button>
+                </a>
+                <a href={`mailto:${location.email}`}>
+                  <Button variant="outline">
+                    E-Mail senden
+                  </Button>
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -157,6 +194,14 @@ export default function CategoryProducts() {
           </div>
         </section>
       )}
+
+      {/* Product Booking Dialog */}
+      <ProductBookingDialog
+        product={selectedProduct}
+        location={location}
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+      />
     </Layout>
   );
 }

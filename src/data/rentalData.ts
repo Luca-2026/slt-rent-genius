@@ -6,7 +6,6 @@ import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
 import iconBuehne from "@/assets/icons/category-buehne.png";
 import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
 import iconGeschirr from "@/assets/icons/category-geschirr-neu.png";
-import iconBesteck from "@/assets/icons/category-besteck.png";
 import iconHuepfburg from "@/assets/icons/category-huepfburg.png";
 import iconSpezialeffekte from "@/assets/icons/category-spezialeffekte.png";
 import iconAbsperrgitter from "@/assets/icons/category-absperrgitter.png";
@@ -18,12 +17,16 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 
 // Types
-export interface RentwareArticle {
+export interface Product {
   id: string;
   name: string;
   description?: string;
-  view?: string;
-  weightKg?: number;
+  image?: string;
+  pricePerDay?: string;
+  priceWeekend?: string;
+  features?: string[];
+  // Rentware widget code per location (will be added later)
+  rentwareCode?: Record<string, string>; // { locationId: "rentware-code-snippet" }
 }
 
 export interface ProductCategory {
@@ -31,7 +34,6 @@ export interface ProductCategory {
   title: string;
   description: string;
   icon: string;
-  rentwareTag?: string; // For Rentware search widget filtering
 }
 
 export interface LocationData {
@@ -44,8 +46,8 @@ export interface LocationData {
   rentwareLocationId: string;
   // Categories available at this location (by category ID)
   availableCategories: string[];
-  // Articles per category for this location
-  articles: Record<string, RentwareArticle[]>;
+  // Products per category for this location
+  products: Record<string, Product[]>;
 }
 
 // All product categories
@@ -54,7 +56,7 @@ export const productCategories: ProductCategory[] = [
     id: "alle",
     title: "Alle Artikel",
     description: "Alle verfügbaren Mietprodukte an diesem Standort.",
-    icon: "", // Special: no icon, or use a grid icon
+    icon: "",
   },
   {
     id: "anhaenger",
@@ -72,13 +74,13 @@ export const productCategories: ProductCategory[] = [
     id: "werkzeuge",
     title: "Werkzeuge",
     description: "Hand- und Elektrowerkzeuge für Bau und Renovierung.",
-    icon: iconVerdichtung, // Placeholder - can be updated
+    icon: iconVerdichtung,
   },
   {
     id: "gartenpflege",
     title: "Gartenpflege",
     description: "Rasenmäher, Vertikutierer, Häcksler und Gartengeräte.",
-    icon: iconBagger, // Placeholder - can be updated
+    icon: iconBagger,
   },
   {
     id: "aggregate",
@@ -126,7 +128,7 @@ export const productCategories: ProductCategory[] = [
     id: "beschallung",
     title: "Beschallung",
     description: "Lautsprecher, Mikrofone, Mischpulte und PA-Anlagen.",
-    icon: iconSpezialeffekte, // Placeholder
+    icon: iconSpezialeffekte,
   },
   {
     id: "beleuchtung",
@@ -160,8 +162,7 @@ export const productCategories: ProductCategory[] = [
   },
 ];
 
-// Locations with their available categories and articles
-// Articles will be populated per location later
+// Locations with their available categories and products
 export const locations: LocationData[] = [
   {
     id: "krefeld",
@@ -171,7 +172,6 @@ export const locations: LocationData[] = [
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
     rentwareLocationId: "01929004-e24f-7cc0-83f0-0f3d3431395e",
-    // All categories available - will be filtered based on actual articles
     availableCategories: [
       "anhaenger",
       "erdbewegung",
@@ -191,8 +191,12 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
     ],
-    articles: {
-      // Will be populated with specific articles
+    products: {
+      // Products will be added per category
+      // Example structure:
+      // "anhaenger": [
+      //   { id: "pkw-anhaenger-750", name: "PKW-Anhänger 750kg", pricePerDay: "25€" }
+      // ]
     },
   },
   {
@@ -222,7 +226,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
     ],
-    articles: {},
+    products: {},
   },
   {
     id: "muelheim",
@@ -251,7 +255,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
     ],
-    articles: {},
+    products: {},
   },
 ];
 
@@ -268,7 +272,6 @@ export function getCategoriesForLocation(locationId: string): ProductCategory[] 
   const location = getLocationById(locationId);
   if (!location) return [];
   
-  // Always include "Alle Artikel" first
   const alleCategory = productCategories.find((c) => c.id === "alle");
   const availableCategories = productCategories.filter(
     (cat) => cat.id !== "alle" && location.availableCategories.includes(cat.id)
@@ -277,17 +280,23 @@ export function getCategoriesForLocation(locationId: string): ProductCategory[] 
   return alleCategory ? [alleCategory, ...availableCategories] : availableCategories;
 }
 
-export function getArticlesForLocationCategory(
+export function getProductsForLocationCategory(
   locationId: string,
   categoryId: string
-): RentwareArticle[] {
+): Product[] {
   const location = getLocationById(locationId);
   if (!location) return [];
   
   if (categoryId === "alle") {
-    // Return all articles from all categories
-    return Object.values(location.articles).flat();
+    // Return all products from all categories
+    return Object.values(location.products).flat();
   }
   
-  return location.articles[categoryId] || [];
+  return location.products[categoryId] || [];
+}
+
+export function getAllProductsForLocation(locationId: string): Product[] {
+  const location = getLocationById(locationId);
+  if (!location) return [];
+  return Object.values(location.products).flat();
 }
