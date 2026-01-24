@@ -33,7 +33,7 @@ const categories = [
     image: iconBagger,
     hasWeightFilter: true,
     rentwareArticles: [
-      { id: "UZEDUY", view: "calendar", name: "Minibagger 0,8t", weightKg: 800 },
+      { id: "UZEDUY", view: "calendar", name: "XCMG XE20E", weightKg: 2050 },
       { id: "QU4BYW", view: "calendar", name: "Bagger 2,7t", weightKg: 2700 },
     ],
   },
