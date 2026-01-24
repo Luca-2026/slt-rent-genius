@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Grid3X3, Package } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -13,14 +13,87 @@ import {
 import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
+import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
 
 export default function CategoryProducts() {
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [trailerFilters, setTrailerFilters] = useState<TrailerFilterState>({
+    search: "",
+    types: [],
+    braking: [],
+    axles: [],
+  });
   
   const location = locationId ? getLocationById(locationId) : undefined;
   const category = categoryId ? getCategoryById(categoryId) : undefined;
+
+  const allProducts = useMemo(() => {
+    if (!location || !category) return [];
+    return getProductsForLocationCategory(location.id, category.id);
+  }, [location, category]);
+
+  const otherCategories = useMemo(() => {
+    if (!location || !category) return [];
+    return getCategoriesForLocation(location.id).filter(
+      (c) => c.id !== category.id && c.id !== "alle"
+    );
+  }, [location, category]);
+
+  // Filter and sort products for trailers
+  const products = useMemo(() => {
+    let filtered = [...allProducts];
+
+    // Apply trailer-specific filters only for anhänger category
+    if (category?.id === "anhaenger") {
+      // Search filter
+      if (trailerFilters.search) {
+        const searchLower = trailerFilters.search.toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.description?.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Type filters
+      if (trailerFilters.types.length > 0) {
+        filtered = filtered.filter((p) =>
+          trailerFilters.types.some((type) => p.tags?.includes(type))
+        );
+      }
+
+      // Braking filters
+      if (trailerFilters.braking.length > 0) {
+        filtered = filtered.filter((p) =>
+          trailerFilters.braking.some((brake) => p.tags?.includes(brake))
+        );
+      }
+
+      // Axle filters
+      if (trailerFilters.axles.length > 0) {
+        filtered = filtered.filter((p) =>
+          trailerFilters.axles.some((axle) => p.tags?.includes(axle))
+        );
+      }
+
+      // Sort by weight
+      filtered.sort((a, b) => (a.weightKg || 0) - (b.weightKg || 0));
+    }
+
+    return filtered;
+  }, [allProducts, trailerFilters, category?.id]);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedProduct(null);
+  };
 
   if (!location) {
     return (
@@ -47,21 +120,6 @@ export default function CategoryProducts() {
       </Layout>
     );
   }
-
-  const products = getProductsForLocationCategory(location.id, category.id);
-  const otherCategories = getCategoriesForLocation(location.id).filter(
-    (c) => c.id !== category.id && c.id !== "alle"
-  );
-
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedProduct(null);
-  };
 
   return (
     <Layout>
@@ -108,29 +166,75 @@ export default function CategoryProducts() {
         </div>
       </section>
 
+      {/* 24/7 Info Banner for Anhänger */}
+      {category.id === "anhaenger" && (
+        <section className="bg-accent/10 border-y border-accent/20">
+          <div className="section-container py-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">24/7 verfügbar</p>
+                  <p className="text-sm text-muted-foreground">Mieten per Codesystem</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Smartphone className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">SMS-Code nach Zahlung</p>
+                  <p className="text-sm text-muted-foreground">Code nur im Mietzeitraum gültig</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Lock className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Schloss entsperren</p>
+                  <p className="text-sm text-muted-foreground">Rückgabe am Abholort</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Products */}
       <section className="py-8 lg:py-12">
         <div className="section-container">
-          {products.length > 0 ? (
+          {allProducts.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Product Grid */}
-              <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onClick={() => handleProductClick(product)}
-                    />
-                  ))}
+              {/* Sidebar with Filters */}
+              <div className="lg:col-span-1 order-2 lg:order-1">
+                <div className="sticky top-4 space-y-6">
+                  {category.id === "anhaenger" && (
+                    <TrailerFilter onFilterChange={setTrailerFilters} />
+                  )}
+                  <DeliveryCalculatorCompact productCategoryId={category.id} />
                 </div>
               </div>
 
-              {/* Sidebar */}
-              <div className="lg:col-span-1">
-                <div className="sticky top-4 space-y-6">
-                  <DeliveryCalculatorCompact productCategoryId={category.id} />
-                </div>
+              {/* Product Grid */}
+              <div className="lg:col-span-2 order-1 lg:order-2">
+                {products.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {products.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onClick={() => handleProductClick(product)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-muted/30 rounded-xl">
+                    <p className="text-muted-foreground">Keine Anhänger gefunden. Bitte passe deine Filter an.</p>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
