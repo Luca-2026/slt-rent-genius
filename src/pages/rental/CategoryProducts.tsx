@@ -134,21 +134,29 @@ export default function CategoryProducts() {
             Zurück zu {location.name}
           </Link>
 
-          <div className="flex items-center gap-6">
-            {/* Category Icon */}
-            <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
-              {category.id === "alle" ? (
-                <Grid3X3 className="h-10 w-10 text-primary" />
-              ) : category.icon ? (
-                <img 
-                  src={category.icon} 
-                  alt={category.title}
-                  className="w-full h-full object-contain"
-                />
-              ) : (
-                <div className="w-full h-full bg-muted rounded-lg" />
-              )}
-            </div>
+          <div className="flex items-start gap-6">
+            {/* Category Icon - larger, no background for anhänger */}
+            {category.id === "anhaenger" ? (
+              <img 
+                src={category.icon} 
+                alt={category.title}
+                className="w-24 h-24 object-contain"
+              />
+            ) : (
+              <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
+                {category.id === "alle" ? (
+                  <Grid3X3 className="h-10 w-10 text-primary" />
+                ) : category.icon ? (
+                  <img 
+                    src={category.icon} 
+                    alt={category.title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted rounded-lg" />
+                )}
+              </div>
+            )}
 
             <div>
               <div className="flex items-center gap-2 text-primary-foreground/80 text-sm mb-1">
@@ -199,6 +207,19 @@ export default function CategoryProducts() {
                 </div>
               </div>
             </div>
+            
+            {/* Additional Info */}
+            <div className="mt-6 pt-6 border-t border-accent/20 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <p className="text-muted-foreground">
+                <span className="font-medium text-foreground">750kg bis 3500kg</span> – Nutz- und Pferdeanhänger in verschiedenen Größen
+              </p>
+              <p className="text-muted-foreground">
+                <span className="font-medium text-foreground">Verschiedene Aufbauten</span> – Planen-, Koffer- und weitere Aufbautypen
+              </p>
+              <p className="text-muted-foreground">
+                <span className="font-medium text-foreground">100 km/h Zulassung</span> – Alle PKW-Anhänger mit 13-Pol Stecker
+              </p>
+            </div>
           </div>
         </section>
       )}
@@ -214,7 +235,9 @@ export default function CategoryProducts() {
                   {category.id === "anhaenger" && (
                     <TrailerFilter onFilterChange={setTrailerFilters} />
                   )}
-                  <DeliveryCalculatorCompact productCategoryId={category.id} />
+                  {category.id !== "anhaenger" && (
+                    <DeliveryCalculatorCompact productCategoryId={category.id} />
+                  )}
                 </div>
               </div>
 
