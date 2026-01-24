@@ -5,11 +5,12 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Truck, MapPin, Calculator, ArrowRight } from "lucide-react";
 
 const deliveryPrices = {
   "1t-bagger": {
-    name: "1t Bagger, Dumper & 8m Scherenbühne",
+    name: "1t Bagger, Dumper",
     multiplier: 1.5,
     distances: [
       { km: 15, brutto: 70 },
@@ -21,7 +22,7 @@ const deliveryPrices = {
     ],
   },
   "2t-bagger": {
-    name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
+    name: "2t Bagger, Radlader",
     multiplier: 1.5,
     distances: [
       { km: 15, brutto: 80 },
@@ -33,7 +34,7 @@ const deliveryPrices = {
     ],
   },
   "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
+    name: "3t Bagger",
     multiplier: 1.7,
     distances: [
       { km: 15, brutto: 90 },
@@ -61,8 +62,16 @@ const deliveryPrices = {
 
 type CategoryKey = keyof typeof deliveryPrices;
 
+// Machine type options for erdbewegung category
+const machineTypeOptions: { value: CategoryKey; label: string }[] = [
+  { value: "1t-bagger", label: "1t Bagger, Dumper" },
+  { value: "2t-bagger", label: "2t Bagger, Radlader" },
+  { value: "3t-bagger", label: "3t Bagger" },
+];
+
 // Map product categories to delivery price categories
 const categoryMapping: Record<string, CategoryKey> = {
+  "erdbewegung": "1t-bagger",
   "bagger-radlader": "2t-bagger",
   "verdichtung": "1t-bagger",
   "hebebuehnen": "3t-bagger",
@@ -86,15 +95,20 @@ export function DeliveryCalculatorCompact({
   productCategoryId,
   className = "" 
 }: DeliveryCalculatorCompactProps) {
+  // Determine if this is erdbewegung category (show machine type selector)
+  const isErdbewegung = productCategoryId === "erdbewegung";
+  
   // Determine initial category based on product
   const initialCategory = productCategoryId 
     ? categoryMapping[productCategoryId] || "2t-bagger"
     : "2t-bagger";
     
+  const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
   const [distance, setDistance] = useState(20);
   const [includeReturn, setIncludeReturn] = useState(true);
+  const [twoMachines, setTwoMachines] = useState(false);
 
-  const selectedCategory = deliveryPrices[initialCategory];
+  const selectedCategory = deliveryPrices[selectedMachineType];
 
   const calculatedPrice = useMemo(() => {
     const distances = selectedCategory.distances;
@@ -107,7 +121,13 @@ export function DeliveryCalculatorCompact({
       }
     }
 
-    const basePrice = priceEntry.brutto;
+    let basePrice = priceEntry.brutto;
+    
+    // Aufschlag für 2 Baumaschinen
+    if (twoMachines && selectedCategory.multiplier > 1) {
+      basePrice = basePrice * selectedCategory.multiplier;
+    }
+
     const totalPrice = includeReturn ? basePrice * 2 : basePrice;
 
     return {
@@ -115,7 +135,7 @@ export function DeliveryCalculatorCompact({
       total: totalPrice,
       distanceUsed: priceEntry.km,
     };
-  }, [distance, includeReturn, selectedCategory]);
+  }, [distance, includeReturn, twoMachines, selectedCategory]);
 
   return (
     <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
@@ -124,11 +144,37 @@ export function DeliveryCalculatorCompact({
           <Truck className="h-5 w-5 text-primary" />
           Lieferkosten berechnen
         </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Für {selectedCategory.name}
-        </p>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Machine Type Selector for Erdbewegung */}
+        {isErdbewegung && (
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Gerätekategorie</Label>
+            <Select
+              value={selectedMachineType}
+              onValueChange={(value) => setSelectedMachineType(value as CategoryKey)}
+            >
+              <SelectTrigger className="w-full bg-background">
+                <SelectValue placeholder="Maschinentyp wählen" />
+              </SelectTrigger>
+              <SelectContent className="bg-background z-50">
+                {machineTypeOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {/* Non-erdbewegung: show category name */}
+        {!isErdbewegung && (
+          <p className="text-sm text-muted-foreground">
+            Für {selectedCategory.name}
+          </p>
+        )}
+
         {/* Distance Slider */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -150,15 +196,34 @@ export function DeliveryCalculatorCompact({
 
         {/* Return Trip Toggle */}
         <div className="flex items-center justify-between py-2 border-t border-border">
-          <Label htmlFor="return-trip" className="text-sm cursor-pointer">
+          <Label htmlFor="return-trip-compact" className="text-sm cursor-pointer">
             Hin- und Rückfahrt
           </Label>
           <Switch
-            id="return-trip"
+            id="return-trip-compact"
             checked={includeReturn}
             onCheckedChange={setIncludeReturn}
           />
         </div>
+
+        {/* Two Machines Toggle - only for erdbewegung */}
+        {isErdbewegung && selectedCategory.multiplier > 1 && (
+          <div className="flex items-center justify-between py-2 border-t border-border">
+            <div>
+              <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
+                2 Baumaschinen
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Aufschlag: ×{selectedCategory.multiplier}
+              </p>
+            </div>
+            <Switch
+              id="two-machines-compact"
+              checked={twoMachines}
+              onCheckedChange={setTwoMachines}
+            />
+          </div>
+        )}
 
         {/* Price Display */}
         <div className="bg-background rounded-lg p-4 border border-border">
@@ -177,6 +242,11 @@ export function DeliveryCalculatorCompact({
           {includeReturn && (
             <p className="text-xs text-muted-foreground mt-1">
               (je Fahrt {calculatedPrice.oneWay.toFixed(0)} €)
+            </p>
+          )}
+          {twoMachines && (
+            <p className="text-xs text-accent mt-1">
+              inkl. Aufschlag für 2 Maschinen
             </p>
           )}
         </div>
