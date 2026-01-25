@@ -19,50 +19,34 @@ import {
   Package
 } from "lucide-react";
 
-// Category Icons
-import iconBagger from "@/assets/icons/category-bagger.png";
-import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
-import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
-import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
-import iconHuepfburg from "@/assets/icons/category-huepfburg.png";
-import iconHeizung from "@/assets/icons/category-heizung.png";
+// Location images
+import imgKrefeld from "@/assets/locations/krefeld.jpg";
+import imgBonn from "@/assets/locations/bonn.webp";
 
-const categories = [
+const locationCards = [
   {
-    id: "bagger-radlader",
-    title: "Bagger & Radlader",
-    description: "Minibagger, Radlader & Erdbaumaschinen",
-    image: iconBagger,
+    id: "krefeld",
+    name: "Krefeld",
+    subtitle: "Hauptsitz",
+    description: "Anhänger, Bagger, Radlader & Event-Equipment",
+    image: imgKrefeld,
+    highlights: ["24/7 Anhängermiete", "Große Auswahl", "Hauptstandort"],
   },
   {
-    id: "anhaenger",
-    title: "Anhänger",
-    description: "Pkw-Anhänger, Kipper, Transportanhänger",
-    image: iconAnhaenger,
+    id: "bonn",
+    name: "Bonn",
+    subtitle: "Filiale",
+    description: "Anhänger, Bagger & Baumaschinen",
+    image: imgBonn,
+    highlights: ["24/7 Anhängermiete", "Servicewerkstatt"],
   },
   {
-    id: "hebebuehnen",
-    title: "Arbeitsbühnen",
-    description: "Scherenbühnen, Teleskopbühnen, Gelenkbühnen",
-    image: iconHebebuehne,
-  },
-  {
-    id: "moebel-zelte",
-    title: "Event-Equipment",
-    description: "Zelte, Möbel, Bühnen & Technik",
-    image: iconMoebelZelte,
-  },
-  {
-    id: "huepfburgen",
-    title: "Hüpfburgen",
-    description: "Aufblasbare Attraktionen für Events",
-    image: iconHuepfburg,
-  },
-  {
-    id: "heizung-klima",
-    title: "Heizung & Klima",
-    description: "Heizlüfter, Heizpilze, Klimageräte",
-    image: iconHeizung,
+    id: "muelheim",
+    name: "Mülheim a.d. Ruhr",
+    subtitle: "Filiale",
+    description: "Anhänger & Erdbewegung",
+    image: imgKrefeld, // Placeholder until Mülheim image is added
+    highlights: ["24/7 Anhängermiete", "Bagger-Spezialist"],
   },
 ];
 
@@ -104,36 +88,6 @@ const trustItems = [
   { value: 800, label: "Mietprodukte", prefix: "+", isCounter: true },
   { value: 3, label: "Standorte in NRW", prefix: "", isCounter: true },
   { value: 2016, label: "dein Partner", prefix: "seit ", isCounter: false },
-];
-
-const locations = [
-  {
-    id: "krefeld",
-    name: "Krefeld",
-    subtitle: "Hauptsitz",
-    address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain",
-    phone: "02151 417 990 4",
-    email: "krefeld@slt-rental.de",
-    hours: "24/7 für Sie erreichbar",
-  },
-  {
-    id: "bonn",
-    name: "Bonn",
-    subtitle: "Filiale",
-    address: "Drachenburgstraße 8, 53179 Bonn",
-    phone: "0228 50466061",
-    email: "bonn@slt-rental.de",
-    hours: "24/7 für Sie erreichbar",
-  },
-  {
-    id: "muelheim",
-    name: "Mülheim an der Ruhr",
-    subtitle: "Filiale",
-    address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
-    phone: "02151 417 99 04",
-    email: "krefeld@slt-rental.de",
-    hours: "24/7 für Sie erreichbar",
-  },
 ];
 
 export default function Index() {
@@ -190,34 +144,62 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Locations / Standorte */}
       <section className="py-16 lg:py-20">
         <div className="section-container">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-              Unsere Produktkategorien
+              Unsere Standorte
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Von Baumaschinen über Anhänger bis hin zu Event-Equipment – 
-              finde das passende Mietgerät für dein Projekt.
+              3 Standorte in NRW – wähle deinen Standort und entdecke das verfügbare Equipment vor Ort.
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {categories.map((category, index) => (
-              <AnimatedSection key={category.id} delay={index * 50} animation="scale-in">
-                <Link to="/mieten">
-                  <Card className="h-full group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-accent/20">
-                    <div className="aspect-square bg-gradient-to-br from-muted to-surface-light relative overflow-hidden rounded-t-lg flex items-center justify-center p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {locationCards.map((loc, index) => (
+              <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
+                <Link to={`/mieten/${loc.id}`}>
+                  <Card className="h-full group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary/30 overflow-hidden">
+                    {/* Location Image */}
+                    <div className="aspect-[16/9] relative overflow-hidden">
                       <img
-                        src={category.image}
-                        alt={category.title}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                        src={loc.image}
+                        alt={loc.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <span className="text-xs text-accent font-medium uppercase tracking-wide">
+                          {loc.subtitle}
+                        </span>
+                        <h3 className="text-xl font-bold text-white">
+                          {loc.name}
+                        </h3>
+                      </div>
                     </div>
-                    <CardContent className="p-4 bg-gradient-to-b from-transparent to-muted/30">
-                      <h3 className="font-semibold text-headline mb-1 text-sm group-hover:text-primary transition-colors">{category.title}</h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{category.description}</p>
+                    
+                    <CardContent className="p-5">
+                      <p className="text-muted-foreground text-sm mb-4">
+                        {loc.description}
+                      </p>
+                      
+                      {/* Highlights */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {loc.highlights.map((highlight) => (
+                          <span
+                            key={highlight}
+                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                          >
+                            {highlight}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center text-primary font-medium text-sm group-hover:text-accent transition-colors">
+                        Kategorien & Produkte ansehen
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </CardContent>
                   </Card>
                 </Link>
@@ -226,9 +208,9 @@ export default function Index() {
           </div>
 
           <AnimatedSection className="text-center mt-10" delay={300}>
-            <Link to="/mieten">
+            <Link to="/standorte">
               <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
-                Alle Produkte ansehen
+                Alle Standorte & Öffnungszeiten
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -290,64 +272,6 @@ export default function Index() {
             <Link to="/so-funktionierts">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 Mehr erfahren
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Locations */}
-      <section className="py-16 lg:py-20 bg-surface-light">
-        <div className="section-container">
-          <AnimatedSection className="text-center mb-12">
-            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-              Unsere Standorte
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              3 Standorte in NRW – immer in deiner Nähe. 
-              Persönliche Beratung und schnelle Abholung garantiert.
-            </p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {locations.map((location, index) => (
-              <AnimatedSection key={location.id} delay={index * 100} animation="slide-in-left">
-                <Link to={`/standorte/${location.id}`}>
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-primary/20 overflow-hidden">
-                    <CardContent className="p-6 relative">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-6 -mt-6 group-hover:bg-primary/10 transition-colors" />
-                      <div className="flex items-start justify-between mb-4 relative">
-                        <div>
-                          <h3 className="font-bold text-lg text-headline group-hover:text-primary transition-colors">{location.name}</h3>
-                          <span className="text-sm text-accent font-medium">{location.subtitle}</span>
-                        </div>
-                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                          <MapPin className="h-5 w-5" />
-                        </div>
-                      </div>
-                      <div className="space-y-3 text-sm text-muted-foreground">
-                        <p className="font-medium">{location.address}</p>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 text-accent" />
-                          <span>{location.phone}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-accent" />
-                          <span>{location.hours}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection className="text-center mt-10" delay={300}>
-            <Link to="/standorte">
-              <Button variant="outline" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
-                Alle Standorte anzeigen
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
