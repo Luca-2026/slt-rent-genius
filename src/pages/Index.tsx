@@ -29,6 +29,8 @@ const locationCards = [
     name: "Krefeld",
     subtitle: "Hauptsitz",
     description: "Anhänger, Bagger, Radlader & Event-Equipment",
+    address: "Anrather Straße 291, 47807 Krefeld",
+    hours: "Mo-Fr 07:30-18:00 | Sa 08:00-14:30*",
     image: imgKrefeld,
     highlights: ["24/7 Anhängermiete", "Große Auswahl", "Hauptstandort"],
   },
@@ -37,6 +39,8 @@ const locationCards = [
     name: "Bonn",
     subtitle: "Filiale",
     description: "Anhänger, Bagger & Baumaschinen",
+    address: "Drachenburgstraße 8, 53179 Bonn",
+    hours: "Mo-Fr 07:30-18:00 | Sa 08:00-14:30*",
     image: imgBonn,
     highlights: ["24/7 Anhängermiete", "Servicewerkstatt"],
   },
@@ -45,6 +49,8 @@ const locationCards = [
     name: "Mülheim a.d. Ruhr",
     subtitle: "Filiale",
     description: "Anhänger & Erdbewegung",
+    address: "Ruhrorter Str. 100, 45478 Mülheim",
+    hours: "Online-Buchung 24/7 | Abholung n. Vereinb.",
     image: imgKrefeld, // Placeholder until Mülheim image is added
     highlights: ["24/7 Anhängermiete", "Bagger-Spezialist"],
   },
@@ -181,9 +187,21 @@ export default function Index() {
                     
                     <CardContent className="p-5 flex flex-col flex-1">
                       {/* Description - fixed height */}
-                      <p className="text-muted-foreground text-sm mb-4 min-h-[40px]">
+                      <p className="text-muted-foreground text-sm mb-3 min-h-[40px]">
                         {loc.description}
                       </p>
+                      
+                      {/* Address & Hours - fixed height */}
+                      <div className="space-y-2 mb-4 min-h-[52px]">
+                        <div className="flex items-start gap-2 text-sm">
+                          <MapPin className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                          <span className="text-body">{loc.address}</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm">
+                          <Clock className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                          <span className="text-body">{loc.hours}</span>
+                        </div>
+                      </div>
                       
                       {/* Highlights - fixed height */}
                       <div className="flex flex-wrap gap-2 mb-4 min-h-[56px]">
