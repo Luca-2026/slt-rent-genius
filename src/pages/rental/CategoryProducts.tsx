@@ -27,7 +27,7 @@ export default function CategoryProducts() {
     search: "",
     types: [],
     braking: [],
-    axles: [],
+    weight: [],
   });
   const [earthMovingFilters, setEarthMovingFilters] = useState<EarthMovingFilterState>({
     search: "",
@@ -124,11 +124,18 @@ export default function CategoryProducts() {
         );
       }
 
-      // Axle filters
-      if (trailerFilters.axles.length > 0) {
-        filtered = filtered.filter((p) =>
-          trailerFilters.axles.some((axle) => p.tags?.includes(axle))
-        );
+      // Weight filters
+      if (trailerFilters.weight.length > 0) {
+        filtered = filtered.filter((p) => {
+          const productWeight = p.weightKg || 0;
+          return trailerFilters.weight.some((weightId) => {
+            if (weightId === "bis-750") return productWeight <= 750;
+            if (weightId === "750-1500") return productWeight > 750 && productWeight <= 1500;
+            if (weightId === "1500-2500") return productWeight > 1500 && productWeight <= 2500;
+            if (weightId === "ab-2500") return productWeight > 2500;
+            return false;
+          });
+        });
       }
     }
 
