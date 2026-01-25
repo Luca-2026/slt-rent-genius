@@ -473,13 +473,19 @@ export default function CategoryProducts() {
               <div className="lg:col-span-2 order-1 lg:order-2">
                 {products.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {products.map((product) => (
-                      <ProductCard
-                        key={product.id}
-                        product={product}
-                        onClick={() => handleProductClick(product)}
-                      />
-                    ))}
+                    {products.map((product) => {
+                      // Get the product's main category for the URL
+                      const productMainCategory = productCategoryMap.get(product.id) || category.id;
+                      const productLink = `/mieten/${location.id}/${productMainCategory}/${product.id}`;
+                      
+                      return (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          linkTo={productLink}
+                        />
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="text-center py-12 bg-muted/30 rounded-xl">

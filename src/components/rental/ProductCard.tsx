@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,34 +8,42 @@ import type { Product } from "@/data/rentalData";
 
 interface ProductCardProps {
   product: Product;
-  onClick: () => void;
+  onClick?: () => void;
+  linkTo?: string; // Optional link for SEO-friendly navigation
 }
 
-export function ProductCard({ product, onClick }: ProductCardProps) {
+export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
   const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasMultipleImages = images.length > 1;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   }, [images.length]);
 
   const handleNext = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, [images.length]);
 
   const goToSlide = useCallback((e: React.MouseEvent, index: number) => {
     e.stopPropagation();
+    e.preventDefault();
     setCurrentIndex(index);
   }, []);
 
-  return (
-    <Card 
-      className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden"
-      onClick={onClick}
-    >
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Only trigger onClick if no linkTo is provided
+    if (onClick && !linkTo) {
+      onClick();
+    }
+  };
+
+  const cardContent = (
+    <>
       {/* Product Image Slider */}
       <div className="aspect-[4/3] bg-muted/50 flex items-center justify-center relative overflow-hidden">
         {images.length > 0 ? (
@@ -133,11 +142,39 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
           <Button 
             size="sm" 
             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            onClick={(e) => {
+              if (onClick && !linkTo) {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick();
+              }
+            }}
           >
             Jetzt mieten
           </Button>
         </div>
       </CardContent>
+    </>
+  );
+
+  // If linkTo is provided, wrap in Link for SEO
+  if (linkTo) {
+    return (
+      <Link to={linkTo} className="block h-full">
+        <Card className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden">
+          {cardContent}
+        </Card>
+      </Link>
+    );
+  }
+
+  // Otherwise, use onClick handler
+  return (
+    <Card 
+      className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden"
+      onClick={handleCardClick}
+    >
+      {cardContent}
     </Card>
   );
 }

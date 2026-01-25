@@ -767,3 +767,40 @@ export function getAllProductsForLocation(locationId: string): Product[] {
   if (!location) return [];
   return Object.values(location.products).flat();
 }
+
+// Get a single product by ID across all locations
+export function getProductById(productId: string): Product | undefined {
+  for (const location of locations) {
+    for (const products of Object.values(location.products)) {
+      const found = products.find((p) => p.id === productId);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+// Get product with its location and category context
+export function getProductWithContext(productId: string): {
+  product: Product;
+  locationId: string;
+  categoryId: string;
+} | undefined {
+  for (const location of locations) {
+    for (const [categoryId, products] of Object.entries(location.products)) {
+      const found = products.find((p) => p.id === productId);
+      if (found) {
+        return {
+          product: found,
+          locationId: location.id,
+          categoryId,
+        };
+      }
+    }
+  }
+  return undefined;
+}
+
+// Generate SEO-friendly slug from product name
+export function generateProductSlug(product: Product): string {
+  return product.id;
+}
