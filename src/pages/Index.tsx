@@ -143,6 +143,11 @@ export default function Index() {
       <section className="relative bg-primary py-16 lg:py-24">
         <div className="section-container">
           <div className="max-w-3xl">
+            {/* Claim Badge */}
+            <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-accent font-bold text-lg">Sei schlau, miet' blau!</span>
+            </div>
+
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
               Baumaschinen & Equipment mieten – 
               <span className="text-accent"> einfach, schnell, zuverlässig</span>
@@ -152,7 +157,7 @@ export default function Index() {
               alles online buchbar mit Weekend-Tarifen.
             </p>
 
-            {/* Interactive Search with Location Selection */}
+            {/* Interactive Search with Article Search */}
             <HeroSearch />
           </div>
         </div>
