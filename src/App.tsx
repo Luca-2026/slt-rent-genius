@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import RentalStart from "./pages/rental/RentalStart";
 import LocationCategories from "./pages/rental/LocationCategories";
 import CategoryProducts from "./pages/rental/CategoryProducts";
+import ProductDetail from "./pages/rental/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -36,10 +37,11 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             
-            {/* New rental flow: Location → Category → Products */}
+            {/* New rental flow: Location → Category → Products → Product Detail */}
             <Route path="/mieten" element={<RentalStart />} />
             <Route path="/mieten/:locationId" element={<LocationCategories />} />
             <Route path="/mieten/:locationId/:categoryId" element={<CategoryProducts />} />
+            <Route path="/mieten/:locationId/:categoryId/:productId" element={<ProductDetail />} />
             
             {/* Legacy products route - redirects or keep for backwards compatibility */}
             <Route path="/produkte" element={<RentalStart />} />
