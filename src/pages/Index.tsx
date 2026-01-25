@@ -59,33 +59,33 @@ const locationCards = [
 const steps = [
   {
     number: "1",
-    icon: Calendar,
-    title: "Zeitraum wählen",
-    description: "Wähle deinen Standort und Mietzeitraum.",
+    icon: MapPin,
+    title: "Standort wählen",
+    description: "Wähle deinen nächsten Standort in NRW.",
   },
   {
     number: "2",
     icon: Search,
-    title: "Gerät finden",
+    title: "Mietartikel suchen",
     description: "Durchsuche unseren Katalog nach Equipment.",
   },
   {
     number: "3",
-    icon: ShoppingCart,
-    title: "Online buchen",
-    description: "Schließe die Buchung einfach online ab.",
+    icon: Calendar,
+    title: "Zeitraum & Buchen",
+    description: "Wähle deinen Mietzeitraum und buche online – oder vor Ort während der Öffnungszeiten.",
   },
   {
     number: "4",
     icon: CreditCard,
     title: "Bezahlen",
-    description: "Zahle sicher per Karte oder vor Ort.",
+    description: "Per Karte, PayPal oder bar vor Ort. 30% Anzahlung online erforderlich.",
   },
   {
     number: "5",
     icon: Package,
     title: "Abholen",
-    description: "Hole ab oder lass liefern.",
+    description: "Hole dein Equipment ab oder lass liefern.",
   },
 ];
 
