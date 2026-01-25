@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -333,11 +333,71 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* Delivery Calculator */}
-              <DeliveryCalculatorCompact
-                productCategoryId={categoryId || ""}
-                showAllCategories={false}
-              />
+              {/* Conditional: Delivery Calculator OR 24/7 Trailer Info */}
+              {categoryId === "anhaenger" ? (
+                /* 24/7 Trailer Rental Info */
+                <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl border border-accent/30 p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
+                      <Clock className="h-6 w-6 text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-foreground text-lg">24/7 Verfügbar</h3>
+                      <p className="text-sm text-muted-foreground">Rund um die Uhr mietbar</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Smartphone className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">SMS-Code System</p>
+                        <p className="text-sm text-muted-foreground">
+                          Nach Buchung erhalten Sie einen SMS-Code zum Entsperren des Anhängers.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Lock className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Elektronisches Schloss</p>
+                        <p className="text-sm text-muted-foreground">
+                          Code am Schloss der Deichsel eingeben und Anhänger mitnehmen.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Key className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Selbstabholung</p>
+                        <p className="text-sm text-muted-foreground">
+                          Abholen und Zurückbringen am Standort – ganz ohne Wartezeit.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-4 border-t border-accent/20">
+                    <p className="text-xs text-muted-foreground text-center">
+                      Personalausweis für Identifikation bei der Buchung erforderlich
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                /* Delivery Calculator for non-trailer products */
+                <DeliveryCalculatorCompact
+                  productCategoryId={categoryId || ""}
+                  showAllCategories={false}
+                />
+              )}
             </div>
           </div>
 
