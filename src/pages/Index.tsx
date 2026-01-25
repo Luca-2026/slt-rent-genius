@@ -179,24 +179,26 @@ export default function Index() {
                       </div>
                     </div>
                     
-                    <CardContent className="p-5">
-                      <p className="text-muted-foreground text-sm mb-4">
+                    <CardContent className="p-5 flex flex-col flex-1">
+                      {/* Description - fixed height */}
+                      <p className="text-muted-foreground text-sm mb-4 min-h-[40px]">
                         {loc.description}
                       </p>
                       
-                      {/* Highlights */}
-                      <div className="flex flex-wrap gap-2 mb-4">
+                      {/* Highlights - fixed height */}
+                      <div className="flex flex-wrap gap-2 mb-4 min-h-[56px]">
                         {loc.highlights.map((highlight) => (
                           <span
                             key={highlight}
-                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full h-fit"
                           >
                             {highlight}
                           </span>
                         ))}
                       </div>
 
-                      <div className="flex items-center text-primary font-medium text-sm group-hover:text-accent transition-colors">
+                      {/* CTA - pushed to bottom */}
+                      <div className="flex items-center text-primary font-medium text-sm group-hover:text-accent transition-colors mt-auto">
                         Kategorien & Produkte ansehen
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </div>
