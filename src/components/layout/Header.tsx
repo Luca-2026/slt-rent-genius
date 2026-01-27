@@ -18,6 +18,7 @@ const locations = [
 
 const navLinks = [
   { to: "/produkte", label: "Produkte" },
+  { to: "/loesungen", label: "Lösungen" },
   { to: "/so-funktionierts", label: "So funktioniert's" },
   { to: "/standorte", label: "Standorte" },
   { to: "/ueber-uns", label: "Über uns" },
