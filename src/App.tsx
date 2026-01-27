@@ -19,6 +19,7 @@ import B2BRegister from "./pages/b2b/Register";
 import B2BDashboard from "./pages/b2b/Dashboard";
 import ProjectRequest from "./pages/b2b/ProjectRequest";
 import NotFound from "./pages/NotFound";
+import AGB from "./pages/AGB";
 
 // New rental flow pages
 import RentalStart from "./pages/rental/RentalStart";
@@ -65,6 +66,9 @@ const App = () => (
             {/* Solutions pages */}
             <Route path="/loesungen" element={<Loesungen />} />
             <Route path="/loesungen/:solutionId" element={<LoesungDetail />} />
+            
+            {/* Legal Pages */}
+            <Route path="/agb" element={<AGB />} />
             
             {/* B2B Portal */}
             <Route path="/b2b/login" element={<B2BLogin />} />
