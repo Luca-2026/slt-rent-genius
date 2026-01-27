@@ -2,11 +2,15 @@ import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail } from "lucide-react";
+import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail, User } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 // Location images
 import imgKrefeld from "@/assets/locations/krefeld.jpg";
 import imgBonn from "@/assets/locations/bonn.webp";
+
+// Team images
+import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 
 const locations = [
   {
@@ -19,6 +23,7 @@ const locations = [
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
     image: imgKrefeld,
+    manager: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt },
     lat: 51.3127,
     lng: 6.5511,
     hours: [
@@ -40,6 +45,7 @@ const locations = [
     phone: "02151 417 990 4",
     email: "bonn@slt-rental.de",
     image: imgBonn,
+    manager: { name: "Ersel Uzun", role: "Standortleiter", image: null },
     lat: 50.6879,
     lng: 7.1591,
     hours: [
@@ -60,6 +66,7 @@ const locations = [
     city: "45478 Mülheim an der Ruhr",
     phone: "02151 417 990 4",
     email: "muelheim@slt-rental.de",
+    manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null },
     lat: 51.4171,
     lng: 6.8711,
     hours: [
@@ -143,6 +150,24 @@ export default function Locations() {
                       </a>
                     </div>
                   </div>
+
+                  {/* Manager */}
+                  {location.manager && (
+                    <div className="flex items-center gap-3 mb-6 p-3 bg-surface-light rounded-lg">
+                      <Avatar className="h-12 w-12">
+                        {location.manager.image ? (
+                          <AvatarImage src={location.manager.image} alt={location.manager.name} />
+                        ) : null}
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          <User className="h-5 w-5" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold text-headline text-sm">{location.manager.name}</p>
+                        <p className="text-xs text-muted-foreground">{location.manager.role}</p>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Hours - fixed height for alignment */}
                   <div className="mb-6">

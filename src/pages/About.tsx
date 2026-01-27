@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Award, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+// Team images
+import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
+import imgJuno from "@/assets/team/juno.png";
 
 const stats = [
   { value: "2016", label: "Gründung" },
@@ -41,6 +46,34 @@ const partners = [
   "Partner 4",
   "Partner 5",
   "Partner 6",
+];
+
+const teamMembers = [
+  {
+    name: "Benedikt Nöchel",
+    role: "Standortleiter Krefeld",
+    image: imgBenedikt,
+  },
+  {
+    name: "Ersel Uzun",
+    role: "Standortleiter Bonn",
+    image: null,
+  },
+  {
+    name: "Andreas Scherzow",
+    role: "Standortleiter Mülheim",
+    image: null,
+  },
+  {
+    name: "Patricia Preuss",
+    role: "Backoffice",
+    image: null,
+  },
+  {
+    name: "Juno",
+    role: "Vermietprofi auf vier Pfoten",
+    image: imgJuno,
+  },
 ];
 
 export default function About() {
@@ -103,6 +136,34 @@ export default function About() {
             <div className="bg-muted rounded-xl aspect-[4/3] flex items-center justify-center">
               <span className="text-muted-foreground">Team-Bild Platzhalter</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="py-12 lg:py-20">
+        <div className="section-container">
+          <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4 text-center">
+            Unser Team
+          </h2>
+          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-8">
+            Die Menschen hinter SLT Rental – persönlich, kompetent und immer für dich da.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            {teamMembers.map((member) => (
+              <div key={member.name} className="text-center">
+                <Avatar className="h-24 w-24 mx-auto mb-3">
+                  {member.image ? (
+                    <AvatarImage src={member.image} alt={member.name} className="object-cover" />
+                  ) : null}
+                  <AvatarFallback className="bg-primary/10 text-primary text-xl">
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-headline text-sm">{member.name}</h3>
+                <p className="text-xs text-muted-foreground">{member.role}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
