@@ -6,15 +6,26 @@ import { ProductSearch } from "@/components/rental/ProductSearch";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Phone, Mail, Navigation } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ArrowLeft, MapPin, Phone, Navigation, User } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
 import bonnImage from "@/assets/locations/bonn.webp";
+
+// Team images
+import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 
 // Location images mapping
 const locationImages: Record<string, string> = {
   krefeld: krefeldImage,
   bonn: bonnImage,
+};
+
+// Location managers
+const locationManagers: Record<string, { name: string; role: string; image: string | null }> = {
+  krefeld: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt },
+  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: null },
+  muelheim: { name: "Andreas Scherzow", role: "Standortleiter", image: null },
 };
 
 // Location descriptions
@@ -124,17 +135,46 @@ export default function LocationCategories() {
                 </div>
               </div>
 
-              {/* Route Button */}
-              <a 
-                href={googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="secondary" className="gap-2">
-                  <Navigation className="h-4 w-4" />
-                  Route planen
-                </Button>
-              </a>
+              {/* Manager & Route Button */}
+              <div className="flex flex-wrap items-center gap-4">
+                {/* Route Button */}
+                <a 
+                  href={googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="secondary" className="gap-2">
+                    <Navigation className="h-4 w-4" />
+                    Route planen
+                  </Button>
+                </a>
+
+                {/* Manager */}
+                {locationManagers[location.id] && (
+                  <div className="flex items-center gap-3 bg-primary-foreground/10 rounded-full pl-1 pr-4 py-1">
+                    <Avatar className="h-10 w-10 border-2 border-primary-foreground/20">
+                      {locationManagers[location.id].image ? (
+                        <AvatarImage 
+                          src={locationManagers[location.id].image!} 
+                          alt={locationManagers[location.id].name} 
+                          className="object-cover"
+                        />
+                      ) : null}
+                      <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground">
+                        <User className="h-5 w-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                        {locationManagers[location.id].name}
+                      </p>
+                      <p className="text-xs text-primary-foreground/70">
+                        {locationManagers[location.id].role}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Location Image */}
