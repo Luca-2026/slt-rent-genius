@@ -15,6 +15,8 @@ import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
 import iconHeizung from "@/assets/icons/category-heizung.png";
 import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
+import iconLedSpots from "@/assets/icons/category-ledspots.png";
+import iconBesteck from "@/assets/icons/category-besteck.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -92,6 +94,30 @@ import imgCormidiC60_3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
 import imgKramer5045_1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
 import imgKramer5045_2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
 
+// Import Krefeld products
+import {
+  aggregateProducts,
+  arbeitsbuehnenProducts,
+  verdichtungProducts,
+  werkzeugeProducts,
+  gartenpflegeProducts,
+  heizungTrocknungProducts,
+  absperrtechnikProducts,
+  beschallungProducts,
+  kommunikationProducts,
+  beleuchtungProducts,
+  spezialeffekteProducts,
+  moebelZelteProducts,
+  geschirrGlaeserBesteckProducts,
+  huepfburgenProducts,
+  leiternGeruesteProducts,
+  kabelStromverteilerProducts,
+  buehneProducts,
+  traversenRiggingProducts,
+  erdbewegungZusatzProducts,
+  anhaengerZusatzProducts,
+} from "./products/krefeldProducts";
+
 export interface Product {
   id: string;
   name: string;
@@ -144,7 +170,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "erdbewegung",
     title: "Erdbewegung",
-    description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
+    description: "Minibagger, Radlader, Dumper und Anbaugeräte für jedes Bauvorhaben.",
     icon: iconBagger,
   },
   {
@@ -208,10 +234,28 @@ export const productCategories: ProductCategory[] = [
     icon: iconSpezialeffekte,
   },
   {
+    id: "kommunikation",
+    title: "Kommunikation",
+    description: "Funkgeräte und Kommunikationstechnik für Events und Baustellen.",
+    icon: iconSpezialeffekte,
+  },
+  {
     id: "beleuchtung",
     title: "Beleuchtung",
     description: "LED Spots, Flutlicht, Bühnenlicht und mobile Beleuchtung.",
     icon: iconBeleuchtung,
+  },
+  {
+    id: "buehne",
+    title: "Bühne",
+    description: "Bühnenelemente, Podeste und Bühnenzubehör.",
+    icon: iconBuehne,
+  },
+  {
+    id: "traversen-rigging",
+    title: "Traversen & Rigging",
+    description: "Traversen, Rigging-Equipment und Bühnenkonstruktionen.",
+    icon: iconLedSpots,
   },
   {
     id: "moebel-zelte",
@@ -240,7 +284,7 @@ export const productCategories: ProductCategory[] = [
 ];
 
 // Category sort order for trailers (user-specified order)
-const trailerCategoryOrder = ["planen", "koffer", "kasten", "laubgitter", "urlaub", "motorrad", "autotransport", "baumaschine", "plattform", "rueckwaertskipp"];
+const trailerCategoryOrder = ["planen", "koffer", "kasten", "laubgitter", "urlaub", "motorrad", "autotransport", "baumaschine", "plattform", "rueckwaertskipp", "aggregat"];
 
 // Shared trailer products with all images - sorted by category then weight
 const trailerProducts: Product[] = [
@@ -533,9 +577,12 @@ const trailerProducts: Product[] = [
     tags: ["urlaub", "ungebremst", "einachser"], 
     rentwareCode: { krefeld: "EM45ZK" } 
   },
+  
+  // === AGGREGAT (from krefeldProducts) ===
+  ...anhaengerZusatzProducts,
 ];
 
-// Erdbewegung products (shared across all locations)
+// Erdbewegung products (shared across all locations) - including attachments
 const erdbewegungProducts: Product[] = [
   {
     id: "bobcat-e10z",
@@ -546,7 +593,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 1000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "bis-1500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "WNE69F" }
   },
   {
     id: "bobcat-e19",
@@ -557,7 +604,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 1800,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "BG4ZS8" }
   },
   {
     id: "xcmg-xe20e",
@@ -568,7 +615,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 2000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "UZEDUY" }
   },
   {
     id: "xcmg-xe27e",
@@ -579,7 +626,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 2700,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "MBUX18" }
   },
   {
     id: "knickdumper-kde550",
@@ -590,7 +637,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 500,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "GH8W6W" }
   },
   {
     id: "cormidi-c60-hitip",
@@ -601,7 +648,7 @@ const erdbewegungProducts: Product[] = [
     weightKg: 600,
     category: "dumper",
     tags: ["dumper", "diesel", "bis-1500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "EZHV9G" }
   },
   {
     id: "kramer-5045",
@@ -612,8 +659,10 @@ const erdbewegungProducts: Product[] = [
     weightKg: 3000,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500"],
-    rentwareCode: {}
+    rentwareCode: { krefeld: "PMJJCT" }
   },
+  // Include all attachments from krefeldProducts
+  ...erdbewegungZusatzProducts,
 ];
 
 // Sort trailer products by category order, then sortOrder (if defined), then weight
@@ -650,7 +699,10 @@ export const locations: LocationData[] = [
       "heizung-trocknung",
       "absperrtechnik",
       "beschallung",
+      "kommunikation",
       "beleuchtung",
+      "buehne",
+      "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
       "spezialeffekte",
@@ -659,6 +711,24 @@ export const locations: LocationData[] = [
     products: {
       "anhaenger": sortedTrailerProducts,
       "erdbewegung": erdbewegungProducts,
+      "werkzeuge": werkzeugeProducts,
+      "gartenpflege": gartenpflegeProducts,
+      "aggregate": aggregateProducts,
+      "arbeitsbuehnen": arbeitsbuehnenProducts,
+      "verdichtung": verdichtungProducts,
+      "kabel-stromverteiler": kabelStromverteilerProducts,
+      "leitern-gerueste": leiternGeruesteProducts,
+      "heizung-trocknung": heizungTrocknungProducts,
+      "absperrtechnik": absperrtechnikProducts,
+      "beschallung": beschallungProducts,
+      "kommunikation": kommunikationProducts,
+      "beleuchtung": beleuchtungProducts,
+      "buehne": buehneProducts,
+      "traversen-rigging": traversenRiggingProducts,
+      "moebel-zelte": moebelZelteProducts,
+      "geschirr-glaeser-besteck": geschirrGlaeserBesteckProducts,
+      "spezialeffekte": spezialeffekteProducts,
+      "huepfburgen": huepfburgenProducts,
     },
   },
   {
@@ -682,7 +752,10 @@ export const locations: LocationData[] = [
       "heizung-trocknung",
       "absperrtechnik",
       "beschallung",
+      "kommunikation",
       "beleuchtung",
+      "buehne",
+      "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
       "spezialeffekte",
@@ -714,7 +787,10 @@ export const locations: LocationData[] = [
       "heizung-trocknung",
       "absperrtechnik",
       "beschallung",
+      "kommunikation",
       "beleuchtung",
+      "buehne",
+      "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
       "spezialeffekte",
