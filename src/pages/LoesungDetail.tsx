@@ -1,5 +1,6 @@
 import { Layout } from "@/components/layout";
 import { Link, useParams, Navigate } from "react-router-dom";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,10 +8,13 @@ import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { solutions } from "./Loesungen";
 import { productCategories } from "@/data/rentalData";
+import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 
 export default function LoesungDetail() {
   const { solutionId } = useParams<{ solutionId: string }>();
   const solution = solutions.find(s => s.id === solutionId);
+  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
 
   if (!solution) {
     return <Navigate to="/loesungen" replace />;
@@ -24,8 +28,22 @@ export default function LoesungDetail() {
   // Get other solutions for "More solutions" section
   const otherSolutions = solutions.filter(s => s.id !== solution.id).slice(0, 3);
 
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategoryId(categoryId);
+    setLocationDialogOpen(true);
+  };
+
   return (
     <Layout>
+      {/* Location Selection Dialog */}
+      <LocationSelectDialog
+        open={locationDialogOpen}
+        onOpenChange={setLocationDialogOpen}
+        targetCategoryId={selectedCategoryId}
+        title="Standort wählen"
+        description="Wähle deinen Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen."
+      />
+
       {/* Hero Section */}
       <section className={`bg-gradient-to-br ${solution.color} py-12 lg:py-20 relative overflow-hidden`}>
         <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-10 bg-cover bg-center" />
@@ -97,17 +115,17 @@ export default function LoesungDetail() {
               </div>
             </AnimatedSection>
 
-            {/* Related Categories */}
+            {/* Related Categories - with location selection */}
             <AnimatedSection animation="fade-in-up" delay={0.1}>
               <h2 className="text-2xl font-bold text-headline mb-6">
                 Passende Produktkategorien
               </h2>
               <div className="grid gap-4">
                 {relatedCategories.map((category) => (
-                  <Link 
+                  <button
                     key={category.id}
-                    to={`/mieten/krefeld/${category.id}`}
-                    className="group"
+                    onClick={() => handleCategoryClick(category.id)}
+                    className="group text-left w-full"
                   >
                     <Card className="hover:shadow-md transition-all border-2 hover:border-primary/20">
                       <CardContent className="p-4 flex items-center gap-4">
@@ -131,7 +149,7 @@ export default function LoesungDetail() {
                         <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                       </CardContent>
                     </Card>
-                  </Link>
+                  </button>
                 ))}
               </div>
             </AnimatedSection>
@@ -168,7 +186,7 @@ export default function LoesungDetail() {
                       </Link>
                     </div>
                   </div>
-                  <div className="hidden lg:block w-48 h-48 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <div className="hidden lg:flex w-48 h-48 rounded-2xl bg-white/10 items-center justify-center">
                     <Icon className="w-24 h-24 text-white/50" />
                   </div>
                 </div>
