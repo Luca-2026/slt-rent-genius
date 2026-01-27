@@ -118,6 +118,31 @@ import {
   anhaengerZusatzProducts,
 } from "./products/krefeldProducts";
 
+// Import Bonn products
+import {
+  bonnAggregateProducts,
+  bonnArbeitsbuehnenProducts,
+  bonnErdbewegungProducts,
+  bonnErdbewegungZusatzProducts,
+  bonnVerdichtungProducts,
+  bonnAnhaengerProducts,
+  bonnGartenpflegeProducts,
+  bonnWerkzeugProducts,
+  bonnTrocknungProducts,
+  bonnHeizungProducts,
+  bonnStromProducts,
+  bonnLeiternProducts,
+  bonnGeruestteileProducts,
+  bonnZelteProducts,
+  bonnMoebelProducts,
+  bonnGeschirrProducts,
+  bonnBesteckProducts,
+  bonnBeschallungProducts,
+  bonnBeleuchtungProducts,
+  bonnHuepfburgProducts,
+  bonnAbsperrtechnikProducts,
+} from "./products/bonnProducts";
+
 export interface Product {
   id: string;
   name: string;
@@ -752,18 +777,28 @@ export const locations: LocationData[] = [
       "heizung-trocknung",
       "absperrtechnik",
       "beschallung",
-      "kommunikation",
       "beleuchtung",
-      "buehne",
-      "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
-      "spezialeffekte",
       "huepfburgen",
     ],
     products: {
-      "anhaenger": sortedTrailerProducts,
-      "erdbewegung": erdbewegungProducts,
+      "anhaenger": [...sortedTrailerProducts.filter(p => p.rentwareCode?.bonn), ...bonnAnhaengerProducts],
+      "erdbewegung": [...bonnErdbewegungProducts, ...bonnErdbewegungZusatzProducts],
+      "werkzeuge": bonnWerkzeugProducts,
+      "gartenpflege": bonnGartenpflegeProducts,
+      "aggregate": bonnAggregateProducts,
+      "arbeitsbuehnen": bonnArbeitsbuehnenProducts,
+      "verdichtung": bonnVerdichtungProducts,
+      "kabel-stromverteiler": bonnStromProducts,
+      "leitern-gerueste": [...bonnLeiternProducts, ...bonnGeruestteileProducts],
+      "heizung-trocknung": [...bonnHeizungProducts, ...bonnTrocknungProducts],
+      "absperrtechnik": bonnAbsperrtechnikProducts,
+      "beschallung": bonnBeschallungProducts,
+      "beleuchtung": bonnBeleuchtungProducts,
+      "moebel-zelte": [...bonnMoebelProducts, ...bonnZelteProducts],
+      "geschirr-glaeser-besteck": [...bonnGeschirrProducts, ...bonnBesteckProducts],
+      "huepfburgen": bonnHuepfburgProducts,
     },
   },
   {
