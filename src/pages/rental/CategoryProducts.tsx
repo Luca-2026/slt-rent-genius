@@ -395,7 +395,7 @@ export default function CategoryProducts() {
           {allProducts.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Sidebar with Filters */}
-              <div className="lg:col-span-1 order-2 lg:order-1">
+              <div className="lg:col-span-1 order-1 lg:order-1">
                 <div className="sticky top-4 space-y-6">
                   {/* "Alle" category: Search + Category Filter + Delivery Calculator */}
                   {category.id === "alle" && (
@@ -477,7 +477,7 @@ export default function CategoryProducts() {
               </div>
 
               {/* Product Grid */}
-              <div className="lg:col-span-2 order-1 lg:order-2">
+              <div className="lg:col-span-2 order-2 lg:order-2">
                 {products.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {products.map((product) => {
