@@ -21,6 +21,7 @@ import ProjectRequest from "./pages/b2b/ProjectRequest";
 import NotFound from "./pages/NotFound";
 import AGB from "./pages/AGB";
 import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 
 // New rental flow pages
 import RentalStart from "./pages/rental/RentalStart";
@@ -71,6 +72,7 @@ const App = () => (
             {/* Legal Pages */}
             <Route path="/agb" element={<AGB />} />
             <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
             
             {/* B2B Portal */}
             <Route path="/b2b/login" element={<B2BLogin />} />
