@@ -26,6 +26,10 @@ import LocationCategories from "./pages/rental/LocationCategories";
 import CategoryProducts from "./pages/rental/CategoryProducts";
 import ProductDetail from "./pages/rental/ProductDetail";
 
+// Solutions pages
+import Loesungen from "./pages/Loesungen";
+import LoesungDetail from "./pages/LoesungDetail";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -57,6 +61,10 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/ueber-uns" element={<About />} />
             <Route path="/karriere" element={<Karriere />} />
+            
+            {/* Solutions pages */}
+            <Route path="/loesungen" element={<Loesungen />} />
+            <Route path="/loesungen/:solutionId" element={<LoesungDetail />} />
             
             {/* B2B Portal */}
             <Route path="/b2b/login" element={<B2BLogin />} />
