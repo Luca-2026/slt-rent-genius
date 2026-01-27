@@ -11,6 +11,7 @@ import imgBonn from "@/assets/locations/bonn.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
+import imgErsel from "@/assets/team/ersel-uzun.jpg";
 
 const locations = [
   {
@@ -45,7 +46,7 @@ const locations = [
     phone: "02151 417 990 4",
     email: "bonn@slt-rental.de",
     image: imgBonn,
-    manager: { name: "Ersel Uzun", role: "Standortleiter", image: null },
+    manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel },
     lat: 50.6879,
     lng: 7.1591,
     hours: [

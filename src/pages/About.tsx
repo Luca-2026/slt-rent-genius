@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
+import imgErsel from "@/assets/team/ersel-uzun.jpg";
 import imgJuno from "@/assets/team/juno.png";
 
 const stats = [
@@ -57,7 +58,7 @@ const teamMembers = [
   {
     name: "Ersel Uzun",
     role: "Standortleiter Bonn",
-    image: null,
+    image: imgErsel,
   },
   {
     name: "Andreas Scherzow",

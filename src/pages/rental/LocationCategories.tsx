@@ -14,6 +14,7 @@ import bonnImage from "@/assets/locations/bonn.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
+import imgErsel from "@/assets/team/ersel-uzun.jpg";
 
 // Location images mapping
 const locationImages: Record<string, string> = {
@@ -24,7 +25,7 @@ const locationImages: Record<string, string> = {
 // Location managers
 const locationManagers: Record<string, { name: string; role: string; image: string | null }> = {
   krefeld: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt },
-  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: null },
+  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel },
   muelheim: { name: "Andreas Scherzow", role: "Standortleiter", image: null },
 };
 
