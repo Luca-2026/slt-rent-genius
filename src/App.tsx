@@ -33,6 +33,9 @@ import ProductDetail from "./pages/rental/ProductDetail";
 import Loesungen from "./pages/Loesungen";
 import LoesungDetail from "./pages/LoesungDetail";
 
+// Local SEO pages
+import LocalArea from "./pages/LocalArea";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -68,6 +71,9 @@ const App = () => (
             {/* Solutions pages */}
             <Route path="/loesungen" element={<Loesungen />} />
             <Route path="/loesungen/:solutionId" element={<LoesungDetail />} />
+            
+            {/* Local SEO pages */}
+            <Route path="/mieten-in/:areaSlug" element={<LocalArea />} />
             
             {/* Legal Pages */}
             <Route path="/agb" element={<AGB />} />

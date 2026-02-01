@@ -1,21 +1,25 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
 import sltLogo from "@/assets/slt-logo.png";
+import { getAreasForLocation } from "@/data/localSeoData";
 
 const locations = [
   {
+    id: "krefeld",
     name: "Krefeld",
     address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain",
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
   },
   {
+    id: "bonn",
     name: "Bonn",
     address: "Drachenburgstraße 8, 53179 Bonn",
     phone: "0228 50466061",
     email: "bonn@slt-rental.de",
   },
   {
+    id: "muelheim",
     name: "Mülheim",
     address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
     phone: "02151 417 99 04",
@@ -80,6 +84,37 @@ export function Footer() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/10 my-4" />
+
+        {/* Local SEO Links by Region */}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">
+            Mietgeräte in Ihrer Nähe
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {locations.map((loc) => {
+              const areas = getAreasForLocation(loc.id).filter(a => a.distance > 0).slice(0, 6);
+              return (
+                <div key={loc.id}>
+                  <span className="text-xs font-medium text-white/70 block mb-1">Region {loc.name}:</span>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    {areas.map((area) => (
+                      <Link
+                        key={area.slug}
+                        to={`/mieten-in/${area.slug}`}
+                        className="text-xs text-white/50 hover:text-accent transition-colors"
+                      >
+                        {area.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
