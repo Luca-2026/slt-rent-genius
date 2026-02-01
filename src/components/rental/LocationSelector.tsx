@@ -81,7 +81,7 @@ export function LocationSelector({
               </a>
 
               {/* Hours - fixed min-height for alignment */}
-              <div className="mb-4 p-3 bg-surface-light rounded-lg min-h-[100px]">
+              <div className="mb-3 p-3 bg-surface-light rounded-lg min-h-[108px]">
                 <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                   <Clock className="h-4 w-4 text-primary" />
                   Öffnungszeiten
@@ -96,10 +96,10 @@ export function LocationSelector({
                 </div>
               </div>
 
-              {/* Manager */}
+              {/* Manager - fixed height */}
               <a 
                 href={`mailto:${location.manager.email}`}
-                className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer"
+                className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer min-h-[72px]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Avatar className="h-10 w-10">
