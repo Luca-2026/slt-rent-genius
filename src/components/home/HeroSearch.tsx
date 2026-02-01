@@ -158,7 +158,7 @@ export function HeroSearch() {
 
         {/* Search Results Dropdown */}
         {showResults && searchQuery && (
-          <div className="absolute left-0 right-0 top-full mt-2 bg-card border border-border rounded-lg shadow-lg z-50 overflow-hidden max-h-96 overflow-y-auto">
+          <div className="absolute left-0 right-0 top-full mt-2 bg-card border border-border rounded-lg shadow-lg z-[100] overflow-hidden max-h-96 overflow-y-auto">
             {filteredProducts.length > 0 ? (
               <div className="p-2">
                 <p className="text-xs text-muted-foreground px-3 py-1 mb-1">
