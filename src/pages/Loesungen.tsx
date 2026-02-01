@@ -43,6 +43,12 @@ import imgHochbauScherenbuehneSteuerung from "@/assets/solutions/hochbau/scheren
 import imgHochbauScherenbuehneGross from "@/assets/solutions/hochbau/scherenbuehne-gross.jpg";
 import imgHochbauGelenkbuehne from "@/assets/solutions/hochbau/gelenkbuehne-zoomlion.jpg";
 
+// Handwerk solution images
+import imgHandwerkErdbohrer from "@/assets/solutions/handwerk/erdbohrer-baustelle.jpg";
+import imgHandwerkBohrhammer from "@/assets/solutions/handwerk/bohrhammer-geruest.jpg";
+import imgHandwerkAkkubohrer from "@/assets/solutions/handwerk/akkubohrer-installation.jpg";
+import imgHandwerkBosch from "@/assets/solutions/handwerk/bosch-bohrhammer.jpg";
+
 interface Solution {
   id: string;
   title: string;
@@ -148,7 +154,8 @@ const solutions: Solution[] = [
     title: "Handwerk & Gewerbe",
     subtitle: "Elektriker, Maler, Installateure",
     description: "Spezialwerkzeuge und Equipment für Handwerksbetriebe. Von der Mauerschlitzfräse bis zum Akku-Werkzeug – professionelle Geräte für professionelle Arbeit.",
-    image: "/placeholder.svg",
+    image: imgHandwerkBohrhammer,
+    images: [imgHandwerkBohrhammer, imgHandwerkBosch, imgHandwerkAkkubohrer, imgHandwerkErdbohrer],
     icon: Hammer,
     categories: ["werkzeuge", "leitern-gerueste", "kabel-stromverteiler", "aggregate"],
     highlights: [
