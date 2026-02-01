@@ -15,6 +15,8 @@ import imgDieseltankstelle2 from "@/assets/products/erdbewegung/dieseltankstelle
 import imgHydraulikhammer1 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-1.jpg";
 import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-2.jpg";
 import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
+// Werkzeuge images
+import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -219,8 +221,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-winkelschleifer-gws18v-10",
     name: "Bosch Akku Winkelschleifer GWS 18V-10",
     description: "Akku-Winkelschleifer mit 125mm Scheibe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgWinkelschleifer,
+    images: [imgWinkelschleifer],
     category: "winkelschleifer",
     rentwareCode: { krefeld: "MY6WRS" }
   },
