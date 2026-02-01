@@ -18,6 +18,7 @@ import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-s
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
+import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -186,8 +187,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrhammer-gbh18v-45c",
     name: "Bosch Akku Bohrhammer GBH 18V-45C",
     description: "Schwerer Akku-Bohrhammer mit Bluetooth",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBohrhammer45c,
+    images: [imgBohrhammer45c],
     category: "bohrhammer",
     rentwareCode: { krefeld: "G8HYWM" }
   },
