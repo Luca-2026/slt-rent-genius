@@ -35,6 +35,7 @@ import imgBohrhammer26f from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.
 import imgSdsPlusSet from "@/assets/products/werkzeuge/sds-plus-bohrer-meissel-set.jpg";
 import imgEinhellBauleuchte from "@/assets/products/werkzeuge/einhell-bauleuchte-te-cl18-2000.jpg";
 import imgSaebelsaege from "@/assets/products/werkzeuge/saebelsaege-gsa18v-li-c.jpg";
+import imgBohrschrauber12v from "@/assets/products/werkzeuge/bohrschrauber-gsr12v-15.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -221,8 +222,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrschrauber-gsr12v-15",
     name: "Bosch Akku Bohrschrauber GSR 12V-15",
     description: "Kompakter Akku-Bohrschrauber",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBohrschrauber12v,
+    images: [imgBohrschrauber12v],
     category: "bohrschrauber",
     rentwareCode: { krefeld: "3ZZ6ET" }
   },
