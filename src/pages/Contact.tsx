@@ -18,9 +18,9 @@ const contactInfo = [
   {
     icon: Mail,
     title: "E-Mail",
-    primary: "info@slt-rental.de",
+    primary: "mieten@slt-rental.de",
     secondary: "Antwort innerhalb 24h",
-    href: "mailto:info@slt-rental.de",
+    href: "mailto:mieten@slt-rental.de",
   },
   {
     icon: MessageCircle,
