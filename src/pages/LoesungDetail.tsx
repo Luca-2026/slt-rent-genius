@@ -83,18 +83,18 @@ export default function LoesungDetail() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             {solution.images && solution.images.length > 1 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {/* Large hero image */}
-                <div className="col-span-2 row-span-2 aspect-[16/10] rounded-2xl overflow-hidden bg-muted">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Large hero image - spans 2 columns on larger screens */}
+                <div className="md:col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-muted">
                   <img 
                     src={solution.images[0]} 
                     alt={solution.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                {/* Smaller gallery images */}
-                {solution.images.slice(1, 5).map((img, index) => (
-                  <div key={index} className="aspect-square rounded-xl overflow-hidden bg-muted">
+                {/* Gallery images */}
+                {solution.images.slice(1).map((img, index) => (
+                  <div key={index} className="aspect-[4/3] rounded-xl overflow-hidden bg-muted">
                     <img 
                       src={img} 
                       alt={`${solution.title} ${index + 2}`}
