@@ -38,6 +38,7 @@ import imgSaebelsaege from "@/assets/products/werkzeuge/saebelsaege-gsa18v-li-c.
 import imgBohrschrauber12v from "@/assets/products/werkzeuge/bohrschrauber-gsr12v-15.jpg";
 import imgMulticutter from "@/assets/products/werkzeuge/multicutter-gop18v-28.jpg";
 import imgOrtungsgeraet from "@/assets/products/werkzeuge/ortungsgeraet-dtect200c.jpg";
+import imgStaubsaugeraufsatz from "@/assets/products/werkzeuge/staubsaugeraufsatz-gde18v-16.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -296,8 +297,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-staubsaugeraufsatz-gde18v-16",
     name: "Bosch Staubsaugeraufsatz GDE 18V-16",
     description: "Staubabsaugung für Bohrhämmer",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgStaubsaugeraufsatz,
+    images: [imgStaubsaugeraufsatz],
     category: "zubehoer",
     rentwareCode: { krefeld: "7WVKE3" }
   },
