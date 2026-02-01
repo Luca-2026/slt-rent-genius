@@ -11,6 +11,10 @@ import imgBodenschutz4 from "@/assets/products/erdbewegung/bodenschutz-fahrmatte
 // Dieseltankstelle images
 import imgDieseltankstelle1 from "@/assets/products/erdbewegung/dieseltankstelle-400l-1.jpg";
 import imgDieseltankstelle2 from "@/assets/products/erdbewegung/dieseltankstelle-400l-2.jpg";
+// Hydraulikhammer SHB45 images
+import imgHydraulikhammer1 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-1.jpg";
+import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-2.jpg";
+import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -2356,8 +2360,8 @@ export const erdbewegungZusatzProducts: Product[] = [
     id: "ms01-ms03-hydraulikhammer-shb45",
     name: "MS01/MS03 Hydraulikhammer SHB45",
     description: "Hydraulikhammer für MS01/MS03 Schnellwechsler",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgHydraulikhammer1,
+    images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
     rentwareCode: { krefeld: "CRLJPA" }
   },
