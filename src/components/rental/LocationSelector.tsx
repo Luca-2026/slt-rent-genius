@@ -23,7 +23,7 @@ export function LocationSelector({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {locationData.map((location) => (
-          <Card key={location.id} className="h-full group hover:shadow-lg transition-all hover:border-primary/50 overflow-hidden">
+          <Card key={location.id} className="h-full group hover:shadow-lg transition-all hover:border-primary/50 overflow-hidden flex flex-col">
             {/* Location Image */}
             <div className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden">
               {location.image ? (
@@ -45,14 +45,14 @@ export function LocationSelector({
               </div>
             </div>
 
-            <CardContent className="p-5">
+            <CardContent className="p-5 flex flex-col flex-1">
               {/* Location Name */}
               <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                 {location.name}
               </h3>
 
-              {/* Address */}
-              <div className="flex items-start gap-2 text-sm text-muted-foreground mb-1">
+              {/* Address - fixed min-height for alignment */}
+              <div className="flex items-start gap-2 text-sm text-muted-foreground mb-1 min-h-[44px]">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
                 <div>
                   <span className="block">{location.address}</span>
@@ -66,8 +66,8 @@ export function LocationSelector({
                 <span>{location.phone}</span>
               </div>
 
-              {/* Hours */}
-              <div className="mb-4 p-3 bg-surface-light rounded-lg">
+              {/* Hours - fixed min-height for alignment */}
+              <div className="mb-4 p-3 bg-surface-light rounded-lg min-h-[100px]">
                 <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                   <Clock className="h-4 w-4 text-primary" />
                   Öffnungszeiten
@@ -103,8 +103,8 @@ export function LocationSelector({
                 <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
               </a>
 
-              {/* CTA */}
-              <Link to={`/mieten/${location.id}`}>
+              {/* CTA - pushed to bottom */}
+              <Link to={`/mieten/${location.id}`} className="mt-auto">
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90"
                 >
