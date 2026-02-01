@@ -37,6 +37,7 @@ import imgEinhellBauleuchte from "@/assets/products/werkzeuge/einhell-bauleuchte
 import imgSaebelsaege from "@/assets/products/werkzeuge/saebelsaege-gsa18v-li-c.jpg";
 import imgBohrschrauber12v from "@/assets/products/werkzeuge/bohrschrauber-gsr12v-15.jpg";
 import imgMulticutter from "@/assets/products/werkzeuge/multicutter-gop18v-28.jpg";
+import imgOrtungsgeraet from "@/assets/products/werkzeuge/ortungsgeraet-dtect200c.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -313,8 +314,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-ortungsgeraet-dtect200c",
     name: "Bosch Ortungsgerät D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgOrtungsgeraet,
+    images: [imgOrtungsgeraet],
     category: "ortungsgeraet",
     rentwareCode: { krefeld: "99MVV7" }
   },
