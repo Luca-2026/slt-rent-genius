@@ -17,6 +17,7 @@ import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-s
 import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
+import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -311,8 +312,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bauleuchte-gli18v-2200c",
     name: "Bosch Akku Bauleuchte GLI 18V-2200 C",
     description: "Akku-Bauleuchte mit 2200 Lumen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBauleuchte,
+    images: [imgBauleuchte],
     category: "bauleuchte",
     rentwareCode: { krefeld: "E282P3" }
   },
