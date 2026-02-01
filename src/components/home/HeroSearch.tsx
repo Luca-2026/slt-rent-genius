@@ -11,15 +11,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-// Get all unique products across all locations
+// Get all unique products across all locations (deduplicated by name)
 function getAllUniqueProducts(): Product[] {
   const productMap = new Map<string, Product>();
   
   for (const location of locations) {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
-      if (!productMap.has(product.id)) {
-        productMap.set(product.id, product);
+      // Use product name as key for deduplication (same product may have different IDs per location)
+      if (!productMap.has(product.name)) {
+        productMap.set(product.name, product);
       }
     }
   }
@@ -27,21 +28,32 @@ function getAllUniqueProducts(): Product[] {
   return Array.from(productMap.values());
 }
 
-// Get locations that have a specific product
-function getLocationsForProduct(productId: string): typeof locations {
+// Get locations that have a specific product (by name match)
+function getLocationsForProduct(productName: string): typeof locations {
   return locations.filter((location) => {
     const products = getAllProductsForLocation(location.id);
-    return products.some((p) => p.id === productId);
+    return products.some((p) => p.name === productName);
   });
 }
 
-// Get category for product
-function getCategoryForProduct(productId: string): string {
-  for (const location of locations) {
-    for (const [categoryId, products] of Object.entries(location.products)) {
-      if (products.some((p) => p.id === productId)) {
-        return categoryId;
-      }
+// Get product ID at a specific location (by name match)
+function getProductIdAtLocation(productName: string, locationId: string): string | null {
+  const location = locations.find((l) => l.id === locationId);
+  if (!location) return null;
+  
+  const products = getAllProductsForLocation(locationId);
+  const product = products.find((p) => p.name === productName);
+  return product?.id || null;
+}
+
+// Get category for product at a specific location
+function getCategoryForProductAtLocation(productName: string, locationId: string): string {
+  const location = locations.find((l) => l.id === locationId);
+  if (!location) return "alle";
+  
+  for (const [categoryId, products] of Object.entries(location.products)) {
+    if (products.some((p) => p.name === productName)) {
+      return categoryId;
     }
   }
   return "alle";
@@ -90,8 +102,11 @@ export function HeroSearch() {
 
   const handleLocationSelect = (locationId: string) => {
     if (selectedProduct) {
-      const categoryId = getCategoryForProduct(selectedProduct.id);
-      navigate(`/mieten/${locationId}/${categoryId}/${selectedProduct.id}`);
+      const productId = getProductIdAtLocation(selectedProduct.name, locationId);
+      const categoryId = getCategoryForProductAtLocation(selectedProduct.name, locationId);
+      if (productId) {
+        navigate(`/mieten/${locationId}/${categoryId}/${productId}`);
+      }
     }
     setShowLocationDialog(false);
     setSelectedProduct(null);
@@ -102,13 +117,12 @@ export function HeroSearch() {
     if (filteredProducts.length === 1) {
       handleProductSelect(filteredProducts[0]);
     } else {
-      // Navigate to search results on first location
       navigate(`/mieten/krefeld/alle`);
     }
   };
 
   const availableLocations = selectedProduct
-    ? getLocationsForProduct(selectedProduct.id)
+    ? getLocationsForProduct(selectedProduct.name)
     : [];
 
   return (
