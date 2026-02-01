@@ -32,6 +32,7 @@ import imgErdbohrer4 from "@/assets/products/gartenpflege/erdbohrer-4308-4.jpg";
 import imgBohrschrauber60c from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-60c.jpg";
 import imgStaubsauger from "@/assets/products/werkzeuge/staubsauger-gas18v-10l.jpg";
 import imgBohrhammer26f from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
+import imgSdsPlusSet from "@/assets/products/werkzeuge/sds-plus-bohrer-meissel-set.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -425,8 +426,8 @@ export const werkzeugeProducts: Product[] = [
     id: "sds-plus-bohrer-meissel-set",
     name: "SDS-Plus Bohrer-/Meißel-Set",
     description: "Umfangreiches Set für Bohrhämmer",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgSdsPlusSet,
+    images: [imgSdsPlusSet],
     category: "zubehoer",
     rentwareCode: { krefeld: "JHFAVK" }
   },
