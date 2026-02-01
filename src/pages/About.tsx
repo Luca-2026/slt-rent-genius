@@ -9,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import imgErsel from "@/assets/team/ersel-uzun.jpg";
 import imgJuno from "@/assets/team/juno.png";
+import imgTeamPhoto from "@/assets/team/team-photo.jpg";
 
 const stats = [
   { value: "2016", label: "Gründung" },
@@ -134,8 +135,12 @@ export default function About() {
                 </p>
               </div>
             </div>
-            <div className="bg-muted rounded-xl aspect-[4/3] flex items-center justify-center">
-              <span className="text-muted-foreground">Team-Bild Platzhalter</span>
+            <div className="rounded-xl aspect-[4/3] overflow-hidden">
+              <img 
+                src={imgTeamPhoto} 
+                alt="SLT Rental Team" 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
