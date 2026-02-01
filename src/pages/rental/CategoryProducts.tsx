@@ -193,12 +193,76 @@ export default function CategoryProducts() {
         );
       }
 
+      // Type group mappings for complex categories
+      const werkzeugeTypeGroups: Record<string, string[]> = {
+        saege: ["kreissaege", "saebelsaege", "stichsaege", "handkreissaege"],
+        abbruch: ["abbruchhammer"],
+        messen: ["laser", "ortungsgeraet", "linienlaser"],
+        beton: ["kernbohrer", "betonruettler", "diamantbohrer"],
+      };
+
       // Apply each filter section
       Object.entries(genericFilters.filters).forEach(([sectionId, selectedValues]) => {
         if (selectedValues.length > 0) {
-          filtered = filtered.filter((p) =>
-            selectedValues.some((value) => p.tags?.includes(value) || p.category === value)
-          );
+          // Special handling for weight-based filters
+          if (sectionId === "weight") {
+            filtered = filtered.filter((p) => {
+              const productWeight = p.weightKg || 0;
+              return selectedValues.some((weightId) => {
+                if (weightId === "bis-100kg") return productWeight > 0 && productWeight <= 100;
+                if (weightId === "100-200kg") return productWeight > 100 && productWeight <= 200;
+                if (weightId === "ab-200kg") return productWeight > 200;
+                return p.tags?.includes(weightId) || p.category === weightId;
+              });
+            });
+          } 
+          // Special handling for height-based filters (Arbeitsbühnen)
+          else if (sectionId === "height") {
+            filtered = filtered.filter((p) => {
+              // Extract height from product name (e.g., "8m Scherenbühne" -> 8)
+              const heightMatch = p.name.match(/(\d+)m\s/);
+              const height = heightMatch ? parseInt(heightMatch[1], 10) : 0;
+              return selectedValues.some((heightId) => {
+                if (heightId === "bis-10m") return height > 0 && height <= 10;
+                if (heightId === "10-15m") return height > 10 && height <= 15;
+                if (heightId === "ab-15m") return height > 15;
+                return p.tags?.includes(heightId);
+              });
+            });
+          }
+          // Special handling for power type filters (Werkzeuge)
+          else if (sectionId === "power") {
+            filtered = filtered.filter((p) => {
+              const nameLower = p.name.toLowerCase();
+              return selectedValues.some((powerId) => {
+                if (powerId === "akku") return nameLower.includes("akku");
+                if (powerId === "elektro") return nameLower.includes("elektro") || (p.category?.includes("elektro"));
+                if (powerId === "benzin") return nameLower.includes("benzin");
+                return p.tags?.includes(powerId) || p.category === powerId;
+              });
+            });
+          }
+          // Type filter with group mappings
+          else if (sectionId === "type") {
+            filtered = filtered.filter((p) => {
+              return selectedValues.some((value) => {
+                // Check direct match first
+                if (p.tags?.includes(value) || p.category === value) return true;
+                // Check group mappings for werkzeuge
+                const groupCategories = werkzeugeTypeGroups[value];
+                if (groupCategories && p.category) {
+                  return groupCategories.includes(p.category);
+                }
+                return false;
+              });
+            });
+          }
+          // Standard tag/category matching
+          else {
+            filtered = filtered.filter((p) =>
+              selectedValues.some((value) => p.tags?.includes(value) || p.category === value)
+            );
+          }
         }
       });
     }
