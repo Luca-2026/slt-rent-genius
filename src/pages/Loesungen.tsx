@@ -49,6 +49,13 @@ import imgHandwerkBohrhammer from "@/assets/solutions/handwerk/bohrhammer-gerues
 import imgHandwerkAkkubohrer from "@/assets/solutions/handwerk/akkubohrer-installation.jpg";
 import imgHandwerkBosch from "@/assets/solutions/handwerk/bosch-bohrhammer.jpg";
 
+// Kindergeburtstage solution images
+import imgKinderClown from "@/assets/solutions/kinder/huepfburg-clown.webp";
+import imgKinderBalloon from "@/assets/solutions/kinder/huepfburg-balloon.jpg";
+import imgKinderKirmes from "@/assets/solutions/kinder/huepfburg-kirmes.jpg";
+import imgKinderWasser1 from "@/assets/solutions/kinder/wasserrutsche-1.jpg";
+import imgKinderWasser2 from "@/assets/solutions/kinder/wasserrutsche-2.jpg";
+
 interface Solution {
   id: string;
   title: string;
@@ -187,7 +194,8 @@ const solutions: Solution[] = [
     title: "Kindergeburtstage & Feste",
     subtitle: "Hüpfburgen, Spiele, Unterhaltung",
     description: "Mach den Kindergeburtstag zum unvergesslichen Erlebnis! Unsere Hüpfburgen, Spezialeffekte und Sound-Systeme bringen Kinderaugen zum Leuchten.",
-    image: "/placeholder.svg",
+    image: imgKinderClown,
+    images: [imgKinderClown, imgKinderKirmes, imgKinderBalloon, imgKinderWasser1, imgKinderWasser2],
     icon: Sparkles,
     categories: ["huepfburgen", "spezialeffekte", "beschallung"],
     highlights: [
