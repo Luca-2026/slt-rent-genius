@@ -20,6 +20,7 @@ import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws1
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
 import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.jpg";
 import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.jpg";
+import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -197,8 +198,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-abbruchhammer-gsh16-28",
     name: "Bosch Abbruchhammer GSH 16-28",
     description: "Schwerer Abbruchhammer für anspruchsvolle Arbeiten",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgAbbruchhammer,
+    images: [imgAbbruchhammer],
     category: "abbruchhammer",
     rentwareCode: { krefeld: "JR8BYL" }
   },
