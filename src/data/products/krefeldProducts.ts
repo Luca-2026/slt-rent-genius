@@ -30,6 +30,7 @@ import imgErdbohrer2 from "@/assets/products/gartenpflege/erdbohrer-4308-2.jpg";
 import imgErdbohrer3 from "@/assets/products/gartenpflege/erdbohrer-4308-3.jpg";
 import imgErdbohrer4 from "@/assets/products/gartenpflege/erdbohrer-4308-4.jpg";
 import imgBohrschrauber60c from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-60c.jpg";
+import imgStaubsauger from "@/assets/products/werkzeuge/staubsauger-gas18v-10l.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -279,8 +280,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-staubsauger-gas18v-10l",
     name: "Bosch Staubsauger GAS 18V-10 L",
     description: "Akku-Staubsauger für Baustellen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgStaubsauger,
+    images: [imgStaubsauger],
     category: "staubsauger",
     rentwareCode: { krefeld: "MS2EV3" }
   },
