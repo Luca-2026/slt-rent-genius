@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart, Percent } from "lucide-react";
+import { Menu, X, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -101,15 +101,6 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
-            {/* Rentware Cart Placeholder */}
-            <Button variant="ghost" size="icon" className="relative" aria-label="Warenkorb">
-              <ShoppingCart className="h-5 w-5" />
-              {/* Cart badge placeholder */}
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
-                0
-              </span>
-            </Button>
-
             <Link to="/b2b/login">
               <Button variant="outline" size="sm" className="hidden sm:flex">
                 zum B2B Portal
