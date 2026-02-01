@@ -11,6 +11,14 @@ import imgErsel from "@/assets/team/ersel-uzun.jpg";
 import imgJuno from "@/assets/team/juno.png";
 import imgTeamPhoto from "@/assets/team/team-photo.jpg";
 
+// Partner logos
+import logoKramer from "@/assets/partners/kramer.png";
+import logoEinhell from "@/assets/partners/einhell.png";
+import logoBosch from "@/assets/partners/bosch.jpg";
+import logoDoosan from "@/assets/partners/doosan.png";
+import logoBaumax from "@/assets/partners/baumax.png";
+import logoZoomlion from "@/assets/partners/zoomlion.png";
+
 const stats = [
   { value: "2016", label: "Gründung" },
   { value: "+3.500", label: "Kunden" },
@@ -42,12 +50,12 @@ const values = [
 ];
 
 const partners = [
-  "Partner 1",
-  "Partner 2",
-  "Partner 3",
-  "Partner 4",
-  "Partner 5",
-  "Partner 6",
+  { name: "Bosch", logo: logoBosch, url: "https://www.bosch-professional.com/de/de/" },
+  { name: "Kramer", logo: logoKramer, url: "https://www.kramer.de/" },
+  { name: "Einhell", logo: logoEinhell, url: "https://www.einhell.de/" },
+  { name: "Doosan", logo: logoDoosan, url: "https://www.doosanportablepower.eu/" },
+  { name: "Baumax", logo: logoBaumax, url: "https://baumax.de/" },
+  { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion.com/" },
 ];
 
 const teamMembers = [
@@ -234,14 +242,21 @@ export default function About() {
           <h2 className="text-xl font-bold text-headline mb-8 text-center">
             Unsere Partner & Marken
           </h2>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
             {partners.map((partner) => (
-              <div
-                key={partner}
-                className="aspect-[3/2] bg-background rounded-lg border border-border flex items-center justify-center"
+              <a
+                key={partner.name}
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="aspect-[3/2] bg-background rounded-lg border border-border flex items-center justify-center p-4 hover:shadow-md hover:border-primary/30 transition-all duration-300"
               >
-                <span className="text-sm text-muted-foreground">{partner}</span>
-              </div>
+                <img 
+                  src={partner.logo} 
+                  alt={partner.name} 
+                  className="max-h-12 w-auto object-contain"
+                />
+              </a>
             ))}
           </div>
         </div>
