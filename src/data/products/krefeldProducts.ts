@@ -41,6 +41,7 @@ import imgOrtungsgeraet from "@/assets/products/werkzeuge/ortungsgeraet-dtect200
 import imgStaubsaugeraufsatz from "@/assets/products/werkzeuge/staubsaugeraufsatz-gde18v-16.jpg";
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
+import imgTrennschleifer from "@/assets/products/werkzeuge/trennschleifer-ts420.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -407,8 +408,8 @@ export const werkzeugeProducts: Product[] = [
     id: "trennschleifer-ts420",
     name: "Benzin-Trennschleifer TS420",
     description: "Benzin-Trennschleifer für Stein und Beton",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgTrennschleifer,
+    images: [imgTrennschleifer],
     category: "trennschleifer",
     rentwareCode: { krefeld: "J83HOT" }
   },
