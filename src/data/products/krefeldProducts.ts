@@ -31,6 +31,7 @@ import imgErdbohrer3 from "@/assets/products/gartenpflege/erdbohrer-4308-3.jpg";
 import imgErdbohrer4 from "@/assets/products/gartenpflege/erdbohrer-4308-4.jpg";
 import imgBohrschrauber60c from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-60c.jpg";
 import imgStaubsauger from "@/assets/products/werkzeuge/staubsauger-gas18v-10l.jpg";
+import imgBohrhammer26f from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -190,8 +191,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrhammer-gbh18v-26f",
     name: "Bosch Akku Bohrhammer GBH 18V-26 F",
     description: "Akku-Bohrhammer mit SDS-Plus Aufnahme",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBohrhammer26f,
+    images: [imgBohrhammer26f],
     category: "bohrhammer",
     rentwareCode: { krefeld: "B3P8MO" }
   },
