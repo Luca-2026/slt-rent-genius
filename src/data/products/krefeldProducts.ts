@@ -34,6 +34,7 @@ import imgStaubsauger from "@/assets/products/werkzeuge/staubsauger-gas18v-10l.j
 import imgBohrhammer26f from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
 import imgSdsPlusSet from "@/assets/products/werkzeuge/sds-plus-bohrer-meissel-set.jpg";
 import imgEinhellBauleuchte from "@/assets/products/werkzeuge/einhell-bauleuchte-te-cl18-2000.jpg";
+import imgSaebelsaege from "@/assets/products/werkzeuge/saebelsaege-gsa18v-li-c.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -256,8 +257,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-saebelsaege-gsa18v-li-c",
     name: "Bosch Akku Säbelsäge GSA 18V-LI C",
     description: "Akku-Säbelsäge mit variabler Geschwindigkeit",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgSaebelsaege,
+    images: [imgSaebelsaege],
     category: "saebelsaege",
     rentwareCode: { krefeld: "ZZOHCI" }
   },
