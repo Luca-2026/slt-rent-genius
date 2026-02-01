@@ -170,13 +170,8 @@ export default function Index() {
                   </div>
                   
                   <CardContent className="p-5 flex flex-col flex-1">
-                    {/* Description - fixed height */}
-                    <p className="text-muted-foreground text-sm mb-3 min-h-[40px]">
-                      {loc.description}
-                    </p>
-                    
                     {/* Address - fixed height */}
-                    <div className="flex items-start gap-2 text-sm mb-3 min-h-[44px]">
+                    <div className="flex items-start gap-2 text-sm mb-1 min-h-[44px]">
                       <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                       <div>
                         <span className="block text-body">{loc.address}</span>
@@ -184,8 +179,28 @@ export default function Index() {
                       </div>
                     </div>
 
+                    {/* Phone */}
+                    <a 
+                      href={`tel:${loc.phone.replace(/\s/g, '')}`}
+                      className="flex items-center gap-2 text-sm text-muted-foreground mb-1 hover:text-primary transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Phone className="h-4 w-4 shrink-0 text-primary" />
+                      <span>{loc.phone}</span>
+                    </a>
+
+                    {/* Email */}
+                    <a 
+                      href={`mailto:${loc.email}`}
+                      className="flex items-center gap-2 text-sm text-muted-foreground mb-3 hover:text-primary transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Mail className="h-4 w-4 shrink-0 text-primary" />
+                      <span>{loc.email}</span>
+                    </a>
+
                     {/* Hours - fixed height */}
-                    <div className="mb-4 p-3 bg-surface-light rounded-lg min-h-[100px]">
+                    <div className="mb-3 p-3 bg-surface-light rounded-lg min-h-[108px]">
                       <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                         <Clock className="h-4 w-4 text-primary" />
                         Öffnungszeiten
@@ -200,10 +215,10 @@ export default function Index() {
                       </div>
                     </div>
 
-                    {/* Manager */}
+                    {/* Manager - fixed height */}
                     <a 
                       href={`mailto:${loc.manager.email}`}
-                      className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer"
+                      className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer min-h-[72px]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Avatar className="h-10 w-10">
