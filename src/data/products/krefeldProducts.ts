@@ -3,6 +3,12 @@
 
 import type { Product } from "../rentalData";
 
+// Bodenschutz images
+import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
+import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
+import imgBodenschutz3 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-3.jpg";
+import imgBodenschutz4 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-4.jpg";
+
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
   {
@@ -2357,8 +2363,8 @@ export const erdbewegungZusatzProducts: Product[] = [
     id: "bodenschutz-fahrmatten",
     name: "Bodenschutz- / Fahrmatten 0,86m² mit Nut & Feder",
     description: "Bodenschutzplatten für Baumaschinen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBodenschutz1,
+    images: [imgBodenschutz1, imgBodenschutz2, imgBodenschutz3, imgBodenschutz4],
     category: "zubehoer",
     rentwareCode: { krefeld: "EH43YT" }
   },
