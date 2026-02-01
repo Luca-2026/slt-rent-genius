@@ -1,5 +1,13 @@
 // Bonn Location Products
-// All products use placeholder images - replace with actual images later
+// Images imported from shared assets
+
+// Shared images with Krefeld
+import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
+import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
+import imgBodenschutz3 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-3.jpg";
+import imgBodenschutz4 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-4.jpg";
+import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
+import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 
 // ==================== AGGREGAT ====================
 export const bonnAggregateProducts = [
@@ -106,7 +114,8 @@ export const bonnErdbewegungZusatzProducts = [
     id: "bonn-bodenschutz-fahrmatten",
     name: "Bodenschutz-/Fahrmatten 0,86m²",
     description: "Mit Nut & Feder für sicheren Untergrund.",
-    image: "/placeholder.svg",
+    image: imgBodenschutz1,
+    images: [imgBodenschutz1, imgBodenschutz2, imgBodenschutz3, imgBodenschutz4],
     rentwareCode: { bonn: "E3IB5R" },
   },
   {
@@ -327,7 +336,8 @@ export const bonnWerkzeugProducts = [
     id: "bonn-abbruchhammer-gsh16",
     name: "Bosch Abbruchhammer GSH 16-28",
     description: "Schwerer Abbruchhammer für harten Einsatz.",
-    image: "/placeholder.svg",
+    image: imgAbbruchhammer,
+    images: [imgAbbruchhammer],
     rentwareCode: { bonn: "226JZO" },
   },
   {
@@ -404,7 +414,8 @@ export const bonnWerkzeugProducts = [
     id: "bonn-winkelschleifer-gws18v",
     name: "Bosch Akku Winkelschleifer GWS 18V-10",
     description: "Kraftvoller Akku-Winkelschleifer.",
-    image: "/placeholder.svg",
+    image: imgWinkelschleifer,
+    images: [imgWinkelschleifer],
     rentwareCode: { bonn: "UL9XG5" },
   },
 ];
