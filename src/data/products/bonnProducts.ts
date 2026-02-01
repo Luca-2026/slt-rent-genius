@@ -1,11 +1,29 @@
 // Bonn Location Products
 // Images imported from shared assets
 
-// Shared images with Krefeld
+// Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
 import imgBodenschutz3 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-3.jpg";
 import imgBodenschutz4 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-4.jpg";
+import imgBobcatE10z1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
+import imgBobcatE10z2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
+import imgBobcatE10z3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
+import imgBobcatE10z4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
+import imgXcmgXe20e1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
+import imgXcmgXe20e2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
+import imgXcmgXe20e3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
+import imgXcmgXe27e1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
+import imgXcmgXe27e2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
+import imgXcmgXe27e3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
+import imgKramer1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
+import imgKramer2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
+import imgCormidi1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
+import imgCormidi2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
+import imgCormidi3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
+import imgKnickdumper1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
+import imgKnickdumper2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
+// Shared images with Krefeld - Werkzeuge
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 
@@ -58,7 +76,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-bobcat-e10",
     name: "1t Bobcat E10",
     description: "Kompakter Minibagger für enge Baustellen.",
-    image: "/placeholder.svg",
+    image: imgBobcatE10z1,
+    images: [imgBobcatE10z1, imgBobcatE10z2, imgBobcatE10z3, imgBobcatE10z4],
     rentwareCode: { bonn: "FQZBM1" },
     weightKg: 1000,
     driveType: "diesel",
@@ -67,7 +86,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-xcmg-xe20e",
     name: "2t XCMG XE20E",
     description: "Vollelektrischer Minibagger - leise und emissionsfrei.",
-    image: "/placeholder.svg",
+    image: imgXcmgXe20e1,
+    images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
     rentwareCode: { bonn: "PV2RQZ" },
     weightKg: 2000,
     driveType: "elektro",
@@ -76,7 +96,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-xcmg-xe27e",
     name: "2,7t XCMG XE27E",
     description: "Vollelektrischer Minibagger für größere Erdarbeiten.",
-    image: "/placeholder.svg",
+    image: imgXcmgXe27e1,
+    images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
     rentwareCode: { bonn: "QU4BYW" },
     weightKg: 2700,
     driveType: "elektro",
@@ -85,7 +106,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-radlader-kramer-5050",
     name: "Radlader 3t Kramer 5050",
     description: "Kompakter Radlader für vielseitige Einsätze.",
-    image: "/placeholder.svg",
+    image: imgKramer1,
+    images: [imgKramer1, imgKramer2],
     rentwareCode: { bonn: "EEJXMU" },
     weightKg: 3000,
     driveType: "diesel",
@@ -94,7 +116,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-cormidi-dumper",
     name: "Ketten-Dumper",
     description: "Kompakter Raupendumper für schwieriges Gelände.",
-    image: "/placeholder.svg",
+    image: imgCormidi1,
+    images: [imgCormidi1, imgCormidi2, imgCormidi3],
     rentwareCode: { bonn: "7Y1UTP" },
     driveType: "diesel",
   },
@@ -102,7 +125,8 @@ export const bonnErdbewegungProducts = [
     id: "bonn-knickdumper-kde550",
     name: "Raddumper / Knickdumper KDe550",
     description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
-    image: "/placeholder.svg",
+    image: imgKnickdumper1,
+    images: [imgKnickdumper1, imgKnickdumper2],
     rentwareCode: { bonn: "CUDHTT" },
     driveType: "elektro",
   },
