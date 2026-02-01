@@ -16,6 +16,11 @@ import imgEventGlaeser from "@/assets/solutions/events/glaeser-slt-kisten.jpg";
 import imgEventBlumenDeko from "@/assets/solutions/events/blumen-deko-event.jpg";
 import imgEventBuehne from "@/assets/solutions/events/buehne-beleuchtung.jpg";
 
+// Tiefbau solution images
+import imgTiefbauBobcat from "@/assets/solutions/tiefbau/bobcat-garten.jpg";
+import imgTiefbauWackerBaustelle from "@/assets/solutions/tiefbau/wacker-neuson-baustelle.jpg";
+import imgTiefbauWackerGarten from "@/assets/solutions/tiefbau/wacker-neuson-garten.jpg";
+
 interface Solution {
   id: string;
   title: string;
@@ -51,7 +56,8 @@ const solutions: Solution[] = [
     title: "Tiefbau & Erdbewegung",
     subtitle: "Kanalbau, Hausanschlüsse, Erdarbeiten",
     description: "Professionelle Baumaschinen für anspruchsvolle Tiefbauprojekte. Mit unseren Minibaggern, Dumpern und dem passenden Zubehör meisterst du jede Erdarbeit.",
-    image: "/placeholder.svg",
+    image: imgTiefbauWackerBaustelle,
+    images: [imgTiefbauWackerBaustelle, imgTiefbauWackerGarten, imgTiefbauBobcat],
     icon: Shovel,
     categories: ["erdbewegung", "verdichtung", "absperrtechnik", "anhaenger"],
     highlights: [
