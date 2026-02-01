@@ -24,6 +24,9 @@ import imgTiefbauKramer from "@/assets/solutions/tiefbau/kramer-radlader.jpg";
 import imgTiefbauKompressor from "@/assets/solutions/tiefbau/doosan-kompressor.jpg";
 import imgTiefbauDrucklufthammer from "@/assets/solutions/tiefbau/drucklufthammer.jpg";
 
+// Transport solution images
+import imgTransportPlanen from "@/assets/solutions/transport/planenanhaenger-3500.jpg";
+
 // Hochbau solution images
 import imgHochbauRollgeruest from "@/assets/solutions/hochbau/rollgeruest-indoor.jpg";
 import imgHochbauGeruestLager from "@/assets/solutions/hochbau/geruest-lager.jpg";
@@ -122,7 +125,8 @@ const solutions: Solution[] = [
     title: "Umzug & Transport",
     subtitle: "Privat- und Firmenumzüge",
     description: "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per SMS-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
-    image: "/placeholder.svg",
+    image: imgTransportPlanen,
+    images: [imgTransportPlanen],
     icon: Truck,
     categories: ["anhaenger"],
     highlights: [
