@@ -5,14 +5,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
+import { locationData } from "@/data/locationData";
 
 const contactInfo = [
   {
     icon: Phone,
     title: "Telefon",
-    primary: "02151 / 932 89 53",
-    secondary: "Mo-Fr: 7:00-17:00 Uhr",
-    href: "tel:+4921519328953",
+    primary: "02151 417 990 4",
+    secondary: "Mo-Fr: 7:30-18:00 Uhr",
+    href: "tel:+49021514179904",
   },
   {
     icon: Mail,
@@ -24,9 +25,9 @@ const contactInfo = [
   {
     icon: MessageCircle,
     title: "WhatsApp",
-    primary: "0151 / 123 456 78",
+    primary: "02151 417 990 4",
     secondary: "Schnelle Anfragen",
-    href: "https://wa.me/4915112345678",
+    href: "https://wa.me/49021514179904",
   },
 ];
 
@@ -134,22 +135,26 @@ export default function Contact() {
             <div>
               <h2 className="text-2xl font-bold text-headline mb-6">Unsere Standorte</h2>
               <div className="space-y-4">
-                {[
-                  { name: "Krefeld (Hauptsitz)", address: "Oberschlesienstr. 16, 47807 Krefeld", phone: "02151 / 932 89 53" },
-                  { name: "Bonn", address: "Siemensstr. 27, 53121 Bonn", phone: "0228 / 850 777 53" },
-                  { name: "Mülheim an der Ruhr", address: "Weseler Str. 161, 45478 Mülheim", phone: "0208 / 740 788 52" },
-                ].map((loc) => (
-                  <Card key={loc.name}>
+                {locationData.map((loc) => (
+                  <Card key={loc.id}>
                     <CardContent className="p-4">
-                      <h3 className="font-semibold text-headline mb-2">{loc.name}</h3>
+                      <h3 className="font-semibold text-headline mb-2">
+                        {loc.name} {loc.subtitle === "Hauptsitz" && "(Hauptsitz)"}
+                      </h3>
                       <div className="flex items-start gap-2 text-sm text-muted-foreground mb-1">
-                        <MapPin className="h-4 w-4 mt-0.5" />
-                        <span>{loc.address}</span>
+                        <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                        <span>{loc.address}, {loc.city}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
+                      <div className="flex items-center gap-2 text-sm mb-1">
+                        <Phone className="h-4 w-4 text-muted-foreground shrink-0" />
                         <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="text-primary hover:text-accent">
                           {loc.phone}
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <a href={`mailto:${loc.email}`} className="text-primary hover:text-accent">
+                          {loc.email}
                         </a>
                       </div>
                     </CardContent>
@@ -163,9 +168,12 @@ export default function Contact() {
                   Öffnungszeiten
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Montag - Freitag: 7:00 - 17:00 Uhr<br />
-                  Samstag: nach Vereinbarung<br />
+                  Montag - Freitag: 7:30 - 18:00 Uhr<br />
+                  Samstag: 8:00 - 14:30 Uhr*<br />
                   Sonntag: geschlossen
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  *Samstags nur mit vorheriger Buchung.
                 </p>
               </div>
 
