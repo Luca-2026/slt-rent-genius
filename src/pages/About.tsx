@@ -14,7 +14,7 @@ import imgTeamPhoto from "@/assets/team/team-photo.jpg";
 // Partner logos
 import logoKramer from "@/assets/partners/kramer.png";
 import logoEinhell from "@/assets/partners/einhell.png";
-import logoBosch from "@/assets/partners/bosch.jpg";
+import logoBosch from "@/assets/partners/bosch.png";
 import logoDoosan from "@/assets/partners/doosan.png";
 import logoBaumax from "@/assets/partners/baumax.png";
 import logoZoomlion from "@/assets/partners/zoomlion.png";
