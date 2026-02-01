@@ -24,7 +24,7 @@ const locations = [
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
     image: imgKrefeld,
-    manager: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt },
+    manager: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
     lat: 51.3127,
     lng: 6.5511,
     hours: [
@@ -46,7 +46,7 @@ const locations = [
     phone: "02151 417 990 4",
     email: "bonn@slt-rental.de",
     image: imgBonn,
-    manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel },
+    manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
     lat: 50.6879,
     lng: 7.1591,
     hours: [
@@ -67,7 +67,7 @@ const locations = [
     city: "45478 Mülheim an der Ruhr",
     phone: "02151 417 990 4",
     email: "muelheim@slt-rental.de",
-    manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null },
+    manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "muelheim@slt-rental.de" },
     lat: 51.4171,
     lng: 6.8711,
     hours: [
@@ -154,7 +154,10 @@ export default function Locations() {
 
                   {/* Manager */}
                   {location.manager && (
-                    <div className="flex items-center gap-3 mb-6 p-3 bg-surface-light rounded-lg">
+                    <a 
+                      href={`mailto:${location.manager.email}`}
+                      className="flex items-center gap-3 mb-6 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group"
+                    >
                       <Avatar className="h-12 w-12">
                         {location.manager.image ? (
                           <AvatarImage src={location.manager.image} alt={location.manager.name} />
@@ -163,11 +166,12 @@ export default function Locations() {
                           <User className="h-5 w-5" />
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <p className="font-semibold text-headline text-sm">{location.manager.name}</p>
+                      <div className="flex-1">
+                        <p className="font-semibold text-headline text-sm group-hover:text-primary transition-colors">{location.manager.name}</p>
                         <p className="text-xs text-muted-foreground">{location.manager.role}</p>
                       </div>
-                    </div>
+                      <Mail className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </a>
                   )}
 
                   {/* Hours - fixed height for alignment */}
