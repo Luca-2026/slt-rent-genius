@@ -19,6 +19,7 @@ import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-s
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
 import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.jpg";
+import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -340,8 +341,8 @@ export const werkzeugeProducts: Product[] = [
     id: "eibenstock-diamantbohrer-ehd1500",
     name: "Eibenstock Diamantbohrer EHD 1500",
     description: "Kernbohrgerät für Beton und Mauerwerk",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgDiamantbohrer,
+    images: [imgDiamantbohrer],
     category: "kernbohrer",
     rentwareCode: { krefeld: "I578B5" }
   },
