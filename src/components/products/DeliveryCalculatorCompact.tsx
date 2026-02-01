@@ -113,12 +113,14 @@ interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
   showAllCategories?: boolean;
   className?: string;
+  categoryDisplayName?: string;
 }
 
 export function DeliveryCalculatorCompact({ 
   productCategoryId,
   showAllCategories = false,
-  className = "" 
+  className = "",
+  categoryDisplayName
 }: DeliveryCalculatorCompactProps) {
   // Determine if this is erdbewegung category (show machine type selector)
   const isErdbewegung = productCategoryId === "erdbewegung";
@@ -177,7 +179,7 @@ export function DeliveryCalculatorCompact({
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Truck className="h-5 w-5 text-primary" />
-          Lieferkosten berechnen
+          {categoryDisplayName ? `Lieferkosten für ${categoryDisplayName}` : "Lieferkosten berechnen"}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

@@ -16,6 +16,9 @@ import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
 import { EarthMovingFilter, type EarthMovingFilterState } from "@/components/rental/EarthMovingFilter";
+import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
+import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
+import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
 
 export default function CategoryProducts() {
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
@@ -34,6 +37,10 @@ export default function CategoryProducts() {
     types: [],
     driveTypes: [],
     weightRange: [],
+  });
+  const [genericFilters, setGenericFilters] = useState<CategoryFilterState>({
+    search: "",
+    filters: {},
   });
   
   const location = locationId ? getLocationById(locationId) : undefined;
@@ -173,8 +180,31 @@ export default function CategoryProducts() {
       }
     }
 
+    // Apply generic filters for other categories
+    const hasGenericFilter = categoryFilterMap[category?.id || ""];
+    if (hasGenericFilter && category?.id !== "anhaenger" && category?.id !== "erdbewegung" && category?.id !== "alle") {
+      // Search filter
+      if (genericFilters.search) {
+        const searchLower = genericFilters.search.toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.description?.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Apply each filter section
+      Object.entries(genericFilters.filters).forEach(([sectionId, selectedValues]) => {
+        if (selectedValues.length > 0) {
+          filtered = filtered.filter((p) =>
+            selectedValues.some((value) => p.tags?.includes(value) || p.category === value)
+          );
+        }
+      });
+    }
+
     return filtered;
-  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, category?.id]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -389,6 +419,11 @@ export default function CategoryProducts() {
         </section>
       )}
 
+      {/* Info Banner for other categories */}
+      {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
+        <CategoryInfoBanner categoryId={category.id} />
+      )}
+
       {/* Products */}
       <section className="py-8 lg:py-12">
         <div className="section-container">
@@ -467,11 +502,28 @@ export default function CategoryProducts() {
                   {category.id === "erdbewegung" && (
                     <>
                       <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
-                      <DeliveryCalculatorCompact productCategoryId={category.id} />
+                      <DeliveryCalculatorCompact 
+                        productCategoryId={category.id} 
+                        categoryDisplayName={categoryDisplayNames[category.id]}
+                      />
                     </>
                   )}
+                  {/* Generic filter for other categories */}
                   {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
-                    <DeliveryCalculatorCompact productCategoryId={category.id} />
+                    <>
+                      {categoryFilterMap[category.id] && (
+                        <CategoryFilter
+                          searchPlaceholder={categorySearchPlaceholders[category.id] || "Artikel suchen..."}
+                          sections={categoryFilterMap[category.id]}
+                          onFilterChange={setGenericFilters}
+                          variant="badges"
+                        />
+                      )}
+                      <DeliveryCalculatorCompact 
+                        productCategoryId={category.id}
+                        categoryDisplayName={categoryDisplayNames[category.id]}
+                      />
+                    </>
                   )}
                 </div>
               </div>
