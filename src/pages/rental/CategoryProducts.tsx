@@ -134,7 +134,10 @@ export default function CategoryProducts() {
       // Weight filters
       if (trailerFilters.weight.length > 0) {
         filtered = filtered.filter((p) => {
-          const productWeight = p.weightKg || 0;
+          // Some location inventories may not provide weightKg consistently.
+          // Fallback: parse "xxxx kg" from name.
+          const parsed = p.name.match(/(\d{2,5})\s*kg/i);
+          const productWeight = p.weightKg || (parsed ? Number(parsed[1]) : 0);
           return trailerFilters.weight.some((weightId) => {
             if (weightId === "bis-750") return productWeight <= 750;
             if (weightId === "750-1500") return productWeight > 750 && productWeight <= 1500;
@@ -142,6 +145,31 @@ export default function CategoryProducts() {
             if (weightId === "ab-2500") return productWeight > 2500;
             return false;
           });
+        });
+      }
+
+      // Type filters (fallback to name if tags are missing)
+      if (trailerFilters.types.length > 0) {
+        filtered = filtered.filter((p) => {
+          const nameLower = p.name.toLowerCase();
+          return trailerFilters.types.some((type) =>
+            p.tags?.includes(type) ||
+            (type === "geschlossen" && (nameLower.includes("planen") || nameLower.includes("koffer"))) ||
+            (type === "baumaschine" && nameLower.includes("baumaschinen")) ||
+            (type === "autotransport" && nameLower.includes("autotransport")) ||
+            (type === "laubgitter" && nameLower.includes("laubgitter")) ||
+            (type === "urlaub" && nameLower.includes("urlaub"))
+          );
+        });
+      }
+
+      // Braking filters (fallback from weight)
+      if (trailerFilters.braking.length > 0) {
+        filtered = filtered.filter((p) => {
+          const parsed = p.name.match(/(\d{2,5})\s*kg/i);
+          const weight = p.weightKg || (parsed ? Number(parsed[1]) : 0);
+          const inferred = weight > 750 ? "gebremst" : "ungebremst";
+          return trailerFilters.braking.some((b) => p.tags?.includes(b) || b === inferred);
         });
       }
     }
@@ -160,23 +188,43 @@ export default function CategoryProducts() {
 
       // Type filters (minibagger, radlader, dumper)
       if (earthMovingFilters.types.length > 0) {
-        filtered = filtered.filter((p) =>
-          earthMovingFilters.types.some((type) => p.tags?.includes(type))
-        );
+        filtered = filtered.filter((p) => {
+          const nameLower = p.name.toLowerCase();
+          const inferredType =
+            nameLower.includes("radlader") ? "radlader" :
+            nameLower.includes("dumper") ? "dumper" :
+            "minibagger";
+
+          return earthMovingFilters.types.some(
+            (type) => p.tags?.includes(type) || p.category === type || type === inferredType
+          );
+        });
       }
 
       // Drive type filters (diesel, benzin, elektro)
       if (earthMovingFilters.driveTypes.length > 0) {
-        filtered = filtered.filter((p) =>
-          earthMovingFilters.driveTypes.some((drive) => p.tags?.includes(drive))
-        );
+        filtered = filtered.filter((p) => {
+          const driveType = (p as unknown as { driveType?: string }).driveType;
+          return earthMovingFilters.driveTypes.some(
+            (drive) => p.tags?.includes(drive) || driveType === drive
+          );
+        });
       }
 
       // Weight range filters
       if (earthMovingFilters.weightRange.length > 0) {
-        filtered = filtered.filter((p) =>
-          earthMovingFilters.weightRange.some((range) => p.tags?.includes(range))
-        );
+        filtered = filtered.filter((p) => {
+          const weightKg = p.weightKg || 0;
+          const inferredRange =
+            weightKg <= 0 ? undefined :
+            weightKg <= 1500 ? "bis-1500" :
+            weightKg <= 2500 ? "1500-2500" :
+            "ab-2500";
+
+          return earthMovingFilters.weightRange.some(
+            (range) => p.tags?.includes(range) || range === inferredRange
+          );
+        });
       }
     }
 
@@ -195,10 +243,20 @@ export default function CategoryProducts() {
 
       // Type group mappings for complex categories
       const werkzeugeTypeGroups: Record<string, string[]> = {
-        saege: ["kreissaege", "saebelsaege", "stichsaege", "handkreissaege"],
+        // include typical special machines that still belong to "Sägen" UX bucket
+        saege: ["kreissaege", "saebelsaege", "stichsaege", "handkreissaege", "fugenschneider"],
         abbruch: ["abbruchhammer"],
         messen: ["laser", "ortungsgeraet", "linienlaser"],
-        beton: ["kernbohrer", "betonruettler", "diamantbohrer"],
+        beton: ["kernbohrer", "betonruettler", "diamantbohrer", "zwangsmischer"],
+        zubehoer: ["zubehoer", "staubsauger"],
+      };
+
+      const gartenpflegeTypeGroups: Record<string, string[]> = {
+        schneiden: ["kettensaege", "heckenschere", "freischneider"],
+        boden: ["erdbohrer", "bodenhacke", "stubbenfraese"],
+        rasen: ["vertikutierer", "rasenwalze", "rasenmaeher"],
+        reinigen: ["hochdruckreiniger"],
+        entsorgen: ["haecksler", "laubblaeser"],
       };
 
       // Apply each filter section
@@ -230,14 +288,27 @@ export default function CategoryProducts() {
               });
             });
           }
-          // Special handling for power type filters (Werkzeuge)
+          // Special handling for power filters (Werkzeuge vs Aggregate)
           else if (sectionId === "power") {
             filtered = filtered.filter((p) => {
               const nameLower = p.name.toLowerCase();
               return selectedValues.some((powerId) => {
-                if (powerId === "akku") return nameLower.includes("akku");
-                if (powerId === "elektro") return nameLower.includes("elektro") || (p.category?.includes("elektro"));
-                if (powerId === "benzin") return nameLower.includes("benzin");
+                // Werkzeuge: antrieb
+                if (powerId === "akku" || powerId === "elektro" || powerId === "benzin") {
+                  if (powerId === "akku") return nameLower.includes("akku");
+                  if (powerId === "elektro") return nameLower.includes("elektro") || (p.category?.includes("elektro"));
+                  if (powerId === "benzin") return nameLower.includes("benzin");
+                }
+
+                // Aggregate: kVA ranges
+                if (powerId === "bis-5kva" || powerId === "5-20kva" || powerId === "ab-20kva") {
+                  const kvaMatch = p.name.match(/(\d+(?:[.,]\d+)?)\s*kva/i);
+                  const kva = kvaMatch ? Number(kvaMatch[1].replace(",", ".")) : undefined;
+                  if (!kva) return p.tags?.includes(powerId);
+                  if (powerId === "bis-5kva") return kva <= 5;
+                  if (powerId === "5-20kva") return kva > 5 && kva <= 20;
+                  if (powerId === "ab-20kva") return kva > 20;
+                }
                 return p.tags?.includes(powerId) || p.category === powerId;
               });
             });
@@ -248,11 +319,13 @@ export default function CategoryProducts() {
               return selectedValues.some((value) => {
                 // Check direct match first
                 if (p.tags?.includes(value) || p.category === value) return true;
-                // Check group mappings for werkzeuge
-                const groupCategories = werkzeugeTypeGroups[value];
-                if (groupCategories && p.category) {
-                  return groupCategories.includes(p.category);
-                }
+                // Category-specific group mappings
+                const groupCategories =
+                  category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
+                  category?.id === "gartenpflege" ? gartenpflegeTypeGroups[value] :
+                  undefined;
+
+                if (groupCategories && p.category) return groupCategories.includes(p.category);
                 return false;
               });
             });

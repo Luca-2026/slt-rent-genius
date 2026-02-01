@@ -701,6 +701,191 @@ const sortedTrailerProducts = [...trailerProducts].sort((a, b) => {
   return sortA - sortB;
 });
 
+// --------------------
+// Bonn product normalization
+// Bonn inventory data is intentionally lightweight and often omits `category`/`tags`.
+// Filters in the UI rely on these fields, so we enrich the Bonn products here.
+
+function mergeTags(existing?: string[], add?: string[]) {
+  return Array.from(new Set([...(existing ?? []), ...(add ?? [])]));
+}
+
+function parseKgFromName(name: string): number | undefined {
+  // e.g. "1800 kg ..." or "... 70kg"
+  const kgMatch = name.match(/(\d{2,5})\s*kg/i);
+  if (kgMatch) return Number(kgMatch[1]);
+  return undefined;
+}
+
+function parseKvaFromName(name: string): number | undefined {
+  // e.g. "7,5 kVA" or "2.8 kVA"
+  const kvaMatch = name.match(/(\d+(?:[.,]\d+)?)\s*kva/i);
+  if (!kvaMatch) return undefined;
+  return Number(kvaMatch[1].replace(",", "."));
+}
+
+function inferArbeitsbuehneCategory(name: string): string | undefined {
+  const n = name.toLowerCase();
+  if (n.includes("scherenbühne") || n.includes("scherenbuehne")) return "scherenbuehne";
+  if (n.includes("mastbühne") || n.includes("mastbuehne")) return "mastbuehne";
+  if (n.includes("gelenk")) return "gelenkbuehne";
+  if (n.includes("teleskop")) return "teleskopbuehne";
+  return undefined;
+}
+
+function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "dumper" | undefined {
+  const n = name.toLowerCase();
+  if (n.includes("radlader")) return "radlader";
+  if (n.includes("dumper")) return "dumper";
+  // default for typical excavator entries
+  if (n.match(/\b(bobcat|xcmg|minibagger)\b/i) || n.match(/\b\d+(?:[.,]\d+)?t\b/i)) return "minibagger";
+  return undefined;
+}
+
+function weightRangeTagFromKg(weightKg?: number): string | undefined {
+  if (!weightKg || weightKg <= 0) return undefined;
+  if (weightKg <= 1500) return "bis-1500";
+  if (weightKg <= 2500) return "1500-2500";
+  return "ab-2500";
+}
+
+function inferWerkzeugCategory(name: string): string | undefined {
+  const n = name.toLowerCase();
+  if (n.includes("bohrhammer")) return "bohrhammer";
+  if (n.includes("bohrschrauber")) return "bohrschrauber";
+  if (n.includes("winkelschleifer")) return "winkelschleifer";
+  if (n.includes("hand-kreissäge") || n.includes("hand-kreissaege") || n.includes("kreissäge") || n.includes("kreissaege")) return "kreissaege";
+  if (n.includes("steinsäge") || n.includes("steinsaege")) return "kreissaege";
+  if (n.includes("abbruchhammer")) return "abbruchhammer";
+  if (n.includes("fugenschneider")) return "fugenschneider";
+  if (n.includes("mauerschlitzfräse") || n.includes("mauerschlitzfraese")) return "fraese";
+  if (n.includes("diamantbohrer") || n.includes("kernbohr")) return "kernbohrer";
+  if (n.includes("laser")) return "laser";
+  if (n.includes("ortung")) return "ortungsgeraet";
+  if (n.includes("sauger")) return "zubehoer"; // keep filterable via "Zubehör"
+  if (n.includes("zwangsmischer")) return "zwangsmischer";
+  if (n.includes("rüttler") || n.includes("ruettler")) return "betonruettler";
+  return undefined;
+}
+
+function inferGartenpflegeCategory(name: string): string | undefined {
+  const n = name.toLowerCase();
+  if (n.includes("kettensäge") || n.includes("kettensaege")) return "kettensaege";
+  if (n.includes("heckenschere")) return "heckenschere";
+  if (n.includes("freischneider")) return "freischneider";
+  if (n.includes("erdbohrer")) return "erdbohrer";
+  if (n.includes("bodenhacke") || n.includes("gartenfräse") || n.includes("gartenfraese")) return "bodenhacke";
+  if (n.includes("baumstumpffräse") || n.includes("baumstumpffraese") || n.includes("stubben")) return "stubbenfraese";
+  if (n.includes("häcksler") || n.includes("haecksler")) return "haecksler";
+  if (n.includes("vertikutierer")) return "vertikutierer";
+  if (n.includes("hochdruckreiniger")) return "hochdruckreiniger";
+  if (n.includes("rasenwalze")) return "rasenwalze";
+  if (n.includes("unkraut")) return "unkrautbrenner";
+  return undefined;
+}
+
+function inferStromCategory(name: string): string {
+  const n = name.toLowerCase();
+  if (n.includes("brücke") || n.includes("bruecke")) return "bruecke";
+  if (n.includes("kabel")) return "kabel";
+  return "verteiler";
+}
+
+function normalizeBonnErdbewegung(products: Product[]): Product[] {
+  return products.map((p) => {
+    const anyP = p as unknown as { driveType?: string };
+    const machineCategory = inferErdbewegungCategory(p.name);
+    const driveType = anyP.driveType;
+    const rangeTag = weightRangeTagFromKg(p.weightKg);
+    const tagsToAdd = [machineCategory, driveType, rangeTag].filter(Boolean) as string[];
+
+    // Only enforce machine category when we can confidently infer it.
+    return {
+      ...p,
+      category: p.category ?? machineCategory,
+      tags: mergeTags(p.tags, tagsToAdd),
+    };
+  });
+}
+
+function normalizeBonnVerdichtung(products: Product[]): Product[] {
+  return products.map((p) => {
+    const n = p.name.toLowerCase();
+    const inferredWeight = p.weightKg ?? parseKgFromName(p.name);
+    const inferredCategory =
+      p.category ??
+      (n.includes("stampfer") ? "stampfer" : n.includes("reversierbar") || n.includes("hvp") ? "ruettelplatte-reversierbar" : "ruettelplatte");
+
+    return {
+      ...p,
+      weightKg: inferredWeight,
+      category: inferredCategory,
+    };
+  });
+}
+
+function normalizeBonnAnhaenger(products: Product[]): Product[] {
+  return products.map((p) => {
+    const n = p.name.toLowerCase();
+    const inferredWeight = p.weightKg ?? parseKgFromName(p.name);
+    const inferredBraking = inferredWeight && inferredWeight > 750 ? "gebremst" : "ungebremst";
+    const inferredType = n.includes("baumaschinen") ? "baumaschine" : undefined;
+
+    return {
+      ...p,
+      weightKg: inferredWeight,
+      tags: mergeTags(p.tags, [inferredBraking, inferredType].filter(Boolean) as string[]),
+      category: p.category ?? (n.includes("aggregat") ? "aggregat" : inferredType),
+    };
+  });
+}
+
+function normalizeBonnWerkzeuge(products: Product[]): Product[] {
+  return products.map((p) => ({
+    ...p,
+    category: p.category ?? inferWerkzeugCategory(p.name),
+  }));
+}
+
+function normalizeBonnGartenpflege(products: Product[]): Product[] {
+  return products.map((p) => ({
+    ...p,
+    category: p.category ?? inferGartenpflegeCategory(p.name),
+  }));
+}
+
+function normalizeBonnAggregate(products: Product[]): Product[] {
+  return products.map((p) => ({
+    ...p,
+    category: p.category ?? "aggregat",
+    tags: mergeTags(p.tags, (() => {
+      const kva = parseKvaFromName(p.name);
+      if (!kva) return [];
+      if (kva <= 5) return ["bis-5kva"];
+      if (kva <= 20) return ["5-20kva"];
+      return ["ab-20kva"];
+    })()),
+  }));
+}
+
+function normalizeBonnArbeitsbuehnen(products: Product[]): Product[] {
+  return products.map((p) => ({
+    ...p,
+    category: p.category ?? inferArbeitsbuehneCategory(p.name),
+  }));
+}
+
+function normalizeBonnStrom(products: Product[]): Product[] {
+  return products.map((p) => ({
+    ...p,
+    category: p.category ?? inferStromCategory(p.name),
+  }));
+}
+
+function withFixedCategory(products: Product[], category: string): Product[] {
+  return products.map((p) => ({ ...p, category: p.category ?? category }));
+}
+
 // Locations with their available categories and products
 export const locations: LocationData[] = [
   {
@@ -783,21 +968,39 @@ export const locations: LocationData[] = [
       "huepfburgen",
     ],
     products: {
-      "anhaenger": [...sortedTrailerProducts.filter(p => p.rentwareCode?.bonn), ...bonnAnhaengerProducts],
-      "erdbewegung": [...bonnErdbewegungProducts, ...bonnErdbewegungZusatzProducts],
-      "werkzeuge": bonnWerkzeugProducts,
-      "gartenpflege": bonnGartenpflegeProducts,
-      "aggregate": bonnAggregateProducts,
-      "arbeitsbuehnen": bonnArbeitsbuehnenProducts,
-      "verdichtung": bonnVerdichtungProducts,
-      "kabel-stromverteiler": bonnStromProducts,
-      "leitern-gerueste": [...bonnLeiternProducts, ...bonnGeruestteileProducts],
-      "heizung-trocknung": [...bonnHeizungProducts, ...bonnTrocknungProducts],
+      "anhaenger": [
+        ...sortedTrailerProducts.filter((p) => p.rentwareCode?.bonn),
+        ...normalizeBonnAnhaenger(bonnAnhaengerProducts as unknown as Product[]),
+      ],
+      "erdbewegung": normalizeBonnErdbewegung([
+        ...(bonnErdbewegungProducts as unknown as Product[]),
+        ...(bonnErdbewegungZusatzProducts as unknown as Product[]),
+      ]),
+      "werkzeuge": normalizeBonnWerkzeuge(bonnWerkzeugProducts as unknown as Product[]),
+      "gartenpflege": normalizeBonnGartenpflege(bonnGartenpflegeProducts as unknown as Product[]),
+      "aggregate": normalizeBonnAggregate(bonnAggregateProducts as unknown as Product[]),
+      "arbeitsbuehnen": normalizeBonnArbeitsbuehnen(bonnArbeitsbuehnenProducts as unknown as Product[]),
+      "verdichtung": normalizeBonnVerdichtung(bonnVerdichtungProducts as unknown as Product[]),
+      "kabel-stromverteiler": normalizeBonnStrom(bonnStromProducts as unknown as Product[]),
+      "leitern-gerueste": [
+        ...withFixedCategory(bonnLeiternProducts as unknown as Product[], "leiter"),
+        ...withFixedCategory(bonnGeruestteileProducts as unknown as Product[], "geruestteile"),
+      ],
+      "heizung-trocknung": [
+        ...withFixedCategory(bonnHeizungProducts as unknown as Product[], "heizung"),
+        ...withFixedCategory(bonnTrocknungProducts as unknown as Product[], "trocknung"),
+      ],
       "absperrtechnik": bonnAbsperrtechnikProducts,
       "beschallung": bonnBeschallungProducts,
       "beleuchtung": bonnBeleuchtungProducts,
-      "moebel-zelte": [...bonnMoebelProducts, ...bonnZelteProducts],
-      "geschirr-glaeser-besteck": [...bonnGeschirrProducts, ...bonnBesteckProducts],
+      "moebel-zelte": [
+        ...(bonnMoebelProducts as unknown as Product[]),
+        ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
+      ],
+      "geschirr-glaeser-besteck": [
+        ...withFixedCategory(bonnGeschirrProducts as unknown as Product[], "geschirr"),
+        ...withFixedCategory(bonnBesteckProducts as unknown as Product[], "besteck"),
+      ],
       "huepfburgen": bonnHuepfburgProducts,
     },
   },
