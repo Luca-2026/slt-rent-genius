@@ -6,12 +6,21 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Shovel, Trees, Hammer, PartyPopper, Truck, Home, Building2, Sparkles } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 
+// Event solution images
+import imgEventZelt from "@/assets/solutions/events/stretch-zelt-outdoor.jpg";
+import imgEventGartenfest from "@/assets/solutions/events/gartenfest-slt.jpg";
+import imgEventIndoorPA from "@/assets/solutions/events/indoor-pa-setup.jpg";
+import imgEventIBCLed from "@/assets/solutions/events/ibc-led-deko.jpg";
+import imgEventTraversen from "@/assets/solutions/events/traversen-lager.jpg";
+import imgEventGlaeser from "@/assets/solutions/events/glaeser-slt-kisten.jpg";
+
 interface Solution {
   id: string;
   title: string;
   subtitle: string;
   description: string;
   image: string;
+  images?: string[];
   icon: React.ElementType;
   categories: string[];
   highlights: string[];
@@ -73,7 +82,8 @@ const solutions: Solution[] = [
     title: "Events & Veranstaltungen",
     subtitle: "Firmenfeiern, Hochzeiten, Festivals",
     description: "Alles für unvergessliche Events: Von der Beschallung über Beleuchtung bis zu Zelten und Möbeln. Wir statten Veranstaltungen jeder Größe professionell aus.",
-    image: "/placeholder.svg",
+    image: imgEventZelt,
+    images: [imgEventZelt, imgEventGartenfest, imgEventIndoorPA, imgEventIBCLed, imgEventTraversen, imgEventGlaeser],
     icon: PartyPopper,
     categories: ["beschallung", "beleuchtung", "moebel-zelte", "geschirr-glaeser-besteck"],
     highlights: [
