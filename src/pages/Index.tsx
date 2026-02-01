@@ -23,6 +23,9 @@ import {
 import imgKrefeld from "@/assets/locations/krefeld.jpg";
 import imgBonn from "@/assets/locations/bonn.webp";
 
+// Hero image
+import heroImage from "@/assets/hero-event.jpg";
+
 const locationCards = [
   {
     id: "krefeld",
@@ -100,8 +103,14 @@ export default function Index() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative bg-primary py-16 lg:py-24">
-        <div className="section-container">
+      <section className="relative bg-primary py-16 lg:py-24 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-primary/85" />
+        <div className="section-container relative z-10">
           <div className="max-w-3xl">
             {/* Claim Badge */}
             <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-2 mb-6">
