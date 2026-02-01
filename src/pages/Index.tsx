@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { HeroSearch } from "@/components/home/HeroSearch";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { 
   Search, 
   Truck, 
@@ -16,48 +17,17 @@ import {
   Calendar,
   ShoppingCart,
   CreditCard,
-  Package
+  Package,
+  User,
+  Mail,
+  Building2
 } from "lucide-react";
 
-// Location images
-import imgKrefeld from "@/assets/locations/krefeld.jpg";
-import imgBonn from "@/assets/locations/bonn.webp";
+// Shared location data
+import { locationData } from "@/data/locationData";
 
 // Hero image
 import heroImage from "@/assets/hero-event.jpg";
-
-const locationCards = [
-  {
-    id: "krefeld",
-    name: "Krefeld",
-    subtitle: "Hauptsitz",
-    description: "Anhänger, Bagger, Radlader & Event-Equipment",
-    address: "Anrather Straße 291, 47807 Krefeld",
-    hours: "Mo-Fr 07:30-18:00 | Sa 08:00-14:30*",
-    image: imgKrefeld,
-    highlights: ["24/7 Anhängermiete", "Große Auswahl", "Hauptstandort"],
-  },
-  {
-    id: "bonn",
-    name: "Bonn",
-    subtitle: "Filiale",
-    description: "Anhänger, Bagger & Baumaschinen",
-    address: "Drachenburgstraße 8, 53179 Bonn",
-    hours: "Mo-Fr 07:30-18:00 | Sa 08:00-14:30*",
-    image: imgBonn,
-    highlights: ["24/7 Anhängermiete", "Servicewerkstatt"],
-  },
-  {
-    id: "muelheim",
-    name: "Mülheim a.d. Ruhr",
-    subtitle: "Filiale",
-    description: "Anhänger & Erdbewegung",
-    address: "Ruhrorter Str. 100, 45478 Mülheim",
-    hours: "Online-Buchung 24/7 | Abholung n. Vereinb.",
-    image: imgKrefeld, // Placeholder until Mülheim image is added
-    highlights: ["24/7 Anhängermiete", "Bagger-Spezialist"],
-  },
-];
 
 const steps = [
   {
@@ -172,66 +142,94 @@ export default function Index() {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {locationCards.map((loc, index) => (
+            {locationData.map((loc, index) => (
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
-                <Link to={`/mieten/${loc.id}`}>
-                  <Card className="h-full group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary/30 overflow-hidden">
-                    {/* Location Image */}
-                    <div className="aspect-[16/9] relative overflow-hidden">
+                <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
+                  {/* Location Image */}
+                  <div className="aspect-[16/9] relative overflow-hidden">
+                    {loc.image ? (
                       <img
                         src={loc.image}
                         alt={loc.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <span className="text-xs text-accent font-medium uppercase tracking-wide">
-                          {loc.subtitle}
-                        </span>
-                        <h3 className="text-xl font-bold text-white">
-                          {loc.name}
-                        </h3>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                        <Building2 className="h-16 w-16 text-primary/30" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <span className="text-xs text-accent font-medium uppercase tracking-wide">
+                        {loc.subtitle}
+                      </span>
+                      <h3 className="text-xl font-bold text-white">
+                        {loc.name}
+                      </h3>
+                    </div>
+                  </div>
+                  
+                  <CardContent className="p-5 flex flex-col flex-1">
+                    {/* Description - fixed height */}
+                    <p className="text-muted-foreground text-sm mb-3 min-h-[40px]">
+                      {loc.description}
+                    </p>
+                    
+                    {/* Address - fixed height */}
+                    <div className="flex items-start gap-2 text-sm mb-3 min-h-[44px]">
+                      <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <span className="block text-body">{loc.address}</span>
+                        <span className="block text-body">{loc.city}</span>
                       </div>
                     </div>
-                    
-                    <CardContent className="p-5 flex flex-col flex-1">
-                      {/* Description - fixed height */}
-                      <p className="text-muted-foreground text-sm mb-3 min-h-[40px]">
-                        {loc.description}
-                      </p>
-                      
-                      {/* Address & Hours - fixed height */}
-                      <div className="space-y-2 mb-4 min-h-[52px]">
-                        <div className="flex items-start gap-2 text-sm">
-                          <MapPin className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-                          <span className="text-body">{loc.address}</span>
-                        </div>
-                        <div className="flex items-start gap-2 text-sm">
-                          <Clock className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-                          <span className="text-body">{loc.hours}</span>
-                        </div>
+
+                    {/* Hours - fixed height */}
+                    <div className="mb-4 p-3 bg-surface-light rounded-lg min-h-[100px]">
+                      <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
+                        <Clock className="h-4 w-4 text-primary" />
+                        Öffnungszeiten
                       </div>
-                      
-                      {/* Highlights - fixed height */}
-                      <div className="flex flex-wrap gap-2 mb-4 min-h-[56px]">
-                        {loc.highlights.map((highlight) => (
-                          <span
-                            key={highlight}
-                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full h-fit"
-                          >
-                            {highlight}
-                          </span>
+                      <div className="space-y-1">
+                        {loc.hours.map((h, idx) => (
+                          <div key={idx} className="flex justify-between text-xs text-muted-foreground">
+                            <span>{h.day}</span>
+                            <span className="font-medium">{h.time}</span>
+                          </div>
                         ))}
                       </div>
+                    </div>
 
-                      {/* CTA - pushed to bottom */}
-                      <div className="flex items-center text-primary font-medium text-sm group-hover:text-accent transition-colors mt-auto">
-                        Kategorien & Produkte ansehen
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    {/* Manager */}
+                    <a 
+                      href={`mailto:${loc.manager.email}`}
+                      className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Avatar className="h-10 w-10">
+                        {loc.manager.image ? (
+                          <AvatarImage src={loc.manager.image} alt={loc.manager.name} />
+                        ) : null}
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          <User className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-headline text-sm truncate">{loc.manager.name}</p>
+                        <p className="text-xs text-muted-foreground">{loc.manager.role}</p>
                       </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+                      <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
+                    </a>
+
+                    {/* CTA - pushed to bottom */}
+                    <Link to={`/mieten/${loc.id}`} className="mt-auto">
+                      <Button className="w-full bg-primary hover:bg-primary/90">
+                        Kategorien & Produkte ansehen
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
               </AnimatedSection>
             ))}
           </div>
