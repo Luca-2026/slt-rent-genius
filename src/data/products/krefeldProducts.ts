@@ -8,6 +8,9 @@ import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatte
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
 import imgBodenschutz3 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-3.jpg";
 import imgBodenschutz4 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-4.jpg";
+// Dieseltankstelle images
+import imgDieseltankstelle1 from "@/assets/products/erdbewegung/dieseltankstelle-400l-1.jpg";
+import imgDieseltankstelle2 from "@/assets/products/erdbewegung/dieseltankstelle-400l-2.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -2373,8 +2376,8 @@ export const erdbewegungZusatzProducts: Product[] = [
     id: "dieseltankstelle-400l",
     name: "Sirocco Mobile Dieseltankstelle 400L/50L",
     description: "Mobile Tankstelle mit AdBlue-Tank",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgDieseltankstelle1,
+    images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
     rentwareCode: { krefeld: "KP5KOB" }
   },
