@@ -61,10 +61,24 @@ export function LocationSelector({
               </div>
 
               {/* Phone */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+              <a 
+                href={`tel:${location.phone.replace(/\s/g, '')}`}
+                className="flex items-center gap-2 text-sm text-muted-foreground mb-1 hover:text-primary transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
                 <span>{location.phone}</span>
-              </div>
+              </a>
+
+              {/* Email */}
+              <a 
+                href={`mailto:${location.email}`}
+                className="flex items-center gap-2 text-sm text-muted-foreground mb-3 hover:text-primary transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Mail className="h-4 w-4 shrink-0 text-primary" />
+                <span>{location.email}</span>
+              </a>
 
               {/* Hours - fixed min-height for alignment */}
               <div className="mb-4 p-3 bg-surface-light rounded-lg min-h-[100px]">
