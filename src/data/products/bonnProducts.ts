@@ -28,6 +28,7 @@ import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
+import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.jpg";
 
 // ==================== AGGREGAT ====================
 export const bonnAggregateProducts = [
@@ -392,7 +393,8 @@ export const bonnWerkzeugProducts = [
     id: "bonn-betonruettler-ir1000",
     name: "Beton Rüttler 2m IR 1000",
     description: "Innenrüttler für die Betonverdichtung.",
-    image: "/placeholder.svg",
+    image: imgBetonruettler,
+    images: [imgBetonruettler],
     rentwareCode: { bonn: "LJ66QJ" },
   },
   {
