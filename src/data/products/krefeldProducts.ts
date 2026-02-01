@@ -29,6 +29,7 @@ import imgErdbohrer1 from "@/assets/products/gartenpflege/erdbohrer-4308-1.jpg";
 import imgErdbohrer2 from "@/assets/products/gartenpflege/erdbohrer-4308-2.jpg";
 import imgErdbohrer3 from "@/assets/products/gartenpflege/erdbohrer-4308-3.jpg";
 import imgErdbohrer4 from "@/assets/products/gartenpflege/erdbohrer-4308-4.jpg";
+import imgBohrschrauber60c from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-60c.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -224,8 +225,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrschrauber-gsr18v-60c",
     name: "Bosch Akku Bohrschrauber GSR 18V-60C",
     description: "Leistungsstarker Akku-Bohrschrauber mit Bluetooth",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBohrschrauber60c,
+    images: [imgBohrschrauber60c],
     category: "bohrschrauber",
     rentwareCode: { krefeld: "QMLQVQ" }
   },
