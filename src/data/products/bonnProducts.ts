@@ -26,6 +26,8 @@ import imgKnickdumper2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.
 // Shared images with Krefeld - Werkzeuge
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
+import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
+import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
 
 // ==================== AGGREGAT ====================
 export const bonnAggregateProducts = [
@@ -353,7 +355,8 @@ export const bonnWerkzeugProducts = [
     id: "bonn-fugenschneider-bs50e",
     name: "Fugenschneider BS50E - 13PS",
     description: "Leistungsstarker Fugenschneider für Asphalt und Beton.",
-    image: "/placeholder.svg",
+    image: imgFugenschneider1,
+    images: [imgFugenschneider1, imgFugenschneider2],
     rentwareCode: { bonn: "RC3QNC" },
   },
   {
