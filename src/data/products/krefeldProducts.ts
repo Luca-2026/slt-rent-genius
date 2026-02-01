@@ -21,7 +21,8 @@ import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.j
 import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.jpg";
 import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.jpg";
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
-import imgDrehschlagschrauber from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
+import imgDrehschlagschrauber1 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
+import imgDrehschlagschrauber2 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h-2.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -262,8 +263,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-drehschlagschrauber-gds18v-1050h",
     name: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H",
     description: "Hochleistungs-Schlagschrauber",
-    image: imgDrehschlagschrauber,
-    images: [imgDrehschlagschrauber],
+    image: imgDrehschlagschrauber1,
+    images: [imgDrehschlagschrauber1, imgDrehschlagschrauber2],
     category: "schlagschrauber",
     rentwareCode: { krefeld: "YRSP66" }
   },
