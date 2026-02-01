@@ -23,6 +23,7 @@ import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgDrehschlagschrauber1 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
 import imgDrehschlagschrauber2 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h-2.jpg";
+import imgNageler from "@/assets/products/werkzeuge/nageler-te-cn.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -371,8 +372,8 @@ export const werkzeugeProducts: Product[] = [
     id: "einhell-nageler-te-cn",
     name: "Einhell Akku Nageler TE-CN",
     description: "Akku-Nagelpistole für Dachdecker",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgNageler,
+    images: [imgNageler],
     category: "nageler",
     rentwareCode: { krefeld: "TI6BTL" }
   },
