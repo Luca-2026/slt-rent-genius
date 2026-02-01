@@ -33,6 +33,7 @@ import imgBohrschrauber60c from "@/assets/products/werkzeuge/bohrschrauber-gsr18
 import imgStaubsauger from "@/assets/products/werkzeuge/staubsauger-gas18v-10l.jpg";
 import imgBohrhammer26f from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
 import imgSdsPlusSet from "@/assets/products/werkzeuge/sds-plus-bohrer-meissel-set.jpg";
+import imgEinhellBauleuchte from "@/assets/products/werkzeuge/einhell-bauleuchte-te-cl18-2000.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -336,8 +337,8 @@ export const werkzeugeProducts: Product[] = [
     id: "einhell-bauleuchte-te-cl18-2000",
     name: "Einhell Akku Bauleuchte TE-CL 18/2000",
     description: "LED-Bauleuchte mit 2000 Lumen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgEinhellBauleuchte,
+    images: [imgEinhellBauleuchte],
     category: "bauleuchte",
     rentwareCode: { krefeld: "A8YVVO" }
   },
