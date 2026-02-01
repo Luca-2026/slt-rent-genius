@@ -4,80 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail, User } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
-// Location images
-import imgKrefeld from "@/assets/locations/krefeld.jpg";
-import imgBonn from "@/assets/locations/bonn.webp";
-
-// Team images
-import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
-import imgErsel from "@/assets/team/ersel-uzun.jpg";
-
-const locations = [
-  {
-    id: "krefeld",
-    name: "Krefeld",
-    subtitle: "Hauptsitz",
-    description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Anrather Straße 291",
-    city: "47807 Krefeld-Fichtenhain",
-    phone: "02151 417 990 4",
-    email: "krefeld@slt-rental.de",
-    image: imgKrefeld,
-    manager: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-    lat: 51.3127,
-    lng: 6.5511,
-    hours: [
-      { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
-      { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
-      { day: "So.", time: "Geschlossen" },
-    ],
-    hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
-    features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
-    mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
-  },
-  {
-    id: "bonn",
-    name: "Bonn",
-    subtitle: "Filiale",
-    description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Drachenburgstraße 8",
-    city: "53179 Bonn",
-    phone: "02151 417 990 4",
-    email: "bonn@slt-rental.de",
-    image: imgBonn,
-    manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
-    lat: 50.6879,
-    lng: 7.1591,
-    hours: [
-      { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
-      { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
-      { day: "So.", time: "Geschlossen" },
-    ],
-    hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
-    features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
-    mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
-  },
-  {
-    id: "muelheim",
-    name: "Mülheim an der Ruhr",
-    subtitle: "Filiale",
-    description: "Miete bei uns Minibagger, Anhänger und mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Ruhrorter Str. 100",
-    city: "45478 Mülheim an der Ruhr",
-    phone: "02151 417 990 4",
-    email: "muelheim@slt-rental.de",
-    manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "muelheim@slt-rental.de" },
-    lat: 51.4171,
-    lng: 6.8711,
-    hours: [
-      { day: "Online-Buchung", time: "24/7 verfügbar" },
-      { day: "Abholung", time: "nach Vereinbarung" },
-    ],
-    features: ["Bagger & Anhänger", "Ruhrgebiet-Nähe", "24/7 Anhänger-Buchung", "Schnelle Abwicklung"],
-    mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+100+45478+Mülheim",
-  },
-];
+import { locationData } from "@/data/locationData";
 
 // Center of NRW (roughly between the three locations)
 const mapCenter = { lat: 51.1, lng: 6.9 };
@@ -102,7 +29,7 @@ export default function Locations() {
       <section className="py-12 lg:py-20">
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {locations.map((location) => (
+            {locationData.map((location) => (
               <Card key={location.id} className="h-full overflow-hidden flex flex-col">
                 {/* Location Image - fixed height placeholder for cards without image */}
                 <div className="h-40 overflow-hidden bg-muted">
