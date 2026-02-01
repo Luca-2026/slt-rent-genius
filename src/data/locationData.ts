@@ -3,6 +3,7 @@
 // Location images
 import imgKrefeld from "@/assets/locations/krefeld.jpg";
 import imgBonn from "@/assets/locations/bonn.webp";
+import imgMuelheim from "@/assets/locations/muelheim.jpg";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
@@ -91,7 +92,7 @@ export const locationData: LocationInfo[] = [
     city: "45478 Mülheim an der Ruhr",
     phone: "02151 417 990 4",
     email: "muelheim@slt-rental.de",
-    image: null,
+    image: imgMuelheim,
     manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "muelheim@slt-rental.de" },
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
