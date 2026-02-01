@@ -36,6 +36,7 @@ import imgSdsPlusSet from "@/assets/products/werkzeuge/sds-plus-bohrer-meissel-s
 import imgEinhellBauleuchte from "@/assets/products/werkzeuge/einhell-bauleuchte-te-cl18-2000.jpg";
 import imgSaebelsaege from "@/assets/products/werkzeuge/saebelsaege-gsa18v-li-c.jpg";
 import imgBohrschrauber12v from "@/assets/products/werkzeuge/bohrschrauber-gsr12v-15.jpg";
+import imgMulticutter from "@/assets/products/werkzeuge/multicutter-gop18v-28.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -267,8 +268,8 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-multicutter-gop18v-28",
     name: "Bosch Akku-Multicutter GOP 18V-28",
     description: "Multifunktionswerkzeug für verschiedene Anwendungen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgMulticutter,
+    images: [imgMulticutter],
     category: "multicutter",
     rentwareCode: { krefeld: "W2GTY5" }
   },
