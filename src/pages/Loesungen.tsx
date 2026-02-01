@@ -6,6 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Shovel, Trees, Hammer, PartyPopper, Truck, Home, Building2, Sparkles } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 
+// GaLaBau solution images
+import imgGalabauStubbenfraese1 from "@/assets/solutions/galabau/stubbenfraese-1.jpg";
+import imgGalabauStubbenfraese2 from "@/assets/solutions/galabau/stubbenfraese-2.jpg";
+import imgGalabauErdbohrer from "@/assets/solutions/galabau/erdbohrer-einsatz.jpg";
+
 // Event solution images
 import imgEventZelt from "@/assets/solutions/events/stretch-zelt-outdoor.jpg";
 import imgEventGartenfest from "@/assets/solutions/events/gartenfest-slt.jpg";
@@ -57,7 +62,8 @@ const solutions: Solution[] = [
     title: "Garten- & Landschaftsbau",
     subtitle: "Vom Privatgarten bis zur Parkanlage",
     description: "Komplette Ausstattung für GaLaBau-Betriebe und ambitionierte Hobbygärtner. Von der Baumstumpffräse bis zum Minibagger – alles für die professionelle Gartengestaltung.",
-    image: "/placeholder.svg",
+    image: imgGalabauStubbenfraese1,
+    images: [imgGalabauStubbenfraese1, imgGalabauStubbenfraese2, imgGalabauErdbohrer],
     icon: Trees,
     categories: ["erdbewegung", "gartenpflege", "anhaenger", "verdichtung"],
     highlights: [
