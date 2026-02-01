@@ -13,7 +13,7 @@ import imgTeamPhoto from "@/assets/team/team-photo.jpg";
 
 // Partner logos
 import logoKramer from "@/assets/partners/kramer.png";
-import logoEinhell from "@/assets/partners/einhell.png";
+import logoEibenstock from "@/assets/partners/eibenstock.jpg";
 import logoBosch from "@/assets/partners/bosch.png";
 import logoDoosan from "@/assets/partners/doosan.png";
 import logoBaumax from "@/assets/partners/baumax.png";
@@ -52,7 +52,7 @@ const values = [
 const partners = [
   { name: "Bosch", logo: logoBosch, url: "https://www.bosch-professional.com/de/de/" },
   { name: "Kramer", logo: logoKramer, url: "https://www.kramer.de/" },
-  { name: "Einhell", logo: logoEinhell, url: "https://www.einhell.de/" },
+  { name: "Eibenstock", logo: logoEibenstock, url: "https://www.eibenstock.de/" },
   { name: "Doosan", logo: logoDoosan, url: "https://www.doosanportablepower.eu/" },
   { name: "Baumax", logo: logoBaumax, url: "https://baumax.de/" },
   { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion.com/" },
