@@ -42,6 +42,7 @@ import imgStaubsaugeraufsatz from "@/assets/products/werkzeuge/staubsaugeraufsat
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
 import imgTrennschleifer from "@/assets/products/werkzeuge/trennschleifer-ts420.jpg";
+import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -426,8 +427,8 @@ export const werkzeugeProducts: Product[] = [
     id: "betonruettler-ir1000",
     name: "Beton Rüttler 2m IR 1000",
     description: "Innenrüttler für Betonverdichtung",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgBetonruettler,
+    images: [imgBetonruettler],
     category: "betonruettler",
     rentwareCode: { krefeld: "TXALE6" }
   },
