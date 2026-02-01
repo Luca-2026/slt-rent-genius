@@ -24,6 +24,11 @@ import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28
 import imgDrehschlagschrauber1 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
 import imgDrehschlagschrauber2 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h-2.jpg";
 import imgNageler from "@/assets/products/werkzeuge/nageler-te-cn.jpg";
+// Erdbohrer images
+import imgErdbohrer1 from "@/assets/products/gartenpflege/erdbohrer-4308-1.jpg";
+import imgErdbohrer2 from "@/assets/products/gartenpflege/erdbohrer-4308-2.jpg";
+import imgErdbohrer3 from "@/assets/products/gartenpflege/erdbohrer-4308-3.jpg";
+import imgErdbohrer4 from "@/assets/products/gartenpflege/erdbohrer-4308-4.jpg";
 
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
@@ -457,8 +462,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "stihl-erdbohrer-4308",
     name: "Stihl 4308 Erdbohrer",
     description: "Professioneller Erdbohrer von Stihl",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgErdbohrer1,
+    images: [imgErdbohrer1, imgErdbohrer2, imgErdbohrer3, imgErdbohrer4],
     category: "erdbohrer",
     rentwareCode: { krefeld: "XOS34H" }
   },
