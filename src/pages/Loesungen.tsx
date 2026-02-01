@@ -24,6 +24,17 @@ import imgTiefbauKramer from "@/assets/solutions/tiefbau/kramer-radlader.jpg";
 import imgTiefbauKompressor from "@/assets/solutions/tiefbau/doosan-kompressor.jpg";
 import imgTiefbauDrucklufthammer from "@/assets/solutions/tiefbau/drucklufthammer.jpg";
 
+// Hochbau solution images
+import imgHochbauRollgeruest from "@/assets/solutions/hochbau/rollgeruest-indoor.jpg";
+import imgHochbauGeruestLager from "@/assets/solutions/hochbau/geruest-lager.jpg";
+import imgHochbauRollgeruestHoch from "@/assets/solutions/hochbau/rollgeruest-hoch.jpg";
+import imgHochbauMastbuehne from "@/assets/solutions/hochbau/mastbuehne-zoomlion.jpg";
+import imgHochbauScherenbuehneKlein from "@/assets/solutions/hochbau/scherenbuehne-klein.jpg";
+import imgHochbauScherenbuehneOutdoor from "@/assets/solutions/hochbau/scherenbuehne-outdoor.jpg";
+import imgHochbauScherenbuehneSteuerung from "@/assets/solutions/hochbau/scherenbuehne-steuerung.jpg";
+import imgHochbauScherenbuehneGross from "@/assets/solutions/hochbau/scherenbuehne-gross.jpg";
+import imgHochbauGelenkbuehne from "@/assets/solutions/hochbau/gelenkbuehne-zoomlion.jpg";
+
 interface Solution {
   id: string;
   title: string;
@@ -77,7 +88,8 @@ const solutions: Solution[] = [
     title: "Hochbau & Renovierung",
     subtitle: "Neubau, Sanierung, Ausbau",
     description: "Vom Rohbau bis zum Feinschliff: Werkzeuge, Arbeitsbühnen und Gerüste für jede Bauphase. Unsere Profi-Geräte machen auch anspruchsvolle Projekte zum Kinderspiel.",
-    image: "/placeholder.svg",
+    image: imgHochbauScherenbuehneOutdoor,
+    images: [imgHochbauScherenbuehneOutdoor, imgHochbauScherenbuehneGross, imgHochbauMastbuehne, imgHochbauGelenkbuehne, imgHochbauScherenbuehneKlein, imgHochbauScherenbuehneSteuerung, imgHochbauRollgeruest, imgHochbauRollgeruestHoch, imgHochbauGeruestLager],
     icon: Building2,
     categories: ["werkzeuge", "arbeitsbuehnen", "leitern-gerueste", "heizung-trocknung"],
     highlights: [
