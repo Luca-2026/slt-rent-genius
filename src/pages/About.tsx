@@ -55,7 +55,7 @@ const partners = [
   { name: "Eibenstock", logo: logoEibenstock, url: "https://www.eibenstock.de/" },
   { name: "Doosan", logo: logoDoosan, url: "https://www.doosanportablepower.eu/" },
   { name: "Baumax", logo: logoBaumax, url: "https://baumax.de/" },
-  { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion.com/" },
+  { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion-nrw.de/" },
 ];
 
 const teamMembers = [
@@ -258,6 +258,22 @@ export default function About() {
                 />
               </a>
             ))}
+          </div>
+          
+          {/* Zoomlion Dealer Note */}
+          <div className="mt-8 p-4 bg-accent/10 border border-accent/20 rounded-lg text-center">
+            <p className="text-sm text-body">
+              <strong className="text-headline">Offizieller Fachhändler:</strong> SLT Rental ist autorisierter Fachhändler für{" "}
+              <a 
+                href="https://www.zoomlion-nrw.de/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-accent hover:underline font-medium"
+              >
+                Zoomlion
+              </a>{" "}
+              Bagger und Arbeitsbühnen in NRW.
+            </p>
           </div>
         </div>
       </section>
