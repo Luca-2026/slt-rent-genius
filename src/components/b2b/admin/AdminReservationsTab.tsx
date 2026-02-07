@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Plus, RefreshCw } from "lucide-react";
+import { CheckCircle2, Clock, Plus, RefreshCw, Check } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -30,6 +30,8 @@ interface Props {
   profiles: B2BProfile[];
   onCreateReservation: () => void;
   onGenerateInvoice: (reservation: Reservation) => void;
+  onConfirmReservation: (reservation: Reservation) => void;
+  confirmingId: string | null;
   onRefresh: () => void;
 }
 
@@ -38,6 +40,8 @@ export function AdminReservationsTab({
   profiles,
   onCreateReservation,
   onGenerateInvoice,
+  onConfirmReservation,
+  confirmingId,
   onRefresh,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
@@ -126,13 +130,27 @@ export function AdminReservationsTab({
                         </p>
                       )}
                     </div>
-                    <Button
-                      size="sm"
-                      className="bg-accent text-accent-foreground hover:bg-cta-orange-hover shrink-0"
-                      onClick={() => onGenerateInvoice(res)}
-                    >
-                      Rechnung erstellen
-                    </Button>
+                    <div className="flex gap-2 shrink-0">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        onClick={() => onConfirmReservation(res)}
+                        disabled={confirmingId === res.id}
+                      >
+                        {confirmingId === res.id ? (
+                          <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />Wird bestätigt...</>
+                        ) : (
+                          <><Check className="h-3.5 w-3.5 mr-1" />Bestätigen</>
+                        )}
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                        onClick={() => onGenerateInvoice(res)}
+                      >
+                        Rechnung erstellen
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
