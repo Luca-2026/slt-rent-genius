@@ -49,6 +49,7 @@ interface B2BProfile {
   city: string;
   country: string | null;
   created_at: string;
+  payment_due_days: number;
 }
 
 interface Invoice {
@@ -95,6 +96,8 @@ export default function AdminDashboard() {
   const [selectedProfile, setSelectedProfile] = useState<B2BProfile | null>(null);
   const [vatDialogOpen, setVatDialogOpen] = useState(false);
   const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false);
+  const [paymentTermsDialogOpen, setPaymentTermsDialogOpen] = useState(false);
+  const [editPaymentDays, setEditPaymentDays] = useState(14);
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -159,11 +162,12 @@ export default function AdminDashboard() {
   const generateInvoice = async (reservation: Reservation) => {
     setGeneratingInvoice(true);
     try {
+      // Use the customer's individual payment terms
+      const profile = profiles.find((p) => p.id === reservation.b2b_profile_id);
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
         body: {
           reservation_id: reservation.id,
           delivery_cost: 0,
-          payment_due_days: 14,
         },
       });
 
@@ -440,6 +444,10 @@ export default function AdminDashboard() {
                             Limit: {formatCurrency(profile.credit_limit)}
                           </span>
                           <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            Zahlungsziel: {profile.payment_due_days} Tage
+                          </span>
+                          <span className="flex items-center gap-1">
                             <Receipt className="h-3 w-3" />
                             {profileInvoices.length} Rechnungen
                           </span>
@@ -457,6 +465,18 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedProfile(profile);
+                            setEditPaymentDays(profile.payment_due_days);
+                            setPaymentTermsDialogOpen(true);
+                          }}
+                        >
+                          <Clock className="h-3.5 w-3.5 mr-1" />
+                          Zahlungsziel
+                        </Button>
                         {profile.tax_id && (
                           <Button
                             size="sm"
@@ -515,7 +535,76 @@ export default function AdminDashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Invoice Generation Dialog */}
+      {/* Payment Terms Dialog */}
+      <Dialog open={paymentTermsDialogOpen} onOpenChange={setPaymentTermsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Zahlungsziel anpassen</DialogTitle>
+            <DialogDescription>
+              Individuelles Zahlungsziel für diesen Kunden festlegen. Wird automatisch bei neuen Rechnungen verwendet.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedProfile && (
+            <div className="space-y-4">
+              <Card>
+                <CardContent className="p-4">
+                  <p className="font-semibold">{selectedProfile.company_name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Aktuell: {selectedProfile.payment_due_days} Tage Zahlungsziel
+                  </p>
+                </CardContent>
+              </Card>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Zahlungsziel (Tage)</label>
+                <Select
+                  value={String(editPaymentDays)}
+                  onValueChange={(v) => setEditPaymentDays(Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="7">7 Tage</SelectItem>
+                    <SelectItem value="14">14 Tage</SelectItem>
+                    <SelectItem value="21">21 Tage</SelectItem>
+                    <SelectItem value="30">30 Tage</SelectItem>
+                    <SelectItem value="45">45 Tage</SelectItem>
+                    <SelectItem value="60">60 Tage</SelectItem>
+                    <SelectItem value="90">90 Tage</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex gap-3 justify-end">
+                <Button variant="outline" onClick={() => setPaymentTermsDialogOpen(false)}>
+                  Abbrechen
+                </Button>
+                <Button
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  onClick={async () => {
+                    const { error } = await supabase
+                      .from("b2b_profiles")
+                      .update({ payment_due_days: editPaymentDays } as any)
+                      .eq("id", selectedProfile.id);
+                    if (error) {
+                      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+                    } else {
+                      toast({
+                        title: "Zahlungsziel aktualisiert",
+                        description: `${selectedProfile.company_name}: ${editPaymentDays} Tage Zahlungsziel.`,
+                      });
+                      fetchData();
+                    }
+                    setPaymentTermsDialogOpen(false);
+                  }}
+                >
+                  Speichern
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={invoiceDialogOpen} onOpenChange={setInvoiceDialogOpen}>
         <DialogContent>
           <DialogHeader>

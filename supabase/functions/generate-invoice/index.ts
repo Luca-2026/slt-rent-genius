@@ -90,7 +90,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days = 14, notes } = body;
+    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes } = body;
 
     console.log("Generating invoice for reservation:", reservation_id);
 
@@ -123,6 +123,9 @@ Deno.serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Use profile's payment terms, fallback to body override, then default 14
+    const payment_due_days = bodyPaymentDueDays ?? profile.payment_due_days ?? 14;
 
     // Determine reverse charge status
     const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
@@ -401,7 +404,7 @@ function generateInvoiceHtml(data: {
     <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
       <div>
-        <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:80px;width:auto;margin-bottom:6px;" />
+        <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:120px;width:auto;margin-bottom:6px;" />
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
       </div>
@@ -528,7 +531,7 @@ function generateInvoiceHtml(data: {
           <p>BIC: ${SLT_COMPANY.bic}</p>
         </div>
       </div>
-      <p style="text-align:center;margin-top:6px;font-size:9px;">${SLT_COMPANY.taxNote} · GF: ${SLT_COMPANY.managingDirector}</p>
+      <p style="text-align:center;margin-top:6px;font-size:9px;">${SLT_COMPANY.registry} · GF: ${SLT_COMPANY.managingDirector}</p>
     </div>
   </div>
 </body>
