@@ -13,16 +13,16 @@ export default function B2BLogin() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, user, loading: authLoading } = useAuth();
+  const { signIn, user, isAdmin, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Redirect already-authenticated users to dashboard
+  // Redirect already-authenticated users based on role
   useEffect(() => {
     if (!authLoading && user) {
-      navigate("/b2b/dashboard", { replace: true });
+      navigate(isAdmin ? "/b2b/admin" : "/b2b/dashboard", { replace: true });
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function B2BLogin() {
         title: "Erfolgreich angemeldet",
         description: "Willkommen im B2B-Portal!",
       });
-      navigate("/b2b/dashboard");
+      // Redirect happens via useEffect based on isAdmin state
     }
   };
 
