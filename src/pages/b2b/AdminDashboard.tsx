@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -376,11 +377,14 @@ export default function AdminDashboard() {
                       <TableCell>
                         <div className="flex gap-1">
                           {inv.file_url && (
-                            <a href={inv.file_url} target="_blank" rel="noopener noreferrer">
-                              <Button size="sm" variant="ghost" title="Rechnung öffnen">
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            </a>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              title="Rechnung öffnen"
+                              onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
                           )}
                         </div>
                       </TableCell>

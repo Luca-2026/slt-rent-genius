@@ -1,0 +1,40 @@
+/**
+ * Opens an invoice HTML file in a new browser window for rendering and PDF printing.
+ * Fetches the HTML from the signed URL and writes it into a new window,
+ * ensuring proper rendering instead of showing raw HTML code.
+ */
+export async function openInvoiceInNewWindow(fileUrl: string, invoiceNumber?: string): Promise<void> {
+  try {
+    const response = await fetch(fileUrl);
+    if (!response.ok) {
+      throw new Error(`Fehler beim Laden der Rechnung: ${response.status}`);
+    }
+
+    const html = await response.text();
+
+    // Open a new window and write the HTML into it
+    const newWindow = window.open("", "_blank");
+    if (!newWindow) {
+      // Fallback: if popup is blocked, use blob URL
+      const blob = new Blob([html], { type: "text/html" });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, "_blank");
+      // Clean up blob URL after a delay
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+      return;
+    }
+
+    newWindow.document.open();
+    newWindow.document.write(html);
+    newWindow.document.close();
+
+    // Set window title
+    if (invoiceNumber) {
+      newWindow.document.title = `Rechnung ${invoiceNumber}`;
+    }
+  } catch (error) {
+    console.error("Invoice viewer error:", error);
+    // Ultimate fallback: open the URL directly
+    window.open(fileUrl, "_blank");
+  }
+}
