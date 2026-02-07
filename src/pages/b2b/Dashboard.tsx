@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 export default function B2BDashboard() {
-  const { user, b2bProfile, loading, signOut } = useAuth();
+  const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   // Get the nearest location based on assigned_location or default to Krefeld
@@ -42,8 +42,10 @@ export default function B2BDashboard() {
   useEffect(() => {
     if (!loading && !user) {
       navigate("/b2b/login");
+    } else if (!loading && user && isAdmin) {
+      navigate("/b2b/admin", { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, isAdmin, navigate]);
 
   if (loading) {
     return (
