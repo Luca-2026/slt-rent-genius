@@ -20,6 +20,8 @@ import B2BDashboard from "./pages/b2b/Dashboard";
 import ProjectRequest from "./pages/b2b/ProjectRequest";
 import B2BProducts from "./pages/b2b/B2BProducts";
 import MyReservations from "./pages/b2b/MyReservations";
+import B2BInvoices from "./pages/b2b/Invoices";
+import AdminDashboard from "./pages/b2b/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import AGB from "./pages/AGB";
 import Impressum from "./pages/Impressum";
@@ -89,6 +91,8 @@ const App = () => (
             <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
             <Route path="/b2b/produkte" element={<B2BProducts />} />
             <Route path="/b2b/anfragen" element={<MyReservations />} />
+            <Route path="/b2b/rechnungen" element={<B2BInvoices />} />
+            <Route path="/b2b/admin" element={<AdminDashboard />} />
             <Route path="/b2b" element={<B2BLogin />} />
             
             {/* Catch-all */}

@@ -56,48 +56,146 @@ export type Database = {
           },
         ]
       }
+      b2b_invoice_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          discount_percent: number
+          id: string
+          invoice_id: string
+          product_name: string
+          quantity: number
+          rental_end: string | null
+          rental_start: string | null
+          total_price: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          invoice_id: string
+          product_name: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          invoice_id?: string
+          product_name?: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_invoices: {
         Row: {
           amount: number
           b2b_profile_id: string
           created_at: string
+          customer_address: string | null
+          customer_city: string | null
+          customer_company: string | null
+          customer_country: string | null
+          customer_postal_code: string | null
+          delivery_cost: number
           due_date: string | null
+          email_sent: boolean
+          email_sent_at: string | null
           file_name: string | null
           file_url: string | null
+          gross_amount: number
           id: string
           invoice_date: string
           invoice_number: string
+          is_reverse_charge: boolean
+          net_amount: number
           notes: string | null
+          payment_due_days: number
+          reservation_id: string | null
           status: string
           updated_at: string
+          vat_amount: number
+          vat_id_at_creation: string | null
+          vat_rate: number
         }
         Insert: {
           amount: number
           b2b_profile_id: string
           created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_company?: string | null
+          customer_country?: string | null
+          customer_postal_code?: string | null
+          delivery_cost?: number
           due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
           file_name?: string | null
           file_url?: string | null
+          gross_amount?: number
           id?: string
           invoice_date: string
           invoice_number: string
+          is_reverse_charge?: boolean
+          net_amount?: number
           notes?: string | null
+          payment_due_days?: number
+          reservation_id?: string | null
           status?: string
           updated_at?: string
+          vat_amount?: number
+          vat_id_at_creation?: string | null
+          vat_rate?: number
         }
         Update: {
           amount?: number
           b2b_profile_id?: string
           created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_company?: string | null
+          customer_country?: string | null
+          customer_postal_code?: string | null
+          delivery_cost?: number
           due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
           file_name?: string | null
           file_url?: string | null
+          gross_amount?: number
           id?: string
           invoice_date?: string
           invoice_number?: string
+          is_reverse_charge?: boolean
+          net_amount?: number
           notes?: string | null
+          payment_due_days?: number
+          reservation_id?: string | null
           status?: string
           updated_at?: string
+          vat_amount?: number
+          vat_id_at_creation?: string | null
+          vat_rate?: number
         }
         Relationships: [
           {
@@ -105,6 +203,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_invoices_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_reservations"
             referencedColumns: ["id"]
           },
         ]
@@ -141,6 +246,7 @@ export type Database = {
           updated_at: string
           used_credit: number
           user_id: string
+          vat_id_verified: boolean
         }
         Insert: {
           assigned_contact_override?: Json | null
@@ -173,6 +279,7 @@ export type Database = {
           updated_at?: string
           used_credit?: number
           user_id: string
+          vat_id_verified?: boolean
         }
         Update: {
           assigned_contact_override?: Json | null
@@ -205,6 +312,7 @@ export type Database = {
           updated_at?: string
           used_credit?: number
           user_id?: string
+          vat_id_verified?: boolean
         }
         Relationships: []
       }
@@ -568,6 +676,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_invoice_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
