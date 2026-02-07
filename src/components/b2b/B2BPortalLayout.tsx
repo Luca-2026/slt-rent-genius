@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
-  LayoutDashboard, Package, FileText, Receipt, 
+  LayoutDashboard, Package, FileText, 
   LogOut, Phone, Home
 } from "lucide-react";
 
@@ -20,7 +20,6 @@ const navItems = [
   { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
   { href: "/b2b/anfragen", label: "Meine Anfragen", icon: FileText },
-  { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];
 
