@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
-import { CalendarDays, MapPin, Send, Package } from "lucide-react";
+import { CalendarDays, MapPin, Send, Package, Clock } from "lucide-react";
 
 interface B2BReservationDialogProps {
   product: Product | null;
@@ -33,7 +33,9 @@ export function B2BReservationDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationId, setLocationId] = useState(preselectedLocation || "krefeld");
   const [startDate, setStartDate] = useState("");
+  const [startTime, setStartTime] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [notes, setNotes] = useState("");
 
@@ -51,6 +53,13 @@ export function B2BReservationDialog({
     setIsSubmitting(true);
 
     try {
+      // Build notes with time info
+      const timeInfo = [
+        startTime ? `Abholung: ${startTime} Uhr` : "",
+        endTime ? `Rückgabe: ${endTime} Uhr` : "",
+      ].filter(Boolean).join(" · ");
+      const fullNotes = [timeInfo, notes].filter(Boolean).join("\n") || null;
+
       const { error } = await supabase.from("b2b_reservations").insert({
         b2b_profile_id: b2bProfile.id,
         user_id: user.id,
@@ -61,7 +70,7 @@ export function B2BReservationDialog({
         start_date: startDate,
         end_date: endDate || null,
         quantity: parseInt(quantity) || 1,
-        notes: notes || null,
+        notes: fullNotes,
         status: "pending",
       } as any);
 
@@ -74,7 +83,9 @@ export function B2BReservationDialog({
       onOpenChange(false);
       // Reset form
       setStartDate("");
+      setStartTime("");
       setEndDate("");
+      setEndTime("");
       setQuantity("1");
       setNotes("");
     } catch (error: any) {
@@ -142,7 +153,7 @@ export function B2BReservationDialog({
             </Select>
           </div>
 
-          {/* Dates */}
+          {/* Dates & Times */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-headline mb-1.5">
@@ -159,6 +170,18 @@ export function B2BReservationDialog({
             </div>
             <div>
               <label className="block text-sm font-medium text-headline mb-1.5">
+                <Clock className="h-3.5 w-3.5 inline mr-1" />
+                Uhrzeit (von)
+              </label>
+              <Input
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                placeholder="z.B. 08:00"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-headline mb-1.5">
                 <CalendarDays className="h-3.5 w-3.5 inline mr-1" />
                 Bis
               </label>
@@ -167,6 +190,18 @@ export function B2BReservationDialog({
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 min={startDate || new Date().toISOString().split("T")[0]}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-headline mb-1.5">
+                <Clock className="h-3.5 w-3.5 inline mr-1" />
+                Uhrzeit (bis)
+              </label>
+              <Input
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                placeholder="z.B. 17:00"
               />
             </div>
           </div>
