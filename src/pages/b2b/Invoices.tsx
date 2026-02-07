@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -217,12 +218,14 @@ export default function B2BInvoices() {
                         )}
                       </div>
                       {inv.file_url && (
-                        <a href={inv.file_url} target="_blank" rel="noopener noreferrer">
-                          <Button size="sm" variant="outline">
-                            <Download className="h-3.5 w-3.5 mr-1" />
-                            PDF
-                          </Button>
-                        </a>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
+                        >
+                          <Download className="h-3.5 w-3.5 mr-1" />
+                          PDF
+                        </Button>
                       )}
                     </div>
                   </CardContent>
@@ -277,11 +280,13 @@ export default function B2BInvoices() {
                       </TableCell>
                       <TableCell className="text-center">
                         {inv.file_url ? (
-                          <a href={inv.file_url} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="ghost">
-                              <ExternalLink className="h-4 w-4" />
-                            </Button>
-                          </a>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </Button>
                         ) : (
                           <span className="text-xs text-muted-foreground">–</span>
                         )}
