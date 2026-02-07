@@ -4,7 +4,11 @@ import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
+import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
+import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
+import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +28,7 @@ import {
 import {
   Users, Receipt, Shield, CheckCircle2, Clock, XCircle,
   FileText, Search, RefreshCw, Building2, CreditCard,
-  AlertCircle, Send, Eye, Filter, Plus,
+  Plus, Eye, Edit, CalendarPlus, UserPlus, Package,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -66,6 +70,7 @@ interface Invoice {
   email_sent: boolean;
   customer_company: string | null;
   b2b_profile_id: string;
+  reservation_id: string | null;
   created_at: string;
 }
 
@@ -93,14 +98,20 @@ export default function AdminDashboard() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState<B2BProfile | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Dialog states
   const [vatDialogOpen, setVatDialogOpen] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<B2BProfile | null>(null);
   const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false);
-  const [paymentTermsDialogOpen, setPaymentTermsDialogOpen] = useState(false);
-  const [editPaymentDays, setEditPaymentDays] = useState(14);
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+
+  // New dialogs
+  const [editCustomerOpen, setEditCustomerOpen] = useState(false);
+  const [extendResOpen, setExtendResOpen] = useState(false);
+  const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
+  const [createReservationOpen, setCreateReservationOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -112,7 +123,7 @@ export default function AdminDashboard() {
     setLoading(true);
     const [profilesRes, invoicesRes, reservationsRes] = await Promise.all([
       supabase.from("b2b_profiles").select("*").order("created_at", { ascending: false }),
-      supabase.from("b2b_invoices").select("id, invoice_number, invoice_date, due_date, gross_amount, net_amount, vat_amount, is_reverse_charge, status, file_url, email_sent, customer_company, b2b_profile_id, created_at").order("created_at", { ascending: false }),
+      supabase.from("b2b_invoices").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_reservations").select("*").order("created_at", { ascending: false }),
     ]);
 
@@ -162,13 +173,8 @@ export default function AdminDashboard() {
   const generateInvoice = async (reservation: Reservation) => {
     setGeneratingInvoice(true);
     try {
-      // Use the customer's individual payment terms
-      const profile = profiles.find((p) => p.id === reservation.b2b_profile_id);
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: {
-          reservation_id: reservation.id,
-          delivery_cost: 0,
-        },
+        body: { reservation_id: reservation.id, delivery_cost: 0 },
       });
 
       if (error) throw error;
@@ -182,11 +188,7 @@ export default function AdminDashboard() {
       fetchData();
     } catch (error: any) {
       console.error("Invoice generation error:", error);
-      toast({
-        title: "Fehler",
-        description: error.message || "Rechnung konnte nicht erstellt werden.",
-        variant: "destructive",
-      });
+      toast({ title: "Fehler", description: error.message || "Rechnung konnte nicht erstellt werden.", variant: "destructive" });
     } finally {
       setGeneratingInvoice(false);
     }
@@ -205,10 +207,11 @@ export default function AdminDashboard() {
     );
   }
 
-  // Pending reservations (no invoice yet)
   const pendingReservations = reservations.filter(
-    (r) => r.status === "pending" && !invoices.some((inv) => (inv as any).reservation_id === r.id)
+    (r) => r.status === "pending" && !invoices.some((inv) => inv.reservation_id === r.id)
   );
+
+  const confirmedReservations = reservations.filter((r) => r.status === "confirmed" || r.status === "pending");
 
   const filteredProfiles = profiles.filter((p) => {
     if (!searchQuery.trim()) return true;
@@ -219,29 +222,38 @@ export default function AdminDashboard() {
   return (
     <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung & Rechnungen">
       <Tabs defaultValue="reservations" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="reservations" className="flex items-center gap-1.5">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="reservations" className="flex items-center gap-1.5 text-xs sm:text-sm">
             <FileText className="h-4 w-4" />
-            Anfragen ({pendingReservations.length})
+            <span className="hidden sm:inline">Anfragen</span> ({pendingReservations.length})
           </TabsTrigger>
-          <TabsTrigger value="invoices" className="flex items-center gap-1.5">
+          <TabsTrigger value="rentals" className="flex items-center gap-1.5 text-xs sm:text-sm">
+            <Package className="h-4 w-4" />
+            <span className="hidden sm:inline">Mietverträge</span> ({confirmedReservations.length})
+          </TabsTrigger>
+          <TabsTrigger value="invoices" className="flex items-center gap-1.5 text-xs sm:text-sm">
             <Receipt className="h-4 w-4" />
-            Rechnungen ({invoices.length})
+            <span className="hidden sm:inline">Rechnungen</span> ({invoices.length})
           </TabsTrigger>
-          <TabsTrigger value="customers" className="flex items-center gap-1.5">
+          <TabsTrigger value="customers" className="flex items-center gap-1.5 text-xs sm:text-sm">
             <Users className="h-4 w-4" />
-            Kunden ({profiles.length})
+            <span className="hidden sm:inline">Kunden</span> ({profiles.length})
           </TabsTrigger>
         </TabsList>
 
-        {/* Reservations / Pending */}
+        {/* === Pending Reservations === */}
         <TabsContent value="reservations">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Offene Anfragen → Rechnung erstellen</h2>
-            <Button variant="outline" size="sm" onClick={fetchData}>
-              <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-              Aktualisieren
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => setCreateReservationOpen(true)} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                <Plus className="h-3.5 w-3.5 mr-1" />
+                Mietanfrage
+              </Button>
+              <Button variant="outline" size="sm" onClick={fetchData}>
+                <RefreshCw className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           </div>
 
           {pendingReservations.length === 0 ? (
@@ -262,16 +274,13 @@ export default function AdminDashboard() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <p className="font-semibold">{res.product_name || res.product_id}</p>
-                            <Badge variant="secondary">
-                              <Clock className="h-3 w-3 mr-1" />
-                              Ausstehend
-                            </Badge>
+                            <Badge variant="secondary"><Clock className="h-3 w-3 mr-1" />Ausstehend</Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            Kunde: <strong>{profile?.company_name || "Unbekannt"}</strong> · 
-                            Standort: {res.location} · 
+                            Kunde: <strong>{profile?.company_name || "Unbekannt"}</strong> ·
+                            Standort: {res.location} ·
                             Von: {formatDate(res.start_date)}
-                            {res.end_date ? ` bis ${formatDate(res.end_date)}` : ""} · 
+                            {res.end_date ? ` bis ${formatDate(res.end_date)}` : ""} ·
                             Menge: {res.quantity}
                           </p>
                           {res.original_price != null && (
@@ -286,13 +295,9 @@ export default function AdminDashboard() {
                         <Button
                           size="sm"
                           className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                          onClick={() => {
-                            setSelectedReservation(res);
-                            setInvoiceDialogOpen(true);
-                          }}
+                          onClick={() => { setSelectedReservation(res); setInvoiceDialogOpen(true); }}
                         >
-                          <Plus className="h-3.5 w-3.5 mr-1" />
-                          Rechnung erstellen
+                          <Plus className="h-3.5 w-3.5 mr-1" />Rechnung erstellen
                         </Button>
                       </div>
                     </CardContent>
@@ -303,14 +308,85 @@ export default function AdminDashboard() {
           )}
         </TabsContent>
 
-        {/* Invoices */}
+        {/* === All Rentals (extend etc.) === */}
+        <TabsContent value="rentals">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Alle Mietverträge</h2>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => setCreateReservationOpen(true)} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                <Plus className="h-3.5 w-3.5 mr-1" />Neu anlegen
+              </Button>
+              <Button variant="outline" size="sm" onClick={fetchData}><RefreshCw className="h-3.5 w-3.5" /></Button>
+            </div>
+          </div>
+
+          {reservations.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <Package className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
+                <p className="text-muted-foreground">Noch keine Mietverträge vorhanden.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Produkt</TableHead>
+                    <TableHead>Kunde</TableHead>
+                    <TableHead>Standort</TableHead>
+                    <TableHead>Zeitraum</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Preis</TableHead>
+                    <TableHead>Aktionen</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {reservations.map((res) => {
+                    const profile = profiles.find((p) => p.id === res.b2b_profile_id);
+                    return (
+                      <TableRow key={res.id}>
+                        <TableCell>
+                          <p className="font-medium text-sm">{res.product_name || res.product_id}</p>
+                          <p className="text-xs text-muted-foreground">Menge: {res.quantity}</p>
+                        </TableCell>
+                        <TableCell className="text-sm">{profile?.company_name || "–"}</TableCell>
+                        <TableCell className="text-sm capitalize">{res.location}</TableCell>
+                        <TableCell className="text-sm">
+                          {formatDate(res.start_date)}
+                          {res.end_date ? ` – ${formatDate(res.end_date)}` : ""}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={res.status === "confirmed" ? "default" : res.status === "pending" ? "secondary" : "outline"}>
+                            {res.status === "confirmed" ? "Bestätigt" : res.status === "pending" ? "Ausstehend" : res.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right text-sm">
+                          {res.discounted_price != null ? formatCurrency(res.discounted_price) : res.original_price != null ? formatCurrency(res.original_price) : "–"}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => { setSelectedReservation(res); setExtendResOpen(true); }}
+                          >
+                            <CalendarPlus className="h-3.5 w-3.5 mr-1" />Verlängern
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* === Invoices === */}
         <TabsContent value="invoices">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Alle Rechnungen</h2>
-            <Button variant="outline" size="sm" onClick={fetchData}>
-              <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-              Aktualisieren
-            </Button>
+            <Button variant="outline" size="sm" onClick={fetchData}><RefreshCw className="h-3.5 w-3.5 mr-1.5" />Aktualisieren</Button>
           </div>
 
           {invoices.length === 0 ? (
@@ -329,9 +405,7 @@ export default function AdminDashboard() {
                     <TableHead>Kunde</TableHead>
                     <TableHead>Datum</TableHead>
                     <TableHead className="text-right">Brutto</TableHead>
-                    <TableHead>USt.</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>E-Mail</TableHead>
                     <TableHead>Aktionen</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -340,24 +414,14 @@ export default function AdminDashboard() {
                     <TableRow key={inv.id}>
                       <TableCell>
                         <p className="font-medium">{inv.invoice_number}</p>
-                        {inv.is_reverse_charge && (
-                          <Badge variant="outline" className="text-xs mt-1">RC</Badge>
-                        )}
+                        {inv.is_reverse_charge && <Badge variant="outline" className="text-xs mt-1">RC</Badge>}
                       </TableCell>
                       <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
                       <TableCell className="text-sm">{formatDate(inv.invoice_date)}</TableCell>
                       <TableCell className="text-right font-medium">{formatCurrency(inv.gross_amount)}</TableCell>
-                      <TableCell className="text-sm">
-                        {inv.is_reverse_charge ? "RC" : formatCurrency(inv.vat_amount)}
-                      </TableCell>
                       <TableCell>
-                        <Select
-                          value={inv.status}
-                          onValueChange={(v) => updateInvoiceStatus(inv.id, v)}
-                        >
-                          <SelectTrigger className="w-[120px] h-8 text-xs">
-                            <SelectValue />
-                          </SelectTrigger>
+                        <Select value={inv.status} onValueChange={(v) => updateInvoiceStatus(inv.id, v)}>
+                          <SelectTrigger className="w-[120px] h-8 text-xs"><SelectValue /></SelectTrigger>
                           <SelectContent>
                             <SelectItem value="open">Offen</SelectItem>
                             <SelectItem value="paid">Bezahlt</SelectItem>
@@ -367,30 +431,11 @@ export default function AdminDashboard() {
                         </Select>
                       </TableCell>
                       <TableCell>
-                        {inv.email_sent ? (
-                          <Badge variant="outline" className="text-xs text-green-600">
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                            Gesendet
-                          </Badge>
-                        ) : (
-                          <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Ausstehend
-                          </Badge>
+                        {inv.file_url && (
+                          <Button size="sm" variant="ghost" onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}>
+                            <Eye className="h-4 w-4" />
+                          </Button>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-1">
-                          {inv.file_url && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              title="Rechnung öffnen"
-                              onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          )}
-                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -400,29 +445,26 @@ export default function AdminDashboard() {
           )}
         </TabsContent>
 
-        {/* Customers / VAT Management */}
+        {/* === Customers === */}
         <TabsContent value="customers">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-            <h2 className="text-lg font-semibold">B2B-Kunden & USt-IdNr. Verwaltung</h2>
+            <h2 className="text-lg font-semibold">B2B-Kunden</h2>
             <div className="flex gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Firma suchen..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 w-[200px]"
-                />
+                <Input placeholder="Firma suchen..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9 w-[200px]" />
               </div>
-              <Button variant="outline" size="sm" onClick={fetchData}>
-                <RefreshCw className="h-3.5 w-3.5" />
+              <Button size="sm" onClick={() => setCreateCustomerOpen(true)} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                <UserPlus className="h-3.5 w-3.5 mr-1" />Neu
               </Button>
+              <Button variant="outline" size="sm" onClick={fetchData}><RefreshCw className="h-3.5 w-3.5" /></Button>
             </div>
           </div>
 
           <div className="space-y-3">
             {filteredProfiles.map((profile) => {
               const profileInvoices = invoices.filter((i) => i.b2b_profile_id === profile.id);
+              const profileReservations = reservations.filter((r) => r.b2b_profile_id === profile.id);
               return (
                 <Card key={profile.id}>
                   <CardContent className="p-4">
@@ -440,23 +482,22 @@ export default function AdminDashboard() {
                         </p>
                         <div className="flex flex-wrap gap-3 mt-2 text-xs">
                           <span className="flex items-center gap-1">
-                            <CreditCard className="h-3 w-3" />
-                            Limit: {formatCurrency(profile.credit_limit)}
+                            <CreditCard className="h-3 w-3" />Limit: {formatCurrency(profile.credit_limit)}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            Zahlungsziel: {profile.payment_due_days} Tage
+                            <Clock className="h-3 w-3" />Zahlungsziel: {profile.payment_due_days} Tage
                           </span>
                           <span className="flex items-center gap-1">
-                            <Receipt className="h-3 w-3" />
-                            {profileInvoices.length} Rechnungen
+                            <Receipt className="h-3 w-3" />{profileInvoices.length} Rechnungen
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Package className="h-3 w-3" />{profileReservations.length} Mieten
                           </span>
                           {profile.tax_id && (
                             <span className="flex items-center gap-1">
-                              <Shield className="h-3 w-3" />
-                              USt-IdNr.: {profile.tax_id}
+                              <Shield className="h-3 w-3" />USt-IdNr.: {profile.tax_id}
                               {profile.vat_id_verified ? (
-                                <Badge variant="default" className="text-[10px] px-1 py-0 ml-1">✓ Verifiziert</Badge>
+                                <Badge variant="default" className="text-[10px] px-1 py-0 ml-1">✓</Badge>
                               ) : (
                                 <Badge variant="secondary" className="text-[10px] px-1 py-0 ml-1">Ungeprüft</Badge>
                               )}
@@ -464,27 +505,15 @@ export default function AdminDashboard() {
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            setSelectedProfile(profile);
-                            setEditPaymentDays(profile.payment_due_days);
-                            setPaymentTermsDialogOpen(true);
-                          }}
-                        >
-                          <Clock className="h-3.5 w-3.5 mr-1" />
-                          Zahlungsziel
+                      <div className="flex gap-2 flex-wrap">
+                        <Button size="sm" variant="outline" onClick={() => { setSelectedProfile(profile); setEditCustomerOpen(true); }}>
+                          <Edit className="h-3.5 w-3.5 mr-1" />Bearbeiten
                         </Button>
                         {profile.tax_id && (
                           <Button
                             size="sm"
                             variant={profile.vat_id_verified ? "outline" : "default"}
-                            onClick={() => {
-                              setSelectedProfile(profile);
-                              setVatDialogOpen(true);
-                            }}
+                            onClick={() => { setSelectedProfile(profile); setVatDialogOpen(true); }}
                           >
                             <Shield className="h-3.5 w-3.5 mr-1" />
                             {profile.vat_id_verified ? "VAT entziehen" : "VAT verifizieren"}
@@ -500,33 +529,29 @@ export default function AdminDashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* VAT Verification Dialog */}
+      {/* === Dialogs === */}
+
+      {/* VAT Verification */}
       <Dialog open={vatDialogOpen} onOpenChange={setVatDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>USt-IdNr. Verifizierung</DialogTitle>
             <DialogDescription>
               {selectedProfile?.vat_id_verified
-                ? "Möchtest du die Verifizierung der USt-IdNr. zurückziehen? Zukünftige Rechnungen werden dann mit USt. erstellt."
-                : "Möchtest du die USt-IdNr. als geprüft und freigegeben markieren? Zukünftige Rechnungen werden dann ohne USt. (Reverse-Charge) erstellt."}
+                ? "Verifizierung zurückziehen? Zukünftige Rechnungen mit USt."
+                : "USt-IdNr. als geprüft markieren? Zukünftige Rechnungen ohne USt. (Reverse-Charge)."}
             </DialogDescription>
           </DialogHeader>
           {selectedProfile && (
             <div className="space-y-4">
-              <Card>
-                <CardContent className="p-4">
-                  <p className="font-semibold">{selectedProfile.company_name}</p>
-                  <p className="text-sm text-muted-foreground">USt-IdNr.: {selectedProfile.tax_id}</p>
-                </CardContent>
-              </Card>
+              <Card><CardContent className="p-4">
+                <p className="font-semibold">{selectedProfile.company_name}</p>
+                <p className="text-sm text-muted-foreground">USt-IdNr.: {selectedProfile.tax_id}</p>
+              </CardContent></Card>
               <div className="flex gap-3 justify-end">
-                <Button variant="outline" onClick={() => setVatDialogOpen(false)}>
-                  Abbrechen
-                </Button>
-                <Button
-                  onClick={() => toggleVatVerification(selectedProfile)}
-                  className={selectedProfile.vat_id_verified ? "" : "bg-accent text-accent-foreground hover:bg-cta-orange-hover"}
-                >
+                <Button variant="outline" onClick={() => setVatDialogOpen(false)}>Abbrechen</Button>
+                <Button onClick={() => toggleVatVerification(selectedProfile)}
+                  className={selectedProfile.vat_id_verified ? "" : "bg-accent text-accent-foreground hover:bg-cta-orange-hover"}>
                   {selectedProfile.vat_id_verified ? "Verifizierung entziehen" : "Als verifiziert markieren"}
                 </Button>
               </div>
@@ -535,69 +560,40 @@ export default function AdminDashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Payment Terms Dialog */}
-      <Dialog open={paymentTermsDialogOpen} onOpenChange={setPaymentTermsDialogOpen}>
+      {/* Invoice Generation */}
+      <Dialog open={invoiceDialogOpen} onOpenChange={setInvoiceDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Zahlungsziel anpassen</DialogTitle>
-            <DialogDescription>
-              Individuelles Zahlungsziel für diesen Kunden festlegen. Wird automatisch bei neuen Rechnungen verwendet.
-            </DialogDescription>
+            <DialogTitle>Rechnung erstellen</DialogTitle>
+            <DialogDescription>Erstelle eine Rechnung für diese Reservierung.</DialogDescription>
           </DialogHeader>
-          {selectedProfile && (
+          {selectedReservation && (
             <div className="space-y-4">
-              <Card>
-                <CardContent className="p-4">
-                  <p className="font-semibold">{selectedProfile.company_name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Aktuell: {selectedProfile.payment_due_days} Tage Zahlungsziel
-                  </p>
-                </CardContent>
-              </Card>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Zahlungsziel (Tage)</label>
-                <Select
-                  value={String(editPaymentDays)}
-                  onValueChange={(v) => setEditPaymentDays(Number(v))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="7">7 Tage</SelectItem>
-                    <SelectItem value="14">14 Tage</SelectItem>
-                    <SelectItem value="21">21 Tage</SelectItem>
-                    <SelectItem value="30">30 Tage</SelectItem>
-                    <SelectItem value="45">45 Tage</SelectItem>
-                    <SelectItem value="60">60 Tage</SelectItem>
-                    <SelectItem value="90">90 Tage</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Card><CardContent className="p-4 space-y-2">
+                <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
+                <p className="text-sm text-muted-foreground">
+                  Standort: {selectedReservation.location} · Menge: {selectedReservation.quantity}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Zeitraum: {formatDate(selectedReservation.start_date)}
+                  {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
+                </p>
+                {selectedReservation.original_price != null && (
+                  <p className="text-sm">Preis: {formatCurrency(selectedReservation.discounted_price || selectedReservation.original_price)}</p>
+                )}
+                {(() => {
+                  const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);
+                  return profile?.tax_id && profile.vat_id_verified ? (
+                    <Badge variant="outline" className="text-primary"><Shield className="h-3 w-3 mr-1" />Reverse-Charge</Badge>
+                  ) : (
+                    <Badge variant="secondary">inkl. 19% USt.</Badge>
+                  );
+                })()}
+              </CardContent></Card>
               <div className="flex gap-3 justify-end">
-                <Button variant="outline" onClick={() => setPaymentTermsDialogOpen(false)}>
-                  Abbrechen
-                </Button>
-                <Button
-                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={async () => {
-                    const { error } = await supabase
-                      .from("b2b_profiles")
-                      .update({ payment_due_days: editPaymentDays } as any)
-                      .eq("id", selectedProfile.id);
-                    if (error) {
-                      toast({ title: "Fehler", description: error.message, variant: "destructive" });
-                    } else {
-                      toast({
-                        title: "Zahlungsziel aktualisiert",
-                        description: `${selectedProfile.company_name}: ${editPaymentDays} Tage Zahlungsziel.`,
-                      });
-                      fetchData();
-                    }
-                    setPaymentTermsDialogOpen(false);
-                  }}
-                >
-                  Speichern
+                <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
+                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover" onClick={() => generateInvoice(selectedReservation)} disabled={generatingInvoice}>
+                  {generatingInvoice ? <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird erstellt...</> : <><Receipt className="h-4 w-4 mr-1.5" />Rechnung generieren</>}
                 </Button>
               </div>
             </div>
@@ -605,75 +601,37 @@ export default function AdminDashboard() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={invoiceDialogOpen} onOpenChange={setInvoiceDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Rechnung erstellen</DialogTitle>
-            <DialogDescription>
-              Erstelle eine Rechnung für diese Reservierung.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedReservation && (
-            <div className="space-y-4">
-              <Card>
-                <CardContent className="p-4 space-y-2">
-                  <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Standort: {selectedReservation.location} · Menge: {selectedReservation.quantity}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Zeitraum: {formatDate(selectedReservation.start_date)}
-                    {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
-                  </p>
-                  {selectedReservation.original_price != null && (
-                    <p className="text-sm">
-                      Preis: {formatCurrency(selectedReservation.discounted_price || selectedReservation.original_price)}
-                    </p>
-                  )}
-                  {(() => {
-                    const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);
-                    if (profile?.tax_id && profile.vat_id_verified) {
-                      return (
-                        <Badge variant="outline" className="text-primary">
-                          <Shield className="h-3 w-3 mr-1" />
-                          Reverse-Charge (VAT verifiziert)
-                        </Badge>
-                      );
-                    }
-                    return (
-                      <Badge variant="secondary">
-                        inkl. 19% USt.
-                      </Badge>
-                    );
-                  })()}
-                </CardContent>
-              </Card>
-              <div className="flex gap-3 justify-end">
-                <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>
-                  Abbrechen
-                </Button>
-                <Button
-                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={() => generateInvoice(selectedReservation)}
-                  disabled={generatingInvoice}
-                >
-                  {generatingInvoice ? (
-                    <>
-                      <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
-                      Wird erstellt...
-                    </>
-                  ) : (
-                    <>
-                      <Receipt className="h-4 w-4 mr-1.5" />
-                      Rechnung generieren
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Customer Edit Dialog */}
+      <AdminCustomerEditDialog
+        profile={selectedProfile}
+        open={editCustomerOpen}
+        onOpenChange={setEditCustomerOpen}
+        onSaved={fetchData}
+      />
+
+      {/* Extend Reservation Dialog */}
+      <AdminExtendReservationDialog
+        reservation={selectedReservation}
+        companyName={profiles.find((p) => p.id === selectedReservation?.b2b_profile_id)?.company_name}
+        open={extendResOpen}
+        onOpenChange={setExtendResOpen}
+        onSaved={fetchData}
+      />
+
+      {/* Create Customer Dialog */}
+      <AdminCreateCustomerDialog
+        open={createCustomerOpen}
+        onOpenChange={setCreateCustomerOpen}
+        onCreated={fetchData}
+      />
+
+      {/* Create Reservation Dialog */}
+      <AdminCreateReservationDialog
+        profiles={profiles}
+        open={createReservationOpen}
+        onOpenChange={setCreateReservationOpen}
+        onCreated={fetchData}
+      />
     </B2BPortalLayout>
   );
 }
