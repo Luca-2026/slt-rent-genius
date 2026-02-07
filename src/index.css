@@ -179,3 +179,25 @@
     animation: marquee 20s linear infinite;
   }
 }
+
+/* Rentware floating cart widget – keep below sticky header */
+rtr-checkout {
+  z-index: 40 !important;
+}
+
+rtr-checkout::part(cart-button),
+rtr-checkout .rtr-cart-button,
+rtr-checkout > div {
+  z-index: 40 !important;
+}
+
+/* On mobile, push the Rentware cart button down so it doesn't cover the header/menu */
+@media (max-width: 768px) {
+  rtr-checkout {
+    position: fixed !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    top: auto !important;
+    z-index: 40 !important;
+  }
+}
