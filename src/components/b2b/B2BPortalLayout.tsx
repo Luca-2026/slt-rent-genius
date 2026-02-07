@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
   LayoutDashboard, Package, FileText, Receipt, Calculator, 
   User, LogOut, Settings, Phone
@@ -58,7 +59,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                 <p className="text-primary-foreground/80 text-sm">{subtitle}</p>
               )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-primary-foreground/70 text-sm hidden md:block">
                 {b2bProfile?.company_name}
               </span>
@@ -70,6 +71,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                   </Button>
                 </Link>
               )}
+              <ChangePasswordDialog />
               <Button 
                 size="sm"
                 variant="outline" 
