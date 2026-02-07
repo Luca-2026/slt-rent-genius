@@ -17,12 +17,11 @@ import {
   XCircle,
   LogOut,
   User,
-  Settings,
   Home
 } from "lucide-react";
 
 export default function B2BDashboard() {
-  const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
+  const { user, b2bProfile, loading, signOut } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,18 +100,6 @@ export default function B2BDashboard() {
                   Startseite
                 </Button>
               </Link>
-              {isAdmin && (
-                <Link to="/b2b/admin">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
-                  >
-                    <Settings className="h-4 w-4 mr-1.5" />
-                    Admin
-                  </Button>
-                </Link>
-              )}
               <ChangePasswordDialog className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20" />
               <Button 
                 variant="outline"
@@ -321,10 +308,12 @@ export default function B2BDashboard() {
             <CardContent className="p-6">
               <h3 className="font-semibold text-headline mb-2">Dein Ansprechpartner</h3>
               <p className="text-muted-foreground text-sm">
-                <strong>SLT Rental GmbH - B2B-Betreuung</strong><br />
-                Tel: 02151 / 932 89 53<br />
-                E-Mail: b2b@slt-rental.de<br />
-                Mo-Fr: 7:00-17:00 Uhr
+                <strong>SLT Technology Group GmbH & Co. KG</strong><br />
+                Marke: SLT-Rental<br />
+                Anrather Straße 291, 47807 Krefeld-Fichtenhain<br />
+                Tel: <a href="tel:+492151417990 4" className="text-primary hover:underline">02151 417 990 4</a><br />
+                E-Mail: <a href="mailto:mieten@slt-rental.de" className="text-primary hover:underline">mieten@slt-rental.de</a><br />
+                Mo-Fr: 07:30-18:00 Uhr · Sa: 08:00-14:30 Uhr
               </p>
             </CardContent>
           </Card>
