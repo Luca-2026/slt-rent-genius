@@ -5,8 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
-  LayoutDashboard, Package, FileText, 
-  LogOut, Phone, Home
+  LayoutDashboard, Package, FileText, Receipt,
+  LogOut, Phone, Home, Settings
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -15,11 +15,12 @@ interface B2BPortalLayoutProps {
   subtitle?: string;
 }
 
-const navItems = [
+const baseNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
   { href: "/b2b/anfragen", label: "Meine Anfragen", icon: FileText },
+  { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];
 
@@ -81,7 +82,10 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
       <div className="bg-background border-b border-border sticky top-16 z-30">
         <div className="section-container">
           <nav className="flex gap-1 overflow-x-auto py-2 -mx-2 px-2">
-            {navItems.map((item) => {
+            {[
+              ...baseNavItems,
+              ...(isAdmin ? [{ href: "/b2b/admin", label: "Admin", icon: Settings }] : []),
+            ].map((item) => {
               const isActive = location.pathname === item.href;
               const Icon = item.icon;
               return (
