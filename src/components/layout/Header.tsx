@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,18 @@ const navLinks = [
   { to: "/ueber-uns", label: "Über uns" },
   { to: "/kontakt", label: "Kontakt" },
 ];
+
+function RentwareCartButton() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current && !ref.current.querySelector("rtr-cart-button")) {
+      const el = document.createElement("rtr-cart-button");
+      ref.current.appendChild(el);
+    }
+  }, []);
+  return <div ref={ref} className="flex items-center" />;
+}
+
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,6 +113,9 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
+            {/* Rentware Cart Button */}
+            <RentwareCartButton />
+
             <Link to="/b2b/login">
               <Button variant="outline" size="sm" className="hidden sm:flex">
                 zum B2B Portal

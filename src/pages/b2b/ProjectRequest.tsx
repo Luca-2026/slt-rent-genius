@@ -28,7 +28,9 @@ export default function ProjectRequest() {
   const [sitePostalCode, setSitePostalCode] = useState("");
   const [siteCity, setSiteCity] = useState("");
   const [startDate, setStartDate] = useState<Date>();
+  const [startTime, setStartTime] = useState("");
   const [endDate, setEndDate] = useState<Date>();
+  const [endTime, setEndTime] = useState("");
   const [equipmentNeeded, setEquipmentNeeded] = useState("");
   const [deliveryRequired, setDeliveryRequired] = useState(false);
   const [pickupRequired, setPickupRequired] = useState(false);
@@ -95,7 +97,9 @@ export default function ProjectRequest() {
         site_postal_code: sitePostalCode,
         site_city: siteCity,
         start_date: startDate.toISOString().split("T")[0],
+        start_time: startTime || null,
         end_date: endDate?.toISOString().split("T")[0] || null,
+        end_time: endTime || null,
         equipment_needed: equipmentNeeded,
         delivery_required: deliveryRequired,
         pickup_required: pickupRequired,
@@ -264,6 +268,17 @@ export default function ProjectRequest() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-headline mb-1.5">
+                      Uhrzeit (Start)
+                    </label>
+                    <Input
+                      type="time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      placeholder="08:00"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-headline mb-1.5">
                       Enddatum (optional)
                     </label>
                     <Popover>
@@ -288,6 +303,17 @@ export default function ProjectRequest() {
                         />
                       </PopoverContent>
                     </Popover>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-headline mb-1.5">
+                      Uhrzeit (Ende)
+                    </label>
+                    <Input
+                      type="time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      placeholder="17:00"
+                    />
                   </div>
                 </div>
               </CardContent>
