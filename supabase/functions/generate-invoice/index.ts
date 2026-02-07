@@ -212,10 +212,11 @@ Deno.serve(async (req: Request) => {
     const fileName = `Rechnung_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
+    const htmlBytes = new TextEncoder().encode(pdfHtml);
     const { error: uploadError } = await serviceClient.storage
       .from("b2b-invoices")
-      .upload(filePath, new Blob([pdfHtml], { type: "text/html" }), {
-        contentType: "text/html",
+      .upload(filePath, htmlBytes, {
+        contentType: "text/html; charset=utf-8",
         upsert: true,
       });
 
