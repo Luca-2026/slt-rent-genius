@@ -1,0 +1,165 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
+
+interface CreateCustomerRequest {
+  email: string;
+  password: string;
+  company_name: string;
+  legal_form?: string;
+  contact_first_name: string;
+  contact_last_name: string;
+  contact_phone: string;
+  contact_email: string;
+  street: string;
+  house_number?: string;
+  postal_code: string;
+  city: string;
+  country?: string;
+  tax_id?: string;
+  credit_limit?: number;
+  assigned_location?: string;
+}
+
+Deno.serve(async (req: Request) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    // Auth check - only admins
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser(
+      authHeader.replace("Bearer ", "")
+    );
+    if (authError || !authUser) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Check admin role
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", authUser.id)
+      .eq("role", "admin")
+      .single();
+
+    if (!roleData) {
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const body: CreateCustomerRequest = await req.json();
+    console.log("Creating customer:", body.email, body.company_name);
+
+    // Validate required fields
+    if (!body.email || !body.password || !body.company_name || !body.contact_first_name || 
+        !body.contact_last_name || !body.contact_phone || !body.contact_email ||
+        !body.street || !body.postal_code || !body.city) {
+      return new Response(JSON.stringify({ error: "Missing required fields" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Use service role to create auth user
+    const serviceClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    // Create auth user with auto-confirm
+    const { data: newUser, error: createUserError } = await serviceClient.auth.admin.createUser({
+      email: body.email,
+      password: body.password,
+      email_confirm: true,
+    });
+
+    if (createUserError || !newUser?.user) {
+      console.error("Error creating user:", createUserError);
+      return new Response(JSON.stringify({ error: createUserError?.message || "Failed to create user" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    console.log("Auth user created:", newUser.user.id);
+
+    // Create B2B profile with approved status
+    const { data: profile, error: profileError } = await serviceClient
+      .from("b2b_profiles")
+      .insert({
+        user_id: newUser.user.id,
+        company_name: body.company_name,
+        legal_form: body.legal_form || null,
+        contact_first_name: body.contact_first_name,
+        contact_last_name: body.contact_last_name,
+        contact_phone: body.contact_phone,
+        contact_email: body.contact_email,
+        street: body.street,
+        house_number: body.house_number || null,
+        postal_code: body.postal_code,
+        city: body.city,
+        country: body.country || "Deutschland",
+        tax_id: body.tax_id || null,
+        credit_limit: body.credit_limit || 0,
+        assigned_location: body.assigned_location || null,
+        status: "approved",
+      })
+      .select()
+      .single();
+
+    if (profileError) {
+      console.error("Error creating profile:", profileError);
+      // Clean up: delete the auth user if profile creation fails
+      await serviceClient.auth.admin.deleteUser(newUser.user.id);
+      return new Response(JSON.stringify({ error: "Failed to create B2B profile: " + profileError.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    console.log("B2B profile created:", profile.id);
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        user_id: newUser.user.id,
+        profile_id: profile.id,
+        company_name: body.company_name,
+      }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
+  } catch (error: any) {
+    console.error("Unexpected error:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+});
