@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
+import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
   FileText, 
   Phone, 
@@ -88,7 +89,7 @@ export default function B2BDashboard() {
                 {b2bProfile?.company_name || "B2B-Dashboard"}
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               {isAdmin && (
                 <Link to="/b2b/admin">
                   <Button variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
@@ -97,6 +98,7 @@ export default function B2BDashboard() {
                   </Button>
                 </Link>
               )}
+              <ChangePasswordDialog />
               <Button 
                 variant="outline" 
                 className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
