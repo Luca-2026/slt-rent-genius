@@ -111,6 +111,7 @@ export default function AdminDashboard() {
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [createReservationOpen, setCreateReservationOpen] = useState(false);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   // Auth guard
   useEffect(() => {
@@ -196,6 +197,31 @@ export default function AdminDashboard() {
     }
   };
 
+  const confirmReservation = async (reservation: Reservation) => {
+    setConfirmingId(reservation.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("confirm-reservation", {
+        body: { reservation_id: reservation.id },
+      });
+      if (error) throw error;
+      toast({
+        title: "Anfrage bestätigt!",
+        description: data.email_sent
+          ? "Der Kunde wurde per E-Mail benachrichtigt."
+          : "Status auf 'bestätigt' gesetzt. (E-Mail-Versand nicht konfiguriert)",
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Bestätigung fehlgeschlagen.",
+        variant: "destructive",
+      });
+    } finally {
+      setConfirmingId(null);
+    }
+  };
+
   // ─── Derived data ─────────────────────────────────────
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -271,6 +297,8 @@ export default function AdminDashboard() {
               setSelectedReservation(res);
               setInvoiceDialogOpen(true);
             }}
+            onConfirmReservation={confirmReservation}
+            confirmingId={confirmingId}
             onRefresh={fetchData}
           />
         </TabsContent>

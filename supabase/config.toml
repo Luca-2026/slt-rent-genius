@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.admin-create-customer]
 verify_jwt = false
+
+[functions.confirm-reservation]
+verify_jwt = false
