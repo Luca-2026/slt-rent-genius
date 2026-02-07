@@ -14,8 +14,106 @@ export type Database = {
   }
   public: {
     Tables: {
+      b2b_category_discounts: {
+        Row: {
+          b2b_profile_id: string
+          category_id: string
+          created_at: string
+          discount_percent: number
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id: string
+          category_id: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string
+          category_id?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_category_discounts_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_category_discounts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_invoices: {
+        Row: {
+          amount: number
+          b2b_profile_id: string
+          created_at: string
+          due_date: string | null
+          file_name: string | null
+          file_url: string | null
+          id: string
+          invoice_date: string
+          invoice_number: string
+          notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          b2b_profile_id: string
+          created_at?: string
+          due_date?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          invoice_date: string
+          invoice_number: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          b2b_profile_id?: string
+          created_at?: string
+          due_date?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          invoice_date?: string
+          invoice_number?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_invoices_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_profiles: {
         Row: {
+          assigned_contact_override: Json | null
+          assigned_location: string | null
+          billing_email: string | null
           city: string
           company_name: string
           contact_email: string
@@ -25,6 +123,7 @@ export type Database = {
           contact_position: string | null
           country: string | null
           created_at: string
+          credit_limit: number
           document_filename: string | null
           document_url: string | null
           house_number: string | null
@@ -40,9 +139,13 @@ export type Database = {
           tax_id: string | null
           trade_register_number: string | null
           updated_at: string
+          used_credit: number
           user_id: string
         }
         Insert: {
+          assigned_contact_override?: Json | null
+          assigned_location?: string | null
+          billing_email?: string | null
           city: string
           company_name: string
           contact_email: string
@@ -52,6 +155,7 @@ export type Database = {
           contact_position?: string | null
           country?: string | null
           created_at?: string
+          credit_limit?: number
           document_filename?: string | null
           document_url?: string | null
           house_number?: string | null
@@ -67,9 +171,13 @@ export type Database = {
           tax_id?: string | null
           trade_register_number?: string | null
           updated_at?: string
+          used_credit?: number
           user_id: string
         }
         Update: {
+          assigned_contact_override?: Json | null
+          assigned_location?: string | null
+          billing_email?: string | null
           city?: string
           company_name?: string
           contact_email?: string
@@ -79,6 +187,7 @@ export type Database = {
           contact_position?: string | null
           country?: string | null
           created_at?: string
+          credit_limit?: number
           document_filename?: string | null
           document_url?: string | null
           house_number?: string | null
@@ -94,9 +203,76 @@ export type Database = {
           tax_id?: string | null
           trade_register_number?: string | null
           updated_at?: string
+          used_credit?: number
           user_id?: string
         }
         Relationships: []
+      }
+      b2b_reservations: {
+        Row: {
+          b2b_profile_id: string
+          created_at: string
+          discounted_price: number | null
+          end_date: string | null
+          id: string
+          location: string
+          notes: string | null
+          original_price: number | null
+          product_id: string
+          quantity: number
+          start_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          b2b_profile_id: string
+          created_at?: string
+          discounted_price?: number | null
+          end_date?: string | null
+          id?: string
+          location: string
+          notes?: string | null
+          original_price?: number | null
+          product_id: string
+          quantity?: number
+          start_date: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          b2b_profile_id?: string
+          created_at?: string
+          discounted_price?: number | null
+          end_date?: string | null
+          id?: string
+          location?: string
+          notes?: string | null
+          original_price?: number | null
+          product_id?: string
+          quantity?: number
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_reservations_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_reservations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       job_applications: {
         Row: {
@@ -172,6 +348,131 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          gdpr_consent: boolean
+          gdpr_consent_date: string | null
+          id: string
+          is_active: boolean | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          gdpr_consent?: boolean
+          gdpr_consent_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          gdpr_consent?: boolean
+          gdpr_consent_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          source?: string | null
+        }
+        Relationships: []
+      }
+      product_categories: {
+        Row: {
+          created_at: string
+          icon_url: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          available_locations: string[] | null
+          category_id: string | null
+          created_at: string
+          daily_price: number
+          deposit: number | null
+          description: string | null
+          id: string
+          images: string[] | null
+          is_active: boolean | null
+          monthly_price: number | null
+          name: string
+          slug: string
+          specifications: Json | null
+          updated_at: string
+          weekly_price: number | null
+          weight_class: string | null
+        }
+        Insert: {
+          available_locations?: string[] | null
+          category_id?: string | null
+          created_at?: string
+          daily_price?: number
+          deposit?: number | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean | null
+          monthly_price?: number | null
+          name: string
+          slug: string
+          specifications?: Json | null
+          updated_at?: string
+          weekly_price?: number | null
+          weight_class?: string | null
+        }
+        Update: {
+          available_locations?: string[] | null
+          category_id?: string | null
+          created_at?: string
+          daily_price?: number
+          deposit?: number | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean | null
+          monthly_price?: number | null
+          name?: string
+          slug?: string
+          specifications?: Json | null
+          updated_at?: string
+          weekly_price?: number | null
+          weight_class?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_requests: {
         Row: {
