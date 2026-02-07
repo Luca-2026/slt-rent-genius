@@ -400,10 +400,13 @@ function generateInvoiceHtml(data: {
   <div style="max-width:210mm;margin:0 auto;padding:20mm 15mm;">
     <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
-      <div>
-        <h1 style="font-size:28px;font-weight:700;color:#00507d;margin-bottom:4px;">SLT-Rental</h1>
-        <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
-        <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:52px;width:auto;" />
+        <div>
+          <h1 style="font-size:28px;font-weight:700;color:#00507d;margin-bottom:4px;">SLT-Rental</h1>
+          <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
+          <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
+        </div>
       </div>
       <div style="text-align:right;">
         <p style="font-size:22px;font-weight:700;color:#393d46;">RECHNUNG</p>
