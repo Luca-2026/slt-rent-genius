@@ -211,6 +211,7 @@ export type Database = {
       b2b_reservations: {
         Row: {
           b2b_profile_id: string
+          category_slug: string | null
           created_at: string
           discounted_price: number | null
           end_date: string | null
@@ -219,6 +220,7 @@ export type Database = {
           notes: string | null
           original_price: number | null
           product_id: string
+          product_name: string | null
           quantity: number
           start_date: string
           status: string
@@ -227,6 +229,7 @@ export type Database = {
         }
         Insert: {
           b2b_profile_id: string
+          category_slug?: string | null
           created_at?: string
           discounted_price?: number | null
           end_date?: string | null
@@ -235,6 +238,7 @@ export type Database = {
           notes?: string | null
           original_price?: number | null
           product_id: string
+          product_name?: string | null
           quantity?: number
           start_date: string
           status?: string
@@ -243,6 +247,7 @@ export type Database = {
         }
         Update: {
           b2b_profile_id?: string
+          category_slug?: string | null
           created_at?: string
           discounted_price?: number | null
           end_date?: string | null
@@ -251,6 +256,7 @@ export type Database = {
           notes?: string | null
           original_price?: number | null
           product_id?: string
+          product_name?: string | null
           quantity?: number
           start_date?: string
           status?: string
@@ -263,13 +269,6 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "b2b_reservations_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]

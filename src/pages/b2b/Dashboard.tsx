@@ -164,17 +164,17 @@ export default function B2BDashboard() {
           {/* Dashboard Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Project Request - Only for approved */}
-            <Link to={isApproved ? "/b2b/projektanfrage" : "#"}>
+            <Link to={isApproved ? "/b2b/produkte" : "#"}>
               <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-2">
                     <FileText className="h-6 w-6 text-accent" />
                   </div>
-                  <CardTitle className="text-lg">Neue Projektanfrage</CardTitle>
+                  <CardTitle className="text-lg">Produkte & Anfragen</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Stelle eine Anfrage für dein nächstes Bauprojekt mit individuellem Equipment-Bedarf.
+                    Durchsuche das gesamte Sortiment und stelle Anfragen mit deinen individuellen B2B-Konditionen.
                   </p>
                   {!isApproved && (
                     <p className="text-xs text-yellow-600 mt-2">
