@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { 
   FileText, 
   Phone, 
@@ -159,6 +160,16 @@ export default function B2BDashboard() {
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Credit Limit Widget - only for approved users with a limit */}
+          {isApproved && b2bProfile && b2bProfile.credit_limit > 0 && (
+            <div className="mb-8">
+              <CreditLimitWidget
+                creditLimit={b2bProfile.credit_limit}
+                usedCredit={b2bProfile.used_credit}
+              />
+            </div>
           )}
 
           {/* Dashboard Grid */}
