@@ -28,10 +28,16 @@ export async function openInvoiceInNewWindow(fileUrl: string, invoiceNumber?: st
     newWindow.document.write(html);
     newWindow.document.close();
 
-    // Set window title
+    // Set window title and favicon
     if (invoiceNumber) {
       newWindow.document.title = `Rechnung ${invoiceNumber}`;
     }
+    // Set SLT favicon
+    const favicon = newWindow.document.createElement("link");
+    favicon.rel = "icon";
+    favicon.type = "image/png";
+    favicon.href = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+    newWindow.document.head.appendChild(favicon);
   } catch (error) {
     console.error("Invoice viewer error:", error);
     // Ultimate fallback: open the URL directly
