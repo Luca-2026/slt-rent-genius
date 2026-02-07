@@ -8,6 +8,11 @@ interface B2BProfile {
   status: "pending" | "approved" | "rejected";
   contact_first_name: string;
   contact_last_name: string;
+  billing_email: string | null;
+  credit_limit: number;
+  used_credit: number;
+  assigned_location: string | null;
+  assigned_contact_override: Record<string, string> | null;
 }
 
 interface AuthContextType {
@@ -35,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchB2BProfile = async (userId: string) => {
     const { data } = await supabase
       .from("b2b_profiles")
-      .select("id, company_name, status, contact_first_name, contact_last_name")
+      .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override")
       .eq("user_id", userId)
       .single();
     

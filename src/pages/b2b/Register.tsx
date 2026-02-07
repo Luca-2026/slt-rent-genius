@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Building2, Upload, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail } from "lucide-react";
+import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
 
 const legalForms = [
   "GmbH",
@@ -49,6 +50,8 @@ export default function B2BRegister() {
   const [position, setPosition] = useState("");
   const [phone, setPhone] = useState("");
 
+  // Billing
+  const [billingEmail, setBillingEmail] = useState("");
   // Address
   const [street, setStreet] = useState("");
   const [houseNumber, setHouseNumber] = useState("");
@@ -127,7 +130,10 @@ export default function B2BRegister() {
         .from("b2b-documents")
         .getPublicUrl(fileName);
 
-      // 3. Create B2B profile
+      // 3. Determine nearest location based on PLZ
+      const assignedLocation = getNearestLocation(postalCode);
+
+      // 4. Create B2B profile
       const { error: profileError } = await supabase.from("b2b_profiles").insert({
         user_id: userId,
         company_name: companyName,
@@ -139,10 +145,12 @@ export default function B2BRegister() {
         contact_position: position,
         contact_phone: phone,
         contact_email: email,
+        billing_email: billingEmail || null,
         street: street,
         house_number: houseNumber,
         postal_code: postalCode,
         city: city,
+        assigned_location: assignedLocation,
         document_url: publicUrl,
         document_filename: documentFile.name,
         status: "pending",
@@ -356,6 +364,27 @@ export default function B2BRegister() {
                             required
                           />
                         </div>
+                      </div>
+
+                      <hr className="my-4" />
+                      <h3 className="font-medium text-headline">Rechnungsversand</h3>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">
+                          E-Mail für Rechnungsversand
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type="email"
+                            placeholder="rechnung@musterfirma.de"
+                            value={billingEmail}
+                            onChange={(e) => setBillingEmail(e.target.value)}
+                          />
+                          <Mail className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Optional – wird für den digitalen Rechnungsversand verwendet. Falls leer, wird die Kontakt-E-Mail genutzt.
+                        </p>
                       </div>
 
                       <hr className="my-4" />
