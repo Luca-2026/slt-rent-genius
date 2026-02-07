@@ -235,6 +235,7 @@ export type Database = {
           id: string
           internal_notes: string | null
           legal_form: string | null
+          payment_due_days: number
           postal_code: string
           rejection_reason: string | null
           status: Database["public"]["Enums"]["b2b_status"]
@@ -268,6 +269,7 @@ export type Database = {
           id?: string
           internal_notes?: string | null
           legal_form?: string | null
+          payment_due_days?: number
           postal_code: string
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
@@ -301,6 +303,7 @@ export type Database = {
           id?: string
           internal_notes?: string | null
           legal_form?: string | null
+          payment_due_days?: number
           postal_code?: string
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
