@@ -591,6 +591,7 @@ export type Database = {
           created_at: string
           delivery_required: boolean | null
           end_date: string | null
+          end_time: string | null
           equipment_needed: string
           id: string
           internal_notes: string | null
@@ -603,6 +604,7 @@ export type Database = {
           site_postal_code: string
           site_street: string
           start_date: string
+          start_time: string | null
           status: string
           updated_at: string
           user_id: string
@@ -613,6 +615,7 @@ export type Database = {
           created_at?: string
           delivery_required?: boolean | null
           end_date?: string | null
+          end_time?: string | null
           equipment_needed: string
           id?: string
           internal_notes?: string | null
@@ -625,6 +628,7 @@ export type Database = {
           site_postal_code: string
           site_street: string
           start_date: string
+          start_time?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -635,6 +639,7 @@ export type Database = {
           created_at?: string
           delivery_required?: boolean | null
           end_date?: string | null
+          end_time?: string | null
           equipment_needed?: string
           id?: string
           internal_notes?: string | null
@@ -647,6 +652,7 @@ export type Database = {
           site_postal_code?: string
           site_street?: string
           start_date?: string
+          start_time?: string | null
           status?: string
           updated_at?: string
           user_id?: string
