@@ -54,14 +54,16 @@ export function B2BReservationDialog({
       const { error } = await supabase.from("b2b_reservations").insert({
         b2b_profile_id: b2bProfile.id,
         user_id: user.id,
-        product_id: product.id, // Note: This is the static product ID, not DB UUID
+        product_id: product.id,
+        product_name: product.name,
+        category_slug: categorySlug,
         location: locationId,
         start_date: startDate,
         end_date: endDate || null,
         quantity: parseInt(quantity) || 1,
         notes: notes || null,
         status: "pending",
-      } as any); // Using any because product_id references static data, not DB products table
+      } as any);
 
       if (error) throw error;
 
