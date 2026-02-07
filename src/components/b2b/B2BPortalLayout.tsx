@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
   LayoutDashboard, Package, FileText, Receipt, Calculator, 
-  User, LogOut, Settings, Phone
+  User, LogOut, Settings, Phone, Home
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -16,11 +16,11 @@ interface B2BPortalLayoutProps {
 }
 
 const navItems = [
+  { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
   { href: "/b2b/anfragen", label: "Meine Anfragen", icon: FileText },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
-  { href: "/b2b/lieferkosten", label: "Lieferkosten", icon: Calculator },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];
 
@@ -65,17 +65,17 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
               </span>
               {isAdmin && (
                 <Link to="/b2b/admin">
-                  <Button size="sm" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                  <Button size="sm" variant="outline" className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20">
                     <Settings className="h-3.5 w-3.5 mr-1" />
                     Admin
                   </Button>
                 </Link>
               )}
-              <ChangePasswordDialog />
+              <ChangePasswordDialog className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20" />
               <Button 
                 size="sm"
                 variant="outline" 
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
                 onClick={() => signOut()}
               >
                 <LogOut className="h-3.5 w-3.5 mr-1" />

@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
 
-export function ChangePasswordDialog() {
+export function ChangePasswordDialog({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -77,7 +78,7 @@ export function ChangePasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) { setNewPassword(""); setConfirmPassword(""); } }}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" className={cn(className)}>
           <KeyRound className="h-4 w-4 mr-2" />
           Passwort ändern
         </Button>

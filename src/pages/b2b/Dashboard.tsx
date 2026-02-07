@@ -17,7 +17,8 @@ import {
   XCircle,
   LogOut,
   User,
-  Settings
+  Settings,
+  Home
 } from "lucide-react";
 
 export default function B2BDashboard() {
@@ -89,22 +90,37 @@ export default function B2BDashboard() {
                 {b2bProfile?.company_name || "B2B-Dashboard"}
               </p>
             </div>
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-2 flex-wrap">
+              <Link to="/">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
+                >
+                  <Home className="h-4 w-4 mr-1.5" />
+                  Startseite
+                </Button>
+              </Link>
               {isAdmin && (
                 <Link to="/b2b/admin">
-                  <Button variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
-                    <Settings className="h-4 w-4 mr-2" />
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
+                  >
+                    <Settings className="h-4 w-4 mr-1.5" />
                     Admin
                   </Button>
                 </Link>
               )}
-              <ChangePasswordDialog />
+              <ChangePasswordDialog className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20" />
               <Button 
-                variant="outline" 
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                variant="outline"
+                size="sm"
+                className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
                 onClick={() => signOut()}
               >
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="h-4 w-4 mr-1.5" />
                 Abmelden
               </Button>
             </div>
