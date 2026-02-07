@@ -10,7 +10,10 @@ export async function openInvoiceInNewWindow(fileUrl: string, invoiceNumber?: st
       throw new Error(`Fehler beim Laden der Rechnung: ${response.status}`);
     }
 
-    const html = await response.text();
+    // Explicitly decode as UTF-8 to prevent umlaut encoding issues
+    // (response.text() may default to ISO-8859-1 if Content-Type lacks charset)
+    const buffer = await response.arrayBuffer();
+    const html = new TextDecoder("utf-8").decode(buffer);
 
     // Open a new window and write the HTML into it
     const newWindow = window.open("", "_blank");
