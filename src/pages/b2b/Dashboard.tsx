@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
+import { locationData, getLocationInfoById } from "@/data/locationData";
 import { 
   FileText, 
   Phone, 
@@ -18,12 +19,25 @@ import {
   LogOut,
   User,
   Home,
-  Receipt
+  Receipt,
+  MapPin,
+  Mail,
+  Navigation
 } from "lucide-react";
 
 export default function B2BDashboard() {
   const { user, b2bProfile, loading, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Get the nearest location based on assigned_location or default to Krefeld
+  const nearestLocation = useMemo(() => {
+    const assignedId = b2bProfile?.assigned_location;
+    if (assignedId) {
+      const found = getLocationInfoById(assignedId);
+      if (found) return found;
+    }
+    return locationData[0]; // Default: Krefeld
+  }, [b2bProfile?.assigned_location]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -327,19 +341,107 @@ export default function B2BDashboard() {
             </Card>
           </div>
 
-          {/* Contact Info */}
-          <Card className="mt-8 bg-surface-light">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-headline mb-2">Dein Ansprechpartner</h3>
-              <p className="text-muted-foreground text-sm">
-                <strong>SLT Technology Group GmbH & Co. KG</strong><br />
-                Marke: SLT-Rental<br />
-                Anrather Straße 291, 47807 Krefeld-Fichtenhain<br />
-                Tel: <a href="tel:+492151417990 4" className="text-primary hover:underline">02151 417 990 4</a><br />
-                E-Mail: <a href="mailto:mieten@slt-rental.de" className="text-primary hover:underline">mieten@slt-rental.de</a><br />
-                Mo-Fr: 07:30-18:00 Uhr · Sa: 08:00-14:30 Uhr
-              </p>
-            </CardContent>
+          {/* Location Contact Card */}
+          <Card className="mt-8 overflow-hidden">
+            <div className="flex flex-col md:flex-row">
+              {/* Location Photo */}
+              {nearestLocation.image && (
+                <div className="md:w-1/3 h-48 md:h-auto">
+                  <img
+                    src={nearestLocation.image}
+                    alt={`SLT Rental ${nearestLocation.name}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Location Info */}
+              <CardContent className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <h3 className="font-semibold text-lg text-foreground">
+                    Dein Standort: SLT Rental {nearestLocation.name}
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Manager & Contact */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      {nearestLocation.manager.image ? (
+                        <img
+                          src={nearestLocation.manager.image}
+                          alt={nearestLocation.manager.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <User className="h-6 w-6 text-primary" />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-foreground">{nearestLocation.manager.name}</p>
+                        <p className="text-xs text-muted-foreground">{nearestLocation.manager.role}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 text-sm">
+                      <p className="flex items-center gap-2 text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                        {nearestLocation.address}, {nearestLocation.city}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Phone className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                        <a href={`tel:${nearestLocation.phone}`} className="text-primary hover:underline">
+                          {nearestLocation.phone}
+                        </a>
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Mail className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                        <a href={`mailto:${nearestLocation.email}`} className="text-primary hover:underline">
+                          {nearestLocation.email}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Opening Hours */}
+                  <div>
+                    <p className="font-semibold text-sm text-foreground mb-2 flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5 text-primary" />
+                      Öffnungszeiten
+                    </p>
+                    <div className="space-y-1">
+                      {nearestLocation.hours.map((h, idx) => (
+                        <div key={idx} className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{h.day}</span>
+                          <span className="font-medium text-foreground">{h.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {nearestLocation.hoursNote && (
+                      <p className="text-xs text-muted-foreground mt-2">{nearestLocation.hoursNote}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                  <a href={nearestLocation.mapUrl} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" size="sm">
+                      <Navigation className="h-3.5 w-3.5 mr-1.5" />
+                      Route planen
+                    </Button>
+                  </a>
+                  <a href={`mailto:${nearestLocation.manager.email}`}>
+                    <Button variant="outline" size="sm">
+                      <Mail className="h-3.5 w-3.5 mr-1.5" />
+                      Ansprechpartner kontaktieren
+                    </Button>
+                  </a>
+                </div>
+              </CardContent>
+            </div>
           </Card>
         </div>
       </section>
