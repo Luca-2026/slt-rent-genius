@@ -1,0 +1,119 @@
+import { ReactNode, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Layout } from "@/components/layout";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { 
+  LayoutDashboard, Package, FileText, Receipt, Calculator, 
+  User, LogOut, Settings, Phone
+} from "lucide-react";
+
+interface B2BPortalLayoutProps {
+  children: ReactNode;
+  title: string;
+  subtitle?: string;
+}
+
+const navItems = [
+  { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
+  { href: "/b2b/anfragen", label: "Meine Anfragen", icon: FileText },
+  { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
+  { href: "/b2b/lieferkosten", label: "Lieferkosten", icon: Calculator },
+  { href: "/kontakt", label: "Kontakt", icon: Phone },
+];
+
+export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
+  const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/b2b/login");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-[50vh] flex items-center justify-center">
+          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user) return null;
+
+  return (
+    <Layout>
+      {/* Header bar */}
+      <section className="bg-primary py-4 lg:py-6">
+        <div className="section-container">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <h1 className="text-xl lg:text-2xl font-bold text-primary-foreground">{title}</h1>
+              {subtitle && (
+                <p className="text-primary-foreground/80 text-sm">{subtitle}</p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-primary-foreground/70 text-sm hidden md:block">
+                {b2bProfile?.company_name}
+              </span>
+              {isAdmin && (
+                <Link to="/b2b/admin">
+                  <Button size="sm" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                    <Settings className="h-3.5 w-3.5 mr-1" />
+                    Admin
+                  </Button>
+                </Link>
+              )}
+              <Button 
+                size="sm"
+                variant="outline" 
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                onClick={() => signOut()}
+              >
+                <LogOut className="h-3.5 w-3.5 mr-1" />
+                Abmelden
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation */}
+      <div className="bg-background border-b border-border sticky top-16 z-30">
+        <div className="section-container">
+          <nav className="flex gap-1 overflow-x-auto py-2 -mx-2 px-2">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              const Icon = item.icon;
+              return (
+                <Link key={item.href} to={item.href}>
+                  <Button 
+                    variant={isActive ? "default" : "ghost"} 
+                    size="sm"
+                    className={`whitespace-nowrap ${isActive ? "bg-primary text-primary-foreground" : ""}`}
+                  >
+                    <Icon className="h-3.5 w-3.5 mr-1.5" />
+                    {item.label}
+                  </Button>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+
+      {/* Content */}
+      <main className="py-6 lg:py-8 min-h-[60vh]">
+        <div className="section-container">
+          {children}
+        </div>
+      </main>
+    </Layout>
+  );
+}
