@@ -22,6 +22,7 @@ import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCus
 import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
 import { AdminCreateOfferDialog, type ExistingOffer, type ExistingOfferItem } from "@/components/b2b/admin/AdminCreateOfferDialog";
 import { DeliveryNoteDialog } from "@/components/b2b/admin/DeliveryNoteDialog";
+import { ReturnProtocolDialog } from "@/components/b2b/admin/ReturnProtocolDialog";
 
 // UI
 import { Card, CardContent } from "@/components/ui/card";
@@ -109,6 +110,7 @@ export default function AdminDashboard() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
+  const [returnProtocolIds, setReturnProtocolIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -130,6 +132,8 @@ export default function AdminDashboard() {
   const [proformaMode, setProformaMode] = useState(false);
   const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
   const [deliveryNoteOffer, setDeliveryNoteOffer] = useState<Offer | null>(null);
+  const [returnProtocolOpen, setReturnProtocolOpen] = useState(false);
+  const [returnProtocolReservation, setReturnProtocolReservation] = useState<Reservation | null>(null);
   // Edit offer state
   const [editingOffer, setEditingOffer] = useState<ExistingOffer | null>(null);
   const [editingOfferItems, setEditingOfferItems] = useState<ExistingOfferItem[]>([]);
@@ -144,18 +148,22 @@ export default function AdminDashboard() {
   // Data fetching
   const fetchData = async () => {
     setLoading(true);
-    const [profilesRes, invoicesRes, reservationsRes, offersRes, offerItemsRes] = await Promise.all([
+    const [profilesRes, invoicesRes, reservationsRes, offersRes, offerItemsRes, returnProtocolsRes] = await Promise.all([
       supabase.from("b2b_profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_invoices").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_reservations").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_offers").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_offer_items").select("*"),
+      supabase.from("b2b_return_protocols").select("id, reservation_id"),
     ]);
     if (profilesRes.data) setProfiles(profilesRes.data as B2BProfile[]);
     if (invoicesRes.data) setInvoices(invoicesRes.data as Invoice[]);
     if (reservationsRes.data) setReservations(reservationsRes.data as Reservation[]);
     if (offersRes.data) setOffers(offersRes.data as Offer[]);
     if (offerItemsRes.data) setOfferItems(offerItemsRes.data as OfferItem[]);
+    if (returnProtocolsRes.data) {
+      setReturnProtocolIds(new Set(returnProtocolsRes.data.map((rp: any) => rp.reservation_id).filter(Boolean)));
+    }
     setLoading(false);
   };
 
@@ -510,7 +518,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals">
           <AdminRentalsTab
-            reservations={reservations.filter((r) => r.status === "confirmed")}
+            reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed")}
             profiles={profiles}
             onCreateReservation={() => setCreateReservationOpen(true)}
             onExtendReservation={(res) => {
@@ -522,7 +530,12 @@ export default function AdminDashboard() {
               setInvoiceFromOffer(null);
               setInvoiceDialogOpen(true);
             }}
+            onCreateReturnProtocol={(res) => {
+              setReturnProtocolReservation(res);
+              setReturnProtocolOpen(true);
+            }}
             hasInvoice={(resId) => invoices.some((inv) => inv.reservation_id === resId)}
+            hasReturnProtocol={(resId) => returnProtocolIds.has(resId)}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -790,6 +803,21 @@ export default function AdminDashboard() {
         onOpenChange={(open) => {
           setDeliveryNoteOpen(open);
           if (!open) setDeliveryNoteOffer(null);
+        }}
+        onCreated={fetchData}
+      />
+      {/* Return Protocol */}
+      <ReturnProtocolDialog
+        reservation={returnProtocolReservation}
+        profile={
+          returnProtocolReservation
+            ? profiles.find((p) => p.id === returnProtocolReservation.b2b_profile_id) || null
+            : null
+        }
+        open={returnProtocolOpen}
+        onOpenChange={(open) => {
+          setReturnProtocolOpen(open);
+          if (!open) setReturnProtocolReservation(null);
         }}
         onCreated={fetchData}
       />

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { CalendarPlus, Package, Plus, Receipt, RefreshCw } from "lucide-react";
+import { CalendarPlus, ClipboardCheck, Package, Plus, Receipt, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -35,7 +35,9 @@ interface Props {
   onCreateReservation: () => void;
   onExtendReservation: (reservation: Reservation) => void;
   onGenerateInvoice: (reservation: Reservation) => void;
+  onCreateReturnProtocol: (reservation: Reservation) => void;
   hasInvoice: (reservationId: string) => boolean;
+  hasReturnProtocol: (reservationId: string) => boolean;
   onRefresh: () => void;
 }
 
@@ -45,7 +47,9 @@ export function AdminRentalsTab({
   onCreateReservation,
   onExtendReservation,
   onGenerateInvoice,
+  onCreateReturnProtocol,
   hasInvoice,
+  hasReturnProtocol,
   onRefresh,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
@@ -101,17 +105,19 @@ export function AdminRentalsTab({
                   <TableHead>Kunde</TableHead>
                   <TableHead>Standort</TableHead>
                   <TableHead>Zeitraum</TableHead>
-                  <TableHead>Mietstatus</TableHead>
-                  <TableHead>Rechnung</TableHead>
-                  <TableHead className="text-right">Preis</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
+                   <TableHead>Mietstatus</TableHead>
+                   <TableHead>Rückgabe</TableHead>
+                   <TableHead>Rechnung</TableHead>
+                   <TableHead className="text-right">Preis</TableHead>
+                   <TableHead className="text-right">Aktionen</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {reservations.map((res) => {
-                  const profile = profiles.find((p) => p.id === res.b2b_profile_id);
-                  const active = isActive(res);
-                  const invoiced = hasInvoice(res.id);
+                 {reservations.map((res) => {
+                   const profile = profiles.find((p) => p.id === res.b2b_profile_id);
+                   const active = isActive(res);
+                   const invoiced = hasInvoice(res.id);
+                   const returned = hasReturnProtocol(res.id);
                   return (
                     <TableRow key={res.id}>
                       <TableCell>
@@ -136,6 +142,18 @@ export function AdminRentalsTab({
                         )}
                       </TableCell>
                       <TableCell>
+                        {returned ? (
+                          <Badge variant="outline" className="text-green-600 border-green-300">
+                            <ClipboardCheck className="h-3 w-3 mr-1" />
+                            Dokumentiert
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-muted-foreground">
+                            Ausstehend
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
                         {invoiced ? (
                           <Badge variant="outline" className="text-primary border-primary/30">
                             <Receipt className="h-3 w-3 mr-1" />
@@ -156,6 +174,18 @@ export function AdminRentalsTab({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
+                          {!returned && active && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onCreateReturnProtocol(res)}
+                              title="Rückgabeprotokoll erstellen"
+                              className="text-green-700"
+                            >
+                              <ClipboardCheck className="h-3.5 w-3.5 mr-1" />
+                              <span className="hidden sm:inline text-xs">Rückgabe</span>
+                            </Button>
+                          )}
                           {!invoiced && (
                             <Button
                               size="sm"
