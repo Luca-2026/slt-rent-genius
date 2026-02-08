@@ -688,6 +688,156 @@ export type Database = {
           },
         ]
       }
+      b2b_return_protocol_items: {
+        Row: {
+          condition: string
+          condition_notes: string | null
+          created_at: string
+          description: string | null
+          id: string
+          product_name: string
+          quantity: number
+          return_protocol_id: string
+          serial_number: string | null
+        }
+        Insert: {
+          condition?: string
+          condition_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          product_name: string
+          quantity?: number
+          return_protocol_id: string
+          serial_number?: string | null
+        }
+        Update: {
+          condition?: string
+          condition_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          product_name?: string
+          quantity?: number
+          return_protocol_id?: string
+          serial_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_return_protocol_items_return_protocol_id_fkey"
+            columns: ["return_protocol_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_return_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_return_protocols: {
+        Row: {
+          all_items_returned: boolean
+          b2b_profile_id: string
+          cleaning_required: boolean
+          condition_notes: string | null
+          created_at: string
+          customer_signature_data: string | null
+          damage_description: string | null
+          delivery_note_id: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_url: string | null
+          id: string
+          meter_reading_end: string | null
+          meter_reading_start: string | null
+          missing_items_notes: string | null
+          notes: string | null
+          overall_condition: string
+          reservation_id: string | null
+          return_protocol_number: string
+          signed_at: string | null
+          staff_name: string | null
+          staff_signature_data: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          all_items_returned?: boolean
+          b2b_profile_id: string
+          cleaning_required?: boolean
+          condition_notes?: string | null
+          created_at?: string
+          customer_signature_data?: string | null
+          damage_description?: string | null
+          delivery_note_id?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          meter_reading_end?: string | null
+          meter_reading_start?: string | null
+          missing_items_notes?: string | null
+          notes?: string | null
+          overall_condition?: string
+          reservation_id?: string | null
+          return_protocol_number: string
+          signed_at?: string | null
+          staff_name?: string | null
+          staff_signature_data?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          all_items_returned?: boolean
+          b2b_profile_id?: string
+          cleaning_required?: boolean
+          condition_notes?: string | null
+          created_at?: string
+          customer_signature_data?: string | null
+          damage_description?: string | null
+          delivery_note_id?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          meter_reading_end?: string | null
+          meter_reading_start?: string | null
+          missing_items_notes?: string | null
+          notes?: string | null
+          overall_condition?: string
+          reservation_id?: string | null
+          return_protocol_number?: string
+          signed_at?: string | null
+          staff_name?: string | null
+          staff_signature_data?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_return_protocols_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_protocols_delivery_note_id_fkey"
+            columns: ["delivery_note_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_delivery_notes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_protocols_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_applications: {
         Row: {
           city: string | null
@@ -1031,6 +1181,7 @@ export type Database = {
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
+      generate_return_protocol_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
