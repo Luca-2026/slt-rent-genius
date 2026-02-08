@@ -60,7 +60,7 @@ export function AdminReservationsTab({
             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
-            Neue Anfrage
+            Mietvorgang anlegen
           </Button>
           <Button variant="outline" size="sm" onClick={onRefresh}>
             <RefreshCw className="h-3.5 w-3.5" />

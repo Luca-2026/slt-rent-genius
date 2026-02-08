@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { ProductAutocomplete } from "./ProductAutocomplete";
-import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory } from "@/data/additionalServices";
+import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 
 interface B2BProfile {
   id: string;
@@ -45,6 +45,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   const [endTime, setEndTime] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [originalPrice, setOriginalPrice] = useState<number>(0);
+  const [deliveryCost, setDeliveryCost] = useState<number>(0);
   const [deposit, setDeposit] = useState<string>("");
   const [notes, setNotes] = useState("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
@@ -61,6 +62,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     setEndTime("");
     setQuantity(1);
     setOriginalPrice(0);
+    setDeliveryCost(0);
     setDeposit("");
     setNotes("");
     setSelectedServices(new Set());
@@ -69,9 +71,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   const toggleService = (serviceId: string) => {
     setSelectedServices((prev) => {
       const next = new Set(prev);
-      // MBV options are mutually exclusive
       if (serviceId.startsWith("mbv-")) {
-        // Remove all other MBV options
         for (const id of next) {
           if (id.startsWith("mbv-")) next.delete(id);
         }
@@ -84,6 +84,10 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       return next;
     });
   };
+
+  // Calculate service surcharges based on item price (excl. delivery & deposit)
+  const baseItemTotal = originalPrice * quantity;
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, baseItemTotal);
 
   const handleCreate = async () => {
     const profile = profiles.find((p) => p.id === selectedProfileId);
@@ -106,13 +110,20 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       return;
     }
 
-    // Build additional services array
+    // Build additional services array (include calculated price)
     const servicesArray = selectedServices.size > 0
-      ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
-          id: s.id,
-          name: s.name,
-          description: s.description,
-        }))
+      ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
+          const surcharge = s.pricePercent !== null
+            ? Math.round(baseItemTotal * (s.pricePercent / 100) * 100) / 100
+            : 0;
+          return {
+            id: s.id,
+            name: s.name,
+            description: s.description,
+            pricePercent: s.pricePercent,
+            calculatedAmount: surcharge,
+          };
+        })
       : null;
 
     // Build time notes
@@ -145,7 +156,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     if (error) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Mietanfrage erstellt", description: `${productName} für ${profile.company_name}` });
+      toast({ title: "Mietvorgang erstellt", description: `${productName} für ${profile.company_name}` });
       resetForm();
       onCreated();
       onOpenChange(false);
@@ -156,16 +167,19 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   const approvedProfiles = profiles.filter((p: any) => p.status === "approved");
   const relevantServices = getServicesForCategory(categorySlug);
 
+  const formatCurrency = (n: number) =>
+    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+
   return (
     <Dialog open={open} onOpenChange={(v) => { onOpenChange(v); if (!v) resetForm(); }}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            Mietprodukt anlegen
+            Mietvorgang anlegen
           </DialogTitle>
           <DialogDescription>
-            Erstelle eine Mietanfrage für einen bestehenden Kunden (z.B. Vor-Ort-Miete).
+            Erstelle einen Mietvorgang für einen bestehenden Kunden (z.B. Vor-Ort-Miete).
           </DialogDescription>
         </DialogHeader>
 
@@ -217,7 +231,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                     {startDate ? format(startDate, "dd.MM.yy", { locale: de }) : "Start"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={startDate} onSelect={setStartDate} initialFocus /></PopoverContent>
+                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={startDate} onSelect={setStartDate} initialFocus className="p-3 pointer-events-auto" /></PopoverContent>
               </Popover>
             </div>
             <div>
@@ -229,7 +243,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                     {endDate ? format(endDate, "dd.MM.yy", { locale: de }) : "Ende"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={endDate} onSelect={setEndDate} initialFocus /></PopoverContent>
+                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={endDate} onSelect={setEndDate} initialFocus className="p-3 pointer-events-auto" /></PopoverContent>
               </Popover>
             </div>
           </div>
@@ -245,7 +259,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Menge</Label>
               <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
@@ -253,6 +267,13 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             <div>
               <Label>Preis (€ netto)</Label>
               <Input type="number" min={0} step={0.01} value={originalPrice} onChange={(e) => setOriginalPrice(Number(e.target.value))} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Lieferkosten (€ netto)</Label>
+              <Input type="number" min={0} step={0.01} value={deliveryCost} onChange={(e) => setDeliveryCost(Number(e.target.value))} />
             </div>
             <div>
               <Label>Kaution (€)</Label>
@@ -268,24 +289,42 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           </div>
 
-          {/* Additional Services */}
+          {/* Additional Services with pricing */}
           {relevantServices.length > 0 && (
             <div>
               <Label className="mb-2 block">Zusatzoptionen</Label>
               <div className="space-y-2 rounded-md border p-3 bg-muted/30">
-                {relevantServices.map((service) => (
-                  <label key={service.id} className="flex items-start gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={selectedServices.has(service.id)}
-                      onCheckedChange={() => toggleService(service.id)}
-                      className="mt-0.5"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">{service.name}</p>
-                      <p className="text-xs text-muted-foreground">{service.description}</p>
-                    </div>
-                  </label>
-                ))}
+                {relevantServices.map((service) => {
+                  const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
+                  return (
+                    <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                      <Checkbox
+                        checked={selectedServices.has(service.id)}
+                        onCheckedChange={() => toggleService(service.id)}
+                        className="mt-0.5"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-sm font-medium">{service.name}</p>
+                          {service.pricePercent !== null && (
+                            <span className="text-xs text-muted-foreground whitespace-nowrap">
+                              {service.pricePercent}% {selectedServices.has(service.id) && baseItemTotal > 0 && surchargeEntry
+                                ? `(${formatCurrency(surchargeEntry.amount)})`
+                                : ""}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground">{service.description}</p>
+                      </div>
+                    </label>
+                  );
+                })}
+                {servicesSurcharge > 0 && (
+                  <div className="pt-2 border-t mt-2 flex justify-between text-sm font-medium">
+                    <span>Zusatzkosten gesamt:</span>
+                    <span>{formatCurrency(servicesSurcharge)}</span>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -299,7 +338,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
         <div className="flex gap-3 justify-end pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Abbrechen</Button>
           <Button onClick={handleCreate} disabled={saving} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-            {saving ? "Wird erstellt..." : "Mietanfrage erstellen"}
+            {saving ? "Wird erstellt..." : "Mietvorgang erstellen"}
           </Button>
         </div>
       </DialogContent>

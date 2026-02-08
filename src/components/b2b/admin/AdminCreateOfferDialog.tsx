@@ -19,7 +19,7 @@ import {
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
-import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory } from "@/data/additionalServices";
+import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 
 interface Reservation {
   id: string;
@@ -208,7 +208,10 @@ export function AdminCreateOfferDialog({
     return Math.round(discounted * item.quantity * 100) / 100;
   };
 
-  const netAmount = items.reduce((sum, item) => sum + calculateItemTotal(item), 0) + deliveryCost;
+  // Base = item totals only (excl. delivery & deposit) for service % calculation
+  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal);
+  const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
   const vatRate = isReverseCharge ? 0 : 19;
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
@@ -263,7 +266,7 @@ export function AdminCreateOfferDialog({
           notes: notes || undefined,
           send_email: sendEmail,
           save_prices: true,
-          deposit: deposit ? Number(deposit) : undefined,
+          deposit: deposit && deposit !== "none" ? Number(deposit) : undefined,
           additional_services: servicesArray,
         },
       });
@@ -463,7 +466,7 @@ export function AdminCreateOfferDialog({
             <Select value={deposit} onValueChange={setDeposit}>
               <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="—" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Keine</SelectItem>
+                <SelectItem value="none">Keine</SelectItem>
                 {DEPOSIT_OPTIONS.map((d) => (
                   <SelectItem key={d} value={String(d)}>{d} €</SelectItem>
                 ))}
@@ -477,19 +480,37 @@ export function AdminCreateOfferDialog({
           <div>
             <Label className="text-xs mb-2 block">Zusatzoptionen</Label>
             <div className="space-y-1.5 rounded-md border p-3 bg-muted/30">
-              {relevantServices.map((service) => (
-                <label key={service.id} className="flex items-start gap-2 cursor-pointer">
-                  <Checkbox
-                    checked={selectedServices.has(service.id)}
-                    onCheckedChange={() => toggleService(service.id)}
-                    className="mt-0.5"
-                  />
-                  <div>
-                    <p className="text-xs font-medium">{service.name}</p>
-                    <p className="text-[11px] text-muted-foreground">{service.description}</p>
-                  </div>
-                </label>
-              ))}
+              {relevantServices.map((service) => {
+                const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
+                return (
+                  <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={selectedServices.has(service.id)}
+                      onCheckedChange={() => toggleService(service.id)}
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-medium">{service.name}</p>
+                        {service.pricePercent !== null && (
+                          <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                            {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
+                              ? `(${formatCurrency(surchargeEntry.amount)})`
+                              : ""}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                    </div>
+                  </label>
+                );
+              })}
+              {servicesSurcharge > 0 && (
+                <div className="pt-1.5 border-t mt-1.5 flex justify-between text-xs font-medium">
+                  <span>Zusatzkosten gesamt:</span>
+                  <span>{formatCurrency(servicesSurcharge)}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -510,6 +531,22 @@ export function AdminCreateOfferDialog({
           <CardContent className="p-4">
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
+                <span className="text-muted-foreground">Positionen:</span>
+                <span>{formatCurrency(itemsNetTotal)}</span>
+              </div>
+              {deliveryCost > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Lieferkosten:</span>
+                  <span>{formatCurrency(deliveryCost)}</span>
+                </div>
+              )}
+              {servicesSurcharge > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Zusatzoptionen:</span>
+                  <span>{formatCurrency(servicesSurcharge)}</span>
+                </div>
+              )}
+              <div className="flex justify-between">
                 <span className="text-muted-foreground">Nettobetrag:</span>
                 <span>{formatCurrency(netAmount)}</span>
               </div>
@@ -519,7 +556,7 @@ export function AdminCreateOfferDialog({
                 </span>
                 <span>{formatCurrency(vatAmount)}</span>
               </div>
-              {deposit && Number(deposit) > 0 && (
+              {deposit && deposit !== "none" && Number(deposit) > 0 && (
                 <div className="flex justify-between text-muted-foreground">
                   <span>Kaution:</span>
                   <span>{formatCurrency(Number(deposit))}</span>

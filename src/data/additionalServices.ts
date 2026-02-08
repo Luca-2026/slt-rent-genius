@@ -6,6 +6,8 @@ export interface AdditionalService {
   description: string;
   /** If null, always suggest. Otherwise only suggest for these category slugs. */
   applicableCategories: string[] | null;
+  /** Percentage of order value (net, excl. deposit & delivery). null = no extra charge. */
+  pricePercent: number | null;
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
@@ -14,6 +16,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Baumaschine – Verladehilfe (Be- & Entladen)",
     description: "Unterstützung beim Verladen und Verzurren der Baumaschinen.",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
+    pricePercent: null,
   },
   {
     id: "mbv-1000",
@@ -21,6 +24,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 1000€ je Schadenfall.",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
+    pricePercent: null, // included / no surcharge
   },
   {
     id: "mbv-500",
@@ -28,6 +32,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 500€ je Schadenfall.",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
+    pricePercent: 5,
   },
   {
     id: "mbv-0",
@@ -35,12 +40,14 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Haftungsfreistellung. Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 0€ je Schadenfall.",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
+    pricePercent: 10,
   },
   {
     id: "kostenfreie-stornierung",
     name: "Kostenfreie Stornierung",
     description: "Mit dieser Option ist die Stornierung bis 72h vor Mietbeginn kostenfrei.",
     applicableCategories: null, // always available
+    pricePercent: 7,
   },
 ];
 
@@ -58,4 +65,26 @@ export function getServicesForCategory(categorySlug?: string | null): Additional
   return ADDITIONAL_SERVICES.filter(
     (s) => s.applicableCategories === null || (categorySlug && s.applicableCategories.includes(categorySlug))
   );
+}
+
+/**
+ * Calculate the surcharge for selected additional services.
+ * Base = net item total (excluding delivery costs and deposit).
+ */
+export function calculateServicesSurcharge(
+  selectedServiceIds: Set<string>,
+  baseNetAmount: number
+): { total: number; breakdown: { service: AdditionalService; amount: number }[] } {
+  const breakdown: { service: AdditionalService; amount: number }[] = [];
+  let total = 0;
+
+  for (const service of ADDITIONAL_SERVICES) {
+    if (selectedServiceIds.has(service.id) && service.pricePercent !== null) {
+      const amount = Math.round(baseNetAmount * (service.pricePercent / 100) * 100) / 100;
+      breakdown.push({ service, amount });
+      total += amount;
+    }
+  }
+
+  return { total: Math.round(total * 100) / 100, breakdown };
 }
