@@ -98,7 +98,8 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    if (reservation.status !== "pending") {
+    const confirmableStatuses = ["pending", "offer_sent"];
+    if (!confirmableStatuses.includes(reservation.status)) {
       return new Response(
         JSON.stringify({ error: `Reservation is already '${reservation.status}'` }),
         {
