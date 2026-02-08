@@ -1,7 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { B2BProductCard } from "@/components/b2b/B2BProductCard";
 import { B2BReservationDialog } from "@/components/b2b/B2BReservationDialog";
+import { B2BMultiReservationDialog } from "@/components/b2b/B2BMultiReservationDialog";
 import { useB2BDiscounts } from "@/hooks/useB2BDiscounts";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,12 @@ import {
   Product,
 } from "@/data/rentalData";
 import { locationData } from "@/data/locationData";
-import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package } from "lucide-react";
+import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X } from "lucide-react";
+
+interface SelectedItem {
+  product: Product;
+  categorySlug: string;
+}
 
 export default function B2BProducts() {
   const { b2bProfile } = useAuth();
@@ -31,6 +37,10 @@ export default function B2BProducts() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inquiryProduct, setInquiryProduct] = useState<Product | null>(null);
   const [inquiryCategory, setInquiryCategory] = useState("");
+
+  // Multi-select state
+  const [selectedItems, setSelectedItems] = useState<Map<string, SelectedItem>>(new Map());
+  const [multiDialogOpen, setMultiDialogOpen] = useState(false);
 
   // Available categories for selected location
   const availableCategories = useMemo(
@@ -56,16 +66,15 @@ export default function B2BProducts() {
   }, [selectedLocation, selectedCategory, searchQuery]);
 
   // Find category slug for a product (for discount lookup)
-  const getCategoryForProduct = (product: Product): string => {
+  const getCategoryForProduct = useCallback((product: Product): string => {
     if (selectedCategory !== "alle") return selectedCategory;
-    // Try to find which category this product belongs to
     const location = locations.find((l) => l.id === selectedLocation);
     if (!location) return "";
     for (const [catId, prods] of Object.entries(location.products)) {
       if (prods.some((p) => p.id === product.id)) return catId;
     }
     return "";
-  };
+  }, [selectedCategory, selectedLocation]);
 
   // Credit limit info
   const creditLimit = b2bProfile?.credit_limit || 0;
@@ -84,6 +93,49 @@ export default function B2BProducts() {
     setInquiryProduct(product);
     setInquiryCategory(catSlug);
   };
+
+  const handleToggleSelect = useCallback((product: Product) => {
+    setSelectedItems((prev) => {
+      const next = new Map(prev);
+      if (next.has(product.id)) {
+        next.delete(product.id);
+      } else {
+        next.set(product.id, {
+          product,
+          categorySlug: getCategoryForProduct(product),
+        });
+      }
+      return next;
+    });
+  }, [getCategoryForProduct]);
+
+  const handleRemoveProduct = useCallback((productId: string) => {
+    setSelectedItems((prev) => {
+      const next = new Map(prev);
+      next.delete(productId);
+      return next;
+    });
+  }, []);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedItems(new Map());
+  }, []);
+
+  const handleMultiSuccess = useCallback(() => {
+    setSelectedItems(new Map());
+  }, []);
+
+  const selectedCount = selectedItems.size;
+
+  const multiProducts = useMemo(
+    () =>
+      Array.from(selectedItems.values()).map((item) => ({
+        product: item.product,
+        categorySlug: item.categorySlug,
+        quantity: 1,
+      })),
+    [selectedItems]
+  );
 
   return (
     <B2BPortalLayout
@@ -147,6 +199,12 @@ export default function B2BProducts() {
             </CardContent>
           </Card>
         )}
+      </div>
+
+      {/* Selection hint */}
+      <div className="flex items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+        <Package className="h-4 w-4 flex-shrink-0" />
+        <span>Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Einzelanfrage" für ein einzelnes Produkt.</span>
       </div>
 
       {/* Filters */}
@@ -213,7 +271,7 @@ export default function B2BProducts() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
           {filteredProducts.map((product) => {
             const catSlug = getCategoryForProduct(product);
             const discount = getDiscountForCategory(catSlug);
@@ -224,13 +282,50 @@ export default function B2BProducts() {
                 categorySlug={catSlug}
                 discountPercent={discount}
                 onInquiry={handleInquiry}
+                isSelected={selectedItems.has(product.id)}
+                onToggleSelect={handleToggleSelect}
               />
             );
           })}
         </div>
       )}
 
-      {/* Reservation Dialog */}
+      {/* Floating selection bar */}
+      {selectedCount > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
+          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Badge className="bg-accent text-accent-foreground text-base px-3 py-1">
+                {selectedCount}
+              </Badge>
+              <span className="text-sm font-medium text-headline hidden sm:inline">
+                {selectedCount === 1 ? "Artikel ausgewählt" : "Artikel ausgewählt"}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearSelection}
+                className="text-muted-foreground"
+              >
+                <X className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Auswahl aufheben</span>
+              </Button>
+              <Button
+                size="sm"
+                className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                onClick={() => setMultiDialogOpen(true)}
+              >
+                <Send className="h-4 w-4 mr-1.5" />
+                Sammelanfrage senden
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Single Reservation Dialog */}
       <B2BReservationDialog
         product={inquiryProduct}
         categorySlug={inquiryCategory}
@@ -238,6 +333,16 @@ export default function B2BProducts() {
         open={!!inquiryProduct}
         onOpenChange={(open) => !open && setInquiryProduct(null)}
         preselectedLocation={selectedLocation}
+      />
+
+      {/* Multi Reservation Dialog */}
+      <B2BMultiReservationDialog
+        selectedProducts={multiProducts}
+        open={multiDialogOpen}
+        onOpenChange={setMultiDialogOpen}
+        preselectedLocation={selectedLocation}
+        onSuccess={handleMultiSuccess}
+        onRemoveProduct={handleRemoveProduct}
       />
     </B2BPortalLayout>
   );
