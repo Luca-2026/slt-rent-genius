@@ -140,6 +140,7 @@ export type Database = {
       }
       b2b_delivery_notes: {
         Row: {
+          additional_defects: string | null
           agb_accepted: boolean
           agb_accepted_at: string | null
           b2b_profile_id: string
@@ -150,6 +151,7 @@ export type Database = {
           file_name: string | null
           file_url: string | null
           id: string
+          known_defects: string | null
           notes: string | null
           offer_id: string | null
           reservation_id: string | null
@@ -159,6 +161,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          additional_defects?: string | null
           agb_accepted?: boolean
           agb_accepted_at?: string | null
           b2b_profile_id: string
@@ -169,6 +172,7 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
           reservation_id?: string | null
@@ -178,6 +182,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          additional_defects?: string | null
           agb_accepted?: boolean
           agb_accepted_at?: string | null
           b2b_profile_id?: string
@@ -188,6 +193,7 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
           reservation_id?: string | null
@@ -755,6 +761,7 @@ export type Database = {
       }
       b2b_return_protocols: {
         Row: {
+          additional_defects_at_return: string | null
           all_items_returned: boolean
           b2b_profile_id: string
           cleaning_required: boolean
@@ -768,11 +775,13 @@ export type Database = {
           file_name: string | null
           file_url: string | null
           id: string
+          known_defects_from_delivery: string | null
           meter_reading_end: string | null
           meter_reading_start: string | null
           missing_items_notes: string | null
           notes: string | null
           overall_condition: string
+          photo_urls: string[] | null
           reservation_id: string | null
           return_protocol_number: string
           signed_at: string | null
@@ -782,6 +791,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          additional_defects_at_return?: string | null
           all_items_returned?: boolean
           b2b_profile_id: string
           cleaning_required?: boolean
@@ -795,11 +805,13 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          known_defects_from_delivery?: string | null
           meter_reading_end?: string | null
           meter_reading_start?: string | null
           missing_items_notes?: string | null
           notes?: string | null
           overall_condition?: string
+          photo_urls?: string[] | null
           reservation_id?: string | null
           return_protocol_number: string
           signed_at?: string | null
@@ -809,6 +821,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          additional_defects_at_return?: string | null
           all_items_returned?: boolean
           b2b_profile_id?: string
           cleaning_required?: boolean
@@ -822,11 +835,13 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          known_defects_from_delivery?: string | null
           meter_reading_end?: string | null
           meter_reading_start?: string | null
           missing_items_notes?: string | null
           notes?: string | null
           overall_condition?: string
+          photo_urls?: string[] | null
           reservation_id?: string | null
           return_protocol_number?: string
           signed_at?: string | null

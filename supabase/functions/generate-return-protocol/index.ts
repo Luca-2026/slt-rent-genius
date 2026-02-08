@@ -36,6 +36,9 @@ interface ReturnProtocolRequest {
   missing_items_notes?: string;
   meter_reading_start?: string;
   meter_reading_end?: string;
+  known_defects_from_delivery?: string;
+  additional_defects_at_return?: string;
+  photo_urls?: string[];
   items: {
     product_name: string;
     description?: string;
@@ -105,6 +108,9 @@ Deno.serve(async (req: Request) => {
       missing_items_notes,
       meter_reading_start,
       meter_reading_end,
+      known_defects_from_delivery,
+      additional_defects_at_return,
+      photo_urls,
       items,
       notes,
       send_email = true,
@@ -196,6 +202,9 @@ Deno.serve(async (req: Request) => {
       missingItemsNotes: missing_items_notes || null,
       meterReadingStart: meter_reading_start || null,
       meterReadingEnd: meter_reading_end || null,
+      knownDefectsFromDelivery: known_defects_from_delivery || null,
+      additionalDefectsAtReturn: additional_defects_at_return || null,
+      photoUrls: photo_urls || [],
       notes: notes || null,
       deliveryNoteNumber: deliveryNote?.delivery_note_number || null,
     });
@@ -245,6 +254,9 @@ Deno.serve(async (req: Request) => {
         missing_items_notes: missing_items_notes || null,
         meter_reading_start: meter_reading_start || null,
         meter_reading_end: meter_reading_end || null,
+        known_defects_from_delivery: known_defects_from_delivery || null,
+        additional_defects_at_return: additional_defects_at_return || null,
+        photo_urls: photo_urls || [],
         customer_signature_data,
         staff_signature_data,
         staff_name,
@@ -416,6 +428,9 @@ function generateReturnProtocolHtml(data: {
   missingItemsNotes: string | null;
   meterReadingStart: string | null;
   meterReadingEnd: string | null;
+  knownDefectsFromDelivery: string | null;
+  additionalDefectsAtReturn: string | null;
+  photoUrls: string[];
   notes: string | null;
   deliveryNoteNumber: string | null;
 }): string {
@@ -600,6 +615,33 @@ function generateReturnProtocolHtml(data: {
     <div style="background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:14px;margin-bottom:6mm;">
       <p style="font-weight:600;color:#854d0e;margin-bottom:4px;">Fehlende Artikel:</p>
       <p style="color:#713f12;font-size:12px;line-height:1.6;">${escapeHtml(data.missingItemsNotes)}</p>
+    </div>` : ""}
+
+    ${(data.knownDefectsFromDelivery || data.additionalDefectsAtReturn) ? `
+    <div style="background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:14px;margin-bottom:6mm;">
+      <p style="font-weight:600;color:#854d0e;margin-bottom:8px;">⚠ Mängeldokumentation</p>
+      ${data.knownDefectsFromDelivery ? `
+      <p style="font-size:12px;color:#713f12;margin-bottom:6px;">
+        <strong>Bekannte Mängel (aus Übergabeprotokoll):</strong><br>
+        ${escapeHtml(data.knownDefectsFromDelivery)}
+      </p>` : ""}
+      ${data.additionalDefectsAtReturn ? `
+      <p style="font-size:12px;color:#713f12;">
+        <strong>Neue / zusätzliche Mängel bei Rückgabe:</strong><br>
+        ${escapeHtml(data.additionalDefectsAtReturn)}
+      </p>` : ""}
+    </div>` : ""}
+
+    ${data.photoUrls && data.photoUrls.length > 0 ? `
+    <div style="margin-bottom:8mm;">
+      <p style="font-weight:600;margin-bottom:8px;">📷 Fotodokumentation (${data.photoUrls.length} ${data.photoUrls.length === 1 ? 'Foto' : 'Fotos'}):</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${data.photoUrls.map((url: string, i: number) => `
+          <a href="${url}" target="_blank" style="display:inline-block;">
+            <img src="${url}" alt="Mangel-Foto ${i + 1}" style="max-height:120px;max-width:180px;border:1px solid #e5e7eb;border-radius:4px;object-fit:cover;" />
+          </a>
+        `).join("")}
+      </div>
     </div>` : ""}
 
     ${data.notes ? `

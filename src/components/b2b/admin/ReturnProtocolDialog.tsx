@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -18,7 +18,7 @@ import {
 import { SignaturePad } from "@/components/b2b/SignaturePad";
 import {
   ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck,
-  UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle,
+  UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -77,6 +77,11 @@ export function ReturnProtocolDialog({
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
+  const [knownDefectsFromDelivery, setKnownDefectsFromDelivery] = useState("");
+  const [additionalDefectsAtReturn, setAdditionalDefectsAtReturn] = useState("");
+  const [defectPhotos, setDefectPhotos] = useState<{ file: File; preview: string }[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [overallCondition, setOverallCondition] = useState<"good" | "minor_damage" | "major_damage">("good");
   const [conditionNotes, setConditionNotes] = useState("");
   const [damageDescription, setDamageDescription] = useState("");
@@ -107,6 +112,9 @@ export function ReturnProtocolDialog({
     setStaffSignature(null);
     setStaffName("");
     setNotes("");
+    setKnownDefectsFromDelivery("");
+    setAdditionalDefectsAtReturn("");
+    setDefectPhotos([]);
     setOverallCondition("good");
     setConditionNotes("");
     setDamageDescription("");
@@ -135,6 +143,50 @@ export function ReturnProtocolDialog({
     });
   };
 
+  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const newPhotos = Array.from(files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setDefectPhotos((prev) => [...prev, ...newPhotos]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removePhoto = (index: number) => {
+    setDefectPhotos((prev) => {
+      URL.revokeObjectURL(prev[index].preview);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const uploadPhotos = async (): Promise<string[]> => {
+    if (defectPhotos.length === 0) return [];
+    setUploadingPhotos(true);
+    const urls: string[] = [];
+    try {
+      for (const photo of defectPhotos) {
+        const ext = photo.file.name.split(".").pop() || "jpg";
+        const path = `defect-photos/${reservation!.b2b_profile_id}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("b2b-documents")
+          .upload(path, photo.file, { upsert: true });
+        if (uploadError) {
+          console.error("Photo upload error:", uploadError);
+          continue;
+        }
+        const { data: signedData } = await supabase.storage
+          .from("b2b-documents")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signedData?.signedUrl) urls.push(signedData.signedUrl);
+      }
+    } finally {
+      setUploadingPhotos(false);
+    }
+    return urls;
+  };
+
   const handleGenerate = async () => {
     if (!reservation || !customerSignature) {
       toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben.", variant: "destructive" });
@@ -151,6 +203,9 @@ export function ReturnProtocolDialog({
 
     setSaving(true);
     try {
+      // Upload photos first
+      const photoUrls = await uploadPhotos();
+
       const { data, error } = await supabase.functions.invoke("generate-return-protocol", {
         body: {
           reservation_id: reservation.id,
@@ -165,6 +220,9 @@ export function ReturnProtocolDialog({
           missing_items_notes: missingItemsNotes || undefined,
           meter_reading_start: meterReadingStart || undefined,
           meter_reading_end: meterReadingEnd || undefined,
+          known_defects_from_delivery: knownDefectsFromDelivery || undefined,
+          additional_defects_at_return: additionalDefectsAtReturn || undefined,
+          photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
           items: itemConditions.map((item) => ({
             product_name: item.product_name,
             description: item.description,
@@ -281,6 +339,80 @@ export function ReturnProtocolDialog({
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        <Separator />
+
+        {/* Defect Documentation */}
+        <div className="space-y-3">
+          <Label className="text-base font-semibold flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            Mängeldokumentation
+          </Label>
+
+          <div>
+            <Label className="text-xs">Bekannte Mängel (aus Übergabeprotokoll)</Label>
+            <Textarea
+              value={knownDefectsFromDelivery}
+              onChange={(e) => setKnownDefectsFromDelivery(e.target.value)}
+              placeholder="z.B. Kratzer am Gehäuse (bei Übergabe dokumentiert)..."
+              rows={2}
+              className="text-sm"
+            />
+          </div>
+
+          <div>
+            <Label className="text-xs">Neue / zusätzliche Mängel bei Rückgabe</Label>
+            <Textarea
+              value={additionalDefectsAtReturn}
+              onChange={(e) => setAdditionalDefectsAtReturn(e.target.value)}
+              placeholder="z.B. Neue Kratzer, fehlende Teile, Funktionsstörungen..."
+              rows={2}
+              className="text-sm"
+            />
+          </div>
+
+          {/* Photo Upload */}
+          <div>
+            <Label className="text-xs flex items-center gap-1">
+              <Camera className="h-3 w-3" />
+              Fotos (Mängeldokumentation)
+            </Label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoAdd}
+              className="hidden"
+            />
+            <div className="flex flex-wrap gap-2 mt-1">
+              {defectPhotos.map((photo, idx) => (
+                <div key={idx} className="relative group">
+                  <img
+                    src={photo.preview}
+                    alt={`Mangel ${idx + 1}`}
+                    className="h-20 w-20 object-cover rounded-md border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(idx)}
+                    className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                <Upload className="h-4 w-4" />
+                <span className="text-[10px]">Foto</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <Separator />

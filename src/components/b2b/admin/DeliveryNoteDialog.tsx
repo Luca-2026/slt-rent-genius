@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool } from "lucide-react";
+import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
@@ -59,8 +59,11 @@ export function DeliveryNoteDialog({
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
+  const [knownDefects, setKnownDefects] = useState("");
+  const [additionalDefects, setAdditionalDefects] = useState("");
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [offerAccepted, setOfferAccepted] = useState(false);
+  const [itemsReceived, setItemsReceived] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Update timestamp every second while dialog is open
@@ -102,6 +105,8 @@ export function DeliveryNoteDialog({
           staff_signature_data: staffSignature,
           staff_name: staffName.trim(),
           notes: notes || undefined,
+          known_defects: knownDefects || undefined,
+          additional_defects: additionalDefects || undefined,
           send_email: true,
           agb_accepted: true,
         },
@@ -120,8 +125,11 @@ export function DeliveryNoteDialog({
       setStaffSignature(null);
       setStaffName("");
       setNotes("");
+      setKnownDefects("");
+      setAdditionalDefects("");
       setAgbAccepted(false);
       setOfferAccepted(false);
+      setItemsReceived(false);
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
@@ -138,7 +146,7 @@ export function DeliveryNoteDialog({
   if (!offer || !profile) return null;
 
   const items = offerItems.filter((i) => i.offer_id === offer.id);
-  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim() && agbAccepted && offerAccepted;
+  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim() && agbAccepted && offerAccepted && itemsReceived;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -223,13 +231,43 @@ export function DeliveryNoteDialog({
           </CardContent>
         </Card>
 
+        {/* Known Defects */}
+        <div className="space-y-2">
+          <Label className="text-base font-semibold flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            Mängeldokumentation
+          </Label>
+          <div>
+            <Label className="text-xs">Bekannte Mängel (vor Übergabe)</Label>
+            <Textarea
+              value={knownDefects}
+              onChange={(e) => setKnownDefects(e.target.value)}
+              placeholder="z.B. Kratzer am Gehäuse, leichte Gebrauchsspuren am Hydraulikarm..."
+              rows={2}
+              className="text-sm"
+            />
+          </div>
+          <div>
+            <Label className="text-xs">Weitere Mängel bei Übergabe</Label>
+            <Textarea
+              value={additionalDefects}
+              onChange={(e) => setAdditionalDefects(e.target.value)}
+              placeholder="z.B. Bei Übergabe festgestellte zusätzliche Mängel..."
+              rows={2}
+              className="text-sm"
+            />
+          </div>
+        </div>
+
+        <Separator />
+
         {/* Notes */}
         <div>
           <Label className="text-xs">Anmerkungen (optional)</Label>
           <Textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="z.B. Zustand der Geräte, besondere Hinweise..."
+            placeholder="z.B. besondere Hinweise, Absprachen..."
             rows={2}
             className="text-sm"
           />
@@ -243,6 +281,19 @@ export function DeliveryNoteDialog({
             <ShieldCheck className="h-4 w-4" />
             Rechtliche Bestätigungen
           </Label>
+
+          {/* Items received confirmation */}
+          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+            <Checkbox
+              id="items-received"
+              checked={itemsReceived}
+              onCheckedChange={(checked) => setItemsReceived(checked === true)}
+            />
+            <label htmlFor="items-received" className="text-sm leading-relaxed cursor-pointer">
+              Der Kunde bestätigt hiermit den <strong>vollständigen und ordnungsgemäßen Empfang</strong> aller 
+              oben aufgeführten Mietgegenstände. Etwaige Mängel sind in der Mängeldokumentation vermerkt.
+            </label>
+          </div>
 
           {/* Offer acceptance */}
           <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
