@@ -136,7 +136,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       end_time: endTime || null,
       quantity,
       original_price: originalPrice > 0 ? originalPrice : null,
-      deposit: deposit ? Number(deposit) : null,
+      deposit: deposit && deposit !== "none" ? Number(deposit) : null,
       additional_services: servicesArray,
       status: "pending",
       notes: fullNotes,
@@ -259,7 +259,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
               <Select value={deposit} onValueChange={setDeposit}>
                 <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Keine</SelectItem>
+                  <SelectItem value="none">Keine</SelectItem>
                   {DEPOSIT_OPTIONS.map((d) => (
                     <SelectItem key={d} value={String(d)}>{d} €</SelectItem>
                   ))}
