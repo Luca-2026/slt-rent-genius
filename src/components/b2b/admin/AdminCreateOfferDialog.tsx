@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 
 interface Reservation {
   id: string;
@@ -206,6 +207,7 @@ export function AdminCreateOfferDialog({
             discount_percent: item.discount_percent || undefined,
             rental_start: startDate,
             rental_end: endDate,
+            image_url: getProductImageUrl(reservation?.product_id || "") || getProductImageUrlByName(item.product_name) || undefined,
           })),
           delivery_cost: deliveryCost,
           valid_days: validDays,
