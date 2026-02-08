@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail } from "lucide-react";
+import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText } from "lucide-react";
 import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
+import { AGBScrollableText } from "@/components/b2b/AGBScrollableText";
 
 const legalForms = [
   "GmbH",
@@ -64,6 +65,9 @@ export default function B2BRegister() {
   // Terms
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+
+  // Postal invoice
+  const [postalInvoice, setPostalInvoice] = useState(false);
 
   const validateStep1 = () => {
     if (!email || !password || !passwordConfirm) {
@@ -153,6 +157,7 @@ export default function B2BRegister() {
         assigned_location: assignedLocation,
         document_url: publicUrl,
         document_filename: documentFile.name,
+        postal_invoice: postalInvoice,
         status: "pending",
       });
 
@@ -493,6 +498,20 @@ export default function B2BRegister() {
                         </div>
                       </div>
 
+                      {/* AGB Full Text */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <FileText className="h-5 w-5 text-primary" />
+                          <label className="block text-sm font-medium text-headline">
+                            Allgemeine Geschäftsbedingungen (AGB) *
+                          </label>
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          Bitte lies die folgenden AGB sorgfältig durch und bestätige sie anschließend.
+                        </p>
+                        <AGBScrollableText />
+                      </div>
+
                       <div className="space-y-3">
                         <div className="flex items-start gap-2">
                           <input
@@ -503,7 +522,7 @@ export default function B2BRegister() {
                             className="mt-1"
                           />
                           <label htmlFor="terms" className="text-sm text-muted-foreground">
-                            Ich habe die <Link to="/agb" className="text-primary hover:underline">AGB</Link> gelesen und akzeptiere sie. *
+                            Ich habe die oben aufgeführten <Link to="/agb" className="text-primary hover:underline">AGB</Link> vollständig gelesen und akzeptiere sie. *
                           </label>
                         </div>
                         <div className="flex items-start gap-2">
@@ -517,6 +536,27 @@ export default function B2BRegister() {
                           <label htmlFor="privacy" className="text-sm text-muted-foreground">
                             Ich habe die <Link to="/datenschutz" className="text-primary hover:underline">Datenschutzerklärung</Link> gelesen und stimme der Verarbeitung meiner Daten zu. *
                           </label>
+                        </div>
+
+                        {/* Postal Invoice Option */}
+                        <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border">
+                          <div className="flex items-start gap-2">
+                            <input
+                              type="checkbox"
+                              id="postalInvoice"
+                              checked={postalInvoice}
+                              onChange={(e) => setPostalInvoice(e.target.checked)}
+                              className="mt-1"
+                            />
+                            <label htmlFor="postalInvoice" className="text-sm text-muted-foreground">
+                              <span className="font-medium text-headline">Rechnungsversand per Post</span>
+                              <br />
+                              Ich möchte meine Rechnungen zusätzlich per Post erhalten.
+                              <span className="inline-block ml-1 text-xs font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                                +2,50 € pro Rechnung
+                              </span>
+                            </label>
+                          </div>
                         </div>
                       </div>
 
