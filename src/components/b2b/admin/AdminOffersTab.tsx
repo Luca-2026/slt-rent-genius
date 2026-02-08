@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -44,6 +44,7 @@ export interface OfferItem {
 interface B2BProfile {
   id: string;
   company_name: string;
+  credit_limit: number;
 }
 
 interface Props {
@@ -54,6 +55,7 @@ interface Props {
   onResendOffer: (offer: Offer) => void;
   onViewOffer: (fileUrl: string, offerNumber: string) => void;
   onCreateInvoice: (offer: Offer) => void;
+  onCreateProformaInvoice: (offer: Offer) => void;
   onCreateDeliveryNote: (offer: Offer) => void;
   resendingId: string | null;
   onRefresh: () => void;
@@ -67,6 +69,7 @@ export function AdminOffersTab({
   onResendOffer,
   onViewOffer,
   onCreateInvoice,
+  onCreateProformaInvoice,
   onCreateDeliveryNote,
   resendingId,
   onRefresh,
@@ -132,6 +135,7 @@ export function AdminOffersTab({
                 {offers.map((offer) => {
                   const profile = profiles.find((p) => p.id === offer.b2b_profile_id);
                   const items = offerItems.filter((i) => i.offer_id === offer.id);
+                  const isNoCreditLimit = !profile || profile.credit_limit === 0;
                   return (
                     <TableRow key={offer.id}>
                       <TableCell>
@@ -184,6 +188,17 @@ export function AdminOffersTab({
                                 <Receipt className="h-4 w-4" />
                               </Button>
                             </>
+                          )}
+                          {(offer.status === "sent" || offer.status === "accepted") && isNoCreditLimit && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onCreateProformaInvoice(offer)}
+                              title="Proforma-Rechnung (Vorkasse)"
+                              className="text-amber-600"
+                            >
+                              <CreditCard className="h-4 w-4" />
+                            </Button>
                           )}
                           <Button
                             size="sm"

@@ -126,6 +126,7 @@ export default function AdminDashboard() {
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
+  const [proformaMode, setProformaMode] = useState(false);
   const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
   const [deliveryNoteOffer, setDeliveryNoteOffer] = useState<Offer | null>(null);
   // Edit offer state
@@ -217,7 +218,10 @@ export default function AdminDashboard() {
             rental_end: item.rental_end || reservation.end_date,
             image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
           })),
-          notes: offer.notes || undefined,
+          notes: proformaMode
+            ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
+            : (offer.notes || undefined),
+          is_proforma: proformaMode,
         };
       } else {
         // Direct invoice without offer — also attach image
@@ -229,12 +233,13 @@ export default function AdminDashboard() {
       });
       if (error) throw error;
       toast({
-        title: "Rechnung erstellt!",
-        description: `Rechnung ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
+        title: proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!",
+        description: `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
       setInvoiceFromOffer(null);
+      setProformaMode(false);
       fetchData();
     } catch (error: any) {
       toast({
@@ -431,18 +436,12 @@ export default function AdminDashboard() {
             reservations={pendingReservations}
             profiles={profiles}
             onCreateReservation={() => setCreateReservationOpen(true)}
-            onGenerateInvoice={(res) => {
-              setSelectedReservation(res);
-              setInvoiceDialogOpen(true);
-            }}
-            onConfirmReservation={confirmReservation}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
               setEditingOffer(null);
               setEditingOfferItems([]);
               setCreateOfferOpen(true);
             }}
-            confirmingId={confirmingId}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -462,6 +461,23 @@ export default function AdminDashboard() {
               if (matchingReservation) {
                 setSelectedReservation(matchingReservation);
                 setInvoiceFromOffer(offer);
+                setInvoiceDialogOpen(true);
+              } else {
+                toast({
+                  title: "Fehler",
+                  description: "Keine zugehörige Reservierung gefunden.",
+                  variant: "destructive",
+                });
+              }
+            }}
+            onCreateProformaInvoice={(offer) => {
+              const matchingReservation = offer.reservation_id
+                ? reservations.find((r) => r.id === offer.reservation_id) || null
+                : null;
+              if (matchingReservation) {
+                setSelectedReservation(matchingReservation);
+                setInvoiceFromOffer(offer);
+                setProformaMode(true);
                 setInvoiceDialogOpen(true);
               } else {
                 toast({
@@ -580,15 +596,20 @@ export default function AdminDashboard() {
         setInvoiceDialogOpen(open);
         if (!open) {
           setInvoiceFromOffer(null);
+          setProformaMode(false);
         }
       }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Rechnung erstellen</DialogTitle>
+            <DialogTitle>
+              {proformaMode ? "Proforma-Rechnung (Vorkasse)" : "Rechnung erstellen"}
+            </DialogTitle>
             <DialogDescription>
-              {invoiceFromOffer
-                ? `Rechnung aus Angebot ${invoiceFromOffer.offer_number} erstellen.`
-                : "Erstelle eine Rechnung für diese Anfrage."}
+              {proformaMode
+                ? `Proforma-Rechnung aus Angebot ${invoiceFromOffer?.offer_number} erstellen. Der Kunde zahlt vorab per Vorkasse.`
+                : invoiceFromOffer
+                  ? `Rechnung aus Angebot ${invoiceFromOffer.offer_number} erstellen.`
+                  : "Erstelle eine Rechnung für diesen Mietvertrag."}
             </DialogDescription>
           </DialogHeader>
           {selectedReservation && (
@@ -646,6 +667,11 @@ export default function AdminDashboard() {
                       <Badge variant="secondary">inkl. 19% USt.</Badge>
                     );
                   })()}
+                  {proformaMode && (
+                    <Badge variant="outline" className="text-amber-600 border-amber-300">
+                      Vorkasse – Zahlungseingang vor Übergabe erforderlich
+                    </Badge>
+                  )}
                 </CardContent>
               </Card>
               <div className="flex gap-3 justify-end">
@@ -657,6 +683,8 @@ export default function AdminDashboard() {
                 >
                   {generatingInvoice ? (
                     <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird erstellt...</>
+                  ) : proformaMode ? (
+                    <><Receipt className="h-4 w-4 mr-1.5" />Proforma-Rechnung erstellen</>
                   ) : (
                     <><Receipt className="h-4 w-4 mr-1.5" />Rechnung generieren</>
                   )}
