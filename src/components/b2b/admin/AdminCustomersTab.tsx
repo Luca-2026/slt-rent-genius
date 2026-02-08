@@ -47,6 +47,7 @@ interface Props {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onEditCustomer: (profile: B2BProfile) => void;
+  onViewCustomer: (profile: B2BProfile) => void;
   onToggleVat: (profile: B2BProfile) => void;
   onCreateCustomer: () => void;
   onRefresh: () => void;
@@ -59,6 +60,7 @@ export function AdminCustomersTab({
   searchQuery,
   onSearchChange,
   onEditCustomer,
+  onViewCustomer,
   onToggleVat,
   onCreateCustomer,
   onRefresh,
@@ -145,7 +147,11 @@ export function AdminCustomersTab({
               : 0;
 
             return (
-              <Card key={profile.id} className="hover:border-primary/30 transition-colors">
+              <Card
+                key={profile.id}
+                className="hover:border-primary/30 transition-colors cursor-pointer"
+                onClick={() => onViewCustomer(profile)}
+              >
                 <CardContent className="p-4">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                     {/* Info */}
@@ -210,7 +216,7 @@ export function AdminCustomersTab({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => onEditCustomer(profile)}
+                        onClick={(e) => { e.stopPropagation(); onEditCustomer(profile); }}
                       >
                         <Edit className="h-3.5 w-3.5 mr-1" />
                         Bearbeiten
@@ -219,7 +225,7 @@ export function AdminCustomersTab({
                         <Button
                           size="sm"
                           variant={profile.vat_id_verified ? "outline" : "default"}
-                          onClick={() => onToggleVat(profile)}
+                          onClick={(e) => { e.stopPropagation(); onToggleVat(profile); }}
                         >
                           <Shield className="h-3.5 w-3.5 mr-1" />
                           {profile.vat_id_verified ? "VAT entziehen" : "VAT verifizieren"}
