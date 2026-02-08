@@ -22,6 +22,7 @@ import B2BProducts from "./pages/b2b/B2BProducts";
 import MyReservations from "./pages/b2b/MyReservations";
 import B2BInvoices from "./pages/b2b/Invoices";
 import B2BDeliveryNotes from "./pages/b2b/DeliveryNotes";
+import B2BReturnProtocols from "./pages/b2b/ReturnProtocols";
 import AdminDashboard from "./pages/b2b/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import AGB from "./pages/AGB";
@@ -91,9 +92,12 @@ const App = () => (
             <Route path="/b2b/dashboard" element={<B2BDashboard />} />
             <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
             <Route path="/b2b/produkte" element={<B2BProducts />} />
-            <Route path="/b2b/anfragen" element={<MyReservations />} />
+            <Route path="/b2b/mietvorgaenge" element={<MyReservations />} />
+            <Route path="/b2b/anfragen" element={<MyReservations />} /> {/* Legacy redirect */}
             <Route path="/b2b/rechnungen" element={<B2BInvoices />} />
-            <Route path="/b2b/lieferscheine" element={<B2BDeliveryNotes />} />
+            <Route path="/b2b/uebergabeprotokolle" element={<B2BDeliveryNotes />} />
+            <Route path="/b2b/lieferscheine" element={<B2BDeliveryNotes />} /> {/* Legacy redirect */}
+            <Route path="/b2b/rueckgabeprotokolle" element={<B2BReturnProtocols />} />
             <Route path="/b2b/admin" element={<AdminDashboard />} />
             <Route path="/b2b" element={<B2BLogin />} />
             

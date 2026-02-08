@@ -181,7 +181,7 @@ export function AdminOffersTab({
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => onCreateDeliveryNote(offer)}
-                                title="Lieferschein erstellen"
+                                title="Übergabeprotokoll erstellen"
                                 className="text-green-600"
                               >
                                 <ClipboardCheck className="h-4 w-4" />

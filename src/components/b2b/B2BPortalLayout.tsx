@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { 
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -19,7 +19,9 @@ const customerNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
-  { href: "/b2b/anfragen", label: "Meine Anfragen", icon: FileText },
+  { href: "/b2b/mietvorgaenge", label: "Mietvorgänge", icon: FileText },
+  { href: "/b2b/uebergabeprotokolle", label: "Übergabeprotokolle", icon: ClipboardCheck },
+  { href: "/b2b/rueckgabeprotokolle", label: "Rückgabeprotokolle", icon: Undo2 },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];

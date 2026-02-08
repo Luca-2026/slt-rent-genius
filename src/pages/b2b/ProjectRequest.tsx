@@ -117,7 +117,7 @@ export default function ProjectRequest() {
         description: "Wir melden uns schnellstmöglich bei dir.",
       });
 
-      navigate("/b2b/anfragen");
+      navigate("/b2b/mietvorgaenge");
     } catch (error: any) {
       console.error("Error submitting project request:", error);
       toast({
