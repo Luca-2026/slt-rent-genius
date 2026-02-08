@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, Package } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalendarIcon, Package, Plus, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,15 @@ interface B2BProfile {
   user_id?: string;
 }
 
+interface ProductItem {
+  id: string;
+  productName: string;
+  productId: string;
+  categorySlug: string;
+  quantity: number;
+  price: number;
+}
+
 interface Props {
   profiles: B2BProfile[];
   open: boolean;
@@ -30,21 +40,29 @@ interface Props {
   onCreated: () => void;
 }
 
+let itemCounter = 0;
+function createEmptyItem(): ProductItem {
+  return {
+    id: `item-${++itemCounter}`,
+    productName: "",
+    productId: "",
+    categorySlug: "",
+    quantity: 1,
+    price: 0,
+  };
+}
+
 export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onCreated }: Props) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
 
   const [selectedProfileId, setSelectedProfileId] = useState("");
-  const [productName, setProductName] = useState("");
-  const [productId, setProductId] = useState("");
-  const [categorySlug, setCategorySlug] = useState("");
+  const [items, setItems] = useState<ProductItem[]>([createEmptyItem()]);
   const [location, setLocation] = useState("krefeld");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [originalPrice, setOriginalPrice] = useState<number>(0);
   const [deliveryCost, setDeliveryCost] = useState<number>(0);
   const [deposit, setDeposit] = useState<string>("");
   const [notes, setNotes] = useState("");
@@ -52,20 +70,28 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
 
   const resetForm = () => {
     setSelectedProfileId("");
-    setProductName("");
-    setProductId("");
-    setCategorySlug("");
+    setItems([createEmptyItem()]);
     setLocation("krefeld");
     setStartDate(undefined);
     setEndDate(undefined);
     setStartTime("");
     setEndTime("");
-    setQuantity(1);
-    setOriginalPrice(0);
     setDeliveryCost(0);
     setDeposit("");
     setNotes("");
     setSelectedServices(new Set());
+  };
+
+  const addItem = () => {
+    setItems((prev) => [...prev, createEmptyItem()]);
+  };
+
+  const removeItem = (id: string) => {
+    setItems((prev) => prev.length > 1 ? prev.filter((i) => i.id !== id) : prev);
+  };
+
+  const updateItem = (id: string, updates: Partial<ProductItem>) => {
+    setItems((prev) => prev.map((item) => item.id === id ? { ...item, ...updates } : item));
   };
 
   const toggleService = (serviceId: string) => {
@@ -85,14 +111,20 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     });
   };
 
-  // Calculate service surcharges based on item price (excl. delivery & deposit)
-  const baseItemTotal = originalPrice * quantity;
+  // Calculate totals
+  const baseItemTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  // Determine category from first item for services
+  const primaryCategorySlug = items[0]?.categorySlug || "";
+  const relevantServices = getServicesForCategory(primaryCategorySlug);
   const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, baseItemTotal);
 
   const handleCreate = async () => {
     const profile = profiles.find((p) => p.id === selectedProfileId);
-    if (!profile || !productName || !startDate) {
-      toast({ title: "Fehler", description: "Bitte fülle alle Pflichtfelder aus.", variant: "destructive" });
+    const validItems = items.filter((i) => i.productName.trim());
+
+    if (!profile || validItems.length === 0 || !startDate) {
+      toast({ title: "Fehler", description: "Bitte fülle alle Pflichtfelder aus (Kunde, min. 1 Produkt, Startdatum).", variant: "destructive" });
       return;
     }
 
@@ -110,7 +142,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       return;
     }
 
-    // Build additional services array (include calculated price)
+    // Build additional services array
     const servicesArray = selectedServices.size > 0
       ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
           const surcharge = s.pricePercent !== null
@@ -134,29 +166,36 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
 
     const fullNotes = [timeInfo, notes].filter(Boolean).join("\n") || null;
 
-    const { error } = await supabase.from("b2b_reservations").insert({
+    // Create one reservation per product item
+    const reservationsToInsert = validItems.map((item) => ({
       b2b_profile_id: selectedProfileId,
       user_id: profileData.user_id,
-      product_name: productName,
-      product_id: productId || productName.toLowerCase().replace(/\s+/g, "-"),
-      category_slug: categorySlug || null,
+      product_name: item.productName,
+      product_id: item.productId || item.productName.toLowerCase().replace(/\s+/g, "-"),
+      category_slug: item.categorySlug || null,
       location,
       start_date: startDate.toISOString().split("T")[0],
       end_date: endDate?.toISOString().split("T")[0] || null,
       start_time: startTime || null,
       end_time: endTime || null,
-      quantity,
-      original_price: originalPrice > 0 ? originalPrice : null,
+      quantity: item.quantity,
+      original_price: item.price > 0 ? item.price : null,
       deposit: deposit && deposit !== "none" ? Number(deposit) : null,
       additional_services: servicesArray,
-      status: "pending",
+      status: "pending" as const,
       notes: fullNotes,
-    } as any);
+    }));
+
+    const { error } = await supabase.from("b2b_reservations").insert(reservationsToInsert as any);
 
     if (error) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Mietvorgang erstellt", description: `${productName} für ${profile.company_name}` });
+      const productNames = validItems.map((i) => i.productName).join(", ");
+      toast({
+        title: `${validItems.length} Mietvorgang${validItems.length > 1 ? "e" : ""} erstellt`,
+        description: `${productNames} für ${profile.company_name}`,
+      });
       resetForm();
       onCreated();
       onOpenChange(false);
@@ -165,7 +204,6 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   };
 
   const approvedProfiles = profiles.filter((p: any) => p.status === "approved");
-  const relevantServices = getServicesForCategory(categorySlug);
 
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -179,11 +217,12 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             Mietvorgang anlegen
           </DialogTitle>
           <DialogDescription>
-            Erstelle einen Mietvorgang für einen bestehenden Kunden (z.B. Vor-Ort-Miete).
+            Erstelle einen oder mehrere Mietvorgänge für einen bestehenden Kunden.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
+          {/* Customer */}
           <div>
             <Label>Kunde *</Label>
             <Select value={selectedProfileId} onValueChange={setSelectedProfileId}>
@@ -196,19 +235,74 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </Select>
           </div>
 
-          <div>
-            <Label>Produktname *</Label>
-            <ProductAutocomplete
-              value={productName}
-              onChange={(name, id, cat) => {
-                setProductName(name);
-                setProductId(id);
-                setCategorySlug(cat);
-              }}
-              location={location}
-            />
+          {/* Product Items */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>Produkte *</Label>
+              <Button type="button" variant="ghost" size="sm" onClick={addItem} className="h-7 text-xs gap-1">
+                <Plus className="h-3.5 w-3.5" />
+                Produkt hinzufügen
+              </Button>
+            </div>
+
+            {items.map((item, index) => (
+              <Card key={item.id} className="border-dashed">
+                <CardContent className="p-3 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-muted-foreground">Artikel {index + 1}</span>
+                    {items.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 text-destructive hover:text-destructive"
+                        onClick={() => removeItem(item.id)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    )}
+                  </div>
+                  <ProductAutocomplete
+                    value={item.productName}
+                    onChange={(name, id, cat) => updateItem(item.id, { productName: name, productId: id, categorySlug: cat })}
+                    location={location}
+                    placeholder="Produktname eingeben..."
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-xs">Menge</Label>
+                      <Input
+                        type="number"
+                        min={1}
+                        value={item.quantity}
+                        onChange={(e) => updateItem(item.id, { quantity: Number(e.target.value) })}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Preis (€ netto)</Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        step={0.01}
+                        value={item.price}
+                        onChange={(e) => updateItem(item.id, { price: Number(e.target.value) })}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {baseItemTotal > 0 && (
+              <div className="text-right text-sm font-medium text-muted-foreground">
+                Artikel gesamt: {formatCurrency(baseItemTotal)}
+              </div>
+            )}
           </div>
 
+          {/* Location */}
           <div>
             <Label>Standort *</Label>
             <Select value={location} onValueChange={setLocation}>
@@ -221,6 +315,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </Select>
           </div>
 
+          {/* Dates */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Startdatum *</Label>
@@ -248,6 +343,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           </div>
 
+          {/* Times */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Uhrzeit (von)</Label>
@@ -259,17 +355,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label>Menge</Label>
-              <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
-            </div>
-            <div>
-              <Label>Preis (€ netto)</Label>
-              <Input type="number" min={0} step={0.01} value={originalPrice} onChange={(e) => setOriginalPrice(Number(e.target.value))} />
-            </div>
-          </div>
-
+          {/* Delivery & Deposit */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Lieferkosten (€ netto)</Label>
@@ -289,7 +375,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           </div>
 
-          {/* Additional Services with pricing */}
+          {/* Additional Services */}
           {relevantServices.length > 0 && (
             <div>
               <Label className="mb-2 block">Zusatzoptionen</Label>
@@ -329,6 +415,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             </div>
           )}
 
+          {/* Notes */}
           <div>
             <Label>Anmerkungen</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Interne Notizen..." rows={2} />
@@ -338,7 +425,9 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
         <div className="flex gap-3 justify-end pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Abbrechen</Button>
           <Button onClick={handleCreate} disabled={saving} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-            {saving ? "Wird erstellt..." : "Mietvorgang erstellen"}
+            {saving ? "Wird erstellt..." : items.filter((i) => i.productName.trim()).length > 1
+              ? `${items.filter((i) => i.productName.trim()).length} Mietvorgänge erstellen`
+              : "Mietvorgang erstellen"}
           </Button>
         </div>
       </DialogContent>
