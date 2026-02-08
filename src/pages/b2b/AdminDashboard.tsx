@@ -381,6 +381,7 @@ export default function AdminDashboard() {
           notes: reservation.notes || undefined,
           send_email: false,
           save_prices: false,
+          skip_status_update: true,
           deposit,
           additional_services: servicesArray,
         },
@@ -582,7 +583,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals">
           <AdminRentalsTab
-            reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed" || r.status === "pending")}
+            reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed" || r.status === "pending" || r.status === "offer_sent")}
             profiles={profiles}
             invoices={invoices}
             offers={offers}

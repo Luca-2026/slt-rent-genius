@@ -44,6 +44,7 @@ interface OfferRequest {
   notes?: string;
   send_email?: boolean;
   save_prices?: boolean;
+  skip_status_update?: boolean; // When true, don't change reservation status (used for auto-offer on confirm)
 }
 
 Deno.serve(async (req: Request) => {
@@ -102,6 +103,7 @@ Deno.serve(async (req: Request) => {
       notes,
       send_email = true,
       save_prices = true,
+      skip_status_update = false,
     } = body;
 
     if (!items || items.length === 0) {
@@ -412,8 +414,8 @@ Deno.serve(async (req: Request) => {
       console.log("Customer prices saved permanently for", profile.company_name);
     }
 
-    // Update reservation status to offer_sent (only if reservation exists)
-    if (reservation_id) {
+    // Update reservation status to offer_sent (only if reservation exists and not skipped)
+    if (reservation_id && !skip_status_update) {
       await serviceClient
         .from("b2b_reservations")
         .update({ 
