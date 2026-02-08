@@ -115,6 +115,7 @@ export default function AdminDashboard() {
   const [returnProtocolIds, setReturnProtocolIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("reservations");
 
   // Dialog states
   const [selectedProfile, setSelectedProfile] = useState<B2BProfile | null>(null);
@@ -448,7 +449,7 @@ export default function AdminDashboard() {
       />
 
       {/* Tab Navigation */}
-      <Tabs defaultValue="reservations" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-8 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
