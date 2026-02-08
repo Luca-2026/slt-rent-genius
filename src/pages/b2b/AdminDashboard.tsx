@@ -13,6 +13,7 @@ import { AdminRentalsTab } from "@/components/b2b/admin/AdminRentalsTab";
 import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
 import { AdminCustomersTab } from "@/components/b2b/admin/AdminCustomersTab";
 import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/admin/AdminOffersTab";
+import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotesTab";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
@@ -30,7 +31,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -387,7 +388,7 @@ export default function AdminDashboard() {
 
       {/* Tab Navigation */}
       <Tabs defaultValue="reservations" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 h-12">
+        <TabsList className="grid w-full grid-cols-6 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
@@ -405,6 +406,10 @@ export default function AdminDashboard() {
                 {offers.length}
               </Badge>
             )}
+          </TabsTrigger>
+          <TabsTrigger value="delivery-notes" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <ClipboardCheck className="h-4 w-4" />
+            <span className="hidden sm:inline">Lieferscheine</span>
           </TabsTrigger>
           <TabsTrigger value="rentals" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <Package className="h-4 w-4" />
@@ -471,6 +476,13 @@ export default function AdminDashboard() {
               setDeliveryNoteOpen(true);
             }}
             resendingId={resendingId}
+            onRefresh={fetchData}
+          />
+        </TabsContent>
+
+        <TabsContent value="delivery-notes">
+          <AdminDeliveryNotesTab
+            profiles={profiles as any}
             onRefresh={fetchData}
           />
         </TabsContent>

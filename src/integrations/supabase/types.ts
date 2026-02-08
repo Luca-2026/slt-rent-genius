@@ -140,6 +140,8 @@ export type Database = {
       }
       b2b_delivery_notes: {
         Row: {
+          agb_accepted: boolean
+          agb_accepted_at: string | null
           b2b_profile_id: string
           created_at: string
           delivery_note_number: string
@@ -157,6 +159,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          agb_accepted?: boolean
+          agb_accepted_at?: string | null
           b2b_profile_id: string
           created_at?: string
           delivery_note_number: string
@@ -174,6 +178,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          agb_accepted?: boolean
+          agb_accepted_at?: string | null
           b2b_profile_id?: string
           created_at?: string
           delivery_note_number?: string

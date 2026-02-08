@@ -28,6 +28,7 @@ interface DeliveryNoteRequest {
   signature_data: string; // base64 PNG
   notes?: string;
   send_email?: boolean;
+  agb_accepted?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -76,7 +77,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, notes, send_email = true } = body;
+    const { offer_id, signature_data, notes, send_email = true, agb_accepted = false } = body;
 
     if (!offer_id || !signature_data) {
       return new Response(
@@ -168,6 +169,7 @@ Deno.serve(async (req: Request) => {
       reservation,
       signatureData: signature_data,
       notes: notes || offer.notes || null,
+      agbAccepted: agb_accepted,
     });
 
     // Upload HTML to storage
@@ -198,6 +200,7 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signedUrlData?.signedUrl || "";
 
     // Create delivery note record
+    const now = new Date().toISOString();
     const { data: deliveryNote, error: dnError } = await serviceClient
       .from("b2b_delivery_notes")
       .insert({
@@ -210,7 +213,9 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
-        signed_at: new Date().toISOString(),
+        signed_at: now,
+        agb_accepted: agb_accepted,
+        agb_accepted_at: agb_accepted ? now : null,
       })
       .select()
       .single();
@@ -369,6 +374,7 @@ function generateDeliveryNoteHtml(data: {
   reservation: any;
   signatureData: string;
   notes: string | null;
+  agbAccepted: boolean;
 }): string {
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr + "T00:00:00");
@@ -492,6 +498,7 @@ function generateDeliveryNoteHtml(data: {
       • Der Mieter bestätigt den ordnungsgemäßen Empfang der aufgeführten Mietgegenstände.<br>
       • Beschädigungen oder Mängel sind sofort bei Übergabe zu melden.<br>
       • Es gelten die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name}.
+      ${data.agbAccepted ? `<br><br><strong style="color:#00507d;">✓ AGB akzeptiert</strong> – Der Kunde hat die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name} am ${dateTimeStr} gelesen und akzeptiert.` : ""}
     </div>
 
     <!-- Signature section -->
