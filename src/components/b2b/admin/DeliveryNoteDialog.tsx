@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { ClipboardCheck, RefreshCw, Send, Package } from "lucide-react";
+import { ClipboardCheck, RefreshCw, Send, Package, Clock, ShieldCheck } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
@@ -53,6 +54,14 @@ export function DeliveryNoteDialog({
   const [saving, setSaving] = useState(false);
   const [signatureData, setSignatureData] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
+  const [agbAccepted, setAgbAccepted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update timestamp every second while dialog is open
+  useState(() => {
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  });
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
 
@@ -61,6 +70,14 @@ export function DeliveryNoteDialog({
       toast({
         title: "Unterschrift fehlt",
         description: "Bitte lassen Sie den Kunden zuerst unterschreiben.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!agbAccepted) {
+      toast({
+        title: "AGB nicht akzeptiert",
+        description: "Der Kunde muss die AGB akzeptieren.",
         variant: "destructive",
       });
       return;
@@ -74,6 +91,7 @@ export function DeliveryNoteDialog({
           signature_data: signatureData,
           notes: notes || undefined,
           send_email: true,
+          agb_accepted: true,
         },
       });
 
@@ -88,6 +106,7 @@ export function DeliveryNoteDialog({
 
       setSignatureData(null);
       setNotes("");
+      setAgbAccepted(false);
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
@@ -175,6 +194,19 @@ export function DeliveryNoteDialog({
 
         <Separator />
 
+        {/* Timestamp */}
+        <Card className="bg-muted/50">
+          <CardContent className="p-3 flex items-center gap-3">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <div>
+              <p className="text-xs text-muted-foreground">Übergabe-Zeitstempel</p>
+              <p className="text-sm font-medium">
+                {format(currentTime, "dd.MM.yyyy, HH:mm:ss", { locale: de })} Uhr
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Notes */}
         <div>
           <Label className="text-xs">Anmerkungen (optional)</Label>
@@ -192,6 +224,24 @@ export function DeliveryNoteDialog({
         {/* Signature Pad */}
         <SignaturePad onSignatureChange={setSignatureData} />
 
+        <Separator />
+
+        {/* AGB Acceptance */}
+        <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+          <Checkbox
+            id="agb-accept"
+            checked={agbAccepted}
+            onCheckedChange={(checked) => setAgbAccepted(checked === true)}
+          />
+          <label htmlFor="agb-accept" className="text-sm leading-relaxed cursor-pointer">
+            Der Kunde bestätigt hiermit, die{" "}
+            <a href="/agb" target="_blank" className="text-primary underline hover:text-primary/80">
+              Allgemeinen Geschäftsbedingungen (AGB)
+            </a>{" "}
+            der SLT Technology Group GmbH & Co. KG gelesen und akzeptiert zu haben.
+          </label>
+        </div>
+
         {/* Actions */}
         <div className="flex gap-3 justify-end pt-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
@@ -199,7 +249,7 @@ export function DeliveryNoteDialog({
           </Button>
           <Button
             onClick={handleGenerate}
-            disabled={saving || !signatureData}
+            disabled={saving || !signatureData || !agbAccepted}
             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           >
             {saving ? (
@@ -209,7 +259,7 @@ export function DeliveryNoteDialog({
               </>
             ) : (
               <>
-                <Send className="h-4 w-4 mr-1.5" />
+                <ShieldCheck className="h-4 w-4 mr-1.5" />
                 Lieferschein erstellen & senden
               </>
             )}
