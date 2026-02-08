@@ -334,7 +334,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleConfirmAndCreateOffer = async (reservation: Reservation) => {
+  const handleConfirmAndCreateOffer = async (reservation: Reservation): Promise<void> => {
     setConfirmingId(reservation.id);
     try {
       // 1. Confirm the reservation
