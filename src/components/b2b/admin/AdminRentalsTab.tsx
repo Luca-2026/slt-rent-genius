@@ -13,9 +13,6 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Collapsible, CollapsibleContent, CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
   CalendarPlus, Check, ChevronDown, ChevronRight, ClipboardCheck,
   ClipboardList, Eye, Layers, MoreHorizontal, Package, Plus, Receipt,
   RefreshCw, Trash2,
@@ -190,15 +187,15 @@ export function AdminRentalsTab({
   // ─── Status badge ─────────────────────────────────────
   const getStatusBadge = (res: Reservation) => {
     if (res.status === "pending") {
-      return <Badge variant="outline" className="border-amber-500 text-amber-700 bg-amber-50 text-xs">Offen</Badge>;
+      return <Badge variant="outline" className="border-amber-500 text-amber-700 bg-amber-50 text-xs whitespace-nowrap">Offen</Badge>;
     }
     if (res.status === "completed") {
-      return <Badge variant="secondary" className="text-xs">Beendet</Badge>;
+      return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;
     }
     if (isActive(res)) {
-      return <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">Aktiv</Badge>;
+      return <Badge className="bg-primary/10 text-primary border-primary/20 text-xs whitespace-nowrap">Aktiv</Badge>;
     }
-    return <Badge variant="secondary" className="text-xs">Beendet</Badge>;
+    return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;
   };
 
   const getGroupStatus = (items: Reservation[]) => {
@@ -229,7 +226,7 @@ export function AdminRentalsTab({
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-52 bg-popover">
+        <DropdownMenuContent align="end" className="w-52 bg-popover z-50">
           {isPending && (
             <DropdownMenuItem
               onClick={() => onConfirmReservation(res)}
@@ -264,7 +261,6 @@ export function AdminRentalsTab({
             </DropdownMenuItem>
           )}
 
-          {/* Document links */}
           {(docs.deliveryNote?.file_url || docs.returnProtocol?.file_url || docs.invoice?.file_url) && (
             <>
               <DropdownMenuSeparator />
@@ -385,47 +381,50 @@ export function AdminRentalsTab({
     return (
       <Card key={group.key} className="border-border">
         <CardContent className="p-4">
-          <Collapsible open={isExpanded} onOpenChange={() => toggleGroup(group.key)}>
-            <div className="flex items-start justify-between gap-2">
-              <CollapsibleTrigger className="flex items-center gap-2 text-left flex-1 min-w-0">
-                {isExpanded ? <ChevronDown className="h-4 w-4 shrink-0" /> : <ChevronRight className="h-4 w-4 shrink-0" />}
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
-                    <span className="font-semibold text-sm">{items.length} Positionen</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {profile?.company_name || "–"}
-                  </p>
+          <div className="flex items-start justify-between gap-2">
+            <button
+              onClick={() => toggleGroup(group.key)}
+              className="flex items-center gap-2 text-left flex-1 min-w-0"
+            >
+              {isExpanded ? <ChevronDown className="h-4 w-4 shrink-0" /> : <ChevronRight className="h-4 w-4 shrink-0" />}
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <span className="font-semibold text-sm">{items.length} Positionen</span>
                 </div>
-              </CollapsibleTrigger>
-              <div className="flex items-center gap-2 shrink-0">
-                {getStatusBadge({ ...first, status: groupStatus })}
-                {renderActionDropdown(first)}
+                <p className="text-xs text-muted-foreground truncate">
+                  {profile?.company_name || "–"}
+                </p>
               </div>
+            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {getStatusBadge({ ...first, status: groupStatus })}
+              {renderActionDropdown(first)}
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-3 text-xs">
-              <div className="col-span-2">
-                <span className="text-muted-foreground">Zeitraum:</span>
-                <span className="ml-1">
-                  {fmtDate(first.start_date)}
-                  {first.end_date ? ` – ${fmtDate(first.end_date)}` : ""}
-                </span>
-              </div>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-3 text-xs">
+            <div className="col-span-2">
+              <span className="text-muted-foreground">Zeitraum:</span>
+              <span className="ml-1">
+                {fmtDate(first.start_date)}
+                {first.end_date ? ` – ${fmtDate(first.end_date)}` : ""}
+              </span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Standort:</span>
+              <span className="ml-1 capitalize">{first.location}</span>
+            </div>
+            {groupPrice > 0 && (
               <div>
-                <span className="text-muted-foreground">Standort:</span>
-                <span className="ml-1 capitalize">{first.location}</span>
+                <span className="text-muted-foreground">Gesamt:</span>
+                <span className="ml-1 font-medium">{fmtCurrency(groupPrice)}</span>
               </div>
-              {groupPrice > 0 && (
-                <div>
-                  <span className="text-muted-foreground">Gesamt:</span>
-                  <span className="ml-1 font-medium">{fmtCurrency(groupPrice)}</span>
-                </div>
-              )}
-            </div>
+            )}
+          </div>
 
-            <CollapsibleContent className="mt-3 space-y-2 border-t border-border pt-3">
+          {isExpanded && (
+            <div className="mt-3 space-y-2 border-t border-border pt-3">
               {items.map((res) => (
                 <div key={res.id} className="flex items-center justify-between text-xs bg-muted/30 rounded-md p-2">
                   <div className="min-w-0 flex-1">
@@ -444,93 +443,102 @@ export function AdminRentalsTab({
                   </Button>
                 </div>
               ))}
-            </CollapsibleContent>
-          </Collapsible>
+            </div>
+          )}
         </CardContent>
       </Card>
     );
   };
 
-  // ─── Desktop Table Row ────────────────────────────────
-  const renderSingleRow = (res: Reservation) => {
-    const profile = profiles.find((p) => p.id === res.b2b_profile_id);
-    const price = getPrice(res);
-    const isPending = res.status === "pending";
+  // ─── Desktop Table Rows (no Collapsible wrapper – pure <tr> elements) ─
+  const renderTableRows = (): React.ReactNode[] => {
+    const rows: React.ReactNode[] = [];
 
-    return (
-      <TableRow key={res.id} className={isPending ? "bg-amber-50/30" : undefined}>
-        <TableCell className="max-w-[200px]">
-          <p className="font-medium text-sm truncate">{res.product_name || res.product_id}</p>
-          <p className="text-xs text-muted-foreground">Menge: {res.quantity}</p>
-        </TableCell>
-        <TableCell className="text-sm">{profile?.company_name || "–"}</TableCell>
-        <TableCell className="text-sm capitalize hidden xl:table-cell">{res.location}</TableCell>
-        <TableCell className="text-sm whitespace-nowrap">
-          {fmtDate(res.start_date)}
-          {res.end_date ? ` – ${fmtDate(res.end_date)}` : ""}
-        </TableCell>
-        <TableCell>{getStatusBadge(res)}</TableCell>
-        <TableCell className="hidden lg:table-cell">{renderDocIcons(res)}</TableCell>
-        <TableCell className="text-right text-sm whitespace-nowrap">
-          {price != null ? fmtCurrency(price) : "–"}
-        </TableCell>
-        <TableCell className="text-right">{renderActionDropdown(res)}</TableCell>
-      </TableRow>
-    );
-  };
+    for (const group of groups) {
+      if (!group.isBatch) {
+        // Single reservation row
+        const res = group.reservations[0];
+        const profile = profiles.find((p) => p.id === res.b2b_profile_id);
+        const price = getPrice(res);
+        const isPending = res.status === "pending";
 
-  const renderGroupRow = (group: RentalGroup) => {
-    const items = group.reservations;
-    const first = items[0];
-    const profile = profiles.find((p) => p.id === first.b2b_profile_id);
-    const isExpanded = expandedGroups.has(group.key);
-    const groupStatus = getGroupStatus(items);
-    const groupPrice = getGroupPrice(items);
-    const isPending = groupStatus === "pending";
+        rows.push(
+          <TableRow key={res.id} className={isPending ? "bg-amber-50/30" : undefined}>
+            <TableCell>
+              <p className="font-medium text-sm truncate max-w-[200px]">{res.product_name || res.product_id}</p>
+              <p className="text-xs text-muted-foreground">Menge: {res.quantity}</p>
+            </TableCell>
+            <TableCell className="text-sm">{profile?.company_name || "–"}</TableCell>
+            <TableCell className="text-sm whitespace-nowrap">
+              {fmtDate(res.start_date)}
+              {res.end_date ? ` – ${fmtDate(res.end_date)}` : ""}
+            </TableCell>
+            <TableCell>{getStatusBadge(res)}</TableCell>
+            <TableCell className="hidden lg:table-cell">{renderDocIcons(res)}</TableCell>
+            <TableCell className="text-right text-sm whitespace-nowrap">
+              {price != null ? fmtCurrency(price) : "–"}
+            </TableCell>
+            <TableCell className="text-right w-[50px]">{renderActionDropdown(res)}</TableCell>
+          </TableRow>
+        );
+      } else {
+        // Group header row
+        const items = group.reservations;
+        const first = items[0];
+        const profile = profiles.find((p) => p.id === first.b2b_profile_id);
+        const isExpanded = expandedGroups.has(group.key);
+        const groupStatus = getGroupStatus(items);
+        const groupPrice = getGroupPrice(items);
+        const isPending = groupStatus === "pending";
 
-    return (
-      <Collapsible key={group.key} open={isExpanded} onOpenChange={() => toggleGroup(group.key)}>
-        <TableRow className={isPending ? "bg-amber-50/30 cursor-pointer" : "cursor-pointer"}>
-          <TableCell>
-            <CollapsibleTrigger asChild>
+        rows.push(
+          <TableRow
+            key={group.key}
+            className={`cursor-pointer ${isPending ? "bg-amber-50/30" : ""}`}
+            onClick={() => toggleGroup(group.key)}
+          >
+            <TableCell>
               <div className="flex items-center gap-2">
-                {isExpanded ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+                {isExpanded
+                  ? <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                  : <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />}
                 <div>
                   <div className="flex items-center gap-1.5">
                     <Layers className="h-3.5 w-3.5 text-primary" />
                     <span className="font-medium text-sm">{items.length} Positionen</span>
                   </div>
-                  <p className="text-xs text-muted-foreground pl-5 truncate max-w-[180px]">
+                  <p className="text-xs text-muted-foreground truncate max-w-[180px] pl-5">
                     {items.map((r) => r.product_name || r.product_id).join(", ")}
                   </p>
                 </div>
               </div>
-            </CollapsibleTrigger>
-          </TableCell>
-          <TableCell className="text-sm">{profile?.company_name || "–"}</TableCell>
-          <TableCell className="text-sm capitalize hidden xl:table-cell">{first.location}</TableCell>
-          <TableCell className="text-sm whitespace-nowrap">
-            {fmtDate(first.start_date)}
-            {first.end_date ? ` – ${fmtDate(first.end_date)}` : ""}
-          </TableCell>
-          <TableCell>{getStatusBadge({ ...first, status: groupStatus })}</TableCell>
-          <TableCell className="hidden lg:table-cell">{renderDocIcons(first)}</TableCell>
-          <TableCell className="text-right text-sm font-medium whitespace-nowrap">
-            {groupPrice > 0 ? fmtCurrency(groupPrice) : "–"}
-          </TableCell>
-          <TableCell className="text-right">{renderActionDropdown(first)}</TableCell>
-        </TableRow>
+            </TableCell>
+            <TableCell className="text-sm">{profile?.company_name || "–"}</TableCell>
+            <TableCell className="text-sm whitespace-nowrap">
+              {fmtDate(first.start_date)}
+              {first.end_date ? ` – ${fmtDate(first.end_date)}` : ""}
+            </TableCell>
+            <TableCell>{getStatusBadge({ ...first, status: groupStatus })}</TableCell>
+            <TableCell className="hidden lg:table-cell">{renderDocIcons(first)}</TableCell>
+            <TableCell className="text-right text-sm font-medium whitespace-nowrap">
+              {groupPrice > 0 ? fmtCurrency(groupPrice) : "–"}
+            </TableCell>
+            <TableCell className="text-right w-[50px]" onClick={(e) => e.stopPropagation()}>
+              {renderActionDropdown(first)}
+            </TableCell>
+          </TableRow>
+        );
 
-        <CollapsibleContent asChild>
-          <>
-            {items.map((res) => (
+        // Expanded child rows
+        if (isExpanded) {
+          for (const res of items) {
+            rows.push(
               <TableRow key={res.id} className="bg-muted/30 border-l-2 border-l-primary/20">
                 <TableCell className="pl-10">
                   <p className="font-medium text-sm">{res.product_name || res.product_id}</p>
                   <p className="text-xs text-muted-foreground">Menge: {res.quantity}</p>
                 </TableCell>
                 <TableCell />
-                <TableCell className="hidden xl:table-cell" />
                 <TableCell className="text-sm whitespace-nowrap">
                   {fmtDate(res.start_date)}
                   {res.end_date ? ` – ${fmtDate(res.end_date)}` : ""}
@@ -544,7 +552,7 @@ export function AdminRentalsTab({
                     ? fmtCurrency(res.original_price)
                     : "–"}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right w-[50px]">
                   <Button
                     size="sm" variant="ghost"
                     className="text-destructive h-8 w-8 p-0"
@@ -554,11 +562,13 @@ export function AdminRentalsTab({
                   </Button>
                 </TableCell>
               </TableRow>
-            ))}
-          </>
-        </CollapsibleContent>
-      </Collapsible>
-    );
+            );
+          }
+        }
+      }
+    }
+
+    return rows;
   };
 
   // ─── Render ────────────────────────────────────────────
@@ -614,22 +624,17 @@ export function AdminRentalsTab({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[160px]">Produkt</TableHead>
+                  <TableHead className="min-w-[180px]">Produkt</TableHead>
                   <TableHead className="min-w-[120px]">Kunde</TableHead>
-                  <TableHead className="hidden xl:table-cell">Standort</TableHead>
-                  <TableHead className="min-w-[130px]">Zeitraum</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="hidden lg:table-cell">Dokumente</TableHead>
-                  <TableHead className="text-right min-w-[80px]">Preis</TableHead>
-                  <TableHead className="text-right w-[50px]"></TableHead>
+                  <TableHead className="min-w-[140px]">Zeitraum</TableHead>
+                  <TableHead className="min-w-[70px]">Status</TableHead>
+                  <TableHead className="hidden lg:table-cell min-w-[100px]">Dokumente</TableHead>
+                  <TableHead className="text-right min-w-[90px]">Preis</TableHead>
+                  <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {groups.map((group) =>
-                  group.isBatch
-                    ? renderGroupRow(group)
-                    : renderSingleRow(group.reservations[0])
-                )}
+                {renderTableRows()}
               </TableBody>
             </Table>
           </div>
