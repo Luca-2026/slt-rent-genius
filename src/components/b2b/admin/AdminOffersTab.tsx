@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -57,6 +62,7 @@ interface Props {
   onCreateInvoice: (offer: Offer) => void;
   onCreateProformaInvoice: (offer: Offer) => void;
   onCreateDeliveryNote: (offer: Offer) => void;
+  onDelete: (offerId: string) => void;
   resendingId: string | null;
   onRefresh: () => void;
 }
@@ -71,9 +77,11 @@ export function AdminOffersTab({
   onCreateInvoice,
   onCreateProformaInvoice,
   onCreateDeliveryNote,
+  onDelete,
   resendingId,
   onRefresh,
 }: Props) {
+  const [deleteConfirmOffer, setDeleteConfirmOffer] = useState<Offer | null>(null);
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -221,6 +229,15 @@ export function AdminOffersTab({
                               <Send className="h-4 w-4" />
                             )}
                           </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-destructive"
+                            onClick={() => setDeleteConfirmOffer(offer)}
+                            title="Angebot löschen"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -231,6 +248,32 @@ export function AdminOffersTab({
           </div>
         </Card>
       )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirmOffer} onOpenChange={(open) => !open && setDeleteConfirmOffer(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Angebot löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie das Angebot <strong>{deleteConfirmOffer?.offer_number}</strong> unwiderruflich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90"
+              onClick={() => {
+                if (deleteConfirmOffer) {
+                  onDelete(deleteConfirmOffer.id);
+                  setDeleteConfirmOffer(null);
+                }
+              }}
+            >
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -14,7 +14,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Eye, Receipt, RefreshCw, Plus, Minus, FileX } from "lucide-react";
+import { Eye, Receipt, RefreshCw, Plus, Minus, FileX, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,6 +47,7 @@ interface Props {
   invoices: Invoice[];
   onStatusChange: (invoiceId: string, status: string) => void;
   onViewInvoice: (fileUrl: string, invoiceNumber: string) => void;
+  onDelete: (invoiceId: string) => void;
   onRefresh: () => void;
 }
 
@@ -57,6 +62,7 @@ export function AdminInvoicesTab({
   invoices,
   onStatusChange,
   onViewInvoice,
+  onDelete,
   onRefresh,
 }: Props) {
   const { toast } = useToast();
@@ -68,6 +74,7 @@ export function AdminInvoicesTab({
   ]);
   const [correctionNotes, setCorrectionNotes] = useState("");
   const [generating, setGenerating] = useState(false);
+  const [deleteConfirmInvoice, setDeleteConfirmInvoice] = useState<Invoice | null>(null);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
@@ -288,8 +295,17 @@ export function AdminInvoicesTab({
                               <Minus className="h-3.5 w-3.5 mr-1" />
                               <span className="hidden lg:inline text-xs">Gutschrift</span>
                             </Button>
-                          </>
+                           </>
                         )}
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-destructive"
+                          onClick={() => setDeleteConfirmInvoice(inv)}
+                          title="Rechnung löschen"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -467,6 +483,31 @@ export function AdminInvoicesTab({
           )}
         </DialogContent>
       </Dialog>
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirmInvoice} onOpenChange={(open) => !open && setDeleteConfirmInvoice(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Rechnung löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie die Rechnung <strong>{deleteConfirmInvoice?.invoice_number}</strong> unwiderruflich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90"
+              onClick={() => {
+                if (deleteConfirmInvoice) {
+                  onDelete(deleteConfirmInvoice.id);
+                  setDeleteConfirmInvoice(null);
+                }
+              }}
+            >
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

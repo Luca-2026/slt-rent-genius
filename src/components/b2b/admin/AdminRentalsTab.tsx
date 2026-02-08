@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +8,11 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { CalendarPlus, ClipboardCheck, Eye, Package, Plus, Receipt, RefreshCw } from "lucide-react";
+import { CalendarPlus, ClipboardCheck, Eye, Package, Plus, Receipt, RefreshCw, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -54,6 +59,7 @@ interface Props {
   onExtendReservation: (reservation: Reservation) => void;
   onGenerateInvoice: (reservation: Reservation) => void;
   onCreateReturnProtocol: (reservation: Reservation) => void;
+  onDelete: (reservationId: string) => void;
   hasInvoice: (reservationId: string) => boolean;
   hasReturnProtocol: (reservationId: string) => boolean;
   onRefresh: () => void;
@@ -68,10 +74,12 @@ export function AdminRentalsTab({
   onExtendReservation,
   onGenerateInvoice,
   onCreateReturnProtocol,
+  onDelete,
   hasInvoice,
   hasReturnProtocol,
   onRefresh,
 }: Props) {
+  const [deleteConfirmRes, setDeleteConfirmRes] = useState<Reservation | null>(null);
   const [deliveryNotes, setDeliveryNotes] = useState<DocumentInfo[]>([]);
   const [returnProtocols, setReturnProtocols] = useState<DocumentInfo[]>([]);
 
@@ -282,6 +290,15 @@ export function AdminRentalsTab({
                             <CalendarPlus className="h-3.5 w-3.5 mr-1" />
                             Verlängern
                           </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-destructive"
+                            onClick={() => setDeleteConfirmRes(res)}
+                            title="Mietvorgang löschen"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -292,6 +309,32 @@ export function AdminRentalsTab({
           </div>
         </Card>
       )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirmRes} onOpenChange={(open) => !open && setDeleteConfirmRes(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Mietvorgang löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie den Mietvorgang <strong>{deleteConfirmRes?.product_name || deleteConfirmRes?.product_id}</strong> unwiderruflich löschen? Zugehörige Dokumente bleiben erhalten, aber die Verknüpfung geht verloren.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90"
+              onClick={() => {
+                if (deleteConfirmRes) {
+                  onDelete(deleteConfirmRes.id);
+                  setDeleteConfirmRes(null);
+                }
+              }}
+            >
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
