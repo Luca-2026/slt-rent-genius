@@ -25,7 +25,9 @@ const SLT_COMPANY = {
 
 interface DeliveryNoteRequest {
   offer_id: string;
-  signature_data: string; // base64 PNG
+  signature_data: string; // base64 PNG – customer signature
+  staff_signature_data: string; // base64 PNG – SLT employee signature
+  staff_name: string; // name of SLT employee
   notes?: string;
   send_email?: boolean;
   agb_accepted?: boolean;
@@ -77,11 +79,11 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, notes, send_email = true, agb_accepted = false } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, send_email = true, agb_accepted = false } = body;
 
-    if (!offer_id || !signature_data) {
+    if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
       return new Response(
-        JSON.stringify({ error: "offer_id and signature_data are required" }),
+        JSON.stringify({ error: "offer_id, signature_data, staff_signature_data and staff_name are required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -168,6 +170,8 @@ Deno.serve(async (req: Request) => {
       offerNumber: offer.offer_number,
       reservation,
       signatureData: signature_data,
+      staffSignatureData: staff_signature_data,
+      staffName: staff_name,
       notes: notes || offer.notes || null,
       agbAccepted: agb_accepted,
     });
@@ -373,6 +377,8 @@ function generateDeliveryNoteHtml(data: {
   offerNumber: string;
   reservation: any;
   signatureData: string;
+  staffSignatureData: string;
+  staffName: string;
   notes: string | null;
   agbAccepted: boolean;
 }): string {
@@ -492,30 +498,62 @@ function generateDeliveryNoteHtml(data: {
       <p style="color:#595959;font-size:12px;">${escapeHtml(data.notes)}</p>
     </div>` : ""}
 
-    <!-- Conditions -->
-    <div style="background:#f0f7fb;border-left:4px solid #00507d;padding:12px 16px;margin-bottom:10mm;font-size:12px;line-height:1.6;">
-      <strong>Hinweise:</strong><br>
-      • Der Mieter bestätigt den ordnungsgemäßen Empfang der aufgeführten Mietgegenstände.<br>
-      • Beschädigungen oder Mängel sind sofort bei Übergabe zu melden.<br>
-      • Es gelten die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name}.
-      ${data.agbAccepted ? `<br><br><strong style="color:#00507d;">✓ AGB akzeptiert</strong> – Der Kunde hat die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name} am ${dateTimeStr} gelesen und akzeptiert.` : ""}
+    <!-- Legal Declarations -->
+    <div style="background:#f0f7fb;border-left:4px solid #00507d;padding:14px 18px;margin-bottom:8mm;font-size:12px;line-height:1.7;">
+      <strong style="font-size:13px;">Rechtliche Erklärungen:</strong><br><br>
+      <strong>1. Empfangsbestätigung</strong><br>
+      Der Mieter bestätigt hiermit den vollständigen und ordnungsgemäßen Empfang der oben aufgeführten Mietgegenstände. 
+      Etwaige Mängel oder Beschädigungen sind unverzüglich bei Übergabe schriftlich zu dokumentieren. 
+      Nicht gemeldete Mängel gelten als bei Übergabe nicht vorhanden (§ 536b BGB analog).<br><br>
+      <strong>2. Angebotsannahme</strong><br>
+      Der Mieter bestätigt, dass das Angebot Nr. <strong>${data.offerNumber}</strong> der ${SLT_COMPANY.name} 
+      angenommen wurde und die darin enthaltenen Konditionen, Preise und Mietbedingungen 
+      Vertragsbestandteil sind (§§ 145 ff. BGB).<br><br>
+      <strong>3. Allgemeine Geschäftsbedingungen</strong><br>
+      ${data.agbAccepted 
+        ? `<span style="color:#00507d;">✓</span> Der Mieter erklärt hiermit, die <strong>Allgemeinen Geschäftsbedingungen (AGB)</strong> 
+           der ${SLT_COMPANY.name} (Marke: ${SLT_COMPANY.brand}), einsehbar unter 
+           <a href="https://slt-rent-genius.lovable.app/agb" style="color:#00507d;">www.slt-rental.de/agb</a>, 
+           vor Vertragsschluss zur Kenntnis genommen und deren Geltung ausdrücklich anerkannt zu haben. 
+           Die AGB wurden am <strong>${dateTimeStr}</strong> akzeptiert.` 
+        : `Die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name} sind Vertragsbestandteil. 
+           Der Mieter bestätigt, diese vor Vertragsschluss zur Kenntnis genommen zu haben.`}<br><br>
+      <strong>4. Haftung & Sorgfaltspflicht</strong><br>
+      Der Mieter verpflichtet sich, die Mietgegenstände pfleglich zu behandeln und sachgemäß zu verwenden. 
+      Für Schäden, die über die normale Abnutzung hinausgehen, haftet der Mieter gemäß den vertraglichen 
+      und gesetzlichen Bestimmungen (§§ 535 ff. BGB).<br><br>
+      <strong>5. Rückgabe</strong><br>
+      Die Mietgegenstände sind in dem Zustand zurückzugeben, in dem sie übergeben wurden (unter Berücksichtigung 
+      normaler Gebrauchsspuren). Der Rückgabezustand wird in einem separaten Rückgabeprotokoll dokumentiert.
     </div>
 
     <!-- Signature section -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:20mm;">
-      <div style="flex:1;">
-        <p style="font-weight:600;font-size:12px;margin-bottom:8mm;color:#00507d;">Übergabe durch SLT-Rental:</p>
-        <div style="border-bottom:1px solid #393d46;height:40px;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">Datum, Unterschrift</p>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:15mm;">
+      <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
+        <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Übergabe durch ${SLT_COMPANY.brand}:</p>
+        <div style="height:100px;margin-bottom:4px;">
+          <img src="${data.staffSignatureData}" alt="Unterschrift SLT-Mitarbeiter" style="max-height:90px;max-width:100%;" />
+        </div>
+        <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
+        <p style="font-size:11px;color:#595959;">${dateTimeStr} · ${escapeHtml(data.staffName)}</p>
+        <p style="font-size:10px;color:#999;">Bevollmächtigter Mitarbeiter, ${SLT_COMPANY.name}</p>
       </div>
-      <div style="flex:1;">
+      <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Empfang bestätigt durch Mieter:</p>
         <div style="height:100px;margin-bottom:4px;">
           <img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
         <p style="font-size:11px;color:#595959;">${dateTimeStr} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
+        <p style="font-size:10px;color:#999;">Vertretungsberechtigte Person, ${escapeHtml(data.profile.company_name)}</p>
       </div>
+    </div>
+
+    <!-- Legal notice -->
+    <div style="background:#fefce8;border:1px solid #fbbf24;border-radius:4px;padding:10px 14px;margin-bottom:8mm;font-size:10px;color:#92400e;line-height:1.5;">
+      <strong>Hinweis gem. § 309 Nr. 12 BGB:</strong> Dieser Lieferschein dient als Nachweis der Übergabe der Mietgegenstände. 
+      Beide Parteien erhalten eine Ausfertigung. Dieses Dokument wurde elektronisch erstellt und ist ohne handschriftliche 
+      Unterschrift im Original gültig, sofern die digitale Signatur korrekt erfasst wurde (vgl. § 126a BGB, elektronische Form).
     </div>
 
     <!-- Footer -->
