@@ -56,6 +56,47 @@ export type Database = {
           },
         ]
       }
+      b2b_customer_prices: {
+        Row: {
+          b2b_profile_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          product_id: string | null
+          product_name: string
+          unit_price: number
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id?: string | null
+          product_name: string
+          unit_price: number
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id?: string | null
+          product_name?: string
+          unit_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_customer_prices_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_invoice_items: {
         Row: {
           created_at: string
@@ -207,6 +248,140 @@ export type Database = {
           },
           {
             foreignKeyName: "b2b_invoices_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_offer_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          discount_percent: number
+          id: string
+          offer_id: string
+          product_name: string
+          quantity: number
+          rental_end: string | null
+          rental_start: string | null
+          total_price: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          offer_id: string
+          product_name: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          offer_id?: string
+          product_name?: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_offer_items_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_offers: {
+        Row: {
+          b2b_profile_id: string
+          created_at: string
+          delivery_cost: number
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_url: string | null
+          gross_amount: number
+          id: string
+          is_reverse_charge: boolean
+          net_amount: number
+          notes: string | null
+          offer_date: string
+          offer_number: string
+          reservation_id: string | null
+          status: string
+          updated_at: string
+          valid_until: string | null
+          vat_amount: number
+          vat_rate: number
+        }
+        Insert: {
+          b2b_profile_id: string
+          created_at?: string
+          delivery_cost?: number
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          gross_amount?: number
+          id?: string
+          is_reverse_charge?: boolean
+          net_amount?: number
+          notes?: string | null
+          offer_date: string
+          offer_number: string
+          reservation_id?: string | null
+          status?: string
+          updated_at?: string
+          valid_until?: string | null
+          vat_amount?: number
+          vat_rate?: number
+        }
+        Update: {
+          b2b_profile_id?: string
+          created_at?: string
+          delivery_cost?: number
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          gross_amount?: number
+          id?: string
+          is_reverse_charge?: boolean
+          net_amount?: number
+          notes?: string | null
+          offer_date?: string
+          offer_number?: string
+          reservation_id?: string | null
+          status?: string
+          updated_at?: string
+          valid_until?: string | null
+          vat_amount?: number
+          vat_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_offers_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_offers_reservation_id_fkey"
             columns: ["reservation_id"]
             isOneToOne: false
             referencedRelation: "b2b_reservations"
@@ -686,6 +861,7 @@ export type Database = {
     }
     Functions: {
       generate_invoice_number: { Args: never; Returns: string }
+      generate_offer_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

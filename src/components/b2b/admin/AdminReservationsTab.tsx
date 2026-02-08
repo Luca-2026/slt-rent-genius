@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Plus, RefreshCw, Check } from "lucide-react";
+import { CheckCircle2, Clock, Plus, RefreshCw, Check, FileText, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -17,6 +17,7 @@ interface Reservation {
   original_price: number | null;
   discounted_price: number | null;
   b2b_profile_id: string;
+  notes: string | null;
   created_at: string;
 }
 
@@ -31,6 +32,7 @@ interface Props {
   onCreateReservation: () => void;
   onGenerateInvoice: (reservation: Reservation) => void;
   onConfirmReservation: (reservation: Reservation) => void;
+  onCreateOffer: (reservation: Reservation) => void;
   confirmingId: string | null;
   onRefresh: () => void;
 }
@@ -41,6 +43,7 @@ export function AdminReservationsTab({
   onCreateReservation,
   onGenerateInvoice,
   onConfirmReservation,
+  onCreateOffer,
   confirmingId,
   onRefresh,
 }: Props) {
@@ -85,73 +88,90 @@ export function AdminReservationsTab({
             return (
               <Card key={res.id} className="hover:border-primary/30 transition-colors">
                 <CardContent className="p-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <p className="font-semibold text-foreground truncate">
-                          {res.product_name || res.product_id}
-                        </p>
-                        <Badge variant="secondary" className="shrink-0">
-                          <Clock className="h-3 w-3 mr-1" />
-                          Ausstehend
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                        <span>
-                          <span className="text-xs text-muted-foreground/70">Kunde:</span>{" "}
-                          <span className="font-medium text-foreground">{profile?.company_name || "—"}</span>
-                        </span>
-                        <span>
-                          <span className="text-xs text-muted-foreground/70">Standort:</span>{" "}
-                          <span className="capitalize">{res.location}</span>
-                        </span>
-                        <span>
-                          <span className="text-xs text-muted-foreground/70">Zeitraum:</span>{" "}
-                          {formatDate(res.start_date)}
-                          {res.end_date ? ` – ${formatDate(res.end_date)}` : ""}
-                        </span>
-                        <span>
-                          <span className="text-xs text-muted-foreground/70">Menge:</span> {res.quantity}
-                        </span>
-                      </div>
-                      {res.original_price != null && (
-                        <p className="text-sm mt-1">
-                          <span className="text-muted-foreground/70 text-xs">Preis:</span>{" "}
-                          {formatCurrency(res.original_price)}
-                          {res.discounted_price != null &&
-                            res.discounted_price !== res.original_price && (
-                              <>
-                                {" → "}
-                                <span className="text-accent font-medium">
-                                  {formatCurrency(res.discounted_price)}
-                                </span>
-                              </>
-                            )}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex gap-2 shrink-0">
-                      <Button
-                        size="sm"
-                        variant="default"
-                        onClick={() => onConfirmReservation(res)}
-                        disabled={confirmingId === res.id}
-                      >
-                        {confirmingId === res.id ? (
-                          <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />Wird bestätigt...</>
-                        ) : (
-                          <><Check className="h-3.5 w-3.5 mr-1" />Bestätigen</>
-                        )}
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                        onClick={() => onGenerateInvoice(res)}
-                      >
-                        Rechnung erstellen
-                      </Button>
-                    </div>
-                  </div>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                     <div className="flex-1 min-w-0">
+                       <div className="flex items-center gap-2 mb-1.5">
+                         <p className="font-semibold text-foreground truncate">
+                           {res.product_name || res.product_id}
+                         </p>
+                         {res.status === "offer_sent" ? (
+                           <Badge variant="outline" className="shrink-0 text-primary border-primary">
+                             <Send className="h-3 w-3 mr-1" />
+                             Angebot gesendet
+                           </Badge>
+                         ) : (
+                           <Badge variant="secondary" className="shrink-0">
+                             <Clock className="h-3 w-3 mr-1" />
+                             Ausstehend
+                           </Badge>
+                         )}
+                       </div>
+                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                         <span>
+                           <span className="text-xs text-muted-foreground/70">Kunde:</span>{" "}
+                           <span className="font-medium text-foreground">{profile?.company_name || "—"}</span>
+                         </span>
+                         <span>
+                           <span className="text-xs text-muted-foreground/70">Standort:</span>{" "}
+                           <span className="capitalize">{res.location}</span>
+                         </span>
+                         <span>
+                           <span className="text-xs text-muted-foreground/70">Zeitraum:</span>{" "}
+                           {formatDate(res.start_date)}
+                           {res.end_date ? ` – ${formatDate(res.end_date)}` : ""}
+                         </span>
+                         <span>
+                           <span className="text-xs text-muted-foreground/70">Menge:</span> {res.quantity}
+                         </span>
+                       </div>
+                       {res.original_price != null && (
+                         <p className="text-sm mt-1">
+                           <span className="text-muted-foreground/70 text-xs">Preis:</span>{" "}
+                           {formatCurrency(res.original_price)}
+                           {res.discounted_price != null &&
+                             res.discounted_price !== res.original_price && (
+                               <>
+                                 {" → "}
+                                 <span className="text-accent font-medium">
+                                   {formatCurrency(res.discounted_price)}
+                                 </span>
+                               </>
+                             )}
+                         </p>
+                       )}
+                     </div>
+                     <div className="flex gap-2 shrink-0">
+                       {res.status === "pending" && (
+                         <Button
+                           size="sm"
+                           variant="outline"
+                           onClick={() => onCreateOffer(res)}
+                         >
+                           <FileText className="h-3.5 w-3.5 mr-1" />
+                           Angebot erstellen
+                         </Button>
+                       )}
+                       <Button
+                         size="sm"
+                         variant="default"
+                         onClick={() => onConfirmReservation(res)}
+                         disabled={confirmingId === res.id}
+                       >
+                         {confirmingId === res.id ? (
+                           <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />Wird bestätigt...</>
+                         ) : (
+                           <><Check className="h-3.5 w-3.5 mr-1" />Bestätigen</>
+                         )}
+                       </Button>
+                       <Button
+                         size="sm"
+                         className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                         onClick={() => onGenerateInvoice(res)}
+                       >
+                         Rechnung erstellen
+                       </Button>
+                     </div>
+                   </div>
                 </CardContent>
               </Card>
             );

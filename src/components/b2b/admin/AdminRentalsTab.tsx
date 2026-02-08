@@ -20,6 +20,7 @@ interface Reservation {
   original_price: number | null;
   discounted_price: number | null;
   b2b_profile_id: string;
+  notes: string | null;
   created_at: string;
 }
 
