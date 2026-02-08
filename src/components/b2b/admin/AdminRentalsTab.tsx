@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { CalendarPlus, Check, ClipboardCheck, Eye, Package, Plus, Receipt, RefreshCw, Trash2 } from "lucide-react";
+import { CalendarPlus, Check, ClipboardCheck, ClipboardList, Eye, Package, Plus, Receipt, RefreshCw, Trash2 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -59,6 +59,7 @@ interface Props {
   onCreateReservation: () => void;
   onExtendReservation: (reservation: Reservation) => void;
   onGenerateInvoice: (reservation: Reservation) => void;
+  onCreateDeliveryNote: (reservation: Reservation) => void;
   onCreateReturnProtocol: (reservation: Reservation) => void;
   onDelete: (reservationId: string) => void;
   hasInvoice: (reservationId: string) => boolean;
@@ -74,6 +75,7 @@ export function AdminRentalsTab({
   onCreateReservation,
   onExtendReservation,
   onGenerateInvoice,
+  onCreateDeliveryNote,
   onCreateReturnProtocol,
   onDelete,
   hasInvoice,
@@ -301,6 +303,18 @@ export function AdminRentalsTab({
                             >
                               <Check className="h-3.5 w-3.5 mr-1" />
                               <span className="text-xs">Bestätigen</span>
+                            </Button>
+                          )}
+                          {!docs.deliveryNote && !isPending && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onCreateDeliveryNote(res)}
+                              title="Übergabeprotokoll erstellen"
+                              className="text-blue-700"
+                            >
+                              <ClipboardList className="h-3.5 w-3.5 mr-1" />
+                              <span className="hidden sm:inline text-xs">Übergabe</span>
                             </Button>
                           )}
                           {!returned && active && !isPending && (

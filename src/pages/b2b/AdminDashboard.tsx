@@ -527,6 +527,20 @@ export default function AdminDashboard() {
               setInvoiceFromOffer(null);
               setInvoiceDialogOpen(true);
             }}
+            onCreateDeliveryNote={(res) => {
+              // Find offer linked to this reservation to open delivery note dialog
+              const offer = offers.find((o) => o.reservation_id === res.id);
+              if (offer) {
+                setDeliveryNoteOffer(offer);
+                setDeliveryNoteOpen(true);
+              } else {
+                toast({
+                  title: "Hinweis",
+                  description: "Bitte erstelle zunächst ein Angebot für diesen Mietvorgang, bevor ein Übergabeprotokoll erstellt werden kann.",
+                  variant: "destructive",
+                });
+              }
+            }}
             onCreateReturnProtocol={(res) => {
               setReturnProtocolReservation(res);
               setReturnProtocolOpen(true);
