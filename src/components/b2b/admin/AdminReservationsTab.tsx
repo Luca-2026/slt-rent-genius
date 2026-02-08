@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Plus, RefreshCw, Check, FileText, Send } from "lucide-react";
+import { CheckCircle2, Clock, Plus, RefreshCw, FileText, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -24,16 +24,14 @@ interface Reservation {
 interface B2BProfile {
   id: string;
   company_name: string;
+  credit_limit: number;
 }
 
 interface Props {
   reservations: Reservation[];
   profiles: B2BProfile[];
   onCreateReservation: () => void;
-  onGenerateInvoice: (reservation: Reservation) => void;
-  onConfirmReservation: (reservation: Reservation) => void;
   onCreateOffer: (reservation: Reservation) => void;
-  confirmingId: string | null;
   onRefresh: () => void;
 }
 
@@ -41,10 +39,7 @@ export function AdminReservationsTab({
   reservations,
   profiles,
   onCreateReservation,
-  onGenerateInvoice,
-  onConfirmReservation,
   onCreateOffer,
-  confirmingId,
   onRefresh,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
@@ -56,7 +51,7 @@ export function AdminReservationsTab({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Offene Anfragen</h2>
-          <p className="text-sm text-muted-foreground">Anfragen bearbeiten und Rechnungen erstellen</p>
+          <p className="text-sm text-muted-foreground">Anfragen bearbeiten und Angebote erstellen</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -85,6 +80,8 @@ export function AdminReservationsTab({
         <div className="space-y-3">
           {reservations.map((res) => {
             const profile = profiles.find((p) => p.id === res.b2b_profile_id);
+            const isNewOrNoCreditLimit = !profile || (profile as any).credit_limit === 0;
+
             return (
               <Card key={res.id} className="hover:border-primary/30 transition-colors">
                 <CardContent className="p-4">
@@ -103,6 +100,11 @@ export function AdminReservationsTab({
                            <Badge variant="secondary" className="shrink-0">
                              <Clock className="h-3 w-3 mr-1" />
                              Ausstehend
+                           </Badge>
+                         )}
+                         {isNewOrNoCreditLimit && (
+                           <Badge variant="outline" className="shrink-0 text-amber-600 border-amber-300 text-xs">
+                             Kein Kreditlimit
                            </Badge>
                          )}
                        </div>
@@ -141,34 +143,13 @@ export function AdminReservationsTab({
                        )}
                      </div>
                      <div className="flex gap-2 shrink-0">
-                       {res.status === "pending" && (
-                         <Button
-                           size="sm"
-                           variant="outline"
-                           onClick={() => onCreateOffer(res)}
-                         >
-                           <FileText className="h-3.5 w-3.5 mr-1" />
-                           Angebot erstellen
-                         </Button>
-                       )}
-                       <Button
-                         size="sm"
-                         variant="default"
-                         onClick={() => onConfirmReservation(res)}
-                         disabled={confirmingId === res.id}
-                       >
-                         {confirmingId === res.id ? (
-                           <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />Wird bestätigt...</>
-                         ) : (
-                           <><Check className="h-3.5 w-3.5 mr-1" />Bestätigen</>
-                         )}
-                       </Button>
                        <Button
                          size="sm"
                          className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                         onClick={() => onGenerateInvoice(res)}
+                         onClick={() => onCreateOffer(res)}
                        >
-                         Rechnung erstellen
+                         <FileText className="h-3.5 w-3.5 mr-1" />
+                         Angebot erstellen
                        </Button>
                      </div>
                    </div>
