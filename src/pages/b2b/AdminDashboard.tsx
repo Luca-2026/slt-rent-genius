@@ -667,6 +667,12 @@ export default function AdminDashboard() {
               setDeliveryNoteOffer(offer);
               setDeliveryNoteOpen(true);
             }}
+            onCreateOffer={() => {
+              setSelectedReservation(null);
+              setEditingOffer(null);
+              setEditingOfferItems([]);
+              setCreateOfferOpen(true);
+            }}
             resendingId={resendingId}
             onDelete={deleteOffer}
             onRefresh={fetchData}
@@ -921,6 +927,7 @@ export default function AdminDashboard() {
               ? profiles.find((p) => p.id === selectedReservation.b2b_profile_id) || null
               : null
         }
+        profiles={profiles}
         open={createOfferOpen}
         onOpenChange={(open) => {
           setCreateOfferOpen(open);

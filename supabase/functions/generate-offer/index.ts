@@ -35,8 +35,9 @@ interface OfferItem {
 }
 
 interface OfferRequest {
-  reservation_id: string;
-  offer_id?: string; // If provided, update existing offer
+  reservation_id?: string;
+  b2b_profile_id?: string; // For standalone offers without a reservation
+  offer_id?: string;
   items: OfferItem[];
   delivery_cost?: number;
   valid_days?: number;
@@ -93,6 +94,7 @@ Deno.serve(async (req: Request) => {
     const body: OfferRequest = await req.json();
     const {
       reservation_id,
+      b2b_profile_id: directProfileId,
       offer_id,
       items,
       delivery_cost = 0,
@@ -102,48 +104,78 @@ Deno.serve(async (req: Request) => {
       save_prices = true,
     } = body;
 
-    if (!reservation_id || !items || items.length === 0) {
+    if (!items || items.length === 0) {
       return new Response(
-        JSON.stringify({ error: "reservation_id and items are required" }),
+        JSON.stringify({ error: "items are required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log("Generating offer for reservation:", reservation_id);
+    if (!reservation_id && !directProfileId) {
+      return new Response(
+        JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("Generating offer for reservation:", reservation_id || "standalone", "profile:", directProfileId || "from reservation");
 
     const serviceClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Fetch reservation
-    const { data: reservation, error: resError } = await serviceClient
-      .from("b2b_reservations")
-      .select("*")
-      .eq("id", reservation_id)
-      .single();
+    let reservation: any = null;
+    let profile: any = null;
 
-    if (resError || !reservation) {
-      console.error("Reservation not found:", resError);
-      return new Response(JSON.stringify({ error: "Reservation not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (reservation_id) {
+      // Fetch reservation
+      const { data: resData, error: resError } = await serviceClient
+        .from("b2b_reservations")
+        .select("*")
+        .eq("id", reservation_id)
+        .single();
 
-    // Fetch B2B profile
-    const { data: profile, error: profileError } = await serviceClient
-      .from("b2b_profiles")
-      .select("*")
-      .eq("id", reservation.b2b_profile_id)
-      .single();
+      if (resError || !resData) {
+        console.error("Reservation not found:", resError);
+        return new Response(JSON.stringify({ error: "Reservation not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      reservation = resData;
 
-    if (profileError || !profile) {
-      console.error("Profile not found:", profileError);
-      return new Response(JSON.stringify({ error: "B2B profile not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      // Fetch B2B profile from reservation
+      const { data: profileData, error: profileError } = await serviceClient
+        .from("b2b_profiles")
+        .select("*")
+        .eq("id", reservation.b2b_profile_id)
+        .single();
+
+      if (profileError || !profileData) {
+        console.error("Profile not found:", profileError);
+        return new Response(JSON.stringify({ error: "B2B profile not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      profile = profileData;
+    } else {
+      // Standalone: fetch profile directly
+      const { data: profileData, error: profileError } = await serviceClient
+        .from("b2b_profiles")
+        .select("*")
+        .eq("id", directProfileId)
+        .single();
+
+      if (profileError || !profileData) {
+        console.error("Profile not found:", profileError);
+        return new Response(JSON.stringify({ error: "B2B profile not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      profile = profileData;
     }
 
     // Determine reverse charge
@@ -161,8 +193,8 @@ Deno.serve(async (req: Request) => {
         unit_price: item.unit_price,
         discount_percent: item.discount_percent || 0,
         total_price: totalPrice,
-        rental_start: item.rental_start || reservation.start_date,
-        rental_end: item.rental_end || reservation.end_date,
+        rental_start: item.rental_start || reservation?.start_date || null,
+        rental_end: item.rental_end || reservation?.end_date || null,
         image_url: item.image_url || null,
       };
     });
@@ -306,7 +338,7 @@ Deno.serve(async (req: Request) => {
       const { data: newOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .insert({
-          reservation_id,
+          reservation_id: reservation_id || null,
           b2b_profile_id: profile.id,
           offer_number: offerNumber,
           offer_date: offerDate,
@@ -367,7 +399,7 @@ Deno.serve(async (req: Request) => {
             {
               b2b_profile_id: profile.id,
               product_name: item.product_name,
-              product_id: reservation.product_id || null,
+              product_id: reservation?.product_id || null,
               unit_price: item.unit_price,
             },
             { onConflict: "b2b_profile_id,product_name" }
@@ -380,15 +412,17 @@ Deno.serve(async (req: Request) => {
       console.log("Customer prices saved permanently for", profile.company_name);
     }
 
-    // Update reservation status to offer_sent
-    await serviceClient
-      .from("b2b_reservations")
-      .update({ 
-        status: "offer_sent",
-        original_price: offerItems[0]?.unit_price || null,
-        discounted_price: offerItems[0]?.total_price || null,
-      })
-      .eq("id", reservation_id);
+    // Update reservation status to offer_sent (only if reservation exists)
+    if (reservation_id) {
+      await serviceClient
+        .from("b2b_reservations")
+        .update({ 
+          status: "offer_sent",
+          original_price: offerItems[0]?.unit_price || null,
+          discounted_price: offerItems[0]?.total_price || null,
+        })
+        .eq("id", reservation_id);
+    }
 
     // Send email via Resend
     let emailSent = false;
