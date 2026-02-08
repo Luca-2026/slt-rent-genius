@@ -32,6 +32,7 @@ import {
   Trash2,
   RefreshCw,
   ClipboardCheck,
+  Undo2,
 } from "lucide-react";
 
 export default function B2BDashboard() {
@@ -230,18 +231,18 @@ export default function B2BDashboard() {
               </Card>
             </Link>
 
-            {/* My Requests */}
-            <Link to="/b2b/anfragen">
+            {/* Mietvorgänge */}
+            <Link to="/b2b/mietvorgaenge">
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardList className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">Meine Anfragen</CardTitle>
+                  <CardTitle className="text-lg">Mietvorgänge</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Übersicht deiner bisherigen Projektanfragen und deren Status.
+                    Übersicht deiner bisherigen Mietvorgänge, Anfragen und deren Status.
                   </p>
                 </CardContent>
               </Card>
@@ -270,18 +271,40 @@ export default function B2BDashboard() {
               </Card>
             </Link>
 
-            {/* Lieferscheine - Only for approved */}
-            <Link to={isApproved ? "/b2b/lieferscheine" : "#"}>
+            {/* Übergabeprotokolle - Only for approved */}
+            <Link to={isApproved ? "/b2b/uebergabeprotokolle" : "#"}>
               <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardCheck className="h-6 w-6 text-green-600" />
                   </div>
-                  <CardTitle className="text-lg">Lieferscheine</CardTitle>
+                  <CardTitle className="text-lg">Übergabeprotokolle</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Unterschriebene Lieferscheine für alle übergebenen Mietartikel einsehen.
+                    Unterschriebene Übergabeprotokolle für alle übergebenen Mietartikel einsehen.
+                  </p>
+                  {!isApproved && (
+                    <p className="text-xs text-yellow-600 mt-2">
+                      Verfügbar nach Freischaltung
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Rückgabeprotokolle - Only for approved */}
+            <Link to={isApproved ? "/b2b/rueckgabeprotokolle" : "#"}>
+              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
+                    <Undo2 className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-lg">Rückgabeprotokolle</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Rückgabeprotokolle mit Zustandsbewertung für zurückgegebene Mietartikel.
                   </p>
                   {!isApproved && (
                     <p className="text-xs text-yellow-600 mt-2">

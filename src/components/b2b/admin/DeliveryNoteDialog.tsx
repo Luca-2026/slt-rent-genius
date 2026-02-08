@@ -110,10 +110,10 @@ export function DeliveryNoteDialog({
       if (error) throw error;
 
       toast({
-        title: "Lieferschein erstellt!",
+        title: "Übergabeprotokoll erstellt!",
         description: data.email_sent
-          ? `Lieferschein ${data.delivery_note?.delivery_note_number} wurde erstellt und per E-Mail versendet.`
-          : `Lieferschein ${data.delivery_note?.delivery_note_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
+          ? `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt und per E-Mail versendet.`
+          : `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
       });
 
       setCustomerSignature(null);
@@ -127,7 +127,7 @@ export function DeliveryNoteDialog({
     } catch (error: any) {
       toast({
         title: "Fehler",
-        description: error.message || "Lieferschein konnte nicht erstellt werden.",
+        description: error.message || "Übergabeprotokoll konnte nicht erstellt werden.",
         variant: "destructive",
       });
     } finally {
@@ -146,7 +146,7 @@ export function DeliveryNoteDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ClipboardCheck className="h-5 w-5" />
-            Lieferschein erstellen
+            Übergabeprotokoll erstellen
           </DialogTitle>
           <DialogDescription>
             Rechtssichere Übergabebestätigung mit AGB-Akzeptanz, Angebotsannahme und beidseitiger Unterschrift.
@@ -331,7 +331,7 @@ export function DeliveryNoteDialog({
             ) : (
               <>
                 <ShieldCheck className="h-4 w-4 mr-1.5" />
-                Lieferschein erstellen & senden
+                Übergabeprotokoll erstellen & senden
               </>
             )}
           </Button>

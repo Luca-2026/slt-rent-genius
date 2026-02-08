@@ -471,7 +471,7 @@ export function AdminStaffTab() {
               <p className="text-xs text-muted-foreground mt-1">
                 {form.role === "admin" && "Vollzugriff auf alle Funktionen."}
                 {form.role === "standort_mitarbeiter" &&
-                  "Kann Reservierungen, Lieferscheine und Übergaben verwalten."}
+                  "Kann Reservierungen, Übergabeprotokolle und Rückgaben verwalten."}
                 {form.role === "buchhaltung" &&
                   "Kann Rechnungen, Angebote und Zahlungsstatus einsehen und bearbeiten."}
                 {form.role === "readonly" && "Kann alle Daten einsehen, aber nichts bearbeiten."}

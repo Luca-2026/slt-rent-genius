@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,8 +17,12 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  Collapsible, CollapsibleContent, CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
   FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
+  ChevronDown, ChevronRight, Layers,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -50,6 +54,17 @@ interface Offer {
   file_url: string | null;
 }
 
+interface ReservationGroup {
+  key: string;
+  reservations: Reservation[];
+  location: string;
+  startDate: string;
+  endDate: string | null;
+  createdAt: string;
+  status: string;
+  isBatch: boolean;
+}
+
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: typeof Clock }> = {
   pending: { label: "Ausstehend", variant: "secondary", icon: Clock },
   offer_sent: { label: "Angebot erhalten", variant: "outline", icon: Send },
@@ -62,6 +77,64 @@ const locationLabels: Record<string, string> = {
   krefeld: "Krefeld",
   bonn: "Bonn",
 };
+
+/**
+ * Group reservations created within 10 seconds of each other at the same location
+ * as a single "Mietvorgang" (batch request).
+ */
+function groupReservations(reservations: Reservation[]): ReservationGroup[] {
+  if (reservations.length === 0) return [];
+
+  const sorted = [...reservations].sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+
+  const groups: ReservationGroup[] = [];
+  let currentGroup: Reservation[] = [sorted[0]];
+
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = currentGroup[currentGroup.length - 1];
+    const curr = sorted[i];
+    const timeDiff = Math.abs(
+      new Date(curr.created_at).getTime() - new Date(prev.created_at).getTime()
+    );
+
+    if (timeDiff <= 10000 && curr.location === prev.location) {
+      currentGroup.push(curr);
+    } else {
+      groups.push(buildGroup(currentGroup));
+      currentGroup = [curr];
+    }
+  }
+  groups.push(buildGroup(currentGroup));
+
+  // Sort groups by newest first
+  return groups.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+}
+
+function buildGroup(items: Reservation[]): ReservationGroup {
+  const first = items[0];
+  // Determine the "worst" status for display
+  const statusPriority = ["pending", "offer_sent", "confirmed", "completed", "cancelled"];
+  const groupStatus = items.reduce((worst, r) => {
+    const wi = statusPriority.indexOf(worst);
+    const ri = statusPriority.indexOf(r.status);
+    return ri < wi ? r.status : worst;
+  }, items[0].status);
+
+  return {
+    key: `${first.created_at}-${first.location}`,
+    reservations: items,
+    location: first.location,
+    startDate: first.start_date,
+    endDate: first.end_date,
+    createdAt: first.created_at,
+    status: groupStatus,
+    isBatch: items.length > 1,
+  };
+}
 
 export default function MyReservations() {
   const { user, b2bProfile } = useAuth();
@@ -76,6 +149,7 @@ export default function MyReservations() {
   const [returnDialogOpen, setReturnDialogOpen] = useState(false);
   const [reservationToReturn, setReservationToReturn] = useState<Reservation | null>(null);
   const [returningId, setReturningId] = useState<string | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
   const fetchData = async () => {
     if (!user) return;
@@ -116,7 +190,7 @@ export default function MyReservations() {
 
       toast({
         title: "Angebot bestätigt!",
-        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt. Wir melden uns in Kürze bei Ihnen.`,
+        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt.`,
       });
       setConfirmDialogOpen(false);
       setOfferToAccept(null);
@@ -163,8 +237,9 @@ export default function MyReservations() {
     ? reservations
     : reservations.filter((r) => r.status === statusFilter);
 
-  const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
+  const groups = useMemo(() => groupReservations(filtered), [filtered]);
 
+  const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
@@ -175,6 +250,15 @@ export default function MyReservations() {
 
   const getOfferForReservation = (reservationId: string) =>
     offers.find((o) => o.reservation_id === reservationId);
+
+  const toggleGroup = (key: string) => {
+    setExpandedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   const renderOfferActions = (offer: Offer) => (
     <div className="space-y-1.5">
@@ -223,8 +307,126 @@ export default function MyReservations() {
     </div>
   );
 
+  const renderReservationRow = (r: Reservation, isSubRow = false) => {
+    const cfg = statusConfig[r.status] || statusConfig.pending;
+    const StatusIcon = cfg.icon;
+    const offer = getOfferForReservation(r.id);
+
+    return (
+      <TableRow key={r.id} className={isSubRow ? "bg-muted/30" : ""}>
+        <TableCell className={isSubRow ? "pl-10" : ""}>
+          <div>
+            <p className="font-medium">{r.product_name || r.product_id}</p>
+            {r.category_slug && (
+              <p className="text-xs text-muted-foreground">{r.category_slug}</p>
+            )}
+          </div>
+        </TableCell>
+        <TableCell>{locationLabels[r.location] || r.location}</TableCell>
+        <TableCell>
+          <div className="text-sm">
+            <p>{formatDate(r.start_date)}</p>
+            {r.end_date && (
+              <p className="text-muted-foreground">bis {formatDate(r.end_date)}</p>
+            )}
+          </div>
+        </TableCell>
+        <TableCell className="text-center">{r.quantity}</TableCell>
+        <TableCell>
+          <Badge variant={cfg.variant} className="flex items-center gap-1 w-fit">
+            <StatusIcon className="h-3 w-3" />
+            {cfg.label}
+          </Badge>
+        </TableCell>
+        <TableCell>
+          {offer ? renderOfferActions(offer) : (
+            <span className="text-xs text-muted-foreground">—</span>
+          )}
+        </TableCell>
+        <TableCell className="text-sm text-muted-foreground">
+          {formatDate(r.created_at)}
+        </TableCell>
+        <TableCell className="text-right">
+          {r.status === "confirmed" && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setReservationToReturn(r);
+                setReturnDialogOpen(true);
+              }}
+              disabled={returningId === r.id}
+            >
+              {returningId === r.id ? (
+                <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
+              ) : (
+                <LogOut className="h-3.5 w-3.5 mr-1" />
+              )}
+              Freimelden
+            </Button>
+          )}
+        </TableCell>
+      </TableRow>
+    );
+  };
+
+  const renderMobileCard = (r: Reservation) => {
+    const cfg = statusConfig[r.status] || statusConfig.pending;
+    const StatusIcon = cfg.icon;
+    const offer = getOfferForReservation(r.id);
+
+    return (
+      <div key={r.id} className="space-y-2 py-2 border-b border-border last:border-0">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="font-semibold text-sm">{r.product_name || r.product_id}</p>
+            <p className="text-xs text-muted-foreground">{r.category_slug}</p>
+          </div>
+          <Badge variant={cfg.variant} className="flex items-center gap-1 text-xs">
+            <StatusIcon className="h-3 w-3" />
+            {cfg.label}
+          </Badge>
+        </div>
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div className="flex items-center gap-1 text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5" />
+            {locationLabels[r.location] || r.location}
+          </div>
+          <div className="flex items-center gap-1 text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5" />
+            {formatDate(r.start_date)}
+            {r.end_date && ` – ${formatDate(r.end_date)}`}
+          </div>
+        </div>
+        {offer && (
+          <div className="bg-primary/5 rounded-lg p-2">
+            {renderOfferActions(offer)}
+          </div>
+        )}
+        {r.status === "confirmed" && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full"
+            onClick={() => {
+              setReservationToReturn(r);
+              setReturnDialogOpen(true);
+            }}
+            disabled={returningId === r.id}
+          >
+            {returningId === r.id ? (
+              <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird freigemeldet...</>
+            ) : (
+              <><LogOut className="h-3.5 w-3.5 mr-1.5" />Gerät freimelden</>
+            )}
+          </Button>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <B2BPortalLayout title="Meine Anfragen" subtitle={`${totalCount} Anfragen insgesamt`}>
+    <B2BPortalLayout title="Mietvorgänge" subtitle={`${totalCount} Mietvorgänge insgesamt`}>
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <Card>
@@ -310,19 +512,19 @@ export default function MyReservations() {
         </Button>
       </div>
 
-      {/* Table */}
+      {/* Content */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
         </div>
-      ) : filtered.length === 0 ? (
+      ) : groups.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
             <Package className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
-            <h3 className="font-semibold text-lg mb-1">Keine Anfragen gefunden</h3>
+            <h3 className="font-semibold text-lg mb-1">Keine Mietvorgänge gefunden</h3>
             <p className="text-sm text-muted-foreground">
               {statusFilter !== "all"
-                ? "Ändere den Filter, um weitere Anfragen anzuzeigen."
+                ? "Ändere den Filter, um weitere Mietvorgänge anzuzeigen."
                 : "Du hast noch keine Anfragen gestellt. Stöbere im Produktkatalog."}
             </p>
           </CardContent>
@@ -331,65 +533,70 @@ export default function MyReservations() {
         <>
           {/* Mobile cards */}
           <div className="md:hidden space-y-3">
-            {filtered.map((r) => {
-              const cfg = statusConfig[r.status] || statusConfig.pending;
+            {groups.map((group) => {
+              const cfg = statusConfig[group.status] || statusConfig.pending;
               const StatusIcon = cfg.icon;
-              const offer = getOfferForReservation(r.id);
-              return (
-                <Card key={r.id}>
-                  <CardContent className="p-4 space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="font-semibold">{r.product_name || r.product_id}</p>
-                        <p className="text-xs text-muted-foreground">{r.category_slug}</p>
-                      </div>
-                      <Badge variant={cfg.variant} className="flex items-center gap-1">
-                        <StatusIcon className="h-3 w-3" />
-                        {cfg.label}
-                      </Badge>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <MapPin className="h-3.5 w-3.5" />
-                        {locationLabels[r.location] || r.location}
-                      </div>
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Calendar className="h-3.5 w-3.5" />
-                        {formatDate(r.start_date)}
-                      </div>
-                    </div>
-                    {offer && (
-                      <div className="bg-primary/5 rounded-lg p-3">
-                        {renderOfferActions(offer)}
-                      </div>
-                    )}
-                    {r.status === "confirmed" && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => {
-                          setReservationToReturn(r);
-                          setReturnDialogOpen(true);
-                        }}
-                        disabled={returningId === r.id}
-                      >
-                        {returningId === r.id ? (
-                          <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird freigemeldet...</>
-                        ) : (
-                          <><LogOut className="h-3.5 w-3.5 mr-1.5" />Gerät freimelden</>
-                        )}
-                      </Button>
-                    )}
-                    {r.notes && (
-                      <p className="text-xs text-muted-foreground bg-muted/50 rounded p-2">
-                        {r.notes}
+              const isExpanded = expandedGroups.has(group.key);
+
+              if (!group.isBatch) {
+                // Single reservation - render directly
+                return (
+                  <Card key={group.key}>
+                    <CardContent className="p-4">
+                      {renderMobileCard(group.reservations[0])}
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Erstellt: {formatDate(group.createdAt)}
                       </p>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                      Erstellt: {formatDate(r.created_at)}
-                    </p>
-                  </CardContent>
+                    </CardContent>
+                  </Card>
+                );
+              }
+
+              // Batch reservation (Sammelanfrage)
+              return (
+                <Card key={group.key}>
+                  <Collapsible open={isExpanded} onOpenChange={() => toggleGroup(group.key)}>
+                    <CollapsibleTrigger asChild>
+                      <CardContent className="p-4 cursor-pointer hover:bg-muted/30 transition-colors">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            {isExpanded ? (
+                              <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                            ) : (
+                              <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                            )}
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <Layers className="h-4 w-4 text-primary" />
+                                <p className="font-semibold">
+                                  Sammelanfrage ({group.reservations.length} Artikel)
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="h-3 w-3" />
+                                  {locationLabels[group.location] || group.location}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {formatDate(group.startDate)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <Badge variant={cfg.variant} className="flex items-center gap-1 text-xs shrink-0">
+                            <StatusIcon className="h-3 w-3" />
+                            {cfg.label}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="px-4 pb-4 space-y-1">
+                        {group.reservations.map((r) => renderMobileCard(r))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </Card>
               );
             })}
@@ -411,65 +618,75 @@ export default function MyReservations() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((r) => {
-                  const cfg = statusConfig[r.status] || statusConfig.pending;
+                {groups.map((group) => {
+                  if (!group.isBatch) {
+                    return renderReservationRow(group.reservations[0]);
+                  }
+
+                  const isExpanded = expandedGroups.has(group.key);
+                  const cfg = statusConfig[group.status] || statusConfig.pending;
                   const StatusIcon = cfg.icon;
-                  const offer = getOfferForReservation(r.id);
+                  // Check if any reservation in group has an offer
+                  const groupOffer = group.reservations
+                    .map((r) => getOfferForReservation(r.id))
+                    .find(Boolean);
+
                   return (
-                    <TableRow key={r.id}>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium">{r.product_name || r.product_id}</p>
-                          {r.category_slug && (
-                            <p className="text-xs text-muted-foreground">{r.category_slug}</p>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>{locationLabels[r.location] || r.location}</TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p>{formatDate(r.start_date)}</p>
-                          {r.end_date && (
-                            <p className="text-muted-foreground">bis {formatDate(r.end_date)}</p>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">{r.quantity}</TableCell>
-                      <TableCell>
-                        <Badge variant={cfg.variant} className="flex items-center gap-1 w-fit">
-                          <StatusIcon className="h-3 w-3" />
-                          {cfg.label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {offer ? renderOfferActions(offer) : (
-                          <span className="text-xs text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(r.created_at)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {r.status === "confirmed" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => {
-                              setReservationToReturn(r);
-                              setReturnDialogOpen(true);
-                            }}
-                            disabled={returningId === r.id}
-                          >
-                            {returningId === r.id ? (
-                              <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
+                    <React.Fragment key={group.key}>
+                      {/* Group header row */}
+                      <TableRow
+                        className="cursor-pointer hover:bg-muted/50 bg-muted/20"
+                        onClick={() => toggleGroup(group.key)}
+                      >
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {isExpanded ? (
+                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
                             ) : (
-                              <LogOut className="h-3.5 w-3.5 mr-1" />
+                              <ChevronRight className="h-4 w-4 text-muted-foreground" />
                             )}
-                            Freimelden
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
+                            <div className="flex items-center gap-1.5">
+                              <Layers className="h-4 w-4 text-primary" />
+                              <span className="font-semibold">
+                                Sammelanfrage ({group.reservations.length} Artikel)
+                              </span>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>{locationLabels[group.location] || group.location}</TableCell>
+                        <TableCell>
+                          <div className="text-sm">
+                            <p>{formatDate(group.startDate)}</p>
+                            {group.endDate && (
+                              <p className="text-muted-foreground">bis {formatDate(group.endDate)}</p>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {group.reservations.reduce((sum, r) => sum + r.quantity, 0)}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={cfg.variant} className="flex items-center gap-1 w-fit">
+                            <StatusIcon className="h-3 w-3" />
+                            {cfg.label}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {groupOffer ? renderOfferActions(groupOffer) : (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {formatDate(group.createdAt)}
+                        </TableCell>
+                        <TableCell />
+                      </TableRow>
+
+                      {/* Expanded sub-rows */}
+                      {isExpanded &&
+                        group.reservations.map((r) => renderReservationRow(r, true))
+                      }
+                    </React.Fragment>
                   );
                 })}
               </TableBody>
@@ -506,7 +723,7 @@ export default function MyReservations() {
               </Card>
 
               <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden, um die Details zu klären.</p>
+                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden.</p>
               </div>
 
               <div className="flex gap-3 justify-end">
