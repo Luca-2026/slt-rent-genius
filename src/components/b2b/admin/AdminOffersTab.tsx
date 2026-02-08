@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -54,6 +54,7 @@ interface Props {
   onResendOffer: (offer: Offer) => void;
   onViewOffer: (fileUrl: string, offerNumber: string) => void;
   onCreateInvoice: (offer: Offer) => void;
+  onCreateDeliveryNote: (offer: Offer) => void;
   resendingId: string | null;
   onRefresh: () => void;
 }
@@ -66,6 +67,7 @@ export function AdminOffersTab({
   onResendOffer,
   onViewOffer,
   onCreateInvoice,
+  onCreateDeliveryNote,
   resendingId,
   onRefresh,
 }: Props) {
@@ -162,15 +164,26 @@ export function AdminOffersTab({
                             </Button>
                           )}
                           {offer.status === "accepted" && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => onCreateInvoice(offer)}
-                              title="Rechnung erstellen"
-                              className="text-primary"
-                            >
-                              <Receipt className="h-4 w-4" />
-                            </Button>
+                            <>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => onCreateDeliveryNote(offer)}
+                                title="Lieferschein erstellen"
+                                className="text-green-600"
+                              >
+                                <ClipboardCheck className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => onCreateInvoice(offer)}
+                                title="Rechnung erstellen"
+                                className="text-primary"
+                              >
+                                <Receipt className="h-4 w-4" />
+                              </Button>
+                            </>
                           )}
                           <Button
                             size="sm"
