@@ -62,6 +62,7 @@ interface Props {
   onCreateInvoice: (offer: Offer) => void;
   onCreateProformaInvoice: (offer: Offer) => void;
   onCreateDeliveryNote: (offer: Offer) => void;
+  onCreateOffer: () => void;
   onDelete: (offerId: string) => void;
   resendingId: string | null;
   onRefresh: () => void;
@@ -77,6 +78,7 @@ export function AdminOffersTab({
   onCreateInvoice,
   onCreateProformaInvoice,
   onCreateDeliveryNote,
+  onCreateOffer,
   onDelete,
   resendingId,
   onRefresh,
@@ -108,10 +110,20 @@ export function AdminOffersTab({
           <h2 className="text-lg font-semibold">Alle Angebote</h2>
           <p className="text-sm text-muted-foreground">Angebote einsehen, bearbeiten und erneut versenden</p>
         </div>
-        <Button variant="outline" size="sm" onClick={onRefresh}>
-          <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-          Aktualisieren
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            onClick={onCreateOffer}
+            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          >
+            <FileText className="h-3.5 w-3.5 mr-1" />
+            Angebot erstellen
+          </Button>
+          <Button variant="outline" size="sm" onClick={onRefresh}>
+            <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+            Aktualisieren
+          </Button>
+        </div>
       </div>
 
       {offers.length === 0 ? (

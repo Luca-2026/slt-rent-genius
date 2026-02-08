@@ -76,6 +76,7 @@ export interface ExistingOfferItem {
 interface Props {
   reservation: Reservation | null;
   profile: B2BProfile | null;
+  profiles?: B2BProfile[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: () => void;
@@ -85,7 +86,8 @@ interface Props {
 
 export function AdminCreateOfferDialog({
   reservation,
-  profile,
+  profile: profileProp,
+  profiles: profilesList,
   open,
   onOpenChange,
   onCreated,
@@ -101,11 +103,20 @@ export function AdminCreateOfferDialog({
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [selectedProfileId, setSelectedProfileId] = useState("");
 
   const isEditing = !!existingOffer;
+  const isStandalone = !reservation && !isEditing;
+
+  // Resolve the active profile: from prop (reservation/edit mode) or from selector (standalone)
+  const profile = profileProp || (isStandalone && profilesList
+    ? profilesList.find((p) => p.id === selectedProfileId) || null
+    : null);
+
+  const approvedProfiles = (profilesList || []).filter((p: any) => p.status === "approved");
 
   useEffect(() => {
-    if (open && profile) {
+    if (open) {
       if (existingOffer && existingItems && existingItems.length > 0) {
         setItems(
           existingItems.map((item) => ({
@@ -119,21 +130,27 @@ export function AdminCreateOfferDialog({
         setDeliveryCost(existingOffer.delivery_cost || 0);
         setNotes(existingOffer.notes || "");
         setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
-        // Restore selected services from existing offer
         if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
           setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
         } else {
           setSelectedServices(new Set());
         }
-      } else if (reservation) {
+      } else if (reservation && profile) {
         loadCustomerPrices();
-        // Pre-fill deposit and services from reservation
         setDeposit(reservation.deposit ? String(reservation.deposit) : "");
         if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
           setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
         } else {
           setSelectedServices(new Set());
         }
+      } else if (isStandalone) {
+        // Standalone mode: start with empty item
+        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }]);
+        setDeliveryCost(0);
+        setNotes("");
+        setDeposit("");
+        setSelectedServices(new Set());
+        setSelectedProfileId("");
       }
     }
   }, [open, reservation, profile, existingOffer, existingItems]);
@@ -222,8 +239,11 @@ export function AdminCreateOfferDialog({
   const relevantServices = getServicesForCategory(categorySlug);
 
   const handleCreate = async () => {
-    if (!reservationId) return;
-
+    if (!isStandalone && !reservationId) return;
+    if (isStandalone && !profile) {
+      toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
+      return;
+    }
     const validItems = items.filter((item) => item.product_name && item.unit_price > 0);
     if (validItems.length === 0) {
       toast({
@@ -249,7 +269,8 @@ export function AdminCreateOfferDialog({
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
-          reservation_id: reservationId,
+          reservation_id: reservationId || undefined,
+          b2b_profile_id: isStandalone ? profile!.id : undefined,
           offer_id: existingOffer?.id || undefined,
           items: validItems.map((item) => ({
             product_name: item.product_name,
@@ -293,8 +314,9 @@ export function AdminCreateOfferDialog({
     }
   };
 
-  if (!profile) return null;
-  if (!isEditing && !reservation) return null;
+  // In standalone mode, show dialog even without profile selected yet
+  if (!isStandalone && !profile) return null;
+  if (!isEditing && !reservation && !isStandalone) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -307,39 +329,60 @@ export function AdminCreateOfferDialog({
           <DialogDescription>
             {isEditing
               ? `Angebot ${existingOffer.offer_number} anpassen und erneut versenden.`
-              : "Preise eintragen und ein PDF-Angebot für den Kunden generieren."}
+              : isStandalone
+                ? "Wähle einen Kunden und erstelle ein Angebot mit individuellen Positionen."
+                : "Preise eintragen und ein PDF-Angebot für den Kunden generieren."}
           </DialogDescription>
         </DialogHeader>
 
-        {/* Customer Info */}
-        <Card>
-          <CardContent className="p-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-foreground">{profile.company_name}</p>
-                {reservation && (
-                  <p className="text-sm text-muted-foreground">
-                    {reservation.product_name || reservation.product_id}
-                  </p>
-                )}
-              </div>
-              {reservation && (
-                <div className="text-right text-sm text-muted-foreground">
-                  <p>Standort: <span className="capitalize">{reservation.location}</span></p>
-                  <p>
-                    {formatDate(reservation.start_date)}
-                    {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
-                  </p>
-                </div>
-              )}
-            </div>
-            {isReverseCharge && (
-              <Badge variant="outline" className="text-primary">
+        {/* Customer selector (standalone) or info */}
+        {isStandalone ? (
+          <div>
+            <Label>Kunde *</Label>
+            <Select value={selectedProfileId} onValueChange={setSelectedProfileId}>
+              <SelectTrigger><SelectValue placeholder="Kunde wählen" /></SelectTrigger>
+              <SelectContent>
+                {approvedProfiles.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>{p.company_name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {profile && isReverseCharge && (
+              <Badge variant="outline" className="text-primary mt-2">
                 Reverse-Charge (USt-IdNr. verifiziert)
               </Badge>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        ) : (
+          <Card>
+            <CardContent className="p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-foreground">{profile!.company_name}</p>
+                  {reservation && (
+                    <p className="text-sm text-muted-foreground">
+                      {reservation.product_name || reservation.product_id}
+                    </p>
+                  )}
+                </div>
+                {reservation && (
+                  <div className="text-right text-sm text-muted-foreground">
+                    <p>Standort: <span className="capitalize">{reservation.location}</span></p>
+                    <p>
+                      {formatDate(reservation.start_date)}
+                      {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
+                    </p>
+                  </div>
+                )}
+              </div>
+              {isReverseCharge && (
+                <Badge variant="outline" className="text-primary">
+                  Reverse-Charge (USt-IdNr. verifiziert)
+                </Badge>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         <Separator />
 
