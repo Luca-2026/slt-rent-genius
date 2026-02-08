@@ -32,17 +32,24 @@ interface B2BProfile {
   company_name: string;
 }
 
+interface Offer {
+  id: string;
+  reservation_id: string | null;
+}
+
 interface DocumentInfo {
   id: string;
   file_url: string | null;
   number: string;
   reservation_id: string | null;
+  offer_id?: string | null;
 }
 
 interface Props {
   reservations: Reservation[];
   profiles: B2BProfile[];
   invoices: { id: string; file_url: string | null; invoice_number: string; reservation_id: string | null }[];
+  offers: Offer[];
   onCreateReservation: () => void;
   onExtendReservation: (reservation: Reservation) => void;
   onGenerateInvoice: (reservation: Reservation) => void;
@@ -56,6 +63,7 @@ export function AdminRentalsTab({
   reservations,
   profiles,
   invoices,
+  offers,
   onCreateReservation,
   onExtendReservation,
   onGenerateInvoice,
@@ -70,11 +78,22 @@ export function AdminRentalsTab({
   useEffect(() => {
     const fetchDocs = async () => {
       const [dnRes, rpRes] = await Promise.all([
-        supabase.from("b2b_delivery_notes").select("id, file_url, delivery_note_number, reservation_id"),
+        supabase.from("b2b_delivery_notes").select("id, file_url, delivery_note_number, reservation_id, offer_id"),
         supabase.from("b2b_return_protocols").select("id, file_url, return_protocol_number, reservation_id"),
       ]);
-      if (dnRes.data) setDeliveryNotes(dnRes.data.map((d: any) => ({ id: d.id, file_url: d.file_url, number: d.delivery_note_number, reservation_id: d.reservation_id })));
-      if (rpRes.data) setReturnProtocols(rpRes.data.map((r: any) => ({ id: r.id, file_url: r.file_url, number: r.return_protocol_number, reservation_id: r.reservation_id })));
+      if (dnRes.data) setDeliveryNotes(dnRes.data.map((d: any) => ({
+        id: d.id,
+        file_url: d.file_url,
+        number: d.delivery_note_number,
+        reservation_id: d.reservation_id,
+        offer_id: d.offer_id,
+      })));
+      if (rpRes.data) setReturnProtocols(rpRes.data.map((r: any) => ({
+        id: r.id,
+        file_url: r.file_url,
+        number: r.return_protocol_number,
+        reservation_id: r.reservation_id,
+      })));
     };
     fetchDocs();
   }, [reservations]);
@@ -94,7 +113,13 @@ export function AdminRentalsTab({
 
   const getDocsForReservation = (resId: string) => {
     const inv = invoices.find((i) => i.reservation_id === resId);
-    const dn = deliveryNotes.find((d) => d.reservation_id === resId);
+    // Find delivery note: by reservation_id directly, OR by offer_id that links to this reservation
+    const offerIdsForRes = offers
+      .filter((o) => o.reservation_id === resId)
+      .map((o) => o.id);
+    const dn = deliveryNotes.find(
+      (d) => d.reservation_id === resId || (d.offer_id && offerIdsForRes.includes(d.offer_id))
+    );
     const rp = returnProtocols.find((r) => r.reservation_id === resId);
     return { invoice: inv, deliveryNote: dn, returnProtocol: rp };
   };
