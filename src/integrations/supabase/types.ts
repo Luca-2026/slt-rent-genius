@@ -413,6 +413,7 @@ export type Database = {
           legal_form: string | null
           payment_due_days: number
           postal_code: string
+          postal_invoice: boolean
           rejection_reason: string | null
           status: Database["public"]["Enums"]["b2b_status"]
           status_changed_at: string | null
@@ -448,6 +449,7 @@ export type Database = {
           legal_form?: string | null
           payment_due_days?: number
           postal_code: string
+          postal_invoice?: boolean
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
           status_changed_at?: string | null
@@ -483,6 +485,7 @@ export type Database = {
           legal_form?: string | null
           payment_due_days?: number
           postal_code?: string
+          postal_invoice?: boolean
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
           status_changed_at?: string | null
