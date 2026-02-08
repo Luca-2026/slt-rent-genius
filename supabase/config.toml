@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.delete-customer]
 verify_jwt = false
+
+[functions.notify-device-return]
+verify_jwt = false
