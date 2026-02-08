@@ -263,6 +263,44 @@ export default function AdminDashboard() {
     }
   };
 
+  // ─── Delete handlers ──────────────────────────────────
+  const deleteInvoice = async (invoiceId: string) => {
+    try {
+      // Delete invoice items first
+      await supabase.from("b2b_invoice_items").delete().eq("invoice_id", invoiceId);
+      const { error } = await supabase.from("b2b_invoices").delete().eq("id", invoiceId);
+      if (error) throw error;
+      toast({ title: "Rechnung gelöscht" });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const deleteOffer = async (offerId: string) => {
+    try {
+      // Delete offer items first
+      await supabase.from("b2b_offer_items").delete().eq("offer_id", offerId);
+      const { error } = await supabase.from("b2b_offers").delete().eq("id", offerId);
+      if (error) throw error;
+      toast({ title: "Angebot gelöscht" });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const deleteReservation = async (reservationId: string) => {
+    try {
+      const { error } = await supabase.from("b2b_reservations").delete().eq("id", reservationId);
+      if (error) throw error;
+      toast({ title: "Mietvorgang gelöscht" });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    }
+  };
+
   const confirmReservation = async (reservation: Reservation) => {
     setConfirmingId(reservation.id);
     try {
@@ -487,6 +525,7 @@ export default function AdminDashboard() {
             }}
             hasInvoice={(resId) => invoices.some((inv) => inv.reservation_id === resId)}
             hasReturnProtocol={(resId) => returnProtocolIds.has(resId)}
+            onDelete={deleteReservation}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -537,6 +576,7 @@ export default function AdminDashboard() {
               setDeliveryNoteOpen(true);
             }}
             resendingId={resendingId}
+            onDelete={deleteOffer}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -560,6 +600,7 @@ export default function AdminDashboard() {
             invoices={invoices}
             onStatusChange={updateInvoiceStatus}
             onViewInvoice={openInvoiceInNewWindow}
+            onDelete={deleteInvoice}
             onRefresh={fetchData}
           />
         </TabsContent>
