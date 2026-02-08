@@ -16,8 +16,12 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Building2, CalendarDays, CreditCard, Edit, Eye, Package,
-  Percent, Receipt, RefreshCw, Save, Shield, TrendingUp,
+  Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -44,6 +48,7 @@ interface B2BProfile {
   country: string | null;
   created_at: string;
   payment_due_days: number;
+  deletion_requested_at: string | null;
 }
 
 interface Invoice {
@@ -118,6 +123,8 @@ export function AdminCustomerDetailDialog({
   const [editingDiscounts, setEditingDiscounts] = useState<Record<string, number>>({});
   const [savingDiscounts, setSavingDiscounts] = useState(false);
   const [loadingDiscounts, setLoadingDiscounts] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
@@ -193,6 +200,36 @@ export function AdminCustomerDetailDialog({
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
     } finally {
       setSavingDiscounts(false);
+    }
+  };
+
+  const handleDeleteCustomer = async () => {
+    if (!profile) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("delete-customer", {
+        body: { profile_id: profile.id },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: "Kunde gelöscht",
+        description: data.email_sent
+          ? `${profile.company_name} wurde gelöscht. Bestätigungsemail versendet.`
+          : `${profile.company_name} wurde gelöscht.`,
+      });
+      setDeleteDialogOpen(false);
+      onOpenChange(false);
+      onRefresh();
+    } catch (error: any) {
+      toast({
+        title: "Fehler beim Löschen",
+        description: error.message || "Kunde konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -278,14 +315,42 @@ export function AdminCustomerDetailDialog({
           )}
         </div>
 
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
-          className="w-fit"
-        >
-          <Edit className="h-3.5 w-3.5 mr-1" /> Stammdaten bearbeiten
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
+          >
+            <Edit className="h-3.5 w-3.5 mr-1" /> Stammdaten bearbeiten
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() => setDeleteDialogOpen(true)}
+          >
+            <Trash2 className="h-3.5 w-3.5 mr-1" /> Konto löschen
+          </Button>
+        </div>
+
+        {/* Deletion Request Banner */}
+        {profile.deletion_requested_at && (
+          <div className="flex items-center gap-2 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+            <Trash2 className="h-4 w-4 text-destructive shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-destructive">Löschung beantragt</p>
+              <p className="text-xs text-muted-foreground">
+                Der Kunde hat am {formatDate(profile.deletion_requested_at)} die Löschung seines Kontos beantragt.
+              </p>
+            </div>
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => setDeleteDialogOpen(true)}
+            >
+              Jetzt löschen
+            </Button>
+          </div>
+        )}
 
         {/* ─── Tabs ─────────────────────────────────────────── */}
         <Tabs defaultValue="discounts" className="mt-2">
@@ -495,6 +560,38 @@ export function AdminCustomerDetailDialog({
           </TabsContent>
         </Tabs>
       </DialogContent>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Kundenkonto endgültig löschen?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Das Konto von <strong>{profile.company_name}</strong> wird unwiderruflich gelöscht, 
+                einschließlich aller Reservierungen, Rechnungen, Angebote und Rabatte.
+              </p>
+              <p className="text-destructive font-medium">
+                Diese Aktion kann nicht rückgängig gemacht werden.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteCustomer}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? (
+                <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" /> Wird gelöscht...</>
+              ) : (
+                <><Trash2 className="h-3.5 w-3.5 mr-1" /> Endgültig löschen</>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Dialog>
   );
 }
