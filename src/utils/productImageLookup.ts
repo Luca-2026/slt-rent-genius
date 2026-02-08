@@ -2,12 +2,115 @@ import { getProductById, locations } from "@/data/rentalData";
 import type { Product } from "@/data/rentalData";
 
 /**
+ * Maps original image filenames (without extension) to their subdirectory
+ * in public/product-images/. Files in public/ are served without Vite hashing,
+ * ensuring stable URLs for documents (invoices, offers, protocols).
+ */
+const IMAGE_DIR_MAP: Record<string, string> = {};
+
+// Erdbewegung
+[
+  "bobcat-e10z-1", "bobcat-e10z-2", "bobcat-e10z-3", "bobcat-e10z-4",
+  "bobcat-e19-1", "bobcat-e19-2", "bobcat-e19-3",
+  "bodenschutz-fahrmatten-1", "bodenschutz-fahrmatten-2", "bodenschutz-fahrmatten-3", "bodenschutz-fahrmatten-4",
+  "cormidi-c60-1", "cormidi-c60-2", "cormidi-c60-3",
+  "dieseltankstelle-400l-1", "dieseltankstelle-400l-2",
+  "hydraulikhammer-shb45-1", "hydraulikhammer-shb45-2", "hydraulikhammer-shb45-3",
+  "knickdumper-kde550-1", "knickdumper-kde550-2",
+  "kramer-5045-1", "kramer-5045-2",
+  "xcmg-xe20e-1", "xcmg-xe20e-2", "xcmg-xe20e-3",
+  "xcmg-xe27e-1", "xcmg-xe27e-2", "xcmg-xe27e-3",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "erdbewegung"));
+
+// Werkzeuge
+[
+  "abbruchhammer-gsh16-28",
+  "akku-ladegeraet-set-4ah",
+  "bauleuchte-gli18v-2200c",
+  "betonruettler-ir1000",
+  "bohrhammer-gbh18v-26f", "bohrhammer-gbh18v-45c",
+  "bohrschrauber-gsr12v-15", "bohrschrauber-gsr18v-60c",
+  "diamantbohrer-ehd1500",
+  "drehschlagschrauber-gds18v-1050h", "drehschlagschrauber-gds18v-1050h-2",
+  "einhell-bauleuchte-te-cl18-2000",
+  "fugenschneider-bs50e-1", "fugenschneider-bs50e-2",
+  "multicutter-gop18v-28",
+  "nageler-te-cn",
+  "ortungsgeraet-dtect200c",
+  "saebelsaege-gsa18v-li-c",
+  "sds-plus-bohrer-meissel-set",
+  "staubsauger-gas18v-10l",
+  "staubsaugeraufsatz-gde18v-16",
+  "trennschleifer-ts420",
+  "winkelschleifer-gws18v-10",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "werkzeuge"));
+
+// Anhänger
+[
+  "autotransport-1500-1", "autotransport-1500-2", "autotransport-1500-3",
+  "autotransport-2700-1", "autotransport-2700-2",
+  "autotransportkipp-2700-1", "autotransportkipp-2700-2",
+  "baumaschinen-1800-1", "baumaschinen-1800-2",
+  "baumaschinen-3500-1", "baumaschinen-3500-2", "baumaschinen-3500-3",
+  "kasten-750",
+  "kasten-laubgitter-1300", "kasten-laubgitter-750",
+  "koffer-1500-1", "koffer-1500-2", "koffer-1500-3", "koffer-1500-4", "koffer-1500-5",
+  "koffer-2000-1", "koffer-2000-2", "koffer-2000-3", "koffer-2000-4", "koffer-2000-5",
+  "koffer-750-1", "koffer-750-2", "koffer-750-3", "koffer-750-4",
+  "motorrad-3fach-750-1", "motorrad-3fach-750-2", "motorrad-3fach-750-3",
+  "planen-1300",
+  "planen-3500-1", "planen-3500-2", "planen-3500-3", "planen-3500-4",
+  "planen-l-750", "planen-m-750", "planen-s-750", "planen-xl-750", "planen-xxl-750",
+  "plattform-3500-1", "plattform-3500-2", "plattform-3500-3", "plattform-3500-4", "plattform-3500-5", "plattform-3500-6",
+  "rueckwaertskipp-2700-1", "rueckwaertskipp-2700-2", "rueckwaertskipp-2700-3",
+  "urlaub-750",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "anhaenger"));
+
+// Gartenpflege
+[
+  "erdbohrer-4308-1", "erdbohrer-4308-2", "erdbohrer-4308-3", "erdbohrer-4308-4",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "gartenpflege"));
+
+/**
+ * Converts a Vite-hashed asset path to a stable public path.
+ * Vite paths: /assets/bobcat-e10z-1-BhXkL2nP.jpg
+ * Stable paths: /product-images/erdbewegung/bobcat-e10z-1.jpg
+ */
+function vitePathToStablePath(vitePath: string): string | null {
+  if (!vitePath || vitePath === "/placeholder.svg") return null;
+
+  // Already a stable URL (http or /product-images)
+  if (vitePath.startsWith("http") || vitePath.startsWith("/product-images/")) {
+    return vitePath;
+  }
+
+  // Match Vite-hashed pattern: /assets/FILENAME-HASH.EXT
+  // Vite hashes are typically 8 alphanumeric characters
+  const match = vitePath.match(/\/assets\/(.+)-[a-zA-Z0-9]{7,10}\.(jpg|jpeg|png|webp)$/i);
+  if (!match) return null;
+
+  const baseName = match[1];
+  const ext = match[2];
+  const dir = IMAGE_DIR_MAP[baseName];
+
+  if (!dir) return null;
+  return `/product-images/${dir}/${baseName}.${ext}`;
+}
+
+/**
  * Looks up a product image by product ID from rental data
- * and returns an absolute URL that can be used in external HTML documents.
+ * and returns a STABLE absolute URL for use in external HTML documents.
+ * Uses public/product-images/ paths which don't change between builds.
  */
 export function getProductImageUrl(productId: string): string | null {
   const product = getProductById(productId);
-  return product?.image ? toAbsoluteUrl(product.image) : null;
+  if (!product?.image) return null;
+
+  const stablePath = vitePathToStablePath(product.image);
+  if (stablePath) return toAbsoluteUrl(stablePath);
+
+  // Fallback: use the Vite path as-is (may break after rebuild)
+  return toAbsoluteUrl(product.image);
 }
 
 /**
@@ -20,7 +123,11 @@ export function getProductImageUrlByName(productName: string): string | null {
       const found = (products as Product[]).find(
         (p) => p.name === productName || p.id === productName
       );
-      if (found?.image) return toAbsoluteUrl(found.image);
+      if (found?.image) {
+        const stablePath = vitePathToStablePath(found.image);
+        if (stablePath) return toAbsoluteUrl(stablePath);
+        return toAbsoluteUrl(found.image);
+      }
     }
   }
   return null;
