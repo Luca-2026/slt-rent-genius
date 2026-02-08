@@ -513,7 +513,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals">
           <AdminRentalsTab
-            reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed")}
+            reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed" || r.status === "pending")}
             profiles={profiles}
             invoices={invoices}
             offers={offers}
