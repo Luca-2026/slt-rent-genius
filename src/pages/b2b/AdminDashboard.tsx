@@ -16,6 +16,7 @@ import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEdi
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
 import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
+import { AdminCreateOfferDialog } from "@/components/b2b/admin/AdminCreateOfferDialog";
 
 // UI
 import { Card, CardContent } from "@/components/ui/card";
@@ -85,6 +86,7 @@ interface Reservation {
   original_price: number | null;
   discounted_price: number | null;
   b2b_profile_id: string;
+  notes: string | null;
   created_at: string;
 }
 
@@ -110,6 +112,7 @@ export default function AdminDashboard() {
   const [extendResOpen, setExtendResOpen] = useState(false);
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [createReservationOpen, setCreateReservationOpen] = useState(false);
+  const [createOfferOpen, setCreateOfferOpen] = useState(false);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
@@ -227,7 +230,7 @@ export default function AdminDashboard() {
   const formatCurrency = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const pendingReservations = reservations.filter(
-    (r) => r.status === "pending" && !invoices.some((inv) => inv.reservation_id === r.id)
+    (r) => (r.status === "pending" || r.status === "offer_sent") && !invoices.some((inv) => inv.reservation_id === r.id)
   );
 
   const paidInvoices = invoices.filter((i) => i.status === "paid");
@@ -298,6 +301,10 @@ export default function AdminDashboard() {
               setInvoiceDialogOpen(true);
             }}
             onConfirmReservation={confirmReservation}
+            onCreateOffer={(res) => {
+              setSelectedReservation(res);
+              setCreateOfferOpen(true);
+            }}
             confirmingId={confirmingId}
             onRefresh={fetchData}
           />
@@ -465,6 +472,15 @@ export default function AdminDashboard() {
         profiles={profiles}
         open={createReservationOpen}
         onOpenChange={setCreateReservationOpen}
+        onCreated={fetchData}
+      />
+
+      {/* Create Offer */}
+      <AdminCreateOfferDialog
+        reservation={selectedReservation}
+        profile={selectedReservation ? profiles.find((p) => p.id === selectedReservation.b2b_profile_id) || null : null}
+        open={createOfferOpen}
+        onOpenChange={setCreateOfferOpen}
         onCreated={fetchData}
       />
     </B2BPortalLayout>

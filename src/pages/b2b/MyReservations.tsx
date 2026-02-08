@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
-  FileText, Filter, RefreshCw,
+  FileText, Filter, RefreshCw, Download, Send,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -34,8 +35,20 @@ interface Reservation {
   created_at: string;
 }
 
+interface Offer {
+  id: string;
+  reservation_id: string | null;
+  offer_number: string;
+  offer_date: string;
+  valid_until: string | null;
+  status: string;
+  gross_amount: number;
+  file_url: string | null;
+}
+
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: typeof Clock }> = {
   pending: { label: "Ausstehend", variant: "secondary", icon: Clock },
+  offer_sent: { label: "Angebot erhalten", variant: "outline", icon: Send },
   confirmed: { label: "Bestätigt", variant: "default", icon: CheckCircle2 },
   cancelled: { label: "Storniert", variant: "destructive", icon: XCircle },
   completed: { label: "Abgeschlossen", variant: "outline", icon: CheckCircle2 },
@@ -49,26 +62,36 @@ const locationLabels: Record<string, string> = {
 export default function MyReservations() {
   const { user, b2bProfile } = useAuth();
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const fetchReservations = async () => {
+  const fetchData = async () => {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from("b2b_reservations")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
+    const [resResult, offersResult] = await Promise.all([
+      supabase
+        .from("b2b_reservations")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("b2b_offers")
+        .select("id, reservation_id, offer_number, offer_date, valid_until, status, gross_amount, file_url")
+        .order("created_at", { ascending: false }),
+    ]);
 
-    if (!error && data) {
-      setReservations(data);
+    if (!resResult.error && resResult.data) {
+      setReservations(resResult.data);
+    }
+    if (!offersResult.error && offersResult.data) {
+      setOffers(offersResult.data as Offer[]);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    if (user) fetchReservations();
+    if (user) fetchData();
   }, [user]);
 
   const filtered = statusFilter === "all"
@@ -77,14 +100,21 @@ export default function MyReservations() {
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
 
+  const formatCurrency = (n: number) =>
+    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+
   const pendingCount = reservations.filter((r) => r.status === "pending").length;
+  const offerCount = reservations.filter((r) => r.status === "offer_sent").length;
   const confirmedCount = reservations.filter((r) => r.status === "confirmed").length;
   const totalCount = reservations.length;
+
+  const getOfferForReservation = (reservationId: string) =>
+    offers.find((o) => o.reservation_id === reservationId);
 
   return (
     <B2BPortalLayout title="Meine Anfragen" subtitle={`${totalCount} Anfragen insgesamt`}>
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -104,6 +134,17 @@ export default function MyReservations() {
             <div>
               <p className="text-2xl font-bold">{pendingCount}</p>
               <p className="text-xs text-muted-foreground">Ausstehend</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <Send className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{offerCount}</p>
+              <p className="text-xs text-muted-foreground">Angebote</p>
             </div>
           </CardContent>
         </Card>
@@ -144,13 +185,14 @@ export default function MyReservations() {
             <SelectContent>
               <SelectItem value="all">Alle Status</SelectItem>
               <SelectItem value="pending">Ausstehend</SelectItem>
+              <SelectItem value="offer_sent">Angebot erhalten</SelectItem>
               <SelectItem value="confirmed">Bestätigt</SelectItem>
               <SelectItem value="completed">Abgeschlossen</SelectItem>
               <SelectItem value="cancelled">Storniert</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchReservations} disabled={loading}>
+        <Button variant="outline" size="sm" onClick={fetchData} disabled={loading}>
           <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`} />
           Aktualisieren
         </Button>
@@ -176,10 +218,11 @@ export default function MyReservations() {
       ) : (
         <>
           {/* Mobile cards */}
-          <div className="md:hidden space-y-3">
+           <div className="md:hidden space-y-3">
             {filtered.map((r) => {
               const cfg = statusConfig[r.status] || statusConfig.pending;
               const StatusIcon = cfg.icon;
+              const offer = getOfferForReservation(r.id);
               return (
                 <Card key={r.id}>
                   <CardContent className="p-4 space-y-3">
@@ -203,6 +246,28 @@ export default function MyReservations() {
                         {formatDate(r.start_date)}
                       </div>
                     </div>
+                    {offer && (
+                      <div className="flex items-center justify-between bg-primary/5 rounded-lg p-2">
+                        <div>
+                          <p className="text-xs font-medium text-primary">Angebot {offer.offer_number}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatCurrency(offer.gross_amount)} brutto
+                            {offer.valid_until && ` · gültig bis ${formatDate(offer.valid_until)}`}
+                          </p>
+                        </div>
+                        {offer.file_url && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
+                            className="h-7 text-xs"
+                          >
+                            <Download className="h-3 w-3 mr-1" />
+                            PDF
+                          </Button>
+                        )}
+                      </div>
+                    )}
                     {r.notes && (
                       <p className="text-xs text-muted-foreground bg-muted/50 rounded p-2">
                         {r.notes}
@@ -227,7 +292,7 @@ export default function MyReservations() {
                   <TableHead>Zeitraum</TableHead>
                   <TableHead className="text-center">Menge</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Anmerkungen</TableHead>
+                  <TableHead>Angebot</TableHead>
                   <TableHead>Erstellt</TableHead>
                 </TableRow>
               </TableHeader>
@@ -235,6 +300,7 @@ export default function MyReservations() {
                 {filtered.map((r) => {
                   const cfg = statusConfig[r.status] || statusConfig.pending;
                   const StatusIcon = cfg.icon;
+                  const offer = getOfferForReservation(r.id);
                   return (
                     <TableRow key={r.id}>
                       <TableCell>
@@ -262,10 +328,22 @@ export default function MyReservations() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {r.notes ? (
-                          <p className="text-xs text-muted-foreground max-w-[200px] truncate" title={r.notes}>
-                            {r.notes}
-                          </p>
+                        {offer ? (
+                          <div className="space-y-1">
+                            <p className="text-xs font-medium text-primary">{offer.offer_number}</p>
+                            <p className="text-xs text-muted-foreground">{formatCurrency(offer.gross_amount)}</p>
+                            {offer.file_url && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
+                                className="h-6 text-xs px-2"
+                              >
+                                <Download className="h-3 w-3 mr-1" />
+                                PDF
+                              </Button>
+                            )}
+                          </div>
                         ) : (
                           <span className="text-xs text-muted-foreground">—</span>
                         )}
