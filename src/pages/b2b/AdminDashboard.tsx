@@ -12,11 +12,12 @@ import { AdminReservationsTab } from "@/components/b2b/admin/AdminReservationsTa
 import { AdminRentalsTab } from "@/components/b2b/admin/AdminRentalsTab";
 import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
 import { AdminCustomersTab } from "@/components/b2b/admin/AdminCustomersTab";
+import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/admin/AdminOffersTab";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
 import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
-import { AdminCreateOfferDialog } from "@/components/b2b/admin/AdminCreateOfferDialog";
+import { AdminCreateOfferDialog, type ExistingOffer, type ExistingOfferItem } from "@/components/b2b/admin/AdminCreateOfferDialog";
 
 // UI
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +28,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -100,6 +101,8 @@ export default function AdminDashboard() {
   const [profiles, setProfiles] = useState<B2BProfile[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -115,6 +118,11 @@ export default function AdminDashboard() {
   const [createOfferOpen, setCreateOfferOpen] = useState(false);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [resendingId, setResendingId] = useState<string | null>(null);
+
+  // Edit offer state
+  const [editingOffer, setEditingOffer] = useState<ExistingOffer | null>(null);
+  const [editingOfferItems, setEditingOfferItems] = useState<ExistingOfferItem[]>([]);
 
   // Auth guard
   useEffect(() => {
@@ -126,14 +134,18 @@ export default function AdminDashboard() {
   // Data fetching
   const fetchData = async () => {
     setLoading(true);
-    const [profilesRes, invoicesRes, reservationsRes] = await Promise.all([
+    const [profilesRes, invoicesRes, reservationsRes, offersRes, offerItemsRes] = await Promise.all([
       supabase.from("b2b_profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_invoices").select("*").order("created_at", { ascending: false }),
       supabase.from("b2b_reservations").select("*").order("created_at", { ascending: false }),
+      supabase.from("b2b_offers").select("*").order("created_at", { ascending: false }),
+      supabase.from("b2b_offer_items").select("*"),
     ]);
     if (profilesRes.data) setProfiles(profilesRes.data as B2BProfile[]);
     if (invoicesRes.data) setInvoices(invoicesRes.data as Invoice[]);
     if (reservationsRes.data) setReservations(reservationsRes.data as Reservation[]);
+    if (offersRes.data) setOffers(offersRes.data as Offer[]);
+    if (offerItemsRes.data) setOfferItems(offerItemsRes.data as OfferItem[]);
     setLoading(false);
   };
 
@@ -225,6 +237,80 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleEditOffer = (offer: Offer, items: OfferItem[]) => {
+    const matchingReservation = offer.reservation_id
+      ? reservations.find((r) => r.id === offer.reservation_id) || null
+      : null;
+
+    setSelectedReservation(matchingReservation);
+    setEditingOffer({
+      id: offer.id,
+      offer_number: offer.offer_number,
+      reservation_id: offer.reservation_id,
+      delivery_cost: offer.delivery_cost,
+      notes: offer.notes,
+      b2b_profile_id: offer.b2b_profile_id,
+    });
+    setEditingOfferItems(
+      items.map((i) => ({
+        product_name: i.product_name,
+        description: i.description,
+        quantity: i.quantity,
+        unit_price: i.unit_price,
+        discount_percent: i.discount_percent,
+      }))
+    );
+    setCreateOfferOpen(true);
+  };
+
+  const handleResendOffer = async (offer: Offer) => {
+    setResendingId(offer.id);
+    try {
+      const items = offerItems.filter((i) => i.offer_id === offer.id);
+      const matchingReservation = offer.reservation_id
+        ? reservations.find((r) => r.id === offer.reservation_id)
+        : null;
+
+      const { data, error } = await supabase.functions.invoke("generate-offer", {
+        body: {
+          reservation_id: offer.reservation_id,
+          offer_id: offer.id,
+          items: items.map((item) => ({
+            product_name: item.product_name,
+            description: item.description || undefined,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            discount_percent: item.discount_percent || undefined,
+            rental_start: matchingReservation?.start_date,
+            rental_end: matchingReservation?.end_date,
+          })),
+          delivery_cost: offer.delivery_cost,
+          notes: offer.notes || undefined,
+          send_email: true,
+          save_prices: false,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Angebot erneut versendet!",
+        description: data.email_sent
+          ? `Angebot ${offer.offer_number} wurde erneut per E-Mail versendet.`
+          : `Angebot ${offer.offer_number} wurde aktualisiert. (E-Mail nicht konfiguriert)`,
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Angebot konnte nicht erneut versendet werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setResendingId(null);
+    }
+  };
+
   // ─── Derived data ─────────────────────────────────────
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -266,13 +352,22 @@ export default function AdminDashboard() {
 
       {/* Tab Navigation */}
       <Tabs defaultValue="reservations" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 h-12">
+        <TabsList className="grid w-full grid-cols-5 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
             {pendingReservations.length > 0 && (
               <Badge variant="secondary" className="h-5 w-5 p-0 flex items-center justify-center text-[10px]">
                 {pendingReservations.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="offers" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <Send className="h-4 w-4" />
+            <span className="hidden sm:inline">Angebote</span>
+            {offers.length > 0 && (
+              <Badge variant="secondary" className="h-5 w-5 p-0 flex items-center justify-center text-[10px]">
+                {offers.length}
               </Badge>
             )}
           </TabsTrigger>
@@ -303,9 +398,24 @@ export default function AdminDashboard() {
             onConfirmReservation={confirmReservation}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
+              setEditingOffer(null);
+              setEditingOfferItems([]);
               setCreateOfferOpen(true);
             }}
             confirmingId={confirmingId}
+            onRefresh={fetchData}
+          />
+        </TabsContent>
+
+        <TabsContent value="offers">
+          <AdminOffersTab
+            offers={offers}
+            offerItems={offerItems}
+            profiles={profiles}
+            onEditOffer={handleEditOffer}
+            onResendOffer={handleResendOffer}
+            onViewOffer={openInvoiceInNewWindow}
+            resendingId={resendingId}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -475,13 +585,27 @@ export default function AdminDashboard() {
         onCreated={fetchData}
       />
 
-      {/* Create Offer */}
+      {/* Create / Edit Offer */}
       <AdminCreateOfferDialog
         reservation={selectedReservation}
-        profile={selectedReservation ? profiles.find((p) => p.id === selectedReservation.b2b_profile_id) || null : null}
+        profile={
+          editingOffer
+            ? profiles.find((p) => p.id === editingOffer.b2b_profile_id) || null
+            : selectedReservation
+              ? profiles.find((p) => p.id === selectedReservation.b2b_profile_id) || null
+              : null
+        }
         open={createOfferOpen}
-        onOpenChange={setCreateOfferOpen}
+        onOpenChange={(open) => {
+          setCreateOfferOpen(open);
+          if (!open) {
+            setEditingOffer(null);
+            setEditingOfferItems([]);
+          }
+        }}
         onCreated={fetchData}
+        existingOffer={editingOffer}
+        existingItems={editingOfferItems}
       />
     </B2BPortalLayout>
   );
