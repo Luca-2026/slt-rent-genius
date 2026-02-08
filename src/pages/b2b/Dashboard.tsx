@@ -203,7 +203,7 @@ export default function B2BDashboard() {
                   <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-2">
                     <FileText className="h-6 w-6 text-accent" />
                   </div>
-                  <CardTitle className="text-lg">Produkte & Anfragen</CardTitle>
+                  <CardTitle className="text-lg">Mietartikel</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
