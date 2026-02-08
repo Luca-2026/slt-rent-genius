@@ -963,6 +963,45 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_profiles: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          is_active: boolean
+          last_name: string
+          phone: string | null
+          position: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          is_active?: boolean
+          last_name: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          is_active?: boolean
+          last_name?: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1002,7 +1041,12 @@ export type Database = {
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role:
+        | "admin"
+        | "user"
+        | "standort_mitarbeiter"
+        | "buchhaltung"
+        | "readonly"
       b2b_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
@@ -1131,7 +1175,13 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: [
+        "admin",
+        "user",
+        "standort_mitarbeiter",
+        "buchhaltung",
+        "readonly",
+      ],
       b2b_status: ["pending", "approved", "rejected"],
     },
   },
