@@ -337,18 +337,35 @@ export default function AdminDashboard() {
   const handleConfirmAndCreateOffer = async (reservation: Reservation): Promise<void> => {
     setConfirmingId(reservation.id);
     try {
-      // 1. Confirm the reservation
+      // Find all related reservations from the same batch
+      // (same customer, same location, created within 10 seconds)
+      const createdAt = new Date(reservation.created_at);
+      const batchStart = new Date(createdAt.getTime() - 10_000).toISOString();
+      const batchEnd = new Date(createdAt.getTime() + 10_000).toISOString();
+
+      const batchReservations = reservations.filter((r) =>
+        r.b2b_profile_id === reservation.b2b_profile_id &&
+        r.location === reservation.location &&
+        r.status === "pending" &&
+        r.created_at >= batchStart &&
+        r.created_at <= batchEnd
+      );
+
+      // If no batch found, just use the single reservation
+      const targetReservations = batchReservations.length > 0 ? batchReservations : [reservation];
+      const targetIds = targetReservations.map((r) => r.id);
+
+      // 1. Confirm all reservations in the batch
       const { error: confirmError } = await supabase
         .from("b2b_reservations")
         .update({ status: "confirmed" })
-        .eq("id", reservation.id);
+        .in("id", targetIds);
 
       if (confirmError) throw confirmError;
 
-      // 2. Auto-create an offer from the reservation data
-      const price = reservation.original_price || 0;
+      // 2. Auto-create an offer with all items from the batch
       const resData = reservation as any;
-      const deposit = resData.deposit ? Number(resData.deposit) : undefined;
+      const depositValue = resData.deposit ? Number(resData.deposit) : undefined;
       const additionalServices = resData.additional_services;
 
       const servicesArray = additionalServices && Array.isArray(additionalServices)
@@ -359,30 +376,35 @@ export default function AdminDashboard() {
           }))
         : undefined;
 
-      const startDate = reservation.start_date;
-      const endDate = reservation.end_date;
+      const offerItems = targetReservations.map((r) => {
+        const price = r.original_price || 0;
+        return {
+          product_name: r.product_name || r.product_id,
+          description: r.end_date
+            ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}`
+            : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}`,
+          quantity: r.quantity || 1,
+          unit_price: price,
+          discount_percent: r.discounted_price && r.original_price && r.original_price > 0
+            ? Math.round((1 - r.discounted_price / r.original_price) * 100)
+            : undefined,
+          rental_start: r.start_date,
+          rental_end: r.end_date,
+          image_url: getProductImageUrl(r.product_id) || getProductImageUrlByName(r.product_name || r.product_id) || undefined,
+        };
+      });
 
       const { data, error: offerError } = await supabase.functions.invoke("generate-offer", {
         body: {
           reservation_id: reservation.id,
-          items: [{
-            product_name: reservation.product_name || reservation.product_id,
-            description: endDate
-              ? `Mietzeitraum: ${format(new Date(startDate), "dd.MM.yyyy", { locale: de })} – ${format(new Date(endDate), "dd.MM.yyyy", { locale: de })}`
-              : `Ab: ${format(new Date(startDate), "dd.MM.yyyy", { locale: de })}`,
-            quantity: reservation.quantity || 1,
-            unit_price: price,
-            rental_start: startDate,
-            rental_end: endDate,
-            image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(reservation.product_name || reservation.product_id) || undefined,
-          }],
+          items: offerItems,
           delivery_cost: 0,
           valid_days: 14,
           notes: reservation.notes || undefined,
           send_email: false,
           save_prices: false,
           skip_status_update: true,
-          deposit,
+          deposit: depositValue,
           additional_services: servicesArray,
         },
       });
@@ -391,7 +413,9 @@ export default function AdminDashboard() {
 
       toast({
         title: "Bestätigt & Angebot erstellt",
-        description: `Mietvorgang bestätigt. Angebot ${data.offer?.offer_number || ""} wurde automatisch erstellt.`,
+        description: targetReservations.length > 1
+          ? `${targetReservations.length} Positionen bestätigt. Angebot ${data.offer?.offer_number || ""} wurde automatisch erstellt.`
+          : `Mietvorgang bestätigt. Angebot ${data.offer?.offer_number || ""} wurde automatisch erstellt.`,
       });
       fetchData();
     } catch (error: any) {

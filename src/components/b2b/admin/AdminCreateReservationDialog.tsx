@@ -11,17 +11,23 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarIcon, Package, Plus, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { CalendarIcon, Package, Plus, Trash2, RefreshCw, ShoppingBag } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { ProductAutocomplete } from "./ProductAutocomplete";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
+import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 
 interface B2BProfile {
   id: string;
   company_name: string;
   user_id?: string;
+  tax_id?: string | null;
+  vat_id_verified?: boolean;
+  status?: string;
 }
 
 interface ProductItem {
@@ -31,6 +37,7 @@ interface ProductItem {
   categorySlug: string;
   quantity: number;
   price: number;
+  discount: number;
 }
 
 interface Props {
@@ -49,6 +56,7 @@ function createEmptyItem(): ProductItem {
     categorySlug: "",
     quantity: 1,
     price: 0,
+    discount: 0,
   };
 }
 
@@ -82,9 +90,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     setSelectedServices(new Set());
   };
 
-  const addItem = () => {
-    setItems((prev) => [...prev, createEmptyItem()]);
-  };
+  const addItem = () => setItems((prev) => [...prev, createEmptyItem()]);
 
   const removeItem = (id: string) => {
     setItems((prev) => prev.length > 1 ? prev.filter((i) => i.id !== id) : prev);
@@ -111,113 +117,189 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     });
   };
 
-  // Calculate totals
-  const baseItemTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // Resolved profile
+  const approvedProfiles = profiles.filter((p: any) => p.status === "approved");
+  const selectedProfile = profiles.find((p) => p.id === selectedProfileId) || null;
+  const isReverseCharge = !!(selectedProfile?.tax_id && selectedProfile?.vat_id_verified);
+  const vatRate = isReverseCharge ? 0 : 19;
 
-  // Determine category from first item for services
-  const primaryCategorySlug = items[0]?.categorySlug || "";
-  const relevantServices = getServicesForCategory(primaryCategorySlug);
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, baseItemTotal);
+  // Price calculations
+  const calculateItemTotal = (item: ProductItem) => {
+    const discounted = item.price * (1 - item.discount / 100);
+    return Math.round(discounted * item.quantity * 100) / 100;
+  };
+
+  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+
+  // Services based on all categories
+  const allCategorySlugs = new Set(items.map((i) => i.categorySlug).filter(Boolean));
+  const relevantServicesMap = new Map<string, (typeof ADDITIONAL_SERVICES)[0]>();
+  for (const slug of allCategorySlugs) {
+    for (const service of getServicesForCategory(slug)) {
+      relevantServicesMap.set(service.id, service);
+    }
+  }
+  // Always include kostenfreie-stornierung
+  const storno = ADDITIONAL_SERVICES.find((s) => s.id === "kostenfreie-stornierung");
+  if (storno) relevantServicesMap.set(storno.id, storno);
+  const relevantServices = Array.from(relevantServicesMap.values());
+
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal);
+  const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
+  const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
+  const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
+
+  const formatCurrency = (n: number) =>
+    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const handleCreate = async () => {
-    const profile = profiles.find((p) => p.id === selectedProfileId);
     const validItems = items.filter((i) => i.productName.trim());
 
-    if (!profile || validItems.length === 0 || !startDate) {
+    if (!selectedProfile || validItems.length === 0 || !startDate) {
       toast({ title: "Fehler", description: "Bitte fülle alle Pflichtfelder aus (Kunde, min. 1 Produkt, Startdatum).", variant: "destructive" });
       return;
     }
 
     setSaving(true);
 
-    const { data: profileData } = await supabase
-      .from("b2b_profiles")
-      .select("user_id")
-      .eq("id", selectedProfileId)
-      .single();
+    try {
+      const { data: profileData } = await supabase
+        .from("b2b_profiles")
+        .select("user_id")
+        .eq("id", selectedProfileId)
+        .single();
 
-    if (!profileData) {
-      toast({ title: "Fehler", description: "Kundenprofil nicht gefunden.", variant: "destructive" });
-      setSaving(false);
-      return;
-    }
+      if (!profileData) {
+        toast({ title: "Fehler", description: "Kundenprofil nicht gefunden.", variant: "destructive" });
+        setSaving(false);
+        return;
+      }
 
-    // Build additional services array
-    const servicesArray = selectedServices.size > 0
-      ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
-          const surcharge = s.pricePercent !== null
-            ? Math.round(baseItemTotal * (s.pricePercent / 100) * 100) / 100
-            : 0;
-          return {
-            id: s.id,
-            name: s.name,
-            description: s.description,
-            pricePercent: s.pricePercent,
-            calculatedAmount: surcharge,
-          };
-        })
-      : null;
+      // Build additional services array
+      const servicesArray = selectedServices.size > 0
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
+            const surcharge = s.pricePercent !== null
+              ? Math.round(itemsNetTotal * (s.pricePercent / 100) * 100) / 100
+              : 0;
+            return {
+              id: s.id,
+              name: s.name,
+              description: s.description,
+              pricePercent: s.pricePercent,
+              calculatedAmount: surcharge,
+            };
+          })
+        : null;
 
-    // Build time notes
-    const timeInfo = [
-      startTime ? `Abholung: ${startTime} Uhr` : "",
-      endTime ? `Rückgabe: ${endTime} Uhr` : "",
-    ].filter(Boolean).join(" · ");
+      // Build time notes
+      const timeInfo = [
+        startTime ? `Abholung: ${startTime} Uhr` : "",
+        endTime ? `Rückgabe: ${endTime} Uhr` : "",
+      ].filter(Boolean).join(" · ");
+      const fullNotes = [timeInfo, notes].filter(Boolean).join("\n") || null;
 
-    const fullNotes = [timeInfo, notes].filter(Boolean).join("\n") || null;
+      const startDateStr = startDate.toISOString().split("T")[0];
+      const endDateStr = endDate?.toISOString().split("T")[0] || null;
+      const depositValue = deposit && deposit !== "none" ? Number(deposit) : null;
 
-    // Create one reservation per product item
-    const reservationsToInsert = validItems.map((item) => ({
-      b2b_profile_id: selectedProfileId,
-      user_id: profileData.user_id,
-      product_name: item.productName,
-      product_id: item.productId || item.productName.toLowerCase().replace(/\s+/g, "-"),
-      category_slug: item.categorySlug || null,
-      location,
-      start_date: startDate.toISOString().split("T")[0],
-      end_date: endDate?.toISOString().split("T")[0] || null,
-      start_time: startTime || null,
-      end_time: endTime || null,
-      quantity: item.quantity,
-      original_price: item.price > 0 ? item.price : null,
-      deposit: deposit && deposit !== "none" ? Number(deposit) : null,
-      additional_services: servicesArray,
-      status: "pending" as const,
-      notes: fullNotes,
-    }));
+      // 1. Create all reservation rows with status "confirmed"
+      const reservationsToInsert = validItems.map((item) => ({
+        b2b_profile_id: selectedProfileId,
+        user_id: profileData.user_id,
+        product_name: item.productName,
+        product_id: item.productId || item.productName.toLowerCase().replace(/\s+/g, "-"),
+        category_slug: item.categorySlug || null,
+        location,
+        start_date: startDateStr,
+        end_date: endDateStr,
+        start_time: startTime || null,
+        end_time: endTime || null,
+        quantity: item.quantity,
+        original_price: item.price > 0 ? item.price : null,
+        discounted_price: item.discount > 0 && item.price > 0
+          ? Math.round(item.price * (1 - item.discount / 100) * 100) / 100
+          : null,
+        deposit: depositValue,
+        additional_services: servicesArray,
+        status: "confirmed" as const,
+        notes: fullNotes,
+      }));
 
-    const { error } = await supabase.from("b2b_reservations").insert(reservationsToInsert as any);
+      const { data: createdReservations, error: insertError } = await supabase
+        .from("b2b_reservations")
+        .insert(reservationsToInsert as any)
+        .select("id");
 
-    if (error) {
-      toast({ title: "Fehler", description: error.message, variant: "destructive" });
-    } else {
+      if (insertError) throw insertError;
+
+      // 2. Auto-generate offer with all items, linked to first reservation
+      const firstReservationId = createdReservations?.[0]?.id;
+
+      if (firstReservationId) {
+        const offerServicesArray = selectedServices.size > 0
+          ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+              id: s.id,
+              name: s.name,
+              description: s.description,
+            }))
+          : undefined;
+
+        const offerItems = validItems.map((item) => ({
+          product_name: item.productName,
+          description: endDateStr
+            ? `Mietzeitraum: ${format(startDate, "dd.MM.yyyy", { locale: de })} – ${format(endDate!, "dd.MM.yyyy", { locale: de })}`
+            : `Ab: ${format(startDate, "dd.MM.yyyy", { locale: de })}`,
+          quantity: item.quantity,
+          unit_price: item.price,
+          discount_percent: item.discount || undefined,
+          rental_start: startDateStr,
+          rental_end: endDateStr,
+          image_url: getProductImageUrl(item.productId) || getProductImageUrlByName(item.productName) || undefined,
+        }));
+
+        await supabase.functions.invoke("generate-offer", {
+          body: {
+            reservation_id: firstReservationId,
+            items: offerItems,
+            delivery_cost: deliveryCost,
+            valid_days: 14,
+            notes: fullNotes || undefined,
+            send_email: false,
+            save_prices: true,
+            skip_status_update: true,
+            deposit: depositValue || undefined,
+            additional_services: offerServicesArray,
+          },
+        });
+      }
+
       const productNames = validItems.map((i) => i.productName).join(", ");
       toast({
-        title: `${validItems.length} Mietvorgang${validItems.length > 1 ? "e" : ""} erstellt`,
-        description: `${productNames} für ${profile.company_name}`,
+        title: "Mietvorgang erstellt & bestätigt",
+        description: `${productNames} für ${selectedProfile.company_name} – Angebot wurde automatisch erstellt.`,
       });
       resetForm();
       onCreated();
       onOpenChange(false);
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
-  const approvedProfiles = profiles.filter((p: any) => p.status === "approved");
-
-  const formatCurrency = (n: number) =>
-    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+  const validItemCount = items.filter((i) => i.productName.trim()).length;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { onOpenChange(v); if (!v) resetForm(); }}>
-      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Package className="h-5 w-5" />
-            Mietvorgang anlegen
+            <ShoppingBag className="h-5 w-5" />
+            Mietvorgang anlegen (Vor-Ort-Buchung)
           </DialogTitle>
           <DialogDescription>
-            Erstelle einen oder mehrere Mietvorgänge für einen bestehenden Kunden.
+            Erstelle eine verbindliche Buchung mit einem oder mehreren Produkten. Der Vorgang wird sofort bestätigt und ein Angebot automatisch generiert.
           </DialogDescription>
         </DialogHeader>
 
@@ -233,15 +315,20 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                 ))}
               </SelectContent>
             </Select>
+            {selectedProfile && isReverseCharge && (
+              <Badge variant="outline" className="text-primary mt-2">
+                Reverse-Charge (USt-IdNr. verifiziert)
+              </Badge>
+            )}
           </div>
 
           {/* Product Items */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label>Produkte *</Label>
-              <Button type="button" variant="ghost" size="sm" onClick={addItem} className="h-7 text-xs gap-1">
+              <Label className="text-base font-semibold">Positionen *</Label>
+              <Button type="button" variant="outline" size="sm" onClick={addItem} className="h-7 text-xs gap-1">
                 <Plus className="h-3.5 w-3.5" />
-                Produkt hinzufügen
+                Position hinzufügen
               </Button>
             </div>
 
@@ -249,7 +336,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
               <Card key={item.id} className="border-dashed">
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-medium text-muted-foreground">Artikel {index + 1}</span>
+                    <span className="text-xs font-medium text-muted-foreground">Position {index + 1}</span>
                     {items.length > 1 && (
                       <Button
                         type="button"
@@ -268,7 +355,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                     location={location}
                     placeholder="Produktname eingeben..."
                   />
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-3 gap-2">
                     <div>
                       <Label className="text-xs">Menge</Label>
                       <Input
@@ -290,16 +377,32 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                         className="h-8 text-sm"
                       />
                     </div>
+                    <div>
+                      <Label className="text-xs">Rabatt (%)</Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={item.discount}
+                        onChange={(e) => updateItem(item.id, { discount: Number(e.target.value) })}
+                        className="h-8 text-sm"
+                      />
+                    </div>
                   </div>
+                  {(item.price > 0) && (
+                    <div className="text-right text-sm">
+                      <span className="text-muted-foreground">Summe: </span>
+                      <span className="font-semibold">{formatCurrency(calculateItemTotal(item))}</span>
+                      {item.discount > 0 && (
+                        <span className="text-xs text-muted-foreground ml-1.5">
+                          (–{item.discount}%)
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
-
-            {baseItemTotal > 0 && (
-              <div className="text-right text-sm font-medium text-muted-foreground">
-                Artikel gesamt: {formatCurrency(baseItemTotal)}
-              </div>
-            )}
           </div>
 
           {/* Location */}
@@ -394,7 +497,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
                           <p className="text-sm font-medium">{service.name}</p>
                           {service.pricePercent !== null && (
                             <span className="text-xs text-muted-foreground whitespace-nowrap">
-                              {service.pricePercent}% {selectedServices.has(service.id) && baseItemTotal > 0 && surchargeEntry
+                              {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
                                 ? `(${formatCurrency(surchargeEntry.amount)})`
                                 : ""}
                             </span>
@@ -420,14 +523,77 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
             <Label>Anmerkungen</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Interne Notizen..." rows={2} />
           </div>
+
+          <Separator />
+
+          {/* Price Summary */}
+          {itemsNetTotal > 0 && (
+            <Card className="bg-muted/50">
+              <CardContent className="p-4">
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Positionen:</span>
+                    <span>{formatCurrency(itemsNetTotal)}</span>
+                  </div>
+                  {deliveryCost > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Lieferkosten:</span>
+                      <span>{formatCurrency(deliveryCost)}</span>
+                    </div>
+                  )}
+                  {servicesSurcharge > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Zusatzoptionen:</span>
+                      <span>{formatCurrency(servicesSurcharge)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Nettobetrag:</span>
+                    <span>{formatCurrency(netAmount)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      {isReverseCharge ? "USt. (Reverse-Charge):" : `USt. (${vatRate}%):`}
+                    </span>
+                    <span>{formatCurrency(vatAmount)}</span>
+                  </div>
+                  {deposit && deposit !== "none" && Number(deposit) > 0 && (
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Kaution:</span>
+                      <span>{formatCurrency(Number(deposit))}</span>
+                    </div>
+                  )}
+                  <Separator />
+                  <div className="flex justify-between font-bold text-base text-primary">
+                    <span>Bruttobetrag:</span>
+                    <span>{formatCurrency(grossAmount)}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         <div className="flex gap-3 justify-end pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Abbrechen</Button>
-          <Button onClick={handleCreate} disabled={saving} className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-            {saving ? "Wird erstellt..." : items.filter((i) => i.productName.trim()).length > 1
-              ? `${items.filter((i) => i.productName.trim()).length} Mietvorgänge erstellen`
-              : "Mietvorgang erstellen"}
+          <Button
+            onClick={handleCreate}
+            disabled={saving}
+            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          >
+            {saving ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
+                Wird erstellt...
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="h-4 w-4 mr-1.5" />
+                {validItemCount > 1
+                  ? `Mietvorgang mit ${validItemCount} Positionen buchen`
+                  : "Mietvorgang buchen"}
+              </>
+            )}
           </Button>
         </div>
       </DialogContent>
