@@ -23,11 +23,43 @@ const SLT_COMPANY = {
   bic: "SPKRDE33",
 };
 
+const DE_TIMEZONE = "Europe/Berlin";
+
+/** Get current date string in German timezone (YYYY-MM-DD) */
+function getGermanDateString(): string {
+  const now = new Date();
+  const year = now.toLocaleString("en-US", { timeZone: DE_TIMEZONE, year: "numeric" });
+  const month = now.toLocaleString("en-US", { timeZone: DE_TIMEZONE, month: "2-digit" });
+  const day = now.toLocaleString("en-US", { timeZone: DE_TIMEZONE, day: "2-digit" });
+  return `${year}-${month}-${day}`;
+}
+
+/** Get current datetime string in German timezone (dd.MM.yyyy, HH:mm Uhr) */
+function getGermanDateTimeString(): string {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("de-DE", {
+    timeZone: DE_TIMEZONE,
+    day: "2-digit", month: "2-digit", year: "numeric",
+  });
+  const timeStr = now.toLocaleTimeString("de-DE", {
+    timeZone: DE_TIMEZONE,
+    hour: "2-digit", minute: "2-digit",
+  });
+  return `${dateStr}, ${timeStr} Uhr`;
+}
+
+/** Format a YYYY-MM-DD date string to dd.MM.yyyy */
+function formatDateStr(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(year, month - 1, day);
+  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 interface DeliveryNoteRequest {
   offer_id: string;
-  signature_data: string; // base64 PNG – customer signature
-  staff_signature_data: string; // base64 PNG – SLT employee signature
-  staff_name: string; // name of SLT employee
+  signature_data: string;
+  staff_signature_data: string;
+  staff_name: string;
   notes?: string;
   known_defects?: string;
   additional_defects?: string;
@@ -65,7 +97,6 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Check admin role
     const { data: roleData } = await supabase
       .from("user_roles")
       .select("role")
@@ -90,7 +121,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    console.log("Generating delivery note for offer:", offer_id);
+    console.log("Generating delivery note (Übergabeprotokoll) for offer:", offer_id);
 
     const serviceClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -112,7 +143,6 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Fetch offer items
     const { data: offerItems, error: itemsError } = await serviceClient
       .from("b2b_offer_items")
       .select("*")
@@ -122,7 +152,6 @@ Deno.serve(async (req: Request) => {
       console.error("Error fetching offer items:", itemsError);
     }
 
-    // Fetch profile
     const { data: profile, error: profileError } = await serviceClient
       .from("b2b_profiles")
       .select("*")
@@ -137,7 +166,6 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Fetch reservation (if linked)
     let reservation: any = null;
     if (offer.reservation_id) {
       const { data: resData } = await serviceClient
@@ -148,7 +176,6 @@ Deno.serve(async (req: Request) => {
       reservation = resData;
     }
 
-    // Generate delivery note number
     const { data: noteNumber, error: numError } = await serviceClient
       .rpc("generate_delivery_note_number");
 
@@ -163,10 +190,14 @@ Deno.serve(async (req: Request) => {
     const deliveryNoteNumber = noteNumber as string;
     console.log("Delivery note number:", deliveryNoteNumber);
 
-    // Generate HTML
+    // Use German timezone for date
+    const germanDate = getGermanDateString();
+    const germanDateTime = getGermanDateTimeString();
+
     const html = generateDeliveryNoteHtml({
       deliveryNoteNumber,
-      date: new Date().toISOString().split("T")[0],
+      date: germanDate,
+      dateTime: germanDateTime,
       profile,
       items: offerItems || [],
       offerNumber: offer.offer_number,
@@ -180,8 +211,8 @@ Deno.serve(async (req: Request) => {
       agbAccepted: agb_accepted,
     });
 
-    // Upload HTML to storage
-    const fileName = `Lieferschein_SLTRental_${deliveryNoteNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
+    // File name updated to Übergabeprotokoll
+    const fileName = `Uebergabeprotokoll_SLTRental_${deliveryNoteNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
     const filePath = `delivery-notes/${profile.id}/${fileName}`;
 
     const htmlBytes = new TextEncoder().encode(html);
@@ -200,14 +231,12 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Get signed URL (1 year)
     const { data: signedUrlData } = await serviceClient.storage
       .from("b2b-invoices")
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    // Create delivery note record
     const now = new Date().toISOString();
     const { data: deliveryNote, error: dnError } = await serviceClient
       .from("b2b_delivery_notes")
@@ -238,7 +267,6 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Insert delivery note items
     if (offerItems && offerItems.length > 0) {
       const dnItems = offerItems.map((item: any) => ({
         delivery_note_id: deliveryNote.id,
@@ -265,11 +293,6 @@ Deno.serve(async (req: Request) => {
         const customerEmail = profile.billing_email || profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
-        const formatDate = (dateStr: string) => {
-          const d = new Date(dateStr + "T00:00:00");
-          return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-        };
-
         const itemsList = (offerItems || []).map((item: any) =>
           `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}</li>`
         ).join("");
@@ -282,14 +305,14 @@ Deno.serve(async (req: Request) => {
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:#00507d;padding:30px 40px;text-align:center;">
       <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">SLT-Rental</h1>
-      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihr Lieferschein</p>
+      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihr Übergabeprotokoll</p>
     </div>
     <div style="padding:35px 40px;">
       <p style="font-size:15px;color:#333;margin-bottom:20px;">
         Guten Tag ${escapeHtml(customerName)},
       </p>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
-        anbei erhalten Sie Ihren unterschriebenen Lieferschein <strong>${deliveryNoteNumber}</strong>
+        anbei erhalten Sie Ihr unterschriebenes Übergabeprotokoll <strong>${deliveryNoteNumber}</strong>
         ${offer.offer_number ? ` (zu Angebot ${offer.offer_number})` : ""}.
       </p>
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:20px;">
@@ -299,10 +322,10 @@ Deno.serve(async (req: Request) => {
         </ul>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
-        Den vollständigen Lieferschein mit Unterschrift finden Sie auch in Ihrem B2B-Portal.
+        Das vollständige Übergabeprotokoll mit Unterschrift finden Sie auch in Ihrem B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://slt-rent-genius.lovable.app/b2b/lieferscheine" 
+        <a href="https://slt-rent-genius.lovable.app/b2b/uebergabeprotokolle" 
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal →
         </a>
@@ -326,14 +349,14 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            subject: `Ihr Lieferschein ${deliveryNoteNumber} – SLT-Rental`,
+            subject: `Ihr Übergabeprotokoll ${deliveryNoteNumber} – SLT-Rental`,
             html: emailHtml,
           }),
         });
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Delivery note email sent to:", customerEmail);
+          console.log("Übergabeprotokoll email sent to:", customerEmail);
 
           await serviceClient
             .from("b2b_delivery_notes")
@@ -378,6 +401,7 @@ Deno.serve(async (req: Request) => {
 function generateDeliveryNoteHtml(data: {
   deliveryNoteNumber: string;
   date: string;
+  dateTime: string;
   profile: any;
   items: any[];
   offerNumber: string;
@@ -390,18 +414,6 @@ function generateDeliveryNoteHtml(data: {
   additionalDefects: string | null;
   agbAccepted: boolean;
 }): string {
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr + "T00:00:00");
-    return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-  };
-
-  const now = new Date();
-  const dateTimeStr = now.toLocaleDateString("de-DE", {
-    day: "2-digit", month: "2-digit", year: "numeric",
-  }) + ", " + now.toLocaleTimeString("de-DE", {
-    hour: "2-digit", minute: "2-digit",
-  }) + " Uhr";
-
   const itemRows = data.items
     .map(
       (item: any, i: number) => `
@@ -410,7 +422,7 @@ function generateDeliveryNoteHtml(data: {
       <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;">
         <strong>${escapeHtml(item.product_name)}</strong>
         ${item.description ? `<br><span style="color:#595959;font-size:12px;">${escapeHtml(item.description)}</span>` : ""}
-        ${item.rental_start ? `<br><span style="color:#595959;font-size:11px;">Zeitraum: ${formatDate(item.rental_start)}${item.rental_end ? " – " + formatDate(item.rental_end) : ""}</span>` : ""}
+        ${item.rental_start ? `<br><span style="color:#595959;font-size:11px;">Zeitraum: ${formatDateStr(item.rental_start)}${item.rental_end ? " – " + formatDateStr(item.rental_end) : ""}</span>` : ""}
       </td>
       <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:500;">${item.quantity}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">
@@ -425,7 +437,7 @@ function generateDeliveryNoteHtml(data: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lieferschein ${data.deliveryNoteNumber}</title>
+  <title>Übergabeprotokoll ${data.deliveryNoteNumber}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -451,7 +463,7 @@ function generateDeliveryNoteHtml(data: {
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
       </div>
       <div style="text-align:right;">
-        <p style="font-size:22px;font-weight:700;color:#393d46;">LIEFERSCHEIN</p>
+        <p style="font-size:22px;font-weight:700;color:#393d46;">ÜBERGABEPROTOKOLL</p>
         <p style="font-size:13px;color:#595959;margin-top:4px;">Nr. ${data.deliveryNoteNumber}</p>
       </div>
     </div>
@@ -472,7 +484,7 @@ function generateDeliveryNoteHtml(data: {
       </div>
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">
-          <tr><td style="color:#595959;padding-right:12px;">Datum:</td><td style="font-weight:500;">${formatDate(data.date)}</td></tr>
+          <tr><td style="color:#595959;padding-right:12px;">Datum:</td><td style="font-weight:500;">${formatDateStr(data.date)}</td></tr>
           <tr><td style="color:#595959;padding-right:12px;">Angebotsnr.:</td><td style="font-weight:500;">${data.offerNumber}</td></tr>
           <tr><td style="color:#595959;padding-right:12px;">Kundennr.:</td><td style="font-weight:500;">${data.profile.id.substring(0, 8).toUpperCase()}</td></tr>
           ${data.reservation ? `<tr><td style="color:#595959;padding-right:12px;">Standort:</td><td style="font-weight:500;text-transform:capitalize;">${data.reservation.location}</td></tr>` : ""}
@@ -538,7 +550,7 @@ function generateDeliveryNoteHtml(data: {
            der ${SLT_COMPANY.name} (Marke: ${SLT_COMPANY.brand}), einsehbar unter 
            <a href="https://slt-rent-genius.lovable.app/agb" style="color:#00507d;">www.slt-rental.de/agb</a>, 
            vor Vertragsschluss zur Kenntnis genommen und deren Geltung ausdrücklich anerkannt zu haben. 
-           Die AGB wurden am <strong>${dateTimeStr}</strong> akzeptiert.` 
+           Die AGB wurden am <strong>${data.dateTime}</strong> akzeptiert.` 
         : `Die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name} sind Vertragsbestandteil. 
            Der Mieter bestätigt, diese vor Vertragsschluss zur Kenntnis genommen zu haben.`}<br><br>
       <strong>4. Haftung & Sorgfaltspflicht</strong><br>
@@ -558,7 +570,7 @@ function generateDeliveryNoteHtml(data: {
           <img src="${data.staffSignatureData}" alt="Unterschrift SLT-Mitarbeiter" style="max-height:90px;max-width:100%;" />
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">${dateTimeStr} · ${escapeHtml(data.staffName)}</p>
+        <p style="font-size:11px;color:#595959;">${data.dateTime} · ${escapeHtml(data.staffName)}</p>
         <p style="font-size:10px;color:#999;">Bevollmächtigter Mitarbeiter, ${SLT_COMPANY.name}</p>
       </div>
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
@@ -567,14 +579,14 @@ function generateDeliveryNoteHtml(data: {
           <img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">${dateTimeStr} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
+        <p style="font-size:11px;color:#595959;">${data.dateTime} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
         <p style="font-size:10px;color:#999;">Vertretungsberechtigte Person, ${escapeHtml(data.profile.company_name)}</p>
       </div>
     </div>
 
     <!-- Legal notice -->
     <div style="background:#fefce8;border:1px solid #fbbf24;border-radius:4px;padding:10px 14px;margin-bottom:8mm;font-size:10px;color:#92400e;line-height:1.5;">
-      <strong>Hinweis gem. § 309 Nr. 12 BGB:</strong> Dieser Lieferschein dient als Nachweis der Übergabe der Mietgegenstände. 
+      <strong>Hinweis gem. § 309 Nr. 12 BGB:</strong> Dieses Übergabeprotokoll dient als Nachweis der Übergabe der Mietgegenstände. 
       Beide Parteien erhalten eine Ausfertigung. Dieses Dokument wurde elektronisch erstellt und ist ohne handschriftliche 
       Unterschrift im Original gültig, sofern die digitale Signatur korrekt erfasst wurde (vgl. § 126a BGB, elektronische Form).
     </div>
