@@ -8,18 +8,20 @@ import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX } from "lucide
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
-interface DeliveryNote {
+interface ReturnProtocol {
   id: string;
-  delivery_note_number: string;
-  offer_id: string | null;
+  return_protocol_number: string;
+  reservation_id: string | null;
   b2b_profile_id: string;
   status: string;
+  overall_condition: string;
+  cleaning_required: boolean;
+  all_items_returned: boolean;
   signed_at: string | null;
-  agb_accepted: boolean;
-  agb_accepted_at: string | null;
   email_sent: boolean;
   file_url: string | null;
   notes: string | null;
+  staff_name: string | null;
   created_at: string;
 }
 
@@ -35,26 +37,39 @@ interface Props {
   onRefresh: () => void;
 }
 
-export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
-  const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
+export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
+  const [protocols, setProtocols] = useState<ReturnProtocol[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchDeliveryNotes = async () => {
+  const fetchProtocols = async () => {
     setLoading(true);
     const { data } = await supabase
-      .from("b2b_delivery_notes")
+      .from("b2b_return_protocols")
       .select("*")
       .order("created_at", { ascending: false });
-    if (data) setDeliveryNotes(data as DeliveryNote[]);
+    if (data) setProtocols(data as ReturnProtocol[]);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchDeliveryNotes();
+    fetchProtocols();
   }, []);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy, HH:mm", { locale: de });
   const getProfile = (id: string) => profiles.find((p) => p.id === id);
+
+  const conditionBadge = (condition: string) => {
+    switch (condition) {
+      case "good":
+        return <Badge className="bg-green-100 text-green-800 border-green-300">Gut</Badge>;
+      case "minor_damage":
+        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">Leichte Mängel</Badge>;
+      case "major_damage":
+        return <Badge className="bg-red-100 text-red-800 border-red-300">Erhebliche Schäden</Badge>;
+      default:
+        return <Badge variant="outline">{condition}</Badge>;
+    }
+  };
 
   const statusBadge = (status: string) => {
     switch (status) {
@@ -80,37 +95,42 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <ClipboardCheck className="h-5 w-5" />
-          Übergabeprotokolle ({deliveryNotes.length})
+          Rückgabeprotokolle ({protocols.length})
         </CardTitle>
-        <Button variant="outline" size="sm" onClick={fetchDeliveryNotes}>
+        <Button variant="outline" size="sm" onClick={fetchProtocols}>
           <RefreshCw className="h-4 w-4 mr-1.5" />
           Aktualisieren
         </Button>
       </CardHeader>
       <CardContent>
-        {deliveryNotes.length === 0 ? (
+        {protocols.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">
-            Noch keine Übergabeprotokolle erstellt.
+            Noch keine Rückgabeprotokolle erstellt.
           </p>
         ) : (
           <div className="space-y-3">
-            {deliveryNotes.map((dn) => {
-              const profile = getProfile(dn.b2b_profile_id);
+            {protocols.map((rp) => {
+              const profile = getProfile(rp.b2b_profile_id);
               return (
-                <Card key={dn.id} className="border">
+                <Card key={rp.id} className="border">
                   <CardContent className="p-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-sm">{dn.delivery_note_number}</span>
-                          {statusBadge(dn.status)}
-                          {dn.agb_accepted && (
-                            <Badge variant="outline" className="text-primary border-primary text-xs">
-                              <ShieldCheck className="h-3 w-3 mr-1" />
-                              AGB akzeptiert
+                          <span className="font-semibold text-sm">{rp.return_protocol_number}</span>
+                          {statusBadge(rp.status)}
+                          {conditionBadge(rp.overall_condition)}
+                          {!rp.all_items_returned && (
+                            <Badge variant="outline" className="text-red-600 border-red-300 text-xs">
+                              Fehlende Teile
                             </Badge>
                           )}
-                          {dn.email_sent ? (
+                          {rp.cleaning_required && (
+                            <Badge variant="outline" className="text-amber-600 border-amber-300 text-xs">
+                              Reinigung nötig
+                            </Badge>
+                          )}
+                          {rp.email_sent ? (
                             <Badge variant="outline" className="text-green-700 border-green-300 text-xs">
                               <Mail className="h-3 w-3 mr-1" />
                               Versendet
@@ -127,23 +147,28 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                             {profile.company_name} · {profile.contact_first_name} {profile.contact_last_name}
                           </p>
                         )}
-                        {dn.signed_at && (
+                        {rp.staff_name && (
                           <p className="text-xs text-muted-foreground">
-                            Unterschrieben: {formatDate(dn.signed_at)}
+                            Mitarbeiter: {rp.staff_name}
                           </p>
                         )}
-                        {dn.notes && (
+                        {rp.signed_at && (
+                          <p className="text-xs text-muted-foreground">
+                            Unterschrieben: {formatDate(rp.signed_at)}
+                          </p>
+                        )}
+                        {rp.notes && (
                           <p className="text-xs text-muted-foreground italic">
-                            {dn.notes}
+                            {rp.notes}
                           </p>
                         )}
                       </div>
                       <div className="flex gap-2">
-                        {dn.file_url && (
+                        {rp.file_url && (
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => openInvoiceInNewWindow(dn.file_url!)}
+                            onClick={() => openInvoiceInNewWindow(rp.file_url!)}
                           >
                             <Eye className="h-4 w-4 mr-1.5" />
                             Ansehen

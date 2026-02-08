@@ -54,7 +54,7 @@ export default function B2BDeliveryNotes() {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
 
   return (
-    <B2BPortalLayout title="Lieferscheine" subtitle={`${deliveryNotes.length} Lieferscheine`}>
+    <B2BPortalLayout title="Übergabeprotokolle" subtitle={`${deliveryNotes.length} Übergabeprotokolle`}>
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <Card>
@@ -100,9 +100,9 @@ export default function B2BDeliveryNotes() {
         <Card>
           <CardContent className="py-12 text-center">
             <ClipboardCheck className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
-            <h3 className="font-semibold text-lg mb-1">Keine Lieferscheine</h3>
+            <h3 className="font-semibold text-lg mb-1">Keine Übergabeprotokolle</h3>
             <p className="text-sm text-muted-foreground">
-              Du hast noch keine Lieferscheine erhalten.
+              Du hast noch keine Übergabeprotokolle erhalten.
             </p>
           </CardContent>
         </Card>
@@ -133,7 +133,7 @@ export default function B2BDeliveryNotes() {
                       onClick={() => openInvoiceInNewWindow(dn.file_url!, dn.delivery_note_number)}
                     >
                       <ExternalLink className="h-3.5 w-3.5 mr-1" />
-                      Lieferschein ansehen
+                      Übergabeprotokoll ansehen
                     </Button>
                   )}
                 </CardContent>
@@ -146,7 +146,7 @@ export default function B2BDeliveryNotes() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Lieferschein-Nr.</TableHead>
+                  <TableHead>Protokoll-Nr.</TableHead>
                   <TableHead>Datum</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-center">Ansehen</TableHead>
