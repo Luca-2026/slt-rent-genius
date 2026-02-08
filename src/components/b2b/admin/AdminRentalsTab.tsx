@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { CalendarPlus, ClipboardCheck, Eye, Package, Plus, Receipt, RefreshCw, Trash2 } from "lucide-react";
+import { CalendarPlus, Check, ClipboardCheck, Eye, Package, Plus, Receipt, RefreshCw, Trash2 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -79,7 +80,9 @@ export function AdminRentalsTab({
   hasReturnProtocol,
   onRefresh,
 }: Props) {
+  const { toast } = useToast();
   const [deleteConfirmRes, setDeleteConfirmRes] = useState<Reservation | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [deliveryNotes, setDeliveryNotes] = useState<DocumentInfo[]>([]);
   const [returnProtocols, setReturnProtocols] = useState<DocumentInfo[]>([]);
 
@@ -114,14 +117,30 @@ export function AdminRentalsTab({
   today.setHours(0, 0, 0, 0);
 
   const isActive = (res: Reservation) => {
+    if (res.status === "pending") return true;
     if (!res.end_date) return true;
     const endDate = new Date(res.end_date + "T23:59:59");
     return endDate >= today;
   };
 
+  const handleConfirm = async (resId: string) => {
+    setConfirmingId(resId);
+    const { error } = await supabase
+      .from("b2b_reservations")
+      .update({ status: "confirmed" })
+      .eq("id", resId);
+
+    if (error) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Bestätigt", description: "Mietvorgang wurde manuell bestätigt." });
+      onRefresh();
+    }
+    setConfirmingId(null);
+  };
+
   const getDocsForReservation = (resId: string) => {
     const inv = invoices.find((i) => i.reservation_id === resId);
-    // Find delivery note: by reservation_id directly, OR by offer_id that links to this reservation
     const offerIdsForRes = offers
       .filter((o) => o.reservation_id === resId)
       .map((o) => o.id);
@@ -132,12 +151,34 @@ export function AdminRentalsTab({
     return { invoice: inv, deliveryNote: dn, returnProtocol: rp };
   };
 
+  const getStatusBadge = (res: Reservation) => {
+    if (res.status === "pending") {
+      return (
+        <Badge variant="outline" className="border-amber-500 text-amber-700 bg-amber-50">
+          Offen
+        </Badge>
+      );
+    }
+    if (res.status === "completed") {
+      return <Badge variant="secondary">Beendet</Badge>;
+    }
+    const active = isActive(res);
+    if (active) {
+      return (
+        <Badge className="bg-primary/10 text-primary border-primary/20">
+          Aktiv
+        </Badge>
+      );
+    }
+    return <Badge variant="secondary">Beendet</Badge>;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Alle Mietvorgänge</h2>
-          <p className="text-sm text-muted-foreground">Bestätigte Mietvorgänge verwalten und verlängern</p>
+          <p className="text-sm text-muted-foreground">Mietvorgänge verwalten, bestätigen und verlängern</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -159,7 +200,7 @@ export function AdminRentalsTab({
           <CardContent className="py-16 text-center">
             <Package className="h-10 w-10 mx-auto text-muted-foreground/30 mb-3" />
             <p className="font-medium text-foreground">Noch keine Mietvorgänge</p>
-            <p className="text-sm text-muted-foreground mt-1">Mietvorgänge erscheinen hier, sobald ein Angebot bestätigt wurde.</p>
+            <p className="text-sm text-muted-foreground mt-1">Mietvorgänge erscheinen hier, sobald sie angelegt oder ein Angebot bestätigt wurde.</p>
           </CardContent>
         </Card>
       ) : (
@@ -172,7 +213,7 @@ export function AdminRentalsTab({
                   <TableHead>Kunde</TableHead>
                   <TableHead>Standort</TableHead>
                   <TableHead>Zeitraum</TableHead>
-                  <TableHead>Mietstatus</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead>Dokumente</TableHead>
                   <TableHead className="text-right">Preis</TableHead>
                   <TableHead className="text-right">Aktionen</TableHead>
@@ -181,13 +222,14 @@ export function AdminRentalsTab({
               <TableBody>
                 {reservations.map((res) => {
                   const profile = profiles.find((p) => p.id === res.b2b_profile_id);
-                  const active = isActive(res);
                   const invoiced = hasInvoice(res.id);
                   const returned = hasReturnProtocol(res.id);
                   const docs = getDocsForReservation(res.id);
+                  const isPending = res.status === "pending";
+                  const active = isActive(res);
 
                   return (
-                    <TableRow key={res.id}>
+                    <TableRow key={res.id} className={isPending ? "bg-amber-50/30" : undefined}>
                       <TableCell>
                         <p className="font-medium text-sm">{res.product_name || res.product_id}</p>
                         <p className="text-xs text-muted-foreground">Menge: {res.quantity}</p>
@@ -198,17 +240,7 @@ export function AdminRentalsTab({
                         {formatDate(res.start_date)}
                         {res.end_date ? ` – ${formatDate(res.end_date)}` : ""}
                       </TableCell>
-                      <TableCell>
-                        {active ? (
-                          <Badge className="bg-primary/10 text-primary border-primary/20">
-                            Aktiv
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">
-                            Beendet
-                          </Badge>
-                        )}
-                      </TableCell>
+                      <TableCell>{getStatusBadge(res)}</TableCell>
                       <TableCell>
                         <div className="flex flex-col gap-1">
                           {docs.deliveryNote?.file_url && (
@@ -258,7 +290,20 @@ export function AdminRentalsTab({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
-                          {!returned && active && (
+                          {isPending && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleConfirm(res.id)}
+                              disabled={confirmingId === res.id}
+                              className="text-green-700 border-green-300 hover:bg-green-50"
+                              title="Mietvorgang manuell bestätigen"
+                            >
+                              <Check className="h-3.5 w-3.5 mr-1" />
+                              <span className="text-xs">Bestätigen</span>
+                            </Button>
+                          )}
+                          {!returned && active && !isPending && (
                             <Button
                               size="sm"
                               variant="ghost"
@@ -270,7 +315,7 @@ export function AdminRentalsTab({
                               <span className="hidden sm:inline text-xs">Rückgabe</span>
                             </Button>
                           )}
-                          {!invoiced && (
+                          {!invoiced && !isPending && (
                             <Button
                               size="sm"
                               variant="ghost"
@@ -282,14 +327,16 @@ export function AdminRentalsTab({
                               <span className="hidden sm:inline text-xs">Rechnung</span>
                             </Button>
                           )}
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => onExtendReservation(res)}
-                          >
-                            <CalendarPlus className="h-3.5 w-3.5 mr-1" />
-                            Verlängern
-                          </Button>
+                          {!isPending && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => onExtendReservation(res)}
+                            >
+                              <CalendarPlus className="h-3.5 w-3.5 mr-1" />
+                              Verlängern
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="ghost"
