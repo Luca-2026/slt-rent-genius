@@ -646,6 +646,7 @@ export type Database = {
           product_id: string
           product_name: string | null
           quantity: number
+          rental_group_id: string | null
           start_date: string
           start_time: string | null
           status: string
@@ -668,6 +669,7 @@ export type Database = {
           product_id: string
           product_name?: string | null
           quantity?: number
+          rental_group_id?: string | null
           start_date: string
           start_time?: string | null
           status?: string
@@ -690,6 +692,7 @@ export type Database = {
           product_id?: string
           product_name?: string | null
           quantity?: number
+          rental_group_id?: string | null
           start_date?: string
           start_time?: string | null
           status?: string

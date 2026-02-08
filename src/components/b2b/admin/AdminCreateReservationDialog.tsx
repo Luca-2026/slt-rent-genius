@@ -202,7 +202,8 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       const endDateStr = endDate?.toISOString().split("T")[0] || null;
       const depositValue = deposit && deposit !== "none" ? Number(deposit) : null;
 
-      // 1. Create all reservation rows with status "confirmed"
+      // 1. Create all reservation rows with status "confirmed" and shared rental_group_id
+      const rentalGroupId = `RG-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       const reservationsToInsert = validItems.map((item) => ({
         b2b_profile_id: selectedProfileId,
         user_id: profileData.user_id,
@@ -223,6 +224,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
         additional_services: servicesArray,
         status: "confirmed" as const,
         notes: fullNotes,
+        rental_group_id: validItems.length > 1 ? rentalGroupId : null,
       }));
 
       const { data: createdReservations, error: insertError } = await supabase

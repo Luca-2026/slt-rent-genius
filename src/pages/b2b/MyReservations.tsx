@@ -41,6 +41,7 @@ interface Reservation {
   original_price: number | null;
   discounted_price: number | null;
   created_at: string;
+  rental_group_id?: string | null;
 }
 
 interface Offer {
@@ -79,34 +80,55 @@ const locationLabels: Record<string, string> = {
 };
 
 /**
- * Group reservations created within 10 seconds of each other at the same location
- * as a single "Mietvorgang" (batch request).
+ * Group reservations by rental_group_id when available,
+ * falling back to timestamp-based grouping for legacy data.
  */
 function groupReservations(reservations: Reservation[]): ReservationGroup[] {
   if (reservations.length === 0) return [];
 
-  const sorted = [...reservations].sort(
-    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-  );
+  const grouped = new Map<string, Reservation[]>();
+  const ungrouped: Reservation[] = [];
 
-  const groups: ReservationGroup[] = [];
-  let currentGroup: Reservation[] = [sorted[0]];
-
-  for (let i = 1; i < sorted.length; i++) {
-    const prev = currentGroup[currentGroup.length - 1];
-    const curr = sorted[i];
-    const timeDiff = Math.abs(
-      new Date(curr.created_at).getTime() - new Date(prev.created_at).getTime()
-    );
-
-    if (timeDiff <= 10000 && curr.location === prev.location) {
-      currentGroup.push(curr);
+  for (const res of reservations) {
+    if (res.rental_group_id) {
+      const existing = grouped.get(res.rental_group_id) || [];
+      existing.push(res);
+      grouped.set(res.rental_group_id, existing);
     } else {
-      groups.push(buildGroup(currentGroup));
-      currentGroup = [curr];
+      ungrouped.push(res);
     }
   }
-  groups.push(buildGroup(currentGroup));
+
+  const groups: ReservationGroup[] = [];
+
+  // Groups with explicit rental_group_id
+  for (const [, items] of grouped) {
+    groups.push(buildGroup(items));
+  }
+
+  // Legacy: timestamp-based grouping for ungrouped items
+  if (ungrouped.length > 0) {
+    const sorted = [...ungrouped].sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+    let currentGroup: Reservation[] = [sorted[0]];
+
+    for (let i = 1; i < sorted.length; i++) {
+      const prev = currentGroup[currentGroup.length - 1];
+      const curr = sorted[i];
+      const timeDiff = Math.abs(
+        new Date(curr.created_at).getTime() - new Date(prev.created_at).getTime()
+      );
+
+      if (timeDiff <= 10000 && curr.location === prev.location) {
+        currentGroup.push(curr);
+      } else {
+        groups.push(buildGroup(currentGroup));
+        currentGroup = [curr];
+      }
+    }
+    groups.push(buildGroup(currentGroup));
+  }
 
   // Sort groups by newest first
   return groups.sort(

@@ -176,6 +176,10 @@ export function B2BMultiReservationDialog({
           }))
         : null;
 
+      const rentalGroupId = selectedProducts.length > 1
+        ? `RG-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+        : null;
+
       const reservations = selectedProducts.map((sp) => {
         const dates = getEffectiveDates(sp.product.id);
 
@@ -213,6 +217,7 @@ export function B2BMultiReservationDialog({
           additional_services: servicesArray,
           notes: fullNotes,
           status: "pending",
+          rental_group_id: rentalGroupId,
         };
       });
 
