@@ -237,8 +237,32 @@ export default function AdminDashboard() {
           is_proforma: proformaMode,
         };
       } else {
-        // Direct invoice without offer — also attach image
-        invoiceBody.image_url = getProductImageUrl(reservation.product_id) || getProductImageUrlByName(reservation.product_name || reservation.product_id) || undefined;
+        // Direct invoice without offer — build custom_items for grouped rentals
+        let targetReservations = [reservation];
+        if (reservation.rental_group_id) {
+          targetReservations = reservations.filter(
+            (r) => r.rental_group_id === reservation.rental_group_id
+          );
+        }
+
+        invoiceBody.custom_items = targetReservations.map((r) => {
+          const unitPrice = r.original_price || 0;
+          const discountPercent = r.discounted_price != null && r.original_price && r.original_price > 0
+            ? Math.round((1 - r.discounted_price / r.original_price) * 100)
+            : 0;
+          return {
+            product_name: r.product_name || r.product_id,
+            description: r.end_date
+              ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}`
+              : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}`,
+            quantity: r.quantity || 1,
+            unit_price: unitPrice,
+            discount_percent: discountPercent,
+            rental_start: r.start_date,
+            rental_end: r.end_date,
+            image_url: getProductImageUrl(r.product_id) || getProductImageUrlByName(r.product_name || r.product_id) || undefined,
+          };
+        });
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
