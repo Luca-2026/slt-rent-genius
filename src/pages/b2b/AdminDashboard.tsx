@@ -98,6 +98,7 @@ interface Reservation {
   b2b_profile_id: string;
   notes: string | null;
   created_at: string;
+  rental_group_id?: string | null;
 }
 
 // ─── Component ────────────────────────────────────────────
@@ -337,22 +338,32 @@ export default function AdminDashboard() {
   const handleConfirmAndCreateOffer = async (reservation: Reservation): Promise<void> => {
     setConfirmingId(reservation.id);
     try {
-      // Find all related reservations from the same batch
-      // (same customer, same location, created within 10 seconds)
-      const createdAt = new Date(reservation.created_at);
-      const batchStart = new Date(createdAt.getTime() - 10_000).toISOString();
-      const batchEnd = new Date(createdAt.getTime() + 10_000).toISOString();
+      // Find all related reservations: prefer rental_group_id, fallback to timestamp-based grouping
+      let targetReservations: Reservation[];
 
-      const batchReservations = reservations.filter((r) =>
-        r.b2b_profile_id === reservation.b2b_profile_id &&
-        r.location === reservation.location &&
-        r.status === "pending" &&
-        r.created_at >= batchStart &&
-        r.created_at <= batchEnd
-      );
+      if (reservation.rental_group_id) {
+        targetReservations = reservations.filter((r) =>
+          r.rental_group_id === reservation.rental_group_id &&
+          r.status === "pending"
+        );
+      } else {
+        // Legacy: timestamp-based grouping for old data without rental_group_id
+        const createdAt = new Date(reservation.created_at);
+        const batchStart = new Date(createdAt.getTime() - 10_000).toISOString();
+        const batchEnd = new Date(createdAt.getTime() + 10_000).toISOString();
+
+        targetReservations = reservations.filter((r) =>
+          r.b2b_profile_id === reservation.b2b_profile_id &&
+          r.location === reservation.location &&
+          r.status === "pending" &&
+          !r.rental_group_id &&
+          r.created_at >= batchStart &&
+          r.created_at <= batchEnd
+        );
+      }
 
       // If no batch found, just use the single reservation
-      const targetReservations = batchReservations.length > 0 ? batchReservations : [reservation];
+      if (targetReservations.length === 0) targetReservations = [reservation];
       const targetIds = targetReservations.map((r) => r.id);
 
       // 1. Confirm all reservations in the batch
