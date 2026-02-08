@@ -334,6 +334,76 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleConfirmAndCreateOffer = async (reservation: Reservation) => {
+    setConfirmingId(reservation.id);
+    try {
+      // 1. Confirm the reservation
+      const { error: confirmError } = await supabase
+        .from("b2b_reservations")
+        .update({ status: "confirmed" })
+        .eq("id", reservation.id);
+
+      if (confirmError) throw confirmError;
+
+      // 2. Auto-create an offer from the reservation data
+      const price = reservation.original_price || 0;
+      const resData = reservation as any;
+      const deposit = resData.deposit ? Number(resData.deposit) : undefined;
+      const additionalServices = resData.additional_services;
+
+      const servicesArray = additionalServices && Array.isArray(additionalServices)
+        ? additionalServices.map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+          }))
+        : undefined;
+
+      const startDate = reservation.start_date;
+      const endDate = reservation.end_date;
+
+      const { data, error: offerError } = await supabase.functions.invoke("generate-offer", {
+        body: {
+          reservation_id: reservation.id,
+          items: [{
+            product_name: reservation.product_name || reservation.product_id,
+            description: endDate
+              ? `Mietzeitraum: ${format(new Date(startDate), "dd.MM.yyyy", { locale: de })} – ${format(new Date(endDate), "dd.MM.yyyy", { locale: de })}`
+              : `Ab: ${format(new Date(startDate), "dd.MM.yyyy", { locale: de })}`,
+            quantity: reservation.quantity || 1,
+            unit_price: price,
+            rental_start: startDate,
+            rental_end: endDate,
+            image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(reservation.product_name || reservation.product_id) || undefined,
+          }],
+          delivery_cost: 0,
+          valid_days: 14,
+          notes: reservation.notes || undefined,
+          send_email: false,
+          save_prices: false,
+          deposit,
+          additional_services: servicesArray,
+        },
+      });
+
+      if (offerError) throw offerError;
+
+      toast({
+        title: "Bestätigt & Angebot erstellt",
+        description: `Mietvorgang bestätigt. Angebot ${data.offer?.offer_number || ""} wurde automatisch erstellt.`,
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Bestätigung fehlgeschlagen.",
+        variant: "destructive",
+      });
+    } finally {
+      setConfirmingId(null);
+    }
+  };
+
   const handleEditOffer = (offer: Offer, items: OfferItem[]) => {
     const matchingReservation = offer.reservation_id
       ? reservations.find((r) => r.id === offer.reservation_id) || null
@@ -500,7 +570,6 @@ export default function AdminDashboard() {
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
-            onCreateReservation={() => setCreateReservationOpen(true)}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
               setEditingOffer(null);
@@ -528,7 +597,6 @@ export default function AdminDashboard() {
               setInvoiceDialogOpen(true);
             }}
             onCreateDeliveryNote={(res) => {
-              // Find offer linked to this reservation to open delivery note dialog
               const offer = offers.find((o) => o.reservation_id === res.id);
               if (offer) {
                 setDeliveryNoteOffer(offer);
@@ -545,6 +613,8 @@ export default function AdminDashboard() {
               setReturnProtocolReservation(res);
               setReturnProtocolOpen(true);
             }}
+            onConfirmReservation={handleConfirmAndCreateOffer}
+            confirmingId={confirmingId}
             hasInvoice={(resId) => invoices.some((inv) => inv.reservation_id === resId)}
             hasReturnProtocol={(resId) => returnProtocolIds.has(resId)}
             onDelete={deleteReservation}
