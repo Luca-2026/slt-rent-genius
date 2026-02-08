@@ -292,6 +292,13 @@ export default function AdminDashboard() {
 
   const deleteReservation = async (reservationId: string) => {
     try {
+      // Remove FK references in related tables before deleting
+      await Promise.all([
+        supabase.from("b2b_return_protocols").update({ reservation_id: null } as any).eq("reservation_id", reservationId),
+        supabase.from("b2b_delivery_notes").update({ reservation_id: null } as any).eq("reservation_id", reservationId),
+        supabase.from("b2b_offers").update({ reservation_id: null } as any).eq("reservation_id", reservationId),
+        supabase.from("b2b_invoices").update({ reservation_id: null } as any).eq("reservation_id", reservationId),
+      ]);
       const { error } = await supabase.from("b2b_reservations").delete().eq("id", reservationId);
       if (error) throw error;
       toast({ title: "Mietvorgang gelöscht" });
