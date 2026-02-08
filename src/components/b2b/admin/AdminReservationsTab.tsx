@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Plus, RefreshCw, FileText, Send } from "lucide-react";
+import { CheckCircle2, Clock, RefreshCw, FileText, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -30,7 +30,6 @@ interface B2BProfile {
 interface Props {
   reservations: Reservation[];
   profiles: B2BProfile[];
-  onCreateReservation: () => void;
   onCreateOffer: (reservation: Reservation) => void;
   onRefresh: () => void;
 }
@@ -38,7 +37,6 @@ interface Props {
 export function AdminReservationsTab({
   reservations,
   profiles,
-  onCreateReservation,
   onCreateOffer,
   onRefresh,
 }: Props) {
@@ -54,14 +52,6 @@ export function AdminReservationsTab({
           <p className="text-sm text-muted-foreground">Anfragen bearbeiten und Angebote erstellen</p>
         </div>
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            onClick={onCreateReservation}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-          >
-            <Plus className="h-3.5 w-3.5 mr-1" />
-            Mietvorgang anlegen
-          </Button>
           <Button variant="outline" size="sm" onClick={onRefresh}>
             <RefreshCw className="h-3.5 w-3.5" />
           </Button>

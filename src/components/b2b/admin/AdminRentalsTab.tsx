@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
-import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -61,6 +60,8 @@ interface Props {
   onGenerateInvoice: (reservation: Reservation) => void;
   onCreateDeliveryNote: (reservation: Reservation) => void;
   onCreateReturnProtocol: (reservation: Reservation) => void;
+  onConfirmReservation: (reservation: Reservation) => void;
+  confirmingId: string | null;
   onDelete: (reservationId: string) => void;
   hasInvoice: (reservationId: string) => boolean;
   hasReturnProtocol: (reservationId: string) => boolean;
@@ -77,14 +78,14 @@ export function AdminRentalsTab({
   onGenerateInvoice,
   onCreateDeliveryNote,
   onCreateReturnProtocol,
+  onConfirmReservation,
+  confirmingId,
   onDelete,
   hasInvoice,
   hasReturnProtocol,
   onRefresh,
 }: Props) {
-  const { toast } = useToast();
   const [deleteConfirmRes, setDeleteConfirmRes] = useState<Reservation | null>(null);
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [deliveryNotes, setDeliveryNotes] = useState<DocumentInfo[]>([]);
   const [returnProtocols, setReturnProtocols] = useState<DocumentInfo[]>([]);
 
@@ -125,21 +126,7 @@ export function AdminRentalsTab({
     return endDate >= today;
   };
 
-  const handleConfirm = async (resId: string) => {
-    setConfirmingId(resId);
-    const { error } = await supabase
-      .from("b2b_reservations")
-      .update({ status: "confirmed" })
-      .eq("id", resId);
-
-    if (error) {
-      toast({ title: "Fehler", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Bestätigt", description: "Mietvorgang wurde manuell bestätigt." });
-      onRefresh();
-    }
-    setConfirmingId(null);
-  };
+  // Confirm is now handled by parent via onConfirmReservation
 
   const getDocsForReservation = (resId: string) => {
     const inv = invoices.find((i) => i.reservation_id === resId);
@@ -296,10 +283,10 @@ export function AdminRentalsTab({
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => handleConfirm(res.id)}
+                              onClick={() => onConfirmReservation(res)}
                               disabled={confirmingId === res.id}
                               className="text-green-700 border-green-300 hover:bg-green-50"
-                              title="Mietvorgang manuell bestätigen"
+                              title="Mietvorgang bestätigen & Angebot erstellen"
                             >
                               <Check className="h-3.5 w-3.5 mr-1" />
                               <span className="text-xs">Bestätigen</span>
