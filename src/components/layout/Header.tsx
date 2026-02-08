@@ -20,6 +20,7 @@ const navLinks = [
   { to: "/produkte", label: "Produkte" },
   { to: "/loesungen", label: "Lösungen" },
   { to: "/so-funktionierts", label: "So funktioniert's" },
+  { to: "/hilfe", label: "Hilfe & Anleitungen" },
   { to: "/standorte", label: "Standorte" },
   { to: "/ueber-uns", label: "Über uns" },
   { to: "/kontakt", label: "Kontakt" },
