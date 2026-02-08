@@ -11,12 +11,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   FileText, Send, Plus, Trash2, RefreshCw, Euro, Package,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
+import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory } from "@/data/additionalServices";
 
 interface Reservation {
   id: string;
@@ -31,6 +34,9 @@ interface Reservation {
   discounted_price: number | null;
   b2b_profile_id: string;
   notes: string | null;
+  category_slug?: string | null;
+  additional_services?: any;
+  deposit?: number | null;
 }
 
 interface B2BProfile {
@@ -55,6 +61,8 @@ export interface ExistingOffer {
   delivery_cost: number;
   notes: string | null;
   b2b_profile_id: string;
+  deposit?: number | null;
+  additional_services?: any;
 }
 
 export interface ExistingOfferItem {
@@ -91,13 +99,14 @@ export function AdminCreateOfferDialog({
   const [validDays, setValidDays] = useState(14);
   const [notes, setNotes] = useState("");
   const [sendEmail, setSendEmail] = useState(true);
+  const [deposit, setDeposit] = useState<string>("");
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
 
   const isEditing = !!existingOffer;
 
   useEffect(() => {
     if (open && profile) {
       if (existingOffer && existingItems && existingItems.length > 0) {
-        // Editing an existing offer — pre-fill with its items
         setItems(
           existingItems.map((item) => ({
             product_name: item.product_name,
@@ -109,8 +118,22 @@ export function AdminCreateOfferDialog({
         );
         setDeliveryCost(existingOffer.delivery_cost || 0);
         setNotes(existingOffer.notes || "");
+        setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
+        // Restore selected services from existing offer
+        if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
+          setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
+        } else {
+          setSelectedServices(new Set());
+        }
       } else if (reservation) {
         loadCustomerPrices();
+        // Pre-fill deposit and services from reservation
+        setDeposit(reservation.deposit ? String(reservation.deposit) : "");
+        if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
+          setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
+        } else {
+          setSelectedServices(new Set());
+        }
       }
     }
   }, [open, reservation, profile, existingOffer, existingItems]);
@@ -142,7 +165,6 @@ export function AdminCreateOfferDialog({
   };
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
-
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
@@ -164,6 +186,23 @@ export function AdminCreateOfferDialog({
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const toggleService = (serviceId: string) => {
+    setSelectedServices((prev) => {
+      const next = new Set(prev);
+      if (serviceId.startsWith("mbv-")) {
+        for (const id of next) {
+          if (id.startsWith("mbv-")) next.delete(id);
+        }
+      }
+      if (next.has(serviceId)) {
+        next.delete(serviceId);
+      } else {
+        next.add(serviceId);
+      }
+      return next;
+    });
+  };
+
   const calculateItemTotal = (item: OfferItemInput) => {
     const discounted = item.unit_price * (1 - item.discount_percent / 100);
     return Math.round(discounted * item.quantity * 100) / 100;
@@ -176,6 +215,8 @@ export function AdminCreateOfferDialog({
   const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
   const reservationId = existingOffer?.reservation_id || reservation?.id;
+  const categorySlug = (reservation as any)?.category_slug;
+  const relevantServices = getServicesForCategory(categorySlug);
 
   const handleCreate = async () => {
     if (!reservationId) return;
@@ -194,6 +235,14 @@ export function AdminCreateOfferDialog({
     try {
       const startDate = reservation?.start_date || undefined;
       const endDate = reservation?.end_date || undefined;
+
+      const servicesArray = selectedServices.size > 0
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+          }))
+        : undefined;
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
@@ -214,6 +263,8 @@ export function AdminCreateOfferDialog({
           notes: notes || undefined,
           send_email: sendEmail,
           save_prices: true,
+          deposit: deposit ? Number(deposit) : undefined,
+          additional_services: servicesArray,
         },
       });
 
@@ -385,7 +436,7 @@ export function AdminCreateOfferDialog({
         <Separator />
 
         {/* Additional options */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <div>
             <Label className="text-xs">Lieferkosten (€ netto)</Label>
             <Input
@@ -407,7 +458,41 @@ export function AdminCreateOfferDialog({
               className="h-8 text-sm"
             />
           </div>
+          <div>
+            <Label className="text-xs">Kaution (€)</Label>
+            <Select value={deposit} onValueChange={setDeposit}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="—" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Keine</SelectItem>
+                {DEPOSIT_OPTIONS.map((d) => (
+                  <SelectItem key={d} value={String(d)}>{d} €</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
+
+        {/* Additional Services */}
+        {relevantServices.length > 0 && (
+          <div>
+            <Label className="text-xs mb-2 block">Zusatzoptionen</Label>
+            <div className="space-y-1.5 rounded-md border p-3 bg-muted/30">
+              {relevantServices.map((service) => (
+                <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                  <Checkbox
+                    checked={selectedServices.has(service.id)}
+                    onCheckedChange={() => toggleService(service.id)}
+                    className="mt-0.5"
+                  />
+                  <div>
+                    <p className="text-xs font-medium">{service.name}</p>
+                    <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div>
           <Label className="text-xs">Anmerkungen</Label>
@@ -434,6 +519,12 @@ export function AdminCreateOfferDialog({
                 </span>
                 <span>{formatCurrency(vatAmount)}</span>
               </div>
+              {deposit && Number(deposit) > 0 && (
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Kaution:</span>
+                  <span>{formatCurrency(Number(deposit))}</span>
+                </div>
+              )}
               <Separator />
               <div className="flex justify-between font-bold text-base text-primary">
                 <span>Bruttobetrag:</span>

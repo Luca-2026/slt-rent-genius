@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
-import { CalendarDays, MapPin, Send, Package, Clock, X, ChevronDown, ChevronUp } from "lucide-react";
+import { CalendarDays, MapPin, Send, Package, X, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ADDITIONAL_SERVICES, getServicesForCategory, type AdditionalService } from "@/data/additionalServices";
 
 interface SelectedProduct {
   product: Product;
@@ -53,10 +54,29 @@ export function B2BMultiReservationDialog({
   const [endTime, setEndTime] = useState("");
   const [notes, setNotes] = useState("");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
 
   // Per-item date overrides
   const [itemOverrides, setItemOverrides] = useState<Record<string, ItemDateOverride>>({});
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  // Determine relevant additional services based on all selected product categories
+  const relevantServices = useMemo(() => {
+    const categorySlugs = new Set(selectedProducts.map((sp) => sp.categorySlug));
+    const allServices = new Map<string, AdditionalService>();
+
+    for (const slug of categorySlugs) {
+      for (const service of getServicesForCategory(slug)) {
+        allServices.set(service.id, service);
+      }
+    }
+
+    // Always include "kostenfreie-stornierung" 
+    const storno = ADDITIONAL_SERVICES.find((s) => s.id === "kostenfreie-stornierung");
+    if (storno) allServices.set(storno.id, storno);
+
+    return Array.from(allServices.values());
+  }, [selectedProducts]);
 
   if (selectedProducts.length === 0) return null;
 
@@ -66,12 +86,28 @@ export function B2BMultiReservationDialog({
     setQuantities((prev) => ({ ...prev, [productId]: Math.max(1, qty) }));
   };
 
+  const toggleService = (serviceId: string) => {
+    setSelectedServices((prev) => {
+      const next = new Set(prev);
+      if (serviceId.startsWith("mbv-")) {
+        for (const id of next) {
+          if (id.startsWith("mbv-")) next.delete(id);
+        }
+      }
+      if (next.has(serviceId)) {
+        next.delete(serviceId);
+      } else {
+        next.add(serviceId);
+      }
+      return next;
+    });
+  };
+
   const toggleItemExpanded = (productId: string) => {
     setExpandedItems((prev) => {
       const next = new Set(prev);
       if (next.has(productId)) {
         next.delete(productId);
-        // Clear override when collapsing
         setItemOverrides((o) => {
           const copy = { ...o };
           delete copy[productId];
@@ -79,7 +115,6 @@ export function B2BMultiReservationDialog({
         });
       } else {
         next.add(productId);
-        // Pre-fill with main dates
         setItemOverrides((o) => ({
           ...o,
           [productId]: {
@@ -133,10 +168,17 @@ export function B2BMultiReservationDialog({
       const batchId = `BATCH-${Date.now()}`;
       const batchNote = `Sammelanfrage ${batchId} (${selectedProducts.length} Artikel)`;
 
+      const servicesArray = selectedServices.size > 0
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+          }))
+        : null;
+
       const reservations = selectedProducts.map((sp) => {
         const dates = getEffectiveDates(sp.product.id);
 
-        // Build per-item time notes
         const timeInfo = [
           dates.startTime ? `Abholung: ${dates.startTime} Uhr` : "",
           dates.endTime ? `Rückgabe: ${dates.endTime} Uhr` : "",
@@ -144,7 +186,6 @@ export function B2BMultiReservationDialog({
           .filter(Boolean)
           .join(" · ");
 
-        // Build main time info only if no per-item override
         const mainTimeInfo = !dates.hasOverride
           ? [
               startTime ? `Abholung: ${startTime} Uhr` : "",
@@ -166,7 +207,10 @@ export function B2BMultiReservationDialog({
           location: locationId,
           start_date: dates.startDate,
           end_date: dates.endDate || null,
+          start_time: dates.startTime || startTime || null,
+          end_time: dates.endTime || endTime || null,
           quantity: getQuantity(sp.product.id),
+          additional_services: servicesArray,
           notes: fullNotes,
           status: "pending",
         };
@@ -193,6 +237,7 @@ export function B2BMultiReservationDialog({
       setQuantities({});
       setItemOverrides({});
       setExpandedItems(new Set());
+      setSelectedServices(new Set());
     } catch (error: any) {
       toast({
         title: "Fehler beim Senden",
@@ -283,7 +328,7 @@ export function B2BMultiReservationDialog({
             </div>
           </div>
 
-          {/* Selected products list with optional per-item dates */}
+          {/* Selected products list */}
           <div>
             <label className="block text-sm font-medium text-headline mb-2">
               Ausgewählte Artikel
@@ -302,7 +347,6 @@ export function B2BMultiReservationDialog({
                       isExpanded ? "border-accent/40 bg-accent/5" : "border-border bg-muted/50"
                     )}
                   >
-                    {/* Product row */}
                     <div className="flex items-center gap-3 p-2.5">
                       <img
                         src={sp.product.image || "/placeholder.svg"}
@@ -357,7 +401,6 @@ export function B2BMultiReservationDialog({
                       </div>
                     </div>
 
-                    {/* Per-item date override */}
                     {isExpanded && (
                       <div className="px-3 pb-3 pt-1 border-t border-border/50">
                         <p className="text-xs text-muted-foreground mb-2">
@@ -410,6 +453,30 @@ export function B2BMultiReservationDialog({
               })}
             </div>
           </div>
+
+          {/* Additional Services (suggested based on categories) */}
+          {relevantServices.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-headline mb-2">
+                Zusatzoptionen
+              </label>
+              <div className="space-y-2 rounded-lg border p-3 bg-muted/30">
+                {relevantServices.map((service) => (
+                  <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={selectedServices.has(service.id)}
+                      onCheckedChange={() => toggleService(service.id)}
+                      className="mt-0.5"
+                    />
+                    <div>
+                      <p className="text-sm font-medium">{service.name}</p>
+                      <p className="text-xs text-muted-foreground">{service.description}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Notes */}
           <div>

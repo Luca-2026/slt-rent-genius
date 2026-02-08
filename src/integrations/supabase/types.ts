@@ -430,9 +430,11 @@ export type Database = {
       }
       b2b_offers: {
         Row: {
+          additional_services: Json | null
           b2b_profile_id: string
           created_at: string
           delivery_cost: number
+          deposit: number | null
           email_sent: boolean
           email_sent_at: string | null
           file_name: string | null
@@ -452,9 +454,11 @@ export type Database = {
           vat_rate: number
         }
         Insert: {
+          additional_services?: Json | null
           b2b_profile_id: string
           created_at?: string
           delivery_cost?: number
+          deposit?: number | null
           email_sent?: boolean
           email_sent_at?: string | null
           file_name?: string | null
@@ -474,9 +478,11 @@ export type Database = {
           vat_rate?: number
         }
         Update: {
+          additional_services?: Json | null
           b2b_profile_id?: string
           created_at?: string
           delivery_cost?: number
+          deposit?: number | null
           email_sent?: boolean
           email_sent_at?: string | null
           file_name?: string | null
@@ -625,11 +631,14 @@ export type Database = {
       }
       b2b_reservations: {
         Row: {
+          additional_services: Json | null
           b2b_profile_id: string
           category_slug: string | null
           created_at: string
+          deposit: number | null
           discounted_price: number | null
           end_date: string | null
+          end_time: string | null
           id: string
           location: string
           notes: string | null
@@ -638,16 +647,20 @@ export type Database = {
           product_name: string | null
           quantity: number
           start_date: string
+          start_time: string | null
           status: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          additional_services?: Json | null
           b2b_profile_id: string
           category_slug?: string | null
           created_at?: string
+          deposit?: number | null
           discounted_price?: number | null
           end_date?: string | null
+          end_time?: string | null
           id?: string
           location: string
           notes?: string | null
@@ -656,16 +669,20 @@ export type Database = {
           product_name?: string | null
           quantity?: number
           start_date: string
+          start_time?: string | null
           status?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          additional_services?: Json | null
           b2b_profile_id?: string
           category_slug?: string | null
           created_at?: string
+          deposit?: number | null
           discounted_price?: number | null
           end_date?: string | null
+          end_time?: string | null
           id?: string
           location?: string
           notes?: string | null
@@ -674,6 +691,7 @@ export type Database = {
           product_name?: string | null
           quantity?: number
           start_date?: string
+          start_time?: string | null
           status?: string
           updated_at?: string
           user_id?: string
