@@ -35,6 +35,7 @@ interface OfferItem {
 
 interface OfferRequest {
   reservation_id: string;
+  offer_id?: string; // If provided, update existing offer
   items: OfferItem[];
   delivery_cost?: number;
   valid_days?: number;
@@ -91,6 +92,7 @@ Deno.serve(async (req: Request) => {
     const body: OfferRequest = await req.json();
     const {
       reservation_id,
+      offer_id,
       items,
       delivery_cost = 0,
       valid_days = 14,
@@ -168,25 +170,53 @@ Deno.serve(async (req: Request) => {
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
-    // Generate offer number
-    const { data: offerNumData, error: offerNumError } = await serviceClient
-      .rpc("generate_offer_number");
+    let offerNumber: string;
+    let offerDate: string;
+    let validUntil: string;
 
-    if (offerNumError) {
-      console.error("Error generating offer number:", offerNumError);
-      return new Response(JSON.stringify({ error: "Failed to generate offer number" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (offer_id) {
+      // Update existing offer: reuse offer number
+      const { data: existingOffer, error: existingError } = await serviceClient
+        .from("b2b_offers")
+        .select("offer_number")
+        .eq("id", offer_id)
+        .single();
+
+      if (existingError || !existingOffer) {
+        return new Response(JSON.stringify({ error: "Existing offer not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      offerNumber = existingOffer.offer_number;
+      offerDate = new Date().toISOString().split("T")[0];
+      validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+
+      console.log("Updating existing offer:", offerNumber);
+    } else {
+      // Generate new offer number
+      const { data: offerNumData, error: offerNumError } = await serviceClient
+        .rpc("generate_offer_number");
+
+      if (offerNumError) {
+        console.error("Error generating offer number:", offerNumError);
+        return new Response(JSON.stringify({ error: "Failed to generate offer number" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      offerNumber = offerNumData as string;
+      offerDate = new Date().toISOString().split("T")[0];
+      validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+
+      console.log("Offer number generated:", offerNumber);
     }
-
-    const offerNumber = offerNumData as string;
-    const offerDate = new Date().toISOString().split("T")[0];
-    const validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0];
-
-    console.log("Offer number generated:", offerNumber);
 
     // Generate offer HTML
     const offerHtml = generateOfferHtml({
@@ -232,36 +262,77 @@ Deno.serve(async (req: Request) => {
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    // Create offer record
-    const { data: offer, error: offerError } = await serviceClient
-      .from("b2b_offers")
-      .insert({
-        reservation_id,
-        b2b_profile_id: profile.id,
-        offer_number: offerNumber,
-        offer_date: offerDate,
-        valid_until: validUntil,
-        status: "sent",
-        net_amount: netAmount,
-        vat_rate: vatRate,
-        vat_amount: vatAmount,
-        gross_amount: grossAmount,
-        delivery_cost,
-        is_reverse_charge: isReverseCharge,
-        notes: notes || null,
-        file_url: fileUrl,
-        file_name: fileName,
-        email_sent: false,
-      })
-      .select()
-      .single();
+    let offer: any;
 
-    if (offerError) {
-      console.error("Offer creation error:", offerError);
-      return new Response(JSON.stringify({ error: "Failed to create offer record" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (offer_id) {
+      // Update existing offer
+      const { data: updatedOffer, error: offerError } = await serviceClient
+        .from("b2b_offers")
+        .update({
+          offer_date: offerDate,
+          valid_until: validUntil,
+          status: "sent",
+          net_amount: netAmount,
+          vat_rate: vatRate,
+          vat_amount: vatAmount,
+          gross_amount: grossAmount,
+          delivery_cost,
+          is_reverse_charge: isReverseCharge,
+          notes: notes || null,
+          file_url: fileUrl,
+          file_name: fileName,
+          email_sent: false,
+        })
+        .eq("id", offer_id)
+        .select()
+        .single();
+
+      if (offerError) {
+        console.error("Offer update error:", offerError);
+        return new Response(JSON.stringify({ error: "Failed to update offer record" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      offer = updatedOffer;
+
+      // Delete old items and insert new ones
+      await serviceClient.from("b2b_offer_items").delete().eq("offer_id", offer_id);
+    } else {
+      // Create new offer record
+      const { data: newOffer, error: offerError } = await serviceClient
+        .from("b2b_offers")
+        .insert({
+          reservation_id,
+          b2b_profile_id: profile.id,
+          offer_number: offerNumber,
+          offer_date: offerDate,
+          valid_until: validUntil,
+          status: "sent",
+          net_amount: netAmount,
+          vat_rate: vatRate,
+          vat_amount: vatAmount,
+          gross_amount: grossAmount,
+          delivery_cost,
+          is_reverse_charge: isReverseCharge,
+          notes: notes || null,
+          file_url: fileUrl,
+          file_name: fileName,
+          email_sent: false,
+        })
+        .select()
+        .single();
+
+      if (offerError) {
+        console.error("Offer creation error:", offerError);
+        return new Response(JSON.stringify({ error: "Failed to create offer record" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      offer = newOffer;
     }
 
     // Insert offer items

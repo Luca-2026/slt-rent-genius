@@ -39,9 +39,26 @@ interface B2BProfile {
   vat_id_verified?: boolean;
 }
 
-interface OfferItem {
+interface OfferItemInput {
   product_name: string;
   description: string;
+  quantity: number;
+  unit_price: number;
+  discount_percent: number;
+}
+
+export interface ExistingOffer {
+  id: string;
+  offer_number: string;
+  reservation_id: string | null;
+  delivery_cost: number;
+  notes: string | null;
+  b2b_profile_id: string;
+}
+
+export interface ExistingOfferItem {
+  product_name: string;
+  description: string | null;
   quantity: number;
   unit_price: number;
   discount_percent: number;
@@ -53,28 +70,53 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: () => void;
+  existingOffer?: ExistingOffer | null;
+  existingItems?: ExistingOfferItem[];
 }
 
-export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChange, onCreated }: Props) {
+export function AdminCreateOfferDialog({
+  reservation,
+  profile,
+  open,
+  onOpenChange,
+  onCreated,
+  existingOffer,
+  existingItems,
+}: Props) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
-  const [items, setItems] = useState<OfferItem[]>([]);
+  const [items, setItems] = useState<OfferItemInput[]>([]);
   const [deliveryCost, setDeliveryCost] = useState(0);
   const [validDays, setValidDays] = useState(14);
   const [notes, setNotes] = useState("");
   const [sendEmail, setSendEmail] = useState(true);
 
-  // Load existing customer prices when dialog opens
+  const isEditing = !!existingOffer;
+
   useEffect(() => {
-    if (open && reservation && profile) {
-      loadCustomerPrices();
+    if (open && profile) {
+      if (existingOffer && existingItems && existingItems.length > 0) {
+        // Editing an existing offer — pre-fill with its items
+        setItems(
+          existingItems.map((item) => ({
+            product_name: item.product_name,
+            description: item.description || "",
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            discount_percent: item.discount_percent,
+          }))
+        );
+        setDeliveryCost(existingOffer.delivery_cost || 0);
+        setNotes(existingOffer.notes || "");
+      } else if (reservation) {
+        loadCustomerPrices();
+      }
     }
-  }, [open, reservation, profile]);
+  }, [open, reservation, profile, existingOffer, existingItems]);
 
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
 
-    // Check if there's a stored price for this customer + product
     const { data: existingPrices } = await supabase
       .from("b2b_customer_prices")
       .select("*")
@@ -103,7 +145,7 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-  const updateItem = (index: number, field: keyof OfferItem, value: any) => {
+  const updateItem = (index: number, field: keyof OfferItemInput, value: any) => {
     setItems((prev) =>
       prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
     );
@@ -121,7 +163,7 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const calculateItemTotal = (item: OfferItem) => {
+  const calculateItemTotal = (item: OfferItemInput) => {
     const discounted = item.unit_price * (1 - item.discount_percent / 100);
     return Math.round(discounted * item.quantity * 100) / 100;
   };
@@ -132,8 +174,10 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
   const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
+  const reservationId = existingOffer?.reservation_id || reservation?.id;
+
   const handleCreate = async () => {
-    if (!reservation) return;
+    if (!reservationId) return;
 
     const validItems = items.filter((item) => item.product_name && item.unit_price > 0);
     if (validItems.length === 0) {
@@ -147,17 +191,21 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
 
     setSaving(true);
     try {
+      const startDate = reservation?.start_date || undefined;
+      const endDate = reservation?.end_date || undefined;
+
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
-          reservation_id: reservation.id,
+          reservation_id: reservationId,
+          offer_id: existingOffer?.id || undefined,
           items: validItems.map((item) => ({
             product_name: item.product_name,
             description: item.description || undefined,
             quantity: item.quantity,
             unit_price: item.unit_price,
             discount_percent: item.discount_percent || undefined,
-            rental_start: reservation.start_date,
-            rental_end: reservation.end_date || undefined,
+            rental_start: startDate,
+            rental_end: endDate,
           })),
           delivery_cost: deliveryCost,
           valid_days: validDays,
@@ -170,10 +218,10 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
       if (error) throw error;
 
       toast({
-        title: "Angebot erstellt!",
+        title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
         description: data.email_sent
-          ? `Angebot ${data.offer?.offer_number} wurde erstellt und per E-Mail versendet.`
-          : `Angebot ${data.offer?.offer_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
+          ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
+          : `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"}. (E-Mail nicht konfiguriert)`,
       });
 
       onCreated();
@@ -189,7 +237,8 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
     }
   };
 
-  if (!reservation || !profile) return null;
+  if (!profile) return null;
+  if (!isEditing && !reservation) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -197,30 +246,36 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Angebot erstellen
+            {isEditing ? "Angebot bearbeiten" : "Angebot erstellen"}
           </DialogTitle>
           <DialogDescription>
-            Preise eintragen und ein PDF-Angebot für den Kunden generieren.
+            {isEditing
+              ? `Angebot ${existingOffer.offer_number} anpassen und erneut versenden.`
+              : "Preise eintragen und ein PDF-Angebot für den Kunden generieren."}
           </DialogDescription>
         </DialogHeader>
 
-        {/* Customer & Reservation Info */}
+        {/* Customer Info */}
         <Card>
           <CardContent className="p-4 space-y-2">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold text-foreground">{profile.company_name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {reservation.product_name || reservation.product_id}
-                </p>
+                {reservation && (
+                  <p className="text-sm text-muted-foreground">
+                    {reservation.product_name || reservation.product_id}
+                  </p>
+                )}
               </div>
-              <div className="text-right text-sm text-muted-foreground">
-                <p>Standort: <span className="capitalize">{reservation.location}</span></p>
-                <p>
-                  {formatDate(reservation.start_date)}
-                  {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
-                </p>
-              </div>
+              {reservation && (
+                <div className="text-right text-sm text-muted-foreground">
+                  <p>Standort: <span className="capitalize">{reservation.location}</span></p>
+                  <p>
+                    {formatDate(reservation.start_date)}
+                    {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
+                  </p>
+                </div>
+              )}
             </div>
             {isReverseCharge && (
               <Badge variant="outline" className="text-primary">
@@ -418,12 +473,12 @@ export function AdminCreateOfferDialog({ reservation, profile, open, onOpenChang
             {saving ? (
               <>
                 <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
-                Wird erstellt...
+                Wird {isEditing ? "aktualisiert" : "erstellt"}...
               </>
             ) : (
               <>
                 <Send className="h-4 w-4 mr-1.5" />
-                Angebot erstellen & senden
+                {isEditing ? "Angebot aktualisieren & senden" : "Angebot erstellen & senden"}
               </>
             )}
           </Button>
