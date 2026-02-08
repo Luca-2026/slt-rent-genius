@@ -14,6 +14,7 @@ import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
 import { AdminCustomersTab } from "@/components/b2b/admin/AdminCustomersTab";
 import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/admin/AdminOffersTab";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
+import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
 import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
@@ -112,6 +113,7 @@ export default function AdminDashboard() {
   const [vatDialogOpen, setVatDialogOpen] = useState(false);
   const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false);
   const [editCustomerOpen, setEditCustomerOpen] = useState(false);
+  const [detailCustomerOpen, setDetailCustomerOpen] = useState(false);
   const [extendResOpen, setExtendResOpen] = useState(false);
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [createReservationOpen, setCreateReservationOpen] = useState(false);
@@ -499,6 +501,10 @@ export default function AdminDashboard() {
               setSelectedProfile(profile);
               setEditCustomerOpen(true);
             }}
+            onViewCustomer={(profile) => {
+              setSelectedProfile(profile);
+              setDetailCustomerOpen(true);
+            }}
             onToggleVat={(profile) => {
               setSelectedProfile(profile);
               setVatDialogOpen(true);
@@ -635,6 +641,20 @@ export default function AdminDashboard() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Customer Detail */}
+      <AdminCustomerDetailDialog
+        profile={selectedProfile}
+        invoices={invoices}
+        reservations={reservations}
+        open={detailCustomerOpen}
+        onOpenChange={setDetailCustomerOpen}
+        onEditCustomer={(profile) => {
+          setSelectedProfile(profile);
+          setEditCustomerOpen(true);
+        }}
+        onRefresh={fetchData}
+      />
 
       {/* Customer Edit */}
       <AdminCustomerEditDialog
