@@ -39,6 +39,9 @@ import ProductDetail from "./pages/rental/ProductDetail";
 import Loesungen from "./pages/Loesungen";
 import LoesungDetail from "./pages/LoesungDetail";
 
+// Knowledge Base
+import KnowledgeBase from "./pages/KnowledgeBase";
+
 // Local SEO pages
 import LocalArea from "./pages/LocalArea";
 
@@ -80,6 +83,9 @@ const App = () => (
             
             {/* Local SEO pages */}
             <Route path="/mieten-in/:areaSlug" element={<LocalArea />} />
+            
+            {/* Knowledge Base */}
+            <Route path="/hilfe" element={<KnowledgeBase />} />
             
             {/* Legal Pages */}
             <Route path="/agb" element={<AGB />} />
