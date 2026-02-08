@@ -3,6 +3,7 @@ import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,8 +14,11 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
-  FileText, Filter, RefreshCw, Download, Send,
+  FileText, Filter, RefreshCw, Download, Send, ThumbsUp,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -61,10 +65,14 @@ const locationLabels: Record<string, string> = {
 
 export default function MyReservations() {
   const { user, b2bProfile } = useAuth();
+  const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [acceptingOfferId, setAcceptingOfferId] = useState<string | null>(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [offerToAccept, setOfferToAccept] = useState<Offer | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -94,6 +102,33 @@ export default function MyReservations() {
     if (user) fetchData();
   }, [user]);
 
+  const handleAcceptOffer = async () => {
+    if (!offerToAccept) return;
+    setAcceptingOfferId(offerToAccept.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("accept-offer", {
+        body: { offer_id: offerToAccept.id },
+      });
+      if (error) throw error;
+
+      toast({
+        title: "Angebot bestätigt!",
+        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt. Wir melden uns in Kürze bei Ihnen.`,
+      });
+      setConfirmDialogOpen(false);
+      setOfferToAccept(null);
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Angebot konnte nicht bestätigt werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setAcceptingOfferId(null);
+    }
+  };
+
   const filtered = statusFilter === "all"
     ? reservations
     : reservations.filter((r) => r.status === statusFilter);
@@ -110,6 +145,53 @@ export default function MyReservations() {
 
   const getOfferForReservation = (reservationId: string) =>
     offers.find((o) => o.reservation_id === reservationId);
+
+  const renderOfferActions = (offer: Offer) => (
+    <div className="space-y-1.5">
+      <p className="text-xs font-medium text-primary">{offer.offer_number}</p>
+      <p className="text-xs text-muted-foreground">
+        {formatCurrency(offer.gross_amount)} brutto
+        {offer.valid_until && ` · bis ${formatDate(offer.valid_until)}`}
+      </p>
+      <div className="flex items-center gap-1.5">
+        {offer.file_url && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
+            className="h-7 text-xs px-2"
+          >
+            <Download className="h-3 w-3 mr-1" />
+            PDF
+          </Button>
+        )}
+        {offer.status === "sent" && (
+          <Button
+            size="sm"
+            className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            onClick={() => {
+              setOfferToAccept(offer);
+              setConfirmDialogOpen(true);
+            }}
+            disabled={acceptingOfferId === offer.id}
+          >
+            {acceptingOfferId === offer.id ? (
+              <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+            ) : (
+              <ThumbsUp className="h-3 w-3 mr-1" />
+            )}
+            Bestätigen
+          </Button>
+        )}
+        {offer.status === "accepted" && (
+          <Badge variant="default" className="text-xs">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            Bestätigt
+          </Badge>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <B2BPortalLayout title="Meine Anfragen" subtitle={`${totalCount} Anfragen insgesamt`}>
@@ -218,7 +300,7 @@ export default function MyReservations() {
       ) : (
         <>
           {/* Mobile cards */}
-           <div className="md:hidden space-y-3">
+          <div className="md:hidden space-y-3">
             {filtered.map((r) => {
               const cfg = statusConfig[r.status] || statusConfig.pending;
               const StatusIcon = cfg.icon;
@@ -247,25 +329,8 @@ export default function MyReservations() {
                       </div>
                     </div>
                     {offer && (
-                      <div className="flex items-center justify-between bg-primary/5 rounded-lg p-2">
-                        <div>
-                          <p className="text-xs font-medium text-primary">Angebot {offer.offer_number}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatCurrency(offer.gross_amount)} brutto
-                            {offer.valid_until && ` · gültig bis ${formatDate(offer.valid_until)}`}
-                          </p>
-                        </div>
-                        {offer.file_url && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
-                            className="h-7 text-xs"
-                          >
-                            <Download className="h-3 w-3 mr-1" />
-                            PDF
-                          </Button>
-                        )}
+                      <div className="bg-primary/5 rounded-lg p-3">
+                        {renderOfferActions(offer)}
                       </div>
                     )}
                     {r.notes && (
@@ -328,23 +393,7 @@ export default function MyReservations() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {offer ? (
-                          <div className="space-y-1">
-                            <p className="text-xs font-medium text-primary">{offer.offer_number}</p>
-                            <p className="text-xs text-muted-foreground">{formatCurrency(offer.gross_amount)}</p>
-                            {offer.file_url && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
-                                className="h-6 text-xs px-2"
-                              >
-                                <Download className="h-3 w-3 mr-1" />
-                                PDF
-                              </Button>
-                            )}
-                          </div>
-                        ) : (
+                        {offer ? renderOfferActions(offer) : (
                           <span className="text-xs text-muted-foreground">—</span>
                         )}
                       </TableCell>
@@ -359,6 +408,58 @@ export default function MyReservations() {
           </Card>
         </>
       )}
+
+      {/* Confirm Offer Dialog */}
+      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ThumbsUp className="h-5 w-5 text-primary" />
+              Angebot bestätigen
+            </DialogTitle>
+            <DialogDescription>
+              Möchten Sie dieses Angebot verbindlich annehmen?
+            </DialogDescription>
+          </DialogHeader>
+          {offerToAccept && (
+            <div className="space-y-4">
+              <Card>
+                <CardContent className="p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-primary">{offerToAccept.offer_number}</p>
+                    <p className="text-lg font-bold">{formatCurrency(offerToAccept.gross_amount)}</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Angebotsdatum: {formatDate(offerToAccept.offer_date)}
+                    {offerToAccept.valid_until && ` · Gültig bis: ${formatDate(offerToAccept.valid_until)}`}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
+                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden, um die Details zu klären.</p>
+              </div>
+
+              <div className="flex gap-3 justify-end">
+                <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
+                  Abbrechen
+                </Button>
+                <Button
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  onClick={handleAcceptOffer}
+                  disabled={acceptingOfferId === offerToAccept.id}
+                >
+                  {acceptingOfferId === offerToAccept.id ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
+                  ) : (
+                    <><ThumbsUp className="h-4 w-4 mr-1.5" />Angebot verbindlich annehmen</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </B2BPortalLayout>
   );
 }
