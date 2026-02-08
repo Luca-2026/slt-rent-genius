@@ -29,6 +29,8 @@ interface DeliveryNoteRequest {
   staff_signature_data: string; // base64 PNG – SLT employee signature
   staff_name: string; // name of SLT employee
   notes?: string;
+  known_defects?: string;
+  additional_defects?: string;
   send_email?: boolean;
   agb_accepted?: boolean;
 }
@@ -79,7 +81,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, send_email = true, agb_accepted = false } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, send_email = true, agb_accepted = false } = body;
 
     if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
       return new Response(
@@ -173,6 +175,8 @@ Deno.serve(async (req: Request) => {
       staffSignatureData: staff_signature_data,
       staffName: staff_name,
       notes: notes || offer.notes || null,
+      knownDefects: known_defects || null,
+      additionalDefects: additional_defects || null,
       agbAccepted: agb_accepted,
     });
 
@@ -217,6 +221,8 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
+        known_defects: known_defects || null,
+        additional_defects: additional_defects || null,
         signed_at: now,
         agb_accepted: agb_accepted,
         agb_accepted_at: agb_accepted ? now : null,
@@ -380,6 +386,8 @@ function generateDeliveryNoteHtml(data: {
   staffSignatureData: string;
   staffName: string;
   notes: string | null;
+  knownDefects: string | null;
+  additionalDefects: string | null;
   agbAccepted: boolean;
 }): string {
   const formatDate = (dateStr: string) => {
@@ -406,7 +414,7 @@ function generateDeliveryNoteHtml(data: {
       </td>
       <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:500;">${item.quantity}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">
-        <span style="display:inline-block;width:16px;height:16px;border:2px solid #00507d;border-radius:3px;"></span>
+        <span style="display:inline-block;width:16px;height:16px;border:2px solid #00507d;border-radius:3px;background:#00507d;color:white;font-size:12px;line-height:16px;text-align:center;">✓</span>
       </td>
     </tr>`
     )
@@ -491,6 +499,21 @@ function generateDeliveryNoteHtml(data: {
         ${itemRows}
       </tbody>
     </table>
+
+    ${(data.knownDefects || data.additionalDefects) ? `
+    <div style="background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:14px;margin-bottom:8mm;">
+      <p style="font-weight:600;color:#854d0e;margin-bottom:8px;">⚠ Mängeldokumentation</p>
+      ${data.knownDefects ? `
+      <p style="font-size:12px;color:#713f12;margin-bottom:6px;">
+        <strong>Bekannte Mängel (vor Übergabe):</strong><br>
+        ${escapeHtml(data.knownDefects)}
+      </p>` : ""}
+      ${data.additionalDefects ? `
+      <p style="font-size:12px;color:#713f12;">
+        <strong>Weitere Mängel bei Übergabe:</strong><br>
+        ${escapeHtml(data.additionalDefects)}
+      </p>` : ""}
+    </div>` : ""}
 
     ${data.notes ? `
     <div style="margin-bottom:8mm;">
