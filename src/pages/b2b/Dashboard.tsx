@@ -311,7 +311,7 @@ export default function B2BDashboard() {
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <HelpCircle className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">FAQ B2B</CardTitle>
+                  <CardTitle className="text-lg">FAQ</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
