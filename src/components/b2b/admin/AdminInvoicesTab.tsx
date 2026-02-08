@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,9 +8,17 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Eye, Receipt, RefreshCw } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Eye, Receipt, RefreshCw, Plus, Minus, FileX } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Invoice {
   id: string;
@@ -27,6 +36,7 @@ interface Invoice {
   b2b_profile_id: string;
   reservation_id: string | null;
   created_at: string;
+  notes: string | null;
 }
 
 interface Props {
@@ -36,12 +46,29 @@ interface Props {
   onRefresh: () => void;
 }
 
+interface CorrectionItem {
+  product_name: string;
+  description: string;
+  quantity: number;
+  unit_price: number;
+}
+
 export function AdminInvoicesTab({
   invoices,
   onStatusChange,
   onViewInvoice,
   onRefresh,
 }: Props) {
+  const { toast } = useToast();
+  const [correctionDialogOpen, setCorrectionDialogOpen] = useState(false);
+  const [correctionType, setCorrectionType] = useState<"correction" | "credit">("correction");
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [correctionItems, setCorrectionItems] = useState<CorrectionItem[]>([
+    { product_name: "", description: "", quantity: 1, unit_price: 0 },
+  ]);
+  const [correctionNotes, setCorrectionNotes] = useState("");
+  const [generating, setGenerating] = useState(false);
+
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -55,12 +82,106 @@ export function AdminInvoicesTab({
     }
   };
 
+  const openCorrectionDialog = (invoice: Invoice, type: "correction" | "credit") => {
+    setSelectedInvoice(invoice);
+    setCorrectionType(type);
+    if (type === "credit") {
+      // Pre-fill with negative full amount as credit
+      setCorrectionItems([{
+        product_name: `Gutschrift zu ${invoice.invoice_number}`,
+        description: `Vollständige Gutschrift der Rechnung ${invoice.invoice_number}`,
+        quantity: 1,
+        unit_price: -invoice.net_amount,
+      }]);
+    } else {
+      setCorrectionItems([{ product_name: "", description: "", quantity: 1, unit_price: 0 }]);
+    }
+    setCorrectionNotes("");
+    setCorrectionDialogOpen(true);
+  };
+
+  const addCorrectionItem = () => {
+    setCorrectionItems([...correctionItems, { product_name: "", description: "", quantity: 1, unit_price: 0 }]);
+  };
+
+  const removeCorrectionItem = (index: number) => {
+    if (correctionItems.length > 1) {
+      setCorrectionItems(correctionItems.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateCorrectionItem = (index: number, field: keyof CorrectionItem, value: string | number) => {
+    const updated = [...correctionItems];
+    (updated[index] as any)[field] = value;
+    setCorrectionItems(updated);
+  };
+
+  const generateCorrection = async () => {
+    if (!selectedInvoice) return;
+    
+    const validItems = correctionItems.filter((item) => item.product_name.trim() !== "");
+    if (validItems.length === 0) {
+      toast({ title: "Fehler", description: "Mindestens eine Position ist erforderlich.", variant: "destructive" });
+      return;
+    }
+
+    setGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-invoice", {
+        body: {
+          reservation_id: selectedInvoice.reservation_id,
+          custom_items: validItems.map((item) => ({
+            product_name: item.product_name,
+            description: item.description || undefined,
+            quantity: item.quantity,
+            unit_price: Math.abs(item.unit_price),
+            discount_percent: 0,
+          })),
+          delivery_cost: 0,
+          notes: [
+            correctionType === "correction"
+              ? `RECHNUNGSKORREKTUR zu Rechnung ${selectedInvoice.invoice_number}`
+              : `GUTSCHRIFT zu Rechnung ${selectedInvoice.invoice_number}`,
+            correctionNotes,
+          ].filter(Boolean).join("\n"),
+          is_correction: true,
+          original_invoice_number: selectedInvoice.invoice_number,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: correctionType === "correction" ? "Rechnungskorrektur erstellt!" : "Gutschrift erstellt!",
+        description: `${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
+      });
+
+      // If credit note, mark original invoice as cancelled
+      if (correctionType === "credit") {
+        await onStatusChange(selectedInvoice.id, "cancelled");
+      }
+
+      setCorrectionDialogOpen(false);
+      onRefresh();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Dokument konnte nicht erstellt werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const correctionTotal = correctionItems.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Alle Rechnungen</h2>
-          <p className="text-sm text-muted-foreground">Rechnungsstatus verwalten und PDFs einsehen</p>
+          <p className="text-sm text-muted-foreground">Rechnungsstatus verwalten, Korrekturen und Gutschriften erstellen</p>
         </div>
         <Button variant="outline" size="sm" onClick={onRefresh}>
           <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
@@ -102,6 +223,12 @@ export function AdminInvoicesTab({
                         {inv.is_reverse_charge && (
                           <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                         )}
+                        {inv.notes?.includes("RECHNUNGSKORREKTUR") && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-amber-600 border-amber-300">Korrektur</Badge>
+                        )}
+                        {inv.notes?.includes("GUTSCHRIFT") && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
@@ -129,16 +256,41 @@ export function AdminInvoicesTab({
                       </Select>
                     </TableCell>
                     <TableCell className="text-right">
-                      {inv.file_url && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          <span className="hidden sm:inline text-xs">PDF</span>
-                        </Button>
-                      )}
+                      <div className="flex items-center justify-end gap-1">
+                        {inv.file_url && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            <span className="hidden sm:inline text-xs">PDF</span>
+                          </Button>
+                        )}
+                        {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => openCorrectionDialog(inv, "correction")}
+                              title="Rechnungskorrektur erstellen"
+                            >
+                              <FileX className="h-3.5 w-3.5 mr-1" />
+                              <span className="hidden lg:inline text-xs">Korrektur</span>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="text-red-600"
+                              onClick={() => openCorrectionDialog(inv, "credit")}
+                              title="Gutschrift erstellen"
+                            >
+                              <Minus className="h-3.5 w-3.5 mr-1" />
+                              <span className="hidden lg:inline text-xs">Gutschrift</span>
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -147,6 +299,174 @@ export function AdminInvoicesTab({
           </div>
         </Card>
       )}
+
+      {/* Correction / Credit Note Dialog */}
+      <Dialog open={correctionDialogOpen} onOpenChange={setCorrectionDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {correctionType === "correction" ? "Rechnungskorrektur" : "Gutschrift"} erstellen
+            </DialogTitle>
+            <DialogDescription>
+              {correctionType === "correction"
+                ? `Korrekturrechnung zur Originalrechnung ${selectedInvoice?.invoice_number} erstellen.`
+                : `Gutschrift zur Originalrechnung ${selectedInvoice?.invoice_number} erstellen. Die Originalrechnung wird automatisch storniert.`}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedInvoice && (
+            <div className="space-y-4">
+              {/* Original Invoice Info */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm font-medium">Originalrechnung: {selectedInvoice.invoice_number}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {selectedInvoice.customer_company} · {formatDate(selectedInvoice.invoice_date)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">{formatCurrency(selectedInvoice.gross_amount)}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {selectedInvoice.is_reverse_charge ? "Reverse-Charge" : "inkl. 19% USt."}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Correction Items */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="font-semibold">Positionen</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addCorrectionItem}
+                  >
+                    <Plus className="h-3.5 w-3.5 mr-1" />
+                    Position
+                  </Button>
+                </div>
+
+                {correctionItems.map((item, index) => (
+                  <Card key={index}>
+                    <CardContent className="p-3 space-y-2">
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Label className="text-xs">Bezeichnung</Label>
+                          <Input
+                            value={item.product_name}
+                            onChange={(e) => updateCorrectionItem(index, "product_name", e.target.value)}
+                            placeholder="z.B. Korrektur Mietdauer"
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                        {correctionItems.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="mt-5 text-red-500"
+                            onClick={() => removeCorrectionItem(index)}
+                          >
+                            <Minus className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
+                      </div>
+                      <div>
+                        <Label className="text-xs">Beschreibung</Label>
+                        <Input
+                          value={item.description}
+                          onChange={(e) => updateCorrectionItem(index, "description", e.target.value)}
+                          placeholder="Optionale Beschreibung"
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-xs">Menge</Label>
+                          <Input
+                            type="number"
+                            min={1}
+                            value={item.quantity}
+                            onChange={(e) => updateCorrectionItem(index, "quantity", parseInt(e.target.value) || 1)}
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">
+                            {correctionType === "credit" ? "Betrag (negativ)" : "Einzelpreis (€)"}
+                          </Label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={item.unit_price}
+                            onChange={(e) => updateCorrectionItem(index, "unit_price", parseFloat(e.target.value) || 0)}
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Notes */}
+              <div>
+                <Label className="text-xs">Anmerkungen</Label>
+                <Textarea
+                  value={correctionNotes}
+                  onChange={(e) => setCorrectionNotes(e.target.value)}
+                  placeholder={correctionType === "correction"
+                    ? "Grund der Korrektur..."
+                    : "Grund der Gutschrift..."}
+                  rows={2}
+                />
+              </div>
+
+              {/* Total */}
+              <Card className="border-primary/20">
+                <CardContent className="p-3 flex justify-between items-center">
+                  <span className="font-medium text-sm">Nettobetrag (Korrektur):</span>
+                  <span className="font-semibold text-lg">
+                    {formatCurrency(Math.abs(correctionTotal))}
+                  </span>
+                </CardContent>
+              </Card>
+
+              {correctionType === "credit" && (
+                <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-3">
+                  <p className="text-sm text-destructive font-medium">
+                    ⚠ Die Originalrechnung {selectedInvoice.invoice_number} wird bei Erstellung der Gutschrift automatisch storniert.
+                  </p>
+                </div>
+              )}
+
+              <div className="flex gap-3 justify-end pt-2">
+                <Button variant="outline" onClick={() => setCorrectionDialogOpen(false)}>
+                  Abbrechen
+                </Button>
+                <Button
+                  onClick={generateCorrection}
+                  disabled={generating || correctionItems.every((i) => !i.product_name.trim())}
+                  className={correctionType === "credit" ? "bg-destructive hover:bg-destructive/90" : "bg-accent text-accent-foreground hover:bg-cta-orange-hover"}
+                >
+                  {generating ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird erstellt...</>
+                  ) : correctionType === "correction" ? (
+                    <><FileX className="h-4 w-4 mr-1.5" />Korrektur erstellen</>
+                  ) : (
+                    <><Minus className="h-4 w-4 mr-1.5" />Gutschrift erstellen</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
