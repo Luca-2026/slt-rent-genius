@@ -415,6 +415,21 @@ export default function AdminDashboard() {
             onEditOffer={handleEditOffer}
             onResendOffer={handleResendOffer}
             onViewOffer={openInvoiceInNewWindow}
+            onCreateInvoice={(offer) => {
+              const matchingReservation = offer.reservation_id
+                ? reservations.find((r) => r.id === offer.reservation_id) || null
+                : null;
+              if (matchingReservation) {
+                setSelectedReservation(matchingReservation);
+                setInvoiceDialogOpen(true);
+              } else {
+                toast({
+                  title: "Fehler",
+                  description: "Keine zugehörige Reservierung gefunden.",
+                  variant: "destructive",
+                });
+              }
+            }}
             resendingId={resendingId}
             onRefresh={fetchData}
           />
@@ -422,7 +437,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals">
           <AdminRentalsTab
-            reservations={reservations}
+            reservations={reservations.filter((r) => r.status === "confirmed")}
             profiles={profiles}
             onCreateReservation={() => setCreateReservationOpen(true)}
             onExtendReservation={(res) => {

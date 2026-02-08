@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, RefreshCw, Send } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -53,6 +53,7 @@ interface Props {
   onEditOffer: (offer: Offer, items: OfferItem[]) => void;
   onResendOffer: (offer: Offer) => void;
   onViewOffer: (fileUrl: string, offerNumber: string) => void;
+  onCreateInvoice: (offer: Offer) => void;
   resendingId: string | null;
   onRefresh: () => void;
 }
@@ -64,6 +65,7 @@ export function AdminOffersTab({
   onEditOffer,
   onResendOffer,
   onViewOffer,
+  onCreateInvoice,
   resendingId,
   onRefresh,
 }: Props) {
@@ -157,6 +159,17 @@ export function AdminOffersTab({
                               title="Angebot ansehen"
                             >
                               <Eye className="h-4 w-4" />
+                            </Button>
+                          )}
+                          {offer.status === "accepted" && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onCreateInvoice(offer)}
+                              title="Rechnung erstellen"
+                              className="text-primary"
+                            >
+                              <Receipt className="h-4 w-4" />
                             </Button>
                           )}
                           <Button
