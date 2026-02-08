@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 
 // ─── Types ────────────────────────────────────────────────
 interface B2BProfile {
@@ -211,9 +212,13 @@ export default function AdminDashboard() {
             discount_percent: item.discount_percent || 0,
             rental_start: item.rental_start || reservation.start_date,
             rental_end: item.rental_end || reservation.end_date,
+            image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
           })),
           notes: offer.notes || undefined,
         };
+      } else {
+        // Direct invoice without offer — also attach image
+        invoiceBody.image_url = getProductImageUrl(reservation.product_id) || getProductImageUrlByName(reservation.product_name || reservation.product_id) || undefined;
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
@@ -310,6 +315,7 @@ export default function AdminDashboard() {
             discount_percent: item.discount_percent || undefined,
             rental_start: matchingReservation?.start_date,
             rental_end: matchingReservation?.end_date,
+            image_url: matchingReservation ? (getProductImageUrl(matchingReservation.product_id) || getProductImageUrlByName(item.product_name) || undefined) : undefined,
           })),
           delivery_cost: offer.delivery_cost,
           notes: offer.notes || undefined,

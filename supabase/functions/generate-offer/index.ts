@@ -31,6 +31,7 @@ interface OfferItem {
   discount_percent?: number;
   rental_start?: string;
   rental_end?: string;
+  image_url?: string;
 }
 
 interface OfferRequest {
@@ -162,6 +163,7 @@ Deno.serve(async (req: Request) => {
         total_price: totalPrice,
         rental_start: item.rental_start || reservation.start_date,
         rental_end: item.rental_end || reservation.end_date,
+        image_url: item.image_url || null,
       };
     });
 
@@ -562,13 +564,18 @@ function generateOfferHtml(data: {
 
   const itemRows = data.items
     .map(
-      (item, i) => `
+      (item: any, i: number) => `
     <tr>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${i + 1}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">
-        <strong>${escapeHtml(item.product_name)}</strong>
-        ${item.description ? `<br><span style="color:#595959;font-size:12px;">${escapeHtml(item.description)}</span>` : ""}
-        ${item.rental_start ? `<br><span style="color:#595959;font-size:11px;">Zeitraum: ${formatDate(item.rental_start)}${item.rental_end ? " – " + formatDate(item.rental_end) : ""}</span>` : ""}
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.product_name)}" style="width:60px;height:45px;object-fit:cover;border-radius:4px;border:1px solid #e5e7eb;flex-shrink:0;" />` : ""}
+          <div>
+            <strong>${escapeHtml(item.product_name)}</strong>
+            ${item.description ? `<br><span style="color:#595959;font-size:12px;">${escapeHtml(item.description)}</span>` : ""}
+            ${item.rental_start ? `<br><span style="color:#595959;font-size:11px;">Zeitraum: ${formatDate(item.rental_start)}${item.rental_end ? " – " + formatDate(item.rental_end) : ""}</span>` : ""}
+          </div>
+        </div>
       </td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.quantity}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${formatCurrency(item.unit_price)}</td>
