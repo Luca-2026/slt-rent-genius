@@ -119,6 +119,7 @@ export default function AdminDashboard() {
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
+  const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
 
   // Edit offer state
   const [editingOffer, setEditingOffer] = useState<ExistingOffer | null>(null);
@@ -190,8 +191,30 @@ export default function AdminDashboard() {
   const generateInvoice = async (reservation: Reservation) => {
     setGeneratingInvoice(true);
     try {
+      // If invoice is being created from an accepted offer, use the offer items
+      const offer = invoiceFromOffer;
+      let invoiceBody: any = { reservation_id: reservation.id, delivery_cost: 0 };
+
+      if (offer) {
+        const items = offerItems.filter((i) => i.offer_id === offer.id);
+        invoiceBody = {
+          reservation_id: reservation.id,
+          delivery_cost: offer.delivery_cost || 0,
+          custom_items: items.map((item) => ({
+            product_name: item.product_name,
+            description: item.description || undefined,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            discount_percent: item.discount_percent || 0,
+            rental_start: item.rental_start || reservation.start_date,
+            rental_end: item.rental_end || reservation.end_date,
+          })),
+          notes: offer.notes || undefined,
+        };
+      }
+
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: { reservation_id: reservation.id, delivery_cost: 0 },
+        body: invoiceBody,
       });
       if (error) throw error;
       toast({
@@ -200,6 +223,7 @@ export default function AdminDashboard() {
       });
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
+      setInvoiceFromOffer(null);
       fetchData();
     } catch (error: any) {
       toast({
@@ -421,6 +445,7 @@ export default function AdminDashboard() {
                 : null;
               if (matchingReservation) {
                 setSelectedReservation(matchingReservation);
+                setInvoiceFromOffer(offer);
                 setInvoiceDialogOpen(true);
               } else {
                 toast({
@@ -444,6 +469,12 @@ export default function AdminDashboard() {
               setSelectedReservation(res);
               setExtendResOpen(true);
             }}
+            onGenerateInvoice={(res) => {
+              setSelectedReservation(res);
+              setInvoiceFromOffer(null);
+              setInvoiceDialogOpen(true);
+            }}
+            hasInvoice={(resId) => invoices.some((inv) => inv.reservation_id === resId)}
             onRefresh={fetchData}
           />
         </TabsContent>
@@ -514,28 +545,65 @@ export default function AdminDashboard() {
       </Dialog>
 
       {/* Invoice Generation */}
-      <Dialog open={invoiceDialogOpen} onOpenChange={setInvoiceDialogOpen}>
+      <Dialog open={invoiceDialogOpen} onOpenChange={(open) => {
+        setInvoiceDialogOpen(open);
+        if (!open) {
+          setInvoiceFromOffer(null);
+        }
+      }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Rechnung erstellen</DialogTitle>
-            <DialogDescription>Erstelle eine Rechnung für diese Anfrage.</DialogDescription>
+            <DialogDescription>
+              {invoiceFromOffer
+                ? `Rechnung aus Angebot ${invoiceFromOffer.offer_number} erstellen.`
+                : "Erstelle eine Rechnung für diese Anfrage."}
+            </DialogDescription>
           </DialogHeader>
           {selectedReservation && (
             <div className="space-y-4">
               <Card>
                 <CardContent className="p-4 space-y-2">
-                  <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Standort: {selectedReservation.location} · Menge: {selectedReservation.quantity}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Zeitraum: {formatDate(selectedReservation.start_date)}
-                    {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
-                  </p>
-                  {selectedReservation.original_price != null && (
-                    <p className="text-sm">
-                      Preis: {formatCurrency(selectedReservation.discounted_price || selectedReservation.original_price)}
-                    </p>
+                  {invoiceFromOffer ? (
+                    <>
+                      <p className="font-semibold">Angebot {invoiceFromOffer.offer_number}</p>
+                      <div className="space-y-1">
+                        {offerItems
+                          .filter((i) => i.offer_id === invoiceFromOffer.id)
+                          .map((item, idx) => (
+                            <div key={idx} className="flex justify-between text-sm">
+                              <span>{item.quantity}x {item.product_name}</span>
+                              <span className="font-medium">{formatCurrency(item.total_price)}</span>
+                            </div>
+                          ))}
+                        {invoiceFromOffer.delivery_cost > 0 && (
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Lieferung</span>
+                            <span>{formatCurrency(invoiceFromOffer.delivery_cost)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="border-t pt-2 flex justify-between font-semibold">
+                        <span>Brutto</span>
+                        <span>{formatCurrency(invoiceFromOffer.gross_amount)}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Standort: {selectedReservation.location} · Menge: {selectedReservation.quantity}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Zeitraum: {formatDate(selectedReservation.start_date)}
+                        {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
+                      </p>
+                      {selectedReservation.original_price != null && (
+                        <p className="text-sm">
+                          Preis: {formatCurrency(selectedReservation.discounted_price || selectedReservation.original_price)}
+                        </p>
+                      )}
+                    </>
                   )}
                   {(() => {
                     const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);

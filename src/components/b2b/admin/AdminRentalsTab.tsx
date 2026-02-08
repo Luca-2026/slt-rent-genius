@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { CalendarPlus, Package, Plus, RefreshCw } from "lucide-react";
+import { CalendarPlus, Package, Plus, Receipt, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -34,6 +34,8 @@ interface Props {
   profiles: B2BProfile[];
   onCreateReservation: () => void;
   onExtendReservation: (reservation: Reservation) => void;
+  onGenerateInvoice: (reservation: Reservation) => void;
+  hasInvoice: (reservationId: string) => boolean;
   onRefresh: () => void;
 }
 
@@ -42,28 +44,21 @@ export function AdminRentalsTab({
   profiles,
   onCreateReservation,
   onExtendReservation,
+  onGenerateInvoice,
+  hasInvoice,
   onRefresh,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-  const statusLabel = (status: string) => {
-    switch (status) {
-      case "confirmed": return "Bestätigt";
-      case "pending": return "Ausstehend";
-      case "cancelled": return "Storniert";
-      default: return status;
-    }
-  };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const statusVariant = (status: string): "default" | "secondary" | "outline" | "destructive" => {
-    switch (status) {
-      case "confirmed": return "default";
-      case "pending": return "secondary";
-      case "cancelled": return "destructive";
-      default: return "outline";
-    }
+  const isActive = (res: Reservation) => {
+    if (!res.end_date) return true;
+    const endDate = new Date(res.end_date + "T23:59:59");
+    return endDate >= today;
   };
 
   return (
@@ -71,7 +66,7 @@ export function AdminRentalsTab({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Alle Mietverträge</h2>
-          <p className="text-sm text-muted-foreground">Mietverträge verwalten und verlängern</p>
+          <p className="text-sm text-muted-foreground">Bestätigte Mietverträge verwalten und verlängern</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -93,7 +88,7 @@ export function AdminRentalsTab({
           <CardContent className="py-16 text-center">
             <Package className="h-10 w-10 mx-auto text-muted-foreground/30 mb-3" />
             <p className="font-medium text-foreground">Noch keine Mietverträge</p>
-            <p className="text-sm text-muted-foreground mt-1">Lege den ersten Mietvertrag an.</p>
+            <p className="text-sm text-muted-foreground mt-1">Mietverträge erscheinen hier, sobald ein Angebot bestätigt wurde.</p>
           </CardContent>
         </Card>
       ) : (
@@ -106,7 +101,8 @@ export function AdminRentalsTab({
                   <TableHead>Kunde</TableHead>
                   <TableHead>Standort</TableHead>
                   <TableHead>Zeitraum</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Mietstatus</TableHead>
+                  <TableHead>Rechnung</TableHead>
                   <TableHead className="text-right">Preis</TableHead>
                   <TableHead className="text-right">Aktionen</TableHead>
                 </TableRow>
@@ -114,6 +110,8 @@ export function AdminRentalsTab({
               <TableBody>
                 {reservations.map((res) => {
                   const profile = profiles.find((p) => p.id === res.b2b_profile_id);
+                  const active = isActive(res);
+                  const invoiced = hasInvoice(res.id);
                   return (
                     <TableRow key={res.id}>
                       <TableCell>
@@ -127,9 +125,27 @@ export function AdminRentalsTab({
                         {res.end_date ? ` – ${formatDate(res.end_date)}` : ""}
                       </TableCell>
                       <TableCell>
-                        <Badge variant={statusVariant(res.status)}>
-                          {statusLabel(res.status)}
-                        </Badge>
+                        {active ? (
+                          <Badge className="bg-primary/10 text-primary border-primary/20">
+                            Aktiv
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary">
+                            Beendet
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {invoiced ? (
+                          <Badge variant="outline" className="text-primary border-primary/30">
+                            <Receipt className="h-3 w-3 mr-1" />
+                            Erstellt
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-muted-foreground">
+                            Ausstehend
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell className="text-right text-sm">
                         {res.discounted_price != null
@@ -139,14 +155,28 @@ export function AdminRentalsTab({
                           : "–"}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => onExtendReservation(res)}
-                        >
-                          <CalendarPlus className="h-3.5 w-3.5 mr-1" />
-                          Verlängern
-                        </Button>
+                        <div className="flex items-center justify-end gap-1">
+                          {!invoiced && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onGenerateInvoice(res)}
+                              title="Rechnung erstellen"
+                              className="text-primary"
+                            >
+                              <Receipt className="h-3.5 w-3.5 mr-1" />
+                              <span className="hidden sm:inline text-xs">Rechnung</span>
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => onExtendReservation(res)}
+                          >
+                            <CalendarPlus className="h-3.5 w-3.5 mr-1" />
+                            Verlängern
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );
