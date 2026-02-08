@@ -56,6 +56,7 @@ interface B2BProfile {
   country: string | null;
   created_at: string;
   payment_due_days: number;
+  deletion_requested_at: string | null;
 }
 
 interface Invoice {

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Building2, CreditCard, Clock, Receipt, Package, Shield,
-  Edit, Search, RefreshCw, UserPlus, Users,
+  Edit, Search, RefreshCw, UserPlus, Users, Trash2,
 } from "lucide-react";
 
 interface B2BProfile {
@@ -28,6 +28,7 @@ interface B2BProfile {
   country: string | null;
   created_at: string;
   payment_due_days: number;
+  deletion_requested_at: string | null;
 }
 
 interface Invoice {
@@ -162,6 +163,11 @@ export function AdminCustomersTab({
                           {profile.company_name}
                         </p>
                         <Badge variant={variant}>{label}</Badge>
+                        {profile.deletion_requested_at && (
+                          <Badge variant="destructive" className="text-[10px]">
+                            <Trash2 className="h-2.5 w-2.5 mr-0.5" /> Löschung beantragt
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">
                         {profile.contact_first_name} {profile.contact_last_name} ·{" "}

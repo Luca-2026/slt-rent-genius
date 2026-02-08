@@ -404,6 +404,7 @@ export type Database = {
           country: string | null
           created_at: string
           credit_limit: number
+          deletion_requested_at: string | null
           document_filename: string | null
           document_url: string | null
           house_number: string | null
@@ -438,6 +439,7 @@ export type Database = {
           country?: string | null
           created_at?: string
           credit_limit?: number
+          deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
           house_number?: string | null
@@ -472,6 +474,7 @@ export type Database = {
           country?: string | null
           created_at?: string
           credit_limit?: number
+          deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
           house_number?: string | null

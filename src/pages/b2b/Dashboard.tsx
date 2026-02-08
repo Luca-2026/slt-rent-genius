@@ -1,9 +1,15 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
@@ -22,12 +28,17 @@ import {
   Receipt,
   MapPin,
   Mail,
-  Navigation
+  Navigation,
+  Trash2,
+  RefreshCw,
 } from "lucide-react";
 
 export default function B2BDashboard() {
-  const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
+  const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [requestingDeletion, setRequestingDeletion] = useState(false);
 
   // Get the nearest location based on assigned_location or default to Krefeld
   const nearestLocation = useMemo(() => {
@@ -407,8 +418,95 @@ export default function B2BDashboard() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Account Deletion Section */}
+          {b2bProfile && (
+            <Card className="mt-8 border-destructive/20">
+              <CardContent className="p-5">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <h3 className="font-semibold text-foreground">Konto löschen</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Beantrage die vollständige Löschung deines B2B-Kontos und aller damit verbundenen Daten.
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-destructive/50 text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
+                    onClick={() => setDeleteDialogOpen(true)}
+                    disabled={!!b2bProfile.deletion_requested_at}
+                  >
+                    {b2bProfile.deletion_requested_at ? (
+                      <><Clock className="h-3.5 w-3.5 mr-1" /> Löschung beantragt</>
+                    ) : (
+                      <><Trash2 className="h-3.5 w-3.5 mr-1" /> Kontolöschung beantragen</>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </section>
+
+      {/* Deletion Request AlertDialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Kontolöschung beantragen?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Möchtest du die Löschung deines B2B-Kundenkontos beantragen? 
+                Unser Team wird deinen Antrag prüfen und die Löschung durchführen.
+              </p>
+              <p className="font-medium">
+                Du erhältst eine Bestätigungsemail, sobald dein Konto gelöscht wurde.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={requestingDeletion}>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                setRequestingDeletion(true);
+                try {
+                  const { error } = await supabase
+                    .from("b2b_profiles")
+                    .update({ deletion_requested_at: new Date().toISOString() } as any)
+                    .eq("id", b2bProfile!.id);
+                  if (error) throw error;
+                  toast({
+                    title: "Löschungsantrag gesendet",
+                    description: "Dein Antrag wurde erfolgreich übermittelt. Wir melden uns bei dir.",
+                  });
+                  refreshB2BProfile();
+                  setDeleteDialogOpen(false);
+                } catch (error: any) {
+                  toast({
+                    title: "Fehler",
+                    description: error.message || "Antrag konnte nicht gesendet werden.",
+                    variant: "destructive",
+                  });
+                } finally {
+                  setRequestingDeletion(false);
+                }
+              }}
+              disabled={requestingDeletion}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {requestingDeletion ? (
+                <><RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" /> Wird gesendet...</>
+              ) : (
+                "Löschung beantragen"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 }
