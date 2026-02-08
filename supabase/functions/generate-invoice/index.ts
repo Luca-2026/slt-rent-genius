@@ -134,37 +134,62 @@ Deno.serve(async (req: Request) => {
     const vatRate = isReverseCharge ? 0 : 19;
 
     // Build invoice items
-    const items = custom_items && custom_items.length > 0
-      ? custom_items.map((item) => {
-          const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
-          const totalPrice = discountedPrice * item.quantity;
-          return {
-            product_name: item.product_name,
-            description: item.description || null,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            discount_percent: item.discount_percent || 0,
-            total_price: Math.round(totalPrice * 100) / 100,
-            rental_start: item.rental_start || reservation.start_date,
-            rental_end: item.rental_end || reservation.end_date,
-            image_url: item.image_url || fallbackImageUrl || null,
-          };
-        })
-      : [
-          {
-            product_name: reservation.product_name || reservation.product_id,
-            description: `Mietzeitraum: ${reservation.start_date}${reservation.end_date ? " bis " + reservation.end_date : ""}`,
-            quantity: reservation.quantity || 1,
-            unit_price: reservation.original_price || 0,
-            discount_percent: reservation.discounted_price && reservation.original_price
-              ? Math.round((1 - reservation.discounted_price / reservation.original_price) * 100)
-              : 0,
-            total_price: reservation.discounted_price || reservation.original_price || 0,
-            rental_start: reservation.start_date,
-            rental_end: reservation.end_date,
-            image_url: fallbackImageUrl || null,
-          },
-        ];
+    let items;
+    if (custom_items && custom_items.length > 0) {
+      items = custom_items.map((item) => {
+        const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
+        const totalPrice = discountedPrice * item.quantity;
+        return {
+          product_name: item.product_name,
+          description: item.description || null,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          discount_percent: item.discount_percent || 0,
+          total_price: Math.round(totalPrice * 100) / 100,
+          rental_start: item.rental_start || reservation.start_date,
+          rental_end: item.rental_end || reservation.end_date,
+          image_url: item.image_url || fallbackImageUrl || null,
+        };
+      });
+    } else {
+      // Auto-generate items: check for grouped rentals (rental_group_id)
+      let allReservations = [reservation];
+
+      if (reservation.rental_group_id) {
+        console.log("Fetching grouped reservations for rental_group_id:", reservation.rental_group_id);
+        const { data: groupedRes, error: groupError } = await supabase
+          .from("b2b_reservations")
+          .select("*")
+          .eq("rental_group_id", reservation.rental_group_id);
+
+        if (!groupError && groupedRes && groupedRes.length > 0) {
+          allReservations = groupedRes;
+          console.log(`Found ${allReservations.length} reservations in group`);
+        }
+      }
+
+      items = allReservations.map((res: any) => {
+        const quantity = res.quantity || 1;
+        const unitPrice = res.original_price || 0;
+        const discountPercent = res.discounted_price != null && res.original_price && res.original_price > 0
+          ? Math.round((1 - res.discounted_price / res.original_price) * 100)
+          : 0;
+        const effectiveUnitPrice = res.discounted_price != null ? res.discounted_price : unitPrice;
+        const totalPrice = Math.round(effectiveUnitPrice * quantity * 100) / 100;
+
+        return {
+          product_name: res.product_name || res.product_id,
+          description: `Mietzeitraum: ${res.start_date}${res.end_date ? " bis " + res.end_date : ""}`,
+          quantity: quantity,
+          unit_price: unitPrice,
+          discount_percent: discountPercent,
+          total_price: totalPrice,
+          rental_start: res.start_date,
+          rental_end: res.end_date,
+          image_url: fallbackImageUrl || null,
+        };
+      });
+    }
 
     // Calculate totals
     const itemsTotal = items.reduce((sum, item) => sum + item.total_price, 0);
