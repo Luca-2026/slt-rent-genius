@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
-  FileText, Filter, RefreshCw, Download, Send, ThumbsUp,
+  FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -73,6 +73,9 @@ export default function MyReservations() {
   const [acceptingOfferId, setAcceptingOfferId] = useState<string | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [offerToAccept, setOfferToAccept] = useState<Offer | null>(null);
+  const [returnDialogOpen, setReturnDialogOpen] = useState(false);
+  const [reservationToReturn, setReservationToReturn] = useState<Reservation | null>(null);
+  const [returningId, setReturningId] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -126,6 +129,33 @@ export default function MyReservations() {
       });
     } finally {
       setAcceptingOfferId(null);
+    }
+  };
+
+  const handleReturnDevice = async () => {
+    if (!reservationToReturn) return;
+    setReturningId(reservationToReturn.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("notify-device-return", {
+        body: { reservation_id: reservationToReturn.id },
+      });
+      if (error) throw error;
+
+      toast({
+        title: "Gerät freigemeldet!",
+        description: "Der Mietvorgang wurde beendet. Unser Team wurde benachrichtigt.",
+      });
+      setReturnDialogOpen(false);
+      setReservationToReturn(null);
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Freimeldung konnte nicht durchgeführt werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setReturningId(null);
     }
   };
 
@@ -333,6 +363,24 @@ export default function MyReservations() {
                         {renderOfferActions(offer)}
                       </div>
                     )}
+                    {r.status === "confirmed" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => {
+                          setReservationToReturn(r);
+                          setReturnDialogOpen(true);
+                        }}
+                        disabled={returningId === r.id}
+                      >
+                        {returningId === r.id ? (
+                          <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird freigemeldet...</>
+                        ) : (
+                          <><LogOut className="h-3.5 w-3.5 mr-1.5" />Gerät freimelden</>
+                        )}
+                      </Button>
+                    )}
                     {r.notes && (
                       <p className="text-xs text-muted-foreground bg-muted/50 rounded p-2">
                         {r.notes}
@@ -359,6 +407,7 @@ export default function MyReservations() {
                   <TableHead>Status</TableHead>
                   <TableHead>Angebot</TableHead>
                   <TableHead>Erstellt</TableHead>
+                  <TableHead className="text-right">Aktionen</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -399,6 +448,26 @@ export default function MyReservations() {
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {formatDate(r.created_at)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {r.status === "confirmed" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setReservationToReturn(r);
+                              setReturnDialogOpen(true);
+                            }}
+                            disabled={returningId === r.id}
+                          >
+                            {returningId === r.id ? (
+                              <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
+                            ) : (
+                              <LogOut className="h-3.5 w-3.5 mr-1" />
+                            )}
+                            Freimelden
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -453,6 +522,58 @@ export default function MyReservations() {
                     <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
                   ) : (
                     <><ThumbsUp className="h-4 w-4 mr-1.5" />Angebot verbindlich annehmen</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Return Device Dialog */}
+      <Dialog open={returnDialogOpen} onOpenChange={setReturnDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <LogOut className="h-5 w-5 text-primary" />
+              Gerät freimelden
+            </DialogTitle>
+            <DialogDescription>
+              Möchten Sie dieses Mietgerät als zurückgegeben melden?
+            </DialogDescription>
+          </DialogHeader>
+          {reservationToReturn && (
+            <div className="space-y-4">
+              <Card>
+                <CardContent className="p-4 space-y-2">
+                  <p className="font-semibold">{reservationToReturn.product_name || reservationToReturn.product_id}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Standort: {locationLabels[reservationToReturn.location] || reservationToReturn.location}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Zeitraum: {formatDate(reservationToReturn.start_date)}
+                    {reservationToReturn.end_date ? ` – ${formatDate(reservationToReturn.end_date)}` : ""}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
+                <p>Mit der Freimeldung wird der Mietvorgang beendet und unser Team über die Rückgabe informiert.</p>
+              </div>
+
+              <div className="flex gap-3 justify-end">
+                <Button variant="outline" onClick={() => setReturnDialogOpen(false)}>
+                  Abbrechen
+                </Button>
+                <Button
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  onClick={handleReturnDevice}
+                  disabled={returningId === reservationToReturn.id}
+                >
+                  {returningId === reservationToReturn.id ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird freigemeldet...</>
+                  ) : (
+                    <><LogOut className="h-4 w-4 mr-1.5" />Gerät freimelden</>
                   )}
                 </Button>
               </div>

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,20 +38,55 @@ export function AdminExtendReservationDialog({ reservation, companyName, open, o
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [newEndDate, setNewEndDate] = useState<Date | undefined>();
+  const [extensionPrice, setExtensionPrice] = useState<string>("");
+
+  // Reset when dialog opens with new reservation
+  useEffect(() => {
+    if (open) {
+      setNewEndDate(undefined);
+      setExtensionPrice("");
+    }
+  }, [open]);
+
+  const currentPrice = reservation
+    ? (reservation.discounted_price ?? reservation.original_price ?? 0)
+    : 0;
+
+  const extensionAmount = parseFloat(extensionPrice) || 0;
+  const newTotalPrice = currentPrice + extensionAmount;
 
   const handleSave = async () => {
     if (!reservation || !newEndDate) return;
     setSaving(true);
 
+    const updateData: Record<string, any> = {
+      end_date: newEndDate.toISOString().split("T")[0],
+    };
+
+    // Update the price if extension price was provided
+    if (extensionAmount > 0) {
+      if (reservation.discounted_price != null) {
+        updateData.discounted_price = newTotalPrice;
+      } else {
+        updateData.original_price = newTotalPrice;
+      }
+    }
+
     const { error } = await supabase
       .from("b2b_reservations")
-      .update({ end_date: newEndDate.toISOString().split("T")[0] })
+      .update(updateData)
       .eq("id", reservation.id);
 
     if (error) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Mietvertrag verlängert", description: `Neues Enddatum: ${format(newEndDate, "dd.MM.yyyy", { locale: de })}` });
+      const priceInfo = extensionAmount > 0
+        ? ` · Aufpreis: ${formatCurrency(extensionAmount)} · Neuer Gesamtpreis: ${formatCurrency(newTotalPrice)}`
+        : "";
+      toast({
+        title: "Mietvertrag verlängert",
+        description: `Neues Enddatum: ${format(newEndDate, "dd.MM.yyyy", { locale: de })}${priceInfo}`,
+      });
       onSaved();
       onOpenChange(false);
     }
@@ -58,13 +94,15 @@ export function AdminExtendReservationDialog({ reservation, companyName, open, o
   };
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
+  const formatCurrency = (n: number) =>
+    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Mietvertrag verlängern</DialogTitle>
-          <DialogDescription>Enddatum für diese Miete anpassen.</DialogDescription>
+          <DialogDescription>Enddatum und Preis für die Verlängerung anpassen.</DialogDescription>
         </DialogHeader>
         {reservation && (
           <div className="space-y-4">
@@ -78,6 +116,9 @@ export function AdminExtendReservationDialog({ reservation, companyName, open, o
                 <p className="text-sm text-muted-foreground">
                   Aktueller Zeitraum: {formatDate(reservation.start_date)}
                   {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : " (offen)"}
+                </p>
+                <p className="text-sm font-medium">
+                  Aktueller Preis: {formatCurrency(currentPrice)}
                 </p>
               </CardContent>
             </Card>
@@ -104,6 +145,34 @@ export function AdminExtendReservationDialog({ reservation, companyName, open, o
                   />
                 </PopoverContent>
               </Popover>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1.5">Aufpreis für Verlängerung (€ netto)</label>
+              <Input
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="z.B. 150,00"
+                value={extensionPrice}
+                onChange={(e) => setExtensionPrice(e.target.value)}
+              />
+              {extensionAmount > 0 && (
+                <div className="mt-2 p-3 rounded-lg bg-muted/50 space-y-1">
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Bisheriger Preis:</span>
+                    <span>{formatCurrency(currentPrice)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Aufpreis Verlängerung:</span>
+                    <span>+ {formatCurrency(extensionAmount)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm font-semibold border-t pt-1">
+                    <span>Neuer Gesamtpreis:</span>
+                    <span>{formatCurrency(newTotalPrice)}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3 justify-end">
