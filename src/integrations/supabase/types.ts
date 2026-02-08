@@ -97,6 +97,123 @@ export type Database = {
           },
         ]
       }
+      b2b_delivery_note_items: {
+        Row: {
+          condition_notes: string | null
+          created_at: string
+          delivery_note_id: string
+          description: string | null
+          id: string
+          product_name: string
+          quantity: number
+          serial_number: string | null
+        }
+        Insert: {
+          condition_notes?: string | null
+          created_at?: string
+          delivery_note_id: string
+          description?: string | null
+          id?: string
+          product_name: string
+          quantity?: number
+          serial_number?: string | null
+        }
+        Update: {
+          condition_notes?: string | null
+          created_at?: string
+          delivery_note_id?: string
+          description?: string | null
+          id?: string
+          product_name?: string
+          quantity?: number
+          serial_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_delivery_note_items_delivery_note_id_fkey"
+            columns: ["delivery_note_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_delivery_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_delivery_notes: {
+        Row: {
+          b2b_profile_id: string
+          created_at: string
+          delivery_note_number: string
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_url: string | null
+          id: string
+          notes: string | null
+          offer_id: string | null
+          reservation_id: string | null
+          signature_data: string | null
+          signed_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id: string
+          created_at?: string
+          delivery_note_number: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          offer_id?: string | null
+          reservation_id?: string | null
+          signature_data?: string | null
+          signed_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string
+          created_at?: string
+          delivery_note_number?: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          offer_id?: string | null
+          reservation_id?: string | null
+          signature_data?: string | null
+          signed_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_delivery_notes_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_delivery_notes_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_delivery_notes_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_invoice_items: {
         Row: {
           created_at: string
@@ -866,6 +983,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_delivery_note_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
       has_role: {

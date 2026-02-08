@@ -19,6 +19,7 @@ import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtend
 import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { AdminCreateReservationDialog } from "@/components/b2b/admin/AdminCreateReservationDialog";
 import { AdminCreateOfferDialog, type ExistingOffer, type ExistingOfferItem } from "@/components/b2b/admin/AdminCreateOfferDialog";
+import { DeliveryNoteDialog } from "@/components/b2b/admin/DeliveryNoteDialog";
 
 // UI
 import { Card, CardContent } from "@/components/ui/card";
@@ -124,7 +125,8 @@ export default function AdminDashboard() {
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
-
+  const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
+  const [deliveryNoteOffer, setDeliveryNoteOffer] = useState<Offer | null>(null);
   // Edit offer state
   const [editingOffer, setEditingOffer] = useState<ExistingOffer | null>(null);
   const [editingOfferItems, setEditingOfferItems] = useState<ExistingOfferItem[]>([]);
@@ -464,6 +466,10 @@ export default function AdminDashboard() {
                 });
               }
             }}
+            onCreateDeliveryNote={(offer) => {
+              setDeliveryNoteOffer(offer);
+              setDeliveryNoteOpen(true);
+            }}
             resendingId={resendingId}
             onRefresh={fetchData}
           />
@@ -716,6 +722,27 @@ export default function AdminDashboard() {
         onCreated={fetchData}
         existingOffer={editingOffer}
         existingItems={editingOfferItems}
+      />
+      {/* Delivery Note */}
+      <DeliveryNoteDialog
+        offer={deliveryNoteOffer}
+        offerItems={offerItems}
+        profile={
+          deliveryNoteOffer
+            ? profiles.find((p) => p.id === deliveryNoteOffer.b2b_profile_id) || null
+            : null
+        }
+        reservation={
+          deliveryNoteOffer?.reservation_id
+            ? reservations.find((r) => r.id === deliveryNoteOffer.reservation_id) || null
+            : null
+        }
+        open={deliveryNoteOpen}
+        onOpenChange={(open) => {
+          setDeliveryNoteOpen(open);
+          if (!open) setDeliveryNoteOffer(null);
+        }}
+        onCreated={fetchData}
       />
     </B2BPortalLayout>
   );

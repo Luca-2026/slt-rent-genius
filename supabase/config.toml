@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.notify-device-return]
 verify_jwt = false
+
+[functions.generate-delivery-note]
+verify_jwt = false
