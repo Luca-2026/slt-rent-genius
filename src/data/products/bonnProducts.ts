@@ -12,6 +12,7 @@ import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import haeckslerLs95_1 from "@/assets/products/haecksler-ls95-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
+import vertikutiererBenzin1 from "@/assets/products/vertikutierer-benzin-1.jpeg";
 // Benzin Bodenhacke images
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -369,8 +370,8 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-vertikutierer-sa38bv",
     name: "Vertikutierer SA38 BV",
     description: "Benzin-Vertikutierer für größere Rasenflächen.",
-    image: vertikutierer1,
-    images: [vertikutierer1, vertikutierer2],
+    image: vertikutiererBenzin1,
+    images: [vertikutiererBenzin1],
     rentwareCode: { bonn: "L3EJDP" },
   },
   {

@@ -16,6 +16,7 @@ import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import haeckslerLs95_1 from "@/assets/products/haecksler-ls95-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
+import vertikutiererBenzin1 from "@/assets/products/vertikutierer-benzin-1.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 
@@ -564,8 +565,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "vertikutierer-sa38-bv",
     name: "Vertikutierer SA38 BV",
     description: "Benzin-Vertikutierer für große Flächen",
-    image: vertikutierer1,
-    images: [vertikutierer1, vertikutierer2],
+    image: vertikutiererBenzin1,
+    images: [vertikutiererBenzin1],
     category: "vertikutierer",
     rentwareCode: { krefeld: "IXDJ8K" }
   },
