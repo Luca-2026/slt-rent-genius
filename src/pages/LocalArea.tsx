@@ -19,13 +19,51 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getAreaBySlug, type LocalArea } from "@/data/localSeoData";
 import { getLocationInfoById } from "@/data/locationData";
 
-// Popular rental categories for SEO
-const rentalCategories = [
-  { id: "anhaenger", name: "Anhänger", description: "Planen-, Koffer- und Baumaschinenanhänger" },
-  { id: "erdbewegung", name: "Erdbewegung", description: "Minibagger, Radlader, Dumper" },
-  { id: "werkzeuge", name: "Werkzeuge", description: "Bohrhammer, Trennschleifer, Akku-Werkzeuge" },
-  { id: "gartenpflege", name: "Gartenpflege", description: "Erdbohrer, Häcksler, Vertikutierer" },
-];
+// Location-specific rental categories for SEO
+const categoriesByLocation: Record<string, { id: string; name: string; description: string }[]> = {
+  krefeld: [
+    { id: "anhaenger", name: "Anhänger", description: "Planen-, Koffer- und Baumaschinenanhänger für Transport und Umzug" },
+    { id: "erdbewegung", name: "Erdbewegung", description: "Minibagger, Radlader, Dumper und Anbaugeräte" },
+    { id: "werkzeuge", name: "Werkzeuge", description: "Bohrhammer, Trennschleifer, Rüttelplatten und Akku-Werkzeuge" },
+    { id: "gartenpflege", name: "Gartenpflege", description: "Erdbohrer, Häcksler, Vertikutierer und mehr" },
+  ],
+  bonn: [
+    { id: "anhaenger", name: "Anhänger", description: "Planen-, Koffer- und Baumaschinenanhänger für Transport und Umzug" },
+    { id: "erdbewegung", name: "Erdbewegung", description: "Minibagger, Radlader, Dumper und Anbaugeräte" },
+    { id: "werkzeuge", name: "Werkzeuge", description: "Bohrhammer, Trennschleifer, Rüttelplatten und Akku-Werkzeuge" },
+    { id: "gartenpflege", name: "Gartenpflege", description: "Erdbohrer, Häcksler, Vertikutierer und mehr" },
+    { id: "buehne", name: "Bühne & Event", description: "Nivtec Bühnensysteme, Podeste und Event-Equipment" },
+    { id: "traversen-rigging", name: "Traversen & Rigging", description: "Milos Traversensysteme, Rigging und Veranstaltungstechnik" },
+  ],
+  muelheim: [
+    { id: "anhaenger", name: "Anhänger", description: "Planen-, Koffer- und Baumaschinenanhänger für Transport und Umzug" },
+    { id: "erdbewegung", name: "Erdbewegung", description: "Minibagger, Radlader, Dumper und Anbaugeräte" },
+    { id: "werkzeuge", name: "Werkzeuge", description: "Bohrhammer, Trennschleifer, Rüttelplatten und Akku-Werkzeuge" },
+    { id: "gartenpflege", name: "Gartenpflege", description: "Erdbohrer, Häcksler, Vertikutierer und mehr" },
+  ],
+};
+
+// Location-specific SEO content
+function getSeoContent(area: LocalArea, locationName: string) {
+  const isBonn = area.locationId === "bonn";
+  const isMuelheim = area.locationId === "muelheim";
+  
+  const equipmentList = isBonn
+    ? "Baumaschinen, Anhängern, Werkzeugen und Event-Equipment (Bühnensysteme, Traversen, Veranstaltungstechnik)"
+    : "Baumaschinen, Anhängern und Werkzeugen";
+
+  const exampleList = isBonn
+    ? "Ob Minibagger für den Gartenbau, Planenanhänger für den Umzug, Nivtec-Bühnensysteme für Ihre Veranstaltung oder Akkuwerkzeuge für die Renovierung"
+    : isMuelheim
+    ? "Ob Minibagger für den Gartenbau, Planenanhänger für den Umzug oder Werkzeuge für die Renovierung"
+    : "Ob Minibagger für den Gartenbau, Planenanhänger für den Umzug oder Akkuwerkzeuge für die Renovierung";
+
+  const specialNote = isBonn
+    ? " Als einziger SLT-Standort mit vollem Event-Sortiment bieten wir zusätzlich professionelle Bühnentechnik, Traversen und Rigging für Veranstaltungen jeder Größe."
+    : "";
+
+  return { equipmentList, exampleList, specialNote };
+}
 
 const benefits = [
   { icon: Truck, title: "Lieferung möglich", text: "Direkt auf Ihre Baustelle" },
@@ -45,8 +83,14 @@ export default function LocalAreaPage() {
 
   const location = getLocationInfoById(area.locationId);
 
-  // Generate SEO-optimized title and meta
-  const pageTitle = `Baumaschinen & Anhänger mieten in ${area.name} | SLT Rental`;
+  const rentalCategories = categoriesByLocation[area.locationId] || categoriesByLocation.krefeld;
+  const seoContent = getSeoContent(area, location?.name || "unserer Filiale");
+
+  // SEO title includes event for Bonn areas
+  const isBonn = area.locationId === "bonn";
+  const pageTitle = isBonn
+    ? `Baumaschinen, Anhänger & Event-Equipment mieten in ${area.name} | SLT Rental`
+    : `Baumaschinen & Anhänger mieten in ${area.name} | SLT Rental`;
   const metaDescription = area.description;
 
   return (
@@ -70,7 +114,7 @@ export default function LocalAreaPage() {
             </nav>
 
             <h1 className="text-3xl lg:text-5xl font-bold text-primary-foreground mb-4">
-              Baumaschinen & Anhänger mieten in {area.name}
+              {isBonn ? `Baumaschinen, Anhänger & Event-Equipment mieten in ${area.name}` : `Baumaschinen & Anhänger mieten in ${area.name}`}
             </h1>
             <p className="text-lg text-primary-foreground/80 max-w-3xl mb-6">
               {area.description}
@@ -141,7 +185,7 @@ export default function LocalAreaPage() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${rentalCategories.length > 4 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-6`}>
             {rentalCategories.map((category, index) => (
               <AnimatedSection key={category.id} delay={index * 100} animation="fade-in-up">
                 <Link to={`/mieten/${area.locationId}/${category.id}`}>
@@ -281,16 +325,17 @@ export default function LocalAreaPage() {
           <div className="max-w-3xl mx-auto prose prose-sm">
             <AnimatedSection>
               <h2 className="text-xl font-bold text-headline mb-4">
-                Baumaschinen und Anhänger mieten in {area.name} – SLT Rental
+                {isBonn
+                  ? `Baumaschinen, Event-Equipment und Anhänger mieten in ${area.name} – SLT Rental`
+                  : `Baumaschinen und Anhänger mieten in ${area.name} – SLT Rental`}
               </h2>
               <p className="text-muted-foreground mb-4">
-                Sie suchen professionelle Mietgeräte in {area.name}? Bei SLT Rental finden Sie eine große Auswahl an 
-                Baumaschinen, Anhängern und Werkzeugen zur Miete. Unser Standort in {location?.name || "Ihrer Nähe"} ist nur {area.distance} km 
+                Sie suchen professionelle Mietgeräte in {area.name}? Bei SLT Rental finden Sie eine große Auswahl an {seoContent.equipmentList} zur Miete. Unser Standort in {location?.name || "Ihrer Nähe"} ist nur {area.distance} km 
                 von {area.name} entfernt und bietet Ihnen flexible Mietoptionen zu fairen Preisen.
               </p>
               <p className="text-muted-foreground mb-4">
-                Ob Minibagger für den Gartenbau, Planenanhänger für den Umzug oder Akkuwerkzeuge für die Renovierung – 
-                wir haben das passende Equipment für Ihr Projekt. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit.
+                {seoContent.exampleList} – 
+                wir haben das passende Equipment für Ihr Projekt. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit.{seoContent.specialNote}
               </p>
               <p className="text-muted-foreground">
                 Neben der Selbstabholung bieten wir auch einen Lieferservice nach {area.name} und Umgebung an. 
