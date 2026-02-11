@@ -31,6 +31,7 @@ import aggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
 import aggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 import aggregat50kva1 from "@/assets/products/aggregat-50kva-1.jpeg";
 import aggregat100kva1 from "@/assets/products/aggregat-100kva-1.jpeg";
+import akkupackBluetti1 from "@/assets/products/akkupack-bluetti-1.png";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -211,6 +212,23 @@ export const aggregateProducts: Product[] = [
       "Tankinhalt": "176 l",
       "Autonomie": "ca. 11 h bei 75 % Last",
       "Kraftstoff": "Diesel",
+    },
+  },
+  {
+    id: "akkupack-bluetti",
+    name: "Bluetti Akkupack 1152 Wh",
+    description: "Tragbare Powerstation mit 1.800 W Maximalleistung – ideal für Baustellen ohne Stromanschluss, Events und Outdoor-Einsätze.",
+    image: akkupackBluetti1,
+    images: [akkupackBluetti1],
+    category: "aggregat",
+    rentwareCode: { krefeld: "" },
+    detailedDescription: "Die Bluetti Powerstation bietet 1.152 Wh Kapazität und bis zu 1.800 W Ausgangsleistung. Vielseitige Anschlüsse (Schuko, USB-A, USB-C, 12V DC) ermöglichen die gleichzeitige Versorgung verschiedener Geräte. Perfekt als mobile Stromversorgung auf Baustellen, bei Veranstaltungen oder im Outdoor-Bereich.",
+    specifications: {
+      "Kapazität": "1.152 Wh",
+      "Max. Leistung": "1.800 W",
+      "Anschlüsse": "2x Schuko, 4x USB-A, 1x USB-C, 1x 12V DC",
+      "Telefon aufladen (10 Wh)": "ca. 115 Mal",
+      "Laptop aufladen (60 Wh)": "ca. 20 Mal",
     },
   },
   {
