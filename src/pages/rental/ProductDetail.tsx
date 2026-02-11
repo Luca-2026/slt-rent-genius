@@ -320,7 +320,7 @@ export default function ProductDetail() {
                     </h2>
                     <div className="aspect-video rounded-xl overflow-hidden border border-border">
                       <iframe
-                        src={product.videoUrl.replace("watch?v=", "embed/")}
+                        src={product.videoUrl.replace("watch?v=", "embed/").replace("/shorts/", "/embed/")}
                         title={`${product.name} Video`}
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
