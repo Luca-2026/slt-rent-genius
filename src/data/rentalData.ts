@@ -155,6 +155,7 @@ export interface Product {
   priceWeekend?: string;
   features?: string[];
   specifications?: Record<string, string>; // Technical specs key-value pairs
+  pdfUrl?: string; // PDF download link (e.g. manual)
   tags?: string[]; // Filter tags
   category?: string; // Product sub-category for sorting
   weightKg?: number;

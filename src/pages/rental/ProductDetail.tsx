@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -327,6 +327,25 @@ export default function ProductDetail() {
                         allowFullScreen
                       />
                     </div>
+                  </div>
+                )}
+
+                {/* PDF Download */}
+                {product.pdfUrl && (
+                  <div className="border-t border-border pt-6 mt-6">
+                    <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
+                      <FileDown className="h-5 w-5 text-primary" />
+                      Betriebsanleitung
+                    </h2>
+                    <a
+                      href={product.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-muted/50 hover:bg-muted rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors"
+                    >
+                      <FileDown className="h-4 w-4 text-primary" />
+                      Anleitung als PDF herunterladen
+                    </a>
                   </div>
                 )}
               </div>
