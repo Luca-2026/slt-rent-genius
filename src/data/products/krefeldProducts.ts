@@ -46,6 +46,9 @@ import scherenbuehneXg0807ac2 from "@/assets/products/scherenbuehne-xg0807ac-2.j
 import gelenkteleskopHr12l1 from "@/assets/products/gelenkteleskop-hr12l-1.jpeg";
 import gelenkteleskopHr12l2 from "@/assets/products/gelenkteleskop-hr12l-2.jpeg";
 import gelenkteleskopHr12l3 from "@/assets/products/gelenkteleskop-hr12l-3.jpeg";
+import mastbuehneZmp091 from "@/assets/products/mastbuehne-zmp09-1.png";
+import mastbuehneZmp092 from "@/assets/products/mastbuehne-zmp09-2.png";
+import mastbuehneZmp093 from "@/assets/products/mastbuehne-zmp09-3.avif";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -346,12 +349,32 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "mastbuehne-11m",
-    name: "11m Mastbühne ZMP09",
-    description: "Kompakte Mastbühne mit 11m Arbeitshöhe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "11m Mastbühne Zoomlion ZMP09",
+    description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
+    image: mastbuehneZmp091,
+    images: [mastbuehneZmp091, mastbuehneZmp092, mastbuehneZmp093],
     category: "mastbuehne",
-    rentwareCode: { krefeld: "JQJ2PS" }
+    rentwareCode: { krefeld: "JQJ2PS" },
+    videoUrl: "https://www.youtube.com/watch?v=9n7ZX-l6Nhg",
+    detailedDescription: "Die Zoomlion ZMP09 ist eine kompakte, elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m seitlicher Reichweite. Die hohe Überbrückungshöhe von 7,75 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (0,99 × 0,76 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg. Zusatzausstattung: 230 V Anschluss im Korb.",
+    specifications: {
+      "Typ": "ZMP09",
+      "Arbeitshöhe": "11,20 m",
+      "Plattformbodenhöhe": "9,20 m",
+      "Max. Reichweite": "3,23 m",
+      "Steigfähigkeit": "25 %",
+      "Überbrückungshöhe": "7,75 m",
+      "Antrieb": "Batterie",
+      "Reifen": "Non-Marking",
+      "Zusatzausstattung": "230 V Anschluss im Korb",
+      "Max. Traglast Plattform": "200 kg",
+      "Max. Personen": "2",
+      "Plattformgröße (L × B)": "0,99 × 0,76 m",
+      "Fahrzeuglänge": "2,70 m",
+      "Fahrzeugbreite": "1,00 m",
+      "Fahrzeughöhe": "1,99 m",
+      "Gesamtgewicht": "2.950 kg",
+    },
   },
   {
     id: "gelenkteleskopsteiger-12m",
