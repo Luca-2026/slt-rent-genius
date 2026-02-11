@@ -82,6 +82,10 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
 
 // Aggregate
 [
+  "scherenbuehne-zs1012ac-1",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "arbeitsbuehnen"));
+
+[
   "aggregat-7kva-1", "aggregat-7kva-2", "aggregat-7kva-3",
   "aggregat-20kva-1",
   "aggregat-2-8kva-1", "aggregat-2-8kva-2",
