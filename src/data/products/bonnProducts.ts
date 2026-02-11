@@ -7,6 +7,7 @@ import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
 import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
 import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
 import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
+import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 // Benzin Bodenhacke images
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
@@ -332,7 +333,8 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-haecksler-axt25tc",
     name: "Häcksler AXT25TC",
     description: "Elektrischer Leisehäcksler für Gartenabfälle.",
-    image: "/placeholder.svg",
+    image: haeckslerAxt1,
+    images: [haeckslerAxt1],
     rentwareCode: { bonn: "3VVG1Y" },
   },
   {
