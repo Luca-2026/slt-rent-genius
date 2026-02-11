@@ -100,7 +100,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "kompressor-5m3-1", "kompressor-5m3-2",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "aggregate"));
 
-["stampfer-gs72xh-1", "ruettelplatte-hvp3050-1", "ruettelplatte-vp2550-1", "ruettelplatte-vp2550-2", "ruettelplatte-vp1644-1", "ruettelplatte-vp1644-2"].forEach((f) => (IMAGE_DIR_MAP[f] = "verdichtung"));
+["stampfer-gs72xh-1", "ruettelplatte-hvp3050-1", "ruettelplatte-hvp3860-1", "ruettelplatte-vp2550-1", "ruettelplatte-vp2550-2", "ruettelplatte-vp1644-1", "ruettelplatte-vp1644-2"].forEach((f) => (IMAGE_DIR_MAP[f] = "verdichtung"));
 
 /**
  * Converts a Vite-hashed asset path to a stable public path.

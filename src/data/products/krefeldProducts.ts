@@ -55,6 +55,7 @@ import ruettelplatteVp2550_2 from "@/assets/products/ruettelplatte-vp2550-2.jpeg
 import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg";
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
+import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -537,13 +538,26 @@ export const verdichtungProducts: Product[] = [
   },
   {
     id: "ruettelplatte-hvp38-60",
-    name: "Rüttelplatte HVP 38/60 250kg reversierbar",
-    description: "Reversierbare Rüttelplatte mit 250kg Einsatzgewicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 250,
+    name: "Rüttelplatte HVP 38/60 247kg reversierbar",
+    description: "Hydraulisch reversierbare Rüttelplatte mit 247 kg Gewicht und 38 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
+    image: ruettelplatteHvp3860,
+    images: [ruettelplatteHvp3860],
+    weightKg: 247,
     category: "ruettelplatte-reversierbar",
-    rentwareCode: { krefeld: "5B9HL3" }
+    rentwareCode: { krefeld: "5B9HL3" },
+    detailedDescription: "Die HVP 38/60 ist eine hydraulisch reversierbare Rüttelplatte mit 247 kg Gewicht und 38 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung besonders effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 6,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
+    specifications: {
+      "Typ": "HVP 38/60",
+      "Gewicht": "247 kg",
+      "Plattengröße (L × B)": "ca. 70 × 60 cm",
+      "Verdichtungsdruck": "38 kN",
+      "Motorleistung": "4,8 kW",
+      "Kraftstoffinhalt": "5,5 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "25 m/min",
+      "Verdichtungstiefe": "ca. 30 cm",
+      "Umschaltung": "Stufenlos hydraulisch",
+    },
   },
 ];
 
