@@ -13,7 +13,8 @@ import {
   Package,
   Calendar,
   Mail,
-  User
+  User,
+  Building2
 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getAreaBySlug, type LocalArea } from "@/data/localSeoData";
@@ -144,6 +145,12 @@ export default function LocalAreaPage() {
                 <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   <Phone className="h-5 w-5 mr-2" />
                   Beratung anfragen
+                </Button>
+              </Link>
+              <Link to="/b2b/login">
+                <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
+                  <Building2 className="h-5 w-5 mr-2" />
+                  B2B-Portal Login
                 </Button>
               </Link>
             </div>
@@ -365,6 +372,12 @@ export default function LocalAreaPage() {
               <Link to="/kontakt">
                 <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   Kontakt aufnehmen
+                </Button>
+              </Link>
+              <Link to="/b2b/login">
+                <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
+                  <Building2 className="h-5 w-5 mr-2" />
+                  B2B-Portal
                 </Button>
               </Link>
             </div>
