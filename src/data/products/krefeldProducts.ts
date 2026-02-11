@@ -35,6 +35,7 @@ import akkupackBluetti1 from "@/assets/products/akkupack-bluetti-1.png";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
+import scherenbuehneZs1012ac1 from "@/assets/products/scherenbuehne-zs1012ac-1.png";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -289,12 +290,30 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "scherenbuehne-12m",
-    name: "12m Scherenbühne ZS1012AC",
-    description: "Elektrische Scherenbühne mit 12m Arbeitshöhe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "12m Scherenbühne Zoomlion ZS1012AC",
+    description: "Elektrische Scherenbühne mit 11,80 m Arbeitshöhe und 1 m Plattformausschub – für bis zu 3 Personen.",
+    image: scherenbuehneZs1012ac1,
+    images: [scherenbuehneZs1012ac1],
     category: "scherenbuehne",
-    rentwareCode: { krefeld: "G98ORG" }
+    rentwareCode: { krefeld: "G98ORG" },
+    detailedDescription: "Die Zoomlion ZS1012AC ist eine kompakte, elektrische Scherenarbeitsbühne mit 11,80 m Arbeitshöhe und 1 m Plattformausschub. Mit Non-Marking-Reifen ist sie ideal für den Inneneinsatz geeignet. Die Plattform (2,30 × 1,12 m) bietet Platz für bis zu 3 Personen bei einer maximalen Traglast von 350 kg. Die Transporthöhe von nur 2 m ermöglicht den Zugang durch Standardtore.",
+    specifications: {
+      "Typ": "ZS1012AC",
+      "Arbeitshöhe": "11,80 m",
+      "Plattformbodenhöhe": "9,80 m",
+      "Plattformausschub": "1 m",
+      "Steigfähigkeit": "25 %",
+      "Antrieb": "Batterie",
+      "Reifen": "Non-Marking",
+      "Max. Traglast Plattform": "350 kg",
+      "Max. Personen": "3",
+      "Plattformgröße (L × B)": "2,30 × 1,12 m",
+      "Fahrzeuglänge": "2,29 m",
+      "Fahrzeugbreite": "1,15 m",
+      "Fahrzeughöhe": "2,53 m",
+      "Transporthöhe": "2 m",
+      "Gesamtgewicht": "2.930 kg",
+    },
   },
   {
     id: "mastbuehne-11m",
