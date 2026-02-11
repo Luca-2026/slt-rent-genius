@@ -41,6 +41,8 @@ import anhaengerbuehneTm18gti2 from "@/assets/products/anhaengerbuehne-tm18gti-2
 import anhaengerbuehneTm18gti3 from "@/assets/products/anhaengerbuehne-tm18gti-3.jpeg";
 import anhaengerbuehneTm18gti4 from "@/assets/products/anhaengerbuehne-tm18gti-4.jpeg";
 import anhaengerbuehneTm18gti5 from "@/assets/products/anhaengerbuehne-tm18gti-5.jpeg";
+import scherenbuehneXg0807ac1 from "@/assets/products/scherenbuehne-xg0807ac-1.jpeg";
+import scherenbuehneXg0807ac2 from "@/assets/products/scherenbuehne-xg0807ac-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -286,12 +288,31 @@ export const aggregateProducts: Product[] = [
 export const arbeitsbuehnenProducts: Product[] = [
   {
     id: "scherenbuehne-8m",
-    name: "8m Scherenbühne XG0807AC",
-    description: "Elektrische Scherenbühne mit 8m Arbeitshöhe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "8m Scherenbühne XCMG XG0807AC",
+    description: "Kompakte elektrische Scherenbühne mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
+    image: scherenbuehneXg0807ac1,
+    images: [scherenbuehneXg0807ac1, scherenbuehneXg0807ac2],
     category: "scherenbuehne",
-    rentwareCode: { krefeld: "TQ7BOF" }
+    rentwareCode: { krefeld: "TQ7BOF" },
+    detailedDescription: "Die XCMG XG0807AC ist eine kompakte, elektrische Scherenarbeitsbühne mit 7,80 m Arbeitshöhe und 90 cm Plattformausschub. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (1,67 × 0,78 m) bietet Platz für bis zu 3 Personen bei einer maximalen Traglast von 230 kg. Die Transporthöhe von nur 1,66 m ermöglicht den Zugang durch niedrige Durchfahrten.",
+    specifications: {
+      "Hersteller": "XCMG",
+      "Typ": "XG0807AC",
+      "Arbeitshöhe": "7,80 m",
+      "Plattformbodenhöhe": "5,80 m / 4,50 m (indoor/outdoor)",
+      "Plattformausschub": "90 cm",
+      "Steigfähigkeit": "25 %",
+      "Antrieb": "Batterie",
+      "Reifen": "Non-Marking",
+      "Max. Traglast Plattform": "230 kg",
+      "Max. Personen": "3",
+      "Plattformgröße (L × B)": "1,67 × 0,78 m",
+      "Fahrzeuglänge": "1,68 m",
+      "Fahrzeugbreite": "0,78 m",
+      "Fahrzeughöhe": "2,16 m",
+      "Transporthöhe": "1,66 m",
+      "Gesamtgewicht": "1.550 kg",
+    },
   },
   {
     id: "scherenbuehne-12m",
