@@ -303,22 +303,24 @@ export default function ProductDetail() {
                 </div>
 
                 {/* CTA Buttons */}
-                <Button
-                  size="lg"
-                  className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover mb-2"
-                  onClick={() => setShowBookingDialog(true)}
-                >
-                  Jetzt mieten
-                </Button>
-                <Link to="/b2b/login" className="block mb-4">
+                <div className="space-y-2 mb-4">
                   <Button
                     size="lg"
-                    variant="default"
-                    className="w-full"
+                    className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                    onClick={() => setShowBookingDialog(true)}
                   >
-                    B2B-Konditionen anfragen
+                    Jetzt mieten
                   </Button>
-                </Link>
+                  <Link to="/b2b/login" className="block">
+                    <Button
+                      size="lg"
+                      variant="default"
+                      className="w-full"
+                    >
+                      B2B-Konditionen anfragen
+                    </Button>
+                  </Link>
+                </div>
 
                 {/* Location Info */}
                 <div className="border-t border-border pt-4 mt-4 space-y-3">
