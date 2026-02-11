@@ -84,6 +84,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
 [
   "scherenbuehne-zs1012ac-1",
   "scherenbuehne-xg0807ac-1", "scherenbuehne-xg0807ac-2",
+  "gelenkteleskop-hr12l-1", "gelenkteleskop-hr12l-2", "gelenkteleskop-hr12l-3",
   "anhaengerbuehne-tm18gti-1", "anhaengerbuehne-tm18gti-2", "anhaengerbuehne-tm18gti-3", "anhaengerbuehne-tm18gti-4", "anhaengerbuehne-tm18gti-5",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "arbeitsbuehnen"));
 

@@ -43,6 +43,9 @@ import anhaengerbuehneTm18gti4 from "@/assets/products/anhaengerbuehne-tm18gti-4
 import anhaengerbuehneTm18gti5 from "@/assets/products/anhaengerbuehne-tm18gti-5.jpeg";
 import scherenbuehneXg0807ac1 from "@/assets/products/scherenbuehne-xg0807ac-1.jpeg";
 import scherenbuehneXg0807ac2 from "@/assets/products/scherenbuehne-xg0807ac-2.jpeg";
+import gelenkteleskopHr12l1 from "@/assets/products/gelenkteleskop-hr12l-1.jpeg";
+import gelenkteleskopHr12l2 from "@/assets/products/gelenkteleskop-hr12l-2.jpeg";
+import gelenkteleskopHr12l3 from "@/assets/products/gelenkteleskop-hr12l-3.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -352,12 +355,30 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "gelenkteleskopsteiger-12m",
-    name: "12m Gelenkteleskopsteiger HR12LE",
-    description: "Gelenkteleskopbühne mit 12m Arbeitshöhe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "12m Gelenkteleskopsteiger Nifty HR12L",
+    description: "Elektrischer Gelenkteleskopsteiger mit 12,10 m Arbeitshöhe und 6,40 m Reichweite – Non-Marking-Reifen für Indoor/Outdoor.",
+    image: gelenkteleskopHr12l1,
+    images: [gelenkteleskopHr12l1, gelenkteleskopHr12l2, gelenkteleskopHr12l3],
     category: "gelenkbuehne",
-    rentwareCode: { krefeld: "XL1WVX" }
+    rentwareCode: { krefeld: "XL1WVX" },
+    detailedDescription: "Der Nifty HR12L ist ein kompakter, elektrisch angetriebener Gelenkteleskopsteiger mit 12,10 m Arbeitshöhe und 6,40 m seitlicher Reichweite. Die Überbrückungshöhe von 4,10 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist er für den Innen- und Außeneinsatz geeignet. Die Plattform (1,20 × 0,85 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg.",
+    specifications: {
+      "Typ": "HR12L",
+      "Arbeitshöhe": "12,10 m",
+      "Plattformbodenhöhe": "10,10 m",
+      "Max. Reichweite": "6,40 m",
+      "Steigfähigkeit": "25 %",
+      "Überbrückungshöhe": "4,10 m",
+      "Antrieb": "Batterie",
+      "Reifen": "Non-Marking",
+      "Max. Traglast Plattform": "200 kg",
+      "Max. Personen": "2",
+      "Plattformgröße (L × B)": "1,20 × 0,85 m",
+      "Fahrzeuglänge": "3,97 m",
+      "Fahrzeugbreite": "1,79 m",
+      "Fahrzeughöhe": "1,98 m",
+      "Gesamtgewicht": "2.540 kg",
+    },
   },
   {
     id: "anhaengerbuehne-18m",
