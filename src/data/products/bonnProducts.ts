@@ -19,6 +19,11 @@ import baumstumpffraeseF360_2 from "@/assets/products/baumstumpffraese-f360-2.jp
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 
+// Aggregat images
+import bonnAggregat7kva1 from "@/assets/products/aggregat-7kva-1.jpeg";
+import bonnAggregat7kva2 from "@/assets/products/aggregat-7kva-2.jpeg";
+import bonnAggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
+
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
@@ -59,10 +64,30 @@ export const bonnAggregateProducts = [
   },
   {
     id: "bonn-aggregat-7-5kva",
-    name: "7,5 kVA Aggregat",
-    description: "Kompaktes Stromaggregat für mittleren Strombedarf.",
-    image: "/placeholder.svg",
+    name: "7,5 kVA Aggregat Kärcher PGG 8/3",
+    description: "Leistungsstarkes Stromaggregat mit 7,5 kVA Drehstrom und 2,5 kVA Wechselstrom – ideal für Baustellen und Events.",
+    image: bonnAggregat7kva1,
+    images: [bonnAggregat7kva1, bonnAggregat7kva2, bonnAggregat7kva3],
     rentwareCode: { bonn: "3PHDI2" },
+    detailedDescription: "Das Kärcher PGG 8/3 ist ein robustes, rollbares Stromaggregat mit 7,5 kVA Drehstrom- und 2,5 kVA Wechselstromleistung. Dank 25-Liter-Tank erreicht es bis zu 7 Stunden Laufzeit bei Nennleistung. Die Anschlüsse (2x Schuko 16A, 1x CEE 16A 5-polig) decken sowohl Standard- als auch Drehstrombedarf ab.",
+    specifications: {
+      "Hersteller": "Kärcher",
+      "Typ": "PGG 8/3",
+      "Spitzenleistung (Wechselstrom)": "2,5 kVA",
+      "Spitzenleistung (Drehstrom)": "7,5 kVA / 7,5 kW",
+      "Dauerleistung (Wechselstrom)": "2,5 kVA / 2 kW",
+      "Dauerleistung (Drehstrom)": "7,5 kVA / 7 kW",
+      "Spannung": "400/230 V",
+      "Anschlüsse": "2x Schuko 16A, 1x CEE 16A 5-Pol",
+      "Drehzahl": "3.000 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht": "ca. 89 kg",
+      "Abmessung (LxBxH)": "75 x 71 x 67 cm",
+      "Tankinhalt": "25 l",
+      "Autonomie": "ca. 7 h bei Nennleistung",
+      "Kraftstoff": "Benzin",
+      "Zusatzausstattung": "Rollbar",
+    },
   },
 ];
 
