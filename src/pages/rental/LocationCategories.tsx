@@ -152,7 +152,11 @@ export default function LocationCategories() {
 
                 {/* Manager */}
                 {locationManagers[location.id] && (
-                  <div className="flex items-center gap-3 bg-primary-foreground/10 rounded-full pl-1 pr-4 py-1">
+                  <a 
+                    href={`mailto:${locationManagers[location.id].email}`}
+                    className="flex items-center gap-3 bg-primary-foreground/10 rounded-full pl-1 pr-4 py-1 hover:bg-primary-foreground/20 transition-colors cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Avatar className="h-10 w-10 border-2 border-primary-foreground/20">
                       {locationManagers[location.id].image ? (
                         <AvatarImage 
@@ -172,15 +176,8 @@ export default function LocationCategories() {
                       <p className="text-xs text-primary-foreground/70">
                         {locationManagers[location.id].role}
                       </p>
-                      <a 
-                        href={`mailto:${locationManagers[location.id].email}`} 
-                        className="text-xs text-primary-foreground/80 hover:text-primary-foreground underline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {locationManagers[location.id].email}
-                      </a>
                     </div>
-                  </div>
+                  </a>
                 )}
               </div>
             </div>
