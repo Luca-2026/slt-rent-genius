@@ -11,8 +11,11 @@ import {
   Clock, 
   CheckCircle2,
   Package,
-  Calendar
+  Calendar,
+  Mail,
+  User
 } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getAreaBySlug, type LocalArea } from "@/data/localSeoData";
 import { getLocationInfoById } from "@/data/locationData";
 
@@ -179,6 +182,16 @@ export default function LocalAreaPage() {
             <div className="max-w-3xl mx-auto">
               <AnimatedSection>
                 <Card className="overflow-hidden">
+                  {/* Location Photo */}
+                  {location.image && (
+                    <div className="w-full h-48 overflow-hidden">
+                      <img 
+                        src={location.image} 
+                        alt={`SLT Rental Standort ${location.name}`} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                   <CardContent className="p-8">
                     <h2 className="text-xl font-bold text-headline mb-6">
                       Ihr SLT Standort für {area.name}
@@ -196,6 +209,29 @@ export default function LocalAreaPage() {
                             <Phone className="h-4 w-4 text-primary shrink-0" />
                             <a href={`tel:${location.phone.replace(/\s/g, "")}`} className="hover:text-primary transition-colors">
                               {location.phone}
+                            </a>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-4 w-4 text-primary shrink-0" />
+                            <a href={`mailto:${location.email}`} className="hover:text-primary transition-colors">
+                              {location.email}
+                            </a>
+                          </div>
+                        </div>
+
+                        {/* Manager */}
+                        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border">
+                          <Avatar className="h-12 w-12">
+                            {location.manager.image ? (
+                              <AvatarImage src={location.manager.image} alt={location.manager.name} />
+                            ) : null}
+                            <AvatarFallback><User className="h-5 w-5" /></AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-semibold text-headline text-sm">{location.manager.name}</p>
+                            <p className="text-xs text-muted-foreground">{location.manager.role}</p>
+                            <a href={`mailto:${location.manager.email}`} className="text-xs text-primary hover:text-accent transition-colors">
+                              {location.manager.email}
                             </a>
                           </div>
                         </div>
