@@ -80,6 +80,11 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "hochdruckreiniger-1",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "gartenpflege"));
 
+// Aggregate
+[
+  "aggregat-7kva-1", "aggregat-7kva-2", "aggregat-7kva-3",
+].forEach((f) => (IMAGE_DIR_MAP[f] = "aggregate"));
+
 /**
  * Converts a Vite-hashed asset path to a stable public path.
  * Vite paths: /assets/bobcat-e10z-1-BhXkL2nP.jpg
