@@ -22,7 +22,7 @@ const steps = [
     icon: Calendar,
     title: "Zeitraum & Standort wählen",
     description: "Wähle zuerst deinen bevorzugten Standort (Krefeld, Bonn oder Mülheim) und den gewünschten Mietzeitraum aus. Der Kalender zeigt dir die Verfügbarkeit in Echtzeit.",
-    tips: ["Weekend-Tarif beachten: Fr-Mo = 1 Tag", "Mindestmietzeit beachten"],
+    tips: ["Weekend-Konditionen: Fr-Mo zu Sonderpreisen", "Mindestmietzeit wird automatisch berechnet"],
   },
   {
     number: "2",
@@ -43,7 +43,7 @@ const steps = [
     icon: Mail,
     title: "Bestätigung erhalten",
     description: "Nach der Buchung erhältst du eine E-Mail mit allen Details: Buchungsnummer, Abholadresse, Öffnungszeiten und Checkliste für die Abholung.",
-    tips: ["Buchung jederzeit einsehbar", "Änderungen per Telefon möglich"],
+    tips: ["Buchung jederzeit einsehbar", "Änderungen per Telefon oder E-Mail möglich (kostenpflichtig)"],
   },
   {
     number: "5",
@@ -158,7 +158,7 @@ export default function HowItWorks() {
               </h2>
               <p className="text-accent-foreground/90 mb-6">
                 Bei vielen Produkten gilt unser beliebter Weekend-Tarif: <br />
-                <strong>Freitag ab 12:00 Uhr abholen, Montag bis 8:00 Uhr zurückgeben – nur 1 Miettag zahlen!</strong>
+                <strong>Freitag ab 12:00 Uhr abholen, Montag bis 8:00 Uhr zurückgeben – zu besonderen Konditionen!</strong>
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-center gap-2">
