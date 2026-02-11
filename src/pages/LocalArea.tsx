@@ -94,7 +94,7 @@ export default function LocalAreaPage() {
                 </Button>
               </Link>
               <Link to="/kontakt">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   <Phone className="h-5 w-5 mr-2" />
                   Beratung anfragen
                 </Button>
@@ -282,7 +282,7 @@ export default function LocalAreaPage() {
                 </Button>
               </Link>
               <Link to="/kontakt">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   Kontakt aufnehmen
                 </Button>
               </Link>
