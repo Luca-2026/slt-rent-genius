@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Search, MessageCircle } from "lucide-react";
+import { AnimatedSection } from "@/components/ui/animated-section";
 
 const faqCategories = [
   {
@@ -102,23 +103,26 @@ export default function FAQ() {
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">
-          <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-            Häufig gestellte Fragen
-          </h1>
-          <p className="text-primary-foreground/80 max-w-2xl mb-6">
-            Hier findest du Antworten auf die häufigsten Fragen rund um Miete, 
-            Buchung, Lieferung und mehr.
-          </p>
+          <AnimatedSection animation="fade-in-up">
+            <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+              Häufig gestellte Fragen
+            </h1>
+            <p className="text-primary-foreground/80 max-w-2xl mb-6">
+              Hier findest du Antworten auf die häufigsten Fragen rund um Miete, 
+              Buchung, Lieferung und mehr.
+            </p>
+          </AnimatedSection>
           
-          {/* Search */}
-          <div className="relative max-w-xl">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Frage suchen..."
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-background text-foreground border border-input focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-          </div>
+          <AnimatedSection animation="fade-in-up" delay={200}>
+            <div className="relative max-w-xl">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Frage suchen..."
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-background text-foreground border border-input focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -126,24 +130,26 @@ export default function FAQ() {
       <section className="py-12 lg:py-20">
         <div className="section-container">
           <div className="max-w-3xl mx-auto">
-            {faqCategories.map((category) => (
-              <div key={category.id} className="mb-10">
-                <h2 className="text-xl font-bold text-headline mb-4 pb-2 border-b border-border">
-                  {category.title}
-                </h2>
-                <Accordion type="single" collapsible className="space-y-2">
-                  {category.questions.map((item, index) => (
-                    <AccordionItem key={index} value={`${category.id}-${index}`} className="border rounded-lg px-4">
-                      <AccordionTrigger className="text-left text-headline hover:text-primary py-4">
-                        {item.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4">
-                        {item.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
+            {faqCategories.map((category, catIndex) => (
+              <AnimatedSection key={category.id} animation="fade-in-up" delay={catIndex * 100}>
+                <div className="mb-10">
+                  <h2 className="text-xl font-bold text-headline mb-4 pb-2 border-b border-border">
+                    {category.title}
+                  </h2>
+                  <Accordion type="single" collapsible className="space-y-2">
+                    {category.questions.map((item, index) => (
+                      <AccordionItem key={index} value={`${category.id}-${index}`} className="border rounded-lg px-4">
+                        <AccordionTrigger className="text-left text-headline hover:text-primary py-4">
+                          {item.q}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground pb-4">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -152,26 +158,28 @@ export default function FAQ() {
       {/* Still Questions */}
       <section className="py-12 lg:py-16 bg-surface-light">
         <div className="section-container text-center">
-          <MessageCircle className="h-12 w-12 text-accent mx-auto mb-4" />
-          <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
-            Deine Frage war nicht dabei?
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-            Kein Problem! Unser Team hilft dir gerne weiter – 
-            per Telefon, E-Mail oder WhatsApp.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/kontakt">
-              <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                Kontakt aufnehmen
-              </Button>
-            </Link>
-            <a href="tel:+4921519328953">
-              <Button variant="outline">
-                02151 / 932 89 53 anrufen
-              </Button>
-            </a>
-          </div>
+          <AnimatedSection animation="scale-in">
+            <MessageCircle className="h-12 w-12 text-accent mx-auto mb-4" />
+            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+              Deine Frage war nicht dabei?
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto mb-6">
+              Kein Problem! Unser Team hilft dir gerne weiter – 
+              per Telefon, E-Mail oder WhatsApp.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/kontakt">
+                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                  Kontakt aufnehmen
+                </Button>
+              </Link>
+              <a href="tel:+4921519328953">
+                <Button variant="outline">
+                  02151 / 932 89 53 anrufen
+                </Button>
+              </a>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </Layout>

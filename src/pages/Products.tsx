@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import { WeightFilter, weightRanges } from "@/components/products/WeightFilter";
 import { RentwareSearch } from "@/components/products/RentwareSearch";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
+import { AnimatedSection } from "@/components/ui/animated-section";
 
-// Category Icons
+// Imports for category icons
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
 import iconBuehne from "@/assets/icons/category-buehne.png";
@@ -26,7 +27,6 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 
-// Category mapping with Rentware article IDs
 const categories = [
   {
     id: "bagger-radlader",
@@ -152,8 +152,7 @@ const categories = [
   },
 ];
 
-// Rentware Article Widget Component
-function RentwareArticle({ articleId, view = "cards" }: { articleId: string; view?: string }) {
+function RentwareArticleWidget({ articleId, view = "cards" }: { articleId: string; view?: string }) {
   useEffect(() => {
     const containerId = `rentware-article-${articleId}`;
     const container = document.getElementById(containerId);
@@ -169,16 +168,14 @@ function RentwareArticle({ articleId, view = "cards" }: { articleId: string; vie
   return <div id={`rentware-article-${articleId}`} className="min-h-[400px]" />;
 }
 
-// Article type definition
-interface RentwareArticle {
+interface RentwareArticleType {
   id: string;
   view: string;
   name: string;
   weightKg?: number;
 }
 
-// Rentware Articles List Component
-function RentwareArticlesList({ articles }: { articles: RentwareArticle[] }) {
+function RentwareArticlesList({ articles }: { articles: RentwareArticleType[] }) {
   if (!articles || articles.length === 0) return null;
   
   return (
@@ -193,7 +190,7 @@ function RentwareArticlesList({ articles }: { articles: RentwareArticle[] }) {
               </span>
             )}
           </div>
-          <RentwareArticle articleId={article.id} view={article.view} />
+          <RentwareArticleWidget articleId={article.id} view={article.view} />
         </div>
       ))}
     </div>
@@ -205,7 +202,6 @@ export default function Products() {
   const selectedCategory = categories.find(c => c.id === category);
   const [weightFilter, setWeightFilter] = useState("all");
 
-  // Filter articles by weight
   const getFilteredArticles = () => {
     if (!selectedCategory?.rentwareArticles) return [];
     if (weightFilter === "all") return selectedCategory.rentwareArticles;
@@ -221,55 +217,51 @@ export default function Products() {
 
   const filteredArticles = getFilteredArticles();
 
-  // If a category is selected, show the category detail view with Rentware
   if (selectedCategory) {
     return (
       <Layout>
-        {/* Category Header */}
         <section className="bg-primary py-8 lg:py-12">
           <div className="section-container">
-            <Link 
-              to="/produkte" 
-              className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Zurück zur Übersicht
-            </Link>
-            
-            <div className="flex items-center gap-6">
-              <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
-                <img 
-                  src={selectedCategory.image} 
-                  alt={selectedCategory.title}
-                  className="w-full h-full object-contain"
-                />
+            <AnimatedSection animation="fade-in-up">
+              <Link 
+                to="/produkte" 
+                className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Zurück zur Übersicht
+              </Link>
+              
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 bg-background rounded-xl p-3 flex items-center justify-center">
+                  <img 
+                    src={selectedCategory.image} 
+                    alt={selectedCategory.title}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
+                    {selectedCategory.title}
+                  </h1>
+                  <p className="text-primary-foreground/80 mt-1">
+                    {selectedCategory.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                  {selectedCategory.title}
-                </h1>
-                <p className="text-primary-foreground/80 mt-1">
-                  {selectedCategory.description}
-                </p>
-              </div>
-            </div>
+            </AnimatedSection>
           </div>
         </section>
 
-        {/* Rentware Search Widget with Delivery Calculator */}
         {selectedCategory.rentwareSearch && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Rentware Products */}
                 <div className="lg:col-span-2">
                   <RentwareSearch 
                     config={selectedCategory.rentwareSearch} 
                     categoryId={selectedCategory.id} 
                   />
                 </div>
-                
-                {/* Delivery Calculator Sidebar */}
                 <div className="lg:col-span-1">
                   <div className="sticky top-4">
                     <DeliveryCalculatorCompact productCategoryId={selectedCategory.id} />
@@ -280,11 +272,9 @@ export default function Products() {
           </section>
         )}
 
-        {/* Rentware Individual Articles (fallback) */}
         {!selectedCategory.rentwareSearch && selectedCategory.rentwareArticles && selectedCategory.rentwareArticles.length > 0 && (
           <section className="py-8 lg:py-12">
             <div className="section-container">
-              {/* Weight Filter for Bagger category */}
               {selectedCategory.hasWeightFilter && (
                 <div className="mb-6 flex items-center gap-4">
                   <span className="text-muted-foreground">Filtern nach Größe:</span>
@@ -315,29 +305,32 @@ export default function Products() {
           </section>
         )}
 
-        {/* Other Categories */}
         <section className="py-8 lg:py-12 bg-surface-light">
           <div className="section-container">
-            <h2 className="text-xl font-bold text-headline mb-6">Weitere Kategorien</h2>
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-xl font-bold text-headline mb-6">Weitere Kategorien</h2>
+            </AnimatedSection>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {categories
                 .filter(c => c.id !== selectedCategory.id)
                 .slice(0, 8)
-                .map((cat) => (
-                  <Link key={cat.id} to={`/produkte/${cat.id}`}>
-                    <Card className="h-full hover:shadow-md transition-shadow group">
-                      <div className="aspect-square bg-muted flex items-center justify-center p-4">
-                        <img 
-                          src={cat.image} 
-                          alt={cat.title}
-                          className="w-3/4 h-3/4 object-contain group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-medium text-sm text-headline text-center">{cat.title}</h3>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                .map((cat, index) => (
+                  <AnimatedSection key={cat.id} animation="scale-in" delay={index * 60}>
+                    <Link to={`/produkte/${cat.id}`}>
+                      <Card className="h-full hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
+                        <div className="aspect-square bg-muted flex items-center justify-center p-4">
+                          <img 
+                            src={cat.image} 
+                            alt={cat.title}
+                            className="w-3/4 h-3/4 object-contain group-hover:scale-105 transition-transform"
+                          />
+                        </div>
+                        <CardContent className="p-3">
+                          <h3 className="font-medium text-sm text-headline text-center">{cat.title}</h3>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </AnimatedSection>
                 ))}
             </div>
           </div>
@@ -349,73 +342,76 @@ export default function Products() {
   // Main products overview
   return (
     <Layout>
-      {/* Hero with Rentware Search */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">
-          <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-            Unsere Mietprodukte
-          </h1>
-          <p className="text-primary-foreground/80 max-w-2xl mb-6">
-            Über 800 Produkte in 16 Kategorien – von Baumaschinen bis Event-Equipment. 
-            Alles online buchbar mit transparenten Preisen.
-          </p>
+          <AnimatedSection animation="fade-in-up">
+            <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+              Unsere Mietprodukte
+            </h1>
+            <p className="text-primary-foreground/80 max-w-2xl mb-6">
+              Über 800 Produkte in 16 Kategorien – von Baumaschinen bis Event-Equipment. 
+              Alles online buchbar mit transparenten Preisen.
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Categories */}
-
-      {/* Categories */}
       <section className="py-12 lg:py-16">
         <div className="section-container">
-          <h2 className="text-2xl font-bold text-headline mb-8">Kategorien</h2>
+          <AnimatedSection animation="fade-in-up">
+            <h2 className="text-2xl font-bold text-headline mb-8">Kategorien</h2>
+          </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((cat) => (
-              <Link key={cat.id} to={`/produkte/${cat.id}`}>
-                <Card className="category-card h-full group">
-                  <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-4">
-                    <img
-                      src={cat.image}
-                      alt={cat.title}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-bold text-headline">{cat.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{cat.description}</p>
-                    <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
-                      Kategorie ansehen <ArrowRight className="ml-1 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
+            {categories.map((cat, index) => (
+              <AnimatedSection key={cat.id} animation="fade-in-up" delay={index * 60}>
+                <Link to={`/produkte/${cat.id}`}>
+                  <Card className="category-card h-full group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-4">
+                      <img
+                        src={cat.image}
+                        alt={cat.title}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-bold text-headline">{cat.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{cat.description}</p>
+                      <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
+                        Kategorie ansehen <ArrowRight className="ml-1 h-4 w-4" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Weekend Tarif Info */}
       <section className="py-12 lg:py-16 bg-surface-light">
         <div className="section-container">
-          <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
-            <div className="max-w-2xl">
-              <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
-                💰 Spare mit unserem Weekend-Tarif
-              </span>
-              <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
-                Freitag leihen, Montag zurückgeben – nur 1 Tag zahlen!
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Bei vielen Produkten gilt unser beliebter Weekend-Tarif: Du holst Freitagmittag ab 
-                und bringst das Gerät Montag früh zurück – bezahlt wird nur ein Miettag.
-              </p>
-              <Link to="/so-funktionierts">
-                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                  Mehr zum Weekend-Tarif
-                </Button>
-              </Link>
+          <AnimatedSection animation="fade-in-up">
+            <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
+              <div className="max-w-2xl">
+                <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
+                  💰 Spare mit unserem Weekend-Tarif
+                </span>
+                <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+                  Freitag leihen, Montag zurückgeben – nur 1 Tag zahlen!
+                </h2>
+                <p className="text-muted-foreground mb-6">
+                  Bei vielen Produkten gilt unser beliebter Weekend-Tarif: Du holst Freitagmittag ab 
+                  und bringst das Gerät Montag früh zurück – bezahlt wird nur ein Miettag.
+                </p>
+                <Link to="/so-funktionierts">
+                  <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                    Mehr zum Weekend-Tarif
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
     </Layout>
