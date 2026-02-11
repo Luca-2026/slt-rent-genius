@@ -34,6 +34,7 @@ import aggregat100kva1 from "@/assets/products/aggregat-100kva-1.jpeg";
 import akkupackBluetti1 from "@/assets/products/akkupack-bluetti-1.png";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
+import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -214,6 +215,31 @@ export const aggregateProducts: Product[] = [
       "Tankinhalt": "176 l",
       "Autonomie": "ca. 11 h bei 75 % Last",
       "Kraftstoff": "Diesel",
+    },
+  },
+  {
+    id: "aggregat-80kva",
+    name: "80 kVA Aggregat Doosan G80",
+    description: "Leistungsstarkes Diesel-Stromaggregat (EU Stage V) mit 90 kVA Spitzenleistung – für große Baustellen und Veranstaltungen.",
+    image: aggregat80kva1,
+    images: [aggregat80kva1],
+    category: "aggregat",
+    rentwareCode: { krefeld: "" },
+    detailedDescription: "Das Doosan G80 ist ein schallgedämmtes Diesel-Stromaggregat mit 90 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    specifications: {
+      "Spitzenleistung": "90 kVA",
+      "Dauerleistung": "80 kVA / 64 kW",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "2x Schuko 16A, 1x CEE 32A 5-Pol, 1x CEE 63A 5-Pol, 1x CEE 125A 5-Pol",
+      "Drehzahl": "1.500 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht": "ca. 2.061 kg",
+      "Abmessung (LxBxH)": "187 × 82 × 149,5 cm",
+      "Tankinhalt": "176 l",
+      "Autonomie": "ca. 11 h bei 75 % Last",
+      "Kraftstoff": "Diesel",
+      "Zusatzausstattung": "Optional mit Anhänger",
     },
   },
   {
