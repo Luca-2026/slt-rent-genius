@@ -294,7 +294,7 @@ export default function About() {
               </Button>
             </Link>
             <Link to="/kontakt">
-              <Button variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <Button variant="outline" className="border-primary text-primary bg-primary-foreground hover:bg-primary hover:text-primary-foreground">
                 Kontakt aufnehmen
               </Button>
             </Link>
