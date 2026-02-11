@@ -1,6 +1,10 @@
 // Bonn Location Products
 // Images imported from shared assets
 
+// Benzin Bodenhacke images
+import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
+import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
+
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
@@ -303,7 +307,8 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-bodenhacke-af1212",
     name: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212",
     description: "Kraftvolle Gartenfräse für Bodenbearbeitung.",
-    image: "/placeholder.svg",
+    image: benzinBodenhacke1,
+    images: [benzinBodenhacke1, benzinBodenhacke2],
     rentwareCode: { bonn: "1JEK78" },
   },
   {
