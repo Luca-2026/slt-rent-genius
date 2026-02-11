@@ -1,6 +1,8 @@
 // Bonn Location Products
 // Images imported from shared assets
 
+import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
+import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
 // Benzin Bodenhacke images
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -300,7 +302,8 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-erdbohrer-benzin",
     name: "Benzin-Erdbohrer",
     description: "Handlicher Erdbohrer für Pflanzlöcher und Pfähle.",
-    image: "/placeholder.svg",
+    image: benzinErdbohrer1,
+    images: [benzinErdbohrer1, benzinErdbohrer2],
     rentwareCode: { bonn: "9FJJ7O" },
   },
   {
