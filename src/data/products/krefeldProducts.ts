@@ -32,6 +32,8 @@ import aggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 import aggregat50kva1 from "@/assets/products/aggregat-50kva-1.jpeg";
 import aggregat100kva1 from "@/assets/products/aggregat-100kva-1.jpeg";
 import akkupackBluetti1 from "@/assets/products/akkupack-bluetti-1.png";
+import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
+import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -233,12 +235,27 @@ export const aggregateProducts: Product[] = [
   },
   {
     id: "kompressor-5m3",
-    name: "5m³ Kompressor",
-    description: "Leistungsstarker Baukompressor",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "5 m³ Kompressor Doosan 7/55",
+    description: "Leistungsstarker Diesel-Baukompressor (EU Stage V) mit 5 m³/min Volumenstrom – inkl. 8 Betriebsstunden/Tag.",
+    image: kompressor5m3_1,
+    images: [kompressor5m3_1, kompressor5m3_2],
     category: "kompressor",
-    rentwareCode: { krefeld: "4UGSQN" }
+    rentwareCode: { krefeld: "4UGSQN" },
+    detailedDescription: "Der Doosan 7/55 ist ein robuster Diesel-Baukompressor mit 5 m³/min Volumenstrom und max. 6,8 bar Druck. Die EU Stage V Emissionsklasse sorgt für umweltschonenden Betrieb. Der 65-Liter-Tank ermöglicht längere Einsätze. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    specifications: {
+      "Hersteller": "Doosan",
+      "Typ": "7/55",
+      "Volumenstrom": "5 m³/min",
+      "Max. Druck": "6,8 bar",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "3x",
+      "Drehzahl": "1.500 U/min",
+      "Gewicht": "ca. 750 kg",
+      "Tankinhalt": "65 l",
+      "Kraftstoff": "Diesel",
+      "Zusatzausstattung": "Optional mit Anhänger",
+    },
   },
 ];
 

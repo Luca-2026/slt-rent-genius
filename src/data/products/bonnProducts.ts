@@ -24,6 +24,8 @@ import bonnAggregat7kva1 from "@/assets/products/aggregat-7kva-1.jpeg";
 import bonnAggregat7kva2 from "@/assets/products/aggregat-7kva-2.jpeg";
 import bonnAggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
 import bonnAggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
+import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
+import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -320,6 +322,29 @@ export const bonnAnhaengerProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "3S1FQQ" },
     weightClass: "1300-2000",
+  },
+  {
+    id: "bonn-kompressor-5m3",
+    name: "5 m³ Kompressor Doosan 7/55",
+    description: "Leistungsstarker Diesel-Baukompressor (EU Stage V) mit 5 m³/min Volumenstrom – inkl. 8 Betriebsstunden/Tag.",
+    image: kompressor5m3_1,
+    images: [kompressor5m3_1, kompressor5m3_2],
+    rentwareCode: { bonn: "" },
+    detailedDescription: "Der Doosan 7/55 ist ein robuster Diesel-Baukompressor mit 5 m³/min Volumenstrom und max. 6,8 bar Druck. Die EU Stage V Emissionsklasse sorgt für umweltschonenden Betrieb. Der 65-Liter-Tank ermöglicht längere Einsätze. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    specifications: {
+      "Hersteller": "Doosan",
+      "Typ": "7/55",
+      "Volumenstrom": "5 m³/min",
+      "Max. Druck": "6,8 bar",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "3x",
+      "Drehzahl": "1.500 U/min",
+      "Gewicht": "ca. 750 kg",
+      "Tankinhalt": "65 l",
+      "Kraftstoff": "Diesel",
+      "Zusatzausstattung": "Optional mit Anhänger",
+    },
   },
 ];
 
