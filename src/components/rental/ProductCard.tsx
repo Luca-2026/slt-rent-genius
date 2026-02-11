@@ -163,7 +163,7 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
               variant="default"
               className="w-full"
             >
-              Als Geschäftskunde mieten
+              B2B-Konditionen anfragen
             </Button>
           </Link>
         </div>
