@@ -6,6 +6,7 @@ import type { Product } from "../rentalData";
 // Benzin Bodenhacke images
 import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
 import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
+import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 
@@ -464,8 +465,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "freischneider-ps162",
     name: "Freischneider PS162",
     description: "Benzin-Freischneider für Dickicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: freischneider1,
+    images: [freischneider1],
     category: "freischneider",
     rentwareCode: { krefeld: "86O771" }
   },

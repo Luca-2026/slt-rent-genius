@@ -3,6 +3,7 @@
 
 import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
 import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
+import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 // Benzin Bodenhacke images
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -295,7 +296,8 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-freischneider-ps162",
     name: "Benzin-Freischneider PS162",
     description: "Leistungsstarker Freischneider für Gras und Gestrüpp.",
-    image: "/placeholder.svg",
+    image: freischneider1,
+    images: [freischneider1],
     rentwareCode: { bonn: "UISB2E" },
   },
   {
