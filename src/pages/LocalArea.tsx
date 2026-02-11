@@ -150,7 +150,7 @@ export default function LocalAreaPage() {
               <Link to="/b2b/login">
                 <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   <Building2 className="h-5 w-5 mr-2" />
-                  B2B-Portal Login
+                  B2B-Konditionen anfragen
                 </Button>
               </Link>
             </div>
@@ -377,7 +377,7 @@ export default function LocalAreaPage() {
               <Link to="/b2b/login">
                 <Button size="lg" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">
                   <Building2 className="h-5 w-5 mr-2" />
-                  B2B-Portal
+                  B2B-Konditionen anfragen
                 </Button>
               </Link>
             </div>
