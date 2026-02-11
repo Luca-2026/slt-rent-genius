@@ -205,6 +205,11 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
+        {/* Info text */}
+        <p className="text-xs text-muted-foreground">
+          Die Lieferkosten dienen der Kalkulation. Wählen Sie im Buchungsschritt „Lieferung gewünscht" – wir fügen die Kosten Ihrem Auftrag hinzu.
+        </p>
+
         {/* Non-dropdown: show category name */}
         {!showCategoryDropdown && (
           <p className="text-sm text-muted-foreground">
