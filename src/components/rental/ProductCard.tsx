@@ -117,13 +117,13 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
       </div>
 
       {/* Content */}
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
+      <CardContent className="p-4 flex flex-col flex-1">
+        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 min-h-[2.5rem]">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">
             {product.description}
           </p>
         )}
@@ -175,7 +175,7 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
   if (linkTo) {
     return (
       <Link to={linkTo} className="block h-full">
-        <Card className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden">
+        <Card className="h-full flex flex-col group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden">
           {cardContent}
         </Card>
       </Link>
@@ -185,7 +185,7 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
   // Otherwise, use onClick handler
   return (
     <Card 
-      className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden"
+      className="h-full flex flex-col group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden"
       onClick={handleCardClick}
     >
       {cardContent}
