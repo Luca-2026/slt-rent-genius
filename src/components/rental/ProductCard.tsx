@@ -140,7 +140,7 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
           </div>
           
           <Button 
-            size="sm" 
+            size="default" 
             className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
             onClick={(e) => {
               if (onClick && !linkTo) {
@@ -159,7 +159,7 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <Button 
-              size="sm" 
+              size="default" 
               variant="default"
               className="w-full"
             >
