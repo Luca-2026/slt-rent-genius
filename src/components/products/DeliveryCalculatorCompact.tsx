@@ -210,12 +210,6 @@ export function DeliveryCalculatorCompact({
           Die Lieferkosten dienen der Kalkulation. Wählen Sie im Buchungsschritt „Lieferung gewünscht" – wir fügen die Kosten Ihrem Auftrag hinzu.
         </p>
 
-        {/* Non-dropdown: show category name */}
-        {!showCategoryDropdown && (
-          <p className="text-sm text-muted-foreground">
-            Für {selectedCategory.name}
-          </p>
-        )}
 
         {/* Distance Slider */}
         <div className="space-y-2">
