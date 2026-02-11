@@ -23,10 +23,10 @@ const locationImages: Record<string, string> = {
 };
 
 // Location managers
-const locationManagers: Record<string, { name: string; role: string; image: string | null }> = {
-  krefeld: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt },
-  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel },
-  muelheim: { name: "Andreas Scherzow", role: "Standortleiter", image: null },
+const locationManagers: Record<string, { name: string; role: string; image: string | null; email: string }> = {
+  krefeld: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
+  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
+  muelheim: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "a.scherzow@slt-rental.de" },
 };
 
 // Location descriptions
@@ -172,6 +172,13 @@ export default function LocationCategories() {
                       <p className="text-xs text-primary-foreground/70">
                         {locationManagers[location.id].role}
                       </p>
+                      <a 
+                        href={`mailto:${locationManagers[location.id].email}`} 
+                        className="text-xs text-primary-foreground/80 hover:text-primary-foreground underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {locationManagers[location.id].email}
+                      </a>
                     </div>
                   </div>
                 )}
