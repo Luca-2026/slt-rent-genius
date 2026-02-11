@@ -81,6 +81,7 @@ export const arbeitsbuehnenFilterSections: FilterSection[] = [
       { id: "mastbuehne", label: "Mastbühne", sublabel: "Kompakt & wendig" },
       { id: "gelenkbuehne", label: "Gelenkbühne", sublabel: "Flexibler Ausleger" },
       { id: "teleskopbuehne", label: "Teleskopbühne", sublabel: "Große Reichweite" },
+      { id: "anhaengerbuehne", label: "Anhänger-Arbeitsbühne", sublabel: "Mobil & straßentauglich" },
     ],
   },
   {
