@@ -303,7 +303,7 @@ export default function ProductDetail() {
                 </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col items-center space-y-2 mb-4">
+                <div className="space-y-2 mb-4">
                   <Button
                     size="lg"
                     className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
