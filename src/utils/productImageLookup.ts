@@ -100,6 +100,8 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "kompressor-5m3-1", "kompressor-5m3-2",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "aggregate"));
 
+["ruettelplatte-hvp3050-1"].forEach((f) => (IMAGE_DIR_MAP[f] = "verdichtung"));
+
 /**
  * Converts a Vite-hashed asset path to a stable public path.
  * Vite paths: /assets/bobcat-e10z-1-BhXkL2nP.jpg
