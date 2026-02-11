@@ -196,6 +196,19 @@ export const kbArticles: KBArticle[] = [
     updatedAt: "2026-02-11",
   },
 
+  // Arbeitsbühnen
+  {
+    id: "mastbuehne-zmp09-video",
+    title: "Mastbühne Zoomlion ZMP09 – Produktvideo",
+    description: "Video zur elektrischen Mastbühne ZMP09 mit 11,20 m Arbeitshöhe: Funktionsweise, Bedienung und Einsatzbeispiele.",
+    categoryId: "arbeitsbuehnen",
+    productIds: ["mastbuehne-11m"],
+    type: "video",
+    videoUrl: "https://www.youtube.com/watch?v=9n7ZX-l6Nhg",
+    tags: ["mastbühne", "zoomlion", "zmp09", "arbeitsbühne", "video", "11m", "elektro"],
+    updatedAt: "2026-02-11",
+  },
+
   // Verdichtung
   {
     id: "ruettelplatte-bedienung",
