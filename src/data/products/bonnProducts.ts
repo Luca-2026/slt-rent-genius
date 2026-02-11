@@ -13,6 +13,8 @@ import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import haeckslerLs95_1 from "@/assets/products/haecksler-ls95-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import vertikutiererBenzin1 from "@/assets/products/vertikutierer-benzin-1.jpeg";
+import baumstumpffraeseF360_1 from "@/assets/products/baumstumpffraese-f360-1.jpg";
+import baumstumpffraeseF360_2 from "@/assets/products/baumstumpffraese-f360-2.jpeg";
 // Benzin Bodenhacke images
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -329,8 +331,24 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-baumstumpffraese-f360",
     name: "Baumstumpffräse F-360",
-    description: "Fräst Baumstümpfe bis unter die Erdoberfläche.",
-    image: "/placeholder.svg",
+    description: "Einachsige Baumstumpffräse mit Honda GX-390 Motor",
+    detailedDescription: "Einachsige Baumstumpffräse ohne Fahrantrieb mit auf Drehkranz gelagertem Oberteil und 60° Schwenkbereich. Angetrieben vom Honda GX-390 Motor (8,2 kW / 11 PS) mit Seilzugstart. Das Schneidrad mit acht DoublePro-Fräsmessern wird über einen dreifachen Keilriementrieb direkt angetrieben. Betriebsbremse auf beide Räder wirkend, Maschinenbreite 650 mm.",
+    image: baumstumpffraeseF360_1,
+    images: [baumstumpffraeseF360_1, baumstumpffraeseF360_2],
+    videoUrl: "https://www.youtube.com/shorts/rqARqFtQB7k",
+    pdfUrl: "/downloads/baumstumpffraese-f360-anleitung.pdf",
+    specifications: {
+      "Motor": "Honda GX-390",
+      "Leistung": "8,2 kW / 11 PS",
+      "Start": "Seilzugstart",
+      "Fräsmesser": "8× DoublePro",
+      "Antrieb": "Dreifacher Keilriementrieb",
+      "Schwenkbereich": "60°",
+      "Maschinenbreite": "650 mm",
+      "Bauart": "Einachsig, ohne Fahrantrieb",
+      "Drehkranz": "Ja, Oberteil gelagert",
+      "Bremse": "Betriebsbremse auf beide Räder",
+    },
     rentwareCode: { bonn: "W4I4YI" },
   },
   {

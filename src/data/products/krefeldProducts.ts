@@ -17,6 +17,8 @@ import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import haeckslerLs95_1 from "@/assets/products/haecksler-ls95-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import vertikutiererBenzin1 from "@/assets/products/vertikutierer-benzin-1.jpeg";
+import baumstumpffraeseF360_1 from "@/assets/products/baumstumpffraese-f360-1.jpg";
+import baumstumpffraeseF360_2 from "@/assets/products/baumstumpffraese-f360-2.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 
@@ -519,9 +521,24 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "baumstumpffraese-f360",
     name: "Baumstumpffräse F-360",
-    description: "Fräse zum Entfernen von Baumstümpfen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Einachsige Baumstumpffräse mit Honda GX-390 Motor",
+    detailedDescription: "Einachsige Baumstumpffräse ohne Fahrantrieb mit auf Drehkranz gelagertem Oberteil und 60° Schwenkbereich. Angetrieben vom Honda GX-390 Motor (8,2 kW / 11 PS) mit Seilzugstart. Das Schneidrad mit acht DoublePro-Fräsmessern wird über einen dreifachen Keilriementrieb direkt angetrieben. Betriebsbremse auf beide Räder wirkend, Maschinenbreite 650 mm.",
+    image: baumstumpffraeseF360_1,
+    images: [baumstumpffraeseF360_1, baumstumpffraeseF360_2],
+    videoUrl: "https://www.youtube.com/shorts/rqARqFtQB7k",
+    pdfUrl: "/downloads/baumstumpffraese-f360-anleitung.pdf",
+    specifications: {
+      "Motor": "Honda GX-390",
+      "Leistung": "8,2 kW / 11 PS",
+      "Start": "Seilzugstart",
+      "Fräsmesser": "8× DoublePro",
+      "Antrieb": "Dreifacher Keilriementrieb",
+      "Schwenkbereich": "60°",
+      "Maschinenbreite": "650 mm",
+      "Bauart": "Einachsig, ohne Fahrantrieb",
+      "Drehkranz": "Ja, Oberteil gelagert",
+      "Bremse": "Betriebsbremse auf beide Räder",
+    },
     category: "baumstumpffraese",
     rentwareCode: { krefeld: "YJ43UU" }
   },
