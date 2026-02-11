@@ -130,30 +130,28 @@ export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
 
         {/* Pricing */}
         <div className="space-y-2 mt-auto">
-          <div className="flex items-end justify-between">
-            <div>
-              {product.pricePerDay && (
-                <p className="text-lg font-bold text-primary">
-                  {product.pricePerDay}
-                  <span className="text-sm font-normal text-muted-foreground">/Tag</span>
-                </p>
-              )}
-            </div>
-            
-            <Button 
-              size="sm" 
-              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-              onClick={(e) => {
-                if (onClick && !linkTo) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onClick();
-                }
-              }}
-            >
-              Als Privatkunde mieten
-            </Button>
+          <div>
+            {product.pricePerDay && (
+              <p className="text-lg font-bold text-primary mb-2">
+                {product.pricePerDay}
+                <span className="text-sm font-normal text-muted-foreground">/Tag</span>
+              </p>
+            )}
           </div>
+          
+          <Button 
+            size="sm" 
+            className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            onClick={(e) => {
+              if (onClick && !linkTo) {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick();
+              }
+            }}
+          >
+            Als Privatkunde mieten
+          </Button>
           
           <Link 
             to="/b2b/login" 
