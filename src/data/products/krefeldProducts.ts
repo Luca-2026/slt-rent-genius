@@ -49,6 +49,7 @@ import gelenkteleskopHr12l3 from "@/assets/products/gelenkteleskop-hr12l-3.jpeg"
 import mastbuehneZmp091 from "@/assets/products/mastbuehne-zmp09-1.png";
 import mastbuehneZmp092 from "@/assets/products/mastbuehne-zmp09-2.png";
 import mastbuehneZmp093 from "@/assets/products/mastbuehne-zmp09-3.avif";
+import ruettelplatteHvp3050 from "@/assets/products/ruettelplatte-hvp3050-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -468,13 +469,26 @@ export const verdichtungProducts: Product[] = [
   },
   {
     id: "ruettelplatte-hvp30-50",
-    name: "Rüttelplatte HVP 30/50 180kg reversierbar",
-    description: "Reversierbare Rüttelplatte mit 180kg Einsatzgewicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 180,
+    name: "Rüttelplatte HVP 30/50 175kg reversierbar",
+    description: "Hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
+    image: ruettelplatteHvp3050,
+    images: [ruettelplatteHvp3050],
+    weightKg: 175,
     category: "ruettelplatte-reversierbar",
-    rentwareCode: { krefeld: "371IBO" }
+    rentwareCode: { krefeld: "371IBO" },
+    detailedDescription: "Die HVP 30/50 ist eine hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung ist sie besonders wendig und effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
+    specifications: {
+      "Typ": "HVP 30/50",
+      "Gewicht": "175 kg",
+      "Plattengröße (L × B)": "ca. 70 × 50 cm",
+      "Verdichtungsdruck": "30 kN",
+      "Motorleistung": "4,8 kW",
+      "Kraftstoffinhalt": "3,5 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "25 m/min",
+      "Verdichtungstiefe": "ca. 30 cm",
+      "Umschaltung": "Stufenlos hydraulisch",
+    },
   },
   {
     id: "ruettelplatte-hvp38-60",
