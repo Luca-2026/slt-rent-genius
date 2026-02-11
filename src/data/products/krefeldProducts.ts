@@ -50,6 +50,8 @@ import mastbuehneZmp091 from "@/assets/products/mastbuehne-zmp09-1.png";
 import mastbuehneZmp092 from "@/assets/products/mastbuehne-zmp09-2.png";
 import mastbuehneZmp093 from "@/assets/products/mastbuehne-zmp09-3.avif";
 import ruettelplatteHvp3050 from "@/assets/products/ruettelplatte-hvp3050-1.jpeg";
+import ruettelplatteVp2550_1 from "@/assets/products/ruettelplatte-vp2550-1.jpeg";
+import ruettelplatteVp2550_2 from "@/assets/products/ruettelplatte-vp2550-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -460,12 +462,26 @@ export const verdichtungProducts: Product[] = [
   {
     id: "ruettelplatte-vp25-50",
     name: "Rüttelplatte VP 25/50 130kg",
-    description: "Vorwärts-Rüttelplatte mit 130kg Einsatzgewicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck – inkl. Rollgestell und 8 Betriebsstunden/Tag.",
+    image: ruettelplatteVp2550_1,
+    images: [ruettelplatteVp2550_1, ruettelplatteVp2550_2],
     weightKg: 130,
     category: "ruettelplatte",
-    rentwareCode: { krefeld: "MWQG3Q" }
+    rentwareCode: { krefeld: "MWQG3Q" },
+    detailedDescription: "Die VP 25/50 ist eine Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck. Inkl. Rollgestell zum praktikablen Transport. Verdichtungstiefe ca. 25 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
+    specifications: {
+      "Typ": "VP 25/50",
+      "Gewicht": "130 kg",
+      "Plattengröße (L × B)": "ca. 59 × 49 cm",
+      "Verdichtungsdruck": "25 kN",
+      "Motorleistung": "4,8 kW",
+      "Kraftstoffinhalt": "3,5 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "25 m/min",
+      "Vibrationsstöße": "4.200 vpm",
+      "Verdichtungstiefe": "ca. 25 cm",
+      "Zubehör": "Rollgestell inkl.",
+    },
   },
   {
     id: "ruettelplatte-hvp30-50",
