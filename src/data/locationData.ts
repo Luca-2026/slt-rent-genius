@@ -69,7 +69,7 @@ export const locationData: LocationInfo[] = [
     description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
     address: "Drachenburgstraße 8",
     city: "53179 Bonn",
-    phone: "02151 417 990 4",
+    phone: "0228 50466061",
     email: "bonn@slt-rental.de",
     image: imgBonn,
     manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
