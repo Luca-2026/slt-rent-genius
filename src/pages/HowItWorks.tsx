@@ -184,6 +184,99 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* B2B Portal */}
+      <section className="py-16 lg:py-24">
+        <div className="section-container">
+          <AnimatedSection className="text-center mb-12">
+            <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              Für Geschäftskunden
+            </span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+              So funktioniert das B2B-Portal
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Registriere dich als Geschäftskunde und profitiere von individuellen Konditionen, 
+              Rahmenverträgen und einer vereinfachten Abrechnung.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {[
+              {
+                number: "1",
+                title: "Registrierung & Freischaltung",
+                description: "Erstelle ein B2B-Konto mit deinen Firmendaten, USt-IdNr. und akzeptiere die AGB. Nach Prüfung durch unser Team wird dein Konto freigeschaltet.",
+              },
+              {
+                number: "2",
+                title: "Produkte & individuelle Preise",
+                description: "Im B2B-Portal siehst du deine individuellen Konditionen, Kategorierabatte und kundenspezifische Preise – automatisch berechnet.",
+              },
+              {
+                number: "3",
+                title: "Anfrage & Angebot",
+                description: "Stelle Sammelanfragen für mehrere Mietartikel mit individuellen Zeiträumen. Du erhältst ein verbindliches Angebot mit allen Details.",
+              },
+              {
+                number: "4",
+                title: "Übergabe, Rückgabe & Rechnung",
+                description: "Bei Übergabe wird ein Protokoll erstellt. Nach Mietende erfolgt die Rücknahme mit Zustandsprüfung und automatischer Rechnungsstellung.",
+              },
+            ].map((step, index) => (
+              <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
+                <Card className="h-full border-2 border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-6 lg:p-8">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-10 h-10 bg-primary text-primary-foreground rounded-xl flex items-center justify-center font-bold text-lg shrink-0">
+                        {step.number}
+                      </div>
+                      <h3 className="font-bold text-headline text-lg">{step.title}</h3>
+                    </div>
+                    <p className="text-muted-foreground">{step.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          <AnimatedSection animation="fade-in-up">
+            <div className="bg-gradient-to-br from-surface-light to-background rounded-2xl p-6 lg:p-8 border border-border">
+              <h3 className="font-bold text-headline text-lg mb-4">Gut zu wissen</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  "Weekend Fr.–Mo.: besondere Konditionen (kein einzelner Miettag)",
+                  "Mindestmietzeit wird automatisch berechnet",
+                  "Änderungen per Telefon oder E-Mail möglich (kostenpflichtig)",
+                  "Kreditlimit & offene Rechnungen jederzeit im Dashboard einsehbar",
+                  "Optionaler Postversand der Rechnung (zzgl. 2,50 €)",
+                  "Persönlicher Ansprechpartner an deinem nächsten Standort",
+                ].map((tip) => (
+                  <span
+                    key={tip}
+                    className="inline-flex items-center gap-2 bg-background px-4 py-2.5 rounded-xl text-sm text-body border border-border"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                    {tip}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <Link to="/b2b/registrierung">
+                  <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                    Jetzt B2B-Konto erstellen
+                  </Button>
+                </Link>
+                <Link to="/kontakt">
+                  <Button variant="outline" className="border-2 hover:border-primary">
+                    Beratung anfordern
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* Requirements */}
       <section className="py-16 lg:py-20">
         <div className="section-container">
