@@ -36,6 +36,11 @@ import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
 import scherenbuehneZs1012ac1 from "@/assets/products/scherenbuehne-zs1012ac-1.png";
+import anhaengerbuehneTm18gti1 from "@/assets/products/anhaengerbuehne-tm18gti-1.jpeg";
+import anhaengerbuehneTm18gti2 from "@/assets/products/anhaengerbuehne-tm18gti-2.jpeg";
+import anhaengerbuehneTm18gti3 from "@/assets/products/anhaengerbuehne-tm18gti-3.jpeg";
+import anhaengerbuehneTm18gti4 from "@/assets/products/anhaengerbuehne-tm18gti-4.jpeg";
+import anhaengerbuehneTm18gti5 from "@/assets/products/anhaengerbuehne-tm18gti-5.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -332,6 +337,35 @@ export const arbeitsbuehnenProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "gelenkbuehne",
     rentwareCode: { krefeld: "XL1WVX" }
+  },
+  {
+    id: "anhaengerbuehne-18m",
+    name: "18m Anhänger-Arbeitsbühne EuropeLIFT TM18GTi",
+    description: "Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und 10,50 m Reichweite – inkl. 8 Betriebsstunden/Tag.",
+    image: anhaengerbuehneTm18gti1,
+    images: [anhaengerbuehneTm18gti1, anhaengerbuehneTm18gti2, anhaengerbuehneTm18gti3, anhaengerbuehneTm18gti4, anhaengerbuehneTm18gti5],
+    category: "anhaengerbuehne",
+    rentwareCode: { krefeld: "" },
+    detailedDescription: "Die EuropeLIFT TM18GTi ist eine benzinbetriebene Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und bis zu 10,50 m seitlicher Reichweite. Der Korb bietet Platz für 2 Personen (max. 220 kg bei 8 m bzw. 100 kg bei 11 m Reichweite). Zusatzausstattung: 230 V und Druckluft-Anschluss im Korb. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 22,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet.",
+    specifications: {
+      "Typ": "TM18GTi",
+      "Arbeitshöhe": "18 m",
+      "Plattformbodenhöhe": "16 m",
+      "Korbarmlänge": "1,30 m",
+      "Max. Reichweite": "10,50 m",
+      "Max. Korblast": "8 m / 220 kg | 11 m / 100 kg",
+      "Max. Personen": "2",
+      "Steigfähigkeit": "25 %",
+      "Überbrückungshöhe": "6 m",
+      "Antrieb": "Benzin",
+      "Zusatzausstattung": "230 V / Druckluft im Korb",
+      "Plattformgröße (L × B)": "1,20 × 0,80 m",
+      "Stützbreite": "3,85 m",
+      "Fahrzeuglänge": "6,10 m",
+      "Fahrzeugbreite": "1,65 m",
+      "Fahrzeughöhe": "2,10 m",
+      "Gesamtgewicht": "2.070 kg",
+    },
   },
 ];
 
