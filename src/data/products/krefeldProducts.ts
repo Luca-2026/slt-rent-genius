@@ -29,6 +29,7 @@ import aggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
 import aggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
 import aggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
 import aggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
+import aggregat50kva1 from "@/assets/products/aggregat-50kva-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -157,6 +158,31 @@ export const aggregateProducts: Product[] = [
       "Abmessung (LxBxH)": "187 × 82 × 149,5 cm",
       "Tankinhalt": "181 l",
       "Autonomie": "ca. 47 h bei Nennleistung",
+      "Kraftstoff": "Diesel",
+      "Zusatzausstattung": "Optional mit Anhänger",
+    },
+  },
+  {
+    id: "aggregat-50kva",
+    name: "50 kVA Aggregat Doosan G50",
+    description: "Leistungsstarkes Diesel-Stromaggregat (EU Stage V) mit 60 kVA Spitzenleistung – für große Baustellen und Veranstaltungen.",
+    image: aggregat50kva1,
+    images: [aggregat50kva1],
+    category: "aggregat",
+    rentwareCode: { krefeld: "" },
+    detailedDescription: "Das Doosan G50 ist ein schallgedämmtes Diesel-Stromaggregat mit 60 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 35 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    specifications: {
+      "Spitzenleistung": "60 kVA",
+      "Dauerleistung": "50 kVA / 24 kW",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "2x Schuko 16A, 1x CEE 16A 5-Pol, 1x CEE 32A 5-Pol",
+      "Drehzahl": "1.500 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht": "ca. 2.061 kg",
+      "Abmessung (LxBxH)": "187 × 82 × 149,5 cm",
+      "Tankinhalt": "176 l",
+      "Autonomie": "ca. 35 h bei 75 % Last",
       "Kraftstoff": "Diesel",
       "Zusatzausstattung": "Optional mit Anhänger",
     },
