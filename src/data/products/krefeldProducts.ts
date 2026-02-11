@@ -4,6 +4,8 @@
 import type { Product } from "../rentalData";
 
 // Benzin Bodenhacke images
+import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
+import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 
@@ -471,8 +473,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "erdbohrer-benzin",
     name: "Benzin-Erdbohrer",
     description: "Motorerdbohrer für Zaunpfähle und Pflanzlöcher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: benzinErdbohrer1,
+    images: [benzinErdbohrer1, benzinErdbohrer2],
     category: "erdbohrer",
     rentwareCode: { krefeld: "ZC7HYZ" }
   },
