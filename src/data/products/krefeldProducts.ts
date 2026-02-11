@@ -27,6 +27,8 @@ import aggregat7kva1 from "@/assets/products/aggregat-7kva-1.jpeg";
 import aggregat7kva2 from "@/assets/products/aggregat-7kva-2.jpeg";
 import aggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
 import aggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
+import aggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
+import aggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -82,12 +84,29 @@ export const aggregateProducts: Product[] = [
   },
   {
     id: "aggregat-2-8kva",
-    name: "2,8 kVA Aggregat",
-    description: "Kompaktes Notstromaggregat für kleine Verbraucher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "2,8 kVA Aggregat Ford FG4050",
+    description: "Kompaktes Benzin-Stromaggregat auf Rollen – ideal für kleine Verbraucher. Inkl. 8 Betriebsstunden/Tag.",
+    image: aggregat2_8kva1,
+    images: [aggregat2_8kva1, aggregat2_8kva2],
     category: "aggregat",
-    rentwareCode: { krefeld: "Q241BU" }
+    rentwareCode: { krefeld: "Q241BU" },
+    detailedDescription: "Das Ford FG4050 ist ein kompaktes, rollbares Benzin-Stromaggregat mit 2.800 Watt Spitzenleistung. Mit 15 Liter Tankinhalt erreicht es ca. 5,5 Stunden Laufzeit bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 8,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Benzin wird mit brutto 2,80 €/l berechnet.",
+    specifications: {
+      "Hersteller": "Ford",
+      "Typ": "FG4050",
+      "Spitzenleistung": "2.800 Watt",
+      "Dauerleistung": "2.500 Watt",
+      "Spannung": "230 V",
+      "Anschlüsse": "2x Schuko 16A",
+      "Drehzahl": "1.500 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht": "ca. 50 kg",
+      "Abmessung (LxBxH)": "64 × 47 × 53 cm",
+      "Tankinhalt": "15 l",
+      "Autonomie": "ca. 5,5 h bei Nennleistung",
+      "Kraftstoff": "Benzin",
+      "Sonderausstattung": "Auf Rollen",
+    },
   },
   {
     id: "aggregat-7-5kva",
