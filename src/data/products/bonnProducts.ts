@@ -23,6 +23,7 @@ import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
 import bonnAggregat7kva1 from "@/assets/products/aggregat-7kva-1.jpeg";
 import bonnAggregat7kva2 from "@/assets/products/aggregat-7kva-2.jpeg";
 import bonnAggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
+import bonnAggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -57,10 +58,27 @@ import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.j
 export const bonnAggregateProducts = [
   {
     id: "bonn-aggregat-20kva",
-    name: "20 kVA Aggregat",
-    description: "Leistungsstarkes Stromaggregat für Baustellen und Events.",
-    image: "/placeholder.svg",
+    name: "20 kVA Aggregat Doosan G20",
+    description: "Leistungsstarkes Diesel-Stromaggregat (EU Stage V) für größere Baustellen und Events – inkl. 8 Betriebsstunden/Tag.",
+    image: bonnAggregat20kva1,
+    images: [bonnAggregat20kva1],
     rentwareCode: { bonn: "GMKLML" },
+    detailedDescription: "Das Doosan G20 ist ein schallgedämmtes Diesel-Stromaggregat mit 20 kVA Spitzenleistung und EU Stage V Emissionsklasse. Mit 181 Liter Tankinhalt erreicht es bis zu 47 Stunden Autonomie bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    specifications: {
+      "Spitzenleistung": "20 kVA",
+      "Dauerleistung": "19 kVA / 15,2 kW",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "2x Schuko 16A, 1x CEE 32A 5-Pol",
+      "Drehzahl": "1.500 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht": "ca. 1.003 kg",
+      "Abmessung (LxBxH)": "187 × 82 × 149,5 cm",
+      "Tankinhalt": "181 l",
+      "Autonomie": "ca. 47 h bei Nennleistung",
+      "Kraftstoff": "Diesel",
+      "Zusatzausstattung": "Optional mit Anhänger",
+    },
   },
   {
     id: "bonn-aggregat-7-5kva",
