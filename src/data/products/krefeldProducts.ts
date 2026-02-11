@@ -80,15 +80,6 @@ import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.j
 // ============= AGGREGATE =============
 export const aggregateProducts: Product[] = [
   {
-    id: "bluetti-akkupack-1152",
-    name: "Bluetti Akkupack 1152 Wh",
-    description: "Tragbarer Akku-Speicher mit 1152 Wh Kapazität",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "akkupack",
-    rentwareCode: { krefeld: "7NPRPK" }
-  },
-  {
     id: "aggregat-2-8kva",
     name: "2,8 kVA Aggregat Ford FG4050",
     description: "Kompaktes Benzin-Stromaggregat auf Rollen – ideal für kleine Verbraucher. Inkl. 8 Betriebsstunden/Tag.",
@@ -249,7 +240,7 @@ export const aggregateProducts: Product[] = [
     image: akkupackBluetti1,
     images: [akkupackBluetti1],
     category: "aggregat",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "7NPRPK" },
     detailedDescription: "Die Bluetti Powerstation bietet 1.152 Wh Kapazität und bis zu 1.800 W Ausgangsleistung. Vielseitige Anschlüsse (Schuko, USB-A, USB-C, 12V DC) ermöglichen die gleichzeitige Versorgung verschiedener Geräte. Perfekt als mobile Stromversorgung auf Baustellen, bei Veranstaltungen oder im Outdoor-Bereich.",
     specifications: {
       "Kapazität": "1.152 Wh",
