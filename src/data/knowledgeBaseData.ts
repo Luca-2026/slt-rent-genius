@@ -51,7 +51,7 @@ export const kbCategories: KBCategory[] = [
     title: "Gartenpflege",
     description: "Anleitungen für Rasenmäher, Vertikutierer, Häcksler und mehr.",
     icon: "TreePine",
-    articleCount: 0,
+    articleCount: 1,
   },
   {
     id: "aggregate",
@@ -159,6 +159,19 @@ export const kbArticles: KBArticle[] = [
     type: "sicherheit",
     tags: ["trennschleifer", "stihl", "psa", "sicherheit", "schneiden"],
     updatedAt: "2026-02-08",
+  },
+
+  // Gartenpflege
+  {
+    id: "haecksler-ls95-video",
+    title: "Häcksler LS-95 GX – Produktvideo & Bedienung",
+    description: "Video zum Buschholzhäcksler LS 95/CH mit Kohler Motor: Funktionsweise, Einzug und Messerwechsel.",
+    categoryId: "gartenpflege",
+    productIds: ["haecksler-ls95-gx", "bonn-haecksler-ls95gx"],
+    type: "video",
+    videoUrl: "https://www.youtube.com/watch?v=ZRLLsGXfL6I",
+    tags: ["häcksler", "ls-95", "kohler", "buschholz", "video", "gartenpflege"],
+    updatedAt: "2026-02-11",
   },
 
   // Verdichtung

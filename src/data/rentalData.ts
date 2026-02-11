@@ -147,11 +147,14 @@ export interface Product {
   id: string;
   name: string;
   description?: string;
+  detailedDescription?: string; // Longer description for product detail page
   image?: string; // Primary image (first in images array)
   images?: string[]; // All images for gallery/slider
+  videoUrl?: string; // YouTube video URL
   pricePerDay?: string;
   priceWeekend?: string;
   features?: string[];
+  specifications?: Record<string, string>; // Technical specs key-value pairs
   tags?: string[]; // Filter tags
   category?: string; // Product sub-category for sorting
   weightKg?: number;

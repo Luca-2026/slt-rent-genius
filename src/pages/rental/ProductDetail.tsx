@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -278,6 +278,55 @@ export default function ProductDetail() {
                     <p className="text-muted-foreground">
                       Nutzlast: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
                     </p>
+                  </div>
+                )}
+
+                {/* Detailed Description */}
+                {product.detailedDescription && (
+                  <div className="border-t border-border pt-6 mt-6">
+                    <h2 className="text-lg font-semibold text-headline mb-3 flex items-center gap-2">
+                      <Info className="h-5 w-5 text-primary" />
+                      Beschreibung
+                    </h2>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {product.detailedDescription}
+                    </p>
+                  </div>
+                )}
+
+                {/* Specifications */}
+                {product.specifications && Object.keys(product.specifications).length > 0 && (
+                  <div className="border-t border-border pt-6 mt-6">
+                    <h2 className="text-lg font-semibold text-headline mb-4">
+                      Technische Daten
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(product.specifications).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center bg-muted/50 rounded-lg px-4 py-3">
+                          <span className="text-sm font-medium text-muted-foreground">{key}</span>
+                          <span className="text-sm font-semibold text-foreground">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Product Video */}
+                {product.videoUrl && (
+                  <div className="border-t border-border pt-6 mt-6">
+                    <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
+                      <Play className="h-5 w-5 text-primary" />
+                      Produktvideo
+                    </h2>
+                    <div className="aspect-video rounded-xl overflow-hidden border border-border">
+                      <iframe
+                        src={product.videoUrl.replace("watch?v=", "embed/")}
+                        title={`${product.name} Video`}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
                   </div>
                 )}
               </div>
