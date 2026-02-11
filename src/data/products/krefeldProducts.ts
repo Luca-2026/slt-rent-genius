@@ -14,6 +14,7 @@ import hochdruckreiniger1 from "@/assets/products/hochdruckreiniger-1.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
+import haeckslerLs95_1 from "@/assets/products/haecksler-ls95-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -536,8 +537,17 @@ export const gartenpflegeProducts: Product[] = [
     id: "haecksler-ls95-gx",
     name: "Häcksler LS-95 GX",
     description: "Benzin-Häcksler für größere Mengen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    detailedDescription: "Der Buschholzhäcksler LS 95/CH zeichnet sich durch hohe Arbeitsleistung und einfache Bauart aus. Angetrieben von einem leistungsstarken Kohler Motor, zerkleinert er Äste bis 7,5 cm Durchmesser zuverlässig. Zwei Zerkleinerungsmesser und eine ortsfeste Gegenschneide sorgen für effizientes Häckseln. Der Messerwechsel ist denkbar einfach – nur Rutsche abkippen. Der Einzug erfolgt automatisch durch das Eigengewicht des Materials. Große Laufräder machen das Manövrieren auch in schwierigem Gelände problemlos.",
+    image: haeckslerLs95_1,
+    images: [haeckslerLs95_1],
+    videoUrl: "https://www.youtube.com/watch?v=ZRLLsGXfL6I",
+    specifications: {
+      "Motor": "Kohler Benzinmotor",
+      "Max. Astdurchmesser": "7,5 cm",
+      "Messer": "2 Zerkleinerungsmesser + Gegenschneide",
+      "Einzug": "Automatisch (Gewichtsfluss)",
+      "Antrieb": "Keilriementrieb",
+    },
     category: "haecksler",
     rentwareCode: { krefeld: "4OEGBK" }
   },
