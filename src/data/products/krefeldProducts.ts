@@ -10,6 +10,8 @@ import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
 import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
 import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
 import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
+import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
+import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
@@ -542,8 +544,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "vertikutierer-sa35-vel",
     name: "Vertikutierer SA35-V EL",
     description: "Elektro-Vertikutierer für Rasenpflege",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: vertikutierer1,
+    images: [vertikutierer1, vertikutierer2],
     category: "vertikutierer",
     rentwareCode: { krefeld: "EP9F7Q" }
   },
@@ -551,8 +553,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "vertikutierer-sa38-bv",
     name: "Vertikutierer SA38 BV",
     description: "Benzin-Vertikutierer für große Flächen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: vertikutierer1,
+    images: [vertikutierer1, vertikutierer2],
     category: "vertikutierer",
     rentwareCode: { krefeld: "IXDJ8K" }
   },

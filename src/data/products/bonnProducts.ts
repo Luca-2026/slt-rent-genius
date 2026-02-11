@@ -7,6 +7,8 @@ import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
 import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
 import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
 import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
+import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
+import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 // Benzin Bodenhacke images
@@ -348,14 +350,16 @@ export const bonnGartenpflegeProducts = [
     id: "bonn-vertikutierer-sa35v",
     name: "Vertikutierer SA35-V EL",
     description: "Elektrischer Vertikutierer für die Rasenpflege.",
-    image: "/placeholder.svg",
+    image: vertikutierer1,
+    images: [vertikutierer1, vertikutierer2],
     rentwareCode: { bonn: "BQ4RKS" },
   },
   {
     id: "bonn-vertikutierer-sa38bv",
     name: "Vertikutierer SA38 BV",
     description: "Benzin-Vertikutierer für größere Rasenflächen.",
-    image: "/placeholder.svg",
+    image: vertikutierer1,
+    images: [vertikutierer1, vertikutierer2],
     rentwareCode: { bonn: "L3EJDP" },
   },
   {
