@@ -52,6 +52,8 @@ import mastbuehneZmp093 from "@/assets/products/mastbuehne-zmp09-3.avif";
 import ruettelplatteHvp3050 from "@/assets/products/ruettelplatte-hvp3050-1.jpeg";
 import ruettelplatteVp2550_1 from "@/assets/products/ruettelplatte-vp2550-1.jpeg";
 import ruettelplatteVp2550_2 from "@/assets/products/ruettelplatte-vp2550-2.jpeg";
+import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg";
+import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -451,13 +453,27 @@ export const verdichtungProducts: Product[] = [
   },
   {
     id: "ruettelplatte-vp16-44",
-    name: "Rüttelplatte VP 16/44 100kg",
-    description: "Vorwärts-Rüttelplatte mit 100kg Einsatzgewicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 100,
+    name: "Rüttelplatte VP 16/44 105kg",
+    description: "Vorwärts-Rüttelplatte mit 105 kg Gewicht und 20 kN Verdichtungsdruck – inkl. Rollgestell.",
+    image: ruettelplatteVp1644_1,
+    images: [ruettelplatteVp1644_1, ruettelplatteVp1644_2],
+    weightKg: 105,
     category: "ruettelplatte",
-    rentwareCode: { krefeld: "N71PUB" }
+    rentwareCode: { krefeld: "N71PUB" },
+    detailedDescription: "Die VP 16/44 ist eine kompakte Vorwärts-Rüttelplatte mit 105 kg Gewicht und 20 kN Verdichtungsdruck. Inkl. Rollgestell zum praktikablen Transport. Verdichtungstiefe ca. 20 cm.",
+    specifications: {
+      "Typ": "VP 16/44",
+      "Gewicht": "105 kg",
+      "Plattengröße (L × B)": "ca. 55 × 44 cm",
+      "Verdichtungsdruck": "20 kN",
+      "Motorleistung": "4,8 kW",
+      "Kraftstoffinhalt": "3,5 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "25 m/min",
+      "Vibrationsstöße": "4.200 vpm",
+      "Verdichtungstiefe": "ca. 20 cm",
+      "Zubehör": "Rollgestell inkl.",
+    },
   },
   {
     id: "ruettelplatte-vp25-50",
