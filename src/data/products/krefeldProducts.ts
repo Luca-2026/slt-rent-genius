@@ -30,6 +30,7 @@ import aggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
 import aggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
 import aggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 import aggregat50kva1 from "@/assets/products/aggregat-50kva-1.jpeg";
+import aggregat100kva1 from "@/assets/products/aggregat-100kva-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -189,12 +190,28 @@ export const aggregateProducts: Product[] = [
   },
   {
     id: "aggregat-100kva",
-    name: "100 kVA Stromaggregat",
-    description: "Industrielles Stromaggregat für Großveranstaltungen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger",
+    description: "Leistungsstarkes Diesel-Stromaggregat (EU Stage V) mit 120 kVA Spitzenleistung auf PKW-Anhänger – für Großbaustellen und Events.",
+    image: aggregat100kva1,
+    images: [aggregat100kva1],
     category: "aggregat",
-    rentwareCode: { krefeld: "E7TNYQ" }
+    rentwareCode: { krefeld: "E7TNYQ" },
+    detailedDescription: "Das Doosan G100 ist ein schallgedämmtes Diesel-Stromaggregat mit 120 kVA Spitzenleistung und EU Stage V Emissionsklasse, montiert auf einem PKW-Anhänger. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart. Diesel wird mit brutto 2,45 €/l berechnet, AdBlue mit brutto 1,45 €/l.",
+    specifications: {
+      "Spitzenleistung": "120 kVA",
+      "Dauerleistung": "100 kVA / 80 kW",
+      "Emissionsklasse": "EU Stage V",
+      "Batteriespannung": "12 V",
+      "Anschlüsse": "2x Schuko 16A, 1x CEE 32A 5-Pol, 1x CEE 63A 5-Pol, 1x CEE 125A 5-Pol",
+      "Drehzahl": "1.500 U/min",
+      "Frequenz": "50 Hz",
+      "Gewicht Aggregat": "ca. 2.061 kg",
+      "Gewicht inkl. Anhänger": "ca. 2.400 kg",
+      "Abmessung (LxBxH)": "187 × 82 × 149,5 cm",
+      "Tankinhalt": "176 l",
+      "Autonomie": "ca. 11 h bei 75 % Last",
+      "Kraftstoff": "Diesel",
+    },
   },
   {
     id: "kompressor-5m3",

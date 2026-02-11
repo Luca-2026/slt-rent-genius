@@ -86,6 +86,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "aggregat-20kva-1",
   "aggregat-2-8kva-1", "aggregat-2-8kva-2",
   "aggregat-50kva-1",
+  "aggregat-100kva-1",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "aggregate"));
 
 /**
