@@ -30,6 +30,7 @@ const typeIconMap: Record<KBArticle["type"], React.ComponentType<{ className?: s
 export default function KnowledgeBase() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<KBArticle | null>(null);
 
   const searchResults = useMemo(() => searchArticles(query), [query]);
   const categoryArticles = useMemo(
@@ -77,7 +78,10 @@ export default function KnowledgeBase() {
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
-                if (e.target.value.trim()) setSelectedCategory(null);
+                if (e.target.value.trim()) {
+                  setSelectedCategory(null);
+                  setSelectedArticle(null);
+                }
               }}
               placeholder="Artikel, Produkt oder Thema suchen…"
               className="pl-12 pr-12 h-12 text-base bg-background border-0 shadow-lg"
@@ -96,8 +100,86 @@ export default function KnowledgeBase() {
 
       <main className="py-8 lg:py-12 min-h-[50vh]">
         <div className="section-container">
+          {/* Article Detail View */}
+          {selectedArticle && (
+            <div>
+              <button
+                onClick={() => setSelectedArticle(null)}
+                className="flex items-center gap-2 text-sm text-primary hover:underline mb-6"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Zurück
+              </button>
+
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="secondary" className={`text-xs ${getArticleTypeColor(selectedArticle.type)}`}>
+                    {getArticleTypeLabel(selectedArticle.type)}
+                  </Badge>
+                </div>
+                <h2 className="text-xl lg:text-2xl font-bold text-foreground">
+                  {selectedArticle.title}
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  {selectedArticle.description}
+                </p>
+              </div>
+
+              {/* Video Embed */}
+              {selectedArticle.videoUrl && (
+                <div className="mb-6">
+                  <div className="aspect-video rounded-xl overflow-hidden border border-border">
+                    <iframe
+                      src={selectedArticle.videoUrl.replace("watch?v=", "embed/").replace("/shorts/", "/embed/")}
+                      title={selectedArticle.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* PDF Download */}
+              {selectedArticle.pdfUrl && (
+                <div className="mb-6">
+                  <a
+                    href={selectedArticle.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-5 py-3 text-sm font-medium transition-colors"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Anleitung als PDF herunterladen
+                  </a>
+                </div>
+              )}
+
+              {/* Content */}
+              {selectedArticle.content && (
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                    {selectedArticle.content}
+                  </p>
+                </div>
+              )}
+
+              {/* No content fallback */}
+              {!selectedArticle.videoUrl && !selectedArticle.pdfUrl && !selectedArticle.content && (
+                <Card className="border-dashed">
+                  <CardContent className="py-12 text-center">
+                    <FileText className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+                    <p className="text-muted-foreground">
+                      Dieser Inhalt wird aktuell vorbereitet und ist in Kürze verfügbar.
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
+
           {/* Search Results */}
-          {isSearching && (
+          {!selectedArticle && isSearching && (
             <div className="mb-8">
               <p className="text-sm text-muted-foreground mb-4">
                 {searchResults.length === 0
@@ -120,14 +202,14 @@ export default function KnowledgeBase() {
               )}
               <div className="grid gap-3">
                 {searchResults.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
+                  <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
                 ))}
               </div>
             </div>
           )}
 
           {/* Category Detail View */}
-          {!isSearching && selectedCategory && selectedCategoryData && (
+          {!selectedArticle && !isSearching && selectedCategory && selectedCategoryData && (
             <div>
               <button
                 onClick={() => setSelectedCategory(null)}
@@ -162,7 +244,7 @@ export default function KnowledgeBase() {
               ) : (
                 <div className="grid gap-3">
                   {categoryArticles.map((article) => (
-                    <ArticleCard key={article.id} article={article} />
+                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
                   ))}
                 </div>
               )}
@@ -170,7 +252,7 @@ export default function KnowledgeBase() {
           )}
 
           {/* Categories Grid */}
-          {!isSearching && !selectedCategory && (
+          {!selectedArticle && !isSearching && !selectedCategory && (
             <>
               <h2 className="text-lg font-semibold text-foreground mb-6">
                 Kategorien durchsuchen
@@ -208,19 +290,17 @@ export default function KnowledgeBase() {
                 })}
               </div>
 
-              {/* Popular / Recently updated */}
               <div className="mt-12">
                 <h2 className="text-lg font-semibold text-foreground mb-4">
                   Neueste Anleitungen
                 </h2>
                 <div className="grid gap-3">
                   {kbArticles.slice(0, 6).map((article) => (
-                    <ArticleCard key={article.id} article={article} />
+                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
                   ))}
                 </div>
               </div>
 
-              {/* CTA */}
               <Card className="mt-12 bg-secondary border-0">
                 <CardContent className="py-8 text-center">
                   <HelpCircle className="h-8 w-8 text-primary mx-auto mb-3" />
@@ -250,12 +330,12 @@ export default function KnowledgeBase() {
 }
 
 // --- Article Card Component ---
-function ArticleCard({ article }: { article: KBArticle }) {
+function ArticleCard({ article, onClick }: { article: KBArticle; onClick: () => void }) {
   const TypeIcon = typeIconMap[article.type];
   const categoryData = kbCategories.find((c) => c.id === article.categoryId);
 
   return (
-    <Card className="hover:shadow-sm transition-shadow">
+    <Card className="hover:shadow-sm transition-shadow cursor-pointer" onClick={onClick}>
       <CardContent className="py-4 px-5 flex items-start gap-4">
         <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 mt-0.5">
           <TypeIcon className="h-5 w-5 text-primary" />
