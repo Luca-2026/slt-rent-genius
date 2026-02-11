@@ -316,7 +316,7 @@ export default function ProductDetail() {
                     variant="default"
                     className="w-full"
                   >
-                    Als Geschäftskunde mieten
+                    B2B-Konditionen anfragen
                   </Button>
                 </Link>
 
