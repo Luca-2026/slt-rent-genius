@@ -54,6 +54,7 @@ import ruettelplatteVp2550_1 from "@/assets/products/ruettelplatte-vp2550-1.jpeg
 import ruettelplatteVp2550_2 from "@/assets/products/ruettelplatte-vp2550-2.jpeg";
 import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg";
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
+import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -443,13 +444,25 @@ export const arbeitsbuehnenProducts: Product[] = [
 export const verdichtungProducts: Product[] = [
   {
     id: "stampfer-gs72-xh",
-    name: "Stampfer GS72-XH 70kg",
-    description: "Vibrationsstampfer mit 70kg Einsatzgewicht",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 70,
+    name: "Stampfer GS72-XH 72kg",
+    description: "Vibrationsstampfer mit 72 kg Gewicht und 14 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
+    image: stampferGs72xh1,
+    images: [stampferGs72xh1],
+    weightKg: 72,
     category: "stampfer",
-    rentwareCode: { krefeld: "DNXDNX" }
+    rentwareCode: { krefeld: "DNXDNX" },
+    detailedDescription: "Der GS72-XH ist ein kompakter Vibrationsstampfer mit 72 kg Gewicht und 14 kN Verdichtungsdruck. Ideal für Gräben, Engstellen und schwer zugängliche Bereiche. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
+    specifications: {
+      "Typ": "GS72-XH",
+      "Gewicht": "72 kg",
+      "Plattengröße (L × B)": "ca. 29 × 29 cm",
+      "Verdichtungsdruck": "14 kN",
+      "Motorleistung": "2,7 kW / 3,7 PS",
+      "Kraftstoffinhalt": "2,7 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "25 m/min",
+      "Verdichtungstiefe": "ca. 30 cm",
+    },
   },
   {
     id: "ruettelplatte-vp16-44",
