@@ -10,6 +10,7 @@ import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
 import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
 import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
 import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
+import hochdruckreiniger1 from "@/assets/products/hochdruckreiniger-1.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -499,8 +500,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "hochdruckreiniger",
     name: "Hochdruckreiniger",
     description: "Professioneller Hochdruckreiniger",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: hochdruckreiniger1,
+    images: [hochdruckreiniger1],
     category: "hochdruckreiniger",
     rentwareCode: { krefeld: "V31KWM" }
   },
