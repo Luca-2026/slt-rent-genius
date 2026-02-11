@@ -3,6 +3,10 @@
 
 import type { Product } from "../rentalData";
 
+// Benzin Bodenhacke images
+import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
+import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
+
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
@@ -494,8 +498,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "bodenhacke-af1212",
     name: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212",
     description: "Motorhacke für Gartenarbeiten",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: benzinBodenhacke1,
+    images: [benzinBodenhacke1, benzinBodenhacke2],
     category: "bodenhacke",
     rentwareCode: { krefeld: "Q81RP5" }
   },
