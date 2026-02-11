@@ -6,6 +6,10 @@ import type { Product } from "../rentalData";
 // Benzin Bodenhacke images
 import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
 import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
+import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
+import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
+import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
+import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
 import freischneider1 from "@/assets/products/freischneider-1.jpeg";
 import benzinBodenhacke1 from "@/assets/products/benzin-bodenhacke-1.jpeg";
 import benzinBodenhacke2 from "@/assets/products/benzin-bodenhacke-2.jpeg";
@@ -456,8 +460,8 @@ export const gartenpflegeProducts: Product[] = [
     id: "akku-kettensaege-gke18v-40",
     name: "Akku Kettensäge GKE 18V-40",
     description: "Bosch Akku-Kettensäge mit 40cm Schwert",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: akkuKettensaege1,
+    images: [akkuKettensaege1, akkuKettensaege2, akkuKettensaege3, akkuKettensaege4],
     category: "kettensaege",
     rentwareCode: { krefeld: "JID3OY" }
   },

@@ -72,6 +72,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "benzin-bodenhacke-1", "benzin-bodenhacke-2",
   "benzin-erdbohrer-1", "benzin-erdbohrer-2",
   "freischneider-1",
+  "akku-kettensaege-1", "akku-kettensaege-2", "akku-kettensaege-3", "akku-kettensaege-4",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "gartenpflege"));
 
 /**
