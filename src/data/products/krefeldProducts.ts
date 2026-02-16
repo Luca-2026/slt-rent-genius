@@ -92,6 +92,7 @@ import officeKabelbruecke1m1 from "@/assets/products/office-kabelbruecke-1m-1.jp
 import officeKabelbruecke1m2 from "@/assets/products/office-kabelbruecke-1m-2.jpeg";
 import ceeKabel63aRot3m1 from "@/assets/products/cee-kabel-63a-rot-3m-1.jpeg";
 import erdungsspiess1_5m1 from "@/assets/products/erdungsspiess-1-5m-1.jpeg";
+import schukokabel5m1 from "@/assets/products/schukokabel-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2344,10 +2345,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-5m",
     name: "Schukokabel 5 m",
-    description: "Schuko-Verlängerung 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
+    image: schukokabel5m1,
+    images: [schukokabel5m1],
     category: "schuko-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "5 m",
+      "Gewicht": "ca. 1,7 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "7J5K6A" }
   },
   {
