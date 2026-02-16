@@ -101,6 +101,7 @@ import defenderMidi5_2 from "@/assets/products/defender-midi-5-2.jpeg";
 import schukoKabeltrommel50m1 from "@/assets/products/schuko-kabeltrommel-50m-1.jpeg";
 import powerconHybridLinkkabel3m1 from "@/assets/products/powercon-hybrid-linkkabel-3m-1.jpeg";
 import ceeAdapter32a16a1 from "@/assets/products/cee-adapter-32a-16a-1.jpeg";
+import cee16aUv3xSchuko1 from "@/assets/products/cee-16a-uv-3x-schuko-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2085,10 +2086,17 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-16a-uv-3xschuko",
     name: "CEE 16A UV auf 3x 16A Schuko",
-    description: "Verteiler CEE16A auf 3x Schuko",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "mit 16 A CEE-Eingang und 3 Schutzkontakt-Ausgängen",
+    image: cee16aUv3xSchuko1,
+    images: [cee16aUv3xSchuko1],
     category: "stromverteiler",
+    specifications: {
+      "Produktmaße": "165 x 190 x 85 mm",
+      "Eingang": "CEE 16A",
+      "Ausgänge": "3x 16A Schuko",
+      "Max. Strom": "3 x 16 A",
+      "Schutzart": "IP44",
+    },
     rentwareCode: { krefeld: "69PG1T" }
   },
   {
