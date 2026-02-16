@@ -100,6 +100,7 @@ import defenderMidi5_1 from "@/assets/products/defender-midi-5-1.jpeg";
 import defenderMidi5_2 from "@/assets/products/defender-midi-5-2.jpeg";
 import schukoKabeltrommel50m1 from "@/assets/products/schuko-kabeltrommel-50m-1.jpeg";
 import powerconHybridLinkkabel3m1 from "@/assets/products/powercon-hybrid-linkkabel-3m-1.jpeg";
+import ceeAdapter32a16a1 from "@/assets/products/cee-adapter-32a-16a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2444,6 +2445,18 @@ export const kabelStromverteilerProducts: Product[] = [
       "Output": "CEE 63A Kupplung rot",
     },
     rentwareCode: { krefeld: "WBHW1T" }
+  },
+  {
+    id: "cee-adapter-32a-16a",
+    name: "CEE Adapter 32A < > 16A",
+    description: "CEE Adapter 32A Stecker auf 16A Kupplung",
+    image: ceeAdapter32a16a1,
+    images: [ceeAdapter32a16a1],
+    category: "adapter",
+    specifications: {
+      "Input": "CEE 32A Stecker rot",
+      "Output": "CEE 16A Kupplung rot",
+    },
   },
   {
     id: "cee-adapter-63a-32a-sicherung",
