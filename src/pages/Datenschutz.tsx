@@ -1,8 +1,15 @@
 import { Layout } from "@/components/layout";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Shield, User, Mail, Phone, MapPin, Cookie, Lock, FileText, Clock, Scale } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Datenschutz() {
+  const { t } = useTranslation();
+
+  const s3Data = t("datenschutz.s3Data", { returnObjects: true }) as string[];
+  const s4Items = t("datenschutz.s4Items", { returnObjects: true }) as { basis: string; purpose: string }[];
+  const s11Rights = t("datenschutz.s11Rights", { returnObjects: true }) as { article: string; right: string }[];
+
   return (
     <Layout>
       <div className="bg-gradient-to-b from-primary/5 to-background">
@@ -13,14 +20,10 @@ export default function Datenschutz() {
                 <Shield className="h-7 w-7 text-primary" />
               </div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-                  Datenschutzerklärung
-                </h1>
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground">{t("datenschutz.title")}</h1>
               </div>
             </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mt-4">
-              Informationen zum Schutz Ihrer personenbezogenen Daten gemäß DSGVO
-            </p>
+            <p className="text-lg text-muted-foreground max-w-2xl mt-4">{t("datenschutz.subtitle")}</p>
           </AnimatedSection>
         </div>
       </div>
@@ -35,13 +38,10 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-lg font-bold text-primary">1</span>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Verantwortlicher</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s1Title")}</h2>
               </div>
-              
               <div className="bg-muted/50 rounded-xl p-6">
-                <p className="font-semibold text-foreground text-lg mb-4">
-                  SLT Technology Group GmbH & Co. KG
-                </p>
+                <p className="font-semibold text-foreground text-lg mb-4">SLT Technology Group GmbH & Co. KG</p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-primary mt-0.5 shrink-0" />
@@ -53,15 +53,11 @@ export default function Datenschutz() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary shrink-0" />
-                      <a href="tel:+4921514179902" className="text-primary hover:underline">
-                        +49 (0) 2151 - 417 99 02
-                      </a>
+                      <a href="tel:+4921514179902" className="text-primary hover:underline">+49 (0) 2151 - 417 99 02</a>
                     </div>
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary shrink-0" />
-                      <a href="mailto:info@slt-rental.de" className="text-primary hover:underline">
-                        info@slt-rental.de
-                      </a>
+                      <a href="mailto:info@slt-rental.de" className="text-primary hover:underline">info@slt-rental.de</a>
                     </div>
                   </div>
                 </div>
@@ -76,9 +72,8 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-lg font-bold text-primary">2</span>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Datenschutzbeauftragter</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s2Title")}</h2>
               </div>
-              
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
                   <User className="h-6 w-6 text-accent" />
@@ -87,8 +82,7 @@ export default function Datenschutz() {
                   <p className="font-semibold text-foreground text-lg">Benedikt Nöchel</p>
                   <p className="text-muted-foreground">Anrather Straße 291, 47807 Krefeld</p>
                   <a href="mailto:datenschutz@slt-rental.de" className="text-primary hover:underline flex items-center gap-2 mt-2">
-                    <Mail className="h-4 w-4" />
-                    datenschutz@slt-rental.de
+                    <Mail className="h-4 w-4" />datenschutz@slt-rental.de
                   </a>
                 </div>
               </div>
@@ -102,47 +96,24 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-lg font-bold text-primary">3</span>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Datenverarbeitung auf unserer Website</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s3Title")}</h2>
               </div>
-              
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-foreground mb-3">Wir verarbeiten Ihre personenbezogenen Daten, wenn Sie:</h3>
+                  <h3 className="font-semibold text-foreground mb-3">{t("datenschutz.s3Intro")}</h3>
                   <ul className="space-y-2 text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      unsere Website besuchen (automatisch durch den Webserver erfasste Daten wie IP-Adresse, Datum/Uhrzeit, aufgerufene Seiten, Browsertyp, Betriebssystem)
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      unser Kontaktformular nutzen
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      einen Mietvertrag über unseren Online-Shop abschließen
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      uns per E-Mail, Telefon oder postalisch kontaktieren
-                    </li>
+                    <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>{t("datenschutz.s3Item1")}</li>
+                    <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>{t("datenschutz.s3Item2")}</li>
+                    <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>{t("datenschutz.s3Item3")}</li>
+                    <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>{t("datenschutz.s3Item4")}</li>
                   </ul>
                 </div>
-
                 <div className="border-t border-border pt-6">
-                  <h3 className="font-semibold text-foreground mb-3">Verarbeitete Datenarten:</h3>
+                  <h3 className="font-semibold text-foreground mb-3">{t("datenschutz.s3DataTitle")}</h3>
                   <div className="grid sm:grid-cols-2 gap-2 text-muted-foreground">
-                    {[
-                      "Name, Vorname",
-                      "Anschrift, ggf. Firma",
-                      "Telefonnummer, E-Mail-Adresse",
-                      "Vertragsdaten (z.B. Mietgegenstand, Zeitraum, Preis)",
-                      "Zahlungsinformationen (bei Online-Buchung)",
-                      "Nutzungsdaten (IP-Adresse, Zeitpunkt, aufgerufene Seiten)",
-                      "Kommunikationsinhalte"
-                    ].map((item) => (
+                    {Array.isArray(s3Data) && s3Data.map((item) => (
                       <div key={item} className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-primary shrink-0" />
-                        <span>{item}</span>
+                        <FileText className="h-4 w-4 text-primary shrink-0" /><span>{item}</span>
                       </div>
                     ))}
                   </div>
@@ -158,18 +129,12 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-lg font-bold text-primary">4</span>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Zwecke und Rechtsgrundlagen der Verarbeitung</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s4Title")}</h2>
               </div>
-              
               <div className="space-y-4">
-                <p className="text-muted-foreground mb-4">Wir verarbeiten Ihre Daten:</p>
+                <p className="text-muted-foreground mb-4">{t("datenschutz.s4Intro")}</p>
                 <div className="grid gap-4">
-                  {[
-                    { basis: "Art. 6 Abs. 1 lit. b DSGVO", purpose: "Zur Vertragserfüllung und -anbahnung" },
-                    { basis: "Art. 6 Abs. 1 lit. c DSGVO", purpose: "Zur Erfüllung gesetzlicher Pflichten" },
-                    { basis: "Art. 6 Abs. 1 lit. a DSGVO", purpose: "Auf Basis Ihrer Einwilligung, z.B. für Cookies/Tracking" },
-                    { basis: "Art. 6 Abs. 1 lit. f DSGVO", purpose: "Zur Wahrung unserer berechtigten Interessen, z.B. für IT-Sicherheit, Webstatistik, Marketing" },
-                  ].map((item) => (
+                  {Array.isArray(s4Items) && s4Items.map((item) => (
                     <div key={item.basis} className="flex items-start gap-3 bg-muted/50 rounded-lg p-4">
                       <Scale className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                       <div>
@@ -190,128 +155,54 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-lg font-bold text-primary">5</span>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Cookies & Tracking-Technologien</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s5Title")}</h2>
               </div>
-              
               <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Wir verwenden auf unserer Webseite Cookies und vergleichbare Technologien. 
-                  Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden und 
-                  bestimmte Informationen über Sie enthalten (z.B. zur Funktionalität des Online-Shops, 
-                  zu Analysezwecken oder für Marketing).
-                </p>
-                
+                <p>{t("datenschutz.s5Desc")}</p>
                 <div className="grid sm:grid-cols-2 gap-4 my-6">
                   <div className="bg-muted/50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Cookie className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-foreground">Technisch notwendige Cookies</span>
+                      <span className="font-semibold text-foreground">{t("datenschutz.s5TechCookies")}</span>
                     </div>
-                    <p className="text-sm">Für den Betrieb der Seite und des Shops erforderlich.</p>
+                    <p className="text-sm">{t("datenschutz.s5TechDesc")}</p>
                   </div>
                   <div className="bg-muted/50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Cookie className="h-5 w-5 text-accent" />
-                      <span className="font-semibold text-foreground">Analyse-/Marketing-Cookies</span>
+                      <span className="font-semibold text-foreground">{t("datenschutz.s5AnalyticsCookies")}</span>
                     </div>
-                    <p className="text-sm">Nur mit Ihrer Einwilligung beim ersten Besuch (Cookie-Banner/Consent-Tool).</p>
+                    <p className="text-sm">{t("datenschutz.s5AnalyticsDesc")}</p>
                   </div>
                 </div>
-
                 <div className="bg-accent/10 rounded-lg p-4 border border-accent/20">
-                  <p className="text-foreground font-medium">
-                    <strong>Widerruf:</strong> Sie können Ihre Einwilligung jederzeit über unser Cookie-Tool 
-                    oder die Einstellungen Ihres Browsers widerrufen.
-                  </p>
+                  <p className="text-foreground font-medium"><strong>{t("datenschutz.s5Revoke")}</strong></p>
                 </div>
               </div>
             </div>
           </AnimatedSection>
 
-          {/* 6. Kontaktformular */}
-          <AnimatedSection animation="fade-in-up" delay={350}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">6</span>
+          {/* 6-9 */}
+          {[
+            { num: "6", title: t("datenschutz.s6Title"), content: t("datenschutz.s6Desc") },
+            { num: "7", title: t("datenschutz.s7Title"), content: `${t("datenschutz.s7P1")}\n\n${t("datenschutz.s7P2")}` },
+            { num: "8", title: t("datenschutz.s8Title"), content: `${t("datenschutz.s8P1")}\n\n${t("datenschutz.s8P2")}` },
+            { num: "9", title: t("datenschutz.s9Title"), content: t("datenschutz.s9Desc") },
+          ].map((section, i) => (
+            <AnimatedSection key={section.num} animation="fade-in-up" delay={350 + i * 50}>
+              <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <span className="text-lg font-bold text-primary">{section.num}</span>
+                  </div>
+                  <h2 className="text-2xl font-bold text-foreground">{section.title}</h2>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Kontaktformular und E-Mail-Kontakt</h2>
+                {section.content.split("\n\n").map((p, pi) => (
+                  <p key={pi} className="text-muted-foreground mb-4 last:mb-0">{p}</p>
+                ))}
               </div>
-              
-              <p className="text-muted-foreground">
-                Wenn Sie uns per Formular, E-Mail oder Telefon kontaktieren, speichern und verarbeiten 
-                wir Ihre Angaben zur Bearbeitung der Anfrage sowie für Anschlussfragen. Die Daten werden 
-                nicht ohne Ihre Einwilligung an Dritte weitergegeben.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          {/* 7. Online-Buchung */}
-          <AnimatedSection animation="fade-in-up" delay={400}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">7</span>
-                </div>
-                <h2 className="text-2xl font-bold text-foreground">Online-Buchung und Vertragsabwicklung</h2>
-              </div>
-              
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Für die Abwicklung von Buchungen/Mietverträgen verarbeiten wir zusätzlich Ihre Vertrags- 
-                  und Zahlungsdaten. Ohne diese Daten ist ein Vertragsabschluss nicht möglich.
-                </p>
-                <p>
-                  Zur Zahlungsabwicklung nutzen wir ggf. externe Zahlungsdienstleister (z.B. PayPal, Stripe, Klarna). 
-                  Für die Verarbeitung Ihrer Daten bei diesen Anbietern gilt deren Datenschutzerklärung.
-                </p>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* 8. Weitergabe */}
-          <AnimatedSection animation="fade-in-up" delay={450}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">8</span>
-                </div>
-                <h2 className="text-2xl font-bold text-foreground">Weitergabe von Daten / Auftragsverarbeiter</h2>
-              </div>
-              
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Wir geben Ihre Daten ausschließlich dann an Dritte weiter, wenn dies zur Vertragserfüllung 
-                  erforderlich ist (z.B. Transportdienstleister, Zahlungsanbieter) oder eine rechtliche 
-                  Verpflichtung besteht.
-                </p>
-                <p>
-                  Wir arbeiten mit externen IT- und Hosting-Dienstleistern zusammen, die Ihre Daten nur im 
-                  Rahmen unserer Weisungen und auf Basis eines Auftragsverarbeitungsvertrags (Art. 28 DSGVO) 
-                  verarbeiten.
-                </p>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* 9. Social Media */}
-          <AnimatedSection animation="fade-in-up" delay={500}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">9</span>
-                </div>
-                <h2 className="text-2xl font-bold text-foreground">Social Media & Einbindung von Diensten Dritter</h2>
-              </div>
-              
-              <p className="text-muted-foreground">
-                Unsere Website kann Dienste von Drittanbietern einbinden (z.B. Google Maps zur Standortanzeige, 
-                Social Plugins). Beim Aufruf solcher Inhalte kann es zur Übertragung personenbezogener Daten 
-                an diese Anbieter, ggf. auch in Drittländer außerhalb der EU, kommen. Es gelten die 
-                Datenschutzbestimmungen der jeweiligen Anbieter.
-              </p>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          ))}
 
           {/* 10. Speicherdauer */}
           <AnimatedSection animation="fade-in-up" delay={550}>
@@ -320,14 +211,9 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Speicherdauer</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s10Title")}</h2>
               </div>
-              
-              <p className="text-muted-foreground">
-                Wir speichern Ihre personenbezogenen Daten nur so lange, wie dies zur Erfüllung der 
-                jeweiligen Zwecke erforderlich ist oder wir gesetzlich zur Aufbewahrung verpflichtet 
-                sind (insbesondere steuer- und handelsrechtliche Aufbewahrungsfristen).
-              </p>
+              <p className="text-muted-foreground">{t("datenschutz.s10Desc")}</p>
             </div>
           </AnimatedSection>
 
@@ -338,34 +224,20 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Scale className="h-5 w-5 text-accent" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Ihre Rechte</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s11Title")}</h2>
               </div>
-              
               <div className="space-y-4">
-                <p className="text-muted-foreground">Sie haben jederzeit das Recht:</p>
+                <p className="text-muted-foreground">{t("datenschutz.s11Intro")}</p>
                 <div className="grid gap-3">
-                  {[
-                    { article: "Art. 15 DSGVO", right: "auf Auskunft über die bei uns gespeicherten personenbezogenen Daten" },
-                    { article: "Art. 16 DSGVO", right: "auf Berichtigung unrichtiger Daten" },
-                    { article: "Art. 17 DSGVO", right: 'auf Löschung ("Recht auf Vergessenwerden")' },
-                    { article: "Art. 18 DSGVO", right: "auf Einschränkung der Verarbeitung" },
-                    { article: "Art. 20 DSGVO", right: "auf Datenübertragbarkeit" },
-                    { article: "Art. 21 DSGVO", right: "auf Widerspruch gegen die Verarbeitung" },
-                    { article: "Art. 7 Abs. 3 DSGVO", right: "auf Widerruf Ihrer Einwilligung (mit Wirkung für die Zukunft)" },
-                  ].map((item) => (
+                  {Array.isArray(s11Rights) && s11Rights.map((item) => (
                     <div key={item.article} className="flex items-start gap-3 bg-muted/50 rounded-lg p-3">
-                      <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-1 rounded shrink-0">
-                        {item.article}
-                      </span>
+                      <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-1 rounded shrink-0">{item.article}</span>
                       <span className="text-muted-foreground">{item.right}</span>
                     </div>
                   ))}
                 </div>
                 <div className="bg-accent/10 rounded-lg p-4 border border-accent/20 mt-6">
-                  <p className="text-foreground">
-                    Bitte richten Sie Ihre Anfrage an die oben genannte Kontaktadresse. Sie haben außerdem 
-                    das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.
-                  </p>
+                  <p className="text-foreground">{t("datenschutz.s11Contact")}</p>
                 </div>
               </div>
             </div>
@@ -378,15 +250,9 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Lock className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Sicherheit</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s12Title")}</h2>
               </div>
-              
-              <p className="text-muted-foreground">
-                Wir treffen technische und organisatorische Sicherheitsmaßnahmen, um Ihre Daten gegen 
-                zufällige oder vorsätzliche Manipulation, Verlust, Zerstörung oder gegen den Zugriff 
-                unberechtigter Personen zu schützen. Unsere Sicherheitsmaßnahmen werden entsprechend 
-                der technologischen Entwicklung fortlaufend verbessert.
-              </p>
+              <p className="text-muted-foreground">{t("datenschutz.s12Desc")}</p>
             </div>
           </AnimatedSection>
 
@@ -397,13 +263,9 @@ export default function Datenschutz() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <FileText className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Änderung der Datenschutzerklärung</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t("datenschutz.s13Title")}</h2>
               </div>
-              
-              <p className="text-muted-foreground">
-                Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen, z.B. bei Änderungen 
-                von Gesetzen, unserer Website oder unserer Dienste.
-              </p>
+              <p className="text-muted-foreground">{t("datenschutz.s13Desc")}</p>
             </div>
           </AnimatedSection>
 
@@ -411,7 +273,7 @@ export default function Datenschutz() {
           <AnimatedSection animation="fade-in-up" delay={750}>
             <div className="text-center py-8 border-t border-border">
               <p className="text-muted-foreground">
-                <strong className="text-foreground">Stand:</strong> Januar 2026
+                <strong className="text-foreground">{t("datenschutz.asOf")}</strong> {t("datenschutz.date")}
               </p>
             </div>
           </AnimatedSection>
