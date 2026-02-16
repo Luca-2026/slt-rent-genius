@@ -59,6 +59,9 @@ import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
+import anschlussverteilerschrank24kva1 from "@/assets/products/anschlussverteilerschrank-24kva-1.jpeg";
+import anschlussverteilerschrank24kva2 from "@/assets/products/anschlussverteilerschrank-24kva-2.jpeg";
+import anschlussverteilerschrank24kva3 from "@/assets/products/anschlussverteilerschrank-24kva-3.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2080,10 +2083,17 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "anschlussverteilerschrank-24kva",
     name: "Anschlussverteilerschrank 24 kVA",
-    description: "Mittlerer Anschlussschrank",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Anschlußleistung 24 kVA mit einem Zählerfeld. Robustes, verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell.",
+    image: anschlussverteilerschrank24kva1,
+    images: [anschlussverteilerschrank24kva1, anschlussverteilerschrank24kva2, anschlussverteilerschrank24kva3],
     category: "anschlussschrank",
+    specifications: {
+      "Anschlussleistung": "24 kVA",
+      "Produktmaße": "1270 x 710 x 360 mm",
+      "Gewicht": "49 kg",
+      "Zählerfeld": "1x",
+    },
+    detailedDescription: "Robustes und stabiles Stahlblechgehäuse, verzinkt und orange pulverbeschichtet. Feuerverzinktes Standgestell. Hochwertige Verdrahtung und Steckvorrichtungen. Stückgeprüft.",
     rentwareCode: { krefeld: "CIRWT3" }
   },
   {
