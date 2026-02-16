@@ -73,6 +73,7 @@ import netzwerkkabelCat5e20m1 from "@/assets/products/netzwerkkabel-cat5e-20m-1.
 import schukokabel20m1 from "@/assets/products/schukokabel-20m-1.jpeg";
 import hdmiGlasfaser35m1 from "@/assets/products/hdmi-glasfaser-35m-1.png";
 import etherconCat5e20m1 from "@/assets/products/ethercon-cat5e-20m-1.jpeg";
+import titanexPowerconTrue1_10m1 from "@/assets/products/titanex-powercon-true1-10m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2514,11 +2515,17 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "titanex-powercon-true1-10m",
-    name: "Titanex PowerCon TRUE1 Top Linkkable 10 m",
-    description: "Titanex PowerCon TRUE1 Kabel 10m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Titanex PowerCon TRUE1 Top Link Cable 10 m",
+    description: "10 m Link Cable, Kabel-Typ: H07RN-F3G2,5 – 16A",
+    image: titanexPowerconTrue1_10m1,
+    images: [titanexPowerconTrue1_10m1],
     category: "powercon-kabel",
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Kabellänge": "10 m",
+      "Gewicht": "ca. 3,5 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "8X5N7T" }
   },
   {
