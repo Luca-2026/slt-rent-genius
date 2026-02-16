@@ -57,6 +57,7 @@ import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
+import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2353,9 +2354,9 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-30m-cat7",
     name: "Major Netzwerkkabel Cat-7 30m",
-    description: "Cat7 Netzwerkkabel 30m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "30 m Cat-7 Netzwerkkabel",
+    image: netzwerkkabelCat7_30m1,
+    images: [netzwerkkabelCat7_30m1],
     category: "netzwerkkabel",
     rentwareCode: { krefeld: "T7E3LU" }
   },
