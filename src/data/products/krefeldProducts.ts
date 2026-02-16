@@ -82,6 +82,7 @@ import ceeKabel63aRot10m1 from "@/assets/products/cee-kabel-63a-rot-10m-1.jpeg";
 import cee32aUv6xSchuko1 from "@/assets/products/cee-32a-uv-6x-schuko-1.jpeg";
 import titanexPowerconTrue1_3m1 from "@/assets/products/titanex-powercon-true1-3m-1.jpeg";
 import etherconCat5e25m1 from "@/assets/products/ethercon-cat5e-25m-1.jpeg";
+import etherconCat7_3m1 from "@/assets/products/ethercon-cat7-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2412,10 +2413,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-3m-cat7",
     name: "Major EtherCon Kabel 3 m, Cat 7",
-    description: "EtherCon Netzwerkkabel 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "3 m Cat6a Netzwerkkabel",
+    image: etherconCat7_3m1,
+    images: [etherconCat7_3m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "3 m",
+      "Kategorie": "Cat 7",
+    },
     rentwareCode: { krefeld: "UDHP5O" }
   },
   {
