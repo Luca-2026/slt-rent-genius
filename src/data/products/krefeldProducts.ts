@@ -102,6 +102,7 @@ import schukoKabeltrommel50m1 from "@/assets/products/schuko-kabeltrommel-50m-1.
 import powerconHybridLinkkabel3m1 from "@/assets/products/powercon-hybrid-linkkabel-3m-1.jpeg";
 import ceeAdapter32a16a1 from "@/assets/products/cee-adapter-32a-16a-1.jpeg";
 import cee16aUv3xSchuko1 from "@/assets/products/cee-16a-uv-3x-schuko-1.jpeg";
+import ceeKabel32aRot3m1 from "@/assets/products/cee-kabel-32a-rot-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2246,10 +2247,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-3m",
     name: "CEE Kabel 32A rot 3 m",
-    description: "CEE 32A Verlängerung 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
+    image: ceeKabel32aRot3m1,
+    images: [ceeKabel32aRot3m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "3 m",
+      "Gewicht": "2,4 kg",
+      "Kabel-Typ": "H07RN-F5G6 – 32A rot",
+    },
     rentwareCode: { krefeld: "O35O9Y" }
   },
   {
