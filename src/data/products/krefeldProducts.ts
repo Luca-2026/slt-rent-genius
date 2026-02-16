@@ -69,6 +69,7 @@ import titanexPowerconTrue1_5m1 from "@/assets/products/titanex-powercon-true1-5
 import cee63aUv2x32a2x16a1 from "@/assets/products/cee-63a-uv-2x32a-2x16a-1.jpeg";
 import officeKabelbruecke2m1 from "@/assets/products/office-kabelbruecke-2m-1.jpeg";
 import officeKabelbruecke2m2 from "@/assets/products/office-kabelbruecke-2m-2.jpeg";
+import netzwerkkabelCat5e20m1 from "@/assets/products/netzwerkkabel-cat5e-20m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2415,10 +2416,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-20m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 20 m",
-    description: "Cat5e Netzwerkkabel 20m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "20 m Cat-5e Netzwerkkabel",
+    image: netzwerkkabelCat5e20m1,
+    images: [netzwerkkabelCat5e20m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "20 m",
+      "Kategorie": "Cat-5e",
+    },
     rentwareCode: { krefeld: "SUYKRA" }
   },
   {
