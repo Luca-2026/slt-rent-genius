@@ -88,6 +88,8 @@ import ceeAdapter32a63a1 from "@/assets/products/cee-adapter-32a-63a-1.jpeg";
 import schukokabel10m1 from "@/assets/products/schukokabel-10m-1.jpeg";
 import ceeKabel16aRot3m1 from "@/assets/products/cee-kabel-16a-rot-3m-1.jpeg";
 import ceeKabel32aRot10m1 from "@/assets/products/cee-kabel-32a-rot-10m-1.jpeg";
+import officeKabelbruecke1m1 from "@/assets/products/office-kabelbruecke-1m-1.jpeg";
+import officeKabelbruecke1m2 from "@/assets/products/office-kabelbruecke-1m-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2673,10 +2675,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "office-kabelbruecke-1m",
     name: "Office Kabelbrücke black 1m",
-    description: "Büro-Kabelbrücke 1m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kabelbrücke mit 4 Kanälen für die Innenanwendung",
+    image: officeKabelbruecke1m1,
+    images: [officeKabelbruecke1m1, officeKabelbruecke1m2],
     category: "kabelbruecke",
+    specifications: {
+      "Kanäle": "4",
+      "Länge": "1 m",
+      "Anwendung": "Innenbereich",
+    },
     rentwareCode: { krefeld: "YESZ5H" }
   },
   {
