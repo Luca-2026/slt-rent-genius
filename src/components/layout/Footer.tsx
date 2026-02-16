@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo.png";
 import { getAreasForLocation } from "@/data/localSeoData";
 
@@ -27,24 +28,26 @@ const locations = [
   },
 ];
 
-const quickLinks = [
-  { to: "/produkte", label: "Produkte" },
-  { to: "/so-funktionierts", label: "So funktioniert's" },
-  { to: "/hilfe", label: "Hilfe & Anleitungen" },
-  { to: "/lieferung", label: "Lieferkosten" },
-  { to: "/standorte", label: "Standorte" },
-  { to: "/karriere", label: "Karriere" },
-  { to: "/kontakt", label: "Kontakt" },
-  { to: "/faq", label: "FAQ" },
-];
-
-const legalLinks = [
-  { to: "/impressum", label: "Impressum" },
-  { to: "/datenschutz", label: "Datenschutz" },
-  { to: "/agb", label: "AGB" },
-];
-
 export function Footer() {
+  const { t } = useTranslation();
+
+  const quickLinks = [
+    { to: "/produkte", label: t("footer.products") },
+    { to: "/so-funktionierts", label: t("footer.howItWorks") },
+    { to: "/hilfe", label: t("footer.help") },
+    { to: "/lieferung", label: t("footer.deliveryCosts") },
+    { to: "/standorte", label: t("footer.locations") },
+    { to: "/karriere", label: t("footer.career") },
+    { to: "/kontakt", label: t("footer.contact") },
+    { to: "/faq", label: t("footer.faq") },
+  ];
+
+  const legalLinks = [
+    { to: "/impressum", label: t("footer.imprint") },
+    { to: "/datenschutz", label: t("footer.privacy") },
+    { to: "/agb", label: t("footer.terms") },
+  ];
+
   return (
     <footer className="bg-primary">
       {/* Main Footer */}
@@ -94,14 +97,14 @@ export function Footer() {
         {/* Local SEO Links by Region */}
         <div className="mb-4">
           <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">
-            Mietgeräte in Ihrer Nähe
+            {t("footer.nearYou")}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {locations.map((loc) => {
               const areas = getAreasForLocation(loc.id).filter(a => a.distance > 0).slice(0, 6);
               return (
                 <div key={loc.id}>
-                  <span className="text-xs font-medium text-white/70 block mb-1">Region {loc.name}:</span>
+                  <span className="text-xs font-medium text-white/70 block mb-1">{t("footer.region", { name: loc.name })}</span>
                   <div className="flex flex-wrap gap-x-3 gap-y-1">
                     {areas.map((area) => (
                       <Link

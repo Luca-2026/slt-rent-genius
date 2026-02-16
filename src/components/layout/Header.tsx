@@ -2,12 +2,8 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo.png";
 
 const locations = [
@@ -16,20 +12,21 @@ const locations = [
   { id: "muelheim", name: "Mülheim", address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr", phone: "02151 417 99 04", email: "krefeld@slt-rental.de" },
 ];
 
-const navLinks = [
-  { to: "/produkte", label: "Produkte" },
-  { to: "/loesungen", label: "Lösungen" },
-  { to: "/so-funktionierts", label: "So funktioniert's" },
-  { to: "/hilfe", label: "Hilfe & Anleitungen" },
-  { to: "/standorte", label: "Standorte" },
-  { to: "/ueber-uns", label: "Über uns" },
-  { to: "/kontakt", label: "Kontakt" },
-];
-
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const navLinks = [
+    { to: "/produkte", label: t("nav.products") },
+    { to: "/loesungen", label: t("nav.solutions") },
+    { to: "/so-funktionierts", label: t("nav.howItWorks") },
+    { to: "/hilfe", label: t("nav.help") },
+    { to: "/standorte", label: t("nav.locations") },
+    { to: "/ueber-uns", label: t("nav.about") },
+    { to: "/kontakt", label: t("nav.contact") },
+  ];
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -41,32 +38,32 @@ export function Header() {
           <div className="animate-marquee whitespace-nowrap flex items-center gap-8">
             <div className="flex items-center gap-1.5 font-semibold">
               <Percent className="h-4 w-4" />
-              <span>Wochenendtarife</span>
+              <span>{t("marquee.weekendRates")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
             <div className="flex items-center gap-1.5">
-              <span className="font-medium">WE:</span>
-              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
+              <span className="font-medium">{t("marquee.we")}:</span>
+              <span>{t("marquee.weFri")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
             <div className="flex items-center gap-1.5">
-              <span className="font-medium">Langes WE:</span>
-              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
+              <span className="font-medium">{t("marquee.longWe")}:</span>
+              <span>{t("marquee.longWeFri")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
             <div className="flex items-center gap-1.5 font-semibold">
               <Percent className="h-4 w-4" />
-              <span>Wochenendtarife</span>
+              <span>{t("marquee.weekendRates")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
             <div className="flex items-center gap-1.5">
-              <span className="font-medium">WE:</span>
-              <span>Fr. ab 16:00 – Mo. 09:30 Uhr</span>
+              <span className="font-medium">{t("marquee.we")}:</span>
+              <span>{t("marquee.weFri")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
             <div className="flex items-center gap-1.5">
-              <span className="font-medium">Langes WE:</span>
-              <span>Fr. ab 06:00 – Mo. 09:30 Uhr</span>
+              <span className="font-medium">{t("marquee.longWe")}:</span>
+              <span>{t("marquee.longWeFri")}</span>
             </div>
             <span className="text-primary-foreground/50">•</span>
           </div>
@@ -102,15 +99,17 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            
             <Link to="/b2b/login">
               <Button variant="outline" size="sm" className="hidden sm:flex">
-                zum B2B Portal
+                {t("nav.b2bPortal")}
               </Button>
             </Link>
 
             <Link to="/mieten" className="hidden md:block">
               <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                Jetzt mieten
+                {t("nav.rentNow")}
               </Button>
             </Link>
 
@@ -120,7 +119,7 @@ export function Header() {
               size="icon"
               className="lg:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Menü"
+              aria-label={t("nav.menu")}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -152,7 +151,7 @@ export function Header() {
               className="px-4 py-3 rounded-lg text-sm font-medium hover:bg-muted text-body"
               onClick={() => setIsMenuOpen(false)}
             >
-              B2B Login
+              {t("nav.b2bLogin")}
             </Link>
             <Link
               to="/mieten"
@@ -160,7 +159,7 @@ export function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                Jetzt mieten
+                {t("nav.rentNow")}
               </Button>
             </Link>
           </nav>
