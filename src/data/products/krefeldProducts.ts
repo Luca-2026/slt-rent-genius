@@ -110,6 +110,7 @@ import anschlussverteilerschrank44kva2 from "@/assets/products/anschlussverteile
 import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteilerschrank-44kva-3.jpeg";
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
+import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2624,10 +2625,14 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-5m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 5m",
-    description: "Cat5e Netzwerkkabel 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "5 m Cat-5e Netzwerkkabel",
+    image: netzwerkkabelCat5e5m1,
+    images: [netzwerkkabelCat5e5m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "5 m",
+    },
     rentwareCode: { krefeld: "F76J8U" }
   },
   {
