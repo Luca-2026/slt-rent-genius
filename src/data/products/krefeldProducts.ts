@@ -111,6 +111,7 @@ import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteile
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
+import ceeKabel63aRot20m1 from "@/assets/products/cee-kabel-63a-rot-20m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2383,10 +2384,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-20m",
     name: "CEE Kabel 63A rot 20 m",
-    description: "CEE 63A Verlängerung 20m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
+    image: ceeKabel63aRot20m1,
+    images: [ceeKabel63aRot20m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "20 m",
+      "Gewicht": "29 kg",
+      "Kabel-Typ": "H07RN-F5G16 – 63A rot",
+    },
     rentwareCode: { krefeld: "756WGG" }
   },
   // Schuko-Kabel
