@@ -1,17 +1,20 @@
 import { Layout } from "@/components/layout";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { useTranslation } from "react-i18next";
 
 export default function AGB() {
+  const { t } = useTranslation();
+
   return (
     <Layout>
       <div className="bg-muted/30 py-12 md:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-              Allgemeine Geschäfts- und Vermietbedingungen
+              {t("agb.title")}
             </h1>
             <p className="text-lg text-muted-foreground">
-              der SLT Technology Group GmbH & Co. KG und der eingetragenen Marke „SLT-Rental"
+              {t("agb.subtitle")}
             </p>
           </AnimatedSection>
         </div>
@@ -460,11 +463,9 @@ export default function AGB() {
 
           {/* Footer */}
           <div className="mt-16 pt-8 border-t border-border">
-            <p className="text-body font-semibold mb-2">Gültig ab: Januar 2026</p>
-            <p className="text-body mb-4">Ort: Krefeld</p>
-            <p className="text-body font-semibold">
-              SLT Technology Group GmbH & Co. KG – eingetragene Marke SLT-Rental
-            </p>
+            <p className="text-body font-semibold mb-2">{t("agb.validFrom")}</p>
+            <p className="text-body mb-4">{t("agb.location")}</p>
+            <p className="text-body font-semibold">{t("agb.companyFooter")}</p>
           </div>
         </div>
       </div>

@@ -7,45 +7,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
-
-const contactInfo = [
-  {
-    icon: Phone,
-    title: "Telefon",
-    primary: "02151 417 990 4",
-    secondary: "Mo-Fr: 7:30-18:00 Uhr",
-    href: "tel:+49021514179904",
-  },
-  {
-    icon: Mail,
-    title: "E-Mail",
-    primary: "mieten@slt-rental.de",
-    secondary: "Antwort innerhalb 24h",
-    href: "mailto:mieten@slt-rental.de",
-  },
-  {
-    icon: MessageCircle,
-    title: "WhatsApp",
-    primary: "02151 417 990 4",
-    secondary: "Schnelle Anfragen",
-    href: "https://wa.me/49021514179904",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
+  const { t } = useTranslation();
+
+  const contactInfo = [
+    { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
+    { icon: Mail, title: t("contact.emailTitle"), primary: t("contact.emailAddress"), secondary: t("contact.emailResponse"), href: "mailto:mieten@slt-rental.de" },
+    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: t("contact.whatsappNumber"), secondary: t("contact.whatsappDesc"), href: "https://wa.me/49021514179904" },
+  ];
+
   return (
     <Layout>
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
-            <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-              Kontakt
-            </h1>
-            <p className="text-primary-foreground/80 max-w-2xl">
-              Hast du Fragen zu unseren Produkten, zur Buchung oder brauchst eine persönliche Beratung? 
-              Wir sind für dich da – per Telefon, E-Mail oder WhatsApp.
-            </p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">{t("contact.heroTitle")}</h1>
+            <p className="text-primary-foreground/80 max-w-2xl">{t("contact.heroDesc")}</p>
           </AnimatedSection>
         </div>
       </section>
@@ -76,78 +56,63 @@ export default function Contact() {
             {/* Contact Form */}
             <AnimatedSection animation="slide-in-left" delay={0}>
               <div>
-                <h2 className="text-2xl font-bold text-headline mb-6">Schreib uns eine Nachricht</h2>
+                <h2 className="text-2xl font-bold text-headline mb-6">{t("contact.formTitle")}</h2>
                 <form className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-headline mb-1.5">
-                        Vorname *
-                      </label>
+                      <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.firstName")} *</label>
                       <Input placeholder="Max" required />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-headline mb-1.5">
-                        Nachname *
-                      </label>
+                      <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.lastName")} *</label>
                       <Input placeholder="Mustermann" required />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">
-                      E-Mail *
-                    </label>
+                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.email")} *</label>
                     <Input type="email" placeholder="max@beispiel.de" required />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">
-                      Telefon (optional)
-                    </label>
+                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")}</label>
                     <Input type="tel" placeholder="0151 123 456 78" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">
-                      Betreff *
-                    </label>
+                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
                     <Input placeholder="Anfrage zu Minibagger" required />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">
-                      Nachricht *
-                    </label>
-                    <Textarea 
-                      placeholder="Deine Nachricht an uns..." 
-                      rows={5} 
-                      required 
-                    />
+                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.message")} *</label>
+                    <Textarea placeholder="..." rows={5} required />
                   </div>
                   <div className="flex items-start gap-2">
                     <input type="checkbox" id="privacy" className="mt-1" required />
                     <label htmlFor="privacy" className="text-sm text-muted-foreground">
-                      Ich habe die <Link to="/datenschutz" className="text-primary hover:underline">Datenschutzerklärung</Link> gelesen 
-                      und stimme der Verarbeitung meiner Daten zu. *
+                      {t("contact.privacy").split("<link>")[0]}
+                      <Link to="/datenschutz" className="text-primary hover:underline">
+                        {t("contact.privacy").split("<link>")[1]?.split("</link>")[0]}
+                      </Link>
+                      {t("contact.privacy").split("</link>")[1]}
                     </label>
                   </div>
                   <Button type="submit" className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-cta-orange-hover">
                     <Send className="h-4 w-4 mr-2" />
-                    Nachricht senden
+                    {t("contact.send")}
                   </Button>
                 </form>
-                <p className="text-xs text-muted-foreground mt-4">
-                  * Pflichtfelder. Wir antworten in der Regel innerhalb von 24 Stunden.
-                </p>
+                <p className="text-xs text-muted-foreground mt-4">{t("contact.required")}</p>
               </div>
             </AnimatedSection>
 
             {/* Locations Overview */}
             <AnimatedSection animation="slide-in-right" delay={200}>
               <div>
-                <h2 className="text-2xl font-bold text-headline mb-6">Unsere Standorte</h2>
+                <h2 className="text-2xl font-bold text-headline mb-6">{t("contact.locationsTitle")}</h2>
                 <div className="space-y-4">
                   {locationData.map((loc) => (
                     <Card key={loc.id} className="hover:shadow-md transition-all duration-300">
                       <CardContent className="p-4">
                         <h3 className="font-semibold text-headline mb-2">
-                          {loc.name} {loc.subtitle === "Hauptsitz" && "(Hauptsitz)"}
+                          {loc.name} {loc.subtitle === "Hauptsitz" && `(${t("contact.hq")})`}
                         </h3>
                         <div className="flex items-start gap-2 text-sm text-muted-foreground mb-1">
                           <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
@@ -155,15 +120,11 @@ export default function Contact() {
                         </div>
                         <div className="flex items-center gap-2 text-sm mb-1">
                           <Phone className="h-4 w-4 text-muted-foreground shrink-0" />
-                          <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="text-primary hover:text-accent">
-                            {loc.phone}
-                          </a>
+                          <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="text-primary hover:text-accent">{loc.phone}</a>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                           <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
-                          <a href={`mailto:${loc.email}`} className="text-primary hover:text-accent">
-                            {loc.email}
-                          </a>
+                          <a href={`mailto:${loc.email}`} className="text-primary hover:text-accent">{loc.email}</a>
                         </div>
                       </CardContent>
                     </Card>
@@ -174,24 +135,20 @@ export default function Contact() {
                   <div className="mt-6 p-4 bg-surface-light rounded-xl">
                     <div className="flex items-center gap-2 text-headline font-medium mb-2">
                       <Clock className="h-5 w-5 text-primary" />
-                      Öffnungszeiten
+                      {t("contact.openingHoursTitle")}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Montag - Freitag: 7:30 - 18:00 Uhr<br />
-                      Samstag: 8:00 - 14:30 Uhr*<br />
-                      Sonntag: geschlossen
+                      {t("contact.openingHoursMf")}<br />
+                      {t("contact.openingHoursSa")}<br />
+                      {t("contact.openingHoursSu")}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      *Samstags nur mit vorheriger Buchung.
-                    </p>
+                    <p className="text-xs text-muted-foreground mt-2">{t("contact.openingHoursNote")}</p>
                   </div>
                 </AnimatedSection>
 
                 <div className="mt-6">
                   <Link to="/standorte">
-                    <Button variant="outline" className="w-full">
-                      Alle Standorte anzeigen
-                    </Button>
+                    <Button variant="outline" className="w-full">{t("contact.allLocations")}</Button>
                   </Link>
                 </div>
               </div>
@@ -204,17 +161,10 @@ export default function Contact() {
       <section className="py-12 lg:py-16 bg-primary">
         <div className="section-container text-center">
           <AnimatedSection animation="fade-in-up">
-            <h2 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-4">
-              Du bist Geschäftskunde?
-            </h2>
-            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-6">
-              Registriere dich im B2B-Portal und profitiere von Rahmenverträgen, 
-              vereinfachter Abrechnung und persönlicher Betreuung.
-            </p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-4">{t("contact.b2bTitle")}</h2>
+            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-6">{t("contact.b2bDesc")}</p>
             <Link to="/b2b">
-              <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                Zum B2B-Portal
-              </Button>
+              <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">{t("contact.b2bCta")}</Button>
             </Link>
           </AnimatedSection>
         </div>
