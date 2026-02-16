@@ -81,6 +81,7 @@ import ceeAdapter63a32a1 from "@/assets/products/cee-adapter-63a-32a-1.jpeg";
 import ceeKabel63aRot10m1 from "@/assets/products/cee-kabel-63a-rot-10m-1.jpeg";
 import cee32aUv6xSchuko1 from "@/assets/products/cee-32a-uv-6x-schuko-1.jpeg";
 import titanexPowerconTrue1_3m1 from "@/assets/products/titanex-powercon-true1-3m-1.jpeg";
+import etherconCat5e25m1 from "@/assets/products/ethercon-cat5e-25m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2434,10 +2435,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-25m-cat5e",
     name: "Major EtherCon Kabel Cat-5e 25m",
-    description: "EtherCon Netzwerkkabel 25m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "25 m Cat-5e Netzwerkkabel",
+    image: etherconCat5e25m1,
+    images: [etherconCat5e25m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "25 m",
+      "Kategorie": "Cat-5e",
+    },
     rentwareCode: { krefeld: "OQ3ZBU" }
   },
   {
