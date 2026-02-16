@@ -77,6 +77,7 @@ import titanexPowerconTrue1_10m1 from "@/assets/products/titanex-powercon-true1-
 import ceeKabel16aRot5m1 from "@/assets/products/cee-kabel-16a-rot-5m-1.jpeg";
 import cee16aUv5xSchuko1 from "@/assets/products/cee-16a-uv-5x-schuko-1.jpeg";
 import ceeKabel32aRot5m1 from "@/assets/products/cee-kabel-32a-rot-5m-1.jpeg";
+import ceeAdapter63a32a1 from "@/assets/products/cee-adapter-63a-32a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2357,10 +2358,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-adapter-63a-32a-sicherung",
     name: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung",
-    description: "CEE-Adapter 63A auf 32A mit Sicherung",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "CEE Adapter 63A Stecker rot auf 32A Kupplung rot, inkl. Leitungsschutzschalter 3-pol. C-32A, 6kA",
+    image: ceeAdapter63a32a1,
+    images: [ceeAdapter63a32a1],
     category: "adapter",
+    specifications: {
+      "Marke": "Mennekes",
+      "Input": "CEE 63A Stecker rot",
+      "Output": "CEE 32A Kupplung rot",
+      "Sicherung": "Leitungsschutzschalter 3-pol. C-32A, 6kA",
+    },
     rentwareCode: { krefeld: "G8HMB1" }
   },
   {
