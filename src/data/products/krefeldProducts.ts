@@ -112,6 +112,8 @@ import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
 import ceeKabel63aRot20m1 from "@/assets/products/cee-kabel-63a-rot-20m-1.jpeg";
+import defenderMicro2_1 from "@/assets/products/defender-micro-2-1.jpeg";
+import defenderMicro2_2 from "@/assets/products/defender-micro-2-2.avif";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2788,10 +2790,19 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "defender-micro-2",
     name: "Defender Micro 2 Kabelbrücke",
-    description: "Kleine Kabelbrücke 2-Kanal",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kabelbrücke mit 2 Kabelkanälen, Typ 535-5",
+    image: defenderMicro2_1,
+    images: [defenderMicro2_1, defenderMicro2_2],
     category: "kabelbruecke",
+    specifications: {
+      "Typ": "535-5",
+      "Kabelkanäle": "2",
+      "Länge": "100 cm",
+      "Breite": "28 cm",
+      "Höhe": "4,5 cm",
+      "Achslast (max)": "2 t",
+      "Brandschutzklasse": "B2",
+    },
     rentwareCode: { krefeld: "4QXW6T" }
   },
   {
