@@ -90,6 +90,7 @@ import ceeKabel16aRot3m1 from "@/assets/products/cee-kabel-16a-rot-3m-1.jpeg";
 import ceeKabel32aRot10m1 from "@/assets/products/cee-kabel-32a-rot-10m-1.jpeg";
 import officeKabelbruecke1m1 from "@/assets/products/office-kabelbruecke-1m-1.jpeg";
 import officeKabelbruecke1m2 from "@/assets/products/office-kabelbruecke-1m-2.jpeg";
+import ceeKabel63aRot3m1 from "@/assets/products/cee-kabel-63a-rot-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2278,10 +2279,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-3m",
     name: "CEE Kabel 63A rot 3 m",
-    description: "CEE 63A Verlängerung 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
+    image: ceeKabel63aRot3m1,
+    images: [ceeKabel63aRot3m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "3 m",
+      "Gewicht": "4,5 kg",
+      "Kabel-Typ": "H07RN-F5G16 – 63A rot",
+    },
     rentwareCode: { krefeld: "WCJ8MZ" }
   },
   {
