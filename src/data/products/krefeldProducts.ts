@@ -71,6 +71,7 @@ import officeKabelbruecke2m1 from "@/assets/products/office-kabelbruecke-2m-1.jp
 import officeKabelbruecke2m2 from "@/assets/products/office-kabelbruecke-2m-2.jpeg";
 import netzwerkkabelCat5e20m1 from "@/assets/products/netzwerkkabel-cat5e-20m-1.jpeg";
 import schukokabel20m1 from "@/assets/products/schukokabel-20m-1.jpeg";
+import hdmiGlasfaser35m1 from "@/assets/products/hdmi-glasfaser-35m-1.png";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2438,9 +2439,13 @@ export const kabelStromverteilerProducts: Product[] = [
     id: "hdmi-glasfaser-35m",
     name: "HDMI Glasfaser Kabel 35m",
     description: "HDMI über Glasfaser 35m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: hdmiGlasfaser35m1,
+    images: [hdmiGlasfaser35m1],
     category: "hdmi-kabel",
+    specifications: {
+      "Marke": "Kramer",
+      "Kabellänge": "35 m",
+    },
     rentwareCode: { krefeld: "HLQOB5" }
   },
   // PowerCon-Kabel
