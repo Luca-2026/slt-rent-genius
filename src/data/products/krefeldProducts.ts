@@ -74,6 +74,7 @@ import schukokabel20m1 from "@/assets/products/schukokabel-20m-1.jpeg";
 import hdmiGlasfaser35m1 from "@/assets/products/hdmi-glasfaser-35m-1.png";
 import etherconCat5e20m1 from "@/assets/products/ethercon-cat5e-20m-1.jpeg";
 import titanexPowerconTrue1_10m1 from "@/assets/products/titanex-powercon-true1-10m-1.jpeg";
+import ceeKabel16aRot5m1 from "@/assets/products/cee-kabel-16a-rot-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2149,10 +2150,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-5m",
     name: "CEE Kabel 16A rot 5 m",
-    description: "CEE 16A Verlängerung 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
+    image: ceeKabel16aRot5m1,
+    images: [ceeKabel16aRot5m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "5 m",
+      "Gewicht": "2,2 kg",
+      "Kabel-Typ": "H07RN-F5G2,5 – 16A rot",
+    },
     rentwareCode: { krefeld: "WT1HNO" }
   },
   {
