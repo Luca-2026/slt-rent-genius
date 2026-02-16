@@ -66,6 +66,7 @@ import ceeKabel63a5m1 from "@/assets/products/cee-kabel-63a-5m-1.jpeg";
 import powerconLinkkabel1_5m1 from "@/assets/products/powercon-linkkabel-1-5m-1.jpeg";
 import ceeAdapter16a32a1 from "@/assets/products/cee-adapter-16a-32a-1.jpeg";
 import titanexPowerconTrue1_5m1 from "@/assets/products/titanex-powercon-true1-5m-1.jpeg";
+import cee63aUv2x32a2x16a1 from "@/assets/products/cee-63a-uv-2x32a-2x16a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2069,10 +2070,20 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-63a-uv-2x32a-2x16a",
     name: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A",
-    description: "Verteiler CEE63A auf CEE-Abgänge",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "19\"-Rackeinbau Stromverteiler (3 HE) mit CEE 63A Eingang, 2x CEE 32A und 2x CEE 16A Ausgängen, FI Typ B 63A",
+    image: cee63aUv2x32a2x16a1,
+    images: [cee63aUv2x32a2x16a1],
     category: "stromverteiler",
+    specifications: {
+      "Produktmaße": "48,3 x 31 x 13,35 cm",
+      "Gewicht": "8,15 kg",
+      "Spannungsversorgung": "380–400V AC, 50Hz",
+      "Stromanschluss": "CEE 63A 5-pol, 5x16mm² H07RN-F, 1 m",
+      "Stromausgang": "2x CEE 32A + 2x CEE 16A 5-pol",
+      "Absicherung": "FI Typ B 63A/0,03A, 2x C16A + 2x C32A 3-pol",
+      "Phasenpräsenzanzeige": "3",
+      "Gehäuse": "19\" Rackeinbau 3 HE",
+    },
     rentwareCode: { krefeld: "42SR2E" }
   },
   {
