@@ -76,6 +76,7 @@ import etherconCat5e20m1 from "@/assets/products/ethercon-cat5e-20m-1.jpeg";
 import titanexPowerconTrue1_10m1 from "@/assets/products/titanex-powercon-true1-10m-1.jpeg";
 import ceeKabel16aRot5m1 from "@/assets/products/cee-kabel-16a-rot-5m-1.jpeg";
 import cee16aUv5xSchuko1 from "@/assets/products/cee-16a-uv-5x-schuko-1.jpeg";
+import ceeKabel32aRot5m1 from "@/assets/products/cee-kabel-32a-rot-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2201,10 +2202,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-5m",
     name: "CEE Kabel 32A rot 5 m",
-    description: "CEE 32A Verlängerung 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
+    image: ceeKabel32aRot5m1,
+    images: [ceeKabel32aRot5m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "5 m",
+      "Gewicht": "3,6 kg",
+      "Kabel-Typ": "H07RN-F5G6 – 32A rot",
+    },
     rentwareCode: { krefeld: "V2T7GR" }
   },
   {
