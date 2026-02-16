@@ -99,6 +99,7 @@ import ceeKabel32aRot20m1 from "@/assets/products/cee-kabel-32a-rot-20m-1.jpeg";
 import defenderMidi5_1 from "@/assets/products/defender-midi-5-1.jpeg";
 import defenderMidi5_2 from "@/assets/products/defender-midi-5-2.jpeg";
 import schukoKabeltrommel50m1 from "@/assets/products/schuko-kabeltrommel-50m-1.jpeg";
+import powerconHybridLinkkabel3m1 from "@/assets/products/powercon-hybrid-linkkabel-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2629,11 +2630,17 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "powercon-hybrid-linkkabel-3m",
-    name: "PowerCon Hybrid Linkable 3 m",
-    description: "PowerCon Hybrid Kabel 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "PowerCon Hybrid Link Cable 3 m",
+    description: "PowerCon & XLR Hybrid Link Cable, 3 m",
+    image: powerconHybridLinkkabel3m1,
+    images: [powerconHybridLinkkabel3m1],
     category: "powercon-kabel",
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Anschlüsse": "PowerCon & XLR",
+      "Kabellänge": "3 m",
+      "Gewicht": "ca. 1,9 kg",
+    },
     rentwareCode: { krefeld: "6TZVSR" }
   },
   {
