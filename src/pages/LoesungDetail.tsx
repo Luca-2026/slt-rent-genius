@@ -6,13 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { solutions } from "./Loesungen";
+import { solutionData } from "./Loesungen";
 import { productCategories } from "@/data/rentalData";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
+import { useTranslation } from "react-i18next";
+import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 
 export default function LoesungDetail() {
+  const { t } = useTranslation();
   const { solutionId } = useParams<{ solutionId: string }>();
-  const solution = solutions.find(s => s.id === solutionId);
+  const solution = solutionData.find(s => s.id === solutionId);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
 
@@ -21,12 +24,17 @@ export default function LoesungDetail() {
   }
 
   const Icon = solution.icon;
-  const relatedCategories = productCategories.filter(cat => 
+  const rawRelatedCategories = productCategories.filter(cat => 
     solution.categories.includes(cat.id)
   );
+  const relatedCategories = useTranslatedCategories(rawRelatedCategories);
 
-  // Get other solutions for "More solutions" section
-  const otherSolutions = solutions.filter(s => s.id !== solution.id).slice(0, 3);
+  const otherSolutions = solutionData.filter(s => s.id !== solution.id).slice(0, 3);
+
+  const title = t(`solutions.items.${solution.id}.title`);
+  const subtitle = t(`solutions.items.${solution.id}.subtitle`);
+  const description = t(`solutions.items.${solution.id}.description`);
+  const highlights = t(`solutions.items.${solution.id}.highlights`, { returnObjects: true }) as string[];
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
@@ -35,23 +43,18 @@ export default function LoesungDetail() {
 
   return (
     <Layout>
-      {/* Location Selection Dialog */}
       <LocationSelectDialog
         open={locationDialogOpen}
         onOpenChange={setLocationDialogOpen}
         targetCategoryId={selectedCategoryId}
-        title="Standort wählen"
-        description="Wähle deinen Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen."
+        title={t("solutions.selectLocation")}
+        description={t("solutions.selectLocationDesc")}
       />
 
       {/* Hero Section */}
       <section className={`bg-gradient-to-br ${solution.color} py-12 lg:py-20 relative overflow-hidden`}>
         <div className="absolute inset-0">
-          <img 
-            src={solution.image} 
-            alt="" 
-            className="w-full h-full object-cover opacity-15"
-          />
+          <img src={solution.image} alt="" className="w-full h-full object-cover opacity-15" />
         </div>
         <div className="section-container relative z-10">
           <Link 
@@ -59,7 +62,7 @@ export default function LoesungDetail() {
             className="inline-flex items-center text-primary hover:text-primary/80 mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Alle Lösungen
+            {t("solutions.allSolutions")}
           </Link>
           
           <AnimatedSection animation="fade-in-up">
@@ -69,53 +72,39 @@ export default function LoesungDetail() {
               </div>
               <div>
                 <Badge variant="secondary" className="mb-2">
-                  {solution.subtitle}
+                  {subtitle}
                 </Badge>
                 <h1 className="text-3xl lg:text-4xl font-bold text-headline">
-                  {solution.title}
+                  {title}
                 </h1>
               </div>
             </div>
             
             <p className="text-body-text text-lg max-w-3xl mb-8">
-              {solution.description}
+              {description}
             </p>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Main Image / Image Gallery */}
+      {/* Image Gallery */}
       <section className="py-8 lg:py-12">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             {solution.images && solution.images.length > 1 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Large hero image - spans 2 columns on larger screens */}
                 <div className="md:col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-muted">
-                  <img 
-                    src={solution.images[0]} 
-                    alt={solution.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                  />
+                  <img src={solution.images[0]} alt={title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </div>
-                {/* Gallery images */}
                 {solution.images.slice(1).map((img, index) => (
                   <div key={index} className="aspect-[4/3] rounded-xl overflow-hidden bg-muted">
-                    <img 
-                      src={img} 
-                      alt={`${solution.title} ${index + 2}`}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    />
+                    <img src={img} alt={`${title} ${index + 2}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
                 ))}
               </div>
             ) : (
               <div className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted">
-                <img 
-                  src={solution.image} 
-                  alt={solution.title}
-                  className="w-full h-full object-cover"
-                />
+                <img src={solution.image} alt={title} className="w-full h-full object-cover" />
               </div>
             )}
           </AnimatedSection>
@@ -126,17 +115,13 @@ export default function LoesungDetail() {
       <section className="py-8 lg:py-12">
         <div className="section-container">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Highlights */}
             <AnimatedSection animation="fade-in-up">
               <h2 className="text-2xl font-bold text-headline mb-6">
-                Das bieten wir dir
+                {t("solutions.whatWeOffer")}
               </h2>
               <div className="space-y-4">
-                {solution.highlights.map((highlight, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-start gap-4 p-4 rounded-xl bg-surface-light hover:bg-muted/50 transition-colors"
-                  >
+                {Array.isArray(highlights) && highlights.map((highlight, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-surface-light hover:bg-muted/50 transition-colors">
                     <CheckCircle2 className="w-6 h-6 text-accent flex-shrink-0 mt-0.5" />
                     <span className="text-body-text">{highlight}</span>
                   </div>
@@ -144,27 +129,18 @@ export default function LoesungDetail() {
               </div>
             </AnimatedSection>
 
-            {/* Related Categories - with location selection */}
             <AnimatedSection animation="fade-in-up" delay={0.1}>
               <h2 className="text-2xl font-bold text-headline mb-6">
-                Passende Produktkategorien
+                {t("solutions.relatedCategories")}
               </h2>
               <div className="grid gap-4">
                 {relatedCategories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category.id)}
-                    className="group text-left w-full"
-                  >
+                  <button key={category.id} onClick={() => handleCategoryClick(category.id)} className="group text-left w-full">
                     <Card className="hover:shadow-md transition-all border-2 hover:border-primary/20">
                       <CardContent className="p-4 flex items-center gap-4">
                         {category.icon && (
                           <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                            <img 
-                              src={category.icon} 
-                              alt={category.title}
-                              className="w-8 h-8 object-contain"
-                            />
+                            <img src={category.icon} alt={category.title} className="w-8 h-8 object-contain" />
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -195,22 +171,21 @@ export default function LoesungDetail() {
                 <div className="flex flex-col lg:flex-row items-center gap-8">
                   <div className="flex-1">
                     <h2 className="text-2xl lg:text-3xl font-bold mb-4">
-                      Bereit für dein Projekt?
+                      {t("solutions.readyForProject")}
                     </h2>
                     <p className="text-primary-foreground/80 mb-6">
-                      Besuche einen unserer Standorte und lass dich persönlich beraten. 
-                      Wir helfen dir, das optimale Equipment zusammenzustellen.
+                      {t("solutions.readyForProjectDesc")}
                     </p>
                     <div className="flex flex-wrap gap-4">
                       <Link to="/standorte">
                         <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                           <MapPin className="mr-2 h-4 w-4" />
-                          Standorte finden
+                          {t("solutions.findLocations")}
                         </Button>
                       </Link>
                       <Link to="/kontakt">
                         <Button size="lg" variant="secondary">
-                          Kontakt aufnehmen
+                          {t("solutions.contactUs")}
                         </Button>
                       </Link>
                     </div>
@@ -230,13 +205,15 @@ export default function LoesungDetail() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h2 className="text-2xl font-bold text-headline mb-8">
-              Weitere Lösungen entdecken
+              {t("solutions.moreSolutions")}
             </h2>
           </AnimatedSection>
           
           <div className="grid md:grid-cols-3 gap-6">
             {otherSolutions.map((otherSolution, index) => {
               const OtherIcon = otherSolution.icon;
+              const otherTitle = t(`solutions.items.${otherSolution.id}.title`);
+              const otherSubtitle = t(`solutions.items.${otherSolution.id}.subtitle`);
               return (
                 <AnimatedSection key={otherSolution.id} animation="fade-in-up" delay={index * 0.1}>
                   <Link to={`/loesungen/${otherSolution.id}`}>
@@ -250,10 +227,10 @@ export default function LoesungDetail() {
                       </div>
                       <CardContent className="p-4">
                         <h3 className="font-bold text-headline group-hover:text-primary transition-colors">
-                          {otherSolution.title}
+                          {otherTitle}
                         </h3>
                         <p className="text-sm text-muted-foreground mt-1">
-                          {otherSolution.subtitle}
+                          {otherSubtitle}
                         </p>
                       </CardContent>
                     </Card>

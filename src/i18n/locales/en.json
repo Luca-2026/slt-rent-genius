@@ -253,6 +253,77 @@
       "absperrung-sicherheit": { "title": "Barriers & Safety", "desc": "Barrier fences, construction fences, warning beacons and safety equipment." }
     }
   },
+  "solutions": {
+    "heroTitle": "The right equipment for <accent>your project</accent>",
+    "heroBadge": "Solutions for every trade",
+    "heroDesc": "Whether you're a professional tradesperson or a DIY enthusiast – discover which rental equipment is perfect for your project. Get inspired!",
+    "findSolution": "Find the right solution",
+    "findSolutionDesc": "Choose your trade or project and discover what equipment we have ready for you.",
+    "learnMore": "Learn more",
+    "specialProject": "Have a special project?",
+    "specialProjectDesc": "We're happy to advise you personally and put together the perfect equipment package. Whether large construction site or private project – we'll find the optimal solution.",
+    "requestConsultation": "Request consultation",
+    "findLocations": "Find locations",
+    "allSolutions": "All Solutions",
+    "whatWeOffer": "What we offer you",
+    "relatedCategories": "Related product categories",
+    "readyForProject": "Ready for your project?",
+    "readyForProjectDesc": "Visit one of our locations and get personal advice. We'll help you put together the optimal equipment.",
+    "contactUs": "Contact us",
+    "moreSolutions": "Discover more solutions",
+    "selectLocation": "Select location",
+    "selectLocationDesc": "Choose your location to see available products in this category.",
+    "items": {
+      "garten-landschaftsbau": {
+        "title": "Garden & Landscaping",
+        "subtitle": "From private gardens to parks",
+        "description": "Complete equipment for landscaping companies and ambitious hobby gardeners. From stump grinders to mini excavators – everything for professional garden design.",
+        "highlights": ["Mini excavators 1t - 2.7t (Diesel)", "Stump grinder & chipper", "Plate compactors & rammers", "Trailers for green waste & materials"]
+      },
+      "tiefbau-erdbewegung": {
+        "title": "Civil Engineering & Earthmoving",
+        "subtitle": "Pipeline construction, house connections, earthworks",
+        "description": "Professional construction machines for demanding civil engineering projects. With our mini excavators, dumpers and the right accessories, you'll master any earthwork.",
+        "highlights": ["Mini excavators 1t - 2.7t with attachments", "Electric dumper for quiet material transport", "Trench cleaning buckets & digging buckets", "Machine trailers 1.8t - 3.5t", "Traffic safety & barriers"]
+      },
+      "hochbau-renovierung": {
+        "title": "Building Construction & Renovation",
+        "subtitle": "New builds, refurbishment, interior work",
+        "description": "From shell construction to finishing: tools, aerial platforms and scaffolding for every construction phase. Our professional equipment makes even demanding projects easy.",
+        "highlights": ["Scissor lifts up to 12m height", "Mobile scaffolding up to 11m", "Demolition hammer & rotary hammer", "Construction dryers for drying"]
+      },
+      "events-veranstaltungen": {
+        "title": "Events & Functions",
+        "subtitle": "Corporate events, weddings, festivals",
+        "description": "Everything for unforgettable events: From sound systems to lighting, tents and furniture. We professionally equip events of every size.",
+        "highlights": ["PA systems & Soundboks", "LED lighting & moving heads", "Party tents 3x3m to 6x12m", "Tableware, glasses & cutlery"]
+      },
+      "umzug-transport": {
+        "title": "Moving & Transport",
+        "subtitle": "Private and business moves",
+        "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup via SMS code – even at night and on weekends. The right trailer for every transport.",
+        "highlights": ["Tarpaulin trailers S to XXL", "Lockable box trailers", "24/7 self-service rental", "Weekend rate: 3 days, pay 1 day price"]
+      },
+      "handwerk-gewerbe": {
+        "title": "Trades & Business",
+        "subtitle": "Electricians, painters, installers",
+        "description": "Specialist tools and equipment for trade businesses. From wall chasers to cordless tools – professional equipment for professional work.",
+        "highlights": ["Wall chaser & diamond drill", "Bosch professional cordless tools", "Generators 2.8 - 100 kVA", "Mobile scaffolding & ladders"]
+      },
+      "private-projekte": {
+        "title": "Private Projects",
+        "subtitle": "DIY, garden, renovation",
+        "description": "Got a project? We've got the equipment. Whether patio construction, garden redesign or renovation – our rental equipment will make your project a success.",
+        "highlights": ["Scarifiers & chippers", "Plate compactors for paving", "Trailers for green waste", "Power tools for renovation"]
+      },
+      "kindergeburtstage": {
+        "title": "Kids' Parties & Celebrations",
+        "subtitle": "Bouncy castles, games, entertainment",
+        "description": "Make the birthday party an unforgettable experience! Our bouncy castles, special effects and sound systems will make children's eyes light up.",
+        "highlights": ["Bouncy castles 2.8m to 6m", "Bouncy castle with water slide", "Fog machine & bubble machine", "Mobile Soundboks speakers"]
+      }
+    }
+  },
   "filters": {
     "productType": "Product Type",
     "cableType": "Cable Type",
