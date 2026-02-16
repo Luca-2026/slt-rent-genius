@@ -118,6 +118,7 @@ import verteilerschrank44kva1 from "@/assets/products/verteilerschrank-44kva-1.j
 import verteilerschrank44kva2 from "@/assets/products/verteilerschrank-44kva-2.jpeg";
 import verteilerschrank44kva3 from "@/assets/products/verteilerschrank-44kva-3.jpeg";
 import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
+import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2269,10 +2270,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-20m",
     name: "CEE Kabel 16A rot 20 m",
-    description: "CEE 16A Verlängerung 20m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
+    image: ceeKabel16aRot20m1,
+    images: [ceeKabel16aRot20m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "20 m",
+      "Gewicht": "7,3 kg",
+      "Kabel-Typ": "H07RN-F5G2,5 – 16A rot",
+    },
     rentwareCode: { krefeld: "G9R37U" }
   },
   {
