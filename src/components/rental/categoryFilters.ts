@@ -268,12 +268,39 @@ export const spezialeffekteFilterSections: FilterSection[] = [
 export const kabelStromverteilerFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "Produktart",
     defaultExpanded: true,
     options: [
-      { id: "kabel", label: "Verlängerungskabel", sublabel: "Verschiedene Längen" },
-      { id: "verteiler", label: "Stromverteiler", sublabel: "CEE & Schuko" },
-      { id: "bruecke", label: "Kabelbrücken", sublabel: "Überfahrschutz" },
+      { id: "stromverteiler", label: "Stromverteiler", sublabel: "UV, Anschlussschränke" },
+      { id: "adapter", label: "Adapter", sublabel: "CEE & Speakon Adapter" },
+      { id: "kabelbruecke", label: "Kabelbrücken", sublabel: "Überfahrschutz" },
+      { id: "erdung", label: "Erdung", sublabel: "Erdungsspieße" },
+    ],
+  },
+  {
+    id: "kabeltyp",
+    label: "Kabeltyp",
+    defaultExpanded: true,
+    options: [
+      { id: "schuko", label: "Schuko", sublabel: "230V Verlängerungen" },
+      { id: "cee", label: "CEE Kabel", sublabel: "16A / 32A / 63A rot" },
+      { id: "powercon", label: "PowerCon", sublabel: "Neutrik PowerCon" },
+      { id: "powercon-true1", label: "PowerCon TRUE1", sublabel: "Neutrik TRUE1 Top" },
+      { id: "lautsprecherkabel", label: "Lautsprecherkabel", sublabel: "Speakon NL2/NL4" },
+      { id: "netzwerk", label: "Netzwerk / EtherCon", sublabel: "Cat-5e & Cat-7" },
+      { id: "hdmi", label: "HDMI / Video", sublabel: "Glasfaser & Kupfer" },
+    ],
+  },
+  {
+    id: "laenge",
+    label: "Kabellänge",
+    defaultExpanded: false,
+    options: [
+      { id: "bis-3m", label: "Bis 3 m" },
+      { id: "5m", label: "5 m" },
+      { id: "10m", label: "10 m" },
+      { id: "20m", label: "20 m" },
+      { id: "ab-25m", label: "Ab 25 m" },
     ],
   },
 ];

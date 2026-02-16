@@ -251,6 +251,23 @@ export default function CategoryProducts() {
         zubehoer: ["zubehoer", "staubsauger"],
       };
 
+      const kabelStromverteilerTypeGroups: Record<string, string[]> = {
+        stromverteiler: ["stromverteiler", "anschlussschrank"],
+        adapter: ["adapter"],
+        kabelbruecke: ["kabelbruecke"],
+        erdung: ["erdung"],
+      };
+
+      const kabelStromverteilerKabeltypGroups: Record<string, string[]> = {
+        schuko: ["schuko-kabel", "kabeltrommel"],
+        cee: ["cee-kabel"],
+        powercon: ["powercon-kabel"],
+        "powercon-true1": ["powercon-kabel"],
+        lautsprecherkabel: ["lautsprecherkabel"],
+        netzwerk: ["netzwerkkabel"],
+        hdmi: ["hdmi-kabel"],
+      };
+
       const gartenpflegeTypeGroups: Record<string, string[]> = {
         schneiden: ["kettensaege", "heckenschere", "freischneider"],
         boden: ["erdbohrer", "bodenhacke", "stubbenfraese"],
@@ -323,9 +340,56 @@ export default function CategoryProducts() {
                 const groupCategories =
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
                   category?.id === "gartenpflege" ? gartenpflegeTypeGroups[value] :
+                  category?.id === "kabel-stromverteiler" ? kabelStromverteilerTypeGroups[value] :
                   undefined;
 
                 if (groupCategories && p.category) return groupCategories.includes(p.category);
+                return false;
+              });
+            });
+          }
+          // Kabeltyp filter for kabel-stromverteiler
+          else if (sectionId === "kabeltyp") {
+            filtered = filtered.filter((p) => {
+              return selectedValues.some((value) => {
+                if (value === "powercon-true1") {
+                  return p.category === "powercon-kabel" && (p.name.toLowerCase().includes("true1") || p.name.toLowerCase().includes("true 1"));
+                }
+                if (value === "powercon") {
+                  return p.category === "powercon-kabel" && !p.name.toLowerCase().includes("true1") && !p.name.toLowerCase().includes("true 1");
+                }
+                const groupCategories = kabelStromverteilerKabeltypGroups[value];
+                if (groupCategories && p.category) return groupCategories.includes(p.category);
+                return p.tags?.includes(value) || p.category === value;
+              });
+            });
+          }
+          // Kabellänge filter
+          else if (sectionId === "laenge") {
+            filtered = filtered.filter((p) => {
+              const lengthStr = p.specifications?.["Kabellänge"] || p.specifications?.["Leitungslänge"] || "";
+              const lengthMatch = lengthStr.match(/([\d,]+)\s*m/);
+              const length = lengthMatch ? parseFloat(lengthMatch[1].replace(",", ".")) : 0;
+              if (length === 0) {
+                // Also try extracting from product name
+                const nameMatch = p.name.match(/(\d+)\s*m\b/);
+                const nameLength = nameMatch ? parseInt(nameMatch[1], 10) : 0;
+                if (nameLength === 0) return false;
+                return selectedValues.some((v) => {
+                  if (v === "bis-3m") return nameLength <= 3;
+                  if (v === "5m") return nameLength === 5;
+                  if (v === "10m") return nameLength === 10;
+                  if (v === "20m") return nameLength === 20;
+                  if (v === "ab-25m") return nameLength >= 25;
+                  return false;
+                });
+              }
+              return selectedValues.some((v) => {
+                if (v === "bis-3m") return length <= 3;
+                if (v === "5m") return length === 5;
+                if (v === "10m") return length === 10;
+                if (v === "20m") return length === 20;
+                if (v === "ab-25m") return length >= 25;
                 return false;
               });
             });
