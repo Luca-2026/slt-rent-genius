@@ -105,6 +105,9 @@ import cee16aUv3xSchuko1 from "@/assets/products/cee-16a-uv-3x-schuko-1.jpeg";
 import ceeKabel32aRot3m1 from "@/assets/products/cee-kabel-32a-rot-3m-1.jpeg";
 import etherconCat5e50m1 from "@/assets/products/ethercon-cat5e-50m-1.jpeg";
 import etherconCat5e50m2 from "@/assets/products/ethercon-cat5e-50m-2.jpeg";
+import anschlussverteilerschrank44kva1 from "@/assets/products/anschlussverteilerschrank-44kva-1.jpeg";
+import anschlussverteilerschrank44kva2 from "@/assets/products/anschlussverteilerschrank-44kva-2.jpeg";
+import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteilerschrank-44kva-3.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2176,10 +2179,18 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "anschlussverteilerschrank-44kva",
     name: "Anschlussverteilerschrank 44kVA",
-    description: "Großer Anschlussschrank",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Anschlußleistung 44 kVA mit einem Zählerfeld",
+    image: anschlussverteilerschrank44kva1,
+    images: [anschlussverteilerschrank44kva1, anschlussverteilerschrank44kva2, anschlussverteilerschrank44kva3],
     category: "anschlussschrank",
+    specifications: {
+      "Anschlußleistung": "44 kVA",
+      "Produktmaße": "1270 x 710 x 360 mm",
+      "Gewicht": "49 kg",
+      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
+      "Standgestell": "Feuerverzinkt",
+      "Prüfung": "Stückgeprüft",
+    },
     rentwareCode: { krefeld: "2EKAZB" }
   },
   {
