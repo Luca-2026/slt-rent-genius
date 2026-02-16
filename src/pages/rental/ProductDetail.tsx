@@ -22,8 +22,10 @@ import {
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
+import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
+  const { t } = useTranslation();
   const { locationId, categoryId, productId } = useParams<{
     locationId: string;
     categoryId: string;
@@ -57,11 +59,10 @@ export default function ProductDetail() {
   // Update page title for SEO
   useEffect(() => {
     if (product && location) {
-      document.title = `${product.name} mieten in ${location.shortName} | SLT Rental`;
+      document.title = `${product.name} | ${location.shortName} | SLT Rental`;
       
-      // Update meta description
       const metaDescription = document.querySelector('meta[name="description"]');
-      const descText = `${product.name} mieten in ${location.shortName}. ${product.description || ""} Jetzt online reservieren bei SLT Rental.`;
+      const descText = `${product.name} – ${location.shortName}. ${product.description || ""}`;
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
       } else {
@@ -96,14 +97,14 @@ export default function ProductDetail() {
       <Layout>
         <div className="section-container py-20 text-center">
           <h1 className="text-2xl font-bold text-headline mb-4">
-            Produkt nicht gefunden
+            {t("rental.productNotFound")}
           </h1>
           <p className="text-muted-foreground mb-6">
-            Das gesuchte Produkt existiert nicht oder ist nicht mehr verfügbar.
+            {t("rental.productNotFoundDesc")}
           </p>
           <Button onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Zurück
+            {t("rental.back")}
           </Button>
         </div>
       </Layout>
@@ -127,7 +128,7 @@ export default function ProductDetail() {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/mieten">Standorte</Link>
+                  <Link to="/mieten">{t("nav.locations")}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -165,7 +166,7 @@ export default function ProductDetail() {
                     <>
                       <img
                         src={images[currentImageIndex]}
-                        alt={`${product.name} - Bild ${currentImageIndex + 1}`}
+                        alt={`${product.name} - ${t("rental.image")} ${currentImageIndex + 1}`}
                         className="w-full h-full object-cover"
                       />
                       
@@ -175,14 +176,14 @@ export default function ProductDetail() {
                           <button
                             onClick={handlePrevImage}
                             className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-lg transition-all"
-                            aria-label="Vorheriges Bild"
+                            aria-label={t("rental.previousImage")}
                           >
                             <ChevronLeft className="h-6 w-6" />
                           </button>
                           <button
                             onClick={handleNextImage}
                             className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-lg transition-all"
-                            aria-label="Nächstes Bild"
+                            aria-label={t("rental.nextImage")}
                           >
                             <ChevronRight className="h-6 w-6" />
                           </button>
@@ -256,7 +257,7 @@ export default function ProductDetail() {
                 {product.features && product.features.length > 0 && (
                   <div className="border-t border-border pt-6">
                     <h2 className="text-lg font-semibold text-headline mb-4">
-                      Ausstattung & Features
+                       {t("rental.featuresTitle")}
                     </h2>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {product.features.map((feature, index) => (
@@ -273,10 +274,10 @@ export default function ProductDetail() {
                 {product.weightKg && (
                   <div className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-2">
-                      Technische Daten
+                       {t("rental.technicalData")}
                     </h2>
                     <p className="text-muted-foreground">
-                      Nutzlast: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
+                      {t("rental.payload")}: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
                     </p>
                   </div>
                 )}
@@ -285,8 +286,8 @@ export default function ProductDetail() {
                 {product.detailedDescription && (
                   <div className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-3 flex items-center gap-2">
-                      <Info className="h-5 w-5 text-primary" />
-                      Beschreibung
+                       <Info className="h-5 w-5 text-primary" />
+                       {t("rental.descriptionTitle")}
                     </h2>
                     <p className="text-muted-foreground leading-relaxed">
                       {product.detailedDescription}
@@ -298,8 +299,8 @@ export default function ProductDetail() {
                 {product.specifications && Object.keys(product.specifications).length > 0 && (
                   <div className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-4">
-                      Technische Daten
-                    </h2>
+                     {t("rental.technicalData")}
+                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {Object.entries(product.specifications).map(([key, value]) => (
                         <div key={key} className="flex justify-between items-center bg-muted/50 rounded-lg px-4 py-3">
@@ -315,8 +316,8 @@ export default function ProductDetail() {
                 {product.videoUrl && (
                   <div className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
-                      <Play className="h-5 w-5 text-primary" />
-                      Produktvideo
+                       <Play className="h-5 w-5 text-primary" />
+                       {t("rental.productVideo")}
                     </h2>
                     <div className="aspect-video rounded-xl overflow-hidden border border-border">
                       <iframe
@@ -334,8 +335,8 @@ export default function ProductDetail() {
                 {product.pdfUrl && (
                   <div className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
-                      <FileDown className="h-5 w-5 text-primary" />
-                      Betriebsanleitung
+                       <FileDown className="h-5 w-5 text-primary" />
+                       {t("rental.operatingManual")}
                     </h2>
                     <a
                       href={product.pdfUrl}
@@ -344,9 +345,9 @@ export default function ProductDetail() {
                       className="inline-flex items-center gap-2 bg-muted/50 hover:bg-muted rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors"
                     >
                       <FileDown className="h-4 w-4 text-primary" />
-                      Anleitung als PDF herunterladen
-                    </a>
-                  </div>
+                       {t("rental.downloadPdf")}
+                     </a>
+                   </div>
                 )}
               </div>
             </div>
@@ -360,7 +361,7 @@ export default function ProductDetail() {
                   {product.pricePerDay && (
                     <div className="text-3xl font-bold text-primary">
                       {product.pricePerDay}
-                      <span className="text-lg font-normal text-muted-foreground"> / Tag</span>
+                      <span className="text-lg font-normal text-muted-foreground"> {t("rental.perDay")}</span>
                     </div>
                   )}
                   {product.priceWeekend && (
@@ -376,23 +377,23 @@ export default function ProductDetail() {
                     size="lg"
                     className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
                     onClick={() => setShowBookingDialog(true)}
-                  >
-                    Jetzt mieten
+                   >
+                     {t("rental.rentNow")}
                   </Button>
                   <Link to="/b2b/login" className="block">
                     <Button
                       size="lg"
                       variant="default"
                       className="w-full"
-                    >
-                      B2B-Konditionen anfragen
+                     >
+                       {t("rental.b2bConditions")}
                     </Button>
                   </Link>
                 </div>
 
                 {/* Location Info */}
                 <div className="border-t border-border pt-4 mt-4 space-y-3">
-                  <h3 className="font-semibold text-foreground">Standort</h3>
+                  <h3 className="font-semibold text-foreground">{t("rental.locationLabel")}</h3>
                   <div className="flex items-start gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
                     <span>{location.address}</span>
@@ -421,21 +422,21 @@ export default function ProductDetail() {
                       <Clock className="h-6 w-6 text-accent" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-foreground text-lg">24/7 Verfügbar</h3>
-                      <p className="text-sm text-muted-foreground">Rund um die Uhr mietbar</p>
-                    </div>
-                  </div>
+                     <h3 className="font-bold text-foreground text-lg">{t("rental.available247")}</h3>
+                       <p className="text-sm text-muted-foreground">{t("rental.available247Desc")}</p>
+                     </div>
+                   </div>
 
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Smartphone className="h-4 w-4 text-primary" />
                       </div>
-                      <div>
-                        <p className="font-medium text-foreground">SMS-Code System</p>
-                        <p className="text-sm text-muted-foreground">
-                          Nach Buchung erhalten Sie einen SMS-Code zum Entsperren des Anhängers.
-                        </p>
+                       <div>
+                         <p className="font-medium text-foreground">{t("rental.smsCodeSystem")}</p>
+                         <p className="text-sm text-muted-foreground">
+                           {t("rental.smsCodeSystemDesc")}
+                         </p>
                       </div>
                     </div>
 
@@ -443,11 +444,11 @@ export default function ProductDetail() {
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Lock className="h-4 w-4 text-primary" />
                       </div>
-                      <div>
-                        <p className="font-medium text-foreground">Elektronisches Schloss</p>
-                        <p className="text-sm text-muted-foreground">
-                          Code am Schloss der Deichsel eingeben und Anhänger mitnehmen.
-                        </p>
+                       <div>
+                         <p className="font-medium text-foreground">{t("rental.electronicLock")}</p>
+                         <p className="text-sm text-muted-foreground">
+                           {t("rental.electronicLockDesc")}
+                         </p>
                       </div>
                     </div>
 
@@ -455,18 +456,18 @@ export default function ProductDetail() {
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Key className="h-4 w-4 text-primary" />
                       </div>
-                      <div>
-                        <p className="font-medium text-foreground">Selbstabholung</p>
-                        <p className="text-sm text-muted-foreground">
-                          Abholen und Zurückbringen am Standort – ganz ohne Wartezeit.
-                        </p>
+                       <div>
+                         <p className="font-medium text-foreground">{t("rental.selfPickup")}</p>
+                         <p className="text-sm text-muted-foreground">
+                           {t("rental.selfPickupDesc")}
+                         </p>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-5 pt-4 border-t border-accent/20">
                     <p className="text-xs text-muted-foreground text-center">
-                      Personalausweis für Identifikation bei der Buchung erforderlich
+                      {t("rental.idRequired")}
                     </p>
                   </div>
                 </div>
@@ -483,8 +484,8 @@ export default function ProductDetail() {
           {/* Related Products */}
           {relatedProducts.length > 0 && (
             <div className="mt-12 pt-8 border-t border-border">
-              <h2 className="text-xl font-bold text-headline mb-6">
-                Ähnliche Produkte
+               <h2 className="text-xl font-bold text-headline mb-6">
+                 {t("rental.relatedProducts")}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {relatedProducts.map((relatedProduct) => (
@@ -512,7 +513,7 @@ export default function ProductDetail() {
                         </h3>
                         {relatedProduct.pricePerDay && (
                           <p className="text-sm font-semibold text-primary mt-1">
-                            {relatedProduct.pricePerDay}/Tag
+                            {relatedProduct.pricePerDay}{t("rental.perDay")}
                           </p>
                         )}
                       </CardContent>

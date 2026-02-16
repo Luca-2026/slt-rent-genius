@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
 
 export default function CategoryProducts() {
+  const { t } = useTranslation();
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -421,9 +423,9 @@ export default function CategoryProducts() {
     return (
       <Layout>
         <div className="section-container py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Standort nicht gefunden</h1>
+          <h1 className="text-2xl font-bold mb-4">{t("rental.locationNotFound")}</h1>
           <Link to="/mieten">
-            <Button>Zurück zur Standortauswahl</Button>
+            <Button>{t("rental.backToLocations")}</Button>
           </Link>
         </div>
       </Layout>
@@ -434,9 +436,9 @@ export default function CategoryProducts() {
     return (
       <Layout>
         <div className="section-container py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Kategorie nicht gefunden</h1>
+          <h1 className="text-2xl font-bold mb-4">{t("rental.categoryNotFound")}</h1>
           <Link to={`/mieten/${location.id}`}>
-            <Button>Zurück zu den Kategorien</Button>
+            <Button>{t("rental.backToCategories")}</Button>
           </Link>
         </div>
       </Layout>
@@ -453,7 +455,7 @@ export default function CategoryProducts() {
             className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Zurück zu {location.name}
+            {t("rental.backTo", { name: location.name })}
           </Link>
 
           <div className="flex items-start gap-6">
@@ -500,8 +502,8 @@ export default function CategoryProducts() {
                   <Clock className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">24/7 verfügbar</p>
-                  <p className="text-sm text-muted-foreground">Mieten per Codesystem</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerAvailable247")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerCodeSystem")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -509,8 +511,8 @@ export default function CategoryProducts() {
                   <Smartphone className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">SMS-Code nach Zahlung</p>
-                  <p className="text-sm text-muted-foreground">Code nur im Mietzeitraum gültig</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerSmsCode")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerSmsCodeDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -518,8 +520,8 @@ export default function CategoryProducts() {
                   <Lock className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Schloss entsperren</p>
-                  <p className="text-sm text-muted-foreground">Rückgabe am Abholort</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerUnlock")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerUnlockDesc")}</p>
                 </div>
               </div>
             </div>
@@ -531,8 +533,8 @@ export default function CategoryProducts() {
                   <Scale className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">750 kg bis 3.500 kg</p>
-                  <p className="text-sm text-muted-foreground">Verschiedene Größen verfügbar</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerWeight")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerWeightDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -540,8 +542,8 @@ export default function CategoryProducts() {
                   <Boxes className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Verschiedene Aufbauten</p>
-                  <p className="text-sm text-muted-foreground">Planen-, Koffer- u.v.m.</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerVariety")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerVarietyDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -549,8 +551,8 @@ export default function CategoryProducts() {
                   <Gauge className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">100 km/h Zulassung</p>
-                  <p className="text-sm text-muted-foreground">Alle mit 13-Pol Stecker</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerSpeed")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerSpeedDesc")}</p>
                 </div>
               </div>
             </div>
@@ -563,11 +565,9 @@ export default function CategoryProducts() {
         <section className="bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
             {/* Main Description */}
-            <p className="text-foreground mb-6">
-              Egal ob Sie einen Minibagger, Dumper oder einen Radlader mieten wollen, wir haben die passende Lösung für Ihren Bedarf. 
-              Mieten Sie bei uns zuverlässige und leistungsstarke Maschinen, um Ihre Bauprojekte effizient und erfolgreich umzusetzen. 
-              Mit unseren Baggern und Dumpern sind Sie bestens ausgestattet, um schwere Lasten zu bewegen und Erdbewegungen durchzuführen.
-            </p>
+             <p className="text-foreground mb-6">
+               {t("rental.earthMovingDesc")}
+              </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-3">
@@ -575,8 +575,8 @@ export default function CategoryProducts() {
                   <Shovel className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Minibagger</p>
-                  <p className="text-sm text-muted-foreground">Von 1t bis 2,7t verfügbar</p>
+                   <p className="font-semibold text-foreground">{t("rental.miniExcavator")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.miniExcavatorDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -584,8 +584,8 @@ export default function CategoryProducts() {
                   <Truck className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Dumper & Radlader</p>
-                  <p className="text-sm text-muted-foreground">Für schwere Lasten</p>
+                   <p className="font-semibold text-foreground">{t("rental.dumperLoader")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.dumperLoaderDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -593,8 +593,8 @@ export default function CategoryProducts() {
                   <Wrench className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Zuverlässig</p>
-                  <p className="text-sm text-muted-foreground">Top gewartete Maschinen</p>
+                   <p className="font-semibold text-foreground">{t("rental.reliable")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.reliableDesc")}</p>
                 </div>
               </div>
             </div>
@@ -608,10 +608,10 @@ export default function CategoryProducts() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    <p className="font-semibold text-foreground">Nachhaltig bauen?</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Soll Ihr Projekt nachhaltig umgesetzt werden? Hierfür haben wir voll elektrische Dumper!
+                     <p className="font-semibold text-foreground">{t("rental.sustainableBuilding")}</p>
+                   </div>
+                   <p className="text-sm text-muted-foreground">
+                     {t("rental.sustainableBuildingDesc")}
                   </p>
                 </div>
               </div>
@@ -638,14 +638,14 @@ export default function CategoryProducts() {
                     <>
                       {/* Search */}
                       <div className="bg-card border border-border rounded-xl p-4">
-                        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <Search className="h-4 w-4" />
-                          Artikelsuche
-                        </h3>
+                         <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                           <Search className="h-4 w-4" />
+                           {t("rental.articleSearch")}
+                         </h3>
                         <div className="relative">
                           <Input
                             type="text"
-                            placeholder="Artikel suchen..."
+                            placeholder={t("rental.searchArticlesShort")}
                             value={allSearchQuery}
                             onChange={(e) => setAllSearchQuery(e.target.value)}
                             className="pr-8"
@@ -664,7 +664,7 @@ export default function CategoryProducts() {
                       {/* Category Quick Filter with scroll */}
                       <div className="bg-card border border-border rounded-xl p-4">
                         <h3 className="font-semibold text-foreground mb-3">
-                          Kategorien ({availableCategories.length})
+                          {t("rental.categoriesCount", { count: availableCategories.length })}
                         </h3>
                         <div className="space-y-1 max-h-[400px] overflow-y-auto pr-2">
                           <button
@@ -675,7 +675,7 @@ export default function CategoryProducts() {
                                 : "hover:bg-muted text-muted-foreground hover:text-foreground"
                             }`}
                           >
-                            Alle Kategorien
+                            {t("rental.allCategories")}
                           </button>
                           {availableCategories.map((cat) => (
                             <button
@@ -748,13 +748,13 @@ export default function CategoryProducts() {
                     })}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-muted/30 rounded-xl">
-                    <p className="text-muted-foreground">
-                      {category.id === "alle" 
-                        ? "Keine Artikel gefunden. Bitte passe deine Suche oder Filter an."
-                        : category.id === "anhaenger" 
-                          ? "Keine Anhänger gefunden. Bitte passe deine Filter an."
-                          : "Keine Maschinen gefunden. Bitte passe deine Filter an."}
+                   <div className="text-center py-12 bg-muted/30 rounded-xl">
+                     <p className="text-muted-foreground">
+                       {category.id === "alle" 
+                         ? t("rental.noArticlesFound")
+                         : category.id === "anhaenger" 
+                           ? t("rental.noTrailersFound")
+                           : t("rental.noMachinesFound")}
                     </p>
                   </div>
                 )}
@@ -765,14 +765,13 @@ export default function CategoryProducts() {
               <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                 <Package className="h-10 w-10 text-muted-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                Noch keine Produkte hinterlegt
-              </h3>
-              <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                Die Produkte für diese Kategorie werden in Kürze hinzugefügt. 
-                Kontaktiere uns gerne direkt für eine Anfrage.
-              </p>
-              <div className="flex justify-center gap-4">
+               <h3 className="text-xl font-semibold text-foreground mb-2">
+                 {t("rental.noProductsYet")}
+               </h3>
+               <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                 {t("rental.noProductsYetDesc")}
+               </p>
+               <div className="flex justify-center gap-4">
                 <a href={`tel:${location.phone.replace(/\s/g, '')}`}>
                   <Button>
                     {location.phone}
@@ -780,7 +779,7 @@ export default function CategoryProducts() {
                 </a>
                 <a href={`mailto:${location.email}`}>
                   <Button variant="outline">
-                    E-Mail senden
+                    {t("rental.sendEmail")}
                   </Button>
                 </a>
               </div>
@@ -793,8 +792,8 @@ export default function CategoryProducts() {
       {otherCategories.length > 0 && (
         <section className="py-8 lg:py-12 bg-muted/30">
           <div className="section-container">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Weitere Kategorien in {location.name}
+             <h2 className="text-xl font-bold text-foreground mb-6">
+               {t("rental.moreCategoriesAt", { name: location.name })}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {otherCategories.slice(0, 6).map((cat) => (

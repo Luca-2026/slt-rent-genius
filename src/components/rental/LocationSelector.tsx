@@ -4,21 +4,16 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, ArrowRight, Clock, Mail, User, Building2 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { locationData } from "@/data/locationData";
+import { useTranslation } from "react-i18next";
 
-interface LocationSelectorProps {
-  title?: string;
-  subtitle?: string;
-}
+export function LocationSelector() {
+  const { t } = useTranslation();
 
-export function LocationSelector({ 
-  title = "Wähle deinen Standort",
-  subtitle = "Verfügbare Produkte und Preise können je nach Standort variieren."
-}: LocationSelectorProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">{title}</h2>
-        <p className="text-muted-foreground">{subtitle}</p>
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">{t("rental.chooseLocation")}</h2>
+        <p className="text-muted-foreground">{t("rental.chooseLocationSubtitle")}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -51,7 +46,7 @@ export function LocationSelector({
                 {location.name}
               </h3>
 
-              {/* Address - fixed min-height for alignment */}
+              {/* Address */}
               <div className="flex items-start gap-2 text-sm text-muted-foreground mb-1 min-h-[44px]">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
                 <div>
@@ -80,11 +75,11 @@ export function LocationSelector({
                 <span>{location.email}</span>
               </a>
 
-              {/* Hours - fixed min-height for alignment */}
+              {/* Hours */}
               <div className="mb-3 p-3 bg-surface-light rounded-lg min-h-[108px]">
                 <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                   <Clock className="h-4 w-4 text-primary" />
-                  Öffnungszeiten
+                  {t("locations.openingHours")}
                 </div>
                 <div className="space-y-1">
                   {location.hours.map((h, idx) => (
@@ -96,7 +91,7 @@ export function LocationSelector({
                 </div>
               </div>
 
-              {/* Manager - fixed height */}
+              {/* Manager */}
               <a 
                 href={`mailto:${location.manager.email}`}
                 className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer min-h-[72px]"
@@ -117,12 +112,10 @@ export function LocationSelector({
                 <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
               </a>
 
-              {/* CTA - pushed to bottom */}
+              {/* CTA */}
               <Link to={`/mieten/${location.id}`} className="mt-auto">
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90"
-                >
-                  Standort wählen
+                <Button className="w-full bg-primary hover:bg-primary/90">
+                  {t("rental.selectThisLocation")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
