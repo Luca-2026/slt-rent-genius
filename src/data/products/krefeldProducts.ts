@@ -70,6 +70,7 @@ import cee63aUv2x32a2x16a1 from "@/assets/products/cee-63a-uv-2x32a-2x16a-1.jpeg
 import officeKabelbruecke2m1 from "@/assets/products/office-kabelbruecke-2m-1.jpeg";
 import officeKabelbruecke2m2 from "@/assets/products/office-kabelbruecke-2m-2.jpeg";
 import netzwerkkabelCat5e20m1 from "@/assets/products/netzwerkkabel-cat5e-20m-1.jpeg";
+import schukokabel20m1 from "@/assets/products/schukokabel-20m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2287,10 +2288,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-20m",
     name: "Schukokabel 20 m",
-    description: "Schuko-Verlängerung 20m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
+    image: schukokabel20m1,
+    images: [schukokabel20m1],
     category: "schuko-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "20 m",
+      "Gewicht": "ca. 5,2 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "S6AL9G" }
   },
   {
