@@ -94,6 +94,7 @@ import ceeKabel63aRot3m1 from "@/assets/products/cee-kabel-63a-rot-3m-1.jpeg";
 import erdungsspiess1_5m1 from "@/assets/products/erdungsspiess-1-5m-1.jpeg";
 import schukokabel5m1 from "@/assets/products/schukokabel-5m-1.jpeg";
 import ceeKabel16aRot10m1 from "@/assets/products/cee-kabel-16a-rot-10m-1.jpeg";
+import powerconLinkkabel5m1 from "@/assets/products/powercon-linkkabel-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2597,11 +2598,17 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "powercon-linkkabel-5m",
-    name: "PowerCon Linkable 5 m",
-    description: "PowerCon Verbindungskabel 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "PowerCon Link Cable 5 m",
+    description: "5 m Link Cable, Typ: H07RN-F3G2,5 – 16A",
+    image: powerconLinkkabel5m1,
+    images: [powerconLinkkabel5m1],
     category: "powercon-kabel",
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Kabellänge": "5 m",
+      "Gewicht": "ca. 1,2 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "JV8JSU" }
   },
   {
