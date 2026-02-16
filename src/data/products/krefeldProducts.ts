@@ -67,6 +67,8 @@ import powerconLinkkabel1_5m1 from "@/assets/products/powercon-linkkabel-1-5m-1.
 import ceeAdapter16a32a1 from "@/assets/products/cee-adapter-16a-32a-1.jpeg";
 import titanexPowerconTrue1_5m1 from "@/assets/products/titanex-powercon-true1-5m-1.jpeg";
 import cee63aUv2x32a2x16a1 from "@/assets/products/cee-63a-uv-2x32a-2x16a-1.jpeg";
+import officeKabelbruecke2m1 from "@/assets/products/office-kabelbruecke-2m-1.jpeg";
+import officeKabelbruecke2m2 from "@/assets/products/office-kabelbruecke-2m-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2550,9 +2552,9 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "office-kabelbruecke-2m",
     name: "Office Kabelbrücke black 2m",
-    description: "Büro-Kabelbrücke 2m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kabelbrücke mit Kanälen für die Innenanwendung, 2 m Länge",
+    image: officeKabelbruecke2m1,
+    images: [officeKabelbruecke2m1, officeKabelbruecke2m2],
     category: "kabelbruecke",
     rentwareCode: { krefeld: "4IJ1SS" }
   },
