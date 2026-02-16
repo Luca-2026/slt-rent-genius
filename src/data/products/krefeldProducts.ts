@@ -85,6 +85,7 @@ import etherconCat5e25m1 from "@/assets/products/ethercon-cat5e-25m-1.jpeg";
 import etherconCat7_3m1 from "@/assets/products/ethercon-cat7-3m-1.jpeg";
 import netzwerkkabelCat5e2m1 from "@/assets/products/netzwerkkabel-cat5e-2m-1.jpeg";
 import ceeAdapter32a63a1 from "@/assets/products/cee-adapter-32a-63a-1.jpeg";
+import schukokabel10m1 from "@/assets/products/schukokabel-10m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2328,10 +2329,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-10m",
     name: "Schukokabel 10 m",
-    description: "Schuko-Verlängerung 10m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
+    image: schukokabel10m1,
+    images: [schukokabel10m1],
     category: "schuko-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "10 m",
+      "Gewicht": "ca. 2,9 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "I17TOM" }
   },
   {
