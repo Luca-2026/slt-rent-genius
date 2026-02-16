@@ -3,13 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Grid3X3 } from "lucide-react";
 import { getCategoriesForLocation, type ProductCategory, type LocationData } from "@/data/rentalData";
+import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 
 interface CategoryGridProps {
   location: LocationData;
 }
 
 export function CategoryGrid({ location }: CategoryGridProps) {
-  const categories = getCategoriesForLocation(location.id);
+  const rawCategories = getCategoriesForLocation(location.id);
+  const categories = useTranslatedCategories(rawCategories);
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
