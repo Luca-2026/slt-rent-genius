@@ -253,6 +253,77 @@
       "absperrung-sicherheit": { "title": "Absperrung & Sicherheit", "desc": "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment." }
     }
   },
+  "solutions": {
+    "heroTitle": "Das richtige Equipment für <accent>dein Projekt</accent>",
+    "heroBadge": "Lösungen für jedes Gewerk",
+    "heroDesc": "Egal ob Profi-Handwerker oder Hobby-Heimwerker – entdecke, welche Mietgeräte perfekt zu deinem Vorhaben passen. Lass dich inspirieren!",
+    "findSolution": "Finde die passende Lösung",
+    "findSolutionDesc": "Wähle dein Gewerk oder Projekt und entdecke, welches Equipment wir für dich bereithalten.",
+    "learnMore": "Mehr erfahren",
+    "specialProject": "Du hast ein spezielles Projekt?",
+    "specialProjectDesc": "Wir beraten dich gerne persönlich und stellen dir das perfekte Equipment-Paket zusammen. Ob Großbaustelle oder Privatprojekt – wir finden die optimale Lösung.",
+    "requestConsultation": "Beratung anfragen",
+    "findLocations": "Standorte finden",
+    "allSolutions": "Alle Lösungen",
+    "whatWeOffer": "Das bieten wir dir",
+    "relatedCategories": "Passende Produktkategorien",
+    "readyForProject": "Bereit für dein Projekt?",
+    "readyForProjectDesc": "Besuche einen unserer Standorte und lass dich persönlich beraten. Wir helfen dir, das optimale Equipment zusammenzustellen.",
+    "contactUs": "Kontakt aufnehmen",
+    "moreSolutions": "Weitere Lösungen entdecken",
+    "selectLocation": "Standort wählen",
+    "selectLocationDesc": "Wähle deinen Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen.",
+    "items": {
+      "garten-landschaftsbau": {
+        "title": "Garten- & Landschaftsbau",
+        "subtitle": "Vom Privatgarten bis zur Parkanlage",
+        "description": "Komplette Ausstattung für GaLaBau-Betriebe und ambitionierte Hobbygärtner. Von der Baumstumpffräse bis zum Minibagger – alles für die professionelle Gartengestaltung.",
+        "highlights": ["Minibagger 1t - 2,7t (Diesel)", "Baumstumpffräse & Häcksler", "Rüttelplatten & Stampfer", "Anhänger für Grünschnitt & Material"]
+      },
+      "tiefbau-erdbewegung": {
+        "title": "Tiefbau & Erdbewegung",
+        "subtitle": "Kanalbau, Hausanschlüsse, Erdarbeiten",
+        "description": "Professionelle Baumaschinen für anspruchsvolle Tiefbauprojekte. Mit unseren Minibaggern, Dumpern und dem passenden Zubehör meisterst du jede Erdarbeit.",
+        "highlights": ["Minibagger 1t - 2,7t mit Anbaugeräten", "Elektro-Dumper für leisen Materialtransport", "Grabenräumlöffel & Tieflöffel", "Baumaschinenanhänger 1,8t - 3,5t", "Verkehrssicherung & Absperrung"]
+      },
+      "hochbau-renovierung": {
+        "title": "Hochbau & Renovierung",
+        "subtitle": "Neubau, Sanierung, Ausbau",
+        "description": "Vom Rohbau bis zum Feinschliff: Werkzeuge, Arbeitsbühnen und Gerüste für jede Bauphase. Unsere Profi-Geräte machen auch anspruchsvolle Projekte zum Kinderspiel.",
+        "highlights": ["Scherenbühnen bis 12m Höhe", "Rollgerüste bis 11m", "Abbruchhammer & Bohrhammer", "Bautrockner für die Trocknung"]
+      },
+      "events-veranstaltungen": {
+        "title": "Events & Veranstaltungen",
+        "subtitle": "Firmenfeiern, Hochzeiten, Festivals",
+        "description": "Alles für unvergessliche Events: Von der Beschallung über Beleuchtung bis zu Zelten und Möbeln. Wir statten Veranstaltungen jeder Größe professionell aus.",
+        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Partyzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"]
+      },
+      "umzug-transport": {
+        "title": "Umzug & Transport",
+        "subtitle": "Privat- und Firmenumzüge",
+        "description": "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per SMS-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
+        "highlights": ["Planenanhänger S bis XXL", "Kofferanhänger abschließbar", "24/7 Self-Service-Miete", "Weekend-Tarif: 3 Tage zahlen, 1 Tag Preis"]
+      },
+      "handwerk-gewerbe": {
+        "title": "Handwerk & Gewerbe",
+        "subtitle": "Elektriker, Maler, Installateure",
+        "description": "Spezialwerkzeuge und Equipment für Handwerksbetriebe. Von der Mauerschlitzfräse bis zum Akku-Werkzeug – professionelle Geräte für professionelle Arbeit.",
+        "highlights": ["Mauerschlitzfräse & Diamantbohrer", "Bosch Profi-Akkugeräte", "Stromerzeuger 2,8 - 100 kVA", "Rollgerüste & Leitern"]
+      },
+      "private-projekte": {
+        "title": "Private Projekte",
+        "subtitle": "Heimwerken, Garten, Renovierung",
+        "description": "Du hast ein Projekt? Wir haben das Equipment. Ob Terrassenbau, Gartenumgestaltung oder Renovierung – mit unseren Mietgeräten wird dein Projekt zum Erfolg.",
+        "highlights": ["Vertikutierer & Häcksler", "Rüttelplatten für Pflasterarbeiten", "Anhänger für Grünschnitt", "Elektrowerkzeuge für Renovierung"]
+      },
+      "kindergeburtstage": {
+        "title": "Kindergeburtstage & Feste",
+        "subtitle": "Hüpfburgen, Spiele, Unterhaltung",
+        "description": "Mach den Kindergeburtstag zum unvergesslichen Erlebnis! Unsere Hüpfburgen, Spezialeffekte und Sound-Systeme bringen Kinderaugen zum Leuchten.",
+        "highlights": ["Hüpfburgen 2,8m bis 6m", "Hüpfburg mit Wasserrutsche", "Nebelmaschine & Seifenblasen", "Mobile Soundboks-Lautsprecher"]
+      }
+    }
+  },
   "filters": {
     "productType": "Produktart",
     "cableType": "Kabeltyp",
