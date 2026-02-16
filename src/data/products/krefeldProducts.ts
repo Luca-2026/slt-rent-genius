@@ -80,6 +80,7 @@ import ceeKabel32aRot5m1 from "@/assets/products/cee-kabel-32a-rot-5m-1.jpeg";
 import ceeAdapter63a32a1 from "@/assets/products/cee-adapter-63a-32a-1.jpeg";
 import ceeKabel63aRot10m1 from "@/assets/products/cee-kabel-63a-rot-10m-1.jpeg";
 import cee32aUv6xSchuko1 from "@/assets/products/cee-32a-uv-6x-schuko-1.jpeg";
+import titanexPowerconTrue1_3m1 from "@/assets/products/titanex-powercon-true1-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2538,11 +2539,17 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "powercon-true1-linkkabel-3m",
-    name: "PowerCon TRUE1 Top Linkkable 3 m",
-    description: "PowerCon TRUE1 Kabel 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "PowerCon TRUE1 Top Link Cable 3 m",
+    description: "3 m Link Cable, Kabel-Typ: H07RN-F3G2,5 – 16A",
+    image: titanexPowerconTrue1_3m1,
+    images: [titanexPowerconTrue1_3m1],
     category: "powercon-kabel",
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Kabellänge": "3 m",
+      "Gewicht": "ca. 0,7 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "4EWYOO" }
   },
   {
