@@ -62,6 +62,7 @@ import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabe
 import anschlussverteilerschrank24kva1 from "@/assets/products/anschlussverteilerschrank-24kva-1.jpeg";
 import anschlussverteilerschrank24kva2 from "@/assets/products/anschlussverteilerschrank-24kva-2.jpeg";
 import anschlussverteilerschrank24kva3 from "@/assets/products/anschlussverteilerschrank-24kva-3.jpeg";
+import ceeKabel63a5m1 from "@/assets/products/cee-kabel-63a-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2208,10 +2209,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-5m",
     name: "CEE Kabel 63A rot 5 m",
-    description: "CEE 63A Verlängerung 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
+    image: ceeKabel63a5m1,
+    images: [ceeKabel63a5m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "5 m",
+      "Gewicht": "7 kg",
+      "Kabel-Typ": "H07RN-F5G16 – 63A rot",
+    },
     rentwareCode: { krefeld: "GIX1D1" }
   },
   {
