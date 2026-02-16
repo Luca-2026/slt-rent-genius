@@ -72,6 +72,7 @@ import officeKabelbruecke2m2 from "@/assets/products/office-kabelbruecke-2m-2.jp
 import netzwerkkabelCat5e20m1 from "@/assets/products/netzwerkkabel-cat5e-20m-1.jpeg";
 import schukokabel20m1 from "@/assets/products/schukokabel-20m-1.jpeg";
 import hdmiGlasfaser35m1 from "@/assets/products/hdmi-glasfaser-35m-1.png";
+import etherconCat5e20m1 from "@/assets/products/ethercon-cat5e-20m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2370,10 +2371,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-20m-cat5e",
     name: "Major EtherCon Kabel Cat-5e 20m",
-    description: "EtherCon Netzwerkkabel 20m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "20 m Cat-5e Netzwerkkabel",
+    image: etherconCat5e20m1,
+    images: [etherconCat5e20m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "20 m",
+      "Kategorie": "Cat-5e",
+    },
     rentwareCode: { krefeld: "A7BAWQ" }
   },
   {
