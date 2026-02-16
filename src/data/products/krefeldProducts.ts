@@ -98,6 +98,7 @@ import powerconLinkkabel5m1 from "@/assets/products/powercon-linkkabel-5m-1.jpeg
 import ceeKabel32aRot20m1 from "@/assets/products/cee-kabel-32a-rot-20m-1.jpeg";
 import defenderMidi5_1 from "@/assets/products/defender-midi-5-1.jpeg";
 import defenderMidi5_2 from "@/assets/products/defender-midi-5-2.jpeg";
+import schukoKabeltrommel50m1 from "@/assets/products/schuko-kabeltrommel-50m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2407,10 +2408,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schuko-kabeltrommel-50m",
     name: "Schuko-Kabeltrommel 50m",
-    description: "Kabeltrommel 50m Schuko",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "50 m Verlängerungskabel auf Trommel, Typ: H07RN-F3G2,5 – 16A",
+    image: schukoKabeltrommel50m1,
+    images: [schukoKabeltrommel50m1],
     category: "kabeltrommel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "50 m",
+      "Gewicht": "ca. 5,2 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "HV6W8A" }
   },
   // Adapter
