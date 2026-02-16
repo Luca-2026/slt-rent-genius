@@ -6,6 +6,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { HeroSearch } from "@/components/home/HeroSearch";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useTranslation } from "react-i18next";
 import { 
   Search, 
   Truck, 
@@ -29,47 +30,31 @@ import { locationData } from "@/data/locationData";
 // Hero image
 import heroImage from "@/assets/hero-event.jpg";
 
-const steps = [
-  {
-    number: "1",
-    icon: MapPin,
-    title: "Standort wählen",
-    description: "Wähle deinen nächsten Standort in NRW.",
-  },
-  {
-    number: "2",
-    icon: Search,
-    title: "Mietartikel suchen",
-    description: "Durchsuche unseren Katalog nach Equipment.",
-  },
-  {
-    number: "3",
-    icon: Calendar,
-    title: "Zeitraum & Buchen",
-    description: "Wähle deinen Mietzeitraum und buche online – oder vor Ort während der Öffnungszeiten.",
-  },
-  {
-    number: "4",
-    icon: CreditCard,
-    title: "Bezahlen",
-    description: "Per Karte, PayPal oder bar vor Ort. 30% Anzahlung online erforderlich.",
-  },
-  {
-    number: "5",
-    icon: Package,
-    title: "Abholen",
-    description: "Hole dein Equipment ab oder lass liefern.",
-  },
-];
-
-const trustItems = [
-  { value: 3500, label: "zufriedene Kunden", prefix: "+", isCounter: true },
-  { value: 800, label: "Mietprodukte", prefix: "+", isCounter: true },
-  { value: 3, label: "Standorte in NRW", prefix: "", isCounter: true },
-  { value: 2016, label: "dein Partner", prefix: "seit ", isCounter: false },
-];
-
 export default function Index() {
+  const { t } = useTranslation();
+
+  const steps = [
+    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc") },
+    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc") },
+    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
+    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
+    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
+  ];
+
+  const trustItems = [
+    { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
+    { value: 800, label: t("trust.rentalProducts"), prefix: "+", isCounter: true },
+    { value: 3, label: t("trust.locationsNRW"), prefix: "", isCounter: true },
+    { value: 2016, label: t("trust.yourPartner"), prefix: "seit ", isCounter: false },
+  ];
+
+  const benefits = [
+    { icon: CheckCircle2, title: t("benefits.fairPrices"), text: t("benefits.fairPricesDesc") },
+    { icon: Truck, title: t("benefits.delivery"), text: t("benefits.deliveryDesc") },
+    { icon: Clock, title: t("benefits.flexibleTimes"), text: t("benefits.flexibleTimesDesc") },
+    { icon: Phone, title: t("benefits.personalAdvice"), text: t("benefits.personalAdviceDesc") },
+  ];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -84,23 +69,21 @@ export default function Index() {
           <div className="max-w-3xl">
             {/* Claim Badge */}
             <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-2 mb-6">
-              <span className="text-accent font-bold text-lg">Sei schlau, miet' blau!</span>
+              <span className="text-accent font-bold text-lg">{t("hero.claim")}</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
-              Baumaschinen & Equipment mieten – 
-              <span className="text-accent"> einfach, schnell, zuverlässig</span>
+              {t("hero.title")}
+              <span className="text-accent"> {t("hero.titleHighlight")}</span>
             </h1>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl">
-              Über 800 Mietprodukte an 3 Standorten in NRW. Von Bagger bis Anhänger – 
-              alles online buchbar mit Weekend-Tarifen.
+              {t("hero.subtitle")}
             </p>
 
             {/* Interactive Search with Article Search */}
             <HeroSearch />
           </div>
         </div>
-
       </section>
 
       {/* Trust Badges with CountUp */}
@@ -134,10 +117,10 @@ export default function Index() {
         <div className="section-container">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-              Unsere Standorte
+              {t("locations.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              3 Standorte in NRW – wähle deinen Standort und entdecke das verfügbare Equipment vor Ort.
+              {t("locations.subtitle")}
             </p>
           </AnimatedSection>
 
@@ -203,7 +186,7 @@ export default function Index() {
                     <div className="mb-3 p-3 bg-surface-light rounded-lg min-h-[108px]">
                       <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                         <Clock className="h-4 w-4 text-primary" />
-                        Öffnungszeiten
+                        {t("locations.openingHours")}
                       </div>
                       <div className="space-y-1">
                         {loc.hours.map((h, idx) => (
@@ -239,7 +222,7 @@ export default function Index() {
                     {/* CTA - pushed to bottom */}
                     <Link to={`/mieten/${loc.id}`} className="mt-auto">
                       <Button className="w-full bg-primary hover:bg-primary/90">
-                        Kategorien & Produkte ansehen
+                        {t("locations.viewCategories")}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -252,7 +235,7 @@ export default function Index() {
           <AnimatedSection className="text-center mt-10" delay={300}>
             <Link to="/standorte">
               <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
-                Alle Standorte & Öffnungszeiten
+                {t("locations.viewAll")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -265,13 +248,13 @@ export default function Index() {
         <div className="section-container">
           <AnimatedSection className="text-center mb-14">
             <span className="inline-block bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
-              In 5 Schritten zum Mietgerät
+              {t("steps.badge")}
             </span>
             <h2 className="text-2xl lg:text-4xl font-bold text-headline mb-3">
-              So einfach funktioniert's
+              {t("steps.title")}
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Online buchen, vor Ort abholen oder liefern lassen.
+              {t("steps.subtitle")}
             </p>
           </AnimatedSection>
 
@@ -292,7 +275,7 @@ export default function Index() {
                           <step.icon className="h-5 w-5" />
                         </div>
                         <span className="text-xs font-bold text-accent uppercase tracking-wider">
-                          Schritt {step.number}
+                          {t("steps.step")} {step.number}
                         </span>
                       </div>
                       
@@ -318,7 +301,7 @@ export default function Index() {
           <AnimatedSection className="text-center mt-12" delay={500}>
             <Link to="/so-funktionierts">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                Mehr erfahren
+                {t("steps.learnMore")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -338,21 +321,20 @@ export default function Index() {
         <div className="section-container text-center relative">
           <AnimatedSection>
             <h2 className="text-3xl lg:text-4xl font-bold text-headline mb-4">
-              Bereit für dein nächstes Projekt?
+              {t("cta.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-10 text-lg">
-              Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. 
-              Jetzt online buchen oder persönlich beraten lassen.
+              {t("cta.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/mieten">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  Jetzt Equipment mieten
+                  {t("cta.rentEquipment")}
                 </Button>
               </Link>
               <Link to="/b2b">
                 <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1">
-                  B2B-Konditionen anfragen
+                  {t("cta.b2bInquiry")}
                 </Button>
               </Link>
             </div>
@@ -364,12 +346,7 @@ export default function Index() {
       <section className="py-16 lg:py-20 bg-background">
         <div className="section-container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: CheckCircle2, title: "Faire Preise", text: "Transparente Tagessätze inkl. Weekend-Tarifen" },
-              { icon: Truck, title: "Lieferung möglich", text: "Bequem direkt auf deine Baustelle" },
-              { icon: Clock, title: "Flexible Mietzeiten", text: "Von einem Tag bis mehrere Wochen" },
-              { icon: Phone, title: "Persönliche Beratung", text: "Kompetente Ansprechpartner vor Ort" },
-            ].map((benefit, index) => (
+            {benefits.map((benefit, index) => (
               <AnimatedSection key={benefit.title} delay={index * 100} animation="fade-in-up">
                 <div className="flex items-start gap-4 group">
                   <div className="w-14 h-14 bg-gradient-to-br from-accent/20 to-accent/5 rounded-xl flex items-center justify-center shrink-0 group-hover:from-accent group-hover:to-accent/80 transition-all duration-300">
