@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslatedProduct, useTranslatedProducts, useTranslatedCategory } from "@/hooks/useTranslatedProduct";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -37,15 +38,18 @@ export default function ProductDetail() {
   const [showBookingDialog, setShowBookingDialog] = useState(false);
 
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
-  const category = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
-  const product = useMemo(() => getProductById(productId || ""), [productId]);
+  const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
+  const category = useTranslatedCategory(rawCategory) || rawCategory;
+  const rawProduct = useMemo(() => getProductById(productId || ""), [productId]);
+  const product = useTranslatedProduct(rawProduct);
 
   // Get related products from same category
-  const relatedProducts = useMemo(() => {
-    if (!location || !categoryId || !product) return [];
+  const rawRelatedProducts = useMemo(() => {
+    if (!location || !categoryId || !rawProduct) return [];
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
-    return allProducts.filter((p) => p.id !== product.id).slice(0, 4);
-  }, [location, categoryId, product]);
+    return allProducts.filter((p) => p.id !== rawProduct.id).slice(0, 4);
+  }, [location, categoryId, rawProduct]);
+  const relatedProducts = useTranslatedProducts(rawRelatedProducts);
 
   const images = useMemo(() => {
     if (!product) return [];

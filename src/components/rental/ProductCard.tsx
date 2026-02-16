@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/rentalData";
+import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
 
 interface ProductCardProps {
   product: Product;
@@ -12,7 +13,8 @@ interface ProductCardProps {
   linkTo?: string; // Optional link for SEO-friendly navigation
 }
 
-export function ProductCard({ product, onClick, linkTo }: ProductCardProps) {
+export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCardProps) {
+  const product = useTranslatedProduct(rawProduct)!;
   const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasMultipleImages = images.length > 1;

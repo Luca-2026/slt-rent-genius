@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,31 +47,38 @@ export default function CategoryProducts() {
   });
   
   const location = locationId ? getLocationById(locationId) : undefined;
-  const category = categoryId ? getCategoryById(categoryId) : undefined;
+  const rawCategory = categoryId ? getCategoryById(categoryId) : undefined;
+  const category = useTranslatedCategory(rawCategory) || rawCategory;
+
+  // Translated categories for sidebar
+  const rawOtherCategories = useMemo(() => {
+    if (!location || !category) return [];
+    return getCategoriesForLocation(location.id).filter(
+      (c) => c.id !== category.id && c.id !== "alle"
+    );
+  }, [location, category]);
+  const translatedOtherCategories = useTranslatedCategories(rawOtherCategories);
+
+  // Translated available categories for "alle" filter
+  const rawAvailableCategories = useMemo(() => {
+    if (!location) return [];
+    return getCategoriesForLocation(location.id).filter((c) => {
+      if (c.id === "alle") return false;
+      const products = getProductsForLocationCategory(location.id, c.id);
+      return products.length > 0;
+    });
+  }, [location]);
+  const translatedAvailableCategories = useTranslatedCategories(rawAvailableCategories);
 
   const allProducts = useMemo(() => {
     if (!location || !category) return [];
     return getProductsForLocationCategory(location.id, category.id);
   }, [location, category]);
 
-  // Get categories that actually have products for quick filter (excluding "alle")
-  const availableCategories = useMemo(() => {
-    if (!location) return [];
-    return getCategoriesForLocation(location.id).filter((c) => {
-      if (c.id === "alle") return false;
-      // Only show categories that have products
-      const products = getProductsForLocationCategory(location.id, c.id);
-      return products.length > 0;
-    });
-  }, [location]);
+  // Use translated versions
+  const availableCategories = translatedAvailableCategories;
+  const otherCategories = translatedOtherCategories;
 
-  const otherCategories = useMemo(() => {
-    if (!location || !category) return [];
-    return getCategoriesForLocation(location.id).filter(
-      (c) => c.id !== category.id && c.id !== "alle"
-    );
-  }, [location, category]);
-  
   // Create a mapping from product to its main category
   const productCategoryMap = useMemo(() => {
     if (!location) return new Map<string, string>();
