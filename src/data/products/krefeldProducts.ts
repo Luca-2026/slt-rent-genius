@@ -75,6 +75,7 @@ import hdmiGlasfaser35m1 from "@/assets/products/hdmi-glasfaser-35m-1.png";
 import etherconCat5e20m1 from "@/assets/products/ethercon-cat5e-20m-1.jpeg";
 import titanexPowerconTrue1_10m1 from "@/assets/products/titanex-powercon-true1-10m-1.jpeg";
 import ceeKabel16aRot5m1 from "@/assets/products/cee-kabel-16a-rot-5m-1.jpeg";
+import cee16aUv5xSchuko1 from "@/assets/products/cee-16a-uv-5x-schuko-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2042,10 +2043,18 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-16a-uv-5xschuko",
     name: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko",
-    description: "Verteiler CEE16A auf 5x Schuko",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Verteiler CEE 16A auf 5x Schuko",
+    image: cee16aUv5xSchuko1,
+    images: [cee16aUv5xSchuko1],
     category: "stromverteiler",
+    specifications: {
+      "Produktmaße": "120 x 47 x 44 mm",
+      "Input": "CEE 16A männlich 5-pol",
+      "Max. Ladung": "3 x 16A",
+      "Output": "5x Schutzkontakt",
+      "IP-Klassifizierung": "IP-44",
+      "Kabellänge": "1,5 m",
+    },
     rentwareCode: { krefeld: "7C1I5T" }
   },
   {
