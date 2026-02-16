@@ -119,6 +119,7 @@ import verteilerschrank44kva2 from "@/assets/products/verteilerschrank-44kva-2.j
 import verteilerschrank44kva3 from "@/assets/products/verteilerschrank-44kva-3.jpeg";
 import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
+import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16a-6xschuko-1.webp";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2136,11 +2137,20 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "cee-63a-uv-2x32a-1x16a-6xschuko",
-    name: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko IP45",
-    description: "Großverteiler CEE63A",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko",
+    description: "Vollgummiverteiler mit CEE 63A Eingang, 2x CEE 32A, 1x CEE 16A und 6x Schuko Ausgängen",
+    image: cee63aUv2x32a1x16a6xSchuko1,
+    images: [cee63aUv2x32a1x16a6xSchuko1],
     category: "stromverteiler",
+    specifications: {
+      "Produktmaße": "48,3 x 31 x 13,35 cm",
+      "Gewicht": "8,15 kg",
+      "Spannungsversorgung": "380–400V AC, 50Hz",
+      "Eingang": "CEE 63A 5-pol Stecker",
+      "Ausgänge": "2x CEE 32A, 1x CEE 16A, 6x Schuko 16A",
+      "FI-Schutz": "Typ A 63A/0,03A 4-pol",
+      "Bauart": "Vollgummiverteiler",
+    },
     rentwareCode: { krefeld: "H5YEKN" }
   },
   {
