@@ -114,6 +114,9 @@ import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jp
 import ceeKabel63aRot20m1 from "@/assets/products/cee-kabel-63a-rot-20m-1.jpeg";
 import defenderMicro2_1 from "@/assets/products/defender-micro-2-1.jpeg";
 import defenderMicro2_2 from "@/assets/products/defender-micro-2-2.avif";
+import verteilerschrank44kva1 from "@/assets/products/verteilerschrank-44kva-1.jpeg";
+import verteilerschrank44kva2 from "@/assets/products/verteilerschrank-44kva-2.jpeg";
+import verteilerschrank44kva3 from "@/assets/products/verteilerschrank-44kva-3.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2202,10 +2205,18 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "verteilerschrank-44kva",
     name: "Verteilerschrank 44 kVA",
-    description: "Stromverteilerschrank",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Anschlußleistung 44 kVA",
+    image: verteilerschrank44kva1,
+    images: [verteilerschrank44kva1, verteilerschrank44kva2, verteilerschrank44kva3],
     category: "anschlussschrank",
+    specifications: {
+      "Anschlußleistung": "44 kVA",
+      "Produktmaße": "935 x 710 x 360 mm",
+      "Gewicht": "40 kg",
+      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
+      "Standgestell": "Feuerverzinkt",
+      "Prüfung": "Stückgeprüft",
+    },
     rentwareCode: { krefeld: "486A6A" }
   },
   // CEE-Kabel
