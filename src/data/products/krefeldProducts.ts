@@ -83,6 +83,7 @@ import cee32aUv6xSchuko1 from "@/assets/products/cee-32a-uv-6x-schuko-1.jpeg";
 import titanexPowerconTrue1_3m1 from "@/assets/products/titanex-powercon-true1-3m-1.jpeg";
 import etherconCat5e25m1 from "@/assets/products/ethercon-cat5e-25m-1.jpeg";
 import etherconCat7_3m1 from "@/assets/products/ethercon-cat7-3m-1.jpeg";
+import netzwerkkabelCat5e2m1 from "@/assets/products/netzwerkkabel-cat5e-2m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2473,10 +2474,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-2m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 2m",
-    description: "Cat5e Netzwerkkabel 2m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "2 m Cat-5e Netzwerkkabel",
+    image: netzwerkkabelCat5e2m1,
+    images: [netzwerkkabelCat5e2m1],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "2 m",
+      "Kategorie": "Cat-5e",
+    },
     rentwareCode: { krefeld: "72BNF6" }
   },
   {
