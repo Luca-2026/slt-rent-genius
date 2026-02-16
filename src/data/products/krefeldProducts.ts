@@ -109,6 +109,7 @@ import anschlussverteilerschrank44kva1 from "@/assets/products/anschlussverteile
 import anschlussverteilerschrank44kva2 from "@/assets/products/anschlussverteilerschrank-44kva-2.jpeg";
 import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteilerschrank-44kva-3.jpeg";
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
+import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2391,10 +2392,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-3m",
     name: "Schukokabel 3 m",
-    description: "Schuko-Verlängerung 3m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
+    image: schukokabel3m1,
+    images: [schukokabel3m1],
     category: "schuko-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "3 m",
+      "Gewicht": "ca. 1,2 kg",
+      "Kabel-Typ": "H07RN-F3G2,5 – 16A",
+    },
     rentwareCode: { krefeld: "QRRDMQ" }
   },
   {
