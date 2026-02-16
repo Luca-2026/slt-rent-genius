@@ -58,6 +58,7 @@ import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
+import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2436,9 +2437,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "powercon-true1-linkkabel-5m",
     name: "PowerCon TRUE1 Top Linkkabel 5 m",
-    description: "PowerCon TRUE1 Kabel 5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Neutrik / Titanex – 5 m Linkkabel H07RN-F3G2,5 – 16A, ca. 1,3 kg",
+    image: powerconTrue1Linkkabel5m1,
+    images: [powerconTrue1Linkkabel5m1],
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Typ": "H07RN-F3G2,5 – 16A",
+      "Kabellänge": "5 m",
+      "Gewicht": "ca. 1,3 kg",
+    },
     category: "powercon-kabel",
     rentwareCode: { krefeld: "9BNX8U" }
   },
