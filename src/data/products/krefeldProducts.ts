@@ -93,6 +93,7 @@ import officeKabelbruecke1m2 from "@/assets/products/office-kabelbruecke-1m-2.jp
 import ceeKabel63aRot3m1 from "@/assets/products/cee-kabel-63a-rot-3m-1.jpeg";
 import erdungsspiess1_5m1 from "@/assets/products/erdungsspiess-1-5m-1.jpeg";
 import schukokabel5m1 from "@/assets/products/schukokabel-5m-1.jpeg";
+import ceeKabel16aRot10m1 from "@/assets/products/cee-kabel-16a-rot-10m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2206,10 +2207,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-10m",
     name: "CEE Kabel 16A rot 10 m",
-    description: "CEE 16A Verlängerung 10m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
+    image: ceeKabel16aRot10m1,
+    images: [ceeKabel16aRot10m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "10 m",
+      "Gewicht": "3,9 kg",
+      "Kabel-Typ": "H07RN-F5G2,5 – 16A rot",
+    },
     rentwareCode: { krefeld: "8AMCNG" }
   },
   {
