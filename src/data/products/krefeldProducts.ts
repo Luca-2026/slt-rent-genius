@@ -108,6 +108,7 @@ import etherconCat5e50m2 from "@/assets/products/ethercon-cat5e-50m-2.jpeg";
 import anschlussverteilerschrank44kva1 from "@/assets/products/anschlussverteilerschrank-44kva-1.jpeg";
 import anschlussverteilerschrank44kva2 from "@/assets/products/anschlussverteilerschrank-44kva-2.jpeg";
 import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteilerschrank-44kva-3.jpeg";
+import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2320,10 +2321,16 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-50m",
     name: "CEE Kabel 32A rot 50 m",
-    description: "CEE 32A Verlängerung 50m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "50 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
+    image: ceeKabel32aRot50m1,
+    images: [ceeKabel32aRot50m1],
     category: "cee-kabel",
+    specifications: {
+      "Marke": "Mennekes / Titanex",
+      "Kabellänge": "50 m",
+      "Gewicht": "7,3 kg",
+      "Kabel-Typ": "H07RN-F5G6 – 32A rot",
+    },
     rentwareCode: { krefeld: "RSBH8K" }
   },
   {
