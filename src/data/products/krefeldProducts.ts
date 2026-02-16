@@ -117,6 +117,7 @@ import defenderMicro2_2 from "@/assets/products/defender-micro-2-2.avif";
 import verteilerschrank44kva1 from "@/assets/products/verteilerschrank-44kva-1.jpeg";
 import verteilerschrank44kva2 from "@/assets/products/verteilerschrank-44kva-2.jpeg";
 import verteilerschrank44kva3 from "@/assets/products/verteilerschrank-44kva-3.jpeg";
+import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2791,10 +2792,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "titanex-speakon-y-adapter",
     name: "Titanex Speakon Y-Adapter",
-    description: "Speakon Y-Verteiler",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "NL4 auf 1x NL2 (1+-) & 1x NL2 (2+-)",
+    image: speakonYAdapter1,
+    images: [speakonYAdapter1],
     category: "adapter",
+    specifications: {
+      "Marke": "Titanex",
+      "Kabellänge": "0,5 m",
+      "Anschluss": "NL4 auf 1x NL2 (1+-) & 1x NL2 (2+-)",
+    },
     rentwareCode: { krefeld: "97DSP4" }
   },
   // Kabelbrücken
