@@ -79,6 +79,7 @@ import cee16aUv5xSchuko1 from "@/assets/products/cee-16a-uv-5x-schuko-1.jpeg";
 import ceeKabel32aRot5m1 from "@/assets/products/cee-kabel-32a-rot-5m-1.jpeg";
 import ceeAdapter63a32a1 from "@/assets/products/cee-adapter-63a-32a-1.jpeg";
 import ceeKabel63aRot10m1 from "@/assets/products/cee-kabel-63a-rot-10m-1.jpeg";
+import cee32aUv6xSchuko1 from "@/assets/products/cee-32a-uv-6x-schuko-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2072,10 +2073,19 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-32a-uv-6xschuko",
     name: "CEE 32A UV auf 6x 16A Schuko",
-    description: "Verteiler CEE32A auf 6x Schuko",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Verteiler CEE 32A auf 6x Schuko",
+    image: cee32aUv6xSchuko1,
+    images: [cee32aUv6xSchuko1],
     category: "stromverteiler",
+    specifications: {
+      "Produktmaße": "465 x 165 x 125 mm",
+      "Gewicht": "4,5 kg",
+      "Eingangsspannung": "380V, 32A",
+      "Eingangsanschluss": "CEE, 32A, 5-polig",
+      "Stromausgabe": "6 x 230V, 32A",
+      "Ausgangsanschluss": "Schuko",
+      "Sicherungen": "6 x C-16",
+    },
     rentwareCode: { krefeld: "KYB943" }
   },
   {
