@@ -64,6 +64,7 @@ import anschlussverteilerschrank24kva2 from "@/assets/products/anschlussverteile
 import anschlussverteilerschrank24kva3 from "@/assets/products/anschlussverteilerschrank-24kva-3.jpeg";
 import ceeKabel63a5m1 from "@/assets/products/cee-kabel-63a-5m-1.jpeg";
 import powerconLinkkabel1_5m1 from "@/assets/products/powercon-linkkabel-1-5m-1.jpeg";
+import ceeAdapter16a32a1 from "@/assets/products/cee-adapter-16a-32a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2290,9 +2291,9 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-adapter-16a-32a",
     name: "Mennekes CEE Adapter 16A < > 32A",
-    description: "CEE-Adapter 16A auf 32A",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "CEE Adapter 16A Stecker rot auf 32A Kupplung rot",
+    image: ceeAdapter16a32a1,
+    images: [ceeAdapter16a32a1],
     category: "adapter",
     rentwareCode: { krefeld: "7B35BP" }
   },
