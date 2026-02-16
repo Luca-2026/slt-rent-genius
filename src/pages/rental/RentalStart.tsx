@@ -2,8 +2,11 @@ import { Layout } from "@/components/layout";
 import { LocationSelector } from "@/components/rental/LocationSelector";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 export default function RentalStart() {
+  const { t } = useTranslation();
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -12,14 +15,13 @@ export default function RentalStart() {
           <AnimatedSection animation="fade-in-up">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-                Jetzt mieten
+                {t("rental.rentNowBadge")}
               </Badge>
               <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                Mieten leicht gemacht
+                {t("rental.rentMadeEasy")}
               </h1>
               <p className="text-lg text-muted-foreground">
-                Über 800 Produkte in 17 Kategorien – von Baumaschinen bis Event-Equipment. 
-                Wähle zuerst deinen Standort für die verfügbaren Produkte und Preise.
+                {t("rental.rentMadeEasyDesc")}
               </p>
             </div>
           </AnimatedSection>
@@ -38,27 +40,27 @@ export default function RentalStart() {
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Standort-basierte Preise</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t("rental.locationBasedPrices")}</h3>
               <p className="text-sm text-muted-foreground">
-                Jeder Standort hat eigene Verfügbarkeiten und Konditionen.
+                {t("rental.locationBasedPricesDesc")}
               </p>
             </div>
             <div>
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🚚</span>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Lieferung möglich</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t("rental.deliveryPossible")}</h3>
               <p className="text-sm text-muted-foreground">
-                Wir liefern direkt zu dir – berechne die Lieferkosten online.
+                {t("rental.deliveryPossibleDesc")}
               </p>
             </div>
             <div>
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">💰</span>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Weekend-Tarife</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t("rental.weekendRates")}</h3>
               <p className="text-sm text-muted-foreground">
-                Freitag leihen, Montag zurück – nur 1 Tag zahlen!
+                {t("rental.weekendRatesDesc")}
               </p>
             </div>
           </div>

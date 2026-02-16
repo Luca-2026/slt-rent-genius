@@ -6,11 +6,14 @@ import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail, User } fro
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
+import { useTranslation } from "react-i18next";
 
 // Center of NRW (roughly between the three locations)
 const mapCenter = { lat: 51.1, lng: 6.9 };
 
 export default function Locations() {
+  const { t } = useTranslation();
+
   return (
     <Layout>
       {/* Hero */}
@@ -18,11 +21,10 @@ export default function Locations() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-              Unsere Standorte
+              {t("locations.title")}
             </h1>
             <p className="text-primary-foreground/80 max-w-2xl">
-              3 Standorte in NRW – immer in deiner Nähe. Persönliche Beratung, 
-              große Auswahl und schnelle Abholung garantiert.
+              {t("locations.heroSubtitle")}
             </p>
           </AnimatedSection>
         </div>
@@ -109,7 +111,7 @@ export default function Locations() {
                     <div className="mb-6">
                       <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
                         <Clock className="h-4 w-4" />
-                        Öffnungszeiten
+                        {t("locations.openingHours")}
                       </div>
                       <div className="space-y-1 min-h-[72px]">
                         {location.hours.map((h) => (
@@ -145,13 +147,13 @@ export default function Locations() {
                     <div className="flex gap-3 mt-auto">
                       <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                         <Button variant="outline" className="w-full" size="sm">
-                          <Navigation className="h-4 w-4 mr-2" />
-                          Route
+                         <Navigation className="h-4 w-4 mr-2" />
+                           {t("locations.route")}
                         </Button>
                       </a>
                       <Link to={`/standorte/${location.id}`} className="flex-1">
-                        <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="sm">
-                          Details
+                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="sm">
+                           {t("locations.details")}
                         </Button>
                       </Link>
                     </div>
@@ -213,43 +215,42 @@ export default function Locations() {
           <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
             <AnimatedSection animation="slide-in-left" className="flex-1">
               <Truck className="h-12 w-12 text-accent mb-4" />
-              <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
-                Lieferung direkt zur Baustelle
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Du hast keine Möglichkeit, das Equipment abzuholen? Kein Problem! 
-                Wir liefern dir Baumaschinen, Anhänger und mehr direkt an deinen Einsatzort in ganz NRW.
-              </p>
-              <Link to="/lieferung">
-                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                  Mehr zur Lieferung
-                </Button>
-              </Link>
-            </AnimatedSection>
-            <AnimatedSection animation="slide-in-right" delay={200} className="lg:w-96">
-              <div className="bg-background rounded-xl p-6 border border-border">
-                <h3 className="font-semibold text-headline mb-4">Lieferkosten</h3>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">Bis 25 km</span>
-                    <span className="font-medium text-headline">ab 49€</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">25 - 50 km</span>
-                    <span className="font-medium text-headline">ab 79€</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">50 - 100 km</span>
-                    <span className="font-medium text-headline">ab 129€</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">Über 100 km</span>
-                    <span className="font-medium text-headline">auf Anfrage</span>
-                  </li>
-                </ul>
-                <p className="text-xs text-muted-foreground mt-4">
-                  * Preise zzgl. MwSt., abhängig vom Equipment
-                </p>
+               <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+                 {t("locations.deliveryToSite")}
+               </h2>
+               <p className="text-muted-foreground mb-6">
+                 {t("locations.deliveryToSiteDesc")}
+               </p>
+               <Link to="/lieferung">
+                 <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                   {t("locations.moreAboutDelivery")}
+                 </Button>
+               </Link>
+             </AnimatedSection>
+             <AnimatedSection animation="slide-in-right" delay={200} className="lg:w-96">
+               <div className="bg-background rounded-xl p-6 border border-border">
+                 <h3 className="font-semibold text-headline mb-4">{t("locations.deliveryCostsTitle")}</h3>
+                 <ul className="space-y-3 text-sm">
+                   <li className="flex justify-between">
+                     <span className="text-muted-foreground">{t("locations.upTo25km")}</span>
+                     <span className="font-medium text-headline">ab 49€</span>
+                   </li>
+                   <li className="flex justify-between">
+                     <span className="text-muted-foreground">{t("locations.range25to50")}</span>
+                     <span className="font-medium text-headline">ab 79€</span>
+                   </li>
+                   <li className="flex justify-between">
+                     <span className="text-muted-foreground">{t("locations.range50to100")}</span>
+                     <span className="font-medium text-headline">ab 129€</span>
+                   </li>
+                   <li className="flex justify-between">
+                     <span className="text-muted-foreground">{t("locations.over100km")}</span>
+                     <span className="font-medium text-headline">{t("locations.onRequest")}</span>
+                   </li>
+                 </ul>
+                 <p className="text-xs text-muted-foreground mt-4">
+                   {t("locations.deliveryNote")}
+                 </p>
               </div>
             </AnimatedSection>
           </div>

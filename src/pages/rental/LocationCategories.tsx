@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowLeft, MapPin, Phone, Navigation, User } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
+import { useTranslation } from "react-i18next";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
 import bonnImage from "@/assets/locations/bonn.webp";
 
@@ -23,17 +24,26 @@ const locationImages: Record<string, string> = {
 };
 
 // Location managers
-const locationManagers: Record<string, { name: string; role: string; image: string | null; email: string }> = {
-  krefeld: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-  bonn: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
-  muelheim: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "a.scherzow@slt-rental.de" },
+const locationManagers: Record<string, { name: string; roleKey: string; image: string | null; email: string }> = {
+  krefeld: { name: "Benedikt Nöchel", roleKey: "rental.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
+  bonn: { name: "Ersel Uzun", roleKey: "rental.locationManager", image: imgErsel, email: "e.uzun@slt-rental.de" },
+  muelheim: { name: "Andreas Scherzow", roleKey: "rental.locationManager", image: null, email: "a.scherzow@slt-rental.de" },
 };
 
-// Location descriptions
-const locationDescriptions: Record<string, string> = {
-  krefeld: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
-  bonn: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
-  muelheim: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+// Location descriptions (kept as data, could be translated if needed)
+const locationDescriptions: Record<string, { de: string; en: string }> = {
+  krefeld: {
+    de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+    en: "Rent mini excavators, trailers, generators, event equipment and much more for your next project at the best price!",
+  },
+  bonn: {
+    de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+    en: "Rent mini excavators, trailers, generators, event equipment and much more for your next project at the best price!",
+  },
+  muelheim: {
+    de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
+    en: "Rent mini excavators, trailers, generators, event equipment and much more for your next project at the best price!",
+  },
 };
 
 export default function LocationCategories() {
@@ -41,6 +51,8 @@ export default function LocationCategories() {
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language?.startsWith("en") ? "en" : "de";
   
   const location = locationId ? getLocationById(locationId) : undefined;
 
@@ -48,9 +60,9 @@ export default function LocationCategories() {
     return (
       <Layout>
         <div className="section-container py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Standort nicht gefunden</h1>
+          <h1 className="text-2xl font-bold mb-4">{t("rental.locationNotFound")}</h1>
           <Link to="/mieten">
-            <Button>Zurück zur Standortauswahl</Button>
+            <Button>{t("rental.backToLocations")}</Button>
           </Link>
         </div>
       </Layout>
@@ -71,13 +83,11 @@ export default function LocationCategories() {
     setSelectedProduct(null);
   };
 
-  // Extract address parts
   const addressParts = location.address.split(", ");
   const streetAddress = addressParts[0] || "";
   const cityAddress = addressParts[1] || "";
-
-  // Google Maps URL
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.address)}`;
+  const description = locationDescriptions[location.id]?.[lang] || locationDescriptions[location.id]?.de || "";
 
   return (
     <Layout>
@@ -89,27 +99,25 @@ export default function LocationCategories() {
             className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Standort wechseln
+            {t("rental.changeLocation")}
           </Link>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Text Content */}
             <div>
               <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground mb-4">
                 SLT Rental in {location.name}
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                {locationDescriptions[location.id] || "Miete bei uns Equipment für dein nächstes Projekt!"}
+                {description}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                {/* Address */}
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
                     <MapPin className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-primary-foreground mb-1">Adresse</p>
+                    <p className="font-semibold text-primary-foreground mb-1">{t("rental.address")}</p>
                     <p className="text-primary-foreground/80 text-sm">
                       {streetAddress}<br />
                       {cityAddress}
@@ -117,13 +125,12 @@ export default function LocationCategories() {
                   </div>
                 </div>
 
-                {/* Contact */}
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
                     <Phone className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-primary-foreground mb-1">Kontakt</p>
+                    <p className="font-semibold text-primary-foreground mb-1">{t("rental.contactLabel")}</p>
                     <p className="text-primary-foreground/80 text-sm">
                       <a href={`mailto:${location.email}`} className="hover:text-primary-foreground transition-colors">
                         {location.email}
@@ -136,21 +143,14 @@ export default function LocationCategories() {
                 </div>
               </div>
 
-              {/* Manager & Route Button */}
               <div className="flex flex-wrap items-center gap-4">
-                {/* Route Button */}
-                <a 
-                  href={googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
                   <Button variant="secondary" className="gap-2">
                     <Navigation className="h-4 w-4" />
-                    Route planen
+                    {t("rental.planRoute")}
                   </Button>
                 </a>
 
-                {/* Manager */}
                 {locationManagers[location.id] && (
                   <a 
                     href={`mailto:${locationManagers[location.id].email}`}
@@ -174,7 +174,7 @@ export default function LocationCategories() {
                         {locationManagers[location.id].name}
                       </p>
                       <p className="text-xs text-primary-foreground/70">
-                        {locationManagers[location.id].role}
+                        {t(locationManagers[location.id].roleKey)}
                       </p>
                     </div>
                   </a>
@@ -182,12 +182,11 @@ export default function LocationCategories() {
               </div>
             </div>
 
-            {/* Location Image */}
             <div className="relative">
               {locationImages[location.id] ? (
                 <img 
                   src={locationImages[location.id]} 
-                  alt={`SLT Rental Standort ${location.name}`}
+                  alt={`SLT Rental ${location.name}`}
                   className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
                 />
               ) : (
@@ -198,13 +197,12 @@ export default function LocationCategories() {
             </div>
           </div>
 
-          {/* Search */}
           <div className="mt-8 lg:mt-12 max-w-xl">
             <ProductSearch 
               locationId={location.id}
               onCategorySelect={handleCategorySelect}
               onProductSelect={handleProductSelect}
-              placeholder="Mietartikel suchen..."
+              placeholder={t("rental.searchArticles")}
             />
           </div>
         </div>
@@ -215,7 +213,7 @@ export default function LocationCategories() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h2 className="text-xl font-bold text-foreground mb-6">
-              Kategorien am Standort {location.name}
+              {t("rental.categoriesAtLocation", { name: location.name })}
             </h2>
             <CategoryGrid location={location} />
           </AnimatedSection>
@@ -228,21 +226,19 @@ export default function LocationCategories() {
           <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
             <div className="max-w-2xl">
               <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
-                💰 Weekend-Tarif
+                💰 {t("rental.weekendRate")}
               </span>
               <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                Freitag leihen, Montag zurückgeben – nur 1 Tag zahlen!
+                {t("rental.weekendTitle")}
               </h2>
               <p className="text-muted-foreground">
-                Bei vielen Produkten gilt unser beliebter Weekend-Tarif: Du holst Freitagmittag ab 
-                und bringst das Gerät Montag früh zurück – bezahlt wird nur ein Miettag.
+                {t("rental.weekendDesc")}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Product Booking Dialog */}
       <ProductBookingDialog
         product={selectedProduct}
         location={location}

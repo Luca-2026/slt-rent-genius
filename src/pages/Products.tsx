@@ -8,6 +8,7 @@ import { WeightFilter, weightRanges } from "@/components/products/WeightFilter";
 import { RentwareSearch } from "@/components/products/RentwareSearch";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { useTranslation } from "react-i18next";
 
 // Imports for category icons
 import iconBagger from "@/assets/icons/category-bagger.png";
@@ -201,6 +202,7 @@ export default function Products() {
   const { category } = useParams<{ category?: string }>();
   const selectedCategory = categories.find(c => c.id === category);
   const [weightFilter, setWeightFilter] = useState("all");
+  const { t } = useTranslation();
 
   const getFilteredArticles = () => {
     if (!selectedCategory?.rentwareArticles) return [];
@@ -228,7 +230,7 @@ export default function Products() {
                 className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Zurück zur Übersicht
+                {t("products.backToOverview")}
               </Link>
               
               <div className="flex items-center gap-6">
@@ -277,7 +279,7 @@ export default function Products() {
             <div className="section-container">
               {selectedCategory.hasWeightFilter && (
                 <div className="mb-6 flex items-center gap-4">
-                  <span className="text-muted-foreground">Filtern nach Größe:</span>
+                  <span className="text-muted-foreground">{t("products.filterBySize")}</span>
                   <WeightFilter 
                     selectedRange={weightFilter} 
                     onRangeChange={setWeightFilter} 
@@ -297,7 +299,7 @@ export default function Products() {
                     onClick={() => setWeightFilter("all")}
                     className="mt-2"
                   >
-                    Alle Produkte anzeigen
+                    {t("products.allProducts")}
                   </Button>
                 </div>
               )}
@@ -308,7 +310,7 @@ export default function Products() {
         <section className="py-8 lg:py-12 bg-surface-light">
           <div className="section-container">
             <AnimatedSection animation="fade-in-up">
-              <h2 className="text-xl font-bold text-headline mb-6">Weitere Kategorien</h2>
+              <h2 className="text-xl font-bold text-headline mb-6">{t("products.otherCategories")}</h2>
             </AnimatedSection>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {categories
@@ -346,20 +348,19 @@ export default function Products() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
-              Unsere Mietprodukte
-            </h1>
-            <p className="text-primary-foreground/80 max-w-2xl mb-6">
-              Über 800 Produkte in 16 Kategorien – von Baumaschinen bis Event-Equipment. 
-              Alles online buchbar mit transparenten Preisen.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+               {t("products.title")}
+             </h1>
+             <p className="text-primary-foreground/80 max-w-2xl mb-6">
+               {t("products.subtitle")}
+             </p>
+           </AnimatedSection>
+         </div>
+       </section>
 
       <section className="py-12 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
-            <h2 className="text-2xl font-bold text-headline mb-8">Kategorien</h2>
+            <h2 className="text-2xl font-bold text-headline mb-8">{t("products.categories")}</h2>
           </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -377,8 +378,8 @@ export default function Products() {
                     <CardContent className="p-4">
                       <h3 className="font-bold text-headline">{cat.title}</h3>
                       <p className="text-sm text-muted-foreground mt-1">{cat.description}</p>
-                      <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
-                        Kategorie ansehen <ArrowRight className="ml-1 h-4 w-4" />
+                       <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
+                         {t("products.viewCategory")} <ArrowRight className="ml-1 h-4 w-4" />
                       </Button>
                     </CardContent>
                   </Card>
@@ -394,19 +395,18 @@ export default function Products() {
           <AnimatedSection animation="fade-in-up">
             <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
               <div className="max-w-2xl">
-                <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
-                  💰 Spare mit unserem Weekend-Tarif
-                </span>
-                <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
-                  Freitag leihen, Montag zurückgeben – nur 1 Tag zahlen!
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  Bei vielen Produkten gilt unser beliebter Weekend-Tarif: Du holst Freitagmittag ab 
-                  und bringst das Gerät Montag früh zurück – bezahlt wird nur ein Miettag.
-                </p>
-                <Link to="/so-funktionierts">
-                  <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                    Mehr zum Weekend-Tarif
+               <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
+                   💰 {t("products.weekendSave")}
+                 </span>
+                 <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
+                   {t("products.weekendTitle")}
+                 </h2>
+                 <p className="text-muted-foreground mb-6">
+                   {t("products.weekendDesc")}
+                 </p>
+                 <Link to="/so-funktionierts">
+                   <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                     {t("products.moreAboutWeekend")}
                   </Button>
                 </Link>
               </div>

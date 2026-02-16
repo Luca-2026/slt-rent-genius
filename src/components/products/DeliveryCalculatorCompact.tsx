@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Truck, MapPin, Calculator, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const deliveryPrices = {
   "1t-bagger": {
@@ -122,6 +123,7 @@ export function DeliveryCalculatorCompact({
   className = "",
   categoryDisplayName
 }: DeliveryCalculatorCompactProps) {
+  const { t } = useTranslation();
   // Determine if this is erdbewegung category (show machine type selector)
   const isErdbewegung = productCategoryId === "erdbewegung";
   
@@ -179,7 +181,7 @@ export function DeliveryCalculatorCompact({
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Truck className="h-5 w-5 text-primary" />
-          {categoryDisplayName ? `Lieferkosten für ${categoryDisplayName}` : "Lieferkosten berechnen"}
+          {categoryDisplayName ? t("rental.deliveryTitle", { category: categoryDisplayName }) : t("rental.deliveryCosts")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -207,7 +209,7 @@ export function DeliveryCalculatorCompact({
 
         {/* Info text */}
         <p className="text-xs text-muted-foreground">
-          Die Lieferkosten dienen der Kalkulation. Wählen Sie im Buchungsschritt „Lieferung gewünscht" – wir fügen die Kosten Ihrem Auftrag hinzu.
+          {t("rental.deliveryHint")}
         </p>
 
 
@@ -216,7 +218,7 @@ export function DeliveryCalculatorCompact({
           <div className="flex items-center justify-between">
             <Label className="flex items-center gap-2 text-sm">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              Entfernung
+              {t("rental.distance")}
             </Label>
             <span className="font-semibold text-primary">{distance} km</span>
           </div>
@@ -233,7 +235,7 @@ export function DeliveryCalculatorCompact({
         {/* Return Trip Toggle */}
         <div className="flex items-center justify-between py-2 border-t border-border">
           <Label htmlFor="return-trip-compact" className="text-sm cursor-pointer">
-            Hin- und Rückfahrt
+            {t("rental.roundTrip")}
           </Label>
           <Switch
             id="return-trip-compact"
@@ -266,18 +268,18 @@ export function DeliveryCalculatorCompact({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                {includeReturn ? "Hin- & Rückfahrt" : "Einfache Fahrt"}
+                {includeReturn ? t("rental.roundTripLabel") : t("rental.oneWayLabel")}
               </p>
               <p className="text-2xl font-bold text-headline">
                 {calculatedPrice.total.toFixed(0)} €
-                <span className="text-sm font-normal text-muted-foreground ml-1">brutto</span>
+                <span className="text-sm font-normal text-muted-foreground ml-1">{t("rental.gross")}</span>
               </p>
             </div>
             <Calculator className="h-8 w-8 text-accent" />
           </div>
           {includeReturn && (
             <p className="text-xs text-muted-foreground mt-1">
-              (je Fahrt {calculatedPrice.oneWay.toFixed(0)} €)
+              ({t("rental.perTrip")} {calculatedPrice.oneWay.toFixed(0)} €)
             </p>
           )}
           {twoMachines && (
