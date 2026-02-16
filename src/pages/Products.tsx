@@ -28,12 +28,46 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 
-const categories = [
-  {
-    id: "bagger-radlader",
-    title: "Bagger & Radlader",
-    description: "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben.",
-    image: iconBagger,
+const categoryIds = [
+  "bagger-radlader",
+  "verdichtung",
+  "anhaenger",
+  "hebebuehnen",
+  "buehnen-podeste",
+  "moebel-zelte",
+  "geschirr",
+  "besteck",
+  "huepfburgen",
+  "spezialeffekte",
+  "led-spots",
+  "beleuchtung",
+  "stromerzeuger",
+  "heizung-klima",
+  "kabel-leitungen",
+  "absperrung-sicherheit",
+] as const;
+
+const categoryImages: Record<string, string> = {
+  "bagger-radlader": iconBagger,
+  "verdichtung": iconVerdichtung,
+  "anhaenger": iconAnhaenger,
+  "hebebuehnen": iconHebebuehne,
+  "buehnen-podeste": iconBuehne,
+  "moebel-zelte": iconMoebelZelte,
+  "geschirr": iconGeschirr,
+  "besteck": iconBesteck,
+  "huepfburgen": iconHuepfburg,
+  "spezialeffekte": iconSpezialeffekte,
+  "led-spots": iconLedSpots,
+  "beleuchtung": iconBeleuchtung,
+  "stromerzeuger": iconAggregat,
+  "heizung-klima": iconHeizung,
+  "kabel-leitungen": iconKabel,
+  "absperrung-sicherheit": iconAbsperrgitter,
+};
+
+const categoryMeta: Record<string, { hasWeightFilter?: boolean; rentwareSearch?: Record<string, string>; rentwareArticles?: RentwareArticleType[] }> = {
+  "bagger-radlader": {
     hasWeightFilter: true,
     rentwareSearch: {
       view: "cards",
@@ -42,116 +76,13 @@ const categories = [
       locations: "01929004-e24f-7cc0-83f0-0f3d3431395e, 01953e5f-614f-743d-8eb9-1a0e865da81d, 95e16e54-04d2-496a-6002-41e0289b53a3",
       showOnlyTags: "Bagger",
     },
-    rentwareArticles: [],
   },
-  {
-    id: "verdichtung",
-    title: "Verdichtung",
-    description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
-    image: iconVerdichtung,
-    rentwareArticles: [],
-  },
-  {
-    id: "anhaenger",
-    title: "Anhänger",
-    description: "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger.",
-    image: iconAnhaenger,
+  "anhaenger": {
     rentwareArticles: [
       { id: "WWSMO3", view: "cards", name: "Anhänger" },
     ],
   },
-  {
-    id: "hebebuehnen",
-    title: "Hebebühnen & Arbeitsbühnen",
-    description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
-    image: iconHebebuehne,
-    rentwareArticles: [],
-  },
-  {
-    id: "buehnen-podeste",
-    title: "Bühnen & Podeste",
-    description: "Event-Bühnen, Podeste und Laufstege für Veranstaltungen.",
-    image: iconBuehne,
-    rentwareArticles: [],
-  },
-  {
-    id: "moebel-zelte",
-    title: "Möbel & Zelte",
-    description: "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
-    image: iconMoebelZelte,
-    rentwareArticles: [],
-  },
-  {
-    id: "geschirr",
-    title: "Geschirr",
-    description: "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung.",
-    image: iconGeschirr,
-    rentwareArticles: [],
-  },
-  {
-    id: "besteck",
-    title: "Besteck",
-    description: "Messer, Gabeln und Löffel für Events und Feiern.",
-    image: iconBesteck,
-    rentwareArticles: [],
-  },
-  {
-    id: "huepfburgen",
-    title: "Hüpfburgen",
-    description: "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen.",
-    image: iconHuepfburg,
-    rentwareArticles: [],
-  },
-  {
-    id: "spezialeffekte",
-    title: "Spezialeffekte",
-    description: "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth.",
-    image: iconSpezialeffekte,
-    rentwareArticles: [],
-  },
-  {
-    id: "led-spots",
-    title: "LED Spots & Effektlicht",
-    description: "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events.",
-    image: iconLedSpots,
-    rentwareArticles: [],
-  },
-  {
-    id: "beleuchtung",
-    title: "Beleuchtung & Flutlicht",
-    description: "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung.",
-    image: iconBeleuchtung,
-    rentwareArticles: [],
-  },
-  {
-    id: "stromerzeuger",
-    title: "Stromerzeuger",
-    description: "Aggregate und Notstromgeräte für Baustelle und Event.",
-    image: iconAggregat,
-    rentwareArticles: [],
-  },
-  {
-    id: "heizung-klima",
-    title: "Heizung & Klima",
-    description: "Heizlüfter, Heizpilze und Klimageräte für jede Situation.",
-    image: iconHeizung,
-    rentwareArticles: [],
-  },
-  {
-    id: "kabel-leitungen",
-    title: "Kabel & Leitungen",
-    description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
-    image: iconKabel,
-    rentwareArticles: [],
-  },
-  {
-    id: "absperrung-sicherheit",
-    title: "Absperrung & Sicherheit",
-    description: "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment.",
-    image: iconAbsperrgitter,
-    rentwareArticles: [],
-  },
-];
+};
 
 function RentwareArticleWidget({ articleId, view = "cards" }: { articleId: string; view?: string }) {
   useEffect(() => {
@@ -200,9 +131,20 @@ function RentwareArticlesList({ articles }: { articles: RentwareArticleType[] })
 
 export default function Products() {
   const { category } = useParams<{ category?: string }>();
-  const selectedCategory = categories.find(c => c.id === category);
   const [weightFilter, setWeightFilter] = useState("all");
   const { t } = useTranslation();
+
+  const categories = categoryIds.map((id) => ({
+    id,
+    title: t(`products.cat.${id}.title`),
+    description: t(`products.cat.${id}.desc`),
+    image: categoryImages[id],
+    hasWeightFilter: categoryMeta[id]?.hasWeightFilter,
+    rentwareSearch: categoryMeta[id]?.rentwareSearch,
+    rentwareArticles: categoryMeta[id]?.rentwareArticles || [],
+  }));
+
+  const selectedCategory = categories.find(c => c.id === category);
 
   const getFilteredArticles = () => {
     if (!selectedCategory?.rentwareArticles) return [];

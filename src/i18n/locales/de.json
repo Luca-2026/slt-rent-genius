@@ -233,7 +233,25 @@
     "weekendTitle": "Freitag leihen, Montag zurückgeben – nur 1 Tag zahlen!",
     "weekendDesc": "Bei vielen Produkten gilt unser beliebter Weekend-Tarif: Du holst Freitagmittag ab und bringst das Gerät Montag früh zurück – bezahlt wird nur ein Miettag.",
     "moreAboutWeekend": "Mehr zum Weekend-Tarif",
-    "filterBySize": "Filtern nach Größe:"
+    "filterBySize": "Filtern nach Größe:",
+    "cat": {
+      "bagger-radlader": { "title": "Bagger & Radlader", "desc": "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben." },
+      "verdichtung": { "title": "Verdichtung", "desc": "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung." },
+      "anhaenger": { "title": "Anhänger", "desc": "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger." },
+      "hebebuehnen": { "title": "Hebebühnen & Arbeitsbühnen", "desc": "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten." },
+      "buehnen-podeste": { "title": "Bühnen & Podeste", "desc": "Event-Bühnen, Podeste und Laufstege für Veranstaltungen." },
+      "moebel-zelte": { "title": "Möbel & Zelte", "desc": "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar." },
+      "geschirr": { "title": "Geschirr", "desc": "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung." },
+      "besteck": { "title": "Besteck", "desc": "Messer, Gabeln und Löffel für Events und Feiern." },
+      "huepfburgen": { "title": "Hüpfburgen", "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen." },
+      "spezialeffekte": { "title": "Spezialeffekte", "desc": "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth." },
+      "led-spots": { "title": "LED Spots & Effektlicht", "desc": "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events." },
+      "beleuchtung": { "title": "Beleuchtung & Flutlicht", "desc": "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung." },
+      "stromerzeuger": { "title": "Stromerzeuger", "desc": "Aggregate und Notstromgeräte für Baustelle und Event." },
+      "heizung-klima": { "title": "Heizung & Klima", "desc": "Heizlüfter, Heizpilze und Klimageräte für jede Situation." },
+      "kabel-leitungen": { "title": "Kabel & Leitungen", "desc": "Verlängerungskabel, Kabelbrücken und Stromverteiler." },
+      "absperrung-sicherheit": { "title": "Absperrung & Sicherheit", "desc": "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment." }
+    }
   },
   "filters": {
     "productType": "Produktart",

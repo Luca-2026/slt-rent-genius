@@ -233,7 +233,25 @@
     "weekendTitle": "Rent Friday, return Monday – pay only 1 day!",
     "weekendDesc": "Many products include our popular weekend rate: Pick up Friday afternoon and return Monday morning – you only pay for one rental day.",
     "moreAboutWeekend": "More about Weekend Rates",
-    "filterBySize": "Filter by size:"
+    "filterBySize": "Filter by size:",
+    "cat": {
+      "bagger-radlader": { "title": "Excavators & Wheel Loaders", "desc": "Mini excavators, wheel loaders and earthmoving machines for every construction project." },
+      "verdichtung": { "title": "Compaction", "desc": "Plate compactors, rammers and rollers for professional soil compaction." },
+      "anhaenger": { "title": "Trailers", "desc": "Car trailers, tippers, machine transporters and cargo trailers." },
+      "hebebuehnen": { "title": "Aerial Work Platforms", "desc": "Scissor lifts, telescopic booms and articulated booms for working at height." },
+      "buehnen-podeste": { "title": "Stages & Platforms", "desc": "Event stages, platforms and catwalks for events." },
+      "moebel-zelte": { "title": "Furniture & Tents", "desc": "Party tents, beer garden sets, standing tables and event furniture." },
+      "geschirr": { "title": "Tableware", "desc": "Plates, bowls, glasses and cups for your event." },
+      "besteck": { "title": "Cutlery", "desc": "Knives, forks and spoons for events and celebrations." },
+      "huepfburgen": { "title": "Bouncy Castles", "desc": "Inflatable bouncy castles and games for children's events." },
+      "spezialeffekte": { "title": "Special Effects", "desc": "Fog machines, bubble machines, spark effects and photo booths." },
+      "led-spots": { "title": "LED Spots & Effect Lighting", "desc": "Moving heads, PAR spotlights and stage lighting for events." },
+      "beleuchtung": { "title": "Lighting & Floodlights", "desc": "Construction site spotlights, floodlight masts and mobile lighting." },
+      "stromerzeuger": { "title": "Generators", "desc": "Power generators and emergency power units for construction sites and events." },
+      "heizung-klima": { "title": "Heating & Climate", "desc": "Fan heaters, patio heaters and air conditioning units for every situation." },
+      "kabel-leitungen": { "title": "Cables & Wiring", "desc": "Extension cables, cable bridges and power distributors." },
+      "absperrung-sicherheit": { "title": "Barriers & Safety", "desc": "Barrier fences, construction fences, warning beacons and safety equipment." }
+    }
   },
   "filters": {
     "productType": "Product Type",
