@@ -96,6 +96,8 @@ import schukokabel5m1 from "@/assets/products/schukokabel-5m-1.jpeg";
 import ceeKabel16aRot10m1 from "@/assets/products/cee-kabel-16a-rot-10m-1.jpeg";
 import powerconLinkkabel5m1 from "@/assets/products/powercon-linkkabel-5m-1.jpeg";
 import ceeKabel32aRot20m1 from "@/assets/products/cee-kabel-32a-rot-20m-1.jpeg";
+import defenderMidi5_1 from "@/assets/products/defender-midi-5-1.jpeg";
+import defenderMidi5_2 from "@/assets/products/defender-midi-5-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2709,10 +2711,19 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "defender-midi-5",
     name: "Defender Midi 5 Kabelbrücke",
-    description: "Mittlere Kabelbrücke 5-Kanal",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kabelbrücke Typ 535-5 mit 5 Kabelkanälen, max. Achslast 5 t, Brandschutzklasse B2",
+    image: defenderMidi5_1,
+    images: [defenderMidi5_1, defenderMidi5_2],
     category: "kabelbruecke",
+    specifications: {
+      "Typ": "535-5",
+      "Kabelkanäle": "5",
+      "Länge": "80 cm",
+      "Breite": "90 cm",
+      "Höhe": "0,5 cm",
+      "Achslast (max)": "5 t",
+      "Brandschutzklasse": "B2",
+    },
     rentwareCode: { krefeld: "6BWU5U" }
   },
   {
