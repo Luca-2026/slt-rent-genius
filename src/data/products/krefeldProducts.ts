@@ -91,6 +91,7 @@ import ceeKabel32aRot10m1 from "@/assets/products/cee-kabel-32a-rot-10m-1.jpeg";
 import officeKabelbruecke1m1 from "@/assets/products/office-kabelbruecke-1m-1.jpeg";
 import officeKabelbruecke1m2 from "@/assets/products/office-kabelbruecke-1m-2.jpeg";
 import ceeKabel63aRot3m1 from "@/assets/products/cee-kabel-63a-rot-3m-1.jpeg";
+import erdungsspiess1_5m1 from "@/assets/products/erdungsspiess-1-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2439,11 +2440,18 @@ export const kabelStromverteilerProducts: Product[] = [
   // Erdung
   {
     id: "erdungsspiess-1-5m",
-    name: "Erdungsspies 1,5m mit 3m Leitung",
-    description: "Erdungsstab mit Kabel",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Erdungsspieß 1,5m mit 3m Leitung",
+    description: "Erdungs-Anschlussleitung 16mm², flexible Verbindungsleitung H07V-K grün-gelb. Zur Verbindung von Erdungspunkten mit ortveränderlichen Einrichtungen wie Baustromverteiler, Notstromaggregaten, Fahrzeugen etc.",
+    image: erdungsspiess1_5m1,
+    images: [erdungsspiess1_5m1],
     category: "erdung",
+    specifications: {
+      "Erdungsspieß": "1,5 m",
+      "Leitungslänge": "3 m",
+      "Querschnitt": "16 mm²",
+      "Leitung": "H07V-K grün-gelb",
+      "Kabelschuh": "8 mm / 10 mm Lochdurchmesser",
+    },
     rentwareCode: { krefeld: "SB6Z2F" }
   },
   // Netzwerkkabel
