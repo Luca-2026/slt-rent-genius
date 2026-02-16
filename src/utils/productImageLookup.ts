@@ -102,7 +102,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
 
 ["stampfer-gs72xh-1", "ruettelplatte-hvp3050-1", "ruettelplatte-hvp3860-1", "ruettelplatte-vp2550-1", "ruettelplatte-vp2550-2", "ruettelplatte-vp1644-1", "ruettelplatte-vp1644-2"].forEach((f) => (IMAGE_DIR_MAP[f] = "verdichtung"));
 
-["cee-adapter-schuko-16a-1"].forEach((f) => (IMAGE_DIR_MAP[f] = "kabel-stromverteiler"));
+["cee-adapter-schuko-16a-1", "netzwerkkabel-cat7-30m-1"].forEach((f) => (IMAGE_DIR_MAP[f] = "kabel-stromverteiler"));
 
 /**
  * Converts a Vite-hashed asset path to a stable public path.
