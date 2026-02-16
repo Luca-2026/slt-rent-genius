@@ -103,6 +103,8 @@ import powerconHybridLinkkabel3m1 from "@/assets/products/powercon-hybrid-linkka
 import ceeAdapter32a16a1 from "@/assets/products/cee-adapter-32a-16a-1.jpeg";
 import cee16aUv3xSchuko1 from "@/assets/products/cee-16a-uv-3x-schuko-1.jpeg";
 import ceeKabel32aRot3m1 from "@/assets/products/cee-kabel-32a-rot-3m-1.jpeg";
+import etherconCat5e50m1 from "@/assets/products/ethercon-cat5e-50m-1.jpeg";
+import etherconCat5e50m2 from "@/assets/products/ethercon-cat5e-50m-2.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2559,11 +2561,16 @@ export const kabelStromverteilerProducts: Product[] = [
   },
   {
     id: "ethercon-kabel-50m-cat5e",
-    name: "Major EtherCon Kabel Cat-5e 50m",
-    description: "EtherCon Netzwerkkabel 50m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Major EtherCon Kabeltrommel Cat-5e 50m",
+    description: "50 m Netzwerkkabel auf Schill GT310 Trommel",
+    image: etherconCat5e50m1,
+    images: [etherconCat5e50m1, etherconCat5e50m2],
     category: "netzwerkkabel",
+    specifications: {
+      "Marke": "Major",
+      "Kabellänge": "50 m",
+      "Trommel": "Schill GT310",
+    },
     rentwareCode: { krefeld: "AN298G" }
   },
   {
