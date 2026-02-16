@@ -63,6 +63,7 @@ import anschlussverteilerschrank24kva1 from "@/assets/products/anschlussverteile
 import anschlussverteilerschrank24kva2 from "@/assets/products/anschlussverteilerschrank-24kva-2.jpeg";
 import anschlussverteilerschrank24kva3 from "@/assets/products/anschlussverteilerschrank-24kva-3.jpeg";
 import ceeKabel63a5m1 from "@/assets/products/cee-kabel-63a-5m-1.jpeg";
+import powerconLinkkabel1_5m1 from "@/assets/products/powercon-linkkabel-1-5m-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2417,11 +2418,17 @@ export const kabelStromverteilerProducts: Product[] = [
   // PowerCon-Kabel
   {
     id: "powercon-linkkabel-1-5m",
-    name: "PowerCon Linkkable 1,5 m",
-    description: "PowerCon Verbindungskabel 1,5m",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "PowerCon Link Cable 1,5 m",
+    description: "Neutrik / Titanex – Link Cable H07RN-F3G2,5 – 16A, ca. 0,4 kg",
+    image: powerconLinkkabel1_5m1,
+    images: [powerconLinkkabel1_5m1],
     category: "powercon-kabel",
+    specifications: {
+      "Marke": "Neutrik / Titanex",
+      "Typ": "H07RN-F3G2,5 – 16A",
+      "Kabellänge": "1,5 m",
+      "Gewicht": "ca. 0,4 kg",
+    },
     rentwareCode: { krefeld: "792P5K" }
   },
   {
