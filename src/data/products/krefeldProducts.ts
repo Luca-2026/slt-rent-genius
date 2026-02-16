@@ -56,6 +56,7 @@ import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
+import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2296,9 +2297,9 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-adapter-schuko-16a",
     name: "Mennekes CEE Adapter Schuko < > 16A (b)",
-    description: "CEE-Adapter Schuko auf CEE16A",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Schuko Adapter Schuko 16A Stecker auf 16A Kupplung blau",
+    image: ceeAdapterSchuko16a1,
+    images: [ceeAdapterSchuko16a1],
     category: "adapter",
     rentwareCode: { krefeld: "IC7B9S" }
   },
