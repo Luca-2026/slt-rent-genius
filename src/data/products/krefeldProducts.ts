@@ -84,6 +84,7 @@ import titanexPowerconTrue1_3m1 from "@/assets/products/titanex-powercon-true1-3
 import etherconCat5e25m1 from "@/assets/products/ethercon-cat5e-25m-1.jpeg";
 import etherconCat7_3m1 from "@/assets/products/ethercon-cat7-3m-1.jpeg";
 import netzwerkkabelCat5e2m1 from "@/assets/products/netzwerkkabel-cat5e-2m-1.jpeg";
+import ceeAdapter32a63a1 from "@/assets/products/cee-adapter-32a-63a-1.jpeg";
 
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -2370,10 +2371,15 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-adapter-32a-63a",
     name: "Mennekes CEE Adapter 32A < > 63A",
-    description: "CEE-Adapter 32A auf 63A",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "CEE Adapter 32A Stecker rot auf 63A Kupplung rot",
+    image: ceeAdapter32a63a1,
+    images: [ceeAdapter32a63a1],
     category: "adapter",
+    specifications: {
+      "Marke": "Mennekes",
+      "Input": "CEE 32A Stecker rot",
+      "Output": "CEE 63A Kupplung rot",
+    },
     rentwareCode: { krefeld: "WBHW1T" }
   },
   {
