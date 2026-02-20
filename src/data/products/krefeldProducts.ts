@@ -44,6 +44,9 @@ import imgVz12110Ra2 from "@/assets/products/vz-121-10-ra2.jpeg";
 import imgWemasKlemmschelleK1 from "@/assets/products/wemas-klemmschelle-k1.jpeg";
 import imgVz28320Ra1 from "@/assets/products/vz-283-20-ra1.jpeg";
 import imgSchrankenzaunInklFuss from "@/assets/products/schrankenzaun-inkl-fuss.jpeg";
+import imgHalteverbotsschilderSet1 from "@/assets/products/halteverbotsschilder-set-1.jpeg";
+import imgHalteverbotsschilderSet2 from "@/assets/products/halteverbotsschilder-set-2.jpeg";
+import imgHalteverbotsschilderSet3 from "@/assets/products/halteverbotsschilder-set-3.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1314,6 +1317,24 @@ export const absperrtechnikProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "verkehrszeichen",
     rentwareCode: { krefeld: "SH78N1" }
+  },
+  {
+    id: "halteverbotsschilder-set",
+    name: "Halteverbotsschilder-Set",
+    description: "18-teiliges Komplett-Set für mobile Halteverbotszonen-Kennzeichnung. Besonders standfest durch 2 Fußplatten. Zusatzschilder individuell beschriftbar (StVO Größe 1). Aufstellung mind. 4 Tage vor Nutzungsbeginn erforderlich.",
+    image: imgHalteverbotsschilderSet1,
+    images: [imgHalteverbotsschilderSet1, imgHalteverbotsschilderSet2, imgHalteverbotsschilderSet3],
+    category: "verkehrszeichen",
+    specifications: {
+      "Umfang": "18-teiliges Komplett-Set",
+      "Standfestigkeit": "Klasse RA2 (2 Fußplatten)",
+      "Reflektionsklasse": "RA1",
+      "Zusatzschilder": "StVO Größe 1, individuell beschriftbar",
+      "Aufstellfrist": "Min. 4 Tage vor Nutzungstag",
+      "Genehmigung": "Min. 14 Werktage Vorlaufzeit bei Beantragung durch uns",
+      "Hinweis": "Genehmigungs-Kopie an mieten@slt-rental.de",
+    },
+    rentwareCode: { krefeld: "" }
   },
   {
     id: "vz-308-ra1",
