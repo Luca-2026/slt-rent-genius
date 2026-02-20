@@ -48,6 +48,8 @@ import imgHalteverbotsschilderSet1 from "@/assets/products/halteverbotsschilder-
 import imgHalteverbotsschilderSet2 from "@/assets/products/halteverbotsschilder-set-2.jpeg";
 import imgHalteverbotsschilderSet3 from "@/assets/products/halteverbotsschilder-set-3.jpeg";
 import imgVz123Ra1 from "@/assets/products/vz-123-ra1.jpeg";
+import imgBauzaunInklFuss1 from "@/assets/products/bauzaun-inkl-fuss-1.jpeg";
+import imgBauzaunInklFuss2 from "@/assets/products/bauzaun-inkl-fuss-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1470,6 +1472,19 @@ export const absperrtechnikProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "bauzaun",
     rentwareCode: { krefeld: "B8V6OY" }
+  },
+  {
+    id: "bauzaun-inkl-fuss-verbinder",
+    name: "Bauzaun inkl. Fuß & Verbinder",
+    description: "Bauzaun inkl. Fuß und Verbinder als Komplettpaket. Sichtschutz optional erhältlich.",
+    image: imgBauzaunInklFuss1,
+    images: [imgBauzaunInklFuss1, imgBauzaunInklFuss2],
+    category: "bauzaun",
+    specifications: {
+      "Lieferumfang": "Bauzaun, Fuß & Verbinder",
+      "Sichtschutz": "Optional erhältlich",
+    },
+    rentwareCode: { krefeld: "" }
   },
   {
     id: "bauzaunfuss-kunststoff",
