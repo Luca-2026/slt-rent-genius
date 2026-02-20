@@ -26,6 +26,8 @@ import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt5
 import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
 import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
 import heizluefter2kw2 from "@/assets/products/heizluefter-2kw-2.jpeg";
+import heizluefter9kw1 from "@/assets/products/heizluefter-9kw-1.jpeg";
+import heizluefter9kw2 from "@/assets/products/heizluefter-9kw-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1073,10 +1075,17 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "heizluefter-9kw",
     name: "Allegra 9 kW Elektro Heizlüfter",
-    description: "Industrieheizlüfter für große Räume",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Leistungsstarker Industrie-Elektroheizlüfter von Allegra mit zwei Heizstufen (4,5 kW & 9 kW) – ideal für große Baustellen, Hallen und Werkstätten. 400 V Drehstrom.",
+    image: heizluefter9kw1,
+    images: [heizluefter9kw1, heizluefter9kw2],
     category: "heizluefter",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Heizleistung": "4,5 kW & 9 kW (umschaltbar)",
+      "Leistungsaufnahme": "9 kW",
+      "Elektroanschluss": "400 V (Drehstrom)",
+      "Luftumwälzung": "845 m³/h",
+    },
     rentwareCode: { krefeld: "FO81O2" }
   },
   {
