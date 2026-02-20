@@ -995,10 +995,13 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
     if (!ref) return p;
     return {
       ...p,
+      // Always use the canonical Krefeld name
+      name:           ref.name,
       // Only fill if primary entry lacks the field
       image:          (p.image && p.image !== "/placeholder.svg") ? p.image : (ref.image ?? p.image),
       images:         (p.images && p.images.length > 0 && p.images[0] !== "/placeholder.svg") ? p.images : (ref.images ?? p.images),
       description:    p.description || ref.description,
+      detailedDescription: p.detailedDescription ?? ref.detailedDescription,
       specifications: p.specifications ?? ref.specifications,
       pdfUrl:         p.pdfUrl ?? ref.pdfUrl,
       videoUrl:       p.videoUrl ?? ref.videoUrl,
