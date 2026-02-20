@@ -1836,10 +1836,23 @@ export const beschallungProducts: Product[] = [
   {
     id: "pioneer-djm900-nxs2",
     name: "Pioneer DJM 900 NXS2",
-    description: "Professioneller DJ-Mixer",
+    description: "Der neue DJM 900 NXS2 unterstützt den ersten 64-bit Mixing Prozessor von Pioneer, der für einen wärmeren und detaillierten Sound sorgt. Der EQ und die Fader Kurven wurden verbessert und die FX Steuerung wurde erweitert, um noch mehr kreative Möglichkeiten zu bieten. Der vielseitige DJM 900 Nexus 2 hat unabhängige Send/Return Wege, 4 Phono Eingänge und 2 USB Ports, für noch mehr Flexibilität.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "dj-equipment",
+    specifications: {
+      "Audiokanäle": "4",
+      "Mikrofonkanäle": "2",
+      "Send/Return": "1× Send (6,3 mm Klinke), 1× Return (6,3 mm Klinke)",
+      "USB-Anschlüsse": "2× USB-B",
+      "Link Anschluss": "1×",
+      "D/A-Wandler": "32-Bit",
+      "A/D-Wandler": "24-Bit",
+      "Frequenzgang": "20 Hz – 40 kHz",
+      "Klirrfaktor": "0,005 % oder niedriger",
+      "Maße (B × T × H)": "333 × 414 × 108 mm",
+      "Gewicht": "8 kg",
+    },
     rentwareCode: { krefeld: "SZ3C5J" }
   },
   {
