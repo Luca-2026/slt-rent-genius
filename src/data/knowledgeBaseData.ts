@@ -79,7 +79,7 @@ export const kbCategories: KBCategory[] = [
     title: "Eventtechnik",
     description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Zelte.",
     icon: "PartyPopper",
-    articleCount: 0,
+    articleCount: 3,
   },
   {
     id: "leitern-gerueste",
@@ -208,6 +208,41 @@ export const kbArticles: KBArticle[] = [
     pdfUrl: "/downloads/baumstumpffraese-f360-anleitung.pdf",
     tags: ["baumstumpffräse", "f-360", "anleitung", "pdf", "betriebsanleitung", "gartenpflege"],
     updatedAt: "2026-02-11",
+  },
+
+  // Eventtechnik
+  {
+    id: "soundboks-gen3-video-produktvideo",
+    title: "Soundboks Gen.3 – Produktvideo",
+    description: "Offizielles Produktvideo des Soundboks Gen.3: Funktionsweise, TeamUP-Modus und Einsatzmöglichkeiten.",
+    categoryId: "event-technik",
+    productIds: ["soundboks-gen3"],
+    type: "video",
+    videoUrl: "https://youtu.be/HEQiWWrrjM8",
+    tags: ["soundboks", "gen3", "bluetooth", "lautsprecher", "outdoor", "video", "beschallung"],
+    updatedAt: "2026-02-20",
+  },
+  {
+    id: "soundboks-gen3-video-teamup",
+    title: "Soundboks Gen.3 – TeamUP & SKAA Technologie",
+    description: "So verbinden Sie bis zu 5 Soundboks Gen.3 kabellos im TeamUP-Modus mit SKAA-Technologie.",
+    categoryId: "event-technik",
+    productIds: ["soundboks-gen3"],
+    type: "video",
+    videoUrl: "https://youtu.be/u6BDAf2W4x8",
+    tags: ["soundboks", "gen3", "teamup", "skaa", "bluetooth", "verbinden", "video"],
+    updatedAt: "2026-02-20",
+  },
+  {
+    id: "soundboks-gen3-anleitung",
+    title: "Soundboks Gen.3 – Bedienungsanleitung (PDF)",
+    description: "Offizielle Bedienungsanleitung für den Soundboks Gen.3: Inbetriebnahme, Bluetooth-Kopplung, TeamUP-Modus, Akku und technische Daten.",
+    categoryId: "event-technik",
+    productIds: ["soundboks-gen3"],
+    type: "anleitung",
+    pdfUrl: "/manuals/soundboks-gen3-bedienungsanleitung.pdf",
+    tags: ["soundboks", "gen3", "anleitung", "pdf", "bedienungsanleitung", "beschallung"],
+    updatedAt: "2026-02-20",
   },
 
   // Arbeitsbühnen

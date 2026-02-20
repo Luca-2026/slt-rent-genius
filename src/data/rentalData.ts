@@ -169,7 +169,8 @@ export interface Product {
   detailedDescription?: string; // Longer description for product detail page
   image?: string; // Primary image (first in images array)
   images?: string[]; // All images for gallery/slider
-  videoUrl?: string; // YouTube video URL
+  videoUrl?: string; // YouTube video URL (primary)
+  videoUrls?: string[]; // Additional YouTube video URLs
   pricePerDay?: string;
   priceWeekend?: string;
   features?: string[];
