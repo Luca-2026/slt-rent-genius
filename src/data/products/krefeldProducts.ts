@@ -41,6 +41,7 @@ import imgVz28311Ra1 from "@/assets/products/vz-283-11-ra1.jpeg";
 import imgVz123Ra2 from "@/assets/products/vz-123-ra2.jpeg";
 import imgVz28310Ra1 from "@/assets/products/vz-283-10-ra1.jpeg";
 import imgVz12110Ra2 from "@/assets/products/vz-121-10-ra2.jpeg";
+import imgWemasKlemmschelleK1 from "@/assets/products/wemas-klemmschelle-k1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1407,10 +1408,17 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "wemas-klemmschelle-k1",
     name: "Wemas Klemmschelle K1",
-    description: "Schelle zur Schilderbefestigung",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kunststoff-Klemmschelle zur Befestigung von Verkehrsschildern an Vierkantrohren 40×40 mm und Rundrohren Ø 42 mm.",
+    image: imgWemasKlemmschelleK1,
+    images: [imgWemasKlemmschelleK1],
     category: "zubehoer",
+    specifications: {
+      "Hersteller": "Wemas",
+      "Modell": "Klemmschelle K1",
+      "Material": "Kunststoff",
+      "Passend für Vierkantrohr": "40 × 40 mm",
+      "Passend für Rundrohr": "Ø 42 mm",
+    },
     rentwareCode: { krefeld: "WXZIEE" }
   },
   // Absperrgitter
