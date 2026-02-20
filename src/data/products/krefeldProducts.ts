@@ -43,6 +43,7 @@ import imgVz28310Ra1 from "@/assets/products/vz-283-10-ra1.jpeg";
 import imgVz12110Ra2 from "@/assets/products/vz-121-10-ra2.jpeg";
 import imgWemasKlemmschelleK1 from "@/assets/products/wemas-klemmschelle-k1.jpeg";
 import imgVz28320Ra1 from "@/assets/products/vz-283-20-ra1.jpeg";
+import imgSchrankenzaunInklFuss from "@/assets/products/schrankenzaun-inkl-fuss.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1466,6 +1467,20 @@ export const absperrtechnikProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "schrankenzaun",
     rentwareCode: { krefeld: "LANT3O" }
+  },
+  {
+    id: "schrankenzaun-inkl-fuss",
+    name: "Schrankenzaun inkl. Fuß",
+    description: "Schrankenzaun RA2 weiß/rot inkl. 1× Fußplatte K1 TL. Warnleuchte optional erhältlich.",
+    image: imgSchrankenzaunInklFuss,
+    images: [imgSchrankenzaunInklFuss],
+    category: "schrankenzaun",
+    specifications: {
+      "Ausführung": "RA2 weiß/rot",
+      "Inklusive": "1× Fußplatte K1 TL",
+      "Warnleuchte": "Optional erhältlich",
+    },
+    rentwareCode: { krefeld: "" }
   },
   {
     id: "warnbarke-ra1",
