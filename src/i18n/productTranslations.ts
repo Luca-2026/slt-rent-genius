@@ -199,6 +199,91 @@ export const specKeyTranslations: Record<string, string> = {
   "Bluetooth": "Bluetooth",
 };
 
+// Specification VALUE translations (German → English)
+// These translate the actual values inside spec tables (not the keys)
+export const specValueTranslations: Record<string, string> = {
+  // Fuel types
+  "Benzin": "Petrol",
+  "Diesel": "Diesel",
+  "Elektro": "Electric",
+  "Batterie": "Battery",
+  "Netz": "Mains",
+
+  // Drive / operation modes
+  "Hydraulisch": "Hydraulic",
+  "Manuell": "Manual",
+  "stufenlos": "stepless",
+  "vorwärts": "forward",
+  "rückwärts": "reverse",
+  "vorwärts und rückwärts": "forward and reverse",
+  "Hydraulisch stufenlos": "Hydraulic stepless",
+
+  // Tires / surfaces
+  "nicht markierend": "Non-Marking",
+  "Non-Marking": "Non-Marking",
+  "Gummi": "Rubber",
+  "Stahl": "Steel",
+  "Luftbereifung": "Pneumatic tyres",
+  "Vollgummi": "Solid rubber",
+
+  // Protection / IP ratings
+  "IP65 (Spritzwasser geschützt)": "IP65 (splash-proof)",
+  "IP65": "IP65",
+  "IP20 (nur Innenbereich)": "IP20 (indoor use only)",
+  "IP54": "IP54",
+  "IP44": "IP44",
+  "IP23": "IP23",
+  "Spritzwasser geschützt": "Splash-proof",
+
+  // Lighting operation modes
+  "Statisch oder Farbprogramme": "Static or colour programs",
+  "Sound to Light oder automatische Farbprogramme": "Sound-to-light or automatic colour programs",
+  "Programmbetrieb oder Sound to Light": "Program mode or sound-to-light",
+  "DMX, Auto, Sound, Master/Slave": "DMX, Auto, Sound, Master/Slave",
+
+  // Boolean values
+  "Ja": "Yes",
+  "Nein": "No",
+  "Ja (für Installationen)": "Yes (for installations)",
+
+  // Accessories / extras
+  "Auf Rollen": "On wheels",
+  "Rollbar": "On wheels",
+  "Optional mit Anhänger": "Optional with trailer",
+  "Optional erhältlich": "Available as option",
+
+  // Colours
+  "weiß": "white",
+  "Weiß": "White",
+  "schwarz": "black",
+  "Schwarz": "Black",
+  "rot": "red",
+  "Rot": "Red",
+  "transparent": "transparent",
+
+  // Scaffolding / access
+  "Beidseitig": "Both sides",
+  "Einseitig": "One side",
+  "Durchstieg": "Access opening",
+
+  // Engine start
+  "Seilzug": "Recoil start",
+  "Elektrostart": "Electric start",
+  "Handstart": "Pull start",
+
+  // Compaction direction
+  "Vorwärts": "Forward",
+  "Reversibel": "Reversible",
+  "Hydraulisch reversibel": "Hydraulic reversible",
+
+  // Misc
+  "Verkaufsartikel": "Purchase item (not rental)",
+  "stationär": "stationary",
+  "Stationär": "Stationary",
+  "automatisch": "automatic",
+  "Automatisch": "Automatic",
+};
+
 // Tag translations (German → English)
 export const tagTranslations: Record<string, string> = {
   "ungebremst": "unbraked",
