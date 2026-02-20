@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,17 +9,22 @@ import {
   Search, BookOpen, FileText, Play, ShieldCheck, HelpCircle,
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info, ChevronRight, X, ArrowLeft,
+  Scale, AlertTriangle, ClipboardCheck, Package, Link2, Eye, Car, Lightbulb, AlertCircle,
 } from "lucide-react";
 import {
   kbCategories, kbArticles, searchArticles, getArticlesForCategory,
   getArticleTypeLabel, getArticleTypeColor,
-  type KBArticle, type KBCategory,
+  type KBArticle, type KBCategory, type KBArticleSection,
 } from "@/data/knowledgeBaseData";
 import { useTranslation } from "react-i18next";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info,
+};
+
+const sectionIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Scale, AlertTriangle, ClipboardCheck, Package, Link: Link2, Eye, Car, Lightbulb, AlertCircle, Info,
 };
 
 const typeIconMap: Record<KBArticle["type"], React.ComponentType<{ className?: string }>> = {
@@ -30,9 +36,22 @@ const typeIconMap: Record<KBArticle["type"], React.ComponentType<{ className?: s
 
 export default function KnowledgeBase() {
   const { t } = useTranslation();
+  const routerLocation = useLocation();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<KBArticle | null>(null);
+
+  // Deep-link to a specific article via router state (e.g. from ProductDetail)
+  useEffect(() => {
+    const state = routerLocation.state as { articleId?: string } | null;
+    if (state?.articleId) {
+      const article = kbArticles.find((a) => a.id === state.articleId);
+      if (article) {
+        setSelectedCategory(article.categoryId);
+        setSelectedArticle(article);
+      }
+    }
+  }, [routerLocation.state]);
 
   const searchResults = useMemo(() => searchArticles(query), [query]);
   const categoryArticles = useMemo(
@@ -162,8 +181,17 @@ export default function KnowledgeBase() {
                 </div>
               )}
 
-              {/* Content */}
-              {selectedArticle.content && (
+              {/* Rich Sections */}
+              {selectedArticle.sections && selectedArticle.sections.length > 0 && (
+                <div className="space-y-5">
+                  {selectedArticle.sections.map((section, idx) => (
+                    <ArticleSection key={idx} section={section} />
+                  ))}
+                </div>
+              )}
+
+              {/* Simple text content fallback */}
+              {selectedArticle.content && !selectedArticle.sections && (
                 <div className="prose prose-sm max-w-none">
                   <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                     {selectedArticle.content}
@@ -381,5 +409,80 @@ function ArticleCard({
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+// --- Article Section Rich Renderer ---
+function ArticleSection({ section }: { section: KBArticleSection }) {
+  const SectionIcon = section.icon ? sectionIconMap[section.icon] || Info : null;
+
+  const bgClass =
+    section.type === "warning"
+      ? "bg-destructive/5 border-destructive/20"
+      : section.type === "legal"
+      ? "bg-primary/5 border-primary/20"
+      : section.type === "tip"
+      ? "bg-accent/10 border-accent/20"
+      : "bg-card border-border";
+
+  const iconColor =
+    section.type === "warning"
+      ? "text-destructive"
+      : section.type === "legal"
+      ? "text-primary"
+      : section.type === "tip"
+      ? "text-foreground"
+      : "text-primary";
+
+  return (
+    <div className={`rounded-xl border p-5 ${bgClass}`}>
+      {section.heading && (
+        <div className="flex items-center gap-2.5 mb-3">
+          {SectionIcon && (
+            <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center flex-shrink-0">
+              <SectionIcon className={`h-4 w-4 ${iconColor}`} />
+            </div>
+          )}
+          <h3 className="font-bold text-foreground text-base leading-snug">{section.heading}</h3>
+        </div>
+      )}
+
+      {section.text && (
+        <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+          {section.text}
+        </p>
+      )}
+
+      {section.items && section.items.length > 0 && (
+        <ul className="space-y-2">
+          {section.items.map((item, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm text-foreground">
+              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                section.type === "warning" ? "bg-destructive" :
+                section.type === "tip" ? "bg-accent" : "bg-primary"
+              }`} />
+              <span className="leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {section.subSections && section.subSections.map((sub, si) => (
+        <div key={si} className="mt-4">
+          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <span className="w-1 h-4 rounded-full bg-primary inline-block" />
+            {sub.heading}
+          </h4>
+          <ul className="space-y-1.5">
+            {sub.items.map((item, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/50 flex-shrink-0" />
+                <span className="leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 }
