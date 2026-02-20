@@ -27,7 +27,7 @@ export function PublicChatAssistant() {
     if (open && messages.length === 0) {
       setMessages([{
         role: "assistant",
-        content: "Hallo! 👋 Ich bin der KI-Assistent von SLT Rent. Ich helfe dir bei Fragen zum Mietablauf, unserem Sortiment und unseren Standorten. Wie kann ich dir helfen?",
+        content: "Hallo! 👋 Ich bin der KI-Assistent von SLT Rental. Ich helfe dir bei Fragen zum Mietablauf, unserem Sortiment und unseren Standorten. Wie kann ich dir helfen?",
       }]);
     }
   }, [open]);
@@ -147,11 +147,11 @@ export function PublicChatAssistant() {
               <Bot className="h-4 w-4 text-primary-foreground" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-primary-foreground font-semibold text-sm">SLT Rent Assistent</p>
+              <p className="text-primary-foreground font-semibold text-sm">SLT Rental Assistent</p>
               <p className="text-primary-foreground/70 text-xs">Fragen zu Miete & Geräten</p>
             </div>
             <a
-              href="tel:+4921516208200"
+              href="tel:+4921514179904"
               className="flex items-center gap-1.5 bg-primary-foreground/20 hover:bg-primary-foreground/30 transition-colors rounded-lg px-2.5 py-1.5 text-primary-foreground text-xs font-medium"
               onClick={e => e.stopPropagation()}
               title="Direkt anrufen"
