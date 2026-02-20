@@ -236,6 +236,9 @@ import imgLed4erBar1 from "@/assets/products/led-4er-bar-1.jpeg";
 // LED Beleuchtungsset single images
 import imgLedBeleuchtungssetSingle1 from "@/assets/products/led-beleuchtungsset-single-1.jpeg";
 
+// LED Beleuchtungsset duo images
+import imgLedBeleuchtungssetDuo1 from "@/assets/products/led-beleuchtungsset-duo-1.jpeg";
+
 // Vector Spot Zoom 2.0 images
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
@@ -2138,6 +2141,21 @@ export const beleuchtungProducts: Product[] = [
     },
     pdfUrl: "/manuals/led-beleuchtungsset-single-manual.pdf",
     rentwareCode: { krefeld: "G47Y4H" }
+  },
+  {
+    id: "led-beleuchtungsset-duo",
+    name: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage",
+    description: "Doppeltes Komplettpaket: 2× LED Beleuchtungsset, jeweils mit 2× LED Moving Heads, 2× RGBW Derby-Effekten, 4× weißem Stroboskop und 2× RGBW-LED Scheinwerfern. Programmbetrieb oder Sound to Light möglich. Ideal für größere Veranstaltungen.",
+    image: imgLedBeleuchtungssetDuo1,
+    images: [imgLedBeleuchtungssetDuo1],
+    category: "beleuchtungsset",
+    specifications: {
+      "Inhalt": "2× Komplettset: je 2× LED Moving Head, 2× RGBW Derby-Effekt, 4× weißes Stroboskop, 2× RGBW-LED Scheinwerfer",
+      "Betrieb": "Programmbetrieb oder Sound to Light",
+      "Lieferumfang": "2× 5m Anschlusskabel, 2× Stativ, 4× Tasche",
+    },
+    pdfUrl: "/manuals/led-beleuchtungsset-duo-manual.pdf",
+    rentwareCode: { krefeld: "YXVVZR" }
   },
   {
     id: "led-moving-head-vector-spot",
