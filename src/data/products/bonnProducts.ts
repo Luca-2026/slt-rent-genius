@@ -1,6 +1,23 @@
 // Bonn Location Products
 // Images imported from shared assets
 
+// Heizung & Trocknung shared images
+import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
+import heizluefter2kw2 from "@/assets/products/heizluefter-2kw-2.jpeg";
+import heizluefter9kw1 from "@/assets/products/heizluefter-9kw-1.jpeg";
+import heizluefter9kw2 from "@/assets/products/heizluefter-9kw-2.jpeg";
+import heizluefter3kw1 from "@/assets/products/heizluefter-3kw-1.jpeg";
+import heizluefter3kw2 from "@/assets/products/heizluefter-3kw-2.jpeg";
+import heizpilz2kw1 from "@/assets/products/heizpilz-2kw-1.jpeg";
+import heizpilz2kw2 from "@/assets/products/heizpilz-2kw-2.jpeg";
+import heizpilz2kw3 from "@/assets/products/heizpilz-2kw-3.jpeg";
+import heizpilz2kw4 from "@/assets/products/heizpilz-2kw-4.jpeg";
+import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
+import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt200-1.webp";
+import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
+import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt553-1.jpeg";
+import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
+
 import benzinErdbohrer1 from "@/assets/products/benzin-erdbohrer-1.jpeg";
 import benzinErdbohrer2 from "@/assets/products/benzin-erdbohrer-2.jpeg";
 import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
@@ -572,16 +589,52 @@ export const bonnWerkzeugProducts = [
 export const bonnTrocknungProducts = [
   {
     id: "bonn-bautrockner-kt200",
-    name: "Bautrockner KT200",
-    description: "Kompakter Bautrockner für kleine bis mittlere Räume.",
-    image: "/placeholder.svg",
+    name: "Allegra Bautrockner KT200",
+    description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
+    image: allegraBautrocknerKt200_1,
+    images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
+    category: "bautrockner",
+    pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Modell": "KT200",
+      "Trocknungsfläche": "20 m²",
+      "Entfeuchtungsleistung": "bis zu 20 l/24h",
+      "Leistung": "350 W",
+      "Luftumwälzung": "260 m³/h",
+      "Stromanschluss": "230 V – 16 A",
+      "Arbeitsbereich": "5 °C – 35 °C",
+      "Wassertank": "4 Liter (Abschaltautomatik)",
+      "Schlauchanschluss": "Ja",
+      "Stromzähler": "Geeichter MID-Zähler PH10",
+      "Betriebsstundenzähler": "Ja",
+      "Gewicht": "18,50 kg",
+    },
     rentwareCode: { bonn: "QSWO1M" },
   },
   {
     id: "bonn-bautrockner-kt554",
-    name: "Allegra Bautrockner KT554",
-    description: "Leistungsstarker Bautrockner für große Flächen.",
-    image: "/placeholder.svg",
+    name: "Allegra Bautrockner KT553/KT554",
+    description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
+    image: allegraBautrocknerKt553_1,
+    images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
+    category: "bautrockner",
+    pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Modell": "KT553 / KT554",
+      "Trocknungsfläche": "50–60 m²",
+      "Entfeuchtungsleistung": "bis zu 50 l/24h",
+      "Leistung": "700 W",
+      "Luftumwälzung": "330 m³/h",
+      "Stromanschluss": "230 V – 16 A",
+      "Arbeitsbereich": "5 °C – 35 °C",
+      "Wassertank": "4 Liter (Abschaltautomatik)",
+      "Schlauchanschluss": "Ja",
+      "Stromzähler": "Geeichter MID-Zähler PH10",
+      "Betriebsstundenzähler": "Ja",
+      "Gewicht": "30 kg",
+    },
     rentwareCode: { bonn: "XK3ZV4" },
   },
 ];
@@ -591,16 +644,68 @@ export const bonnHeizungProducts = [
   {
     id: "bonn-heizpilz-2kw",
     name: "2 kW Elektro Heizpilz",
-    description: "Elektrischer Heizpilz für Terrassen und Events.",
-    image: "/placeholder.svg",
+    description: "Eleganter Infrarot-Heizstrahler im Pilzdesign – ideal für Terrassen, Events und Außengastronomie. Zwei Heizstufen (1 kW & 2 kW), stufenlos höhenverstellbar, Schutzklasse IP34.",
+    image: heizpilz2kw1,
+    images: [heizpilz2kw1, heizpilz2kw2, heizpilz2kw3, heizpilz2kw4, heizpilz2kw5],
+    category: "heizpilz",
+    specifications: {
+      "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+      "Leistungsaufnahme": "2 kW",
+      "Elektroanschluss": "230 V",
+      "Wirkungsfläche": "ca. 15 m²",
+      "Höhenverstellbar": "194 cm – 210 cm",
+      "Heizart": "Infrarot",
+      "Schutzklasse": "IP34",
+      "Material": "Aluminium / Edelstahl",
+    },
     rentwareCode: { bonn: "MSKYPD" },
+  },
+  {
+    id: "bonn-heizluefter-2kw",
+    name: "2 kW Elektro Heizlüfter",
+    description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen. Robustes Metallgehäuse mit Tragegriff.",
+    image: heizluefter2kw1,
+    images: [heizluefter2kw1, heizluefter2kw2],
+    category: "heizluefter",
+    specifications: {
+      "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+      "Leistungsaufnahme": "2 kW",
+      "Elektroanschluss": "230 V",
+      "Luftleistung": "500 m³/h",
+    },
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-heizluefter-3kw",
     name: "Allegra 3 kW Elektro Heizlüfter",
-    description: "Kompakter Heizlüfter für schnelle Wärme.",
-    image: "/placeholder.svg",
+    description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose.",
+    image: heizluefter3kw1,
+    images: [heizluefter3kw1, heizluefter3kw2],
+    category: "heizluefter",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Heizleistung": "1,5 kW & 3 kW (umschaltbar)",
+      "Leistungsaufnahme": "3 kW",
+      "Elektroanschluss": "230 V",
+      "Luftleistung": "510 m³/h",
+    },
     rentwareCode: { bonn: "YWLOT7" },
+  },
+  {
+    id: "bonn-heizluefter-9kw",
+    name: "Allegra 9 kW Elektro Heizlüfter",
+    description: "Leistungsstarker Industrie-Elektroheizlüfter von Allegra mit zwei Heizstufen (4,5 kW & 9 kW) – ideal für große Baustellen, Hallen und Werkstätten. 400 V Drehstrom.",
+    image: heizluefter9kw1,
+    images: [heizluefter9kw1, heizluefter9kw2],
+    category: "heizluefter",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Heizleistung": "4,5 kW & 9 kW (umschaltbar)",
+      "Leistungsaufnahme": "9 kW",
+      "Elektroanschluss": "400 V (Drehstrom / CEE)",
+      "Luftumwälzung": "845 m³/h",
+    },
+    rentwareCode: { bonn: "" },
   },
 ];
 
