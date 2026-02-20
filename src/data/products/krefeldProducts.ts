@@ -264,6 +264,10 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 // Stehtisch Husse images
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
 
+// Partyzelt 3x3m images
+import imgPartyzelt3x3_1 from "@/assets/products/partyzelt-3x3-1.jpeg";
+import imgPartyzelt3x3_2 from "@/assets/products/partyzelt-3x3-2.avif";
+
 // Partyzelt 4x4m images
 import imgPartyzelt4x4_1 from "@/assets/products/partyzelt-4x4-1.jpeg";
 
@@ -2305,10 +2309,18 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-3x3m",
     name: "Partyzelt 3x3m",
-    description: "Kleines Pagodenzelt",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
+    image: imgPartyzelt3x3_1,
+    images: [imgPartyzelt3x3_1, imgPartyzelt3x3_2],
     category: "zelt",
+    specifications: {
+      "Grundfläche": "9 m² (3 m × 3 m)",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 15 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 13 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 60 € bei Nichtbeachtung)",
+    },
     rentwareCode: { krefeld: "U5FLRB" }
   },
   {
