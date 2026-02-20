@@ -71,6 +71,7 @@ import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
 import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
 import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
+import imgVz100022Ra1Gr2 from "@/assets/products/vz-1000-22-ra1.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
@@ -1302,6 +1303,24 @@ export const absperrtechnikProducts: Product[] = [
     specifications: {
       "Bezeichnung": "VZ 1000-12",
       "Bedeutung": "Fußgänger Gehweg links gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "330 mm × 600 mm",
+      "Größe": "Gr. 2",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "vz-1000-22-ra1-gr2",
+    name: "VZ 1000-22, RA1, Gr. 2",
+    description: "Zusatzzeichen VZ 1000-22: Fußgänger – Gehweg rechts gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100022Ra1Gr2,
+    images: [imgVz100022Ra1Gr2],
+    category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 1000-22",
+      "Bedeutung": "Fußgänger Gehweg rechts gegenüber benutzen",
       "Reflektionsklasse": "RA1",
       "Form": "Flachform",
       "Material": "2 mm",
