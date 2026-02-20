@@ -158,6 +158,7 @@ import {
   bonnBesteckProducts,
   bonnBeschallungProducts,
   bonnBeleuchtungProducts,
+  bonnSpezialeffekteProducts,
   bonnHuepfburgProducts,
   bonnAbsperrtechnikProducts,
 } from "./products/bonnProducts";
@@ -1203,7 +1204,11 @@ export const locations: LocationData[] = [
         geschirrGlaeserBesteckProducts,
         "bonn"
       ),
-      "spezialeffekte": spezialeffekteProducts.map((p) => ({ ...p })),
+      "spezialeffekte": mergeWithFallback(
+        bonnSpezialeffekteProducts as unknown as Product[],
+        spezialeffekteProducts,
+        "bonn"
+      ),
       "huepfburgen": mergeWithFallback(
         bonnHuepfburgProducts as unknown as Product[],
         huepfburgenProducts,
