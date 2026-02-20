@@ -72,8 +72,9 @@ import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws1
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
 import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.jpg";
+// Shared images - Mobiliar
+import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 
-// ==================== AGGREGAT ====================
 export const bonnAggregateProducts = [
   {
     id: "bonn-aggregat-20kva",
@@ -894,8 +895,13 @@ export const bonnMoebelProducts = [
   {
     id: "bonn-stehtisch",
     name: "Stehtisch",
-    description: "Robuster Stehtisch für Events.",
-    image: "/placeholder.svg",
+    description: "Runder, klappbarer Stehtisch – ideal für Events, Empfänge und Partys. Stabile Metallbeine, pflegeleichte Kunststoffplatte.",
+    image: imgStehtischRund1,
+    specifications: {
+      "Form": "rund",
+      "Abmessungen": "Ø 80 cm × H 110 cm",
+      "Bauweise": "klappbar",
+    },
     rentwareCode: { bonn: "DYAJ56" },
   },
   {
