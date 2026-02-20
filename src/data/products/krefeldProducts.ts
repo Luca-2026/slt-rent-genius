@@ -79,6 +79,8 @@ import imgRetevRt29Set4 from "@/assets/products/retevis-rt29-set-4.jpeg";
 import imgSoundboksGen31 from "@/assets/products/soundboks-gen3-1.jpeg";
 import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
+import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
+import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgPioneerDjm900Nxs21 from "@/assets/products/pioneer-djm900-nxs2-1.jpeg";
 import imgPioneerDjm900Nxs22 from "@/assets/products/pioneer-djm900-nxs2-2.jpeg";
 import imgPioneerDjm900Nxs23 from "@/assets/products/pioneer-djm900-nxs2-3.jpeg";
@@ -1789,10 +1791,18 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-action-508a",
     name: "D.A.S. Audio Action 508A",
-    description: "Aktiver 2-Wege Lautsprecher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Aktiver 8\" Lautsprecher mit 720 W und 122 dB max. SPL. Ideal für kleinere Veranstaltungen, Sprachbeschallungen und als Monitor. Optional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    image: imgDasAction508a1,
+    images: [imgDasAction508a1, imgDasAction508a2],
     category: "lautsprecher",
+    specifications: {
+      "Typ": "Aktiv, 2-Wege",
+      "Leistung": "720 W (Peak)",
+      "Bestückung": "1× 8\", 1,4\" Tweeter",
+      "Abstrahlwinkel": "90° × 60°",
+      "Max. Schalldruckpegel": "122 dB SPL (Peak, 1 m)",
+      "Zubehör": "Lautsprecherstative optional erhältlich",
+    },
     rentwareCode: { krefeld: "CU51C2" }
   },
   {
