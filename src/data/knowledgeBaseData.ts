@@ -86,7 +86,7 @@ export const kbCategories: KBCategory[] = [
     title: "Leitern & Gerüste",
     description: "Aufbau- und Verwendungsanleitungen für Rollgerüste, Steh- und Kombileitern.",
     icon: "ArrowUpFromLine",
-    articleCount: 2,
+    articleCount: 3,
   },
   {
     id: "allgemein",
@@ -250,8 +250,19 @@ export const kbArticles: KBArticle[] = [
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "11,4m", "fahrgerüst", "leitern-gerueste"],
     updatedAt: "2026-02-20",
   },
+  {
+    id: "krause-rollgeruest-3-3m-video",
+    title: "Krause Rollgerüst 3,3 m – Aufbau & Bedienung (Video)",
+    description: "Video-Anleitung zum Aufbau und zur Bedienung des Krause Rollgerüsts mit 3,3 m Arbeitshöhe und 2,00 × 1,20 m Arbeitsfläche.",
+    categoryId: "leitern-gerueste",
+    productIds: ["rollgeruest-krause-3-3m"],
+    type: "video",
+    videoUrl: "https://www.youtube.com/watch?v=5tqZPFwN02c",
+    tags: ["krause", "rollgerüst", "3,3m", "aufbau", "video", "fahrgerüst", "leitern-gerueste"],
+    updatedAt: "2026-02-20",
+  },
 
-  // Allgemein
+
   {
     id: "mietablauf-erklaert",
     title: "Der Mietablauf bei SLT Rental",
