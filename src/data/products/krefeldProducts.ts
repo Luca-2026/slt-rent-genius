@@ -233,6 +233,9 @@ import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16
 // LED 4er Bar images
 import imgLed4erBar1 from "@/assets/products/led-4er-bar-1.jpeg";
 
+// LED Beleuchtungsset single images
+import imgLedBeleuchtungssetSingle1 from "@/assets/products/led-beleuchtungsset-single-1.jpeg";
+
 // Vector Spot Zoom 2.0 images
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
@@ -2123,11 +2126,17 @@ export const beleuchtungProducts: Product[] = [
   },
   {
     id: "led-beleuchtungsset-single",
-    name: "LED Beleuchtungsset single",
-    description: "Einzelnes LED-Beleuchtungsset",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage",
+    description: "Komplett-Lichtanlage mit 2× LED Moving Heads, 2× RGBW Derby-Effekten, 4× weißem Stroboskop und 2× RGBW-LED Scheinwerfern. Programmbetrieb oder Sound to Light möglich. Inkl. 5m Anschlusskabel, Stativ und 2 Tragetaschen.",
+    image: imgLedBeleuchtungssetSingle1,
+    images: [imgLedBeleuchtungssetSingle1],
     category: "beleuchtungsset",
+    specifications: {
+      "Inhalt": "2× LED Moving Head, 2× RGBW Derby-Effekt, 4× weißes Stroboskop, 2× RGBW-LED Scheinwerfer",
+      "Betrieb": "Programmbetrieb oder Sound to Light",
+      "Lieferumfang": "1× 5m Anschlusskabel, 1× Stativ, 2× Tasche",
+    },
+    pdfUrl: "/manuals/led-beleuchtungsset-single-manual.pdf",
     rentwareCode: { krefeld: "G47Y4H" }
   },
   {
