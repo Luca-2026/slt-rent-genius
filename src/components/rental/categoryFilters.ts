@@ -5,27 +5,27 @@ import type { FilterSection } from "./CategoryFilter";
 export const werkzeugeFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Werkzeugtyp",
+    label: "catFilters.werkzeugtyp",
     defaultExpanded: true,
     options: [
-      { id: "bohrhammer", label: "Bohrhämmer", sublabel: "SDS-Plus & SDS-Max" },
-      { id: "bohrschrauber", label: "Bohrschrauber", sublabel: "Akku-Bohrmaschinen" },
-      { id: "winkelschleifer", label: "Winkelschleifer", sublabel: "Trennschleifen" },
-      { id: "saege", label: "Sägen", sublabel: "Kreis-, Säbel-, Stichsäge" },
-      { id: "abbruch", label: "Abbruch & Meißeln", sublabel: "Abbruchhammer" },
-      { id: "messen", label: "Messen & Orten", sublabel: "Laser, Ortungsgeräte" },
-      { id: "beton", label: "Betonbearbeitung", sublabel: "Kernbohrer, Rüttler" },
-      { id: "zubehoer", label: "Zubehör", sublabel: "Bohrer, Meißel, Akkus" },
+      { id: "bohrhammer", label: "catFilters.bohrhammer", sublabel: "catFilters.bohrhammer_sub" },
+      { id: "bohrschrauber", label: "catFilters.bohrschrauber", sublabel: "catFilters.bohrschrauber_sub" },
+      { id: "winkelschleifer", label: "catFilters.winkelschleifer", sublabel: "catFilters.winkelschleifer_sub" },
+      { id: "saege", label: "catFilters.saege", sublabel: "catFilters.saege_sub" },
+      { id: "abbruch", label: "catFilters.abbruch", sublabel: "catFilters.abbruch_sub" },
+      { id: "messen", label: "catFilters.messen", sublabel: "catFilters.messen_sub" },
+      { id: "beton", label: "catFilters.beton", sublabel: "catFilters.beton_sub" },
+      { id: "zubehoer", label: "catFilters.zubehoer", sublabel: "catFilters.zubehoer_sub" },
     ],
   },
   {
     id: "power",
-    label: "Antrieb",
+    label: "catFilters.antrieb",
     defaultExpanded: false,
     options: [
-      { id: "akku", label: "Akku" },
-      { id: "elektro", label: "Elektro (Kabel)" },
-      { id: "benzin", label: "Benzin" },
+      { id: "akku", label: "catFilters.akku" },
+      { id: "elektro", label: "catFilters.elektro" },
+      { id: "benzin", label: "catFilters.benzin" },
     ],
   },
 ];
@@ -34,14 +34,14 @@ export const werkzeugeFilterSections: FilterSection[] = [
 export const gartenpflegeFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Gerätetyp",
+    label: "catFilters.geraetetyp",
     defaultExpanded: true,
     options: [
-      { id: "schneiden", label: "Schneiden & Sägen", sublabel: "Kettensäge, Heckenschere" },
-      { id: "boden", label: "Bodenbearbeitung", sublabel: "Erdbohrer, Fräse, Hacke" },
-      { id: "rasen", label: "Rasenpflege", sublabel: "Mäher, Vertikutierer" },
-      { id: "reinigen", label: "Reinigen", sublabel: "Hochdruckreiniger" },
-      { id: "entsorgen", label: "Häckseln & Entsorgen", sublabel: "Häcksler, Laubbläser" },
+      { id: "schneiden", label: "catFilters.schneiden", sublabel: "catFilters.schneiden_sub" },
+      { id: "boden", label: "catFilters.boden", sublabel: "catFilters.boden_sub" },
+      { id: "rasen", label: "catFilters.rasen", sublabel: "catFilters.rasen_sub" },
+      { id: "reinigen", label: "catFilters.reinigen", sublabel: "catFilters.reinigen_sub" },
+      { id: "entsorgen", label: "catFilters.entsorgen", sublabel: "catFilters.entsorgen_sub" },
     ],
   },
 ];
@@ -50,22 +50,22 @@ export const gartenpflegeFilterSections: FilterSection[] = [
 export const aggregateFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Gerätetype",
+    label: "catFilters.geraetetyp",
     defaultExpanded: true,
     options: [
-      { id: "aggregat", label: "Stromaggregate", sublabel: "Notstrom & Baustrom" },
-      { id: "akkupack", label: "Akkupacks", sublabel: "Tragbare Speicher" },
-      { id: "kompressor", label: "Kompressoren", sublabel: "Druckluft" },
+      { id: "aggregat", label: "catFilters.stromaggregate", sublabel: "catFilters.stromaggregate_sub" },
+      { id: "akkupack", label: "catFilters.akkupacks", sublabel: "catFilters.akkupacks_sub" },
+      { id: "kompressor", label: "catFilters.kompressoren", sublabel: "catFilters.kompressoren_sub" },
     ],
   },
   {
     id: "power",
-    label: "Leistung",
+    label: "catFilters.leistung",
     defaultExpanded: true,
     options: [
-      { id: "bis-5kva", label: "Bis 5 kVA", sublabel: "Kleine Verbraucher" },
-      { id: "5-20kva", label: "5-20 kVA", sublabel: "Mittlere Projekte" },
-      { id: "ab-20kva", label: "Ab 20 kVA", sublabel: "Großveranstaltungen" },
+      { id: "bis-5kva", label: "catFilters.bis5kva", sublabel: "catFilters.bis5kva_sub" },
+      { id: "5-20kva", label: "catFilters.5bis20kva", sublabel: "catFilters.5bis20kva_sub" },
+      { id: "ab-20kva", label: "catFilters.ab20kva", sublabel: "catFilters.ab20kva_sub" },
     ],
   },
 ];
@@ -74,24 +74,24 @@ export const aggregateFilterSections: FilterSection[] = [
 export const arbeitsbuehnenFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Bühnentyp",
+    label: "catFilters.buehnentyp",
     defaultExpanded: true,
     options: [
-      { id: "scherenbuehne", label: "Scherenbühne", sublabel: "Vertikaler Hub" },
-      { id: "mastbuehne", label: "Mastbühne", sublabel: "Kompakt & wendig" },
-      { id: "gelenkbuehne", label: "Gelenkbühne", sublabel: "Flexibler Ausleger" },
-      { id: "teleskopbuehne", label: "Teleskopbühne", sublabel: "Große Reichweite" },
-      { id: "anhaengerbuehne", label: "Anhänger-Arbeitsbühne", sublabel: "Mobil & straßentauglich" },
+      { id: "scherenbuehne", label: "catFilters.scherenbuehne", sublabel: "catFilters.scherenbuehne_sub" },
+      { id: "mastbuehne", label: "catFilters.mastbuehne", sublabel: "catFilters.mastbuehne_sub" },
+      { id: "gelenkbuehne", label: "catFilters.gelenkbuehne", sublabel: "catFilters.gelenkbuehne_sub" },
+      { id: "teleskopbuehne", label: "catFilters.teleskopbuehne", sublabel: "catFilters.teleskopbuehne_sub" },
+      { id: "anhaengerbuehne", label: "catFilters.anhaengerbuehne", sublabel: "catFilters.anhaengerbuehne_sub" },
     ],
   },
   {
     id: "height",
-    label: "Arbeitshöhe",
+    label: "catFilters.arbeitshoehe",
     defaultExpanded: true,
     options: [
-      { id: "bis-10m", label: "Bis 10m" },
-      { id: "10-15m", label: "10-15m" },
-      { id: "ab-15m", label: "Ab 15m" },
+      { id: "bis-10m", label: "catFilters.bis10m" },
+      { id: "10-15m", label: "catFilters.10bis15m" },
+      { id: "ab-15m", label: "catFilters.ab15m" },
     ],
   },
 ];
@@ -100,23 +100,23 @@ export const arbeitsbuehnenFilterSections: FilterSection[] = [
 export const verdichtungFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Gerätetyp",
+    label: "catFilters.geraetetyp",
     defaultExpanded: true,
     options: [
-      { id: "stampfer", label: "Stampfer", sublabel: "Für Gräben & Engstellen" },
-      { id: "ruettelplatte", label: "Rüttelplatte vorwärts", sublabel: "Für Flächen" },
-      { id: "ruettelplatte-reversierbar", label: "Rüttelplatte reversierbar", sublabel: "Vor- & Rückwärts" },
-      { id: "walze", label: "Walze", sublabel: "Große Flächen" },
+      { id: "stampfer", label: "catFilters.stampfer", sublabel: "catFilters.stampfer_sub" },
+      { id: "ruettelplatte", label: "catFilters.ruettelplatte", sublabel: "catFilters.ruettelplatte_sub" },
+      { id: "ruettelplatte-reversierbar", label: "catFilters.ruettelplatte_rev", sublabel: "catFilters.ruettelplatte_rev_sub" },
+      { id: "walze", label: "catFilters.walze", sublabel: "catFilters.walze_sub" },
     ],
   },
   {
     id: "weight",
-    label: "Einsatzgewicht",
+    label: "catFilters.einsatzgewicht",
     defaultExpanded: false,
     options: [
-      { id: "bis-100kg", label: "Bis 100 kg" },
-      { id: "100-200kg", label: "100-200 kg" },
-      { id: "ab-200kg", label: "Ab 200 kg" },
+      { id: "bis-100kg", label: "catFilters.bis100kg" },
+      { id: "100-200kg", label: "catFilters.100bis200kg" },
+      { id: "ab-200kg", label: "catFilters.ab200kg" },
     ],
   },
 ];
@@ -125,33 +125,31 @@ export const verdichtungFilterSections: FilterSection[] = [
 export const heizungTrocknungFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Gerätetyp",
+    label: "catFilters.geraetetyp",
     defaultExpanded: true,
     options: [
-      { id: "heizluefter", label: "Heizlüfter", sublabel: "Elektro-Heizlüfter" },
-      { id: "heizpilz", label: "Heizpilz", sublabel: "Infrarot-Heizstrahler" },
-      { id: "bautrockner", label: "Bautrockner", sublabel: "Kondensations-Entfeuchtung" },
+      { id: "heizluefter", label: "catFilters.heizluefter", sublabel: "catFilters.heizluefter_sub" },
+      { id: "heizpilz", label: "catFilters.heizpilz", sublabel: "catFilters.heizpilz_sub" },
+      { id: "bautrockner", label: "catFilters.bautrockner", sublabel: "catFilters.bautrockner_sub" },
     ],
   },
   {
-    // Only shown/used when heizluefter or heizpilz is selected (or no type filter)
     id: "heizleistung",
-    label: "Heizleistung",
+    label: "catFilters.heizleistung",
     defaultExpanded: false,
     options: [
-      { id: "bis-2kw", label: "Bis 2 kW", sublabel: "230 V Schuko – kein CEE nötig" },
-      { id: "3kw", label: "3 kW", sublabel: "230 V – kein CEE nötig" },
-      { id: "ab-9kw", label: "9 kW", sublabel: "⚡ 400 V CEE-Starkstrom erforderlich" },
+      { id: "bis-2kw", label: "catFilters.bis2kw", sublabel: "catFilters.bis2kw_sub" },
+      { id: "3kw", label: "catFilters.3kw", sublabel: "catFilters.3kw_sub" },
+      { id: "ab-9kw", label: "catFilters.9kw", sublabel: "catFilters.9kw_sub" },
     ],
   },
   {
-    // Only shown/used when bautrockner is selected (or no type filter)
     id: "trocknung",
-    label: "Trocknungsfläche",
+    label: "catFilters.trocknungsflaeche",
     defaultExpanded: false,
     options: [
-      { id: "bis-20m2", label: "Bis 20 m²", sublabel: "Kleine Räume" },
-      { id: "ab-50m2", label: "Ab 50 m²", sublabel: "Große Flächen" },
+      { id: "bis-20m2", label: "catFilters.bis20m2", sublabel: "catFilters.bis20m2_sub" },
+      { id: "ab-50m2", label: "catFilters.ab50m2", sublabel: "catFilters.ab50m2_sub" },
     ],
   },
 ];
@@ -160,23 +158,23 @@ export const heizungTrocknungFilterSections: FilterSection[] = [
 export const leiternGeruesteFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "stehleiter", label: "Stehleiter", sublabel: "Alu-Stehleiter" },
-      { id: "kombileiter", label: "Kombileiter", sublabel: "Mehrzweck-Leitern" },
-      { id: "rollgeruest", label: "Rollgerüste", sublabel: "Fahrbar, Alu" },
-      { id: "geruestteil", label: "Gerüstteile", sublabel: "Rahmen, Böden & Zubehör" },
+      { id: "stehleiter", label: "catFilters.stehleiter", sublabel: "catFilters.stehleiter_sub" },
+      { id: "kombileiter", label: "catFilters.kombileiter", sublabel: "catFilters.kombileiter_sub" },
+      { id: "rollgeruest", label: "catFilters.rollgeruest", sublabel: "catFilters.rollgeruest_sub" },
+      { id: "geruestteil", label: "catFilters.geruestteil", sublabel: "catFilters.geruestteil_sub" },
     ],
   },
   {
     id: "arbeitshoehe",
-    label: "Arbeitshöhe",
+    label: "catFilters.arbeitshoehe",
     defaultExpanded: true,
     options: [
-      { id: "bis-3m", label: "Bis 3 m", sublabel: "Kleine Leitern" },
-      { id: "3-6m", label: "3 – 6 m", sublabel: "Mittlere Leitern & Gerüste" },
-      { id: "ab-6m", label: "Ab 6 m", sublabel: "Große Rollgerüste" },
+      { id: "bis-3m", label: "catFilters.bis3m", sublabel: "catFilters.bis3m_sub" },
+      { id: "3-6m", label: "catFilters.3bis6m", sublabel: "catFilters.3bis6m_sub" },
+      { id: "ab-6m", label: "catFilters.ab6m", sublabel: "catFilters.ab6m_sub" },
     ],
   },
 ];
@@ -185,23 +183,23 @@ export const leiternGeruesteFilterSections: FilterSection[] = [
 export const beleuchtungFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Lichttyp",
+    label: "catFilters.lichttyp",
     defaultExpanded: true,
     options: [
-      { id: "fluter", label: "Fluter & Baustrahler", sublabel: "Baustelle & Outdoor" },
-      { id: "spot", label: "LED Spots & PAR", sublabel: "Event-Akzentlicht" },
-      { id: "moving-head", label: "Moving Heads", sublabel: "Schwenkbare Scheinwerfer" },
-      { id: "deko", label: "Dekobeleuchtung", sublabel: "Lichterketten, Effekte" },
-      { id: "arbeitsleuchte", label: "Arbeitsleuchten", sublabel: "Handlampen, Inspektionsleuchten" },
+      { id: "fluter", label: "catFilters.fluter", sublabel: "catFilters.fluter_sub" },
+      { id: "spot", label: "catFilters.spot", sublabel: "catFilters.spot_sub" },
+      { id: "moving-head", label: "catFilters.movingHead", sublabel: "catFilters.movingHead_sub" },
+      { id: "deko", label: "catFilters.dekobeleuchtung", sublabel: "catFilters.dekobeleuchtung_sub" },
+      { id: "arbeitsleuchte", label: "catFilters.arbeitsleuchte", sublabel: "catFilters.arbeitsleuchte_sub" },
     ],
   },
   {
     id: "einsatz",
-    label: "Einsatzbereich",
+    label: "catFilters.einsatzbereich",
     defaultExpanded: false,
     options: [
-      { id: "event", label: "Event & Bühne", sublabel: "Veranstaltungen & Shows" },
-      { id: "baustelle", label: "Baustelle & Industrie", sublabel: "Außenbeleuchtung" },
+      { id: "event", label: "catFilters.eventBuehne", sublabel: "catFilters.eventBuehne_sub" },
+      { id: "baustelle", label: "catFilters.baustelleIndustrie", sublabel: "catFilters.baustelleIndustrie_sub" },
     ],
   },
 ];
@@ -210,23 +208,23 @@ export const beleuchtungFilterSections: FilterSection[] = [
 export const moebelZelteFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Produktart",
+    label: "catFilters.produktart",
     defaultExpanded: true,
     options: [
-      { id: "zelt", label: "Zelte", sublabel: "Party- & Eventzelte" },
-      { id: "moebel", label: "Tische & Stühle", sublabel: "Bierzeltgarnitur, Stehtisch, Stuhl" },
-      { id: "husse", label: "Hussen", sublabel: "Tisch- & Bankhussen" },
-      { id: "kuehlgeraet", label: "Kühlgeräte", sublabel: "Getränkekühlschränke" },
+      { id: "zelt", label: "catFilters.zelte", sublabel: "catFilters.zelte_sub" },
+      { id: "moebel", label: "catFilters.tischeStühle", sublabel: "catFilters.tischeStühle_sub" },
+      { id: "husse", label: "catFilters.hussen", sublabel: "catFilters.hussen_sub" },
+      { id: "kuehlgeraet", label: "catFilters.kuehlgeraete", sublabel: "catFilters.kuehlgeraete_sub" },
     ],
   },
   {
     id: "zeltgroesse",
-    label: "Zeltgröße",
+    label: "catFilters.zeltgroesse",
     defaultExpanded: true,
     options: [
-      { id: "bis-16m2", label: "Bis 16 m²", sublabel: "3×3m, 4×4m" },
-      { id: "17-40m2", label: "17 – 40 m²", sublabel: "4×6m, 4×10m" },
-      { id: "ab-48m2", label: "Ab 48 m²", sublabel: "4×14m, 6×8m, 6×12m" },
+      { id: "bis-16m2", label: "catFilters.bis16m2", sublabel: "catFilters.bis16m2_sub" },
+      { id: "17-40m2", label: "catFilters.17bis40m2", sublabel: "catFilters.17bis40m2_sub" },
+      { id: "ab-48m2", label: "catFilters.ab48m2", sublabel: "catFilters.ab48m2_sub" },
     ],
   },
 ];
@@ -237,34 +235,34 @@ export const moebelZelteFilterSections: FilterSection[] = [
 export const beschallungFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "pa", label: "PA-Systeme", sublabel: "Komplett-Anlagen" },
-      { id: "lautsprecher", label: "Lautsprecher", sublabel: "Aktiv & Passiv" },
-      { id: "subwoofer", label: "Subwoofer", sublabel: "Bass-Verstärker" },
-      { id: "mikrofon", label: "Mikrofone", sublabel: "Funk & Kabel" },
-      { id: "zubehoer", label: "Zubehör", sublabel: "Stative, Kabel, Adapter" },
+      { id: "pa", label: "catFilters.paSysteme", sublabel: "catFilters.paSysteme_sub" },
+      { id: "lautsprecher", label: "catFilters.lautsprecher", sublabel: "catFilters.lautsprecher_sub" },
+      { id: "subwoofer", label: "catFilters.subwoofer", sublabel: "catFilters.subwoofer_sub" },
+      { id: "mikrofon", label: "catFilters.mikrofone", sublabel: "catFilters.mikrofone_sub" },
+      { id: "zubehoer", label: "catFilters.zubehoer", sublabel: "catFilters.zubehoer_beschallung_sub" },
     ],
   },
   {
     id: "personen",
-    label: "Personenanzahl",
+    label: "catFilters.personenanzahl",
     defaultExpanded: true,
     options: [
-      { id: "bis-30", label: "Bis 30 Personen", sublabel: "Kleine Veranstaltungen" },
-      { id: "bis-75", label: "Bis 75 Personen", sublabel: "Mittlere Events" },
-      { id: "bis-250", label: "Bis 250 Personen", sublabel: "Große Events & Feiern" },
+      { id: "bis-30", label: "catFilters.bis30", sublabel: "catFilters.bis30_sub" },
+      { id: "bis-75", label: "catFilters.bis75", sublabel: "catFilters.bis75_sub" },
+      { id: "bis-250", label: "catFilters.bis250", sublabel: "catFilters.bis250_sub" },
     ],
   },
   {
     id: "features",
-    label: "Ausstattung",
+    label: "catFilters.ausstattung",
     defaultExpanded: false,
     options: [
-      { id: "bluetooth", label: "Bluetooth", sublabel: "Kabellose Musikübertragung" },
-      { id: "akku", label: "Akku-betrieben", sublabel: "Ohne Stromkabel" },
-      { id: "mischpult", label: "Integriertes Mischpult", sublabel: "Mixer eingebaut" },
+      { id: "bluetooth", label: "catFilters.bluetooth", sublabel: "catFilters.bluetooth_sub" },
+      { id: "akku", label: "catFilters.akkuBetrieben", sublabel: "catFilters.akkuBetrieben_sub" },
+      { id: "mischpult", label: "catFilters.mischpult", sublabel: "catFilters.mischpult_sub" },
     ],
   },
 ];
@@ -275,13 +273,13 @@ export const beschallungFilterSections: FilterSection[] = [
 export const geschirrFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Kategorie",
+    label: "catFilters.kategorie",
     defaultExpanded: true,
     options: [
-      { id: "geschirr", label: "Geschirr", sublabel: "Teller, Tassen" },
-      { id: "glaeser", label: "Gläser", sublabel: "Wein, Bier, Cocktail" },
-      { id: "besteck", label: "Besteck", sublabel: "Messer, Gabel, Löffel" },
-      { id: "servieren", label: "Servieren", sublabel: "Tabletts, Karaffen" },
+      { id: "geschirr", label: "catFilters.geschirr", sublabel: "catFilters.geschirr_sub" },
+      { id: "glaeser", label: "catFilters.glaeser", sublabel: "catFilters.glaeser_sub" },
+      { id: "besteck", label: "catFilters.besteck", sublabel: "catFilters.besteck_sub" },
+      { id: "servieren", label: "catFilters.servieren", sublabel: "catFilters.servieren_sub" },
     ],
   },
 ];
@@ -290,22 +288,22 @@ export const geschirrFilterSections: FilterSection[] = [
 export const huepfburgenFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "huepfburg", label: "Hüpfburgen", sublabel: "Klassische Modelle" },
-      { id: "rutsche", label: "Rutschen", sublabel: "Mit Wasseranschluss" },
-      { id: "spiel", label: "Spielgeräte", sublabel: "Parcours & Co." },
+      { id: "huepfburg", label: "catFilters.huepfburgen", sublabel: "catFilters.huepfburgen_sub" },
+      { id: "rutsche", label: "catFilters.rutschen", sublabel: "catFilters.rutschen_sub" },
+      { id: "spiel", label: "catFilters.spielgeraete", sublabel: "catFilters.spielgeraete_sub" },
     ],
   },
   {
     id: "size",
-    label: "Größe",
+    label: "catFilters.groesse",
     defaultExpanded: false,
     options: [
-      { id: "klein", label: "Klein", sublabel: "Bis 4x4m" },
-      { id: "mittel", label: "Mittel", sublabel: "4x4m - 6x6m" },
-      { id: "gross", label: "Groß", sublabel: "Ab 6x6m" },
+      { id: "klein", label: "catFilters.klein", sublabel: "catFilters.klein_sub" },
+      { id: "mittel", label: "catFilters.mittel", sublabel: "catFilters.mittel_sub" },
+      { id: "gross", label: "catFilters.gross", sublabel: "catFilters.gross_sub" },
     ],
   },
 ];
@@ -314,25 +312,25 @@ export const huepfburgenFilterSections: FilterSection[] = [
 export const absperrtechnikFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Produktart",
+    label: "catFilters.produktart",
     defaultExpanded: true,
     options: [
-      { id: "verkehrszeichen", label: "Verkehrszeichen", sublabel: "VZ-Schilder RA1/RA2" },
-      { id: "warnbarke", label: "Warnbarken", sublabel: "Verkehrssicherung" },
-      { id: "warnleuchte", label: "Warnleuchten", sublabel: "TL-Leuchten" },
-      { id: "bauzaun", label: "Bauzäune", sublabel: "Baustellen-Absperrung" },
-      { id: "absperrgitter", label: "Absperrgitter", sublabel: "Veranstaltungen" },
-      { id: "schrankenzaun", label: "Schrankenzäune", sublabel: "Verkehrslenkung" },
-      { id: "zubehoer", label: "Zubehör", sublabel: "Fußplatten, Rohre, Schellen" },
+      { id: "verkehrszeichen", label: "catFilters.verkehrszeichen", sublabel: "catFilters.verkehrszeichen_sub" },
+      { id: "warnbarke", label: "catFilters.warnbarken", sublabel: "catFilters.warnbarken_sub" },
+      { id: "warnleuchte", label: "catFilters.warnleuchten", sublabel: "catFilters.warnleuchten_sub" },
+      { id: "bauzaun", label: "catFilters.bauzaeune", sublabel: "catFilters.bauzaeune_sub" },
+      { id: "absperrgitter", label: "catFilters.absperrgitter", sublabel: "catFilters.absperrgitter_sub" },
+      { id: "schrankenzaun", label: "catFilters.schrankenzaeune", sublabel: "catFilters.schrankenzaeune_sub" },
+      { id: "zubehoer", label: "catFilters.zubehoer", sublabel: "catFilters.zubehoer_absperr_sub" },
     ],
   },
   {
     id: "reflektionsklasse",
-    label: "Reflektionsklasse",
+    label: "catFilters.reflektionsklasse",
     defaultExpanded: false,
     options: [
-      { id: "ra1", label: "RA1", sublabel: "Standard" },
-      { id: "ra2", label: "RA2", sublabel: "Erhöhte Reflexion" },
+      { id: "ra1", label: "catFilters.ra1", sublabel: "catFilters.ra1_sub" },
+      { id: "ra2", label: "catFilters.ra2", sublabel: "catFilters.ra2_sub" },
     ],
   },
 ];
@@ -341,13 +339,13 @@ export const absperrtechnikFilterSections: FilterSection[] = [
 export const spezialeffekteFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Effekttyp",
+    label: "catFilters.effekttyp",
     defaultExpanded: true,
     options: [
-      { id: "nebel", label: "Nebel & Dunst", sublabel: "Nebelmaschinen" },
-      { id: "seifenblasen", label: "Seifenblasen", sublabel: "Blasenmaschinen" },
-      { id: "funken", label: "Funken & Pyro", sublabel: "Kalte Funken" },
-      { id: "konfetti", label: "Konfetti", sublabel: "Shooter & Kanonen" },
+      { id: "nebel", label: "catFilters.nebelDunst", sublabel: "catFilters.nebelDunst_sub" },
+      { id: "seifenblasen", label: "catFilters.seifenblasen", sublabel: "catFilters.seifenblasen_sub" },
+      { id: "funken", label: "catFilters.funkenPyro", sublabel: "catFilters.funkenPyro_sub" },
+      { id: "konfetti", label: "catFilters.konfetti", sublabel: "catFilters.konfetti_sub" },
     ],
   },
 ];
@@ -356,39 +354,39 @@ export const spezialeffekteFilterSections: FilterSection[] = [
 export const kabelStromverteilerFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Produktart",
+    label: "catFilters.produktart",
     defaultExpanded: true,
     options: [
-      { id: "stromverteiler", label: "Stromverteiler", sublabel: "UV, Anschlussschränke" },
-      { id: "adapter", label: "Adapter", sublabel: "CEE & Speakon Adapter" },
-      { id: "kabelbruecke", label: "Kabelbrücken", sublabel: "Überfahrschutz" },
-      { id: "erdung", label: "Erdung", sublabel: "Erdungsspieße" },
+      { id: "stromverteiler", label: "catFilters.stromverteiler", sublabel: "catFilters.stromverteiler_sub" },
+      { id: "adapter", label: "catFilters.adapter", sublabel: "catFilters.adapter_sub" },
+      { id: "kabelbruecke", label: "catFilters.kabelbruecken", sublabel: "catFilters.kabelbruecken_sub" },
+      { id: "erdung", label: "catFilters.erdung", sublabel: "catFilters.erdung_sub" },
     ],
   },
   {
     id: "kabeltyp",
-    label: "Kabeltyp",
+    label: "catFilters.kabeltyp",
     defaultExpanded: true,
     options: [
-      { id: "schuko", label: "Schuko", sublabel: "230V Verlängerungen" },
-      { id: "cee", label: "CEE Kabel", sublabel: "16A / 32A / 63A rot" },
-      { id: "powercon", label: "PowerCon", sublabel: "Neutrik PowerCon" },
-      { id: "powercon-true1", label: "PowerCon TRUE1", sublabel: "Neutrik TRUE1 Top" },
-      { id: "lautsprecherkabel", label: "Lautsprecherkabel", sublabel: "Speakon NL2/NL4" },
-      { id: "netzwerk", label: "Netzwerk / EtherCon", sublabel: "Cat-5e & Cat-7" },
-      { id: "hdmi", label: "HDMI / Video", sublabel: "Glasfaser & Kupfer" },
+      { id: "schuko", label: "catFilters.schuko", sublabel: "catFilters.schuko_sub" },
+      { id: "cee", label: "catFilters.ceeKabel", sublabel: "catFilters.ceeKabel_sub" },
+      { id: "powercon", label: "catFilters.powercon", sublabel: "catFilters.powercon_sub" },
+      { id: "powercon-true1", label: "catFilters.powerconTrue1", sublabel: "catFilters.powerconTrue1_sub" },
+      { id: "lautsprecherkabel", label: "catFilters.lautsprecherkabel", sublabel: "catFilters.lautsprecherkabel_sub" },
+      { id: "netzwerk", label: "catFilters.netzwerk", sublabel: "catFilters.netzwerk_sub" },
+      { id: "hdmi", label: "catFilters.hdmi", sublabel: "catFilters.hdmi_sub" },
     ],
   },
   {
     id: "laenge",
-    label: "Kabellänge",
+    label: "catFilters.kabellaenge",
     defaultExpanded: false,
     options: [
-      { id: "bis-3m", label: "Bis 3 m" },
-      { id: "5m", label: "5 m" },
-      { id: "10m", label: "10 m" },
-      { id: "20m", label: "20 m" },
-      { id: "ab-25m", label: "Ab 25 m" },
+      { id: "bis-3m", label: "catFilters.bis3mKabel" },
+      { id: "5m", label: "catFilters.5m" },
+      { id: "10m", label: "catFilters.10m" },
+      { id: "20m", label: "catFilters.20m" },
+      { id: "ab-25m", label: "catFilters.ab25m" },
     ],
   },
 ];
@@ -397,12 +395,12 @@ export const kabelStromverteilerFilterSections: FilterSection[] = [
 export const buehneFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "element", label: "Bühnenelemente", sublabel: "Podeste & Platten" },
-      { id: "treppe", label: "Treppen", sublabel: "Bühnentreppen" },
-      { id: "zubehoer", label: "Zubehör", sublabel: "Füße, Verbinder" },
+      { id: "element", label: "catFilters.buehnenelemente", sublabel: "catFilters.buehnenelemente_sub" },
+      { id: "treppe", label: "catFilters.treppen", sublabel: "catFilters.treppen_sub" },
+      { id: "zubehoer", label: "catFilters.zubehoer", sublabel: "catFilters.zubehoer_buehne_sub" },
     ],
   },
 ];
@@ -411,12 +409,12 @@ export const buehneFilterSections: FilterSection[] = [
 export const traversenFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "traverse", label: "Traversen", sublabel: "Verschiedene Längen" },
-      { id: "ecke", label: "Eckverbinder", sublabel: "90° & variabel" },
-      { id: "stativ", label: "Stative", sublabel: "Travers-Ständer" },
+      { id: "traverse", label: "catFilters.traversen", sublabel: "catFilters.traversen_sub" },
+      { id: "ecke", label: "catFilters.eckverbinder", sublabel: "catFilters.eckverbinder_sub" },
+      { id: "stativ", label: "catFilters.stative", sublabel: "catFilters.stative_sub" },
     ],
   },
 ];
@@ -425,11 +423,11 @@ export const traversenFilterSections: FilterSection[] = [
 export const kommunikationFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "catFilters.typ",
     defaultExpanded: true,
     options: [
-      { id: "funk", label: "Funkgeräte", sublabel: "UHF/VHF" },
-      { id: "headset", label: "Headsets", sublabel: "Kabel & Funk" },
+      { id: "funk", label: "catFilters.funkgeraete", sublabel: "catFilters.funkgeraete_sub" },
+      { id: "headset", label: "catFilters.headsets", sublabel: "catFilters.headsets_sub" },
     ],
   },
 ];
