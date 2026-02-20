@@ -72,6 +72,8 @@ import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
 import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
+import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
+import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1679,6 +1681,20 @@ export const absperrtechnikProducts: Product[] = [
     specifications: {
       "Verwendung": "Verkehrsschilder, Warnbarken, Schrankenzäune",
       "Gewicht": "ca. 28 kg",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "bauzaun",
+    name: "Bauzaun",
+    description: "Mobiler Bauzaun ca. 3,5 m × 2,0 m, verzinkt, ca. 13 kg. Ideal für Baustellen- und Veranstaltungsabsperrungen.",
+    image: imgBauzaun1,
+    images: [imgBauzaun1, imgBauzaun2],
+    category: "absperrtechnik",
+    specifications: {
+      "Abmessungen": "ca. 3,5 m × 2,0 m",
+      "Gewicht": "ca. 13 kg",
+      "Ausführung": "Verzinkt",
     },
     rentwareCode: { krefeld: "" }
   },
