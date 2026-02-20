@@ -923,7 +923,7 @@ function withFixedCategory(products: Product[], category: string): Product[] {
  *    "Auf Anfrage".
  */
 function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: string): Product[] {
-  const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const normalise = (s: string | undefined | null) => (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
 
   /**
    * Find a Krefeld reference product for a primary product using multiple strategies:
