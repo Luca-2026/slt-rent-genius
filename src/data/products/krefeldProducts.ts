@@ -74,6 +74,7 @@ import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
+import imgBlockbatterie6v from "@/assets/products/blockbatterie-6v.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1695,6 +1696,21 @@ export const absperrtechnikProducts: Product[] = [
       "Abmessungen": "ca. 3,5 m × 2,0 m",
       "Gewicht": "ca. 13 kg",
       "Ausführung": "Verzinkt",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "blockbatterie-6v",
+    name: "6V Blockbatterie (Verkauf)",
+    description: "6V Blockbatterie, 7,5 Ah – für Warnleuchten und Absperrtechnik. Packungsinhalt: 1 Stück.",
+    image: imgBlockbatterie6v,
+    images: [imgBlockbatterie6v],
+    category: "absperrtechnik",
+    specifications: {
+      "Spannung": "6 Volt",
+      "Kapazität": "7,5 Ah",
+      "Packungsinhalt": "1 Stück",
+      "Hinweis": "Verkaufsartikel",
     },
     rentwareCode: { krefeld: "" }
   },
