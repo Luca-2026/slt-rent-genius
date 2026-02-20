@@ -243,6 +243,9 @@ import imgLedBeleuchtungssetDuo1 from "@/assets/products/led-beleuchtungsset-duo
 import imgShowtecSunstripMkii1 from "@/assets/products/showtec-sunstrip-mkii-1.jpg";
 import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.jpg";
 
+// Stehtisch images
+import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
+
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
 import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
@@ -2316,10 +2319,15 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "stehtisch",
     name: "Stehtisch",
-    description: "Klappbarer Stehtisch",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Runder, klappbarer Stehtisch – ideal für Events, Empfänge und Partys. Stabile Metallbeine, pflegeleichte Kunststoffplatte.",
+    image: imgStehtischRund1,
+    images: [imgStehtischRund1],
     category: "moebel",
+    specifications: {
+      "Form": "rund",
+      "Abmessungen": "Ø 80 cm × H 110 cm",
+      "Bauweise": "klappbar",
+    },
     rentwareCode: { krefeld: "J1MZJQ" }
   },
   {
