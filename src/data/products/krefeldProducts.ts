@@ -76,6 +76,8 @@ import imgRetevRt29Set1 from "@/assets/products/retevis-rt29-set-1.jpeg";
 import imgRetevRt29Set2 from "@/assets/products/retevis-rt29-set-2.jpeg";
 import imgRetevRt29Set3 from "@/assets/products/retevis-rt29-set-3.jpeg";
 import imgRetevRt29Set4 from "@/assets/products/retevis-rt29-set-4.jpeg";
+import imgRetevRt291 from "@/assets/products/retevis-rt29-1.jpeg";
+import imgRetevRt29SetNew from "@/assets/products/retevis-rt29-set-new.jpeg";
 import imgSoundboksGen31 from "@/assets/products/soundboks-gen3-1.jpeg";
 import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
@@ -2002,8 +2004,8 @@ export const kommunikationProducts: Product[] = [
     id: "uhf-funkgeraet",
     name: "UHF Funkgeräte 6er Set (Retevis RT29)",
     description: "Professionelles UHF-Funkgerät-Set mit 6 Geräten des Typs Retevis RT29 inkl. 6-fach Ladestation. Mit 10 W Ausgangsleistung und einem 3200 mAh Akku für bis zu 168 Stunden Standby-Betrieb. Ideal für Veranstaltungen, Baustellen und Events. Weiteres Zubehör finden Sie im nächsten Schritt.",
-    image: imgRetevRt29Set1,
-    images: [imgRetevRt29Set1, imgRetevRt29Set2, imgRetevRt29Set3, imgRetevRt29Set4],
+    image: imgRetevRt291,
+    images: [imgRetevRt291, imgRetevRt29SetNew, imgRetevRt29Set1, imgRetevRt29Set2, imgRetevRt29Set3, imgRetevRt29Set4],
     category: "funkgeraet",
     specifications: {
       "Typ": "Retevis RT29",
