@@ -51,6 +51,7 @@ import imgVz123Ra1 from "@/assets/products/vz-123-ra1.jpeg";
 import imgBauzaunInklFuss1 from "@/assets/products/bauzaun-inkl-fuss-1.jpeg";
 import imgBauzaunInklFuss2 from "@/assets/products/bauzaun-inkl-fuss-2.jpeg";
 import imgBauzaunfussKunststoff from "@/assets/products/bauzaunfuss-kunststoff.jpeg";
+import imgVz267Ra1 from "@/assets/products/vz-267-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1255,10 +1256,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-267-ra1",
     name: "VZ 267, RA1",
-    description: "Verbot der Einfahrt",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Verbot der Einfahrt – Rundes Verkehrszeichen Ø 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
+    image: imgVz267Ra1,
+    images: [imgVz267Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 267",
+      "Bedeutung": "Verbot der Einfahrt",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "NCQ97L" }
   },
   {
