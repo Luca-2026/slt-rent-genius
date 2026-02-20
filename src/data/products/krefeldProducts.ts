@@ -60,6 +60,7 @@ import imgWarnbarkeMitFussTransport from "@/assets/products/warnbarke-mit-fuss-t
 import imgTlWarnleuchteGelb from "@/assets/products/tl-warnleuchte-gelb.jpeg";
 import imgTlWarnleuchteGelbFront from "@/assets/products/tl-warnleuchte-gelb-front.jpeg";
 import imgTlWarnleuchteGelbSeite from "@/assets/products/tl-warnleuchte-gelb-seite.jpeg";
+import imgVz100022Ra1Gr1 from "@/assets/products/vz-1000-22-ra1-gr1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1420,11 +1421,20 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-22-ra1-gr1",
     name: "VZ 1000-22, RA1, Gr. 1",
-    description: "Richtungspfeil rechts (klein)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Fußgänger Gehweg rechts gegenüber benutzen – Zusatzzeichen 231 × 420 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100022Ra1Gr1,
+    images: [imgVz100022Ra1Gr1],
     category: "verkehrszeichen",
-    rentwareCode: { krefeld: "D2MTMY" }
+    specifications: {
+      "Bezeichnung": "VZ 1000-22",
+      "Bedeutung": "Fußgänger Gehweg rechts gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Abmessungen": "231 × 420 mm",
+      "Größe": "Gr. 1",
+    },
+    rentwareCode: { krefeld: "EGRK14" }
   },
   {
     id: "vz-1000-22-ra1-gr2",
