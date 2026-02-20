@@ -71,6 +71,7 @@ import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
 import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
 import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
+import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1665,6 +1666,19 @@ export const absperrtechnikProducts: Product[] = [
       "Ausführung": "RA2 weiß/rot",
       "Inklusive": "1× Fußplatte K1 TL",
       "Warnleuchte": "Optional erhältlich",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "fussplatte-k1-tl",
+    name: "Fußplatte K1 TL",
+    description: "Fußplatte für Verkehrsschilder, Warnbarken oder Schrankenzäune, ca. 28 kg.",
+    image: imgFussplatteK1Tl,
+    images: [imgFussplatteK1Tl],
+    category: "absperrtechnik",
+    specifications: {
+      "Verwendung": "Verkehrsschilder, Warnbarken, Schrankenzäune",
+      "Gewicht": "ca. 28 kg",
     },
     rentwareCode: { krefeld: "" }
   },
