@@ -53,6 +53,7 @@ import imgBauzaunInklFuss2 from "@/assets/products/bauzaun-inkl-fuss-2.jpeg";
 import imgBauzaunfussKunststoff from "@/assets/products/bauzaunfuss-kunststoff.jpeg";
 import imgVz267Ra1 from "@/assets/products/vz-267-ra1.jpeg";
 import imgVzZusatzNeutralRa1Gr2 from "@/assets/products/vz-zusatz-neutral-ra1-gr2.jpeg";
+import imgVz308Ra1 from "@/assets/products/vz-308-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1361,10 +1362,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-308-ra1",
     name: "VZ 308, RA1",
-    description: "Vorrang vor dem Gegenverkehr",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Vorrang vor dem Gegenverkehr – Quadratisches Verkehrszeichen 600 × 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
+    image: imgVz308Ra1,
+    images: [imgVz308Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 308",
+      "Bedeutung": "Vorrang vor dem Gegenverkehr",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Abmessungen": "600 × 600 mm",
+    },
     rentwareCode: { krefeld: "O79BYU" }
   },
   {
