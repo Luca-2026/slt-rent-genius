@@ -315,6 +315,27 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Special handling for Arbeitshöhe filter (Leitern & Gerüste)
+          else if (sectionId === "arbeitshoehe") {
+            filtered = filtered.filter((p) => {
+              // Try to extract working height from specifications first
+              const specHeight = p.specifications?.["Arbeitshöhe"] ||
+                p.specifications?.["Arbeitshöhe (Stehleiter)"] || "";
+              const specMatch = String(specHeight).match(/([\d,]+)\s*m/);
+              let heightM = specMatch ? parseFloat(String(specMatch[1]).replace(",", ".")) : 0;
+              // Fallback: extract from product name (e.g. "3,3 m Arbeitshöhe")
+              if (heightM === 0) {
+                const nameMatch = p.name.match(/([\d,]+)\s*m/);
+                if (nameMatch) heightM = parseFloat(nameMatch[1].replace(",", "."));
+              }
+              return selectedValues.some((v) => {
+                if (v === "bis-3m") return heightM > 0 && heightM <= 3;
+                if (v === "3-6m") return heightM > 3 && heightM <= 6;
+                if (v === "ab-6m") return heightM > 6;
+                return p.tags?.includes(v);
+              });
+            });
+          }
           // Special handling for power filters (Werkzeuge vs Aggregate)
           else if (sectionId === "power") {
             filtered = filtered.filter((p) => {

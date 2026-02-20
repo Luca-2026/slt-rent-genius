@@ -143,9 +143,20 @@ export const leiternGeruesteFilterSections: FilterSection[] = [
     label: "Typ",
     defaultExpanded: true,
     options: [
-      { id: "leiter", label: "Leitern", sublabel: "Steh- & Anlegeleiter" },
-      { id: "rollgeruest", label: "Rollgerüste", sublabel: "Fahrbar" },
-      { id: "geruestteile", label: "Gerüstteile", sublabel: "Rahmen & Böden" },
+      { id: "stehleiter", label: "Stehleiter", sublabel: "Alu-Stehleiter" },
+      { id: "kombileiter", label: "Kombileiter", sublabel: "Mehrzweck-Leitern" },
+      { id: "rollgeruest", label: "Rollgerüste", sublabel: "Fahrbar, Alu" },
+      { id: "geruestteil", label: "Gerüstteile", sublabel: "Rahmen, Böden & Zubehör" },
+    ],
+  },
+  {
+    id: "arbeitshoehe",
+    label: "Arbeitshöhe",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-3m", label: "Bis 3 m", sublabel: "Kleine Leitern" },
+      { id: "3-6m", label: "3 – 6 m", sublabel: "Mittlere Leitern & Gerüste" },
+      { id: "ab-6m", label: "Ab 6 m", sublabel: "Große Rollgerüste" },
     ],
   },
 ];
