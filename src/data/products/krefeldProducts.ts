@@ -263,6 +263,7 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 
 // Stehtisch Husse images
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
+import imgStehtischHusseWeiss1 from "@/assets/products/stehtisch-husse-weiss-1.jpeg";
 
 // Partyzelt 3x3m images
 import imgPartyzelt3x3_1 from "@/assets/products/partyzelt-3x3-1.jpeg";
@@ -2506,10 +2507,15 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "stehtisch-husse-weiss",
     name: "Stehtisch Husse weiß",
-    description: "Weiße Husse für Stehtisch",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Elegante weiße Stretch-Husse für runde Stehtische (Ø 80 cm, H 110 cm). Gewaschen zurückzugeben – Reinigung gegen Aufpreis möglich.",
+    image: imgStehtischHusseWeiss1,
+    images: [imgStehtischHusseWeiss1],
     category: "husse",
+    specifications: {
+      "Farbe": "weiß",
+      "Passend für": "Stehtisch Ø 80 cm × H 110 cm",
+      "Rückgabe": "gewaschen (Reinigung gegen Aufpreis möglich)",
+    },
     rentwareCode: { krefeld: "AOZ99O" }
   },
   {
