@@ -28,6 +28,8 @@ import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
 import heizluefter2kw2 from "@/assets/products/heizluefter-2kw-2.jpeg";
 import heizluefter9kw1 from "@/assets/products/heizluefter-9kw-1.jpeg";
 import heizluefter9kw2 from "@/assets/products/heizluefter-9kw-2.jpeg";
+import heizluefter3kw1 from "@/assets/products/heizluefter-3kw-1.jpeg";
+import heizluefter3kw2 from "@/assets/products/heizluefter-3kw-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1066,10 +1068,17 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "heizluefter-3kw",
     name: "Allegra 3 kW Elektro Heizlüfter",
-    description: "Leistungsstarker Elektro-Heizlüfter",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose, robustes Metallgehäuse mit Tragegriff.",
+    image: heizluefter3kw1,
+    images: [heizluefter3kw1, heizluefter3kw2],
     category: "heizluefter",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Heizleistung": "1,5 kW & 3 kW (umschaltbar)",
+      "Leistungsaufnahme": "3 kW",
+      "Elektroanschluss": "230 V",
+      "Luftleistung": "510 m³/h",
+    },
     rentwareCode: { krefeld: "5FW6KJ" }
   },
   {
