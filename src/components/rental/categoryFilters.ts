@@ -128,10 +128,19 @@ export const heizungTrocknungFilterSections: FilterSection[] = [
     label: "Gerätetyp",
     defaultExpanded: true,
     options: [
-      { id: "heizung", label: "Heizgeräte", sublabel: "Elektro & Gas" },
-      { id: "trocknung", label: "Bautrockner", sublabel: "Entfeuchtung" },
-      { id: "klima", label: "Klimageräte", sublabel: "Kühlung" },
-      { id: "ventilator", label: "Ventilatoren", sublabel: "Luftzirkulation" },
+      { id: "heizluefter", label: "Heizlüfter", sublabel: "Elektro-Heizlüfter" },
+      { id: "heizpilz", label: "Heizpilz", sublabel: "Infrarot-Heizstrahler" },
+      { id: "bautrockner", label: "Bautrockner", sublabel: "Kondensations-Entfeuchtung" },
+    ],
+  },
+  {
+    id: "leistung",
+    label: "Heizleistung",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-2kw", label: "Bis 2 kW", sublabel: "230 V Schuko – kein CEE nötig" },
+      { id: "3kw", label: "3 kW", sublabel: "230 V – kein CEE nötig" },
+      { id: "ab-9kw", label: "9 kW", sublabel: "⚡ 400 V CEE-Starkstrom erforderlich" },
     ],
   },
 ];

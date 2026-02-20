@@ -5,7 +5,7 @@ import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTrans
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -425,6 +425,29 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Heizleistung filter for heizung-trocknung
+          else if (sectionId === "leistung") {
+            filtered = filtered.filter((p) => {
+              // Extract kW from specifications or product name
+              const leistungStr = p.specifications?.["Leistungsaufnahme"] ||
+                p.specifications?.["Leistung"] ||
+                p.specifications?.["Heizleistung"] || "";
+              const kwMatch = String(leistungStr).match(/([\d,]+)\s*kW/i);
+              // Also try name
+              const nameMatch = p.name.match(/([\d,]+)\s*kW/i);
+              const kw = kwMatch
+                ? parseFloat(String(kwMatch[1]).replace(",", "."))
+                : nameMatch
+                ? parseFloat(nameMatch[1].replace(",", "."))
+                : 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-2kw") return kw > 0 && kw <= 2;
+                if (v === "3kw") return kw > 2 && kw <= 3;
+                if (v === "ab-9kw") return kw >= 9;
+                return p.tags?.includes(v);
+              });
+            });
+          }
           // Standard tag/category matching
           else {
             filtered = filtered.filter((p) =>
@@ -649,8 +672,64 @@ export default function CategoryProducts() {
         </section>
       )}
 
+      {/* Info Banner for Heizung & Trocknung */}
+      {category.id === "heizung-trocknung" && (
+        <section className="bg-accent/10 border-y border-accent/20">
+          <div className="section-container py-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Thermometer className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Heizlüfter & Heizpilz</p>
+                  <p className="text-sm text-muted-foreground">Für Räume, Baustellen & Veranstaltungen</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Droplets className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Bautrockner mit MID-Zähler</p>
+                  <p className="text-sm text-muted-foreground">Geeichter Stromzähler – faire Abrechnung</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Wind className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Arbeitsbereich 5 °C – 35 °C</p>
+                  <p className="text-sm text-muted-foreground">Ganzjährig einsetzbar</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Starkstrom warning */}
+            <div className="mt-5 pt-5 border-t border-accent/20">
+              <div className="flex items-start gap-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
+                <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground mb-1">
+                    ⚡ Starkstromanschluss ab 3 kW Heizleistung erforderlich
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Unser <strong>9 kW Heizlüfter</strong> benötigt einen <strong>400 V CEE-Starkstromanschluss</strong> (roter CEE-Stecker, 16 A).
+                    Bitte stellen Sie sicher, dass am Einsatzort ein entsprechender Anschluss vorhanden ist.
+                    Heizgeräte bis 3 kW können an einer normalen 230 V Schuko-Steckdose betrieben werden.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Info Banner for other categories */}
-      {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
+      {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "heizung-trocknung" && category.id !== "alle" && (
         <CategoryInfoBanner categoryId={category.id} />
       )}
 
@@ -742,12 +821,26 @@ export default function CategoryProducts() {
                   {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
                     <>
                       {categoryFilterMap[category.id] && (
-                        <CategoryFilter
-                          searchPlaceholder={categorySearchPlaceholders[category.id] || "Artikel suchen..."}
-                          sections={categoryFilterMap[category.id]}
-                          onFilterChange={setGenericFilters}
-                          variant="badges"
-                        />
+                        <>
+                          <CategoryFilter
+                            searchPlaceholder={categorySearchPlaceholders[category.id] || "Artikel suchen..."}
+                            sections={categoryFilterMap[category.id]}
+                            onFilterChange={setGenericFilters}
+                            variant={category.id === "heizung-trocknung" ? "accordion" : "badges"}
+                          />
+                          {/* Starkstrom-Hinweis: show in sidebar when 9 kW filter is active */}
+                          {category.id === "heizung-trocknung" && genericFilters.filters["leistung"]?.includes("ab-9kw") && (
+                            <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
+                              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="font-semibold text-sm text-foreground mb-1">400 V CEE erforderlich</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Der 9 kW Heizlüfter benötigt einen roten CEE-Starkstromanschluss (400 V / 16 A) am Einsatzort.
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
                       <DeliveryCalculatorCompact 
                         productCategoryId={category.id}
