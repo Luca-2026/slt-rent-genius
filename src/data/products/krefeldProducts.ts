@@ -42,6 +42,7 @@ import imgVz123Ra2 from "@/assets/products/vz-123-ra2.jpeg";
 import imgVz28310Ra1 from "@/assets/products/vz-283-10-ra1.jpeg";
 import imgVz12110Ra2 from "@/assets/products/vz-121-10-ra2.jpeg";
 import imgWemasKlemmschelleK1 from "@/assets/products/wemas-klemmschelle-k1.jpeg";
+import imgVz28320Ra1 from "@/assets/products/vz-283-20-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1281,10 +1282,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-283-20-ra1",
     name: "VZ 283-20, RA1",
-    description: "Absolutes Halteverbot Ende links",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Absolutes Haltverbot Ende, Rechtsaufstellung – Rundes Verkehrszeichen Ø 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
+    image: imgVz28320Ra1,
+    images: [imgVz28320Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 283-20",
+      "Bedeutung": "Absolutes Haltverbot Ende, Rechtsaufstellung",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "GAWVK6" }
   },
   {
