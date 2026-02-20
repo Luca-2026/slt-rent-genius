@@ -246,6 +246,10 @@ import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.j
 // Stehtisch images
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 
+// Zeltboden Anthrazit images
+import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
+import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
+
 // Partyzelt 4x14m images
 import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
@@ -2313,6 +2317,23 @@ export const moebelZelteProducts: Product[] = [
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
     rentwareCode: { krefeld: "PARTYZELT4X14" }
+  },
+  {
+    id: "zeltboden-anthrazit",
+    name: "Zeltboden Anthrazit 0,86 m²",
+    description: "Robuste Kunststoff-Eventmatte mit Nut-und-Feder-System für lückenlosen, stabilen Zelt- und Eventboden. Anthrazit, rutschfeste Oberfläche. Besenrein zurückzugeben.",
+    image: imgZeltbodenAnthrazit1,
+    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2],
+    category: "zelt",
+    specifications: {
+      "Maße": "100 × 86 × 0,23 cm (0,86 m²/Stück)",
+      "Material": "Kunststoff mit Nut-und-Feder-Verbindung",
+      "Farbe": "Anthrazit",
+      "Belastbarkeit": "ca. 15 t/m² (fester Untergrund)",
+      "Gewicht": "15 kg/Stück",
+      "Rückgabe": "besenrein",
+    },
+    rentwareCode: { krefeld: "ZELTBODEN_ANT" }
   },
   {
     id: "eventzelt-6x8m",
