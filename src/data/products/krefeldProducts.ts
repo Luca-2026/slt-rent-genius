@@ -233,6 +233,9 @@ import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16
 // LED 4er Bar images
 import imgLed4erBar1 from "@/assets/products/led-4er-bar-1.jpeg";
 
+// Vector Spot Zoom 2.0 images
+import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
+
 // TourLED 50 XCR images
 import imgTourled50Xcr1 from "@/assets/products/tourled-50-xcr-1.jpeg";
 import imgTourled50Xcr2 from "@/assets/products/tourled-50-xcr-2.jpeg";
@@ -2127,11 +2130,30 @@ export const beleuchtungProducts: Product[] = [
   },
   {
     id: "led-moving-head-vector-spot",
-    name: "LED Moving Head Vector Spot Zoom 2.0",
-    description: "Moving Head Spot mit Zoom",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "LED Moving Head – Vector Spot Zoom 2.0",
+    description: "Professioneller 230-Watt LED Moving Head mit motorisiertem Zoom, Farbrad (7 Farben + Weiß), rotierendem 5-/6-Facetten-Prisma und zwei Gobo-Rädern. Regenbogeneffekt mit variabler Geschwindigkeit in beide Richtungen. DMX-steuerbar (6/18 Kanal) oder autonomer Betrieb.",
+    image: imgVectorSpotZoom1,
+    images: [imgVectorSpotZoom1],
     category: "moving-head",
+    specifications: {
+      "Leistung": "230 Watt LED",
+      "PAN-Bewegung": "540° (16-bit)",
+      "TILT-Bewegung": "270° (16-bit)",
+      "Zoom": "motorisiert, 11°–25°",
+      "Farbrad": "7 Farben + Weiß, Regenbogeneffekt",
+      "Gobos": "7 rotierende + 7 statische Gobos (je offen)",
+      "Prisma": "5-Facetten- & 6-Facetten-Prisma, bidirektional rotierend",
+      "Dimmer": "0–100 %",
+      "Stroboskop": "0–20 Hz",
+      "DMX-Modi": "6-Kanal und 18-Kanal",
+      "Betriebsmodi": "DMX, Auto, Sound, Master/Slave",
+      "Anschlüsse": "PowerCon In/Out, DMX In/Out (3- & 5-polig)",
+      "Schutzklasse": "IP20 (nur Innenbereich)",
+      "Gewicht": "12,5 kg",
+      "Maße (L×B×H)": "328 × 220 × 482 mm",
+      "Lieferumfang": "2× Omega-Bracket, 1× Stromkabel",
+    },
+    pdfUrl: "/manuals/vector-spot-zoom-20-manual.pdf",
     rentwareCode: { krefeld: "VE92CT" }
   },
   {
