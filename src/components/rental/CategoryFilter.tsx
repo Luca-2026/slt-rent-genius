@@ -31,6 +31,7 @@ export function CategoryFilter({
   onFilterChange,
   variant = "badges"
 }: CategoryFilterProps) {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<CategoryFilterState>({
     search: "",
     filters: {},
@@ -77,7 +78,7 @@ export function CategoryFilter({
         <div className="bg-primary/5 border-b border-border px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-primary" />
-            <span className="font-semibold text-headline text-sm">Filter</span>
+            <span className="font-semibold text-headline text-sm">{t("rental.filter")}</span>
             {activeFilterCount > 0 && (
               <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-0.5 rounded-full">
                 {activeFilterCount}
@@ -90,7 +91,7 @@ export function CategoryFilter({
               className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
             >
               <X className="h-3 w-3" />
-              Zurücksetzen
+              {t("rental.reset")}
             </button>
           )}
         </div>
@@ -114,7 +115,7 @@ export function CategoryFilter({
                 onClick={() => toggleSection(section.id)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-muted/30 hover:bg-muted/50 transition-colors"
               >
-                <span className="font-medium text-sm text-headline">{section.label}</span>
+                <span className="font-medium text-sm text-headline">{t(section.label)}</span>
                 <div className="flex items-center gap-2">
                   {(filters.filters[section.id]?.length || 0) > 0 && (
                     <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-0.5 rounded-full">
@@ -146,9 +147,9 @@ export function CategoryFilter({
                         className="border-muted-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                       />
                       <div>
-                        <span className="text-sm text-body block">{option.label}</span>
+                        <span className="text-sm text-body block">{t(option.label)}</span>
                         {option.sublabel && (
-                          <span className="text-xs text-muted-foreground">{option.sublabel}</span>
+                          <span className="text-xs text-muted-foreground">{t(option.sublabel)}</span>
                         )}
                       </div>
                     </label>
@@ -179,7 +180,7 @@ export function CategoryFilter({
       {/* Filter Sections */}
       {sections.map((section) => (
         <div key={section.id}>
-          <p className="text-sm font-medium text-foreground mb-2">{section.label}</p>
+          <p className="text-sm font-medium text-foreground mb-2">{t(section.label)}</p>
           <div className="flex flex-wrap gap-2">
             {section.options.map((option) => (
               <Badge
@@ -188,7 +189,7 @@ export function CategoryFilter({
                 className="cursor-pointer hover:bg-primary/90 transition-colors"
                 onClick={() => toggleFilter(section.id, option.id)}
               >
-                {option.label}
+                {t(option.label)}
               </Badge>
             ))}
           </div>
@@ -202,7 +203,7 @@ export function CategoryFilter({
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="h-3 w-3" />
-          Filter zurücksetzen
+          {t("rental.resetFilters")}
         </button>
       )}
     </div>
