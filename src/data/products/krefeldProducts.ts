@@ -6,6 +6,8 @@ import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-
 import rollgeruest3_3m_1 from "@/assets/products/rollgeruest-3-3m-2x1-2m-1.jpeg";
 import rollgeruest7_4m_1 from "@/assets/products/rollgeruest-breitaufbau-7-4m-1.jpeg";
 import rollgeruest7_4m_2 from "@/assets/products/rollgeruest-breitaufbau-7-4m-2.jpeg";
+import rollgeruest6_4m_1 from "@/assets/products/rollgeruest-breitaufbau-6-4m-1.jpeg";
+import rollgeruest6_4m_2 from "@/assets/products/rollgeruest-breitaufbau-6-4m-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2041,6 +2043,28 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
     },
     rentwareCode: { krefeld: "FSQFEL" }
+  },
+  {
+    id: "rollgeruest-krause-breitaufbau-6-4m",
+    name: "Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe",
+    description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 1,50 m und 6,4 m Arbeitshöhe. TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von über 3,00 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
+    image: rollgeruest6_4m_1,
+    images: [rollgeruest6_4m_1, rollgeruest6_4m_2],
+    category: "rollgeruest",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-6-4m.pdf",
+    specifications: {
+      "Arbeitshöhe": "6,4 m",
+      "Gerüsthöhe": "5,5 m",
+      "Standhöhe": "4,4 m",
+      "Arbeitsfläche": "2,00 × 1,50 m",
+      "Standfläche": "über 3,00 m²",
+      "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
+      "Belastbarkeit": "200 kg/m² (Gerüstgruppe 3)",
+      "Norm": "DIN EN 1004-1, TÜV-geprüft",
+      "Material": "Aluminium",
+      "Verriegelung": "Selbstsicherndes KRAUSE-System",
+    },
+    rentwareCode: { krefeld: "FSQFEL_64" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-7-4m",
