@@ -188,13 +188,50 @@ export const beleuchtungFilterSections: FilterSection[] = [
     label: "Lichttyp",
     defaultExpanded: true,
     options: [
-      { id: "fluter", label: "Fluter & Strahler", sublabel: "Baustelle & Outdoor" },
-      { id: "spot", label: "LED Spots", sublabel: "Akzentbeleuchtung" },
-      { id: "buehne", label: "Bühnenlicht", sublabel: "Moving Heads, PAR" },
+      { id: "fluter", label: "Fluter & Baustrahler", sublabel: "Baustelle & Outdoor" },
+      { id: "spot", label: "LED Spots & PAR", sublabel: "Event-Akzentlicht" },
+      { id: "moving-head", label: "Moving Heads", sublabel: "Schwenkbare Scheinwerfer" },
       { id: "deko", label: "Dekobeleuchtung", sublabel: "Lichterketten, Effekte" },
+      { id: "arbeitsleuchte", label: "Arbeitsleuchten", sublabel: "Handlampen, Inspektionsleuchten" },
+    ],
+  },
+  {
+    id: "einsatz",
+    label: "Einsatzbereich",
+    defaultExpanded: false,
+    options: [
+      { id: "event", label: "Event & Bühne", sublabel: "Veranstaltungen & Shows" },
+      { id: "baustelle", label: "Baustelle & Industrie", sublabel: "Außenbeleuchtung" },
     ],
   },
 ];
+
+// ============= MÖBEL & ZELTE =============
+export const moebelZelteFilterSections: FilterSection[] = [
+  {
+    id: "type",
+    label: "Produktart",
+    defaultExpanded: true,
+    options: [
+      { id: "zelt", label: "Zelte", sublabel: "Party- & Eventzelte" },
+      { id: "moebel", label: "Tische & Stühle", sublabel: "Bierzeltgarnitur, Stehtisch, Stuhl" },
+      { id: "husse", label: "Hussen", sublabel: "Tisch- & Bankhussen" },
+      { id: "kuehlgeraet", label: "Kühlgeräte", sublabel: "Getränkekühlschränke" },
+    ],
+  },
+  {
+    id: "zeltgroesse",
+    label: "Zeltgröße",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-16m2", label: "Bis 16 m²", sublabel: "3×3m, 4×4m" },
+      { id: "17-40m2", label: "17 – 40 m²", sublabel: "4×6m, 4×10m" },
+      { id: "ab-48m2", label: "Ab 48 m²", sublabel: "4×14m, 6×8m, 6×12m" },
+    ],
+  },
+];
+
+
 
 // ============= BESCHALLUNG =============
 export const beschallungFilterSections: FilterSection[] = [
@@ -232,20 +269,7 @@ export const beschallungFilterSections: FilterSection[] = [
   },
 ];
 
-// ============= MÖBEL & ZELTE =============
-export const moebelZelteFilterSections: FilterSection[] = [
-  {
-    id: "type",
-    label: "Kategorie",
-    defaultExpanded: true,
-    options: [
-      { id: "zelt", label: "Zelte", sublabel: "Party- & Pagodenzelte" },
-      { id: "tisch", label: "Tische", sublabel: "Bierzelt, Stehtisch" },
-      { id: "stuhl", label: "Stühle & Bänke", sublabel: "Klapp- & Festzeltgarnitur" },
-      { id: "lounge", label: "Lounge-Möbel", sublabel: "Sofas, Sessel" },
-    ],
-  },
-];
+
 
 // ============= GESCHIRR, GLÄSER & BESTECK =============
 export const geschirrFilterSections: FilterSection[] = [

@@ -375,14 +375,34 @@ export default function CategoryProducts() {
                   "subwoofer": ["subwoofer"],
                   "zubehoer": ["zubehoer"],
                 };
+                const moebelZelteTypeGroups: Record<string, string[]> = {
+                  "zelt": ["zelt"],
+                  "moebel": ["moebel", "stuhl", "tisch", "bank"],
+                  "husse": ["husse"],
+                  "kuehlgeraet": ["kuehlgeraet"],
+                };
+                const beleuchtungTypeGroups: Record<string, string[]> = {
+                  "fluter": ["fluter", "baustrahler"],
+                  "spot": ["spot", "par", "led-spot"],
+                  "moving-head": ["moving-head", "movinghead"],
+                  "deko": ["deko", "lichterkette"],
+                  "arbeitsleuchte": ["arbeitsleuchte", "handlampe"],
+                };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
                   category?.id === "gartenpflege" ? gartenpflegeTypeGroups[value] :
                   category?.id === "kabel-stromverteiler" ? kabelStromverteilerTypeGroups[value] :
+                  category?.id === "moebel-zelte" ? moebelZelteTypeGroups[value] :
+                  category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
                   undefined;
 
                 if (groupCategories && p.category) return groupCategories.includes(p.category);
+                // For moebel-zelte "moebel" group also match by name keywords
+                if (category?.id === "moebel-zelte" && value === "moebel") {
+                  const nameLower = p.name.toLowerCase();
+                  return nameLower.includes("stuhl") || nameLower.includes("tisch") || nameLower.includes("bank") || nameLower.includes("bierzelt");
+                }
                 return false;
               });
             });
@@ -475,6 +495,58 @@ export default function CategoryProducts() {
             filtered = filtered.filter((p) => {
               const ra = (p.specifications?.["Reflektionsklasse"] || "").toLowerCase().replace(/\s/g, "");
               return selectedValues.some((v) => ra.includes(v.toLowerCase()));
+            });
+          }
+          // Zeltgröße filter for moebel-zelte
+          else if (sectionId === "zeltgroesse") {
+            filtered = filtered.filter((p) => {
+              // Only apply to tents
+              if (p.category !== "zelt") return false;
+              // Extract area from product name (e.g. "Partyzelt 4x6m" -> 24m²)
+              const dimMatch = p.name.match(/(\d+)\s*x\s*(\d+)\s*m/i);
+              if (dimMatch) {
+                const area = parseInt(dimMatch[1]) * parseInt(dimMatch[2]);
+                return selectedValues.some((v) => {
+                  if (v === "bis-16m2") return area <= 16;
+                  if (v === "17-40m2") return area >= 17 && area <= 40;
+                  if (v === "ab-48m2") return area >= 48;
+                  return false;
+                });
+              }
+              // Fallback: check specifications
+              const grundflaecheStr = String(p.specifications?.["Grundfläche"] || "");
+              const areaMatch = grundflaecheStr.match(/(\d+)\s*m²/);
+              if (areaMatch) {
+                const area = parseInt(areaMatch[1]);
+                return selectedValues.some((v) => {
+                  if (v === "bis-16m2") return area <= 16;
+                  if (v === "17-40m2") return area >= 17 && area <= 40;
+                  if (v === "ab-48m2") return area >= 48;
+                  return false;
+                });
+              }
+              return true;
+            });
+          }
+          // Einsatzbereich filter for beleuchtung
+          else if (sectionId === "einsatz") {
+            filtered = filtered.filter((p) => {
+              const nameLower = p.name.toLowerCase();
+              const descLower = (p.description || "").toLowerCase();
+              const specsStr = Object.values(p.specifications || {}).join(" ").toLowerCase();
+              const combined = `${nameLower} ${descLower} ${specsStr}`;
+              return selectedValues.some((v) => {
+                if (v === "event") {
+                  return combined.includes("event") || combined.includes("bühne") || combined.includes("buehne") ||
+                    combined.includes("spot") || combined.includes("par ") || combined.includes("moving") ||
+                    p.category === "spot" || p.category === "moving-head";
+                }
+                if (v === "baustelle") {
+                  return combined.includes("bau") || combined.includes("fluter") || combined.includes("strahler") ||
+                    combined.includes("arbeits") || p.category === "fluter" || p.category === "arbeitsleuchte";
+                }
+                return false;
+              });
             });
           }
           // Beschallung: Personenanzahl filter
