@@ -83,6 +83,9 @@ import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
+import imgDasVantec18a1 from "@/assets/products/das-vantec-18a-1.jpeg";
+import imgDasVantec18a2 from "@/assets/products/das-vantec-18a-2.jpeg";
+import imgDasVantec18a3 from "@/assets/products/das-vantec-18a-3.jpeg";
 import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
 import imgKmDistanzstange21366 from "@/assets/products/km-21366-distanzstange-1.jpeg";
 import imgSoundsystem1400w1 from "@/assets/products/soundsystem-1400w-1.jpeg";
@@ -1876,10 +1879,18 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-vantec-18a",
     name: "D.A.S. Audio Vantec 18A",
-    description: "18\" aktiver Subwoofer",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Aktiver 18\" Subwoofer mit 2000 W und 134 dB max. SPL. Kraftvoller Bass für Veranstaltungen jeder Größe. Optional sind Distanzstangen erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    image: imgDasVantec18a1,
+    images: [imgDasVantec18a1, imgDasVantec18a2, imgDasVantec18a3],
     category: "subwoofer",
+    specifications: {
+      "Typ": "Aktiv, Subwoofer",
+      "Leistung": "2000 W (Peak)",
+      "Bestückung": "1× 18\"",
+      "Max. Schalldruckpegel": "134 dB SPL (Peak, 1 m)",
+      "Zubehör": "Distanzstangen optional erhältlich",
+    },
+    pdfUrl: "/manuals/das-vantec-18a-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "I3RY5W" }
   },
   {
