@@ -976,7 +976,7 @@ export default function CategoryProducts() {
                       <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
                       <DeliveryCalculatorCompact 
                         productCategoryId={category.id} 
-                        categoryDisplayName={categoryDisplayNames[category.id]}
+                        categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
                       />
                     </>
                   )}
@@ -986,7 +986,7 @@ export default function CategoryProducts() {
                       {categoryFilterMap[category.id] && (
                         <>
                           <CategoryFilter
-                            searchPlaceholder={categorySearchPlaceholders[category.id] || "Artikel suchen..."}
+                            searchPlaceholder={t(categorySearchPlaceholders[category.id] || "catSearch.default")}
                             sections={categoryFilterMap[category.id]}
                             onFilterChange={setGenericFilters}
                             variant={(category.id === "heizung-trocknung" || category.id === "beschallung") ? "accordion" : "badges"}
@@ -1007,7 +1007,7 @@ export default function CategoryProducts() {
                       )}
                       <DeliveryCalculatorCompact 
                         productCategoryId={category.id}
-                        categoryDisplayName={categoryDisplayNames[category.id]}
+                        categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
                       />
                     </>
                   )}

@@ -1345,5 +1345,179 @@
     "typeLeafSub": "Garden & green waste",
     "typeVacation": "Holiday",
     "typeVacationSub": "Camping & leisure"
+  },
+  "earthFilter": {
+    "searchPlaceholder": "Search machines...",
+    "machineType": "Machine Type",
+    "operatingWeight": "Operating Weight",
+    "driveType": "Drive Type",
+    "minibagger": "Mini Excavator",
+    "radlader": "Wheel Loader",
+    "dumper": "Dumper",
+    "diesel": "Diesel",
+    "benzin": "Petrol",
+    "elektro": "Electric",
+    "bis1500": "Up to 1.5t",
+    "1500bis2500": "1.5t – 2.5t",
+    "ab2500": "2.5t and above",
+    "reset": "Reset filters"
+  },
+  "catSearch": {
+    "default": "Search items...",
+    "werkzeuge": "Search tools...",
+    "gartenpflege": "Search garden equipment...",
+    "aggregate": "Search generators...",
+    "arbeitsbuehnen": "Search platforms...",
+    "verdichtung": "Search compaction...",
+    "heizungTrocknung": "Search heating/drying...",
+    "leiternGerueste": "Search ladders/scaffolding...",
+    "beleuchtung": "Search lighting...",
+    "beschallung": "Search PA equipment...",
+    "moebelZelte": "Search furniture/tents...",
+    "geschirr": "Search tableware...",
+    "huepfburgen": "Search bouncy castles...",
+    "absperrtechnik": "Search barriers/signs...",
+    "spezialeffekte": "Search effects...",
+    "kabelStromverteiler": "Search cables/distributors...",
+    "buehne": "Search stage elements...",
+    "traversenRigging": "Search trusses...",
+    "kommunikation": "Search radios..."
+  },
+  "catDisplay": {
+    "werkzeuge": "Tools",
+    "gartenpflege": "Garden Care",
+    "aggregate": "Generators",
+    "arbeitsbuehnen": "Aerial Platforms",
+    "verdichtung": "Compaction",
+    "heizungTrocknung": "Heating & Drying",
+    "leiternGerueste": "Ladders & Scaffolding",
+    "beleuchtung": "Lighting",
+    "beschallung": "Sound",
+    "moebelZelte": "Furniture & Tents",
+    "geschirr": "Tableware",
+    "huepfburgen": "Bouncy Castles",
+    "absperrtechnik": "Barriers & Safety",
+    "spezialeffekte": "Special Effects",
+    "kabelStromverteiler": "Cables & Power",
+    "buehne": "Stage",
+    "traversenRigging": "Trusses",
+    "kommunikation": "Communication",
+    "erdbewegung": "Earthmoving",
+    "anhaenger": "Trailers"
+  },
+  "infoBanner": {
+    "werkzeuge": {
+      "desc": "Professional cordless and electric tools from Bosch, Eibenstock and Einhell for construction, renovation and trades. All cordless tools include battery and charger.",
+      "item1": "Brand Quality", "item1sub": "Bosch Professional & more",
+      "item2": "Incl. Battery & Charger", "item2sub": "Ready to use immediately",
+      "item3": "Tested & Maintained", "item3sub": "Top condition guaranteed"
+    },
+    "gartenpflege": {
+      "desc": "Garden equipment for professionals and DIY enthusiasts. From chainsaws to earth augers – everything for your garden.",
+      "item1": "Cutting & Trimming", "item1sub": "Chainsaws, hedge trimmers",
+      "item2": "Soil Cultivation", "item2sub": "Earth auger, tiller, hoe",
+      "item3": "Battery & Petrol", "item3sub": "Various drive types"
+    },
+    "aggregate": {
+      "desc": "Reliable power supply for construction sites, events or emergencies. From small battery packs to powerful industrial generators.",
+      "item1": "2.8 to 100 kVA", "item1sub": "For every requirement",
+      "item2": "Battery Packs", "item2sub": "Portable & quiet",
+      "item3": "Compressors", "item3sub": "Compressed air on site"
+    },
+    "arbeitsbuehnen": {
+      "desc": "Safe work at height with our electric aerial platforms. All platforms are instructed and suitable for indoor and outdoor use.",
+      "item1": "8m to 12m+", "item1sub": "Various working heights",
+      "item2": "Electric", "item2sub": "Emission-free & quiet",
+      "item3": "Training Included", "item3sub": "Safe operation",
+      "highlightTitle": "Zoomlion Authorised Dealer",
+      "highlightText": "As an official Zoomlion authorised dealer, we offer first-class aerial platforms with full service."
+    },
+    "verdichtung": {
+      "desc": "Professional soil compaction with rammers and plate compactors for paving, trenches and foundation preparation.",
+      "item1": "70 to 250 kg", "item1sub": "Various weight classes",
+      "item2": "Rammers & Plates", "item2sub": "For every application",
+      "item3": "Ready to Use", "item3sub": "Fuelled & tested"
+    },
+    "heizung": {
+      "desc": "Heaters and construction dryers for shell construction, renovation and events. Efficient solutions for warmth and dehumidification.",
+      "item1": "Heaters", "item1sub": "Electric & gas",
+      "item2": "Construction Dryers", "item2sub": "Fast dehumidification",
+      "item3": "Fans", "item3sub": "Air circulation"
+    },
+    "leitern": {
+      "desc": "Safe ladders and mobile scaffolding for working at height. TÜV-tested and regularly maintained.",
+      "item1": "Various Heights", "item1sub": "Up to 12m working height",
+      "item2": "Mobile Scaffolding", "item2sub": "Mobile & stable",
+      "item3": "TÜV-Tested", "item3sub": "Maximum safety"
+    },
+    "beleuchtung": {
+      "desc": "Professional lighting for events, construction sites and venues. From LED floodlights to stage lighting.",
+      "item1": "LED Technology", "item1sub": "Energy-efficient",
+      "item2": "Stage Lighting", "item2sub": "Moving heads, PAR",
+      "item3": "Battery & Mains", "item3sub": "Flexible solutions"
+    },
+    "beschallung": {
+      "desc": "PA systems and sound equipment for events, conferences and celebrations – from complete setups to individual microphones.",
+      "item1": "PA Systems", "item1sub": "Up to 250 persons",
+      "item2": "Wireless Microphones", "item2sub": "Cable-free freedom",
+      "item3": "Setup & Support", "item3sub": "On-site by our team"
+    },
+    "moebelZelte": {
+      "desc": "Event furniture and tents for your event. Beer garden sets, standing tables, party tents and lounge furniture.",
+      "item1": "Party Tents", "item1sub": "Various sizes",
+      "item2": "Tables & Chairs", "item2sub": "For every occasion",
+      "item3": "Clean & Well-Kept", "item3sub": "Event-ready"
+    },
+    "geschirr": {
+      "desc": "Tableware, glasses and cutlery for your event. High-quality, washed and packed transport-ready in crates.",
+      "item1": "Complete Sets", "item1sub": "Tableware, cutlery, glasses",
+      "item2": "Delivered Washed", "item2sub": "Ready to use immediately",
+      "item3": "Packed in Crates", "item3sub": "Easy transport"
+    },
+    "huepfburgen": {
+      "desc": "Inflatable bouncy castles and games for children's parties, corporate events and celebrations.",
+      "item1": "Various Models", "item1sub": "For every age",
+      "item2": "Incl. Blower", "item2sub": "Complete set",
+      "item3": "TÜV-Tested", "item3sub": "Maximum safety"
+    },
+    "absperrtechnik": {
+      "desc": "Traffic signs, construction fences, warning barriers and complete traffic safety – incl. planning and applications for no-parking zones.",
+      "item1": "Traffic Signs", "item1sub": "RA1 & RA2, all types",
+      "item2": "Fences & Barriers", "item2sub": "Construction sites & events",
+      "item3": "Full Service Available", "item3sub": "Planning & applications",
+      "highlightTitle": "Traffic Safety from One Source",
+      "highlightText": "We handle complete planning of your traffic safety – incl. no-parking zones, authority applications and setup.",
+      "highlightLink": "More info at slt-infra.de"
+    },
+    "spezialeffekte": {
+      "desc": "Impressive special effects for unforgettable events. Fog, bubbles, sparks and more.",
+      "item1": "Fog Machines", "item1sub": "Create atmosphere",
+      "item2": "Cold Sparks", "item2sub": "Safe pyrotechnics",
+      "item3": "Training Included", "item3sub": "Safe operation"
+    },
+    "kabel": {
+      "desc": "Extension cables, power distributors and cable bridges for safe power supply at your event.",
+      "item1": "Cables", "item1sub": "Various lengths",
+      "item2": "Distributors", "item2sub": "CEE & Schuko",
+      "item3": "Tested", "item3sub": "Safety first"
+    },
+    "buehne": {
+      "desc": "Stage elements and platforms for professional performances. Nivtec systems for flexible stage design.",
+      "item1": "Nivtec System", "item1sub": "Modular stage",
+      "item2": "Various Heights", "item2sub": "20cm to 100cm",
+      "item3": "Setup Service", "item3sub": "Available on request"
+    },
+    "traversen": {
+      "desc": "Trusses and rigging equipment for professional stage constructions. Milos trusses in black.",
+      "item1": "Milos Trusses", "item1sub": "High quality & stable",
+      "item2": "Various Lengths", "item2sub": "0.5m to 3m",
+      "item3": "Black Anodised", "item3sub": "Subtle & elegant"
+    },
+    "kommunikation": {
+      "desc": "Walkie-talkies for events, construction sites and venues. Reliable communication for your team.",
+      "item1": "UHF Radios", "item1sub": "Long range",
+      "item2": "Incl. Batteries", "item2sub": "Ready to use immediately",
+      "item3": "Multiple Sets", "item3sub": "For large teams"
+    }
   }
 }

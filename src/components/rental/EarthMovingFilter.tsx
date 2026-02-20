@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface EarthMovingFilterState {
   search: string;
@@ -14,25 +15,27 @@ interface EarthMovingFilterProps {
   onFilterChange: (filters: EarthMovingFilterState) => void;
 }
 
-const typeFilters = [
-  { id: "minibagger", label: "Minibagger" },
-  { id: "radlader", label: "Radlader" },
-  { id: "dumper", label: "Dumper" },
-];
-
-const driveTypeFilters = [
-  { id: "diesel", label: "Diesel" },
-  { id: "benzin", label: "Benzin" },
-  { id: "elektro", label: "Elektro" },
-];
-
-const weightRangeFilters = [
-  { id: "bis-1500", label: "Bis 1,5t" },
-  { id: "1500-2500", label: "1,5t - 2,5t" },
-  { id: "ab-2500", label: "Ab 2,5t" },
-];
-
 export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
+  const { t } = useTranslation();
+
+  const typeFilters = [
+    { id: "minibagger", label: t("earthFilter.minibagger") },
+    { id: "radlader", label: t("earthFilter.radlader") },
+    { id: "dumper", label: t("earthFilter.dumper") },
+  ];
+
+  const driveTypeFilters = [
+    { id: "diesel", label: t("earthFilter.diesel") },
+    { id: "benzin", label: t("earthFilter.benzin") },
+    { id: "elektro", label: t("earthFilter.elektro") },
+  ];
+
+  const weightRangeFilters = [
+    { id: "bis-1500", label: t("earthFilter.bis1500") },
+    { id: "1500-2500", label: t("earthFilter.1500bis2500") },
+    { id: "ab-2500", label: t("earthFilter.ab2500") },
+  ];
+
   const [filters, setFilters] = useState<EarthMovingFilterState>({
     search: "",
     types: [],
@@ -69,7 +72,7 @@ export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Maschine suchen..."
+          placeholder={t("earthFilter.searchPlaceholder")}
           value={filters.search}
           onChange={(e) => updateFilters({ search: e.target.value })}
           className="pl-10"
@@ -78,7 +81,7 @@ export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
 
       {/* Type Filters */}
       <div>
-        <p className="text-sm font-medium text-foreground mb-2">Maschinentyp</p>
+        <p className="text-sm font-medium text-foreground mb-2">{t("earthFilter.machineType")}</p>
         <div className="flex flex-wrap gap-2">
           {typeFilters.map((filter) => (
             <Badge
@@ -95,7 +98,7 @@ export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
 
       {/* Weight Range Filters */}
       <div>
-        <p className="text-sm font-medium text-foreground mb-2">Einsatzgewicht</p>
+        <p className="text-sm font-medium text-foreground mb-2">{t("earthFilter.operatingWeight")}</p>
         <div className="flex flex-wrap gap-2">
           {weightRangeFilters.map((filter) => (
             <Badge
@@ -112,7 +115,7 @@ export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
 
       {/* Drive Type Filters */}
       <div>
-        <p className="text-sm font-medium text-foreground mb-2">Antriebsart</p>
+        <p className="text-sm font-medium text-foreground mb-2">{t("earthFilter.driveType")}</p>
         <div className="flex flex-wrap gap-2">
           {driveTypeFilters.map((filter) => (
             <Badge
@@ -134,7 +137,7 @@ export function EarthMovingFilter({ onFilterChange }: EarthMovingFilterProps) {
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="h-3 w-3" />
-          Filter zurücksetzen
+          {t("earthFilter.reset")}
         </button>
       )}
     </div>

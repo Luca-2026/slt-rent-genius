@@ -20,177 +20,183 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 interface InfoItem {
   icon: ReactNode;
-  title: string;
-  subtitle: string;
+  titleKey: string;
+  subtitleKey: string;
 }
 
 interface CategoryInfoBannerProps {
   categoryId: string;
 }
 
-const categoryInfoConfig: Record<string, { description?: string; items: InfoItem[]; highlight?: { icon: ReactNode; title: string; text: string; link?: string; linkLabel?: string } }> = {
+const categoryInfoConfig: Record<string, {
+  descriptionKey?: string;
+  items: InfoItem[];
+  highlight?: { icon: ReactNode; titleKey: string; textKey: string; link?: string; linkLabelKey?: string }
+}> = {
   "werkzeuge": {
-    description: "Professionelle Akku- und Elektrowerkzeuge von Bosch, Eibenstock und Einhell für Bau, Renovierung und Handwerk. Alle Akkuwerkzeuge inkl. Akku und Ladegerät.",
+    descriptionKey: "infoBanner.werkzeuge.desc",
     items: [
-      { icon: <Wrench className="h-5 w-5 text-accent" />, title: "Markenqualität", subtitle: "Bosch Professional & mehr" },
-      { icon: <Battery className="h-5 w-5 text-accent" />, title: "Inkl. Akku & Ladegerät", subtitle: "Sofort einsatzbereit" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Geprüft & gewartet", subtitle: "Top Zustand garantiert" },
+      { icon: <Wrench className="h-5 w-5 text-accent" />, titleKey: "infoBanner.werkzeuge.item1", subtitleKey: "infoBanner.werkzeuge.item1sub" },
+      { icon: <Battery className="h-5 w-5 text-accent" />, titleKey: "infoBanner.werkzeuge.item2", subtitleKey: "infoBanner.werkzeuge.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.werkzeuge.item3", subtitleKey: "infoBanner.werkzeuge.item3sub" },
     ],
   },
   "gartenpflege": {
-    description: "Gartengeräte für Profis und Heimwerker. Von der Kettensäge bis zum Erdbohrer – alles für Ihren Garten.",
+    descriptionKey: "infoBanner.gartenpflege.desc",
     items: [
-      { icon: <TreeDeciduous className="h-5 w-5 text-accent" />, title: "Schneiden & Pflegen", subtitle: "Kettensägen, Heckenscheren" },
-      { icon: <Leaf className="h-5 w-5 text-accent" />, title: "Bodenbearbeitung", subtitle: "Erdbohrer, Fräsen, Hacken" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Akku & Benzin", subtitle: "Verschiedene Antriebe" },
+      { icon: <TreeDeciduous className="h-5 w-5 text-accent" />, titleKey: "infoBanner.gartenpflege.item1", subtitleKey: "infoBanner.gartenpflege.item1sub" },
+      { icon: <Leaf className="h-5 w-5 text-accent" />, titleKey: "infoBanner.gartenpflege.item2", subtitleKey: "infoBanner.gartenpflege.item2sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.gartenpflege.item3", subtitleKey: "infoBanner.gartenpflege.item3sub" },
     ],
   },
   "aggregate": {
-    description: "Zuverlässige Stromversorgung für Baustelle, Event oder Notfall. Von kleinen Akkupacks bis zu leistungsstarken Industrieaggregaten.",
+    descriptionKey: "infoBanner.aggregate.desc",
     items: [
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "2,8 bis 100 kVA", subtitle: "Für jeden Bedarf" },
-      { icon: <Battery className="h-5 w-5 text-accent" />, title: "Akkupacks", subtitle: "Tragbar & leise" },
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Kompressoren", subtitle: "Druckluft vor Ort" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.aggregate.item1", subtitleKey: "infoBanner.aggregate.item1sub" },
+      { icon: <Battery className="h-5 w-5 text-accent" />, titleKey: "infoBanner.aggregate.item2", subtitleKey: "infoBanner.aggregate.item2sub" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, titleKey: "infoBanner.aggregate.item3", subtitleKey: "infoBanner.aggregate.item3sub" },
     ],
   },
   "arbeitsbuehnen": {
-    description: "Sichere Höhenarbeit mit unseren elektrischen Arbeitsbühnen. Alle Bühnen werden eingewiesen und sind für Innen- und Außeneinsatz geeignet.",
+    descriptionKey: "infoBanner.arbeitsbuehnen.desc",
     items: [
-      { icon: <Ruler className="h-5 w-5 text-accent" />, title: "8m bis 12m+", subtitle: "Verschiedene Arbeitshöhen" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Elektrisch", subtitle: "Emissionsfrei & leise" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Einweisung inkl.", subtitle: "Sichere Bedienung" },
+      { icon: <Ruler className="h-5 w-5 text-accent" />, titleKey: "infoBanner.arbeitsbuehnen.item1", subtitleKey: "infoBanner.arbeitsbuehnen.item1sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.arbeitsbuehnen.item2", subtitleKey: "infoBanner.arbeitsbuehnen.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.arbeitsbuehnen.item3", subtitleKey: "infoBanner.arbeitsbuehnen.item3sub" },
     ],
     highlight: {
       icon: <Zap className="h-6 w-6 text-primary" />,
-      title: "Zoomlion Fachhändler",
-      text: "Als offizieller Zoomlion-Fachhändler bieten wir erstklassige Arbeitsbühnen mit vollem Service.",
+      titleKey: "infoBanner.arbeitsbuehnen.highlightTitle",
+      textKey: "infoBanner.arbeitsbuehnen.highlightText",
     },
   },
   "verdichtung": {
-    description: "Professionelle Bodenverdichtung mit Stampfern und Rüttelplatten für Pflasterarbeiten, Gräben und Fundamentvorbereitung.",
+    descriptionKey: "infoBanner.verdichtung.desc",
     items: [
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "70 bis 250 kg", subtitle: "Verschiedene Gewichtsklassen" },
-      { icon: <Wrench className="h-5 w-5 text-accent" />, title: "Stampfer & Platten", subtitle: "Für jeden Einsatz" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Sofort einsatzbereit", subtitle: "Betankt & geprüft" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, titleKey: "infoBanner.verdichtung.item1", subtitleKey: "infoBanner.verdichtung.item1sub" },
+      { icon: <Wrench className="h-5 w-5 text-accent" />, titleKey: "infoBanner.verdichtung.item2", subtitleKey: "infoBanner.verdichtung.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.verdichtung.item3", subtitleKey: "infoBanner.verdichtung.item3sub" },
     ],
   },
   "heizung-trocknung": {
-    description: "Heizgeräte und Bautrockner für Rohbau, Renovierung und Events. Effiziente Lösungen für Wärme und Entfeuchtung.",
+    descriptionKey: "infoBanner.heizung.desc",
     items: [
-      { icon: <Thermometer className="h-5 w-5 text-accent" />, title: "Heizgeräte", subtitle: "Elektro & Gas" },
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Bautrockner", subtitle: "Schnelle Entfeuchtung" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Ventilatoren", subtitle: "Luftzirkulation" },
+      { icon: <Thermometer className="h-5 w-5 text-accent" />, titleKey: "infoBanner.heizung.item1", subtitleKey: "infoBanner.heizung.item1sub" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, titleKey: "infoBanner.heizung.item2", subtitleKey: "infoBanner.heizung.item2sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.heizung.item3", subtitleKey: "infoBanner.heizung.item3sub" },
     ],
   },
   "leitern-gerueste": {
-    description: "Sichere Leitern und Rollgerüste für Arbeiten in der Höhe. TÜV-geprüft und regelmäßig gewartet.",
+    descriptionKey: "infoBanner.leitern.desc",
     items: [
-      { icon: <Ruler className="h-5 w-5 text-accent" />, title: "Verschiedene Höhen", subtitle: "Bis 12m Arbeitshöhe" },
-      { icon: <Construction className="h-5 w-5 text-accent" />, title: "Rollgerüste", subtitle: "Fahrbar & stabil" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "TÜV-geprüft", subtitle: "Maximale Sicherheit" },
+      { icon: <Ruler className="h-5 w-5 text-accent" />, titleKey: "infoBanner.leitern.item1", subtitleKey: "infoBanner.leitern.item1sub" },
+      { icon: <Construction className="h-5 w-5 text-accent" />, titleKey: "infoBanner.leitern.item2", subtitleKey: "infoBanner.leitern.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.leitern.item3", subtitleKey: "infoBanner.leitern.item3sub" },
     ],
   },
   "beleuchtung": {
-    description: "Professionelle Beleuchtung für Events, Baustellen und Veranstaltungen. Von LED-Fluter bis Bühnenlicht.",
+    descriptionKey: "infoBanner.beleuchtung.desc",
     items: [
-      { icon: <Lightbulb className="h-5 w-5 text-accent" />, title: "LED-Technik", subtitle: "Energieeffizient" },
-      { icon: <Sparkles className="h-5 w-5 text-accent" />, title: "Bühnenlicht", subtitle: "Moving Heads, PAR" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Akku & Strom", subtitle: "Flexible Lösungen" },
+      { icon: <Lightbulb className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beleuchtung.item1", subtitleKey: "infoBanner.beleuchtung.item1sub" },
+      { icon: <Sparkles className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beleuchtung.item2", subtitleKey: "infoBanner.beleuchtung.item2sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beleuchtung.item3", subtitleKey: "infoBanner.beleuchtung.item3sub" },
     ],
   },
   "beschallung": {
-    description: "PA-Systeme und Beschallungstechnik für Events, Konferenzen und Feiern – von der Komplett-Anlage bis zum einzelnen Mikrofon. Wir bauen auf Wunsch auch auf und betreuen Sie vor Ort.",
+    descriptionKey: "infoBanner.beschallung.desc",
     items: [
-      { icon: <Music className="h-5 w-5 text-accent" />, title: "PA-Systeme", subtitle: "Bis 250 Personen" },
-      { icon: <Radio className="h-5 w-5 text-accent" />, title: "Funkmikrofone", subtitle: "Kabellose Freiheit" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Aufbau & Betreuung", subtitle: "Vor Ort durch unser Team" },
+      { icon: <Music className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beschallung.item1", subtitleKey: "infoBanner.beschallung.item1sub" },
+      { icon: <Radio className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beschallung.item2", subtitleKey: "infoBanner.beschallung.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.beschallung.item3", subtitleKey: "infoBanner.beschallung.item3sub" },
     ],
   },
   "moebel-zelte": {
-    description: "Event-Mobiliar und Zelte für Ihre Veranstaltung. Bierzeltgarnituren, Stehtische, Partyzelte und Lounge-Möbel.",
+    descriptionKey: "infoBanner.moebelZelte.desc",
     items: [
-      { icon: <Tent className="h-5 w-5 text-accent" />, title: "Partyzelte", subtitle: "Verschiedene Größen" },
-      { icon: <Box className="h-5 w-5 text-accent" />, title: "Tische & Stühle", subtitle: "Für jeden Anlass" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Sauber & gepflegt", subtitle: "Event-ready" },
+      { icon: <Tent className="h-5 w-5 text-accent" />, titleKey: "infoBanner.moebelZelte.item1", subtitleKey: "infoBanner.moebelZelte.item1sub" },
+      { icon: <Box className="h-5 w-5 text-accent" />, titleKey: "infoBanner.moebelZelte.item2", subtitleKey: "infoBanner.moebelZelte.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.moebelZelte.item3", subtitleKey: "infoBanner.moebelZelte.item3sub" },
     ],
   },
   "geschirr-glaeser-besteck": {
-    description: "Geschirr, Gläser und Besteck für Ihre Veranstaltung. Hochwertig, gespült und transportfertig in Kisten verpackt.",
+    descriptionKey: "infoBanner.geschirr.desc",
     items: [
-      { icon: <UtensilsCrossed className="h-5 w-5 text-accent" />, title: "Komplette Sets", subtitle: "Geschirr, Besteck, Gläser" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Gespült geliefert", subtitle: "Sofort einsatzbereit" },
-      { icon: <Box className="h-5 w-5 text-accent" />, title: "In Kisten verpackt", subtitle: "Einfacher Transport" },
+      { icon: <UtensilsCrossed className="h-5 w-5 text-accent" />, titleKey: "infoBanner.geschirr.item1", subtitleKey: "infoBanner.geschirr.item1sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.geschirr.item2", subtitleKey: "infoBanner.geschirr.item2sub" },
+      { icon: <Box className="h-5 w-5 text-accent" />, titleKey: "infoBanner.geschirr.item3", subtitleKey: "infoBanner.geschirr.item3sub" },
     ],
   },
   "huepfburgen": {
-    description: "Aufblasbare Hüpfburgen und Spiele für Kinderfeste, Firmenevents und Veranstaltungen. Spaß für Groß und Klein!",
+    descriptionKey: "infoBanner.huepfburgen.desc",
     items: [
-      { icon: <Castle className="h-5 w-5 text-accent" />, title: "Verschiedene Modelle", subtitle: "Für jedes Alter" },
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Inkl. Gebläse", subtitle: "Komplett-Set" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "TÜV-geprüft", subtitle: "Maximale Sicherheit" },
+      { icon: <Castle className="h-5 w-5 text-accent" />, titleKey: "infoBanner.huepfburgen.item1", subtitleKey: "infoBanner.huepfburgen.item1sub" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, titleKey: "infoBanner.huepfburgen.item2", subtitleKey: "infoBanner.huepfburgen.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.huepfburgen.item3", subtitleKey: "infoBanner.huepfburgen.item3sub" },
     ],
   },
   "absperrtechnik": {
-    description: "Verkehrszeichen, Bauzäune, Warnbarken und komplette Verkehrssicherung – inkl. Planung und Antrag für Halteverbotszonen.",
+    descriptionKey: "infoBanner.absperrtechnik.desc",
     items: [
-      { icon: <Construction className="h-5 w-5 text-accent" />, title: "Verkehrszeichen", subtitle: "RA1 & RA2, alle Typen" },
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Bauzäune & Gitter", subtitle: "Baustelle & Events" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Vollservice möglich", subtitle: "Planung & Antragstellung" },
+      { icon: <Construction className="h-5 w-5 text-accent" />, titleKey: "infoBanner.absperrtechnik.item1", subtitleKey: "infoBanner.absperrtechnik.item1sub" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, titleKey: "infoBanner.absperrtechnik.item2", subtitleKey: "infoBanner.absperrtechnik.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.absperrtechnik.item3", subtitleKey: "infoBanner.absperrtechnik.item3sub" },
     ],
     highlight: {
       icon: <CheckCircle2 className="h-6 w-6 text-accent" />,
-      title: "Verkehrssicherung aus einer Hand",
-      text: "Wir übernehmen die komplette Planung Ihrer Verkehrssicherung – inkl. Halteverbotszonen, Behördenanträgen und Aufbau.",
+      titleKey: "infoBanner.absperrtechnik.highlightTitle",
+      textKey: "infoBanner.absperrtechnik.highlightText",
       link: "https://www.slt-infra.de",
-      linkLabel: "Mehr Infos auf slt-infra.de",
+      linkLabelKey: "infoBanner.absperrtechnik.highlightLink",
     },
   },
   "spezialeffekte": {
-    description: "Beeindruckende Spezialeffekte für unvergessliche Events. Nebel, Seifenblasen, Funken und mehr.",
+    descriptionKey: "infoBanner.spezialeffekte.desc",
     items: [
-      { icon: <Sparkles className="h-5 w-5 text-accent" />, title: "Nebelmaschinen", subtitle: "Atmosphäre schaffen" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Kalte Funken", subtitle: "Sichere Pyrotechnik" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Einweisung inkl.", subtitle: "Sichere Bedienung" },
+      { icon: <Sparkles className="h-5 w-5 text-accent" />, titleKey: "infoBanner.spezialeffekte.item1", subtitleKey: "infoBanner.spezialeffekte.item1sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.spezialeffekte.item2", subtitleKey: "infoBanner.spezialeffekte.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.spezialeffekte.item3", subtitleKey: "infoBanner.spezialeffekte.item3sub" },
     ],
   },
   "kabel-stromverteiler": {
-    description: "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung.",
+    descriptionKey: "infoBanner.kabel.desc",
     items: [
-      { icon: <Cable className="h-5 w-5 text-accent" />, title: "Kabel", subtitle: "Verschiedene Längen" },
-      { icon: <Zap className="h-5 w-5 text-accent" />, title: "Verteiler", subtitle: "CEE & Schuko" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Geprüft", subtitle: "Sicherheit zuerst" },
+      { icon: <Cable className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kabel.item1", subtitleKey: "infoBanner.kabel.item1sub" },
+      { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kabel.item2", subtitleKey: "infoBanner.kabel.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kabel.item3", subtitleKey: "infoBanner.kabel.item3sub" },
     ],
   },
   "buehne": {
-    description: "Bühnenelemente und Podeste für professionelle Auftritte. Nivtec-Systeme für flexible Bühnengestaltung.",
+    descriptionKey: "infoBanner.buehne.desc",
     items: [
-      { icon: <Box className="h-5 w-5 text-accent" />, title: "Nivtec-System", subtitle: "Modulare Bühne" },
-      { icon: <Ruler className="h-5 w-5 text-accent" />, title: "Verschiedene Höhen", subtitle: "20cm bis 100cm" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Aufbau-Service", subtitle: "Auf Wunsch verfügbar" },
+      { icon: <Box className="h-5 w-5 text-accent" />, titleKey: "infoBanner.buehne.item1", subtitleKey: "infoBanner.buehne.item1sub" },
+      { icon: <Ruler className="h-5 w-5 text-accent" />, titleKey: "infoBanner.buehne.item2", subtitleKey: "infoBanner.buehne.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.buehne.item3", subtitleKey: "infoBanner.buehne.item3sub" },
     ],
   },
   "traversen-rigging": {
-    description: "Traversen und Rigging-Equipment für professionelle Bühnenkonstruktionen. Milos-Traversen in Schwarz.",
+    descriptionKey: "infoBanner.traversen.desc",
     items: [
-      { icon: <Construction className="h-5 w-5 text-accent" />, title: "Milos Traversen", subtitle: "Hochwertig & stabil" },
-      { icon: <Ruler className="h-5 w-5 text-accent" />, title: "Verschiedene Längen", subtitle: "0,5m bis 3m" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Schwarz eloxiert", subtitle: "Dezent & elegant" },
+      { icon: <Construction className="h-5 w-5 text-accent" />, titleKey: "infoBanner.traversen.item1", subtitleKey: "infoBanner.traversen.item1sub" },
+      { icon: <Ruler className="h-5 w-5 text-accent" />, titleKey: "infoBanner.traversen.item2", subtitleKey: "infoBanner.traversen.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.traversen.item3", subtitleKey: "infoBanner.traversen.item3sub" },
     ],
   },
   "kommunikation": {
-    description: "Funkgeräte für Events, Baustellen und Veranstaltungen. Zuverlässige Kommunikation für Ihr Team.",
+    descriptionKey: "infoBanner.kommunikation.desc",
     items: [
-      { icon: <Radio className="h-5 w-5 text-accent" />, title: "UHF-Funkgeräte", subtitle: "Große Reichweite" },
-      { icon: <Battery className="h-5 w-5 text-accent" />, title: "Inkl. Akkus", subtitle: "Sofort einsatzbereit" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Mehrere Sets", subtitle: "Für große Teams" },
+      { icon: <Radio className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kommunikation.item1", subtitleKey: "infoBanner.kommunikation.item1sub" },
+      { icon: <Battery className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kommunikation.item2", subtitleKey: "infoBanner.kommunikation.item2sub" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.kommunikation.item3", subtitleKey: "infoBanner.kommunikation.item3sub" },
     ],
   },
 };
 
 export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
+  const { t } = useTranslation();
   const config = categoryInfoConfig[categoryId];
   
   if (!config) return null;
@@ -199,9 +205,9 @@ export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
     <section className="bg-accent/10 border-y border-accent/20">
       <div className="section-container py-6">
         {/* Description */}
-        {config.description && (
+        {config.descriptionKey && (
           <p className="text-foreground mb-6">
-            {config.description}
+            {t(config.descriptionKey)}
           </p>
         )}
         
@@ -213,8 +219,8 @@ export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
                 {item.icon}
               </div>
               <div>
-                <p className="font-semibold text-foreground">{item.title}</p>
-                <p className="text-sm text-muted-foreground">{item.subtitle}</p>
+                <p className="font-semibold text-foreground">{t(item.titleKey)}</p>
+                <p className="text-sm text-muted-foreground">{t(item.subtitleKey)}</p>
               </div>
             </div>
           ))}
@@ -228,11 +234,13 @@ export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
                 {config.highlight.icon}
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">{config.highlight.title}</p>
+                <p className="font-semibold text-foreground mb-1">{t(config.highlight.titleKey)}</p>
                 <p className="text-sm text-muted-foreground">
-                  {config.highlight.text}
+                  {t(config.highlight.textKey)}
                   {config.highlight.link && (
-                    <> <a href={config.highlight.link} target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">{config.highlight.linkLabel ?? config.highlight.link}</a></>
+                    <> <a href={config.highlight.link} target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">
+                      {config.highlight.linkLabelKey ? t(config.highlight.linkLabelKey) : config.highlight.link}
+                    </a></>
                   )}
                 </p>
               </div>
