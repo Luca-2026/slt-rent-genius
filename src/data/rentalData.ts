@@ -911,25 +911,56 @@ function withFixedCategory(products: Product[], category: string): Product[] {
 }
 
 /**
- * Merges primary location products with Krefeld fallback products.
- * Products from `primary` that already have a rentware code for `locationId` are kept as-is.
- * Krefeld fallback products are only added if no product with the same id exists in primary.
- * Fallback products have their rentwareCode stripped for the location to indicate "Auf Anfrage".
+ * Merges primary location products with Krefeld reference products.
+ *
+ * 1. Enrich: For each primary product, find a matching Krefeld product by
+ *    name (case-insensitive) and copy over missing fields (images, specs, PDF,
+ *    videos, description, category) so the local entry gets full content.
+ *
+ * 2. Fill gaps: Krefeld products that have no match in primary (by ID or name)
+ *    are appended without a rentwareCode for the target location, signalling
+ *    "Auf Anfrage".
  */
 function mergeWithFallback(primary: Product[], krefeld: Product[], locationId: string): Product[] {
-  const primaryIds = new Set(primary.map((p) => p.id));
+  const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  // Build lookup maps for krefeld products
+  const krefeldById  = new Map(krefeld.map((p) => [p.id, p]));
+  const krefeldByName = new Map(krefeld.map((p) => [normalise(p.name), p]));
+
+  // Step 1: enrich primary products with Krefeld content where data is missing
+  const enriched = primary.map((p) => {
+    const ref = krefeldById.get(p.id) ?? krefeldByName.get(normalise(p.name));
+    if (!ref) return p;
+    return {
+      ...p,
+      // Only fill if primary entry lacks the field
+      image:        (p.image && p.image !== "/placeholder.svg") ? p.image : (ref.image ?? p.image),
+      images:       (p.images && p.images.length > 0 && p.images[0] !== "/placeholder.svg") ? p.images : (ref.images ?? p.images),
+      description:  p.description || ref.description,
+      specifications: p.specifications ?? ref.specifications,
+      pdfUrl:       p.pdfUrl ?? ref.pdfUrl,
+      videoUrl:     p.videoUrl ?? ref.videoUrl,
+      videoUrls:    p.videoUrls ?? ref.videoUrls,
+      category:     p.category ?? ref.category,
+      tags:         p.tags ?? ref.tags,
+      weightKg:     p.weightKg ?? ref.weightKg,
+    };
+  });
+
+  // Step 2: collect IDs and names already covered by primary
+  const coveredIds   = new Set(primary.map((p) => p.id));
+  const coveredNames = new Set(primary.map((p) => normalise(p.name)));
+
+  // Add krefeld products that are not represented at the target location at all
   const fallbacks = krefeld
-    .filter((p) => !primaryIds.has(p.id))
+    .filter((p) => !coveredIds.has(p.id) && !coveredNames.has(normalise(p.name)))
     .map((p) => {
-      // Remove the krefeld rentware code - at this location it's "Auf Anfrage"
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { [locationId]: _removed, ...otherCodes } = p.rentwareCode || {};
-      return {
-        ...p,
-        rentwareCode: Object.keys(otherCodes).length > 0 ? otherCodes : undefined,
-      };
+      // Strip all rentware codes so the dialog shows "Auf Anfrage"
+      return { ...p, rentwareCode: undefined };
     });
-  return [...primary, ...fallbacks];
+
+  return [...enriched, ...fallbacks];
 }
 
 // Locations with their available categories and products
