@@ -59,7 +59,8 @@
     "onRequest": "on request",
     "deliveryNote": "* Prices excl. VAT, depending on equipment",
     "route": "Route",
-    "details": "Details"
+    "details": "Details",
+    "locationManager": "Location Manager"
   },
   "steps": {
     "badge": "Get Your Rental in 5 Steps",
@@ -1320,31 +1321,5 @@
     "funkgeraete_sub": "UHF/VHF",
     "headsets": "Headsets",
     "headsets_sub": "Wired & wireless"
-  }
-}
-  }
-}
-    "geraetetyp": "Device Type",
-    "gerätetype": "Device Type",
-    "leistung": "Power Output",
-    "bühnentyp": "Platform Type",
-    "arbeitshöhe": "Working Height",
-    "einsatzgewicht": "Operating Weight",
-    "heizleistung": "Heating Output",
-    "trocknungsfläche": "Drying Area",
-    "typ": "Type",
-    "lichttyp": "Light Type",
-    "einsatzbereich": "Application Area",
-    "produktart": "Product Type",
-    "zeltgröße": "Tent Size",
-    "personenanzahl": "Number of Persons",
-    "ausstattung": "Features",
-    "kategorie": "Category",
-    "größe": "Size",
-    "reflektionsklasse": "Reflection Class",
-    "effekttyp": "Effect Type",
-    "kabeltyp": "Cable Type",
-    "kabellänge": "Cable Length",
-    "zurücksetzen": "Reset"
   }
 }

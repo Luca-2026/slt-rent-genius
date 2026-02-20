@@ -51,7 +51,7 @@ export const locationData: LocationInfo[] = [
     phone: "02151 417 990 4",
     email: "krefeld@slt-rental.de",
     image: imgKrefeld,
-    manager: { name: "Benedikt Nöchel", role: "Standortleiter", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
+    manager: { name: "Benedikt Nöchel", role: "locations.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
     hours: [
       { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
       { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
@@ -72,7 +72,7 @@ export const locationData: LocationInfo[] = [
     phone: "0228 50466061",
     email: "bonn@slt-rental.de",
     image: imgBonn,
-    manager: { name: "Ersel Uzun", role: "Standortleiter", image: imgErsel, email: "e.uzun@slt-rental.de" },
+    manager: { name: "Ersel Uzun", role: "locations.locationManager", image: imgErsel, email: "e.uzun@slt-rental.de" },
     hours: [
       { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
       { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
@@ -93,7 +93,7 @@ export const locationData: LocationInfo[] = [
     phone: "02151 417 990 4",
     email: "muelheim@slt-rental.de",
     image: imgMuelheim,
-    manager: { name: "Andreas Scherzow", role: "Standortleiter", image: null, email: "muelheim@slt-rental.de" },
+    manager: { name: "Andreas Scherzow", role: "locations.locationManager", image: null, email: "muelheim@slt-rental.de" },
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },

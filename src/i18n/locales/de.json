@@ -59,7 +59,8 @@
     "onRequest": "auf Anfrage",
     "deliveryNote": "* Preise zzgl. MwSt., abhängig vom Equipment",
     "route": "Route",
-    "details": "Details"
+    "details": "Details",
+    "locationManager": "Standortleiter"
   },
   "steps": {
     "badge": "In 5 Schritten zum Mietgerät",
@@ -1318,31 +1319,5 @@
     "funkgeraete_sub": "UHF/VHF",
     "headsets": "Headsets",
     "headsets_sub": "Kabel & Funk"
-  }
-}
-  }
-}
-    "geraetetyp": "Gerätetyp",
-    "gerätetype": "Gerätetyp",
-    "leistung": "Leistung",
-    "bühnentyp": "Bühnentyp",
-    "arbeitshöhe": "Arbeitshöhe",
-    "einsatzgewicht": "Einsatzgewicht",
-    "heizleistung": "Heizleistung",
-    "trocknungsfläche": "Trocknungsfläche",
-    "typ": "Typ",
-    "lichttyp": "Lichttyp",
-    "einsatzbereich": "Einsatzbereich",
-    "produktart": "Produktart",
-    "zeltgröße": "Zeltgröße",
-    "personenanzahl": "Personenanzahl",
-    "ausstattung": "Ausstattung",
-    "kategorie": "Kategorie",
-    "größe": "Größe",
-    "reflektionsklasse": "Reflektionsklasse",
-    "effekttyp": "Effekttyp",
-    "kabeltyp": "Kabeltyp",
-    "kabellänge": "Kabellänge",
-    "zurücksetzen": "Zurücksetzen"
   }
 }

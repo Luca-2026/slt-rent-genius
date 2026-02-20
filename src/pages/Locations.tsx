@@ -101,7 +101,7 @@ export default function Locations() {
                         </Avatar>
                         <div className="flex-1">
                           <p className="font-semibold text-headline text-sm group-hover/mgr:text-primary transition-colors">{location.manager.name}</p>
-                          <p className="text-xs text-muted-foreground">{location.manager.role}</p>
+                          <p className="text-xs text-muted-foreground">{t(location.manager.role)}</p>
                         </div>
                         <Mail className="h-4 w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors" />
                       </a>

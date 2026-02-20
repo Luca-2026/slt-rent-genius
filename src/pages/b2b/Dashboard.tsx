@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ import {
 
 export default function B2BDashboard() {
   const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -426,7 +428,7 @@ export default function B2BDashboard() {
                   )}
                   <div>
                     <p className="font-semibold text-sm text-foreground">{nearestLocation.manager.name}</p>
-                    <p className="text-xs text-muted-foreground">{nearestLocation.manager.role}</p>
+                    <p className="text-xs text-muted-foreground">{t(nearestLocation.manager.role)}</p>
                   </div>
                 </div>
 
