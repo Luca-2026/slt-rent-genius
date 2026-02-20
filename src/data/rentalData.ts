@@ -910,6 +910,28 @@ function withFixedCategory(products: Product[], category: string): Product[] {
   return products.map((p) => ({ ...p, category: p.category ?? category }));
 }
 
+/**
+ * Merges primary location products with Krefeld fallback products.
+ * Products from `primary` that already have a rentware code for `locationId` are kept as-is.
+ * Krefeld fallback products are only added if no product with the same id exists in primary.
+ * Fallback products have their rentwareCode stripped for the location to indicate "Auf Anfrage".
+ */
+function mergeWithFallback(primary: Product[], krefeld: Product[], locationId: string): Product[] {
+  const primaryIds = new Set(primary.map((p) => p.id));
+  const fallbacks = krefeld
+    .filter((p) => !primaryIds.has(p.id))
+    .map((p) => {
+      // Remove the krefeld rentware code - at this location it's "Auf Anfrage"
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [locationId]: _removed, ...otherCodes } = p.rentwareCode || {};
+      return {
+        ...p,
+        rentwareCode: Object.keys(otherCodes).length > 0 ? otherCodes : undefined,
+      };
+    });
+  return [...primary, ...fallbacks];
+}
+
 // Locations with their available categories and products
 export const locations: LocationData[] = [
   {
@@ -986,46 +1008,119 @@ export const locations: LocationData[] = [
       "heizung-trocknung",
       "absperrtechnik",
       "beschallung",
+      "kommunikation",
       "beleuchtung",
+      "buehne",
+      "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
+      "spezialeffekte",
       "huepfburgen",
     ],
     products: {
-      "anhaenger": [
-        ...sortedTrailerProducts.filter((p) => p.rentwareCode?.bonn),
-        ...normalizeBonnAnhaenger(bonnAnhaengerProducts as unknown as Product[]),
-      ],
-      "erdbewegung": normalizeBonnErdbewegung([
-        ...(bonnErdbewegungProducts as unknown as Product[]),
-        ...(bonnErdbewegungZusatzProducts as unknown as Product[]),
-      ]),
-      "werkzeuge": normalizeBonnWerkzeuge(bonnWerkzeugProducts as unknown as Product[]),
-      "gartenpflege": normalizeBonnGartenpflege(bonnGartenpflegeProducts as unknown as Product[]),
-      "aggregate": normalizeBonnAggregate(bonnAggregateProducts as unknown as Product[]),
-      "arbeitsbuehnen": normalizeBonnArbeitsbuehnen(bonnArbeitsbuehnenProducts as unknown as Product[]),
-      "verdichtung": normalizeBonnVerdichtung(bonnVerdichtungProducts as unknown as Product[]),
-      "kabel-stromverteiler": normalizeBonnStrom(bonnStromProducts as unknown as Product[]),
-      "leitern-gerueste": [
-        ...withFixedCategory(bonnLeiternProducts as unknown as Product[], "leiter"),
-        ...withFixedCategory(bonnGeruestteileProducts as unknown as Product[], "geruestteile"),
-      ],
-      "heizung-trocknung": [
-        ...withFixedCategory(bonnHeizungProducts as unknown as Product[], "heizung"),
-        ...withFixedCategory(bonnTrocknungProducts as unknown as Product[], "trocknung"),
-      ],
-      "absperrtechnik": bonnAbsperrtechnikProducts,
-      "beschallung": bonnBeschallungProducts,
-      "beleuchtung": bonnBeleuchtungProducts,
-      "moebel-zelte": [
-        ...(bonnMoebelProducts as unknown as Product[]),
-        ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
-      ],
-      "geschirr-glaeser-besteck": [
-        ...withFixedCategory(bonnGeschirrProducts as unknown as Product[], "geschirr"),
-        ...withFixedCategory(bonnBesteckProducts as unknown as Product[], "besteck"),
-      ],
-      "huepfburgen": bonnHuepfburgProducts,
+      // Merge: Bonn-specific items first (with Rentware codes), then fill with Krefeld items not already covered
+      "anhaenger": mergeWithFallback(
+        [
+          ...sortedTrailerProducts.filter((p) => p.rentwareCode?.bonn),
+          ...normalizeBonnAnhaenger(bonnAnhaengerProducts as unknown as Product[]),
+        ],
+        sortedTrailerProducts,
+        "bonn"
+      ),
+      "erdbewegung": mergeWithFallback(
+        normalizeBonnErdbewegung([
+          ...(bonnErdbewegungProducts as unknown as Product[]),
+          ...(bonnErdbewegungZusatzProducts as unknown as Product[]),
+        ]),
+        erdbewegungProducts,
+        "bonn"
+      ),
+      "werkzeuge": mergeWithFallback(
+        normalizeBonnWerkzeuge(bonnWerkzeugProducts as unknown as Product[]),
+        werkzeugeProducts,
+        "bonn"
+      ),
+      "gartenpflege": mergeWithFallback(
+        normalizeBonnGartenpflege(bonnGartenpflegeProducts as unknown as Product[]),
+        gartenpflegeProducts,
+        "bonn"
+      ),
+      "aggregate": mergeWithFallback(
+        normalizeBonnAggregate(bonnAggregateProducts as unknown as Product[]),
+        aggregateProducts,
+        "bonn"
+      ),
+      "arbeitsbuehnen": mergeWithFallback(
+        normalizeBonnArbeitsbuehnen(bonnArbeitsbuehnenProducts as unknown as Product[]),
+        arbeitsbuehnenProducts,
+        "bonn"
+      ),
+      "verdichtung": mergeWithFallback(
+        normalizeBonnVerdichtung(bonnVerdichtungProducts as unknown as Product[]),
+        verdichtungProducts,
+        "bonn"
+      ),
+      "kabel-stromverteiler": mergeWithFallback(
+        normalizeBonnStrom(bonnStromProducts as unknown as Product[]),
+        kabelStromverteilerProducts,
+        "bonn"
+      ),
+      "leitern-gerueste": mergeWithFallback(
+        [
+          ...withFixedCategory(bonnLeiternProducts as unknown as Product[], "leiter"),
+          ...withFixedCategory(bonnGeruestteileProducts as unknown as Product[], "geruestteile"),
+        ],
+        leiternGeruesteProducts,
+        "bonn"
+      ),
+      "heizung-trocknung": mergeWithFallback(
+        [
+          ...withFixedCategory(bonnHeizungProducts as unknown as Product[], "heizung"),
+          ...withFixedCategory(bonnTrocknungProducts as unknown as Product[], "trocknung"),
+        ],
+        heizungTrocknungProducts,
+        "bonn"
+      ),
+      "absperrtechnik": mergeWithFallback(
+        bonnAbsperrtechnikProducts as unknown as Product[],
+        absperrtechnikProducts,
+        "bonn"
+      ),
+      "beschallung": mergeWithFallback(
+        bonnBeschallungProducts as unknown as Product[],
+        beschallungProducts,
+        "bonn"
+      ),
+      "kommunikation": kommunikationProducts.map((p) => ({ ...p })),
+      "beleuchtung": mergeWithFallback(
+        bonnBeleuchtungProducts as unknown as Product[],
+        beleuchtungProducts,
+        "bonn"
+      ),
+      "buehne": buehneProducts.map((p) => ({ ...p })),
+      "traversen-rigging": traversenRiggingProducts.map((p) => ({ ...p })),
+      "moebel-zelte": mergeWithFallback(
+        [
+          ...(bonnMoebelProducts as unknown as Product[]),
+          ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
+        ],
+        moebelZelteProducts,
+        "bonn"
+      ),
+      "geschirr-glaeser-besteck": mergeWithFallback(
+        [
+          ...withFixedCategory(bonnGeschirrProducts as unknown as Product[], "geschirr"),
+          ...withFixedCategory(bonnBesteckProducts as unknown as Product[], "besteck"),
+        ],
+        geschirrGlaeserBesteckProducts,
+        "bonn"
+      ),
+      "spezialeffekte": spezialeffekteProducts.map((p) => ({ ...p })),
+      "huepfburgen": mergeWithFallback(
+        bonnHuepfburgProducts as unknown as Product[],
+        huepfburgenProducts,
+        "bonn"
+      ),
     },
   },
   {
@@ -1061,6 +1156,22 @@ export const locations: LocationData[] = [
     products: {
       "anhaenger": sortedTrailerProducts,
       "erdbewegung": erdbewegungProducts,
+      "werkzeuge": werkzeugeProducts,
+      "gartenpflege": gartenpflegeProducts,
+      "arbeitsbuehnen": arbeitsbuehnenProducts,
+      "verdichtung": verdichtungProducts,
+      "kabel-stromverteiler": kabelStromverteilerProducts,
+      "leitern-gerueste": leiternGeruesteProducts,
+      "absperrtechnik": absperrtechnikProducts,
+      "beschallung": beschallungProducts,
+      "kommunikation": kommunikationProducts,
+      "beleuchtung": beleuchtungProducts,
+      "buehne": buehneProducts,
+      "traversen-rigging": traversenRiggingProducts,
+      "moebel-zelte": moebelZelteProducts,
+      "geschirr-glaeser-besteck": geschirrGlaeserBesteckProducts,
+      "spezialeffekte": spezialeffekteProducts,
+      "huepfburgen": huepfburgenProducts,
       "aggregate": [
         {
           id: "mh-kompressor-5m3",
@@ -1087,124 +1198,128 @@ export const locations: LocationData[] = [
           },
         },
       ],
-      "heizung-trocknung": [
-        {
-          id: "mh-heizpilz-2kw",
-          name: "2 kW Elektro Heizpilz",
-          description: "Eleganter Infrarot-Heizstrahler im Pilzdesign – ideal für Terrassen, Events und Außengastronomie. Zwei Heizstufen (1 kW & 2 kW), stufenlos höhenverstellbar, Schutzklasse IP34.",
-          image: heizpilz2kw1,
-          images: [heizpilz2kw1, heizpilz2kw2, heizpilz2kw3, heizpilz2kw4, heizpilz2kw5],
-          category: "heizpilz",
-          specifications: {
-            "Heizleistung": "1 kW & 2 kW (umschaltbar)",
-            "Leistungsaufnahme": "2 kW",
-            "Elektroanschluss": "230 V",
-            "Wirkungsfläche": "ca. 15 m²",
-            "Höhenverstellbar": "194 cm – 210 cm",
-            "Heizart": "Infrarot",
-            "Schutzklasse": "IP34",
-            "Material": "Aluminium / Edelstahl",
+      "heizung-trocknung": mergeWithFallback(
+        [
+          {
+            id: "mh-heizpilz-2kw",
+            name: "2 kW Elektro Heizpilz",
+            description: "Eleganter Infrarot-Heizstrahler im Pilzdesign – ideal für Terrassen, Events und Außengastronomie. Zwei Heizstufen (1 kW & 2 kW), stufenlos höhenverstellbar, Schutzklasse IP34.",
+            image: heizpilz2kw1,
+            images: [heizpilz2kw1, heizpilz2kw2, heizpilz2kw3, heizpilz2kw4, heizpilz2kw5],
+            category: "heizpilz",
+            specifications: {
+              "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+              "Leistungsaufnahme": "2 kW",
+              "Elektroanschluss": "230 V",
+              "Wirkungsfläche": "ca. 15 m²",
+              "Höhenverstellbar": "194 cm – 210 cm",
+              "Heizart": "Infrarot",
+              "Schutzklasse": "IP34",
+              "Material": "Aluminium / Edelstahl",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-        {
-          id: "mh-heizluefter-2kw",
-          name: "2 kW Elektro Heizlüfter",
-          description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen.",
-          image: heizluefter2kw1,
-          images: [heizluefter2kw1, heizluefter2kw2],
-          category: "heizluefter",
-          specifications: {
-            "Heizleistung": "1 kW & 2 kW (umschaltbar)",
-            "Leistungsaufnahme": "2 kW",
-            "Elektroanschluss": "230 V",
-            "Luftleistung": "500 m³/h",
+          {
+            id: "mh-heizluefter-2kw",
+            name: "2 kW Elektro Heizlüfter",
+            description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen.",
+            image: heizluefter2kw1,
+            images: [heizluefter2kw1, heizluefter2kw2],
+            category: "heizluefter",
+            specifications: {
+              "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+              "Leistungsaufnahme": "2 kW",
+              "Elektroanschluss": "230 V",
+              "Luftleistung": "500 m³/h",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-        {
-          id: "mh-heizluefter-3kw",
-          name: "Allegra 3 kW Elektro Heizlüfter",
-          description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose.",
-          image: heizluefter3kw1,
-          images: [heizluefter3kw1, heizluefter3kw2],
-          category: "heizluefter",
-          specifications: {
-            "Hersteller": "Allegra",
-            "Heizleistung": "1,5 kW & 3 kW (umschaltbar)",
-            "Leistungsaufnahme": "3 kW",
-            "Elektroanschluss": "230 V",
-            "Luftleistung": "510 m³/h",
+          {
+            id: "mh-heizluefter-3kw",
+            name: "Allegra 3 kW Elektro Heizlüfter",
+            description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose.",
+            image: heizluefter3kw1,
+            images: [heizluefter3kw1, heizluefter3kw2],
+            category: "heizluefter",
+            specifications: {
+              "Hersteller": "Allegra",
+              "Heizleistung": "1,5 kW & 3 kW (umschaltbar)",
+              "Leistungsaufnahme": "3 kW",
+              "Elektroanschluss": "230 V",
+              "Luftleistung": "510 m³/h",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-        {
-          id: "mh-heizluefter-9kw",
-          name: "Allegra 9 kW Elektro Heizlüfter",
-          description: "Leistungsstarker Industrie-Elektroheizlüfter mit zwei Heizstufen (4,5 kW & 9 kW) – 400 V Drehstrom.",
-          image: heizluefter9kw1,
-          images: [heizluefter9kw1, heizluefter9kw2],
-          category: "heizluefter",
-          specifications: {
-            "Hersteller": "Allegra",
-            "Heizleistung": "4,5 kW & 9 kW (umschaltbar)",
-            "Leistungsaufnahme": "9 kW",
-            "Elektroanschluss": "400 V (Drehstrom / CEE)",
-            "Luftumwälzung": "845 m³/h",
+          {
+            id: "mh-heizluefter-9kw",
+            name: "Allegra 9 kW Elektro Heizlüfter",
+            description: "Leistungsstarker Industrie-Elektroheizlüfter mit zwei Heizstufen (4,5 kW & 9 kW) – 400 V Drehstrom.",
+            image: heizluefter9kw1,
+            images: [heizluefter9kw1, heizluefter9kw2],
+            category: "heizluefter",
+            specifications: {
+              "Hersteller": "Allegra",
+              "Heizleistung": "4,5 kW & 9 kW (umschaltbar)",
+              "Leistungsaufnahme": "9 kW",
+              "Elektroanschluss": "400 V (Drehstrom / CEE)",
+              "Luftumwälzung": "845 m³/h",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-        {
-          id: "mh-bautrockner-kt200",
-          name: "Allegra Bautrockner KT200",
-          description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) – ideal für Räume bis 20 m².",
-          image: allegraBautrocknerKt200_1,
-          images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
-          category: "bautrockner",
-          pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
-          specifications: {
-            "Hersteller": "Allegra",
-            "Modell": "KT200",
-            "Trocknungsfläche": "20 m²",
-            "Entfeuchtungsleistung": "bis zu 20 l/24h",
-            "Leistung": "350 W",
-            "Luftumwälzung": "260 m³/h",
-            "Stromanschluss": "230 V – 16 A",
-            "Arbeitsbereich": "5 °C – 35 °C",
-            "Wassertank": "4 Liter (Abschaltautomatik)",
-            "Schlauchanschluss": "Ja",
-            "Stromzähler": "Geeichter MID-Zähler PH10",
-            "Betriebsstundenzähler": "Ja",
-            "Gewicht": "18,50 kg",
+          {
+            id: "mh-bautrockner-kt200",
+            name: "Allegra Bautrockner KT200",
+            description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) – ideal für Räume bis 20 m².",
+            image: allegraBautrocknerKt200_1,
+            images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
+            category: "bautrockner",
+            pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
+            specifications: {
+              "Hersteller": "Allegra",
+              "Modell": "KT200",
+              "Trocknungsfläche": "20 m²",
+              "Entfeuchtungsleistung": "bis zu 20 l/24h",
+              "Leistung": "350 W",
+              "Luftumwälzung": "260 m³/h",
+              "Stromanschluss": "230 V – 16 A",
+              "Arbeitsbereich": "5 °C – 35 °C",
+              "Wassertank": "4 Liter (Abschaltautomatik)",
+              "Schlauchanschluss": "Ja",
+              "Stromzähler": "Geeichter MID-Zähler PH10",
+              "Betriebsstundenzähler": "Ja",
+              "Gewicht": "18,50 kg",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-        {
-          id: "mh-bautrockner-kt553",
-          name: "Allegra Bautrockner KT553/KT554",
-          description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler – ideal für 50–60 m² Trocknungsfläche.",
-          image: allegraBautrocknerKt553_1,
-          images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
-          category: "bautrockner",
-          pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
-          specifications: {
-            "Hersteller": "Allegra",
-            "Modell": "KT553 / KT554",
-            "Trocknungsfläche": "50–60 m²",
-            "Entfeuchtungsleistung": "bis zu 50 l/24h",
-            "Leistung": "700 W",
-            "Luftumwälzung": "330 m³/h",
-            "Stromanschluss": "230 V – 16 A",
-            "Arbeitsbereich": "5 °C – 35 °C",
-            "Wassertank": "4 Liter (Abschaltautomatik)",
-            "Schlauchanschluss": "Ja",
-            "Stromzähler": "Geeichter MID-Zähler PH10",
-            "Betriebsstundenzähler": "Ja",
-            "Gewicht": "30 kg",
+          {
+            id: "mh-bautrockner-kt553",
+            name: "Allegra Bautrockner KT553/KT554",
+            description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler – ideal für 50–60 m² Trocknungsfläche.",
+            image: allegraBautrocknerKt553_1,
+            images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
+            category: "bautrockner",
+            pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
+            specifications: {
+              "Hersteller": "Allegra",
+              "Modell": "KT553 / KT554",
+              "Trocknungsfläche": "50–60 m²",
+              "Entfeuchtungsleistung": "bis zu 50 l/24h",
+              "Leistung": "700 W",
+              "Luftumwälzung": "330 m³/h",
+              "Stromanschluss": "230 V – 16 A",
+              "Arbeitsbereich": "5 °C – 35 °C",
+              "Wassertank": "4 Liter (Abschaltautomatik)",
+              "Schlauchanschluss": "Ja",
+              "Stromzähler": "Geeichter MID-Zähler PH10",
+              "Betriebsstundenzähler": "Ja",
+              "Gewicht": "30 kg",
+            },
+            rentwareCode: { muelheim: "" },
           },
-          rentwareCode: { muelheim: "" },
-        },
-      ],
+        ],
+        heizungTrocknungProducts,
+        "muelheim"
+      ),
     },
   },
 ];
