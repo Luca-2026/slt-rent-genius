@@ -269,6 +269,11 @@ import imgStehtischHusseWeiss1 from "@/assets/products/stehtisch-husse-weiss-1.j
 import imgPartyzelt3x3_1 from "@/assets/products/partyzelt-3x3-1.jpeg";
 import imgPartyzelt3x3_2 from "@/assets/products/partyzelt-3x3-2.avif";
 
+// Getränkekühlschrank 236l images
+import imgGetraenkekuehlschrank236l_1 from "@/assets/products/getraenkekuehlschrank-236l-1.jpeg";
+import imgGetraenkekuehlschrank236l_2 from "@/assets/products/getraenkekuehlschrank-236l-2.jpeg";
+import imgGetraenkekuehlschrank236l_3 from "@/assets/products/getraenkekuehlschrank-236l-3.jpeg";
+
 // Partyzelt 4x4m images
 import imgPartyzelt4x4_1 from "@/assets/products/partyzelt-4x4-1.jpeg";
 
@@ -2552,10 +2557,17 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "getraenkekuehlschrank-236l",
     name: "Getränkekühlschrank 236l",
-    description: "Kühlschrank mit Glastür",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Gewerblicher Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
+    image: imgGetraenkekuehlschrank236l_1,
+    images: [imgGetraenkekuehlschrank236l_1, imgGetraenkekuehlschrank236l_2, imgGetraenkekuehlschrank236l_3],
     category: "kuehlgeraet",
+    specifications: {
+      "Fassungsvermögen": "236 l",
+      "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
+      "Gewicht": "45 kg",
+      "Beleuchtung": "LED",
+      "Tür": "Glastür",
+    },
     rentwareCode: { krefeld: "Q3VB7F" }
   },
 ];
