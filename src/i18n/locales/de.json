@@ -1318,6 +1318,30 @@
     "funkgeraete": "Funkgeräte",
     "funkgeraete_sub": "UHF/VHF",
     "headsets": "Headsets",
-    "headsets_sub": "Kabel & Funk"
+    "headsets_sub": "Kabel & Funk",
+    "filter": "Filter",
+    "reset": "Zurücksetzen"
+  },
+  "trailerFilter": {
+    "searchPlaceholder": "Anhänger suchen...",
+    "totalWeight": "Zul. Gesamtgewicht",
+    "trailerType": "Anhängertyp",
+    "brake": "Bremse",
+    "braked": "Gebremst",
+    "unbraked": "Ungebremst",
+    "upTo750": "Bis 750 kg",
+    "750to1500": "750 - 1.500 kg",
+    "1500to2500": "1.500 - 2.500 kg",
+    "from2500": "Ab 2.500 kg",
+    "typeEnclosed": "Geschlossen",
+    "typeEnclosedSub": "Koffer & Plane",
+    "typeConstruction": "Baumaschinen",
+    "typeConstructionSub": "Rampen & Mulden",
+    "typeCar": "Autotransport",
+    "typeCarSub": "PKW & Motorrad",
+    "typeLeaf": "Laubgitter",
+    "typeLeafSub": "Garten & Grünschnitt",
+    "typeVacation": "Urlaub",
+    "typeVacationSub": "Camping & Freizeit"
   }
 }
