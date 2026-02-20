@@ -83,6 +83,7 @@ import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
 import imgYamahaDm31 from "@/assets/products/yamaha-dm3-1.jpeg";
+import imgSoundboksBatteryboks1 from "@/assets/products/soundboks-batteryboks-1.jpeg";
 import imgYamahaDm32 from "@/assets/products/yamaha-dm3-2.jpeg";
 import imgYamahaDm33 from "@/assets/products/yamaha-dm3-3.jpeg";
 import imgPioneerDjm900Nxs21 from "@/assets/products/pioneer-djm900-nxs2-1.jpeg";
@@ -1777,10 +1778,16 @@ export const beschallungProducts: Product[] = [
   {
     id: "soundboks-batteryboks",
     name: "Soundboks Batteryboks",
-    description: "Zusatzakku für Soundboks",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Ersatz-Akku passend für Soundboks Gen.3 und Gen.4. Mit 40 Stunden Akkulaufzeit bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke und einer Ladezeit von nur 3,5 Stunden.",
+    image: imgSoundboksBatteryboks1,
+    images: [imgSoundboksBatteryboks1],
     category: "zubehoer",
+    specifications: {
+      "Kompatibilität": "Soundboks Gen.3 und Gen.4",
+      "Akkulaufzeit (50% Lautstärke)": "40 Stunden",
+      "Akkulaufzeit (100% Lautstärke)": "5 Stunden",
+      "Ladezeit": "3,5 Stunden",
+    },
     rentwareCode: { krefeld: "6FQZ3A" }
   },
   {
