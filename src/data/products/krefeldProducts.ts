@@ -61,6 +61,7 @@ import imgTlWarnleuchteGelb from "@/assets/products/tl-warnleuchte-gelb.jpeg";
 import imgTlWarnleuchteGelbFront from "@/assets/products/tl-warnleuchte-gelb-front.jpeg";
 import imgTlWarnleuchteGelbSeite from "@/assets/products/tl-warnleuchte-gelb-seite.jpeg";
 import imgVz100022Ra1Gr1 from "@/assets/products/vz-1000-22-ra1-gr1.jpeg";
+import imgVz357Ra1 from "@/assets/products/vz-357-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1394,10 +1395,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-357-ra1",
     name: "VZ 357, RA1",
-    description: "Sackgasse",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Sackgasse – Quadratisches Verkehrszeichen 600 × 600 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz357Ra1,
+    images: [imgVz357Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 357",
+      "Bedeutung": "Sackgasse",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Abmessungen": "600 × 600 mm",
+    },
     rentwareCode: { krefeld: "P2P3JU" }
   },
   {
