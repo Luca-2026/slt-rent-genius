@@ -2026,22 +2026,6 @@ export const leiternGeruesteProducts: Product[] = [
   // --- Rollgerüst ---
   {
     id: "rollgeruest-krause-3-3m",
-    name: "Krause Rollgerüst – 3,3 m Arbeitshöhe",
-    description: "Aluminium-Rollgerüst mit 3,3 m Arbeitshöhe, fahrbar, schnell auf- und abgebaut. Plattformgröße 2,0 × 1,2 m.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "rollgeruest",
-    specifications: {
-      "Arbeitshöhe": "3,3 m",
-      "Plattformgröße": "2,0 × 1,2 m",
-      "Material": "Aluminium",
-      "Max. Belastung": "200 kg",
-      "Fahrbar": "Ja, mit Bremsen",
-    },
-    rentwareCode: { krefeld: "FSQFEL" }
-  },
-  {
-    id: "rollgeruest-krause-3-3m",
     name: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 1,20 m und 3,3 m Arbeitshöhe. Ideal für Innenarbeiten. Höhenverstellbare Fahrrollen Ø 150 mm für sicheren Stand auf unebenem Untergrund.",
     image: rollgeruest3_3m_1,
@@ -2056,7 +2040,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
       "Material": "Aluminium",
     },
-    rentwareCode: { krefeld: "FSQFEL_33" }
+    rentwareCode: { krefeld: "FSQFEL" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-7-4m",
