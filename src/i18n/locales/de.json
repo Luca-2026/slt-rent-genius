@@ -1343,5 +1343,179 @@
     "typeLeafSub": "Garten & Grünschnitt",
     "typeVacation": "Urlaub",
     "typeVacationSub": "Camping & Freizeit"
+  },
+  "earthFilter": {
+    "searchPlaceholder": "Maschine suchen...",
+    "machineType": "Maschinentyp",
+    "operatingWeight": "Einsatzgewicht",
+    "driveType": "Antriebsart",
+    "minibagger": "Minibagger",
+    "radlader": "Radlader",
+    "dumper": "Dumper",
+    "diesel": "Diesel",
+    "benzin": "Benzin",
+    "elektro": "Elektro",
+    "bis1500": "Bis 1,5t",
+    "1500bis2500": "1,5t - 2,5t",
+    "ab2500": "Ab 2,5t",
+    "reset": "Filter zurücksetzen"
+  },
+  "catSearch": {
+    "default": "Artikel suchen...",
+    "werkzeuge": "Werkzeug suchen...",
+    "gartenpflege": "Gartengerät suchen...",
+    "aggregate": "Aggregat suchen...",
+    "arbeitsbuehnen": "Arbeitsbühne suchen...",
+    "verdichtung": "Verdichtungsgerät suchen...",
+    "heizungTrocknung": "Heiz-/Trocknungsgerät suchen...",
+    "leiternGerueste": "Leiter/Gerüst suchen...",
+    "beleuchtung": "Beleuchtung suchen...",
+    "beschallung": "PA-Equipment suchen...",
+    "moebelZelte": "Möbel/Zelt suchen...",
+    "geschirr": "Geschirr suchen...",
+    "huepfburgen": "Hüpfburg suchen...",
+    "absperrtechnik": "Verkehrszeichen / Absperrung suchen...",
+    "spezialeffekte": "Effekt suchen...",
+    "kabelStromverteiler": "Kabel/Verteiler suchen...",
+    "buehne": "Bühnenelement suchen...",
+    "traversenRigging": "Traverse suchen...",
+    "kommunikation": "Funkgerät suchen..."
+  },
+  "catDisplay": {
+    "werkzeuge": "Werkzeuge",
+    "gartenpflege": "Gartenpflege",
+    "aggregate": "Aggregate",
+    "arbeitsbuehnen": "Arbeitsbühnen",
+    "verdichtung": "Verdichtung",
+    "heizungTrocknung": "Heizung & Trocknung",
+    "leiternGerueste": "Leitern & Gerüste",
+    "beleuchtung": "Beleuchtung",
+    "beschallung": "Beschallung",
+    "moebelZelte": "Möbel & Zelte",
+    "geschirr": "Geschirr",
+    "huepfburgen": "Hüpfburgen",
+    "absperrtechnik": "Absperr- & Verkehrstechnik",
+    "spezialeffekte": "Spezialeffekte",
+    "kabelStromverteiler": "Kabel & Stromverteiler",
+    "buehne": "Bühne",
+    "traversenRigging": "Traversen",
+    "kommunikation": "Kommunikation",
+    "erdbewegung": "Erdbewegung",
+    "anhaenger": "Anhänger"
+  },
+  "infoBanner": {
+    "werkzeuge": {
+      "desc": "Professionelle Akku- und Elektrowerkzeuge von Bosch, Eibenstock und Einhell für Bau, Renovierung und Handwerk. Alle Akkuwerkzeuge inkl. Akku und Ladegerät.",
+      "item1": "Markenqualität", "item1sub": "Bosch Professional & mehr",
+      "item2": "Inkl. Akku & Ladegerät", "item2sub": "Sofort einsatzbereit",
+      "item3": "Geprüft & gewartet", "item3sub": "Top Zustand garantiert"
+    },
+    "gartenpflege": {
+      "desc": "Gartengeräte für Profis und Heimwerker. Von der Kettensäge bis zum Erdbohrer – alles für Ihren Garten.",
+      "item1": "Schneiden & Pflegen", "item1sub": "Kettensägen, Heckenscheren",
+      "item2": "Bodenbearbeitung", "item2sub": "Erdbohrer, Fräsen, Hacken",
+      "item3": "Akku & Benzin", "item3sub": "Verschiedene Antriebe"
+    },
+    "aggregate": {
+      "desc": "Zuverlässige Stromversorgung für Baustelle, Event oder Notfall. Von kleinen Akkupacks bis zu leistungsstarken Industrieaggregaten.",
+      "item1": "2,8 bis 100 kVA", "item1sub": "Für jeden Bedarf",
+      "item2": "Akkupacks", "item2sub": "Tragbar & leise",
+      "item3": "Kompressoren", "item3sub": "Druckluft vor Ort"
+    },
+    "arbeitsbuehnen": {
+      "desc": "Sichere Höhenarbeit mit unseren elektrischen Arbeitsbühnen. Alle Bühnen werden eingewiesen und sind für Innen- und Außeneinsatz geeignet.",
+      "item1": "8m bis 12m+", "item1sub": "Verschiedene Arbeitshöhen",
+      "item2": "Elektrisch", "item2sub": "Emissionsfrei & leise",
+      "item3": "Einweisung inkl.", "item3sub": "Sichere Bedienung",
+      "highlightTitle": "Zoomlion Fachhändler",
+      "highlightText": "Als offizieller Zoomlion-Fachhändler bieten wir erstklassige Arbeitsbühnen mit vollem Service."
+    },
+    "verdichtung": {
+      "desc": "Professionelle Bodenverdichtung mit Stampfern und Rüttelplatten für Pflasterarbeiten, Gräben und Fundamentvorbereitung.",
+      "item1": "70 bis 250 kg", "item1sub": "Verschiedene Gewichtsklassen",
+      "item2": "Stampfer & Platten", "item2sub": "Für jeden Einsatz",
+      "item3": "Sofort einsatzbereit", "item3sub": "Betankt & geprüft"
+    },
+    "heizung": {
+      "desc": "Heizgeräte und Bautrockner für Rohbau, Renovierung und Events. Effiziente Lösungen für Wärme und Entfeuchtung.",
+      "item1": "Heizgeräte", "item1sub": "Elektro & Gas",
+      "item2": "Bautrockner", "item2sub": "Schnelle Entfeuchtung",
+      "item3": "Ventilatoren", "item3sub": "Luftzirkulation"
+    },
+    "leitern": {
+      "desc": "Sichere Leitern und Rollgerüste für Arbeiten in der Höhe. TÜV-geprüft und regelmäßig gewartet.",
+      "item1": "Verschiedene Höhen", "item1sub": "Bis 12m Arbeitshöhe",
+      "item2": "Rollgerüste", "item2sub": "Fahrbar & stabil",
+      "item3": "TÜV-geprüft", "item3sub": "Maximale Sicherheit"
+    },
+    "beleuchtung": {
+      "desc": "Professionelle Beleuchtung für Events, Baustellen und Veranstaltungen. Von LED-Fluter bis Bühnenlicht.",
+      "item1": "LED-Technik", "item1sub": "Energieeffizient",
+      "item2": "Bühnenlicht", "item2sub": "Moving Heads, PAR",
+      "item3": "Akku & Strom", "item3sub": "Flexible Lösungen"
+    },
+    "beschallung": {
+      "desc": "PA-Systeme und Beschallungstechnik für Events, Konferenzen und Feiern – von der Komplett-Anlage bis zum einzelnen Mikrofon.",
+      "item1": "PA-Systeme", "item1sub": "Bis 250 Personen",
+      "item2": "Funkmikrofone", "item2sub": "Kabellose Freiheit",
+      "item3": "Aufbau & Betreuung", "item3sub": "Vor Ort durch unser Team"
+    },
+    "moebelZelte": {
+      "desc": "Event-Mobiliar und Zelte für Ihre Veranstaltung. Bierzeltgarnituren, Stehtische, Partyzelte und Lounge-Möbel.",
+      "item1": "Partyzelte", "item1sub": "Verschiedene Größen",
+      "item2": "Tische & Stühle", "item2sub": "Für jeden Anlass",
+      "item3": "Sauber & gepflegt", "item3sub": "Event-ready"
+    },
+    "geschirr": {
+      "desc": "Geschirr, Gläser und Besteck für Ihre Veranstaltung. Hochwertig, gespült und transportfertig in Kisten verpackt.",
+      "item1": "Komplette Sets", "item1sub": "Geschirr, Besteck, Gläser",
+      "item2": "Gespült geliefert", "item2sub": "Sofort einsatzbereit",
+      "item3": "In Kisten verpackt", "item3sub": "Einfacher Transport"
+    },
+    "huepfburgen": {
+      "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderfeste, Firmenevents und Veranstaltungen.",
+      "item1": "Verschiedene Modelle", "item1sub": "Für jedes Alter",
+      "item2": "Inkl. Gebläse", "item2sub": "Komplett-Set",
+      "item3": "TÜV-geprüft", "item3sub": "Maximale Sicherheit"
+    },
+    "absperrtechnik": {
+      "desc": "Verkehrszeichen, Bauzäune, Warnbarken und komplette Verkehrssicherung – inkl. Planung und Antrag für Halteverbotszonen.",
+      "item1": "Verkehrszeichen", "item1sub": "RA1 & RA2, alle Typen",
+      "item2": "Bauzäune & Gitter", "item2sub": "Baustelle & Events",
+      "item3": "Vollservice möglich", "item3sub": "Planung & Antragstellung",
+      "highlightTitle": "Verkehrssicherung aus einer Hand",
+      "highlightText": "Wir übernehmen die komplette Planung Ihrer Verkehrssicherung – inkl. Halteverbotszonen, Behördenanträgen und Aufbau.",
+      "highlightLink": "Mehr Infos auf slt-infra.de"
+    },
+    "spezialeffekte": {
+      "desc": "Beeindruckende Spezialeffekte für unvergessliche Events. Nebel, Seifenblasen, Funken und mehr.",
+      "item1": "Nebelmaschinen", "item1sub": "Atmosphäre schaffen",
+      "item2": "Kalte Funken", "item2sub": "Sichere Pyrotechnik",
+      "item3": "Einweisung inkl.", "item3sub": "Sichere Bedienung"
+    },
+    "kabel": {
+      "desc": "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung.",
+      "item1": "Kabel", "item1sub": "Verschiedene Längen",
+      "item2": "Verteiler", "item2sub": "CEE & Schuko",
+      "item3": "Geprüft", "item3sub": "Sicherheit zuerst"
+    },
+    "buehne": {
+      "desc": "Bühnenelemente und Podeste für professionelle Auftritte. Nivtec-Systeme für flexible Bühnengestaltung.",
+      "item1": "Nivtec-System", "item1sub": "Modulare Bühne",
+      "item2": "Verschiedene Höhen", "item2sub": "20cm bis 100cm",
+      "item3": "Aufbau-Service", "item3sub": "Auf Wunsch verfügbar"
+    },
+    "traversen": {
+      "desc": "Traversen und Rigging-Equipment für professionelle Bühnenkonstruktionen. Milos-Traversen in Schwarz.",
+      "item1": "Milos Traversen", "item1sub": "Hochwertig & stabil",
+      "item2": "Verschiedene Längen", "item2sub": "0,5m bis 3m",
+      "item3": "Schwarz eloxiert", "item3sub": "Dezent & elegant"
+    },
+    "kommunikation": {
+      "desc": "Funkgeräte für Events, Baustellen und Veranstaltungen. Zuverlässige Kommunikation für Ihr Team.",
+      "item1": "UHF-Funkgeräte", "item1sub": "Große Reichweite",
+      "item2": "Inkl. Akkus", "item2sub": "Sofort einsatzbereit",
+      "item3": "Mehrere Sets", "item3sub": "Für große Teams"
+    }
   }
 }
