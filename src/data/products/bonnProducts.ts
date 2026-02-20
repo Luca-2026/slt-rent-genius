@@ -1046,10 +1046,7 @@ export const bonnBeleuchtungProducts = [
     rentwareCode: { bonn: "7NA19B" },
   },
   {
-    id: "bonn-led-4er-bar",
-    name: "LED 4er Bar",
-    description: "Kompakte LED-Lichtleiste mit 4 Spots.",
-    image: "/placeholder.svg",
+    id: "led-4er-bar",
     rentwareCode: { bonn: "ZKOF2K" },
   },
   {
