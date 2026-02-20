@@ -66,6 +66,7 @@ import imgVz357Ra1 from "@/assets/products/vz-357-ra1.jpeg";
 import imgVz100012Ra1Gr1 from "@/assets/products/vz-1000-12-ra1-gr1.jpeg";
 import imgVz28321Ra1 from "@/assets/products/vz-283-21-ra1.jpeg";
 import imgStahlVierkantrohr4x4 from "@/assets/products/stahl-vierkantrohr-4x4-2-5m.jpeg";
+import imgVz240Ra1 from "@/assets/products/vz-240-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1269,10 +1270,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-240-ra1",
     name: "VZ 240, RA1",
-    description: "Gemeinsamer Fuß- und Radweg",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Gemeinsamer Geh- und Radweg – Rundes Verkehrszeichen Ø 600 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz240Ra1,
+    images: [imgVz240Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 240",
+      "Bedeutung": "Gemeinsamer Geh- und Radweg",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "ZSNQ9H" }
   },
   {
