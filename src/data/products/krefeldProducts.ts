@@ -65,6 +65,7 @@ import imgVz100022Ra1Gr1 from "@/assets/products/vz-1000-22-ra1-gr1.jpeg";
 import imgVz357Ra1 from "@/assets/products/vz-357-ra1.jpeg";
 import imgVz100012Ra1Gr1 from "@/assets/products/vz-1000-12-ra1-gr1.jpeg";
 import imgVz28321Ra1 from "@/assets/products/vz-283-21-ra1.jpeg";
+import imgStahlVierkantrohr4x4 from "@/assets/products/stahl-vierkantrohr-4x4-2-5m.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1531,10 +1532,15 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "stahl-vierkantrohr-4x4cm-2-5m",
     name: "Stahl-Vierkantrohr, 4x4cm, 2,5m",
-    description: "Pfosten für Verkehrszeichen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Stahl-Vierkantrohr 4 × 4 cm, Länge 2,5 m, Materialstärke 1,5 mm. Geeignet als Pfosten für Verkehrszeichen.",
+    image: imgStahlVierkantrohr4x4,
+    images: [imgStahlVierkantrohr4x4],
     category: "zubehoer",
+    specifications: {
+      "Querschnitt": "4 × 4 cm",
+      "Länge": "2,5 m",
+      "Materialstärke": "1,5 mm",
+    },
     rentwareCode: { krefeld: "VVOJM5" }
   },
   {
