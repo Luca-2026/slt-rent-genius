@@ -72,6 +72,10 @@ import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
 import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
 import imgVz100022Ra1Gr2 from "@/assets/products/vz-1000-22-ra1.jpeg";
+import imgRetevRt29Set1 from "@/assets/products/retevis-rt29-set-1.jpeg";
+import imgRetevRt29Set2 from "@/assets/products/retevis-rt29-set-2.jpeg";
+import imgRetevRt29Set3 from "@/assets/products/retevis-rt29-set-3.jpeg";
+import imgRetevRt29Set4 from "@/assets/products/retevis-rt29-set-4.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
@@ -1897,11 +1901,22 @@ export const beschallungProducts: Product[] = [
 export const kommunikationProducts: Product[] = [
   {
     id: "uhf-funkgeraet",
-    name: "UHF Funkgerät",
-    description: "Professionelles Handfunkgerät",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "UHF Funkgeräte 6er Set (Retevis RT29)",
+    description: "Professionelles UHF-Funkgerät-Set mit 6 Geräten des Typs Retevis RT29 inkl. 6-fach Ladestation. Mit 10 W Ausgangsleistung und einem 3200 mAh Akku für bis zu 168 Stunden Standby-Betrieb. Ideal für Veranstaltungen, Baustellen und Events. Weiteres Zubehör finden Sie im nächsten Schritt.",
+    image: imgRetevRt29Set1,
+    images: [imgRetevRt29Set1, imgRetevRt29Set2, imgRetevRt29Set3, imgRetevRt29Set4],
     category: "funkgeraet",
+    specifications: {
+      "Typ": "Retevis RT29",
+      "Ausgangsleistung": "10 W",
+      "Frequenzbereich": "400–430 MHz (UHF)",
+      "Akku": "3200 mAh Li-Ion",
+      "Standby-Laufzeit": "bis zu 168 Stunden",
+      "Reichweite (städtisch)": "3–5 km",
+      "Reichweite (offenes Gelände)": "bis zu 8 km",
+      "VOX-Freisprechfunktion": "Ja",
+      "Lieferumfang": "6× Funkgerät + 6-fach Ladestation",
+    },
     rentwareCode: { krefeld: "4PPBU1" }
   },
   {
