@@ -180,7 +180,15 @@
   }
 }
 
-/* Rentware floating cart widget – keep below sticky header */
+/* =============================================
+   Rentware floating cart widget (rtr-checkout)
+   The widget is injected by Rentware's CDN script
+   as a fixed-position button.
+   We ensure it's always visible and never overlaps
+   other fixed UI elements (chat bubble, nav).
+   ============================================= */
+
+/* Desktop: keep below sticky header, right side */
 rtr-checkout {
   z-index: 40 !important;
 }
@@ -191,12 +199,26 @@ rtr-checkout > div {
   z-index: 40 !important;
 }
 
-/* On mobile, push the Rentware cart button down so it doesn't cover the header/menu */
+/* Mobile (≤768px): move cart to LEFT side so it doesn't
+   collide with the chat/support bubble on the right */
 @media (max-width: 768px) {
   rtr-checkout {
     position: fixed !important;
     bottom: 16px !important;
-    right: 16px !important;
+    left: 16px !important;
+    right: auto !important;
+    top: auto !important;
+    z-index: 40 !important;
+  }
+}
+
+/* Tablet (769px–1024px): keep on right but add bottom
+   clearance so it doesn't sit behind bottom nav bars */
+@media (min-width: 769px) and (max-width: 1024px) {
+  rtr-checkout {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
     top: auto !important;
     z-index: 40 !important;
   }
