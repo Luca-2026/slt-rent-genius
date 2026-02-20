@@ -47,6 +47,7 @@ import imgSchrankenzaunInklFuss from "@/assets/products/schrankenzaun-inkl-fuss.
 import imgHalteverbotsschilderSet1 from "@/assets/products/halteverbotsschilder-set-1.jpeg";
 import imgHalteverbotsschilderSet2 from "@/assets/products/halteverbotsschilder-set-2.jpeg";
 import imgHalteverbotsschilderSet3 from "@/assets/products/halteverbotsschilder-set-3.jpeg";
+import imgVz123Ra1 from "@/assets/products/vz-123-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1208,10 +1209,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-123-ra1",
     name: "VZ 123, RA1",
-    description: "Gefahrzeichen Baustelle",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Arbeitsstelle – Dreieckiges Gefahrzeichen, Seitenlänge 900 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz123Ra1,
+    images: [imgVz123Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 123",
+      "Bedeutung": "Arbeitsstelle",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "900 mm",
+    },
     rentwareCode: { krefeld: "WH4OQC" }
   },
   {
