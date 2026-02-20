@@ -86,7 +86,7 @@ export const kbCategories: KBCategory[] = [
     title: "Leitern & Gerüste",
     description: "Aufbau- und Verwendungsanleitungen für Rollgerüste, Steh- und Kombileitern.",
     icon: "ArrowUpFromLine",
-    articleCount: 6,
+    articleCount: 7,
   },
   {
     id: "allgemein",
@@ -281,6 +281,17 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-7-4m.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "7,4m", "fahrgerüst", "leitern-gerueste"],
+    updatedAt: "2026-02-20",
+  },
+  {
+    id: "krause-rollgeruest-4-4m-video",
+    title: "Krause Rollgerüst Breitaufbau 4,4 m – Aufbau & Bedienung (Video)",
+    description: "Video-Anleitung zum Aufbau und zur Bedienung des Krause Rollgerüsts Breitaufbau mit 4,4 m Arbeitshöhe und 2,00 × 1,50 m Arbeitsfläche.",
+    categoryId: "leitern-gerueste",
+    productIds: ["rollgeruest-krause-breitaufbau-4-4m"],
+    type: "video",
+    videoUrl: "https://www.youtube.com/watch?v=5tqZPFwN02c",
+    tags: ["krause", "rollgerüst", "4,4m", "breitaufbau", "aufbau", "video", "fahrgerüst", "leitern-gerueste"],
     updatedAt: "2026-02-20",
   },
   {
