@@ -1900,7 +1900,7 @@ export const beschallungProducts: Product[] = [
     description: "Distanzstange zur Montage von Lautsprechern auf Subwoofern. Stabil, höhenverstellbar und passend für gängige 35-mm-Flansche.",
     image: imgKmDistanzstange21366,
     images: [imgKmDistanzstange21366],
-    category: "stativ",
+    category: "zubehoer",
     specifications: {
       "Verwendung": "Montage von Tops auf Subwoofern",
       "Anschluss": "35-mm-Flansch (oben & unten)",
