@@ -38,6 +38,7 @@ import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
 import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt200-1.webp";
 import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
 import imgVz28311Ra1 from "@/assets/products/vz-283-11-ra1.jpeg";
+import imgVz123Ra2 from "@/assets/products/vz-123-ra2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1200,10 +1201,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-123-ra2",
     name: "VZ 123, RA2",
-    description: "Gefahrzeichen Baustelle (reflektierend)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Arbeitsstelle – Dreieckiges Gefahrzeichen, Seitenlänge 900 mm, Flachform 2 mm, Reflektionsklasse RA2.",
+    image: imgVz123Ra2,
+    images: [imgVz123Ra2],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 123",
+      "Bedeutung": "Arbeitsstelle",
+      "Reflektionsklasse": "RA2",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "900 mm",
+    },
     rentwareCode: { krefeld: "UXKG5G" }
   },
   {
