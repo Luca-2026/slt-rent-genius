@@ -22,6 +22,8 @@ import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
 import krauseDiagonale1 from "@/assets/products/krause-diagonale-1.webp";
 import krauseAuslegerstuetze1 from "@/assets/products/krause-auslegerstuetze-1.webp";
 import krauseVertikalrahmen1 from "@/assets/products/krause-vertikalrahmen-1.webp";
+import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt553-1.jpeg";
+import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1081,10 +1083,26 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "bautrockner-kt553",
     name: "Allegra Bautrockner KT553/KT554",
-    description: "Leistungsstarker Bautrockner",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
+    image: allegraBautrocknerKt553_1,
+    images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
     category: "bautrockner",
+    pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Modell": "KT553 / KT554",
+      "Trocknungsfläche": "50–60 m²",
+      "Entfeuchtungsleistung": "bis zu 50 l/24h",
+      "Leistung": "700 W",
+      "Luftumwälzung": "330 m³/h",
+      "Stromanschluss": "230 V – 16 A",
+      "Arbeitsbereich": "5 °C – 35 °C",
+      "Wassertank": "4 Liter (Abschaltautomatik)",
+      "Schlauchanschluss": "Ja",
+      "Stromzähler": "Geeichter MID-Zähler PH10",
+      "Betriebsstundenzähler": "Ja",
+      "Gewicht": "30 kg",
+    },
     rentwareCode: { krefeld: "Z6BL9U" }
   },
 ];

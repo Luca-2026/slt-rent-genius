@@ -89,6 +89,13 @@ export const kbCategories: KBCategory[] = [
     articleCount: 9,
   },
   {
+    id: "heizung-trocknung",
+    title: "Heizung & Trocknung",
+    description: "Bedienungsanleitungen für Bautrockner und Heizgeräte.",
+    icon: "Thermometer",
+    articleCount: 1,
+  },
+  {
     id: "allgemein",
     title: "Allgemeine Hinweise",
     description: "Mietablauf, Rückgabe, Transport und häufige Fragen.",
@@ -328,6 +335,19 @@ export const kbArticles: KBArticle[] = [
     updatedAt: "2026-02-20",
   },
 
+
+  // Heizung & Trocknung
+  {
+    id: "allegra-bautrockner-kt553-anleitung",
+    title: "Allegra Bautrockner KT553/KT554 – Bedienungsanleitung (PDF)",
+    description: "Offizielle Bedienungsanleitung für den Allegra Bautrockner KT553/KT554: Inbetriebnahme, Sicherheitshinweise, Schlauchanschluss, MID-Stromzähler und technische Daten.",
+    categoryId: "heizung-trocknung",
+    productIds: ["bautrockner-kt553"],
+    type: "anleitung",
+    pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
+    tags: ["allegra", "bautrockner", "kt553", "kt554", "entfeuchtung", "trocknung", "anleitung", "pdf", "stromzähler", "mid"],
+    updatedAt: "2026-02-20",
+  },
 
   {
     id: "mietablauf-erklaert",
