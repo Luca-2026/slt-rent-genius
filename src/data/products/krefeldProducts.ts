@@ -239,7 +239,10 @@ import imgLedBeleuchtungssetSingle1 from "@/assets/products/led-beleuchtungsset-
 // LED Beleuchtungsset duo images
 import imgLedBeleuchtungssetDuo1 from "@/assets/products/led-beleuchtungsset-duo-1.jpeg";
 
-// Vector Spot Zoom 2.0 images
+// Showtec Sunstrip Active MKII images
+import imgShowtecSunstripMkii1 from "@/assets/products/showtec-sunstrip-mkii-1.jpg";
+import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.jpg";
+
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
 import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
@@ -2204,10 +2207,22 @@ export const beleuchtungProducts: Product[] = [
   {
     id: "showtec-sunstrip-active-mkii",
     name: "Showtec Sunstrip Active MKII",
-    description: "Blinder-Leiste für Bühnen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Professionelle Stage-Blinder-Leiste mit 10× GU10 50W Leuchtmitteln, eingebauten Programmen und DMX-Steuerung (1, 2, 5 oder 10 Kanäle). Mit Powercon In/Output sowie Montage- und Bodenbefestigung – ideal für Bühnenblinder und Ambientebeleuchtung.",
+    image: imgShowtecSunstripMkii1,
+    images: [imgShowtecSunstripMkii1, imgShowtecSunstripMkii2],
     category: "blinder",
+    specifications: {
+      "Leuchtmittel": "10× Showtec 240V / 50W GU10 (inkl.)",
+      "Stromspannung": "240V 50Hz",
+      "Stromverbrauch": "550W",
+      "Strom": "3,5A",
+      "Sicherung": "F6,3A",
+      "DMX-Kanäle": "wählbar: 1, 2, 5 oder 10 Kanäle",
+      "Anschluss": "Powercon In & Output",
+      "Abmessungen": "1000 × 130 × 77 mm",
+      "Gewicht": "5,32 kg",
+      "Lieferumfang": "inkl. Montage- / Bodenbefestigung, inkl. Leuchtmittel",
+    },
     rentwareCode: { krefeld: "1E8ME4" }
   },
 ];
