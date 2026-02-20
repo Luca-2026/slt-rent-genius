@@ -93,7 +93,7 @@ export const kbCategories: KBCategory[] = [
     title: "Heizung & Trocknung",
     description: "Bedienungsanleitungen für Bautrockner und Heizgeräte.",
     icon: "Thermometer",
-    articleCount: 1,
+    articleCount: 2,
   },
   {
     id: "allgemein",
@@ -346,6 +346,17 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
     tags: ["allegra", "bautrockner", "kt553", "kt554", "entfeuchtung", "trocknung", "anleitung", "pdf", "stromzähler", "mid"],
+    updatedAt: "2026-02-20",
+  },
+  {
+    id: "allegra-bautrockner-kt200-anleitung",
+    title: "Allegra Bautrockner KT200 – Bedienungsanleitung (PDF)",
+    description: "Offizielle Bedienungsanleitung für den Allegra Bautrockner KT200: Inbetriebnahme, Sicherheitshinweise, Schlauchanschluss, MID-Stromzähler und technische Daten.",
+    categoryId: "heizung-trocknung",
+    productIds: ["bautrockner-kt200"],
+    type: "anleitung",
+    pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
+    tags: ["allegra", "bautrockner", "kt200", "entfeuchtung", "trocknung", "anleitung", "pdf", "stromzähler", "mid"],
     updatedAt: "2026-02-20",
   },
 
