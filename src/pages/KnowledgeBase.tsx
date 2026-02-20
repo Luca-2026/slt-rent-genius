@@ -14,6 +14,7 @@ import {
   getArticleTypeLabel, getArticleTypeColor,
   type KBArticle, type KBCategory,
 } from "@/data/knowledgeBaseData";
+import { useTranslation } from "react-i18next";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
@@ -28,6 +29,7 @@ const typeIconMap: Record<KBArticle["type"], React.ComponentType<{ className?: s
 };
 
 export default function KnowledgeBase() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<KBArticle | null>(null);
@@ -42,7 +44,6 @@ export default function KnowledgeBase() {
     [selectedCategory]
   );
 
-  // Count articles per category
   const categoriesWithCounts = useMemo(
     () =>
       kbCategories.map((cat) => ({
@@ -54,6 +55,13 @@ export default function KnowledgeBase() {
 
   const isSearching = query.trim().length > 0;
 
+  // Article type labels translated
+  const typeLabel = (type: KBArticle["type"]) => {
+    const key = `kb.type.${type}`;
+    const translated = t(key);
+    return translated !== key ? translated : getArticleTypeLabel(type);
+  };
+
   return (
     <Layout>
       {/* Hero */}
@@ -62,12 +70,11 @@ export default function KnowledgeBase() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <BookOpen className="h-8 w-8 text-accent" />
             <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground">
-              Hilfe & Anleitungen
+              {t("kb.title")}
             </h1>
           </div>
           <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-            Bedienungsanleitungen, Sicherheitshinweise und Video-Tutorials für alle
-            unsere Mietartikel. Finden Sie schnell die Antwort auf Ihre Frage.
+            {t("kb.subtitle")}
           </p>
 
           {/* Search */}
@@ -83,7 +90,7 @@ export default function KnowledgeBase() {
                   setSelectedArticle(null);
                 }
               }}
-              placeholder="Artikel, Produkt oder Thema suchen…"
+              placeholder={t("kb.searchPlaceholder")}
               className="pl-12 pr-12 h-12 text-base bg-background border-0 shadow-lg"
             />
             {query && (
@@ -108,13 +115,13 @@ export default function KnowledgeBase() {
                 className="flex items-center gap-2 text-sm text-primary hover:underline mb-6"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Zurück
+                {t("common.back")}
               </button>
 
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="secondary" className={`text-xs ${getArticleTypeColor(selectedArticle.type)}`}>
-                    {getArticleTypeLabel(selectedArticle.type)}
+                    {typeLabel(selectedArticle.type)}
                   </Badge>
                 </div>
                 <h2 className="text-xl lg:text-2xl font-bold text-foreground">
@@ -150,7 +157,7 @@ export default function KnowledgeBase() {
                     className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-5 py-3 text-sm font-medium transition-colors"
                   >
                     <FileText className="h-4 w-4" />
-                    Anleitung als PDF herunterladen
+                    {t("kb.downloadPdf")}
                   </a>
                 </div>
               )}
@@ -170,7 +177,7 @@ export default function KnowledgeBase() {
                   <CardContent className="py-12 text-center">
                     <FileText className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                     <p className="text-muted-foreground">
-                      Dieser Inhalt wird aktuell vorbereitet und ist in Kürze verfügbar.
+                      {t("kb.contentSoon")}
                     </p>
                   </CardContent>
                 </Card>
@@ -183,26 +190,25 @@ export default function KnowledgeBase() {
             <div className="mb-8">
               <p className="text-sm text-muted-foreground mb-4">
                 {searchResults.length === 0
-                  ? `Keine Ergebnisse für „${query}"`
-                  : `${searchResults.length} Ergebnis${searchResults.length !== 1 ? "se" : ""} für „${query}"`}
+                  ? t("kb.noResults", { query })
+                  : t("kb.resultsCount", { count: searchResults.length, query })}
               </p>
               {searchResults.length === 0 && (
                 <Card className="border-dashed">
                   <CardContent className="py-12 text-center">
                     <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                     <p className="text-muted-foreground">
-                      Kein passender Artikel gefunden. Versuchen Sie einen anderen Suchbegriff
-                      oder kontaktieren Sie uns direkt.
+                      {t("kb.noResultsHint")}
                     </p>
                     <Button variant="outline" className="mt-4" asChild>
-                      <a href="/kontakt">Kontakt aufnehmen</a>
+                      <a href="/kontakt">{t("kb.contactUs")}</a>
                     </Button>
                   </CardContent>
                 </Card>
               )}
               <div className="grid gap-3">
                 {searchResults.map((article) => (
-                  <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
+                  <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} typeLabel={typeLabel} t={t} />
                 ))}
               </div>
             </div>
@@ -216,7 +222,7 @@ export default function KnowledgeBase() {
                 className="flex items-center gap-2 text-sm text-primary hover:underline mb-6"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Zurück zur Übersicht
+                {t("kb.backToOverview")}
               </button>
 
               <div className="mb-8">
@@ -233,18 +239,17 @@ export default function KnowledgeBase() {
                   <CardContent className="py-12 text-center">
                     <FileText className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                     <p className="text-lg font-medium text-foreground mb-2">
-                      Anleitungen werden vorbereitet
+                      {t("kb.guidesSoon")}
                     </p>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                      Die Bedienungsanleitungen für diese Kategorie werden aktuell erstellt
-                      und in Kürze hier verfügbar sein.
+                      {t("kb.guidesSoonDesc")}
                     </p>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="grid gap-3">
                   {categoryArticles.map((article) => (
-                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
+                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} typeLabel={typeLabel} t={t} />
                   ))}
                 </div>
               )}
@@ -255,7 +260,7 @@ export default function KnowledgeBase() {
           {!selectedArticle && !isSearching && !selectedCategory && (
             <>
               <h2 className="text-lg font-semibold text-foreground mb-6">
-                Kategorien durchsuchen
+                {t("kb.browseCategories")}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categoriesWithCounts.map((cat) => {
@@ -281,8 +286,8 @@ export default function KnowledgeBase() {
                       <CardContent className="pt-0">
                         <span className="text-xs text-muted-foreground">
                           {cat.articleCount === 0
-                            ? "Anleitungen in Kürze verfügbar"
-                            : `${cat.articleCount} Artikel`}
+                            ? t("kb.guidesComingSoon")
+                            : t("kb.articleCount", { count: cat.articleCount })}
                         </span>
                       </CardContent>
                     </Card>
@@ -292,11 +297,11 @@ export default function KnowledgeBase() {
 
               <div className="mt-12">
                 <h2 className="text-lg font-semibold text-foreground mb-4">
-                  Neueste Anleitungen
+                  {t("kb.latestGuides")}
                 </h2>
                 <div className="grid gap-3">
                   {kbArticles.slice(0, 6).map((article) => (
-                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} />
+                    <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} typeLabel={typeLabel} t={t} />
                   ))}
                 </div>
               </div>
@@ -305,18 +310,17 @@ export default function KnowledgeBase() {
                 <CardContent className="py-8 text-center">
                   <HelpCircle className="h-8 w-8 text-primary mx-auto mb-3" />
                   <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Frage nicht beantwortet?
+                    {t("kb.questionNotAnswered")}
                   </h3>
                   <p className="text-muted-foreground text-sm max-w-md mx-auto mb-4">
-                    Unser Team hilft Ihnen gerne weiter – telefonisch, per E-Mail
-                    oder vor Ort an unseren Standorten.
+                    {t("kb.questionNotAnsweredDesc")}
                   </p>
                   <div className="flex flex-wrap gap-3 justify-center">
                     <Button asChild>
-                      <a href="/kontakt">Kontakt aufnehmen</a>
+                      <a href="/kontakt">{t("kb.contactUs")}</a>
                     </Button>
                     <Button variant="outline" asChild>
-                      <a href="/faq">FAQ ansehen</a>
+                      <a href="/faq">{t("kb.viewFaq")}</a>
                     </Button>
                   </div>
                 </CardContent>
@@ -330,7 +334,17 @@ export default function KnowledgeBase() {
 }
 
 // --- Article Card Component ---
-function ArticleCard({ article, onClick }: { article: KBArticle; onClick: () => void }) {
+function ArticleCard({
+  article,
+  onClick,
+  typeLabel,
+  t,
+}: {
+  article: KBArticle;
+  onClick: () => void;
+  typeLabel: (type: KBArticle["type"]) => string;
+  t: (key: string) => string;
+}) {
   const TypeIcon = typeIconMap[article.type];
   const categoryData = kbCategories.find((c) => c.id === article.categoryId);
 
@@ -346,7 +360,7 @@ function ArticleCard({ article, onClick }: { article: KBArticle; onClick: () => 
               {article.title}
             </h3>
             <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 ${getArticleTypeColor(article.type)}`}>
-              {getArticleTypeLabel(article.type)}
+              {typeLabel(article.type)}
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground line-clamp-2">
@@ -359,9 +373,9 @@ function ArticleCard({ article, onClick }: { article: KBArticle; onClick: () => 
               </span>
             )}
             {article.content || article.videoUrl || article.pdfUrl ? (
-              <span className="text-[10px] text-primary font-medium">Jetzt lesen →</span>
+              <span className="text-[10px] text-primary font-medium">{t("kb.readNow")} →</span>
             ) : (
-              <span className="text-[10px] text-muted-foreground italic">Inhalt folgt in Kürze</span>
+              <span className="text-[10px] text-muted-foreground italic">{t("kb.contentSoonShort")}</span>
             )}
           </div>
         </div>

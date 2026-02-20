@@ -230,7 +230,7 @@ export function HeroSearch() {
         {/* Quick category links */}
         <div className="flex flex-wrap gap-2 mt-3">
           <span className="text-xs text-muted-foreground">{t("hero.popular")}</span>
-          {["Anhänger", "Bagger", "Koffer", "Planen"].map((term) => (
+          {(t("hero.popularTerms", { returnObjects: true }) as string[]).map((term) => (
             <button
               key={term}
               onClick={() => {
