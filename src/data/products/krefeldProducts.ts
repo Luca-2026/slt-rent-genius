@@ -83,6 +83,9 @@ import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
 import imgKmDistanzstange21366 from "@/assets/products/km-21366-distanzstange-1.jpeg";
+import imgPioneerCdj2000Nxs1 from "@/assets/products/pioneer-cdj2000-nxs-1.jpeg";
+import imgPioneerCdj2000Nxs2 from "@/assets/products/pioneer-cdj2000-nxs-2.jpeg";
+import imgPioneerCdj2000Nxs3 from "@/assets/products/pioneer-cdj2000-nxs-3.jpeg";
 import imgYamahaDm31 from "@/assets/products/yamaha-dm3-1.jpeg";
 import imgSoundboksBatteryboks1 from "@/assets/products/soundboks-batteryboks-1.jpeg";
 import imgYamahaDm32 from "@/assets/products/yamaha-dm3-2.jpeg";
@@ -1916,10 +1919,21 @@ export const beschallungProducts: Product[] = [
   {
     id: "pioneer-cdj2000-nxs",
     name: "Pioneer CDJ 2000 NXS",
-    description: "Professioneller DJ-Player",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Professioneller DJ-Multiplayer mit Kompatibilität für Smartphones (USB/Wi-Fi), USB-Speichermedien, SD-Karten und CDs. Mit Beat-Sync, detailliertem Display und Wave-Zoom Funktion für präzises Beat Matching.",
+    image: imgPioneerCdj2000Nxs1,
+    images: [imgPioneerCdj2000Nxs1, imgPioneerCdj2000Nxs2, imgPioneerCdj2000Nxs3],
     category: "dj-equipment",
+    specifications: {
+      "Abspielbare Medien": "Smartphone (USB/Wi-Fi), USB, SD-Karte, Audio CD, CD-R/RW, DVD",
+      "Abspielbare Dateien": "MP3, AAC, WAV, AIFF",
+      "Frequenzgang": "4 Hz – 20 kHz",
+      "Rauschabstand": "115 dB oder größer",
+      "Klirrfaktor": "0,0018% oder kleiner",
+      "USB-Anschlüsse": "2×",
+      "Audioausgänge": "1× Stereo Out (Cinch), 1× Digital Out (Koaxial)",
+      "Weitere Anschlüsse": "1× LAN, 1× Control (3,5 mm Minibuchse)",
+    },
+    pdfUrl: "/manuals/pioneer-cdj2000-nxs-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "PAVOZ5" }
   },
   {
