@@ -21,6 +21,7 @@ import rollgeruest5_4m_2 from "@/assets/products/rollgeruest-breitaufbau-5-4m-2.
 import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
 import krauseDiagonale1 from "@/assets/products/krause-diagonale-1.webp";
 import krauseAuslegerstuetze1 from "@/assets/products/krause-auslegerstuetze-1.webp";
+import krauseVertikalrahmen1 from "@/assets/products/krause-vertikalrahmen-1.webp";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2354,21 +2355,21 @@ export const leiternGeruesteProducts: Product[] = [
   {
     id: "krause-vertikalrahmen-1x1-5m",
     name: "Krause Vertikalrahmen – 1,00 × 1,50 m",
-    description: "Aufstockrahmen für Krause Rollgerüste, 1,00 m breit × 1,50 m hoch.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Vertikalrahmen für Krause Rollgerüste der STABILO Serie 10, 1,00 m breit × 1,50 m hoch. Dient als Aufstockelement zum Erhöhen der Gerüsthöhe.",
+    image: krauseVertikalrahmen1,
+    images: [krauseVertikalrahmen1],
     category: "geruestteil",
-    specifications: { "Breite": "1,00 m", "Höhe": "1,50 m" },
+    specifications: { "Breite": "1,00 m", "Höhe": "1,50 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
     rentwareCode: { krefeld: "2EPETD" }
   },
   {
     id: "krause-vertikalrahmen-2x1-5m",
     name: "Krause Vertikalrahmen – 2,00 × 1,50 m",
-    description: "Aufstockrahmen für Krause Rollgerüste, 2,00 m breit × 1,50 m hoch.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Vertikalrahmen für Krause Rollgerüste der STABILO Serie 10, 2,00 m breit × 1,50 m hoch. Dient als Aufstockelement zum Erhöhen der Gerüsthöhe.",
+    image: krauseVertikalrahmen1,
+    images: [krauseVertikalrahmen1],
     category: "geruestteil",
-    specifications: { "Breite": "2,00 m", "Höhe": "1,50 m" },
+    specifications: { "Breite": "2,00 m", "Höhe": "1,50 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
     rentwareCode: { krefeld: "E9ZNCN" }
   },
 ];
