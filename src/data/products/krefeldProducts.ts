@@ -246,6 +246,11 @@ import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.j
 // Stehtisch images
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 
+// Partyzelt 4x14m images
+import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
+import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
+import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
+
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
 import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
@@ -2288,6 +2293,26 @@ export const moebelZelteProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "zelt",
     rentwareCode: { krefeld: "K12XM9" }
+  },
+  {
+    id: "partyzelt-4x14m",
+    name: "Partyzelt 4x14m",
+    description: "Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    image: imgPartyzelt4x14_1,
+    images: [imgPartyzelt4x14_1, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
+    category: "zelt",
+    specifications: {
+      "Grundfläche": "56 m² (4 m × 14 m)",
+      "Aufbau": "4×6m + 2× 4×4m, verbunden mit Regenrinne",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 93 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 79 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 100 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
+    videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
+    rentwareCode: { krefeld: "PARTYZELT4X14" }
   },
   {
     id: "eventzelt-6x8m",
