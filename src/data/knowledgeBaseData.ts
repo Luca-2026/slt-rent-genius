@@ -79,7 +79,7 @@ export const kbCategories: KBCategory[] = [
     title: "Eventtechnik",
     description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Zelte.",
     icon: "PartyPopper",
-    articleCount: 4,
+    articleCount: 5,
   },
   {
     id: "leitern-gerueste",
@@ -432,6 +432,18 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/pioneer-cdj2000-nxs-bedienungsanleitung.pdf",
     tags: ["pioneer", "cdj", "2000", "nxs", "multiplayer", "dj", "anleitung"],
+    updatedAt: "2026-02-20",
+  },
+  // Eventtechnik – D.A.S. Audio Vantec 18A
+  {
+    id: "das-vantec-18a-anleitung",
+    title: "D.A.S. Audio Vantec 18A – Bedienungsanleitung",
+    description: "Offizielle Bedienungsanleitung für den aktiven 18\" Subwoofer D.A.S. Audio Vantec 18A.",
+    categoryId: "event-technik",
+    productIds: ["das-vantec-18a"],
+    type: "anleitung",
+    pdfUrl: "/manuals/das-vantec-18a-bedienungsanleitung.pdf",
+    tags: ["das", "das audio", "vantec", "18a", "subwoofer", "anleitung"],
     updatedAt: "2026-02-20",
   },
 ];
