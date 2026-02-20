@@ -85,6 +85,8 @@ import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
 import imgKmDistanzstange21366 from "@/assets/products/km-21366-distanzstange-1.jpeg";
+import imgSoundsystem1400w1 from "@/assets/products/soundsystem-1400w-1.jpeg";
+import imgSoundsystem1400w2 from "@/assets/products/soundsystem-1400w-2.jpeg";
 import imgPioneerCdj2000Nxs1 from "@/assets/products/pioneer-cdj2000-nxs-1.jpeg";
 import imgPioneerCdj2000Nxs2 from "@/assets/products/pioneer-cdj2000-nxs-2.jpeg";
 import imgPioneerCdj2000Nxs3 from "@/assets/products/pioneer-cdj2000-nxs-3.jpeg";
@@ -1798,11 +1800,22 @@ export const beschallungProducts: Product[] = [
   },
   {
     id: "soundsystem-2-1-1400w",
-    name: "2.1 Soundsystem 1400W RMS",
-    description: "PA-System mit Sub und Tops",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult – bis zu 75 Personen",
+    description: "Aktive 2.1 Anlage mit 1400W RMS Systemleistung und integriertem 4-Kanal Mischpult. Bis zu 75 Personen, 126 dB Lautstärke, Bluetooth-fähig und einfacher Aufbau. Inkl. 1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel sowie Miniklinke-auf-XLR Adapter. Optional: Bluetooth Empfänger.",
+    image: imgSoundsystem1400w1,
+    images: [imgSoundsystem1400w1, imgSoundsystem1400w2],
     category: "pa-system",
+    specifications: {
+      "Systemleistung": "1400W RMS",
+      "Geeignet für": "bis zu ca. 75 Personen",
+      "Max. Schalldruckpegel": "126 dB",
+      "Mischpult": "Integriertes 4-Kanal Mischpult",
+      "Anschlüsse": "XLR, AUX, Klinke",
+      "Verbindung": "Kabellos / Bluetooth",
+      "Lieferumfang": "1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke-auf-XLR Adapter",
+      "Optional": "Bluetooth Empfänger",
+      "Gewicht": "ca. 55 kg",
+    },
     rentwareCode: { krefeld: "HP9CD4" }
   },
   {
