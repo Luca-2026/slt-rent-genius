@@ -79,6 +79,9 @@ import imgRetevRt29Set4 from "@/assets/products/retevis-rt29-set-4.jpeg";
 import imgSoundboksGen31 from "@/assets/products/soundboks-gen3-1.jpeg";
 import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
+import imgPioneerDjm900Nxs21 from "@/assets/products/pioneer-djm900-nxs2-1.jpeg";
+import imgPioneerDjm900Nxs22 from "@/assets/products/pioneer-djm900-nxs2-2.jpeg";
+import imgPioneerDjm900Nxs23 from "@/assets/products/pioneer-djm900-nxs2-3.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
@@ -1859,8 +1862,8 @@ export const beschallungProducts: Product[] = [
     id: "pioneer-djm900-nxs2",
     name: "Pioneer DJM 900 NXS2",
     description: "Der neue DJM 900 NXS2 unterstützt den ersten 64-bit Mixing Prozessor von Pioneer, der für einen wärmeren und detaillierten Sound sorgt. Der EQ und die Fader Kurven wurden verbessert und die FX Steuerung wurde erweitert, um noch mehr kreative Möglichkeiten zu bieten. Der vielseitige DJM 900 Nexus 2 hat unabhängige Send/Return Wege, 4 Phono Eingänge und 2 USB Ports, für noch mehr Flexibilität.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    image: imgPioneerDjm900Nxs21,
+    images: [imgPioneerDjm900Nxs21, imgPioneerDjm900Nxs22, imgPioneerDjm900Nxs23],
     category: "dj-equipment",
     specifications: {
       "Audiokanäle": "4",
