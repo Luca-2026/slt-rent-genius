@@ -368,7 +368,15 @@ export default function CategoryProducts() {
                 // Check direct match first
                 if (p.tags?.includes(value) || p.category === value) return true;
                 // Category-specific group mappings
+                const beschallungTypeGroups: Record<string, string[]> = {
+                  "pa": ["pa-system", "bluetooth-speaker"],
+                  "lautsprecher": ["lautsprecher", "bluetooth-speaker"],
+                  "mikrofon": ["mikrofon"],
+                  "subwoofer": ["subwoofer"],
+                  "zubehoer": ["zubehoer"],
+                };
                 const groupCategories =
+                  category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
                   category?.id === "gartenpflege" ? gartenpflegeTypeGroups[value] :
                   category?.id === "kabel-stromverteiler" ? kabelStromverteilerTypeGroups[value] :
@@ -467,6 +475,55 @@ export default function CategoryProducts() {
             filtered = filtered.filter((p) => {
               const ra = (p.specifications?.["Reflektionsklasse"] || "").toLowerCase().replace(/\s/g, "");
               return selectedValues.some((v) => ra.includes(v.toLowerCase()));
+            });
+          }
+          // Beschallung: Personenanzahl filter
+          else if (sectionId === "personen") {
+            filtered = filtered.filter((p) => {
+              // Check specifications for person count
+              const geeignetFuer = String(p.specifications?.["Geeignet für"] || "");
+              const personMatch = geeignetFuer.match(/(\d+)/);
+              const persons = personMatch ? parseInt(personMatch[1], 10) : 0;
+              // Also check name
+              const nameMatch = p.name.match(/bis\s+zu\s+(\d+)\s+Personen/i);
+              const namePersons = nameMatch ? parseInt(nameMatch[1], 10) : 0;
+              const maxPersons = Math.max(persons, namePersons);
+              // Accessories / individual speakers without clear person count: show for all filters
+              if (maxPersons === 0) return true;
+              return selectedValues.some((v) => {
+                if (v === "bis-30") return maxPersons <= 30;
+                if (v === "bis-75") return maxPersons <= 75;
+                if (v === "bis-250") return maxPersons <= 250;
+                return false;
+              });
+            });
+          }
+          // Beschallung: Features filter (bluetooth, akku, mischpult)
+          else if (sectionId === "features") {
+            filtered = filtered.filter((p) => {
+              return selectedValues.every((feat) => {
+                const nameLower = p.name.toLowerCase();
+                const descLower = (p.description || "").toLowerCase();
+                const specsStr = Object.values(p.specifications || {}).join(" ").toLowerCase();
+                if (feat === "bluetooth") {
+                  return nameLower.includes("bluetooth") ||
+                    descLower.includes("bluetooth") ||
+                    specsStr.includes("bluetooth") ||
+                    p.category === "bluetooth-speaker";
+                }
+                if (feat === "akku") {
+                  return nameLower.includes("akku") ||
+                    descLower.includes("akku") ||
+                    specsStr.includes("akku") ||
+                    p.category === "bluetooth-speaker";
+                }
+                if (feat === "mischpult") {
+                  return nameLower.includes("mischpult") ||
+                    descLower.includes("mischpult") ||
+                    specsStr.includes("mischpult");
+                }
+                return false;
+              });
             });
           }
           // Standard tag/category matching
@@ -847,7 +904,7 @@ export default function CategoryProducts() {
                             searchPlaceholder={categorySearchPlaceholders[category.id] || "Artikel suchen..."}
                             sections={categoryFilterMap[category.id]}
                             onFilterChange={setGenericFilters}
-                            variant={category.id === "heizung-trocknung" ? "accordion" : "badges"}
+                            variant={(category.id === "heizung-trocknung" || category.id === "beschallung") ? "accordion" : "badges"}
                           />
                           {/* Starkstrom-Hinweis: show in sidebar when 9 kW filter is active */}
                           {category.id === "heizung-trocknung" && genericFilters.filters["heizleistung"]?.includes("ab-9kw") && (

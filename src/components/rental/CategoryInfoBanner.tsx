@@ -102,11 +102,11 @@ const categoryInfoConfig: Record<string, { description?: string; items: InfoItem
     ],
   },
   "beschallung": {
-    description: "PA-Systeme und Beschallungstechnik für Events, Konferenzen und Feiern. Komplett-Anlagen oder Einzelkomponenten.",
+    description: "PA-Systeme und Beschallungstechnik für Events, Konferenzen und Feiern – von der Komplett-Anlage bis zum einzelnen Mikrofon. Wir bauen auf Wunsch auch auf und betreuen Sie vor Ort.",
     items: [
-      { icon: <Music className="h-5 w-5 text-accent" />, title: "PA-Systeme", subtitle: "Komplett-Anlagen" },
+      { icon: <Music className="h-5 w-5 text-accent" />, title: "PA-Systeme", subtitle: "Bis 250 Personen" },
       { icon: <Radio className="h-5 w-5 text-accent" />, title: "Funkmikrofone", subtitle: "Kabellose Freiheit" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Aufbau-Service", subtitle: "Auf Wunsch verfügbar" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Aufbau & Betreuung", subtitle: "Vor Ort durch unser Team" },
     ],
   },
   "moebel-zelte": {
