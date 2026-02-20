@@ -63,6 +63,7 @@ import imgTlWarnleuchteGelbFront from "@/assets/products/tl-warnleuchte-gelb-fro
 import imgTlWarnleuchteGelbSeite from "@/assets/products/tl-warnleuchte-gelb-seite.jpeg";
 import imgVz100022Ra1Gr1 from "@/assets/products/vz-1000-22-ra1-gr1.jpeg";
 import imgVz357Ra1 from "@/assets/products/vz-357-ra1.jpeg";
+import imgVz100012Ra1Gr1 from "@/assets/products/vz-1000-12-ra1-gr1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1413,10 +1414,19 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-12-ra1-gr1",
     name: "VZ 1000-12, RA1, Gr. 1",
-    description: "Richtungspfeil links (klein)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Fußgänger Gehweg links gegenüber benutzen – Zusatzzeichen 231 × 420 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100012Ra1Gr1,
+    images: [imgVz100012Ra1Gr1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 1000-12",
+      "Bedeutung": "Fußgänger Gehweg links gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Abmessungen": "231 × 420 mm",
+      "Größe": "Gr. 1",
+    },
     rentwareCode: { krefeld: "ANT9D8" }
   },
   {
