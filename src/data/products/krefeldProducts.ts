@@ -81,6 +81,9 @@ import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
+import imgYamahaDm31 from "@/assets/products/yamaha-dm3-1.jpeg";
+import imgYamahaDm32 from "@/assets/products/yamaha-dm3-2.jpeg";
+import imgYamahaDm33 from "@/assets/products/yamaha-dm3-3.jpeg";
 import imgPioneerDjm900Nxs21 from "@/assets/products/pioneer-djm900-nxs2-1.jpeg";
 import imgPioneerDjm900Nxs22 from "@/assets/products/pioneer-djm900-nxs2-2.jpeg";
 import imgPioneerDjm900Nxs23 from "@/assets/products/pioneer-djm900-nxs2-3.jpeg";
@@ -1852,11 +1855,29 @@ export const beschallungProducts: Product[] = [
   },
   {
     id: "yamaha-dm3",
-    name: "Yamaha DM3",
-    description: "Digitales Mischpult",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Yamaha DM3 – Digitalmischpult (Dante-Version)",
+    description: "16-Kanal Digitalmischpult für Studio-, Stream- und Live-Anwendungen mit 9\" Multi-Touchscreen, 9 Motorfadern und integriertem 16×16 Dante-Interface. Kompakt, leistungsstark und vielseitig.",
+    image: imgYamahaDm31,
+    images: [imgYamahaDm31, imgYamahaDm32, imgYamahaDm33],
     category: "mischpult",
+    specifications: {
+      "Kanäle": "16 Mono + 1 Stereo + 2 FX Return",
+      "Ausgänge": "8 Ausgänge",
+      "Busse": "1 Stereo, 6 Mix, 2 FX, 2 Matrix (Input to Matrix)",
+      "Display": "9\" Multi-Touchscreen",
+      "Fader": "9 Motorfader",
+      "Bedienung": "\"Touch and Turn\"-Regler",
+      "USB Audio Interface": "18 × 18, 48 kHz / 96 kHz",
+      "Dante Interface": "16 × 16 (16 Ein- und Ausgänge)",
+      "Aufnahme/Wiedergabe": "2 × 2 Kanal über USB Port",
+      "Effekte": "18 wählbare Effekte + GEQ auf Mix 1–6 & Stereo Bus",
+      "Frei belegbare Taster": "6",
+      "DAW Remote": "HUI",
+      "OSC Unterstützung": "Ja (für Installationen)",
+      "Abmessungen (B × H × T)": "320 × 140 × 455 mm",
+      "Gewicht": "6,5 kg",
+    },
+    pdfUrl: "/manuals/yamaha-dm3-anleitung.pdf",
     rentwareCode: { krefeld: "1BNTNX" }
   },
   {
