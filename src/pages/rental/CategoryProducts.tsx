@@ -402,9 +402,10 @@ export default function CategoryProducts() {
                   // Fallback: name-based matching for products without a category field
                   if (category?.id === "beleuchtung") {
                     const nameLower = p.name.toLowerCase();
-                    if (value === "spot") return nameLower.includes("scheinwerfer") || nameLower.includes("spot") || nameLower.includes("par") || nameLower.includes("bar") || nameLower.includes("blinder") || nameLower.includes("beleuchtungsset");
+                    const isMovingHead = p.category === "moving-head" || nameLower.includes("moving head") || nameLower.includes("moving-head");
+                    if (value === "spot") return !isMovingHead && (nameLower.includes("scheinwerfer") || nameLower.includes("par") || nameLower.includes("bar") || nameLower.includes("blinder") || nameLower.includes("beleuchtungsset"));
                     if (value === "fluter") return nameLower.includes("fluter") || nameLower.includes("flutlicht") || nameLower.includes("baustrahler");
-                    if (value === "moving-head") return nameLower.includes("moving head") || nameLower.includes("moving-head");
+                    if (value === "moving-head") return isMovingHead;
                     if (value === "deko") return nameLower.includes("lichterkette") || nameLower.includes("deko");
                     if (value === "arbeitsleuchte") return nameLower.includes("arbeitsleuchte") || nameLower.includes("handlampe") || nameLower.includes("inspektionsleuchte");
                   }
