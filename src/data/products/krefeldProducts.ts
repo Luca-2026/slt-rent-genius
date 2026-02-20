@@ -82,6 +82,7 @@ import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
+import imgKmDistanzstange21366 from "@/assets/products/km-21366-distanzstange-1.jpeg";
 import imgYamahaDm31 from "@/assets/products/yamaha-dm3-1.jpeg";
 import imgSoundboksBatteryboks1 from "@/assets/products/soundboks-batteryboks-1.jpeg";
 import imgYamahaDm32 from "@/assets/products/yamaha-dm3-2.jpeg";
@@ -1866,10 +1867,14 @@ export const beschallungProducts: Product[] = [
   {
     id: "km-distanzstange-21366",
     name: "K&M 21366 Distanzstange",
-    description: "Distanzstange für Subwoofer/Tops",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Distanzstange zur Montage von Lautsprechern auf Subwoofern. Stabil, höhenverstellbar und passend für gängige 35-mm-Flansche.",
+    image: imgKmDistanzstange21366,
+    images: [imgKmDistanzstange21366],
     category: "stativ",
+    specifications: {
+      "Verwendung": "Montage von Tops auf Subwoofern",
+      "Anschluss": "35-mm-Flansch (oben & unten)",
+    },
     rentwareCode: { krefeld: "MVFUVW" }
   },
   {
