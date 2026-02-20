@@ -64,6 +64,7 @@ import imgTlWarnleuchteGelbSeite from "@/assets/products/tl-warnleuchte-gelb-sei
 import imgVz100022Ra1Gr1 from "@/assets/products/vz-1000-22-ra1-gr1.jpeg";
 import imgVz357Ra1 from "@/assets/products/vz-357-ra1.jpeg";
 import imgVz100012Ra1Gr1 from "@/assets/products/vz-1000-12-ra1-gr1.jpeg";
+import imgVz28321Ra1 from "@/assets/products/vz-283-21-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1344,10 +1345,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-283-21-ra1",
     name: "VZ 283-21, RA1",
-    description: "Absolutes Halteverbot Ende rechts",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Absolutes Haltverbot Anfang, Linksaufstellung – Rundes Verkehrszeichen Ø 600 mm, Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz28321Ra1,
+    images: [imgVz28321Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 283-21",
+      "Bedeutung": "Absolutes Haltverbot Anfang, Linksaufstellung",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "SBF5T8" }
   },
   {
