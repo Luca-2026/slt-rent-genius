@@ -230,6 +230,11 @@ import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
 import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16a-6xschuko-1.webp";
 
+// TourLED 50 XCR images
+import imgTourled50Xcr1 from "@/assets/products/tourled-50-xcr-1.jpeg";
+import imgTourled50Xcr2 from "@/assets/products/tourled-50-xcr-2.jpeg";
+import imgTourled50Xcr3 from "@/assets/products/tourled-50-xcr-3.jpeg";
+
 // Kalt-Funkenfontäne images
 import imgKaltFunkenfontaene1 from "@/assets/products/kalt-funkenfontaene-1.jpeg";
 import imgKaltFunkenfontaene2 from "@/assets/products/kalt-funkenfontaene-2.jpeg";
@@ -2080,10 +2085,17 @@ export const beleuchtungProducts: Product[] = [
   {
     id: "led-outdoorscheinwerfer-tourled50xcr",
     name: "LED Outdoorscheinwerfer TourLED 50 XCR",
-    description: "Professioneller LED-Scheinwerfer outdoor",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Professioneller LED-Outdoorscheinwerfer mit RGBW-LEDs – ideal für Fassadenanstrahlungen, Eventbeleuchtung und Außeneinsätze. Statisch oder mit Farbprogrammen betreibbar, spritzwassergeschützt nach IP65, inkl. PowerCon True1 Kabel, Super Clamp und Safety 5mm.",
+    image: imgTourled50Xcr1,
+    images: [imgTourled50Xcr1, imgTourled50Xcr2, imgTourled50Xcr3],
     category: "scheinwerfer",
+    specifications: {
+      "LEDs": "RGBW",
+      "Betrieb": "Statisch oder Farbprogramme",
+      "Schutzklasse": "IP65 (Spritzwasser geschützt)",
+      "Lieferumfang": "1× PowerCon True1 Kabel, 1× Super Clamp, 1× Safety 5mm",
+    },
+    pdfUrl: "/manuals/tourled-50-xcr-manual.pdf",
     rentwareCode: { krefeld: "QKTPFF" }
   },
   {

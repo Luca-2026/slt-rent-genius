@@ -1042,10 +1042,7 @@ export const bonnSpezialeffekteProducts = [
 // ==================== BELEUCHTUNG ====================
 export const bonnBeleuchtungProducts = [
   {
-    id: "bonn-led-outdoor-tourled50",
-    name: "LED Outdoorscheinwerfer TourLED 50 XCR",
-    description: "Wetterfester LED-Scheinwerfer für Außeneinsatz.",
-    image: "/placeholder.svg",
+    id: "led-outdoorscheinwerfer-tourled50xcr",
     rentwareCode: { bonn: "7NA19B" },
   },
   {
