@@ -3,6 +3,7 @@ import rollgeruest10_4m_1 from "@/assets/products/rollgeruest-breitaufbau-10-4m-
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
 import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-2.jpeg";
+import rollgeruest3_3m_1 from "@/assets/products/rollgeruest-3-3m-2x1-2m-1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2036,6 +2037,24 @@ export const leiternGeruesteProducts: Product[] = [
       "Fahrbar": "Ja, mit Bremsen",
     },
     rentwareCode: { krefeld: "FSQFEL" }
+  },
+  {
+    id: "rollgeruest-krause-3-3m",
+    name: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m)",
+    description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 1,20 m und 3,3 m Arbeitshöhe. Ideal für Innenarbeiten. Höhenverstellbare Fahrrollen Ø 150 mm für sicheren Stand auf unebenem Untergrund.",
+    image: rollgeruest3_3m_1,
+    images: [rollgeruest3_3m_1],
+    category: "rollgeruest",
+    videoUrl: "https://www.youtube.com/watch?v=5tqZPFwN02c",
+    specifications: {
+      "Arbeitshöhe": "3,3 m",
+      "Gerüsthöhe": "2,3 m",
+      "Standhöhe": "1,3 m",
+      "Arbeitsfläche": "2,00 × 1,20 m",
+      "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
+      "Material": "Aluminium",
+    },
+    rentwareCode: { krefeld: "FSQFEL_33" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-10-4m",
