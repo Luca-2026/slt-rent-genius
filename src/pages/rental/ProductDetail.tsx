@@ -43,7 +43,6 @@ export default function ProductDetail() {
   const rawProduct = useMemo(() => getProductById(productId || ""), [productId]);
   const product = useTranslatedProduct(rawProduct);
 
-  // Get related products from same category
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
@@ -60,11 +59,9 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
-  // Update page title for SEO
   useEffect(() => {
     if (product && location) {
       document.title = `${product.name} | ${location.shortName} | SLT Rental`;
-      
       const metaDescription = document.querySelector('meta[name="description"]');
       const descText = `${product.name} – ${location.shortName}. ${product.description || ""}`;
       if (metaDescription) {
@@ -76,21 +73,14 @@ export default function ProductDetail() {
         document.head.appendChild(meta);
       }
     }
-    
-    return () => {
-      document.title = "SLT Rental";
-    };
+    return () => { document.title = "SLT Rental"; };
   }, [product, location]);
 
-  // Handle keyboard navigation for images
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (images.length <= 1) return;
-      if (e.key === "ArrowLeft") {
-        setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-      } else if (e.key === "ArrowRight") {
-        setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-      }
+      if (e.key === "ArrowLeft") setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+      else if (e.key === "ArrowRight") setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -100,12 +90,8 @@ export default function ProductDetail() {
     return (
       <Layout>
         <div className="section-container py-20 text-center">
-          <h1 className="text-2xl font-bold text-headline mb-4">
-            {t("rental.productNotFound")}
-          </h1>
-          <p className="text-muted-foreground mb-6">
-            {t("rental.productNotFoundDesc")}
-          </p>
+          <h1 className="text-2xl font-bold text-headline mb-4">{t("rental.productNotFound")}</h1>
+          <p className="text-muted-foreground mb-6">{t("rental.productNotFoundDesc")}</p>
           <Button onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             {t("rental.back")}
@@ -115,17 +101,16 @@ export default function ProductDetail() {
     );
   }
 
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  const handlePrevImage = () => setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  const handleNextImage = () => setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
-  const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  const videoUrls = product.videoUrls && product.videoUrls.length > 0
+    ? product.videoUrls
+    : product.videoUrl ? [product.videoUrl] : [];
 
   return (
     <Layout>
-      {/* Breadcrumb Navigation */}
+      {/* Breadcrumb */}
       <div className="bg-muted/50 border-b border-border">
         <div className="section-container py-3">
           <Breadcrumb>
@@ -149,7 +134,7 @@ export default function ProductDetail() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>{product.name}</BreadcrumbPage>
+                <BreadcrumbPage className="max-w-[180px] truncate">{product.name}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -157,48 +142,43 @@ export default function ProductDetail() {
       </div>
 
       {/* Main Content */}
-      <section className="py-8 lg:py-12">
+      <section className="py-6 lg:py-10">
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Images & Details */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+            {/* ── LEFT / MAIN COLUMN ── */}
+            <div className="lg:col-span-2 space-y-5">
+
               {/* Image Gallery */}
               <div className="bg-card rounded-xl border border-border overflow-hidden">
-                {/* Main Image */}
-                <div className="relative aspect-[4/3] bg-muted">
+                <div className="relative bg-muted" style={{ aspectRatio: "4/3" }}>
                   {images.length > 0 ? (
                     <>
                       <img
                         src={images[currentImageIndex]}
-                        alt={`${product.name} - ${t("rental.image")} ${currentImageIndex + 1}`}
-                        className="w-full h-full object-cover"
+                        alt={`${product.name} – Bild ${currentImageIndex + 1}`}
+                        className="w-full h-full object-contain"
                       />
-                      
-                      {/* Navigation Arrows */}
                       {images.length > 1 && (
                         <>
                           <button
                             onClick={handlePrevImage}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-lg transition-all"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-md transition-all"
                             aria-label={t("rental.previousImage")}
                           >
-                            <ChevronLeft className="h-6 w-6" />
+                            <ChevronLeft className="h-5 w-5" />
                           </button>
                           <button
                             onClick={handleNextImage}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-lg transition-all"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 bg-background/90 hover:bg-background rounded-full p-2 shadow-md transition-all"
                             aria-label={t("rental.nextImage")}
                           >
-                            <ChevronRight className="h-6 w-6" />
+                            <ChevronRight className="h-5 w-5" />
                           </button>
+                          <Badge className="absolute top-3 left-3 bg-background/90 text-foreground text-xs">
+                            {currentImageIndex + 1} / {images.length}
+                          </Badge>
                         </>
-                      )}
-
-                      {/* Image Counter */}
-                      {images.length > 1 && (
-                        <Badge className="absolute top-4 left-4 bg-background/90 text-foreground">
-                          {currentImageIndex + 1} / {images.length}
-                        </Badge>
                       )}
                     </>
                   ) : (
@@ -207,26 +187,20 @@ export default function ProductDetail() {
                     </div>
                   )}
                 </div>
-
-                {/* Thumbnail Strip */}
                 {images.length > 1 && (
-                  <div className="p-4 bg-muted/30 border-t border-border">
-                    <div className="flex gap-2 overflow-x-auto pb-1">
+                  <div className="px-4 py-3 bg-muted/30 border-t border-border">
+                    <div className="flex gap-2 overflow-x-auto">
                       {images.map((img, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentImageIndex(index)}
-                          className={`flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                          className={`flex-shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-all ${
                             index === currentImageIndex
-                              ? "border-primary ring-2 ring-primary/30"
+                              ? "border-primary ring-2 ring-primary/20"
                               : "border-transparent hover:border-muted-foreground/30"
                           }`}
                         >
-                          <img
-                            src={img}
-                            alt={`Thumbnail ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
+                          <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>
@@ -234,279 +208,225 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              {/* Product Details */}
-              <div className="bg-card rounded-xl border border-border p-6">
-                <h1 className="text-2xl lg:text-3xl font-bold text-headline mb-2">
-                  {product.name}
-                </h1>
-                
-                {product.description && (
-                  <p className="text-lg text-muted-foreground mb-6">
-                    {product.description}
-                  </p>
-                )}
+              {/* ── MOBILE ONLY: Booking Card inline ── */}
+              <div className="lg:hidden">
+                <MobileBookingCard
+                  product={product}
+                  location={location}
+                  categoryId={categoryId}
+                  onBook={() => setShowBookingDialog(true)}
+                  t={t}
+                />
+              </div>
 
-                {/* Tags */}
-                {product.tags && product.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {product.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+              {/* Product Name + Description */}
+              <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+                <div>
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
+                    {product.name}
+                  </h1>
+                  {product.description && (
+                    <p className="text-base text-muted-foreground mt-2 leading-relaxed">
+                      {product.description}
+                    </p>
+                  )}
+                  {product.tags && product.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {product.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
                 {/* Features */}
                 {product.features && product.features.length > 0 && (
-                  <div className="border-t border-border pt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-4">
-                       {t("rental.featuresTitle")}
-                    </h2>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="border-t border-border pt-4">
+                    <h2 className="text-base font-semibold text-headline mb-3">{t("rental.featuresTitle")}</h2>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {product.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span className="text-foreground">{feature}</span>
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-foreground leading-snug">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                {/* Weight Info */}
-                {product.weightKg && (
-                  <div className="border-t border-border pt-6 mt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-2">
-                       {t("rental.technicalData")}
-                    </h2>
-                    <p className="text-muted-foreground">
-                      {t("rental.payload")}: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
-                    </p>
-                  </div>
-                )}
-
                 {/* Detailed Description */}
                 {product.detailedDescription && (
-                  <div className="border-t border-border pt-6 mt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-3 flex items-center gap-2">
-                       <Info className="h-5 w-5 text-primary" />
-                       {t("rental.descriptionTitle")}
+                  <div className="border-t border-border pt-4">
+                    <h2 className="text-base font-semibold text-headline mb-2 flex items-center gap-2">
+                      <Info className="h-4 w-4 text-primary flex-shrink-0" />
+                      {t("rental.descriptionTitle")}
                     </h2>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {product.detailedDescription}
                     </p>
                   </div>
                 )}
-
-                {/* Specifications */}
-                {product.specifications && Object.keys(product.specifications).length > 0 && (
-                  <div className="border-t border-border pt-6 mt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-4">
-                     {t("rental.technicalData")}
-                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(product.specifications).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center bg-muted/50 rounded-lg px-4 py-3">
-                          <span className="text-sm font-medium text-muted-foreground">{key}</span>
-                          <span className="text-sm font-semibold text-foreground">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Product Videos */}
-                {(product.videoUrls && product.videoUrls.length > 0 ? product.videoUrls : product.videoUrl ? [product.videoUrl] : []).map((url, idx, arr) => (
-                  <div key={url} className="border-t border-border pt-6 mt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
-                      <Play className="h-5 w-5 text-primary" />
-                      {arr.length > 1 ? `${t("rental.productVideo")} ${idx + 1}` : t("rental.productVideo")}
-                    </h2>
-                    <div className="aspect-video rounded-xl overflow-hidden border border-border">
-                      <iframe
-                        src={url
-                          .replace("https://youtu.be/", "https://www.youtube.com/embed/")
-                          .replace("watch?v=", "embed/")
-                          .replace("/shorts/", "/embed/")}
-                        title={`${product.name} Video ${idx + 1}`}
-                        className="w-full h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-                  </div>
-                ))}
-
-                {/* PDF Download */}
-                {product.pdfUrl && (
-                  <div className="border-t border-border pt-6 mt-6">
-                    <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
-                       <FileDown className="h-5 w-5 text-primary" />
-                       {t("rental.operatingManual")}
-                    </h2>
-                    <a
-                      href={product.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-muted/50 hover:bg-muted rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors"
-                    >
-                      <FileDown className="h-4 w-4 text-primary" />
-                       {t("rental.downloadPdf")}
-                     </a>
-                   </div>
-                )}
               </div>
-            </div>
 
-            {/* Right Column: Booking & Info */}
-            <div className="space-y-6">
-              {/* Booking Card */}
-              <div className="bg-card rounded-xl border border-border p-6 sticky top-4">
-                {/* Pricing */}
-                <div className="mb-6">
-                  {product.pricePerDay && (
-                    <div className="text-3xl font-bold text-primary">
-                      {product.pricePerDay}
-                      <span className="text-lg font-normal text-muted-foreground"> {t("rental.perDay")}</span>
-                    </div>
-                  )}
-                  {product.priceWeekend && (
-                    <p className="text-sm text-accent font-medium mt-1">
-                      Weekend-Tarif: {product.priceWeekend}
+              {/* Technical Specifications */}
+              {product.specifications && Object.keys(product.specifications).length > 0 && (
+                <div className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-4">{t("rental.technicalData")}</h2>
+                  <div className="divide-y divide-border rounded-lg overflow-hidden border border-border">
+                    {Object.entries(product.specifications).map(([key, value], i) => (
+                      <div
+                        key={key}
+                        className={`flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 gap-1 ${
+                          i % 2 === 0 ? "bg-muted/30" : "bg-background"
+                        }`}
+                      >
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          {key}
+                        </span>
+                        <span className="text-sm font-medium text-foreground sm:text-right max-w-[60%]">
+                          {value as string}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {product.weightKg && (
+                    <p className="text-xs text-muted-foreground mt-3">
+                      {t("rental.payload")}: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
                     </p>
                   )}
                 </div>
+              )}
 
-                {/* CTA Buttons */}
+              {/* Videos */}
+              {videoUrls.length > 0 && (
+                <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+                  {videoUrls.map((url, idx) => (
+                    <div key={url}>
+                      <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
+                        <Play className="h-4 w-4 text-primary flex-shrink-0" />
+                        {videoUrls.length > 1 ? `${t("rental.productVideo")} ${idx + 1}` : t("rental.productVideo")}
+                      </h2>
+                      <div className="aspect-video rounded-lg overflow-hidden border border-border">
+                        <iframe
+                          src={url
+                            .replace("https://youtu.be/", "https://www.youtube.com/embed/")
+                            .replace("watch?v=", "embed/")
+                            .replace("/shorts/", "/embed/")}
+                          title={`${product.name} Video ${idx + 1}`}
+                          className="w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                      {idx < videoUrls.length - 1 && <div className="border-t border-border pt-4" />}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* PDF Download */}
+              {product.pdfUrl && (
+                <div className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
+                    <FileDown className="h-4 w-4 text-primary flex-shrink-0" />
+                    {t("rental.operatingManual")}
+                  </h2>
+                  <a
+                    href={product.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg px-4 py-3 text-sm font-medium transition-colors border border-primary/20"
+                  >
+                    <FileDown className="h-4 w-4 flex-shrink-0" />
+                    {t("rental.downloadPdf")}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
+            <div className="hidden lg:block space-y-5">
+              {/* Booking Card */}
+              <div className="bg-card rounded-xl border border-border p-5 sticky top-4">
+                {product.pricePerDay && (
+                  <div className="mb-4 pb-4 border-b border-border">
+                    <div className="text-3xl font-bold text-primary">
+                      {product.pricePerDay}
+                      <span className="text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+                    </div>
+                    {product.priceWeekend && (
+                      <p className="text-sm text-accent font-medium mt-1">
+                        Weekend-Tarif: {product.priceWeekend}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <div className="space-y-2 mb-4">
                   <Button
                     size="lg"
                     className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
                     onClick={() => setShowBookingDialog(true)}
-                   >
-                     {t("rental.rentNow")}
+                  >
+                    {t("rental.rentNow")}
                   </Button>
                   <Link to="/b2b/login" className="block">
-                    <Button
-                      size="lg"
-                      variant="default"
-                      className="w-full"
-                     >
-                       {t("rental.b2bConditions")}
+                    <Button size="lg" variant="default" className="w-full">
+                      {t("rental.b2bConditions")}
                     </Button>
                   </Link>
                 </div>
 
-                {/* Location Info */}
-                <div className="border-t border-border pt-4 mt-4 space-y-3">
-                  <h3 className="font-semibold text-foreground">{t("rental.locationLabel")}</h3>
+                {/* Location */}
+                <div className="border-t border-border pt-4 space-y-2">
+                  <h3 className="text-sm font-semibold text-foreground">{t("rental.locationLabel")}</h3>
                   <div className="flex items-start gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
                     <span>{location.address}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Phone className="h-4 w-4" />
-                    <a href={`tel:${location.phone}`} className="hover:text-primary">
-                      {location.phone}
-                    </a>
+                    <Phone className="h-4 w-4 flex-shrink-0" />
+                    <a href={`tel:${location.phone}`} className="hover:text-primary truncate">{location.phone}</a>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Mail className="h-4 w-4" />
-                    <a href={`mailto:${location.email}`} className="hover:text-primary">
-                      {location.email}
-                    </a>
+                    <Mail className="h-4 w-4 flex-shrink-0" />
+                    <a href={`mailto:${location.email}`} className="hover:text-primary truncate">{location.email}</a>
                   </div>
                 </div>
               </div>
 
-              {/* Conditional: Delivery Calculator OR 24/7 Trailer Info */}
+              {/* Delivery / Trailer Info */}
               {categoryId === "anhaenger" ? (
-                /* 24/7 Trailer Rental Info */
-                <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl border border-accent/30 p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
-                      <Clock className="h-6 w-6 text-accent" />
-                    </div>
-                    <div>
-                     <h3 className="font-bold text-foreground text-lg">{t("rental.available247")}</h3>
-                       <p className="text-sm text-muted-foreground">{t("rental.available247Desc")}</p>
-                     </div>
-                   </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Smartphone className="h-4 w-4 text-primary" />
-                      </div>
-                       <div>
-                         <p className="font-medium text-foreground">{t("rental.smsCodeSystem")}</p>
-                         <p className="text-sm text-muted-foreground">
-                           {t("rental.smsCodeSystemDesc")}
-                         </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Lock className="h-4 w-4 text-primary" />
-                      </div>
-                       <div>
-                         <p className="font-medium text-foreground">{t("rental.electronicLock")}</p>
-                         <p className="text-sm text-muted-foreground">
-                           {t("rental.electronicLockDesc")}
-                         </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Key className="h-4 w-4 text-primary" />
-                      </div>
-                       <div>
-                         <p className="font-medium text-foreground">{t("rental.selfPickup")}</p>
-                         <p className="text-sm text-muted-foreground">
-                           {t("rental.selfPickupDesc")}
-                         </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 pt-4 border-t border-accent/20">
-                    <p className="text-xs text-muted-foreground text-center">
-                      {t("rental.idRequired")}
-                    </p>
-                  </div>
-                </div>
+                <TrailerInfoCard t={t} />
               ) : (
-                /* Delivery Calculator for non-trailer products */
-                <DeliveryCalculatorCompact
-                  productCategoryId={categoryId || ""}
-                  showAllCategories={false}
-                />
+                <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} />
               )}
             </div>
           </div>
 
+          {/* ── MOBILE: Delivery / Trailer Info below ── */}
+          <div className="lg:hidden mt-5">
+            {categoryId === "anhaenger" ? (
+              <TrailerInfoCard t={t} />
+            ) : (
+              <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} />
+            )}
+          </div>
+
           {/* Related Products */}
           {relatedProducts.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-border">
-               <h2 className="text-xl font-bold text-headline mb-6">
-                 {t("rental.relatedProducts")}
-              </h2>
+            <div className="mt-10 pt-8 border-t border-border">
+              <h2 className="text-lg font-bold text-headline mb-5">{t("rental.relatedProducts")}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {relatedProducts.map((relatedProduct) => (
-                  <Link
-                    key={relatedProduct.id}
-                    to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}`}
-                  >
+                  <Link key={relatedProduct.id} to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}`}>
                     <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
                       <div className="aspect-[4/3] bg-muted">
                         {relatedProduct.image ? (
                           <img
                             src={relatedProduct.image}
                             alt={relatedProduct.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
@@ -533,7 +453,6 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* Booking Dialog */}
       <ProductBookingDialog
         product={product}
         location={location}
@@ -541,5 +460,94 @@ export default function ProductDetail() {
         onClose={() => setShowBookingDialog(false)}
       />
     </Layout>
+  );
+}
+
+// ── Sub-components ──────────────────────────────────────────
+
+function MobileBookingCard({
+  product,
+  location,
+  categoryId,
+  onBook,
+  t,
+}: {
+  product: Product;
+  location: ReturnType<typeof getLocationById>;
+  categoryId?: string;
+  onBook: () => void;
+  t: (key: string) => string;
+}) {
+  if (!location) return null;
+  return (
+    <div className="bg-card rounded-xl border border-border p-4">
+      {product.pricePerDay && (
+        <div className="mb-3 pb-3 border-b border-border">
+          <div className="text-2xl font-bold text-primary">
+            {product.pricePerDay}
+            <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+          </div>
+          {product.priceWeekend && (
+            <p className="text-sm text-accent font-medium mt-0.5">
+              Weekend-Tarif: {product.priceWeekend}
+            </p>
+          )}
+        </div>
+      )}
+      <div className="flex gap-2">
+        <Button
+          size="default"
+          className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          onClick={onBook}
+        >
+          {t("rental.rentNow")}
+        </Button>
+        <Link to="/b2b/login" className="flex-1">
+          <Button size="default" variant="default" className="w-full">
+            {t("rental.b2bConditions")}
+          </Button>
+        </Link>
+      </div>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-3">
+        <MapPin className="h-3 w-3 flex-shrink-0" />
+        <span className="truncate">{location.address}</span>
+      </div>
+    </div>
+  );
+}
+
+function TrailerInfoCard({ t }: { t: (key: string) => string }) {
+  return (
+    <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl border border-accent/30 p-5">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+          <Clock className="h-5 w-5 text-accent" />
+        </div>
+        <div>
+          <h3 className="font-bold text-foreground">{t("rental.available247")}</h3>
+          <p className="text-xs text-muted-foreground">{t("rental.available247Desc")}</p>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {[
+          { icon: Smartphone, title: t("rental.smsCodeSystem"), desc: t("rental.smsCodeSystemDesc") },
+          { icon: Lock, title: t("rental.electronicLock"), desc: t("rental.electronicLockDesc") },
+          { icon: Key, title: t("rental.selfPickup"), desc: t("rental.selfPickupDesc") },
+        ].map(({ icon: Icon, title, desc }) => (
+          <div key={title} className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Icon className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">{title}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-muted-foreground text-center mt-4 pt-3 border-t border-accent/20">
+        {t("rental.idRequired")}
+      </p>
+    </div>
   );
 }
