@@ -54,6 +54,7 @@ import imgBauzaunfussKunststoff from "@/assets/products/bauzaunfuss-kunststoff.j
 import imgVz267Ra1 from "@/assets/products/vz-267-ra1.jpeg";
 import imgVzZusatzNeutralRa1Gr2 from "@/assets/products/vz-zusatz-neutral-ra1-gr2.jpeg";
 import imgVz308Ra1 from "@/assets/products/vz-308-ra1.jpeg";
+import imgVz12120Ra2 from "@/assets/products/vz-121-20-ra2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1206,10 +1207,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-121-20-ra2",
     name: "VZ 121-20, RA2",
-    description: "Gefahrzeichen Kurve rechts",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Einseitig verengte Fahrbahn, Verengung links – Dreieckiges Gefahrzeichen, Seitenlänge 900 mm, Flachform 2 mm, Reflektionsklasse RA2.",
+    image: imgVz12120Ra2,
+    images: [imgVz12120Ra2],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 121-20",
+      "Bedeutung": "Einseitig verengte Fahrbahn, Verengung links",
+      "Reflektionsklasse": "RA2",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "900 mm",
+    },
     rentwareCode: { krefeld: "JBQ7S2" }
   },
   {
