@@ -1844,6 +1844,7 @@ export const beschallungProducts: Product[] = [
       "Max. Schalldruckpegel": "135 dB SPL (Peak, 1 m)",
       "Zubehör": "Lautsprecherstative optional erhältlich",
     },
+    pdfUrl: "/manuals/das-vantec-12a-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "TJOHWT" }
   },
   {
