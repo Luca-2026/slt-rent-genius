@@ -5,6 +5,7 @@ import {
   productTranslations,
   categoryTranslations,
   specKeyTranslations,
+  specValueTranslations,
   tagTranslations,
 } from "@/i18n/productTranslations";
 
@@ -23,13 +24,14 @@ export function useTranslatedProduct(product: Product | null | undefined): Produ
 
     const tr = productTranslations[product.id];
 
-    // Translate specifications keys
+    // Translate specifications keys AND values
     let translatedSpecs: Record<string, string> | undefined;
     if (product.specifications) {
       translatedSpecs = {};
       for (const [key, value] of Object.entries(product.specifications)) {
         const translatedKey = specKeyTranslations[key] || key;
-        translatedSpecs[translatedKey] = value;
+        const translatedValue = specValueTranslations[value] || value;
+        translatedSpecs[translatedKey] = translatedValue;
       }
     }
 
@@ -68,7 +70,8 @@ export function useTranslatedProducts(products: Product[]): Product[] {
         translatedSpecs = {};
         for (const [key, value] of Object.entries(product.specifications)) {
           const translatedKey = specKeyTranslations[key] || key;
-          translatedSpecs[translatedKey] = value;
+          const translatedValue = specValueTranslations[value] || value;
+          translatedSpecs[translatedKey] = translatedValue;
         }
       }
 
