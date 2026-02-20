@@ -2014,11 +2014,18 @@ export const beschallungProducts: Product[] = [
   },
   {
     id: "funkmikrofon",
-    name: "Funkmikrofon",
-    description: "Kabelloses Mikrofon",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Sennheiser Funkmikrofon XSW 1-835",
+    description: "Professionelles UHF-Funkmikrofon-Set von Sennheiser mit ca. 25m Reichweite (je nach Umgebung). Ideal für Präsentationen, Veranstaltungen und Bühnenauftritte.",
+    image: imgSennheiserXsw1,
+    images: [imgSennheiserXsw1],
     category: "mikrofon",
+    specifications: {
+      "Empfänger": "EM-XSW 1 (stationär)",
+      "Handsender": "SKM 835-XSW",
+      "Reichweite": "ca. 25 m (umgebungsabhängig)",
+      "Lieferumfang": "1× Empfänger, 1× Handsender, 1× Netzteil NT 12-5 CW, 1× XLR-Kabel 1,5m, 1× Mikrofonklemme MZQ 1, 2× AA Batterien",
+    },
+    pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "6UTPYZ" }
   },
 ];
@@ -2053,22 +2060,6 @@ export const kommunikationProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "zubehoer",
     rentwareCode: { krefeld: "OZHNRX" }
-  },
-  {
-    id: "sennheiser-funkmikrofon-xsw1",
-    name: "Sennheiser Funkmikrofon XSW 1-835",
-    description: "Professionelles UHF-Funkmikrofon-Set von Sennheiser mit ca. 25m Reichweite (je nach Umgebung). Ideal für Präsentationen, Veranstaltungen und Bühnenauftritte.",
-    image: imgSennheiserXsw1,
-    images: [imgSennheiserXsw1],
-    category: "mikrofon",
-    specifications: {
-      "Empfänger": "EM-XSW 1 (stationär)",
-      "Handsender": "SKM 835-XSW",
-      "Reichweite": "ca. 25 m (umgebungsabhängig)",
-      "Lieferumfang": "1× Empfänger, 1× Handsender, 1× Netzteil NT 12-5 CW, 1× XLR-Kabel 1,5m, 1× Mikrofonklemme MZQ 1, 2× AA Batterien",
-    },
-    pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
-    rentwareCode: { krefeld: "PLACEHOLDER_SENNHEISER" }
   },
 ];
 
