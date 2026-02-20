@@ -253,7 +253,9 @@ import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg
 // Bierzeltgarnitur Hussen-Set images
 import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-weiss-1.jpeg";
 
-// Partyzelt 4x14m images
+// Stehtisch Husse images
+import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
+
 import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
@@ -2398,10 +2400,15 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "stehtisch-husse-schwarz",
     name: "Stehtisch Husse schwarz",
-    description: "Schwarze Husse für Stehtisch",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Elegante schwarze Stretch-Husse für runde Stehtische (Ø 80 cm, H 110 cm). Gewaschen zurückzugeben – Reinigung gegen Aufpreis möglich.",
+    image: imgStehtischHusseSchwarz1,
+    images: [imgStehtischHusseSchwarz1],
     category: "husse",
+    specifications: {
+      "Farbe": "schwarz",
+      "Passend für": "Stehtisch Ø 80 cm × H 110 cm",
+      "Rückgabe": "gewaschen (Reinigung gegen Aufpreis möglich)",
+    },
     rentwareCode: { krefeld: "V9E8C7" }
   },
   {
