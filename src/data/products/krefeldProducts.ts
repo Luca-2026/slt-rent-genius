@@ -19,6 +19,7 @@ import leiterKaiserthalL50_1 from "@/assets/products/leiter-kaiserthal-l50-5-stu
 import rollgeruest5_4m_1 from "@/assets/products/rollgeruest-breitaufbau-5-4m-1.jpeg";
 import rollgeruest5_4m_2 from "@/assets/products/rollgeruest-breitaufbau-5-4m-2.jpeg";
 import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
+import krauseDiagonale1 from "@/assets/products/krause-diagonale-1.webp";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2292,11 +2293,11 @@ export const leiternGeruesteProducts: Product[] = [
   {
     id: "krause-diagonale-2m",
     name: "Krause Diagonale – Feldlänge 2,00 m",
-    description: "Diagonalstrebe für Krause Rollgerüste, Feldlänge 2,00 m.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Diagonalstrebe für Krause Rollgerüste der STABILO Serie 10, Feldlänge 2,00 m. Sorgt für maximale Seitensteifigkeit und Standsicherheit des Gerüsts.",
+    image: krauseDiagonale1,
+    images: [krauseDiagonale1],
     category: "geruestteil",
-    specifications: { "Feldlänge": "2,00 m" },
+    specifications: { "Feldlänge": "2,00 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
     rentwareCode: { krefeld: "YE4GIK" }
   },
   {
