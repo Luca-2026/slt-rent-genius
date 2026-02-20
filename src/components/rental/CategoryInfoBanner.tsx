@@ -31,7 +31,7 @@ interface CategoryInfoBannerProps {
   categoryId: string;
 }
 
-const categoryInfoConfig: Record<string, { description?: string; items: InfoItem[]; highlight?: { icon: ReactNode; title: string; text: string } }> = {
+const categoryInfoConfig: Record<string, { description?: string; items: InfoItem[]; highlight?: { icon: ReactNode; title: string; text: string; link?: string; linkLabel?: string } }> = {
   "werkzeuge": {
     description: "Professionelle Akku- und Elektrowerkzeuge von Bosch, Eibenstock und Einhell für Bau, Renovierung und Handwerk. Alle Akkuwerkzeuge inkl. Akku und Ladegerät.",
     items: [
@@ -64,7 +64,7 @@ const categoryInfoConfig: Record<string, { description?: string; items: InfoItem
       { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Einweisung inkl.", subtitle: "Sichere Bedienung" },
     ],
     highlight: {
-      icon: <Zap className="h-6 w-6 text-green-600 dark:text-green-400" />,
+      icon: <Zap className="h-6 w-6 text-primary" />,
       title: "Zoomlion Fachhändler",
       text: "Als offizieller Zoomlion-Fachhändler bieten wir erstklassige Arbeitsbühnen mit vollem Service.",
     },
@@ -134,12 +134,19 @@ const categoryInfoConfig: Record<string, { description?: string; items: InfoItem
     ],
   },
   "absperrtechnik": {
-    description: "Absperrgitter, Bauzäune und Warnbaken für Veranstaltungen und Baustellen. Sicherheit und Ordnung garantiert.",
+    description: "Verkehrszeichen, Bauzäune, Warnbarken und komplette Verkehrssicherung – inkl. Planung und Antrag für Halteverbotszonen.",
     items: [
-      { icon: <Construction className="h-5 w-5 text-accent" />, title: "Absperrgitter", subtitle: "Für Events" },
-      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Bauzäune", subtitle: "Baustellensicherung" },
-      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Lieferung möglich", subtitle: "Bis vor Ort" },
+      { icon: <Construction className="h-5 w-5 text-accent" />, title: "Verkehrszeichen", subtitle: "RA1 & RA2, alle Typen" },
+      { icon: <Gauge className="h-5 w-5 text-accent" />, title: "Bauzäune & Gitter", subtitle: "Baustelle & Events" },
+      { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, title: "Vollservice möglich", subtitle: "Planung & Antragstellung" },
     ],
+    highlight: {
+      icon: <CheckCircle2 className="h-6 w-6 text-accent" />,
+      title: "Verkehrssicherung aus einer Hand",
+      text: "Wir übernehmen die komplette Planung Ihrer Verkehrssicherung – inkl. Halteverbotszonen, Behördenanträgen und Aufbau.",
+      link: "https://www.slt-infra.de",
+      linkLabel: "Mehr Infos auf slt-infra.de",
+    },
   },
   "spezialeffekte": {
     description: "Beeindruckende Spezialeffekte für unvergessliche Events. Nebel, Seifenblasen, Funken und mehr.",
@@ -216,14 +223,17 @@ export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
         {/* Highlight Section */}
         {config.highlight && (
           <div className="mt-6 pt-6 border-t border-accent/20">
-            <div className="flex items-start gap-4 bg-green-50 dark:bg-green-900/20 rounded-xl p-4">
-              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-4 bg-primary/5 border border-primary/20 rounded-xl p-4">
+              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
                 {config.highlight.icon}
               </div>
               <div>
                 <p className="font-semibold text-foreground mb-1">{config.highlight.title}</p>
                 <p className="text-sm text-muted-foreground">
                   {config.highlight.text}
+                  {config.highlight.link && (
+                    <> <a href={config.highlight.link} target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">{config.highlight.linkLabel ?? config.highlight.link}</a></>
+                  )}
                 </p>
               </div>
             </div>

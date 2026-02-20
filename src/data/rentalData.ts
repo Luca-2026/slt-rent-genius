@@ -271,8 +271,8 @@ export const productCategories: ProductCategory[] = [
   },
   {
     id: "absperrtechnik",
-    title: "Absperrtechnik",
-    description: "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment.",
+    title: "Absperr- & Verkehrstechnik",
+    description: "Verkehrszeichen, Bauzäune, Warnbaken und komplette Verkehrssicherung.",
     icon: iconAbsperrgitter,
   },
   {

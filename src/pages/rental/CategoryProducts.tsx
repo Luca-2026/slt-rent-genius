@@ -462,6 +462,13 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Reflektionsklasse filter for absperrtechnik
+          else if (sectionId === "reflektionsklasse") {
+            filtered = filtered.filter((p) => {
+              const ra = (p.specifications?.["Reflektionsklasse"] || "").toLowerCase().replace(/\s/g, "");
+              return selectedValues.some((v) => ra.includes(v.toLowerCase()));
+            });
+          }
           // Standard tag/category matching
           else {
             filtered = filtered.filter((p) =>

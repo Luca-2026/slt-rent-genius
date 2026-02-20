@@ -265,17 +265,29 @@ export const huepfburgenFilterSections: FilterSection[] = [
   },
 ];
 
-// ============= ABSPERRTECHNIK =============
+// ============= ABSPERR- & VERKEHRSTECHNIK =============
 export const absperrtechnikFilterSections: FilterSection[] = [
   {
     id: "type",
-    label: "Typ",
+    label: "Produktart",
     defaultExpanded: true,
     options: [
-      { id: "gitter", label: "Absperrgitter", sublabel: "Veranstaltungen" },
-      { id: "zaun", label: "Bauzäune", sublabel: "Baustellen" },
-      { id: "bake", label: "Warnbaken", sublabel: "Verkehrssicherung" },
-      { id: "band", label: "Flatterband", sublabel: "Absperrung" },
+      { id: "verkehrszeichen", label: "Verkehrszeichen", sublabel: "VZ-Schilder RA1/RA2" },
+      { id: "warnbarke", label: "Warnbarken", sublabel: "Verkehrssicherung" },
+      { id: "warnleuchte", label: "Warnleuchten", sublabel: "TL-Leuchten" },
+      { id: "bauzaun", label: "Bauzäune", sublabel: "Baustellen-Absperrung" },
+      { id: "absperrgitter", label: "Absperrgitter", sublabel: "Veranstaltungen" },
+      { id: "schrankenzaun", label: "Schrankenzäune", sublabel: "Verkehrslenkung" },
+      { id: "zubehoer", label: "Zubehör", sublabel: "Fußplatten, Rohre, Schellen" },
+    ],
+  },
+  {
+    id: "reflektionsklasse",
+    label: "Reflektionsklasse",
+    defaultExpanded: false,
+    options: [
+      { id: "ra1", label: "RA1", sublabel: "Standard" },
+      { id: "ra2", label: "RA2", sublabel: "Erhöhte Reflexion" },
     ],
   },
 ];
@@ -413,7 +425,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "moebel-zelte": "Möbel/Zelt suchen...",
   "geschirr-glaeser-besteck": "Geschirr suchen...",
   "huepfburgen": "Hüpfburg suchen...",
-  "absperrtechnik": "Absperrtechnik suchen...",
+  "absperrtechnik": "Verkehrszeichen / Absperrung suchen...",
   "spezialeffekte": "Effekt suchen...",
   "kabel-stromverteiler": "Kabel/Verteiler suchen...",
   "buehne": "Bühnenelement suchen...",
@@ -435,7 +447,7 @@ export const categoryDisplayNames: Record<string, string> = {
   "moebel-zelte": "Möbel & Zelte",
   "geschirr-glaeser-besteck": "Geschirr",
   "huepfburgen": "Hüpfburgen",
-  "absperrtechnik": "Absperrtechnik",
+  "absperrtechnik": "Absperr- & Verkehrstechnik",
   "spezialeffekte": "Spezialeffekte",
   "kabel-stromverteiler": "Kabel & Stromverteiler",
   "buehne": "Bühne",
