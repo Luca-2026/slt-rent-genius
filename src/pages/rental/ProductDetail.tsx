@@ -316,24 +316,27 @@ export default function ProductDetail() {
                   </div>
                 )}
 
-                {/* Product Video */}
-                {product.videoUrl && (
-                  <div className="border-t border-border pt-6 mt-6">
+                {/* Product Videos */}
+                {(product.videoUrls && product.videoUrls.length > 0 ? product.videoUrls : product.videoUrl ? [product.videoUrl] : []).map((url, idx, arr) => (
+                  <div key={url} className="border-t border-border pt-6 mt-6">
                     <h2 className="text-lg font-semibold text-headline mb-4 flex items-center gap-2">
-                       <Play className="h-5 w-5 text-primary" />
-                       {t("rental.productVideo")}
+                      <Play className="h-5 w-5 text-primary" />
+                      {arr.length > 1 ? `${t("rental.productVideo")} ${idx + 1}` : t("rental.productVideo")}
                     </h2>
                     <div className="aspect-video rounded-xl overflow-hidden border border-border">
                       <iframe
-                        src={product.videoUrl.replace("watch?v=", "embed/").replace("/shorts/", "/embed/")}
-                        title={`${product.name} Video`}
+                        src={url
+                          .replace("https://youtu.be/", "https://www.youtube.com/embed/")
+                          .replace("watch?v=", "embed/")
+                          .replace("/shorts/", "/embed/")}
+                        title={`${product.name} Video ${idx + 1}`}
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       />
                     </div>
                   </div>
-                )}
+                ))}
 
                 {/* PDF Download */}
                 {product.pdfUrl && (

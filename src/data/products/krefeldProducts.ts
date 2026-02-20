@@ -1760,6 +1760,9 @@ export const beschallungProducts: Product[] = [
       "Ladezeit": "3,5 Stunden (230 V)",
       "Gewicht": "15,4 kg",
     },
+    videoUrl: "https://youtu.be/HEQiWWrrjM8",
+    videoUrls: ["https://youtu.be/HEQiWWrrjM8", "https://youtu.be/u6BDAf2W4x8"],
+    pdfUrl: "/manuals/soundboks-gen3-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "48MYNA" }
   },
   {
