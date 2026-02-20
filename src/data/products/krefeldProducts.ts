@@ -18,6 +18,7 @@ import mehrzweckleiter3x12_1 from "@/assets/products/mehrzweckleiter-3x12-1.jpeg
 import leiterKaiserthalL50_1 from "@/assets/products/leiter-kaiserthal-l50-5-stufen-1.jpeg";
 import rollgeruest5_4m_1 from "@/assets/products/rollgeruest-breitaufbau-5-4m-1.jpeg";
 import rollgeruest5_4m_2 from "@/assets/products/rollgeruest-breitaufbau-5-4m-2.jpeg";
+import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2263,6 +2264,21 @@ export const leiternGeruesteProducts: Product[] = [
     rentwareCode: { krefeld: "FSQFEL_11" }
   },
   // --- Gerüstteile ---
+  {
+    id: "krause-belagbuehne",
+    name: "Krause Belagbühne",
+    description: "Original KRAUSE Belagbühne für Rollgerüste der STABILO Serie 10 – mit aufklappbarer Durchstiegsluke für sicheres Durchsteigen. Rutschfeste Holzwerkstoffplatte im Aluminiumrahmen mit Einhängehaken.",
+    image: krauseBelagbuehne1,
+    images: [krauseBelagbuehne1],
+    category: "geruestteil",
+    specifications: {
+      "Passend für": "Krause Rollgerüste STABILO Serie 10",
+      "Ausstattung": "Aufklappbare Durchstiegsluke",
+      "Oberfläche": "Rutschfeste Holzwerkstoffplatte",
+      "Rahmen": "Aluminium",
+    },
+    rentwareCode: { krefeld: "KBB_01" }
+  },
   {
     id: "krause-auslegerstuetze",
     name: "Krause Auslegerstütze",
