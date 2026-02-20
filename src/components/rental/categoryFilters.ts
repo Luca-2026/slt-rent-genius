@@ -134,13 +134,24 @@ export const heizungTrocknungFilterSections: FilterSection[] = [
     ],
   },
   {
-    id: "leistung",
+    // Only shown/used when heizluefter or heizpilz is selected (or no type filter)
+    id: "heizleistung",
     label: "Heizleistung",
-    defaultExpanded: true,
+    defaultExpanded: false,
     options: [
       { id: "bis-2kw", label: "Bis 2 kW", sublabel: "230 V Schuko – kein CEE nötig" },
       { id: "3kw", label: "3 kW", sublabel: "230 V – kein CEE nötig" },
       { id: "ab-9kw", label: "9 kW", sublabel: "⚡ 400 V CEE-Starkstrom erforderlich" },
+    ],
+  },
+  {
+    // Only shown/used when bautrockner is selected (or no type filter)
+    id: "trocknung",
+    label: "Trocknungsfläche",
+    defaultExpanded: false,
+    options: [
+      { id: "bis-20m2", label: "Bis 20 m²", sublabel: "Kleine Räume" },
+      { id: "ab-50m2", label: "Ab 50 m²", sublabel: "Große Flächen" },
     ],
   },
 ];

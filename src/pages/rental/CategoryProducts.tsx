@@ -425,15 +425,14 @@ export default function CategoryProducts() {
               });
             });
           }
-          // Heizleistung filter for heizung-trocknung
-          else if (sectionId === "leistung") {
+          // Heizleistung filter – only for Heizlüfter and Heizpilz
+          else if (sectionId === "heizleistung") {
             filtered = filtered.filter((p) => {
-              // Extract kW from specifications or product name
+              // Bautrockner are excluded from heizleistung filter entirely
+              if (p.category === "bautrockner") return false;
               const leistungStr = p.specifications?.["Leistungsaufnahme"] ||
-                p.specifications?.["Leistung"] ||
                 p.specifications?.["Heizleistung"] || "";
               const kwMatch = String(leistungStr).match(/([\d,]+)\s*kW/i);
-              // Also try name
               const nameMatch = p.name.match(/([\d,]+)\s*kW/i);
               const kw = kwMatch
                 ? parseFloat(String(kwMatch[1]).replace(",", "."))
@@ -444,7 +443,22 @@ export default function CategoryProducts() {
                 if (v === "bis-2kw") return kw > 0 && kw <= 2;
                 if (v === "3kw") return kw > 2 && kw <= 3;
                 if (v === "ab-9kw") return kw >= 9;
-                return p.tags?.includes(v);
+                return false;
+              });
+            });
+          }
+          // Trocknungsfläche filter – only for Bautrockner
+          else if (sectionId === "trocknung") {
+            filtered = filtered.filter((p) => {
+              // Heizgeräte are excluded from trocknung filter
+              if (p.category !== "bautrockner") return false;
+              const flaecheStr = p.specifications?.["Trocknungsfläche"] || "";
+              const m2Match = String(flaecheStr).match(/(\d+)/);
+              const m2 = m2Match ? parseInt(m2Match[1]) : 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-20m2") return m2 > 0 && m2 <= 20;
+                if (v === "ab-50m2") return m2 >= 50;
+                return false;
               });
             });
           }
@@ -829,7 +843,7 @@ export default function CategoryProducts() {
                             variant={category.id === "heizung-trocknung" ? "accordion" : "badges"}
                           />
                           {/* Starkstrom-Hinweis: show in sidebar when 9 kW filter is active */}
-                          {category.id === "heizung-trocknung" && genericFilters.filters["leistung"]?.includes("ab-9kw") && (
+                          {category.id === "heizung-trocknung" && genericFilters.filters["heizleistung"]?.includes("ab-9kw") && (
                             <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
                               <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                               <div>
