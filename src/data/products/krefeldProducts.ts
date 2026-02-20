@@ -261,6 +261,9 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 // Stehtisch Husse images
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
 
+// Partyzelt 4x4m images
+import imgPartyzelt4x4_1 from "@/assets/products/partyzelt-4x4-1.jpeg";
+
 // Partyzelt 4x6m images
 import imgPartyzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
 
@@ -2303,10 +2306,20 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x4m",
     name: "Partyzelt 4x4m",
-    description: "Mittleres Pagodenzelt",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Partyzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
+    image: imgPartyzelt4x4_1,
+    images: [imgPartyzelt4x4_1],
     category: "zelt",
+    specifications: {
+      "Grundfläche": "16 m² (4 m × 4 m)",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 27 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 23 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 60 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/partyzelt-4x4-aufbauanleitung.pdf",
+    videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
     rentwareCode: { krefeld: "4ZSXIQ" }
   },
   {
