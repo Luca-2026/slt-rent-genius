@@ -82,6 +82,7 @@ import imgSoundboksGen31 from "@/assets/products/soundboks-gen3-1.jpeg";
 import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
+import imgSennheiserXsw1 from "@/assets/products/sennheiser-xsw1-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
 import imgDasVantec18a1 from "@/assets/products/das-vantec-18a-1.jpeg";
 import imgDasVantec18a2 from "@/assets/products/das-vantec-18a-2.jpeg";
@@ -2052,6 +2053,22 @@ export const kommunikationProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "zubehoer",
     rentwareCode: { krefeld: "OZHNRX" }
+  },
+  {
+    id: "sennheiser-funkmikrofon-xsw1",
+    name: "Sennheiser Funkmikrofon XSW 1-835",
+    description: "Professionelles UHF-Funkmikrofon-Set von Sennheiser mit ca. 25m Reichweite (je nach Umgebung). Ideal für Präsentationen, Veranstaltungen und Bühnenauftritte.",
+    image: imgSennheiserXsw1,
+    images: [imgSennheiserXsw1],
+    category: "mikrofon",
+    specifications: {
+      "Empfänger": "EM-XSW 1 (stationär)",
+      "Handsender": "SKM 835-XSW",
+      "Reichweite": "ca. 25 m (umgebungsabhängig)",
+      "Lieferumfang": "1× Empfänger, 1× Handsender, 1× Netzteil NT 12-5 CW, 1× XLR-Kabel 1,5m, 1× Mikrofonklemme MZQ 1, 2× AA Batterien",
+    },
+    pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
+    rentwareCode: { krefeld: "PLACEHOLDER_SENNHEISER" }
   },
 ];
 

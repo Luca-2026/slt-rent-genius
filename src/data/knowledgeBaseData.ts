@@ -79,7 +79,7 @@ export const kbCategories: KBCategory[] = [
     title: "Eventtechnik",
     description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Zelte.",
     icon: "PartyPopper",
-    articleCount: 5,
+    articleCount: 6,
   },
   {
     id: "leitern-gerueste",
@@ -444,6 +444,18 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/das-vantec-18a-bedienungsanleitung.pdf",
     tags: ["das", "das audio", "vantec", "18a", "subwoofer", "anleitung"],
+    updatedAt: "2026-02-20",
+  },
+  // Eventtechnik – Sennheiser Funkmikrofon XSW 1
+  {
+    id: "sennheiser-xsw1-anleitung",
+    title: "Sennheiser XSW 1-835 – Bedienungsanleitung",
+    description: "Offizielle Bedienungsanleitung für das Sennheiser Funkmikrofon-Set XSW 1-835.",
+    categoryId: "event-technik",
+    productIds: ["sennheiser-funkmikrofon-xsw1"],
+    type: "anleitung",
+    pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
+    tags: ["sennheiser", "xsw", "funkmikrofon", "mikrofon", "anleitung"],
     updatedAt: "2026-02-20",
   },
 ];
