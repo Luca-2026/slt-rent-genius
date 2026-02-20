@@ -205,8 +205,29 @@ export const beschallungFilterSections: FilterSection[] = [
     options: [
       { id: "pa", label: "PA-Systeme", sublabel: "Komplett-Anlagen" },
       { id: "lautsprecher", label: "Lautsprecher", sublabel: "Aktiv & Passiv" },
+      { id: "subwoofer", label: "Subwoofer", sublabel: "Bass-Verstärker" },
       { id: "mikrofon", label: "Mikrofone", sublabel: "Funk & Kabel" },
-      { id: "mischpult", label: "Mischpulte", sublabel: "Analog & Digital" },
+      { id: "zubehoer", label: "Zubehör", sublabel: "Stative, Kabel, Adapter" },
+    ],
+  },
+  {
+    id: "personen",
+    label: "Personenanzahl",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-30", label: "Bis 30 Personen", sublabel: "Kleine Veranstaltungen" },
+      { id: "bis-75", label: "Bis 75 Personen", sublabel: "Mittlere Events" },
+      { id: "bis-250", label: "Bis 250 Personen", sublabel: "Große Events & Feiern" },
+    ],
+  },
+  {
+    id: "features",
+    label: "Ausstattung",
+    defaultExpanded: false,
+    options: [
+      { id: "bluetooth", label: "Bluetooth", sublabel: "Kabellose Musikübertragung" },
+      { id: "akku", label: "Akku-betrieben", sublabel: "Ohne Stromkabel" },
+      { id: "mischpult", label: "Integriertes Mischpult", sublabel: "Mixer eingebaut" },
     ],
   },
 ];
