@@ -13,7 +13,7 @@ export const categoryTranslations: Record<string, { title: string; description: 
   "kabel-stromverteiler": { title: "Cables & Power Distribution", description: "Extension cables, cable ramps and power distribution units." },
   "leitern-gerueste": { title: "Ladders & Scaffolding", description: "Ladders, mobile scaffolding and work platforms." },
   "heizung-trocknung": { title: "Heating & Drying", description: "Fan heaters, patio heaters, construction dryers and air conditioning units." },
-  absperrtechnik: { title: "Barrier Equipment", description: "Barrier fences, construction fences, warning beacons and safety equipment." },
+  absperrtechnik: { title: "Traffic & Barrier Equipment", description: "Traffic signs, construction fences, warning beacons and complete traffic safety services." },
   beschallung: { title: "Sound Systems", description: "Speakers, microphones, mixing consoles and PA systems." },
   kommunikation: { title: "Communication", description: "Two-way radios and communication equipment for events and construction sites." },
   beleuchtung: { title: "Lighting", description: "LED spots, floodlights, stage lighting and mobile lighting." },
