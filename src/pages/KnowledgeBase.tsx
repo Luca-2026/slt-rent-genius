@@ -10,6 +10,7 @@ import {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info, ChevronRight, X, ArrowLeft,
   Scale, AlertTriangle, ClipboardCheck, Package, Link2, Eye, Car, Lightbulb, AlertCircle,
+  Smartphone, MessageSquare, Unlock, Lock,
 } from "lucide-react";
 import {
   kbCategories, kbArticles, searchArticles, getArticlesForCategory,
@@ -25,6 +26,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 const sectionIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Scale, AlertTriangle, ClipboardCheck, Package, Link: Link2, Eye, Car, Lightbulb, AlertCircle, Info,
+  Smartphone, MessageSquare, Unlock, Lock, HelpCircle,
 };
 
 const typeIconMap: Record<KBArticle["type"], React.ComponentType<{ className?: string }>> = {
@@ -199,8 +201,8 @@ export default function KnowledgeBase() {
                 </div>
               )}
 
-              {/* No content fallback */}
-              {!selectedArticle.videoUrl && !selectedArticle.pdfUrl && !selectedArticle.content && (
+              {/* No content fallback – only show if truly no content at all */}
+              {!selectedArticle.videoUrl && !selectedArticle.pdfUrl && !selectedArticle.content && !(selectedArticle.sections && selectedArticle.sections.length > 0) && (
                 <Card className="border-dashed">
                   <CardContent className="py-12 text-center">
                     <FileText className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
@@ -400,7 +402,7 @@ function ArticleCard({
                 {categoryData.title}
               </span>
             )}
-            {article.content || article.videoUrl || article.pdfUrl ? (
+            {article.content || article.videoUrl || article.pdfUrl || (article.sections && article.sections.length > 0) ? (
               <span className="text-[10px] text-primary font-medium">{t("kb.readNow")} →</span>
             ) : (
               <span className="text-[10px] text-muted-foreground italic">{t("kb.contentSoonShort")}</span>
