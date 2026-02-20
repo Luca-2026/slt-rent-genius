@@ -58,7 +58,7 @@ export const kbCategories: KBCategory[] = [
     title: "Aggregate & Stromversorgung",
     description: "Bedienung und Sicherheitsregeln für Stromerzeuger und Notstromgeräte.",
     icon: "Zap",
-    articleCount: 0,
+    articleCount: 1,
   },
   {
     id: "arbeitsbuehnen",
@@ -456,6 +456,19 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
     tags: ["sennheiser", "xsw", "funkmikrofon", "mikrofon", "anleitung"],
+    updatedAt: "2026-02-20",
+  },
+
+  // Aggregate
+  {
+    id: "doosan-g20-g50-g80-g100-betriebsanleitung",
+    title: "Doosan G20 / G50 / G80 / G100 – Betriebsanleitung (PDF)",
+    description: "Offizielle Betriebsanleitung für die Doosan Diesel-Stromaggregate der G-Serie (G20, G30, G40): Sicherheitshinweise, Inbetriebnahme, Bedienung, Wartung und technische Daten.",
+    categoryId: "aggregate",
+    productIds: ["aggregat-20kva", "aggregat-50kva", "aggregat-80kva", "aggregat-100kva", "bonn-aggregat-20kva"],
+    type: "anleitung",
+    pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
+    tags: ["doosan", "g20", "g50", "g80", "g100", "aggregat", "stromerzeuger", "betriebsanleitung", "anleitung", "pdf", "diesel", "stage-v"],
     updatedAt: "2026-02-20",
   },
 ];
