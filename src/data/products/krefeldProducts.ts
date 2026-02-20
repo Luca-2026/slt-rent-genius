@@ -256,6 +256,9 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 // Stehtisch Husse images
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
 
+// Partyzelt 4x6m images
+import imgPartyzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
+
 // Partyzelt 4x10m images
 import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
 
@@ -2304,10 +2307,20 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x6m",
     name: "Partyzelt 4x6m",
-    description: "Partyzelt für ca. 40 Personen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    image: imgPartyzelt4x6_1,
+    images: [imgPartyzelt4x6_1],
     category: "zelt",
+    specifications: {
+      "Grundfläche": "24 m² (4 m × 6 m)",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 40 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 34 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 100 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/partyzelt-4x6-aufbauanleitung.pdf",
+    videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
     rentwareCode: { krefeld: "K12XM9" }
   },
   {
