@@ -30,6 +30,11 @@ import heizluefter9kw1 from "@/assets/products/heizluefter-9kw-1.jpeg";
 import heizluefter9kw2 from "@/assets/products/heizluefter-9kw-2.jpeg";
 import heizluefter3kw1 from "@/assets/products/heizluefter-3kw-1.jpeg";
 import heizluefter3kw2 from "@/assets/products/heizluefter-3kw-2.jpeg";
+import heizpilz2kw1 from "@/assets/products/heizpilz-2kw-1.jpeg";
+import heizpilz2kw2 from "@/assets/products/heizpilz-2kw-2.jpeg";
+import heizpilz2kw3 from "@/assets/products/heizpilz-2kw-3.jpeg";
+import heizpilz2kw4 from "@/assets/products/heizpilz-2kw-4.jpeg";
+import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1059,10 +1064,20 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "heizpilz-2kw",
     name: "2 kW Elektro Heizpilz",
-    description: "Elektro-Heizstrahler für Events",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Eleganter Infrarot-Heizstrahler im Pilzdesign – ideal für Terrassen, Events und Außengastronomie. Zwei Heizstufen (1 kW & 2 kW), stufenlos höhenverstellbar, Schutzklasse IP34.",
+    image: heizpilz2kw1,
+    images: [heizpilz2kw1, heizpilz2kw2, heizpilz2kw3, heizpilz2kw4, heizpilz2kw5],
     category: "heizpilz",
+    specifications: {
+      "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+      "Leistungsaufnahme": "2 kW",
+      "Elektroanschluss": "230 V",
+      "Wirkungsfläche": "ca. 15 m²",
+      "Höhenverstellbar": "194 cm – 210 cm",
+      "Heizart": "Infrarot",
+      "Schutzklasse": "IP34",
+      "Material": "Aluminium / Edelstahl",
+    },
     rentwareCode: { krefeld: "552B4C" }
   },
   {
