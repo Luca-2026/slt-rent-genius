@@ -114,9 +114,10 @@ ${reservations.length === 0 ? "Keine Mietvorgänge" : reservations.slice(0, 5).m
 
 === ANLEITUNG ===
 - Beantworte Fragen zu Mietvorgängen, Rechnungen, Kreditlimit und Kontoinfos anhand der obigen Daten
-- Für technische Probleme oder Änderungen verweise auf den Kontakt: support@slt-rent.de oder Telefon
+- Für technische Probleme oder Änderungen verweise auf den Kontakt: mieten@slt-rental.de oder Tel. 02151 417 990 4
 - Du kannst keine Änderungen vornehmen, nur Informationen geben
 - Wenn du etwas nicht weißt, sage es ehrlich und verweise auf den Kundendienst
+- Nenne IMMER den korrekten Firmennamen "SLT Rental" – niemals "SLT Rent"
 - Fragen zu Preisen für neue Produkte kannst du nicht beantworten`;
 
     const { messages } = await req.json();
