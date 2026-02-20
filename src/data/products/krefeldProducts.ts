@@ -1991,21 +1991,6 @@ export const leiternGeruesteProducts: Product[] = [
     },
     rentwareCode: { krefeld: "7HKFN5" }
   },
-  {
-    id: "stehleiter-kaiserthal-l50-5stufen",
-    name: "Kaiserthal L50 – 5 Stufen",
-    description: "Alu-Stehleiter 5 Stufen, leicht und stabil. Ideal für leichtere Arbeiten in Innenräumen.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "stehleiter",
-    specifications: {
-      "Stufenanzahl": "5",
-      "Arbeitshöhe": "ca. 2,4 m",
-      "Material": "Aluminium",
-      "Max. Belastung": "150 kg",
-    },
-    rentwareCode: { krefeld: "7I1HQL" }
-  },
   // --- Kombileiter ---
   {
     id: "mehrzweckleiter-3x11",
@@ -2022,22 +2007,6 @@ export const leiternGeruesteProducts: Product[] = [
       "Max. Belastung": "150 kg",
     },
     rentwareCode: { krefeld: "IMR9B9" }
-  },
-  {
-    id: "mehrzweckleiter-3x12",
-    name: "Mehrzweckleiter 3×12",
-    description: "Kombileiter 3×12 Sprossen – universell einsetzbar als Steh-, Anlege- und Schiebeleiter.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "kombileiter",
-    specifications: {
-      "Sprossen": "3 × 12",
-      "Arbeitshöhe (Stehleiter)": "ca. 4,9 m",
-      "Arbeitshöhe (Anlegeleiter)": "ca. 7,5 m",
-      "Material": "Aluminium",
-      "Max. Belastung": "150 kg",
-    },
-    rentwareCode: { krefeld: "7XT9BR" }
   },
   {
     id: "mehrzweckleiter-3x12",
@@ -2280,7 +2249,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Oberfläche": "Rutschfeste Holzwerkstoffplatte",
       "Rahmen": "Aluminium",
     },
-    rentwareCode: { krefeld: "KBB_01" }
+    rentwareCode: { krefeld: "TJLWHT" }
   },
   {
     id: "krause-auslegerstuetze",
@@ -2311,16 +2280,6 @@ export const leiternGeruesteProducts: Product[] = [
     category: "geruestteil",
     specifications: { "Breite": "2,00 m" },
     rentwareCode: { krefeld: "N2KGOX" }
-  },
-  {
-    id: "krause-belagbuehne-durchstieg-2m",
-    name: "Krause Belagbühne mit Durchstieg – 2,00 m",
-    description: "Arbeitsfläche mit integriertem Einstieg für Krause Rollgerüste, 2,00 m breit.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "geruestteil",
-    specifications: { "Breite": "2,00 m", "Durchstieg": "Ja" },
-    rentwareCode: { krefeld: "TJLWHT" }
   },
   {
     id: "krause-bordbrettset-150cm",
