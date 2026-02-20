@@ -182,44 +182,43 @@
 
 /* =============================================
    Rentware floating cart widget (rtr-checkout)
-   The widget is injected by Rentware's CDN script
-   as a fixed-position button.
-   We ensure it's always visible and never overlaps
-   other fixed UI elements (chat bubble, nav).
+   
+   The widget uses its own CSS custom properties for
+   positioning and has z-index: 2147471500 internally.
+   We control placement via the official Rentware vars:
+     --rentware-cart-view-position-bottom
+     --rentware-cart-view-position-right
+     --rentware-cart-view-position-left
+     --rentware-cart-view-position-top
    ============================================= */
 
-/* Desktop: keep below sticky header, right side */
-rtr-checkout {
-  z-index: 40 !important;
+/* Desktop (≥1025px): bottom-right, above the chat bubble
+   Chat bubble = h-14 (56px) at bottom-6 (24px)
+   → Rentware sits at bottom: 96px to clear it            */
+:root {
+  --rentware-cart-view-position-bottom: 96px;
+  --rentware-cart-view-position-right: 24px;
+  --rentware-cart-view-position-left: unset;
+  --rentware-cart-view-position-top: unset;
 }
 
-rtr-checkout::part(cart-button),
-rtr-checkout .rtr-cart-button,
-rtr-checkout > div {
-  z-index: 40 !important;
-}
-
-/* Mobile (≤768px): move cart to LEFT side so it doesn't
-   collide with the chat/support bubble on the right */
+/* Mobile (≤768px): LEFT side, bottom-left
+   Chat bubble is bottom-right → no overlap              */
 @media (max-width: 768px) {
-  rtr-checkout {
-    position: fixed !important;
-    bottom: 16px !important;
-    left: 16px !important;
-    right: auto !important;
-    top: auto !important;
-    z-index: 40 !important;
+  :root {
+    --rentware-cart-view-position-bottom: 16px;
+    --rentware-cart-view-position-left: 16px;
+    --rentware-cart-view-position-right: unset;
+    --rentware-cart-view-position-top: unset;
   }
 }
 
-/* Tablet (769px–1024px): keep on right but add bottom
-   clearance so it doesn't sit behind bottom nav bars */
+/* Tablet (769px–1024px): bottom-right, above chat bubble */
 @media (min-width: 769px) and (max-width: 1024px) {
-  rtr-checkout {
-    position: fixed !important;
-    bottom: 24px !important;
-    right: 24px !important;
-    top: auto !important;
-    z-index: 40 !important;
+  :root {
+    --rentware-cart-view-position-bottom: 96px;
+    --rentware-cart-view-position-right: 24px;
+    --rentware-cart-view-position-left: unset;
+    --rentware-cart-view-position-top: unset;
   }
 }
