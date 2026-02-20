@@ -52,6 +52,7 @@ import imgBauzaunInklFuss1 from "@/assets/products/bauzaun-inkl-fuss-1.jpeg";
 import imgBauzaunInklFuss2 from "@/assets/products/bauzaun-inkl-fuss-2.jpeg";
 import imgBauzaunfussKunststoff from "@/assets/products/bauzaunfuss-kunststoff.jpeg";
 import imgVz267Ra1 from "@/assets/products/vz-267-ra1.jpeg";
+import imgVzZusatzNeutralRa1Gr2 from "@/assets/products/vz-zusatz-neutral-ra1-gr2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1414,10 +1415,19 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-zusatz-neutral-ra1-gr2",
     name: "VZ Zusatz Neutral, RA1, Gr. 2",
-    description: "Blanko Zusatzschild",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Zusatzzeichen mit schwarzem Rand (neutral/unbeschriftet), Reflektionsklasse RA1, Flachform 2 mm, 330 × 600 mm.",
+    image: imgVzZusatzNeutralRa1Gr2,
+    images: [imgVzZusatzNeutralRa1Gr2],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ Zusatz Neutral",
+      "Bedeutung": "Zusatzzeichen mit Rand (neutral)",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Abmessungen": "330 × 600 mm",
+      "Größe": "Gr. 2",
+    },
     rentwareCode: { krefeld: "GZZWD3" }
   },
   {
