@@ -55,6 +55,8 @@ import imgVz267Ra1 from "@/assets/products/vz-267-ra1.jpeg";
 import imgVzZusatzNeutralRa1Gr2 from "@/assets/products/vz-zusatz-neutral-ra1-gr2.jpeg";
 import imgVz308Ra1 from "@/assets/products/vz-308-ra1.jpeg";
 import imgVz12120Ra2 from "@/assets/products/vz-121-20-ra2.jpeg";
+import imgWarnbarkeMitFuss from "@/assets/products/warnbarke-mit-fuss.jpeg";
+import imgWarnbarkeMitFussTransport from "@/assets/products/warnbarke-mit-fuss-transport.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1581,11 +1583,17 @@ export const absperrtechnikProducts: Product[] = [
   },
   {
     id: "warnbarke-ra2",
-    name: "Warnbarke weiß/rot, RA 2",
-    description: "Absperrbarke reflektierend",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Warnbarke mit Fuß, RA2",
+    description: "Warnbarke mit RA2-Folie inkl. Fußplatte K! TL, beidseitig beklebt. Warnleuchte optional erhältlich.",
+    image: imgWarnbarkeMitFuss,
+    images: [imgWarnbarkeMitFuss, imgWarnbarkeMitFussTransport],
     category: "warnbarke",
+    specifications: {
+      "Reflektionsklasse": "RA2",
+      "Beklebung": "Beidseitig",
+      "Fußplatte": "K! TL",
+      "Warnleuchte": "Optional erhältlich",
+    },
     rentwareCode: { krefeld: "U9BFGZ" }
   },
 ];
