@@ -69,6 +69,7 @@ import imgStahlVierkantrohr4x4 from "@/assets/products/stahl-vierkantrohr-4x4-2-
 import imgVz240Ra1 from "@/assets/products/vz-240-ra1.jpeg";
 import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
 import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
+import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1651,10 +1652,15 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "warnbarke-ra1",
     name: "Warnbarke weiß/rot, RA 1",
-    description: "Absperrbarke Standard",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Warnbarke mit RA1-Folie, beidseitig beklebt, ohne Fuß, ca. 2 kg.",
+    image: imgWarnbarkeRa1,
+    images: [imgWarnbarkeRa1],
     category: "warnbarke",
+    specifications: {
+      "Reflektionsklasse": "RA1",
+      "Beklebung": "Beidseitig",
+      "Gewicht": "ca. 2 kg",
+    },
     rentwareCode: { krefeld: "DHE9HH" }
   },
   {
