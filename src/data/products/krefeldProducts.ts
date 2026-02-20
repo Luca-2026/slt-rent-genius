@@ -76,6 +76,9 @@ import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
 import imgBlockbatterie6v from "@/assets/products/blockbatterie-6v.jpeg";
+import imgDasVantec12a1 from "@/assets/products/das-vantec-12a-1.jpeg";
+import imgDasVantec12a2 from "@/assets/products/das-vantec-12a-2.jpeg";
+import imgDasVantec12a3 from "@/assets/products/das-vantec-12a-3.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1770,10 +1773,19 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-vantec-12a",
     name: "D.A.S. Audio Vantec 12A",
-    description: "12\" Aktivlautsprecher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Aktiver 12\" Lautsprecher mit 1500 W und Bluetooth. Ideal für Veranstaltungen, Partys und Sprachbeschallungen. Optional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    image: imgDasVantec12a1,
+    images: [imgDasVantec12a1, imgDasVantec12a2, imgDasVantec12a3],
     category: "lautsprecher",
+    specifications: {
+      "Typ": "Aktiv, 2-Wege",
+      "Leistung": "1500 W (Peak)",
+      "Bestückung": "1× 12\", 3\" Tweeter",
+      "Bluetooth": "Ja",
+      "Abstrahlwinkel": "90° × 50°",
+      "Max. Schalldruckpegel": "135 dB SPL (Peak, 1 m)",
+      "Zubehör": "Lautsprecherstative optional erhältlich",
+    },
     rentwareCode: { krefeld: "TJOHWT" }
   },
   {
