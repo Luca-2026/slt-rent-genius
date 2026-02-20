@@ -256,6 +256,10 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 // Stehtisch Husse images
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
 
+// Partyzelt 4x10m images
+import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
+
+// Partyzelt 4x14m images (shared photos for same tent type)
 import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
@@ -2302,6 +2306,26 @@ export const moebelZelteProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "zelt",
     rentwareCode: { krefeld: "K12XM9" }
+  },
+  {
+    id: "partyzelt-4x10m",
+    name: "Partyzelt 4x10m",
+    description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    image: imgPartyzelt4x10_1,
+    images: [imgPartyzelt4x10_1, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
+    category: "zelt",
+    specifications: {
+      "Grundfläche": "40 m² (4 m × 10 m)",
+      "Aufbau": "4×6m + 4×4m, verbunden mit Regenrinne",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 67 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 56 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 100 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/partyzelt-4x10-aufbauanleitung.pdf",
+    videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
+    rentwareCode: { krefeld: "PARTYZELT4X10" }
   },
   {
     id: "partyzelt-4x14m",
