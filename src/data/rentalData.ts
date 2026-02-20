@@ -921,44 +921,98 @@ function withFixedCategory(products: Product[], category: string): Product[] {
  *    are appended without a rentwareCode for the target location, signalling
  *    "Auf Anfrage".
  */
-function mergeWithFallback(primary: Product[], krefeld: Product[], locationId: string): Product[] {
+function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: string): Product[] {
   const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-  // Build lookup maps for krefeld products
-  const krefeldById  = new Map(krefeld.map((p) => [p.id, p]));
-  const krefeldByName = new Map(krefeld.map((p) => [normalise(p.name), p]));
+  /**
+   * Find a Krefeld reference product for a primary product using multiple strategies:
+   * 1. Exact ID match
+   * 2. Exact normalised name match
+   * 3. Primary name is a prefix of the Krefeld name (e.g. "2.1 Soundsystem 1400W RMS" → longer Krefeld title)
+   * 4. Krefeld name is a prefix of the primary name (reverse)
+   * 5. Primary name is contained within the Krefeld name (e.g. "Funkmikrofon" inside "Sennheiser Funkmikrofon XSW 1-835")
+   * 6. Krefeld name is contained within the primary name
+   */
+  function findRef(p: Product): Product | undefined {
+    const pn = normalise(p.name);
+
+    // 1. Exact ID
+    const byId = krefeld.find((k) => k.id === p.id);
+    if (byId) return byId;
+
+    // 2. Exact normalised name
+    const byExactName = krefeld.find((k) => normalise(k.name) === pn);
+    if (byExactName) return byExactName;
+
+    if (pn.length >= 8) {
+      // 3. Primary name is a prefix of Krefeld name
+      const byPrefix = krefeld.find((k) => normalise(k.name).startsWith(pn));
+      if (byPrefix) return byPrefix;
+
+      // 4. Krefeld name is a prefix of primary name
+      const byReversePrefix = krefeld.find((k) => {
+        const kn = normalise(k.name);
+        return kn.length >= 8 && pn.startsWith(kn);
+      });
+      if (byReversePrefix) return byReversePrefix;
+
+      // 5. Primary name is contained in Krefeld name (e.g. "Funkmikrofon" in "Sennheiser Funkmikrofon XSW 1-835")
+      const byContained = krefeld.find((k) => normalise(k.name).includes(pn));
+      if (byContained) return byContained;
+
+      // 6. Krefeld name is contained in primary name
+      const byReverseContained = krefeld.find((k) => {
+        const kn = normalise(k.name);
+        return kn.length >= 8 && pn.includes(kn);
+      });
+      if (byReverseContained) return byReverseContained;
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Determine if a Krefeld product is already covered by any primary product
+   * using the same multi-strategy matching.
+   */
+  function isCovered(k: Product): boolean {
+    const kn = normalise(k.name);
+    return primary.some((p) => {
+      if (p.id === k.id) return true;
+      const pn = normalise(p.name);
+      if (pn === kn) return true;
+      if (pn.length >= 8 && kn.startsWith(pn)) return true;
+      if (kn.length >= 8 && pn.startsWith(kn)) return true;
+      if (pn.length >= 8 && kn.includes(pn)) return true;
+      if (kn.length >= 8 && pn.includes(kn)) return true;
+      return false;
+    });
+  }
 
   // Step 1: enrich primary products with Krefeld content where data is missing
   const enriched = primary.map((p) => {
-    const ref = krefeldById.get(p.id) ?? krefeldByName.get(normalise(p.name));
+    const ref = findRef(p);
     if (!ref) return p;
     return {
       ...p,
       // Only fill if primary entry lacks the field
-      image:        (p.image && p.image !== "/placeholder.svg") ? p.image : (ref.image ?? p.image),
-      images:       (p.images && p.images.length > 0 && p.images[0] !== "/placeholder.svg") ? p.images : (ref.images ?? p.images),
-      description:  p.description || ref.description,
+      image:          (p.image && p.image !== "/placeholder.svg") ? p.image : (ref.image ?? p.image),
+      images:         (p.images && p.images.length > 0 && p.images[0] !== "/placeholder.svg") ? p.images : (ref.images ?? p.images),
+      description:    p.description || ref.description,
       specifications: p.specifications ?? ref.specifications,
-      pdfUrl:       p.pdfUrl ?? ref.pdfUrl,
-      videoUrl:     p.videoUrl ?? ref.videoUrl,
-      videoUrls:    p.videoUrls ?? ref.videoUrls,
-      category:     p.category ?? ref.category,
-      tags:         p.tags ?? ref.tags,
-      weightKg:     p.weightKg ?? ref.weightKg,
+      pdfUrl:         p.pdfUrl ?? ref.pdfUrl,
+      videoUrl:       p.videoUrl ?? ref.videoUrl,
+      videoUrls:      p.videoUrls ?? ref.videoUrls,
+      category:       p.category ?? ref.category,
+      tags:           p.tags ?? ref.tags,
+      weightKg:       p.weightKg ?? ref.weightKg,
     };
   });
 
-  // Step 2: collect IDs and names already covered by primary
-  const coveredIds   = new Set(primary.map((p) => p.id));
-  const coveredNames = new Set(primary.map((p) => normalise(p.name)));
-
-  // Add krefeld products that are not represented at the target location at all
+  // Step 2: Add Krefeld products that are NOT represented in primary at all
   const fallbacks = krefeld
-    .filter((p) => !coveredIds.has(p.id) && !coveredNames.has(normalise(p.name)))
-    .map((p) => {
-      // Strip all rentware codes so the dialog shows "Auf Anfrage"
-      return { ...p, rentwareCode: undefined };
-    });
+    .filter((k) => !isCovered(k))
+    .map((k) => ({ ...k, rentwareCode: undefined }));
 
   return [...enriched, ...fallbacks];
 }
