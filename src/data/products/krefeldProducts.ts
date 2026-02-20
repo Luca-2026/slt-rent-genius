@@ -70,6 +70,7 @@ import imgVz240Ra1 from "@/assets/products/vz-240-ra1.jpeg";
 import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
 import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 import imgWarnbarkeRa1 from "@/assets/products/warnbarke-ra1.jpeg";
+import imgVz100012Ra1 from "@/assets/products/vz-1000-12-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1286,6 +1287,24 @@ export const absperrtechnikProducts: Product[] = [
       "Durchmesser": "600 mm",
     },
     rentwareCode: { krefeld: "ZSNQ9H" }
+  },
+  {
+    id: "vz-1000-12-ra1",
+    name: "VZ 1000-12, RA1, Gr. 2",
+    description: "Zusatzzeichen VZ 1000-12: Fußgänger – Gehweg links gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100012Ra1,
+    images: [imgVz100012Ra1],
+    category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 1000-12",
+      "Bedeutung": "Fußgänger Gehweg links gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "330 mm × 600 mm",
+      "Größe": "Gr. 2",
+    },
+    rentwareCode: { krefeld: "" }
   },
   {
     id: "vz-267-ra1",
