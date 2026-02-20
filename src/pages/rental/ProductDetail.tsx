@@ -343,33 +343,62 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Ladungssicherungs-Hinweis für Anhänger */}
+              {/* Hilfe-Artikel für Anhänger */}
               {categoryId === "anhaenger" && (
-                <Link
-                  to="/hilfe"
-                  state={{ articleId: "anhaenger-beladen" }}
-                  className="block"
-                >
-                  <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 hover:bg-primary/10 transition-colors group">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <ShieldCheck className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-foreground text-sm">
-                          {t("rental.trailerLoadGuide")}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {t("rental.trailerLoadGuideDesc")}
-                        </p>
-                        <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-2 group-hover:underline">
-                          {t("rental.trailerLoadGuideLink")}
-                          <ExternalLink className="h-3 w-3" />
-                        </span>
+                <div className="space-y-3">
+                  {/* Ladungssicherung */}
+                  <Link
+                    to="/hilfe"
+                    state={{ articleId: "anhaenger-beladen" }}
+                    className="block"
+                  >
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <ShieldCheck className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            {t("rental.trailerLoadGuide")}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {t("rental.trailerLoadGuideDesc")}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                            {t("rental.trailerLoadGuideLink")}
+                            <ExternalLink className="h-3 w-3" />
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                  {/* Codesystem */}
+                  <Link
+                    to="/hilfe"
+                    state={{ articleId: "anhaenger-codesystem" }}
+                    className="block"
+                  >
+                    <div className="bg-accent/5 border border-accent/20 rounded-xl p-4 hover:bg-accent/10 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                          <Smartphone className="h-4 w-4 text-accent" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            {t("rental.trailerCodeGuide")}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {t("rental.trailerCodeGuideDesc")}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs text-accent font-medium mt-1.5 group-hover:underline">
+                            {t("rental.trailerCodeGuideLink")}
+                            <ExternalLink className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               )}
             </div>
 

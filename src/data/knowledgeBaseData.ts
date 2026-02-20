@@ -232,12 +232,92 @@ export const kbArticles: KBArticle[] = [
   },
   {
     id: "anhaenger-codesystem",
-    title: "24/7 Anhängermiete – So funktioniert das Codesystem",
-    description: "Schritt-für-Schritt: SMS-Code erhalten, Schloss öffnen, Anhänger abholen und zurückgeben.",
+    title: "Kontaktlose Anhängermiete: So funktioniert das Codesystem",
+    description: "SMS-Code empfangen, Schloss öffnen, Anhänger abholen und zurückbringen – ganz ohne persönlichen Kontakt.",
     categoryId: "anhaenger",
     type: "anleitung",
-    tags: ["codesystem", "24/7", "sms", "schloss", "selbstbedienung"],
-    updatedAt: "2026-02-08",
+    tags: ["codesystem", "24/7", "sms", "schloss", "selbstbedienung", "kontaktlos", "code"],
+    updatedAt: "2026-02-20",
+    sections: [
+      {
+        type: "info",
+        icon: "Smartphone",
+        heading: "Was ist das Codesystem?",
+        text: "Das kontaktlose Mietsystem ermöglicht es Ihnen, Ihren Anhänger bequem und sicher ohne persönlichen Kontakt abzuholen und zurückzubringen. Der SMS-Code dient als digitaler Schlüssel für das Zahlenschloss an der Deichsel.",
+      },
+      {
+        icon: "MessageSquare",
+        heading: "Code-Empfang und Gültigkeit",
+        items: [
+          "Der SMS-Code wird automatisch bis spätestens 30 Minuten vor Mietbeginn an Ihre hinterlegte Telefonnummer versendet.",
+          "Er ist ausschließlich während des Mietzeitraums gültig und verliert danach seine Funktion.",
+          "Bewahren Sie die SMS sicher auf – es wird kein Ersatzcode ausgestellt.",
+        ],
+      },
+      {
+        icon: "Unlock",
+        heading: "Anhänger entsperren – Schritt für Schritt",
+        items: [
+          "Stellen Sie sicher, dass Sie sich am richtigen Anhänger befinden (Kennzeichen mit Buchung abgleichen).",
+          "Geben Sie den 4- oder 6-stelligen Code aus der SMS auf dem Zahlenschloss ein.",
+          "Bestätigen Sie die Eingabe durch Drücken der Schloss-Taste (meist mit Schloss-Symbol markiert).",
+          "Ziehen Sie kräftig am Schlossbügel oder der Deichsel – das Schloss öffnet sich.",
+          "Entfernen Sie das Schloss vollständig und starten Sie Ihre Miete.",
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Tipp",
+        text: "Testen Sie die Funktion bei Bedarf mehrmals, um ein einwandfreies Öffnen zu gewährleisten.",
+      },
+      {
+        icon: "Lock",
+        heading: "Anhänger wieder sperren und abstellen",
+        items: [
+          "Nach Mietende: Code eingeben, Schloss-Taste drücken und Bügel einrasten lassen.",
+          "Schließen Sie das Schloss fest und ziehen Sie kräftig daran, um die Verriegelung zu prüfen.",
+          "Stellen Sie den Anhänger innerhalb des Mietzeitraums auf dem vereinbarten Platz ab.",
+          "Der Code bleibt bis zum Ende der Mietzeit aktiv – er kann für erneute Sperrungen verwendet werden.",
+        ],
+      },
+      {
+        type: "warning",
+        icon: "AlertTriangle",
+        heading: "Wichtige Hinweise und Sicherheit",
+        items: [
+          "Code verloren? Kontaktieren Sie uns umgehend per Telefon oder E-Mail. Außerhalb der Öffnungszeiten ist keine Soforthilfe möglich.",
+          "Teilen Sie den Code niemals mit Dritten – Sie haften für Missbrauch.",
+          "Bei technischen Problemen mit dem Schloss (keine Reaktion) melden Sie dies sofort und nutzen Sie den Notfallkontakt in Ihrer Buchungsbestätigung.",
+        ],
+      },
+      {
+        icon: "HelpCircle",
+        heading: "Häufige Fragen (FAQ)",
+        subSections: [
+          {
+            heading: "Was tun, wenn der Code nicht ankommt?",
+            items: [
+              "Prüfen Sie Spam-Ordner oder Mobilfunkempfang.",
+              "Fordern Sie bei Bedarf einen Neuversand über unseren Kundenservice an.",
+            ],
+          },
+          {
+            heading: "Funktioniert der Code bei Regen?",
+            items: [
+              "Ja, das Schloss ist wetterbeständig.",
+              "Trockene Finger erleichtern jedoch die Eingabe.",
+            ],
+          },
+          {
+            heading: "Kann ich den Anhänger vor Mietbeginn abholen?",
+            items: [
+              "Nein – der Code ist erst ab dem gebuchten Mietstart gültig.",
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     id: "anhaenger-rueckwaertskipper",
