@@ -230,6 +230,12 @@ import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
 import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16a-6xschuko-1.webp";
 
+// Kalt-Funkenfontäne images
+import imgKaltFunkenfontaene1 from "@/assets/products/kalt-funkenfontaene-1.jpeg";
+import imgKaltFunkenfontaene2 from "@/assets/products/kalt-funkenfontaene-2.jpeg";
+import imgKaltFunkenfontaene3 from "@/assets/products/kalt-funkenfontaene-3.jpeg";
+import imgKaltFunkenfontaene4 from "@/assets/products/kalt-funkenfontaene-4.jpeg";
+
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
 import imgSltLedFluterRgbwauv2 from "@/assets/products/slt-led-fluter-rgbwauv-2.jpeg";
@@ -2148,10 +2154,18 @@ export const spezialeffekteProducts: Product[] = [
   {
     id: "kalt-funkenfontaene",
     name: "Kalt-Funkenfontäne",
-    description: "Kalte Pyrotechnik für Events",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
+    image: imgKaltFunkenfontaene1,
+    images: [imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
     category: "pyrotechnik",
+    specifications: {
+      "Effekthöhe": "bis zu 6 Meter",
+      "Steuerung": "Fernbedienung oder DMX",
+      "Höhe": "einstellbar",
+      "Lieferumfang": "inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)",
+      "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
+      "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+    },
     rentwareCode: { krefeld: "IHAKJD" }
   },
 ];

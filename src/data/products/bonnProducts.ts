@@ -1031,15 +1031,16 @@ export const bonnBeschallungProducts = [
   },
 ];
 
-// ==================== BELEUCHTUNG ====================
-export const bonnBeleuchtungProducts = [
+// ==================== SPEZIALEFFEKTE ====================
+export const bonnSpezialeffekteProducts = [
   {
-    id: "bonn-dj-power-spark-v1",
-    name: "DJ Power Spark V1",
-    description: "Kalt-Funkenfontäne für spektakuläre Effekte.",
-    image: "/placeholder.svg",
+    id: "kalt-funkenfontaene",
     rentwareCode: { bonn: "EDWHU1" },
   },
+];
+
+// ==================== BELEUCHTUNG ====================
+export const bonnBeleuchtungProducts = [
   {
     id: "bonn-led-outdoor-tourled50",
     name: "LED Outdoorscheinwerfer TourLED 50 XCR",
