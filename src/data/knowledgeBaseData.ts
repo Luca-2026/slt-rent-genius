@@ -79,7 +79,7 @@ export const kbCategories: KBCategory[] = [
     title: "Eventtechnik",
     description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Zelte.",
     icon: "PartyPopper",
-    articleCount: 3,
+    articleCount: 4,
   },
   {
     id: "leitern-gerueste",
@@ -421,6 +421,18 @@ export const kbArticles: KBArticle[] = [
     type: "faq",
     tags: ["schaden", "beschädigung", "versicherung", "meldung"],
     updatedAt: "2026-02-08",
+  },
+  // Eventtechnik – Pioneer CDJ 2000 NXS
+  {
+    id: "pioneer-cdj2000-nxs-anleitung",
+    title: "Pioneer CDJ 2000 NXS – Bedienungsanleitung",
+    description: "Offizielle Bedienungsanleitung (DE) für den Pioneer CDJ-2000 NXS Multiplayer.",
+    categoryId: "event-technik",
+    productIds: ["pioneer-cdj2000-nxs"],
+    type: "anleitung",
+    pdfUrl: "/manuals/pioneer-cdj2000-nxs-bedienungsanleitung.pdf",
+    tags: ["pioneer", "cdj", "2000", "nxs", "multiplayer", "dj", "anleitung"],
+    updatedAt: "2026-02-20",
   },
 ];
 
