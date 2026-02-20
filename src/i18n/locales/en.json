@@ -1320,6 +1320,30 @@
     "funkgeraete": "Walkie-Talkies",
     "funkgeraete_sub": "UHF/VHF",
     "headsets": "Headsets",
-    "headsets_sub": "Wired & wireless"
+    "headsets_sub": "Wired & wireless",
+    "filter": "Filter",
+    "reset": "Reset"
+  },
+  "trailerFilter": {
+    "searchPlaceholder": "Search trailers...",
+    "totalWeight": "Max. Total Weight",
+    "trailerType": "Trailer Type",
+    "brake": "Braking",
+    "braked": "Braked",
+    "unbraked": "Unbraked",
+    "upTo750": "Up to 750 kg",
+    "750to1500": "750 - 1,500 kg",
+    "1500to2500": "1,500 - 2,500 kg",
+    "from2500": "2,500 kg and above",
+    "typeEnclosed": "Enclosed",
+    "typeEnclosedSub": "Box trailer & tarpaulin",
+    "typeConstruction": "Construction",
+    "typeConstructionSub": "Ramps & tipper",
+    "typeCar": "Car Transport",
+    "typeCarSub": "Car & motorcycle",
+    "typeLeaf": "Leaf Mesh",
+    "typeLeafSub": "Garden & green waste",
+    "typeVacation": "Holiday",
+    "typeVacationSub": "Camping & leisure"
   }
 }

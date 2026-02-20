@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Search, X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export interface TrailerFilterState {
   search: string;
@@ -17,34 +16,36 @@ interface TrailerFilterProps {
   onFilterChange: (filters: TrailerFilterState) => void;
 }
 
-const typeFilters = [
-  { id: "geschlossen", label: "Geschlossen", sublabel: "Koffer & Plane" },
-  { id: "baumaschine", label: "Baumaschinen", sublabel: "Rampen & Mulden" },
-  { id: "autotransport", label: "Autotransport", sublabel: "PKW & Motorrad" },
-  { id: "laubgitter", label: "Laubgitter", sublabel: "Garten & Grünschnitt" },
-  { id: "urlaub", label: "Urlaub", sublabel: "Camping & Freizeit" },
-];
-
-const brakingFilters = [
-  { id: "gebremst", label: "Gebremst" },
-  { id: "ungebremst", label: "Ungebremst" },
-];
-
-const weightFilters = [
-  { id: "bis-750", label: "Bis 750 kg", min: 0, max: 750 },
-  { id: "750-1500", label: "750 - 1.500 kg", min: 751, max: 1500 },
-  { id: "1500-2500", label: "1.500 - 2.500 kg", min: 1501, max: 2500 },
-  { id: "ab-2500", label: "Ab 2.500 kg", min: 2501, max: 99999 },
-];
-
 export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
+  const { t } = useTranslation();
+
+  const typeFilters = [
+    { id: "geschlossen", label: t("trailerFilter.typeEnclosed"), sublabel: t("trailerFilter.typeEnclosedSub") },
+    { id: "baumaschine", label: t("trailerFilter.typeConstruction"), sublabel: t("trailerFilter.typeConstructionSub") },
+    { id: "autotransport", label: t("trailerFilter.typeCar"), sublabel: t("trailerFilter.typeCarSub") },
+    { id: "laubgitter", label: t("trailerFilter.typeLeaf"), sublabel: t("trailerFilter.typeLeafSub") },
+    { id: "urlaub", label: t("trailerFilter.typeVacation"), sublabel: t("trailerFilter.typeVacationSub") },
+  ];
+
+  const brakingFilters = [
+    { id: "gebremst", label: t("trailerFilter.braked") },
+    { id: "ungebremst", label: t("trailerFilter.unbraked") },
+  ];
+
+  const weightFilters = [
+    { id: "bis-750", label: t("trailerFilter.upTo750"), min: 0, max: 750 },
+    { id: "750-1500", label: t("trailerFilter.750to1500"), min: 751, max: 1500 },
+    { id: "1500-2500", label: t("trailerFilter.1500to2500"), min: 1501, max: 2500 },
+    { id: "ab-2500", label: t("trailerFilter.from2500"), min: 2501, max: 99999 },
+  ];
+
   const [filters, setFilters] = useState<TrailerFilterState>({
     search: "",
     types: [],
     braking: [],
     weight: [],
   });
-  
+
   const [expandedSections, setExpandedSections] = useState({
     type: true,
     braking: false,
@@ -75,7 +76,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
     onFilterChange(cleared);
   };
 
-  const activeFilterCount = 
+  const activeFilterCount =
     filters.types.length + filters.braking.length + filters.weight.length;
 
   const hasActiveFilters = filters.search || activeFilterCount > 0;
@@ -86,7 +87,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
       <div className="bg-primary/5 border-b border-border px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-primary" />
-          <span className="font-semibold text-headline text-sm">Filter</span>
+          <span className="font-semibold text-headline text-sm">{t("catFilters.filter")}</span>
           {activeFilterCount > 0 && (
             <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-0.5 rounded-full">
               {activeFilterCount}
@@ -99,7 +100,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
             className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
           >
             <X className="h-3 w-3" />
-            Zurücksetzen
+            {t("catFilters.reset")}
           </button>
         )}
       </div>
@@ -109,7 +110,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Anhänger suchen..."
+            placeholder={t("trailerFilter.searchPlaceholder")}
             value={filters.search}
             onChange={(e) => updateFilters({ search: e.target.value })}
             className="pl-10 bg-background border-border focus:border-primary"
@@ -122,7 +123,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
             onClick={() => toggleSection("weight")}
             className="w-full flex items-center justify-between px-4 py-3 bg-muted/30 hover:bg-muted/50 transition-colors"
           >
-            <span className="font-medium text-sm text-headline">Zul. Gesamtgewicht</span>
+            <span className="font-medium text-sm text-headline">{t("trailerFilter.totalWeight")}</span>
             <div className="flex items-center gap-2">
               {filters.weight.length > 0 && (
                 <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-0.5 rounded-full">
@@ -166,7 +167,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
             onClick={() => toggleSection("type")}
             className="w-full flex items-center justify-between px-4 py-3 bg-muted/30 hover:bg-muted/50 transition-colors"
           >
-            <span className="font-medium text-sm text-headline">Anhängertyp</span>
+            <span className="font-medium text-sm text-headline">{t("trailerFilter.trailerType")}</span>
             <div className="flex items-center gap-2">
               {filters.types.length > 0 && (
                 <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-0.5 rounded-full">
@@ -213,7 +214,7 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
             onClick={() => toggleSection("braking")}
             className="w-full flex items-center justify-between px-4 py-3 bg-muted/30 hover:bg-muted/50 transition-colors"
           >
-            <span className="font-medium text-sm text-headline">Bremse</span>
+            <span className="font-medium text-sm text-headline">{t("trailerFilter.brake")}</span>
             <div className="flex items-center gap-2">
               {filters.braking.length > 0 && (
                 <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-0.5 rounded-full">
@@ -256,4 +257,9 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
 }
 
 // Export weight filter ranges for use in filtering logic
-export const weightFilterRanges = weightFilters;
+export const weightFilterRanges = [
+  { id: "bis-750", min: 0, max: 750 },
+  { id: "750-1500", min: 751, max: 1500 },
+  { id: "1500-2500", min: 1501, max: 2500 },
+  { id: "ab-2500", min: 2501, max: 99999 },
+];

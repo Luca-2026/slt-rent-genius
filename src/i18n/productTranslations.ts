@@ -35,9 +35,11 @@ export const specKeyTranslations: Record<string, string> = {
   "Gewicht inkl. Anhänger": "Weight incl. Trailer",
   "Gesamtgewicht": "Total Weight",
   "Abmessung (LxBxH)": "Dimensions (LxWxH)",
+  "Abmessungen": "Dimensions",
+  "Maße (L×B×H)": "Dimensions (L×W×H)",
   "Produktmaße": "Product Dimensions",
   "Marke": "Brand",
-  
+
   // Power / Generators
   "Spitzenleistung": "Peak Power",
   "Dauerleistung": "Continuous Power",
@@ -62,11 +64,11 @@ export const specKeyTranslations: Record<string, string> = {
   "Max. Leistung": "Max. Power",
   "Telefon aufladen (10 Wh)": "Phone charging (10 Wh)",
   "Laptop aufladen (60 Wh)": "Laptop charging (60 Wh)",
-  
+
   // Compressor
   "Volumenstrom": "Volume Flow",
   "Max. Druck": "Max. Pressure",
-  
+
   // Aerial platforms
   "Arbeitshöhe": "Working Height",
   "Plattformbodenhöhe": "Platform Floor Height",
@@ -86,7 +88,7 @@ export const specKeyTranslations: Record<string, string> = {
   "Korbarmlänge": "Basket Arm Length",
   "Max. Korblast": "Max. Basket Load",
   "Stützbreite": "Outrigger Spread",
-  
+
   // Compaction
   "Plattengröße (L × B)": "Plate Size (L × W)",
   "Verdichtungsdruck": "Compaction Force",
@@ -96,7 +98,7 @@ export const specKeyTranslations: Record<string, string> = {
   "Verdichtungstiefe": "Compaction Depth",
   "Umschaltung": "Direction Change",
   "Zubehör": "Accessories",
-  
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
@@ -110,7 +112,7 @@ export const specKeyTranslations: Record<string, string> = {
   "Max. Astdurchmesser": "Max. Branch Diameter",
   "Messer": "Blades",
   "Einzug": "Feed",
-  
+
   // Cables & Power
   "Kabellänge": "Cable Length",
   "Leitungslänge": "Cable Length",
@@ -144,7 +146,7 @@ export const specKeyTranslations: Record<string, string> = {
   "Anschluss": "Connection",
   "Kategorie": "Category",
   "Trommel": "Reel",
-  
+
   // Cable bridges
   "Kabelkanäle": "Cable Channels",
   "Kanäle": "Channels",
@@ -154,12 +156,47 @@ export const specKeyTranslations: Record<string, string> = {
   "Achslast (max)": "Axle Load (max)",
   "Brandschutzklasse": "Fire Protection Class",
   "Anwendung": "Application",
-  
+
   // Grounding
   "Erdungsspieß": "Grounding Spike",
   "Querschnitt": "Cross Section",
   "Leitung": "Cable",
   "Kabelschuh": "Cable Lug",
+
+  // Lighting & Events
+  "Betrieb": "Operation",
+  "Betriebsmodi": "Operation Modes",
+  "Lieferumfang": "Includes",
+  "Leuchtmittel": "Light Source",
+  "Stromspannung": "Voltage",
+  "Stromverbrauch": "Power Consumption",
+  "Strom": "Current",
+  "DMX-Kanäle": "DMX Channels",
+  "DMX-Modi": "DMX Modes",
+  "Farbrad": "Colour Wheel",
+  "Gobos": "Gobos",
+  "Prisma": "Prism",
+  "Dimmer": "Dimmer",
+  "Stroboskop": "Strobe",
+  "PAN-Bewegung": "PAN Movement",
+  "TILT-Bewegung": "TILT Movement",
+  "Zoom": "Zoom",
+  "LEDs": "LEDs",
+  "Farben": "Colours",
+  "Abstrahlwinkel": "Beam Angle",
+  "Inhalt": "Contents",
+  "Schutzklasse": "Protection Class",
+
+  // Sound / PA
+  "Ausführung": "Version",
+  "Frequenzbereich": "Frequency Range",
+  "Impedanz": "Impedance",
+  "Schalldruckpegel": "Sound Pressure Level",
+  "Übertragungsbereich": "Transmission Range",
+  "Reichweite": "Range",
+  "Akku": "Battery",
+  "Laufzeit": "Runtime",
+  "Bluetooth": "Bluetooth",
 };
 
 // Tag translations (German → English)
