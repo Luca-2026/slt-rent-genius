@@ -1952,131 +1952,176 @@ export const huepfburgenProducts: Product[] = [
 
 // ============= LEITERN & GERÜSTE =============
 export const leiternGeruesteProducts: Product[] = [
+  // --- Stehleiter ---
   {
     id: "stehleiter-hailo-l60-6stufen",
-    name: "Hailo L60 - 6 Stufen",
-    description: "Alu-Stehleiter 6 Stufen",
+    name: "Hailo L60 – 6 Stufen",
+    description: "Alu-Stehleiter 6 Stufen, standfest und leicht. Geeignet für Innen- und Außenarbeiten.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "stehleiter",
+    specifications: {
+      "Stufenanzahl": "6",
+      "Arbeitshöhe": "ca. 2,8 m",
+      "Material": "Aluminium",
+      "Max. Belastung": "150 kg",
+    },
     rentwareCode: { krefeld: "7HKFN5" }
   },
   {
     id: "stehleiter-kaiserthal-l50-5stufen",
-    name: "Kaiserthal L50 - 5 Stufen",
-    description: "Alu-Stehleiter 5 Stufen",
+    name: "Kaiserthal L50 – 5 Stufen",
+    description: "Alu-Stehleiter 5 Stufen, leicht und stabil. Ideal für leichtere Arbeiten in Innenräumen.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "stehleiter",
+    specifications: {
+      "Stufenanzahl": "5",
+      "Arbeitshöhe": "ca. 2,4 m",
+      "Material": "Aluminium",
+      "Max. Belastung": "150 kg",
+    },
     rentwareCode: { krefeld: "7I1HQL" }
   },
+  // --- Kombileiter ---
   {
     id: "mehrzweckleiter-3x11",
-    name: "Mehrzweckleiter 3x11",
-    description: "Kombileiter 3x11 Sprossen",
+    name: "Mehrzweckleiter 3×11",
+    description: "Kombileiter 3×11 Sprossen – verwendbar als Stehleiter, Anlegeleiter und Schiebeleiter.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "kombileiter",
+    specifications: {
+      "Sprossen": "3 × 11",
+      "Arbeitshöhe (Stehleiter)": "ca. 4,4 m",
+      "Arbeitshöhe (Anlegeleiter)": "ca. 7,0 m",
+      "Material": "Aluminium",
+      "Max. Belastung": "150 kg",
+    },
     rentwareCode: { krefeld: "IMR9B9" }
   },
   {
     id: "mehrzweckleiter-3x12",
-    name: "Mehrzweckleiter 3x12",
-    description: "Kombileiter 3x12 Sprossen",
+    name: "Mehrzweckleiter 3×12",
+    description: "Kombileiter 3×12 Sprossen – universell einsetzbar als Steh-, Anlege- und Schiebeleiter.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "kombileiter",
+    specifications: {
+      "Sprossen": "3 × 12",
+      "Arbeitshöhe (Stehleiter)": "ca. 4,9 m",
+      "Arbeitshöhe (Anlegeleiter)": "ca. 7,5 m",
+      "Material": "Aluminium",
+      "Max. Belastung": "150 kg",
+    },
     rentwareCode: { krefeld: "7XT9BR" }
   },
+  // --- Rollgerüst ---
   {
     id: "rollgeruest-krause-3-3m",
-    name: "Krause Rollgerüst 3,3 m (2x1,2m)",
-    description: "Aluminium-Rollgerüst 3,3m Arbeitshöhe",
+    name: "Krause Rollgerüst – 3,3 m Arbeitshöhe",
+    description: "Aluminium-Rollgerüst mit 3,3 m Arbeitshöhe, fahrbar, schnell auf- und abgebaut. Plattformgröße 2,0 × 1,2 m.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "rollgeruest",
+    specifications: {
+      "Arbeitshöhe": "3,3 m",
+      "Plattformgröße": "2,0 × 1,2 m",
+      "Material": "Aluminium",
+      "Max. Belastung": "200 kg",
+      "Fahrbar": "Ja, mit Bremsen",
+    },
     rentwareCode: { krefeld: "FSQFEL" }
   },
-  // Gerüstteile (für separate Vermietung)
+  // --- Gerüstteile ---
   {
     id: "krause-auslegerstuetze",
     name: "Krause Auslegerstütze",
-    description: "Zusatzstütze für Rollgerüst",
+    description: "Zusatzstütze für Krause Rollgerüste – erhöht die Standsicherheit bei einseitiger Nutzung.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Passend für": "Krause Rollgerüste" },
     rentwareCode: { krefeld: "5AEGBH" }
   },
   {
     id: "krause-diagonale-2m",
-    name: "Krause Diagonale Feldlänge 2,00 m",
-    description: "Diagonalstrebe für Rollgerüst",
+    name: "Krause Diagonale – Feldlänge 2,00 m",
+    description: "Diagonalstrebe für Krause Rollgerüste, Feldlänge 2,00 m.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Feldlänge": "2,00 m" },
     rentwareCode: { krefeld: "YE4GIK" }
   },
   {
     id: "krause-belagbuehne-2m",
-    name: "Krause Belagbühne 2,00 m",
-    description: "Arbeitsfläche für Rollgerüst",
+    name: "Krause Belagbühne – 2,00 m",
+    description: "Arbeitsfläche für Krause Rollgerüste, 2,00 m breit.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "2,00 m" },
     rentwareCode: { krefeld: "N2KGOX" }
   },
   {
     id: "krause-belagbuehne-durchstieg-2m",
-    name: "Kause Belagbühne mit Durchstieg 2,00 m",
-    description: "Arbeitsfläche mit Einstieg",
+    name: "Krause Belagbühne mit Durchstieg – 2,00 m",
+    description: "Arbeitsfläche mit integriertem Einstieg für Krause Rollgerüste, 2,00 m breit.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "2,00 m", "Durchstieg": "Ja" },
     rentwareCode: { krefeld: "TJLWHT" }
   },
   {
     id: "krause-bordbrettset-150cm",
-    name: "Krause Bordbrettset 150cm Breite",
-    description: "Seitenschutz für Rollgerüst",
+    name: "Krause Bordbrettset – 150 cm Breite",
+    description: "Seitenschutz für Krause Rollgerüste, Breite 150 cm.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "150 cm" },
     rentwareCode: { krefeld: "VA7FF8" }
   },
   {
     id: "krause-fahrbase-150",
     name: "Krause Fahrbase 150",
-    description: "Fahrwerk für Rollgerüst",
+    description: "Fahrwerk-Set für Krause Rollgerüste, Breite 150 cm.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "150 cm" },
     rentwareCode: { krefeld: "65KU3H" }
   },
   {
     id: "krause-guardmatic-system-2m",
-    name: "Krause GuardMatic-System | Feldlänge 2,00 m",
-    description: "Geländersystem für Rollgerüst",
+    name: "Krause GuardMatic-System – Feldlänge 2,00 m",
+    description: "Geländerschutzsystem für Krause Rollgerüste. Vorab-Montage vor dem Aufstieg möglich.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Feldlänge": "2,00 m" },
     rentwareCode: { krefeld: "URLSCG" }
   },
   {
     id: "krause-vertikalrahmen-1x1-5m",
-    name: "Krause Vertikalrahmen 1,00 x 1,50 m",
-    description: "Aufstockrahmen 1m",
+    name: "Krause Vertikalrahmen – 1,00 × 1,50 m",
+    description: "Aufstockrahmen für Krause Rollgerüste, 1,00 m breit × 1,50 m hoch.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "1,00 m", "Höhe": "1,50 m" },
     rentwareCode: { krefeld: "2EPETD" }
   },
   {
     id: "krause-vertikalrahmen-2x1-5m",
-    name: "Krause Vertikalrahmen 2,00 x 1,50 m",
-    description: "Aufstockrahmen 2m",
+    name: "Krause Vertikalrahmen – 2,00 × 1,50 m",
+    description: "Aufstockrahmen für Krause Rollgerüste, 2,00 m breit × 1,50 m hoch.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
+    specifications: { "Breite": "2,00 m", "Höhe": "1,50 m" },
     rentwareCode: { krefeld: "E9ZNCN" }
   },
 ];
