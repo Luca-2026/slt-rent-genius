@@ -1615,19 +1615,6 @@ export const absperrtechnikProducts: Product[] = [
     rentwareCode: { krefeld: "B8V6OY" }
   },
   {
-    id: "bauzaun-inkl-fuss-verbinder",
-    name: "Bauzaun inkl. Fuß & Verbinder",
-    description: "Bauzaun inkl. Fuß und Verbinder als Komplettpaket. Sichtschutz optional erhältlich.",
-    image: imgBauzaunInklFuss1,
-    images: [imgBauzaunInklFuss1, imgBauzaunInklFuss2],
-    category: "bauzaun",
-    specifications: {
-      "Lieferumfang": "Bauzaun, Fuß & Verbinder",
-      "Sichtschutz": "Optional erhältlich",
-    },
-    rentwareCode: { krefeld: "" }
-  },
-  {
     id: "bauzaunfuss-kunststoff",
     name: "Bauzaunfuß aus Kunststoffrecycling",
     description: "Fußplatte für Bauzäune aus Kunststoffrecycling mit 5 Aufnahmen. Ca. 20 kg schwer für optimale Standfestigkeit.",
