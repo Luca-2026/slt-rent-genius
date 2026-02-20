@@ -35,6 +35,8 @@ import heizpilz2kw2 from "@/assets/products/heizpilz-2kw-2.jpeg";
 import heizpilz2kw3 from "@/assets/products/heizpilz-2kw-3.jpeg";
 import heizpilz2kw4 from "@/assets/products/heizpilz-2kw-4.jpeg";
 import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
+import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt200-1.webp";
+import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1115,10 +1117,26 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "bautrockner-kt200",
     name: "Allegra Bautrockner KT200",
-    description: "Bautrockner für Entfeuchtung",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
+    image: allegraBautrocknerKt200_1,
+    images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
     category: "bautrockner",
+    pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
+    specifications: {
+      "Hersteller": "Allegra",
+      "Modell": "KT200",
+      "Trocknungsfläche": "20 m²",
+      "Entfeuchtungsleistung": "bis zu 20 l/24h",
+      "Leistung": "350 W",
+      "Luftumwälzung": "260 m³/h",
+      "Stromanschluss": "230 V – 16 A",
+      "Arbeitsbereich": "5 °C – 35 °C",
+      "Wassertank": "4 Liter (Abschaltautomatik)",
+      "Schlauchanschluss": "Ja",
+      "Stromzähler": "Geeichter MID-Zähler PH10",
+      "Betriebsstundenzähler": "Ja",
+      "Gewicht": "18,50 kg",
+    },
     rentwareCode: { krefeld: "3EZNGC" }
   },
   {
