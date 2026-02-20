@@ -24,6 +24,8 @@ import krauseAuslegerstuetze1 from "@/assets/products/krause-auslegerstuetze-1.w
 import krauseVertikalrahmen1 from "@/assets/products/krause-vertikalrahmen-1.webp";
 import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt553-1.jpeg";
 import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
+import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
+import heizluefter2kw2 from "@/assets/products/heizluefter-2kw-2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1038,10 +1040,16 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "heizluefter-2kw",
     name: "2 kW Elektro Heizlüfter",
-    description: "Kompakter Elektro-Heizlüfter",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen. Robustes Metallgehäuse mit Tragegriff.",
+    image: heizluefter2kw1,
+    images: [heizluefter2kw1, heizluefter2kw2],
     category: "heizluefter",
+    specifications: {
+      "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+      "Leistungsaufnahme": "2 kW",
+      "Elektroanschluss": "230 V",
+      "Luftleistung": "500 m³/h",
+    },
     rentwareCode: { krefeld: "CD894R" }
   },
   {
