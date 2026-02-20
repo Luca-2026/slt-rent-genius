@@ -452,7 +452,7 @@ export const kbArticles: KBArticle[] = [
     title: "Sennheiser XSW 1-835 – Bedienungsanleitung",
     description: "Offizielle Bedienungsanleitung für das Sennheiser Funkmikrofon-Set XSW 1-835.",
     categoryId: "event-technik",
-    productIds: ["sennheiser-funkmikrofon-xsw1"],
+    productIds: ["funkmikrofon"],
     type: "anleitung",
     pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
     tags: ["sennheiser", "xsw", "funkmikrofon", "mikrofon", "anleitung"],
