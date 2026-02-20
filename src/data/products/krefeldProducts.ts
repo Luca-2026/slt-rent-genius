@@ -20,6 +20,7 @@ import rollgeruest5_4m_1 from "@/assets/products/rollgeruest-breitaufbau-5-4m-1.
 import rollgeruest5_4m_2 from "@/assets/products/rollgeruest-breitaufbau-5-4m-2.jpeg";
 import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
 import krauseDiagonale1 from "@/assets/products/krause-diagonale-1.webp";
+import krauseAuslegerstuetze1 from "@/assets/products/krause-auslegerstuetze-1.webp";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2283,11 +2284,11 @@ export const leiternGeruesteProducts: Product[] = [
   {
     id: "krause-auslegerstuetze",
     name: "Krause Auslegerstütze",
-    description: "Zusatzstütze für Krause Rollgerüste – erhöht die Standsicherheit bei einseitiger Nutzung.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Auslegerstütze für Krause Rollgerüste der STABILO Serie 10 – erhöht die Standsicherheit bei einseitiger Nutzung und schützt vor Umkippen.",
+    image: krauseAuslegerstuetze1,
+    images: [krauseAuslegerstuetze1],
     category: "geruestteil",
-    specifications: { "Passend für": "Krause Rollgerüste" },
+    specifications: { "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
     rentwareCode: { krefeld: "5AEGBH" }
   },
   {
