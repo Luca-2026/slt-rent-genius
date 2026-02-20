@@ -44,6 +44,7 @@ import imgVz12110Ra2 from "@/assets/products/vz-121-10-ra2.jpeg";
 import imgWemasKlemmschelleK1 from "@/assets/products/wemas-klemmschelle-k1.jpeg";
 import imgVz28320Ra1 from "@/assets/products/vz-283-20-ra1.jpeg";
 import imgSchrankenzaunInklFuss from "@/assets/products/schrankenzaun-inkl-fuss.jpeg";
+import imgSchrankenzaunRa2 from "@/assets/products/schrankenzaun-ra2.jpeg";
 import imgHalteverbotsschilderSet1 from "@/assets/products/halteverbotsschilder-set-1.jpeg";
 import imgHalteverbotsschilderSet2 from "@/assets/products/halteverbotsschilder-set-2.jpeg";
 import imgHalteverbotsschilderSet3 from "@/assets/products/halteverbotsschilder-set-3.jpeg";
@@ -1582,10 +1583,15 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "schrankenzaun-ra2",
     name: "Schrankenzaun RA2 weiß/rot",
-    description: "Reflektierender Schrankenzaun",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Schrankenzaun mit RA2-Folie und Lampenadapter, ca. 9 kg.",
+    image: imgSchrankenzaunRa2,
+    images: [imgSchrankenzaunRa2],
     category: "schrankenzaun",
+    specifications: {
+      "Ausführung": "RA2 weiß/rot",
+      "Ausstattung": "Lampenadapter",
+      "Gewicht": "ca. 9 kg",
+    },
     rentwareCode: { krefeld: "LANT3O" }
   },
   {
