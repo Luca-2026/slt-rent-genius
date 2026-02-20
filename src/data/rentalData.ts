@@ -96,6 +96,23 @@ import imgKramer5045_2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
+// Heizung & Trocknung shared images for Mülheim
+import heizpilz2kw1 from "@/assets/products/heizpilz-2kw-1.jpeg";
+import heizpilz2kw2 from "@/assets/products/heizpilz-2kw-2.jpeg";
+import heizpilz2kw3 from "@/assets/products/heizpilz-2kw-3.jpeg";
+import heizpilz2kw4 from "@/assets/products/heizpilz-2kw-4.jpeg";
+import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
+import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
+import heizluefter2kw2 from "@/assets/products/heizluefter-2kw-2.jpeg";
+import heizluefter3kw1 from "@/assets/products/heizluefter-3kw-1.jpeg";
+import heizluefter3kw2 from "@/assets/products/heizluefter-3kw-2.jpeg";
+import heizluefter9kw1 from "@/assets/products/heizluefter-9kw-1.jpeg";
+import heizluefter9kw2 from "@/assets/products/heizluefter-9kw-2.jpeg";
+import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt200-1.webp";
+import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
+import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt553-1.jpeg";
+import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
+
 // Import Krefeld products
 import {
   aggregateProducts,
@@ -1067,6 +1084,124 @@ export const locations: LocationData[] = [
             "Kraftstoff": "Diesel",
             "Zusatzausstattung": "Optional mit Anhänger",
           },
+        },
+      ],
+      "heizung-trocknung": [
+        {
+          id: "mh-heizpilz-2kw",
+          name: "2 kW Elektro Heizpilz",
+          description: "Eleganter Infrarot-Heizstrahler im Pilzdesign – ideal für Terrassen, Events und Außengastronomie. Zwei Heizstufen (1 kW & 2 kW), stufenlos höhenverstellbar, Schutzklasse IP34.",
+          image: heizpilz2kw1,
+          images: [heizpilz2kw1, heizpilz2kw2, heizpilz2kw3, heizpilz2kw4, heizpilz2kw5],
+          category: "heizpilz",
+          specifications: {
+            "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+            "Leistungsaufnahme": "2 kW",
+            "Elektroanschluss": "230 V",
+            "Wirkungsfläche": "ca. 15 m²",
+            "Höhenverstellbar": "194 cm – 210 cm",
+            "Heizart": "Infrarot",
+            "Schutzklasse": "IP34",
+            "Material": "Aluminium / Edelstahl",
+          },
+          rentwareCode: { muelheim: "" },
+        },
+        {
+          id: "mh-heizluefter-2kw",
+          name: "2 kW Elektro Heizlüfter",
+          description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen.",
+          image: heizluefter2kw1,
+          images: [heizluefter2kw1, heizluefter2kw2],
+          category: "heizluefter",
+          specifications: {
+            "Heizleistung": "1 kW & 2 kW (umschaltbar)",
+            "Leistungsaufnahme": "2 kW",
+            "Elektroanschluss": "230 V",
+            "Luftleistung": "500 m³/h",
+          },
+          rentwareCode: { muelheim: "" },
+        },
+        {
+          id: "mh-heizluefter-3kw",
+          name: "Allegra 3 kW Elektro Heizlüfter",
+          description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose.",
+          image: heizluefter3kw1,
+          images: [heizluefter3kw1, heizluefter3kw2],
+          category: "heizluefter",
+          specifications: {
+            "Hersteller": "Allegra",
+            "Heizleistung": "1,5 kW & 3 kW (umschaltbar)",
+            "Leistungsaufnahme": "3 kW",
+            "Elektroanschluss": "230 V",
+            "Luftleistung": "510 m³/h",
+          },
+          rentwareCode: { muelheim: "" },
+        },
+        {
+          id: "mh-heizluefter-9kw",
+          name: "Allegra 9 kW Elektro Heizlüfter",
+          description: "Leistungsstarker Industrie-Elektroheizlüfter mit zwei Heizstufen (4,5 kW & 9 kW) – 400 V Drehstrom.",
+          image: heizluefter9kw1,
+          images: [heizluefter9kw1, heizluefter9kw2],
+          category: "heizluefter",
+          specifications: {
+            "Hersteller": "Allegra",
+            "Heizleistung": "4,5 kW & 9 kW (umschaltbar)",
+            "Leistungsaufnahme": "9 kW",
+            "Elektroanschluss": "400 V (Drehstrom / CEE)",
+            "Luftumwälzung": "845 m³/h",
+          },
+          rentwareCode: { muelheim: "" },
+        },
+        {
+          id: "mh-bautrockner-kt200",
+          name: "Allegra Bautrockner KT200",
+          description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) – ideal für Räume bis 20 m².",
+          image: allegraBautrocknerKt200_1,
+          images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
+          category: "bautrockner",
+          pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
+          specifications: {
+            "Hersteller": "Allegra",
+            "Modell": "KT200",
+            "Trocknungsfläche": "20 m²",
+            "Entfeuchtungsleistung": "bis zu 20 l/24h",
+            "Leistung": "350 W",
+            "Luftumwälzung": "260 m³/h",
+            "Stromanschluss": "230 V – 16 A",
+            "Arbeitsbereich": "5 °C – 35 °C",
+            "Wassertank": "4 Liter (Abschaltautomatik)",
+            "Schlauchanschluss": "Ja",
+            "Stromzähler": "Geeichter MID-Zähler PH10",
+            "Betriebsstundenzähler": "Ja",
+            "Gewicht": "18,50 kg",
+          },
+          rentwareCode: { muelheim: "" },
+        },
+        {
+          id: "mh-bautrockner-kt553",
+          name: "Allegra Bautrockner KT553/KT554",
+          description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler – ideal für 50–60 m² Trocknungsfläche.",
+          image: allegraBautrocknerKt553_1,
+          images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
+          category: "bautrockner",
+          pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
+          specifications: {
+            "Hersteller": "Allegra",
+            "Modell": "KT553 / KT554",
+            "Trocknungsfläche": "50–60 m²",
+            "Entfeuchtungsleistung": "bis zu 50 l/24h",
+            "Leistung": "700 W",
+            "Luftumwälzung": "330 m³/h",
+            "Stromanschluss": "230 V – 16 A",
+            "Arbeitsbereich": "5 °C – 35 °C",
+            "Wassertank": "4 Liter (Abschaltautomatik)",
+            "Schlauchanschluss": "Ja",
+            "Stromzähler": "Geeichter MID-Zähler PH10",
+            "Betriebsstundenzähler": "Ja",
+            "Gewicht": "30 kg",
+          },
+          rentwareCode: { muelheim: "" },
         },
       ],
     },
