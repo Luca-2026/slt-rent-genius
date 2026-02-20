@@ -81,6 +81,7 @@ import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
 import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgDasAction508a1 from "@/assets/products/das-action-508a-1.jpeg";
 import imgDasAction508a2 from "@/assets/products/das-action-508a-2.jpeg";
+import imgDasSoundsystem3500w1 from "@/assets/products/das-soundsystem-3500w-1.jpeg";
 import imgYamahaDm31 from "@/assets/products/yamaha-dm3-1.jpeg";
 import imgYamahaDm32 from "@/assets/products/yamaha-dm3-2.jpeg";
 import imgYamahaDm33 from "@/assets/products/yamaha-dm3-3.jpeg";
@@ -1790,6 +1791,25 @@ export const beschallungProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "pa-system",
     rentwareCode: { krefeld: "HP9CD4" }
+  },
+  {
+    id: "das-soundsystem-3500w",
+    name: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen",
+    description: "Aktive Club PA mit 3500W RMS Systemleistung, geeignet für bis zu ca. 250 Personen. Das Set besteht aus 2× DAS Audio VANTEC-18A Subwoofer, 2× DAS Audio VANTEC-12A Aktivlautsprecher, 2× Distanzstange, 2× Hybrid-Audio-Powercon Link Kabel 3m und 2× XLR Kabel 10m. Gesamtgewicht: ca. 130 kg.",
+    image: imgDasSoundsystem3500w1,
+    images: [imgDasSoundsystem3500w1],
+    category: "pa-system",
+    specifications: {
+      "Systemleistung": "3500W RMS",
+      "Geeignet für": "bis zu ca. 250 Personen",
+      "Subwoofer": "2× DAS Audio VANTEC-18A (aktiv)",
+      "Tops": "2× DAS Audio VANTEC-12A (aktiv)",
+      "Distanzstangen": "2× Distanzstange (inkl.)",
+      "Verbindungskabel": "2× Hybrid-Audio-Powercon Link Kabel 3m",
+      "XLR Kabel": "2× XLR Kabel 10m",
+      "Gesamtgewicht": "ca. 130 kg",
+    },
+    rentwareCode: { krefeld: "PLACEHOLDER_3500W" }
   },
   {
     id: "das-action-508a",
