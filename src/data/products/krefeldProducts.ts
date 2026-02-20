@@ -235,6 +235,8 @@ import imgLed4erBar1 from "@/assets/products/led-4er-bar-1.jpeg";
 
 // Vector Spot Zoom 2.0 images
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
+import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
+import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
 
 // TourLED 50 XCR images
 import imgTourled50Xcr1 from "@/assets/products/tourled-50-xcr-1.jpeg";
@@ -2132,8 +2134,8 @@ export const beleuchtungProducts: Product[] = [
     id: "led-moving-head-vector-spot",
     name: "LED Moving Head – Vector Spot Zoom 2.0",
     description: "Professioneller 230-Watt LED Moving Head mit motorisiertem Zoom, Farbrad (7 Farben + Weiß), rotierendem 5-/6-Facetten-Prisma und zwei Gobo-Rädern. Regenbogeneffekt mit variabler Geschwindigkeit in beide Richtungen. DMX-steuerbar (6/18 Kanal) oder autonomer Betrieb.",
-    image: imgVectorSpotZoom1,
-    images: [imgVectorSpotZoom1],
+    image: imgVectorSpotZoom2,
+    images: [imgVectorSpotZoom2, imgVectorSpotZoom3, imgVectorSpotZoom1],
     category: "moving-head",
     specifications: {
       "Leistung": "230 Watt LED",
