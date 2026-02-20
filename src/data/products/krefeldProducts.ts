@@ -270,6 +270,11 @@ import imgPartyzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
 // Partyzelt 4x10m images
 import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
 
+// Eventzelt 6x8m images
+import imgEventzelt6x8_1 from "@/assets/products/eventzelt-6x8-1.jpeg";
+import imgEventzelt6x8_2 from "@/assets/products/eventzelt-6x8-2.jpeg";
+import imgEventzelt6x8_3 from "@/assets/products/eventzelt-6x8-3.jpeg";
+
 // Eventzelt 6x12m images
 import imgEventzelt6x12_1 from "@/assets/products/eventzelt-6x12-1.jpeg";
 import imgEventzelt6x12_2 from "@/assets/products/eventzelt-6x12-2.jpeg";
@@ -2417,6 +2422,26 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/eventzelt-6x12-aufbauanleitung.pdf",
     rentwareCode: { krefeld: "7PGYQB" }
+  },
+  {
+    id: "eventzelt-6x8m",
+    name: "Eventzelt 6x8m extra hoch",
+    description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
+    image: imgEventzelt6x8_1,
+    images: [imgEventzelt6x8_1, imgEventzelt6x8_2, imgEventzelt6x8_3],
+    category: "zelt",
+    specifications: {
+      "Grundfläche": "48 m² (6 m × 8 m)",
+      "Durchgangshöhe": "2,6 m (extra hoch)",
+      "Farbe": "weiß",
+      "Inklusive": "Seiten- und Stirnwände, Dachstangen",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 80 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 68 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
+    rentwareCode: { krefeld: "EVENTZELT6X8" }
   },
   {
     id: "bierzeltgarnitur-set",
