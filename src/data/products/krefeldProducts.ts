@@ -259,7 +259,10 @@ import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz
 // Partyzelt 4x10m images
 import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
 
-// Partyzelt 4x14m images (shared photos for same tent type)
+// Eventzelt 6x12m images
+import imgEventzelt6x12_1 from "@/assets/products/eventzelt-6x12-1.jpeg";
+import imgEventzelt6x12_2 from "@/assets/products/eventzelt-6x12-2.jpeg";
+
 import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
@@ -2365,12 +2368,23 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "ZELTBODEN_ANT" }
   },
   {
-    id: "eventzelt-6x8m",
-    name: "Eventzelt 6x8m extra hoch",
-    description: "Großes Eventzelt mit extra Höhe",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    id: "eventzelt-6x12m",
+    name: "Eventzelt 6x12m extra hoch",
+    description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
+    image: imgEventzelt6x12_1,
+    images: [imgEventzelt6x12_1, imgEventzelt6x12_2],
     category: "zelt",
+    specifications: {
+      "Grundfläche": "72 m² (6 m × 12 m)",
+      "Durchgangshöhe": "2,6 m (extra hoch)",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Brandschutz": "feuerfest nach EN-13501-1",
+      "Kapazität (Stehend)": "ca. 120 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 101 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 130 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/eventzelt-6x12-aufbauanleitung.pdf",
     rentwareCode: { krefeld: "7PGYQB" }
   },
   {
