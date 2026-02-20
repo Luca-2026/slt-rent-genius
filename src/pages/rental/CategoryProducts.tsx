@@ -382,8 +382,8 @@ export default function CategoryProducts() {
                   "kuehlgeraet": ["kuehlgeraet"],
                 };
                 const beleuchtungTypeGroups: Record<string, string[]> = {
-                  "fluter": ["fluter", "baustrahler"],
-                  "spot": ["spot", "par", "led-spot"],
+                  "fluter": ["fluter", "baustrahler", "led-fluter"],
+                  "spot": ["spot", "par", "led-spot", "scheinwerfer", "led-bar", "blinder"],
                   "moving-head": ["moving-head", "movinghead"],
                   "deko": ["deko", "lichterkette"],
                   "arbeitsleuchte": ["arbeitsleuchte", "handlampe"],
@@ -397,7 +397,19 @@ export default function CategoryProducts() {
                   category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
                   undefined;
 
-                if (groupCategories && p.category) return groupCategories.includes(p.category);
+                if (groupCategories) {
+                  if (p.category && groupCategories.includes(p.category)) return true;
+                  // Fallback: name-based matching for products without a category field
+                  if (category?.id === "beleuchtung") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "spot") return nameLower.includes("scheinwerfer") || nameLower.includes("spot") || nameLower.includes("par") || nameLower.includes("bar") || nameLower.includes("blinder") || nameLower.includes("beleuchtungsset");
+                    if (value === "fluter") return nameLower.includes("fluter") || nameLower.includes("flutlicht") || nameLower.includes("baustrahler");
+                    if (value === "moving-head") return nameLower.includes("moving head") || nameLower.includes("moving-head");
+                    if (value === "deko") return nameLower.includes("lichterkette") || nameLower.includes("deko");
+                    if (value === "arbeitsleuchte") return nameLower.includes("arbeitsleuchte") || nameLower.includes("handlampe") || nameLower.includes("inspektionsleuchte");
+                  }
+                  return false;
+                }
                 // For moebel-zelte "moebel" group also match by name keywords
                 if (category?.id === "moebel-zelte" && value === "moebel") {
                   const nameLower = p.name.toLowerCase();
