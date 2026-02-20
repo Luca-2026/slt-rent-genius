@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export interface FilterSection {
   id: string;
