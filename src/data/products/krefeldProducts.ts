@@ -37,6 +37,7 @@ import heizpilz2kw4 from "@/assets/products/heizpilz-2kw-4.jpeg";
 import heizpilz2kw5 from "@/assets/products/heizpilz-2kw-5.jpeg";
 import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt200-1.webp";
 import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
+import imgVz28311Ra1 from "@/assets/products/vz-283-11-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1235,10 +1236,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-283-11-ra1",
     name: "VZ 283-11, RA1",
-    description: "Absolutes Halteverbot Mitte",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Absolutes Haltverbot Ende, Linksaufstellung – Rundes Verkehrszeichen Ø 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
+    image: imgVz28311Ra1,
+    images: [imgVz28311Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 283-11",
+      "Bedeutung": "Absolutes Haltverbot Ende, Linksaufstellung",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "FSBHNJ" }
   },
   {
