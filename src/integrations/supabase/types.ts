@@ -48,6 +48,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "b2b_category_discounts_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "b2b_category_discounts_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
@@ -93,6 +100,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_customer_prices_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
             referencedColumns: ["id"]
           },
         ]
@@ -208,6 +222,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_delivery_notes_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
             referencedColumns: ["id"]
           },
           {
@@ -376,6 +397,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "b2b_invoices_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "b2b_invoices_reservation_id_fkey"
             columns: ["reservation_id"]
             isOneToOne: false
@@ -513,6 +541,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_offers_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
             referencedColumns: ["id"]
           },
           {
@@ -713,6 +748,13 @@ export type Database = {
             referencedRelation: "b2b_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "b2b_reservations_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
         ]
       }
       b2b_return_protocol_items: {
@@ -856,6 +898,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_protocols_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
             referencedColumns: ["id"]
           },
           {
@@ -1211,7 +1260,105 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      b2b_profiles_customer: {
+        Row: {
+          assigned_contact_override: Json | null
+          assigned_location: string | null
+          billing_email: string | null
+          city: string | null
+          company_name: string | null
+          contact_email: string | null
+          contact_first_name: string | null
+          contact_last_name: string | null
+          contact_phone: string | null
+          contact_position: string | null
+          country: string | null
+          created_at: string | null
+          credit_limit: number | null
+          deletion_requested_at: string | null
+          document_filename: string | null
+          document_url: string | null
+          house_number: string | null
+          id: string | null
+          legal_form: string | null
+          payment_due_days: number | null
+          postal_code: string | null
+          postal_invoice: boolean | null
+          status: Database["public"]["Enums"]["b2b_status"] | null
+          street: string | null
+          tax_id: string | null
+          trade_register_number: string | null
+          updated_at: string | null
+          used_credit: number | null
+          user_id: string | null
+          vat_id_verified: boolean | null
+        }
+        Insert: {
+          assigned_contact_override?: Json | null
+          assigned_location?: string | null
+          billing_email?: string | null
+          city?: string | null
+          company_name?: string | null
+          contact_email?: string | null
+          contact_first_name?: string | null
+          contact_last_name?: string | null
+          contact_phone?: string | null
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string | null
+          credit_limit?: number | null
+          deletion_requested_at?: string | null
+          document_filename?: string | null
+          document_url?: string | null
+          house_number?: string | null
+          id?: string | null
+          legal_form?: string | null
+          payment_due_days?: number | null
+          postal_code?: string | null
+          postal_invoice?: boolean | null
+          status?: Database["public"]["Enums"]["b2b_status"] | null
+          street?: string | null
+          tax_id?: string | null
+          trade_register_number?: string | null
+          updated_at?: string | null
+          used_credit?: number | null
+          user_id?: string | null
+          vat_id_verified?: boolean | null
+        }
+        Update: {
+          assigned_contact_override?: Json | null
+          assigned_location?: string | null
+          billing_email?: string | null
+          city?: string | null
+          company_name?: string | null
+          contact_email?: string | null
+          contact_first_name?: string | null
+          contact_last_name?: string | null
+          contact_phone?: string | null
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string | null
+          credit_limit?: number | null
+          deletion_requested_at?: string | null
+          document_filename?: string | null
+          document_url?: string | null
+          house_number?: string | null
+          id?: string | null
+          legal_form?: string | null
+          payment_due_days?: number | null
+          postal_code?: string | null
+          postal_invoice?: boolean | null
+          status?: Database["public"]["Enums"]["b2b_status"] | null
+          street?: string | null
+          tax_id?: string | null
+          trade_register_number?: string | null
+          updated_at?: string | null
+          used_credit?: number | null
+          user_id?: string | null
+          vat_id_verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       generate_delivery_note_number: { Args: never; Returns: string }
