@@ -230,6 +230,12 @@ import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
 import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16a-6xschuko-1.webp";
 
+// SLT LED Fluter RGBWAUV images
+import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
+import imgSltLedFluterRgbwauv2 from "@/assets/products/slt-led-fluter-rgbwauv-2.jpeg";
+import imgSltLedFluterRgbwauv3 from "@/assets/products/slt-led-fluter-rgbwauv-3.jpeg";
+import imgSltLedFluterRgbwauv4 from "@/assets/products/slt-led-fluter-rgbwauv-4.jpeg";
+
 // Bodenschutz images
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
 import imgBodenschutz2 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-2.jpg";
@@ -2103,11 +2109,18 @@ export const beleuchtungProducts: Product[] = [
   },
   {
     id: "slt-led-fluter-rgbwauv",
-    name: "SLT LED Fluter RGBWAUV",
-    description: "LED-Fluter mit RGBWAUV",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65",
+    description: "Professioneller LED-Flutlicht-Scheinwerfer mit 44×15W LEDs in RGBWA+UV – ideal für Fassadenanstrahlungen, Eventbeleuchtung und Outdoor-Einsätze. IP65 wetterfest, inkl. PowerCon True1 Kabel, Super Clamp und Safety.",
+    image: imgSltLedFluterRgbwauv1,
+    images: [imgSltLedFluterRgbwauv1, imgSltLedFluterRgbwauv2, imgSltLedFluterRgbwauv3, imgSltLedFluterRgbwauv4],
     category: "led-fluter",
+    specifications: {
+      "LEDs": "44 × 15 W",
+      "Farben": "RGBWA + UV",
+      "Abstrahlwinkel": "25°",
+      "Schutzklasse": "IP65",
+      "Lieferumfang": "1× PowerCon True1 Kabel, 1× Super Clamp, 1× Safety 5mm",
+    },
     rentwareCode: { krefeld: "5N4U12" }
   },
   {
