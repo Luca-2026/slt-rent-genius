@@ -39,6 +39,7 @@ import allegraBautrocknerKt200_1 from "@/assets/products/allegra-bautrockner-kt2
 import allegraBautrocknerKt200_2 from "@/assets/products/allegra-bautrockner-kt200-2.webp";
 import imgVz28311Ra1 from "@/assets/products/vz-283-11-ra1.jpeg";
 import imgVz123Ra2 from "@/assets/products/vz-123-ra2.jpeg";
+import imgVz28310Ra1 from "@/assets/products/vz-283-10-ra1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1236,10 +1237,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-283-10-ra1",
     name: "VZ 283-10, RA1",
-    description: "Absolutes Halteverbot Anfang",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Absolutes Haltverbot Anfang, Rechtsaufstellung – Rundes Verkehrszeichen Ø 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
+    image: imgVz28310Ra1,
+    images: [imgVz28310Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 283-10",
+      "Bedeutung": "Absolutes Haltverbot Anfang, Rechtsaufstellung",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Durchmesser": "600 mm",
+    },
     rentwareCode: { krefeld: "C7NXIO" }
   },
   {
