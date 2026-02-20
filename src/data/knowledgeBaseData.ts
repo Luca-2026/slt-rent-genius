@@ -1,5 +1,13 @@
 // Knowledge Base data structure
-// Articles/videos will be added later by the team
+
+export interface KBArticleSection {
+  heading?: string;
+  icon?: string; // lucide icon name
+  type?: "info" | "warning" | "tip" | "legal";
+  text?: string;
+  items?: string[];
+  subSections?: { heading: string; items: string[] }[];
+}
 
 export interface KBArticle {
   id: string;
@@ -8,9 +16,10 @@ export interface KBArticle {
   categoryId: string;
   productIds?: string[]; // Links to rental product IDs
   type: "anleitung" | "video" | "faq" | "sicherheit";
-  content?: string; // Markdown content (added later)
-  videoUrl?: string; // YouTube/video embed URL (added later)
-  pdfUrl?: string; // PDF download link (added later)
+  content?: string; // Simple text fallback
+  sections?: KBArticleSection[]; // Rich structured content
+  videoUrl?: string; // YouTube/video embed URL
+  pdfUrl?: string; // PDF download link
   tags: string[];
   updatedAt: string;
 }
@@ -110,11 +119,116 @@ export const kbArticles: KBArticle[] = [
   {
     id: "anhaenger-beladen",
     title: "Anhänger richtig beladen & sichern",
-    description: "Ladungssicherung nach StVO: So beladen und sichern Sie Ihren Mietanhänger korrekt.",
+    description: "Ladungssicherung nach § 22 StVO: So beladen und sichern Sie Ihren Mietanhänger korrekt – Schritt für Schritt.",
     categoryId: "anhaenger",
-    type: "anleitung",
-    tags: ["ladungssicherung", "beladen", "zurrgurte", "stvo"],
-    updatedAt: "2026-02-08",
+    type: "sicherheit",
+    tags: ["ladungssicherung", "beladen", "zurrgurte", "stvo", "§22", "spanngurte", "antirutschmatte"],
+    updatedAt: "2026-02-20",
+    sections: [
+      {
+        type: "legal",
+        icon: "Scale",
+        heading: "Rechtliche Grundlage – § 22 StVO",
+        text: "Nach § 22 StVO muss die Ladung so verstaut und gesichert sein, dass sie selbst bei Vollbremsung oder plötzlichem Ausweichen nicht verrutschen, umfallen, herabfallen oder vermeidbaren Lärm erzeugen kann. Der Fahrzeugführer ist verpflichtet, die Ladung vor Fahrtantritt zu kontrollieren und Mängel zu beseitigen. Das zulässige Gesamtgewicht und die Achslasten des Anhängers dürfen nicht überschritten werden.",
+      },
+      {
+        type: "warning",
+        icon: "AlertTriangle",
+        heading: "Warum Ladungssicherung so wichtig ist",
+        text: "Wer einen Mietanhänger nutzt, trägt als Fahrer die volle Verantwortung für eine korrekte Ladungssicherung. Fehlende oder falsche Sicherung führt zu:",
+        items: [
+          "Instabilem Fahrverhalten und Schlingern des Gespanns",
+          "Längeren Bremswegen und erhöhter Unfallgefahr",
+          "Schäden an der Ladung durch Verrutschen oder Herabfallen",
+          "Bußgeldern, Punkten in Flensburg und strafrechtlichen Konsequenzen",
+          "Haftung für Schäden an Dritten",
+        ],
+      },
+      {
+        icon: "ClipboardCheck",
+        heading: "Schritt 1: Anhänger vorbereiten",
+        items: [
+          "Anhänger auf ebenem, geradem Untergrund abstellen und mit Unterlegkeilen gegen Wegrollen sichern",
+          "Technischen Zustand prüfen: Reifen, Beleuchtung, Kupplung, Stützrad und Sicherungsseil",
+          "Zulässige Gesamtmasse und maximale Zuladung in den Fahrzeugpapieren nachschlagen",
+          "Zulässige Anhängelast und Stützlast Ihres Zugfahrzeugs im Fahrzeugschein prüfen",
+        ],
+      },
+      {
+        icon: "Package",
+        heading: "Schritt 2: Richtig beladen – Gewichtsverteilung",
+        items: [
+          "Schwere Gegenstände über oder möglichst nahe der Achse platzieren – nicht weit vorne oder hinten",
+          "Schwerpunkt der Ladung auf der Längsmittellinie des Anhängers halten – links und rechts gleichmäßig beladen",
+          "Schweres nach unten, Leichtes nach oben – für einen tiefen Gesamtschwerpunkt",
+          "Stützlast möglichst ausnutzen, aber keinesfalls überschreiten",
+          "Ladung darf nicht über die Bordwände ragen – bei Überständen rote Fahne oder Beleuchtung anbringen",
+        ],
+      },
+      {
+        icon: "Link",
+        heading: "Schritt 3: Ladung sicher befestigen",
+        subSections: [
+          {
+            heading: "Formschluss – Bewegungsraum verhindern",
+            items: [
+              "Ladung so dicht wie möglich an Bordwände, Stirnwand oder Zwischenwände stellen",
+              "Keile und Unterlegklötze für runde Gegenstände (Fässer, Rohre) verwenden",
+              "Freie Räume mit Füllmaterial ausstopfen",
+            ],
+          },
+          {
+            heading: "Kraftschluss – Niederzurren mit Spanngurten",
+            items: [
+              "Spanngurte mit ausreichender Zugfestigkeit (LC/STF auf dem Etikett prüfen) verwenden",
+              "Gurte nur an den dafür vorgesehenen Zurrpunkten des Anhängers befestigen",
+              "Niederzurren: Gurte über die Ladung spannen, in Zurrpunkten einhängen und mit Ratschen vorspannen",
+              "Direktzurren/Diagonalzurren: Gurte direkt von der Ladung zu den Zurrpunkten (bei schweren Gütern)",
+              "Lose oder leichte Ladung (Grünschnitt, Kartons) mit Netzen oder Planen abdecken",
+              "Verschlissene oder eingerissene Gurte sofort austauschen",
+            ],
+          },
+        ],
+      },
+      {
+        icon: "Eye",
+        heading: "Schritt 4: Kontrolle vor Fahrtbeginn",
+        items: [
+          "Sitz der Kupplung, Verriegelung des Kugelkopfes und Sicherungsseil prüfen",
+          "Alle Zurrgurte gespannt, Verriegelungen geschlossen, Netze/Planen fest fixiert?",
+          "Sichtkontrolle: Beleuchtung, Kennzeichen, Bremslichter, Blinker, Stützrad hochgekurbelt?",
+          "Kurze Bremsprobe auf freier Fläche – bei Schlingern oder starkem Nicken Beladung prüfen",
+          "Nach den ersten Kilometern Gurte nachspannen, da sich die Ladung setzen kann",
+        ],
+      },
+      {
+        icon: "Car",
+        heading: "Schritt 5: Fahrhinweise mit beladenem Anhänger",
+        items: [
+          "Mit reduzierter Geschwindigkeit fahren und größere Abstände einhalten",
+          "Vorausschauend und sanft bremsen – keine harten Bremsvorgänge",
+          "In Kurven gleichmäßig und nicht ruckartig lenken",
+          "Bei Seitenwind besonders vorsichtig fahren",
+          "Bei beginnendem Schlingern: langsam Gas wegnehmen, leicht bremsen, nicht ruckartig lenken",
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Praxis-Tipps",
+        items: [
+          "Genug Zeit zum Beladen und Sichern einplanen – keine Hektik",
+          "Passende Zurrgurte, Antirutschmatten und Netze bei uns ausleihen oder mitbringen",
+          "Nach wenigen Kilometern die Gurte nachspannen, da sich die Ladung setzen kann",
+        ],
+      },
+      {
+        type: "legal",
+        icon: "AlertCircle",
+        heading: "Haftungshinweis",
+        text: "Der Mieter und Fahrzeugführer ist für die ordnungsgemäße Beladung und Sicherung der Ladung nach § 22 StVO verantwortlich. Bitte beachten Sie die Angaben in den Fahrzeugpapieren zu zulässiger Anhängelast, Stützlast und Gesamtgewicht. Bei Verstößen gegen die Ladungssicherungsvorschriften haftet der Fahrer – ggf. zusätzlich Halter oder Verlader – für Bußgelder, Punkte und entstandene Schäden.",
+      },
+    ],
   },
   {
     id: "anhaenger-codesystem",
