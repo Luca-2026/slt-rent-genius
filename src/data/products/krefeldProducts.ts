@@ -68,6 +68,7 @@ import imgVz28321Ra1 from "@/assets/products/vz-283-21-ra1.jpeg";
 import imgStahlVierkantrohr4x4 from "@/assets/products/stahl-vierkantrohr-4x4-2-5m.jpeg";
 import imgVz240Ra1 from "@/assets/products/vz-240-ra1.jpeg";
 import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
+import imgMannesmanngitter from "@/assets/products/mannesmanngitter.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1609,10 +1610,14 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "mannesmanngitter",
     name: "Mannesmanngitter",
-    description: "Absperrgitter für Veranstaltungen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Mannesmanngitter 250 × 110 cm, ca. 16 kg. Stabile Absperrgitter für Veranstaltungen und Baustellen.",
+    image: imgMannesmanngitter,
+    images: [imgMannesmanngitter],
     category: "absperrgitter",
+    specifications: {
+      "Abmessungen": "250 × 110 cm",
+      "Gewicht": "ca. 16 kg",
+    },
     rentwareCode: { krefeld: "QQWZPJ" }
   },
   {
