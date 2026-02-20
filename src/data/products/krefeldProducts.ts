@@ -67,6 +67,7 @@ import imgVz100012Ra1Gr1 from "@/assets/products/vz-1000-12-ra1-gr1.jpeg";
 import imgVz28321Ra1 from "@/assets/products/vz-283-21-ra1.jpeg";
 import imgStahlVierkantrohr4x4 from "@/assets/products/stahl-vierkantrohr-4x4-2-5m.jpeg";
 import imgVz240Ra1 from "@/assets/products/vz-240-ra1.jpeg";
+import imgWarnbarkeRa2 from "@/assets/products/warnbarke-ra2.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1650,6 +1651,20 @@ export const absperrtechnikProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "warnbarke",
     rentwareCode: { krefeld: "DHE9HH" }
+  },
+  {
+    id: "warnbarke-ra2-ohne-fuss",
+    name: "Warnbarke weiß/rot, RA 2",
+    description: "Warnbarke mit RA2-Folie, beidseitig beklebt, ohne Fuß, ca. 2 kg.",
+    image: imgWarnbarkeRa2,
+    images: [imgWarnbarkeRa2],
+    category: "warnbarke",
+    specifications: {
+      "Reflektionsklasse": "RA2",
+      "Beklebung": "Beidseitig",
+      "Gewicht": "ca. 2 kg",
+    },
+    rentwareCode: { krefeld: "U9BFGZ" }
   },
   {
     id: "warnbarke-ra2",
