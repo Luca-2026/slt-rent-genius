@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
+import { B2BChatAssistant } from "@/components/b2b/B2BChatAssistant";
 import { 
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen,
@@ -118,6 +119,9 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
           {children}
         </div>
       </main>
+
+      {/* AI Chat Assistant - only for customers, not admins */}
+      {!isAdmin && <B2BChatAssistant />}
     </Layout>
   );
 }

@@ -1,5 +1,8 @@
 project_id = "ccmxitxgyznethanixlg"
 
+[functions.b2b-chat]
+verify_jwt = false
+
 [functions.generate-invoice]
 verify_jwt = false
 
