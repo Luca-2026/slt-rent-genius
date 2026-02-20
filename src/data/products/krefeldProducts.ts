@@ -1294,42 +1294,6 @@ export const absperrtechnikProducts: Product[] = [
     rentwareCode: { krefeld: "ZSNQ9H" }
   },
   {
-    id: "vz-1000-12-ra1",
-    name: "VZ 1000-12, RA1, Gr. 2",
-    description: "Zusatzzeichen VZ 1000-12: Fußgänger – Gehweg links gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
-    image: imgVz100012Ra1,
-    images: [imgVz100012Ra1],
-    category: "verkehrszeichen",
-    specifications: {
-      "Bezeichnung": "VZ 1000-12",
-      "Bedeutung": "Fußgänger Gehweg links gegenüber benutzen",
-      "Reflektionsklasse": "RA1",
-      "Form": "Flachform",
-      "Material": "2 mm",
-      "Seitenlänge": "330 mm × 600 mm",
-      "Größe": "Gr. 2",
-    },
-    rentwareCode: { krefeld: "" }
-  },
-  {
-    id: "vz-1000-22-ra1-gr2",
-    name: "VZ 1000-22, RA1, Gr. 2",
-    description: "Zusatzzeichen VZ 1000-22: Fußgänger – Gehweg rechts gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
-    image: imgVz100022Ra1Gr2,
-    images: [imgVz100022Ra1Gr2],
-    category: "verkehrszeichen",
-    specifications: {
-      "Bezeichnung": "VZ 1000-22",
-      "Bedeutung": "Fußgänger Gehweg rechts gegenüber benutzen",
-      "Reflektionsklasse": "RA1",
-      "Form": "Flachform",
-      "Material": "2 mm",
-      "Seitenlänge": "330 mm × 600 mm",
-      "Größe": "Gr. 2",
-    },
-    rentwareCode: { krefeld: "" }
-  },
-  {
     id: "vz-267-ra1",
     name: "VZ 267, RA1",
     description: "Verbot der Einfahrt – Rundes Verkehrszeichen Ø 600 mm in Flachform (2 mm), Reflektionsklasse RA1.",
@@ -1496,10 +1460,19 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-12-ra1-gr2",
     name: "VZ 1000-12, RA1, Gr. 2",
-    description: "Richtungspfeil links (groß)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Zusatzzeichen VZ 1000-12: Fußgänger – Gehweg links gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100012Ra1,
+    images: [imgVz100012Ra1],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 1000-12",
+      "Bedeutung": "Fußgänger Gehweg links gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "330 mm × 600 mm",
+      "Größe": "Gr. 2",
+    },
     rentwareCode: { krefeld: "DEXR4U" }
   },
   {
@@ -1523,10 +1496,19 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-22-ra1-gr2",
     name: "VZ 1000-22, RA1, Gr. 2",
-    description: "Richtungspfeil rechts (groß)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Zusatzzeichen VZ 1000-22: Fußgänger – Gehweg rechts gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
+    image: imgVz100022Ra1Gr2,
+    images: [imgVz100022Ra1Gr2],
     category: "verkehrszeichen",
+    specifications: {
+      "Bezeichnung": "VZ 1000-22",
+      "Bedeutung": "Fußgänger Gehweg rechts gegenüber benutzen",
+      "Reflektionsklasse": "RA1",
+      "Form": "Flachform",
+      "Material": "2 mm",
+      "Seitenlänge": "330 mm × 600 mm",
+      "Größe": "Gr. 2",
+    },
     rentwareCode: { krefeld: "ICH8W8" }
   },
   {
@@ -1577,10 +1559,14 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "fussplatte-k1-tl",
     name: "Fußplatte K1 TL",
-    description: "Fußplatte für Verkehrszeichen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Fußplatte für Verkehrsschilder, Warnbarken oder Schrankenzäune, ca. 28 kg.",
+    image: imgFussplatteK1Tl,
+    images: [imgFussplatteK1Tl],
     category: "zubehoer",
+    specifications: {
+      "Verwendung": "Verkehrsschilder, Warnbarken, Schrankenzäune",
+      "Gewicht": "ca. 28 kg",
+    },
     rentwareCode: { krefeld: "WG72M2" }
   },
   {
@@ -1617,10 +1603,15 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "bauzaun",
     name: "Bauzaun",
-    description: "Standard-Bauzaunelement",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Mobiler Bauzaun ca. 3,5 m × 2,0 m, verzinkt, ca. 13 kg. Ideal für Baustellen- und Veranstaltungsabsperrungen.",
+    image: imgBauzaun1,
+    images: [imgBauzaun1, imgBauzaun2],
     category: "bauzaun",
+    specifications: {
+      "Abmessungen": "ca. 3,5 m × 2,0 m",
+      "Gewicht": "ca. 13 kg",
+      "Ausführung": "Verzinkt",
+    },
     rentwareCode: { krefeld: "B8V6OY" }
   },
   {
@@ -1688,33 +1679,6 @@ export const absperrtechnikProducts: Product[] = [
       "Ausführung": "RA2 weiß/rot",
       "Inklusive": "1× Fußplatte K1 TL",
       "Warnleuchte": "Optional erhältlich",
-    },
-    rentwareCode: { krefeld: "" }
-  },
-  {
-    id: "fussplatte-k1-tl",
-    name: "Fußplatte K1 TL",
-    description: "Fußplatte für Verkehrsschilder, Warnbarken oder Schrankenzäune, ca. 28 kg.",
-    image: imgFussplatteK1Tl,
-    images: [imgFussplatteK1Tl],
-    category: "absperrtechnik",
-    specifications: {
-      "Verwendung": "Verkehrsschilder, Warnbarken, Schrankenzäune",
-      "Gewicht": "ca. 28 kg",
-    },
-    rentwareCode: { krefeld: "" }
-  },
-  {
-    id: "bauzaun",
-    name: "Bauzaun",
-    description: "Mobiler Bauzaun ca. 3,5 m × 2,0 m, verzinkt, ca. 13 kg. Ideal für Baustellen- und Veranstaltungsabsperrungen.",
-    image: imgBauzaun1,
-    images: [imgBauzaun1, imgBauzaun2],
-    category: "absperrtechnik",
-    specifications: {
-      "Abmessungen": "ca. 3,5 m × 2,0 m",
-      "Gewicht": "ca. 13 kg",
-      "Ausführung": "Verzinkt",
     },
     rentwareCode: { krefeld: "" }
   },
