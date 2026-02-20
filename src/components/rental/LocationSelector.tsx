@@ -107,7 +107,7 @@ export function LocationSelector() {
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-headline text-sm truncate">{location.manager.name}</p>
-                  <p className="text-xs text-muted-foreground">{location.manager.role}</p>
+                  <p className="text-xs text-muted-foreground">{t(location.manager.role)}</p>
                 </div>
                 <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
               </a>
