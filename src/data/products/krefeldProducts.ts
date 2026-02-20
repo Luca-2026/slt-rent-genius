@@ -250,6 +250,11 @@ import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
 
+// Bierzeltgarnitur-Set images
+import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jpeg";
+import imgBierzeltgarniturSet2 from "@/assets/products/bierzeltgarnitur-set-2.jpeg";
+import imgBierzeltgarniturSet3 from "@/assets/products/bierzeltgarnitur-set-3.jpeg";
+
 // Bierzeltgarnitur Hussen-Set images
 import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-weiss-1.jpeg";
 
@@ -2403,10 +2408,16 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "bierzeltgarnitur-set",
     name: "Bierzeltgarnitur-Set",
-    description: "1 Tisch und 2 Bänke",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Klassische Bierzeltgarnitur als Set: 1× Tisch (50×220 cm) + 2× Bank (25×220 cm). Optional sind weiße Hussen für Tisch und Bänke erhältlich – im nächsten Schritt der Bestellung hinzufügbar.",
+    image: imgBierzeltgarniturSet1,
+    images: [imgBierzeltgarniturSet1, imgBierzeltgarniturSet2, imgBierzeltgarniturSet3],
     category: "moebel",
+    specifications: {
+      "Set-Inhalt": "1× Tisch + 2× Bänke",
+      "Tischmaß": "50 × 220 cm",
+      "Bankmaß": "25 × 220 cm",
+      "Zubehör (optional)": "Hussen in weiß (Tisch & Bank) – im Bestellprozess hinzufügbar",
+    },
     rentwareCode: { krefeld: "5S2ECT" }
   },
   {
