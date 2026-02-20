@@ -818,7 +818,7 @@ export default function CategoryProducts() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-1 lg:order-1">
-                <div className="sticky top-4 space-y-6">
+                <div className="sticky top-4 space-y-6 max-h-[calc(100vh-2rem)] overflow-y-auto pr-1 pb-4">
                   {/* "Alle" category: Search + Category Filter + Delivery Calculator */}
                   {category.id === "alle" && (
                     <>
