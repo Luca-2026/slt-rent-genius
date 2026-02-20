@@ -76,6 +76,9 @@ import imgRetevRt29Set1 from "@/assets/products/retevis-rt29-set-1.jpeg";
 import imgRetevRt29Set2 from "@/assets/products/retevis-rt29-set-2.jpeg";
 import imgRetevRt29Set3 from "@/assets/products/retevis-rt29-set-3.jpeg";
 import imgRetevRt29Set4 from "@/assets/products/retevis-rt29-set-4.jpeg";
+import imgSoundboksGen31 from "@/assets/products/soundboks-gen3-1.jpeg";
+import imgSoundboksGen32 from "@/assets/products/soundboks-gen3-2.jpeg";
+import imgSoundboksGen33 from "@/assets/products/soundboks-gen3-3.jpeg";
 import imgFussplatteK1Tl from "@/assets/products/fussplatte-k1-tl.jpeg";
 import imgBauzaun1 from "@/assets/products/bauzaun-1.jpeg";
 import imgBauzaun2 from "@/assets/products/bauzaun-2.jpeg";
@@ -1741,10 +1744,22 @@ export const beschallungProducts: Product[] = [
   {
     id: "soundboks-gen3",
     name: "Soundboks Gen.3",
-    description: "Bluetooth-Party-Lautsprecher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Tragbarer Outdoor-Lautsprecher mit 126 dB max. SPL und bis zu 40 Stunden Akkulaufzeit bei halber Lautstärke. Bluetooth 5.0 mit SKAA-Technologie: Bis zu 5 Soundboks lassen sich im \"TeamUP\"-Modus drahtlos verbinden (kostenlose App im App Store / Play Store). Im nächsten Schritt können Sie zusätzliche Akkus reservieren.",
+    image: imgSoundboksGen31,
+    images: [imgSoundboksGen31, imgSoundboksGen32, imgSoundboksGen33],
     category: "bluetooth-speaker",
+    specifications: {
+      "Leistung": "3 × 72 W",
+      "Verstärker": "Merus Audio Eximo Class-D",
+      "Bestückung": "2× 10\" Subwoofer, 1× 1\" Hochtöner",
+      "Max. Schalldruckpegel": "126 dB SPL",
+      "Bluetooth": "5.0 + SKAA (TeamUP-Modus)",
+      "Max. Verbund": "bis zu 5 Geräte",
+      "Akku": "1× Akku mit 5-stufiger LED-Anzeige",
+      "Akkulaufzeit": "40 h (50 % Lautstärke) / 5 h (100 %)",
+      "Ladezeit": "3,5 Stunden (230 V)",
+      "Gewicht": "15,4 kg",
+    },
     rentwareCode: { krefeld: "48MYNA" }
   },
   {
