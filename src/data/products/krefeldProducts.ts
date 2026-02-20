@@ -57,6 +57,9 @@ import imgVz308Ra1 from "@/assets/products/vz-308-ra1.jpeg";
 import imgVz12120Ra2 from "@/assets/products/vz-121-20-ra2.jpeg";
 import imgWarnbarkeMitFuss from "@/assets/products/warnbarke-mit-fuss.jpeg";
 import imgWarnbarkeMitFussTransport from "@/assets/products/warnbarke-mit-fuss-transport.jpeg";
+import imgTlWarnleuchteGelb from "@/assets/products/tl-warnleuchte-gelb.jpeg";
+import imgTlWarnleuchteGelbFront from "@/assets/products/tl-warnleuchte-gelb-front.jpeg";
+import imgTlWarnleuchteGelbSeite from "@/assets/products/tl-warnleuchte-gelb-seite.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1463,10 +1466,18 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "tl-warnleuchte-gelb",
     name: "TL-Warnleuchte, gelb",
-    description: "Blinkende Warnleuchte für Absperrungen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "LED Warnleuchte nach EN 12352, gelbe Streuscheibe, doppelseitig, Ø 180 mm. Blink-/Dauerlicht per Lampenschlüssel umschaltbar. Batterien optional.",
+    image: imgTlWarnleuchteGelb,
+    images: [imgTlWarnleuchteGelb, imgTlWarnleuchteGelbFront, imgTlWarnleuchteGelbSeite],
     category: "warnleuchte",
+    specifications: {
+      "Norm": "EN 12352",
+      "Streuscheibe": "Gelb, doppelseitig",
+      "Lichtaustritt": "Ø 180 mm",
+      "Technik": "Verbrauchsarme LED",
+      "Umschaltung": "Blink-/Dauerlicht per Lampenschlüssel",
+      "Hinweis": "Batterien optional erhältlich",
+    },
     rentwareCode: { krefeld: "XLIU51" }
   },
   {
