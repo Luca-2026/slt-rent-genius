@@ -50,6 +50,7 @@ import imgHalteverbotsschilderSet3 from "@/assets/products/halteverbotsschilder-
 import imgVz123Ra1 from "@/assets/products/vz-123-ra1.jpeg";
 import imgBauzaunInklFuss1 from "@/assets/products/bauzaun-inkl-fuss-1.jpeg";
 import imgBauzaunInklFuss2 from "@/assets/products/bauzaun-inkl-fuss-2.jpeg";
+import imgBauzaunfussKunststoff from "@/assets/products/bauzaunfuss-kunststoff.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -1489,10 +1490,15 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "bauzaunfuss-kunststoff",
     name: "Bauzaunfuß aus Kunststoffrecycling",
-    description: "Standfuß für Bauzaun",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Fußplatte für Bauzäune aus Kunststoffrecycling mit 5 Aufnahmen. Ca. 20 kg schwer für optimale Standfestigkeit.",
+    image: imgBauzaunfussKunststoff,
+    images: [imgBauzaunfussKunststoff],
     category: "bauzaun",
+    specifications: {
+      "Material": "Kunststoffrecycling",
+      "Aufnahmen": "5",
+      "Gewicht": "ca. 20 kg",
+    },
     rentwareCode: { krefeld: "96SCQN" }
   },
   {
