@@ -250,6 +250,9 @@ import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
 
+// Bierzeltgarnitur Hussen-Set images
+import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-weiss-1.jpeg";
+
 // Partyzelt 4x14m images
 import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
@@ -2356,10 +2359,17 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "bierzeltgarnitur-hussen-set-weiss",
     name: "Bierzeltgarnitur Hussen-Set weiß",
-    description: "Komplettset mit weißen Hussen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Elegantes weißes Hussen-Set für Bierzeltgarnituren. 1 Set = 2× Bankhusse + 1× Tischhusse. Gewaschen zurückzugeben.",
+    image: imgBierzeltHussenWeiss1,
+    images: [imgBierzeltHussenWeiss1],
     category: "moebel",
+    specifications: {
+      "Set-Inhalt": "2× Bankhusse + 1× Tischhusse",
+      "Bankhusse": "25 × 220 cm",
+      "Tischhusse": "50 × 220 cm",
+      "Farbe": "weiß",
+      "Rückgabe": "gewaschen",
+    },
     rentwareCode: { krefeld: "1MYLJ5" }
   },
   {
