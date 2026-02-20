@@ -15,6 +15,7 @@ import rollgeruest4_4m_2 from "@/assets/products/rollgeruest-breitaufbau-4-4m-2.
 import rollgeruest8_4m_1 from "@/assets/products/rollgeruest-breitaufbau-8-4m-1.jpeg";
 import rollgeruest8_4m_2 from "@/assets/products/rollgeruest-breitaufbau-8-4m-2.jpeg";
 import mehrzweckleiter3x12_1 from "@/assets/products/mehrzweckleiter-3x12-1.jpeg";
+import leiterKaiserthalL50_1 from "@/assets/products/leiter-kaiserthal-l50-5-stufen-1.jpeg";
 // All products use placeholder images until real images are provided
 
 import type { Product } from "../rentalData";
@@ -2047,6 +2048,22 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
     },
     rentwareCode: { krefeld: "MZL3X12" }
+  },
+  {
+    id: "leiter-kaiserthal-l50-5-stufen",
+    name: "Leiter Kaiserthal L50 – 5 Stufen",
+    description: "Aluminium-Stehleiter Kaiserthal L50 mit 5 Stufen und ergonomischem Haltebügel. Kompakt und stabil – ideal für Arbeiten im Innenbereich auf mittlerer Höhe.",
+    image: leiterKaiserthalL50_1,
+    images: [leiterKaiserthalL50_1],
+    category: "stehleiter",
+    specifications: {
+      "Stufen": "5",
+      "Leiterlänge": "1,75 m",
+      "Plattformhöhe": "1,02 m",
+      "Belastbarkeit": "150 kg",
+      "Material": "Aluminium",
+    },
+    rentwareCode: { krefeld: "KL50_5" }
   },
   // --- Rollgerüst ---
   {
