@@ -59,26 +59,26 @@ export function AdminStatsOverview({
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (
           <Card key={stat.label} className="relative overflow-hidden">
-            <CardContent className="p-4 lg:p-5">
+            <CardContent className="p-3 sm:p-4 lg:p-5">
               <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                <div className="space-y-0.5 sm:space-y-1 min-w-0">
+                  <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide truncate">
                     {stat.label}
                   </p>
-                  <p className="text-xl lg:text-2xl font-bold text-foreground">
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
                     {stat.value}
                   </p>
-                  <p className={`text-xs ${stat.accent ? "text-accent font-medium" : "text-muted-foreground"}`}>
+                  <p className={`text-[10px] sm:text-xs ${stat.accent ? "text-accent font-medium" : "text-muted-foreground"}`}>
                     {stat.sub}
                   </p>
                 </div>
-                <div className={`p-2 rounded-lg ${stat.accent ? "bg-accent/10" : "bg-primary/10"}`}>
-                  <Icon className={`h-5 w-5 ${stat.accent ? "text-accent" : "text-primary"}`} />
+                <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${stat.accent ? "bg-accent/10" : "bg-primary/10"}`}>
+                  <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.accent ? "text-accent" : "text-primary"}`} />
                 </div>
               </div>
             </CardContent>

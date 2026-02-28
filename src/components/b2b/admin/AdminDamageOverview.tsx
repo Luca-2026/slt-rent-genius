@@ -202,17 +202,17 @@ export function AdminDamageOverview({ profiles }: Props) {
       </CardHeader>
       <CardContent>
         {/* Filters */}
-        <div className="flex flex-wrap items-end gap-3 mb-4 p-3 rounded-lg bg-muted/30 border border-border">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3 mb-4 p-3 rounded-lg bg-muted/30 border border-border">
           <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
             <Filter className="h-3.5 w-3.5" />
             Filter
           </div>
 
           {/* Customer filter */}
-          <div className="flex-1 min-w-[160px] max-w-[220px]">
+          <div className="w-full sm:flex-1 sm:min-w-[160px] sm:max-w-[220px]">
             <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Kunde</label>
             <Select value={filterCustomer} onValueChange={setFilterCustomer}>
-              <SelectTrigger className="h-8 text-xs">
+              <SelectTrigger className="h-10 sm:h-8 text-sm sm:text-xs">
                 <SelectValue placeholder="Alle Kunden" />
               </SelectTrigger>
               <SelectContent>
@@ -225,10 +225,10 @@ export function AdminDamageOverview({ profiles }: Props) {
           </div>
 
           {/* Type filter */}
-          <div className="min-w-[140px] max-w-[180px]">
+          <div className="w-full sm:min-w-[140px] sm:max-w-[180px]">
             <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Typ</label>
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="h-8 text-xs">
+              <SelectTrigger className="h-10 sm:h-8 text-sm sm:text-xs">
                 <SelectValue placeholder="Alle Typen" />
               </SelectTrigger>
               <SelectContent>
@@ -239,48 +239,49 @@ export function AdminDamageOverview({ profiles }: Props) {
             </Select>
           </div>
 
-          {/* Date from */}
-          <div className="min-w-[130px]">
-            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Von</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("h-8 text-xs w-full justify-start", !filterDateFrom && "text-muted-foreground")}>
-                  <CalendarIcon className="h-3 w-3 mr-1.5" />
-                  {filterDateFrom ? format(filterDateFrom, "dd.MM.yy", { locale: de }) : "Startdatum"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={filterDateFrom}
-                  onSelect={setFilterDateFrom}
-                  locale={de}
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          {/* Date filters - side by side on mobile */}
+          <div className="flex gap-2 w-full sm:w-auto sm:contents">
+            <div className="flex-1 sm:min-w-[130px]">
+              <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Von</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className={cn("h-10 sm:h-8 text-sm sm:text-xs w-full justify-start", !filterDateFrom && "text-muted-foreground")}>
+                    <CalendarIcon className="h-3.5 w-3.5 mr-1.5" />
+                    {filterDateFrom ? format(filterDateFrom, "dd.MM.yy", { locale: de }) : "Start"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={filterDateFrom}
+                    onSelect={setFilterDateFrom}
+                    locale={de}
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
 
-          {/* Date to */}
-          <div className="min-w-[130px]">
-            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Bis</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("h-8 text-xs w-full justify-start", !filterDateTo && "text-muted-foreground")}>
-                  <CalendarIcon className="h-3 w-3 mr-1.5" />
-                  {filterDateTo ? format(filterDateTo, "dd.MM.yy", { locale: de }) : "Enddatum"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={filterDateTo}
-                  onSelect={setFilterDateTo}
-                  locale={de}
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
+            <div className="flex-1 sm:min-w-[130px]">
+              <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Bis</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className={cn("h-10 sm:h-8 text-sm sm:text-xs w-full justify-start", !filterDateTo && "text-muted-foreground")}>
+                    <CalendarIcon className="h-3.5 w-3.5 mr-1.5" />
+                    {filterDateTo ? format(filterDateTo, "dd.MM.yy", { locale: de }) : "Ende"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={filterDateTo}
+                    onSelect={setFilterDateTo}
+                    locale={de}
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
         </div>
 
