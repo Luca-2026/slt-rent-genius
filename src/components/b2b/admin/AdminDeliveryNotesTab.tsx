@@ -77,15 +77,17 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <ClipboardCheck className="h-5 w-5" />
-          Übergabeprotokolle ({deliveryNotes.length})
-        </CardTitle>
-        <Button variant="outline" size="sm" onClick={fetchDeliveryNotes}>
-          <RefreshCw className="h-4 w-4 mr-1.5" />
-          Aktualisieren
-        </Button>
+      <CardHeader className="p-4 sm:p-6">
+        <div className="flex flex-col gap-3">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <ClipboardCheck className="h-5 w-5 shrink-0" />
+            Übergabeprotokolle ({deliveryNotes.length})
+          </CardTitle>
+          <Button variant="outline" size="sm" onClick={fetchDeliveryNotes} className="self-start h-10 sm:h-9">
+            <RefreshCw className="h-4 w-4 mr-1.5" />
+            Aktualisieren
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         {deliveryNotes.length === 0 ? (

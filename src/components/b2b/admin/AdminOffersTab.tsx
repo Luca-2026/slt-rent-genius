@@ -105,21 +105,21 @@ export function AdminOffersTab({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3">
         <div>
-          <h2 className="text-lg font-semibold">Alle Angebote</h2>
+          <h2 className="text-base sm:text-lg font-semibold">Alle Angebote</h2>
           <p className="text-sm text-muted-foreground">Angebote einsehen, bearbeiten und erneut versenden</p>
         </div>
         <div className="flex gap-2">
           <Button
             size="sm"
             onClick={onCreateOffer}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover h-10 sm:h-9"
           >
             <FileText className="h-3.5 w-3.5 mr-1" />
             Angebot erstellen
           </Button>
-          <Button variant="outline" size="sm" onClick={onRefresh}>
+          <Button variant="outline" size="sm" onClick={onRefresh} className="h-10 sm:h-9">
             <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
             Aktualisieren
           </Button>
