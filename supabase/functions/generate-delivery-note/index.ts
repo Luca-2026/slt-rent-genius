@@ -66,6 +66,9 @@ interface DeliveryNoteRequest {
   photo_urls?: string[];
   send_email?: boolean;
   agb_accepted?: boolean;
+  operating_hours?: string;
+  fuel_level?: string;
+  cleanliness_rating?: number;
 }
 
 Deno.serve(async (req: Request) => {
@@ -113,7 +116,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating } = body;
 
     if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
       return new Response(
@@ -211,6 +214,9 @@ Deno.serve(async (req: Request) => {
       additionalDefects: additional_defects || null,
       agbAccepted: agb_accepted,
       photoUrls: photo_urls || [],
+      operatingHours: operating_hours || null,
+      fuelLevel: fuel_level || null,
+      cleanlinessRating: cleanliness_rating || null,
     });
 
     // File name updated to Übergabeprotokoll
@@ -417,6 +423,9 @@ function generateDeliveryNoteHtml(data: {
   additionalDefects: string | null;
   agbAccepted: boolean;
   photoUrls: string[];
+  operatingHours: string | null;
+  fuelLevel: string | null;
+  cleanlinessRating: number | null;
 }): string {
   const itemRows = data.items
     .map(
@@ -451,6 +460,17 @@ function generateDeliveryNoteHtml(data: {
       .no-print { display: none !important; }
       @page { margin: 15mm; size: A4; }
     }
+    @media screen and (max-width: 768px) {
+      body { font-size: 12px; }
+      .doc-container { padding: 4mm 3mm !important; max-width: 100% !important; }
+      .flex-row { display: block !important; }
+      .flex-row > div { text-align: left !important; margin-bottom: 12px; width: 100% !important; max-width: 100% !important; }
+      .sig-row { display: block !important; }
+      .sig-row > div { margin-bottom: 16px; }
+      table { font-size: 11px; }
+      td, th { padding: 6px 8px !important; }
+      img.photo-img { width: 100px !important; height: 75px !important; }
+    }
     .print-btn { position: fixed; top: 20px; right: 20px; background: #00507d; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .print-btn:hover { background: #003d5f; }
   </style>
@@ -458,9 +478,9 @@ function generateDeliveryNoteHtml(data: {
 <body>
   <button class="print-btn no-print" onclick="window.print()">🖨️ Drucken / PDF</button>
 
-  <div style="max-width:210mm;margin:0 auto;padding:20mm 15mm;">
+  <div class="doc-container" style="max-width:210mm;margin:0 auto;padding:20mm 15mm;">
     <!-- Header -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
+    <div class="flex-row" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
       <div>
         <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:120px;width:auto;margin-bottom:6px;" />
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
@@ -478,7 +498,7 @@ function generateDeliveryNoteHtml(data: {
     </p>
 
     <!-- Address block + Meta -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:12mm;">
+    <div class="flex-row" style="display:flex;justify-content:space-between;margin-bottom:12mm;">
       <div style="max-width:55%;">
         <p style="font-weight:600;font-size:14px;margin-bottom:4px;">${escapeHtml(data.profile.company_name)}</p>
         ${data.profile.legal_form ? `<p style="font-size:12px;color:#595959;">${escapeHtml(data.profile.legal_form)}</p>` : ""}
@@ -516,6 +536,16 @@ function generateDeliveryNoteHtml(data: {
       </tbody>
     </table>
 
+    ${(data.operatingHours || data.fuelLevel || data.cleanlinessRating) ? `
+    <div style="background:#f0f7fb;border:1px solid #b3d4e8;border-radius:8px;padding:16px;margin-bottom:8mm;">
+      <p style="font-weight:600;font-size:14px;margin-bottom:10px;">⚙ Gerätedaten bei Übergabe</p>
+      <table style="width:100%;font-size:13px;">
+        ${data.operatingHours ? `<tr><td style="padding:6px 0;color:#595959;width:40%;">Betriebsstunden:</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(data.operatingHours)}</td></tr>` : ""}
+        ${data.fuelLevel ? `<tr><td style="padding:6px 0;color:#595959;">Tankfüllstand:</td><td style="padding:6px 0;font-weight:500;">${escapeHtml(data.fuelLevel)}</td></tr>` : ""}
+        ${data.cleanlinessRating ? `<tr><td style="padding:6px 0;color:#595959;">Sauberkeit (1-5):</td><td style="padding:6px 0;font-weight:600;">${data.cleanlinessRating} / 5</td></tr>` : ""}
+      </table>
+    </div>` : ""}
+
     ${(data.knownDefects || data.additionalDefects) ? `
     <div style="background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:14px;margin-bottom:8mm;">
       <p style="font-weight:600;color:#854d0e;margin-bottom:8px;">⚠ Mängeldokumentation</p>
@@ -537,7 +567,7 @@ function generateDeliveryNoteHtml(data: {
       <div style="display:flex;flex-wrap:wrap;gap:8px;">
         ${data.photoUrls.map((url: string, i: number) => `
         <div style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
-          <img src="${url}" alt="Schadensfoto ${i + 1}" style="width:180px;height:135px;object-fit:cover;display:block;" />
+          <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:180px;height:135px;object-fit:cover;display:block;" loading="eager" /></a>
           <p style="font-size:10px;color:#595959;text-align:center;padding:4px;">Foto ${i + 1}</p>
         </div>`).join("")}
       </div>
@@ -579,7 +609,7 @@ function generateDeliveryNoteHtml(data: {
     </div>
 
     <!-- Signature section -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:15mm;">
+    <div class="sig-row" style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:15mm;">
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Übergabe durch ${SLT_COMPANY.brand}:</p>
         <div style="height:100px;margin-bottom:4px;">
@@ -609,7 +639,7 @@ function generateDeliveryNoteHtml(data: {
 
     <!-- Footer -->
     <div style="border-top:2px solid #00507d;padding-top:10px;font-size:10px;color:#595959;">
-      <div style="display:flex;justify-content:space-between;">
+      <div class="flex-row" style="display:flex;justify-content:space-between;">
         <div>
           <p style="font-weight:600;color:#00507d;">${SLT_COMPANY.name}</p>
           <p>${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>

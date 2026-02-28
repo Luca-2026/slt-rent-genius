@@ -18,7 +18,7 @@ import {
 import { SignaturePad } from "@/components/b2b/SignaturePad";
 import {
   ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck,
-  UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload,
+  UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload, Gauge,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -90,6 +90,9 @@ export function ReturnProtocolDialog({
   const [missingItemsNotes, setMissingItemsNotes] = useState("");
   const [meterReadingStart, setMeterReadingStart] = useState("");
   const [meterReadingEnd, setMeterReadingEnd] = useState("");
+  const [fuelLevelStart, setFuelLevelStart] = useState("");
+  const [fuelLevelEnd, setFuelLevelEnd] = useState("");
+  const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
   const [currentTime] = useState(new Date());
 
   // Build items list from reservation
@@ -123,6 +126,9 @@ export function ReturnProtocolDialog({
     setMissingItemsNotes("");
     setMeterReadingStart("");
     setMeterReadingEnd("");
+    setFuelLevelStart("");
+    setFuelLevelEnd("");
+    setCleanlinessRating(0);
     if (reservation) {
       setItemConditions([
         {
@@ -220,6 +226,9 @@ export function ReturnProtocolDialog({
           missing_items_notes: missingItemsNotes || undefined,
           meter_reading_start: meterReadingStart || undefined,
           meter_reading_end: meterReadingEnd || undefined,
+          fuel_level_start: fuelLevelStart || undefined,
+          fuel_level_end: fuelLevelEnd || undefined,
+          cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           known_defects_from_delivery: knownDefectsFromDelivery || undefined,
           additional_defects_at_return: additionalDefectsAtReturn || undefined,
           photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
@@ -260,6 +269,10 @@ export function ReturnProtocolDialog({
 
   if (!reservation || !profile) return null;
 
+  const EQUIPMENT_KEYWORDS = ['bagger', 'dumper', 'aggregat', 'radlader', 'minibagger'];
+  const needsEquipmentFields = EQUIPMENT_KEYWORDS.some(kw =>
+    (reservation.product_name || '').toLowerCase().includes(kw)
+  );
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const allValid = !!customerSignature && !!staffSignature && !!staffName.trim();
 
@@ -514,30 +527,89 @@ export function ReturnProtocolDialog({
 
         <Separator />
 
-        {/* Meter readings (optional) */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold">Zählerstände (optional)</Label>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label className="text-xs">Bei Übergabe</Label>
-              <Input
-                value={meterReadingStart}
-                onChange={(e) => setMeterReadingStart(e.target.value)}
-                placeholder="z.B. 1.250 Bh"
-                className="text-sm"
-              />
+        {/* Equipment Details (Bagger/Dumper/Aggregate) */}
+        {needsEquipmentFields && (
+          <div className="space-y-3">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <Gauge className="h-4 w-4" />
+              Gerätedaten
+            </Label>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Betriebsstunden (Übergabe)</Label>
+                <Input
+                  value={meterReadingStart}
+                  onChange={(e) => setMeterReadingStart(e.target.value)}
+                  placeholder="z.B. 1.250 Bh"
+                  className="text-sm"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Betriebsstunden (Rückgabe)</Label>
+                <Input
+                  value={meterReadingEnd}
+                  onChange={(e) => setMeterReadingEnd(e.target.value)}
+                  placeholder="z.B. 1.312 Bh"
+                  className="text-sm"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Tankfüllstand (Übergabe)</Label>
+                <Select value={fuelLevelStart} onValueChange={setFuelLevelStart}>
+                  <SelectTrigger className="text-sm h-9">
+                    <SelectValue placeholder="Auswählen" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="voll">Voll (100%)</SelectItem>
+                    <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
+                    <SelectItem value="halb">½ (50%)</SelectItem>
+                    <SelectItem value="viertel">¼ (25%)</SelectItem>
+                    <SelectItem value="leer">Leer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Tankfüllstand (Rückgabe)</Label>
+                <Select value={fuelLevelEnd} onValueChange={setFuelLevelEnd}>
+                  <SelectTrigger className="text-sm h-9">
+                    <SelectValue placeholder="Auswählen" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="voll">Voll (100%)</SelectItem>
+                    <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
+                    <SelectItem value="halb">½ (50%)</SelectItem>
+                    <SelectItem value="viertel">¼ (25%)</SelectItem>
+                    <SelectItem value="leer">Leer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
-              <Label className="text-xs">Bei Rückgabe</Label>
-              <Input
-                value={meterReadingEnd}
-                onChange={(e) => setMeterReadingEnd(e.target.value)}
-                placeholder="z.B. 1.312 Bh"
-                className="text-sm"
-              />
+              <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
+              <div className="flex gap-2 mt-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setCleanlinessRating(n)}
+                    className={`w-10 h-10 rounded-lg border-2 font-semibold text-sm transition-colors ${
+                      cleanlinessRating === n
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                1 = Sehr verschmutzt · 5 = Sauber
+              </p>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Timestamp */}
         <Card className="bg-muted/50">
