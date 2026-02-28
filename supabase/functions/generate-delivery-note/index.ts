@@ -63,6 +63,7 @@ interface DeliveryNoteRequest {
   notes?: string;
   known_defects?: string;
   additional_defects?: string;
+  photo_urls?: string[];
   send_email?: boolean;
   agb_accepted?: boolean;
 }
@@ -112,7 +113,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, send_email = true, agb_accepted = false } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false } = body;
 
     if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
       return new Response(
@@ -209,6 +210,7 @@ Deno.serve(async (req: Request) => {
       knownDefects: known_defects || null,
       additionalDefects: additional_defects || null,
       agbAccepted: agb_accepted,
+      photoUrls: photo_urls || [],
     });
 
     // File name updated to Übergabeprotokoll
@@ -252,6 +254,7 @@ Deno.serve(async (req: Request) => {
         notes: notes || null,
         known_defects: known_defects || null,
         additional_defects: additional_defects || null,
+        photo_urls: photo_urls || [],
         signed_at: now,
         agb_accepted: agb_accepted,
         agb_accepted_at: agb_accepted ? now : null,
@@ -413,6 +416,7 @@ function generateDeliveryNoteHtml(data: {
   knownDefects: string | null;
   additionalDefects: string | null;
   agbAccepted: boolean;
+  photoUrls: string[];
 }): string {
   const itemRows = data.items
     .map(
@@ -525,6 +529,18 @@ function generateDeliveryNoteHtml(data: {
         <strong>Weitere Mängel bei Übergabe:</strong><br>
         ${escapeHtml(data.additionalDefects)}
       </p>` : ""}
+    </div>` : ""}
+
+    ${data.photoUrls && data.photoUrls.length > 0 ? `
+    <div style="margin-bottom:8mm;">
+      <p style="font-weight:600;margin-bottom:8px;">📷 Fotodokumentation (${data.photoUrls.length} ${data.photoUrls.length === 1 ? "Foto" : "Fotos"})</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${data.photoUrls.map((url: string, i: number) => `
+        <div style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+          <img src="${url}" alt="Schadensfoto ${i + 1}" style="width:180px;height:135px;object-fit:cover;display:block;" />
+          <p style="font-size:10px;color:#595959;text-align:center;padding:4px;">Foto ${i + 1}</p>
+        </div>`).join("")}
+      </div>
     </div>` : ""}
 
     ${data.notes ? `

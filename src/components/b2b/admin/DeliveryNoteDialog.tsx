@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle } from "lucide-react";
+import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle, Camera, Upload, X } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
@@ -61,6 +61,9 @@ export function DeliveryNoteDialog({
   const [notes, setNotes] = useState("");
   const [knownDefects, setKnownDefects] = useState("");
   const [additionalDefects, setAdditionalDefects] = useState("");
+  const [defectPhotos, setDefectPhotos] = useState<{ file: File; preview: string }[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [itemsReceived, setItemsReceived] = useState(false);
@@ -73,6 +76,49 @@ export function DeliveryNoteDialog({
   });
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
+
+  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const newPhotos = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setDefectPhotos((prev) => [...prev, ...newPhotos]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removePhoto = (index: number) => {
+    setDefectPhotos((prev) => {
+      URL.revokeObjectURL(prev[index].preview);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const uploadPhotos = async (profileId: string): Promise<string[]> => {
+    if (defectPhotos.length === 0) return [];
+    setUploadingPhotos(true);
+    const urls: string[] = [];
+    try {
+      for (const photo of defectPhotos) {
+        const ext = photo.file.name.split(".").pop() || "jpg";
+        const path = `defect-photos/${profileId}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("b2b-documents")
+          .upload(path, photo.file, { upsert: true });
+        if (uploadError) {
+          console.error("Photo upload error:", uploadError);
+          continue;
+        }
+        const { data: signedData } = await supabase.storage
+          .from("b2b-documents")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signedData?.signedUrl) urls.push(signedData.signedUrl);
+      }
+    } finally {
+      setUploadingPhotos(false);
+    }
+    return urls;
+  };
 
   const handleGenerate = async () => {
     if (!offer || !customerSignature) {
@@ -98,6 +144,9 @@ export function DeliveryNoteDialog({
 
     setSaving(true);
     try {
+      // Upload photos first
+      const photoUrls = await uploadPhotos(profile!.id);
+
       const { data, error } = await supabase.functions.invoke("generate-delivery-note", {
         body: {
           offer_id: offer.id,
@@ -107,6 +156,7 @@ export function DeliveryNoteDialog({
           notes: notes || undefined,
           known_defects: knownDefects || undefined,
           additional_defects: additionalDefects || undefined,
+          photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
           send_email: true,
           agb_accepted: true,
         },
@@ -127,6 +177,7 @@ export function DeliveryNoteDialog({
       setNotes("");
       setKnownDefects("");
       setAdditionalDefects("");
+      setDefectPhotos([]);
       setAgbAccepted(false);
       setOfferAccepted(false);
       setItemsReceived(false);
@@ -256,6 +307,48 @@ export function DeliveryNoteDialog({
               rows={2}
               className="text-sm"
             />
+          </div>
+
+          {/* Photo Upload */}
+          <div>
+            <Label className="text-xs flex items-center gap-1">
+              <Camera className="h-3 w-3" />
+              Fotos (Schadensdokumentation)
+            </Label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoAdd}
+              className="hidden"
+            />
+            <div className="flex flex-wrap gap-2 mt-1">
+              {defectPhotos.map((photo, idx) => (
+                <div key={idx} className="relative group">
+                  <img
+                    src={photo.preview}
+                    alt={`Mangel ${idx + 1}`}
+                    className="h-20 w-20 object-cover rounded-md border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(idx)}
+                    className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                <Upload className="h-4 w-4" />
+                <span className="text-[10px]">Foto</span>
+              </button>
+            </div>
           </div>
         </div>
 
