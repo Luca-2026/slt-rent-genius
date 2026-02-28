@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertTriangle, Package, CheckCircle, XCircle, Wrench, Camera } from "lucide-react";
-import { format } from "date-fns";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { AlertTriangle, Package, CheckCircle, XCircle, Wrench, Camera, CalendarIcon, Filter, X } from "lucide-react";
+import { format, isAfter, isBefore, startOfDay, endOfDay } from "date-fns";
 import { de } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 interface B2BProfile {
   id: string;
@@ -23,6 +28,7 @@ interface DamageEntry {
   type: "delivery" | "return";
   protocolNumber: string;
   company: string;
+  profileId: string;
   date: string;
   productName: string;
   condition?: string;
@@ -33,6 +39,12 @@ interface DamageEntry {
 export function AdminDamageOverview({ profiles }: Props) {
   const [entries, setEntries] = useState<DamageEntry[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Filter states
+  const [filterCustomer, setFilterCustomer] = useState<string>("all");
+  const [filterType, setFilterType] = useState<string>("all");
+  const [filterDateFrom, setFilterDateFrom] = useState<Date | undefined>();
+  const [filterDateTo, setFilterDateTo] = useState<Date | undefined>();
 
   const getProfile = (id: string) => profiles.find((p) => p.id === id);
 
@@ -49,14 +61,12 @@ export function AdminDamageOverview({ profiles }: Props) {
 
       const damageEntries: DamageEntry[] = [];
 
-      // Process delivery notes - items with defects
       if (dnRes.data && dnItemsRes.data) {
         for (const dn of dnRes.data) {
           const items = dnItemsRes.data.filter((i: any) => i.delivery_note_id === dn.id);
           const profile = getProfile(dn.b2b_profile_id);
           const hasPhotos = Array.isArray(dn.photo_urls) && dn.photo_urls.length > 0;
 
-          // Items with condition notes
           for (const item of items) {
             if (item.condition_notes) {
               damageEntries.push({
@@ -64,6 +74,7 @@ export function AdminDamageOverview({ profiles }: Props) {
                 type: "delivery",
                 protocolNumber: dn.delivery_note_number,
                 company: profile?.company_name || "Unbekannt",
+                profileId: dn.b2b_profile_id,
                 date: dn.signed_at || dn.created_at,
                 productName: item.product_name,
                 damageNotes: item.condition_notes,
@@ -72,7 +83,6 @@ export function AdminDamageOverview({ profiles }: Props) {
             }
           }
 
-          // General defects from protocol
           const generalDefects = [dn.known_defects, dn.additional_defects].filter(Boolean).join(" | ");
           if (generalDefects && items.length === 0) {
             damageEntries.push({
@@ -80,6 +90,7 @@ export function AdminDamageOverview({ profiles }: Props) {
               type: "delivery",
               protocolNumber: dn.delivery_note_number,
               company: profile?.company_name || "Unbekannt",
+              profileId: dn.b2b_profile_id,
               date: dn.signed_at || dn.created_at,
               productName: "Allgemein",
               damageNotes: generalDefects,
@@ -89,7 +100,6 @@ export function AdminDamageOverview({ profiles }: Props) {
         }
       }
 
-      // Process return protocols - items with damage
       if (rpRes.data && rpItemsRes.data) {
         for (const rp of rpRes.data) {
           const items = rpItemsRes.data.filter((i: any) => i.return_protocol_id === rp.id);
@@ -103,6 +113,7 @@ export function AdminDamageOverview({ profiles }: Props) {
                 type: "return",
                 protocolNumber: rp.return_protocol_number,
                 company: profile?.company_name || "Unbekannt",
+                profileId: rp.b2b_profile_id,
                 date: rp.signed_at || rp.created_at,
                 productName: item.product_name,
                 condition: item.condition,
@@ -112,7 +123,6 @@ export function AdminDamageOverview({ profiles }: Props) {
             }
           }
 
-          // General damage from protocol
           const generalDamage = [rp.damage_description, rp.additional_defects_at_return, rp.condition_notes].filter(Boolean).join(" | ");
           if (generalDamage) {
             damageEntries.push({
@@ -120,6 +130,7 @@ export function AdminDamageOverview({ profiles }: Props) {
               type: "return",
               protocolNumber: rp.return_protocol_number,
               company: profile?.company_name || "Unbekannt",
+              profileId: rp.b2b_profile_id,
               date: rp.signed_at || rp.created_at,
               productName: "Allgemein",
               condition: rp.overall_condition,
@@ -130,7 +141,6 @@ export function AdminDamageOverview({ profiles }: Props) {
         }
       }
 
-      // Sort by date descending
       damageEntries.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setEntries(damageEntries);
       setLoading(false);
@@ -139,9 +149,36 @@ export function AdminDamageOverview({ profiles }: Props) {
     if (profiles.length > 0) fetchData();
   }, [profiles]);
 
-  const totalDeliveryDamages = entries.filter((e) => e.type === "delivery").length;
-  const totalReturnDamages = entries.filter((e) => e.type === "return").length;
-  const withPhotos = entries.filter((e) => e.hasPhotos).length;
+  // Get unique customers from entries
+  const uniqueCustomers = useMemo(() => {
+    const map = new Map<string, string>();
+    entries.forEach((e) => map.set(e.profileId, e.company));
+    return Array.from(map.entries()).sort((a, b) => a[1].localeCompare(b[1]));
+  }, [entries]);
+
+  // Filtered entries
+  const filtered = useMemo(() => {
+    return entries.filter((e) => {
+      if (filterCustomer !== "all" && e.profileId !== filterCustomer) return false;
+      if (filterType !== "all" && e.type !== filterType) return false;
+      if (filterDateFrom && isBefore(new Date(e.date), startOfDay(filterDateFrom))) return false;
+      if (filterDateTo && isAfter(new Date(e.date), endOfDay(filterDateTo))) return false;
+      return true;
+    });
+  }, [entries, filterCustomer, filterType, filterDateFrom, filterDateTo]);
+
+  const hasActiveFilter = filterCustomer !== "all" || filterType !== "all" || filterDateFrom || filterDateTo;
+
+  const clearFilters = () => {
+    setFilterCustomer("all");
+    setFilterType("all");
+    setFilterDateFrom(undefined);
+    setFilterDateTo(undefined);
+  };
+
+  const totalDeliveryDamages = filtered.filter((e) => e.type === "delivery").length;
+  const totalReturnDamages = filtered.filter((e) => e.type === "return").length;
+  const withPhotos = filtered.filter((e) => e.hasPhotos).length;
 
   if (loading) {
     return null;
@@ -150,23 +187,114 @@ export function AdminDamageOverview({ profiles }: Props) {
   return (
     <Card className="mb-6">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <AlertTriangle className="h-5 w-5 text-accent" />
-          Schadens- & Maschinenübersicht
-        </CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <AlertTriangle className="h-5 w-5 text-accent" />
+            Schadens- & Maschinenübersicht
+          </CardTitle>
+          {hasActiveFilter && (
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs h-7">
+              <X className="h-3 w-3 mr-1" />
+              Filter zurücksetzen
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
+        {/* Filters */}
+        <div className="flex flex-wrap items-end gap-3 mb-4 p-3 rounded-lg bg-muted/30 border border-border">
+          <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+            <Filter className="h-3.5 w-3.5" />
+            Filter
+          </div>
+
+          {/* Customer filter */}
+          <div className="flex-1 min-w-[160px] max-w-[220px]">
+            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Kunde</label>
+            <Select value={filterCustomer} onValueChange={setFilterCustomer}>
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="Alle Kunden" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Kunden</SelectItem>
+                {uniqueCustomers.map(([id, name]) => (
+                  <SelectItem key={id} value={id}>{name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Type filter */}
+          <div className="min-w-[140px] max-w-[180px]">
+            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Typ</label>
+            <Select value={filterType} onValueChange={setFilterType}>
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="Alle Typen" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Typen</SelectItem>
+                <SelectItem value="delivery">Übergabe</SelectItem>
+                <SelectItem value="return">Rückgabe</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Date from */}
+          <div className="min-w-[130px]">
+            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Von</label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className={cn("h-8 text-xs w-full justify-start", !filterDateFrom && "text-muted-foreground")}>
+                  <CalendarIcon className="h-3 w-3 mr-1.5" />
+                  {filterDateFrom ? format(filterDateFrom, "dd.MM.yy", { locale: de }) : "Startdatum"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={filterDateFrom}
+                  onSelect={setFilterDateFrom}
+                  locale={de}
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          {/* Date to */}
+          <div className="min-w-[130px]">
+            <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">Bis</label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className={cn("h-8 text-xs w-full justify-start", !filterDateTo && "text-muted-foreground")}>
+                  <CalendarIcon className="h-3 w-3 mr-1.5" />
+                  {filterDateTo ? format(filterDateTo, "dd.MM.yy", { locale: de }) : "Enddatum"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={filterDateTo}
+                  onSelect={setFilterDateTo}
+                  locale={de}
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
         {/* Summary Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
             <Package className="h-4 w-4 text-primary" />
             <div>
               <p className="text-xs text-muted-foreground">Gesamt Einträge</p>
-              <p className="font-semibold">{entries.length}</p>
+              <p className="font-semibold">{filtered.length}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-            <Wrench className="h-4 w-4 text-orange-500" />
+            <Wrench className="h-4 w-4 text-accent" />
             <div>
               <p className="text-xs text-muted-foreground">Übergabe-Mängel</p>
               <p className="font-semibold">{totalDeliveryDamages}</p>
@@ -188,10 +316,10 @@ export function AdminDamageOverview({ profiles }: Props) {
           </div>
         </div>
 
-        {entries.length === 0 ? (
+        {filtered.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground">
-            <CheckCircle className="h-8 w-8 mx-auto mb-2 text-green-500" />
-            <p>Keine Schäden oder Mängel dokumentiert.</p>
+            <CheckCircle className="h-8 w-8 mx-auto mb-2 text-primary/60" />
+            <p>{hasActiveFilter ? "Keine Einträge für die gewählten Filter." : "Keine Schäden oder Mängel dokumentiert."}</p>
           </div>
         ) : (
           <div className="relative w-full overflow-auto max-h-[400px]">
@@ -208,7 +336,7 @@ export function AdminDamageOverview({ profiles }: Props) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {entries.slice(0, 20).map((entry) => (
+                {filtered.slice(0, 20).map((entry) => (
                   <TableRow key={entry.id}>
                     <TableCell className="py-2">
                       <Badge
@@ -241,9 +369,9 @@ export function AdminDamageOverview({ profiles }: Props) {
                 ))}
               </TableBody>
             </Table>
-            {entries.length > 20 && (
+            {filtered.length > 20 && (
               <p className="text-xs text-muted-foreground text-center py-2">
-                … und {entries.length - 20} weitere Einträge
+                … und {filtered.length - 20} weitere Einträge
               </p>
             )}
           </div>
@@ -265,10 +393,10 @@ function conditionLabel(condition: string): string {
 
 function conditionColor(condition: string): string {
   switch (condition) {
-    case "good": return "text-green-700 border-green-300";
-    case "minor_damage": return "text-orange-700 border-orange-300";
-    case "major_damage": return "text-red-700 border-red-300";
-    case "defective": return "text-red-900 border-red-500";
+    case "good": return "text-primary border-primary/30";
+    case "minor_damage": return "text-accent border-accent/30";
+    case "major_damage": return "text-destructive border-destructive/30";
+    case "defective": return "text-destructive border-destructive";
     default: return "";
   }
 }
