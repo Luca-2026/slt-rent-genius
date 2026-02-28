@@ -583,8 +583,46 @@ export default function AdminDashboard() {
       <AdminDamageOverview profiles={profiles} />
 
       {/* Tab Navigation */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-8 h-12">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+        {/* Mobile: horizontally scrollable tabs with labels */}
+        <div className="sm:hidden -mx-4 px-4">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
+            {[
+              { value: "reservations", label: "Anfragen", icon: FileText, badge: pendingReservations.length },
+              { value: "rentals", label: "Mietvorgänge", icon: Package },
+              { value: "offers", label: "Angebote", icon: Send, badge: offers.length },
+              { value: "delivery-notes", label: "Übergabe", icon: ClipboardCheck },
+              { value: "return-protocols", label: "Rückgabe", icon: ClipboardCheck },
+              { value: "invoices", label: "Rechnungen", icon: Receipt },
+              { value: "customers", label: "Kunden", icon: Users },
+              { value: "staff", label: "Mitarbeiter", icon: UserCog },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.value;
+              return (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`flex-shrink-0 snap-start flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
+                    isActive
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-muted/60 text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {tab.label}
+                  {tab.badge && tab.badge > 0 ? (
+                    <Badge variant={isActive ? "secondary" : "outline"} className="h-5 min-w-[20px] px-1 flex items-center justify-center text-[10px]">
+                      {tab.badge}
+                    </Badge>
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {/* Desktop: original grid tabs */}
+        <TabsList className="hidden sm:grid w-full grid-cols-8 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
