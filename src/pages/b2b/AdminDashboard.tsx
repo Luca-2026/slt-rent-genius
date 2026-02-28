@@ -16,6 +16,7 @@ import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/adm
 import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotesTab";
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
+import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
@@ -577,6 +578,9 @@ export default function AdminDashboard() {
         overdueInvoices={overdueInvoices.length}
         totalRevenue={totalRevenue}
       />
+
+      {/* Damage & Machine Overview */}
+      <AdminDamageOverview profiles={profiles} />
 
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
