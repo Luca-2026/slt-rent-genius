@@ -35,7 +35,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -579,8 +579,41 @@ export default function AdminDashboard() {
         totalRevenue={totalRevenue}
       />
 
-      {/* Damage & Machine Overview */}
-      <AdminDamageOverview profiles={profiles} />
+      {/* Quick Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6">
+        <Button
+          variant="outline"
+          className="flex-1 justify-between h-auto py-3 px-4"
+          onClick={() => setActiveTab("rentals")}
+        >
+          <span className="flex items-center gap-2">
+            <Package className="h-4 w-4 text-primary" />
+            <span className="font-medium">Laufende Mietvorgänge</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              {reservations.filter((r) => r.status === "confirmed").length}
+            </Badge>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          </span>
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1 justify-between h-auto py-3 px-4"
+          onClick={() => setActiveTab("customers")}
+        >
+          <span className="flex items-center gap-2">
+            <Users className="h-4 w-4 text-accent" />
+            <span className="font-medium">Offene Registrierungen</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <Badge variant={pendingCustomers.length > 0 ? "destructive" : "secondary"} className="text-xs">
+              {pendingCustomers.length}
+            </Badge>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          </span>
+        </Button>
+      </div>
 
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
@@ -595,6 +628,7 @@ export default function AdminDashboard() {
               { value: "return-protocols", label: "Rückgabe", icon: ClipboardCheck },
               { value: "invoices", label: "Rechnungen", icon: Receipt },
               { value: "customers", label: "Kunden", icon: Users },
+              { value: "damages", label: "Schäden", icon: AlertTriangle },
               { value: "staff", label: "Mitarbeiter", icon: UserCog },
             ].map((tab) => {
               const Icon = tab.icon;
@@ -622,7 +656,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className="hidden sm:grid w-full grid-cols-8 h-12">
+        <TabsList className="hidden sm:grid w-full grid-cols-9 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
@@ -660,6 +694,10 @@ export default function AdminDashboard() {
           <TabsTrigger value="customers" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Kunden</span>
+          </TabsTrigger>
+          <TabsTrigger value="damages" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <AlertTriangle className="h-4 w-4" />
+            <span className="hidden sm:inline">Schäden</span>
           </TabsTrigger>
           <TabsTrigger value="staff" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <UserCog className="h-4 w-4" />
@@ -827,6 +865,10 @@ export default function AdminDashboard() {
             onCreateCustomer={() => setCreateCustomerOpen(true)}
             onRefresh={fetchData}
           />
+        </TabsContent>
+
+        <TabsContent value="damages">
+          <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 
         <TabsContent value="staff">
