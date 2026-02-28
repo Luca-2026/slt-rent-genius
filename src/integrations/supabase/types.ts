@@ -168,6 +168,7 @@ export type Database = {
           known_defects: string | null
           notes: string | null
           offer_id: string | null
+          photo_urls: string[] | null
           reservation_id: string | null
           signature_data: string | null
           signed_at: string | null
@@ -189,6 +190,7 @@ export type Database = {
           known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
+          photo_urls?: string[] | null
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
@@ -210,6 +212,7 @@ export type Database = {
           known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
+          photo_urls?: string[] | null
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
