@@ -257,31 +257,33 @@ export function AdminStaffTab() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          Mitarbeiterverwaltung
-        </CardTitle>
-        <div className="flex gap-2">
-          <Input
-            placeholder="Suchen..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-48"
-          />
-          <Button variant="outline" size="icon" onClick={fetchStaff}>
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-          <Button
-            onClick={() => setCreateOpen(true)}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-          >
-            <UserPlus className="h-4 w-4 mr-2" />
-            Mitarbeiter anlegen
-          </Button>
+      <CardHeader className="p-4 sm:p-6">
+        <div className="flex flex-col gap-3">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Shield className="h-5 w-5 shrink-0" />
+            Mitarbeiterverwaltung
+          </CardTitle>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Suchen..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 h-10"
+            />
+            <Button variant="outline" size="icon" onClick={fetchStaff} className="h-10 w-10 shrink-0">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => setCreateOpen(true)}
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover h-10 shrink-0"
+            >
+              <UserPlus className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Mitarbeiter anlegen</span>
+            </Button>
+          </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin h-6 w-6 border-4 border-primary border-t-transparent rounded-full" />
@@ -291,85 +293,171 @@ export function AdminStaffTab() {
             {searchQuery ? "Keine Mitarbeiter gefunden." : "Noch keine Mitarbeiter angelegt."}
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>E-Mail</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Rolle</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Erstellt</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredStaff.map((s) => {
-                  const role = getStaffRole(s.user_id);
-                  const roleInfo = ROLE_MAP[role];
-                  return (
-                    <TableRow key={s.id} className={!s.is_active ? "opacity-50" : ""}>
-                      <TableCell className="font-medium">
-                        {s.first_name} {s.last_name}
-                      </TableCell>
-                      <TableCell>{s.email}</TableCell>
-                      <TableCell>{s.position || "–"}</TableCell>
-                      <TableCell>
+          <>
+            {/* Desktop: Table */}
+            <div className="hidden lg:block overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>E-Mail</TableHead>
+                    <TableHead>Position</TableHead>
+                    <TableHead>Rolle</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Erstellt</TableHead>
+                    <TableHead className="text-right">Aktionen</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredStaff.map((s) => {
+                    const role = getStaffRole(s.user_id);
+                    const roleInfo = ROLE_MAP[role];
+                    return (
+                      <TableRow key={s.id} className={!s.is_active ? "opacity-50" : ""}>
+                        <TableCell className="font-medium">
+                          {s.first_name} {s.last_name}
+                        </TableCell>
+                        <TableCell>{s.email}</TableCell>
+                        <TableCell>{s.position || "–"}</TableCell>
+                        <TableCell>
+                          {roleInfo ? (
+                            <Badge className={`${roleInfo.color} flex items-center gap-1 w-fit`}>
+                              {roleInfo.icon}
+                              {roleInfo.label}
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">{role}</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {s.is_active ? (
+                            <Badge variant="default" className="bg-green-600">Aktiv</Badge>
+                          ) : (
+                            <Badge variant="secondary">Deaktiviert</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {format(new Date(s.created_at), "dd.MM.yyyy", { locale: de })}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex gap-1 justify-end">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedStaff(s);
+                                setNewRole(getStaffRole(s.user_id));
+                                setEditRoleOpen(true);
+                              }}
+                              title="Rolle ändern"
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleToggleActive(s)}
+                              disabled={saving}
+                              title={s.is_active ? "Deaktivieren" : "Reaktivieren"}
+                            >
+                              {s.is_active ? (
+                                <UserX className="h-3.5 w-3.5" />
+                              ) : (
+                                <UserCheck className="h-3.5 w-3.5" />
+                              )}
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile: Card Layout */}
+            <div className="lg:hidden space-y-3">
+              {filteredStaff.map((s) => {
+                const role = getStaffRole(s.user_id);
+                const roleInfo = ROLE_MAP[role];
+                return (
+                  <div
+                    key={s.id}
+                    className={`border rounded-lg p-4 space-y-3 ${!s.is_active ? "opacity-50" : ""}`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-foreground truncate">
+                          {s.first_name} {s.last_name}
+                        </p>
+                        <p className="text-sm text-muted-foreground truncate">{s.email}</p>
+                        {s.position && (
+                          <p className="text-xs text-muted-foreground mt-0.5">{s.position}</p>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5 shrink-0">
+                        {s.is_active ? (
+                          <Badge variant="default" className="bg-green-600 text-xs">Aktiv</Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-xs">Deaktiviert</Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
                         {roleInfo ? (
-                          <Badge className={`${roleInfo.color} flex items-center gap-1 w-fit`}>
+                          <Badge className={`${roleInfo.color} flex items-center gap-1 text-xs`}>
                             {roleInfo.icon}
                             {roleInfo.label}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary">{role}</Badge>
+                          <Badge variant="secondary" className="text-xs">{role}</Badge>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        {s.is_active ? (
-                          <Badge variant="default" className="bg-green-600">Aktiv</Badge>
-                        ) : (
-                          <Badge variant="secondary">Deaktiviert</Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {format(new Date(s.created_at), "dd.MM.yyyy", { locale: de })}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex gap-1 justify-end">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedStaff(s);
-                              setNewRole(getStaffRole(s.user_id));
-                              setEditRoleOpen(true);
-                            }}
-                            title="Rolle ändern"
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleToggleActive(s)}
-                            disabled={saving}
-                            title={s.is_active ? "Deaktivieren" : "Reaktivieren"}
-                          >
-                            {s.is_active ? (
-                              <UserX className="h-3.5 w-3.5" />
-                            ) : (
-                              <UserCheck className="h-3.5 w-3.5" />
-                            )}
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
+                        <span className="text-xs text-muted-foreground">
+                          {format(new Date(s.created_at), "dd.MM.yy", { locale: de })}
+                        </span>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-9 px-3"
+                          onClick={() => {
+                            setSelectedStaff(s);
+                            setNewRole(getStaffRole(s.user_id));
+                            setEditRoleOpen(true);
+                          }}
+                        >
+                          <Pencil className="h-3.5 w-3.5 mr-1.5" />
+                          Rolle
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-9 px-3"
+                          onClick={() => handleToggleActive(s)}
+                          disabled={saving}
+                        >
+                          {s.is_active ? (
+                            <>
+                              <UserX className="h-3.5 w-3.5 mr-1.5" />
+                              Deaktivieren
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck className="h-3.5 w-3.5 mr-1.5" />
+                              Aktivieren
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </CardContent>
 
