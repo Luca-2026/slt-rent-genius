@@ -613,6 +613,22 @@ export default function AdminDashboard() {
             <ArrowRight className="h-4 w-4 text-muted-foreground" />
           </span>
         </Button>
+        <Button
+          variant="outline"
+          className="flex-1 justify-between h-auto py-3 px-4"
+          onClick={() => setActiveTab("reservations")}
+        >
+          <span className="flex items-center gap-2">
+            <FileText className="h-4 w-4 text-primary" />
+            <span className="font-medium">Offene Angebotsanfragen</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <Badge variant={pendingReservations.length > 0 ? "destructive" : "secondary"} className="text-xs">
+              {pendingReservations.length}
+            </Badge>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          </span>
+        </Button>
       </div>
 
       {/* Tab Navigation */}
