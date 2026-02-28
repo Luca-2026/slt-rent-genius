@@ -13,8 +13,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle, Camera, Upload, X } from "lucide-react";
+import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle, Camera, Upload, X, Gauge } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
@@ -68,6 +71,9 @@ export function DeliveryNoteDialog({
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [itemsReceived, setItemsReceived] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [operatingHours, setOperatingHours] = useState("");
+  const [fuelLevel, setFuelLevel] = useState("");
+  const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
 
   // Update timestamp every second while dialog is open
   useState(() => {
@@ -159,6 +165,9 @@ export function DeliveryNoteDialog({
           photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
           send_email: true,
           agb_accepted: true,
+          operating_hours: operatingHours || undefined,
+          fuel_level: fuelLevel || undefined,
+          cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
         },
       });
 
@@ -181,6 +190,9 @@ export function DeliveryNoteDialog({
       setAgbAccepted(false);
       setOfferAccepted(false);
       setItemsReceived(false);
+      setOperatingHours("");
+      setFuelLevel("");
+      setCleanlinessRating(0);
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
@@ -197,6 +209,10 @@ export function DeliveryNoteDialog({
   if (!offer || !profile) return null;
 
   const items = offerItems.filter((i) => i.offer_id === offer.id);
+  const EQUIPMENT_KEYWORDS = ['bagger', 'dumper', 'aggregat', 'radlader', 'minibagger'];
+  const needsEquipmentFields = items.some(item =>
+    EQUIPMENT_KEYWORDS.some(kw => item.product_name.toLowerCase().includes(kw))
+  );
   const allValid = !!customerSignature && !!staffSignature && !!staffName.trim() && agbAccepted && offerAccepted && itemsReceived;
 
   return (
@@ -351,6 +367,67 @@ export function DeliveryNoteDialog({
             </div>
           </div>
         </div>
+
+        {/* Equipment Details (Bagger/Dumper/Aggregate) */}
+        {needsEquipmentFields && (
+          <>
+            <Separator />
+            <div className="space-y-3">
+              <Label className="text-base font-semibold flex items-center gap-2">
+                <Gauge className="h-4 w-4" />
+                Gerätedaten bei Übergabe
+              </Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs">Betriebsstunden</Label>
+                  <Input
+                    value={operatingHours}
+                    onChange={(e) => setOperatingHours(e.target.value)}
+                    placeholder="z.B. 1.250 Bh"
+                    className="text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Tankfüllstand</Label>
+                  <Select value={fuelLevel} onValueChange={setFuelLevel}>
+                    <SelectTrigger className="text-sm h-9">
+                      <SelectValue placeholder="Auswählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="voll">Voll (100%)</SelectItem>
+                      <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
+                      <SelectItem value="halb">½ (50%)</SelectItem>
+                      <SelectItem value="viertel">¼ (25%)</SelectItem>
+                      <SelectItem value="leer">Leer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
+                <div className="flex gap-2 mt-1">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setCleanlinessRating(n)}
+                      className={`w-10 h-10 rounded-lg border-2 font-semibold text-sm transition-colors ${
+                        cleanlinessRating === n
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  1 = Sehr verschmutzt · 5 = Sauber
+                </p>
+              </div>
+            </div>
+          </>
+        )}
 
         <Separator />
 

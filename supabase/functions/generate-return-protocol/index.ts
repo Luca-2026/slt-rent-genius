@@ -36,6 +36,9 @@ interface ReturnProtocolRequest {
   missing_items_notes?: string;
   meter_reading_start?: string;
   meter_reading_end?: string;
+  fuel_level_start?: string;
+  fuel_level_end?: string;
+  cleanliness_rating?: number;
   known_defects_from_delivery?: string;
   additional_defects_at_return?: string;
   photo_urls?: string[];
@@ -108,6 +111,9 @@ Deno.serve(async (req: Request) => {
       missing_items_notes,
       meter_reading_start,
       meter_reading_end,
+      fuel_level_start,
+      fuel_level_end,
+      cleanliness_rating,
       known_defects_from_delivery,
       additional_defects_at_return,
       photo_urls,
@@ -202,6 +208,9 @@ Deno.serve(async (req: Request) => {
       missingItemsNotes: missing_items_notes || null,
       meterReadingStart: meter_reading_start || null,
       meterReadingEnd: meter_reading_end || null,
+      fuelLevelStart: fuel_level_start || null,
+      fuelLevelEnd: fuel_level_end || null,
+      cleanlinessRating: cleanliness_rating || null,
       knownDefectsFromDelivery: known_defects_from_delivery || null,
       additionalDefectsAtReturn: additional_defects_at_return || null,
       photoUrls: photo_urls || [],
@@ -428,6 +437,9 @@ function generateReturnProtocolHtml(data: {
   missingItemsNotes: string | null;
   meterReadingStart: string | null;
   meterReadingEnd: string | null;
+  fuelLevelStart: string | null;
+  fuelLevelEnd: string | null;
+  cleanlinessRating: number | null;
   knownDefectsFromDelivery: string | null;
   additionalDefectsAtReturn: string | null;
   photoUrls: string[];
@@ -501,6 +513,17 @@ function generateReturnProtocolHtml(data: {
       .no-print { display: none !important; }
       @page { margin: 15mm; size: A4; }
     }
+    @media screen and (max-width: 768px) {
+      body { font-size: 12px; }
+      .doc-container { padding: 4mm 3mm !important; max-width: 100% !important; }
+      .flex-row { display: block !important; }
+      .flex-row > div { text-align: left !important; margin-bottom: 12px; width: 100% !important; max-width: 100% !important; }
+      .sig-row { display: block !important; }
+      .sig-row > div { margin-bottom: 16px; }
+      table { font-size: 11px; }
+      td, th { padding: 6px 8px !important; }
+      img.photo-img { width: 100px !important; height: 75px !important; }
+    }
     .print-btn { position: fixed; top: 20px; right: 20px; background: #00507d; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .print-btn:hover { background: #003d5f; }
   </style>
@@ -508,9 +531,9 @@ function generateReturnProtocolHtml(data: {
 <body>
   <button class="print-btn no-print" onclick="window.print()">🖨️ Drucken / PDF</button>
 
-  <div style="max-width:210mm;margin:0 auto;padding:20mm 15mm;">
+  <div class="doc-container" style="max-width:210mm;margin:0 auto;padding:20mm 15mm;">
     <!-- Header -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
+    <div class="flex-row" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
       <div>
         <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:120px;width:auto;margin-bottom:6px;" />
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
@@ -528,7 +551,7 @@ function generateReturnProtocolHtml(data: {
     </p>
 
     <!-- Address block + Meta -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:12mm;">
+    <div class="flex-row" style="display:flex;justify-content:space-between;margin-bottom:12mm;">
       <div style="max-width:55%;">
         <p style="font-weight:600;font-size:14px;margin-bottom:4px;">${escapeHtml(data.profile.company_name)}</p>
         ${data.profile.legal_form ? `<p style="font-size:12px;color:#595959;">${escapeHtml(data.profile.legal_form)}</p>` : ""}
@@ -589,12 +612,26 @@ function generateReturnProtocolHtml(data: {
         </tr>
         ${data.meterReadingStart || data.meterReadingEnd ? `
         <tr>
-          <td style="padding:6px 0;color:#595959;">Zählerstand Übergabe:</td>
-          <td style="padding:6px 0;">${data.meterReadingStart || "–"}</td>
+          <td style="padding:6px 0;color:#595959;">Betriebsstunden (Übergabe):</td>
+          <td style="padding:6px 0;font-weight:600;">${data.meterReadingStart || "–"}</td>
         </tr>
         <tr>
-          <td style="padding:6px 0;color:#595959;">Zählerstand Rückgabe:</td>
-          <td style="padding:6px 0;">${data.meterReadingEnd || "–"}</td>
+          <td style="padding:6px 0;color:#595959;">Betriebsstunden (Rückgabe):</td>
+          <td style="padding:6px 0;font-weight:600;">${data.meterReadingEnd || "–"}</td>
+        </tr>` : ""}
+        ${data.fuelLevelStart || data.fuelLevelEnd ? `
+        <tr>
+          <td style="padding:6px 0;color:#595959;">Tankfüllstand (Übergabe):</td>
+          <td style="padding:6px 0;font-weight:500;">${data.fuelLevelStart || "–"}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#595959;">Tankfüllstand (Rückgabe):</td>
+          <td style="padding:6px 0;font-weight:500;">${data.fuelLevelEnd || "–"}</td>
+        </tr>` : ""}
+        ${data.cleanlinessRating ? `
+        <tr>
+          <td style="padding:6px 0;color:#595959;">Sauberkeit (1-5):</td>
+          <td style="padding:6px 0;font-weight:600;">${data.cleanlinessRating} / 5</td>
         </tr>` : ""}
       </table>
     </div>
@@ -638,7 +675,7 @@ function generateReturnProtocolHtml(data: {
       <div style="display:flex;flex-wrap:wrap;gap:8px;">
         ${data.photoUrls.map((url: string, i: number) => `
           <a href="${url}" target="_blank" style="display:inline-block;">
-            <img src="${url}" alt="Mangel-Foto ${i + 1}" style="max-height:120px;max-width:180px;border:1px solid #e5e7eb;border-radius:4px;object-fit:cover;" />
+            <img class="photo-img" src="${url}" alt="Mangel-Foto ${i + 1}" style="max-height:120px;max-width:180px;border:1px solid #e5e7eb;border-radius:4px;object-fit:cover;" loading="eager" />
           </a>
         `).join("")}
       </div>
@@ -676,7 +713,7 @@ function generateReturnProtocolHtml(data: {
     </div>
 
     <!-- Signature section -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:15mm;">
+    <div class="sig-row" style="display:flex;justify-content:space-between;margin-bottom:10mm;gap:15mm;">
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Rücknahme durch ${SLT_COMPANY.brand}:</p>
         <div style="height:100px;margin-bottom:4px;">
@@ -707,7 +744,7 @@ function generateReturnProtocolHtml(data: {
 
     <!-- Footer -->
     <div style="border-top:2px solid #00507d;padding-top:10px;font-size:10px;color:#595959;">
-      <div style="display:flex;justify-content:space-between;">
+      <div class="flex-row" style="display:flex;justify-content:space-between;">
         <div>
           <p style="font-weight:600;color:#00507d;">${SLT_COMPANY.name}</p>
           <p>${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
