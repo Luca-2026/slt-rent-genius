@@ -1,0 +1,1 @@
+ALTER TABLE public.b2b_delivery_notes ADD COLUMN photo_urls text[] DEFAULT '{}'::text[];
