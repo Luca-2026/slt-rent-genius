@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -5,16 +6,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Calendar, Search, ShoppingCart, Mail, Truck, CreditCard, FileText, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { ProductSearchDialog } from "@/components/home/ProductSearchDialog";
 
 export default function HowItWorks() {
   const { t } = useTranslation();
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
   const steps = [
     { number: "1", icon: Calendar, title: t("howItWorks.step1Title"), description: t("howItWorks.step1Desc"), tips: [t("howItWorks.step1Tip1"), t("howItWorks.step1Tip2")], link: "/mieten", cta: t("howItWorks.step1Cta") },
-    { number: "2", icon: Search, title: t("howItWorks.step2Title"), description: t("howItWorks.step2Desc"), tips: [t("howItWorks.step2Tip1"), t("howItWorks.step2Tip2")], link: "/mieten", cta: t("howItWorks.step2Cta") },
-    { number: "3", icon: ShoppingCart, title: t("howItWorks.step3Title"), description: t("howItWorks.step3Desc"), tips: [t("howItWorks.step3Tip1"), t("howItWorks.step3Tip2")], link: "/mieten", cta: t("howItWorks.step3Cta") },
+    { number: "2", icon: Search, title: t("howItWorks.step2Title"), description: t("howItWorks.step2Desc"), tips: [t("howItWorks.step2Tip1"), t("howItWorks.step2Tip2")], action: "search" as const, cta: t("howItWorks.step2Cta") },
+    { number: "3", icon: ShoppingCart, title: t("howItWorks.step3Title"), description: t("howItWorks.step3Desc"), tips: [t("howItWorks.step3Tip1"), t("howItWorks.step3Tip2")] },
     { number: "4", icon: Mail, title: t("howItWorks.step4Title"), description: t("howItWorks.step4Desc"), tips: [t("howItWorks.step4Tip1"), t("howItWorks.step4Tip2")] },
-    { number: "5", icon: Truck, title: t("howItWorks.step5Title"), description: t("howItWorks.step5Desc"), tips: [t("howItWorks.step5Tip1"), t("howItWorks.step5Tip2")], link: "/standorte", cta: t("howItWorks.step5Cta") },
+    { number: "5", icon: Truck, title: t("howItWorks.step5Title"), description: t("howItWorks.step5Desc"), tips: [t("howItWorks.step5Tip1"), t("howItWorks.step5Tip2")] },
   ];
 
   const requirements = [
@@ -76,6 +79,12 @@ export default function HowItWorks() {
                           {step.cta}
                           <ArrowRight className="h-4 w-4 group-hover/cta:translate-x-1 transition-transform" />
                         </Link>
+                      )}
+                      {step.action === "search" && step.cta && (
+                        <button onClick={() => setSearchDialogOpen(true)} className="inline-flex items-center gap-2 mt-5 text-sm font-semibold text-primary hover:text-accent transition-colors group/cta cursor-pointer">
+                          {step.cta}
+                          <ArrowRight className="h-4 w-4 group-hover/cta:translate-x-1 transition-transform" />
+                        </button>
                       )}
                     </div>
                   </div>
@@ -184,6 +193,7 @@ export default function HowItWorks() {
           </AnimatedSection>
         </div>
       </section>
+      <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
     </Layout>
   );
 }
