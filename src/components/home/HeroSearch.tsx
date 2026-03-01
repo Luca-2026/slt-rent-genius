@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
+import { productTranslations, tagTranslations } from "@/i18n/productTranslations";
 import {
   Dialog,
   DialogContent,
@@ -67,17 +68,30 @@ export function HeroSearch() {
 
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
 
-  // Filter products based on search query
+  // Filter products based on search query (matches both German and English)
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
     return allProducts
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.description?.toLowerCase().includes(query) ||
-          p.tags?.some((t) => t.toLowerCase().includes(query))
-      )
+      .filter((p) => {
+        // German (source) fields
+        if (p.name.toLowerCase().includes(query)) return true;
+        if (p.description?.toLowerCase().includes(query)) return true;
+        if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+
+        // English translated fields
+        const tr = productTranslations[p.id];
+        if (tr?.name?.toLowerCase().includes(query)) return true;
+        if (tr?.description?.toLowerCase().includes(query)) return true;
+
+        // Translated tags
+        if (p.tags?.some((t) => {
+          const translated = tagTranslations[t];
+          return translated?.toLowerCase().includes(query);
+        })) return true;
+
+        return false;
+      })
       .slice(0, 8);
   }, [searchQuery, allProducts]);
 
