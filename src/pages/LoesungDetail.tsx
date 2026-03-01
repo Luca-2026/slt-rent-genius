@@ -99,21 +99,23 @@ export default function LoesungDetail() {
           <AnimatedSection animation="fade-in-up">
             {solution.images && solution.images.length > 1 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <button
-                  className="md:col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-muted cursor-pointer group"
-                  onClick={() => handleImageClick(0)}
-                >
-                  <img src={solution.images[0]} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </button>
-                {solution.images.slice(1).map((img, index) => (
-                  <button
-                    key={index}
-                    className="aspect-[4/3] rounded-xl overflow-hidden bg-muted cursor-pointer group"
-                    onClick={() => handleImageClick(index + 1)}
-                  >
-                    <img src={img} alt={`${title} ${index + 2}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  </button>
-                ))}
+                {solution.images.map((img, index) => {
+                  const categoryId = solution.imageCategories?.[index] || solution.categories[0];
+                  const category = relatedCategories.find(c => c.id === categoryId);
+                  const categoryTitle = category?.title || categoryId;
+                  return (
+                    <button
+                      key={index}
+                      className={`${index === 0 ? 'md:col-span-2 aspect-[16/9] rounded-2xl' : 'aspect-[4/3] rounded-xl'} overflow-hidden bg-muted cursor-pointer group relative`}
+                      onClick={() => handleImageClick(index)}
+                    >
+                      <img src={img} alt={`${title} ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <span className="text-sm font-medium text-white">{categoryTitle}</span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             ) : (
               <div className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted">
