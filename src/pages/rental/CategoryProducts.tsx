@@ -964,8 +964,10 @@ export default function CategoryProducts() {
                         </div>
                       </div>
                       
-                      {/* Delivery Calculator for all */}
-                      <DeliveryCalculatorCompact showAllCategories />
+                      {/* Delivery Calculator for all - desktop only in sidebar */}
+                      <div className="hidden lg:block">
+                        <DeliveryCalculatorCompact showAllCategories />
+                      </div>
                     </>
                   )}
                   {category.id === "anhaenger" && (
@@ -974,10 +976,12 @@ export default function CategoryProducts() {
                   {category.id === "erdbewegung" && (
                     <>
                       <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
-                      <DeliveryCalculatorCompact 
-                        productCategoryId={category.id} 
-                        categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
-                      />
+                      <div className="hidden lg:block">
+                        <DeliveryCalculatorCompact 
+                          productCategoryId={category.id} 
+                          categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                        />
+                      </div>
                     </>
                   )}
                   {/* Generic filter for other categories */}
@@ -1005,10 +1009,12 @@ export default function CategoryProducts() {
                           )}
                         </>
                       )}
-                      <DeliveryCalculatorCompact 
-                        productCategoryId={category.id}
-                        categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
-                      />
+                      <div className="hidden lg:block">
+                        <DeliveryCalculatorCompact 
+                          productCategoryId={category.id}
+                          categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                        />
+                      </div>
                     </>
                   )}
                 </div>
@@ -1043,6 +1049,18 @@ export default function CategoryProducts() {
                     </p>
                   </div>
                 )}
+              </div>
+
+              {/* Delivery Calculator - mobile only, after products */}
+              <div className="lg:hidden order-3 col-span-1">
+                {category.id === "alle" ? (
+                  <DeliveryCalculatorCompact showAllCategories />
+                ) : category.id !== "anhaenger" ? (
+                  <DeliveryCalculatorCompact 
+                    productCategoryId={category.id}
+                    categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                  />
+                ) : null}
               </div>
             </div>
           ) : (
