@@ -75,13 +75,21 @@ export function HeroSearch() {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
     return translatedProducts
-      .filter((p) => {
+      .filter((p, index) => {
         // Search translated fields (which are already in the active language)
         if (p.name.toLowerCase().includes(query)) return true;
         if (p.description?.toLowerCase().includes(query)) return true;
         if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
 
         // Also search original German fields so German terms still work in EN mode
+        const original = allProducts[index];
+        if (original) {
+          if (original.name.toLowerCase().includes(query)) return true;
+          if (original.description?.toLowerCase().includes(query)) return true;
+          if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+        }
+
+        // Also search English translations so English terms work in DE mode
         const tr = productTranslations[p.id];
         if (tr?.name?.toLowerCase().includes(query)) return true;
         if (tr?.description?.toLowerCase().includes(query)) return true;
@@ -89,7 +97,7 @@ export function HeroSearch() {
         return false;
       })
       .slice(0, 8);
-  }, [searchQuery, translatedProducts]);
+  }, [searchQuery, translatedProducts, allProducts]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
