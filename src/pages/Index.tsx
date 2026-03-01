@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { HeroSearch } from "@/components/home/HeroSearch";
+import { ProductSearchDialog } from "@/components/home/ProductSearchDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { 
@@ -32,13 +34,14 @@ import heroImage from "@/assets/hero-event.jpg";
 
 export default function Index() {
   const { t } = useTranslation();
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
   const steps = [
     { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), link: "/mieten", cta: t("steps.step1Cta") },
-    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), link: "/mieten", cta: t("steps.step2Cta") },
-    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc"), link: "/mieten", cta: t("steps.step3Cta") },
-    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc"), link: "/kontakt", cta: t("steps.step4Cta") },
-    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc"), link: "/standorte", cta: t("steps.step5Cta") },
+    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), action: "search", cta: t("steps.step2Cta") },
+    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
+    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
+    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
   ];
 
   const trustItems = [
@@ -264,14 +267,15 @@ export default function Index() {
             <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-border rounded-full" />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5 relative">
-              {steps.map((step, index) => (
-                <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
-                  <Link to={step.link} className="relative group h-full block">
+              {steps.map((step, index) => {
+                const isInteractive = step.link || step.action;
+                const cardContent = (
+                  <>
                     {/* Step Card */}
-                    <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div className={`bg-card rounded-2xl p-5 h-full border border-border shadow-sm ${isInteractive ? 'hover:shadow-lg hover:-translate-y-1' : ''} transition-all duration-300 flex flex-col`}>
                       {/* Step Number Badge + Icon Row */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300 shrink-0">
+                        <div className={`w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md ${isInteractive ? 'group-hover:scale-110 group-hover:bg-accent' : ''} transition-all duration-300 shrink-0`}>
                           <step.icon className="h-5 w-5" />
                         </div>
                         <span className="text-xs font-bold text-accent uppercase tracking-wider">
@@ -285,11 +289,13 @@ export default function Index() {
                       {/* Description - fixed height for alignment */}
                       <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px] flex-1">{step.description}</p>
 
-                      {/* CTA */}
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-3">
-                        {step.cta}
-                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                      </span>
+                      {/* CTA - only for interactive steps */}
+                      {step.cta && (
+                        <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-3">
+                          {step.cta}
+                          <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      )}
                     </div>
                     
                     {/* Arrow */}
@@ -298,9 +304,27 @@ export default function Index() {
                         <ArrowRight className="h-3 w-3 text-accent" />
                       </div>
                     )}
-                  </Link>
-                </AnimatedSection>
-              ))}
+                  </>
+                );
+
+                return (
+                  <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
+                    {step.link ? (
+                      <Link to={step.link} className="relative group h-full block">
+                        {cardContent}
+                      </Link>
+                    ) : step.action === "search" ? (
+                      <button onClick={() => setSearchDialogOpen(true)} className="relative group h-full block w-full text-left cursor-pointer">
+                        {cardContent}
+                      </button>
+                    ) : (
+                      <div className="relative h-full">
+                        {cardContent}
+                      </div>
+                    )}
+                  </AnimatedSection>
+                );
+              })}
             </div>
           </div>
 
@@ -368,6 +392,7 @@ export default function Index() {
           </div>
         </div>
       </section>
+      <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
     </Layout>
   );
 }
