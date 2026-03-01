@@ -10,11 +10,11 @@ export default function HowItWorks() {
   const { t } = useTranslation();
 
   const steps = [
-    { number: "1", icon: Calendar, title: t("howItWorks.step1Title"), description: t("howItWorks.step1Desc"), tips: [t("howItWorks.step1Tip1"), t("howItWorks.step1Tip2")] },
-    { number: "2", icon: Search, title: t("howItWorks.step2Title"), description: t("howItWorks.step2Desc"), tips: [t("howItWorks.step2Tip1"), t("howItWorks.step2Tip2")] },
-    { number: "3", icon: ShoppingCart, title: t("howItWorks.step3Title"), description: t("howItWorks.step3Desc"), tips: [t("howItWorks.step3Tip1"), t("howItWorks.step3Tip2")] },
+    { number: "1", icon: Calendar, title: t("howItWorks.step1Title"), description: t("howItWorks.step1Desc"), tips: [t("howItWorks.step1Tip1"), t("howItWorks.step1Tip2")], link: "/mieten", cta: t("howItWorks.step1Cta") },
+    { number: "2", icon: Search, title: t("howItWorks.step2Title"), description: t("howItWorks.step2Desc"), tips: [t("howItWorks.step2Tip1"), t("howItWorks.step2Tip2")], link: "/mieten", cta: t("howItWorks.step2Cta") },
+    { number: "3", icon: ShoppingCart, title: t("howItWorks.step3Title"), description: t("howItWorks.step3Desc"), tips: [t("howItWorks.step3Tip1"), t("howItWorks.step3Tip2")], link: "/mieten", cta: t("howItWorks.step3Cta") },
     { number: "4", icon: Mail, title: t("howItWorks.step4Title"), description: t("howItWorks.step4Desc"), tips: [t("howItWorks.step4Tip1"), t("howItWorks.step4Tip2")] },
-    { number: "5", icon: Truck, title: t("howItWorks.step5Title"), description: t("howItWorks.step5Desc"), tips: [t("howItWorks.step5Tip1"), t("howItWorks.step5Tip2")] },
+    { number: "5", icon: Truck, title: t("howItWorks.step5Title"), description: t("howItWorks.step5Desc"), tips: [t("howItWorks.step5Tip1"), t("howItWorks.step5Tip2")], link: "/standorte", cta: t("howItWorks.step5Cta") },
   ];
 
   const requirements = [
@@ -71,6 +71,12 @@ export default function HowItWorks() {
                           </span>
                         ))}
                       </div>
+                      {step.link && step.cta && (
+                        <Link to={step.link} className="inline-flex items-center gap-2 mt-5 text-sm font-semibold text-primary hover:text-accent transition-colors group/cta">
+                          {step.cta}
+                          <ArrowRight className="h-4 w-4 group-hover/cta:translate-x-1 transition-transform" />
+                        </Link>
+                      )}
                     </div>
                   </div>
                   {index < steps.length - 1 && <div className="hidden lg:block absolute left-8 top-24 w-0.5 h-20 bg-gradient-to-b from-accent to-transparent" />}

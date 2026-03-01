@@ -34,11 +34,11 @@ export default function Index() {
   const { t } = useTranslation();
 
   const steps = [
-    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc") },
-    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc") },
-    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
-    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
-    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
+    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), link: "/mieten", cta: t("steps.step1Cta") },
+    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), link: "/mieten", cta: t("steps.step2Cta") },
+    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc"), link: "/mieten", cta: t("steps.step3Cta") },
+    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc"), link: "/kontakt", cta: t("steps.step4Cta") },
+    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc"), link: "/standorte", cta: t("steps.step5Cta") },
   ];
 
   const trustItems = [
@@ -266,7 +266,7 @@ export default function Index() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5 relative">
               {steps.map((step, index) => (
                 <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
-                  <div className="relative group h-full">
+                  <Link to={step.link} className="relative group h-full block">
                     {/* Step Card */}
                     <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
                       {/* Step Number Badge + Icon Row */}
@@ -283,7 +283,13 @@ export default function Index() {
                       <h3 className="font-bold text-headline text-base mb-2 min-h-[24px]">{step.title}</h3>
                       
                       {/* Description - fixed height for alignment */}
-                      <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px]">{step.description}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px] flex-1">{step.description}</p>
+
+                      {/* CTA */}
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-3">
+                        {step.cta}
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                      </span>
                     </div>
                     
                     {/* Arrow */}
@@ -292,7 +298,7 @@ export default function Index() {
                         <ArrowRight className="h-3 w-3 text-accent" />
                       </div>
                     )}
-                  </div>
+                  </Link>
                 </AnimatedSection>
               ))}
             </div>
