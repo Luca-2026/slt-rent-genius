@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { productCategories, getProductsForLocationCategory, type Product, type ProductCategory } from "@/data/rentalData";
+import { productTranslations, categoryTranslations, tagTranslations } from "@/i18n/productTranslations";
 
 interface ProductSearchProps {
   locationId: string;
@@ -39,9 +40,12 @@ export function ProductSearch({
       const products = getProductsForLocationCategory(locationId, category.id);
       
       for (const product of products) {
+        const tr = productTranslations[product.id];
         if (
           product.name.toLowerCase().includes(searchTerm) ||
-          product.description?.toLowerCase().includes(searchTerm)
+          product.description?.toLowerCase().includes(searchTerm) ||
+          tr?.name?.toLowerCase().includes(searchTerm) ||
+          tr?.description?.toLowerCase().includes(searchTerm)
         ) {
           results.push({ type: "product", product, categoryId: category.id });
         }
@@ -50,9 +54,12 @@ export function ProductSearch({
     
     // Then add matching categories
     for (const category of categories) {
+      const catTr = categoryTranslations[category.id];
       if (
         category.title.toLowerCase().includes(searchTerm) ||
-        category.description.toLowerCase().includes(searchTerm)
+        category.description.toLowerCase().includes(searchTerm) ||
+        catTr?.title?.toLowerCase().includes(searchTerm) ||
+        catTr?.description?.toLowerCase().includes(searchTerm)
       ) {
         results.push({ type: "category", category });
       }
