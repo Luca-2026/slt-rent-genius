@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
 import { productTranslations, tagTranslations } from "@/i18n/productTranslations";
+import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
 import {
   Dialog,
   DialogContent,
@@ -29,28 +30,28 @@ function getAllUniqueProducts(): Product[] {
   return Array.from(productMap.values());
 }
 
-// Get locations that have a specific product (by name match)
-function getLocationsForProduct(productName: string): typeof locations {
+// Get locations that have a specific product (by id match)
+function getLocationsForProduct(productId: string): typeof locations {
   return locations.filter((location) => {
     const products = getAllProductsForLocation(location.id);
-    return products.some((p) => p.name === productName);
+    return products.some((p) => p.id === productId);
   });
 }
 
-// Get product ID at a specific location (by name match)
-function getProductIdAtLocation(productName: string, locationId: string): string | null {
+// Get product ID at a specific location (by id match)
+function getProductIdAtLocation(productId: string, locationId: string): string | null {
   const products = getAllProductsForLocation(locationId);
-  const product = products.find((p) => p.name === productName);
+  const product = products.find((p) => p.id === productId);
   return product?.id || null;
 }
 
 // Get category for product at a specific location
-function getCategoryForProductAtLocation(productName: string, locationId: string): string {
+function getCategoryForProductAtLocation(productId: string, locationId: string): string {
   const location = locations.find((l) => l.id === locationId);
   if (!location) return "alle";
   
   for (const [categoryId, products] of Object.entries(location.products)) {
-    if (products.some((p) => p.name === productName)) {
+    if (products.some((p) => p.id === productId)) {
       return categoryId;
     }
   }
@@ -67,33 +68,28 @@ export function HeroSearch() {
   const searchRef = useRef<HTMLDivElement>(null);
 
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
+  const translatedProducts = useTranslatedProducts(allProducts);
 
   // Filter products based on search query (matches both German and English)
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
-    return allProducts
+    return translatedProducts
       .filter((p) => {
-        // German (source) fields
+        // Search translated fields (which are already in the active language)
         if (p.name.toLowerCase().includes(query)) return true;
         if (p.description?.toLowerCase().includes(query)) return true;
         if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
 
-        // English translated fields
+        // Also search original German fields so German terms still work in EN mode
         const tr = productTranslations[p.id];
         if (tr?.name?.toLowerCase().includes(query)) return true;
         if (tr?.description?.toLowerCase().includes(query)) return true;
 
-        // Translated tags
-        if (p.tags?.some((t) => {
-          const translated = tagTranslations[t];
-          return translated?.toLowerCase().includes(query);
-        })) return true;
-
         return false;
       })
       .slice(0, 8);
-  }, [searchQuery, allProducts]);
+  }, [searchQuery, translatedProducts]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -114,8 +110,8 @@ export function HeroSearch() {
 
   const handleLocationSelect = (locationId: string) => {
     if (selectedProduct) {
-      const productId = getProductIdAtLocation(selectedProduct.name, locationId);
-      const categoryId = getCategoryForProductAtLocation(selectedProduct.name, locationId);
+      const productId = getProductIdAtLocation(selectedProduct.id, locationId);
+      const categoryId = getCategoryForProductAtLocation(selectedProduct.id, locationId);
       if (productId) {
         navigate(`/mieten/${locationId}/${categoryId}/${productId}`);
       }
@@ -134,7 +130,7 @@ export function HeroSearch() {
   };
 
   const availableLocations = selectedProduct
-    ? getLocationsForProduct(selectedProduct.name)
+    ? getLocationsForProduct(selectedProduct.id)
     : [];
 
   return (
