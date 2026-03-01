@@ -61,6 +61,7 @@ export interface Solution {
   id: string;
   image: string;
   images?: string[];
+  imageCategories?: string[];
   icon: React.ElementType;
   categories: string[];
   color: string;
@@ -70,6 +71,7 @@ export const solutionData: Solution[] = [{
   id: "garten-landschaftsbau",
   image: imgGalabauStubbenfraese1,
   images: [imgGalabauStubbenfraese1, imgGalabauStubbenfraese2, imgGalabauErdbohrer],
+  imageCategories: ["gartenpflege", "gartenpflege", "gartenpflege"],
   icon: Trees,
   categories: ["erdbewegung", "gartenpflege", "anhaenger", "verdichtung"],
   color: "from-green-500/20 to-green-600/10"
@@ -77,6 +79,7 @@ export const solutionData: Solution[] = [{
   id: "tiefbau-erdbewegung",
   image: imgTiefbauWackerBaustelle,
   images: [imgTiefbauWackerBaustelle, imgTiefbauWackerGarten, imgTiefbauBobcat, imgTiefbauKramer, imgTiefbauKompressor, imgTiefbauDrucklufthammer],
+  imageCategories: ["erdbewegung", "erdbewegung", "erdbewegung", "erdbewegung", "erdbewegung", "erdbewegung"],
   icon: Shovel,
   categories: ["erdbewegung", "verdichtung", "absperrtechnik", "anhaenger"],
   color: "from-amber-500/20 to-amber-600/10"
@@ -84,6 +87,7 @@ export const solutionData: Solution[] = [{
   id: "hochbau-renovierung",
   image: imgHochbauScherenbuehneOutdoor,
   images: [imgHochbauScherenbuehneOutdoor, imgHochbauScherenbuehneGross, imgHochbauMastbuehne, imgHochbauGelenkbuehne, imgHochbauScherenbuehneKlein, imgHochbauScherenbuehneSteuerung, imgHochbauRollgeruest, imgHochbauRollgeruestHoch, imgHochbauGeruestLager],
+  imageCategories: ["arbeitsbuehnen", "arbeitsbuehnen", "arbeitsbuehnen", "arbeitsbuehnen", "arbeitsbuehnen", "arbeitsbuehnen", "leitern-gerueste", "leitern-gerueste", "leitern-gerueste"],
   icon: Building2,
   categories: ["werkzeuge", "arbeitsbuehnen", "leitern-gerueste", "heizung-trocknung"],
   color: "from-blue-500/20 to-blue-600/10"
@@ -91,6 +95,7 @@ export const solutionData: Solution[] = [{
   id: "events-veranstaltungen",
   image: imgEventZelt,
   images: [imgEventZelt, imgEventGartenfest, imgEventIndoorPA, imgEventIBCLed, imgEventTraversen, imgEventGlaeser, imgEventBlumenDeko, imgEventBuehne],
+  imageCategories: ["moebel-zelte", "moebel-zelte", "beschallung", "beleuchtung", "beschallung", "geschirr-glaeser-besteck", "moebel-zelte", "beleuchtung"],
   icon: PartyPopper,
   categories: ["beschallung", "beleuchtung", "moebel-zelte", "geschirr-glaeser-besteck"],
   color: "from-purple-500/20 to-purple-600/10"
@@ -98,6 +103,7 @@ export const solutionData: Solution[] = [{
   id: "umzug-transport",
   image: imgTransportPlanen,
   images: [imgTransportPlanen],
+  imageCategories: ["anhaenger"],
   icon: Truck,
   categories: ["anhaenger"],
   color: "from-orange-500/20 to-orange-600/10"
@@ -105,6 +111,7 @@ export const solutionData: Solution[] = [{
   id: "handwerk-gewerbe",
   image: imgHandwerkBohrhammer,
   images: [imgHandwerkBohrhammer, imgHandwerkBosch, imgHandwerkAkkubohrer, imgHandwerkErdbohrer],
+  imageCategories: ["werkzeuge", "werkzeuge", "werkzeuge", "werkzeuge"],
   icon: Hammer,
   categories: ["werkzeuge", "leitern-gerueste", "kabel-stromverteiler", "aggregate"],
   color: "from-red-500/20 to-red-600/10"
@@ -118,6 +125,7 @@ export const solutionData: Solution[] = [{
   id: "kindergeburtstage",
   image: imgKinderClown,
   images: [imgKinderClown, imgKinderKirmes, imgKinderBalloon, imgKinderWasser1, imgKinderWasser2],
+  imageCategories: ["huepfburgen", "huepfburgen", "huepfburgen", "huepfburgen", "huepfburgen"],
   icon: Sparkles,
   categories: ["huepfburgen", "spezialeffekte", "beschallung"],
   color: "from-pink-500/20 to-pink-600/10"
