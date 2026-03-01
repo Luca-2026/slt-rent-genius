@@ -26,7 +26,7 @@ const partners = [
   { name: "Kramer", logo: logoKramer, url: "https://www.kramer.de/" },
   { name: "Eibenstock", logo: logoEibenstock, url: "https://www.eibenstock.de/" },
   { name: "Doosan", logo: logoDoosan, url: "https://www.doosanportablepower.eu/" },
-  { name: "Baumax", logo: logoBaumax, url: "https://baumax.de/" },
+  { name: "Baumax", logo: logoBaumax, url: "https://baumax-baumaschinen.de/" },
   { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion-nrw.de/" },
 ];
 
@@ -204,9 +204,12 @@ export default function About() {
           <AnimatedSection animation="fade-in-up" delay={600}>
             <div className="mt-8 p-4 bg-accent/10 border border-accent/20 rounded-lg text-center">
               <p className="text-sm text-body">
-                <strong className="text-headline">{t("about.partnerDealerNote").split("<a>")[0].replace("<strong>", "").replace("</strong>", "")}</strong>{" "}
-                <a href="https://www.zoomlion-nrw.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Zoomlion</a>{" "}
-                {t("about.partnerDealerNote").split("</a>")[1]}
+                <strong className="text-headline">{t("about.partnersTitle")}:</strong>{" "}
+                {t("about.partnerDealerNote").split("Zoomlion")[0]}
+                <a href="https://www.zoomlion-nrw.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Zoomlion</a>
+                {t("about.partnerDealerNote").split("Zoomlion")[1]?.split("Baumax")[0]}
+                <a href="https://baumax-baumaschinen.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Baumax</a>
+                {t("about.partnerDealerNote").split("Baumax")[1]}
               </p>
             </div>
           </AnimatedSection>
