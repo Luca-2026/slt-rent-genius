@@ -812,7 +812,7 @@ export const productUITranslations: Record<string, Record<string, string>> = {
     "perDay": "/Tag",
     "rentPrivate": "Als Privatkunde mieten",
     "b2bConditions": "B2B-Konditionen anfragen",
-    "weekendRate": "Weekend-Tarif",
+    "weekendRate": "Wochenend-Tarif",
     "prevImage": "Vorheriges Bild",
     "nextImage": "Nächstes Bild",
     "imageOf": "Bild",
