@@ -41,6 +41,12 @@ export default function LoesungDetail() {
     setLocationDialogOpen(true);
   };
 
+  const handleImageClick = (imageIndex: number) => {
+    const categoryId = solution.imageCategories?.[imageIndex] || solution.categories[0];
+    setSelectedCategoryId(categoryId);
+    setLocationDialogOpen(true);
+  };
+
   return (
     <Layout>
       <LocationSelectDialog
@@ -93,13 +99,20 @@ export default function LoesungDetail() {
           <AnimatedSection animation="fade-in-up">
             {solution.images && solution.images.length > 1 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="md:col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-muted">
-                  <img src={solution.images[0]} alt={title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                </div>
+                <button
+                  className="md:col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-muted cursor-pointer group"
+                  onClick={() => handleImageClick(0)}
+                >
+                  <img src={solution.images[0]} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </button>
                 {solution.images.slice(1).map((img, index) => (
-                  <div key={index} className="aspect-[4/3] rounded-xl overflow-hidden bg-muted">
-                    <img src={img} alt={`${title} ${index + 2}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                  </div>
+                  <button
+                    key={index}
+                    className="aspect-[4/3] rounded-xl overflow-hidden bg-muted cursor-pointer group"
+                    onClick={() => handleImageClick(index + 1)}
+                  >
+                    <img src={img} alt={`${title} ${index + 2}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </button>
                 ))}
               </div>
             ) : (
