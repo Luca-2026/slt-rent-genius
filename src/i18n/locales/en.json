@@ -77,7 +77,12 @@
     "step4Title": "Pay",
     "step4Desc": "By card, PayPal or cash on site. 30% deposit required online.",
     "step5Title": "Pick Up",
-    "step5Desc": "Pick up your equipment or have it delivered."
+    "step5Desc": "Pick up your equipment or have it delivered.",
+    "step1Cta": "Choose Location",
+    "step2Cta": "Browse Products",
+    "step3Cta": "Book Now",
+    "step4Cta": "Contact Us",
+    "step5Cta": "View Locations"
   },
   "cta": {
     "title": "Ready for Your Next Project?",
@@ -437,6 +442,10 @@
     "step5Desc": "Pick up your equipment at the chosen location or have it delivered directly to your construction site. Upon return, we'll check the condition together.",
     "step5Tip1": "Delivery for an additional fee",
     "step5Tip2": "On-site training available",
+    "step1Cta": "Choose Location",
+    "step2Cta": "Browse Products",
+    "step3Cta": "Book Now",
+    "step5Cta": "View Locations",
     "weekendTitle": "🎉 Weekend Rate: Rent More, Pay Less!",
     "weekendDesc": "Many products include our popular weekend rate:",
     "weekendHighlight": "Pick up Friday from 12:00 PM, return Monday by 8:00 AM – at special conditions!",

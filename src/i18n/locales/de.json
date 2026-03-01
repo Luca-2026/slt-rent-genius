@@ -77,7 +77,12 @@
     "step4Title": "Bezahlen",
     "step4Desc": "Per Karte, PayPal oder bar vor Ort. 30% Anzahlung online erforderlich.",
     "step5Title": "Abholen",
-    "step5Desc": "Hole dein Equipment ab oder lass liefern."
+    "step5Desc": "Hole dein Equipment ab oder lass liefern.",
+    "step1Cta": "Standort wählen",
+    "step2Cta": "Produkte durchsuchen",
+    "step3Cta": "Jetzt buchen",
+    "step4Cta": "Kontakt aufnehmen",
+    "step5Cta": "Standorte anzeigen"
   },
   "cta": {
     "title": "Bereit für dein nächstes Projekt?",
@@ -437,6 +442,10 @@
     "step5Desc": "Hole dein Equipment am gewählten Standort ab oder lass es dir direkt auf die Baustelle liefern. Bei der Rückgabe prüfen wir gemeinsam den Zustand.",
     "step5Tip1": "Lieferung gegen Aufpreis",
     "step5Tip2": "Einweisung vor Ort möglich",
+    "step1Cta": "Standort wählen",
+    "step2Cta": "Produkte durchsuchen",
+    "step3Cta": "Jetzt buchen",
+    "step5Cta": "Standorte anzeigen",
     "weekendTitle": "🎉 Wochenend-Tarif: Mehr mieten, weniger zahlen!",
     "weekendDesc": "Bei vielen Produkten gilt unser beliebter Wochenend-Tarif:",
     "weekendHighlight": "Freitag ab 12:00 Uhr abholen, Montag bis 8:00 Uhr zurückgeben – zu besonderen Konditionen!",
