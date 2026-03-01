@@ -343,12 +343,6 @@ export default function Index() {
 
       {/* CTA Section */}
       <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-40 h-40 border border-border rounded-full opacity-50" />
-          <div className="absolute bottom-10 right-10 w-60 h-60 border border-border rounded-full opacity-50" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-accent/20 rounded-full opacity-30" />
-        </div>
         
         <div className="section-container text-center relative">
           <AnimatedSection>
