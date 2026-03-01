@@ -218,8 +218,17 @@ export default function LoesungDetail() {
                 <AnimatedSection key={otherSolution.id} animation="fade-in-up" delay={index * 0.1}>
                   <Link to={`/loesungen/${otherSolution.id}`}>
                     <Card className="h-full group hover:shadow-md transition-all border-2 hover:border-primary/20">
-                      <div className={`aspect-[16/9] bg-gradient-to-br ${otherSolution.color} relative overflow-hidden`}>
-                        <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="aspect-[16/9] relative overflow-hidden">
+                        {otherSolution.image ? (
+                          <img 
+                            src={otherSolution.image} 
+                            alt={otherTitle} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className={`w-full h-full bg-gradient-to-br ${otherSolution.color}`} />
+                        )}
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                           <div className="w-14 h-14 rounded-xl bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <OtherIcon className="w-7 h-7 text-primary" />
                           </div>
