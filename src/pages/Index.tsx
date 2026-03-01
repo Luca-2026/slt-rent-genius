@@ -7,6 +7,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { HeroSearch } from "@/components/home/HeroSearch";
 import { ProductSearchDialog } from "@/components/home/ProductSearchDialog";
+import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { 
@@ -35,10 +36,11 @@ import heroImage from "@/assets/hero-event.jpg";
 export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
+  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
 
   const steps = [
-    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), link: "/mieten", cta: t("steps.step1Cta") },
-    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), action: "search", cta: t("steps.step2Cta") },
+    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), action: "location" as const, cta: t("steps.step1Cta") },
+    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), action: "search" as const, cta: t("steps.step2Cta") },
     { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
     { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
     { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
@@ -268,7 +270,7 @@ export default function Index() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5 relative">
               {steps.map((step, index) => {
-                const isInteractive = step.link || step.action;
+                const isInteractive = step.action;
                 const cardContent = (
                   <>
                     {/* Step Card */}
@@ -309,10 +311,10 @@ export default function Index() {
 
                 return (
                   <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
-                    {step.link ? (
-                      <Link to={step.link} className="relative group h-full block">
+                    {step.action === "location" ? (
+                      <button onClick={() => setLocationDialogOpen(true)} className="relative group h-full block w-full text-left cursor-pointer">
                         {cardContent}
-                      </Link>
+                      </button>
                     ) : step.action === "search" ? (
                       <button onClick={() => setSearchDialogOpen(true)} className="relative group h-full block w-full text-left cursor-pointer">
                         {cardContent}
@@ -393,6 +395,7 @@ export default function Index() {
         </div>
       </section>
       <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
+      <LocationSelectDialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen} />
     </Layout>
   );
 }
