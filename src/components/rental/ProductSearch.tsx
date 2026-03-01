@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { productCategories, getProductsForLocationCategory, type Product, type ProductCategory } from "@/data/rentalData";
@@ -24,6 +25,8 @@ export function ProductSearch({
 }: ProductSearchProps) {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
   const navigate = useNavigate();
 
   // Search through products and categories
@@ -132,10 +135,14 @@ export function ProductSearch({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-foreground truncate">
-                      {result.product.name}
+                      {lang !== "de" && productTranslations[result.product.id]?.name
+                        ? productTranslations[result.product.id].name
+                        : result.product.name}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {result.product.description}
+                      {lang !== "de" && productTranslations[result.product.id]?.description
+                        ? productTranslations[result.product.id].description
+                        : result.product.description}
                     </p>
                   </div>
                 </>
@@ -150,7 +157,9 @@ export function ProductSearch({
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-foreground truncate">
-                      {result.category.title}
+                      {lang !== "de" && categoryTranslations[result.category.id]?.title
+                        ? categoryTranslations[result.category.id].title
+                        : result.category.title}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
                       Kategorie
