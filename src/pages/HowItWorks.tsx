@@ -42,10 +42,6 @@ export default function HowItWorks() {
     <Layout>
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary via-primary to-slt-blue-hover py-16 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-64 h-64 border-4 border-primary-foreground rounded-full" />
-          <div className="absolute bottom-10 left-10 w-40 h-40 border-4 border-accent rounded-full" />
-        </div>
         <div className="section-container relative">
           <AnimatedSection>
             <span className="inline-block bg-accent/20 text-accent-foreground px-4 py-1.5 rounded-full text-sm font-medium mb-4 backdrop-blur-sm border border-accent/30">{t("howItWorks.badge")}</span>
