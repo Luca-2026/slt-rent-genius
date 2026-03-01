@@ -58,13 +58,13 @@ export function LocationSelectDialog({
               className="h-auto py-4 px-4 justify-start text-left hover:border-primary hover:bg-primary/5"
               onClick={() => handleLocationSelect(location.id)}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <span className="font-bold text-primary">{location.shortName}</span>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-headline">{location.name}</div>
-                  <div className="text-sm text-muted-foreground">{location.address}</div>
+                  <div className="text-sm text-muted-foreground truncate">{location.address}</div>
                 </div>
               </div>
             </Button>
