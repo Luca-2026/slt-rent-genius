@@ -76,20 +76,20 @@ const deliveryPrices = {
 
 type CategoryKey = keyof typeof deliveryPrices;
 
-// All category options for the dropdown
-const allCategoryOptions: { value: CategoryKey; label: string }[] = [
-  { value: "1t-bagger", label: "1t Bagger, Dumper & 8m Scherenbühne" },
-  { value: "2t-bagger", label: "2t Bagger, Radlader & Anhängerarbeitsbühne" },
-  { value: "3t-bagger", label: "3t Bagger & 12m Scherenbühne" },
-  { value: "geruest", label: "Gerüst bis 4,4m Arbeitshöhe" },
-  { value: "event", label: "Heizung, Möbel, Zelte, Event-Equipment" },
+// All category options for the dropdown (use i18n keys)
+const allCategoryKeys: { value: CategoryKey; labelKey: string }[] = [
+  { value: "1t-bagger", labelKey: "rental.cat1tBagger" },
+  { value: "2t-bagger", labelKey: "rental.cat2tBagger" },
+  { value: "3t-bagger", labelKey: "rental.cat3tBagger" },
+  { value: "geruest", labelKey: "rental.catScaffolding" },
+  { value: "event", labelKey: "rental.catEvent" },
 ];
 
 // Machine type options for erdbewegung category
-const machineTypeOptions: { value: CategoryKey; label: string }[] = [
-  { value: "1t-bagger", label: "1t Bagger, Dumper" },
-  { value: "2t-bagger", label: "2t Bagger, Radlader" },
-  { value: "3t-bagger", label: "3t Bagger" },
+const machineTypeKeys: { value: CategoryKey; labelKey: string }[] = [
+  { value: "1t-bagger", labelKey: "rental.machine1t" },
+  { value: "2t-bagger", labelKey: "rental.machine2t" },
+  { value: "3t-bagger", labelKey: "rental.machine3t" },
 ];
 
 // Map product categories to delivery price categories
@@ -174,7 +174,7 @@ export function DeliveryCalculatorCompact({
   }, [distance, includeReturn, twoMachines, selectedCategory]);
 
   // Determine which options to show in dropdown
-  const categoryOptions = showAllCategories ? allCategoryOptions : machineTypeOptions;
+  const categoryOptions = showAllCategories ? allCategoryKeys : machineTypeKeys;
 
   return (
     <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
@@ -188,18 +188,18 @@ export function DeliveryCalculatorCompact({
         {/* Category Selector */}
         {showCategoryDropdown && (
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Gerätekategorie</Label>
+            <Label className="text-sm font-medium">{t("rental.deviceCategory")}</Label>
             <Select
               value={selectedMachineType}
               onValueChange={(value) => setSelectedMachineType(value as CategoryKey)}
             >
               <SelectTrigger className="w-full bg-background">
-                <SelectValue placeholder="Kategorie wählen" />
+                <SelectValue placeholder={t("rental.selectCategory")} />
               </SelectTrigger>
               <SelectContent className="bg-background z-50">
                 {categoryOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                    {t(option.labelKey)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -249,10 +249,10 @@ export function DeliveryCalculatorCompact({
           <div className="flex items-center justify-between py-2 border-t border-border">
             <div>
               <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
-                2 Baumaschinen
+                {t("rental.twoMachines")}
               </Label>
               <p className="text-xs text-muted-foreground">
-                Aufschlag: ×{selectedCategory.multiplier}
+                {t("rental.surcharge")}: ×{selectedCategory.multiplier}
               </p>
             </div>
             <Switch
@@ -284,7 +284,7 @@ export function DeliveryCalculatorCompact({
           )}
           {twoMachines && (
             <p className="text-xs text-accent mt-1">
-              inkl. Aufschlag für 2 Maschinen
+              {t("rental.inclSurchargeTwoMachines")}
             </p>
           )}
         </div>
@@ -292,7 +292,7 @@ export function DeliveryCalculatorCompact({
         {/* Link to full calculator */}
         <Link to="/lieferung">
           <Button variant="outline" className="w-full text-sm">
-            Detaillierter Rechner
+            {t("rental.detailedCalculator")}
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </Link>
