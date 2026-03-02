@@ -59,6 +59,9 @@ import buffetTellerwaermer1 from "@/assets/products/geschirr/buffet-tellerwaerme
 import buffetTellerwaermer2 from "@/assets/products/geschirr/buffet-tellerwaermer-2.jpeg";
 import buffetTellerwaermer3 from "@/assets/products/geschirr/buffet-tellerwaermer-3.jpeg";
 import buffetTellerwaermer4 from "@/assets/products/geschirr/buffet-tellerwaermer-4.jpeg";
+import getraenkekuehlschrank236l_1 from "@/assets/products/geschirr/getraenkekuehlschrank-236l-1.jpeg";
+import getraenkekuehlschrank236l_2 from "@/assets/products/geschirr/getraenkekuehlschrank-236l-2.jpeg";
+import getraenkekuehlschrank236l_3 from "@/assets/products/geschirr/getraenkekuehlschrank-236l-3.jpeg";
 import messerSimply20_1 from "@/assets/products/besteck/messer-simply-20-1.jpeg";
 import messerSimply20_2 from "@/assets/products/besteck/messer-simply-20-2.jpeg";
 import rotweinBrunelli1 from "@/assets/products/geschirr/rotweinglas-brunelli-1.jpeg";
@@ -998,8 +1001,17 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-getraenkekuehlschrank-236l",
     name: "Getränkekühlschrank 236l",
-    description: "Großer Kühlschrank für Getränke bei Events.",
-    image: "/placeholder.svg",
+    description: "Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
+    image: getraenkekuehlschrank236l_1,
+    images: [getraenkekuehlschrank236l_1, getraenkekuehlschrank236l_2, getraenkekuehlschrank236l_3],
+    detailedDescription: "Der Getränkekühlschrank mit 236 Litern Fassungsvermögen ist ein gewerblicher Glastürkühlschrank mit energieeffizienter LED-Beleuchtung. Dank seiner kompakten Abmessungen (54 × 55 × 144 cm) passt er in jede Eventlocation und bietet ausreichend Platz für Getränke aller Art.",
+    specifications: {
+      "Fassungsvermögen": "236 l",
+      "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
+      "Gewicht": "45 kg",
+      "Beleuchtung": "LED",
+      "Tür": "Glastür",
+    },
     rentwareCode: { bonn: "MY5VGV" },
   },
   {
