@@ -56,6 +56,8 @@ import buffetTellerwaermer3 from "@/assets/products/geschirr/buffet-tellerwaerme
 import buffetTellerwaermer4 from "@/assets/products/geschirr/buffet-tellerwaermer-4.jpeg";
 import messerSimply20_1 from "@/assets/products/besteck/messer-simply-20-1.jpeg";
 import messerSimply20_2 from "@/assets/products/besteck/messer-simply-20-2.jpeg";
+import rotweinBrunelli1 from "@/assets/products/geschirr/rotweinglas-brunelli-1.jpeg";
+import rotweinBrunelli2 from "@/assets/products/geschirr/rotweinglas-brunelli-2.jpeg";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
 import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
@@ -2649,11 +2651,22 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   // Gläser
   {
     id: "burgunderglas-brunelli-10er",
-    name: "Burgunderglas Brunelli, 10er Set",
-    description: "Elegante Rotweingläser",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Rotweinglas Brunelli, 10er Set",
+    description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
+    image: rotweinBrunelli1,
+    images: [rotweinBrunelli1, rotweinBrunelli2],
     category: "glaeser",
+    detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 10er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    specifications: {
+      "Hersteller": "Leonardo",
+      "Typ": "Rotweinglas",
+      "Höhe": "23,8 cm",
+      "Durchmesser": "11,5 cm",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Klar & stoßfest",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "C2Z5S4" }
   },
   {
