@@ -33,6 +33,8 @@ import spuelmaschineStalgast1 from "@/assets/products/geschirr/spuelmaschine-sta
 import spuelmaschineStalgast2 from "@/assets/products/geschirr/spuelmaschine-stalgast-2.jpeg";
 import aschenbecherGlas1 from "@/assets/products/geschirr/aschenbecher-glas-1.jpeg";
 import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jpeg";
+import tellerTiefSimply20_1 from "@/assets/products/geschirr/teller-tief-simply20-1.jpeg";
+import tellerTiefSimply20_2 from "@/assets/products/geschirr/teller-tief-simply20-2.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -1097,8 +1099,17 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-teller-tief-simply-20",
     name: "Teller tief SIMPLY 20, 10er Set",
-    description: "Tiefe Teller für Suppen und Pasta.",
-    image: "/placeholder.svg",
+    description: "Suppenteller weiß in Porzellanoptik, 20 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: tellerTiefSimply20_1,
+    images: [tellerTiefSimply20_1, tellerTiefSimply20_2],
+    detailedDescription: "Der Teller tief SIMPLY 20 im 10er Set – ein klassischer Suppenteller in eleganter weißer Porzellanoptik mit 20 cm Durchmesser. Ideal für Suppen, Eintöpfe, Pasta und Desserts. Perfekt für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Typ": "Suppenteller / Teller tief",
+      "Durchmesser": "20 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { bonn: "HAZLZ4" },
   },
   {
