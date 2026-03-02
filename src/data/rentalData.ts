@@ -21,6 +21,7 @@ import iconBesteck from "@/assets/icons/category-besteck.png";
 import iconTraverse from "@/assets/icons/traverse.png";
 import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
 import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.png";
+import iconBeschallung from "@/assets/icons/beschallung.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -285,7 +286,7 @@ export const productCategories: ProductCategory[] = [
     id: "beschallung",
     title: "Beschallung",
     description: "Lautsprecher, Mikrofone, Mischpulte und PA-Anlagen.",
-    icon: iconSpezialeffekte,
+    icon: iconBeschallung,
   },
   {
     id: "kommunikation",
