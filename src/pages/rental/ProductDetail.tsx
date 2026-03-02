@@ -458,13 +458,11 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Kaufanfrage-Banner für Erdbewegung & Verdichtung */}
-              {(categoryId === "erdbewegung" || categoryId === "verdichtung") && (
-                <PurchaseInquiryBanner
-                  productName={product.name}
-                  locationName={location.shortName}
-                />
-              )}
+              {/* Kaufanfrage-Banner */}
+              <PurchaseInquiryBanner
+                productName={product.name}
+                locationName={location.shortName}
+              />
             </div>
 
             {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
