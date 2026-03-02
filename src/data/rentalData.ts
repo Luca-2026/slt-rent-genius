@@ -19,6 +19,7 @@ import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 import iconBesteck from "@/assets/icons/category-besteck.png";
 import iconTraverse from "@/assets/icons/traverse.png";
+import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -265,7 +266,7 @@ export const productCategories: ProductCategory[] = [
     id: "leitern-gerueste",
     title: "Leitern & Gerüste",
     description: "Leitern, Rollgerüste und Arbeitsplattformen.",
-    icon: iconBuehne,
+    icon: iconLeiterGeruest,
   },
   {
     id: "heizung-trocknung",
