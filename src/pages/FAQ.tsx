@@ -108,7 +108,7 @@ export default function FAQ() {
               <Link to="/kontakt">
                 <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">{t("faq.ctaContact")}</Button>
               </Link>
-              <a href="tel:+4921519328953">
+              <a href="tel:+4921514179904">
                 <Button variant="outline">{t("faq.ctaCall")}</Button>
               </a>
             </div>
