@@ -903,119 +903,117 @@ export default function CategoryProducts() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-1 lg:order-1">
-                <div className="sticky top-4 space-y-6 max-h-[calc(100vh-2rem)] overflow-y-auto pr-1 pb-4">
-                  {/* "Alle" category: Search + Category Filter + Delivery Calculator */}
-                  {category.id === "alle" && (
-                    <>
-                      {/* Search */}
-                      <div className="bg-card border border-border rounded-xl p-4">
-                         <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                           <Search className="h-4 w-4" />
-                           {t("rental.articleSearch")}
-                         </h3>
-                        <div className="relative">
-                          <Input
-                            type="text"
-                            placeholder={t("rental.searchArticlesShort")}
-                            value={allSearchQuery}
-                            onChange={(e) => setAllSearchQuery(e.target.value)}
-                            className="pr-8"
-                          />
-                          {allSearchQuery && (
-                            <button
-                              onClick={() => setAllSearchQuery("")}
-                              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          )}
+                <div className="sticky top-4 space-y-4">
+                  {/* Scrollable filter area */}
+                  <div className="space-y-6 max-h-[calc(100vh-22rem)] overflow-y-auto pr-1 pb-2">
+                    {/* "Alle" category: Search + Category Filter */}
+                    {category.id === "alle" && (
+                      <>
+                        {/* Search */}
+                        <div className="bg-card border border-border rounded-xl p-4">
+                           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                             <Search className="h-4 w-4" />
+                             {t("rental.articleSearch")}
+                           </h3>
+                          <div className="relative">
+                            <Input
+                              type="text"
+                              placeholder={t("rental.searchArticlesShort")}
+                              value={allSearchQuery}
+                              onChange={(e) => setAllSearchQuery(e.target.value)}
+                              className="pr-8"
+                            />
+                            {allSearchQuery && (
+                              <button
+                                onClick={() => setAllSearchQuery("")}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      
-                      {/* Category Quick Filter with scroll */}
-                      <div className="bg-card border border-border rounded-xl p-4">
-                        <h3 className="font-semibold text-foreground mb-3">
-                          {t("rental.categoriesCount", { count: availableCategories.length })}
-                        </h3>
-                        <div className="space-y-1 max-h-[400px] overflow-y-auto pr-2">
-                          <button
-                            onClick={() => setSelectedCategoryFilter(null)}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                              selectedCategoryFilter === null
-                                ? "bg-primary text-primary-foreground font-medium"
-                                : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                            }`}
-                          >
-                            {t("rental.allCategories")}
-                          </button>
-                          {availableCategories.map((cat) => (
+                        
+                        {/* Category Quick Filter with scroll */}
+                        <div className="bg-card border border-border rounded-xl p-4">
+                          <h3 className="font-semibold text-foreground mb-3">
+                            {t("rental.categoriesCount", { count: availableCategories.length })}
+                          </h3>
+                          <div className="space-y-1 max-h-[400px] overflow-y-auto pr-2">
                             <button
-                              key={cat.id}
-                              onClick={() => setSelectedCategoryFilter(cat.id === selectedCategoryFilter ? null : cat.id)}
+                              onClick={() => setSelectedCategoryFilter(null)}
                               className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                                selectedCategoryFilter === cat.id
+                                selectedCategoryFilter === null
                                   ? "bg-primary text-primary-foreground font-medium"
                                   : "hover:bg-muted text-muted-foreground hover:text-foreground"
                               }`}
                             >
-                              {cat.title}
+                              {t("rental.allCategories")}
                             </button>
-                          ))}
+                            {availableCategories.map((cat) => (
+                              <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategoryFilter(cat.id === selectedCategoryFilter ? null : cat.id)}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                                  selectedCategoryFilter === cat.id
+                                    ? "bg-primary text-primary-foreground font-medium"
+                                    : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                                }`}
+                              >
+                                {cat.title}
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                      
-                      {/* Delivery Calculator for all - desktop only in sidebar */}
-                      <div className="hidden lg:block">
-                        <DeliveryCalculatorCompact showAllCategories />
-                      </div>
-                    </>
-                  )}
-                  {category.id === "anhaenger" && (
-                    <TrailerFilter onFilterChange={setTrailerFilters} />
-                  )}
-                  {category.id === "erdbewegung" && (
-                    <>
+                      </>
+                    )}
+                    {category.id === "anhaenger" && (
+                      <TrailerFilter onFilterChange={setTrailerFilters} />
+                    )}
+                    {category.id === "erdbewegung" && (
                       <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
-                      <div className="hidden lg:block">
-                        <DeliveryCalculatorCompact 
-                          productCategoryId={category.id} 
-                          categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
-                        />
-                      </div>
-                    </>
-                  )}
-                  {/* Generic filter for other categories */}
-                  {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
-                    <>
-                      {categoryFilterMap[category.id] && (
-                        <>
-                          <CategoryFilter
-                            searchPlaceholder={t(categorySearchPlaceholders[category.id] || "catSearch.default")}
-                            sections={categoryFilterMap[category.id]}
-                            onFilterChange={setGenericFilters}
-                            variant={(category.id === "heizung-trocknung" || category.id === "beschallung") ? "accordion" : "badges"}
-                          />
-                          {/* Starkstrom-Hinweis: show in sidebar when 9 kW filter is active */}
-                          {category.id === "heizung-trocknung" && genericFilters.filters["heizleistung"]?.includes("ab-9kw") && (
-                            <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
-                              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-sm text-foreground mb-1">400 V CEE erforderlich</p>
-                                <p className="text-xs text-muted-foreground">
-                                  Der 9 kW Heizlüfter benötigt einen roten CEE-Starkstromanschluss (400 V / 16 A) am Einsatzort.
-                                </p>
+                    )}
+                    {/* Generic filter for other categories */}
+                    {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (
+                      <>
+                        {categoryFilterMap[category.id] && (
+                          <>
+                            <CategoryFilter
+                              searchPlaceholder={t(categorySearchPlaceholders[category.id] || "catSearch.default")}
+                              sections={categoryFilterMap[category.id]}
+                              onFilterChange={setGenericFilters}
+                              variant={(category.id === "heizung-trocknung" || category.id === "beschallung") ? "accordion" : "badges"}
+                            />
+                            {/* Starkstrom-Hinweis: show in sidebar when 9 kW filter is active */}
+                            {category.id === "heizung-trocknung" && genericFilters.filters["heizleistung"]?.includes("ab-9kw") && (
+                              <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
+                                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-semibold text-sm text-foreground mb-1">400 V CEE erforderlich</p>
+                                  <p className="text-xs text-muted-foreground">
+                                    Der 9 kW Heizlüfter benötigt einen roten CEE-Starkstromanschluss (400 V / 16 A) am Einsatzort.
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                      <div className="hidden lg:block">
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Delivery Calculator - always visible below filters (desktop only) */}
+                  {category.id !== "anhaenger" && (
+                    <div className="hidden lg:block">
+                      {category.id === "alle" ? (
+                        <DeliveryCalculatorCompact showAllCategories />
+                      ) : (
                         <DeliveryCalculatorCompact 
                           productCategoryId={category.id}
                           categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
                         />
-                      </div>
-                    </>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
