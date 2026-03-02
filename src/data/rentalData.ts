@@ -18,6 +18,7 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 import iconBesteck from "@/assets/icons/category-besteck.png";
+import iconTraverse from "@/assets/icons/traverse.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -306,7 +307,7 @@ export const productCategories: ProductCategory[] = [
     id: "traversen-rigging",
     title: "Traversen & Rigging",
     description: "Traversen, Rigging-Equipment und Bühnenkonstruktionen.",
-    icon: iconLedSpots,
+    icon: iconTraverse,
   },
   {
     id: "moebel-zelte",
