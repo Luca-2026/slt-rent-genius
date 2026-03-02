@@ -274,10 +274,10 @@ export default function Index() {
                 const cardContent = (
                   <>
                     {/* Step Card */}
-                    <div className={`bg-card rounded-2xl p-5 h-full border border-border shadow-sm ${isInteractive ? 'hover:shadow-lg hover:-translate-y-1' : ''} transition-all duration-300 flex flex-col`}>
+                    <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
                       {/* Step Number Badge + Icon Row */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md ${isInteractive ? 'group-hover:scale-110 group-hover:bg-accent' : ''} transition-all duration-300 shrink-0`}>
+                        <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300 shrink-0">
                           <step.icon className="h-5 w-5" />
                         </div>
                         <span className="text-xs font-bold text-accent uppercase tracking-wider">
@@ -320,7 +320,7 @@ export default function Index() {
                         {cardContent}
                       </button>
                     ) : (
-                      <div className="relative h-full">
+                      <div className="relative group h-full">
                         {cardContent}
                       </div>
                     )}
