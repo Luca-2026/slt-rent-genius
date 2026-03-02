@@ -301,9 +301,10 @@ export default function Lieferung() {
                       </Button>
                     </Link>
 
-                    <p className="text-xs text-muted-foreground text-center">
-                      Unverbindliche Preisberechnung
-                    </p>
+                    <div className="bg-muted/50 rounded-lg p-3 text-xs text-muted-foreground text-center space-y-1">
+                      <p className="font-medium">ℹ️ Dieser Rechner dient nur zur Orientierung.</p>
+                      <p>Wähle im Buchungsprozess einfach „Lieferung gewünscht" – wir fügen die Lieferkosten anschließend deinem Auftrag hinzu.</p>
+                    </div>
                   </CardContent>
                 </Card>
               </AnimatedSection>
