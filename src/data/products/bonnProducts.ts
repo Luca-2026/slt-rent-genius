@@ -30,6 +30,9 @@ import weissweinPassionata1 from "@/assets/products/geschirr/weissweinglas-passi
 import weissweinPassionata2 from "@/assets/products/geschirr/weissweinglas-passionata-2.jpg";
 import weissweinPassionata3 from "@/assets/products/geschirr/weissweinglas-passionata-3.jpg";
 import weissweinPassionata4 from "@/assets/products/geschirr/weissweinglas-passionata-4.jpg";
+import rotweinPassionata1 from "@/assets/products/geschirr/rotweinglas-passionata-1.jpg";
+import rotweinPassionata2 from "@/assets/products/geschirr/rotweinglas-passionata-2.avif";
+import rotweinPassionata3 from "@/assets/products/geschirr/rotweinglas-passionata-3.jpg";
 import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
 import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
@@ -1041,6 +1044,27 @@ export const bonnGeschirrProducts = [
       "Fassungsvermögen": "450 ml",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Aromaverstärkend, kratzfest, nachhaltig",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-rotweinglas-passionata-10er",
+    name: "Rotweinglas Passionata, 10er Set",
+    description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
+    image: rotweinPassionata1,
+    images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
+    detailedDescription: "Das Schott Zwiesel Passionata Rotweinglas im 10er Set – bruchsichere Klasse für Rotwein. Hergestellt aus Tritan®-Kristallglas, extrem bruchfest und kratzfest. Spülmaschinenfest mit langanhaltende Glanz.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas",
+      "Typ": "Rotweinglas",
+      "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
       "Stückzahl": "10 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
