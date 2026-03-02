@@ -34,6 +34,7 @@ import aschenbecherGlas1 from "@/assets/products/geschirr/aschenbecher-glas-1.jp
 import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jpeg";
 import tellerTiefSimply20_1 from "@/assets/products/geschirr/teller-tief-simply20-1.jpeg";
 import tellerTiefSimply20_2 from "@/assets/products/geschirr/teller-tief-simply20-2.jpeg";
+import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2917,10 +2918,18 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "loeffel-simply-19-10er",
     name: "Löffel SIMPLY 19, 10er Set",
-    description: "Tafellöffel",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Löffel klein Edelstahl, 19 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: loeffelSimply19_1,
+    images: [loeffelSimply19_1],
     category: "besteck",
+    detailedDescription: "Der Löffel SIMPLY 19 im 10er Set – ein klassischer Edelstahl-Löffel mit 19 cm Länge. Ideal für den täglichen Gebrauch bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Typ": "Löffel klein",
+      "Länge": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "MVUAG2" }
   },
   {
