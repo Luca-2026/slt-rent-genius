@@ -381,6 +381,7 @@ export default function CategoryProducts() {
                   "moebel": ["moebel", "stuhl", "tisch", "bank"],
                   "husse": ["husse"],
                   "kuehlgeraet": ["kuehlgeraet"],
+                  "garderobe": ["garderobe"],
                 };
                 const beleuchtungTypeGroups: Record<string, string[]> = {
                   "fluter": ["fluter", "baustrahler", "led-fluter"],
