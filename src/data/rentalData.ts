@@ -20,6 +20,7 @@ import iconLedSpots from "@/assets/icons/category-ledspots.png";
 import iconBesteck from "@/assets/icons/category-besteck.png";
 import iconTraverse from "@/assets/icons/traverse.png";
 import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
+import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -320,7 +321,7 @@ export const productCategories: ProductCategory[] = [
     id: "geschirr-glaeser-besteck",
     title: "Geschirr, Gläser & Besteck",
     description: "Teller, Gläser, Tassen und Besteck für Ihre Veranstaltung.",
-    icon: iconGeschirr,
+    icon: iconGeschirrGlaeserBesteck,
   },
   {
     id: "spezialeffekte",
