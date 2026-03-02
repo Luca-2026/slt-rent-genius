@@ -428,6 +428,8 @@
     "badge": "Einfach & unkompliziert",
     "heroTitle": "So funktioniert's",
     "heroDesc": "In 5 einfachen Schritten zu deinem Mietgerät – online buchen, vor Ort abholen oder direkt liefern lassen.",
+    "tabPrivate": "Privatkunden",
+    "tabB2B": "Geschäftskunden (B2B)",
     "step1Title": "Zeitraum & Standort wählen",
     "step1Desc": "Wähle zuerst deinen bevorzugten Standort (Krefeld, Bonn oder Mülheim) und den gewünschten Mietzeitraum aus. Der Kalender zeigt dir die Verfügbarkeit in Echtzeit.",
     "step1Tip1": "Weekend-Konditionen: Fr-Mo zu Sonderpreisen",
