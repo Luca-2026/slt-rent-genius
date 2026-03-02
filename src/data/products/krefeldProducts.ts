@@ -415,6 +415,12 @@ import imgTurboCo2Jet2 from "@/assets/products/spezialeffekte/turbo-jet-co2-2.jp
 import imgTurboCo2Jet3 from "@/assets/products/spezialeffekte/turbo-jet-co2-3.jpg";
 import imgKaltFunkenfontaene4erSet from "@/assets/products/spezialeffekte/kalt-funkenfontaene-4er-set.jpeg";
 
+// Kleiderständer images
+import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-rollen-1.webp";
+import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
+import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
+import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
+
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
 import imgSltLedFluterRgbwauv2 from "@/assets/products/slt-led-fluter-rgbwauv-2.jpeg";
@@ -2730,6 +2736,26 @@ export const moebelZelteProducts: Product[] = [
       "Tür": "Glastür",
     },
     rentwareCode: { krefeld: "Q3VB7F" }
+  },
+  {
+    id: "kleiderstaender-rollen",
+    name: "Kleiderständer mit Rollen",
+    description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – inkl. 20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderstaenderRollen1,
+    images: [imgKleiderstaenderRollen1, imgKleiderstaenderRollen2, imgKleiderstaenderRollen3, imgKleiderstaenderRollen4],
+    category: "garderobe",
+    detailedDescription: "Sie besitzen viele Kleidungsstücke, aber es fehlt an Stauraum in Ihrem Kleiderschrank? Dann heißen Sie diesen Garderobenständer willkommen! Er ist eine neue Aufbewahrungsmöglichkeit für Ihr Zuhause sowie eine optimale Ergänzung zu Ihrem Kleiderschrank!\n\nPerfekt für den Heimgebrauch geeignet – an der Kleiderstange aufgehängt, sehen Ihre Jacken immer so aus, als hätten Sie sie gerade erst gebügelt.\n\nAuch für den gewerblichen Gebrauch geeignet – stellen Sie diesen Kleiderständer in Ihr Bekleidungsgeschäft oder Fotostudio und hängen Sie verschiedene Kleidungsstücke hieran auf. Dank der 4 Rollen lässt er sich mühelos an jede beliebige Stelle schieben. Demontieren Sie einfach den oberen Teil und klappen Sie den unteren Teil zusammen, um den Transport zu erleichtern.\n\nInkl. 20 Stk. Kleiderbügel Holz schwarz! Die max. Belastbarkeit bezieht sich auf das statische Maximalgewicht.",
+    specifications: {
+      "Farbe": "Schwarz",
+      "Material": "Eisenrohr, pulverbeschichtet",
+      "Größe (L × B × H)": "(92–132) × 45,4 × 160 cm",
+      "Kleiderstange": "ausziehbar von 92 cm auf 132 cm",
+      "Max. Belastbarkeit": "90 kg (statisch)",
+      "Gewicht": "5 kg",
+      "Rollen": "4 × Lenkrollen mit Bremse",
+      "Inklusive": "20 Stk. Kleiderbügel Holz schwarz",
+    },
+    rentwareCode: { krefeld: "" }
   },
 ];
 

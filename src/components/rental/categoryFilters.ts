@@ -215,6 +215,7 @@ export const moebelZelteFilterSections: FilterSection[] = [
       { id: "moebel", label: "catFilters.tischeStühle", sublabel: "catFilters.tischeStühle_sub" },
       { id: "husse", label: "catFilters.hussen", sublabel: "catFilters.hussen_sub" },
       { id: "kuehlgeraet", label: "catFilters.kuehlgeraete", sublabel: "catFilters.kuehlgeraete_sub" },
+      { id: "garderobe", label: "catFilters.garderobe", sublabel: "catFilters.garderobe_sub" },
     ],
   },
   {
