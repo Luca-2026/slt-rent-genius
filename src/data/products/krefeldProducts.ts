@@ -392,6 +392,13 @@ import imgTourled50Xcr1 from "@/assets/products/tourled-50-xcr-1.jpeg";
 import imgTourled50Xcr2 from "@/assets/products/tourled-50-xcr-2.jpeg";
 import imgTourled50Xcr3 from "@/assets/products/tourled-50-xcr-3.jpeg";
 
+// ADJ Fog Fury Jett PRO images
+import imgFogFuryJettPro1 from "@/assets/products/spezialeffekte/fog-fury-jett-pro-1.jpeg";
+import imgFogFuryJettPro2 from "@/assets/products/spezialeffekte/fog-fury-jett-pro-2.jpeg";
+import imgFogFuryJettPro3 from "@/assets/products/spezialeffekte/fog-fury-jett-pro-3.jpeg";
+import imgFogFuryJettPro4 from "@/assets/products/spezialeffekte/fog-fury-jett-pro-4.jpeg";
+import imgFogFuryJettPro5 from "@/assets/products/spezialeffekte/fog-fury-jett-pro-5.jpeg";
+
 // Kalt-Funkenfontäne images
 import imgKaltFunkenfontaene1 from "@/assets/products/kalt-funkenfontaene-1.jpeg";
 import imgKaltFunkenfontaene2 from "@/assets/products/kalt-funkenfontaene-2.jpeg";
@@ -2376,10 +2383,21 @@ export const spezialeffekteProducts: Product[] = [
   {
     id: "adj-fog-fury-jett-pro",
     name: "ADJ Fog Fury Jett PRO",
-    description: "CO2-Effekt Nebelmaschine",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "nebelmaschine",
+    description: "Senkrecht-Nebelmaschine inkl. LED-Beleuchtung mit 2,5 l Nebelfluid. Erzeugt vertikale, farbig beleuchtete Nebelsäulen – ideal für Bühnen, Events und Partys. Weiteres Nebelfluid kann im nächsten Schritt dazu gebucht werden.",
+    image: imgFogFuryJettPro1,
+    images: [imgFogFuryJettPro1, imgFogFuryJettPro2, imgFogFuryJettPro3, imgFogFuryJettPro4, imgFogFuryJettPro5],
+    category: "nebel",
+    specifications: {
+      "Typ": "Senkrecht-Nebelmaschine mit LED",
+      "Leistung": "1.520 W",
+      "LEDs": "21 × 3 W RGBA LEDs",
+      "Nebelausstoß": "ca. 283 m³/min",
+      "Tankvolumen": "2,5 Liter",
+      "Aufheizzeit": "ca. 8 Minuten",
+      "Steuerung": "DMX / Wireless / Fernbedienung",
+      "Lieferumfang": "inkl. 2,5 l Nebelfluid",
+      "Montage": "Boden- oder Deckenmontage (Kopfüber) möglich",
+    },
     rentwareCode: { krefeld: "H77LBM" }
   },
   {
