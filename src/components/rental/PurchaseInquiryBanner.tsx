@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +24,11 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setOpen(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [form, setForm] = useState({
     name: "",
