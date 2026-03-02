@@ -205,7 +205,9 @@ export function HeroSearch() {
               onFocus={() => setShowResults(true)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleSearchSubmit();
+                  e.preventDefault();
+                  // Use a microtask to ensure filtered results are up to date
+                  setTimeout(() => handleSearchSubmit(), 0);
                 }
               }}
               className="pl-10 pr-10 py-3 h-auto text-base border-input focus-visible:ring-accent"
