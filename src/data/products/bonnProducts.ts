@@ -25,6 +25,9 @@ import schuessSimply15_1 from "@/assets/products/geschirr/schuessel-simply-15-1.
 import schuessSimply15_2 from "@/assets/products/geschirr/schuessel-simply-15-2.jpeg";
 import schuessSimply15_3 from "@/assets/products/geschirr/schuessel-simply-15-3.jpeg";
 import schuessSimply15_4 from "@/assets/products/geschirr/schuessel-simply-15-4.jpeg";
+import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
+import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
+import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -1131,6 +1134,22 @@ export const bonnBesteckProducts = [
     description: "Große Löffel im 10er Set.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "ML5SL8" },
+  },
+  {
+    id: "bonn-loeffel-gross-deluxe-19",
+    name: "Löffel groß Deluxe 19, 10er Set",
+    description: "Löffel 19,5 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: loeffelGrossDeluxe19_1,
+    images: [loeffelGrossDeluxe19_1, loeffelGrossDeluxe19_2, loeffelGrossDeluxe19_3],
+    detailedDescription: "Der Löffel groß Deluxe 19 im 10er Set – ein hochwertiger Tafellöffel aus poliertem Edelstahl der Serie Athene. Mit 19,5 cm Länge ideal für Hauptgerichte und Suppen. Perfekt für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Länge": "19,5 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
   },
   {
     id: "bonn-messer-simply-20",
