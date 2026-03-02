@@ -3,6 +3,7 @@
 // Category Icons
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
+import iconWerkzeug from "@/assets/icons/werkzeug.png";
 import iconBuehne from "@/assets/icons/category-buehne.png";
 import iconMoebelZelte from "@/assets/icons/category-moebel-zelte.png";
 import iconGeschirr from "@/assets/icons/category-geschirr-neu.png";
@@ -227,7 +228,7 @@ export const productCategories: ProductCategory[] = [
     id: "werkzeuge",
     title: "Werkzeuge",
     description: "Hand- und Elektrowerkzeuge für Bau und Renovierung.",
-    icon: iconVerdichtung,
+    icon: iconWerkzeug,
   },
   {
     id: "gartenpflege",
