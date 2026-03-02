@@ -35,37 +35,26 @@ export function Header() {
       {/* Weekend Tariffs Bar - Scrolling */}
       <div className="bg-primary text-primary-foreground overflow-hidden">
         <div className="py-1.5 text-sm">
-          <div className="animate-marquee whitespace-nowrap flex items-center gap-8">
-            <div className="flex items-center gap-1.5 font-semibold">
-              <Percent className="h-4 w-4" />
-              <span>{t("marquee.weekendRates")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium">{t("marquee.we")}:</span>
-              <span>{t("marquee.weFri")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium">{t("marquee.longWe")}:</span>
-              <span>{t("marquee.longWeFri")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
-            <div className="flex items-center gap-1.5 font-semibold">
-              <Percent className="h-4 w-4" />
-              <span>{t("marquee.weekendRates")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium">{t("marquee.we")}:</span>
-              <span>{t("marquee.weFri")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium">{t("marquee.longWe")}:</span>
-              <span>{t("marquee.longWeFri")}</span>
-            </div>
-            <span className="text-primary-foreground/50">•</span>
+          <div className="marquee-track whitespace-nowrap flex items-center">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="flex items-center gap-8 shrink-0 px-4">
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Percent className="h-4 w-4" />
+                  <span>{t("marquee.weekendRates")}</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-medium">{t("marquee.we")}:</span>
+                  <span>{t("marquee.weFri")}</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-medium">{t("marquee.longWe")}:</span>
+                  <span>{t("marquee.longWeFri")}</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
