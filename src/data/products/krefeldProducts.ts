@@ -6,6 +6,12 @@ import champagnerBrunelli2 from "@/assets/products/geschirr/champagnerglas-brune
 import messerDeluxe21_1 from "@/assets/products/besteck/messer-deluxe-21-1.jpeg";
 import messerDeluxe21_2 from "@/assets/products/besteck/messer-deluxe-21-2.jpeg";
 import messerDeluxe21_3 from "@/assets/products/besteck/messer-deluxe-21-3.jpeg";
+import tellerSimply25_1 from "@/assets/products/geschirr/teller-simply-25-1.jpeg";
+import tellerSimply25_2 from "@/assets/products/geschirr/teller-simply-25-2.jpeg";
+import tellerSimply25_3 from "@/assets/products/geschirr/teller-simply-25-3.jpeg";
+import tellerSimply25_4 from "@/assets/products/geschirr/teller-simply-25-4.jpeg";
+import tellerSimply25_5 from "@/assets/products/geschirr/teller-simply-25-5.jpeg";
+import tellerSimply25_6 from "@/assets/products/geschirr/teller-simply-25-6.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2678,10 +2684,17 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "teller-simply-25-10er",
     name: "Teller SIMPLY 25, 10er Set",
-    description: "Flache Teller 25cm",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Teller weiß in Porzellanoptik, 25 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: tellerSimply25_1,
+    images: [tellerSimply25_1, tellerSimply25_2, tellerSimply25_3, tellerSimply25_4, tellerSimply25_5, tellerSimply25_6],
     category: "teller",
+    detailedDescription: "Der Teller SIMPLY 25 im 10er Set überzeugt durch seine elegante Porzellanoptik in Weiß und ist mit 25 cm Durchmesser ideal als Speiseteller für Hauptgerichte. Perfekt für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Durchmesser": "25 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "1I2HWN" }
   },
   {
