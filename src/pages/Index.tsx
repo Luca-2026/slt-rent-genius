@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { ServicesSection } from "@/components/home/ServicesSection";
+const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
 import { Loader2 } from "lucide-react";
 
 // Lazy load components that pull in rentalData (~100 product images)
@@ -349,6 +350,11 @@ export default function Index() {
 
       {/* Services Section */}
       <ServicesSection />
+
+      {/* Product Inspiration Slider */}
+      <Suspense fallback={null}>
+        <ProductInspirationSlider />
+      </Suspense>
 
       {/* CTA Section */}
       <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
