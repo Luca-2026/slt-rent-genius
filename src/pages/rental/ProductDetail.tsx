@@ -23,6 +23,7 @@ import {
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
+import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
@@ -455,6 +456,14 @@ export default function ProductDetail() {
                     </div>
                   </Link>
                 </div>
+              )}
+
+              {/* Kaufanfrage-Banner für Erdbewegung & Verdichtung */}
+              {(categoryId === "erdbewegung" || categoryId === "verdichtung") && (
+                <PurchaseInquiryBanner
+                  productName={product.name}
+                  locationName={location.shortName}
+                />
               )}
             </div>
 
