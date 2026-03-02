@@ -3,6 +3,9 @@ import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-sim
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
 import champagnerBrunelli2 from "@/assets/products/geschirr/champagnerglas-brunelli-2.jpeg";
+import messerDeluxe21_1 from "@/assets/products/besteck/messer-deluxe-21-1.jpeg";
+import messerDeluxe21_2 from "@/assets/products/besteck/messer-deluxe-21-2.jpeg";
+import messerDeluxe21_3 from "@/assets/products/besteck/messer-deluxe-21-3.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2818,10 +2821,18 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "messer-deluxe-21-10er",
     name: "Messer Deluxe 21, 10er Set",
-    description: "Tafelmesser",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Messer 21 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: messerDeluxe21_1,
+    images: [messerDeluxe21_1, messerDeluxe21_2, messerDeluxe21_3],
     category: "besteck",
+    detailedDescription: "Das Messer Deluxe 21 im 10er Set aus der Serie Athene Poliert überzeugt durch hochwertigen Edelstahl und elegantes Design. Ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Länge": "21 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "8ZQ4K9" }
   },
   {
