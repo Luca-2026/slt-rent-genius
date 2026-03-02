@@ -36,7 +36,7 @@ export default function About() {
   const stats = [
     { value: "2016", label: t("about.statFounded") },
     { value: "+3.500", label: t("about.statCustomers") },
-    { value: "+800", label: t("about.statProducts") },
+    { value: "+1.700", label: t("about.statProducts") },
     { value: "3", label: t("about.statLocations") },
   ];
 

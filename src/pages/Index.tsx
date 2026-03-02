@@ -48,7 +48,7 @@ export default function Index() {
 
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
-    { value: 800, label: t("trust.rentalProducts"), prefix: "+", isCounter: true },
+    { value: 1700, label: t("trust.rentalProducts"), prefix: "+", isCounter: true },
     { value: 3, label: t("trust.locationsNRW"), prefix: "", isCounter: true },
     { value: 2016, label: t("trust.yourPartner"), prefix: "seit ", isCounter: false },
   ];
