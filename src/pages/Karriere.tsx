@@ -70,8 +70,8 @@ export default function Karriere() {
               <AnimatedSection key={benefit.label} animation="fade-in-up" delay={index * 50}>
                 <Card className="text-center p-6 hover:shadow-md transition-shadow border-border hover:border-primary/30">
                   <CardContent className="p-0">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <benefit.icon className="h-7 w-7 text-primary" />
+                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 shrink-0">
+                      <benefit.icon className="h-7 w-7 text-primary shrink-0" strokeWidth={1.5} />
                     </div>
                     <p className="font-medium text-foreground text-sm">{benefit.label}</p>
                   </CardContent>
