@@ -41,6 +41,12 @@ import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-1
 import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
 import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
+import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
+import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
+import speisetDarwin27_3 from "@/assets/products/geschirr/speiseteller-darwin-27-3.jpeg";
+import speisetDarwin27_4 from "@/assets/products/geschirr/speiseteller-darwin-27-4.jpeg";
+import speisetDarwin27_5 from "@/assets/products/geschirr/speiseteller-darwin-27-5.jpeg";
+import speisetDarwin27_6 from "@/assets/products/geschirr/speiseteller-darwin-27-6.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -1106,6 +1112,24 @@ export const bonnGeschirrProducts = [
       "Durchmesser": "21,8 cm",
       "Höhe": "2,3 cm",
       "Stückzahl": "10 Stück pro Set",
+      "Spülmaschinenfest": "Ja",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-speiseteller-darwin-27",
+    name: "Speiseteller 27 cm",
+    description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: speisetDarwin27_1,
+    images: [speisetDarwin27_1, speisetDarwin27_2, speisetDarwin27_3, speisetDarwin27_4, speisetDarwin27_5, speisetDarwin27_6],
+    onRequest: true,
+    detailedDescription: "Der Speiseteller 27 cm aus der Serie Darwin von Sänger. Das schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Inspiriert von der gehobenen Sterneküche. Spülmaschinenfest – einfache und unkomplizierte Reinigung in der Spülmaschine oder auch von Hand. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Hersteller": "Sänger",
+      "Serie": "Darwin",
+      "Durchmesser": "27 cm",
+      "Design": "Vintage mit feiner Maserung",
       "Spülmaschinenfest": "Ja",
       "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
     },
