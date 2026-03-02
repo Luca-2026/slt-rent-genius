@@ -73,12 +73,14 @@ export function HeroSearch() {
   const translatedProducts = useTranslatedProducts(allProducts);
 
   // Filter matching categories (by title, description, OR products within)
+  // Prioritize direct category name matches over indirect product-based matches
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
     const searchable = productCategories.filter((c) => c.id !== "alle");
-    return searchable.filter((cat) => {
-      // Match category title/description
+    
+    // First: direct category title/description matches
+    const directMatches = searchable.filter((cat) => {
       if (isGerman) {
         if (cat.title.toLowerCase().includes(query)) return true;
         if (cat.description.toLowerCase().includes(query)) return true;
@@ -88,7 +90,14 @@ export function HeroSearch() {
         if (tr?.description?.toLowerCase().includes(query)) return true;
         if (cat.title.toLowerCase().includes(query)) return true;
       }
-      // Match if any product in this category matches the query
+      return false;
+    });
+    
+    // If we have direct category matches, only show those
+    if (directMatches.length > 0) return directMatches.slice(0, 3);
+    
+    // Otherwise: indirect matches via products within categories
+    const indirectMatches = searchable.filter((cat) => {
       for (const location of locations) {
         const catProducts = location.products[cat.id];
         if (catProducts) {
@@ -99,7 +108,9 @@ export function HeroSearch() {
         }
       }
       return false;
-    }).slice(0, 3);
+    });
+    
+    return indirectMatches.slice(0, 3);
   }, [searchQuery, isGerman]);
 
   const filteredProducts = useMemo(() => {
