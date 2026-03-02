@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, ChevronRight, Package, X } from "lucide-react";
+import { Search, MapPin, ChevronRight, Package, X, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
-import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
+import { locations, getAllProductsForLocation, type Product, productCategories, type ProductCategory } from "@/data/rentalData";
+import { categoryTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
 import {
   Dialog,
@@ -70,6 +71,26 @@ export function HeroSearch() {
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
   const translatedProducts = useTranslatedProducts(allProducts);
 
+  // Filter matching categories
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    // Exclude "alle" category
+    const searchable = productCategories.filter((c) => c.id !== "alle");
+    return searchable.filter((cat) => {
+      if (isGerman) {
+        return cat.title.toLowerCase().includes(query) || cat.description.toLowerCase().includes(query);
+      } else {
+        const tr = categoryTranslations[cat.id];
+        if (tr?.title?.toLowerCase().includes(query)) return true;
+        if (tr?.description?.toLowerCase().includes(query)) return true;
+        // Also match German as fallback
+        if (cat.title.toLowerCase().includes(query)) return true;
+        return false;
+      }
+    }).slice(0, 3);
+  }, [searchQuery, isGerman]);
+
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
@@ -78,12 +99,10 @@ export function HeroSearch() {
         const original = allProducts[index];
         
         if (isGerman) {
-          // German mode: only search German (original) fields
           if (original.name.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
           if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
         } else {
-          // English mode: search translated fields + original German as fallback
           if (p.name.toLowerCase().includes(query)) return true;
           if (p.description?.toLowerCase().includes(query)) return true;
           if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
@@ -129,12 +148,21 @@ export function HeroSearch() {
   };
 
   const handleSearchSubmit = () => {
-    if (filteredProducts.length > 0) {
-      // Navigate to the first matching product's location dialog
+    if (filteredCategories.length > 0) {
+      // Navigate to the first matching category
+      handleCategorySelect(filteredCategories[0].id);
+    } else if (filteredProducts.length > 0) {
       handleProductSelect(filteredProducts[0]);
     } else {
       navigate(`/mieten/krefeld/alle`);
     }
+  };
+
+  const handleCategorySelect = (categoryId: string) => {
+    setShowResults(false);
+    setSearchQuery("");
+    // Navigate to location selection for the category
+    navigate(`/mieten/krefeld/${categoryId}`);
   };
 
   const availableLocations = selectedProduct
@@ -189,42 +217,85 @@ export function HeroSearch() {
         {/* Search Results Dropdown */}
         {showResults && searchQuery && (
           <div className="absolute left-0 right-0 top-full mt-2 bg-card border border-border rounded-lg shadow-lg z-[100] overflow-hidden max-h-96 overflow-y-auto">
-            {filteredProducts.length > 0 ? (
+            {(filteredCategories.length > 0 || filteredProducts.length > 0) ? (
               <div className="p-2">
-                <p className="text-xs text-muted-foreground px-3 py-1 mb-1">
-                  {t("hero.articlesFound", { count: filteredProducts.length })}
-                </p>
-                {filteredProducts.map((product) => (
-                  <button
-                    key={product.id}
-                    onClick={() => handleProductSelect(product)}
-                    className="w-full flex items-center gap-3 px-3 py-3 rounded-md hover:bg-muted transition-colors text-left group"
-                  >
-                    <div className="w-14 h-14 bg-muted rounded-lg overflow-hidden flex-shrink-0">
-                      {product.image ? (
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Package className="h-6 w-6 text-muted-foreground/50" />
+                {/* Categories first */}
+                {filteredCategories.length > 0 && (
+                  <>
+                    <p className="text-xs text-muted-foreground px-3 py-1 mb-1">
+                      {t("hero.categoriesFound", { count: filteredCategories.length, defaultValue: "{{count}} Kategorien" })}
+                    </p>
+                    {filteredCategories.map((cat) => {
+                      const displayTitle = isGerman ? cat.title : (categoryTranslations[cat.id]?.title || cat.title);
+                      const displayDesc = isGerman ? cat.description : (categoryTranslations[cat.id]?.description || cat.description);
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => handleCategorySelect(cat.id)}
+                          className="w-full flex items-center gap-3 px-3 py-3 rounded-md hover:bg-muted transition-colors text-left group"
+                        >
+                          <div className="w-14 h-14 bg-primary/10 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                            {cat.icon ? (
+                              <img src={cat.icon} alt={displayTitle} className="w-8 h-8 object-contain" />
+                            ) : (
+                              <FolderOpen className="h-6 w-6 text-primary" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
+                              {displayTitle}
+                            </span>
+                            <span className="text-xs text-muted-foreground line-clamp-1">{displayDesc}</span>
+                            <span className="text-xs text-primary font-medium mt-0.5 block">
+                              {t("hero.viewCategory", { defaultValue: "Kategorie anzeigen →" })}
+                            </span>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+
+                {/* Products */}
+                {filteredProducts.length > 0 && (
+                  <>
+                    <p className="text-xs text-muted-foreground px-3 py-1 mb-1 mt-2">
+                      {t("hero.articlesFound", { count: filteredProducts.length })}
+                    </p>
+                    {filteredProducts.map((product) => (
+                      <button
+                        key={product.id}
+                        onClick={() => handleProductSelect(product)}
+                        className="w-full flex items-center gap-3 px-3 py-3 rounded-md hover:bg-muted transition-colors text-left group"
+                      >
+                        <div className="w-14 h-14 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                          {product.image ? (
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Package className="h-6 w-6 text-muted-foreground/50" />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
-                        {product.name}
-                      </span>
-                      {product.description && (
-                        <span className="text-xs text-muted-foreground line-clamp-1">{product.description}</span>
-                      )}
-                      {product.pricePerDay && (
-                        <span className="text-sm font-semibold text-primary mt-0.5 block">
-                          {product.pricePerDay}{t("rental.perDay")}
-                        </span>
-                      )}
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                  </button>
-                ))}
+                        <div className="flex-1 min-w-0">
+                          <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
+                            {product.name}
+                          </span>
+                          {product.description && (
+                            <span className="text-xs text-muted-foreground line-clamp-1">{product.description}</span>
+                          )}
+                          {product.pricePerDay && (
+                            <span className="text-sm font-semibold text-primary mt-0.5 block">
+                              {product.pricePerDay}{t("rental.perDay")}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                      </button>
+                    ))}
+                  </>
+                )}
               </div>
             ) : (
               <div className="p-6 text-center">
