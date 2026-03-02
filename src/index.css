@@ -174,8 +174,8 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Marquee Animation */
-  @keyframes marquee {
+  /* Marquee Animation - seamless infinite scroll */
+  @keyframes marquee-scroll {
     0% {
       transform: translateX(0);
     }
@@ -184,8 +184,9 @@
     }
   }
 
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
+  .marquee-track {
+    animation: marquee-scroll 30s linear infinite;
+    width: max-content;
   }
 }
 
