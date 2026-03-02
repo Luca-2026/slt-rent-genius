@@ -96,7 +96,7 @@ export function ProductInspirationSlider() {
             Entdecken Sie unser Sortiment
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Eine Auswahl aus über 300 Mietartikeln – von Baumaschinen bis Event-Equipment.
+            Eine Auswahl aus über 1.700 Mietartikeln – von Baumaschinen bis Event-Equipment.
           </p>
         </AnimatedSection>
       </div>
