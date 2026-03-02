@@ -327,9 +327,9 @@ export default function Lieferung() {
               { icon: MapPin, title: "3 Standorte in NRW", text: "Wir liefern von Krefeld, Bonn oder Mülheim – je nachdem, welcher Standort deiner Baustelle am nächsten ist." },
             ].map((item, index) => (
               <AnimatedSection key={item.title} animation="fade-in-up" delay={index * 120}>
-                <Card className="hover:shadow-md transition-all duration-300">
-                  <CardContent className="pt-6">
-                    <item.icon className="h-8 w-8 text-primary mb-3" />
+                <Card className="hover:shadow-md transition-all duration-300 h-full">
+                  <CardContent className="pt-6 h-full flex flex-col">
+                    <item.icon className="h-8 w-8 text-primary mb-3 shrink-0" />
                     <h3 className="font-semibold text-headline mb-2">{item.title}</h3>
                     <p className="text-sm text-muted-foreground">{item.text}</p>
                   </CardContent>
