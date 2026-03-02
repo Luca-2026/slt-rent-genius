@@ -2735,8 +2735,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     id: "champagnerglas-passionata-10er",
     name: "Champagnerglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
-    image: champagnerPassionata1,
-    images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
+    image: champagnerPassionata2,
+    images: [champagnerPassionata2, champagnerPassionata1, champagnerPassionata3, champagnerPassionata4],
     category: "glaeser",
     detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz mit jeder Flasche. Das hohe, schlanke Design verstärkt das Prickeln und den Geschmack von Champagner und Sekt. Hergestellt aus bleifreiem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Spülmaschinenfest mit langanhaltender Brillanz. Ideal für gehobene Veranstaltungen, Empfänge und festliche Anlässe. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
