@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { ExternalLink, Wrench, Construction, ShieldCheck, PartyPopper, Truck } from "lucide-react";
+import { ExternalLink, Construction, ShieldCheck, Truck } from "lucide-react";
 
 interface ServiceBannerProps {
   categoryId?: string;
@@ -9,7 +8,6 @@ interface ServiceInfo {
   icon: React.ElementType;
   title: string;
   description: string;
-  link?: string;
   externalLink?: string;
   externalLabel?: string;
   colorClass: string;
@@ -21,7 +19,6 @@ const categoryServices: Record<string, ServiceInfo> = {
     icon: ShieldCheck,
     title: "Komplette Verkehrssicherung aus einer Hand",
     description: "Wir übernehmen die gesamte Absperrplanung, richten Halteverbotszonen ein, stellen Antragsformulare bereit und koordinieren mit Straßenverkehrsbehörden & Bauämtern.",
-    link: "/loesungen/tiefbau-erdbewegung",
     externalLink: "https://www.slt-infra.de",
     externalLabel: "Mehr auf slt-infra.de",
     colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
@@ -31,7 +28,6 @@ const categoryServices: Record<string, ServiceInfo> = {
     icon: Construction,
     title: "Auf- & Abbau inklusive",
     description: "Wir liefern nicht nur – wir übernehmen auch den kompletten Auf- und Abbau Ihrer Zelte, Möbel und Event-Ausstattung.",
-    link: "/loesungen/events-veranstaltungen",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
@@ -39,7 +35,6 @@ const categoryServices: Record<string, ServiceInfo> = {
     icon: Construction,
     title: "Lieferung, Auf- & Abbau",
     description: "Unsere Techniker liefern Ihre Beschallungstechnik an, bauen auf, testen und bauen nach dem Event wieder ab.",
-    link: "/loesungen/events-veranstaltungen",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
@@ -47,7 +42,6 @@ const categoryServices: Record<string, ServiceInfo> = {
     icon: Construction,
     title: "Lieferung, Auf- & Abbau",
     description: "Professionelle Installation und Abbau Ihrer Beleuchtungstechnik durch unser erfahrenes Team.",
-    link: "/loesungen/events-veranstaltungen",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
@@ -55,7 +49,6 @@ const categoryServices: Record<string, ServiceInfo> = {
     icon: Truck,
     title: "Anlieferung & Aufbau",
     description: "Wir liefern Ihre Hüpfburg direkt zum Veranstaltungsort, bauen sie auf und holen sie nach dem Event wieder ab.",
-    link: "/loesungen/kindergeburtstage",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
@@ -92,20 +85,10 @@ export function ServiceBanner({ categoryId }: ServiceBannerProps) {
               <ExternalLink className="h-3 w-3" />
             </a>
           )}
-          {service.link && !service.externalLink && (
-            <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
-              Mehr erfahren
-              <ExternalLink className="h-3 w-3" />
-            </span>
-          )}
         </div>
       </div>
     </div>
   );
-
-  if (service.link && !service.externalLink) {
-    return <Link to={service.link} className="block">{content}</Link>;
-  }
 
   return content;
 }
