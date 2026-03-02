@@ -333,8 +333,7 @@ export default function ProductDetail() {
                   </h2>
                   <a
                     href={product.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    download
                     className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg px-4 py-3 text-sm font-medium transition-colors border border-primary/20"
                   >
                     <FileDown className="h-4 w-4 flex-shrink-0" />
