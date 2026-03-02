@@ -10,16 +10,17 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { ShoppingCart, Send, CheckCircle, Loader2 } from "lucide-react";
+import { ShoppingCart, Send, CheckCircle, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 interface PurchaseInquiryBannerProps {
   productName: string;
   locationName: string;
+  categoryId?: string;
 }
 
-export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInquiryBannerProps) {
+export function PurchaseInquiryBanner({ productName, locationName, categoryId }: PurchaseInquiryBannerProps) {
   const [popupOpen, setPopupOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -121,6 +122,17 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
               <Send className="h-4 w-4 mr-2" />
               Jetzt Kaufanfrage stellen
             </Button>
+            {(categoryId === "erdbewegung" || categoryId === "arbeitsbuehnen") && (
+              <a
+                href="https://www.zoomlion-nrw.de"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 text-sm text-primary hover:underline pt-1"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                Zoomlion Neumaschinen auf www.zoomlion-nrw.de
+              </a>
+            )}
           </div>
         </DialogContent>
       </Dialog>
