@@ -5,7 +5,7 @@ import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTrans
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets, Sparkles } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -905,6 +905,39 @@ export default function CategoryProducts() {
           </div>
         </section>
       )}
+
+      {/* Spülmaschine Recommendation for Geschirr/Gläser/Besteck */}
+      {category.id === "geschirr-glaeser-besteck" && (() => {
+        const spuelmaschine = allProducts.find(p => 
+          p.id === "spuelmaschine-frontlader" || p.id === "bonn-spuelmaschine-gastro"
+        );
+        if (!spuelmaschine) return null;
+        const spuelmaschineLink = `/mieten/${location.id}/${category.id}/${spuelmaschine.id}`;
+        return (
+          <section className="pt-4 lg:pt-6">
+            <div className="section-container">
+              <Link to={spuelmaschineLink} className="block">
+                <div className="flex items-center gap-4 bg-accent/10 border border-accent/30 rounded-xl p-4 hover:bg-accent/15 transition-colors group">
+                  {spuelmaschine.image && (
+                    <div className="w-20 h-20 rounded-lg overflow-hidden bg-background flex-shrink-0 border border-border">
+                      <img src={spuelmaschine.image} alt={spuelmaschine.name} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Sparkles className="h-4 w-4 text-accent flex-shrink-0" />
+                      <span className="text-xs font-semibold text-accent uppercase tracking-wide">Empfehlung</span>
+                    </div>
+                    <p className="font-semibold text-foreground group-hover:text-accent transition-colors">{spuelmaschine.name}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1">Professionell reinigen statt Reinigungspauschale zahlen – ideal bei großen Mengen an Geschirr, Gläsern & Besteck.</p>
+                  </div>
+                  <ArrowLeft className="h-5 w-5 text-muted-foreground rotate-180 flex-shrink-0 group-hover:text-accent transition-colors" />
+                </div>
+              </Link>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* Products */}
       <section className="py-8 lg:py-12">
