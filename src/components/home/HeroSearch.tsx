@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
-import { productTranslations, tagTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
 import {
   Dialog,
@@ -60,7 +59,8 @@ function getCategoryForProductAtLocation(productId: string, locationId: string):
 
 export function HeroSearch() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isGerman = i18n.language === "de" || i18n.language?.startsWith("de");
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -70,34 +70,33 @@ export function HeroSearch() {
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
   const translatedProducts = useTranslatedProducts(allProducts);
 
-  // Filter products based on search query (matches both German and English)
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
     return translatedProducts
       .filter((p, index) => {
-        // Search translated fields (which are already in the active language)
-        if (p.name.toLowerCase().includes(query)) return true;
-        if (p.description?.toLowerCase().includes(query)) return true;
-        if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-
-        // Also search original German fields so German terms still work in EN mode
         const original = allProducts[index];
-        if (original) {
+        
+        if (isGerman) {
+          // German mode: only search German (original) fields
           if (original.name.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
           if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+        } else {
+          // English mode: search translated fields + original German as fallback
+          if (p.name.toLowerCase().includes(query)) return true;
+          if (p.description?.toLowerCase().includes(query)) return true;
+          if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+          if (original) {
+            if (original.name.toLowerCase().includes(query)) return true;
+            if (original.description?.toLowerCase().includes(query)) return true;
+          }
         }
-
-        // Also search English translations so English terms work in DE mode
-        const tr = productTranslations[p.id];
-        if (tr?.name?.toLowerCase().includes(query)) return true;
-        if (tr?.description?.toLowerCase().includes(query)) return true;
 
         return false;
       })
       .slice(0, 8);
-  }, [searchQuery, translatedProducts, allProducts]);
+  }, [searchQuery, translatedProducts, allProducts, isGerman]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -130,7 +129,8 @@ export function HeroSearch() {
   };
 
   const handleSearchSubmit = () => {
-    if (filteredProducts.length === 1) {
+    if (filteredProducts.length > 0) {
+      // Navigate to the first matching product's location dialog
       handleProductSelect(filteredProducts[0]);
     } else {
       navigate(`/mieten/krefeld/alle`);
