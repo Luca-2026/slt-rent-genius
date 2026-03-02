@@ -38,6 +38,8 @@ import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpe
 import gabelKleinDeluxe14_1 from "@/assets/products/besteck/gabel-klein-deluxe-14-1.jpeg";
 import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-14-2.jpeg";
 import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
+import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
+import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2692,10 +2694,18 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "kaffeetasse-12er",
     name: "Kaffeetasse, 12er Set",
-    description: "Kaffeetassen mit Untertasse",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kaffeetasse weiß aus Porzellan inkl. Untertasse. Fassungsvermögen ca. 200 ml. Die Tassen müssen gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €/Set.",
+    image: kaffeetasse12er_1,
+    images: [kaffeetasse12er_1, kaffeetasse12er_2],
     category: "tassen",
+    detailedDescription: "Klassische Kaffeetasse im 12er Set aus weißem Porzellan, inklusive passender Untertasse. Mit einem Fassungsvermögen von ca. 200 ml und einem Untertassen-Durchmesser von 16 cm ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Tassen müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € pro Set erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Fassungsvermögen": "ca. 200 ml",
+      "Durchmesser Untertasse": "16 cm",
+      "Stückzahl": "12 Tassen + 12 Untertassen pro Set",
+      "Reinigungspauschale": "2,50 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "W3X799" }
   },
   // Geschirr
