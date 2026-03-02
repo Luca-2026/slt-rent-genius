@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -444,8 +444,38 @@ export default function ProductDetail() {
                       </p>
                     )}
                   </div>
-                )}
+              )}
 
+              {/* Hilfe-Artikel für Erdbewegung (Minibagger) */}
+              {categoryId === "erdbewegung" && (
+                <div className="space-y-3">
+                  <Link
+                    to="/hilfe"
+                    state={{ articleId: "minibagger-einweisung" }}
+                    className="block"
+                  >
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <HardHat className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            {t("rental.excavatorSafetyGuide")}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {t("rental.excavatorSafetyGuideDesc")}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                            {t("rental.excavatorSafetyGuideLink")}
+                            <ExternalLink className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              )}
                 <div className="space-y-2 mb-4">
                   <Button
                     size="lg"
