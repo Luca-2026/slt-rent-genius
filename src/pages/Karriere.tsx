@@ -68,12 +68,12 @@ export default function Karriere() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {benefits.map((benefit, index) => (
               <AnimatedSection key={benefit.label} animation="fade-in-up" delay={index * 50}>
-                <Card className="text-center p-6 hover:shadow-md transition-shadow border-border hover:border-primary/30">
-                  <CardContent className="p-0">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 shrink-0">
+                <Card className="text-center p-6 hover:shadow-md transition-shadow border-border hover:border-primary/30 h-full flex flex-col items-center justify-center">
+                  <CardContent className="p-0 flex flex-col items-center justify-center">
+                    <div className="w-14 h-14 min-w-[3.5rem] min-h-[3.5rem] bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 shrink-0">
                       <benefit.icon className="h-7 w-7 text-primary shrink-0" strokeWidth={1.5} />
                     </div>
-                    <p className="font-medium text-foreground text-sm">{benefit.label}</p>
+                    <p className="font-medium text-foreground text-sm leading-tight">{benefit.label}</p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
