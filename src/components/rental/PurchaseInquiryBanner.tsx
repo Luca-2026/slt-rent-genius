@@ -20,13 +20,14 @@ interface PurchaseInquiryBannerProps {
 }
 
 export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInquiryBannerProps) {
-  const [open, setOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    const timer = setTimeout(() => setOpen(true), 2500);
+    const timer = setTimeout(() => setPopupOpen(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -43,7 +44,6 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
 
     setIsSubmitting(true);
     try {
-      // Use the project_requests table for purchase inquiries
       const { error } = await supabase.from("project_requests").insert({
         project_name: `Kaufanfrage: ${productName}`,
         equipment_needed: productName,
@@ -71,9 +71,10 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
 
   return (
     <>
+      {/* Clickable banner on the page */}
       <div
         className="bg-accent/10 border border-accent/30 rounded-xl p-4 cursor-pointer hover:bg-accent/15 transition-colors group"
-        onClick={() => setOpen(true)}
+        onClick={() => setFormOpen(true)}
       >
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -90,7 +91,38 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      {/* Auto-popup after 2.5s — info only, no form */}
+      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-accent" />
+              Lieber kaufen statt mieten?
+            </DialogTitle>
+            <DialogDescription>
+              Alle Artikel können Sie bei uns auch zu besten Konditionen erwerben!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-center space-y-3 pt-2">
+            <p className="text-sm text-muted-foreground">
+              Stellen Sie jetzt eine unverbindliche Kaufanfrage für <span className="font-medium text-foreground">{productName}</span>.
+            </p>
+            <Button
+              className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+              onClick={() => {
+                setPopupOpen(false);
+                setFormOpen(true);
+              }}
+            >
+              <Send className="h-4 w-4 mr-2" />
+              Jetzt Kaufanfrage stellen
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Form dialog — opens on button click */}
+      <Dialog open={formOpen} onOpenChange={setFormOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -113,7 +145,7 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
               <p className="text-sm text-muted-foreground mb-4">
                 Vielen Dank für dein Interesse. Wir melden uns zeitnah mit einem Angebot bei dir.
               </p>
-              <Button variant="outline" onClick={() => { setOpen(false); setIsSuccess(false); }}>
+              <Button variant="outline" onClick={() => { setFormOpen(false); setIsSuccess(false); }}>
                 Schließen
               </Button>
             </div>
