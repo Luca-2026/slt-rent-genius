@@ -54,6 +54,8 @@ import buffetTellerwaermer1 from "@/assets/products/geschirr/buffet-tellerwaerme
 import buffetTellerwaermer2 from "@/assets/products/geschirr/buffet-tellerwaermer-2.jpeg";
 import buffetTellerwaermer3 from "@/assets/products/geschirr/buffet-tellerwaermer-3.jpeg";
 import buffetTellerwaermer4 from "@/assets/products/geschirr/buffet-tellerwaermer-4.jpeg";
+import messerSimply20_1 from "@/assets/products/besteck/messer-simply-20-1.jpeg";
+import messerSimply20_2 from "@/assets/products/besteck/messer-simply-20-2.jpeg";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
 import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
@@ -3050,10 +3052,18 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "messer-simply-20-10er",
     name: "Messer SIMPLY 20, 10er Set",
-    description: "Tafelmesser",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Messer Edelstahl, 20 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: messerSimply20_1,
+    images: [messerSimply20_1, messerSimply20_2],
     category: "besteck",
+    detailedDescription: "Das Messer SIMPLY 20 im 10er Set – ein klassisches Tafelmesser aus Edelstahl mit 20 cm Länge. Ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Typ": "Tafelmesser",
+      "Länge": "20 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "LKA1DW" }
   },
 ];
