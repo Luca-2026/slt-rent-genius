@@ -52,16 +52,51 @@ export function Footer() {
     <footer className="bg-primary">
       {/* Main Footer */}
       <div className="section-container py-6">
-        {/* Top Row: Logo + Locations */}
-        <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12">
-          {/* Logo - clipped to remove margins, aligned left */}
-          <Link to="/" className="shrink-0 h-16 lg:h-20 overflow-hidden flex items-center -ml-4">
+        {/* Top Row: Logo + Quick Links + Social */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          {/* Logo */}
+          <Link to="/" className="shrink-0 h-14 lg:h-16 overflow-hidden flex items-center -ml-4">
             <img 
               src={sltLogo} 
               alt="SLT Rental" 
-              className="h-36 lg:h-44 w-auto brightness-0 invert max-w-none"
+              className="h-32 lg:h-36 w-auto brightness-0 invert max-w-none"
             />
           </Link>
+
+          {/* Quick Links */}
+          <nav className="flex flex-wrap gap-x-6 gap-y-2">
+            {quickLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-xs text-white/70 hover:text-accent transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Social Links */}
+          <div className="flex items-center gap-3 shrink-0">
+            <a
+              href="https://www.facebook.com/sltrental"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
+              aria-label="Facebook"
+            >
+              <Facebook className="h-4 w-4 text-white" />
+            </a>
+            <a
+              href="https://www.instagram.com/slt_rental"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="h-4 w-4 text-white" />
+            </a>
+          </div>
         </div>
 
         {/* Divider */}
@@ -92,47 +127,6 @@ export function Footer() {
                 </div>
               );
             })}
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="border-t border-white/10 my-4" />
-
-        {/* Bottom Row: Links + Social */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {/* Quick Links */}
-          <nav className="flex flex-wrap gap-x-6 gap-y-2">
-            {quickLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="text-xs text-white/70 hover:text-accent transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Social Links */}
-          <div className="flex items-center gap-3">
-            <a
-              href="https://www.facebook.com/sltrental"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook className="h-4 w-4 text-white" />
-            </a>
-            <a
-              href="https://www.instagram.com/slt_rental"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="h-4 w-4 text-white" />
-            </a>
           </div>
         </div>
       </div>
