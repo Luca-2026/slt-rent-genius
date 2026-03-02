@@ -1016,8 +1016,8 @@ export const bonnGeschirrProducts = [
     id: "bonn-longdrinkglas-passionata-10er",
     name: "Longdrink- / Wasserglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set.",
-    image: longdrinkPassionata1,
-    images: [longdrinkPassionata1, longdrinkPassionata2, longdrinkPassionata3],
+    image: longdrinkPassionata2,
+    images: [longdrinkPassionata2, longdrinkPassionata1, longdrinkPassionata3],
     detailedDescription: "Die Schott Zwiesel Passionata Longdrinkgläser im 10er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Longdrinks, Cocktails, Mocktails oder einfach erfrischendes Wasser. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden.",
     specifications: {
       "Hersteller": "Schott Zwiesel",
@@ -1079,8 +1079,8 @@ export const bonnGeschirrProducts = [
     id: "bonn-champagnerglas-passionata-10er",
     name: "Champagnerglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
-    image: champagnerPassionata2,
-    images: [champagnerPassionata2, champagnerPassionata1, champagnerPassionata3, champagnerPassionata4],
+    image: champagnerPassionata1,
+    images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
     detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz für Champagner und Sekt. Bleifreies Tritan®-Kristallglas, bruchfest, kratzfest und spülmaschinenfest.",
     specifications: {
       "Hersteller": "Schott Zwiesel",
