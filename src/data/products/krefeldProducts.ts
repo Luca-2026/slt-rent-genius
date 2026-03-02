@@ -20,6 +20,10 @@ import dessertellerDeluxe21_3 from "@/assets/products/geschirr/dessertteller-del
 import dessertellerDeluxe21_4 from "@/assets/products/geschirr/dessertteller-deluxe-21-4.jpeg";
 import dessertellerDeluxe21_5 from "@/assets/products/geschirr/dessertteller-deluxe-21-5.jpeg";
 import dessertellerDeluxe21_6 from "@/assets/products/geschirr/dessertteller-deluxe-21-6.jpeg";
+import schuessSimply15_1 from "@/assets/products/geschirr/schuessel-simply-15-1.jpeg";
+import schuessSimply15_2 from "@/assets/products/geschirr/schuessel-simply-15-2.jpeg";
+import schuessSimply15_3 from "@/assets/products/geschirr/schuessel-simply-15-3.jpeg";
+import schuessSimply15_4 from "@/assets/products/geschirr/schuessel-simply-15-4.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2752,10 +2756,17 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "schuessel-simply-15-10er",
     name: "Schüssel SIMPLY 15, 10er Set",
-    description: "Schüsseln 15cm",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Schüssel/Schale weiß in Porzellanoptik, 15 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: schuessSimply15_1,
+    images: [schuessSimply15_1, schuessSimply15_2, schuessSimply15_3, schuessSimply15_4],
     category: "schuessel",
+    detailedDescription: "Die Schüssel SIMPLY 15 im 10er Set in eleganter Porzellanoptik. Mit 15 cm Durchmesser ideal für Desserts, Beilagen, Salate und Suppen. Perfekt für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Durchmesser": "15 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "7BS99N" }
   },
   {
