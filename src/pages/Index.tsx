@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { HeroSearch } from "@/components/home/HeroSearch";
+import { ServicesSection } from "@/components/home/ServicesSection";
 import { ProductSearchDialog } from "@/components/home/ProductSearchDialog";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -340,6 +341,9 @@ export default function Index() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Services Section */}
+      <ServicesSection />
 
       {/* CTA Section */}
       <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">

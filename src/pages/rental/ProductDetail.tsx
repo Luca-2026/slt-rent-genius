@@ -24,6 +24,7 @@ import {
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
+import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
@@ -457,6 +458,9 @@ export default function ProductDetail() {
                   </Link>
                 </div>
               )}
+
+              {/* Dienstleistungs-Banner */}
+              <ServiceBanner categoryId={categoryId} />
 
               {/* Kaufanfrage-Banner */}
               <PurchaseInquiryBanner

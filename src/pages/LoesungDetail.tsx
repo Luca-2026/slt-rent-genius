@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Construction, ShieldCheck, Truck, ClipboardList, ExternalLink } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { solutionData } from "./Loesungen";
 import { productCategories } from "@/data/rentalData";
@@ -177,7 +177,103 @@ export default function LoesungDetail() {
         </div>
       </section>
 
-      {/* Location CTA */}
+      {/* Dienstleistungen Section */}
+      {(solution.id === "events-veranstaltungen" || solution.id === "tiefbau-erdbewegung" || solution.id === "kindergeburtstage") && (
+        <section className="py-8 lg:py-12 bg-surface-light">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-2xl font-bold text-headline mb-2">
+                Unsere Dienstleistungen
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Wir bieten Ihnen den kompletten Service – nicht nur die Vermietung.
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                {solution.id === "tiefbau-erdbewegung" && (
+                  <>
+                    <Card className="border-2 hover:border-primary/30 transition-all">
+                      <CardContent className="p-5 flex items-start gap-4">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <ShieldCheck className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-headline mb-1">Verkehrssicherung & Absperrplanung</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Komplette Absperrplanung, Halteverbotszonen einrichten, Antragsformulare und Koordination mit Straßenverkehrsbehörden & Bauämtern.
+                          </p>
+                          <a href="https://www.slt-infra.de" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-accent font-medium hover:underline">
+                            www.slt-infra.de <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2 hover:border-primary/30 transition-all">
+                      <CardContent className="p-5 flex items-start gap-4">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <ClipboardList className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-headline mb-1">Projektplanung & Behördenkoordination</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Von der Bedarfsermittlung über Genehmigungsanträge bis zur Abstimmung mit Bauämtern – wir übernehmen die komplette Koordination.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
+                {(solution.id === "events-veranstaltungen" || solution.id === "kindergeburtstage") && (
+                  <>
+                    <Card className="border-2 hover:border-primary/30 transition-all">
+                      <CardContent className="p-5 flex items-start gap-4">
+                        <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Construction className="h-5 w-5 text-accent" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-headline mb-1">Auf- & Abbau</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Professioneller Auf- und Abbau von Zelten, Bühnen, Möbeln, Beleuchtung und Beschallung – alles aus einer Hand.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2 hover:border-primary/30 transition-all">
+                      <CardContent className="p-5 flex items-start gap-4">
+                        <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Truck className="h-5 w-5 text-accent" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-headline mb-1">Anlieferung & Abholung</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Flexible Lieferung direkt zu Ihrem Veranstaltungsort – wir bringen alles, bauen auf und holen nach dem Event wieder ab.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
+                <Card className="border-2 hover:border-primary/30 transition-all md:col-span-2">
+                  <CardContent className="p-5 flex items-start gap-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <ClipboardList className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-headline mb-1">Individuelle Beratung</h3>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        Sie haben ein spezielles Projekt? Kontaktieren Sie uns – wir erstellen Ihnen ein maßgeschneidertes Angebot mit allen Dienstleistungen.
+                      </p>
+                      <Link to="/kontakt" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
+                        Jetzt anfragen <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       <section className="py-8 lg:py-12 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
