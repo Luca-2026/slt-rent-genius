@@ -897,8 +897,8 @@ export default function CategoryProducts() {
         <CategoryInfoBanner categoryId={category.id} />
       )}
 
-      {/* Dienstleistungs-Banner */}
-      {category.id !== "alle" && (
+      {/* Dienstleistungs-Banner (nicht bei absperrtechnik, da dort bereits im InfoBanner enthalten) */}
+      {category.id !== "alle" && category.id !== "absperrtechnik" && (
         <section className="pt-4 lg:pt-6">
           <div className="section-container">
             <ServiceBanner categoryId={category.id} />
