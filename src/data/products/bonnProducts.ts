@@ -15,6 +15,12 @@ import tellerSimply25_5 from "@/assets/products/geschirr/teller-simply-25-5.jpeg
 import tellerSimply25_6 from "@/assets/products/geschirr/teller-simply-25-6.jpeg";
 import gabelSimply19_1 from "@/assets/products/besteck/gabel-simply-19-1.jpeg";
 import gabelSimply19_2 from "@/assets/products/besteck/gabel-simply-19-2.jpeg";
+import dessertellerDeluxe21_1 from "@/assets/products/geschirr/dessertteller-deluxe-21-1.jpeg";
+import dessertellerDeluxe21_2 from "@/assets/products/geschirr/dessertteller-deluxe-21-2.jpeg";
+import dessertellerDeluxe21_3 from "@/assets/products/geschirr/dessertteller-deluxe-21-3.jpeg";
+import dessertellerDeluxe21_4 from "@/assets/products/geschirr/dessertteller-deluxe-21-4.jpeg";
+import dessertellerDeluxe21_5 from "@/assets/products/geschirr/dessertteller-deluxe-21-5.jpeg";
+import dessertellerDeluxe21_6 from "@/assets/products/geschirr/dessertteller-deluxe-21-6.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -1030,6 +1036,25 @@ export const bonnGeschirrProducts = [
       "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { bonn: "UGNDNW" },
+  },
+  {
+    id: "bonn-dessertteller-deluxe-21-10er",
+    name: "Dessertteller Deluxe 21, 10er Set",
+    description: "Dessertteller ØxH: 21,8x2,3 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: dessertellerDeluxe21_1,
+    images: [dessertellerDeluxe21_1, dessertellerDeluxe21_2, dessertellerDeluxe21_3, dessertellerDeluxe21_4, dessertellerDeluxe21_5, dessertellerDeluxe21_6],
+    onRequest: true,
+    detailedDescription: "Der Dessertteller Deluxe 21 im 10er Set aus der Serie Darwin von Sänger. Das schlichte und dennoch elegante Design fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Spülmaschinenfest. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Hersteller": "Sänger",
+      "Serie": "Darwin",
+      "Durchmesser": "21,8 cm",
+      "Höhe": "2,3 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Spülmaschinenfest": "Ja",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-teller-tief-simply-20",
