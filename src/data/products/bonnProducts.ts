@@ -25,6 +25,7 @@ import schuessSimply15_1 from "@/assets/products/geschirr/schuessel-simply-15-1.
 import schuessSimply15_2 from "@/assets/products/geschirr/schuessel-simply-15-2.jpeg";
 import schuessSimply15_3 from "@/assets/products/geschirr/schuessel-simply-15-3.jpeg";
 import schuessSimply15_4 from "@/assets/products/geschirr/schuessel-simply-15-4.jpeg";
+import weissweinglasBrunelli1 from "@/assets/products/geschirr/weisweinglas-brunelli-1.jpeg";
 import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
 import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
@@ -1021,6 +1022,24 @@ export const bonnGeschirrProducts = [
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-weisweinglas-brunelli-12er",
+    name: "Weißweinglas Brunelli, 12er Set",
+    description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
+    image: weissweinglasBrunelli1,
+    images: [weissweinglasBrunelli1],
+    detailedDescription: "Das Weißweinglas Brunelli von Leonardo im 12er Set – elegant, klar und stoßfest. Die schlanke Form mit 23,7 cm Höhe bringt Weißweine optimal zur Geltung. Spülmaschinenfest und ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    specifications: {
+      "Hersteller": "Leonardo",
+      "Typ": "Weißweinglas",
+      "Höhe": "23,7 cm",
+      "Durchmesser": "8,5 cm",
+      "Stückzahl": "12 Stück pro Set",
+      "Eigenschaften": "Klar, stoßfest, spülmaschinenfest",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
   },
   {
     id: "bonn-schuessel-simply-15",
