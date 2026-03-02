@@ -1,6 +1,7 @@
 // Bonn Location Products
 // Images imported from shared assets
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
+import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -955,6 +956,25 @@ export const bonnGeschirrProducts = [
     description: "Klassische Kaffeetassen im 12er Set.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "UY8AV1" },
+  },
+  {
+    id: "bonn-bierglas-0-2l-40er",
+    name: "Bierglas 0,2, 40er Set",
+    description: "Bierglas 0,2L geeicht von VAN WELL. Spülmaschinenfest. Die Gläser müssen gereinigt zurückgegeben werden. Reinigungspauschale: 3,90 €.",
+    image: bierglas02_1,
+    images: [bierglas02_1],
+    onRequest: true,
+    detailedDescription: "Hochwertiges Bierglas 0,2L geeicht vom Hersteller VAN WELL im praktischen 40er Set. Die Gläser sind spülmaschinenfest und eignen sich ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € erhoben.",
+    specifications: {
+      "Hersteller": "VAN WELL",
+      "Volumen": "0,2 L (geeicht)",
+      "Höhe": "13,5 cm",
+      "Durchmesser": "6 cm",
+      "Stückzahl": "40 Stück pro Set",
+      "Spülmaschinenfest": "Ja",
+      "Reinigungspauschale": "3,90 € (bei Rückgabe ohne Reinigung)",
+    },
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-schuessel-simply-15",
