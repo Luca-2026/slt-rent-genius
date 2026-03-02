@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo.png";
 import { getAreasForLocation } from "@/data/localSeoData";
@@ -62,33 +62,6 @@ export function Footer() {
               className="h-36 lg:h-44 w-auto brightness-0 invert max-w-none"
             />
           </Link>
-
-          {/* Locations Row */}
-          <div className="flex flex-wrap gap-6 lg:gap-10">
-            {locations.map((loc) => (
-              <div key={loc.name} className="text-white">
-                <h4 className="font-bold text-white text-sm mb-2">{loc.name}</h4>
-                <div className="space-y-1 text-xs text-white/70">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                    <span>{loc.address}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 shrink-0" />
-                    <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="hover:text-accent transition-colors">
-                      {loc.phone}
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 shrink-0" />
-                    <a href={`mailto:${loc.email}`} className="hover:text-accent transition-colors">
-                      {loc.email}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Divider */}
