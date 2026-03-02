@@ -258,7 +258,7 @@ export default function Lieferung() {
               <AnimatedSection animation="scale-in" delay={300}>
                 <Card className="sticky top-32 border-2 border-primary">
                   <CardHeader className="bg-primary text-primary-foreground rounded-t-lg">
-                    <CardTitle className="text-lg">Deine Lieferkosten</CardTitle>
+                    <CardTitle className="text-lg text-primary-foreground">Deine Lieferkosten</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-4">
                     <div className="text-center">
