@@ -134,7 +134,7 @@ export default function Index() {
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
                   {/* Location Image */}
-                  <div className="aspect-[16/9] relative overflow-hidden">
+                  <Link to={`/mieten/${loc.id}`} className="aspect-[16/9] relative overflow-hidden block cursor-pointer">
                     {loc.image ? (
                       <img
                         src={loc.image}
@@ -155,7 +155,7 @@ export default function Index() {
                         {loc.name}
                       </h3>
                     </div>
-                  </div>
+                  </Link>
                   
                   <CardContent className="p-5 flex flex-col flex-1">
                     {/* Address - fixed height */}

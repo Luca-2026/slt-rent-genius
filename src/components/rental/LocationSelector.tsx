@@ -20,7 +20,7 @@ export function LocationSelector() {
         {locationData.map((location) => (
           <Card key={location.id} className="h-full group hover:shadow-lg transition-all hover:border-primary/50 overflow-hidden flex flex-col">
             {/* Location Image */}
-            <div className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden">
+            <Link to={`/mieten/${location.id}`} className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden block cursor-pointer">
               {location.image ? (
                 <img 
                   src={location.image} 
@@ -38,7 +38,7 @@ export function LocationSelector() {
                   {location.subtitle}
                 </span>
               </div>
-            </div>
+            </Link>
 
             <CardContent className="p-5 flex flex-col flex-1">
               {/* Location Name */}
