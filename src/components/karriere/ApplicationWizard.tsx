@@ -50,9 +50,9 @@ const createSchema = (job: JobListing) => {
     lastName: z.string().min(2, "Mindestens 2 Zeichen").max(50),
     email: z.string().email("Ungültige E-Mail-Adresse"),
     phone: z.string().min(6, "Ungültige Telefonnummer").max(20),
-    street: z.string().optional(),
-    postalCode: z.string().optional(),
-    city: z.string().optional(),
+    street: z.string().min(1, "Bitte Straße angeben").max(200),
+    postalCode: z.string().min(4, "Bitte PLZ angeben").max(10),
+    city: z.string().min(1, "Bitte Stadt angeben").max(100),
     motivation: z.string().min(50, "Mindestens 50 Zeichen").max(2000),
     earliestStartDate: job.askEarliestStart 
       ? z.string().min(1, "Bitte auswählen") 
@@ -139,7 +139,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     let fieldsToValidate: (keyof FormData)[] = [];
     
     if (step === 1) {
-      fieldsToValidate = ['firstName', 'lastName', 'email', 'phone'];
+      fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'street', 'postalCode', 'city'];
     } else if (step === 2) {
       // Job-specific fields - check required ones
       const requiredFields = job.specificFields.filter(f => f.required);
@@ -337,26 +337,35 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
               </div>
 
               <div className="pt-2">
-                <p className="text-sm text-muted-foreground mb-3">Adresse (optional)</p>
+                <p className="text-sm text-muted-foreground mb-3">Adresse *</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="sm:col-span-2 space-y-2">
                     <Input
                       {...register("street")}
                       placeholder="Straße und Hausnummer"
                     />
+                    {errors.street && (
+                      <p className="text-sm text-destructive">{errors.street.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Input
                       {...register("postalCode")}
                       placeholder="PLZ"
                     />
+                    {errors.postalCode && (
+                      <p className="text-sm text-destructive">{errors.postalCode.message}</p>
+                    )}
                   </div>
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 space-y-2">
                   <Input
                     {...register("city")}
                     placeholder="Stadt"
                   />
+                  {errors.city && (
+                    <p className="text-sm text-destructive">{errors.city.message}</p>
+                  )}
                 </div>
               </div>
             </div>

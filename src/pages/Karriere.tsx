@@ -86,7 +86,7 @@ export default function Karriere() {
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="section-container text-center">
           <AnimatedSection animation="fade-in-up">
-            <h2 className="text-3xl font-bold mb-4">{t("karriere.ctaTitle")}</h2>
+            <h2 className="text-3xl font-bold mb-4 text-primary-foreground">{t("karriere.ctaTitle")}</h2>
             <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">{t("karriere.ctaDesc")}</p>
             <a href="mailto:karriere@slt-rental.de">
               <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90">{t("karriere.ctaCta")}</Button>
