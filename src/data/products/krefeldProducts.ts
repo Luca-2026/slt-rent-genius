@@ -35,6 +35,9 @@ import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jp
 import tellerTiefSimply20_1 from "@/assets/products/geschirr/teller-tief-simply20-1.jpeg";
 import tellerTiefSimply20_2 from "@/assets/products/geschirr/teller-tief-simply20-2.jpeg";
 import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpeg";
+import gabelKleinDeluxe14_1 from "@/assets/products/besteck/gabel-klein-deluxe-14-1.jpeg";
+import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-14-2.jpeg";
+import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2858,10 +2861,19 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "gabel-klein-deluxe-14-10er",
     name: "Gabel klein Deluxe 14, 10er Set",
-    description: "Kuchengabeln",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Gabel 14 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: gabelKleinDeluxe14_1,
+    images: [gabelKleinDeluxe14_1, gabelKleinDeluxe14_2, gabelKleinDeluxe14_3],
     category: "besteck",
+    detailedDescription: "Die Gabel klein Deluxe 14 im 10er Set – eine elegante Kuchengabel aus der Serie Athene Poliert. Mit 14 cm Länge aus hochwertigem Edelstahl, ideal für Desserts, Kuchen und Gebäck bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Typ": "Kuchengabel / Gabel klein",
+      "Länge": "14 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "GB31E4" }
   },
   {
