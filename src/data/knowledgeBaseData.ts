@@ -39,7 +39,7 @@ export const kbCategories: KBCategory[] = [
     title: "Anhänger",
     description: "Bedienungsanleitungen, Beladungstipps und Sicherheitshinweise für alle Anhänger-Typen.",
     icon: "Truck",
-    articleCount: 0,
+    articleCount: 4,
   },
   {
     id: "erdbewegung",
@@ -316,6 +316,143 @@ export const kbArticles: KBArticle[] = [
             ],
           },
         ],
+      },
+    ],
+  },
+  {
+    id: "anhaenger-fuehrerschein",
+    title: "Welcher Führerschein für welchen Anhänger?",
+    description: "Klasse B, B96 oder BE? Alle Infos zu Führerscheinklassen, Anhängelasten und Voraussetzungen für Ihr Zugfahrzeug.",
+    categoryId: "anhaenger",
+    type: "anleitung",
+    tags: ["führerschein", "klasse b", "b96", "be", "anhängelast", "stützlast", "zugfahrzeug", "zgm", "gesamtmasse", "tempo 100"],
+    updatedAt: "2026-03-02",
+    sections: [
+      {
+        type: "info",
+        icon: "Car",
+        heading: "1. Welcher Führerschein für welchen Anhänger?",
+        text: "Ob Sie einen kleinen Kastenanhänger oder einen schweren Transportanhänger ziehen dürfen, hängt von Ihrer Führerscheinklasse ab. Hier finden Sie eine Übersicht der wichtigsten Klassen.",
+      },
+      {
+        icon: "Car",
+        heading: "Klasse B (Standard-Pkw-Führerschein)",
+        text: "Mit Führerschein Klasse B dürfen Sie:",
+        items: [
+          "Pkw bis 3.500 kg zulässiger Gesamtmasse (zGM) fahren.",
+          "Einen Anhänger bis 750 kg zGM immer mitführen (Gespann dann max. 4.250 kg).",
+          "Einen Anhänger über 750 kg zGM mitführen, wenn die Kombination aus Pkw + Anhänger zusammen nicht mehr als 3.500 kg zGM hat.",
+        ],
+        subSections: [
+          {
+            heading: "Typische Beispiele",
+            items: [
+              "Leichter Kastenanhänger bis 750 kg hinter fast jedem Pkw.",
+              "Größerer Anhänger (z. B. 1.300 kg zGM) nur, wenn das Zugfahrzeug entsprechend leicht ist, damit die Summe ≤ 3.500 kg bleibt.",
+            ],
+          },
+        ],
+      },
+      {
+        icon: "Car",
+        heading: "Klasse B96 (Erweiterung zu B)",
+        text: "B96 ist keine eigene Klasse, sondern eine Erweiterung der Klasse B für schwerere Gespanne. Mit B96 dürfen Sie:",
+        items: [
+          "Pkw bis 3.500 kg zGM fahren.",
+          "Einen Anhänger über 750 kg zGM ziehen.",
+          "Die Kombination Pkw + Anhänger darf mehr als 3.500 kg, aber höchstens 4.250 kg zGM haben.",
+        ],
+        subSections: [
+          {
+            heading: "Voraussetzung",
+            items: [
+              "Vorhandene Klasse B und eine Fahrerschulung (keine klassische Prüfung) in einer Fahrschule.",
+              "Eintrag der Schlüsselzahl \u201E96\u201C im Führerschein.",
+            ],
+          },
+        ],
+      },
+      {
+        icon: "Car",
+        heading: "Klasse BE (Anhängerführerschein)",
+        text: "Mit Führerschein Klasse BE dürfen Sie:",
+        items: [
+          "Zugfahrzeug der Klasse B (Pkw bis 3.500 kg zGM) fahren.",
+          "Einen Anhänger mit zGM bis zu 3.500 kg ziehen.",
+          "Gespann bis max. 7.000 kg zGM (3.500 kg Pkw + 3.500 kg Anhänger).",
+        ],
+        subSections: [
+          {
+            heading: "Voraussetzung",
+            items: [
+              "Vorher Klasse B.",
+              "Zusätzliche Ausbildung und praktische Prüfung in der Fahrschule.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "info",
+        icon: "ClipboardCheck",
+        heading: "Übersichtstabelle: Führerschein vs. Anhänger",
+        text: "Klasse B → Pkw bis 3,5 t + Anhänger bis 750 kg (immer) = max. 4,25 t → kleine Mietanhänger\nKlasse B → Pkw bis 3,5 t + Anhänger > 750 kg = max. 3,5 t Kombination → leichte gebremste Anhänger\nKlasse B96 → Pkw bis 3,5 t + Anhänger > 750 kg = > 3,5 t bis 4,25 t → Wohnwagen, größere Anhänger\nKlasse BE → Pkw bis 3,5 t + Anhänger bis 3,5 t = bis 7,0 t → schwere Transportanhänger, Autotransporter",
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Hinweis",
+        text: "Prüfen Sie im Zweifel Ihren Fahrzeugschein und Führerschein oder fragen Sie bei uns nach, bevor Sie einen Anhänger buchen.",
+      },
+      {
+        type: "info",
+        icon: "Car",
+        heading: "2. Voraussetzungen für das Zugfahrzeug",
+        text: "Für Ihr Zugfahrzeug sind vor allem drei Werte wichtig: zulässige Anhängelast, Stützlast und zulässige Gesamtmasse.",
+      },
+      {
+        icon: "ClipboardCheck",
+        heading: "Zulässige Anhängelast",
+        items: [
+          "In der Zulassungsbescheinigung Teil I (Fahrzeugschein) finden Sie die maximal zulässige gebremste und ungebremste Anhängelast (Feld O.1 / O.2).",
+          "Die tatsächliche Anhängelast (tatsächliches Gewicht des Anhängers inkl. Ladung) darf diesen Wert nicht überschreiten.",
+          "Die tatsächliche Anhängelast soll in der Regel nicht größer sein als das zulässige Gesamtgewicht des Zugfahrzeugs (1:1-Prinzip).",
+        ],
+      },
+      {
+        icon: "Package",
+        heading: "Stützlast",
+        text: "Die Stützlast ist die Kraft, mit der der Anhänger auf die Anhängerkupplung des Zugfahrzeugs drückt.",
+        items: [
+          "Gesetzlich muss die Stützlast bei einachsigen Anhängern mindestens 4 % des tatsächlichen Anhängergewichts und mindestens 25 kg betragen.",
+          "Die tatsächliche Stützlast darf weder die maximal zulässige Stützlast des Fahrzeugs noch die der Kupplung überschreiten.",
+          "Praxis-Beispiel: Anhänger 1.300 kg tatsächliches Gewicht → Mindeststützlast ca. 52 kg. Bei einer zulässigen Stützlast von 75 kg sind 60–70 kg sinnvoll.",
+        ],
+      },
+      {
+        icon: "Eye",
+        heading: "Weitere technische Voraussetzungen",
+        items: [
+          "Das Zugfahrzeug muss über eine geeignete, zugelassene Anhängerkupplung verfügen (Eintragung in Fahrzeugpapieren beachten).",
+          "Die Steckdose (7- oder 13-polig) muss funktionsfähig sein, damit Beleuchtung, Blinker und ggf. Rückfahr-/Nebelschlussleuchte des Anhängers arbeiten.",
+          "Die Bremsanlage des Fahrzeugs muss für die zusätzliche Last ausgelegt sein.",
+        ],
+      },
+      {
+        type: "info",
+        icon: "Car",
+        heading: "Tempo-100-Zulassung (optional)",
+        items: [
+          "Zugfahrzeug muss mit ABS ausgestattet sein.",
+          "Anhängerreifen max. 6 Jahre alt und mindestens für 120 km/h (Geschwindigkeitsindex L) zugelassen.",
+          "Anhänger (gebremst) benötigt Achsstoßdämpfer; das Verhältnis Anhänger- zu Fahrzeugmasse darf je nach Ausstattung einen bestimmten Faktor nicht überschreiten.",
+          "Tempo-100-Plakette und Eintragung/Bestätigung durch Prüforganisation und Zulassungsstelle sind erforderlich.",
+        ],
+      },
+      {
+        type: "legal",
+        icon: "AlertCircle",
+        heading: "Haftungshinweis",
+        text: "Der Mieter ist dafür verantwortlich, dass er über den passenden Führerschein verfügt und sein Zugfahrzeug die technischen Voraussetzungen für den gemieteten Anhänger erfüllt. Prüfen Sie vor Mietantritt Ihren Fahrzeugschein (Feld O.1/O.2), die zulässige Stützlast und die Eintragung der Anhängerkupplung.",
       },
     ],
   },
