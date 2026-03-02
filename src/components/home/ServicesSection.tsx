@@ -34,6 +34,8 @@ const services = [
     icon: Truck,
     title: "Anlieferung & Abholung",
     description: "Flexible Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ganz NRW.",
+    link: "/lieferung",
+    linkLabel: "Lieferkosten berechnen",
   },
 ];
 
@@ -77,6 +79,15 @@ export function ServicesSection() {
                       {service.externalLabel}
                       <ArrowRight className="h-3 w-3" />
                     </a>
+                  )}
+                  {service.link && (
+                    <Link
+                      to={service.link}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-accent transition-colors mt-3"
+                    >
+                      {service.linkLabel}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                   )}
                 </CardContent>
               </Card>
