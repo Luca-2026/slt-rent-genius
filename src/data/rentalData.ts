@@ -1028,7 +1028,7 @@ export const locations: LocationData[] = [
     name: "Krefeld",
     shortName: "KR",
     address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain",
-    phone: "02151 417 990 4",
+    phone: "02151 417 99 04",
     email: "krefeld@slt-rental.de",
     rentwareLocationId: "01929004-e24f-7cc0-83f0-0f3d3431395e",
     availableCategories: [
@@ -1081,7 +1081,7 @@ export const locations: LocationData[] = [
     name: "Bonn",
     shortName: "BN",
     address: "Drachenburgstraße 8, 53179 Bonn",
-    phone: "02151 417 990 4",
+    phone: "0228 504 660 61",
     email: "bonn@slt-rental.de",
     rentwareLocationId: "01953e5f-614f-743d-8eb9-1a0e865da81d",
     availableCategories: [
@@ -1221,7 +1221,7 @@ export const locations: LocationData[] = [
     name: "Mülheim",
     shortName: "MH",
     address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
-    phone: "02151 417 990 4",
+    phone: "02151 417 99 04",
     email: "muelheim@slt-rental.de",
     rentwareLocationId: "95e16e54-04d2-496a-6002-41e0289b53a3",
     availableCategories: [

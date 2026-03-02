@@ -9,14 +9,14 @@ const locations = [
     id: "krefeld",
     name: "Krefeld",
     address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain",
-    phone: "02151 417 990 4",
+    phone: "02151 417 99 04",
     email: "krefeld@slt-rental.de",
   },
   {
     id: "bonn",
     name: "Bonn",
     address: "Drachenburgstraße 8, 53179 Bonn",
-    phone: "0228 50466061",
+    phone: "0228 504 660 61",
     email: "bonn@slt-rental.de",
   },
   {
