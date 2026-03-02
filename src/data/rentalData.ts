@@ -22,6 +22,7 @@ import iconTraverse from "@/assets/icons/traverse.png";
 import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
 import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.png";
 import iconBeschallung from "@/assets/icons/beschallung.png";
+import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -298,7 +299,7 @@ export const productCategories: ProductCategory[] = [
     id: "beleuchtung",
     title: "Beleuchtung",
     description: "LED Spots, Flutlicht, Bühnenlicht und mobile Beleuchtung.",
-    icon: iconBeleuchtung,
+    icon: iconBeleuchtungNeu,
   },
   {
     id: "buehne",
