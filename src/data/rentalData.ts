@@ -23,7 +23,7 @@ import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
 import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.png";
 import iconBeschallung from "@/assets/icons/beschallung.png";
 import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
-import iconKommunikation from "@/assets/icons/kommunikation.png";
+import iconKommunikation from "@/assets/icons/kommunikation.svg";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
