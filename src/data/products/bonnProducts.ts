@@ -36,6 +36,9 @@ import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jp
 import tellerTiefSimply20_1 from "@/assets/products/geschirr/teller-tief-simply20-1.jpeg";
 import tellerTiefSimply20_2 from "@/assets/products/geschirr/teller-tief-simply20-2.jpeg";
 import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpeg";
+import gabelGrossDeluxe19_1 from "@/assets/products/besteck/gabel-deluxe-19-1.jpeg";
+import gabelGrossDeluxe19_2 from "@/assets/products/besteck/gabel-deluxe-19-2.jpeg";
+import gabelGrossDeluxe19_3 from "@/assets/products/besteck/gabel-deluxe-19-3.jpeg";
 import gabelKleinDeluxe14_1 from "@/assets/products/besteck/gabel-klein-deluxe-14-1.jpeg";
 import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-14-2.jpeg";
 import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
@@ -1282,6 +1285,24 @@ export const bonnBesteckProducts = [
       "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { bonn: "GT8B4N" },
+  },
+  {
+    id: "bonn-gabel-gross-deluxe-19",
+    name: "Gabel groß Deluxe 19, 10er Set",
+    description: "Gabel 19 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: gabelGrossDeluxe19_1,
+    images: [gabelGrossDeluxe19_1, gabelGrossDeluxe19_2, gabelGrossDeluxe19_3],
+    detailedDescription: "Die Gabel groß Deluxe 19 im 10er Set – eine elegante Tafelgabel aus der Serie Athene Poliert. Mit 19 cm Länge aus hochwertigem Edelstahl, ideal für Hauptgerichte bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Typ": "Tafelgabel",
+      "Länge": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-gabel-klein-deluxe-14",
