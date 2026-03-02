@@ -35,6 +35,9 @@ import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jp
 import tellerTiefSimply20_1 from "@/assets/products/geschirr/teller-tief-simply20-1.jpeg";
 import tellerTiefSimply20_2 from "@/assets/products/geschirr/teller-tief-simply20-2.jpeg";
 import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpeg";
+import gabelGrossDeluxe19_1 from "@/assets/products/besteck/gabel-deluxe-19-1.jpeg";
+import gabelGrossDeluxe19_2 from "@/assets/products/besteck/gabel-deluxe-19-2.jpeg";
+import gabelGrossDeluxe19_3 from "@/assets/products/besteck/gabel-deluxe-19-3.jpeg";
 import gabelKleinDeluxe14_1 from "@/assets/products/besteck/gabel-klein-deluxe-14-1.jpeg";
 import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-14-2.jpeg";
 import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
@@ -2936,10 +2939,19 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "gabel-gross-deluxe-19-10er",
     name: "Gabel groß Deluxe 19, 10er Set",
-    description: "Tafelgabeln",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Gabel 19 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: gabelGrossDeluxe19_1,
+    images: [gabelGrossDeluxe19_1, gabelGrossDeluxe19_2, gabelGrossDeluxe19_3],
     category: "besteck",
+    detailedDescription: "Die Gabel groß Deluxe 19 im 10er Set – eine elegante Tafelgabel aus der Serie Athene Poliert. Mit 19 cm Länge aus hochwertigem Edelstahl, ideal für Hauptgerichte bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Typ": "Tafelgabel",
+      "Länge": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "5GN1EH" }
   },
   {
