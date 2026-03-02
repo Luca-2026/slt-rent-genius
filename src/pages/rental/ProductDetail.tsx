@@ -426,25 +426,6 @@ export default function ProductDetail() {
                   </Link>
                 </div>
               )}
-            </div>
-
-            {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
-            <div className="hidden lg:block space-y-5">
-              {/* Booking Card */}
-              <div className="bg-card rounded-xl border border-border p-5 sticky top-4">
-                {product.pricePerDay && (
-                  <div className="mb-4 pb-4 border-b border-border">
-                    <div className="text-3xl font-bold text-primary">
-                      {product.pricePerDay}
-                      <span className="text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
-                    </div>
-                    {product.priceWeekend && (
-                      <p className="text-sm text-accent font-medium mt-1">
-                        Weekend-Tarif: {product.priceWeekend}
-                      </p>
-                    )}
-                  </div>
-              )}
 
               {/* Hilfe-Artikel für Erdbewegung (Minibagger) */}
               {categoryId === "erdbewegung" && (
@@ -475,6 +456,25 @@ export default function ProductDetail() {
                     </div>
                   </Link>
                 </div>
+              )}
+            </div>
+
+            {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
+            <div className="hidden lg:block space-y-5">
+              {/* Booking Card */}
+              <div className="bg-card rounded-xl border border-border p-5 sticky top-4">
+                {product.pricePerDay && (
+                  <div className="mb-4 pb-4 border-b border-border">
+                    <div className="text-3xl font-bold text-primary">
+                      {product.pricePerDay}
+                      <span className="text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+                    </div>
+                    {product.priceWeekend && (
+                      <p className="text-sm text-accent font-medium mt-1">
+                        Weekend-Tarif: {product.priceWeekend}
+                      </p>
+                    )}
+                  </div>
               )}
                 <div className="space-y-2 mb-4">
                   <Button
