@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat, Sparkles } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -298,6 +298,37 @@ export default function ProductDetail() {
                   )}
                 </div>
               )}
+
+              {/* Spülmaschinen-Empfehlung für Geschirr-Kategorie */}
+              {categoryId === "geschirr-glaeser-besteck" && product.id !== "spuelmaschine-frontlader" && product.id !== "bonn-spuelmaschine-gastro" && (() => {
+                const spuelmaschine = rawRelatedProducts.find(p => 
+                  p.id === "spuelmaschine-frontlader" || p.id === "bonn-spuelmaschine-gastro"
+                ) || (location ? getProductsForLocationCategory(location.id, categoryId).find(p => 
+                  p.id === "spuelmaschine-frontlader" || p.id === "bonn-spuelmaschine-gastro"
+                ) : null);
+                if (!spuelmaschine) return null;
+                const spuelmaschineLink = `/mieten/${location!.id}/${categoryId}/${spuelmaschine.id}`;
+                return (
+                  <Link to={spuelmaschineLink} className="block">
+                    <div className="flex items-center gap-4 bg-accent/10 border border-accent/30 rounded-xl p-4 hover:bg-accent/15 transition-colors group">
+                      {spuelmaschine.image && (
+                        <div className="w-20 h-20 rounded-lg overflow-hidden bg-background flex-shrink-0 border border-border">
+                          <img src={spuelmaschine.image} alt={spuelmaschine.name} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Sparkles className="h-4 w-4 text-accent flex-shrink-0" />
+                          <span className="text-xs font-semibold text-accent uppercase tracking-wide">Empfehlung</span>
+                        </div>
+                        <p className="font-semibold text-foreground group-hover:text-accent transition-colors">{spuelmaschine.name}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-2">Professionell reinigen statt Reinigungspauschale zahlen – ideal bei großen Mengen an Geschirr, Gläsern & Besteck.</p>
+                      </div>
+                      <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 group-hover:text-accent transition-colors" />
+                    </div>
+                  </Link>
+                );
+              })()}
 
               {/* Videos */}
               {videoUrls.length > 0 && (
