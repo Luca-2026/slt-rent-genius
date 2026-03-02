@@ -463,6 +463,30 @@ export default function ProductDetail() {
                 productName={product.name}
                 locationName={location.shortName}
               />
+
+              {/* Zoomlion Verkaufsseite für Bagger & Arbeitsbühnen */}
+              {(categoryId === "erdbewegung" || categoryId === "arbeitsbuehnen") && (
+                <a
+                  href="https://www.zoomlion-nrw.de"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <ExternalLink className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm">
+                        Zoomlion Neumaschinen kaufen
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Entdecken Sie unser Angebot an neuen Zoomlion {categoryId === "erdbewegung" ? "Baggern" : "Arbeitsbühnen"} auf www.zoomlion-nrw.de
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              )}
             </div>
 
             {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
