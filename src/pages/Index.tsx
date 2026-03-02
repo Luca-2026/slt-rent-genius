@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
-import { HeroSearch } from "@/components/home/HeroSearch";
 import { ServicesSection } from "@/components/home/ServicesSection";
-import { ProductSearchDialog } from "@/components/home/ProductSearchDialog";
-import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
+import { Loader2 } from "lucide-react";
+
+// Lazy load components that pull in rentalData (~100 product images)
+const HeroSearch = lazy(() => import("@/components/home/HeroSearch").then(m => ({ default: m.HeroSearch })));
+const ProductSearchDialog = lazy(() => import("@/components/home/ProductSearchDialog").then(m => ({ default: m.ProductSearchDialog })));
+const LocationSelectDialog = lazy(() => import("@/components/solutions/LocationSelectDialog").then(m => ({ default: m.LocationSelectDialog })));
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { 
@@ -86,8 +89,10 @@ export default function Index() {
               {t("hero.subtitle")}
             </p>
 
-            {/* Interactive Search with Article Search */}
-            <HeroSearch />
+            {/* Interactive Search with Article Search - lazy loaded */}
+            <Suspense fallback={<div className="bg-background rounded-xl p-4 shadow-xl max-w-2xl h-[88px] flex items-center justify-center"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>}>
+              <HeroSearch />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -392,8 +397,12 @@ export default function Index() {
           </div>
         </div>
       </section>
-      <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
-      <LocationSelectDialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen} />
+      <Suspense fallback={null}>
+        <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <LocationSelectDialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen} />
+      </Suspense>
     </Layout>
   );
 }
