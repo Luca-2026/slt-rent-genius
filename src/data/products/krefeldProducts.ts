@@ -409,6 +409,11 @@ import imgKaltFunkenfontaeneSet2 from "@/assets/products/spezialeffekte/kalt-fun
 import imgKaltFunkenfontaeneSet3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-3.jpeg";
 import imgKaltFunkenfontaeneSet4 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-4.jpeg";
 
+// TCM FX Turbo CO2 Jet images
+import imgTurboCo2Jet1 from "@/assets/products/spezialeffekte/turbo-jet-co2-1.jpg";
+import imgTurboCo2Jet2 from "@/assets/products/spezialeffekte/turbo-jet-co2-2.jpg";
+import imgTurboCo2Jet3 from "@/assets/products/spezialeffekte/turbo-jet-co2-3.jpg";
+
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
 import imgSltLedFluterRgbwauv2 from "@/assets/products/slt-led-fluter-rgbwauv-2.jpeg";
@@ -2437,6 +2442,29 @@ export const spezialeffekteProducts: Product[] = [
       "Lieferumfang": "inkl. einer Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)",
       "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
       "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "tcm-fx-turbo-co2-jet",
+    name: "TCM FX Turbo CO2 Jet",
+    description: "Der TCM FX Turbo Jet ist ein leistungsstarker CO2-Nebel-Shooter für eindrucksvolle Effekte auf Bühnen, Dancefloors und Events. Mit bis zu 20 m Reichweite erzeugt er dichte, kalte Nebelsäulen, die jedes Drop und jeden Showmoment unterstreichen. Die stufenlos einstellbare Düse erlaubt präzise Ausrichtung – vom knackigen Frontschuss bis zum markanten Up-FX.",
+    image: imgTurboCo2Jet1,
+    images: [imgTurboCo2Jet1, imgTurboCo2Jet2, imgTurboCo2Jet3],
+    category: "nebel",
+    videoUrls: ["https://www.youtube.com/watch?v=G-afE8F7ZCs"],
+    specifications: {
+      "Ausstoßweite": "ca. 20 m",
+      "Stromversorgung": "230 V AC, 50 Hz",
+      "Gesamtanschlusswert": "100 W",
+      "Stromanschluss": "PowerCON (blau), Einbauversion",
+      "Stromausgang": "1 × PowerCON (grau), Einbauversion",
+      "Ansteuerung": "Plug & Play (230-V-Impuls, DMX via Switchpack möglich)",
+      "Abschusswinkel": "stufenlos einstellbar",
+      "CO2-Versorgung": "CO2-Steigrohrflaschen",
+      "Maße (B × T × H)": "37 × 30 × 41 cm",
+      "Gewicht": "8,10 kg",
+      "Herstellung": "Made in Europe",
     },
     rentwareCode: { krefeld: "" }
   },
