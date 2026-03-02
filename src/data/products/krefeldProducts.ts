@@ -2751,10 +2751,20 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "teller-deluxe-27-10er",
     name: "Teller Deluxe 27, 10er Set",
-    description: "Flache Teller 27cm",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: speisetDarwin27_1,
+    images: [speisetDarwin27_1, speisetDarwin27_2, speisetDarwin27_3, speisetDarwin27_4, speisetDarwin27_5, speisetDarwin27_6],
     category: "teller",
+    detailedDescription: "Der Teller Deluxe 27 im 10er Set aus der Serie Darwin von Sänger. Das schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Inspiriert von der gehobenen Sterneküche. Spülmaschinenfest – einfache und unkomplizierte Reinigung in der Spülmaschine oder auch von Hand. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Hersteller": "Sänger",
+      "Serie": "Darwin",
+      "Durchmesser": "27 cm",
+      "Design": "Vintage mit feiner Maserung",
+      "Spülmaschinenfest": "Ja",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "NZWMHN" }
   },
   {
@@ -2775,24 +2785,6 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { krefeld: "VIGSG2" }
-  },
-  {
-    id: "speiseteller-darwin-27",
-    name: "Speiseteller 27 cm",
-    description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
-    image: speisetDarwin27_1,
-    images: [speisetDarwin27_1, speisetDarwin27_2, speisetDarwin27_3, speisetDarwin27_4, speisetDarwin27_5, speisetDarwin27_6],
-    category: "teller",
-    detailedDescription: "Der Speiseteller 27 cm aus der Serie Darwin von Sänger. Das schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Inspiriert von der gehobenen Sterneküche. Spülmaschinenfest – einfache und unkomplizierte Reinigung in der Spülmaschine oder auch von Hand. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
-    specifications: {
-      "Hersteller": "Sänger",
-      "Serie": "Darwin",
-      "Durchmesser": "27 cm",
-      "Design": "Vintage mit feiner Maserung",
-      "Spülmaschinenfest": "Ja",
-      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
-    },
-    rentwareCode: { krefeld: "" }
   },
   {
     id: "teller-simply-25-10er",
