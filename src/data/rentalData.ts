@@ -24,6 +24,7 @@ import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.
 import iconBeschallung from "@/assets/icons/beschallung.png";
 import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
 import iconKommunikation from "@/assets/icons/kommunikation.png";
+import iconGartenpflege from "@/assets/icons/SLT_Rental_Icons_Gartenpflege.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -240,7 +241,7 @@ export const productCategories: ProductCategory[] = [
     id: "gartenpflege",
     title: "Gartenpflege",
     description: "Rasenmäher, Vertikutierer, Häcksler und Gartengeräte.",
-    icon: iconBagger,
+    icon: iconGartenpflege,
   },
   {
     id: "aggregate",
