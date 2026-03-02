@@ -65,6 +65,7 @@ export function HeroSearch() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -140,6 +141,14 @@ export function HeroSearch() {
 
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
+    setSelectedCategoryId(null);
+    setShowResults(false);
+    setShowLocationDialog(true);
+  };
+
+  const handleCategorySelect = (categoryId: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedProduct(null);
     setShowResults(false);
     setShowLocationDialog(true);
   };
@@ -151,15 +160,19 @@ export function HeroSearch() {
       if (productId) {
         navigate(`/mieten/${locationId}/${categoryId}/${productId}`);
       }
+    } else if (selectedCategoryId) {
+      navigate(`/mieten/${locationId}/${selectedCategoryId}`);
+    } else {
+      navigate(`/mieten/${locationId}/alle`);
     }
     setShowLocationDialog(false);
     setSelectedProduct(null);
+    setSelectedCategoryId(null);
     setSearchQuery("");
   };
 
   const handleSearchSubmit = () => {
     if (filteredCategories.length > 0) {
-      // Navigate to the first matching category
       handleCategorySelect(filteredCategories[0].id);
     } else if (filteredProducts.length > 0) {
       handleProductSelect(filteredProducts[0]);
@@ -168,16 +181,11 @@ export function HeroSearch() {
     }
   };
 
-  const handleCategorySelect = (categoryId: string) => {
-    setShowResults(false);
-    setSearchQuery("");
-    // Navigate to location selection for the category
-    navigate(`/mieten/krefeld/${categoryId}`);
-  };
-
   const availableLocations = selectedProduct
     ? getLocationsForProduct(selectedProduct.id)
-    : [];
+    : selectedCategoryId
+      ? locations
+      : [];
 
   return (
     <>
@@ -368,6 +376,27 @@ export function HeroSearch() {
               </div>
             </div>
           )}
+
+          {selectedCategoryId && !selectedProduct && (() => {
+            const cat = productCategories.find((c) => c.id === selectedCategoryId);
+            if (!cat) return null;
+            const displayTitle = isGerman ? cat.title : (categoryTranslations[cat.id]?.title || cat.title);
+            return (
+              <div className="mb-4 p-3 bg-muted rounded-lg flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-md flex-shrink-0 flex items-center justify-center">
+                  {cat.icon ? (
+                    <img src={cat.icon} alt={displayTitle} className="w-7 h-7 object-contain" />
+                  ) : (
+                    <FolderOpen className="h-5 w-5 text-primary" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-medium text-foreground text-sm">{displayTitle}</p>
+                  <p className="text-xs text-muted-foreground">{t("hero.selectLocationHint")}</p>
+                </div>
+              </div>
+            );
+          })()}
 
           <div className="space-y-2">
             {availableLocations.map((location) => (
