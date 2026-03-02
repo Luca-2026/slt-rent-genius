@@ -2670,8 +2670,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     id: "longdrinkglas-passionata-10er",
     name: "Longdrink- / Wasserglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set.",
-    image: longdrinkPassionata1,
-    images: [longdrinkPassionata1, longdrinkPassionata2, longdrinkPassionata3],
+    image: longdrinkPassionata2,
+    images: [longdrinkPassionata2, longdrinkPassionata1, longdrinkPassionata3],
     category: "glaeser",
     detailedDescription: "Die Schott Zwiesel Passionata Longdrinkgläser im 10er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Longdrinks, Cocktails, Mocktails oder einfach erfrischendes Wasser. Das kraftvolle, schlanke Design mit massivem Sockel garantiert gute Stabilität und liegt bequem in der Hand. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden. Ideal für Events, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
@@ -2735,8 +2735,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     id: "champagnerglas-passionata-10er",
     name: "Champagnerglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
-    image: champagnerPassionata2,
-    images: [champagnerPassionata2, champagnerPassionata1, champagnerPassionata3, champagnerPassionata4],
+    image: champagnerPassionata1,
+    images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
     category: "glaeser",
     detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz mit jeder Flasche. Das hohe, schlanke Design verstärkt das Prickeln und den Geschmack von Champagner und Sekt. Hergestellt aus bleifreiem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Spülmaschinenfest mit langanhaltender Brillanz. Ideal für gehobene Veranstaltungen, Empfänge und festliche Anlässe. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
