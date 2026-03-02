@@ -1,4 +1,4 @@
-import { ExternalLink, Construction, ShieldCheck, Truck } from "lucide-react";
+import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Music, Sparkles, Zap } from "lucide-react";
 
 interface ServiceBannerProps {
   categoryId?: string;
@@ -32,23 +32,65 @@ const categoryServices: Record<string, ServiceInfo> = {
     iconBgClass: "bg-accent/10",
   },
   beschallung: {
-    icon: Construction,
-    title: "Lieferung, Auf- & Abbau",
-    description: "Unsere Techniker liefern Ihre Beschallungstechnik an, bauen auf, testen und bauen nach dem Event wieder ab.",
+    icon: Headphones,
+    title: "Kompletter Beschallungsservice",
+    description: "Lieferung, Auf- & Abbau sowie technische Betreuung durch unsere erfahrenen Tontechniker während Ihrer Veranstaltung.",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
   beleuchtung: {
-    icon: Construction,
-    title: "Lieferung, Auf- & Abbau",
-    description: "Professionelle Installation und Abbau Ihrer Beleuchtungstechnik durch unser erfahrenes Team.",
+    icon: Lightbulb,
+    title: "Kompletter Beleuchtungsservice",
+    description: "Lieferung, Auf- & Abbau sowie technische Betreuung durch unsere Lichttechniker – von der Planung bis zur Durchführung.",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
+  },
+  buehne: {
+    icon: Construction,
+    title: "Bühne: Auf- & Abbau inklusive",
+    description: "Professioneller Aufbau, Sicherheitsprüfung und Abbau Ihrer Bühnenelemente durch unser geschultes Team.",
+    colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
+    iconBgClass: "bg-accent/10",
+  },
+  "traversen-rigging": {
+    icon: Construction,
+    title: "Traversen: Montage & Demontage",
+    description: "Fachgerechte Montage, Lastberechnung und Demontage Ihrer Traversenkonstruktionen durch zertifizierte Rigger.",
+    colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
+    iconBgClass: "bg-accent/10",
+  },
+  spezialeffekte: {
+    icon: Sparkles,
+    title: "Effekte: Aufbau & Betreuung",
+    description: "Installation, Einrichtung und technische Betreuung Ihrer Spezialeffekte – Nebel, Funken, Seifenblasen und mehr.",
+    colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
+    iconBgClass: "bg-accent/10",
+  },
+  "kabel-stromverteiler": {
+    icon: Zap,
+    title: "Stromversorgung: Planung & Installation",
+    description: "Wir planen und installieren die komplette Stromversorgung für Ihre Veranstaltung oder Baustelle.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+  },
+  aggregate: {
+    icon: Zap,
+    title: "Aggregate: Lieferung & Inbetriebnahme",
+    description: "Wir liefern, installieren und nehmen Ihre Stromerzeuger in Betrieb – inkl. Einweisung und Abholung.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
   },
   huepfburgen: {
     icon: Truck,
     title: "Anlieferung & Aufbau",
     description: "Wir liefern Ihre Hüpfburg direkt zum Veranstaltungsort, bauen sie auf und holen sie nach dem Event wieder ab.",
+    colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
+    iconBgClass: "bg-accent/10",
+  },
+  "geschirr-glaeser-besteck": {
+    icon: Truck,
+    title: "Lieferung & Abholung",
+    description: "Wir liefern Geschirr, Gläser und Besteck sauber und gezählt an – und holen alles nach der Veranstaltung wieder ab.",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
