@@ -1,5 +1,10 @@
 // Bonn Location Products
 // Images imported from shared assets
+import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
+import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
+import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
+import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
+import dessertellerSimply19_5 from "@/assets/products/geschirr/dessertteller-simply-19-5.jpeg";
 
 // Heizung & Trocknung shared images
 import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
@@ -932,9 +937,17 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-dessertteller-simply-19",
     name: "Dessertteller SIMPLY 19, 10er Set",
-    description: "Elegante Dessertteller im 10er Set.",
-    image: "/placeholder.svg",
+    description: "Desserteller weiß in Porzellanoptik, 19cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: dessertellerSimply19_1,
+    images: [dessertellerSimply19_1, dessertellerSimply19_2, dessertellerSimply19_3, dessertellerSimply19_4, dessertellerSimply19_5],
     rentwareCode: { bonn: "1RWUHC" },
+    detailedDescription: "Der Dessertteller SIMPLY 19 im 10er Set überzeugt durch seine elegante Porzellanoptik in Weiß und ist mit 19 cm Durchmesser ideal für Desserts, Vorspeisen und Kuchen. Perfekt für Veranstaltungen, Caterings und private Feiern. Bitte beachten Sie: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Durchmesser": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
   },
   {
     id: "bonn-kaffeetasse-12er",
