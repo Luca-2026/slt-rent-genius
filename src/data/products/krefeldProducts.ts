@@ -1,4 +1,9 @@
 // Krefeld location products - organized by category
+import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
+import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
+import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
+import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
+import dessertellerSimply19_5 from "@/assets/products/geschirr/dessertteller-simply-19-5.jpeg";
 import rollgeruest10_4m_1 from "@/assets/products/rollgeruest-breitaufbau-10-4m-1.jpeg";
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
@@ -2655,11 +2660,18 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "dessertteller-simply-19-10er",
     name: "Dessertteller SIMPLY 19, 10er Set",
-    description: "Dessertteller 19cm",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Desserteller weiß in Porzellanoptik, 19cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: dessertellerSimply19_1,
+    images: [dessertellerSimply19_1, dessertellerSimply19_2, dessertellerSimply19_3, dessertellerSimply19_4, dessertellerSimply19_5],
     category: "teller",
-    rentwareCode: { krefeld: "DRP3ZX" }
+    rentwareCode: { krefeld: "DRP3ZX" },
+    detailedDescription: "Der Dessertteller SIMPLY 19 im 10er Set überzeugt durch seine elegante Porzellanoptik in Weiß und ist mit 19 cm Durchmesser ideal für Desserts, Vorspeisen und Kuchen. Perfekt für Veranstaltungen, Caterings und private Feiern. Bitte beachten Sie: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Material": "Porzellan (weiß)",
+      "Durchmesser": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
   },
   {
     id: "teller-tief-simply-20-10er",
