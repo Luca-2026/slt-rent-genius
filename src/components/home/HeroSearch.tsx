@@ -74,21 +74,26 @@ export function HeroSearch() {
 
   // Filter matching categories (by title, description, OR products within)
   // Prioritize direct category name matches over indirect product-based matches
+  // Check if all words in the query appear in the target string
+  const allWordsMatch = (target: string, queryWords: string[]) =>
+    queryWords.every((w) => target.includes(w));
+
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
+    const queryWords = query.split(/\s+/).filter(Boolean);
     const searchable = productCategories.filter((c) => c.id !== "alle");
     
-    // First: direct category title/description matches
+    // First: direct category title/description matches (word-based)
     const directMatches = searchable.filter((cat) => {
       if (isGerman) {
-        if (cat.title.toLowerCase().includes(query)) return true;
-        if (cat.description.toLowerCase().includes(query)) return true;
+        if (allWordsMatch(cat.title.toLowerCase(), queryWords)) return true;
+        if (allWordsMatch(cat.description.toLowerCase(), queryWords)) return true;
       } else {
         const tr = categoryTranslations[cat.id];
-        if (tr?.title?.toLowerCase().includes(query)) return true;
-        if (tr?.description?.toLowerCase().includes(query)) return true;
-        if (cat.title.toLowerCase().includes(query)) return true;
+        if (tr?.title && allWordsMatch(tr.title.toLowerCase(), queryWords)) return true;
+        if (tr?.description && allWordsMatch(tr.description.toLowerCase(), queryWords)) return true;
+        if (allWordsMatch(cat.title.toLowerCase(), queryWords)) return true;
       }
       return false;
     });
@@ -102,8 +107,8 @@ export function HeroSearch() {
         const catProducts = location.products[cat.id];
         if (catProducts) {
           for (const p of catProducts) {
-            if (p.name.toLowerCase().includes(query)) return true;
-            if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+            if (allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
+            if (p.tags?.some((t) => allWordsMatch(t.toLowerCase(), queryWords))) return true;
           }
         }
       }
