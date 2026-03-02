@@ -47,7 +47,7 @@ export const kbCategories: KBCategory[] = [
     title: "Erdbewegung",
     description: "Betriebsanleitungen für Minibagger, Radlader, Dumper und Anbaugeräte.",
     icon: "HardHat",
-    articleCount: 0,
+    articleCount: 2,
   },
   {
     id: "werkzeuge",
@@ -478,12 +478,113 @@ export const kbArticles: KBArticle[] = [
   // Erdbewegung
   {
     id: "minibagger-einweisung",
-    title: "Minibagger – Ersteinweisung & Bedienung",
-    description: "Grundlagen der Minibagger-Bedienung: Steuerung, Sicherheitshinweise und typische Fehler.",
+    title: "Minibagger sicher bedienen – Anleitung für Privatnutzer",
+    description: "Sicherheitshinweise, Einweisung und Grundfunktionen: So arbeiten Sie sicher mit einem Miet-Minibagger.",
     categoryId: "erdbewegung",
-    type: "anleitung",
-    tags: ["minibagger", "einweisung", "steuerung", "bobcat", "xcmg"],
-    updatedAt: "2026-02-08",
+    productIds: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bonn-bobcat-e10", "bonn-xcmg-xe20e", "bonn-xcmg-xe27e"],
+    type: "sicherheit",
+    tags: ["minibagger", "einweisung", "sicherheit", "bedienung", "joystick", "psa", "graben", "bagger"],
+    updatedAt: "2026-03-02",
+    sections: [
+      {
+        type: "warning",
+        icon: "AlertTriangle",
+        heading: "Wichtiger Hinweis vorweg",
+        items: [
+          "Minibagger sind keine Spielzeuge, sondern Arbeitsmaschinen mit erheblichem Gefährdungspotenzial.",
+          "Unerfahrene Nutzer dürfen nur nach verständlicher Einweisung in Bedienung und Sicherheit arbeiten und müssen die Betriebsanleitung des Geräts beachten.",
+          "Kinder und unbeteiligte Personen haben im Arbeitsbereich nichts zu suchen.",
+        ],
+      },
+      {
+        icon: "ClipboardCheck",
+        heading: "Persönliche Schutzausrüstung & Vorbereitung",
+        text: "Tragen Sie mindestens: Sicherheitsschuhe, eng anliegende Arbeitskleidung, Arbeitshandschuhe, Schutzhelm und ggf. Warnweste und Schutzbrille.",
+        items: [
+          "Schmuck, lose Kleidung, Kapuzenbänder etc. vermeiden – sie können sich in beweglichen Teilen verfangen.",
+          "Arbeitsbereich prüfen: Untergrund, Gefälle, Gräben, Hindernisse, unterirdische Leitungen (Gas, Strom, Wasser), Bäume, Mauern.",
+          "Gefahrenbereich markieren und sichern, Mindestabstand zu Personen einhalten (niemand im Schwenkbereich des Oberwagens).",
+        ],
+      },
+      {
+        icon: "Car",
+        heading: "Einsteigen, Starten, Grundfunktionen",
+        items: [
+          "Auf- und Absteigen immer über Trittstufen und Haltegriffe, nie springen – immer Drei-Punkt-Kontakt (zwei Hände + ein Fuß oder umgekehrt).",
+          "Vor dem Start: Hydraulikschläuche, Laufwerk, Anbaugeräte, Flüssigkeitsstände und offensichtliche Schäden kontrollieren.",
+          "Im Sitz Platz nehmen, Sicherheitsgurt anlegen (falls vorhanden), Sicherheitsbügel/-hebel nach Vorschrift senken.",
+          "Motor nach Herstellerangabe starten, zunächst im Standgas laufen lassen und mit den Joysticks und Pedalen in Ruhe vertraut machen.",
+        ],
+        subSections: [
+          {
+            heading: "Grundbedienung (typisch, kann je nach Modell variieren)",
+            items: [
+              "Linker Joystick: Drehen (Schwenken) des Oberwagens links/rechts, Ausleger vor/zurück.",
+              "Rechter Joystick: Stiel (Löffelstiel) einziehen/ausfahren, Löffel (Schaufel) öffnen/schließen.",
+              "Fahrpedale/Handhebel: Geradeaus fahren, Kurven durch unterschiedliche Ansteuerung der Ketten.",
+              "Schild: Mit separatem Hebel hoch/runter – dient zum Abstützen und Nivellieren.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Hinweis",
+        text: "Die Beschriftung und Belegung der Bedienelemente wird immer am konkreten Mietgerät bei der Einweisung vor Ort erklärt und gezeigt.",
+      },
+      {
+        icon: "Eye",
+        heading: "Sicheres Arbeiten (Grundregeln)",
+        items: [
+          "Immer langsam und mit niedriger Drehzahl beginnen, Bewegungen zunächst ruckfrei üben.",
+          "Untergrund möglichst eben wählen; als Anfänger kein oder nur sehr geringes Gefälle nutzen; Steigungen über ca. 10–15 % vermeiden.",
+          "Beim Fahren Schaufel und Schild leicht über dem Boden (ca. 20–30 cm) halten, damit Sie im Notfall abstützen können.",
+          "Hang nur langsam gerade rauf/runter fahren, seitliches Fahren am Hang vermeiden (Kippgefahr).",
+          "Oberwagen nicht mit voll gefüllter Schaufel weit ausgefahren über die Seite schwenken – Schwerpunkt möglichst nah an der Maschine halten.",
+          "Nie unter überhängenden Lasten arbeiten oder Personen im Graben stehen lassen, während oben gebaggert wird.",
+        ],
+        subSections: [
+          {
+            heading: "Einfache Grabtechnik für Einsteiger",
+            items: [
+              "Schaufel vor der Maschine ansetzen, Zähne auf den Boden aufsetzen.",
+              "Stiel langsam einziehen und gleichzeitig den Ausleger leicht heben, bis die Schaufel gefüllt ist.",
+              "Schaufel schließen, dann Oberwagen langsam zur Ablagestelle schwenken.",
+              "Über dem Ablageort Schaufel öffnen, Material abkippen, dann Schaufel wieder zum Körper holen.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "warning",
+        icon: "AlertTriangle",
+        heading: "Typische Verbote und No-Gos",
+        items: [
+          "Keine Personen mit dem Löffel anheben oder transportieren – keine Mitfahrten auf Schild, Ausleger oder Ketten.",
+          "Nicht im Bereich unterirdischer Leitungen baggern ohne vorherige Klärung/Planauskunft.",
+          "Minibagger nicht in tiefem Wasser einsetzen – Wasserlinie darf die Unterkante der Ketten nicht überschreiten.",
+          "Motor nicht in geschlossenen Räumen ohne ausreichende Belüftung laufen lassen (Gefahr von Abgasvergiftung).",
+        ],
+      },
+      {
+        icon: "Package",
+        heading: "Parken, Abstellen, Transport",
+        items: [
+          "Nach Arbeitsende Bagger auf ebenem Untergrund abstellen.",
+          "Schaufel und Schild komplett absenken, alle Anbaugeräte drucklos auf dem Boden absetzen.",
+          "Motor im Leerlauf kurz abkühlen lassen, dann abstellen und Zündschlüssel abziehen.",
+          "Sicherheitshebel/Bügel hochklappen, Maschine gegen unbefugte Benutzung sichern.",
+          "Beim Transport auf Anhänger: Minibagger mittig und niedrig positionieren, an den vorgesehenen Zurrpunkten mit Gurten sichern.",
+        ],
+      },
+      {
+        type: "legal",
+        icon: "AlertCircle",
+        heading: "Haftungshinweis",
+        text: "Unsere Minibagger sind für Privatkunden geeignet – eine Einweisung vor Ort ist Pflicht. Beachten Sie stets die Betriebsanleitung und unsere Sicherheitsmerkblätter. Arbeiten Sie grundsätzlich langsam, vorausschauend und niemals in der Nähe von spielenden Kindern. Bei Unsicherheit oder schwierigen Bedingungen (starke Hanglage, Leitungen im Boden, Arbeiten an Gebäuden) empfehlen wir dringend die Beauftragung eines Fachunternehmens.",
+      },
+    ],
   },
   {
     id: "radlader-bedienung",
