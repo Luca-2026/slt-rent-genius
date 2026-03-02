@@ -389,6 +389,12 @@ export default function CategoryProducts() {
                   "deko": ["deko", "lichterkette"],
                   "arbeitsleuchte": ["arbeitsleuchte", "handlampe"],
                 };
+                const geschirrTypeGroups: Record<string, string[]> = {
+                  "geschirr": ["geschirr", "teller", "schuessel", "tassen"],
+                  "glaeser": ["glaeser", "glas"],
+                  "besteck": ["besteck"],
+                  "zubehoer": ["spuelmaschine", "warmhaltegeraet", "zubehoer"],
+                };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
@@ -396,6 +402,7 @@ export default function CategoryProducts() {
                   category?.id === "kabel-stromverteiler" ? kabelStromverteilerTypeGroups[value] :
                   category?.id === "moebel-zelte" ? moebelZelteTypeGroups[value] :
                   category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
+                  category?.id === "geschirr-glaeser-besteck" ? geschirrTypeGroups[value] :
                   undefined;
 
                 if (groupCategories) {
@@ -416,6 +423,21 @@ export default function CategoryProducts() {
                 if (category?.id === "moebel-zelte" && value === "moebel") {
                   const nameLower = p.name.toLowerCase();
                   return nameLower.includes("stuhl") || nameLower.includes("tisch") || nameLower.includes("bank") || nameLower.includes("bierzelt");
+                }
+                return false;
+              });
+            });
+          }
+          // Anlass filter for geschirr-glaeser-besteck (hochwertig vs standard)
+          else if (sectionId === "anlass") {
+            filtered = filtered.filter((p) => {
+              const nameLower = p.name.toLowerCase();
+              return selectedValues.some((value) => {
+                if (value === "hochwertig") {
+                  return nameLower.includes("passionata") || nameLower.includes("darwin") || nameLower.includes("deluxe");
+                }
+                if (value === "standard") {
+                  return nameLower.includes("simply") || nameLower.includes("brunelli");
                 }
                 return false;
               });

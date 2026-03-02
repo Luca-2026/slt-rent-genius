@@ -279,7 +279,16 @@ export const geschirrFilterSections: FilterSection[] = [
       { id: "geschirr", label: "catFilters.geschirr", sublabel: "catFilters.geschirr_sub" },
       { id: "glaeser", label: "catFilters.glaeser", sublabel: "catFilters.glaeser_sub" },
       { id: "besteck", label: "catFilters.besteck", sublabel: "catFilters.besteck_sub" },
-      { id: "servieren", label: "catFilters.servieren", sublabel: "catFilters.servieren_sub" },
+      { id: "zubehoer", label: "catFilters.zubehoer_geschirr", sublabel: "catFilters.zubehoer_geschirr_sub" },
+    ],
+  },
+  {
+    id: "anlass",
+    label: "catFilters.anlass",
+    defaultExpanded: false,
+    options: [
+      { id: "hochwertig", label: "catFilters.hochwertig", sublabel: "catFilters.hochwertig_sub" },
+      { id: "standard", label: "catFilters.standard", sublabel: "catFilters.standard_sub" },
     ],
   },
 ];
