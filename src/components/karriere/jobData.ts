@@ -77,17 +77,19 @@ export const jobListings: JobListing[] = [
     location: "Krefeld oder Bonn",
     type: "Ausbildung",
     startDate: "01.08.2026",
-    description: "Starte deine berufliche Zukunft bei SLT Rental! In deiner Ausbildung lernst du alle kaufmännischen Abläufe kennen – von der Angebotserstellung über die Kundenbetreuung bis zur Buchhaltung. Du arbeitest mit modernen digitalen Tools und bekommst Einblicke in spannende Projekte rund um Vermietung und Verkauf von Baumaschinen.",
+    description: "Starte deine berufliche Zukunft bei SLT Rental – einem der innovativsten Vermietungsunternehmen in NRW! In deiner Ausbildung lernst du alle kaufmännischen Abläufe kennen – von der Angebotserstellung über die Kundenbetreuung bis zur Buchhaltung. Dabei arbeitest du mit modernsten digitalen Tools und KI-gestützten Anwendungen, die unsere Prozesse effizienter machen. Du bekommst Einblicke in spannende Projekte rund um Vermietung und Verkauf von Baumaschinen und wirst gezielt im Umgang mit Künstlicher Intelligenz geschult – ein klarer Wettbewerbsvorteil für deine Karriere.",
     requirements: [
       "Mindestens mittlere Reife oder (Fach-)Abitur",
-      "Interesse an kaufmännischen Prozessen und Organisation",
+      "Interesse an kaufmännischen Prozessen, Digitalisierung und modernen Technologien",
+      "Offenheit für neue Tools und KI-gestützte Arbeitsweisen",
       "Gute Kommunikationsfähigkeit und Lernbereitschaft",
       "Zuverlässigkeit und Teamgeist"
     ],
     benefits: [
-      "Abwechslungsreiche Ausbildung mit Verantwortung",
+      "Abwechslungsreiche Ausbildung mit Verantwortung ab Tag 1",
+      "Gezielte Schulungen in KI-Tools und digitalen Geschäftsprozessen",
       "Hohe Übernahmechancen nach erfolgreichem Abschluss",
-      "Moderne Arbeitsplätze und angenehmes Arbeitsumfeld"
+      "Moderne, digitale Arbeitsplätze und angenehmes Arbeitsumfeld"
     ],
     specificFields: [
       {
@@ -179,16 +181,18 @@ export const jobListings: JobListing[] = [
     location: "Homeoffice oder Büro in Bonn / Krefeld",
     type: "Vollzeit",
     startDate: "01.02.2026",
-    description: "Zur Erweiterung unseres Vertriebsteams suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) für den Verkauf von Baumaschinen und Zubehör. Als offizieller Zoomlion-Vertragshändler in NRW bieten wir ein starkes Produktportfolio mit hervorragendem Preis-Leistungs-Verhältnis. Sie beraten Kunden kompetent, entwickeln Lösungen und begleiten den gesamten Verkaufsprozess.",
+    description: "Zur Erweiterung unseres Vertriebsteams suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) für den Verkauf von Baumaschinen und Zubehör. Als offizieller Zoomlion-Vertragshändler in NRW bieten wir ein starkes Produktportfolio mit hervorragendem Preis-Leistungs-Verhältnis. Sie nutzen KI-gestützte Vertriebstools und moderne CRM-Systeme, um Kunden kompetent zu beraten, datenbasierte Lösungen zu entwickeln und den gesamten Verkaufsprozess effizient zu begleiten. Durch den Einsatz von Künstlicher Intelligenz und digitalen Prozessen heben wir uns klar vom Wettbewerb ab.",
     requirements: [
-      "Erfahrung im technischen Vertrieb, idealerweise im Bereich Baumaschinen oder Industrieprodukte",
+      "Erfahrung im technischen Vertrieb, idealerweise im Bereich Baumaschinen, Industrieprodukte oder Vermietung",
       "Sicheres Auftreten und Verhandlungsgeschick",
+      "Affinität zu digitalen Tools, KI-Anwendungen und datengetriebenem Vertrieb",
       "Eigenständige, zielorientierte Arbeitsweise",
-      "Gute MS-Office- und CRM-Kenntnisse"
+      "Gute MS-Office- und CRM-Kenntnisse (z. B. HubSpot, Salesforce)"
     ],
     benefits: [
       "Attraktives Fixgehalt mit leistungsbezogener Vergütung",
       "Firmenwagen zur privaten Nutzung",
+      "Schulungen in KI-gestützten Vertriebstools und modernen Technologien",
       "Betriebliche Altersvorsorge",
       "Flexible Arbeitsmöglichkeiten (Homeoffice oder Büro)"
     ],
