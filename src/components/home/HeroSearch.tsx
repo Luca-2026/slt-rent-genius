@@ -116,9 +116,28 @@ export function HeroSearch() {
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
+    
+    // Collect product IDs from matched categories to boost them
+    const categoryProductIds = new Set<string>();
+    if (filteredCategories.length > 0) {
+      for (const cat of filteredCategories) {
+        for (const location of locations) {
+          const catProducts = location.products[cat.id];
+          if (catProducts) {
+            for (const p of catProducts) {
+              categoryProductIds.add(p.id);
+            }
+          }
+        }
+      }
+    }
+    
     return translatedProducts
       .filter((p, index) => {
         const original = allProducts[index];
+        
+        // Include products from matched categories
+        if (categoryProductIds.has(original.id)) return true;
         
         if (isGerman) {
           if (original.name.toLowerCase().includes(query)) return true;
@@ -137,7 +156,7 @@ export function HeroSearch() {
         return false;
       })
       .slice(0, 8);
-  }, [searchQuery, translatedProducts, allProducts, isGerman]);
+  }, [searchQuery, translatedProducts, allProducts, isGerman, filteredCategories]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
