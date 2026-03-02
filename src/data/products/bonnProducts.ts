@@ -39,6 +39,9 @@ import loeffelSimply19_1 from "@/assets/products/besteck/loeffel-simply-19-1.jpe
 import gabelKleinDeluxe14_1 from "@/assets/products/besteck/gabel-klein-deluxe-14-1.jpeg";
 import gabelKleinDeluxe14_2 from "@/assets/products/besteck/gabel-klein-deluxe-14-2.jpeg";
 import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-14-3.jpeg";
+import loeffelKleinDeluxe14_1 from "@/assets/products/besteck/loeffel-klein-deluxe-14-1.jpeg";
+import loeffelKleinDeluxe14_2 from "@/assets/products/besteck/loeffel-klein-deluxe-14-2.jpeg";
+import loeffelKleinDeluxe14_3 from "@/assets/products/besteck/loeffel-klein-deluxe-14-3.jpeg";
 import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
@@ -1217,6 +1220,24 @@ export const bonnBesteckProducts = [
       "Material": "Edelstahl",
       "Serie": "Athene Poliert",
       "Typ": "Kuchengabel / Gabel klein",
+      "Länge": "14 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-loeffel-klein-deluxe-14",
+    name: "Löffel klein Deluxe 14, 10er Set",
+    description: "Löffel 14 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: loeffelKleinDeluxe14_1,
+    images: [loeffelKleinDeluxe14_1, loeffelKleinDeluxe14_2, loeffelKleinDeluxe14_3],
+    detailedDescription: "Der Löffel klein Deluxe 14 im 10er Set – ein eleganter Teelöffel aus der Serie Athene Poliert. Mit 14 cm Länge aus hochwertigem Edelstahl, ideal für Desserts, Kaffee und Tee bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Serie": "Athene Poliert",
+      "Typ": "Teelöffel / Löffel klein",
       "Länge": "14 cm",
       "Stückzahl": "10 Stück pro Set",
       "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
