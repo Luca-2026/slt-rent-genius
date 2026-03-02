@@ -1569,7 +1569,7 @@ export const bonnBeschallungProducts = [
 // ==================== SPEZIALEFFEKTE ====================
 export const bonnSpezialeffekteProducts = [
   {
-    id: "kalt-funkenfontaene",
+    id: "kalt-funkenfontaene-2er",
     rentwareCode: { bonn: "EDWHU1" },
   },
 ];
