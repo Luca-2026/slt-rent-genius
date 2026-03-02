@@ -1,4 +1,4 @@
-import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Music, Sparkles, Zap } from "lucide-react";
+import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Sparkles, Zap } from "lucide-react";
 
 interface ServiceBannerProps {
   categoryId?: string;
