@@ -1,6 +1,8 @@
 // Krefeld location products - organized by category
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
+import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
+import champagnerBrunelli2 from "@/assets/products/geschirr/champagnerglas-brunelli-2.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2606,10 +2608,21 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "champagnerglas-brunelli-14er",
     name: "Champagnerglas Brunelli, 14er Set",
-    description: "Champagnerflöten",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Die Gläser müssen gereinigt zurückgegeben werden. Reinigungspauschale: 3,90 €/Set.",
+    image: champagnerBrunelli1,
+    images: [champagnerBrunelli1, champagnerBrunelli2],
     category: "glaeser",
+    detailedDescription: "Das Champagnerglas Brunelli von Leonardo im praktischen 14er Set besticht durch seine elegante, schlanke Silhouette. Ideal für Sekt, Champagner und Prosecco bei Veranstaltungen, Hochzeiten und Caterings. Die Gläser sind spülmaschinenfest, klar und stoßfest. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    specifications: {
+      "Hersteller": "Leonardo",
+      "Typ": "Sekt-/Champagnerglas",
+      "Höhe": "25,4 cm",
+      "Durchmesser": "7,8 cm",
+      "Stückzahl": "14 Stück pro Set",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaften": "Klar & stoßfest",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "SLGIZH" }
   },
   {
