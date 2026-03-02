@@ -52,6 +52,10 @@ import schuessDeluxeDarwin18_5 from "@/assets/products/geschirr/schuessel-deluxe
 import schuessDeluxeDarwin18_6 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-6.jpeg";
 import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
+import buffetTellerwaermer1 from "@/assets/products/geschirr/buffet-tellerwaermer-1.jpeg";
+import buffetTellerwaermer2 from "@/assets/products/geschirr/buffet-tellerwaermer-2.jpeg";
+import buffetTellerwaermer3 from "@/assets/products/geschirr/buffet-tellerwaermer-3.jpeg";
+import buffetTellerwaermer4 from "@/assets/products/geschirr/buffet-tellerwaermer-4.jpeg";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
 import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
 import speisetDarwin27_3 from "@/assets/products/geschirr/speiseteller-darwin-27-3.jpeg";
@@ -1202,6 +1206,24 @@ export const bonnGeschirrProducts = [
       "Pumpen": "Klarspülmittel-, Reinigerdosierpumpe & Ablaufpumpe",
     },
     rentwareCode: { bonn: "EEZP7X" },
+  },
+  {
+    id: "bonn-buffet-tellerwaermer",
+    name: "2-in-1-Buffet- und Tellerwärmer, elektrisch",
+    description: "Elektrischer Speisenwärmer mit 300 Watt Leistung. Betriebstemperatur 40°–75°C, bis zu 8 Stunden Betriebszeit. 4 Behälter: 2x 2,4 l und 2x 1,15 l.",
+    image: buffetTellerwaermer1,
+    images: [buffetTellerwaermer1, buffetTellerwaermer2, buffetTellerwaermer3, buffetTellerwaermer4],
+    detailedDescription: "Der 2-in-1-Buffet- und Tellerwärmer vereint zwei Funktionen in einem Gerät: Als Buffetstation hält er Speisen in vier Edelstahlbehältern (2x 2,4 Liter und 2x 1,15 Liter) zuverlässig warm. Gleichzeitig kann die Edelstahloberfläche als Tellerwärmer genutzt werden. Mit 300 Watt Leistung, stufenlos regelbarer Temperatur von 40° bis 75°C und einer Betriebszeit von bis zu 8 Stunden ist er ideal für Buffets, Caterings und Veranstaltungen.",
+    specifications: {
+      "Leistung": "300 Watt",
+      "Betriebstemperatur": "40° bis 75°C (stufenlos regelbar)",
+      "Betriebszeit": "bis zu 8 Stunden",
+      "Behälter": "4 Stück (2x 2,4 l + 2x 1,15 l)",
+      "Material": "Edelstahl",
+      "Funktion": "Buffetstation & Tellerwärmer",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-aschenbecher-glas",
