@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTranslatedProduct";
@@ -46,6 +46,24 @@ export default function CategoryProducts() {
     search: "",
     filters: {},
   });
+
+  const productGridRef = useRef<HTMLDivElement>(null);
+  const prevFiltersRef = useRef({ trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter });
+
+  // Scroll to product grid when filters change
+  useEffect(() => {
+    const prev = prevFiltersRef.current;
+    const filtersChanged =
+      prev.trailerFilters !== trailerFilters ||
+      prev.earthMovingFilters !== earthMovingFilters ||
+      prev.genericFilters !== genericFilters ||
+      prev.selectedCategoryFilter !== selectedCategoryFilter;
+
+    if (filtersChanged && productGridRef.current) {
+      productGridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    prevFiltersRef.current = { trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter };
+  }, [trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter]);
   
   const location = locationId ? getLocationById(locationId) : undefined;
   const rawCategory = categoryId ? getCategoryById(categoryId) : undefined;
@@ -1085,7 +1103,7 @@ export default function CategoryProducts() {
               </div>
 
               {/* Product Grid */}
-              <div className="lg:col-span-2 order-2 lg:order-2">
+              <div ref={productGridRef} className="lg:col-span-2 order-2 lg:order-2">
                 {products.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {products.map((product) => {
