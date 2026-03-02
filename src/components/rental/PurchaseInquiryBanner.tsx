@@ -27,7 +27,11 @@ export function PurchaseInquiryBanner({ productName, locationName }: PurchaseInq
   const { toast } = useToast();
 
   useEffect(() => {
-    const timer = setTimeout(() => setPopupOpen(true), 2500);
+    if (sessionStorage.getItem("purchasePopupShown")) return;
+    const timer = setTimeout(() => {
+      setPopupOpen(true);
+      sessionStorage.setItem("purchasePopupShown", "1");
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
