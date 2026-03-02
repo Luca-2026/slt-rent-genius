@@ -26,8 +26,8 @@ const categoryServices: Record<string, ServiceInfo> = {
   },
   "moebel-zelte": {
     icon: Construction,
-    title: "Auf- & Abbau inklusive",
-    description: "Wir liefern nicht nur – wir übernehmen auch den kompletten Auf- und Abbau Ihrer Zelte, Möbel und Event-Ausstattung.",
+    title: "Auf- & Abbau auf Wunsch",
+    description: "Optional übernehmen wir den kompletten Auf- und Abbau Ihrer Zelte, Möbel und Event-Ausstattung – sprechen Sie uns einfach an.",
     colorClass: "bg-accent/5 border-accent/20 hover:bg-accent/10",
     iconBgClass: "bg-accent/10",
   },
