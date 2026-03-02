@@ -413,6 +413,7 @@ import imgKaltFunkenfontaeneSet4 from "@/assets/products/spezialeffekte/kalt-fun
 import imgTurboCo2Jet1 from "@/assets/products/spezialeffekte/turbo-jet-co2-1.jpg";
 import imgTurboCo2Jet2 from "@/assets/products/spezialeffekte/turbo-jet-co2-2.jpg";
 import imgTurboCo2Jet3 from "@/assets/products/spezialeffekte/turbo-jet-co2-3.jpg";
+import imgKaltFunkenfontaene4erSet from "@/assets/products/spezialeffekte/kalt-funkenfontaene-4er-set.jpeg";
 
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
@@ -2431,8 +2432,8 @@ export const spezialeffekteProducts: Product[] = [
     id: "kalt-funkenfontaene-4er",
     name: "Kalt-Funkenfontäne, 4er Set",
     description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
-    image: imgKaltFunkenfontaeneSet1,
-    images: [imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
+    image: imgKaltFunkenfontaene4erSet,
+    images: [imgKaltFunkenfontaene4erSet, imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
     category: "funken",
     specifications: {
       "Set": "4 × Kalt-Funkenfontäne im Flightcase",
