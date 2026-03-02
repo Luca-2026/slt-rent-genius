@@ -29,7 +29,7 @@
     "popular": "Popular:",
     "articlesFound": "{{count}} items found",
     "noArticlesFound": "No items found for \"{{query}}\"",
-    "popularTerms": ["Trailer", "Excavator", "Box trailer", "Tarpaulin trailer"],
+    "popularTerms": ["Excavator", "Trailer", "Tableware", "Construction dryer", "Aerial platforms"],
     "browseAll": "Browse all products",
     "selectLocation": "Select Location",
     "selectLocationHint": "Choose a location for pickup",
