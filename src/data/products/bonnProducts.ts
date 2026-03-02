@@ -4,6 +4,10 @@ import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-sim
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
 import champagnerBrunelli2 from "@/assets/products/geschirr/champagnerglas-brunelli-2.jpeg";
+import champagnerPassionata1 from "@/assets/products/geschirr/champagnerglas-passionata-1.jpg";
+import champagnerPassionata2 from "@/assets/products/geschirr/champagnerglas-passionata-2.jpg";
+import champagnerPassionata3 from "@/assets/products/geschirr/champagnerglas-passionata-3.jpg";
+import champagnerPassionata4 from "@/assets/products/geschirr/champagnerglas-passionata-4.jpg";
 import messerDeluxe21_1 from "@/assets/products/besteck/messer-deluxe-21-1.jpeg";
 import messerDeluxe21_2 from "@/assets/products/besteck/messer-deluxe-21-2.jpeg";
 import messerDeluxe21_3 from "@/assets/products/besteck/messer-deluxe-21-3.jpeg";
@@ -1063,6 +1067,27 @@ export const bonnGeschirrProducts = [
       "Material": "Tritan®-Kristallglas",
       "Typ": "Rotweinglas",
       "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-champagnerglas-passionata-10er",
+    name: "Champagnerglas Passionata, 10er Set",
+    description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
+    image: champagnerPassionata1,
+    images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
+    detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz für Champagner und Sekt. Bleifreies Tritan®-Kristallglas, bruchfest, kratzfest und spülmaschinenfest.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas (bleifrei)",
+      "Typ": "Champagnerglas / Sektflöte",
+      "Fassungsvermögen": "325 ml",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
       "Stückzahl": "10 Stück pro Set",

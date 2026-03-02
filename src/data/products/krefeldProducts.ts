@@ -32,6 +32,10 @@ import weissweinPassionata4 from "@/assets/products/geschirr/weissweinglas-passi
 import rotweinPassionata1 from "@/assets/products/geschirr/rotweinglas-passionata-1.jpg";
 import rotweinPassionata2 from "@/assets/products/geschirr/rotweinglas-passionata-2.avif";
 import rotweinPassionata3 from "@/assets/products/geschirr/rotweinglas-passionata-3.jpg";
+import champagnerPassionata1 from "@/assets/products/geschirr/champagnerglas-passionata-1.jpg";
+import champagnerPassionata2 from "@/assets/products/geschirr/champagnerglas-passionata-2.jpg";
+import champagnerPassionata3 from "@/assets/products/geschirr/champagnerglas-passionata-3.jpg";
+import champagnerPassionata4 from "@/assets/products/geschirr/champagnerglas-passionata-4.jpg";
 import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
 import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
@@ -2720,6 +2724,28 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Typ": "Rotweinglas",
       "Farbe": "Transparent",
       "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "champagnerglas-passionata-10er",
+    name: "Champagnerglas Passionata, 10er Set",
+    description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
+    image: champagnerPassionata1,
+    images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
+    category: "glaeser",
+    detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz mit jeder Flasche. Das hohe, schlanke Design verstärkt das Prickeln und den Geschmack von Champagner und Sekt. Hergestellt aus bleifreiem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Spülmaschinenfest mit langanhaltender Brillanz. Ideal für gehobene Veranstaltungen, Empfänge und festliche Anlässe. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas (bleifrei)",
+      "Typ": "Champagnerglas / Sektflöte",
+      "Fassungsvermögen": "325 ml",
+      "Farbe": "Transparent",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
       "Stückzahl": "10 Stück pro Set",
