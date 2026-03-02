@@ -43,6 +43,12 @@ import loeffelKleinDeluxe14_2 from "@/assets/products/besteck/loeffel-klein-delu
 import loeffelKleinDeluxe14_3 from "@/assets/products/besteck/loeffel-klein-deluxe-14-3.jpeg";
 import loeffelSimply13_1 from "@/assets/products/besteck/loeffel-simply-13-1.jpeg";
 import loeffelSimply13_2 from "@/assets/products/besteck/loeffel-simply-13-2.jpeg";
+import schuessDeluxeDarwin18_1 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-1.jpeg";
+import schuessDeluxeDarwin18_2 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-2.jpeg";
+import schuessDeluxeDarwin18_3 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-3.jpeg";
+import schuessDeluxeDarwin18_4 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-4.jpeg";
+import schuessDeluxeDarwin18_5 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-5.jpeg";
+import schuessDeluxeDarwin18_6 from "@/assets/products/geschirr/schuessel-deluxe-darwin-18-6.jpeg";
 import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
@@ -2818,10 +2824,21 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "schuessel-deluxe-18-10er",
     name: "Schüssel Deluxe 18, 10er Set",
-    description: "Schüsseln 18cm",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Suppenteller 18 cm, Füllmenge 700 ml. Hersteller Sänger, Serie Darwin. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
+    image: schuessDeluxeDarwin18_1,
+    images: [schuessDeluxeDarwin18_1, schuessDeluxeDarwin18_2, schuessDeluxeDarwin18_3, schuessDeluxeDarwin18_4, schuessDeluxeDarwin18_5, schuessDeluxeDarwin18_6],
     category: "schuessel",
+    detailedDescription: "Die Schüssel Deluxe 18 im 10er Set aus der Serie Darwin von Sänger. Mit 18 cm Durchmesser und 700 ml Füllmenge ideal als Suppenteller oder Schale für Salate und Beilagen. Das schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Spülmaschinenfest. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
+    specifications: {
+      "Hersteller": "Sänger",
+      "Serie": "Darwin",
+      "Durchmesser": "18 cm",
+      "Füllmenge": "ca. 700 ml",
+      "Design": "Vintage",
+      "Spülmaschinenfest": "Ja",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,50 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "8SXZKZ" }
   },
   {
