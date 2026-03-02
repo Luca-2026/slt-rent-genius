@@ -487,7 +487,7 @@
     "reqDepositTitle": "Kaution",
     "reqDepositDesc": "Je nach Produkt ist eine Kaution fällig, die bei Rückgabe erstattet wird. Die Höhe wird bei der Buchung angezeigt.",
     "reqIdTitle": "Ausweis & Führerschein",
-    "reqIdDesc": "Bitte bring einen gültigen Personalausweis mit. Für bestimmte Fahrzeuge und Anhänger wird ein Führerschein benötigt.",
+    "reqIdDesc": "Bitte bring einen gültigen deutschen Personalausweis, Aufenthaltstitel oder Meldebescheinigung (nicht älter als 3 Monate). Bei selbstfahrenden Fahrzeugen oder Anhängern zusätzlich auch den Führerschein.",
     "reqBusinessTitle": "Für Unternehmen",
     "reqBusinessDesc": "Gewerbetreibende registrieren sich im B2B-Portal und profitieren von Rahmenverträgen und vereinfachter Abrechnung.",
     "faqTitle": "Noch Fragen?",

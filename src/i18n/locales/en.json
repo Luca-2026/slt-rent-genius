@@ -487,7 +487,7 @@
     "reqDepositTitle": "Deposit",
     "reqDepositDesc": "Depending on the product, a deposit is required which will be refunded upon return. The amount is shown during booking.",
     "reqIdTitle": "ID & Driver's License",
-    "reqIdDesc": "Please bring a valid ID. A driver's license is required for certain vehicles and trailers.",
+    "reqIdDesc": "Please bring a valid German ID card, residence permit, or registration certificate (not older than 3 months). A driver's license is also required for self-propelled vehicles or trailers.",
     "reqBusinessTitle": "For Businesses",
     "reqBusinessDesc": "Business customers register in the B2B portal and benefit from framework agreements and simplified billing.",
     "faqTitle": "Still Have Questions?",
