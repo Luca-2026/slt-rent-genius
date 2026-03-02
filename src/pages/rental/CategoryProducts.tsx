@@ -167,7 +167,7 @@ export default function CategoryProducts() {
             (type === "geschlossen" && (nameLower.includes("planen") || nameLower.includes("koffer"))) ||
             (type === "baumaschine" && nameLower.includes("baumaschinen")) ||
             (type === "autotransport" && nameLower.includes("autotransport")) ||
-            (type === "laubgitter" && nameLower.includes("laubgitter")) ||
+            (type === "laubgitter" && (nameLower.includes("laubgitter") || nameLower.includes("kipp"))) ||
             (type === "urlaub" && nameLower.includes("urlaub"))
           );
         });
