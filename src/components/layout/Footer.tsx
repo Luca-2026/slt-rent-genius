@@ -22,7 +22,7 @@ const locations = [
   {
     id: "muelheim",
     name: "Mülheim",
-    address: "Ruhrorter Str. 100, 45478 Mülheim an der Ruhr",
+    address: "Ruhrorter Str. 122, 45478 Mülheim an der Ruhr",
     phone: "02151 417 99 04",
     email: "krefeld@slt-rental.de",
   },

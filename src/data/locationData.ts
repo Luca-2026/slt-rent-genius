@@ -86,9 +86,9 @@ export const locationData: LocationInfo[] = [
     id: "muelheim",
     name: "Mülheim an der Ruhr",
     shortName: "MH",
-    subtitle: "Filiale",
+    subtitle: "Corporate Filiale SLT x Bobcat",
     description: "Miete bei uns Minibagger, Anhänger und mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Ruhrorter Str. 100",
+    address: "Ruhrorter Str. 122",
     city: "45478 Mülheim an der Ruhr",
     phone: "02151 417 99 04",
     email: "muelheim@slt-rental.de",
@@ -99,7 +99,7 @@ export const locationData: LocationInfo[] = [
       { day: "Abholung", time: "nach Vereinbarung" },
     ],
     features: ["Bagger & Anhänger", "Ruhrgebiet-Nähe", "24/7 Anhänger-Buchung", "Schnelle Abwicklung"],
-    mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+100+45478+Mülheim",
+    mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+122+45478+Mülheim",
   },
 ];
 
