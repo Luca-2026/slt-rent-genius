@@ -20,6 +20,7 @@ import { TrailerFilter, type TrailerFilterState } from "@/components/rental/Trai
 import { EarthMovingFilter, type EarthMovingFilterState } from "@/components/rental/EarthMovingFilter";
 import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
 import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
+import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
 
 export default function CategoryProducts() {
@@ -894,6 +895,15 @@ export default function CategoryProducts() {
       {/* Info Banner for other categories */}
       {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "heizung-trocknung" && category.id !== "alle" && (
         <CategoryInfoBanner categoryId={category.id} />
+      )}
+
+      {/* Dienstleistungs-Banner */}
+      {category.id !== "alle" && (
+        <section className="pt-4 lg:pt-6">
+          <div className="section-container">
+            <ServiceBanner categoryId={category.id} />
+          </div>
+        </section>
       )}
 
       {/* Products */}
