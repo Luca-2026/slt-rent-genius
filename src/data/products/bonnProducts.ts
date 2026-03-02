@@ -42,6 +42,8 @@ import gabelKleinDeluxe14_3 from "@/assets/products/besteck/gabel-klein-deluxe-1
 import loeffelKleinDeluxe14_1 from "@/assets/products/besteck/loeffel-klein-deluxe-14-1.jpeg";
 import loeffelKleinDeluxe14_2 from "@/assets/products/besteck/loeffel-klein-deluxe-14-2.jpeg";
 import loeffelKleinDeluxe14_3 from "@/assets/products/besteck/loeffel-klein-deluxe-14-3.jpeg";
+import loeffelSimply13_1 from "@/assets/products/besteck/loeffel-simply-13-1.jpeg";
+import loeffelSimply13_2 from "@/assets/products/besteck/loeffel-simply-13-2.jpeg";
 import kaffeetasse12er_1 from "@/assets/products/geschirr/kaffeetasse-12er-1.png";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
@@ -1265,8 +1267,17 @@ export const bonnBesteckProducts = [
   {
     id: "bonn-loeffel-simply-13",
     name: "Löffel SIMPLY 13, 10er Set",
-    description: "Kleine Löffel für Desserts.",
-    image: "/placeholder.svg",
+    description: "Löffel klein Edelstahl, 13 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: loeffelSimply13_1,
+    images: [loeffelSimply13_1, loeffelSimply13_2],
+    detailedDescription: "Der Löffel SIMPLY 13 im 10er Set – ein kompakter Kaffeelöffel aus Edelstahl mit 13 cm Länge. Ideal für Kaffee, Tee und Desserts bei Veranstaltungen, Caterings und privaten Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Typ": "Kaffeelöffel / Löffel klein",
+      "Länge": "13 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { bonn: "E941H1" },
   },
   {
