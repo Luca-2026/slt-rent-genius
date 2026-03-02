@@ -26,6 +26,10 @@ import schuessSimply15_2 from "@/assets/products/geschirr/schuessel-simply-15-2.
 import schuessSimply15_3 from "@/assets/products/geschirr/schuessel-simply-15-3.jpeg";
 import schuessSimply15_4 from "@/assets/products/geschirr/schuessel-simply-15-4.jpeg";
 import weissweinglasBrunelli1 from "@/assets/products/geschirr/weisweinglas-brunelli-1.jpeg";
+import weissweinPassionata1 from "@/assets/products/geschirr/weissweinglas-passionata-1.jpg";
+import weissweinPassionata2 from "@/assets/products/geschirr/weissweinglas-passionata-2.jpg";
+import weissweinPassionata3 from "@/assets/products/geschirr/weissweinglas-passionata-3.jpg";
+import weissweinPassionata4 from "@/assets/products/geschirr/weissweinglas-passionata-4.jpg";
 import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
 import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
@@ -1016,6 +1020,27 @@ export const bonnGeschirrProducts = [
       "Typ": "Longdrinkglas / Wasserglas",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Kratzfest & bruchsicher",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-weissweinglas-passionata-10er",
+    name: "Weißweinglas Passionata, 10er Set",
+    description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
+    image: weissweinPassionata1,
+    images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
+    detailedDescription: "Das Schott Zwiesel Passionata Weißweinglas im 10er Set – optimiert für den aromatischen Ausdruck von Weißweinen. Hergestellt aus Tritan®-Kristallglas – klar, kratzfest und extrem bruchsicher. Spülmaschinenfest und nachhaltig hergestellt.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas",
+      "Typ": "Weißweinglas",
+      "Fassungsvermögen": "450 ml",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Aromaverstärkend, kratzfest, nachhaltig",
       "Stückzahl": "10 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
