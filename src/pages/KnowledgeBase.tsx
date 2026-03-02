@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { Input } from "@/components/ui/input";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -467,6 +468,33 @@ function ArticleSection({ section }: { section: KBArticleSection }) {
             </li>
           ))}
         </ul>
+      )}
+
+      {section.table && (
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-primary/5">
+                {section.table.headers.map((h, i) => (
+                  <TableHead key={i} className="text-xs font-semibold text-foreground whitespace-nowrap">
+                    {h}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {section.table.rows.map((row, ri) => (
+                <TableRow key={ri}>
+                  {row.map((cell, ci) => (
+                    <TableCell key={ci} className={`text-sm ${ci === 0 ? "font-semibold text-primary" : "text-foreground"}`}>
+                      {cell}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
 
       {section.subSections && section.subSections.map((sub, si) => (

@@ -6,6 +6,7 @@ export interface KBArticleSection {
   type?: "info" | "warning" | "tip" | "legal";
   text?: string;
   items?: string[];
+  table?: { headers: string[]; rows: string[][] };
   subSections?: { heading: string; items: string[] }[];
 }
 
@@ -395,7 +396,15 @@ export const kbArticles: KBArticle[] = [
         type: "info",
         icon: "ClipboardCheck",
         heading: "Übersichtstabelle: Führerschein vs. Anhänger",
-        text: "Klasse B → Pkw bis 3,5 t + Anhänger bis 750 kg (immer) = max. 4,25 t → kleine Mietanhänger\nKlasse B → Pkw bis 3,5 t + Anhänger > 750 kg = max. 3,5 t Kombination → leichte gebremste Anhänger\nKlasse B96 → Pkw bis 3,5 t + Anhänger > 750 kg = > 3,5 t bis 4,25 t → Wohnwagen, größere Anhänger\nKlasse BE → Pkw bis 3,5 t + Anhänger bis 3,5 t = bis 7,0 t → schwere Transportanhänger, Autotransporter",
+        table: {
+          headers: ["Führerschein", "Pkw zGM", "Anhänger zGM", "Kombination zGM", "Typische Nutzung"],
+          rows: [
+            ["B", "bis 3,5 t", "bis 750 kg (immer)", "bis 4,25 t", "Kleine Mietanhänger"],
+            ["B", "bis 3,5 t", "> 750 kg", "max. 3,5 t", "Leichte gebremste Anhänger"],
+            ["B96", "bis 3,5 t", "> 750 kg", "> 3,5 t bis 4,25 t", "Wohnwagen, größere Anhänger"],
+            ["BE", "bis 3,5 t", "bis 3,5 t", "bis 7,0 t", "Schwere Transportanhänger"],
+          ],
+        },
       },
       {
         type: "tip",
