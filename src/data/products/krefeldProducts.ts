@@ -30,6 +30,8 @@ import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-delu
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
 import spuelmaschineStalgast1 from "@/assets/products/geschirr/spuelmaschine-stalgast-1.jpeg";
 import spuelmaschineStalgast2 from "@/assets/products/geschirr/spuelmaschine-stalgast-2.jpeg";
+import aschenbecherGlas1 from "@/assets/products/geschirr/aschenbecher-glas-1.jpeg";
+import aschenbecherGlas2 from "@/assets/products/geschirr/aschenbecher-glas-2.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2788,10 +2790,17 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "aschenbecher-glas",
     name: "Aschenbecher Glas",
-    description: "Glas-Aschenbecher",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Glas-Aschenbecher Ø 10,7 x 3,5 cm. Klar, stapelbar.",
+    image: aschenbecherGlas1,
+    images: [aschenbecherGlas1, aschenbecherGlas2],
     category: "zubehoer",
+    detailedDescription: "Klassischer Glas-Aschenbecher in klarem Design. Mit einem Durchmesser von 10,7 cm und einer Höhe von 3,5 cm kompakt und praktisch. Die Aschenbecher sind stapelbar und eignen sich ideal für Veranstaltungen, Gastronomie und private Feiern.",
+    specifications: {
+      "Material": "Glas (klar)",
+      "Durchmesser": "10,7 cm",
+      "Höhe": "3,5 cm",
+      "Eigenschaften": "Stapelbar",
+    },
     rentwareCode: { krefeld: "QNIZSP" }
   },
   {
