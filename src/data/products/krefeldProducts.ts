@@ -12,6 +12,8 @@ import tellerSimply25_3 from "@/assets/products/geschirr/teller-simply-25-3.jpeg
 import tellerSimply25_4 from "@/assets/products/geschirr/teller-simply-25-4.jpeg";
 import tellerSimply25_5 from "@/assets/products/geschirr/teller-simply-25-5.jpeg";
 import tellerSimply25_6 from "@/assets/products/geschirr/teller-simply-25-6.jpeg";
+import gabelSimply19_1 from "@/assets/products/besteck/gabel-simply-19-1.jpeg";
+import gabelSimply19_2 from "@/assets/products/besteck/gabel-simply-19-2.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2789,10 +2791,17 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "gabel-simply-19-10er",
     name: "Gabel SIMPLY 19, 10er Set",
-    description: "Tafelgabeln",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Gabel Edelstahl, 19 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
+    image: gabelSimply19_1,
+    images: [gabelSimply19_1, gabelSimply19_2],
     category: "besteck",
+    detailedDescription: "Die Gabel SIMPLY 19 im 10er Set aus hochwertigem Edelstahl mit 19 cm Länge. Ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Das Besteck muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,00 € erhoben.",
+    specifications: {
+      "Material": "Edelstahl",
+      "Länge": "19 cm",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "2,00 € (bei Rückgabe ohne Reinigung)",
+    },
     rentwareCode: { krefeld: "KX7QQ4" }
   },
   {
