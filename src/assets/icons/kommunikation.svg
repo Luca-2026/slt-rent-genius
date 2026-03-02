@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Walkie-Talkie 1 -->
+  <g transform="translate(100, 60)">
+    <!-- Antenna -->
+    <rect x="85" y="0" width="12" height="100" rx="6" fill="#3a3a3a"/>
+    <rect x="81" y="0" width="20" height="8" rx="4" fill="#555"/>
+    <!-- Body -->
+    <rect x="40" y="90" width="120" height="280" rx="16" fill="#3a3a3a"/>
+    <!-- Screen -->
+    <rect x="56" y="115" width="88" height="55" rx="6" fill="#6b7b8d"/>
+    <rect x="60" y="119" width="80" height="47" rx="4" fill="#8899aa"/>
+    <!-- Speaker lines -->
+    <rect x="60" y="185" width="60" height="6" rx="3" fill="#555"/>
+    <rect x="60" y="198" width="60" height="6" rx="3" fill="#555"/>
+    <rect x="60" y="211" width="60" height="6" rx="3" fill="#555"/>
+    <!-- Keypad -->
+    <circle cx="72" cy="250" r="7" fill="#555"/>
+    <circle cx="100" cy="250" r="7" fill="#555"/>
+    <circle cx="128" cy="250" r="7" fill="#555"/>
+    <circle cx="72" cy="275" r="7" fill="#555"/>
+    <circle cx="100" cy="275" r="7" fill="#555"/>
+    <circle cx="128" cy="275" r="7" fill="#555"/>
+    <circle cx="72" cy="300" r="7" fill="#555"/>
+    <circle cx="100" cy="300" r="7" fill="#555"/>
+    <circle cx="128" cy="300" r="7" fill="#555"/>
+    <!-- Side button -->
+    <rect x="160" y="140" width="12" height="40" rx="4" fill="#555"/>
+    <!-- PTT button -->
+    <rect x="160" y="195" width="12" height="60" rx="4" fill="#555"/>
+    <!-- Top knob -->
+    <rect x="48" y="82" width="24" height="16" rx="6" fill="#555"/>
+  </g>
+  <!-- Signal waves -->
+  <g transform="translate(310, 100)" stroke="#3a3a3a" stroke-width="8" fill="none" stroke-linecap="round">
+    <path d="M0,40 Q20,-10 40,40" opacity="0.4"/>
+    <path d="M15,40 Q30,5 45,40" opacity="0.6"/>
+    <path d="M30,40 Q40,20 50,40" opacity="0.8"/>
+  </g>
+</svg>
