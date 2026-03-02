@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -392,6 +392,32 @@ export default function ProductDetail() {
                           </p>
                           <span className="inline-flex items-center gap-1 text-xs text-accent font-medium mt-1.5 group-hover:underline">
                             {t("rental.trailerCodeGuideLink")}
+                            <ExternalLink className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                  {/* Führerschein & Zugfahrzeug */}
+                  <Link
+                    to="/hilfe"
+                    state={{ articleId: "anhaenger-fuehrerschein" }}
+                    className="block"
+                  >
+                    <div className="bg-secondary border border-border rounded-xl p-4 hover:bg-secondary/80 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Car className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            {t("rental.trailerLicenseGuide")}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {t("rental.trailerLicenseGuideDesc")}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                            {t("rental.trailerLicenseGuideLink")}
                             <ExternalLink className="h-3 w-3" />
                           </span>
                         </div>
