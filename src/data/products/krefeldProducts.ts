@@ -28,6 +28,8 @@ import weissweinglasBrunelli1 from "@/assets/products/geschirr/weisweinglas-brun
 import loeffelGrossDeluxe19_1 from "@/assets/products/besteck/loeffel-gross-deluxe-19-1.jpeg";
 import loeffelGrossDeluxe19_2 from "@/assets/products/besteck/loeffel-gross-deluxe-19-2.jpeg";
 import loeffelGrossDeluxe19_3 from "@/assets/products/besteck/loeffel-gross-deluxe-19-3.jpeg";
+import spuelmaschineStalgast1 from "@/assets/products/geschirr/spuelmaschine-stalgast-1.jpeg";
+import spuelmaschineStalgast2 from "@/assets/products/geschirr/spuelmaschine-stalgast-2.jpeg";
 import dessertellerSimply19_2 from "@/assets/products/geschirr/dessertteller-simply-19-2.jpeg";
 import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-simply-19-3.jpeg";
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
@@ -2803,11 +2805,24 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   },
   {
     id: "spuelmaschine-frontlader",
-    name: "Gastro-Spülmaschinen Frontlader",
-    description: "Gewerbespülmaschine",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "Gastro-Spülmaschine Frontlader",
+    description: "Gewerbespülmaschine von Stalgast für Spülkörbe 50x50 cm und GN1/1. Einschubhöhe 32 cm, Waschzyklen 120s & 180s, inkl. Spülkorb und Wasserenthärter.",
+    image: spuelmaschineStalgast1,
+    images: [spuelmaschineStalgast1, spuelmaschineStalgast2],
     category: "spuelmaschine",
+    detailedDescription: "Die Gastro-Spülmaschine Frontlader von Stalgast ist speziell für die Aufnahme von Spülkörben (50x50 cm) oder GN1/1-Blechen und -Behältern konzipiert. Mit einer Einschubhöhe von 32 cm eignet sie sich auch für größere Töpfe oder Weizengläser. Die Maschine bietet zwei Waschzyklen (120s und 180s) und wird inklusive Spülkorb und Wasserenthärter geliefert. Anschlussleistung: 4,9 kW, verfügbar in 400V (Standard) oder 230V (bitte bei Buchung angeben). Benötigt einen 2 bar 3/4 Zoll Wasseranschluss. Ideal als Ergänzung bei Veranstaltungen mit großen Mengen an Geschirr, Gläsern und Besteck.",
+    specifications: {
+      "Hersteller": "Stalgast",
+      "Typ": "Frontlader-Gewerbespülmaschine",
+      "Spülkörbe": "50x50 cm / GN1/1",
+      "Einschubhöhe": "32 cm",
+      "Waschzyklen": "120s & 180s",
+      "Anschlussleistung": "4,9 kW",
+      "Spannung": "400V (Standard) oder 230V (bitte angeben)",
+      "Wasseranschluss": "2 bar, 3/4 Zoll",
+      "Inklusive": "Spülkorb & Wasserenthärter",
+      "Pumpen": "Klarspülmittel-, Reinigerdosierpumpe & Ablaufpumpe",
+    },
     rentwareCode: { krefeld: "DFGFG2" }
   },
   // Besteck
