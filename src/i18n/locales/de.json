@@ -29,7 +29,7 @@
     "popular": "Beliebt:",
     "articlesFound": "{{count}} Artikel gefunden",
     "noArticlesFound": "Keine Artikel für \"{{query}}\" gefunden",
-    "popularTerms": ["Anhänger", "Bagger", "Koffer", "Planen"],
+    "popularTerms": ["Bagger", "Anhänger", "Geschirr", "Bautrockner", "Arbeitsbühnen"],
     "browseAll": "Alle Produkte durchsuchen",
     "selectLocation": "Standort wählen",
     "selectLocationHint": "Wähle einen Standort für die Abholung",
