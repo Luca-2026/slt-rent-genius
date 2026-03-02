@@ -71,23 +71,33 @@ export function HeroSearch() {
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
   const translatedProducts = useTranslatedProducts(allProducts);
 
-  // Filter matching categories
+  // Filter matching categories (by title, description, OR products within)
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
-    // Exclude "alle" category
     const searchable = productCategories.filter((c) => c.id !== "alle");
     return searchable.filter((cat) => {
+      // Match category title/description
       if (isGerman) {
-        return cat.title.toLowerCase().includes(query) || cat.description.toLowerCase().includes(query);
+        if (cat.title.toLowerCase().includes(query)) return true;
+        if (cat.description.toLowerCase().includes(query)) return true;
       } else {
         const tr = categoryTranslations[cat.id];
         if (tr?.title?.toLowerCase().includes(query)) return true;
         if (tr?.description?.toLowerCase().includes(query)) return true;
-        // Also match German as fallback
         if (cat.title.toLowerCase().includes(query)) return true;
-        return false;
       }
+      // Match if any product in this category matches the query
+      for (const location of locations) {
+        const catProducts = location.products[cat.id];
+        if (catProducts) {
+          for (const p of catProducts) {
+            if (p.name.toLowerCase().includes(query)) return true;
+            if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+          }
+        }
+      }
+      return false;
     }).slice(0, 3);
   }, [searchQuery, isGerman]);
 
