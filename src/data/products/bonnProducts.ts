@@ -65,6 +65,9 @@ import getraenkekuehlschrank236l_3 from "@/assets/products/geschirr/getraenkekue
 import messerSimply20_1 from "@/assets/products/besteck/messer-simply-20-1.jpeg";
 import messerSimply20_2 from "@/assets/products/besteck/messer-simply-20-2.jpeg";
 import rotweinBrunelli1 from "@/assets/products/geschirr/rotweinglas-brunelli-1.jpeg";
+import longdrinkPassionata1 from "@/assets/products/geschirr/longdrinkglas-passionata-1.avif";
+import longdrinkPassionata2 from "@/assets/products/geschirr/longdrinkglas-passionata-2.jpg";
+import longdrinkPassionata3 from "@/assets/products/geschirr/longdrinkglas-passionata-3.avif";
 import rotweinBrunelli2 from "@/assets/products/geschirr/rotweinglas-brunelli-2.jpeg";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
 import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
@@ -998,6 +1001,27 @@ export const bonnMoebelProducts = [
 
 // ==================== GESCHIRR ====================
 export const bonnGeschirrProducts = [
+  {
+    id: "bonn-longdrinkglas-passionata-10er",
+    name: "Longdrink- / Wasserglas Passionata, 10er Set",
+    description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set.",
+    image: longdrinkPassionata1,
+    images: [longdrinkPassionata1, longdrinkPassionata2, longdrinkPassionata3],
+    detailedDescription: "Die Schott Zwiesel Passionata Longdrinkgläser im 10er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Longdrinks, Cocktails, Mocktails oder einfach erfrischendes Wasser. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas",
+      "Fassungsvermögen": "460 ml",
+      "Typ": "Longdrinkglas / Wasserglas",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Kratzfest & bruchsicher",
+      "Stückzahl": "10 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
   {
     id: "bonn-getraenkekuehlschrank-236l",
     name: "Getränkekühlschrank 236l",
