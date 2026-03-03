@@ -164,13 +164,13 @@ export default function Index() {
                     </div>
                   </Link>
                   
-                  <CardContent className="p-5 flex flex-col flex-1">
-                    {/* Address - fixed height */}
-                    <div className="flex items-start gap-2 text-sm mb-1 min-h-[44px]">
+                  <CardContent className="p-4 sm:p-5 flex flex-col flex-1">
+                    {/* Address */}
+                    <div className="flex items-start gap-2 text-sm mb-1">
                       <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <span className="block text-body">{loc.address}</span>
-                        <span className="block text-body">{loc.city}</span>
+                      <div className="min-w-0">
+                        <span className="block text-body break-words">{loc.address}</span>
+                        <span className="block text-body break-words">{loc.city}</span>
                       </div>
                     </div>
 
