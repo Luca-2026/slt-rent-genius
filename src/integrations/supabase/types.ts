@@ -926,6 +926,39 @@ export type Database = {
           },
         ]
       }
+      google_reviews_cache: {
+        Row: {
+          created_at: string
+          fetched_at: string
+          id: string
+          place_id: string
+          rating: number | null
+          reviews: Json | null
+          total_reviews: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          fetched_at?: string
+          id?: string
+          place_id: string
+          rating?: number | null
+          reviews?: Json | null
+          total_reviews?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          fetched_at?: string
+          id?: string
+          place_id?: string
+          rating?: number | null
+          reviews?: Json | null
+          total_reviews?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           city: string | null
