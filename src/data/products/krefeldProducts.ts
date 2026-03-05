@@ -5098,7 +5098,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieseltankstelle1,
     images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
-    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "kramer-5045"],
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z", "kramer-5045"],
     rentwareCode: { krefeld: "KP5KOB" }
   },
   // Diesel Kanister
