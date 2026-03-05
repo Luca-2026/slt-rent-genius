@@ -195,6 +195,15 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                             Ansehen
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => sendEmail(rp.id)}
+                          disabled={sendingId === rp.id}
+                        >
+                          <Send className="h-4 w-4 mr-1.5" />
+                          {sendingId === rp.id ? "Sende..." : rp.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
