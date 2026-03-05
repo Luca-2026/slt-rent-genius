@@ -52,6 +52,22 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
     setLoading(false);
   };
 
+  const sendEmail = async (dnId: string) => {
+    setSendingId(dnId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "delivery_note", id: dnId },
+      });
+      if (error) throw error;
+      toast({ title: "E-Mail versendet", description: `Übergabeprotokoll wurde an ${data.recipient} gesendet.` });
+      fetchDeliveryNotes();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
+  };
+
   useEffect(() => {
     fetchDeliveryNotes();
   }, []);
