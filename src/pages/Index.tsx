@@ -383,7 +383,7 @@ export default function Index() {
               </AnimatedSection>
             ))}
           </div>
-          )
+          )}
 
           <AnimatedSection className="text-center mt-12" delay={500}>
             <Link to="/so-funktionierts">
