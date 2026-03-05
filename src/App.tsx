@@ -30,6 +30,7 @@ const MyReservations = lazy(() => import("./pages/b2b/MyReservations"));
 const B2BInvoices = lazy(() => import("./pages/b2b/Invoices"));
 const B2BDeliveryNotes = lazy(() => import("./pages/b2b/DeliveryNotes"));
 const B2BReturnProtocols = lazy(() => import("./pages/b2b/ReturnProtocols"));
+const B2BCompanyProfile = lazy(() => import("./pages/b2b/CompanyProfile"));
 const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
 
 // Lazy-loaded: Other pages
