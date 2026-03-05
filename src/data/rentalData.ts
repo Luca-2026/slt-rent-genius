@@ -859,6 +859,10 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Geschwindigkeitsstufen": "2",
       "Extra": "Mitfahrplattform",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
+    ],
   },
   {
     id: "kettendumper-rmd800",
