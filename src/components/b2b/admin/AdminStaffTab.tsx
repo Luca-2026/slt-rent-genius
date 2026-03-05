@@ -507,6 +507,19 @@ export function AdminStaffTab() {
                             </>
                           )}
                         </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-9 px-3 text-destructive hover:text-destructive"
+                          onClick={() => {
+                            setSelectedStaff(s);
+                            setDeleteConfirmOpen(true);
+                          }}
+                          disabled={saving}
+                        >
+                          <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                          Löschen
+                        </Button>
                       </div>
                     </div>
                   </div>
