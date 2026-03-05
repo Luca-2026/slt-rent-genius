@@ -256,14 +256,14 @@ export function B2BMultiReservationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-base">
             <Package className="h-5 w-5 text-primary" />
             Sammelanfrage ({selectedProducts.length} Artikel)
           </DialogTitle>
-          <DialogDescription>
-            Stellen Sie eine gemeinsame Anfrage für alle ausgewählten Produkte. Optional können Sie pro Artikel einen abweichenden Mietzeitraum festlegen.
+          <DialogDescription className="text-xs sm:text-sm">
+            Stellen Sie eine gemeinsame Anfrage für alle ausgewählten Produkte. Sie erhalten Ihr Angebot innerhalb von <strong>1 Stunde</strong>.
           </DialogDescription>
         </DialogHeader>
 
