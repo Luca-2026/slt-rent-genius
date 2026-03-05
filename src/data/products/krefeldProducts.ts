@@ -484,6 +484,7 @@ import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.
 import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.jpg";
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgAbbruchhammerHm1812 from "@/assets/products/werkzeuge/abbruchhammer-hm1812.jpeg";
+import imgMauerschlitzfraese from "@/assets/products/werkzeuge/mauerschlitzfraese.jpeg";
 import imgDrehschlagschrauber1 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
 import imgDrehschlagschrauber2 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h-2.jpg";
 import imgNageler from "@/assets/products/werkzeuge/nageler-te-cn.jpg";
