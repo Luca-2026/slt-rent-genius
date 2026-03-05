@@ -76,6 +76,7 @@ export function AdminInvoicesTab({
   const [generating, setGenerating] = useState(false);
   const [deleteConfirmInvoice, setDeleteConfirmInvoice] = useState<Invoice | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
