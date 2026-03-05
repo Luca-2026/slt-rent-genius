@@ -198,6 +198,18 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                           <Send className="h-4 w-4 mr-1.5" />
                           {sendingId === dn.id ? "Sende..." : dn.email_sent ? "Erneut senden" : "Versenden"}
                         </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(dn)}
+                          disabled={deletingId === dn.id}
+                        >
+                          {deletingId === dn.id ? (
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
