@@ -14,15 +14,19 @@ const SLT_COMPANY = {
   street: "Anrather Straße 291",
   city: "47807 Krefeld",
   country: "Deutschland",
-  phone: "+49 (0) 2151 - 417 99 02",
-  fax: "+49 (0) 2151 - 417 99 04",
-  email: "info@slt-rental.de",
+  phone: "+49 2151 417 99 02",
+  fax: "+49 2151 417 99 04",
+  mobil: "+49 1578 915 08 72",
+  email: "mieten@slt-rental.de",
   web: "www.slt-rental.de",
-  registry: "HRA 7075 Amtsgericht Krefeld",
+  facebook: "www.facebook.com/slt-rental",
+  registry: "Registergericht Krefeld HRA7075",
   managingDirector: "Benedikt Nöchel",
+  steuerNr: "117/5717/1398",
+  ustId: "DE340481717",
   bankName: "Sparkasse Krefeld",
   iban: "DE65 3205 0000 0000 4784 46",
-  bic: "SPKRDE33",
+  bic: "SPKRDE33XXX",
 };
 
 interface OfferItem {
@@ -903,18 +907,18 @@ async function generateOfferPdf(data: {
   // ── FOOTER on every page ──
   const pages = doc.getPages();
   for (const p of pages) {
-    const fy = 35;
-    p.drawLine({ start: { x: margin, y: fy + 12 }, end: { x: pageWidth - margin, y: fy + 12 }, thickness: 1.5, color: blue });
-    p.drawText(safe(SLT_COMPANY.name), { x: margin, y: fy, font, size: 7, color: gray });
-    p.drawText(safe(SLT_COMPANY.street + ", " + SLT_COMPANY.city), { x: margin, y: fy - 9, font, size: 7, color: lightGray });
-    p.drawText("E-Mail: " + SLT_COMPANY.email, { x: 230, y: fy, font, size: 7, color: lightGray });
-    p.drawText("Web: " + SLT_COMPANY.web, { x: 230, y: fy - 9, font, size: 7, color: lightGray });
-    const ibanText = "IBAN: " + SLT_COMPANY.iban;
-    const ibanW = font.widthOfTextAtSize(ibanText, 7);
-    p.drawText(ibanText, { x: pageWidth - margin - ibanW, y: fy, font, size: 7, color: lightGray });
-    const bicText = "BIC: " + SLT_COMPANY.bic;
-    const bicW = font.widthOfTextAtSize(bicText, 7);
-    p.drawText(bicText, { x: pageWidth - margin - bicW, y: fy - 9, font, size: 7, color: lightGray });
+    const fy = 42;
+    p.drawLine({ start: { x: margin, y: fy + 14 }, end: { x: pageWidth - margin, y: fy + 14 }, thickness: 1.5, color: blue });
+    const footerLines = [
+      safe(`${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`),
+      safe(`${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`),
+      safe(`${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`),
+      safe(`${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`),
+    ];
+    footerLines.forEach((line, i) => {
+      const tw = font.widthOfTextAtSize(line, 6);
+      p.drawText(line, { x: (pageWidth - tw) / 2, y: fy - i * 8, font, size: 6, color: lightGray });
+    });
   }
 
   return await doc.save();

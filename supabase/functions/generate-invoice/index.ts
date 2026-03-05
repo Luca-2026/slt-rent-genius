@@ -15,16 +15,19 @@ const SLT_COMPANY = {
   street: "Anrather Straße 291",
   city: "47807 Krefeld",
   country: "Deutschland",
-  phone: "+49 (0) 2151 - 417 99 02",
-  fax: "+49 (0) 2151 - 417 99 04",
-  email: "info@slt-rental.de",
+  phone: "+49 2151 417 99 02",
+  fax: "+49 2151 417 99 04",
+  mobil: "+49 1578 915 08 72",
+  email: "mieten@slt-rental.de",
   web: "www.slt-rental.de",
-  registry: "HRA 7075 Amtsgericht Krefeld",
+  facebook: "www.facebook.com/slt-rental",
+  registry: "Registergericht Krefeld HRA7075",
   managingDirector: "Benedikt Nöchel",
+  steuerNr: "117/5717/1398",
+  ustId: "DE340481717",
   bankName: "Sparkasse Krefeld",
   iban: "DE65 3205 0000 0000 4784 46",
-  bic: "SPKRDE33",
-  taxNote: "Steuerlich vertreten durch SLT Management GmbH, HRB 18191 AG Krefeld",
+  bic: "SPKRDE33XXX",
 };
 
 interface InvoiceRequest {
@@ -692,26 +695,11 @@ function generateInvoiceHtml(data: {
       </p>
     </div>
 
-    <!-- Footer -->
-    <div style="border-top:2px solid #00507d;padding-top:10px;font-size:10px;color:#595959;">
-      <div style="display:flex;justify-content:space-between;">
-        <div>
-          <p style="font-weight:600;color:#00507d;">${SLT_COMPANY.name}</p>
-          <p>${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
-          <p>Tel: ${SLT_COMPANY.phone}</p>
-        </div>
-        <div style="text-align:center;">
-          <p>E-Mail: ${SLT_COMPANY.email}</p>
-          <p>Web: ${SLT_COMPANY.web}</p>
-          <p>${SLT_COMPANY.registry}</p>
-        </div>
-        <div style="text-align:right;">
-          <p>${SLT_COMPANY.bankName}</p>
-          <p>IBAN: ${SLT_COMPANY.iban}</p>
-          <p>BIC: ${SLT_COMPANY.bic}</p>
-        </div>
-      </div>
-      <p style="text-align:center;margin-top:6px;font-size:9px;">${SLT_COMPANY.registry} · GF: ${SLT_COMPANY.managingDirector}</p>
+    <div style="border-top:2px solid #00507d;padding-top:10px;font-size:9px;color:#595959;text-align:center;line-height:1.8;">
+      <p>${SLT_COMPANY.name} - Geschäftsführer: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}</p>
+      <p>${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}</p>
+      <p>${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}</p>
+      <p>${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}</p>
     </div>
   </div>
 </body>
@@ -846,11 +834,21 @@ async function generateDocumentPdf(data: {
     dt(`Mitarbeiter: ${data.signatures.staffName || ''}`, MG + CW / 2 + 10, y, font, 8, rgb(0.5, 0.5, 0.5));
   }
 
+  const footerLines = [
+    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`,
+    `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
+    `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
+    `${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`,
+  ];
   for (let i = 0; i < doc.getPageCount(); i++) {
     const p = doc.getPage(i);
-    p.drawRectangle({ x: MG, y: MG - 5, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
-    const ft = `${SLT_COMPANY.name} | ${SLT_COMPANY.street}, ${SLT_COMPANY.city} | ${SLT_COMPANY.web}`;
-    try { p.drawText(ft, { x: MG, y: MG - 17, size: 6, font, color: rgb(0.5, 0.5, 0.5) }); } catch {}
+    p.drawRectangle({ x: MG, y: MG + 20, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
+    footerLines.forEach((line, li) => {
+      try {
+        const tw = font.widthOfTextAtSize(line, 5.5);
+        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size: 5.5, font, color: rgb(0.5, 0.5, 0.5) });
+      } catch {}
+    });
   }
 
   return await doc.save();
