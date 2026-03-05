@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
-  <url><loc>https://slt-rent-genius.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/standorte</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/kontakt</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/so-funktionierts</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/lieferung</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/karriere</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/ueber-uns</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.slt-rental.de/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.slt-rental.de/standorte</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.slt-rental.de/kontakt</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/so-funktionierts</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/lieferung</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/karriere</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.slt-rental.de/ueber-uns</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   
   <!-- Location Pages -->
-  <url><loc>https://slt-rent-genius.lovable.app/mieten/krefeld</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten/bonn</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten/muelheim</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten/krefeld</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten/bonn</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten/muelheim</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   
   <!-- Solutions -->
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/tiefbau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/hochbau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/galabau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/events</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/handwerk</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/transport</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/loesungen/kinder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/tiefbau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/hochbau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/galabau</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/events</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/handwerk</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/transport</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.slt-rental.de/loesungen/kinder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   
   <!-- Local SEO Pages - Krefeld Region -->
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/krefeld</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/meerbusch</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/willich</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/toenisvorst</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/kempen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/moers</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/duisburg-west</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/neuss</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/viersen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/kaarst</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/krefeld</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/meerbusch</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/willich</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/toenisvorst</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/kempen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/moers</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/duisburg-west</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/neuss</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/viersen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/kaarst</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   
   <!-- Local SEO Pages - Bonn Region -->
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bonn</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bad-godesberg</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/koenigswinter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bad-honnef</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/sankt-augustin</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/siegburg</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/troisdorf</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/alfter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bornheim</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/meckenheim</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/rheinbach</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bonn</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bad-godesberg</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/koenigswinter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bad-honnef</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/sankt-augustin</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/siegburg</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/troisdorf</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/alfter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bornheim</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/meckenheim</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/rheinbach</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   
   <!-- Local SEO Pages - Mülheim Region -->
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/muelheim-an-der-ruhr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/essen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/oberhausen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/duisburg-sued</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bottrop</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/gelsenkirchen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/ratingen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/bochum-west</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/mieten-in/dinslaken</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/muelheim-an-der-ruhr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/essen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/oberhausen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/duisburg-sued</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bottrop</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/gelsenkirchen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/ratingen</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/bochum-west</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.slt-rental.de/mieten-in/dinslaken</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   
   <!-- Legal Pages -->
-  <url><loc>https://slt-rent-genius.lovable.app/impressum</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/datenschutz</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://slt-rent-genius.lovable.app/agb</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.slt-rental.de/impressum</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.slt-rental.de/datenschutz</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.slt-rental.de/agb</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

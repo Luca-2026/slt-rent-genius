@@ -14,7 +14,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://slt-rent-genius.lovable.app/sitemap.xml
+Sitemap: https://www.slt-rental.de/sitemap.xml
 
 # Disallow admin/B2B protected areas
 Disallow: /b2b/dashboard
