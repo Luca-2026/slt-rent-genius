@@ -35,3 +35,6 @@ verify_jwt = false
 
 [functions.generate-return-protocol]
 verify_jwt = false
+
+[functions.google-reviews]
+verify_jwt = false
