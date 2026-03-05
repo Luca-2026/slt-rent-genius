@@ -72,7 +72,7 @@ export function PriceGuaranteeBadge({ variant = "inline", className }: PriceGuar
             "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
             className
           )}
-          onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+          onClick={(e) => { e.stopPropagation(); }}
         >
           <Shield className="h-3 w-3" />
           Tiefpreisgarantie
