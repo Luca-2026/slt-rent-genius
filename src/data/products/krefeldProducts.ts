@@ -5052,7 +5052,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgHydraulikhammer1,
     images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z"],
     rentwareCode: { krefeld: "CRLJPA" }
   },
   // Sortiergreifer
