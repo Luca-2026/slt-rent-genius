@@ -464,7 +464,20 @@ export default function B2BDashboard() {
               <CardContent className="flex-1">
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="/downloads/AGB_Vermietbedingungen.pdf" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1.5">
+                    <a 
+                      href="/downloads/AGB_Vermietbedingungen.pdf" 
+                      download="AGB_Vermietbedingungen.pdf"
+                      className="text-primary hover:underline flex items-center gap-1.5"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const link = document.createElement('a');
+                        link.href = '/downloads/AGB_Vermietbedingungen.pdf';
+                        link.download = 'AGB_Vermietbedingungen.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                    >
                       <Download className="h-3.5 w-3.5" />
                       Allgemeine Mietbedingungen (PDF)
                     </a>
