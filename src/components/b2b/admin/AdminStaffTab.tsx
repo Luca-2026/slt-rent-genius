@@ -691,6 +691,33 @@ export function AdminStaffTab() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Mitarbeiter endgültig löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {selectedStaff && (
+                <>
+                  <strong>{selectedStaff.first_name} {selectedStaff.last_name}</strong> ({selectedStaff.email}) wird unwiderruflich gelöscht.
+                  Das Benutzerkonto, die Rolle und alle Zugangsdaten werden entfernt.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={saving}
+            >
+              {saving ? "Wird gelöscht..." : "Endgültig löschen"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }
