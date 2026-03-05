@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Phone, Mail, MapPin, Building2, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,7 @@ export default function Impressum() {
 
   return (
     <Layout>
+      <SEO title="Impressum | SLT Rental" description="Impressum der SLT Technology Group GmbH & Co. KG. Geschäftsführer, Kontaktdaten, Handelsregistereintrag und Umsatzsteuer-ID." canonical="/impressum" noIndex />
       <div className="bg-gradient-to-b from-primary/5 to-background">
         <div className="section-container py-16 md:py-24">
           <AnimatedSection animation="fade-in-up">

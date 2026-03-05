@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -59,6 +60,12 @@ export default function About() {
 
   return (
     <Layout>
+      <SEO
+        title="Über uns – SLT Rental"
+        description="Seit 2016 Ihr Partner für Baumaschinen- und Equipment-Vermietung in NRW. 3 Standorte, +3.500 Kunden, +1.700 Produkte. Lernen Sie unser Team kennen."
+        canonical="/ueber-uns"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Über uns", url: "/ueber-uns" }])}
+      />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-20">
         <div className="section-container">

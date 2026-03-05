@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,13 @@ export default function Locations() {
 
   return (
     <Layout>
+      <SEO
+        title="Standorte – Krefeld, Bonn & Mülheim | SLT Rental"
+        description="3 SLT Rental Standorte in NRW: Krefeld, Bonn und Mülheim an der Ruhr. Öffnungszeiten, Anfahrt und Kontakt. Equipment direkt vor Ort abholen."
+        canonical="/standorte"
+        keywords="SLT Rental Standorte, Krefeld, Bonn, Mülheim, Baumaschinen Vermietung NRW"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Standorte", url: "/standorte" }])}
+      />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">

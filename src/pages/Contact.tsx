@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -61,6 +62,12 @@ export default function Contact() {
 
   return (
     <Layout>
+      <SEO
+        title="Kontakt – SLT Rental"
+        description="Kontaktieren Sie SLT Rental: Telefon, E-Mail oder WhatsApp. 3 Standorte in Krefeld, Bonn und Mülheim. Persönliche Beratung für Ihre Mietanfrage."
+        canonical="/kontakt"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Kontakt", url: "/kontakt" }])}
+      />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">

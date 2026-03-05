@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,6 +50,12 @@ export default function LoesungDetail() {
 
   return (
     <Layout>
+      <SEO
+        title={`${title} – Mietlösungen | SLT Rental`}
+        description={`${subtitle} – ${description.slice(0, 120)}...`}
+        canonical={`/loesungen/${solution.id}`}
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lösungen", url: "/loesungen" }, { name: title, url: `/loesungen/${solution.id}` }])}
+      />
       <LocationSelectDialog
         open={locationDialogOpen}
         onOpenChange={setLocationDialogOpen}

@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -187,6 +188,13 @@ export default function Loesungen() {
 
   return (
     <Layout>
+      <SEO
+        title="Lösungen – Equipment für jede Branche | SLT Rental"
+        description="Maßgeschneiderte Mietlösungen für Tiefbau, Hochbau, GaLaBau, Events, Handwerk, Transport und mehr. Equipment für Profis und Privat."
+        canonical="/loesungen"
+        keywords="Baumaschinen Lösungen, Tiefbau Equipment, Event-Technik mieten, GaLaBau Geräte"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lösungen", url: "/loesungen" }])}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary via-primary to-primary-800 py-16 lg:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-[url('/lovable-uploads/0908574b-d901-4874-9c4a-e3fc1984cf10.jpg')]" />

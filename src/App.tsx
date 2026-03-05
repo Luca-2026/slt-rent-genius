@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { Loader2 } from "lucide-react";
+import { HelmetProvider } from "react-helmet-async";
 
 // Eagerly loaded: landing page and lightweight pages
 import Index from "./pages/Index";
@@ -62,6 +63,7 @@ const PageLoader = () => (
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
@@ -136,6 +138,7 @@ const App = () => (
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

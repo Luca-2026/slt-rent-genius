@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { LocationSelector } from "@/components/rental/LocationSelector";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,12 @@ export default function RentalStart() {
 
   return (
     <Layout>
+      <SEO
+        title="Equipment mieten – Standort wählen | SLT Rental"
+        description="Wählen Sie Ihren SLT Rental Standort: Krefeld, Bonn oder Mülheim. Über 1.700 Mietartikel – Baumaschinen, Anhänger, Event-Equipment und mehr."
+        canonical="/mieten"
+        keywords="Baumaschinen mieten NRW, Anhänger mieten, Equipment Vermietung"
+      />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 lg:py-24">
         <div className="section-container">

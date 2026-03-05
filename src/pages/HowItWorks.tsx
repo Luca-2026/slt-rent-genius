@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,6 +42,13 @@ export default function HowItWorks() {
 
   return (
     <Layout>
+      <SEO
+        title="So funktioniert's – Equipment mieten | SLT Rental"
+        description="In 5 einfachen Schritten Baumaschinen, Anhänger und Event-Equipment mieten. Standort wählen, Artikel suchen, buchen und abholen – so einfach geht's bei SLT Rental."
+        canonical="/so-funktionierts"
+        keywords="Baumaschinen mieten Anleitung, Equipment mieten NRW, Mietprozess"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "So funktioniert's", url: "/so-funktionierts" }])}
+      />
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary via-primary to-slt-blue-hover py-16 lg:py-24 relative overflow-hidden">
         <div className="section-container relative">
