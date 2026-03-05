@@ -105,6 +105,7 @@ import imgBobcatE50z_4 from "@/assets/products/erdbewegung/bobcat-e50z-4.webp";
 import imgKettendumperRmd650_1 from "@/assets/products/erdbewegung/kettendumper-rmd650-1.jpeg";
 import imgKettendumperRmd650_2 from "@/assets/products/erdbewegung/kettendumper-rmd650-2.jpeg";
 import imgKettendumperRmd650_3 from "@/assets/products/erdbewegung/kettendumper-rmd650-3.jpeg";
+import imgKettendumperRmd800_1 from "@/assets/products/erdbewegung/kettendumper-rmd800-1.jpeg";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
 import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";

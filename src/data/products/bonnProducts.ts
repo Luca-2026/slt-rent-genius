@@ -334,6 +334,15 @@ export const bonnErdbewegungProducts = [
     driveType: "benzin",
     onRequest: true,
   },
+  {
+    id: "bonn-kettendumper-rmd800",
+    name: "Ketten-Dumper RMD-800",
+    description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplatten",
+    image: "/placeholder.svg",
+    weightKg: 450,
+    driveType: "benzin",
+    onRequest: true,
+  },
 ];
 
 // ==================== ERDBEWEGUNG ZUBEHÖR (Schaufeln, Löffel) ====================
