@@ -263,7 +263,17 @@ export function AdminInvoicesTab({
           <h2 className="text-lg font-semibold">Alle Rechnungen</h2>
           <p className="text-sm text-muted-foreground">Rechnungsstatus verwalten, Korrekturen und Gutschriften erstellen</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <Select value={exportMonth} onValueChange={setExportMonth}>
+            <SelectTrigger className="w-[180px] h-9 text-sm">
+              <SelectValue placeholder="Monat wählen" />
+            </SelectTrigger>
+            <SelectContent>
+              {monthOptions.map((m) => (
+                <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Button
             variant="outline"
             size="sm"
