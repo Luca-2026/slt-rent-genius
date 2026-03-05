@@ -256,6 +256,37 @@ export function AdminStaffTab() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!selectedStaff) return;
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
+        body: {
+          action: "delete",
+          staff_user_id: selectedStaff.user_id,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: "Mitarbeiter gelöscht",
+        description: `${selectedStaff.first_name} ${selectedStaff.last_name} wurde endgültig gelöscht.`,
+      });
+      setDeleteConfirmOpen(false);
+      setSelectedStaff(null);
+      fetchStaff();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Mitarbeiter konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const filteredStaff = staff.filter((s) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
