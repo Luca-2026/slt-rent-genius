@@ -4995,7 +4995,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgGrabenraeumloeffelMs03_140cm_1,
     images: [imgGrabenraeumloeffelMs03_140cm_1],
     category: "grabenraeumloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "170 l",
