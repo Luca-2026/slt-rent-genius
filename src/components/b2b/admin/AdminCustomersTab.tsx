@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Building2, CreditCard, Clock, Receipt, Package, Shield,
-  Edit, Search, RefreshCw, UserPlus, Users, Trash2,
+  Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
 
 interface B2BProfile {
