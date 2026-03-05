@@ -3283,8 +3283,10 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
 ];
 
 // ============= HÜPFBURGEN =============
-import imgHuepfburgLamar1 from "@/assets/products/huepfburg-lamar-1.jpg";
-import imgHuepfburgLamar2 from "@/assets/products/huepfburg-lamar-2.jpg";
+import imgHuepfburgLamar1 from "@/assets/products/huepfburg-lamar-front.jpeg";
+import imgHuepfburgLamar2 from "@/assets/products/huepfburg-lamar-side.jpeg";
+import imgHuepfburgLamar3 from "@/assets/products/huepfburg-lamar-top.jpeg";
+import imgHuepfburgLamar4 from "@/assets/products/huepfburg-lamar-angle.jpeg";
 
 export const huepfburgenProducts: Product[] = [
   {
@@ -3293,7 +3295,7 @@ export const huepfburgenProducts: Product[] = [
     description: "Aufblasbare Burg mit Basketballkorb und Sicherheitsnetz – inkl. Gebläse. Ideal für Kindergeburtstage im Garten.",
     detailedDescription: "Die HappyHop Hüpfburg Lamar bietet viel Platz zum Springen und Toben auf kompakter Fläche (2,80 m × 2,10 m × 1,85 m). Die gesamte Hüpfburg ist vollständig von einem Sicherheitsnetz umgeben und verfügt über einen integrierten Basketballkorb für zusätzlichen Spielspaß. Dank des mitgelieferten 300-Watt-Gebläses ist die Burg in ca. 5 Minuten aufgebaut. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang enthalten: Tragekiste, Gebläse (300 W), Gewebeplane und 8 Heringe zur Fixierung im Boden.",
     image: imgHuepfburgLamar1,
-    images: [imgHuepfburgLamar1, imgHuepfburgLamar2],
+    images: [imgHuepfburgLamar1, imgHuepfburgLamar2, imgHuepfburgLamar3, imgHuepfburgLamar4],
     category: "huepfburg",
     specifications: {
       "Maße (L × B × H)": "2,80 m × 2,10 m × 1,85 m",
