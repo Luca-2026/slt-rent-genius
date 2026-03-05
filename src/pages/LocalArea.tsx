@@ -93,10 +93,17 @@ export default function LocalAreaPage() {
 
   return (
     <Layout>
-      <title>{heroTitle} | SLT Rental</title>
-      <meta name="description" content={area.description} />
-      <meta name="keywords" content={area.keywords.join(", ")} />
-
+      <SEO
+        title={`${heroTitle} | SLT Rental`}
+        description={area.description}
+        canonical={`/mieten-in/${area.slug}`}
+        keywords={area.keywords.join(", ")}
+        jsonLd={SLT_BREADCRUMB_JSONLD([
+          { name: "Home", url: "/" },
+          { name: "Standorte", url: "/standorte" },
+          { name: area.name, url: `/mieten-in/${area.slug}` },
+        ])}
+      />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-20">
         <div className="section-container">
