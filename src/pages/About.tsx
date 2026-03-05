@@ -50,8 +50,8 @@ export default function About() {
   const teamMembers = [
     { name: "Benedikt Nöchel", role: t("about.teamBenedikt"), image: imgBenedikt, email: "b.noechel@slt-rental.de" },
     { name: "Ersel Uzun", role: t("about.teamErsel"), image: imgErsel, email: "e.uzun@slt-rental.de" },
-    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null, email: "muelheim@slt-rental.de" },
-    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null, email: "mieten@slt-rental.de" },
+    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null, email: "a.scherzow@slt-rental.de" },
+    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null, email: "p.preuss@slt-rental.de" },
     { name: "Juno", role: t("about.teamJuno"), image: imgJuno, email: null },
   ];
 
@@ -127,18 +127,21 @@ export default function About() {
             {teamMembers.map((member, index) => (
               <AnimatedSection key={member.name} animation="scale-in" delay={index * 100}>
                 <div className="text-center group">
-                  <Avatar className="h-24 w-24 mx-auto mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
-                    {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
-                    <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
+                  {member.email ? (
+                    <a href={`mailto:${member.email}`} className="block cursor-pointer">
+                      <Avatar className="h-24 w-24 mx-auto mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
+                        {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
+                        <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                    </a>
+                  ) : (
+                    <Avatar className="h-24 w-24 mx-auto mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
+                      {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
+                      <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                  )}
                   <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
                   <p className="text-xs text-muted-foreground">{member.role}</p>
-                  {member.email && (
-                    <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-xs text-primary hover:text-accent transition-colors mt-1">
-                      <Mail className="h-3 w-3" />
-                      <span>{member.email}</span>
-                    </a>
-                  )}
                 </div>
               </AnimatedSection>
             ))}
