@@ -338,7 +338,7 @@ export function B2BMultiReservationDialog({
             <label className="block text-sm font-medium text-headline mb-2">
               Ausgewählte Artikel
             </label>
-            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-[200px] sm:max-h-[300px] overflow-y-auto pr-1">
               {selectedProducts.map((sp) => {
                 const isExpanded = expandedItems.has(sp.product.id);
                 const override = itemOverrides[sp.product.id];
