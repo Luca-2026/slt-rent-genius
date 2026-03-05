@@ -66,7 +66,7 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
   );
 }
 
-export function GoogleReviews({ placeId, locationName, variant = "full" }: GoogleReviewsProps) {
+export function GoogleReviews({ placeId, locationName, variant = "full", maxReviews }: GoogleReviewsProps) {
   const [data, setData] = useState<ReviewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
