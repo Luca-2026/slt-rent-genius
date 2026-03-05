@@ -110,17 +110,28 @@ export function B2BProductCard({
             </p>
           )}
 
-          <Button
-            size="sm"
-            className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-            onClick={(e) => {
-              e.stopPropagation();
-              onInquiry(product);
-            }}
-          >
-            <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-            Einzelanfrage
-          </Button>
+          <div className="flex gap-1.5">
+            <Button
+              size="sm"
+              variant="outline"
+              className="flex-1 text-xs"
+              onClick={handleDetailClick}
+            >
+              <ExternalLink className="h-3 w-3 mr-1" />
+              Details
+            </Button>
+            <Button
+              size="sm"
+              className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover text-xs"
+              onClick={(e) => {
+                e.stopPropagation();
+                onInquiry(product);
+              }}
+            >
+              <ShoppingCart className="h-3 w-3 mr-1" />
+              Anfrage
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
