@@ -464,18 +464,9 @@ export default function B2BDashboard() {
               <CardContent className="flex-1">
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="text-primary hover:underline">
+                    <a href="/downloads/AGB_Vermietbedingungen.pdf" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1.5">
+                      <Download className="h-3.5 w-3.5" />
                       Allgemeine Mietbedingungen (PDF)
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="text-primary hover:underline">
-                      Checkliste Abholung
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="text-primary hover:underline">
-                      Preisliste B2B
                     </a>
                   </li>
                 </ul>
