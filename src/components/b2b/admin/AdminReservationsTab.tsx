@@ -69,8 +69,10 @@ export function AdminReservationsTab({
   onCreateOffer,
   onEditOffer,
   onResendOffer,
+  onDeleteReservation,
   onRefresh,
   resendingId,
+  deletingId,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
