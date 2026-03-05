@@ -500,7 +500,7 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Profile */}
-            <Card className="h-full">
+            <Card className="h-full flex flex-col">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                   <User className="h-6 w-6 text-primary" />
