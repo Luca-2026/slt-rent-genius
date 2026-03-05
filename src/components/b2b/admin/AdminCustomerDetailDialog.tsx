@@ -49,6 +49,7 @@ interface B2BProfile {
   created_at: string;
   payment_due_days: number;
   deletion_requested_at: string | null;
+  credit_limit_requested_at: string | null;
 }
 
 interface Invoice {
