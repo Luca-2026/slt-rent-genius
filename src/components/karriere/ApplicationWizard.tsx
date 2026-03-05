@@ -215,6 +215,30 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
       if (error) throw error;
 
+      // Send notification email to karriere@slt-rental.de
+      try {
+        await supabase.functions.invoke("send-application-email", {
+          body: {
+            jobTitle: job.title,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            street: data.street || null,
+            postalCode: data.postalCode || null,
+            city: data.city || null,
+            earliestStartDate: data.earliestStartDate || null,
+            salaryExpectation: data.salaryExpectation || null,
+            motivation: data.motivation || null,
+            resumeFilename: resumeData?.filename || null,
+            coverLetterFilename: coverLetterData?.filename || null,
+          },
+        });
+      } catch (emailErr) {
+        console.error("Application email notification failed:", emailErr);
+        // Don't block the success – the application is already saved
+      }
+
       setIsSuccess(true);
     } catch (error) {
       console.error('Application error:', error);
