@@ -451,14 +451,29 @@ Deno.serve(async (req: Request) => {
         const formatCurrency = (n: number) =>
           n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-        const itemsHtml = offerItems.map(item => `
+        const itemsHtml = offerItems.map(item => {
+          const rentalInfo = item.rental_start && item.rental_end 
+            ? ` <span style="font-size:12px;color:#94a3b8;">(${formatDate(item.rental_start)} – ${formatDate(item.rental_end)})</span>` 
+            : "";
+          return `
           <tr>
-            <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:14px;">${escapeHtml(item.product_name)}</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:14px;">${escapeHtml(item.product_name)}${rentalInfo}</td>
             <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:14px;">${item.quantity}</td>
             <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:14px;">${formatCurrency(item.unit_price)}</td>
             <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:14px;font-weight:600;">${formatCurrency(item.total_price)}</td>
-          </tr>
-        `).join("");
+          </tr>`;
+        }).join("");
+
+        // Determine rental period from items
+        const allStarts = offerItems.map(i => i.rental_start).filter(Boolean);
+        const allEnds = offerItems.map(i => i.rental_end).filter(Boolean);
+        const rentalPeriodHtml = allStarts.length > 0 && allEnds.length > 0
+          ? `<div style="background:#eef6fc;border:1px solid #b3d4e8;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+              <p style="font-size:13px;color:#00507d;margin:0;">
+                📅 Mietzeitraum: <strong>${formatDate(allStarts.sort()[0]!)}</strong> bis <strong>${formatDate(allEnds.sort().reverse()[0]!)}</strong>
+              </p>
+            </div>`
+          : "";
 
         const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
 
@@ -468,9 +483,11 @@ Deno.serve(async (req: Request) => {
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
-    <div style="background:#00507d;padding:30px 40px;text-align:center;">
-      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:60px;width:auto;margin-bottom:8px;" />
-      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihr individuelles Angebot</p>
+    <div style="background:#ffffff;padding:25px 40px;text-align:center;border-bottom:3px solid #00507d;">
+      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
+    </div>
+    <div style="background:#00507d;padding:14px 40px;text-align:center;">
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihr individuelles Angebot – ${offerNumber}</p>
     </div>
     <div style="padding:35px 40px;">
       <p style="font-size:15px;color:#333;margin-bottom:20px;">
@@ -479,6 +496,7 @@ Deno.serve(async (req: Request) => {
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
         vielen Dank für Ihre Anfrage. Wir haben ein individuelles Angebot für Sie erstellt:
       </p>
+      ${rentalPeriodHtml}
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:4px;margin-bottom:20px;">
         <table style="width:100%;border-collapse:collapse;">
           <thead>
@@ -492,12 +510,15 @@ Deno.serve(async (req: Request) => {
           <tbody>${itemsHtml}</tbody>
         </table>
       </div>
-      <div style="text-align:right;margin-bottom:25px;">
-        <p style="font-size:14px;color:#555;">Netto: <strong>${formatCurrency(netAmount)}</strong></p>
-        ${isReverseCharge 
-          ? `<p style="font-size:12px;color:#64748b;">USt. (Reverse-Charge): ${formatCurrency(0)}</p>` 
-          : `<p style="font-size:14px;color:#555;">zzgl. ${vatRate}% USt.: ${formatCurrency(vatAmount)}</p>`}
-        <p style="font-size:18px;color:#00507d;font-weight:700;">Brutto: ${formatCurrency(grossAmount)}</p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:25px;">
+        <table style="width:100%;font-size:14px;color:#555;">
+          <tr><td>Zwischensumme (Netto):</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
+          ${deliveryCost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(deliveryCost)}</td></tr>` : ""}
+          ${isReverseCharge 
+            ? `<tr><td style="font-size:12px;color:#64748b;">USt. (Reverse-Charge):</td><td style="text-align:right;font-size:12px;color:#64748b;">${formatCurrency(0)}</td></tr>` 
+            : `<tr><td>zzgl. ${vatRate}% USt.:</td><td style="text-align:right;">${formatCurrency(vatAmount)}</td></tr>`}
+          <tr style="border-top:2px solid #00507d;"><td style="padding-top:8px;font-size:18px;color:#00507d;font-weight:700;">Gesamtbetrag (Brutto):</td><td style="text-align:right;padding-top:8px;font-size:18px;color:#00507d;font-weight:700;">${formatCurrency(grossAmount)}</td></tr>
+        </table>
       </div>
       <div style="background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:12px 16px;margin-bottom:25px;">
         <p style="font-size:13px;color:#92400e;margin:0;">
@@ -505,7 +526,7 @@ Deno.serve(async (req: Request) => {
         </p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
-        Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie auch als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
+        Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://slt-rent-genius.lovable.app/b2b/reservations" 
