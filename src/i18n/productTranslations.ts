@@ -504,7 +504,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "einhell-bauleuchte-te-cl18-2000": { name: "Einhell Cordless Work Light TE-CL 18/2000", description: "LED work light with 2000 lumens" },
   "bosch-ladegeraet-gal18v6-80": { name: "Bosch 6-Bay Charger GAL 18V6-80", description: "Fast charger for 6 batteries simultaneously" },
   "eibenstock-diamantbohrer-ehd1500": { name: "Eibenstock Diamond Core Drill EHD 1500", description: "Core drill for concrete and masonry" },
-  "mauerschlitzfraese": { name: "Wall Chaser", description: "Electric cutter for cable channels" },
+  "mauerschlitzfraese": { name: "Wall Chaser", description: "Electric wall chaser for cable channels – up to 45 mm depth and 46 mm width." },
   "einhell-laubbläser-gp-lb": { name: "Einhell Leaf Blower GP-LB 36/210 Li", description: "Cordless leaf blower with high air flow" },
   "einhell-nageler-te-cn": { name: "Einhell Cordless Nailer TE-CN", description: "Cordless nail gun for roofing" },
   "einhell-heissluftfoehn-te-ha18li": { name: "Einhell Cordless Heat Gun TE-HA 18Li", description: "Cordless heat gun" },
