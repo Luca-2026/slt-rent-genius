@@ -686,7 +686,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 1000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "WNE69F" }
+    rentwareCode: { krefeld: "WNE69F" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "bobcat-e19",
@@ -697,7 +701,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 1800,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500", "maschine"],
-    rentwareCode: { krefeld: "BG4ZS8" }
+    rentwareCode: { krefeld: "BG4ZS8" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "xcmg-xe20e",
@@ -708,7 +716,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 2000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500", "maschine"],
-    rentwareCode: { krefeld: "UZEDUY" }
+    rentwareCode: { krefeld: "UZEDUY" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "xcmg-xe27e",
@@ -719,7 +731,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 2700,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { krefeld: "MBUX18" }
+    rentwareCode: { krefeld: "MBUX18" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "bobcat-e35z",
@@ -742,6 +758,10 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Löffelvolumen": "0,1 – 0,15 m³",
       "Laufwerk": "Gummiketten (Stahlketten optional)",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "bobcat-e50z",
@@ -766,6 +786,10 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Hydraulikleistung": "99,2 l/min",
       "Schwenkbereich Ausleger": "Links 75°, Rechts 55°",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "kramer-5045",
@@ -776,7 +800,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 3000,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { krefeld: "PMJJCT" }
+    rentwareCode: { krefeld: "PMJJCT" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "knickdumper-kde550",
@@ -787,7 +815,10 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 500,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "GH8W6W" }
+    rentwareCode: { krefeld: "GH8W6W" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag (Laufzeit ca. 8–10 h).",
+    ],
   },
   {
     id: "cormidi-c60-hitip",
@@ -798,7 +829,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 600,
     category: "dumper",
     tags: ["dumper", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "EZHV9G" }
+    rentwareCode: { krefeld: "EZHV9G" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "kettendumper-rmd650",
@@ -824,19 +859,22 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Geschwindigkeitsstufen": "2",
       "Extra": "Mitfahrplattform",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
+    ],
   },
   {
     id: "kettendumper-rmd800",
     name: "Ketten-Dumper RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport",
-    detailedDescription: "Der Ketten-Dumper RMD-800 ist ein kompakter Raupendumper mit 800 kg Tragfähigkeit und einer Muldenkapazität von 305 l (gestrichen) bzw. 400 l (gehäuft). Mit nur 80 cm Gesamtbreite eignet er sich hervorragend für enge Zugänge. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Serienmäßige Rungen ermöglichen den sicheren Transport von Holz oder Steinplatten.\n\nInkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 8,00 € pro Std. berechnet.\nZzgl. Verbrauch, Tankfüllung je Mietgerät – Rückgabe des Mietgeräts mit vollgetanktem Tank vereinbart. Benzin wird mit brutto 3,35 €/l berechnet.",
+    detailedDescription: "Der Ketten-Dumper RMD-800 ist ein kompakter Raupendumper mit 800 kg Tragfähigkeit und einer Muldenkapazität von 305 l (gestrichen) bzw. 400 l (gehäuft). Mit nur 80 cm Gesamtbreite eignet er sich hervorragend für enge Zugänge. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Serienmäßige Rungen ermöglichen den sicheren Transport von Holz oder Steinplatten.",
     image: imgKettendumperRmd800_1,
     images: [imgKettendumperRmd800_1],
     weightKg: 450,
     category: "dumper",
     tags: ["dumper", "benzin", "bis-1500", "maschine"],
     onRequest: true,
-    videoUrls: ["https://www.youtube.com/shorts/lAwx7bS6lFE"],
     specifications: {
       "Maschinengewicht": "450 kg",
       "Max. Tragfähigkeit": "800 kg",
@@ -853,8 +891,8 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Extras": "Rungen (für Transport von Holz oder Steinplatten)",
     },
     rentalNotes: [
-      "Inkl. 8 Betriebsstunden/Tag, Mehrstunden: brutto 8,00 €/Std.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Benzin: brutto 3,35 €/l.",
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
     ],
   },
   // Include all attachments from krefeldProducts
