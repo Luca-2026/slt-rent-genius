@@ -55,8 +55,10 @@ interface Props {
   onCreateOffer: (reservation: Reservation) => void;
   onEditOffer: (offer: Offer, items: OfferItem[]) => void;
   onResendOffer: (offer: Offer) => void;
+  onDeleteReservation?: (reservation: Reservation) => void;
   onRefresh: () => void;
   resendingId: string | null;
+  deletingId?: string | null;
 }
 
 export function AdminReservationsTab({
