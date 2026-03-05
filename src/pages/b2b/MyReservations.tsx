@@ -490,6 +490,24 @@ export default function MyReservations() {
             )}
           </Button>
         )}
+        {r.status === "pending" && (
+          <Button
+            size="sm"
+            variant="destructive"
+            className="w-full"
+            onClick={() => {
+              setReservationToDelete(r);
+              setDeleteDialogOpen(true);
+            }}
+            disabled={deletingId === r.id}
+          >
+            {deletingId === r.id ? (
+              <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird gelöscht...</>
+            ) : (
+              <><Trash2 className="h-3.5 w-3.5 mr-1.5" />Anfrage löschen</>
+            )}
+          </Button>
+        )}
       </div>
     );
   };
