@@ -101,28 +101,28 @@ export function B2BReservationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-base">
             <Package className="h-5 w-5 text-primary" />
             Produktanfrage
           </DialogTitle>
-          <DialogDescription>
-            Stellen Sie eine Anfrage für das gewünschte Produkt. Wir erstellen Ihnen ein individuelles Angebot.
+          <DialogDescription className="text-xs sm:text-sm">
+            Stellen Sie eine Anfrage für das gewünschte Produkt. Sie erhalten Ihr Angebot innerhalb von <strong>1 Stunde</strong>.
           </DialogDescription>
         </DialogHeader>
 
         {/* Product info */}
-        <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+        <div className="flex items-center gap-3 p-2.5 sm:p-3 bg-muted/50 rounded-lg">
           <img
             src={product.image || "/placeholder.svg"}
             alt={product.name}
-            className="w-16 h-16 object-cover rounded-md"
+            className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-md flex-shrink-0"
           />
           <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-sm text-headline truncate">{product.name}</h4>
+            <h4 className="font-medium text-sm text-headline line-clamp-2">{product.name}</h4>
             {product.description && (
-              <p className="text-xs text-muted-foreground truncate">{product.description}</p>
+              <p className="text-xs text-muted-foreground line-clamp-1 hidden sm:block">{product.description}</p>
             )}
             {discountPercent > 0 && (
               <span className="text-xs font-medium text-accent">
@@ -132,21 +132,21 @@ export function B2BReservationDialog({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           {/* Location */}
           <div>
-            <label className="block text-sm font-medium text-headline mb-1.5">
+            <label className="block text-sm font-medium text-headline mb-1">
               <MapPin className="h-3.5 w-3.5 inline mr-1" />
               Standort
             </label>
             <Select value={locationId} onValueChange={setLocationId}>
-              <SelectTrigger>
+              <SelectTrigger className="h-9 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((loc) => (
                   <SelectItem key={loc.id} value={loc.id}>
-                    {loc.name} – {loc.address}
+                    {loc.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -154,10 +154,9 @@ export function B2BReservationDialog({
           </div>
 
           {/* Dates & Times */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <div>
-              <label className="block text-sm font-medium text-headline mb-1.5">
-                <CalendarDays className="h-3.5 w-3.5 inline mr-1" />
+              <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
                 Von *
               </label>
               <Input
@@ -166,23 +165,22 @@ export function B2BReservationDialog({
                 onChange={(e) => setStartDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
                 required
+                className="h-9 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-headline mb-1.5">
-                <Clock className="h-3.5 w-3.5 inline mr-1" />
+              <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
                 Uhrzeit (von)
               </label>
               <Input
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                placeholder="z.B. 08:00"
+                className="h-9 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-headline mb-1.5">
-                <CalendarDays className="h-3.5 w-3.5 inline mr-1" />
+              <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
                 Bis
               </label>
               <Input
@@ -190,25 +188,25 @@ export function B2BReservationDialog({
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 min={startDate || new Date().toISOString().split("T")[0]}
+                className="h-9 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-headline mb-1.5">
-                <Clock className="h-3.5 w-3.5 inline mr-1" />
+              <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
                 Uhrzeit (bis)
               </label>
               <Input
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                placeholder="z.B. 17:00"
+                className="h-9 text-sm"
               />
             </div>
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="block text-sm font-medium text-headline mb-1.5">
+            <label className="block text-sm font-medium text-headline mb-1">
               Menge
             </label>
             <Input
@@ -216,20 +214,30 @@ export function B2BReservationDialog({
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
+              className="h-9 text-sm w-24"
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-headline mb-1.5">
+            <label className="block text-sm font-medium text-headline mb-1">
               Anmerkungen
             </label>
             <Textarea
               placeholder="z.B. gewünschte Lieferung, spezielle Anforderungen..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={3}
+              rows={2}
+              className="text-sm"
             />
+          </div>
+
+          {/* 1h Guarantee */}
+          <div className="flex items-center gap-2 bg-primary/5 rounded-lg p-2.5 border border-primary/10">
+            <Clock className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-xs text-foreground">
+              Angebot innerhalb von <strong>1 Stunde</strong> – garantiert!
+            </p>
           </div>
 
           <Button
