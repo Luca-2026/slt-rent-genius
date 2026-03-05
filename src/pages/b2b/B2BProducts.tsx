@@ -396,9 +396,10 @@ export default function B2BProducts() {
       </div>
 
       {/* Selection hint */}
-      <div className="flex items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 mb-3 md:mb-4 p-2.5 md:p-3 bg-muted/50 rounded-lg text-xs md:text-sm text-muted-foreground">
         <Package className="h-4 w-4 flex-shrink-0" />
-        <span>Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Anfrage" für ein einzelnes Produkt.</span>
+        <span className="hidden sm:inline">Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Anfrage" für ein einzelnes Produkt.</span>
+        <span className="sm:hidden">Produkte für <strong>Sammelanfrage</strong> auswählen oder einzeln anfragen.</span>
       </div>
 
       {/* Filters */}
