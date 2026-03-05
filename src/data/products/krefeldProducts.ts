@@ -1154,6 +1154,21 @@ export const werkzeugeProducts: Product[] = [
     onRequest: true,
   },
   {
+    id: "fliesenschneider-80cm",
+    name: "Fliesenschneider 80cm",
+    description: "Profi-Fliesenschneider zum präzisen Schneiden und Trennen von Keramikfliesen.",
+    detailedDescription: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. Mit einer maximalen Schnittlänge von 800 mm und einer Schneidleistung bis 14 mm ist er ideal für Fliesen- und Plattenleger.",
+    image: fliesenschneider1,
+    images: [fliesenschneider1, fliesenschneider2, fliesenschneider3, fliesenschneider4, fliesenschneider5],
+    category: "fliesenschneider",
+    specifications: {
+      "Schnittlänge max.": "800 mm",
+      "Schneidleistung max.": "14 mm",
+      "Diagonal-Schnittlänge mit Auflage": "565 mm",
+    },
+    onRequest: true,
+  },
+  {
     id: "bosch-ortungsgeraet-dtect200c",
     name: "Bosch Ortungsgerät D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
