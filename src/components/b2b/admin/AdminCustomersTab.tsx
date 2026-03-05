@@ -169,6 +169,11 @@ export function AdminCustomersTab({
                             <Trash2 className="h-2.5 w-2.5 mr-0.5" /> Löschung beantragt
                           </Badge>
                         )}
+                        {profile.credit_limit_requested_at && profile.credit_limit === 0 && (
+                          <Badge variant="secondary" className="text-[10px] bg-orange-100 text-orange-700 border-orange-200">
+                            <Banknote className="h-2.5 w-2.5 mr-0.5" /> Kreditlimit beantragt
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">
                         {profile.contact_first_name} {profile.contact_last_name} ·{" "}
