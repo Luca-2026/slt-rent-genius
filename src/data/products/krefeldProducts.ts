@@ -447,6 +447,7 @@ import imgHydraulikhammerShb40_3 from "@/assets/products/erdbewegung/hydraulikha
 import imgTiefloeffelMs01_30cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-1.jpeg";
 import imgTiefloeffelMs01_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-50cm-1.jpeg";
 import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
+import imgGrabenraeumloeffelMs01_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-80cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4846,12 +4847,20 @@ export const erdbewegungZusatzProducts: Product[] = [
   // Grabenräumlöffel
   {
     id: "ms01-grabenraeumloeffel-80cm",
-    name: "MS01 Grabenräumlöffel hydr. 80cm/52l",
-    description: "Hydraulischer Grabenräumlöffel 80cm für MS01",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    name: "MS01 Grabenräumlöffel starr 80cm/45l",
+    description: "Starrer Grabenräumlöffel 80cm für MS01 – Gewichtsklasse 1–2 t",
+    detailedDescription: "Der MS01 Grabenräumlöffel starr 80cm/45l ist ideal zum sauberen Profilieren und Räumen von Gräben. Mit 800 mm Arbeitsbreite und 45 Liter Volumen eignet er sich für Planierarbeiten, Böschungsprofilierung und das Anlegen von Gräben. Die starre Bauweise sorgt für maximale Stabilität bei der Arbeit.",
+    image: imgGrabenraeumloeffelMs01_80cm_1,
+    images: [imgGrabenraeumloeffelMs01_80cm_1],
     category: "grabenraeumloeffel",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Volumen": "45 l",
+      "Arbeitsbreite": "800 mm",
+      "Gewicht": "46 kg",
+    },
     rentwareCode: { krefeld: "2A5TQZ" }
   },
   {
