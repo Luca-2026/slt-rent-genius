@@ -514,70 +514,7 @@ export default function B2BDashboard() {
             </Card>
           </div>
 
-          {/* Location Contact Card */}
-          <Card className="mt-8">
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin className="h-4 w-4 text-primary" />
-                <h3 className="font-semibold text-foreground">
-                  Dein Standort: SLT Rental {nearestLocation.name}
-                </h3>
-              </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                {/* Manager */}
-                <div className="flex items-center gap-3 sm:min-w-[200px]">
-                  {nearestLocation.manager.image ? (
-                    <img
-                      src={nearestLocation.manager.image}
-                      alt={nearestLocation.manager.name}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-semibold text-sm text-foreground">{nearestLocation.manager.name}</p>
-                    <p className="text-xs text-muted-foreground">{t(nearestLocation.manager.role)}</p>
-                  </div>
-                </div>
-
-                {/* Contact */}
-                <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Phone className="h-3.5 w-3.5 text-primary" />
-                    <a href={`tel:${nearestLocation.phone}`} className="text-primary hover:underline">{nearestLocation.phone}</a>
-                  </span>
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Mail className="h-3.5 w-3.5 text-primary" />
-                    <a href={`mailto:${nearestLocation.email}`} className="text-primary hover:underline">{nearestLocation.email}</a>
-                  </span>
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Clock className="h-3.5 w-3.5 text-primary" />
-                    {nearestLocation.hours.map((h) => `${h.day} ${h.time}`).join(" · ")}
-                  </span>
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-2 sm:ml-auto">
-                  <a href={nearestLocation.mapUrl} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
-                      <Navigation className="h-3.5 w-3.5 mr-1" />
-                      Route
-                    </Button>
-                  </a>
-                  <a href={`mailto:${nearestLocation.manager.email}`}>
-                    <Button variant="outline" size="sm">
-                      <Mail className="h-3.5 w-3.5 mr-1" />
-                      Kontakt
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Account Deletion Section */}
           {b2bProfile && (
