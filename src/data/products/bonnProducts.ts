@@ -241,8 +241,8 @@ export const bonnArbeitsbuehnenProducts = [
   },
   {
     id: "bonn-scherenbuehne-8m",
-    name: "8m Scherenbühne ZS0607AC",
-    description: "Elektrische Scherenbühne für Innen- und Außeneinsatz.",
+    name: "8m Scherenbühne XCMG XG0807AC",
+    description: "Kompakte elektrische Scherenbühne mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "M4H2CP" },
   },
