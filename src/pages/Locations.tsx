@@ -8,8 +8,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
 
-// Center of NRW (roughly between the three locations)
-const mapCenter = { lat: 51.1, lng: 6.9 };
+
 
 export default function Locations() {
   const { t } = useTranslation();
