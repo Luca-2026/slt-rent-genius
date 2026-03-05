@@ -987,6 +987,12 @@ function inferWerkzeugCategory(name: string): string | undefined {
   if (n.includes("sauger")) return "zubehoer"; // keep filterable via "Zubehör"
   if (n.includes("zwangsmischer")) return "zwangsmischer";
   if (n.includes("rüttler") || n.includes("ruettler")) return "betonruettler";
+  if (n.includes("trennschleifer")) return "trennschleifer";
+  if (n.includes("multicutter") || n.includes("multi-cutter")) return "multicutter";
+  if (n.includes("nageler") || n.includes("nagler")) return "nageler";
+  if (n.includes("bauleuchte") || n.includes("baulampe")) return "bauleuchte";
+  if (n.includes("ladegerät") || n.includes("ladegeraet")) return "ladegeraet";
+  if (n.includes("schlagschrauber") || n.includes("drehschlagschrauber")) return "schlagschrauber";
   return undefined;
 }
 
