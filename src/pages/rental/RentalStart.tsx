@@ -59,9 +59,14 @@ export default function RentalStart() {
                 <span className="text-2xl">💰</span>
               </div>
               <h3 className="font-semibold text-foreground mb-2">{t("rental.weekendRates")}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground mb-3">
                 {t("rental.weekendRatesDesc")}
               </p>
+              <ul className="text-sm text-muted-foreground space-y-1 text-left">
+                <li>✅ {t("rental.weekendBenefit1")}</li>
+                <li>✅ {t("rental.weekendBenefit2")}</li>
+                <li>✅ {t("rental.weekendBenefit3")}</li>
+              </ul>
             </div>
           </div>
         </div>
