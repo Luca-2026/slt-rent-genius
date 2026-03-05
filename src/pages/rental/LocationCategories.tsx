@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowLeft, MapPin, Phone, Navigation, User } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
+import { GoogleReviews, getPlaceId, getReviewUrl } from "@/components/reviews/GoogleReviews";
 import { useTranslation } from "react-i18next";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
 import bonnImage from "@/assets/locations/bonn.webp";
@@ -220,8 +221,23 @@ export default function LocationCategories() {
         </div>
       </section>
 
+      {/* Google Reviews */}
+      {getPlaceId(location.id) && (
+        <section className="py-12 lg:py-16 bg-muted/30">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <GoogleReviews
+                placeId={getPlaceId(location.id)!}
+                locationName={location.name}
+                variant="full"
+              />
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Weekend Info */}
-      <section className="py-12 lg:py-16 bg-muted/30">
+      <section className="py-12 lg:py-16 bg-background">
         <div className="section-container">
           <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
             <div className="max-w-2xl">
