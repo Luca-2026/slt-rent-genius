@@ -798,6 +798,31 @@ const erdbewegungProductsUnsorted: Product[] = [
     tags: ["dumper", "diesel", "bis-1500", "maschine"],
     rentwareCode: { krefeld: "EZHV9G" }
   },
+  {
+    id: "kettendumper-rmd650",
+    name: "Ketten-Dumper RMD-650",
+    description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform | 2 Geschwindigkeitsstufen",
+    detailedDescription: "Der Ketten-Dumper RMD-650 ist ein kompakter und leistungsstarker Raupendumper mit 650 kg Tragfähigkeit und 0,26 m³ Mulde. Dank Raupenlaufwerk (nur 77 cm breit) meistert er auch schwieriges Gelände und enge Zugänge mühelos. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Die integrierte Mitfahrplattform sorgt für komfortables Arbeiten auf längeren Strecken.",
+    image: imgKettendumperRmd650_1,
+    images: [imgKettendumperRmd650_1, imgKettendumperRmd650_2, imgKettendumperRmd650_3],
+    weightKg: 636,
+    category: "dumper",
+    tags: ["dumper", "benzin", "bis-1500", "maschine"],
+    onRequest: true,
+    videoUrls: ["https://www.youtube.com/watch?v=5bguWODhjfY"],
+    specifications: {
+      "Maschinengewicht": "636 kg",
+      "Max. Tragfähigkeit": "650 kg",
+      "Muldengröße": "0,26 m³",
+      "Gesamtbreite": "77 cm",
+      "Gesamthöhe": "152 cm",
+      "Motorleistung": "6,2 PS",
+      "Kraftstoff": "Benzin",
+      "Tankinhalt": "5 l",
+      "Geschwindigkeitsstufen": "2",
+      "Extra": "Mitfahrplattform",
+    },
+  },
   // Include all attachments from krefeldProducts
   ...erdbewegungZusatzProducts,
 ];
