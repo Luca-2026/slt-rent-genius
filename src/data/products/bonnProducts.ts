@@ -684,8 +684,23 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-zwangsmischer-140l",
     name: "Zwangsmischer 140L",
-    description: "Betonmischer für gleichmäßige Mischungen.",
-    image: "/placeholder.svg",
+    description: "Zwangsmischer Compakt 140L – für gleichmäßige Beton- und Mörtelmischungen.",
+    detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle. Der Zwangsmischer ist gereinigt zurückzugeben, andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
+    image: zwangsmischer140l1,
+    images: [zwangsmischer140l1, zwangsmischer140l2, zwangsmischer140l3],
+    category: "zwangsmischer",
+    specifications: {
+      "Typ": "Compakt 140L",
+      "Motorleistung": "2.200 W / 230V",
+      "Rührwerk N": "27,5 min⁻¹",
+      "Trommelvolumen": "max. 140 L",
+      "Gewicht": "130 kg",
+      "Abmessung (LxBxH)": "82 x 77 x 121 cm",
+    },
+    rentalNotes: [
+      "Der Zwangsmischer ist gereinigt zurückzugeben.",
+      "Bei ungereinigter Rückgabe berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
+    ],
     rentwareCode: { bonn: "VSE9XB" },
   },
   {
