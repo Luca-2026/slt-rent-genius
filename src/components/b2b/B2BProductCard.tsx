@@ -6,7 +6,6 @@ import { ShoppingCart, Percent, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { useNavigate } from "react-router-dom";
-
 interface B2BProductCardProps {
   product: Product;
   categorySlug: string;
