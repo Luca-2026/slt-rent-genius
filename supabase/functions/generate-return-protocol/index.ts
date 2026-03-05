@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -344,12 +345,38 @@ Deno.serve(async (req: Request) => {
         };
         const loc = LOCATIONS[profile.assigned_location || ""] || LOCATIONS["krefeld"];
 
-        // Prepare HTML attachment
-        const htmlBase64 = encodeBase64(htmlBytes);
+        // Generate PDF for email attachment
+        const pdfBytes = await generateDocumentPdf({
+          title: "RUECKGABEPROTOKOLL",
+          documentNumber: returnProtocolNumber,
+          date: new Date().toISOString().split("T")[0],
+          profile,
+          items: (items || []).map((item) => ({
+            name: item.product_name,
+            description: `Zustand: ${item.condition === "good" ? "Gut" : item.condition === "minor_damage" ? "Leichte Maengel" : item.condition === "major_damage" ? "Erhebliche Schaeden" : "Fehlend"}${item.condition_notes ? ' - ' + item.condition_notes : ''}`,
+            quantity: item.quantity,
+          })),
+          sections: [
+            { label: "Gesamtzustand", value: conditionLabel },
+            ...(condition_notes ? [{ label: "Zustandsnotizen", value: condition_notes }] : []),
+            ...(damage_description ? [{ label: "Schadensbeschreibung", value: damage_description }] : []),
+            ...(cleaning_required ? [{ label: "Reinigung erforderlich", value: "Ja" }] : []),
+            ...(!all_items_returned ? [{ label: "Fehlende Gegenstaende", value: missing_items_notes || "Nicht alle Artikel zurueckgegeben" }] : []),
+            ...(meter_reading_start || meter_reading_end ? [{ label: "Betriebsstunden", value: `Start: ${meter_reading_start || '-'} / Ende: ${meter_reading_end || '-'}` }] : []),
+            ...(fuel_level_start || fuel_level_end ? [{ label: "Tankfuellstand", value: `Start: ${fuel_level_start || '-'} / Ende: ${fuel_level_end || '-'}` }] : []),
+            ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
+            ...(known_defects_from_delivery ? [{ label: "Bekannte Maengel aus Uebergabe", value: known_defects_from_delivery }] : []),
+            ...(additional_defects_at_return ? [{ label: "Neue Maengel bei Rueckgabe", value: additional_defects_at_return }] : []),
+            ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
+          ],
+          signatures: { customerData: customer_signature_data, staffData: staff_signature_data, staffName: staff_name },
+        });
+        const pdfBase64 = encodeBase64(pdfBytes);
+        const pdfFileName = fileName.replace(".html", ".pdf");
         const attachments = [{
-          filename: fileName,
-          content: htmlBase64,
-          content_type: "text/html; charset=utf-8",
+          filename: pdfFileName,
+          content: pdfBase64,
+          content_type: "application/pdf",
         }];
 
         const emailHtml = `
@@ -807,4 +834,133 @@ function escapeHtml(str: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+// ─── PDF Generator for Email Attachment ─────────────────────
+async function generateDocumentPdf(data: {
+  title: string;
+  documentNumber: string;
+  date: string;
+  profile: any;
+  items: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number }>;
+  sections: Array<{ label: string; value: string }>;
+  signatures?: { customerData?: string; staffData?: string; staffName?: string };
+  totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string };
+}): Promise<Uint8Array> {
+  const doc = await PDFDocument.create();
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const W = 595.28, H = 841.89, MG = 50, CW = W - 2 * MG;
+  let page = doc.addPage([W, H]);
+  let y = H - MG;
+
+  const checkPage = (need: number) => { if (y - need < MG + 40) { page = doc.addPage([W, H]); y = H - MG; } };
+  const dt = (t: string, x: number, yy: number, f = font, s = 10, c = rgb(0.2, 0.2, 0.2)) => {
+    try { page.drawText(t || '', { x, y: yy, size: s, font: f, color: c }); } catch {}
+  };
+  const wt = (t: string, f: any, s: number, mw: number): string[] => {
+    if (!t) return [''];
+    const words = t.split(' '); const lines: string[] = []; let cur = '';
+    for (const w of words) { const test = cur ? `${cur} ${w}` : w; if (f.widthOfTextAtSize(test, s) <= mw) cur = test; else { if (cur) lines.push(cur); cur = w; } }
+    if (cur) lines.push(cur); return lines.length ? lines : [''];
+  };
+  const fd = (d: string) => { const p = d.split('-'); return p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : d; };
+  const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' EUR';
+
+  try {
+    const lr = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
+    const lb = new Uint8Array(await lr.arrayBuffer()); const li = await doc.embedPng(lb);
+    const ls = 45 / li.height; page.drawImage(li, { x: MG, y: y - 45, width: li.width * ls, height: 45 });
+  } catch {}
+
+  [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
+    const tw = font.widthOfTextAtSize(l, 7); dt(l, W - MG - tw, y - 10 - i * 10, font, 7, rgb(0.5, 0.5, 0.5));
+  });
+  y -= 60;
+  page.drawRectangle({ x: MG, y, width: CW, height: 2, color: rgb(0, 0.314, 0.49) });
+  y -= 30;
+  dt(data.title, MG, y, bold, 18, rgb(0, 0.314, 0.49)); y -= 22;
+  dt(data.documentNumber, MG, y, bold, 11);
+  const ds = `Datum: ${fd(data.date)}`; dt(ds, W - MG - font.widthOfTextAtSize(ds, 10), y, font, 10); y -= 30;
+
+  dt("Kunde:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
+  dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
+  dt(`${data.profile.contact_first_name} ${data.profile.contact_last_name}`, MG, y, font, 10); y -= 14;
+  dt(`${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, MG, y, font, 10); y -= 14;
+  dt(`${data.profile.postal_code} ${data.profile.city}`, MG, y, font, 10);
+  if (data.profile.tax_id) { y -= 14; dt(`USt-IdNr.: ${data.profile.tax_id}`, MG, y, font, 9, rgb(0.4, 0.4, 0.4)); }
+  y -= 25;
+
+  const hp = data.items.some(i => i.unitPrice != null);
+  page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 18, color: rgb(0.96, 0.97, 0.98) });
+  dt("Pos.", MG + 4, y + 8, bold, 8); dt("Bezeichnung", MG + 30, y + 8, bold, 8);
+  dt("Menge", MG + CW * (hp ? 0.55 : 0.8), y + 8, bold, 8);
+  if (hp) { dt("Einzelpreis", MG + CW * 0.67, y + 8, bold, 8); dt("Gesamt", MG + CW * 0.87, y + 8, bold, 8); }
+  y -= 5; page.drawRectangle({ x: MG, y, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 14;
+
+  data.items.forEach((item, i) => {
+    checkPage(30); dt(`${i + 1}`, MG + 4, y, font, 9);
+    let desc = item.name; if (item.description) desc += ` - ${item.description}`;
+    if (item.discount && item.discount > 0) desc += ` (${item.discount}% Rabatt)`;
+    const maxNW = CW * (hp ? 0.5 : 0.72); const nl = wt(desc, font, 9, maxNW);
+    nl.forEach((line, li) => {
+      dt(line, MG + 30, y, font, 9);
+      if (li === 0) { dt(`${item.quantity}`, MG + CW * (hp ? 0.57 : 0.82), y, font, 9);
+        if (hp && item.unitPrice != null) { dt(fm(item.unitPrice), MG + CW * 0.67, y, font, 9); dt(fm(item.totalPrice || 0), MG + CW * 0.87, y, font, 9); }
+      } y -= 13;
+    }); y -= 3;
+    page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+  });
+  y -= 10;
+
+  if (data.totals) {
+    checkPage(100); const tx = MG + CW * 0.6; const vx = W - MG - 5;
+    if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
+      dt("Transportkosten:", tx, y, font, 9); const dcT = fm(data.totals.deliveryCost); dt(dcT, vx - font.widthOfTextAtSize(dcT, 9), y, font, 9); y -= 16;
+    }
+    page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
+    dt("Nettobetrag:", tx, y, font, 9); const ntT = fm(data.totals.net); dt(ntT, vx - font.widthOfTextAtSize(ntT, 9), y, font, 9); y -= 16;
+    if (data.totals.isReverseCharge) { dt("USt. (Reverse Charge):", tx, y, font, 9); dt("0,00 EUR", vx - font.widthOfTextAtSize("0,00 EUR", 9), y, font, 9); }
+    else { dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9); const vT = fm(data.totals.vat); dt(vT, vx - font.widthOfTextAtSize(vT, 9), y, font, 9); }
+    y -= 16; page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 1, color: rgb(0, 0.314, 0.49) });
+    dt("Bruttobetrag:", tx, y, bold, 10); const gT = fm(data.totals.gross); dt(gT, vx - bold.widthOfTextAtSize(gT, 10), y, bold, 10); y -= 22;
+    if (data.totals.dueDate) { dt(`Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`, MG, y, font, 9); y -= 16; }
+    if (data.totals.isReverseCharge) { dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse Charge)", MG, y, font, 8, rgb(0.5, 0.5, 0.5)); y -= 16; }
+    y -= 5; dt("Bankverbindung:", MG, y, bold, 9); y -= 13;
+    dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4)); y -= 20;
+  }
+
+  for (const sec of data.sections) {
+    checkPage(30); dt(sec.label + ":", MG, y, bold, 9); y -= 14;
+    const lines = wt(sec.value, font, 9, CW);
+    for (const line of lines) { checkPage(15); dt(line, MG, y, font, 9); y -= 13; }
+    y -= 8;
+  }
+
+  if (data.signatures) {
+    checkPage(90); y -= 10;
+    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 55;
+    for (const [sigData, xOff] of [[data.signatures.customerData, 0], [data.signatures.staffData, CW / 2 + 10]] as [string | undefined, number][]) {
+      if (sigData) { try {
+        const b64 = sigData.split(',')[1]; const sb = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+        const si = sigData.includes('png') ? await doc.embedPng(sb) : await doc.embedJpg(sb);
+        const sc = Math.min(120 / si.width, 45 / si.height);
+        page.drawImage(si, { x: MG + xOff, y, width: si.width * sc, height: si.height * sc });
+      } catch {} }
+    }
+    y -= 8;
+    page.drawRectangle({ x: MG, y, width: CW / 2 - 15, height: 0.5, color: rgb(0.6, 0.6, 0.6) });
+    page.drawRectangle({ x: MG + CW / 2 + 10, y, width: CW / 2 - 10, height: 0.5, color: rgb(0.6, 0.6, 0.6) });
+    y -= 12; dt("Kunde", MG, y, font, 8, rgb(0.5, 0.5, 0.5));
+    dt(`Mitarbeiter: ${data.signatures.staffName || ''}`, MG + CW / 2 + 10, y, font, 8, rgb(0.5, 0.5, 0.5));
+  }
+
+  for (let i = 0; i < doc.getPageCount(); i++) {
+    const p = doc.getPage(i);
+    p.drawRectangle({ x: MG, y: MG - 5, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
+    const ft = `${SLT_COMPANY.name} | ${SLT_COMPANY.street}, ${SLT_COMPANY.city} | ${SLT_COMPANY.web}`;
+    try { p.drawText(ft, { x: MG, y: MG - 17, size: 6, font, color: rgb(0.5, 0.5, 0.5) }); } catch {}
+  }
+
+  return await doc.save();
 }
