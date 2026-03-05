@@ -118,6 +118,12 @@ export const specKeyTranslations: Record<string, string> = {
   "Beton, möglicher Bereich": "Concrete, possible range",
   "Mauerwerk, möglicher Bereich": "Masonry, possible range",
 
+  // Demolition / Impact
+  "Schlagenergie": "Impact Energy",
+  "Schlagzahl bei Nenndrehzahl": "Impact Rate at Rated Speed",
+  "Werkzeugaufnahme": "Tool Holder",
+  "Abmessung (LxB)": "Dimensions (LxW)",
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
