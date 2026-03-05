@@ -8,6 +8,7 @@ export default function AGB() {
 
   return (
     <Layout>
+      <SEO title="AGB | SLT Rental" description="Allgemeine Geschäftsbedingungen der SLT Technology Group GmbH & Co. KG für die Vermietung von Baumaschinen und Equipment." canonical="/agb" noIndex />
       <div className="bg-muted/30 py-12 md:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">

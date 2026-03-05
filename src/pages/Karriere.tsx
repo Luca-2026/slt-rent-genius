@@ -30,6 +30,13 @@ export default function Karriere() {
 
   return (
     <Layout>
+      <SEO
+        title="Karriere bei SLT Rental – Jobs in NRW"
+        description="Arbeiten bei SLT Rental: Offene Stellen in Krefeld, Bonn und Mülheim. Flexible Arbeitszeiten, faire Bezahlung und ein starkes Team. Jetzt bewerben!"
+        canonical="/karriere"
+        keywords="Jobs SLT Rental, Karriere Baumaschinen, Stellenangebote NRW, Krefeld Jobs"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Karriere", url: "/karriere" }])}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 lg:py-24">
         <div className="section-container">

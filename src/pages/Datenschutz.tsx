@@ -13,6 +13,7 @@ export default function Datenschutz() {
 
   return (
     <Layout>
+      <SEO title="Datenschutz | SLT Rental" description="Datenschutzerklärung der SLT Technology Group GmbH & Co. KG. Informationen zur Datenverarbeitung gemäß DSGVO." canonical="/datenschutz" noIndex />
       <div className="bg-gradient-to-b from-primary/5 to-background">
         <div className="section-container py-16 md:py-24">
           <AnimatedSection animation="fade-in-up">

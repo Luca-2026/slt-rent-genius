@@ -59,6 +59,13 @@ export default function FAQ() {
 
   return (
     <Layout>
+      <SEO
+        title="FAQ – Häufige Fragen | SLT Rental"
+        description="Antworten auf häufige Fragen zu Mietbedingungen, Buchung, Lieferung und Abholung bei SLT Rental. Alles Wichtige rund um Ihre Miete."
+        canonical="/faq"
+        keywords="FAQ Baumaschinen mieten, Mietbedingungen, Kaution, Lieferung"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "FAQ", url: "/faq" }])}
+      />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-16">
         <div className="section-container">
