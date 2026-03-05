@@ -17,12 +17,16 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
   FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
-  ChevronDown, ChevronRight, Layers,
+  ChevronDown, ChevronRight, Layers, Trash2, Pencil,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
