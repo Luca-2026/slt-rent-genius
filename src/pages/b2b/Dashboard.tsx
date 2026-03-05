@@ -398,14 +398,14 @@ export default function B2BDashboard() {
 
             {/* Rückgabeprotokolle - Only for approved */}
             <Link to={isApproved ? "/b2b/rueckgabeprotokolle" : "#"}>
-              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+              <Card className={`h-full flex flex-col hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
                     <Undo2 className="h-6 w-6 text-blue-600" />
                   </div>
                   <CardTitle className="text-lg">Rückgabeprotokolle</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Rückgabeprotokolle mit Zustandsbewertung für zurückgegebene Mietartikel.
                   </p>
