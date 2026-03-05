@@ -177,6 +177,7 @@ import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergrei
 import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-3.avif";
 // Shared images with Krefeld - Werkzeuge
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
+import imgAbbruchhammerHm1812 from "@/assets/products/werkzeuge/abbruchhammer-hm1812.jpeg";
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
