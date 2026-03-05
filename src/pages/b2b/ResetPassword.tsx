@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Lock, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { PasswordStrengthIndicator } from "@/components/b2b/PasswordStrengthIndicator";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
