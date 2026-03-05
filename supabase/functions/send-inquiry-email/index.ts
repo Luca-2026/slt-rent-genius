@@ -50,27 +50,33 @@ Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
     `.trim();
 
     const htmlBody = `
-<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-  <h2 style="color: #1a1a1a; border-bottom: 2px solid #f97316; padding-bottom: 8px;">Neue Mietanfrage</h2>
-  
-  <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-    <strong style="color: #ea580c;">Artikel:</strong> ${productName}<br>
-    <strong style="color: #ea580c;">Standort:</strong> ${locationName}
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+  <div style="background: #ffffff; padding: 20px; text-align: center; border-bottom: 3px solid #f97316;">
+    <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT Rental" style="height: 50px; max-width: 200px;" />
   </div>
 
-  <h3 style="color: #374151;">Kontaktdaten</h3>
-  <table style="width: 100%; border-collapse: collapse;">
-    <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${name}</td></tr>
-    <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
-    <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
-    <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${dateRange}</td></tr>
-  </table>
+  <div style="padding: 24px;">
+    <h2 style="color: #1a1a1a; margin-top: 0;">Neue Mietanfrage</h2>
+    
+    <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
+      <strong style="color: #ea580c;">Artikel:</strong> ${productName}<br>
+      <strong style="color: #ea580c;">Standort:</strong> ${locationName}
+    </div>
 
-  ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap;">${message}</p>` : ""}
+    <h3 style="color: #374151;">Kontaktdaten</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${name}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${dateRange}</td></tr>
+    </table>
 
-  <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
-    Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
-  </p>
+    ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${message}</p>` : ""}
+
+    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
+      Diese Anfrage wurde über slt-rental.de gesendet.
+    </p>
+  </div>
 </div>
     `.trim();
 
