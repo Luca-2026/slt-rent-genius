@@ -53,6 +53,10 @@ interface OfferItemInput {
   quantity: number;
   unit_price: number;
   discount_percent: number;
+  rental_start?: string;
+  rental_end?: string;
+  start_time?: string;
+  end_time?: string;
 }
 
 export interface ExistingOffer {
