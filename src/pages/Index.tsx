@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
+import { SEO, SLT_ORGANIZATION_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
