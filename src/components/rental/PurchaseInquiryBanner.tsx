@@ -17,10 +17,11 @@ import { useToast } from "@/hooks/use-toast";
 interface PurchaseInquiryBannerProps {
   productName: string;
   locationName: string;
+  locationEmail?: string;
   categoryId?: string;
 }
 
-export function PurchaseInquiryBanner({ productName, locationName, categoryId }: PurchaseInquiryBannerProps) {
+export function PurchaseInquiryBanner({ productName, locationName, locationEmail, categoryId }: PurchaseInquiryBannerProps) {
   const [popupOpen, setPopupOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
