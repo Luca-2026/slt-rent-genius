@@ -49,6 +49,13 @@ export default function B2BProducts() {
     search: "",
     filters: {},
   });
+  // Trailer filter state
+  const [trailerFilters, setTrailerFilters] = useState<TrailerFilterState>({
+    search: "",
+    types: [],
+    braking: [],
+    weight: [],
+  });
 
   // Multi-select state
   const [selectedItems, setSelectedItems] = useState<Map<string, SelectedItem>>(new Map());
