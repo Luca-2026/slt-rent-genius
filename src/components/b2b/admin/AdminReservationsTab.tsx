@@ -139,7 +139,7 @@ export function AdminReservationsTab({
                          onClick={() => onCreateOffer(res)}
                        >
                          <FileText className="h-3.5 w-3.5 mr-1" />
-                         Angebot erstellen
+                         Angebot ansehen
                        </Button>
                      </div>
                    </div>
