@@ -3287,6 +3287,11 @@ import imgHuepfburgLamar1 from "@/assets/products/huepfburg-lamar-front.jpeg";
 import imgHuepfburgLamar2 from "@/assets/products/huepfburg-lamar-side.jpeg";
 import imgHuepfburgLamar3 from "@/assets/products/huepfburg-lamar-top.jpeg";
 import imgHuepfburgLamar4 from "@/assets/products/huepfburg-lamar-angle.jpeg";
+import imgHuepfburgRollercoaster1 from "@/assets/products/huepfburg-rollercoaster-front.jpeg";
+import imgHuepfburgRollercoaster2 from "@/assets/products/huepfburg-rollercoaster-inside1.jpeg";
+import imgHuepfburgRollercoaster3 from "@/assets/products/huepfburg-rollercoaster-inside2.jpeg";
+import imgHuepfburgRollercoaster4 from "@/assets/products/huepfburg-rollercoaster-angle.jpeg";
+
 
 export const huepfburgenProducts: Product[] = [
   {
@@ -3331,10 +3336,31 @@ export const huepfburgenProducts: Product[] = [
   {
     id: "huepfburg-rollercoaster-1",
     name: "Hüpfburg Rollercoaster 4,9x4m",
-    description: "Große Hüpfburg mit Rutsche",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Große aufblasbare Hüpfburg mit Rutsche im Kirmes-Design – inkl. 1100W Gebläse. Für bis zu 6 Kinder.",
+    detailedDescription: "Die Hüpfburg Rollercoaster bietet auf 4,90 m × 4,00 m × 3,50 m jede Menge Platz zum Springen, Toben und Rutschen. Das farbenfrohe Kirmes-Design mit Riesenrad und Achterbahn-Motiven begeistert Kinder von 3 bis 16 Jahren. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg (max. 6 Kinder gleichzeitig) stand. Alle Nähte sind doppelt vernäht. Im Lieferumfang: Tragesack, 1100W Gebläse, Gewebeplane und 8 Heringe.",
+    image: imgHuepfburgRollercoaster1,
+    images: [imgHuepfburgRollercoaster1, imgHuepfburgRollercoaster4, imgHuepfburgRollercoaster2, imgHuepfburgRollercoaster3],
     category: "huepfburg",
+    specifications: {
+      "Maße (L × B × H)": "4,90 m × 4,00 m × 3,50 m",
+      "Gewicht": "100 kg",
+      "Max. Belastung": "450 kg",
+      "Max. Kinder": "6",
+      "Altersempfehlung": "3 – 16 Jahre",
+      "Aufbauzeit": "ca. 10 Minuten",
+      "Gebläse": "1.100 Watt (inkl.)",
+      "Nähte": "Doppelt vernäht",
+      "Extras": "Rutsche, Kirmes-Design",
+      "Zubehör": "Tragesack, Gebläse, Gewebeplane, 8 Heringe",
+    },
+    features: [
+      "Inkl. 1100W Gebläse",
+      "Große Rutsche",
+      "Platz für 6 Kinder",
+      "Kirmes-Design",
+      "Doppelt vernähte Nähte",
+      "Inkl. Heringe & Plane",
+    ],
     rentwareCode: { krefeld: "A92U2I" }
   },
   {
@@ -3349,10 +3375,31 @@ export const huepfburgenProducts: Product[] = [
   {
     id: "huepfburg-rollercoaster-2",
     name: "Hüpfburg Rollercoaster 4,9x4m",
-    description: "Große Hüpfburg mit Rutsche (2. Exemplar)",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Große aufblasbare Hüpfburg mit Rutsche im Kirmes-Design – inkl. 1100W Gebläse (2. Exemplar).",
+    detailedDescription: "Die Hüpfburg Rollercoaster bietet auf 4,90 m × 4,00 m × 3,50 m jede Menge Platz zum Springen, Toben und Rutschen. Das farbenfrohe Kirmes-Design mit Riesenrad und Achterbahn-Motiven begeistert Kinder von 3 bis 16 Jahren. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg (max. 6 Kinder gleichzeitig) stand. Alle Nähte sind doppelt vernäht. Im Lieferumfang: Tragesack, 1100W Gebläse, Gewebeplane und 8 Heringe.",
+    image: imgHuepfburgRollercoaster1,
+    images: [imgHuepfburgRollercoaster1, imgHuepfburgRollercoaster4, imgHuepfburgRollercoaster2, imgHuepfburgRollercoaster3],
     category: "huepfburg",
+    specifications: {
+      "Maße (L × B × H)": "4,90 m × 4,00 m × 3,50 m",
+      "Gewicht": "100 kg",
+      "Max. Belastung": "450 kg",
+      "Max. Kinder": "6",
+      "Altersempfehlung": "3 – 16 Jahre",
+      "Aufbauzeit": "ca. 10 Minuten",
+      "Gebläse": "1.100 Watt (inkl.)",
+      "Nähte": "Doppelt vernäht",
+      "Extras": "Rutsche, Kirmes-Design",
+      "Zubehör": "Tragesack, Gebläse, Gewebeplane, 8 Heringe",
+    },
+    features: [
+      "Inkl. 1100W Gebläse",
+      "Große Rutsche",
+      "Platz für 6 Kinder",
+      "Kirmes-Design",
+      "Doppelt vernähte Nähte",
+      "Inkl. Heringe & Plane",
+    ],
     rentwareCode: { krefeld: "TRHPW2" }
   },
 ];
