@@ -303,17 +303,16 @@ export const huepfburgenFilterSections: FilterSection[] = [
     options: [
       { id: "huepfburg", label: "catFilters.huepfburgen", sublabel: "catFilters.huepfburgen_sub" },
       { id: "rutsche", label: "catFilters.rutschen", sublabel: "catFilters.rutschen_sub" },
-      { id: "spiel", label: "catFilters.spielgeraete", sublabel: "catFilters.spielgeraete_sub" },
     ],
   },
   {
     id: "size",
     label: "catFilters.groesse",
-    defaultExpanded: false,
+    defaultExpanded: true,
     options: [
-      { id: "klein", label: "catFilters.klein", sublabel: "catFilters.klein_sub" },
-      { id: "mittel", label: "catFilters.mittel", sublabel: "catFilters.mittel_sub" },
-      { id: "gross", label: "catFilters.gross", sublabel: "catFilters.gross_sub" },
+      { id: "klein", label: "catFilters.klein", sublabel: "catFilters.klein_huepfburg_sub" },
+      { id: "mittel", label: "catFilters.mittel", sublabel: "catFilters.mittel_huepfburg_sub" },
+      { id: "gross", label: "catFilters.gross", sublabel: "catFilters.gross_huepfburg_sub" },
     ],
   },
 ];

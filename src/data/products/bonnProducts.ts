@@ -1604,7 +1604,7 @@ import imgHuepfburgWasserpark2 from "@/assets/products/huepfburg-wasserpark-2.jp
 export const bonnHuepfburgProducts = [
   {
     id: "bonn-huepfburg-lamar",
-    name: "HappyHop Hüpfburg Lamar 2,8x2,1m",
+    name: "HappyHop Hüpfburg Lamar 2,8 x 2,1m",
     description: "Aufblasbare Burg mit Basketballkorb und Sicherheitsnetz – inkl. Gebläse. Ideal für Kindergeburtstage im Garten.",
     detailedDescription: "Die HappyHop Hüpfburg Lamar bietet viel Platz zum Springen und Toben auf kompakter Fläche (2,80 m × 2,10 m × 1,85 m). Die gesamte Hüpfburg ist vollständig von einem Sicherheitsnetz umgeben und verfügt über einen integrierten Basketballkorb für zusätzlichen Spielspaß. Dank des mitgelieferten 300-Watt-Gebläses ist die Burg in ca. 5 Minuten aufgebaut. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang enthalten: Tragekiste, Gebläse (300 W), Gewebeplane und 8 Heringe zur Fixierung im Boden.",
     image: imgHuepfburgLamar1,
@@ -1633,7 +1633,7 @@ export const bonnHuepfburgProducts = [
   },
   {
     id: "bonn-huepfburg-wasserpark",
-    name: "Hüpfburg Wasserpark 3m x 4m",
+    name: "Hüpfburg Wasserpark 3 x 4m",
     description: "Hüpfburg mit Kletterturm, Wasserrutsche und Pool – inkl. 300W Gebläse. Perfekt für heiße Sommertage!",
     detailedDescription: "Die Hüpfburg Wasserpark vereint Kletterturm, Rutsche und Pool auf 3,00 m × 4,00 m × 2,25 m. Ideal für Kindergeburtstage und Gartenpartys an heißen Tagen. Die Rutsche mündet in ein aufblasbares Planschbecken – Palmen-Design inklusive. Für bis zu 3 Kinder (3–5 Jahre, max. 60 kg). Aufbau in ca. 5 Minuten dank 300W Gebläse. Alle Nähte doppelt vernäht. Wichtig: Die Hüpfburg muss trocken zurückgegeben werden. Im Lieferumfang: Tragekiste, Gebläse, Gewebeplane und 8 Heringe.",
     image: imgHuepfburgWasserpark1,
