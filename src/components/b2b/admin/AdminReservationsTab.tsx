@@ -63,7 +63,7 @@ export function AdminReservationsTab({
           <CardContent className="py-16 text-center">
             <CheckCircle2 className="h-10 w-10 mx-auto text-primary/30 mb-3" />
             <p className="font-medium text-foreground">Alles erledigt!</p>
-            <p className="text-sm text-muted-foreground mt-1">Keine offenen Anfragen vorhanden.</p>
+            <p className="text-sm text-muted-foreground mt-1">Keine offenen Angebote vorhanden.</p>
           </CardContent>
         </Card>
       ) : (
