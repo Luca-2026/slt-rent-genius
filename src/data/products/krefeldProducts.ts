@@ -457,6 +457,7 @@ import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1
 import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-symlock-1.jpeg";
 import imgGrabenraeumloeffelMs03_140cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms03-140cm-1.jpeg";
 import imgKabelloeffelMs03_20cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms03-20cm-1.png";
+import imgTiefloeffelMs03_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms03-50cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4825,6 +4826,24 @@ export const erdbewegungZusatzProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
     rentwareCode: { krefeld: "JZQKVD" }
+  },
+  {
+    id: "ms03-tiefloeffel-50cm-symlock",
+    name: "MS03 Tieflöffel 50cm/107l Symlock",
+    description: "Tieflöffel 50cm für MS03 Symlock – 4 Zähne, 107 l Volumen",
+    detailedDescription: "Der MS03 Tieflöffel 50cm/107l Symlock ist ein leistungsstarker Grabenlöffel mit 4 geschraubten Zähnen für anspruchsvolle Aushubarbeiten. Mit 500 mm Arbeitsbreite und 107 Liter Volumen eignet er sich für Fundamentarbeiten, Kanalisation und allgemeine Erdarbeiten mit Baggern der 2,5- bis 4-Tonnen-Klasse.",
+    image: imgTiefloeffelMs03_50cm_1,
+    images: [imgTiefloeffelMs03_50cm_1],
+    category: "tiefloeffel",
+    compatibleMachines: ["xcmg-xe27e"],
+    specifications: {
+      "Aufnahme": "MS03 (Symlock)",
+      "Volumen": "107 l",
+      "Arbeitsbreite": "500 mm",
+      "Zahnsystem": "geschraubt",
+      "Anzahl Zähne": "4",
+      "Gewicht": "79 kg",
+    },
   },
   {
     id: "cw05-tiefloeffel-40cm",
