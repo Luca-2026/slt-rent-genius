@@ -44,15 +44,18 @@ serve(async (req) => {
 
     const data = await response.json();
 
-    // Transform reviews to a simpler format
-    const reviews = (data.reviews || []).slice(0, 5).map((review: any) => ({
-      authorName: review.authorAttribution?.displayName || 'Anonym',
-      authorPhoto: review.authorAttribution?.photoUri || null,
-      rating: review.rating || 0,
-      text: review.text?.text || '',
-      relativeTime: review.relativePublishTimeDescription || '',
-      publishTime: review.publishTime || '',
-    }));
+    // Transform and sort reviews by newest first
+    const reviews = (data.reviews || [])
+      .map((review: any) => ({
+        authorName: review.authorAttribution?.displayName || 'Anonym',
+        authorPhoto: review.authorAttribution?.photoUri || null,
+        rating: review.rating || 0,
+        text: review.text?.text || '',
+        relativeTime: review.relativePublishTimeDescription || '',
+        publishTime: review.publishTime || '',
+      }))
+      .sort((a: any, b: any) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime())
+      .slice(0, 5);
 
     return new Response(JSON.stringify({
       rating: data.rating || 0,
