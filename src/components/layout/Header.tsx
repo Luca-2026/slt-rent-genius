@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Percent } from "lucide-react";
+import { Menu, X, Percent, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import sltLogo from "@/assets/slt-logo.png";
 
 const locations = [
@@ -51,6 +52,11 @@ export function Header() {
                 <div className="flex items-center gap-1.5">
                   <span className="font-medium">{t("marquee.longWe")}:</span>
                   <span>{t("marquee.longWeFri")}</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Shield className="h-4 w-4 text-accent" />
+                  <span>Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!</span>
                 </div>
                 <span className="text-primary-foreground/50">•</span>
               </div>

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Percent, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { useNavigate } from "react-router-dom";
-
 interface B2BProductCardProps {
   product: Product;
   categorySlug: string;
@@ -109,6 +109,7 @@ export function B2BProductCard({
               {discountPercent}% B2B-Rabatt auf Listenpreis
             </p>
           )}
+          <PriceGuaranteeBadge variant="inline" />
 
           <div className="flex gap-1.5">
             <Button
