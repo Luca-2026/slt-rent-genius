@@ -192,7 +192,7 @@ export default function B2BProductDetail() {
           </div>
 
           {/* Product Name + Description */}
-          <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+          <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-3 md:space-y-4">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-headline leading-tight">
                 {product.name}
