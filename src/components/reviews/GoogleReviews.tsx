@@ -26,6 +26,8 @@ interface GoogleReviewsProps {
   locationName: string;
   /** Compact mode for location cards, full mode for dedicated sections */
   variant?: "compact" | "full";
+  /** Max number of reviews to display (useful for mobile) */
+  maxReviews?: number;
 }
 
 const PLACE_IDS: Record<string, string> = {
