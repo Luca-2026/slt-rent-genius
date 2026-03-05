@@ -209,6 +209,9 @@ import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
 import steinsaege80cm1 from "@/assets/products/saegen/steinsaege-80cm-1.jpeg";
 import steinsaege80cm2 from "@/assets/products/saegen/steinsaege-80cm-2.jpeg";
 import steinsaege80cm3 from "@/assets/products/saegen/steinsaege-80cm-3.jpeg";
+import zwangsmischer140l1 from "@/assets/products/mischer/zwangsmischer-140l-1.jpeg";
+import zwangsmischer140l2 from "@/assets/products/mischer/zwangsmischer-140l-2.jpeg";
+import zwangsmischer140l3 from "@/assets/products/mischer/zwangsmischer-140l-3.jpeg";
 import hochdruckreiniger1 from "@/assets/products/hochdruckreiniger-1.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
@@ -1044,6 +1047,28 @@ export const werkzeugeProducts: Product[] = [
       "Je nach Durchmesser und Typ der Sägeblätter wird ein Einheitspreis pro 0,1 mm veranschlagt.",
       "Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt.",
       "Diamanttrennscheiben zum Kauf optional erhältlich.",
+    ],
+    onRequest: true,
+  },
+  {
+    id: "zwangsmischer-140l",
+    name: "Zwangsmischer 140L",
+    description: "Zwangsmischer Compakt 140L – für gleichmäßige Beton- und Mörtelmischungen.",
+    detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle. Der Zwangsmischer ist gereinigt zurückzugeben, andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
+    image: zwangsmischer140l1,
+    images: [zwangsmischer140l1, zwangsmischer140l2, zwangsmischer140l3],
+    category: "zwangsmischer",
+    specifications: {
+      "Typ": "Compakt 140L",
+      "Motorleistung": "2.200 W / 230V",
+      "Rührwerk N": "27,5 min⁻¹",
+      "Trommelvolumen": "max. 140 L",
+      "Gewicht": "130 kg",
+      "Abmessung (LxBxH)": "82 x 77 x 121 cm",
+    },
+    rentalNotes: [
+      "Der Zwangsmischer ist gereinigt zurückzugeben.",
+      "Bei ungereinigter Rückgabe berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
     ],
     onRequest: true,
   },
