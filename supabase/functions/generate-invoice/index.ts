@@ -43,6 +43,7 @@ interface InvoiceRequest {
   image_url?: string; // Fallback image for auto-generated items
   is_correction?: boolean;
   original_invoice_number?: string;
+  send_email?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -94,7 +95,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number } = body;
+    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true } = body;
 
     console.log("Generating invoice for reservation:", reservation_id);
 
@@ -342,6 +343,85 @@ Deno.serve(async (req: Request) => {
 
     console.log("Invoice created successfully:", invoice.id);
 
+    // Send email to customer
+    let emailSent = false;
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    if (resendApiKey && send_email) {
+      try {
+        const customerEmail = profile.billing_email || profile.contact_email;
+        const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+        const isCredit = is_correction && notes?.includes("GUTSCHRIFT");
+        const docTitle = is_correction ? (isCredit ? "Gutschrift" : "Rechnungskorrektur") : "Rechnung";
+        
+        const itemsList = items.map((item: any) =>
+          `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}: ${item.total_price.toFixed(2).replace(".", ",")} €</li>`
+        ).join("");
+
+        const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#00507d;padding:30px 40px;text-align:center;">
+      <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">SLT-Rental</h1>
+      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihre ${docTitle}</p>
+    </div>
+    <div style="padding:35px 40px;">
+      <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(customerName)},</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">
+        anbei erhalten Sie Ihre ${docTitle} <strong>${invoiceNumber}</strong>.
+      </p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
+        <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Positionen:</p>
+        <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
+        <p style="font-size:14px;font-weight:600;margin:12px 0 0;color:#333;">Bruttobetrag: ${grossAmount.toFixed(2).replace(".", ",")} €</p>
+      </div>
+      <p style="font-size:14px;color:#555;line-height:1.6;">
+        Die vollständige ${docTitle} finden Sie auch in Ihrem B2B-Portal.
+      </p>
+      <div style="text-align:center;margin:30px 0;">
+        <a href="https://slt-rent-genius.lovable.app/b2b/rechnungen" 
+           style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
+          Zum B2B-Portal →
+        </a>
+      </div>
+    </div>
+    <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${SLT_COMPANY.phone} · E-Mail: ${SLT_COMPANY.email}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">${SLT_COMPANY.web}</p>
+    </div>
+  </div>
+</body></html>`;
+
+        const emailRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+            to: [customerEmail],
+            subject: `Ihre ${docTitle} ${invoiceNumber} – SLT-Rental`,
+            html: emailHtml,
+          }),
+        });
+
+        if (emailRes.ok) {
+          emailSent = true;
+          console.log("Invoice email sent to:", customerEmail);
+          await serviceClient
+            .from("b2b_invoices")
+            .update({ email_sent: true, email_sent_at: new Date().toISOString() })
+            .eq("id", invoice.id);
+        } else {
+          const errBody = await emailRes.text();
+          console.error("Resend API error:", emailRes.status, errBody);
+        }
+      } catch (emailErr: any) {
+        console.error("Email sending failed:", emailErr.message);
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
@@ -352,6 +432,7 @@ Deno.serve(async (req: Request) => {
           file_url: fileUrl,
           is_reverse_charge: isReverseCharge,
         },
+        email_sent: emailSent,
       }),
       {
         status: 200,
