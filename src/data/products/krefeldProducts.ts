@@ -4902,7 +4902,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgKabelloeffelMs03_20cm_1,
     images: [imgKabelloeffelMs03_20cm_1],
     category: "kabelloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Gewichtsklasse Trägergerät": "2,5 – 4 t",
