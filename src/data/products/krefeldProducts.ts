@@ -451,6 +451,7 @@ import imgGrabenraeumloeffelMs01_80cm_1 from "@/assets/products/erdbewegung/grab
 import imgGrabenraeumloeffelMs01_80cm65l_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-100cm-1.jpeg";
 import imgGrabenraeumloeffelMs01Hydr_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-80cm-1.jpeg";
 import imgGrabenraeumloeffelMs01Hydr_100cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-100cm-1.jpeg";
+import imgDieselKanister10l_1 from "@/assets/products/erdbewegung/diesel-kanister-10l-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4986,7 +4987,24 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieseltankstelle1,
     images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "kramer-5045"],
     rentwareCode: { krefeld: "KP5KOB" }
+  },
+  // Diesel Kanister
+  {
+    id: "diesel-kanister-10l",
+    name: "Diesel Kanister 10 l",
+    description: "Zum Nachtanken der Mietgeräte – Kanister wird leer übergeben!",
+    detailedDescription: "Der 10-Liter-Dieselkanister ist das praktische Zubehör für alle dieselbetriebenen Mietgeräte. Er wird leer übergeben und kann an jeder Tankstelle befüllt werden. Ideal für Minibagger und Radlader, die auf der Baustelle nachgetankt werden müssen.",
+    image: imgDieselKanister10l_1,
+    images: [imgDieselKanister10l_1],
+    category: "zubehoer",
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "kramer-5045"],
+    specifications: {
+      "Volumen": "10 l",
+      "Kraftstoff": "Diesel",
+      "Übergabe": "leer",
+    },
   },
 ];
 
