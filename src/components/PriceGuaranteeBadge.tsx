@@ -65,29 +65,42 @@ export function PriceGuaranteeBadge({ variant = "inline", className }: PriceGuar
 
   // inline variant (for product cards)
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <button
-        className={cn(
-          "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
-          className
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          setOpen(true);
-        }}
-      >
-        <Shield className="h-3 w-3" />
-        Tiefpreisgarantie
-      </button>
-      <PriceGuaranteeDialogContent />
-    </Dialog>
+    <span
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+      }}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <Dialog open={open} onOpenChange={setOpen}>
+        <button
+          className={cn(
+            "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
+            className
+          )}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setOpen(true);
+          }}
+        >
+          <Shield className="h-3 w-3" />
+          Tiefpreisgarantie
+        </button>
+        <PriceGuaranteeDialogContent />
+      </Dialog>
+    </span>
   );
 }
 
 function PriceGuaranteeDialogContent() {
   return (
-    <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+    <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
       <DialogHeader>
         <DialogTitle className="flex items-center gap-2 text-primary">
           <Shield className="h-6 w-6" />
