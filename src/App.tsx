@@ -25,6 +25,7 @@ const B2BRegister = lazy(() => import("./pages/b2b/Register"));
 const B2BDashboard = lazy(() => import("./pages/b2b/Dashboard"));
 const ProjectRequest = lazy(() => import("./pages/b2b/ProjectRequest"));
 const B2BProducts = lazy(() => import("./pages/b2b/B2BProducts"));
+const B2BProductDetail = lazy(() => import("./pages/b2b/B2BProductDetail"));
 const MyReservations = lazy(() => import("./pages/b2b/MyReservations"));
 const B2BInvoices = lazy(() => import("./pages/b2b/Invoices"));
 const B2BDeliveryNotes = lazy(() => import("./pages/b2b/DeliveryNotes"));
