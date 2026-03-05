@@ -267,21 +267,21 @@ export function B2BMultiReservationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           {/* Location */}
           <div>
-            <label className="block text-sm font-medium text-headline mb-1.5">
+            <label className="block text-sm font-medium text-headline mb-1">
               <MapPin className="h-3.5 w-3.5 inline mr-1" />
               Standort
             </label>
             <Select value={locationId} onValueChange={setLocationId}>
-              <SelectTrigger>
+              <SelectTrigger className="h-9 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((loc) => (
                   <SelectItem key={loc.id} value={loc.id}>
-                    {loc.name} – {loc.address}
+                    {loc.name}
                   </SelectItem>
                 ))}
               </SelectContent>
