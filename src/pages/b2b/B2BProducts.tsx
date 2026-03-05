@@ -509,8 +509,8 @@ export default function B2BProducts() {
 
       {/* Floating selection bar */}
       {selectedCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
-          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg safe-area-bottom">
+          <div className="max-w-5xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
             <div className="flex items-center gap-3">
               <Badge className="bg-accent text-accent-foreground text-base px-3 py-1">
                 {selectedCount}

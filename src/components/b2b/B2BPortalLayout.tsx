@@ -90,7 +90,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
       {/* Navigation */}
       <div className="bg-background border-b border-border sticky top-16 z-30">
         <div className="section-container">
-          <nav className="flex gap-1 overflow-x-auto py-2 -mx-2 px-2">
+          <nav className="flex gap-1 overflow-x-auto py-1.5 sm:py-2 -mx-2 px-2 scrollbar-none">
             {(isAdmin ? adminNavItems : [
               ...customerNavItems,
             ]).map((item) => {
