@@ -284,12 +284,14 @@ export default function CategoryProducts() {
 
       // Type group mappings for complex categories
       const werkzeugeTypeGroups: Record<string, string[]> = {
-        // include typical special machines that still belong to "Sägen" UX bucket
         saege: ["kreissaege", "saebelsaege", "stichsaege", "handkreissaege", "fugenschneider"],
+        schneiden: ["fraese", "fliesenschneider", "trennschleifer", "multicutter"],
         abbruch: ["abbruchhammer"],
+        schrauber: ["schlagschrauber", "drehschlagschrauber"],
         messen: ["laser", "ortungsgeraet", "linienlaser"],
         beton: ["kernbohrer", "betonruettler", "diamantbohrer", "zwangsmischer"],
-        zubehoer: ["zubehoer", "staubsauger"],
+        beleuchtung: ["bauleuchte"],
+        zubehoer: ["zubehoer", "staubsauger", "ladegeraet", "nageler"],
       };
 
       const kabelStromverteilerTypeGroups: Record<string, string[]> = {
