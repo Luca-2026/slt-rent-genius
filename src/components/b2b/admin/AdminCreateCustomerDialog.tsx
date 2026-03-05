@@ -79,7 +79,7 @@ export function AdminCreateCustomerDialog({ open, onOpenChange, onCreated }: Pro
 
       toast({
         title: "Kunde angelegt!",
-        description: `${form.company_name} wurde erfolgreich erstellt und freigeschaltet.`,
+        description: `${form.company_name} wurde erfolgreich erstellt und freigeschaltet.${data?.email_sent ? " Willkommens-E-Mail wurde versendet." : ""}`,
       });
       resetForm();
       onCreated();
