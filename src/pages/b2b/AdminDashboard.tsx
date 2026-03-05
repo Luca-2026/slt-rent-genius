@@ -307,6 +307,8 @@ export default function AdminDashboard() {
 
   const deleteOffer = async (offerId: string) => {
     try {
+      // Nullify foreign key references in related tables
+      await supabase.from("b2b_delivery_notes").update({ offer_id: null }).eq("offer_id", offerId);
       // Delete offer items first
       await supabase.from("b2b_offer_items").delete().eq("offer_id", offerId);
       const { error } = await supabase.from("b2b_offers").delete().eq("id", offerId);
