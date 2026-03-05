@@ -784,7 +784,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-nasstrockensauger-gas35": { name: "Wet/Dry Vacuum GAS 35 M AFC", description: "Professional industrial vacuum with filter cleaning." },
   "bonn-rotationslaser-grl400h": { name: "Bosch Rotary Laser GRL 400H", description: "Rotary laser with up to 400m working range for horizontal levelling. Receiver not included." },
   "rotationslaser-grl400h": { name: "Bosch Rotary Laser GRL 400H", description: "Rotary laser with up to 400m working range for horizontal levelling. Receiver not included." },
-  "bonn-mauerschlitzfraese": { name: "Wall Chaser", description: "For precise channels in masonry." },
+  "bonn-mauerschlitzfraese": { name: "Wall Chaser", description: "For precise channels in masonry – up to 45 mm depth and 46 mm width." },
   "bonn-winkelschleifer-gws18v": { name: "Bosch Cordless Angle Grinder GWS 18V-10", description: "Powerful cordless angle grinder." },
   "bonn-bautrockner-kt200": { name: "Construction Dryer KT200", description: "Compact construction dryer for small to medium rooms." },
   "bonn-bautrockner-kt554": { name: "Allegra Construction Dryer KT554", description: "Powerful construction dryer for large areas." },
