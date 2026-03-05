@@ -90,6 +90,10 @@ export default function B2BProducts() {
   const contactPerson = b2bProfile?.assigned_contact_override 
     ? b2bProfile.assigned_contact_override 
     : assignedLoc?.manager;
+  const whatsappNumbers: Record<string, string> = {
+    krefeld: "4915789150872",
+    bonn: "4915757151584",
+  };
 
   const handleInquiry = (product: Product) => {
     const catSlug = getCategoryForProduct(product);
