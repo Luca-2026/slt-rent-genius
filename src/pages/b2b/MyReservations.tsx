@@ -262,6 +262,26 @@ export default function MyReservations() {
     }
   };
 
+  const handleDeleteReservation = async () => {
+    if (!reservationToDelete) return;
+    setDeletingId(reservationToDelete.id);
+    try {
+      const { error } = await supabase
+        .from("b2b_reservations")
+        .delete()
+        .eq("id", reservationToDelete.id);
+      if (error) throw error;
+      toast({ title: "Anfrage gelöscht", description: "Die Mietanfrage wurde erfolgreich gelöscht." });
+      setDeleteDialogOpen(false);
+      setReservationToDelete(null);
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message || "Anfrage konnte nicht gelöscht werden.", variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const filtered = statusFilter === "all"
     ? reservations
     : reservations.filter((r) => r.status === statusFilter);
