@@ -485,6 +485,48 @@ export function AdminCreateOfferDialog({
                   </div>
                 </div>
 
+                {/* Rental period per item (standalone or editable) */}
+                {(isStandalone || isEditing) && (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-xs">Mietbeginn</Label>
+                      <Input
+                        type="date"
+                        value={item.rental_start || ""}
+                        onChange={(e) => updateItem(index, "rental_start", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Uhrzeit Beginn</Label>
+                      <Input
+                        type="time"
+                        value={item.start_time || ""}
+                        onChange={(e) => updateItem(index, "start_time", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Mietende</Label>
+                      <Input
+                        type="date"
+                        value={item.rental_end || ""}
+                        onChange={(e) => updateItem(index, "rental_end", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Uhrzeit Ende</Label>
+                      <Input
+                        type="time"
+                        value={item.end_time || ""}
+                        onChange={(e) => updateItem(index, "end_time", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div className="text-right text-sm">
                   <span className="text-muted-foreground">Summe: </span>
                   <span className="font-semibold">{formatCurrency(calculateItemTotal(item))}</span>
