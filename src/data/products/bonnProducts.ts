@@ -325,6 +325,15 @@ export const bonnErdbewegungProducts = [
     driveType: "diesel",
     onRequest: true,
   },
+  {
+    id: "bonn-kettendumper-rmd650",
+    name: "Ketten-Dumper RMD-650",
+    description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform",
+    image: "/placeholder.svg",
+    weightKg: 636,
+    driveType: "benzin",
+    onRequest: true,
+  },
 ];
 
 // ==================== ERDBEWEGUNG ZUBEHÖR (Schaufeln, Löffel) ====================
