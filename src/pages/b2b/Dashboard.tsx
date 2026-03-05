@@ -15,7 +15,7 @@ import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
-import { 
+import {
   FileText, 
   Phone, 
   Download, 
@@ -294,12 +294,15 @@ export default function B2BDashboard() {
             </Card>
           )}
 
-          {/* Credit Limit Widget - only for approved users with a limit */}
-          {isApproved && b2bProfile && b2bProfile.credit_limit > 0 && (
+          {/* Credit / Vorkasse Widget - always for approved users */}
+          {isApproved && b2bProfile && (
             <div className="mb-8">
               <CreditLimitWidget
                 creditLimit={b2bProfile.credit_limit}
                 usedCredit={b2bProfile.used_credit}
+                profileId={b2bProfile.id}
+                creditLimitRequestedAt={(b2bProfile as any).credit_limit_requested_at}
+                onRequestSent={refreshB2BProfile}
               />
             </div>
           )}
@@ -311,14 +314,14 @@ export default function B2BDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Project Request - Only for approved */}
             <Link to={isApproved ? "/b2b/produkte" : "#"}>
-              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+              <Card className={`h-full flex flex-col hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-2">
                     <FileText className="h-6 w-6 text-accent" />
                   </div>
                   <CardTitle className="text-lg">Mietartikel</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Durchsuche das gesamte Sortiment und stelle Anfragen mit deinen individuellen B2B-Konditionen.
                   </p>
@@ -333,14 +336,14 @@ export default function B2BDashboard() {
 
             {/* Mietvorgänge */}
             <Link to="/b2b/mietvorgaenge">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardList className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle className="text-lg">Mietvorgänge</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Übersicht deiner bisherigen Mietvorgänge, Anfragen und deren Status.
                   </p>
@@ -351,14 +354,14 @@ export default function B2BDashboard() {
 
             {/* Rechnungen - Only for approved */}
             <Link to={isApproved ? "/b2b/rechnungen" : "#"}>
-              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+              <Card className={`h-full flex flex-col hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-2">
                     <Receipt className="h-6 w-6 text-accent" />
                   </div>
                   <CardTitle className="text-lg">Rechnungen</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Alle Rechnungen einsehen, herunterladen und den Zahlungsstatus verfolgen.
                   </p>
@@ -373,14 +376,14 @@ export default function B2BDashboard() {
 
             {/* Übergabeprotokolle - Only for approved */}
             <Link to={isApproved ? "/b2b/uebergabeprotokolle" : "#"}>
-              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+              <Card className={`h-full flex flex-col hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardCheck className="h-6 w-6 text-green-600" />
                   </div>
                   <CardTitle className="text-lg">Übergabeprotokolle</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Unterschriebene Übergabeprotokolle für alle übergebenen Mietartikel einsehen.
                   </p>
@@ -395,14 +398,14 @@ export default function B2BDashboard() {
 
             {/* Rückgabeprotokolle - Only for approved */}
             <Link to={isApproved ? "/b2b/rueckgabeprotokolle" : "#"}>
-              <Card className={`h-full hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
+              <Card className={`h-full flex flex-col hover:shadow-lg transition-shadow ${!isApproved ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
                 <CardHeader>
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
                     <Undo2 className="h-6 w-6 text-blue-600" />
                   </div>
                   <CardTitle className="text-lg">Rückgabeprotokolle</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Rückgabeprotokolle mit Zustandsbewertung für zurückgegebene Mietartikel.
                   </p>
@@ -416,7 +419,7 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Direct Contact - personalized */}
-            <Card className="h-full">
+            <Card className="h-full flex flex-col">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                   <Phone className="h-6 w-6 text-primary" />
@@ -428,7 +431,7 @@ export default function B2BDashboard() {
                   </p>
                 )}
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="flex-1 space-y-3">
                 {assignedLocation && (
                   <a href={`tel:${assignedLocation.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
                     <Phone className="h-4 w-4 shrink-0" />
@@ -451,14 +454,14 @@ export default function B2BDashboard() {
             </Card>
 
             {/* Downloads */}
-            <Card className="h-full">
+            <Card className="h-full flex flex-col">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                   <Download className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Downloads</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <ul className="space-y-2 text-sm">
                   <li>
                     <a href="#" className="text-primary hover:underline">
@@ -481,14 +484,14 @@ export default function B2BDashboard() {
 
             {/* FAQ */}
             <Link to="/faq">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <HelpCircle className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle className="text-lg">FAQ</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Häufige Fragen zu Buchung, Abrechnung und Rahmenverträgen.
                   </p>
@@ -497,14 +500,14 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Profile */}
-            <Card className="h-full">
+            <Card className="h-full flex flex-col">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                   <User className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Mein Profil</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground mb-3">
                   Firmendaten und Kontaktinformationen bearbeiten.
                 </p>

@@ -14,6 +14,7 @@ interface B2BProfile {
   assigned_location: string | null;
   assigned_contact_override: Record<string, string> | null;
   deletion_requested_at: string | null;
+  credit_limit_requested_at: string | null;
 }
 
 interface AuthContextType {
@@ -41,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchB2BProfile = async (userId: string) => {
     const { data } = await supabase
       .from("b2b_profiles")
-      .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at")
+      .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
       .eq("user_id", userId)
       .single();
     

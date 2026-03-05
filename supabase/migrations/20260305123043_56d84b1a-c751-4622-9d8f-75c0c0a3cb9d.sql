@@ -1,0 +1,1 @@
+ALTER TABLE public.b2b_profiles ADD COLUMN IF NOT EXISTS credit_limit_requested_at timestamp with time zone DEFAULT NULL;

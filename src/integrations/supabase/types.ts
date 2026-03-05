@@ -637,6 +637,7 @@ export type Database = {
           country: string | null
           created_at: string
           credit_limit: number
+          credit_limit_requested_at: string | null
           deletion_requested_at: string | null
           document_filename: string | null
           document_url: string | null
@@ -673,6 +674,7 @@ export type Database = {
           country?: string | null
           created_at?: string
           credit_limit?: number
+          credit_limit_requested_at?: string | null
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
@@ -709,6 +711,7 @@ export type Database = {
           country?: string | null
           created_at?: string
           credit_limit?: number
+          credit_limit_requested_at?: string | null
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null

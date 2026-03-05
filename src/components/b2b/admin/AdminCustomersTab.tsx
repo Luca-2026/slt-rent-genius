@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Building2, CreditCard, Clock, Receipt, Package, Shield,
-  Edit, Search, RefreshCw, UserPlus, Users, Trash2,
+  Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
 
 interface B2BProfile {
@@ -29,6 +29,7 @@ interface B2BProfile {
   created_at: string;
   payment_due_days: number;
   deletion_requested_at: string | null;
+  credit_limit_requested_at: string | null;
 }
 
 interface Invoice {
@@ -166,6 +167,11 @@ export function AdminCustomersTab({
                         {profile.deletion_requested_at && (
                           <Badge variant="destructive" className="text-[10px]">
                             <Trash2 className="h-2.5 w-2.5 mr-0.5" /> Löschung beantragt
+                          </Badge>
+                        )}
+                        {profile.credit_limit_requested_at && profile.credit_limit === 0 && (
+                          <Badge variant="secondary" className="text-[10px] bg-orange-100 text-orange-700 border-orange-200">
+                            <Banknote className="h-2.5 w-2.5 mr-0.5" /> Kreditlimit beantragt
                           </Badge>
                         )}
                       </div>
