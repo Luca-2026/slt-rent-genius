@@ -65,23 +65,36 @@ export function PriceGuaranteeBadge({ variant = "inline", className }: PriceGuar
 
   // inline variant (for product cards)
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <button
-        className={cn(
-          "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
-          className
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          setOpen(true);
-        }}
-      >
-        <Shield className="h-3 w-3" />
-        Tiefpreisgarantie
-      </button>
-      <PriceGuaranteeDialogContent />
-    </Dialog>
+    <span
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+      }}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <Dialog open={open} onOpenChange={setOpen}>
+        <button
+          className={cn(
+            "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
+            className
+          )}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setOpen(true);
+          }}
+        >
+          <Shield className="h-3 w-3" />
+          Tiefpreisgarantie
+        </button>
+        <PriceGuaranteeDialogContent />
+      </Dialog>
+    </span>
   );
 }
 
