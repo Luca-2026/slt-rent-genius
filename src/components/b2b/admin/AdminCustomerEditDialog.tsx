@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -57,7 +57,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
     status: "approved",
   });
 
-  // Sync form when profile changes
+  // Sync form when profile changes or dialog opens
   const resetForm = (p: B2BProfile) => {
     setForm({
       company_name: p.company_name,
@@ -79,10 +79,12 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
     });
   };
 
-  // Reset form when dialog opens
-  if (open && profile && form.company_name !== profile.company_name && form.contact_email !== profile.contact_email) {
-    resetForm(profile);
-  }
+  // Reset form when dialog opens with a profile
+  useEffect(() => {
+    if (open && profile) {
+      resetForm(profile);
+    }
+  }, [open, profile?.id]);
 
   const handleSave = async () => {
     if (!profile) return;
@@ -121,7 +123,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!v || profile) { onOpenChange(v); if (v && profile) resetForm(profile); } }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Kundendaten bearbeiten</DialogTitle>
