@@ -190,6 +190,7 @@ export interface Product {
   weightKg?: number;
   sortOrder?: number; // Explicit sort order within category (lower = first)
   rentwareCode?: Record<string, string>;
+  compatibleMachines?: string[]; // IDs of machines this accessory is compatible with
 }
 
 export interface ProductCategory {
@@ -1496,6 +1497,14 @@ export function getProductWithContext(productId: string): {
     }
   }
   return undefined;
+}
+
+// Get compatible accessories for a machine (by product ID)
+export function getCompatibleAccessories(machineId: string, locationId: string): Product[] {
+  const location = getLocationById(locationId);
+  if (!location) return [];
+  const allProducts = location.products["erdbewegung"] || [];
+  return allProducts.filter((p) => p.compatibleMachines?.includes(machineId));
 }
 
 // Generate SEO-friendly slug from product name

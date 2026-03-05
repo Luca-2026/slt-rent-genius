@@ -19,6 +19,7 @@ import {
   getCategoryById,
   getProductById,
   getProductsForLocationCategory,
+  getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
@@ -48,9 +49,16 @@ export default function ProductDetail() {
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
-    return allProducts.filter((p) => p.id !== rawProduct.id).slice(0, 4);
+    return allProducts.filter((p) => p.id !== rawProduct.id && !p.compatibleMachines).slice(0, 4);
   }, [location, categoryId, rawProduct]);
   const relatedProducts = useTranslatedProducts(rawRelatedProducts);
+
+  // Get compatible accessories for excavators / earthmoving machines
+  const rawAccessories = useMemo(() => {
+    if (!location || !rawProduct || categoryId !== "erdbewegung") return [];
+    return getCompatibleAccessories(rawProduct.id, location.id);
+  }, [location, rawProduct, categoryId]);
+  const accessories = useTranslatedProducts(rawAccessories);
 
   const images = useMemo(() => {
     if (!product) return [];
@@ -650,6 +658,48 @@ export default function ProductDetail() {
               <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} />
             )}
           </div>
+
+          {/* Optional Accessories for Excavators */}
+          {accessories.length > 0 && (
+            <div className="mt-10 pt-8 border-t border-border">
+              <div className="flex items-center gap-2 mb-5">
+                <HardHat className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-bold text-headline">{t("rental.optionalAccessories", "Optionales Zubehör")}</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                {t("rental.accessoriesHint", "Passende Anbaugeräte für diese Maschine – einfach dazu buchen.")}
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {accessories.map((acc) => (
+                  <Link key={acc.id} to={`/mieten/${location.id}/${categoryId}/${acc.id}`}>
+                    <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden border-primary/20">
+                      <div className="aspect-[4/3] bg-muted">
+                        {acc.image && acc.image !== "/placeholder.svg" ? (
+                          <img
+                            src={acc.image}
+                            alt={`${acc.name} – Anbaugerät für ${product.name}`}
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Package className="h-8 w-8 text-muted-foreground/30" />
+                          </div>
+                        )}
+                      </div>
+                      <CardContent className="p-3">
+                        <h3 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                          {acc.name}
+                        </h3>
+                        {acc.description && (
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{acc.description}</p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (

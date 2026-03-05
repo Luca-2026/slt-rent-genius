@@ -439,6 +439,10 @@ import imgDieseltankstelle2 from "@/assets/products/erdbewegung/dieseltankstelle
 import imgHydraulikhammer1 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-1.jpg";
 import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-2.jpg";
 import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
+// Hydraulikhammer SHB40 images
+import imgHydraulikhammerShb40_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-1.jpeg";
+import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-2.jpeg";
+import imgHydraulikhammerShb40_3 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-3.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4737,6 +4741,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "ZDH9MF" }
   },
   {
@@ -4746,6 +4751,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "NXR6T1" }
   },
   {
@@ -4755,6 +4761,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "7A6LGC" }
   },
   {
@@ -4792,6 +4799,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "kabelloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "ZHXAG6" }
   },
   {
@@ -4811,6 +4819,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "grabenraeumloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "2A5TQZ" }
   },
   {
@@ -4820,6 +4829,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "grabenraeumloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "EZKG9U" }
   },
   {
@@ -4839,16 +4849,30 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "roderechen",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
     rentwareCode: { krefeld: "R5B2W9" }
   },
   // Hydraulikhammer
   {
     id: "ms01-hydraulikhammer-shb40",
     name: "MS01 Hydraulikhammer SHB40",
-    description: "Hydraulikhammer für MS01 Schnellwechsler",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Hydraulikhammer für MS01 Schnellwechsler – Gewichtsklasse 1–2,5 t",
+    detailedDescription: "Der SHB40 Hydraulikhammer ist das ideale Anbaugerät für Minibagger der 1- bis 2,5-Tonnen-Klasse mit MS01 Schnellwechsler. Mit einer Schlagkraft von 280 Joule und 800–1.400 Schlägen pro Minute eignet er sich hervorragend zum Aufbrechen von Beton, Asphalt und Gestein. Das kompakte Eigengewicht von nur 105 kg ermöglicht den Einsatz auch auf kleineren Maschinen ohne Stabilitätsverlust.",
+    image: imgHydraulikhammerShb40_1,
+    images: [imgHydraulikhammerShb40_1, imgHydraulikhammerShb40_2, imgHydraulikhammerShb40_3],
     category: "hydraulikhammer",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Schnellwechsler": "MS01",
+      "Gewichtsklasse Trägergerät": "1 – 2,5 t",
+      "Gewicht": "105 kg",
+      "Höhe": "109 cm",
+      "Meißel-Durchmesser": "40 mm",
+      "Schlaganzahl": "800 – 1.400 bpm",
+      "Schlagkraft": "280 J",
+      "Betriebsdruck": "9 – 12 MPa",
+      "Öldurchfluss": "15 – 25 l/min",
+    },
     rentwareCode: { krefeld: "DC6H9Z" }
   },
   {
@@ -4858,6 +4882,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgHydraulikhammer1,
     images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
     rentwareCode: { krefeld: "CRLJPA" }
   },
   // Bodenschutz
