@@ -126,6 +126,19 @@ export default function KnowledgeBase() {
           </div>
         </div>
       </section>
+      {/* Billing Contact Banner */}
+      <section className="py-4 bg-accent/10 border-b border-accent/20">
+        <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center">
+          <span className="text-sm font-medium text-headline">Fragen zur Abrechnung?</span>
+          <a
+            href="mailto:buchhaltung@slt-tg.de"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors"
+          >
+            <Mail className="h-4 w-4" />
+            buchhaltung@slt-tg.de
+          </a>
+        </div>
+      </section>
 
       <main className="py-8 lg:py-12 min-h-[50vh]">
         <div className="section-container">
