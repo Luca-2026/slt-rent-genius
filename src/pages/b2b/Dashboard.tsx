@@ -115,9 +115,21 @@ export default function B2BDashboard() {
         <div className="section-container">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-1">
-                Willkommen, {b2bProfile?.contact_first_name || "Benutzer"}!
-              </h1>
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
+                  Willkommen, {b2bProfile?.contact_first_name || "Benutzer"}!
+                </h1>
+                {b2bProfile && (
+                  <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
+                    status === "approved" ? "bg-green-500/20 text-green-200" : 
+                    status === "rejected" ? "bg-red-500/20 text-red-200" : 
+                    "bg-yellow-500/20 text-yellow-200"
+                  }`}>
+                    <StatusIcon className="h-3 w-3" />
+                    {statusConfig[status]?.label}
+                  </span>
+                )}
+              </div>
               <p className="text-primary-foreground/80">
                 {b2bProfile?.company_name || "B2B-Dashboard"}
               </p>
