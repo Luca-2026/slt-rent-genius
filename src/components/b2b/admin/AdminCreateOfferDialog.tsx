@@ -206,7 +206,7 @@ export function AdminCreateOfferDialog({
   const addItem = () => {
     setItems((prev) => [
       ...prev,
-      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 },
+      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" },
     ]);
   };
 
