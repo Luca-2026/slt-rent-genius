@@ -502,7 +502,8 @@ const trailerProducts: Product[] = [
     images: [imgBaumaschinen1800_1, imgBaumaschinen1800_2], 
     weightKg: 1800, 
     category: "baumaschine",
-    tags: ["baumaschine", "gebremst", "zweiachser"], 
+    tags: ["baumaschine", "gebremst", "zweiachser"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -513,7 +514,8 @@ const trailerProducts: Product[] = [
     images: [imgBaumaschinen3500_1, imgBaumaschinen3500_2, imgBaumaschinen3500_3], 
     weightKg: 3500, 
     category: "baumaschine",
-    tags: ["baumaschine", "gebremst", "zweiachser"], 
+    tags: ["baumaschine", "gebremst", "zweiachser"],
+    compatibleMachines: ["xcmg-xe27e"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR" } 
   },
 
@@ -1503,7 +1505,10 @@ export function getProductWithContext(productId: string): {
 export function getCompatibleAccessories(machineId: string, locationId: string): Product[] {
   const location = getLocationById(locationId);
   if (!location) return [];
-  const allProducts = location.products["erdbewegung"] || [];
+  // Search erdbewegung for attachments + anhaenger for transport trailers
+  const erdbewegung = location.products["erdbewegung"] || [];
+  const anhaenger = location.products["anhaenger"] || [];
+  const allProducts = [...erdbewegung, ...anhaenger];
   return allProducts.filter((p) => p.compatibleMachines?.includes(machineId));
 }
 

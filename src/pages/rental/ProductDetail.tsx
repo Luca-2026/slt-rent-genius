@@ -671,7 +671,7 @@ export default function ProductDetail() {
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {accessories.map((acc) => (
-                  <Link key={acc.id} to={`/mieten/${location.id}/${categoryId}/${acc.id}`}>
+                  <Link key={acc.id} to={`/mieten/${location.id}/${acc.tags?.includes("baumaschine") || acc.tags?.includes("autotransport") || acc.tags?.includes("gebremst") ? "anhaenger" : categoryId}/${acc.id}`}>
                     <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden border-primary/20">
                       <div className="aspect-[4/3] bg-muted">
                         {acc.image && acc.image !== "/placeholder.svg" ? (
