@@ -82,23 +82,55 @@ export default function B2BProducts() {
   const filteredProducts = useMemo(() => {
     let products = getProductsForLocationCategory(selectedLocation, selectedCategory);
 
-    // Deduplicate: remove products with placeholder images when a similar product with real image exists
-    const seen = new Map<string, Product>();
+    // Deduplicate products that appear twice due to mergeWithFallback
+    // Strategy: normalize names and group similar products, keeping the richer entry
+    const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9äöüß]/g, "");
+    
+    const seenIds = new Set<string>();
+    const seenNames = new Map<string, Product>();
     const deduped: Product[] = [];
+    
     for (const p of products) {
+      if (seenIds.has(p.id)) continue;
+      seenIds.add(p.id);
+
+      const pn = normalise(p.name);
       const hasRealImage = p.image && p.image !== "/placeholder.svg";
-      const existing = seen.get(p.id);
-      if (existing) {
-        // Keep the one with real image
-        if (hasRealImage && (!existing.image || existing.image === "/placeholder.svg")) {
-          const idx = deduped.indexOf(existing);
-          if (idx >= 0) deduped[idx] = p;
-          seen.set(p.id, p);
+      const hasSpecs = p.specifications && Object.keys(p.specifications).length > 0;
+      const richness = (hasRealImage ? 10 : 0) + (hasSpecs ? 5 : 0) + (p.detailedDescription ? 3 : 0) + (p.features?.length || 0);
+      
+      // Check if a similar product already exists (by normalized name similarity)
+      let isDuplicate = false;
+      for (const [existingName, existingProduct] of seenNames) {
+        const en = existingName;
+        // Match if one name contains the other (min 10 chars to avoid false matches)
+        const similar = (pn.length >= 10 && en.length >= 10) && (
+          pn.includes(en) || en.includes(pn) ||
+          // Same leading size+type pattern (e.g. "8mscherenbühne", "11mmastbühne")
+          (pn.match(/^\d+/) && en.match(/^\d+/) && pn.slice(0, 12) === en.slice(0, 12))
+        );
+        
+        if (similar) {
+          isDuplicate = true;
+          // Replace existing if this one is richer
+          const existingHasImage = existingProduct.image && existingProduct.image !== "/placeholder.svg";
+          const existingSpecs = existingProduct.specifications && Object.keys(existingProduct.specifications).length > 0;
+          const existingRichness = (existingHasImage ? 10 : 0) + (existingSpecs ? 5 : 0) + (existingProduct.detailedDescription ? 3 : 0) + (existingProduct.features?.length || 0);
+          
+          if (richness > existingRichness) {
+            const idx = deduped.indexOf(existingProduct);
+            if (idx >= 0) deduped[idx] = p;
+            seenNames.delete(existingName);
+            seenNames.set(pn, p);
+          }
+          break;
         }
-        continue;
       }
-      seen.set(p.id, p);
-      deduped.push(p);
+      
+      if (!isDuplicate) {
+        seenNames.set(pn, p);
+        deduped.push(p);
+      }
     }
     products = deduped;
 
