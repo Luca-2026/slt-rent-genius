@@ -4,9 +4,10 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface DeliveryNote {
   id: string;
@@ -38,6 +39,8 @@ interface Props {
 export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
   const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchDeliveryNotes = async () => {
     setLoading(true);
@@ -47,6 +50,22 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
       .order("created_at", { ascending: false });
     if (data) setDeliveryNotes(data as DeliveryNote[]);
     setLoading(false);
+  };
+
+  const sendEmail = async (dnId: string) => {
+    setSendingId(dnId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "delivery_note", id: dnId },
+      });
+      if (error) throw error;
+      toast({ title: "E-Mail versendet", description: `Übergabeprotokoll wurde an ${data.recipient} gesendet.` });
+      fetchDeliveryNotes();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
   };
 
   useEffect(() => {
@@ -151,6 +170,15 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                             Ansehen
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => sendEmail(dn.id)}
+                          disabled={sendingId === dn.id}
+                        >
+                          <Send className="h-4 w-4 mr-1.5" />
+                          {sendingId === dn.id ? "Sende..." : dn.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>

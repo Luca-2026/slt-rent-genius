@@ -4,9 +4,10 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface ReturnProtocol {
   id: string;
@@ -40,6 +41,8 @@ interface Props {
 export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
   const [protocols, setProtocols] = useState<ReturnProtocol[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchProtocols = async () => {
     setLoading(true);
@@ -49,6 +52,22 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
       .order("created_at", { ascending: false });
     if (data) setProtocols(data as ReturnProtocol[]);
     setLoading(false);
+  };
+
+  const sendEmail = async (rpId: string) => {
+    setSendingId(rpId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "return_protocol", id: rpId },
+      });
+      if (error) throw error;
+      toast({ title: "E-Mail versendet", description: `Rückgabeprotokoll wurde an ${data.recipient} gesendet.` });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
   };
 
   useEffect(() => {
@@ -176,6 +195,15 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                             Ansehen
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => sendEmail(rp.id)}
+                          disabled={sendingId === rp.id}
+                        >
+                          <Send className="h-4 w-4 mr-1.5" />
+                          {sendingId === rp.id ? "Sende..." : rp.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
