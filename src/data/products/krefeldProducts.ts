@@ -450,6 +450,7 @@ import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeff
 import imgGrabenraeumloeffelMs01_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-80cm-1.jpeg";
 import imgGrabenraeumloeffelMs01_80cm65l_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-100cm-1.jpeg";
 import imgGrabenraeumloeffelMs01Hydr_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-80cm-1.jpeg";
+import imgGrabenraeumloeffelMs01Hydr_100cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-100cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4900,11 +4901,18 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-grabenraeumloeffel-100cm-symlock",
     name: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
-    description: "Hydraulischer Grabenräumlöffel 100cm für MS01 Symlock",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Hydraulischer Grabenräumlöffel 100cm für MS01 Symlock – schwenkbar",
+    detailedDescription: "Der MS01 Grabenräumlöffel hydr. 100cm/80l Symlock ist ein hydraulisch schwenkbarer Löffel mit 1000 mm Arbeitsbreite und 80 Liter Volumen. Dank der hydraulischen Schwenkfunktion lassen sich Gräben und Böschungen auch in unebenem Gelände exakt profilieren. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
+    image: imgGrabenraeumloeffelMs01Hydr_100cm_1,
+    images: [imgGrabenraeumloeffelMs01Hydr_100cm_1],
     category: "grabenraeumloeffel",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01 (Symlock)",
+      "Volumen": "80 l",
+      "Arbeitsbreite": "1000 mm",
+      "Gewicht": "104 kg",
+    },
     rentwareCode: { krefeld: "EZKG9U" }
   },
   {
