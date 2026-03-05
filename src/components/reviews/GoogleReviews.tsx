@@ -146,22 +146,22 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
   return (
     <div className="space-y-6">
       {/* Header with rating summary */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <img src="https://www.google.com/favicon.ico" alt="Google" className="h-6 w-6" />
-            <span className="text-lg font-bold text-foreground">Google Bewertungen</span>
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="h-5 w-5" />
+            <span className="text-base font-bold text-foreground">Google Bewertungen</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <StarRating rating={data.rating} size="lg" />
-            <span className="text-xl font-bold text-foreground">{data.rating.toFixed(1)}</span>
-            <span className="text-sm text-muted-foreground">({data.totalReviews} Bewertungen)</span>
+            <span className="text-lg font-bold text-foreground">{data.rating.toFixed(1)}</span>
+            <span className="text-sm text-muted-foreground whitespace-nowrap">({data.totalReviews} Bewertungen)</span>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {reviewUrl && (
             <a href={reviewUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2">
                 <PenLine className="h-4 w-4" />
                 Bewertung schreiben
               </Button>
@@ -172,7 +172,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="ghost" className="gap-2 text-muted-foreground">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
               <ExternalLink className="h-4 w-4" />
               Alle ansehen
             </Button>
