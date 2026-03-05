@@ -81,6 +81,14 @@ export default function B2BDashboard() {
   const isPending = b2bProfile?.status === "pending";
   const isApproved = b2bProfile?.status === "approved";
   const isRejected = b2bProfile?.status === "rejected";
+  const assignedLocation = nearestLocation;
+
+  // WhatsApp numbers per location
+  const whatsappNumbers: Record<string, string> = {
+    krefeld: "+4915789150872",
+    bonn: "+4915757151584",
+  };
+  const locationWhatsApp = assignedLocation ? whatsappNumbers[assignedLocation.id] : null;
 
   const statusConfig = {
     pending: {
