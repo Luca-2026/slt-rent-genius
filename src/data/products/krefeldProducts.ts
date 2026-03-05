@@ -4838,7 +4838,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgTiefloeffelMs03_50cm_1,
     images: [imgTiefloeffelMs03_50cm_1],
     category: "tiefloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "107 l",
