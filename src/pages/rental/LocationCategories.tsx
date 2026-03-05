@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { CategoryGrid } from "@/components/rental/CategoryGrid";
 import { ProductSearch } from "@/components/rental/ProductSearch";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
