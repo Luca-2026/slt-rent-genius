@@ -192,6 +192,15 @@ Deno.serve(async (req: Request) => {
     const offerItems = items.map((item) => {
       const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
+      // Append time to rental dates if available from reservation
+      let rentalStart = item.rental_start || reservation?.start_date || null;
+      let rentalEnd = item.rental_end || reservation?.end_date || null;
+      if (rentalStart && reservation?.start_time && !rentalStart.includes(" ")) {
+        rentalStart = `${rentalStart} ${reservation.start_time}`;
+      }
+      if (rentalEnd && reservation?.end_time && !rentalEnd.includes(" ")) {
+        rentalEnd = `${rentalEnd} ${reservation.end_time}`;
+      }
       return {
         product_name: item.product_name,
         description: item.description || null,
@@ -199,8 +208,8 @@ Deno.serve(async (req: Request) => {
         unit_price: item.unit_price,
         discount_percent: item.discount_percent || 0,
         total_price: totalPrice,
-        rental_start: item.rental_start || reservation?.start_date || null,
-        rental_end: item.rental_end || reservation?.end_date || null,
+        rental_start: rentalStart,
+        rental_end: rentalEnd,
         image_url: item.image_url || null,
       };
     });
