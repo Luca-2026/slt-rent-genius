@@ -382,6 +382,8 @@ function generateInvoiceHtml(data: {
   isReverseCharge: boolean;
   notes: string | null;
   paymentDueDays: number;
+  isCorrection: boolean;
+  originalInvoiceNumber: string | null;
 }): string {
   const formatCurrency = (amount: number) =>
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
