@@ -82,22 +82,42 @@ export default function B2BProducts() {
   const filteredProducts = useMemo(() => {
     let products = getProductsForLocationCategory(selectedLocation, selectedCategory);
 
-    // Deduplicate: remove products with placeholder images when a similar product with real image exists
-    const seen = new Map<string, Product>();
+    // Deduplicate by ID and by similar name (catches Bonn/Krefeld variants of the same product type)
+    const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9äöüß]/g, "");
+    const getBaseKey = (name: string) => {
+      // Extract the core product descriptor: e.g. "8m Scherenbühne ..." → "8mscherenbühne"
+      // Remove brand names and model numbers to find same-type products
+      const n = normalise(name);
+      // Match leading size + type pattern (e.g. "8mscherenbühne", "11mmastbühne", "18manhänger")
+      const sizeTypeMatch = n.match(/^(\d+[a-z]?\s*(?:scherenb|mastb|gelenkteleskop|anh[aä]nger|teleskop))/);
+      return sizeTypeMatch ? sizeTypeMatch[1] : null;
+    };
+
+    const seenIds = new Set<string>();
+    const seenBaseKeys = new Map<string, Product>();
     const deduped: Product[] = [];
     for (const p of products) {
+      // Skip exact ID duplicates
+      if (seenIds.has(p.id)) continue;
+      seenIds.add(p.id);
+
       const hasRealImage = p.image && p.image !== "/placeholder.svg";
-      const existing = seen.get(p.id);
-      if (existing) {
-        // Keep the one with real image
-        if (hasRealImage && (!existing.image || existing.image === "/placeholder.svg")) {
-          const idx = deduped.indexOf(existing);
-          if (idx >= 0) deduped[idx] = p;
-          seen.set(p.id, p);
+      const baseKey = getBaseKey(p.name);
+
+      if (baseKey) {
+        const existing = seenBaseKeys.get(baseKey);
+        if (existing) {
+          // Keep the one with real image / more data; skip the other
+          if (hasRealImage && (!existing.image || existing.image === "/placeholder.svg")) {
+            const idx = deduped.indexOf(existing);
+            if (idx >= 0) deduped[idx] = p;
+            seenBaseKeys.set(baseKey, p);
+          }
+          continue;
         }
-        continue;
+        seenBaseKeys.set(baseKey, p);
       }
-      seen.set(p.id, p);
+
       deduped.push(p);
     }
     products = deduped;
