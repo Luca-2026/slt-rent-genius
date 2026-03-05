@@ -121,7 +121,7 @@ export default function B2BProductDetail() {
         <div className="lg:col-span-2 space-y-4 md:space-y-5">
           {/* Image Gallery */}
           <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="relative bg-muted" style={{ aspectRatio: "4/3" }}>
+            <div className="relative bg-muted aspect-square sm:aspect-[4/3]">
               {images.length > 0 ? (
                 <>
                   <img
