@@ -977,6 +977,7 @@ function inferWerkzeugCategory(name: string): string | undefined {
   if (n.includes("winkelschleifer")) return "winkelschleifer";
   if (n.includes("hand-kreissäge") || n.includes("hand-kreissaege") || n.includes("kreissäge") || n.includes("kreissaege")) return "kreissaege";
   if (n.includes("steinsäge") || n.includes("steinsaege")) return "kreissaege";
+  if (n.includes("fliesenschneider")) return "fliesenschneider";
   if (n.includes("abbruchhammer")) return "abbruchhammer";
   if (n.includes("fugenschneider")) return "fugenschneider";
   if (n.includes("mauerschlitzfräse") || n.includes("mauerschlitzfraese")) return "fraese";

@@ -122,6 +122,11 @@ import zwangsmischer140l2 from "@/assets/products/mischer/zwangsmischer-140l-2.j
 import zwangsmischer140l3 from "@/assets/products/mischer/zwangsmischer-140l-3.jpeg";
 import rotationslaser1 from "@/assets/products/messtechnik/rotationslaser-grl400h-1.jpeg";
 import rotationslaser2 from "@/assets/products/messtechnik/rotationslaser-grl400h-2.jpeg";
+import fliesenschneider1 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-1.jpeg";
+import fliesenschneider2 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-2.jpeg";
+import fliesenschneider3 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-3.jpeg";
+import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-4.jpeg";
+import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -730,8 +735,16 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-fliesenschneider-80cm",
     name: "Fliesenschneider 80cm",
-    description: "Manueller Fliesenschneider für präzise Schnitte.",
-    image: "/placeholder.svg",
+    description: "Profi-Fliesenschneider zum präzisen Schneiden und Trennen von Keramikfliesen.",
+    detailedDescription: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. Mit einer maximalen Schnittlänge von 800 mm und einer Schneidleistung bis 14 mm ist er ideal für Fliesen- und Plattenleger.",
+    image: fliesenschneider1,
+    images: [fliesenschneider1, fliesenschneider2, fliesenschneider3, fliesenschneider4, fliesenschneider5],
+    category: "fliesenschneider",
+    specifications: {
+      "Schnittlänge max.": "800 mm",
+      "Schneidleistung max.": "14 mm",
+      "Diagonal-Schnittlänge mit Auflage": "565 mm",
+    },
     rentwareCode: { bonn: "ATIOQF" },
   },
   {
