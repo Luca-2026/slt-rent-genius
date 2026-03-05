@@ -104,9 +104,23 @@ export default function B2BProducts() {
       for (const [existingName, existingProduct] of seenNames) {
         const en = existingName;
         // Match if one name contains the other (min 10 chars to avoid false matches)
+        // Also extract the leading size pattern (e.g. "18m") for comparison
+        const pnSize = pn.match(/^(\d+[a-z]*)/)?.[1] || "";
+        const enSize = en.match(/^(\d+[a-z]*)/)?.[1] || "";
+        const sameSize = pnSize.length >= 2 && pnSize === enSize;
+        
+        // Extract the core type word (e.g. "scherenbühne", "mastbühne", "arbeitsbühne")
+        const pnType = pn.match(/(scherenb[uü]hne|mastb[uü]hne|gelenkteleskop|anhänger.*b[uü]hne|arbeitsbühne|anhängerb[uü]hne)/)?.[1] || "";
+        const enType = en.match(/(scherenb[uü]hne|mastb[uü]hne|gelenkteleskop|anhänger.*b[uü]hne|arbeitsbühne|anhängerb[uü]hne)/)?.[1] || "";
+        const sameType = pnType.length > 0 && enType.length > 0 && (
+          pnType === enType || pnType.includes(enType) || enType.includes(pnType)
+        );
+        
         const similar = (pn.length >= 10 && en.length >= 10) && (
           pn.includes(en) || en.includes(pn) ||
-          // Same leading size+type pattern (e.g. "8mscherenbühne", "11mmastbühne")
+          // Same size + same type (e.g. "18m...arbeitsbühne" matches "18m...anhängerbühne")
+          (sameSize && sameType) ||
+          // Same leading pattern
           (pn.match(/^\d+/) && en.match(/^\d+/) && pn.slice(0, 12) === en.slice(0, 12))
         );
         
