@@ -177,6 +177,7 @@ import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergrei
 import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-3.avif";
 // Shared images with Krefeld - Werkzeuge
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
+import imgAbbruchhammerHm1812 from "@/assets/products/werkzeuge/abbruchhammer-hm1812.jpeg";
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
@@ -668,6 +669,26 @@ export const bonnWerkzeugProducts = [
     image: imgAbbruchhammer,
     images: [imgAbbruchhammer],
     rentwareCode: { bonn: "226JZO" },
+  },
+  {
+    id: "bonn-abbruchhammer-hm1812",
+    name: "Makita Abbruchhammer HM1812",
+    description: "Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.",
+    detailedDescription: "Der Makita HM1812 ist ein leistungsstarker Abbruchhammer mit 2.000 W und 72,8 J Schlagenergie. Dank AVT (Anti-Vibrations-Technologie) wird die Belastung für den Anwender deutlich reduziert. Im Lieferumfang enthalten: 1x Spitzmeißel und 1x Flachmeißel.",
+    image: imgAbbruchhammerHm1812,
+    images: [imgAbbruchhammerHm1812],
+    category: "abbruchhammer",
+    specifications: {
+      "Hersteller": "Makita",
+      "Schlagenergie": "72,8 J",
+      "Schlagzahl bei Nenndrehzahl": "870 bpm",
+      "Nenneingangsleistung": "2.000 W",
+      "Gewicht": "31 kg",
+      "Abmessung (LxB)": "84 x 60 cm",
+      "Werkzeugaufnahme": "HEX-28",
+      "Lieferumfang": "1x Spitzmeißel, 1x Flachmeißel",
+    },
+    rentwareCode: { bonn: "" },
   },
   {
     id: "bonn-steinsaege-80cm",
