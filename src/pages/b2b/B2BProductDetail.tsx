@@ -341,9 +341,9 @@ export default function B2BProductDetail() {
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <div className="mt-10 pt-8 border-t border-border">
-          <h2 className="text-lg font-bold text-headline mb-5">Weitere Produkte in dieser Kategorie</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-6 md:mt-10 pt-6 md:pt-8 border-t border-border">
+          <h2 className="text-base md:text-lg font-bold text-headline mb-4 md:mb-5">Weitere Produkte in dieser Kategorie</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {relatedProducts.map((rp) => (
               <Link key={rp.id} to={`/b2b/produkte/${locationId}/${categoryId}/${rp.id}`}>
                 <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
