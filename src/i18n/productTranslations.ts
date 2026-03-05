@@ -110,6 +110,14 @@ export const specKeyTranslations: Record<string, string> = {
   "Schnitttiefe 45°": "Cutting Depth 45°",
   "Schallleistungspegel": "Sound Power Level",
 
+  // Drilling / Core drilling
+  "Nenneingangsleistung": "Rated Input Power",
+  "Bohrbereich": "Drilling Range",
+  "Bohrspindelanschlussgewinde": "Drill Spindle Thread",
+  "Eignung": "Suitability",
+  "Beton, möglicher Bereich": "Concrete, possible range",
+  "Mauerwerk, möglicher Bereich": "Masonry, possible range",
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
