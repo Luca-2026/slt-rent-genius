@@ -36,6 +36,7 @@ import {
 import { locationData } from "@/data/locationData";
 
 import { HeroBackgroundSlider } from "@/components/home/HeroBackgroundSlider";
+import { GoogleReviews as GoogleReviewsComponent } from "@/components/reviews/GoogleReviews";
 
 export default function Index() {
   const { t } = useTranslation();
