@@ -15,7 +15,7 @@ import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
-import { 
+import {
   FileText, 
   Phone, 
   Download, 
