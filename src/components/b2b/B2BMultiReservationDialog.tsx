@@ -496,6 +496,14 @@ export function B2BMultiReservationDialog({
             />
           </div>
 
+          {/* 1h Guarantee */}
+          <div className="flex items-center gap-2 bg-primary/5 rounded-lg p-2.5 border border-primary/10">
+            <CalendarDays className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-xs text-foreground">
+              Angebot innerhalb von <strong>1 Stunde</strong> – garantiert!
+            </p>
+          </div>
+
           <Button
             type="submit"
             className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
