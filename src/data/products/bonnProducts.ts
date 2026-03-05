@@ -114,6 +114,9 @@ import akkuKettensaege1 from "@/assets/products/akku-kettensaege-1.jpeg";
 import akkuKettensaege2 from "@/assets/products/akku-kettensaege-2.jpeg";
 import akkuKettensaege3 from "@/assets/products/akku-kettensaege-3.jpeg";
 import akkuKettensaege4 from "@/assets/products/akku-kettensaege-4.jpeg";
+import steinsaege80cm1 from "@/assets/products/saegen/steinsaege-80cm-1.jpeg";
+import steinsaege80cm2 from "@/assets/products/saegen/steinsaege-80cm-2.jpeg";
+import steinsaege80cm3 from "@/assets/products/saegen/steinsaege-80cm-3.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -656,8 +659,23 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-steinsaege-80cm",
     name: "Steinsäge 80cm Nasschneidetisch",
-    description: "Nassschneidetisch für präzise Steinschnitte.",
-    image: "/placeholder.svg",
+    description: "Steinsäge mit Kühlwasserzufuhr – Nassschneidetisch für präzise Steinschnitte.",
+    detailedDescription: "Professioneller Nasschneidetisch für präzise Steinschnitte mit integrierter Kühlwasserzufuhr. Ideal zum Schneiden von Naturstein, Pflastersteinen, Fliesen und Betonsteinen. Die Messung des Verschleißes erfolgt bei der Abholung und Rückgabe. Je nach Durchmesser und Typ der Sägeblätter wird ein Einheitspreis pro 0,1 mm veranschlagt. Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt. Diamanttrennscheiben zum Kauf optional erhältlich.",
+    image: steinsaege80cm1,
+    images: [steinsaege80cm1, steinsaege80cm2, steinsaege80cm3],
+    category: "kreissaege",
+    specifications: {
+      "Durchmesser Sägeblatt": "350 mm",
+      "Nenneingangsleistung": "2.200 W",
+      "Gewicht": "70 kg",
+      "Abmessung (LxBxH)": "110 x 58 x 118 cm",
+    },
+    rentalNotes: [
+      "Die Messung des Verschleißes erfolgt bei der Abholung und Rückgabe.",
+      "Je nach Durchmesser und Typ der Sägeblätter wird ein Einheitspreis pro 0,1 mm veranschlagt.",
+      "Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt.",
+      "Diamanttrennscheiben zum Kauf optional erhältlich.",
+    ],
     rentwareCode: { bonn: "RVQWQN" },
   },
   {
