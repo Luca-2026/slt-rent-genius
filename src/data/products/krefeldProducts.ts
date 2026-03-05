@@ -443,6 +443,8 @@ import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-s
 import imgHydraulikhammerShb40_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-1.jpeg";
 import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-2.jpeg";
 import imgHydraulikhammerShb40_3 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-3.jpeg";
+// Kabellöffel MS01 15cm image
+import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4795,11 +4797,19 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-kabelloeffel-15cm-symlock",
     name: "MS01 Kabellöffel 15cm Symlock",
-    description: "Kabellöffel 15cm für MS01 Symlock",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Kabellöffel 15cm für MS01 Symlock – Gewichtsklasse 1–2 t",
+    detailedDescription: "Der MS01 Kabellöffel 15cm Symlock ist ein schmaler Löffel ohne Zähne, speziell für das präzise Freilegen und Verlegen von Kabeln und Leitungen in engen Gräben. Die 150 mm Arbeitsbreite ermöglicht akkurates Arbeiten bei minimalem Aushub. Dank des Symlock-Schnellwechselsystems ist der Anbau an MS01-kompatible Minibagger der 1- bis 2-Tonnen-Klasse in wenigen Sekunden erledigt.",
+    image: imgKabelloeffelMs01_15cm_1,
+    images: [imgKabelloeffelMs01_15cm_1],
     category: "kabelloeffel",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01 Symlock",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Arbeitsbreite": "150 mm",
+      "Anzahl Zähne": "0",
+      "Gewicht": "36 kg",
+    },
     rentwareCode: { krefeld: "ZHXAG6" }
   },
   {
