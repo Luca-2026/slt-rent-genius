@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Search, BookOpen, FileText, Play, ShieldCheck, HelpCircle,
+  Search, BookOpen, FileText, Play, ShieldCheck, HelpCircle, Mail,
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info, ChevronRight, X, ArrowLeft,
   Scale, AlertTriangle, ClipboardCheck, Package, Link2, Eye, Car, Lightbulb, AlertCircle,
