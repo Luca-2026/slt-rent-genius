@@ -593,16 +593,34 @@ export default function AdminDashboard() {
     if (!confirm(`Anfrage "${res.product_name || res.product_id}" wirklich löschen?`)) return;
     setDeletingReservationId(res.id);
     try {
-      // Delete associated offer items & offers first
+      // Nullify FK references from delivery notes & return protocols
+      await supabase.from("b2b_delivery_notes").update({ reservation_id: null, offer_id: null }).eq("reservation_id", res.id);
+      await supabase.from("b2b_return_protocols").update({ reservation_id: null }).eq("reservation_id", res.id);
+
+      // Delete associated offer items & offers
       const { data: relatedOffers } = await supabase
         .from("b2b_offers")
         .select("id")
         .eq("reservation_id", res.id);
       if (relatedOffers && relatedOffers.length > 0) {
-        const offerIds = relatedOffers.map((o) => o.id);
+        const offerIds = relatedOffers.map((o: any) => o.id);
+        // Nullify delivery note references to these offers
+        await supabase.from("b2b_delivery_notes").update({ offer_id: null }).in("offer_id", offerIds);
         await supabase.from("b2b_offer_items").delete().in("offer_id", offerIds);
         await supabase.from("b2b_offers").delete().in("id", offerIds);
       }
+
+      // Delete invoices referencing this reservation
+      const { data: relatedInvoices } = await supabase
+        .from("b2b_invoices")
+        .select("id")
+        .eq("reservation_id", res.id);
+      if (relatedInvoices && relatedInvoices.length > 0) {
+        const invoiceIds = relatedInvoices.map((i: any) => i.id);
+        await supabase.from("b2b_invoice_items").delete().in("invoice_id", invoiceIds);
+        await supabase.from("b2b_invoices").delete().in("id", invoiceIds);
+      }
+
       const { error } = await supabase.from("b2b_reservations").delete().eq("id", res.id);
       if (error) throw error;
       toast({ title: "Anfrage gelöscht" });
