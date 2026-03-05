@@ -26,6 +26,8 @@ interface GoogleReviewsProps {
   locationName: string;
   /** Compact mode for location cards, full mode for dedicated sections */
   variant?: "compact" | "full";
+  /** Max number of reviews to display (useful for mobile) */
+  maxReviews?: number;
 }
 
 const PLACE_IDS: Record<string, string> = {
@@ -64,7 +66,7 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
   );
 }
 
-export function GoogleReviews({ placeId, locationName, variant = "full" }: GoogleReviewsProps) {
+export function GoogleReviews({ placeId, locationName, variant = "full", maxReviews }: GoogleReviewsProps) {
   const [data, setData] = useState<ReviewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -181,7 +183,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full" }: Googl
       {/* Reviews grid */}
       {data.reviews.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data.reviews.map((review, index) => (
+          {(maxReviews ? data.reviews.slice(0, maxReviews) : data.reviews).map((review, index) => (
             <AnimatedSection key={index} delay={index * 80} animation="fade-in-up">
               <Card className="h-full hover:shadow-md transition-shadow">
                 <CardContent className="p-5">
