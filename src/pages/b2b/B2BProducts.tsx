@@ -179,25 +179,43 @@ export default function B2BProducts() {
         {contactPerson && (
           <Card>
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-3">
                 <Phone className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-headline">Ihr Ansprechpartner</span>
               </div>
-              <p className="font-medium text-headline text-sm">
-                {(contactPerson as any).name}
-              </p>
-              <p className="text-xs text-muted-foreground">{(contactPerson as any).role || "Standortleiter"}</p>
-              <div className="flex gap-3 mt-2">
+              <div className="flex items-center gap-3 mb-3">
+                <Avatar className="h-10 w-10">
+                  {(contactPerson as any).image ? (
+                    <AvatarImage src={(contactPerson as any).image} alt={(contactPerson as any).name} />
+                  ) : null}
+                  <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                    {(contactPerson as any).name?.split(' ').map((n: string) => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium text-headline text-sm">{(contactPerson as any).name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t((contactPerson as any).role || "locations.locationManager")}
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-1.5">
                 {assignedLoc && (
-                  <a href={`tel:${assignedLoc.phone}`} className="text-xs text-primary hover:underline flex items-center gap-1">
+                  <a href={`tel:${assignedLoc.phone.replace(/\s/g, '')}`} className="text-xs text-primary hover:underline flex items-center gap-1">
                     <Phone className="h-3 w-3" />
                     {assignedLoc.phone}
                   </a>
                 )}
                 <a href={`mailto:${(contactPerson as any).email}`} className="text-xs text-primary hover:underline flex items-center gap-1">
                   <Mail className="h-3 w-3" />
-                  E-Mail
+                  {(contactPerson as any).email}
                 </a>
+                {assignedLoc && whatsappNumbers[assignedLoc.id] && (
+                  <a href={`https://wa.me/${whatsappNumbers[assignedLoc.id]}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
+                    <MessageCircle className="h-3 w-3" />
+                    WhatsApp
+                  </a>
+                )}
               </div>
             </CardContent>
           </Card>
