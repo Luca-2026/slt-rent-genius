@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 interface CreateStaffRequest {
-  action: "create" | "update_role" | "deactivate" | "reactivate";
+  action: "create" | "update_role" | "deactivate" | "reactivate" | "delete";
   // For create
   email?: string;
   password?: string;
