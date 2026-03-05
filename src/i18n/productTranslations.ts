@@ -760,7 +760,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-bohrschrauber-gsr18v55": { name: "Bosch Cordless Drill Driver GSR 18V-55", description: "Powerful cordless drill driver with 55 Nm torque and brushless EC motor." },
   "bohrschrauber-gsr18v55": { name: "Bosch Cordless Drill Driver GSR 18V-55", description: "Powerful cordless drill driver with 55 Nm torque and brushless EC motor." },
   "bonn-betonruettler-ir1000": { name: "Concrete Vibrator 2m IR 1000", description: "Internal vibrator for concrete compaction." },
-  "bonn-handkreissaege-gks18v": { name: "Bosch Cordless Circular Saw GKS 18V-57G", description: "Precise cordless circular saw for wood cuts." },
+  "bonn-handkreissaege-gks18v": { name: "Bosch Cordless Circular Saw GKS 18V-57G", description: "Precise cordless circular saw for wood cuts – guide rail compatible." },
   "bonn-fliesenschneider-80cm": { name: "Tile Cutter 80cm", description: "Professional tile cutter for precise cutting of ceramic tiles." },
   "fliesenschneider-80cm": { name: "Tile Cutter 80cm", description: "Professional tile cutter for precise cutting of ceramic tiles." },
   "bonn-diamantbohrer-gdb180": { name: "Bosch Diamond Core Drill GDB 180 WE", description: "Diamond drill for core drilling." },
