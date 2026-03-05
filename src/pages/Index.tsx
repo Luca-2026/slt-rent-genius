@@ -264,7 +264,7 @@ export default function Index() {
       {/* How it Works - Redesigned */}
       <section className="py-20 lg:py-28 bg-surface-light overflow-hidden">
         <div className="section-container">
-          <AnimatedSection className="text-center mb-14">
+          <AnimatedSection className="text-center mb-8">
             <span className="inline-block bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
               {t("steps.badge")}
             </span>
@@ -275,6 +275,32 @@ export default function Index() {
               {t("steps.subtitle")}
             </p>
           </AnimatedSection>
+
+          {/* Privat / B2B Toggle */}
+          <div className="flex items-center justify-center gap-3 mb-10">
+            <button
+              onClick={() => setHowItWorksTab("private")}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
+                howItWorksTab === "private"
+                  ? "bg-primary text-primary-foreground border-primary shadow-md"
+                  : "bg-background text-body border-border hover:border-primary/40"
+              }`}
+            >
+              <User className="h-4 w-4" />
+              {t("howItWorks.tabPrivate", "Privatkunden")}
+            </button>
+            <button
+              onClick={() => setHowItWorksTab("b2b")}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
+                howItWorksTab === "b2b"
+                  ? "bg-primary text-primary-foreground border-primary shadow-md"
+                  : "bg-background text-body border-border hover:border-primary/40"
+              }`}
+            >
+              <Building2 className="h-4 w-4" />
+              {t("howItWorks.tabB2B", "Geschäftskunden")}
+            </button>
+          </div>
 
           {/* Steps Timeline */}
           <div className="relative">
