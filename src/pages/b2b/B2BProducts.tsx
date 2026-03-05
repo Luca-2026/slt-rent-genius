@@ -258,11 +258,23 @@ export default function B2BProducts() {
           } else if (sectionId === "type" || sectionId === "maschinentyp" || sectionId === "anbaugeraet") {
             const erdMachineCategories = ["minibagger", "radlader", "dumper"];
             const erdAnbauCategories = ["tiefloeffel", "kabelloeffel", "grabenraeumloeffel", "hydraulikhammer", "sortiergreifer", "roderechen"];
+            const werkzeugeTypeGroups: Record<string, string[]> = {
+              saege: ["kreissaege", "saebelsaege", "stichsaege", "handkreissaege", "fugenschneider"],
+              schneiden: ["fraese", "fliesenschneider", "trennschleifer", "multicutter"],
+              abbruch: ["abbruchhammer"],
+              schrauber: ["schlagschrauber", "drehschlagschrauber"],
+              messen: ["laser", "ortungsgeraet", "linienlaser"],
+              beton: ["kernbohrer", "betonruettler", "diamantbohrer", "zwangsmischer"],
+              beleuchtung: ["bauleuchte"],
+              zubehoer: ["zubehoer", "staubsauger", "ladegeraet", "nageler"],
+            };
             products = products.filter((p) => {
               return selectedValues.some((value) => {
                 if (value === "maschine") return p.tags?.includes("maschine") || erdMachineCategories.includes(p.category || "");
                 if (value === "anbaugeraet") return erdAnbauCategories.includes(p.category || "");
-                if (value === "zubehoer") return p.category === "zubehoer";
+                // Check werkzeuge type groups
+                const groupCats = werkzeugeTypeGroups[value];
+                if (groupCats && p.category && groupCats.includes(p.category)) return true;
                 return p.tags?.includes(value) || p.category === value;
               });
             });
