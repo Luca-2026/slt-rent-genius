@@ -5110,7 +5110,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieselKanister10l_1,
     images: [imgDieselKanister10l_1],
     category: "zubehoer",
-    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "kramer-5045"],
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z", "kramer-5045"],
     specifications: {
       "Volumen": "10 l",
       "Kraftstoff": "Diesel",
