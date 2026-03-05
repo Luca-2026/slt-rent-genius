@@ -716,7 +716,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 2000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500", "maschine"],
-    rentwareCode: { krefeld: "UZEDUY" }
+    rentwareCode: { krefeld: "UZEDUY" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "xcmg-xe27e",
