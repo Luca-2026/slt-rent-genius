@@ -490,6 +490,7 @@ export const erdbewegungFilterSections: FilterSection[] = [
     defaultExpanded: false,
     options: [
       { id: "diesel", label: "catFilters.erdDiesel" },
+      { id: "benzin", label: "catFilters.erdBenzin" },
       { id: "elektro", label: "catFilters.erdElektro" },
     ],
   },
