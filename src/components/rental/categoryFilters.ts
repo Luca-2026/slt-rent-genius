@@ -441,6 +441,60 @@ export const kommunikationFilterSections: FilterSection[] = [
   },
 ];
 
+// ============= ERDBEWEGUNG =============
+export const erdbewegungFilterSections: FilterSection[] = [
+  {
+    id: "type",
+    label: "catFilters.erdArtikeltyp",
+    defaultExpanded: true,
+    options: [
+      { id: "maschine", label: "catFilters.erdMaschinen", sublabel: "catFilters.erdMaschinen_sub" },
+      { id: "anbaugeraet", label: "catFilters.erdAnbaugeraete", sublabel: "catFilters.erdAnbaugeraete_sub" },
+      { id: "zubehoer", label: "catFilters.erdZubehoer", sublabel: "catFilters.erdZubehoer_sub" },
+    ],
+  },
+  {
+    id: "maschinentyp",
+    label: "catFilters.erdMaschinentyp",
+    defaultExpanded: true,
+    options: [
+      { id: "minibagger", label: "catFilters.erdMinibagger", sublabel: "catFilters.erdMinibagger_sub" },
+      { id: "radlader", label: "catFilters.erdRadlader", sublabel: "catFilters.erdRadlader_sub" },
+      { id: "dumper", label: "catFilters.erdDumper", sublabel: "catFilters.erdDumper_sub" },
+    ],
+  },
+  {
+    id: "anbaugeraet",
+    label: "catFilters.erdAnbaugeraetTyp",
+    defaultExpanded: false,
+    options: [
+      { id: "tiefloeffel", label: "catFilters.erdTiefloeffel", sublabel: "catFilters.erdTiefloeffel_sub" },
+      { id: "kabelloeffel", label: "catFilters.erdKabelloeffel", sublabel: "catFilters.erdKabelloeffel_sub" },
+      { id: "grabenraeumloeffel", label: "catFilters.erdGrabenraeumloeffel", sublabel: "catFilters.erdGrabenraeumloeffel_sub" },
+      { id: "hydraulikhammer", label: "catFilters.erdHydraulikhammer", sublabel: "catFilters.erdHydraulikhammer_sub" },
+    ],
+  },
+  {
+    id: "aufnahme",
+    label: "catFilters.erdAufnahme",
+    defaultExpanded: false,
+    options: [
+      { id: "ms01", label: "catFilters.erdMs01", sublabel: "catFilters.erdMs01_sub" },
+      { id: "ms03", label: "catFilters.erdMs03", sublabel: "catFilters.erdMs03_sub" },
+      { id: "cw05", label: "catFilters.erdCw05", sublabel: "catFilters.erdCw05_sub" },
+    ],
+  },
+  {
+    id: "antrieb",
+    label: "catFilters.erdAntrieb",
+    defaultExpanded: false,
+    options: [
+      { id: "diesel", label: "catFilters.erdDiesel" },
+      { id: "elektro", label: "catFilters.erdElektro" },
+    ],
+  },
+];
+
 // Map category IDs to their filter configurations
 export const categoryFilterMap: Record<string, FilterSection[]> = {
   "werkzeuge": werkzeugeFilterSections,
@@ -461,6 +515,7 @@ export const categoryFilterMap: Record<string, FilterSection[]> = {
   "buehne": buehneFilterSections,
   "traversen-rigging": traversenFilterSections,
   "kommunikation": kommunikationFilterSections,
+  "erdbewegung": erdbewegungFilterSections,
 };
 
 // Get search placeholder i18n keys for each category
@@ -483,6 +538,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "buehne": "catSearch.buehne",
   "traversen-rigging": "catSearch.traversenRigging",
   "kommunikation": "catSearch.kommunikation",
+  "erdbewegung": "catSearch.erdbewegung",
 };
 
 // Category display name i18n keys for delivery calculator

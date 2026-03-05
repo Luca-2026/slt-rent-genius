@@ -17,7 +17,6 @@ import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
-import { EarthMovingFilter, type EarthMovingFilterState } from "@/components/rental/EarthMovingFilter";
 import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
 import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
@@ -36,11 +35,9 @@ export default function CategoryProducts() {
     braking: [],
     weight: [],
   });
-  const [earthMovingFilters, setEarthMovingFilters] = useState<EarthMovingFilterState>({
+  const [earthMovingFilters, setEarthMovingFilters] = useState<CategoryFilterState>({
     search: "",
-    types: [],
-    driveTypes: [],
-    weightRange: [],
+    filters: {},
   });
   const [genericFilters, setGenericFilters] = useState<CategoryFilterState>({
     search: "",
@@ -215,46 +212,61 @@ export default function CategoryProducts() {
         );
       }
 
-      // Type filters (minibagger, radlader, dumper)
-      if (earthMovingFilters.types.length > 0) {
-        filtered = filtered.filter((p) => {
-          const nameLower = p.name.toLowerCase();
-          const inferredType =
-            nameLower.includes("radlader") ? "radlader" :
-            nameLower.includes("dumper") ? "dumper" :
-            "minibagger";
+      // Erdbewegung type groups for filter matching
+      const erdMachineCategories = ["minibagger", "radlader", "dumper"];
+      const erdAnbauCategories = ["tiefloeffel", "kabelloeffel", "grabenraeumloeffel", "hydraulikhammer", "sortiergreifer", "roderechen"];
 
-          return earthMovingFilters.types.some(
-            (type) => p.tags?.includes(type) || p.category === type || type === inferredType
-          );
-        });
-      }
-
-      // Drive type filters (diesel, benzin, elektro)
-      if (earthMovingFilters.driveTypes.length > 0) {
-        filtered = filtered.filter((p) => {
-          const driveType = (p as unknown as { driveType?: string }).driveType;
-          return earthMovingFilters.driveTypes.some(
-            (drive) => p.tags?.includes(drive) || driveType === drive
-          );
-        });
-      }
-
-      // Weight range filters
-      if (earthMovingFilters.weightRange.length > 0) {
-        filtered = filtered.filter((p) => {
-          const weightKg = p.weightKg || 0;
-          const inferredRange =
-            weightKg <= 0 ? undefined :
-            weightKg <= 1500 ? "bis-1500" :
-            weightKg <= 2500 ? "1500-2500" :
-            "ab-2500";
-
-          return earthMovingFilters.weightRange.some(
-            (range) => p.tags?.includes(range) || range === inferredRange
-          );
-        });
-      }
+      // Apply each filter section
+      Object.entries(earthMovingFilters.filters).forEach(([sectionId, selectedValues]) => {
+        if (selectedValues.length > 0) {
+          if (sectionId === "type") {
+            // Artikeltyp: maschine, anbaugeraet, zubehoer
+            filtered = filtered.filter((p) => {
+              return selectedValues.some((value) => {
+                if (value === "maschine") return p.tags?.includes("maschine") || erdMachineCategories.includes(p.category || "");
+                if (value === "anbaugeraet") return erdAnbauCategories.includes(p.category || "");
+                if (value === "zubehoer") return p.category === "zubehoer";
+                return false;
+              });
+            });
+          } else if (sectionId === "maschinentyp") {
+            // Maschinentyp: minibagger, radlader, dumper
+            filtered = filtered.filter((p) => {
+              return selectedValues.some((value) => p.tags?.includes(value) || p.category === value);
+            });
+          } else if (sectionId === "anbaugeraet") {
+            // Anbaugerätetyp: tiefloeffel, kabelloeffel, grabenraeumloeffel, hydraulikhammer
+            filtered = filtered.filter((p) => {
+              return selectedValues.some((value) => p.category === value);
+            });
+          } else if (sectionId === "aufnahme") {
+            // Aufnahme: ms01, ms03, cw05
+            filtered = filtered.filter((p) => {
+              const aufnahme = p.specifications?.["Aufnahme"] || p.specifications?.["Schnellwechsler"] || "";
+              const nameLower = p.name.toLowerCase();
+              return selectedValues.some((value) => {
+                if (value === "ms01") return aufnahme.toLowerCase().includes("ms01") || nameLower.includes("ms01");
+                if (value === "ms03") return aufnahme.toLowerCase().includes("ms03") || nameLower.includes("ms03");
+                if (value === "cw05") return aufnahme.toLowerCase().includes("cw05") || nameLower.includes("cw05");
+                return false;
+              });
+            });
+          } else if (sectionId === "antrieb") {
+            // Antrieb: diesel, elektro
+            filtered = filtered.filter((p) => {
+              const driveType = (p as unknown as { driveType?: string }).driveType;
+              return selectedValues.some(
+                (drive) => p.tags?.includes(drive) || driveType === drive
+              );
+            });
+          } else {
+            // Default tag/category matching
+            filtered = filtered.filter((p) =>
+              selectedValues.some((value) => p.tags?.includes(value) || p.category === value)
+            );
+          }
+        }
+      });
     }
 
     // Apply generic filters for other categories
@@ -1055,7 +1067,12 @@ export default function CategoryProducts() {
                       <TrailerFilter onFilterChange={setTrailerFilters} />
                     )}
                     {category.id === "erdbewegung" && (
-                      <EarthMovingFilter onFilterChange={setEarthMovingFilters} />
+                      <CategoryFilter
+                        searchPlaceholder={t(categorySearchPlaceholders["erdbewegung"] || "catSearch.default")}
+                        sections={categoryFilterMap["erdbewegung"]}
+                        onFilterChange={setEarthMovingFilters}
+                        variant="accordion"
+                      />
                     )}
                     {/* Generic filter for other categories */}
                     {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "alle" && (

@@ -229,7 +229,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "erdbewegung",
     title: "Erdbewegung",
-    description: "Minibagger, Radlader, Dumper und Anbaugeräte für jedes Bauvorhaben.",
+    description: "Minibagger (1t–2,7t), Radlader, Dumper sowie Tieflöffel, Kabellöffel, Grabenräumlöffel, Hydraulikhämmer & Sortiergreifer mieten.",
     icon: iconBagger,
   },
   {
@@ -643,8 +643,25 @@ const trailerProducts: Product[] = [
   ...anhaengerZusatzProducts,
 ];
 
+// Erdbewegung category sort order: Machines first, then attachments, then accessories
+const erdbewegungCategoryOrder = [
+  // 1. Maschinen (Bagger nach Gewicht, dann Radlader, dann Dumper)
+  "minibagger",
+  "radlader",
+  "dumper",
+  // 2. Anbaugeräte
+  "tiefloeffel",
+  "kabelloeffel",
+  "grabenraeumloeffel",
+  "hydraulikhammer",
+  "sortiergreifer",
+  "roderechen",
+  // 3. Zubehör
+  "zubehoer",
+];
+
 // Erdbewegung products (shared across all locations) - including attachments
-const erdbewegungProducts: Product[] = [
+const erdbewegungProductsUnsorted: Product[] = [
   {
     id: "bobcat-e10z",
     name: "1t Bobcat E10Z Minibagger",
@@ -653,7 +670,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgBobcatE10z_1, imgBobcatE10z_2, imgBobcatE10z_3, imgBobcatE10z_4],
     weightKg: 1000,
     category: "minibagger",
-    tags: ["minibagger", "diesel", "bis-1500"],
+    tags: ["minibagger", "diesel", "bis-1500", "maschine"],
     rentwareCode: { krefeld: "WNE69F" }
   },
   {
@@ -664,7 +681,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
     weightKg: 1800,
     category: "minibagger",
-    tags: ["minibagger", "diesel", "1500-2500"],
+    tags: ["minibagger", "diesel", "1500-2500", "maschine"],
     rentwareCode: { krefeld: "BG4ZS8" }
   },
   {
@@ -675,7 +692,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
     weightKg: 2000,
     category: "minibagger",
-    tags: ["minibagger", "diesel", "1500-2500"],
+    tags: ["minibagger", "diesel", "1500-2500", "maschine"],
     rentwareCode: { krefeld: "UZEDUY" }
   },
   {
@@ -686,8 +703,19 @@ const erdbewegungProducts: Product[] = [
     images: [imgXcmgXe27e_1, imgXcmgXe27e_2, imgXcmgXe27e_3],
     weightKg: 2700,
     category: "minibagger",
-    tags: ["minibagger", "diesel", "ab-2500"],
+    tags: ["minibagger", "diesel", "ab-2500", "maschine"],
     rentwareCode: { krefeld: "MBUX18" }
+  },
+  {
+    id: "kramer-5045",
+    name: "3t Radlader Kramer 5045",
+    description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
+    image: imgKramer5045_1,
+    images: [imgKramer5045_1, imgKramer5045_2],
+    weightKg: 3000,
+    category: "radlader",
+    tags: ["radlader", "diesel", "ab-2500", "maschine"],
+    rentwareCode: { krefeld: "PMJJCT" }
   },
   {
     id: "knickdumper-kde550",
@@ -697,7 +725,7 @@ const erdbewegungProducts: Product[] = [
     images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
     weightKg: 500,
     category: "dumper",
-    tags: ["dumper", "elektro", "bis-1500"],
+    tags: ["dumper", "elektro", "bis-1500", "maschine"],
     rentwareCode: { krefeld: "GH8W6W" }
   },
   {
@@ -708,23 +736,24 @@ const erdbewegungProducts: Product[] = [
     images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
     weightKg: 600,
     category: "dumper",
-    tags: ["dumper", "diesel", "bis-1500"],
+    tags: ["dumper", "diesel", "bis-1500", "maschine"],
     rentwareCode: { krefeld: "EZHV9G" }
-  },
-  {
-    id: "kramer-5045",
-    name: "3t Radlader Kramer 5045",
-    description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
-    image: imgKramer5045_1,
-    images: [imgKramer5045_1, imgKramer5045_2],
-    weightKg: 3000,
-    category: "radlader",
-    tags: ["radlader", "diesel", "ab-2500"],
-    rentwareCode: { krefeld: "PMJJCT" }
   },
   // Include all attachments from krefeldProducts
   ...erdbewegungZusatzProducts,
 ];
+
+// Sort erdbewegung: machines first (Bagger by weight, Radlader, Dumper), then attachments, then accessories
+const erdbewegungProducts = [...erdbewegungProductsUnsorted].sort((a, b) => {
+  const catIndexA = erdbewegungCategoryOrder.indexOf(a.category || "");
+  const catIndexB = erdbewegungCategoryOrder.indexOf(b.category || "");
+  const idxA = catIndexA >= 0 ? catIndexA : 999;
+  const idxB = catIndexB >= 0 ? catIndexB : 999;
+  if (idxA !== idxB) return idxA - idxB;
+  // Within same category, sort by weight (machines) or name (attachments)
+  if (a.weightKg && b.weightKg) return a.weightKg - b.weightKg;
+  return a.name.localeCompare(b.name);
+});
 
 // Sort trailer products by category order, then sortOrder (if defined), then weight
 const sortedTrailerProducts = [...trailerProducts].sort((a, b) => {
