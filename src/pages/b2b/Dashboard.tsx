@@ -162,8 +162,32 @@ export default function B2BDashboard() {
 
       <section className="py-8 lg:py-12">
         <div className="section-container">
-          {/* Status Banner */}
-          {b2bProfile && (
+          {/* Standort Banner - for approved users */}
+          {isApproved && b2bProfile && assignedLocation && (
+            <Card className="mb-8 border-primary/20 bg-primary/5">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                    <MapPin className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="font-semibold text-lg text-headline">
+                      Dein Standort: {assignedLocation.name}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {assignedLocation.address}, {assignedLocation.city}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Dein Ansprechpartner: <span className="font-medium text-headline">{assignedLocation.manager.name}</span>
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Pending/Rejected Banner */}
+          {b2bProfile && !isApproved && (
             <Card className={`mb-8 ${statusConfig[status]?.bgColor}`}>
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
@@ -175,7 +199,7 @@ export default function B2BDashboard() {
                     <p className="text-muted-foreground">
                       {statusConfig[status]?.description}
                     </p>
-                    {isRejected && b2bProfile && (
+                    {isRejected && (
                       <Link to="/kontakt">
                         <Button size="sm" className="mt-3 bg-accent text-accent-foreground hover:bg-cta-orange-hover">
                           Kontakt aufnehmen
