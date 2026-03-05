@@ -48,8 +48,8 @@ export function AdminReservationsTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Offene Anfragen</h2>
-          <p className="text-sm text-muted-foreground">Anfragen bearbeiten und Angebote erstellen</p>
+         <h2 className="text-lg font-semibold">Offene Angebote</h2>
+          <p className="text-sm text-muted-foreground">Angebote einsehen und verwalten</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={onRefresh}>
@@ -63,7 +63,7 @@ export function AdminReservationsTab({
           <CardContent className="py-16 text-center">
             <CheckCircle2 className="h-10 w-10 mx-auto text-primary/30 mb-3" />
             <p className="font-medium text-foreground">Alles erledigt!</p>
-            <p className="text-sm text-muted-foreground mt-1">Keine offenen Anfragen vorhanden.</p>
+            <p className="text-sm text-muted-foreground mt-1">Keine offenen Angebote vorhanden.</p>
           </CardContent>
         </Card>
       ) : (
@@ -139,7 +139,7 @@ export function AdminReservationsTab({
                          onClick={() => onCreateOffer(res)}
                        >
                          <FileText className="h-3.5 w-3.5 mr-1" />
-                         Angebot erstellen
+                         Angebot ansehen
                        </Button>
                      </div>
                    </div>
