@@ -409,6 +409,19 @@ export function AdminStaffTab() {
                                 <UserCheck className="h-3.5 w-3.5" />
                               )}
                             </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedStaff(s);
+                                setDeleteConfirmOpen(true);
+                              }}
+                              disabled={saving}
+                              title="Löschen"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
