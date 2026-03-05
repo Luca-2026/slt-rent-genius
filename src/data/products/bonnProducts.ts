@@ -1594,12 +1594,37 @@ export const bonnBeleuchtungProducts = [
 ];
 
 // ==================== HÜPFBURGEN ====================
+import imgHuepfburgLamar1 from "@/assets/products/huepfburg-lamar-1.jpg";
+import imgHuepfburgLamar2 from "@/assets/products/huepfburg-lamar-2.jpg";
+
 export const bonnHuepfburgProducts = [
   {
     id: "bonn-huepfburg-lamar",
     name: "HappyHop Hüpfburg Lamar 2,8x2,1m",
-    description: "Kompakte Hüpfburg für Kindergeburtstage.",
-    image: "/placeholder.svg",
+    description: "Aufblasbare Burg mit Basketballkorb und Sicherheitsnetz – inkl. Gebläse. Ideal für Kindergeburtstage im Garten.",
+    detailedDescription: "Die HappyHop Hüpfburg Lamar bietet viel Platz zum Springen und Toben auf kompakter Fläche (2,80 m × 2,10 m × 1,85 m). Die gesamte Hüpfburg ist vollständig von einem Sicherheitsnetz umgeben und verfügt über einen integrierten Basketballkorb für zusätzlichen Spielspaß. Dank des mitgelieferten 300-Watt-Gebläses ist die Burg in ca. 5 Minuten aufgebaut. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang enthalten: Tragekiste, Gebläse (300 W), Gewebeplane und 8 Heringe zur Fixierung im Boden.",
+    image: imgHuepfburgLamar1,
+    images: [imgHuepfburgLamar1, imgHuepfburgLamar2],
+    specifications: {
+      "Maße (L × B × H)": "2,80 m × 2,10 m × 1,85 m",
+      "Gewicht": "6,4 kg",
+      "Max. Belastung": "90 kg",
+      "Max. Kinder": "2",
+      "Altersempfehlung": "3 – 10 Jahre",
+      "Aufbauzeit": "ca. 5 Minuten",
+      "Gebläse": "300 Watt (inkl.)",
+      "Nähte": "Doppelt vernäht",
+      "Extras": "Basketballkorb, Sicherheitsnetz rundum",
+      "Zubehör": "Tragekiste, Gebläse, Gewebeplane, 8 Heringe",
+    },
+    features: [
+      "Inkl. 300W Gebläse",
+      "Sicherheitsnetz rundum",
+      "Basketballkorb",
+      "Aufbau in 5 Min.",
+      "Doppelt vernähte Nähte",
+      "Inkl. Heringe & Plane",
+    ],
     rentwareCode: { bonn: "WKM6GJ" },
   },
   {
