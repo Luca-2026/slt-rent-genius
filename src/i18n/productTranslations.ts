@@ -767,6 +767,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-rasenwalze": { name: "Lawn Roller", description: "For even lawn surfaces after seeding." },
   "bonn-fugenschneider-bs50e": { name: "Floor Saw BS50E - 13HP", description: "Powerful floor saw for asphalt and concrete." },
   "bonn-abbruchhammer-gsh16": { name: "Bosch Demolition Hammer GSH 16-28", description: "Heavy demolition hammer for tough jobs." },
+  "bonn-abbruchhammer-hm1812": { name: "Makita Demolition Hammer HM1812", description: "Heavy demolition hammer with 72.8 J impact energy and anti-vibration technology." },
+  "makita-abbruchhammer-hm1812": { name: "Makita Demolition Hammer HM1812", description: "Heavy demolition hammer with 72.8 J impact energy and anti-vibration technology." },
   "bonn-steinsaege-80cm": { name: "Stone Saw 80cm Wet Cutting Table", description: "Stone saw with cooling water supply – wet cutting table for precise stone cuts. Blade wear is measured at pickup and return." },
   "steinsaege-80cm": { name: "Stone Saw 80cm Wet Cutting Table", description: "Stone saw with cooling water supply – wet cutting table for precise stone cuts. Blade wear is measured at pickup and return." },
   "bonn-zwangsmischer-140l": { name: "Forced Action Mixer 140L", description: "Compakt 140L forced action mixer for uniform concrete and mortar mixes. Must be returned clean, otherwise a cleaning fee of €100 applies." },
