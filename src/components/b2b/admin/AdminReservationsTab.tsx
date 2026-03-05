@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, RefreshCw, FileText, Send } from "lucide-react";
+import { CheckCircle2, Clock, RefreshCw, FileText, Send, Pencil } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -27,18 +27,48 @@ interface B2BProfile {
   credit_limit: number;
 }
 
+interface Offer {
+  id: string;
+  offer_number: string;
+  reservation_id: string | null;
+  b2b_profile_id: string;
+  delivery_cost: number;
+  notes: string | null;
+  status: string;
+}
+
+interface OfferItem {
+  id: string;
+  offer_id: string;
+  product_name: string;
+  description: string | null;
+  quantity: number;
+  unit_price: number;
+  discount_percent: number;
+}
+
 interface Props {
   reservations: Reservation[];
   profiles: B2BProfile[];
+  offers: Offer[];
+  offerItems: OfferItem[];
   onCreateOffer: (reservation: Reservation) => void;
+  onEditOffer: (offer: Offer, items: OfferItem[]) => void;
+  onResendOffer: (offer: Offer) => void;
   onRefresh: () => void;
+  resendingId: string | null;
 }
 
 export function AdminReservationsTab({
   reservations,
   profiles,
+  offers,
+  offerItems,
   onCreateOffer,
+  onEditOffer,
+  onResendOffer,
   onRefresh,
+  resendingId,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
@@ -48,7 +78,7 @@ export function AdminReservationsTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-         <h2 className="text-lg font-semibold">Offene Angebote</h2>
+          <h2 className="text-lg font-semibold">Offene Angebote</h2>
           <p className="text-sm text-muted-foreground">Angebote einsehen und verwalten</p>
         </div>
         <div className="flex gap-2">
@@ -71,6 +101,11 @@ export function AdminReservationsTab({
           {reservations.map((res) => {
             const profile = profiles.find((p) => p.id === res.b2b_profile_id);
             const isNewOrNoCreditLimit = !profile || (profile as any).credit_limit === 0;
+            const existingOffer = offers.find((o) => o.reservation_id === res.id);
+            const existingOfferItemsList = existingOffer
+              ? offerItems.filter((i) => i.offer_id === existingOffer.id)
+              : [];
+            const hasOffer = res.status === "offer_sent" && existingOffer;
 
             return (
               <Card key={res.id} className="hover:border-primary/30 transition-colors">
@@ -81,7 +116,7 @@ export function AdminReservationsTab({
                          <p className="font-semibold text-foreground truncate">
                            {res.product_name || res.product_id}
                          </p>
-                         {res.status === "offer_sent" ? (
+                         {hasOffer ? (
                            <Badge variant="outline" className="shrink-0 text-primary border-primary">
                              <Send className="h-3 w-3 mr-1" />
                              Angebot gesendet
@@ -131,16 +166,43 @@ export function AdminReservationsTab({
                              )}
                          </p>
                        )}
+                       {hasOffer && (
+                         <p className="text-xs text-muted-foreground mt-1">
+                           Angebot: <span className="font-medium text-foreground">{existingOffer.offer_number}</span>
+                         </p>
+                       )}
                      </div>
                      <div className="flex gap-2 shrink-0">
-                       <Button
-                         size="sm"
-                         className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                         onClick={() => onCreateOffer(res)}
-                       >
-                         <FileText className="h-3.5 w-3.5 mr-1" />
-                         Angebot ansehen
-                       </Button>
+                       {hasOffer ? (
+                         <>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
+                           >
+                             <Pencil className="h-3.5 w-3.5 mr-1" />
+                             Angebot ändern
+                           </Button>
+                           <Button
+                             size="sm"
+                             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                             onClick={() => onResendOffer(existingOffer)}
+                             disabled={resendingId === existingOffer.id}
+                           >
+                             <Send className="h-3.5 w-3.5 mr-1" />
+                             {resendingId === existingOffer.id ? "Wird gesendet..." : "Erneut senden"}
+                           </Button>
+                         </>
+                       ) : (
+                         <Button
+                           size="sm"
+                           className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                           onClick={() => onCreateOffer(res)}
+                         >
+                           <FileText className="h-3.5 w-3.5 mr-1" />
+                           Angebot erstellen
+                         </Button>
+                       )}
                      </div>
                    </div>
                 </CardContent>

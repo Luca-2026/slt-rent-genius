@@ -727,13 +727,18 @@ export default function AdminDashboard() {
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
+            offers={offers}
+            offerItems={offerItems}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
               setEditingOffer(null);
               setEditingOfferItems([]);
               setCreateOfferOpen(true);
             }}
+            onEditOffer={handleEditOffer}
+            onResendOffer={handleResendOffer}
             onRefresh={fetchData}
+            resendingId={resendingId}
           />
         </TabsContent>
 
