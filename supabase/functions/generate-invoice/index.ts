@@ -393,9 +393,14 @@ function generateInvoiceHtml(data: {
     return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
   };
 
+  const isCredit = data.isCorrection && data.notes?.includes("GUTSCHRIFT");
+
   const itemRows = data.items
     .map(
-      (item: any, i: number) => `
+      (item: any, i: number) => {
+        const displayPrice = isCredit ? -Math.abs(item.unit_price) : item.unit_price;
+        const displayTotal = isCredit ? -Math.abs(item.total_price) : item.total_price;
+        return `
     <tr>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${i + 1}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">
@@ -409,10 +414,11 @@ function generateInvoiceHtml(data: {
         </div>
       </td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.quantity}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${formatCurrency(item.unit_price)}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${formatCurrency(displayPrice)}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.discount_percent > 0 ? item.discount_percent + "%" : "–"}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:500;">${formatCurrency(item.total_price)}</td>
-    </tr>`
+      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:500;">${formatCurrency(displayTotal)}</td>
+    </tr>`;
+      }
     )
     .join("");
 
