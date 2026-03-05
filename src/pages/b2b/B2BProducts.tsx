@@ -319,7 +319,7 @@ export default function B2BProducts() {
       subtitle={`${filteredProducts.length} Produkte verfügbar`}
     >
       {/* Top info bar: Credit + Contact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 md:mb-6">
         {/* Credit Limit Card */}
         {creditLimit > 0 && (
           <Card>
