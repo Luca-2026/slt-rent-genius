@@ -32,6 +32,8 @@ const B2BDeliveryNotes = lazy(() => import("./pages/b2b/DeliveryNotes"));
 const B2BReturnProtocols = lazy(() => import("./pages/b2b/ReturnProtocols"));
 const B2BCompanyProfile = lazy(() => import("./pages/b2b/CompanyProfile"));
 const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
+const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
 
 // Lazy-loaded: Other pages
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
@@ -106,6 +108,8 @@ const App = () => (
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
               <Route path="/b2b/registrieren" element={<B2BRegister />} />
+              <Route path="/b2b/passwort-vergessen" element={<ForgotPassword />} />
+              <Route path="/b2b/passwort-zuruecksetzen" element={<ResetPassword />} />
               <Route path="/b2b/dashboard" element={<B2BDashboard />} />
               <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
               <Route path="/b2b/produkte" element={<B2BProducts />} />
