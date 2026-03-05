@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
+import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
 
 interface Reservation {
   id: string;
@@ -115,6 +116,7 @@ export function AdminCreateOfferDialog({
 
   const approvedProfiles = (profilesList || []).filter((p: any) => p.status === "approved");
 
+  // Initialize form when dialog opens (only on open change, not on profile change)
   useEffect(() => {
     if (open) {
       if (existingOffer && existingItems && existingItems.length > 0) {
@@ -135,8 +137,8 @@ export function AdminCreateOfferDialog({
         } else {
           setSelectedServices(new Set());
         }
-      } else if (reservation && profile) {
-        loadCustomerPrices();
+      } else if (reservation) {
+        // Will load prices once profile is available
         setDeposit(reservation.deposit ? String(reservation.deposit) : "");
         if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
           setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
@@ -144,7 +146,6 @@ export function AdminCreateOfferDialog({
           setSelectedServices(new Set());
         }
       } else if (isStandalone) {
-        // Standalone mode: start with empty item
         setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }]);
         setDeliveryCost(0);
         setNotes("");
@@ -153,7 +154,14 @@ export function AdminCreateOfferDialog({
         setSelectedProfileId("");
       }
     }
-  }, [open, reservation, profile, existingOffer, existingItems]);
+  }, [open]); // Only run on open change
+
+  // Load customer prices when reservation + profile are available
+  useEffect(() => {
+    if (open && reservation && profile) {
+      loadCustomerPrices();
+    }
+  }, [open, reservation, profile]);
 
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
@@ -417,10 +425,10 @@ export function AdminCreateOfferDialog({
 
                 <div>
                   <Label className="text-xs">Bezeichnung *</Label>
-                  <Input
+                  <ProductAutocomplete
                     value={item.product_name}
-                    onChange={(e) => updateItem(index, "product_name", e.target.value)}
-                    placeholder="z.B. Minibagger 1,5t"
+                    onChange={(name, productId, categorySlug) => updateItem(index, "product_name", name)}
+                    placeholder="Produkt suchen oder eingeben..."
                     className="h-8 text-sm"
                   />
                 </div>
