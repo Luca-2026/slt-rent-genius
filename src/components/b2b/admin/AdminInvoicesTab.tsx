@@ -184,21 +184,45 @@ export function AdminInvoicesTab({
 
   const correctionTotal = correctionItems.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
 
+  // Generate month options (last 24 months)
+  const monthOptions = Array.from({ length: 24 }, (_, i) => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - i);
+    return {
+      value: format(d, "yyyy-MM"),
+      label: format(d, "MMMM yyyy", { locale: de }),
+    };
+  });
+
   const exportCsv = async () => {
     setExporting(true);
     try {
-      // Fetch all profiles to get tax_id per b2b_profile_id
-      const profileIds = [...new Set(invoices.map((i) => i.b2b_profile_id))];
+      const [year, month] = exportMonth.split("-").map(Number);
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0);
+
+      const filtered = invoices.filter((inv) => {
+        const d = new Date(inv.invoice_date);
+        return d >= startDate && d <= endDate;
+      });
+
+      if (filtered.length === 0) {
+        toast({ title: "Keine Daten", description: "Für den gewählten Monat gibt es keine Rechnungen.", variant: "destructive" });
+        setExporting(false);
+        return;
+      }
+
+      const profileIds = [...new Set(filtered.map((i) => i.b2b_profile_id))];
       const { data: profiles } = await supabase
         .from("b2b_profiles")
-        .select("id, tax_id, vat_id_at_creation:tax_id")
+        .select("id, tax_id")
         .in("id", profileIds);
 
       const taxMap: Record<string, string> = {};
       profiles?.forEach((p: any) => { taxMap[p.id] = p.tax_id || ""; });
 
       const header = "Rechnungsnummer;Kunde;USt-IdNr;Rechnungsdatum;Fälligkeitsdatum;Netto;MwSt;Brutto;Reverse-Charge;Status";
-      const rows = invoices.map((inv) => {
+      const rows = filtered.map((inv) => {
         const taxId = (inv as any).vat_id_at_creation || taxMap[inv.b2b_profile_id] || "";
         return [
           inv.invoice_number,
@@ -214,16 +238,17 @@ export function AdminInvoicesTab({
         ].join(";");
       });
 
+      const monthLabel = format(startDate, "yyyy-MM");
       const csv = "\uFEFF" + [header, ...rows].join("\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Rechnungen_Export_${format(new Date(), "yyyy-MM-dd")}.csv`;
+      a.download = `Rechnungen_${monthLabel}.csv`;
       a.click();
       URL.revokeObjectURL(url);
 
-      toast({ title: "CSV exportiert", description: `${invoices.length} Rechnungen exportiert.` });
+      toast({ title: "CSV exportiert", description: `${filtered.length} Rechnungen für ${format(startDate, "MMMM yyyy", { locale: de })} exportiert.` });
     } catch (error: any) {
       toast({ title: "Fehler beim Export", description: error.message, variant: "destructive" });
     } finally {
