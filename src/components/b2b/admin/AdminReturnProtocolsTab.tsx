@@ -54,6 +54,22 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
     setLoading(false);
   };
 
+  const sendEmail = async (rpId: string) => {
+    setSendingId(rpId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "return_protocol", id: rpId },
+      });
+      if (error) throw error;
+      toast({ title: "E-Mail versendet", description: `Rückgabeprotokoll wurde an ${data.recipient} gesendet.` });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
+  };
+
   useEffect(() => {
     fetchProtocols();
   }, []);
