@@ -377,7 +377,19 @@ export default function CategoryProducts() {
                 // Werkzeuge: antrieb
                 if (powerId === "akku" || powerId === "elektro" || powerId === "benzin") {
                   if (powerId === "akku") return nameLower.includes("akku");
-                  if (powerId === "elektro") return nameLower.includes("elektro") || (p.category?.includes("elektro"));
+                  if (powerId === "elektro") {
+                    // Check name, category, or specs for voltage indicators
+                    if (nameLower.includes("elektro") || p.category?.includes("elektro")) return true;
+                    const specs = p.specifications || {};
+                    const hasMainsVoltage = Object.values(specs).some(v => 
+                      String(v).includes("230 V") || String(v).includes("230V") || String(v).includes("220 V")
+                    );
+                    if (hasMainsVoltage) return true;
+                    // Corded tools without "akku" or "benzin" in name and with wattage specs
+                    const hasWattage = Object.values(specs).some(v => String(v).includes(" W"));
+                    if (hasWattage && !nameLower.includes("akku") && !nameLower.includes("benzin")) return true;
+                    return false;
+                  }
                   if (powerId === "benzin") return nameLower.includes("benzin");
                 }
 
