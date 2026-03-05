@@ -48,8 +48,8 @@ export function AdminReservationsTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Offene Anfragen</h2>
-          <p className="text-sm text-muted-foreground">Anfragen bearbeiten und Angebote erstellen</p>
+         <h2 className="text-lg font-semibold">Offene Angebote</h2>
+          <p className="text-sm text-muted-foreground">Angebote einsehen und verwalten</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={onRefresh}>
