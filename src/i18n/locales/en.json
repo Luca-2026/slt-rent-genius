@@ -1404,6 +1404,7 @@
     "erdCw05_sub": "Lehnhoff system",
     "erdAntrieb": "Drive Type",
     "erdDiesel": "Diesel",
+    "erdBenzin": "Petrol",
     "erdElektro": "Electric"
   },
   "trailerFilter": {
