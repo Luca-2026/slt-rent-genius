@@ -711,6 +711,28 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "MBUX18" }
   },
   {
+    id: "bobcat-e35z",
+    name: "3,5t Bobcat E35z Minibagger",
+    description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
+    detailedDescription: "Der Bobcat E35z ist ein leistungsstarker Minibagger der 3,5-Tonnen-Klasse mit Nullheck-Design für beengte Einsatzorte. Mit einer Grabtiefe von bis zu 3,12 m und einer maximalen Reichweite von 5,26 m am Boden eignet er sich hervorragend für Aushub-, Kanal- und Landschaftsbauarbeiten. Der Stage V Motor mit 24,8 kW (33,4 PS) sorgt für kraftvollen und emissionsarmen Betrieb. Das Laufwerk ist serienmäßig mit Gummiketten ausgestattet, Stahlketten sind optional verfügbar.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel für Aushubarbeiten, Tieflöffel für Aushubarbeiten, Laserausrüstung für exakte Nivellierung.",
+    image: imgBobcatE35z_1,
+    images: [imgBobcatE35z_1, imgBobcatE35z_2, imgBobcatE35z_3, imgBobcatE35z_4],
+    weightKg: 3500,
+    category: "minibagger",
+    tags: ["minibagger", "diesel", "ab-2500", "maschine"],
+    onRequest: true,
+    specifications: {
+      "Betriebsgewicht": "ca. 3.500 kg",
+      "Motorleistung": "24,8 kW (33,4 PS)",
+      "Abgasnorm": "Stufe V",
+      "Grabtiefe": "bis zu 3,12 m",
+      "Reichweite am Boden": "ca. 5,26 m",
+      "Max. Ausschütthöhe": "ca. 3,5 m",
+      "Löffelvolumen": "0,1 – 0,15 m³",
+      "Laufwerk": "Gummiketten (Stahlketten optional)",
+    },
+  },
+  {
     id: "kramer-5045",
     name: "3t Radlader Kramer 5045",
     description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
