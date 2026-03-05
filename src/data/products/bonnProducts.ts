@@ -128,6 +128,7 @@ import fliesenschneider3 from "@/assets/products/fliesenschneider/fliesenschneid
 import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-4.jpeg";
 import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
 import imgBohrschrauber18v55 from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-55.jpeg";
+import kreissaegeGks18v from "@/assets/products/werkzeuge/kreissaege-gks18v-57g.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -745,8 +746,24 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-handkreissaege-gks18v",
     name: "Bosch Akku Hand-Kreissäge GKS 18V-57G",
-    description: "Präzise Akku-Handkreissäge für Holzschnitte.",
-    image: "/placeholder.svg",
+    description: "Präzise Akku-Handkreissäge für Holzschnitte – führungsschienenkompatibel.",
+    detailedDescription: "Die Bosch GKS 18V-57G ist eine leistungsstarke Akku-Handkreissäge mit 165 mm Sägeblatt und einer maximalen Schnitttiefe von 57 mm bei 90°. Dank Führungsschienenkompatibilität eignet sie sich ideal für präzise, gerade Schnitte in Holz. Mit nur 3,8 kg (ohne Akku) ist sie leicht und handlich.",
+    image: kreissaegeGks18v,
+    images: [kreissaegeGks18v],
+    category: "kreissaege",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Leerlaufdrehzahl": "3.400 min⁻¹",
+      "Sägeblattdurchmesser": "165 mm",
+      "Sägeblattbohrungs-Ø": "20 mm",
+      "Akkuspannung": "18,0 V",
+      "Führungsschienenkompatibel": "Ja",
+      "Gewicht ohne Akku": "3,8 kg",
+      "Schnitttiefe 90°": "57 mm",
+      "Schnitttiefe 45°": "42 mm",
+      "Schalldruckpegel": "80 dB(A)",
+      "Schallleistungspegel": "91 dB(A)",
+    },
     rentwareCode: { bonn: "PKQ1ID" },
   },
   {
