@@ -3293,6 +3293,7 @@ import imgHuepfburgRollercoaster3 from "@/assets/products/huepfburg-rollercoaste
 import imgHuepfburgRollercoaster4 from "@/assets/products/huepfburg-rollercoaster-angle.jpeg";
 import imgHuepfburgWasserpark1 from "@/assets/products/huepfburg-wasserpark-1.jpeg";
 import imgHuepfburgWasserpark2 from "@/assets/products/huepfburg-wasserpark-2.jpeg";
+import imgHuepfburgClown1 from "@/assets/products/huepfburg-clown-1.webp";
 
 
 export const huepfburgenProducts: Product[] = [
@@ -3389,10 +3390,31 @@ export const huepfburgenProducts: Product[] = [
   {
     id: "huepfburg-clown",
     name: "Hüpfburg Clown 6,1x5,2m",
-    description: "Extra große Hüpfburg Clown-Motiv",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Extra große Hüpfburg im Clown-Design mit riesiger Springfläche – inkl. 1500W Gebläse. Für bis zu 6 Kinder.",
+    detailedDescription: "Die Hüpfburg Clown ist mit 6,10 m × 5,20 m × 5,90 m unsere größte Hüpfburg und bietet eine riesige Springfläche für bis zu 6 Kinder gleichzeitig. Das farbenfrohe Clown-Motiv mit aufblasbarer Figur auf dem Dach begeistert auf jeder Veranstaltung. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg stand. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang: Tragesack, 1500W Gebläse, Gewebeplane und 8 Heringe.",
+    image: imgHuepfburgClown1,
+    images: [imgHuepfburgClown1],
     category: "huepfburg",
+    specifications: {
+      "Maße (L × B × H)": "6,10 m × 5,20 m × 5,90 m",
+      "Gewicht": "150 kg",
+      "Max. Belastung": "450 kg",
+      "Max. Kinder": "6",
+      "Altersempfehlung": "3 – 16 Jahre",
+      "Aufbauzeit": "ca. 10 Minuten",
+      "Gebläse": "1.500 Watt (inkl.)",
+      "Nähte": "Doppelt vernäht",
+      "Extras": "Große Springfläche, Clown-Design",
+      "Zubehör": "Tragesack, Gebläse, Gewebeplane, 8 Heringe",
+    },
+    features: [
+      "Inkl. 1500W Gebläse",
+      "Riesige Springfläche",
+      "Platz für 6 Kinder",
+      "Clown-Design mit Figur",
+      "Doppelt vernähte Nähte",
+      "Inkl. Heringe & Plane",
+    ],
     rentwareCode: { krefeld: "Y6ASNV" }
   },
   {
