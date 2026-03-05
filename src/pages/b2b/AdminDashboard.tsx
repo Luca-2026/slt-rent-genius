@@ -93,6 +93,8 @@ interface Reservation {
   location: string;
   start_date: string;
   end_date: string | null;
+  start_time: string | null;
+  end_time: string | null;
   quantity: number;
   status: string;
   original_price: number | null;
@@ -101,6 +103,12 @@ interface Reservation {
   notes: string | null;
   created_at: string;
   rental_group_id?: string | null;
+}
+
+interface InvoiceSurcharge {
+  id: string;
+  name: string;
+  amount: number;
 }
 
 // ─── Component ────────────────────────────────────────────
