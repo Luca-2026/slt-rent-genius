@@ -99,9 +99,11 @@ serve(async (req) => {
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
-    <div style="background:#00507d;padding:30px 40px;text-align:center;">
-      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:60px;width:auto;margin-bottom:8px;" />
-      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihr Übergabeprotokoll</p>
+    <div style="background:#ffffff;padding:25px 40px;text-align:center;border-bottom:3px solid #00507d;">
+      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
+    </div>
+    <div style="background:#00507d;padding:14px 40px;text-align:center;">
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihr Übergabeprotokoll</p>
     </div>
     <div style="padding:35px 40px;">
       <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(recipientName)},</p>
