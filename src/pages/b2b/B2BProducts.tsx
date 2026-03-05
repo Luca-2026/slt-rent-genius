@@ -403,7 +403,7 @@ export default function B2BProducts() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 md:mb-6">
         {/* Location */}
         <Select value={selectedLocation} onValueChange={(v) => { setSelectedLocation(v); handleCategoryChange("alle"); }}>
           <SelectTrigger className="w-full sm:w-48">
