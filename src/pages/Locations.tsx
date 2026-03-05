@@ -8,8 +8,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
 
-// Center of NRW (roughly between the three locations)
-const mapCenter = { lat: 51.1, lng: 6.9 };
+
 
 export default function Locations() {
   const { t } = useTranslation();
@@ -38,7 +37,7 @@ export default function Locations() {
               <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
-                  <div className="h-40 overflow-hidden bg-muted">
+                  <Link to={`/mieten/${location.id}`} className="block h-40 overflow-hidden bg-muted">
                     {location.image ? (
                       <img 
                         src={location.image} 
@@ -50,7 +49,7 @@ export default function Locations() {
                         <MapPin className="h-12 w-12 text-muted-foreground/30" />
                       </div>
                     )}
-                  </div>
+                  </Link>
                   <CardContent className="p-6 flex flex-col flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div>
@@ -151,9 +150,9 @@ export default function Locations() {
                            {t("locations.route")}
                         </Button>
                       </a>
-                      <Link to={`/standorte/${location.id}`} className="flex-1">
+                      <Link to={`/mieten/${location.id}`} className="flex-1">
                          <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="sm">
-                           {t("locations.details")}
+                           Zu den Mietartikeln
                         </Button>
                       </Link>
                     </div>
@@ -165,11 +164,11 @@ export default function Locations() {
         </div>
       </section>
 
-      {/* Google Maps */}
+      {/* Google Maps - All 3 Locations */}
       <AnimatedSection animation="fade-in">
-        <section className="h-96 lg:h-[500px] relative">
+        <section className="h-96 lg:h-[500px]">
           <iframe
-            src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=${mapCenter.lat},${mapCenter.lng}&zoom=9`}
+            src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=SLT+Rental&center=50.9,6.9&zoom=8"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -177,35 +176,8 @@ export default function Locations() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="SLT Rental Standorte"
-            className="w-full h-full"
+            className="w-full h-full rounded-none"
           />
-          {/* Custom Markers Overlay */}
-          <div className="absolute inset-0 pointer-events-none">
-            <a href="#krefeld" className="absolute pointer-events-auto" style={{ top: '35%', left: '42%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-primary text-primary-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Krefeld (Hauptsitz)
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
-              </div>
-            </a>
-            <a href="#muelheim" className="absolute pointer-events-auto" style={{ top: '28%', left: '52%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Mülheim a.d. Ruhr
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
-              </div>
-            </a>
-            <a href="#bonn" className="absolute pointer-events-auto" style={{ top: '72%', left: '48%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Bonn
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
-              </div>
-            </a>
-          </div>
         </section>
       </AnimatedSection>
 
