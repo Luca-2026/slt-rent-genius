@@ -35,8 +35,7 @@ import {
 // Shared location data
 import { locationData } from "@/data/locationData";
 
-// Hero image
-import heroImage from "@/assets/hero-event.jpg";
+import { HeroBackgroundSlider } from "@/components/home/HeroBackgroundSlider";
 
 export default function Index() {
   const { t } = useTranslation();
