@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Search, BookOpen, FileText, Play, ShieldCheck, HelpCircle,
+  Search, BookOpen, FileText, Play, ShieldCheck, HelpCircle, Mail,
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info, ChevronRight, X, ArrowLeft,
   Scale, AlertTriangle, ClipboardCheck, Package, Link2, Eye, Car, Lightbulb, AlertCircle,
@@ -124,6 +124,19 @@ export default function KnowledgeBase() {
               </button>
             )}
           </div>
+        </div>
+      </section>
+      {/* Billing Contact Banner */}
+      <section className="py-4 bg-accent/10 border-b border-accent/20">
+        <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center">
+          <span className="text-sm font-medium text-headline">Fragen zur Abrechnung?</span>
+          <a
+            href="mailto:buchhaltung@slt-tg.de"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors"
+          >
+            <Mail className="h-4 w-4" />
+            buchhaltung@slt-tg.de
+          </a>
         </div>
       </section>
 
