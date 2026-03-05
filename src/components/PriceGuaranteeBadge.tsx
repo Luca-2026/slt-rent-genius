@@ -100,7 +100,7 @@ export function PriceGuaranteeBadge({ variant = "inline", className }: PriceGuar
 
 function PriceGuaranteeDialogContent() {
   return (
-    <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+    <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
       <DialogHeader>
         <DialogTitle className="flex items-center gap-2 text-primary">
           <Shield className="h-6 w-6" />
