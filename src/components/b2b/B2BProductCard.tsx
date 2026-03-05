@@ -80,12 +80,12 @@ export function B2BProductCard({
       </div>
 
       {/* Content */}
-      <CardContent className="flex-1 flex flex-col p-4">
+      <CardContent className="flex-1 flex flex-col p-3 sm:p-4">
         <h3 className="font-semibold text-headline text-sm leading-tight mb-1 line-clamp-2">
           {product.name}
         </h3>
         {product.description && (
-          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+          <p className="text-xs text-muted-foreground mb-2 sm:mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
