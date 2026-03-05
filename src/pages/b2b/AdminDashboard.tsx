@@ -985,9 +985,12 @@ export default function AdminDashboard() {
         if (!open) {
           setInvoiceFromOffer(null);
           setProformaMode(false);
+          setInvoiceSurcharges([]);
+          setNewSurchargeName("");
+          setNewSurchargeAmount("");
         }
       }}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>
               {proformaMode ? "Proforma-Rechnung (Vorkasse)" : "Rechnung erstellen"}
@@ -1036,7 +1039,9 @@ export default function AdminDashboard() {
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Zeitraum: {formatDate(selectedReservation.start_date)}
+                        {selectedReservation.start_time ? ` ${selectedReservation.start_time} Uhr` : ""}
                         {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
+                        {selectedReservation.end_time ? ` ${selectedReservation.end_time} Uhr` : ""}
                       </p>
                       {selectedReservation.original_price != null && (
                         <p className="text-sm">
@@ -1062,6 +1067,74 @@ export default function AdminDashboard() {
                   )}
                 </CardContent>
               </Card>
+
+              {/* Surcharges / Extra costs */}
+              <Card>
+                <CardContent className="p-4 space-y-3">
+                  <p className="text-sm font-semibold">Zusatzkosten (optional)</p>
+                  <p className="text-xs text-muted-foreground">
+                    z.B. Nachtanken, Reinigung, Beschädigungen
+                  </p>
+                  {invoiceSurcharges.map((s) => (
+                    <div key={s.id} className="flex items-center gap-2">
+                      <span className="text-sm flex-1">{s.name}</span>
+                      <span className="text-sm font-medium">{formatCurrency(s.amount)}</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-destructive"
+                        onClick={() => setInvoiceSurcharges((prev) => prev.filter((x) => x.id !== s.id))}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <Input
+                        placeholder="Bezeichnung"
+                        value={newSurchargeName}
+                        onChange={(e) => setNewSurchargeName(e.target.value)}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <div className="w-28">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="Betrag €"
+                        value={newSurchargeAmount}
+                        onChange={(e) => setNewSurchargeAmount(e.target.value)}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-9"
+                      disabled={!newSurchargeName.trim() || !newSurchargeAmount || parseFloat(newSurchargeAmount) <= 0}
+                      onClick={() => {
+                        setInvoiceSurcharges((prev) => [
+                          ...prev,
+                          { id: crypto.randomUUID(), name: newSurchargeName.trim(), amount: parseFloat(newSurchargeAmount) },
+                        ]);
+                        setNewSurchargeName("");
+                        setNewSurchargeAmount("");
+                      }}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  {invoiceSurcharges.length > 0 && (
+                    <div className="border-t pt-2 flex justify-between text-sm font-medium">
+                      <span>Zusatzkosten gesamt:</span>
+                      <span>{formatCurrency(invoiceSurcharges.reduce((sum, s) => sum + s.amount, 0))}</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               <div className="flex gap-3 justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
                 <Button
