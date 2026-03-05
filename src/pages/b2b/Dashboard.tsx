@@ -294,12 +294,15 @@ export default function B2BDashboard() {
             </Card>
           )}
 
-          {/* Credit Limit Widget - only for approved users with a limit */}
-          {isApproved && b2bProfile && b2bProfile.credit_limit > 0 && (
+          {/* Credit / Vorkasse Widget - always for approved users */}
+          {isApproved && b2bProfile && (
             <div className="mb-8">
               <CreditLimitWidget
                 creditLimit={b2bProfile.credit_limit}
                 usedCredit={b2bProfile.used_credit}
+                profileId={b2bProfile.id}
+                creditLimitRequestedAt={(b2bProfile as any).credit_limit_requested_at}
+                onRequestSent={refreshB2BProfile}
               />
             </div>
           )}
