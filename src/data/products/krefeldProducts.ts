@@ -3291,6 +3291,8 @@ import imgHuepfburgRollercoaster1 from "@/assets/products/huepfburg-rollercoaste
 import imgHuepfburgRollercoaster2 from "@/assets/products/huepfburg-rollercoaster-inside1.jpeg";
 import imgHuepfburgRollercoaster3 from "@/assets/products/huepfburg-rollercoaster-inside2.jpeg";
 import imgHuepfburgRollercoaster4 from "@/assets/products/huepfburg-rollercoaster-angle.jpeg";
+import imgHuepfburgWasserpark1 from "@/assets/products/huepfburg-wasserpark-1.jpeg";
+import imgHuepfburgWasserpark2 from "@/assets/products/huepfburg-wasserpark-2.jpeg";
 
 
 export const huepfburgenProducts: Product[] = [
@@ -3327,10 +3329,31 @@ export const huepfburgenProducts: Product[] = [
   {
     id: "huepfburg-wasserpark",
     name: "Hüpfburg Wasserpark 3m x 4m",
-    description: "Hüpfburg mit Wasserrutsche",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Hüpfburg mit Kletterturm, Wasserrutsche und Pool – inkl. 300W Gebläse. Perfekt für heiße Sommertage!",
+    detailedDescription: "Die Hüpfburg Wasserpark vereint Kletterturm, Rutsche und Pool auf 3,00 m × 4,00 m × 2,25 m. Ideal für Kindergeburtstage und Gartenpartys an heißen Tagen. Die Rutsche mündet in ein aufblasbares Planschbecken – Palmen-Design inklusive. Für bis zu 3 Kinder (3–5 Jahre, max. 60 kg). Aufbau in ca. 5 Minuten dank 300W Gebläse. Alle Nähte doppelt vernäht. Wichtig: Die Hüpfburg muss trocken zurückgegeben werden. Im Lieferumfang: Tragekiste, Gebläse, Gewebeplane und 8 Heringe.",
+    image: imgHuepfburgWasserpark1,
+    images: [imgHuepfburgWasserpark1, imgHuepfburgWasserpark2],
     category: "huepfburg",
+    specifications: {
+      "Maße (L × B × H)": "3,00 m × 4,00 m × 2,25 m",
+      "Gewicht": "20 kg",
+      "Max. Belastung": "60 kg",
+      "Max. Kinder": "3",
+      "Altersempfehlung": "3 – 5 Jahre",
+      "Aufbauzeit": "ca. 5 Minuten",
+      "Gebläse": "300 Watt (inkl.)",
+      "Nähte": "Doppelt vernäht",
+      "Extras": "Kletterturm, Rutsche, Pool",
+      "Zubehör": "Tragekiste, Gebläse, Gewebeplane, 8 Heringe",
+    },
+    features: [
+      "Inkl. 300W Gebläse",
+      "Wasserrutsche & Pool",
+      "Kletterturm",
+      "Aufbau in 5 Min.",
+      "Doppelt vernähte Nähte",
+      "Trocken zurückgeben",
+    ],
     rentwareCode: { krefeld: "JLXJUH" }
   },
   {
