@@ -50,6 +50,12 @@ export default function LoesungDetail() {
 
   return (
     <Layout>
+      <SEO
+        title={`${title} – Mietlösungen | SLT Rental`}
+        description={`${subtitle} – ${description.slice(0, 120)}...`}
+        canonical={`/loesungen/${solution.id}`}
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lösungen", url: "/loesungen" }, { name: title, url: `/loesungen/${solution.id}` }])}
+      />
       <LocationSelectDialog
         open={locationDialogOpen}
         onOpenChange={setLocationDialogOpen}
