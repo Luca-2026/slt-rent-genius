@@ -434,7 +434,7 @@ export default function B2BProducts() {
       </div>
 
       {/* Category pills */}
-      <div className="flex gap-2 overflow-x-auto pb-3 mb-6 -mx-2 px-2">
+      <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-2 sm:pb-3 mb-4 md:mb-6 -mx-2 px-2 scrollbar-none">
         {availableCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const discount = cat.id !== "alle" ? getDiscountForCategory(cat.id) : 0;
