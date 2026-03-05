@@ -25,13 +25,14 @@ serve(async (req) => {
       throw new Error('GOOGLE_PLACES_API_KEY is not configured');
     }
 
-    // Use Places API (New) - Place Details
+    // Use Places API (New) - Place Details with newest reviews
     const url = `https://places.googleapis.com/v1/places/${placeId}?fields=rating,userRatingCount,reviews&languageCode=de&key=${apiKey}`;
     
     const response = await fetch(url, {
       headers: {
         'X-Goog-Api-Key': apiKey,
         'X-Goog-FieldMask': 'rating,userRatingCount,reviews',
+        'X-Goog-Reviews-Sort': 'newest',
       },
     });
 
