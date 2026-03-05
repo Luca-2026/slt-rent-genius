@@ -34,6 +34,7 @@ import {
   RefreshCw,
   ClipboardCheck,
   Undo2,
+  MessageCircle,
 } from "lucide-react";
 
 export default function B2BDashboard() {
