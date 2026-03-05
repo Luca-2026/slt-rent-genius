@@ -165,11 +165,11 @@ export default function Locations() {
         </div>
       </section>
 
-      {/* Google Maps */}
+      {/* Google Maps - All 3 Locations */}
       <AnimatedSection animation="fade-in">
-        <section className="h-96 lg:h-[500px] relative">
+        <section className="h-96 lg:h-[500px]">
           <iframe
-            src="https://www.google.com/maps/d/embed?mid=1_placeholder&z=9"
+            src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=SLT+Rental&center=50.9,6.9&zoom=8"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -177,46 +177,8 @@ export default function Locations() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="SLT Rental Standorte"
-            className="w-full h-full hidden"
+            className="w-full h-full rounded-none"
           />
-          {/* Static map with all 3 markers using Maps Static API */}
-          <iframe
-            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Anrather+Straße+291,+47807+Krefeld&zoom=9`}
-            width="100%"
-            height="100%"
-            style={{ border: 0, position: 'absolute', inset: 0 }}
-            allowFullScreen
-            loading="lazy"
-            className="w-full h-full"
-            title="SLT Rental Standorte - Karte"
-          />
-          {/* Custom Markers Overlay */}
-          <div className="absolute inset-0 pointer-events-none">
-            <Link to="/mieten/krefeld" className="absolute pointer-events-auto" style={{ top: '35%', left: '42%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-primary text-primary-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Krefeld (Hauptsitz)
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
-              </div>
-            </Link>
-            <Link to="/mieten/muelheim" className="absolute pointer-events-auto" style={{ top: '28%', left: '52%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Mülheim a.d. Ruhr
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
-              </div>
-            </Link>
-            <Link to="/mieten/bonn" className="absolute pointer-events-auto" style={{ top: '72%', left: '48%' }}>
-              <div className="flex flex-col items-center">
-                <div className="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm font-semibold shadow-lg whitespace-nowrap">
-                  Bonn
-                </div>
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
-              </div>
-            </Link>
-          </div>
         </section>
       </AnimatedSection>
 
