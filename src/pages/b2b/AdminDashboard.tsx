@@ -504,7 +504,8 @@ export default function AdminDashboard() {
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
-          reservation_id: offer.reservation_id,
+          reservation_id: offer.reservation_id || undefined,
+          b2b_profile_id: offer.b2b_profile_id,
           offer_id: offer.id,
           items: items.map((item) => ({
             product_name: item.product_name,
@@ -512,11 +513,13 @@ export default function AdminDashboard() {
             quantity: item.quantity,
             unit_price: item.unit_price,
             discount_percent: item.discount_percent || undefined,
-            rental_start: matchingReservation?.start_date,
-            rental_end: matchingReservation?.end_date,
+            rental_start: item.rental_start || matchingReservation?.start_date,
+            rental_end: item.rental_end || matchingReservation?.end_date,
             image_url: matchingReservation ? (getProductImageUrl(matchingReservation.product_id) || getProductImageUrlByName(item.product_name) || undefined) : undefined,
           })),
           delivery_cost: offer.delivery_cost,
+          deposit: offer.deposit || undefined,
+          additional_services: offer.additional_services ? (typeof offer.additional_services === 'string' ? JSON.parse(offer.additional_services) : offer.additional_services) : undefined,
           notes: offer.notes || undefined,
           send_email: true,
           save_prices: false,
