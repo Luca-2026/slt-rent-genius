@@ -67,7 +67,7 @@ export default function Index() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative z-20 bg-primary py-16 lg:py-0 lg:min-h-[calc(100svh-15.5rem)] lg:flex lg:items-center">
+      <section className="relative z-20 bg-primary py-16 lg:py-0 lg:min-h-[calc(100svh-17rem)] lg:flex lg:items-center">
         {/* Background Image Slider */}
         <HeroBackgroundSlider />
         <div className="absolute inset-0 bg-primary/85" />
