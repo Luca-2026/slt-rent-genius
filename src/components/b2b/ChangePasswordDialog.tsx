@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
+import { PasswordStrengthIndicator } from "@/components/b2b/PasswordStrengthIndicator";
 
 export function ChangePasswordDialog({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
