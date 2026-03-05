@@ -533,8 +533,8 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Hilfe-Artikel für Erdbewegung (Minibagger) */}
-              {categoryId === "erdbewegung" && (
+              {/* Hilfe-Artikel für Erdbewegung (nur Minibagger) */}
+              {categoryId === "erdbewegung" && product?.category === "minibagger" && (
                 <div className="space-y-3">
                   <Link
                     to="/hilfe"
