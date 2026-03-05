@@ -52,7 +52,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
           <>
             <img
               src={images[currentIndex]}
-              alt={`${product.name} - Bild ${currentIndex + 1}`}
+              alt={`${product.name} – ${currentIndex === 0 ? 'Produktbild' : `Ansicht ${currentIndex + 1}`} | SLT Rental`}
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
             

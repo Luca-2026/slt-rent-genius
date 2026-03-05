@@ -3299,12 +3299,13 @@ import imgHuepfburgClown1 from "@/assets/products/huepfburg-clown-1.webp";
 export const huepfburgenProducts: Product[] = [
   {
     id: "huepfburg-lamar",
-    name: "HappyHop Hüpfburg Lamar 2,8x2,1m",
+    name: "HappyHop Hüpfburg Lamar 2,8 x 2,1m",
     description: "Aufblasbare Burg mit Basketballkorb und Sicherheitsnetz – inkl. Gebläse. Ideal für Kindergeburtstage im Garten.",
     detailedDescription: "Die HappyHop Hüpfburg Lamar bietet viel Platz zum Springen und Toben auf kompakter Fläche (2,80 m × 2,10 m × 1,85 m). Die gesamte Hüpfburg ist vollständig von einem Sicherheitsnetz umgeben und verfügt über einen integrierten Basketballkorb für zusätzlichen Spielspaß. Dank des mitgelieferten 300-Watt-Gebläses ist die Burg in ca. 5 Minuten aufgebaut. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang enthalten: Tragekiste, Gebläse (300 W), Gewebeplane und 8 Heringe zur Fixierung im Boden.",
     image: imgHuepfburgLamar1,
     images: [imgHuepfburgLamar1, imgHuepfburgLamar2, imgHuepfburgLamar3, imgHuepfburgLamar4],
     category: "huepfburg",
+    tags: ["huepfburg", "spiel", "klein"],
     specifications: {
       "Maße (L × B × H)": "2,80 m × 2,10 m × 1,85 m",
       "Gewicht": "6,4 kg",
@@ -3329,12 +3330,13 @@ export const huepfburgenProducts: Product[] = [
   },
   {
     id: "huepfburg-wasserpark",
-    name: "Hüpfburg Wasserpark 3m x 4m",
+    name: "Hüpfburg Wasserpark 3 x 4m",
     description: "Hüpfburg mit Kletterturm, Wasserrutsche und Pool – inkl. 300W Gebläse. Perfekt für heiße Sommertage!",
     detailedDescription: "Die Hüpfburg Wasserpark vereint Kletterturm, Rutsche und Pool auf 3,00 m × 4,00 m × 2,25 m. Ideal für Kindergeburtstage und Gartenpartys an heißen Tagen. Die Rutsche mündet in ein aufblasbares Planschbecken – Palmen-Design inklusive. Für bis zu 3 Kinder (3–5 Jahre, max. 60 kg). Aufbau in ca. 5 Minuten dank 300W Gebläse. Alle Nähte doppelt vernäht. Wichtig: Die Hüpfburg muss trocken zurückgegeben werden. Im Lieferumfang: Tragekiste, Gebläse, Gewebeplane und 8 Heringe.",
     image: imgHuepfburgWasserpark1,
     images: [imgHuepfburgWasserpark1, imgHuepfburgWasserpark2],
     category: "huepfburg",
+    tags: ["huepfburg", "rutsche", "mittel"],
     specifications: {
       "Maße (L × B × H)": "3,00 m × 4,00 m × 2,25 m",
       "Gewicht": "20 kg",
@@ -3359,12 +3361,13 @@ export const huepfburgenProducts: Product[] = [
   },
   {
     id: "huepfburg-rollercoaster-1",
-    name: "Hüpfburg Rollercoaster 4,9x4m",
+    name: "Hüpfburg Rollercoaster 4,9 x 4m",
     description: "Große aufblasbare Hüpfburg mit Rutsche im Kirmes-Design – inkl. 1100W Gebläse. Für bis zu 6 Kinder.",
     detailedDescription: "Die Hüpfburg Rollercoaster bietet auf 4,90 m × 4,00 m × 3,50 m jede Menge Platz zum Springen, Toben und Rutschen. Das farbenfrohe Kirmes-Design mit Riesenrad und Achterbahn-Motiven begeistert Kinder von 3 bis 16 Jahren. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg (max. 6 Kinder gleichzeitig) stand. Alle Nähte sind doppelt vernäht. Im Lieferumfang: Tragesack, 1100W Gebläse, Gewebeplane und 8 Heringe.",
     image: imgHuepfburgRollercoaster1,
     images: [imgHuepfburgRollercoaster1, imgHuepfburgRollercoaster4, imgHuepfburgRollercoaster2, imgHuepfburgRollercoaster3],
     category: "huepfburg",
+    tags: ["huepfburg", "rutsche", "gross"],
     specifications: {
       "Maße (L × B × H)": "4,90 m × 4,00 m × 3,50 m",
       "Gewicht": "100 kg",
@@ -3389,12 +3392,13 @@ export const huepfburgenProducts: Product[] = [
   },
   {
     id: "huepfburg-clown",
-    name: "Hüpfburg Clown 6,1x5,2m",
+    name: "Hüpfburg Clown 6,1 x 5,2m",
     description: "Extra große Hüpfburg im Clown-Design mit riesiger Springfläche – inkl. 1500W Gebläse. Für bis zu 6 Kinder.",
     detailedDescription: "Die Hüpfburg Clown ist mit 6,10 m × 5,20 m × 5,90 m unsere größte Hüpfburg und bietet eine riesige Springfläche für bis zu 6 Kinder gleichzeitig. Das farbenfrohe Clown-Motiv mit aufblasbarer Figur auf dem Dach begeistert auf jeder Veranstaltung. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg stand. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang: Tragesack, 1500W Gebläse, Gewebeplane und 8 Heringe.",
     image: imgHuepfburgClown1,
     images: [imgHuepfburgClown1],
     category: "huepfburg",
+    tags: ["huepfburg", "spiel", "gross"],
     specifications: {
       "Maße (L × B × H)": "6,10 m × 5,20 m × 5,90 m",
       "Gewicht": "150 kg",
@@ -3416,36 +3420,6 @@ export const huepfburgenProducts: Product[] = [
       "Inkl. Heringe & Plane",
     ],
     rentwareCode: { krefeld: "Y6ASNV" }
-  },
-  {
-    id: "huepfburg-rollercoaster-2",
-    name: "Hüpfburg Rollercoaster 4,9x4m",
-    description: "Große aufblasbare Hüpfburg mit Rutsche im Kirmes-Design – inkl. 1100W Gebläse (2. Exemplar).",
-    detailedDescription: "Die Hüpfburg Rollercoaster bietet auf 4,90 m × 4,00 m × 3,50 m jede Menge Platz zum Springen, Toben und Rutschen. Das farbenfrohe Kirmes-Design mit Riesenrad und Achterbahn-Motiven begeistert Kinder von 3 bis 16 Jahren. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg (max. 6 Kinder gleichzeitig) stand. Alle Nähte sind doppelt vernäht. Im Lieferumfang: Tragesack, 1100W Gebläse, Gewebeplane und 8 Heringe.",
-    image: imgHuepfburgRollercoaster1,
-    images: [imgHuepfburgRollercoaster1, imgHuepfburgRollercoaster4, imgHuepfburgRollercoaster2, imgHuepfburgRollercoaster3],
-    category: "huepfburg",
-    specifications: {
-      "Maße (L × B × H)": "4,90 m × 4,00 m × 3,50 m",
-      "Gewicht": "100 kg",
-      "Max. Belastung": "450 kg",
-      "Max. Kinder": "6",
-      "Altersempfehlung": "3 – 16 Jahre",
-      "Aufbauzeit": "ca. 10 Minuten",
-      "Gebläse": "1.100 Watt (inkl.)",
-      "Nähte": "Doppelt vernäht",
-      "Extras": "Rutsche, Kirmes-Design",
-      "Zubehör": "Tragesack, Gebläse, Gewebeplane, 8 Heringe",
-    },
-    features: [
-      "Inkl. 1100W Gebläse",
-      "Große Rutsche",
-      "Platz für 6 Kinder",
-      "Kirmes-Design",
-      "Doppelt vernähte Nähte",
-      "Inkl. Heringe & Plane",
-    ],
-    rentwareCode: { krefeld: "TRHPW2" }
   },
 ];
 

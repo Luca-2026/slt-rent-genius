@@ -62,21 +62,70 @@ export default function ProductDetail() {
   }, [product]);
 
   useEffect(() => {
-    if (product && location) {
-      document.title = `${product.name} | ${location.shortName} | SLT Rental`;
-      const metaDescription = document.querySelector('meta[name="description"]');
-      const descText = `${product.name} – ${location.shortName}. ${product.description || ""}`;
+    if (product && location && category) {
+      // SEO: Title optimized for search (keyword-rich, <60 chars target)
+      const seoTitle = `${product.name} mieten – ${location.name} | SLT Rental`;
+      document.title = seoTitle.length > 60 ? `${product.name} mieten | SLT Rental` : seoTitle;
+
+      // SEO: Meta description (<160 chars)
+      const descText = `${product.name} günstig mieten in ${location.name}. ${product.description || ""} Jetzt online buchen bei SLT Rental.`.slice(0, 160);
+      let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
       } else {
-        const meta = document.createElement("meta");
-        meta.name = "description";
-        meta.content = descText;
-        document.head.appendChild(meta);
+        metaDescription = document.createElement("meta");
+        metaDescription.setAttribute("name", "description");
+        metaDescription.setAttribute("content", descText);
+        document.head.appendChild(metaDescription);
       }
+
+      // SEO: Canonical URL
+      const canonicalUrl = `https://slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}`;
+      let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      if (canonicalLink) {
+        canonicalLink.href = canonicalUrl;
+      } else {
+        canonicalLink = document.createElement("link");
+        canonicalLink.rel = "canonical";
+        canonicalLink.href = canonicalUrl;
+        document.head.appendChild(canonicalLink);
+      }
+
+      // SEO: JSON-LD Product structured data
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": product.name,
+        "description": product.description || "",
+        "image": images.length > 0 ? images[0] : undefined,
+        "brand": { "@type": "Brand", "name": "SLT Rental" },
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "priceCurrency": "EUR",
+          "price": product.pricePerDay?.replace(/[^\d,]/g, "").replace(",", ".") || undefined,
+          "priceValidUntil": new Date(Date.now() + 90 * 86400000).toISOString().split("T")[0],
+          "url": canonicalUrl,
+          "areaServed": { "@type": "City", "name": location.name },
+        },
+        "category": category.title,
+      };
+      let scriptTag = document.querySelector('script[data-product-jsonld]') as HTMLScriptElement;
+      if (!scriptTag) {
+        scriptTag = document.createElement("script");
+        scriptTag.type = "application/ld+json";
+        scriptTag.setAttribute("data-product-jsonld", "true");
+        document.head.appendChild(scriptTag);
+      }
+      scriptTag.textContent = JSON.stringify(jsonLd);
+
+      return () => {
+        document.title = "SLT Rental";
+        scriptTag?.remove();
+        canonicalLink?.remove();
+      };
     }
-    return () => { document.title = "SLT Rental"; };
-  }, [product, location]);
+  }, [product, location, category, categoryId, images]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -158,7 +207,7 @@ export default function ProductDetail() {
                     <>
                       <img
                         src={images[currentImageIndex]}
-                        alt={`${product.name} – Bild ${currentImageIndex + 1}`}
+                        alt={`${product.name} – ${currentImageIndex === 0 ? 'Produktbild' : `Ansicht ${currentImageIndex + 1}`} | SLT Rental ${location.name}`}
                         className="w-full h-full object-contain"
                       />
                       {images.length > 1 && (
@@ -202,7 +251,7 @@ export default function ProductDetail() {
                               : "border-transparent hover:border-muted-foreground/30"
                           }`}
                         >
-                          <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                          <img src={img} alt={`${product.name} – Vorschau ${index + 1}`} className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>
