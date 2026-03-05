@@ -4838,7 +4838,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgTiefloeffelMs03_50cm_1,
     images: [imgTiefloeffelMs03_50cm_1],
     category: "tiefloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "107 l",
@@ -4902,7 +4902,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgKabelloeffelMs03_20cm_1,
     images: [imgKabelloeffelMs03_20cm_1],
     category: "kabelloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Gewichtsklasse Trägergerät": "2,5 – 4 t",
@@ -4995,7 +4995,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgGrabenraeumloeffelMs03_140cm_1,
     images: [imgGrabenraeumloeffelMs03_140cm_1],
     category: "grabenraeumloeffel",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "170 l",
@@ -5052,7 +5052,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgHydraulikhammer1,
     images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "CRLJPA" }
   },
   // Sortiergreifer
@@ -5064,7 +5064,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",
@@ -5098,7 +5098,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieseltankstelle1,
     images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
-    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "kramer-5045"],
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z", "kramer-5045"],
     rentwareCode: { krefeld: "KP5KOB" }
   },
   // Diesel Kanister
@@ -5110,7 +5110,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieselKanister10l_1,
     images: [imgDieselKanister10l_1],
     category: "zubehoer",
-    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "kramer-5045"],
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z", "kramer-5045"],
     specifications: {
       "Volumen": "10 l",
       "Kraftstoff": "Diesel",
@@ -5125,7 +5125,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieselKanister20l_1,
     images: [imgDieselKanister20l_1],
     category: "zubehoer",
-    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "kramer-5045"],
+    compatibleMachines: ["bobcat-e19", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z", "kramer-5045"],
     specifications: {
       "Volumen": "20 l",
       "Kraftstoff": "Diesel",

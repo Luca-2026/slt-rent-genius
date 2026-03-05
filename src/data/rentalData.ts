@@ -98,6 +98,10 @@ import imgBobcatE35z_1 from "@/assets/products/erdbewegung/bobcat-e35z-1.webp";
 import imgBobcatE35z_2 from "@/assets/products/erdbewegung/bobcat-e35z-2.webp";
 import imgBobcatE35z_3 from "@/assets/products/erdbewegung/bobcat-e35z-3.webp";
 import imgBobcatE35z_4 from "@/assets/products/erdbewegung/bobcat-e35z-4.webp";
+import imgBobcatE50z_1 from "@/assets/products/erdbewegung/bobcat-e50z-1.webp";
+import imgBobcatE50z_2 from "@/assets/products/erdbewegung/bobcat-e50z-2.webp";
+import imgBobcatE50z_3 from "@/assets/products/erdbewegung/bobcat-e50z-3.webp";
+import imgBobcatE50z_4 from "@/assets/products/erdbewegung/bobcat-e50z-4.webp";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
 import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
@@ -509,7 +513,7 @@ const trailerProducts: Product[] = [
     weightKg: 1800, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -521,7 +525,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
-    compatibleMachines: ["xcmg-xe27e"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR" } 
   },
 
@@ -732,6 +736,30 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Max. Ausschütthöhe": "ca. 3,5 m",
       "Löffelvolumen": "0,1 – 0,15 m³",
       "Laufwerk": "Gummiketten (Stahlketten optional)",
+    },
+  },
+  {
+    id: "bobcat-e50z",
+    name: "5t Bobcat E50z Minibagger",
+    description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
+    detailedDescription: "Der Bobcat E50z ist ein kraftvoller Minibagger der 5-Tonnen-Klasse mit Nullheck-Design. Mit einer maximalen Grabtiefe von 3,52 m, einer Reichweite von 5,98 m und einer Ausschütthöhe von 4,08 m meistert er anspruchsvolle Erd-, Kanal- und Abbrucharbeiten. Der Stage V Motor mit 36,4 kW (49,6 PS) und 99,2 l/min Hydraulikleistung bietet hervorragende Performance. Der Schwenkbereich des Auslegers beträgt 75° links und 55° rechts. Serienmäßig mit Gummiketten, Stahlketten optional.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel und Tieflöffel für Aushubarbeiten, Greifer zum sicheren Heben und Platzieren von Materialien.",
+    image: imgBobcatE50z_1,
+    images: [imgBobcatE50z_1, imgBobcatE50z_2, imgBobcatE50z_3, imgBobcatE50z_4],
+    weightKg: 4800,
+    category: "minibagger",
+    tags: ["minibagger", "diesel", "ab-2500", "maschine"],
+    onRequest: true,
+    specifications: {
+      "Betriebsgewicht": "ca. 4,8 t",
+      "Motorleistung": "36,4 kW (49,6 PS)",
+      "Abgasnorm": "Stufe V",
+      "Max. Grabtiefe": "3,52 m",
+      "Max. Reichweite": "5,98 m",
+      "Ausschütthöhe": "4,08 m",
+      "Löffelvolumen": "0,13 – 0,22 m³",
+      "Laufwerk": "Gummiketten (Stahlketten optional)",
+      "Hydraulikleistung": "99,2 l/min",
+      "Schwenkbereich Ausleger": "Links 75°, Rechts 55°",
     },
   },
   {
