@@ -374,7 +374,7 @@ export default function B2BProductDetail() {
 
       {/* Accessories for Erdbewegung */}
       {accessories.length > 0 && (
-        <div className="mt-10 pt-8 border-t border-border">
+        <div className="mt-6 md:mt-10 pt-6 md:pt-8 border-t border-border">
           <div className="flex items-center gap-2 mb-5">
             <HardHat className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-bold text-headline">Optionales Zubehör</h2>
