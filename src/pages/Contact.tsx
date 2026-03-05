@@ -1,22 +1,63 @@
+import { useState } from "react";
 import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle, Loader2 } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
   const { t } = useTranslation();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
     { icon: Mail, title: t("contact.emailTitle"), primary: t("contact.emailAddress"), secondary: t("contact.emailResponse"), href: "mailto:mieten@slt-rental.de" },
     { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: t("contact.whatsappNumber"), secondary: t("contact.whatsappDesc"), href: "https://wa.me/49021514179904" },
   ];
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          firstName: formData.get("firstName"),
+          lastName: formData.get("lastName"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+        },
+      });
+
+      if (error) throw error;
+
+      setIsSuccess(true);
+      form.reset();
+    } catch (err) {
+      console.error("Contact form error:", err);
+      toast({
+        title: "Fehler",
+        description: "Die Nachricht konnte nicht gesendet werden. Bitte versuche es erneut.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Layout>
@@ -57,49 +98,66 @@ export default function Contact() {
             <AnimatedSection animation="slide-in-left" delay={0}>
               <div>
                 <h2 className="text-2xl font-bold text-headline mb-6">{t("contact.formTitle")}</h2>
-                <form className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.firstName")} *</label>
-                      <Input placeholder="Max" required />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.lastName")} *</label>
-                      <Input placeholder="Mustermann" required />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.email")} *</label>
-                    <Input type="email" placeholder="max@beispiel.de" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")}</label>
-                    <Input type="tel" placeholder="0151 123 456 78" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
-                    <Input placeholder="Anfrage zu Minibagger" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.message")} *</label>
-                    <Textarea placeholder="..." rows={5} required />
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <input type="checkbox" id="privacy" className="mt-1" required />
-                    <label htmlFor="privacy" className="text-sm text-muted-foreground">
-                      {t("contact.privacy").split("<link>")[0]}
-                      <Link to="/datenschutz" className="text-primary hover:underline">
-                        {t("contact.privacy").split("<link>")[1]?.split("</link>")[0]}
-                      </Link>
-                      {t("contact.privacy").split("</link>")[1]}
-                    </label>
-                  </div>
-                  <Button type="submit" className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                    <Send className="h-4 w-4 mr-2" />
-                    {t("contact.send")}
-                  </Button>
-                </form>
-                <p className="text-xs text-muted-foreground mt-4">{t("contact.required")}</p>
+                {isSuccess ? (
+                  <Card className="border-primary/20 bg-primary/5">
+                    <CardContent className="py-12 text-center">
+                      <CheckCircle className="h-12 w-12 text-primary mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-foreground mb-2">Nachricht gesendet!</h3>
+                      <p className="text-muted-foreground mb-6">
+                        Vielen Dank für Ihre Anfrage. Wir melden uns schnellstmöglich bei Ihnen.
+                      </p>
+                      <Button variant="outline" onClick={() => setIsSuccess(false)}>
+                        Neue Nachricht senden
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <>
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.firstName")} *</label>
+                          <Input name="firstName" placeholder="Max" required />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.lastName")} *</label>
+                          <Input name="lastName" placeholder="Mustermann" required />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.email")} *</label>
+                        <Input name="email" type="email" placeholder="max@beispiel.de" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")}</label>
+                        <Input name="phone" type="tel" placeholder="0151 123 456 78" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
+                        <Input name="subject" placeholder="Anfrage zu Minibagger" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.message")} *</label>
+                        <Textarea name="message" placeholder="..." rows={5} required />
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <input type="checkbox" id="privacy" className="mt-1" required />
+                        <label htmlFor="privacy" className="text-sm text-muted-foreground">
+                          {t("contact.privacy").split("<link>")[0]}
+                          <Link to="/datenschutz" className="text-primary hover:underline">
+                            {t("contact.privacy").split("<link>")[1]?.split("</link>")[0]}
+                          </Link>
+                          {t("contact.privacy").split("</link>")[1]}
+                        </label>
+                      </div>
+                      <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                        {isSubmitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
+                        {isSubmitting ? "Wird gesendet..." : t("contact.send")}
+                      </Button>
+                    </form>
+                    <p className="text-xs text-muted-foreground mt-4">{t("contact.required")}</p>
+                  </>
+                )}
               </div>
             </AnimatedSection>
 
