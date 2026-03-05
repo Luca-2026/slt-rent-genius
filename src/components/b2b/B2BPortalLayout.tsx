@@ -24,6 +24,7 @@ const customerNavItems = [
   { href: "/b2b/uebergabeprotokolle", label: "Übergabeprotokolle", icon: ClipboardCheck },
   { href: "/b2b/rueckgabeprotokolle", label: "Rückgabeprotokolle", icon: Undo2 },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
+  { href: "/b2b/firmendaten", label: "Firmendaten", icon: Building2 },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];
