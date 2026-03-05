@@ -99,26 +99,23 @@ export default function CompanyProfile() {
     try {
       const assignedLocation = getNearestLocation(postalCode);
 
-      const { error } = await supabase
-        .from("b2b_profiles")
-        .update({
-          company_name: companyName,
-          legal_form: legalForm || null,
-          tax_id: taxId || null,
-          trade_register_number: tradeRegisterNumber || null,
-          contact_first_name: firstName,
-          contact_last_name: lastName,
-          contact_position: position || null,
-          contact_phone: phone,
-          billing_email: billingEmail || null,
-          street,
-          house_number: houseNumber || null,
-          postal_code: postalCode,
-          city,
-          assigned_location: assignedLocation,
-          status: "pending" as const,
-        })
-        .eq("user_id", user.id);
+      const { error } = await supabase.rpc("update_b2b_profile_with_pending", {
+        _user_id: user.id,
+        _company_name: companyName,
+        _legal_form: legalForm || null,
+        _tax_id: taxId || null,
+        _trade_register_number: tradeRegisterNumber || null,
+        _contact_first_name: firstName,
+        _contact_last_name: lastName,
+        _contact_position: position || null,
+        _contact_phone: phone,
+        _billing_email: billingEmail || null,
+        _street: street,
+        _house_number: houseNumber || null,
+        _postal_code: postalCode,
+        _city: city,
+        _assigned_location: assignedLocation,
+      });
 
       if (error) throw error;
 
