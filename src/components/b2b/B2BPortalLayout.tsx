@@ -78,7 +78,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                 size="sm"
                 variant="outline" 
                 className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
-                onClick={() => signOut()}
+                onClick={() => { signOut(); navigate("/b2b/login"); }}
               >
                 <LogOut className="h-3.5 w-3.5 mr-1" />
                 Abmelden
