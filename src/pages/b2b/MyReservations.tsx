@@ -450,7 +450,7 @@ export default function MyReservations() {
   return (
     <B2BPortalLayout title="Mietvorgänge" subtitle={`${totalCount} Mietvorgänge insgesamt`}>
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
