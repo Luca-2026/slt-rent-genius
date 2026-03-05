@@ -4,7 +4,7 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
