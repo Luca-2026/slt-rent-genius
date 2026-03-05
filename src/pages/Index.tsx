@@ -432,7 +432,7 @@ export default function Index() {
                   return (
                     <div key={loc.id}>
                       <h3 className="text-lg font-semibold text-foreground mb-4">📍 {loc.name}</h3>
-                      <GoogleReviewsComponent placeId={placeId} locationName={loc.name} variant="full" />
+                      <GoogleReviewsComponent placeId={placeId} locationName={loc.name} variant="full" maxReviews={isMobile ? 2 : undefined} />
                     </div>
                   );
                 })}
