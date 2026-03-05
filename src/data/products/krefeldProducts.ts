@@ -220,6 +220,7 @@ import fliesenschneider2 from "@/assets/products/fliesenschneider/fliesenschneid
 import fliesenschneider3 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-3.jpeg";
 import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-4.jpeg";
 import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
+import imgBohrschrauber18v55 from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-55.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
