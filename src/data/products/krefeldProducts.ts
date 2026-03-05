@@ -448,6 +448,7 @@ import imgTiefloeffelMs01_30cm_1 from "@/assets/products/erdbewegung/tiefloeffel
 import imgTiefloeffelMs01_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-50cm-1.jpeg";
 import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
 import imgGrabenraeumloeffelMs01_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-80cm-1.jpeg";
+import imgGrabenraeumloeffelMs01_80cm65l_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-100cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4862,6 +4863,22 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Gewicht": "46 kg",
     },
     rentwareCode: { krefeld: "2A5TQZ" }
+  },
+  {
+    id: "ms01-grabenraeumloeffel-80cm-65l",
+    name: "MS01 Grabenräumlöffel starr 80cm/65l",
+    description: "Starrer Grabenräumlöffel 80cm/65l für MS01 – größeres Volumen",
+    detailedDescription: "Der MS01 Grabenräumlöffel starr 80cm/65l bietet mit 65 Liter Volumen eine größere Kapazität als das 45l-Modell bei gleicher Arbeitsbreite von 800 mm. Ideal für Planierarbeiten, Böschungsprofilierung und das effiziente Räumen breiterer Gräben mit MS01-kompatiblen Minibaggern.",
+    image: imgGrabenraeumloeffelMs01_80cm65l_1,
+    images: [imgGrabenraeumloeffelMs01_80cm65l_1],
+    category: "grabenraeumloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01",
+      "Volumen": "65 l",
+      "Arbeitsbreite": "800 mm",
+      "Gewicht": "55 kg",
+    },
   },
   {
     id: "ms01-grabenraeumloeffel-100cm-symlock",
