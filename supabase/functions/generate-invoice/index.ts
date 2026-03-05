@@ -43,6 +43,7 @@ interface InvoiceRequest {
   image_url?: string; // Fallback image for auto-generated items
   is_correction?: boolean;
   original_invoice_number?: string;
+  send_email?: boolean;
 }
 
 Deno.serve(async (req: Request) => {

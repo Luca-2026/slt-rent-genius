@@ -143,12 +143,81 @@ Deno.serve(async (req: Request) => {
 
     console.log("B2B profile created:", profile.id);
 
+    // Send welcome email to customer
+    let emailSent = false;
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    if (resendApiKey) {
+      try {
+        const customerName = `${body.contact_first_name} ${body.contact_last_name}`;
+        const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#00507d;padding:30px 40px;text-align:center;">
+      <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">SLT-Rental</h1>
+      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Willkommen im B2B-Portal</p>
+    </div>
+    <div style="padding:35px 40px;">
+      <p style="font-size:15px;color:#333;">Guten Tag ${customerName},</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">
+        Ihr B2B-Kundenkonto für <strong>${body.company_name}</strong> wurde erfolgreich eingerichtet und freigeschaltet.
+      </p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
+        <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Ihre Zugangsdaten:</p>
+        <p style="font-size:14px;color:#555;margin:4px 0;">E-Mail: <strong>${body.email}</strong></p>
+        <p style="font-size:14px;color:#555;margin:4px 0;">Passwort: <strong>${body.password}</strong></p>
+        <p style="font-size:12px;color:#94a3b8;margin:8px 0 0;">Bitte ändern Sie Ihr Passwort nach dem ersten Login.</p>
+      </div>
+      <p style="font-size:14px;color:#555;line-height:1.6;">
+        Bitte prüfen Sie Ihre hinterlegten Firmendaten im Portal und bestätigen Sie deren Richtigkeit.
+      </p>
+      <div style="text-align:center;margin:30px 0;">
+        <a href="https://slt-rent-genius.lovable.app/b2b/login" 
+           style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
+          Zum B2B-Portal einloggen →
+        </a>
+      </div>
+    </div>
+    <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">SLT Technology Group GmbH & Co. KG</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: +49 (0) 2151 - 417 99 02 · E-Mail: info@slt-rental.de</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">www.slt-rental.de</p>
+    </div>
+  </div>
+</body></html>`;
+
+        const emailRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+            to: [body.email],
+            subject: `Willkommen bei SLT-Rental – Ihr B2B-Zugang`,
+            html: emailHtml,
+          }),
+        });
+
+        if (emailRes.ok) {
+          emailSent = true;
+          console.log("Welcome email sent to:", body.email);
+        } else {
+          const errBody = await emailRes.text();
+          console.error("Resend API error:", emailRes.status, errBody);
+        }
+      } catch (emailErr: any) {
+        console.error("Email sending failed:", emailErr.message);
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
         user_id: newUser.user.id,
         profile_id: profile.id,
         company_name: body.company_name,
+        email_sent: emailSent,
       }),
       {
         status: 200,
