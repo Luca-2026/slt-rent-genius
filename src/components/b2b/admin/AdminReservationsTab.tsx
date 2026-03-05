@@ -179,35 +179,49 @@ export function AdminReservationsTab({
                      <div className="flex gap-2 shrink-0">
                        {hasOffer ? (
                          <>
-                           <Button
-                             size="sm"
-                             variant="outline"
-                             onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
-                           >
-                             <Pencil className="h-3.5 w-3.5 mr-1" />
-                             Angebot ändern
-                           </Button>
-                           <Button
-                             size="sm"
-                             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                             onClick={() => onResendOffer(existingOffer)}
-                             disabled={resendingId === existingOffer.id}
-                           >
-                             <Send className="h-3.5 w-3.5 mr-1" />
-                             {resendingId === existingOffer.id ? "Wird gesendet..." : "Erneut senden"}
-                           </Button>
-                         </>
-                       ) : (
-                         <Button
-                           size="sm"
-                           className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                           onClick={() => onCreateOffer(res)}
-                         >
-                           <FileText className="h-3.5 w-3.5 mr-1" />
-                           Angebot erstellen
-                         </Button>
-                       )}
-                     </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
+                            >
+                              <Pencil className="h-3.5 w-3.5 mr-1" />
+                              Angebot ändern
+                            </Button>
+                            <Button
+                              size="sm"
+                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                              onClick={() => onResendOffer(existingOffer)}
+                              disabled={resendingId === existingOffer.id}
+                            >
+                              <Send className="h-3.5 w-3.5 mr-1" />
+                              {resendingId === existingOffer.id ? "Wird gesendet..." : "Erneut senden"}
+                            </Button>
+                          </>
+                        ) : (
+                          <Button
+                            size="sm"
+                            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                            onClick={() => onCreateOffer(res)}
+                          >
+                            <FileText className="h-3.5 w-3.5 mr-1" />
+                            Angebot erstellen
+                          </Button>
+                        )}
+                        {onDeleteReservation && (
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => onDeleteReservation(res)}
+                            disabled={deletingId === res.id}
+                          >
+                            {deletingId === res.id ? (
+                              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
+                        )}
+                      </div>
                    </div>
                 </CardContent>
               </Card>
