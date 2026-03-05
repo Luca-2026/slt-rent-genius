@@ -758,6 +758,10 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Löffelvolumen": "0,1 – 0,15 m³",
       "Laufwerk": "Gummiketten (Stahlketten optional)",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "bobcat-e50z",
