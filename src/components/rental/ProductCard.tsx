@@ -135,11 +135,12 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
         <div className="space-y-2 mt-auto">
           <div>
             {product.pricePerDay && (
-              <p className="text-lg font-bold text-primary mb-2">
+              <p className="text-lg font-bold text-primary mb-1">
                 {product.pricePerDay}
                 <span className="text-sm font-normal text-muted-foreground">/Tag</span>
               </p>
             )}
+            <PriceGuaranteeBadge variant="inline" />
           </div>
           
           <Button 

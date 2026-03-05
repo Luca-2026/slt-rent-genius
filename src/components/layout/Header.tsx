@@ -54,6 +54,11 @@ export function Header() {
                   <span>{t("marquee.longWeFri")}</span>
                 </div>
                 <span className="text-primary-foreground/50">•</span>
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Shield className="h-4 w-4 text-accent" />
+                  <span>Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
               </div>
             ))}
           </div>
