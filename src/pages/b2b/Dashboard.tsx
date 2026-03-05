@@ -480,7 +480,7 @@ export default function B2BDashboard() {
             </Card>
 
             {/* FAQ */}
-            <Link to="/faq">
+            <Link to="/b2b/faq">
               <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
