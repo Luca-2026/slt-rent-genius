@@ -526,6 +526,11 @@ Deno.serve(async (req: Request) => {
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
         Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
+      <div style="background:#eef6fc;border:1px solid #b3d4e8;border-radius:8px;padding:14px 18px;margin-bottom:25px;">
+        <p style="font-size:14px;color:#00507d;margin:0;line-height:1.6;">
+          Es würde uns freuen, wenn Ihnen unser Angebot zusagt. Wir bitten Sie, das Angebot direkt in Ihrem <strong>B2B-Portal</strong> zu bestätigen.
+        </p>
+      </div>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://slt-rent-genius.lovable.app/b2b/reservations"
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
