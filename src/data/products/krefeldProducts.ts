@@ -444,6 +444,7 @@ import imgHydraulikhammerShb40_1 from "@/assets/products/erdbewegung/hydraulikha
 import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-2.jpeg";
 import imgHydraulikhammerShb40_3 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-3.jpeg";
 // Kabellöffel MS01 15cm image
+import imgTiefloeffelMs01_30cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-1.jpeg";
 import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
@@ -4749,11 +4750,21 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-30cm",
     name: "MS01 Tieflöffel 30cm/24l",
-    description: "Tieflöffel 30cm für MS01 Schnellwechsler",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Tieflöffel 30cm für MS01 Schnellwechsler – Gewichtsklasse 1–2 t",
+    detailedDescription: "Der MS01 Tieflöffel 30cm/24l eignet sich ideal für Grab- und Aushubarbeiten mit Minibaggern der 1- bis 2-Tonnen-Klasse. Mit 300 mm Arbeitsbreite und 24 Liter Volumen ist er vielseitig einsetzbar – von Fundamentaushub bis Leitungsgräben. Der zahnlose Löffel schont empfindliche Untergründe und ermöglicht saubere Grabensohlen.",
+    image: imgTiefloeffelMs01_30cm_1,
+    images: [imgTiefloeffelMs01_30cm_1],
     category: "tiefloeffel",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Volumen": "24 l",
+      "Arbeitsbreite": "300 mm",
+      "Zahnsystem": "ohne Zähne",
+      "Anzahl Zähne": "0",
+      "Gewicht": "36 kg",
+    },
     rentwareCode: { krefeld: "NXR6T1" }
   },
   {
