@@ -133,6 +133,12 @@ export default function About() {
                   </Avatar>
                   <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
                   <p className="text-xs text-muted-foreground">{member.role}</p>
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-xs text-primary hover:text-accent transition-colors mt-1">
+                      <Mail className="h-3 w-3" />
+                      <span>{member.email}</span>
+                    </a>
+                  )}
                 </div>
               </AnimatedSection>
             ))}
