@@ -93,6 +93,12 @@ export default function LocationCategories() {
 
   return (
     <Layout>
+      <SEO
+        title={`Equipment mieten in ${location.name} | SLT Rental`}
+        description={description}
+        canonical={`/mieten/${location.id}`}
+        keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Equipment ${location.name}`}
+      />
       {/* Header with Location Info */}
       <section className="bg-primary py-8 lg:py-12">
         <div className="section-container">
