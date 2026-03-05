@@ -456,8 +456,15 @@ export default function B2BProducts() {
         })}
       </div>
 
-      {/* Category-specific filters */}
-      {filterSections && (
+      {/* Trailer-specific filters */}
+      {selectedCategory === "anhaenger" && (
+        <div className="mb-6">
+          <TrailerFilter onFilterChange={setTrailerFilters} />
+        </div>
+      )}
+
+      {/* Category-specific filters (non-trailer) */}
+      {filterSections && selectedCategory !== "anhaenger" && (
         <div className="mb-6">
           <CategoryFilter
             searchPlaceholder={t(filterSearchPlaceholder)}
