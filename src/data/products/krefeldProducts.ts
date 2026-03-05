@@ -220,6 +220,7 @@ import fliesenschneider2 from "@/assets/products/fliesenschneider/fliesenschneid
 import fliesenschneider3 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-3.jpeg";
 import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-4.jpeg";
 import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
+import imgBohrschrauber18v55 from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-55.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -1016,6 +1017,29 @@ export const werkzeugeProducts: Product[] = [
     images: [imgBohrschrauber60c],
     category: "bohrschrauber",
     rentwareCode: { krefeld: "QMLQVQ" }
+  },
+  {
+    id: "bohrschrauber-gsr18v55",
+    name: "Bosch Akku Bohrschrauber GSR 18V-55",
+    description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
+    detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
+    image: imgBohrschrauber18v55,
+    images: [imgBohrschrauber18v55],
+    category: "bohrschrauber",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Drehmoment (weich/hart)": "28 / 55 Nm",
+      "Leerlaufdrehzahl (1./2. Gang)": "0–460 / 0–1.800 min⁻¹",
+      "Akkutyp": "Lithium-Ionen",
+      "Akkuspannung": "18,0 V",
+      "Bohrfutterspannbereich": "1,5–13 mm",
+      "Gewicht exkl. Akku": "1 kg",
+      "Drehmomentstufen": "20+1",
+      "Schrauben-Ø max.": "10 mm",
+      "Bohr-Ø Holz max.": "35 mm",
+      "Bohr-Ø Stahl max.": "13 mm",
+    },
+    onRequest: true,
   },
   {
     id: "bosch-winkelschleifer-gws18v-10",
