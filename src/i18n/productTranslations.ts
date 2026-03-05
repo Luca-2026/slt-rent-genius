@@ -124,6 +124,14 @@ export const specKeyTranslations: Record<string, string> = {
   "Werkzeugaufnahme": "Tool Holder",
   "Abmessung (LxB)": "Dimensions (LxW)",
 
+  // Wall Chaser / Milling
+  "Leistungsaufnahme": "Power Input",
+  "Nennspannung": "Rated Voltage",
+  "Max. Schlitztiefe": "Max. Groove Depth",
+  "Max. Schlitzbreite": "Max. Groove Width",
+  "Nenndrehzahl": "Rated Speed",
+  "Scheibendurchmesser": "Disc Diameter",
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
