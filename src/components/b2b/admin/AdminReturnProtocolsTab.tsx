@@ -41,6 +41,8 @@ interface Props {
 export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
   const [protocols, setProtocols] = useState<ReturnProtocol[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchProtocols = async () => {
     setLoading(true);
