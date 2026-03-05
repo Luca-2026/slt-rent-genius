@@ -209,9 +209,11 @@ Deno.serve(async (req: Request) => {
           const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
-    <div style="background:#00507d;padding:30px 40px;text-align:center;">
-      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:60px;width:auto;margin-bottom:8px;" />
-      <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Willkommen im Team</p>
+    <div style="background:#ffffff;padding:25px 40px;text-align:center;border-bottom:3px solid #00507d;">
+      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
+    </div>
+    <div style="background:#00507d;padding:14px 40px;text-align:center;">
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Willkommen im Team</p>
     </div>
     <div style="padding:35px 40px;">
       <p style="font-size:15px;color:#333;">Hallo ${body.first_name} ${body.last_name},</p>
