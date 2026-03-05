@@ -122,6 +122,11 @@ import zwangsmischer140l2 from "@/assets/products/mischer/zwangsmischer-140l-2.j
 import zwangsmischer140l3 from "@/assets/products/mischer/zwangsmischer-140l-3.jpeg";
 import rotationslaser1 from "@/assets/products/messtechnik/rotationslaser-grl400h-1.jpeg";
 import rotationslaser2 from "@/assets/products/messtechnik/rotationslaser-grl400h-2.jpeg";
+import fliesenschneider1 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-1.jpeg";
+import fliesenschneider2 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-2.jpeg";
+import fliesenschneider3 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-3.jpeg";
+import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-4.jpeg";
+import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
