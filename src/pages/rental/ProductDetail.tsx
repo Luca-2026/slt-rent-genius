@@ -356,7 +356,24 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Spülmaschinen-Empfehlung für Geschirr-Kategorie */}
+              {/* Rental Notes (e.g. operating hours, fuel costs) */}
+              {product.rentalNotes && product.rentalNotes.length > 0 && (
+                <div className="bg-accent/5 border border-accent/20 rounded-xl p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
+                    <Info className="h-4 w-4 text-accent flex-shrink-0" />
+                    Mietkonditionen
+                  </h2>
+                  <ul className="space-y-2">
+                    {product.rentalNotes.map((note, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <CheckCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
+                        <span>{note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {categoryId === "geschirr-glaeser-besteck" && product.id !== "spuelmaschine-frontlader" && product.id !== "bonn-spuelmaschine-gastro" && (() => {
                 const spuelmaschine = rawRelatedProducts.find(p => 
                   p.id === "spuelmaschine-frontlader" || p.id === "bonn-spuelmaschine-gastro"

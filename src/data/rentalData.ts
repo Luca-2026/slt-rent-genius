@@ -244,7 +244,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "erdbewegung",
     title: "Erdbewegung",
-    description: "Minibagger (1t–2,7t), Radlader, Dumper sowie Tieflöffel, Kabellöffel, Grabenräumlöffel, Hydraulikhämmer & Sortiergreifer mieten.",
+    description: "Minibagger (1t–5t), Radlader, Dumper sowie Tieflöffel, Kabellöffel, Grabenräumlöffel, Hydraulikhämmer & Sortiergreifer mieten.",
     icon: iconBagger,
   },
   {
