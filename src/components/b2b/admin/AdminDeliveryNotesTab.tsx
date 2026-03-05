@@ -39,6 +39,8 @@ interface Props {
 export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
   const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchDeliveryNotes = async () => {
     setLoading(true);
