@@ -232,19 +232,32 @@ export default function AdminDashboard() {
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
+        const mainItems = items.map((item) => ({
+          product_name: item.product_name,
+          description: item.description || undefined,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          discount_percent: item.discount_percent || 0,
+          rental_start: item.rental_start || reservation.start_date,
+          rental_end: item.rental_end || reservation.end_date,
+          image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
+        }));
+
+        // Append surcharges as line items
+        const surchargeItems = invoiceSurcharges
+          .filter((s) => s.amount > 0 && s.name.trim())
+          .map((s) => ({
+            product_name: s.name,
+            description: "Zusatzkosten",
+            quantity: 1,
+            unit_price: s.amount,
+            discount_percent: 0,
+          }));
+
         invoiceBody = {
           reservation_id: reservation.id,
           delivery_cost: offer.delivery_cost || 0,
-          custom_items: items.map((item) => ({
-            product_name: item.product_name,
-            description: item.description || undefined,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            discount_percent: item.discount_percent || 0,
-            rental_start: item.rental_start || reservation.start_date,
-            rental_end: item.rental_end || reservation.end_date,
-            image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
-          })),
+          custom_items: [...mainItems, ...surchargeItems],
           notes: proformaMode
             ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
             : (offer.notes || undefined),
@@ -259,16 +272,18 @@ export default function AdminDashboard() {
           );
         }
 
-        invoiceBody.custom_items = targetReservations.map((r) => {
+        const mainItems = targetReservations.map((r) => {
           const unitPrice = r.original_price || 0;
           const discountPercent = r.discounted_price != null && r.original_price && r.original_price > 0
             ? Math.round((1 - r.discounted_price / r.original_price) * 100)
             : 0;
+          const timeStart = r.start_time ? ` ${r.start_time} Uhr` : "";
+          const timeEnd = r.end_time ? ` ${r.end_time} Uhr` : "";
           return {
             product_name: r.product_name || r.product_id,
             description: r.end_date
-              ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}`
-              : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}`,
+              ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}${timeStart} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}${timeEnd}`
+              : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}${timeStart}`,
             quantity: r.quantity || 1,
             unit_price: unitPrice,
             discount_percent: discountPercent,
@@ -277,6 +292,19 @@ export default function AdminDashboard() {
             image_url: getProductImageUrl(r.product_id) || getProductImageUrlByName(r.product_name || r.product_id) || undefined,
           };
         });
+
+        // Append surcharges
+        const surchargeItems = invoiceSurcharges
+          .filter((s) => s.amount > 0 && s.name.trim())
+          .map((s) => ({
+            product_name: s.name,
+            description: "Zusatzkosten",
+            quantity: 1,
+            unit_price: s.amount,
+            discount_percent: 0,
+          }));
+
+        invoiceBody.custom_items = [...mainItems, ...surchargeItems];
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
@@ -291,6 +319,7 @@ export default function AdminDashboard() {
       setSelectedReservation(null);
       setInvoiceFromOffer(null);
       setProformaMode(false);
+      setInvoiceSurcharges([]);
       fetchData();
     } catch (error: any) {
       toast({
