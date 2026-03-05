@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowLeft, MapPin, Phone, Navigation, User } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
+import { GoogleReviews, getPlaceId, getReviewUrl } from "@/components/reviews/GoogleReviews";
 import { useTranslation } from "react-i18next";
 import krefeldImage from "@/assets/locations/krefeld.jpg";
 import bonnImage from "@/assets/locations/bonn.webp";
