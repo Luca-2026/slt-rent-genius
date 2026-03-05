@@ -7,7 +7,7 @@ import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { B2BChatAssistant } from "@/components/b2b/B2BChatAssistant";
 import { 
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen,
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -24,6 +24,7 @@ const customerNavItems = [
   { href: "/b2b/uebergabeprotokolle", label: "Übergabeprotokolle", icon: ClipboardCheck },
   { href: "/b2b/rueckgabeprotokolle", label: "Rückgabeprotokolle", icon: Undo2 },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
+  { href: "/b2b/firmendaten", label: "Firmendaten", icon: Building2 },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];

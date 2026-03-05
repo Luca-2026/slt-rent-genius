@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.google-reviews]
 verify_jwt = false
+
+[functions.notify-profile-change]
+verify_jwt = false
