@@ -84,7 +84,13 @@ export default function Index() {
 
   return (
     <Layout>
-      {/* Hero Section */}
+      <SEO
+        title="Baumaschinen & Equipment mieten | SLT Rental"
+        description="SLT Rental: Baumaschinen, Anhänger, Event-Equipment und mehr mieten in Krefeld, Bonn und Mülheim. Über 1.700 Produkte. Faire Preise, flexible Mietzeiten."
+        canonical="/"
+        keywords="Baumaschinen mieten, Anhänger mieten, Minibagger mieten, Event-Equipment mieten, NRW, Krefeld, Bonn, Mülheim"
+        jsonLd={SLT_ORGANIZATION_JSONLD}
+      />
       <section className="relative z-20 bg-primary py-16 lg:py-0 lg:min-h-[calc(100svh-17rem)] lg:flex lg:items-center">
         {/* Background Image Slider */}
         <HeroBackgroundSlider />
