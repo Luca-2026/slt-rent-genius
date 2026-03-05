@@ -885,6 +885,31 @@ export default function MyReservations() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Reservation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Anfrage löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchtest du die Anfrage für „{reservationToDelete?.product_name || reservationToDelete?.product_id}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteReservation}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deletingId ? (
+                <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird gelöscht...</>
+              ) : (
+                <><Trash2 className="h-4 w-4 mr-1.5" />Löschen</>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </B2BPortalLayout>
   );
 }
