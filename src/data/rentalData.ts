@@ -204,6 +204,7 @@ export interface Product {
   compatibleMachines?: string[]; // IDs of machines this accessory is compatible with
   onRequest?: boolean; // Product available on request only (no direct booking)
   driveType?: string; // Drive type: diesel, elektro, benzin
+  rentalNotes?: string[]; // Additional rental condition notes (e.g. operating hours, fuel)
 }
 
 export interface ProductCategory {
