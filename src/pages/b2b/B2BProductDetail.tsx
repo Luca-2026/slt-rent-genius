@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft, ChevronLeft, ChevronRight, Package, CheckCircle,
   ShoppingCart, Play, Info, FileDown, ShieldCheck, ExternalLink,
-  Car, Smartphone, HardHat, Sparkles, Percent,
+  Car, Smartphone, HardHat, Sparkles, Percent, Zap,
 } from "lucide-react";
 import {
   getLocationById,
@@ -242,7 +242,7 @@ export default function B2BProductDetail() {
 
           {/* Technical Specifications */}
           {product.specifications && Object.keys(product.specifications).length > 0 && (
-            <div className="bg-card rounded-xl border border-border p-5">
+            <div className="bg-card rounded-xl border border-border p-4 md:p-5">
               <h2 className="text-base font-semibold text-headline mb-4">Technische Daten</h2>
               <div className="divide-y divide-border rounded-lg overflow-hidden border border-border">
                 {Object.entries(product.specifications).map(([key, value], i) => (
@@ -261,12 +261,17 @@ export default function B2BProductDetail() {
                   </div>
                 ))}
               </div>
+              {product.weightKg && (
+                <p className="text-xs text-muted-foreground mt-3">
+                  Gewicht: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
+                </p>
+              )}
             </div>
           )}
 
           {/* Rental Notes */}
           {product.rentalNotes && product.rentalNotes.length > 0 && (
-            <div className="bg-accent/5 border border-accent/20 rounded-xl p-5">
+            <div className="bg-accent/5 border border-accent/20 rounded-xl p-4 md:p-5">
               <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
                 <Info className="h-4 w-4 text-accent flex-shrink-0" />
                 Mietkonditionen
@@ -284,7 +289,7 @@ export default function B2BProductDetail() {
 
           {/* Videos */}
           {videoUrls.length > 0 && (
-            <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+            <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-4">
               {videoUrls.map((url, idx) => (
                 <div key={url}>
                   <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
@@ -310,7 +315,7 @@ export default function B2BProductDetail() {
 
           {/* PDF Download */}
           {product.pdfUrl && (
-            <div className="bg-card rounded-xl border border-border p-5">
+            <div className="bg-card rounded-xl border border-border p-4 md:p-5">
               <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
                 <FileDown className="h-4 w-4 text-primary flex-shrink-0" />
                 Bedienungsanleitung
@@ -324,6 +329,100 @@ export default function B2BProductDetail() {
                 PDF herunterladen
               </a>
             </div>
+          )}
+
+          {/* Hilfe-Artikel für Anhänger */}
+          {categoryId === "anhaenger" && (
+            <div className="space-y-3">
+              <Link to="/hilfe" state={{ articleId: "anhaenger-beladen" }} className="block">
+                <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <ShieldCheck className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm">Anhänger richtig beladen & sichern</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">Tipps zur Ladungssicherung und Gewichtsverteilung.</p>
+                      <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                        Zur Anleitung <ExternalLink className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+              <Link to="/hilfe" state={{ articleId: "anhaenger-codesystem" }} className="block">
+                <div className="bg-accent/5 border border-accent/20 rounded-xl p-4 hover:bg-accent/10 transition-colors group">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Smartphone className="h-4 w-4 text-accent" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm">Code-System & Abholung</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">So funktioniert die flexible Abholung mit Code.</p>
+                      <span className="inline-flex items-center gap-1 text-xs text-accent font-medium mt-1.5 group-hover:underline">
+                        Zum Code-System <ExternalLink className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+              <Link to="/hilfe" state={{ articleId: "anhaenger-fuehrerschein" }} className="block">
+                <div className="bg-secondary border border-border rounded-xl p-4 hover:bg-secondary/80 transition-colors group">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Car className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm">Führerschein & Zugfahrzeug</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">Welcher Führerschein wird für welchen Anhänger benötigt?</p>
+                      <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                        Mehr erfahren <ExternalLink className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
+
+          {/* Hilfe-Artikel für Erdbewegung (Minibagger) */}
+          {categoryId === "erdbewegung" && product?.category === "minibagger" && (
+            <Link to="/hilfe" state={{ articleId: "minibagger-einweisung" }} className="block">
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <HardHat className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-sm">Minibagger Einweisung & Sicherheit</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">Wichtige Hinweise zu Bedienung und Sicherheitsregeln.</p>
+                    <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                      Zur Sicherheitsanleitung <ExternalLink className="h-3 w-3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          )}
+
+          {/* Hilfe-Artikel für Hüpfburgen */}
+          {categoryId === "huepfburgen" && (
+            <Link to="/hilfe" state={{ articleId: "huepfburg-aufbau-sicherheit" }} className="block">
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-sm">Hüpfburg sicher aufbauen & nutzen</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">Schritt-für-Schritt-Anleitung für Auf-/Abbau und Sicherheitsregeln.</p>
+                    <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                      Zur Sicherheitsanleitung <ExternalLink className="h-3 w-3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
           )}
         </div>
 
@@ -431,7 +530,7 @@ function B2BInquiryCard({
     <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-3 md:space-y-4">
       {/* Price info */}
       {product.pricePerDay && (
-        <div className="pb-4 border-b border-border">
+        <div className="pb-3 border-b border-border">
           <div className={`text-2xl font-bold ${hasDiscount ? "line-through text-muted-foreground" : "text-primary"}`}>
             {product.pricePerDay}
             <span className="text-sm font-normal"> / Tag</span>
@@ -444,17 +543,30 @@ function B2BInquiryCard({
               <span className="text-sm font-bold text-accent">Ihr B2B-Preis</span>
             </div>
           )}
+          {product.priceWeekend && (
+            <p className="text-xs text-muted-foreground mt-1">
+              Weekend-Tarif: {product.priceWeekend}
+            </p>
+          )}
         </div>
       )}
 
       {!product.pricePerDay && hasDiscount && (
-        <div className="pb-4 border-b border-border">
+        <div className="pb-3 border-b border-border">
           <Badge className="bg-accent text-accent-foreground text-sm px-2 py-0.5">
             -{discount}% B2B-Rabatt
           </Badge>
           <p className="text-xs text-muted-foreground mt-1">auf den Listenpreis</p>
         </div>
       )}
+
+      {/* 1h Promise */}
+      <div className="flex items-center gap-2 bg-primary/5 rounded-lg p-2.5 border border-primary/10">
+        <Zap className="h-4 w-4 text-primary flex-shrink-0" />
+        <p className="text-xs text-foreground font-medium">
+          Angebot innerhalb von <strong>1 Stunde</strong> – garantiert!
+        </p>
+      </div>
 
       {/* Inquiry Button */}
       <Button
@@ -467,7 +579,7 @@ function B2BInquiryCard({
       </Button>
 
       <p className="text-xs text-muted-foreground text-center">
-        Sie erhalten innerhalb von 24h ein verbindliches Angebot.
+        Verbindliches Angebot mit Ihrem persönlichen B2B-Rabatt.
       </p>
     </div>
   );
