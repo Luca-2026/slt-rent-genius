@@ -432,7 +432,7 @@ Deno.serve(async (req: Request) => {
 
     if (resendApiKey && send_email) {
       try {
-        const customerEmail = profile.billing_email || profile.contact_email;
+        const customerEmail = profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
         const formatDate = (dateStr: string) => {

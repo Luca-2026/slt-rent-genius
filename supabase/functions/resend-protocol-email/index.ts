@@ -86,7 +86,7 @@ serve(async (req) => {
 
       documentNumber = dn.delivery_note_number;
       documentId = dn.id;
-      recipientEmail = profile.billing_email || profile.contact_email;
+      recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
       // Get items
@@ -133,7 +133,7 @@ serve(async (req) => {
 
       documentNumber = rp.return_protocol_number;
       documentId = rp.id;
-      recipientEmail = profile.billing_email || profile.contact_email;
+      recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
       const { data: items } = await serviceClient.from("b2b_return_protocol_items").select("*").eq("return_protocol_id", rp.id);
