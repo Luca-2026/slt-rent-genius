@@ -132,10 +132,10 @@ export default function KnowledgeBase() {
           <span className="text-sm font-medium text-headline">Fragen zur Abrechnung?</span>
           <a
             href="mailto:buchhaltung@slt-tg.de"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold border-2 border-primary text-primary bg-background rounded-md hover:border-accent transition-colors"
           >
             <Mail className="h-4 w-4" />
-            buchhaltung@slt-tg.de
+            Buchhaltung kontaktieren
           </a>
         </div>
       </section>
