@@ -66,18 +66,20 @@ export function PriceGuaranteeBadge({ variant = "inline", className }: PriceGuar
   // inline variant (for product cards)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button
-          className={cn(
-            "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
-            className
-          )}
-          onClick={(e) => { e.stopPropagation(); }}
-        >
-          <Shield className="h-3 w-3" />
-          Tiefpreisgarantie
-        </button>
-      </DialogTrigger>
+      <button
+        className={cn(
+          "inline-flex items-center gap-1 text-xs text-primary font-medium hover:underline cursor-pointer",
+          className
+        )}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setOpen(true);
+        }}
+      >
+        <Shield className="h-3 w-3" />
+        Tiefpreisgarantie
+      </button>
       <PriceGuaranteeDialogContent />
     </Dialog>
   );
