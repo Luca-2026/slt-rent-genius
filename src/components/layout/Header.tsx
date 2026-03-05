@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Percent } from "lucide-react";
+import { Menu, X, Percent, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import sltLogo from "@/assets/slt-logo.png";
 
 const locations = [
