@@ -500,7 +500,7 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Profile */}
-            <Link to="/b2b/profil" className="block h-full">
+            <Link to="/b2b/firmendaten" className="block h-full">
               <Card className="h-full flex flex-col hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
