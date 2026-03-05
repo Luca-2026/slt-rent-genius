@@ -151,9 +151,9 @@ export default function Locations() {
                            {t("locations.route")}
                         </Button>
                       </a>
-                      <Link to={`/standorte/${location.id}`} className="flex-1">
+                      <Link to={`/mieten/${location.id}`} className="flex-1">
                          <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover" size="sm">
-                           {t("locations.details")}
+                           Zu den Mietartikeln
                         </Button>
                       </Link>
                     </div>
