@@ -7,7 +7,7 @@ import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { B2BChatAssistant } from "@/components/b2b/B2BChatAssistant";
 import { 
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen,
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
