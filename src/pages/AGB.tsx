@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 
