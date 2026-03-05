@@ -815,7 +815,10 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 500,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "GH8W6W" }
+    rentwareCode: { krefeld: "GH8W6W" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag (Laufzeit ca. 8–10 h).",
+    ],
   },
   {
     id: "cormidi-c60-hitip",
