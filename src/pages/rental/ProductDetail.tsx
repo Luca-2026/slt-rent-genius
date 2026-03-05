@@ -602,6 +602,7 @@ export default function ProductDetail() {
               <PurchaseInquiryBanner
                 productName={product.name}
                 locationName={location.shortName}
+                locationEmail={location.email}
                 categoryId={categoryId}
               />
             </div>

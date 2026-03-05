@@ -62,6 +62,24 @@ export function PurchaseInquiryBanner({ productName, locationName, locationEmail
       });
 
       if (error) throw error;
+
+      // Send email notification to the location
+      try {
+        await supabase.functions.invoke("send-inquiry-email", {
+          body: {
+            productName,
+            locationName,
+            locationEmail: locationEmail || "mieten@slt-rental.de",
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            message: `KAUFANFRAGE\n\n${form.message || "Keine zusätzliche Nachricht."}`,
+          },
+        });
+      } catch (emailErr) {
+        console.error("Purchase inquiry email failed:", emailErr);
+      }
+
       setIsSuccess(true);
     } catch (err) {
       console.error("Purchase inquiry error:", err);
