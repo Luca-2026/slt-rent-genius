@@ -484,7 +484,7 @@ export default function B2BDashboard() {
 
             {/* FAQ */}
             <Link to="/faq">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <HelpCircle className="h-6 w-6 text-primary" />
