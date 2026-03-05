@@ -124,6 +124,14 @@ export const specKeyTranslations: Record<string, string> = {
   "Werkzeugaufnahme": "Tool Holder",
   "Abmessung (LxB)": "Dimensions (LxW)",
 
+  // Wall Chaser / Milling
+  "Leistungsaufnahme": "Power Input",
+  "Nennspannung": "Rated Voltage",
+  "Max. Schlitztiefe": "Max. Groove Depth",
+  "Max. Schlitzbreite": "Max. Groove Width",
+  "Nenndrehzahl": "Rated Speed",
+  "Scheibendurchmesser": "Disc Diameter",
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
@@ -504,7 +512,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "einhell-bauleuchte-te-cl18-2000": { name: "Einhell Cordless Work Light TE-CL 18/2000", description: "LED work light with 2000 lumens" },
   "bosch-ladegeraet-gal18v6-80": { name: "Bosch 6-Bay Charger GAL 18V6-80", description: "Fast charger for 6 batteries simultaneously" },
   "eibenstock-diamantbohrer-ehd1500": { name: "Eibenstock Diamond Core Drill EHD 1500", description: "Core drill for concrete and masonry" },
-  "mauerschlitzfraese": { name: "Wall Chaser", description: "Electric cutter for cable channels" },
+  "mauerschlitzfraese": { name: "Wall Chaser", description: "Electric wall chaser for cable channels – up to 45 mm depth and 46 mm width." },
   "einhell-laubbläser-gp-lb": { name: "Einhell Leaf Blower GP-LB 36/210 Li", description: "Cordless leaf blower with high air flow" },
   "einhell-nageler-te-cn": { name: "Einhell Cordless Nailer TE-CN", description: "Cordless nail gun for roofing" },
   "einhell-heissluftfoehn-te-ha18li": { name: "Einhell Cordless Heat Gun TE-HA 18Li", description: "Cordless heat gun" },
@@ -784,7 +792,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-nasstrockensauger-gas35": { name: "Wet/Dry Vacuum GAS 35 M AFC", description: "Professional industrial vacuum with filter cleaning." },
   "bonn-rotationslaser-grl400h": { name: "Bosch Rotary Laser GRL 400H", description: "Rotary laser with up to 400m working range for horizontal levelling. Receiver not included." },
   "rotationslaser-grl400h": { name: "Bosch Rotary Laser GRL 400H", description: "Rotary laser with up to 400m working range for horizontal levelling. Receiver not included." },
-  "bonn-mauerschlitzfraese": { name: "Wall Chaser", description: "For precise channels in masonry." },
+  "bonn-mauerschlitzfraese": { name: "Wall Chaser", description: "For precise channels in masonry – up to 45 mm depth and 46 mm width." },
   "bonn-winkelschleifer-gws18v": { name: "Bosch Cordless Angle Grinder GWS 18V-10", description: "Powerful cordless angle grinder." },
   "bonn-bautrockner-kt200": { name: "Construction Dryer KT200", description: "Compact construction dryer for small to medium rooms." },
   "bonn-bautrockner-kt554": { name: "Allegra Construction Dryer KT554", description: "Powerful construction dryer for large areas." },

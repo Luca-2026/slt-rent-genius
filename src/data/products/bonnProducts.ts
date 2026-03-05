@@ -178,6 +178,7 @@ import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergrei
 // Shared images with Krefeld - Werkzeuge
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgAbbruchhammerHm1812 from "@/assets/products/werkzeuge/abbruchhammer-hm1812.jpeg";
+import imgMauerschlitzfraese from "@/assets/products/werkzeuge/mauerschlitzfraese.jpeg";
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgFugenschneider1 from "@/assets/products/werkzeuge/fugenschneider-bs50e-1.jpg";
 import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e-2.jpg";
@@ -858,8 +859,26 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-mauerschlitzfraese",
     name: "Mauerschlitzfräse",
-    description: "Für präzise Schlitze in Mauerwerk.",
-    image: "/placeholder.svg",
+    description: "Für präzise Schlitze in Mauerwerk – bis 45 mm Tiefe und 46 mm Breite.",
+    detailedDescription: "Leistungsstarke Mauerschlitzfräse mit 2.300 W für das Fräsen von Kabelschlitzen in Mauerwerk. Mit einer maximalen Schlitztiefe von 45 mm und Schlitzbreite von 46 mm ideal für Elektroinstallationen. Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. Diamanttrennscheiben zum Kauf optional erhältlich.",
+    image: imgMauerschlitzfraese,
+    images: [imgMauerschlitzfraese],
+    category: "fraese",
+    specifications: {
+      "Leistungsaufnahme": "2.300 W",
+      "Nennspannung": "230 V",
+      "Max. Schlitztiefe": "45 mm",
+      "Max. Schlitzbreite": "46 mm",
+      "Nenndrehzahl": "4.300 U/min",
+      "Leerlaufdrehzahl": "7.500 U/min",
+      "Werkzeugaufnahme": "22,2 mm",
+      "Scheibendurchmesser": "max. 150 mm",
+      "Gewicht": "6,1 kg",
+    },
+    rentalNotes: [
+      "Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten.",
+      "Diamanttrennscheiben zum Kauf optional erhältlich.",
+    ],
     rentwareCode: { bonn: "KWUY1N" },
   },
   {

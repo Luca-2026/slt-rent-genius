@@ -484,6 +484,7 @@ import imgBohrhammer45c from "@/assets/products/werkzeuge/bohrhammer-gbh18v-45c.
 import imgDiamantbohrer from "@/assets/products/werkzeuge/diamantbohrer-ehd1500.jpg";
 import imgAbbruchhammer from "@/assets/products/werkzeuge/abbruchhammer-gsh16-28.png";
 import imgAbbruchhammerHm1812 from "@/assets/products/werkzeuge/abbruchhammer-hm1812.jpeg";
+import imgMauerschlitzfraese from "@/assets/products/werkzeuge/mauerschlitzfraese.jpeg";
 import imgDrehschlagschrauber1 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h.jpg";
 import imgDrehschlagschrauber2 from "@/assets/products/werkzeuge/drehschlagschrauber-gds18v-1050h-2.jpg";
 import imgNageler from "@/assets/products/werkzeuge/nageler-te-cn.jpg";
@@ -1311,11 +1312,27 @@ export const werkzeugeProducts: Product[] = [
   {
     id: "mauerschlitzfraese",
     name: "Mauerschlitzfräse",
-    description: "Elektrofräse für Kabelschlitze",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Elektrofräse für Kabelschlitze – bis 45 mm Tiefe und 46 mm Breite.",
+    detailedDescription: "Leistungsstarke Mauerschlitzfräse mit 2.300 W für das Fräsen von Kabelschlitzen in Mauerwerk. Mit einer maximalen Schlitztiefe von 45 mm und Schlitzbreite von 46 mm ideal für Elektroinstallationen. Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. Diamanttrennscheiben zum Kauf optional erhältlich.",
+    image: imgMauerschlitzfraese,
+    images: [imgMauerschlitzfraese],
     category: "fraese",
-    rentwareCode: { krefeld: "XUQECL" }
+    specifications: {
+      "Leistungsaufnahme": "2.300 W",
+      "Nennspannung": "230 V",
+      "Max. Schlitztiefe": "45 mm",
+      "Max. Schlitzbreite": "46 mm",
+      "Nenndrehzahl": "4.300 U/min",
+      "Leerlaufdrehzahl": "7.500 U/min",
+      "Werkzeugaufnahme": "22,2 mm",
+      "Scheibendurchmesser": "max. 150 mm",
+      "Gewicht": "6,1 kg",
+    },
+    rentalNotes: [
+      "Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten.",
+      "Diamanttrennscheiben zum Kauf optional erhältlich.",
+    ],
+    rentwareCode: { krefeld: "XUQECL" },
   },
   {
     id: "einhell-laubbläser-gp-lb",
