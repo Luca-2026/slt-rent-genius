@@ -32,6 +32,8 @@ const B2BDeliveryNotes = lazy(() => import("./pages/b2b/DeliveryNotes"));
 const B2BReturnProtocols = lazy(() => import("./pages/b2b/ReturnProtocols"));
 const B2BCompanyProfile = lazy(() => import("./pages/b2b/CompanyProfile"));
 const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
+const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
 
 // Lazy-loaded: Other pages
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
