@@ -786,6 +786,10 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Hydraulikleistung": "99,2 l/min",
       "Schwenkbereich Ausleger": "Links 75°, Rechts 55°",
     },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "kramer-5045",
