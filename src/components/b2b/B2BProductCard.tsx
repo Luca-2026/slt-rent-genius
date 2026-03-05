@@ -109,6 +109,7 @@ export function B2BProductCard({
               {discountPercent}% B2B-Rabatt auf Listenpreis
             </p>
           )}
+          <PriceGuaranteeBadge variant="inline" />
 
           <div className="flex gap-1.5">
             <Button
