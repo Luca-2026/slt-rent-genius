@@ -71,7 +71,7 @@ export default function Index() {
         {/* Background Image Slider */}
         <HeroBackgroundSlider />
         <div className="absolute inset-0 bg-primary/85" />
-        <div className="absolute inset-0 bg-primary/30" />
+        <div className="absolute inset-0 bg-primary/20" />
         <div className="section-container relative z-10">
           <div className="max-w-3xl">
             {/* Claim Badge */}
