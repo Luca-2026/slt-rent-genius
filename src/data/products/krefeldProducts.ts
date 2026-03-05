@@ -456,6 +456,7 @@ import imgDieselKanister20l_1 from "@/assets/products/erdbewegung/diesel-kaniste
 import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1.jpeg";
 import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-symlock-1.jpeg";
 import imgGrabenraeumloeffelMs03_140cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms03-140cm-1.jpeg";
+import imgKabelloeffelMs03_20cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms03-20cm-1.png";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4870,6 +4871,22 @@ export const erdbewegungZusatzProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "kabelloeffel",
     rentwareCode: { krefeld: "9YCXJH" }
+  },
+  {
+    id: "ms03-kabelloeffel-20cm-symlock",
+    name: "MS03 Kabellöffel 20cm Symlock",
+    description: "Kabellöffel 20cm für MS03 Symlock – Gewichtsklasse 2,5–4 t",
+    detailedDescription: "Der MS03 Kabellöffel 20cm Symlock ist ein schmaler Löffel ohne Zähne, speziell für das präzise Freilegen und Verlegen von Kabeln und Leitungen in engen Gräben. Die 200 mm Arbeitsbreite ermöglicht akkurates Arbeiten bei minimalem Aushub. Dank des Symlock-Schnellwechselsystems ist der Anbau an MS03-kompatible Bagger der 2,5- bis 4-Tonnen-Klasse in wenigen Sekunden erledigt.",
+    image: imgKabelloeffelMs03_20cm_1,
+    images: [imgKabelloeffelMs03_20cm_1],
+    category: "kabelloeffel",
+    compatibleMachines: ["xcmg-xe27e"],
+    specifications: {
+      "Aufnahme": "MS03 (Symlock)",
+      "Gewichtsklasse Trägergerät": "2,5 – 4 t",
+      "Arbeitsbreite": "200 mm",
+      "Gewicht": "46 kg",
+    },
   },
   // Grabenräumlöffel
   {
