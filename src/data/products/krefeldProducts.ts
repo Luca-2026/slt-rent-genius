@@ -1129,6 +1129,26 @@ export const werkzeugeProducts: Product[] = [
     rentwareCode: { krefeld: "61VZOZ" }
   },
   {
+    id: "rotationslaser-grl400h",
+    name: "Bosch Rotationslaser GRL 400H",
+    description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
+    detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
+    image: rotationslaser1,
+    images: [rotationslaser1, rotationslaser2],
+    category: "laser",
+    specifications: {
+      "Arbeitsbereich mit Empfänger": "bis zu 400 m (Durchmesser)",
+      "Arbeitsbereich ohne Empfänger": "bis zu 20 m (Durchmesser)",
+      "Nivelliergenauigkeit": "± 2,4 mm bei 30 m",
+      "Selbstnivellierbereich": "± 8 % (± 5°)",
+    },
+    rentalNotes: [
+      "Empfänger nicht im Set enthalten.",
+      "Nivelliergenauigkeit zzgl. einsatzabhängiger Abweichung.",
+    ],
+    onRequest: true,
+  },
+  {
     id: "bosch-ortungsgeraet-dtect200c",
     name: "Bosch Ortungsgerät D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
