@@ -42,7 +42,24 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
   const [protocols, setProtocols] = useState<ReturnProtocol[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const handleDelete = async (rp: ReturnProtocol) => {
+    if (!confirm(`Rückgabeprotokoll ${rp.return_protocol_number} wirklich löschen?`)) return;
+    setDeletingId(rp.id);
+    try {
+      await supabase.from("b2b_return_protocol_items").delete().eq("return_protocol_id", rp.id);
+      const { error } = await supabase.from("b2b_return_protocols").delete().eq("id", rp.id);
+      if (error) throw error;
+      toast({ title: "Rückgabeprotokoll gelöscht" });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const fetchProtocols = async () => {
     setLoading(true);

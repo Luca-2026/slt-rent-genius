@@ -40,7 +40,26 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
   const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const handleDelete = async (dn: DeliveryNote) => {
+    if (!confirm(`Übergabeprotokoll ${dn.delivery_note_number} wirklich löschen?`)) return;
+    setDeletingId(dn.id);
+    try {
+      await supabase.from("b2b_delivery_note_items").delete().eq("delivery_note_id", dn.id);
+      // Nullify references from return protocols
+      await supabase.from("b2b_return_protocols").update({ delivery_note_id: null }).eq("delivery_note_id", dn.id);
+      const { error } = await supabase.from("b2b_delivery_notes").delete().eq("id", dn.id);
+      if (error) throw error;
+      toast({ title: "Übergabeprotokoll gelöscht" });
+      fetchDeliveryNotes();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const fetchDeliveryNotes = async () => {
     setLoading(true);
