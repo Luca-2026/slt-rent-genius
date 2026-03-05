@@ -337,12 +337,35 @@ Deno.serve(async (req: Request) => {
           `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}</li>`
         ).join("");
 
-        // Prepare HTML attachment
-        const htmlBase64 = encodeBase64(htmlBytes);
+        // Generate PDF for email attachment
+        const pdfBytes = await generateDocumentPdf({
+          title: "UEBERGABEPROTOKOLL",
+          documentNumber: deliveryNoteNumber,
+          date: germanDate,
+          profile,
+          items: (offerItems || []).map((item: any) => ({
+            name: item.product_name,
+            description: item.description || undefined,
+            quantity: item.quantity,
+          })),
+          sections: [
+            ...(offer.offer_number ? [{ label: "Angebot", value: offer.offer_number }] : []),
+            ...(known_defects ? [{ label: "Bekannte Maengel bei Uebergabe", value: known_defects }] : []),
+            ...(additional_defects ? [{ label: "Zusaetzliche Maengel", value: additional_defects }] : []),
+            ...(operating_hours ? [{ label: "Betriebsstunden", value: operating_hours }] : []),
+            ...(fuel_level ? [{ label: "Tankfuellstand", value: fuel_level }] : []),
+            ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
+            ...(notes || offer.notes ? [{ label: "Bemerkungen", value: notes || offer.notes }] : []),
+            ...(agb_accepted ? [{ label: "AGB", value: "Wurden akzeptiert" }] : []),
+          ],
+          signatures: { customerData: signature_data, staffData: staff_signature_data, staffName: staff_name },
+        });
+        const pdfBase64 = encodeBase64(pdfBytes);
+        const pdfFileName = fileName.replace(".html", ".pdf");
         const attachments = [{
-          filename: fileName.replace(".html", ".html"),
-          content: htmlBase64,
-          content_type: "text/html; charset=utf-8",
+          filename: pdfFileName,
+          content: pdfBase64,
+          content_type: "application/pdf",
         }];
 
         const emailHtml = `

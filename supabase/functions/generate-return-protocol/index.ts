@@ -345,12 +345,38 @@ Deno.serve(async (req: Request) => {
         };
         const loc = LOCATIONS[profile.assigned_location || ""] || LOCATIONS["krefeld"];
 
-        // Prepare HTML attachment
-        const htmlBase64 = encodeBase64(htmlBytes);
+        // Generate PDF for email attachment
+        const pdfBytes = await generateDocumentPdf({
+          title: "RUECKGABEPROTOKOLL",
+          documentNumber: returnProtocolNumber,
+          date: new Date().toISOString().split("T")[0],
+          profile,
+          items: (items || []).map((item) => ({
+            name: item.product_name,
+            description: `Zustand: ${item.condition === "good" ? "Gut" : item.condition === "minor_damage" ? "Leichte Maengel" : item.condition === "major_damage" ? "Erhebliche Schaeden" : "Fehlend"}${item.condition_notes ? ' - ' + item.condition_notes : ''}`,
+            quantity: item.quantity,
+          })),
+          sections: [
+            { label: "Gesamtzustand", value: conditionLabel },
+            ...(condition_notes ? [{ label: "Zustandsnotizen", value: condition_notes }] : []),
+            ...(damage_description ? [{ label: "Schadensbeschreibung", value: damage_description }] : []),
+            ...(cleaning_required ? [{ label: "Reinigung erforderlich", value: "Ja" }] : []),
+            ...(!all_items_returned ? [{ label: "Fehlende Gegenstaende", value: missing_items_notes || "Nicht alle Artikel zurueckgegeben" }] : []),
+            ...(meter_reading_start || meter_reading_end ? [{ label: "Betriebsstunden", value: `Start: ${meter_reading_start || '-'} / Ende: ${meter_reading_end || '-'}` }] : []),
+            ...(fuel_level_start || fuel_level_end ? [{ label: "Tankfuellstand", value: `Start: ${fuel_level_start || '-'} / Ende: ${fuel_level_end || '-'}` }] : []),
+            ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
+            ...(known_defects_from_delivery ? [{ label: "Bekannte Maengel aus Uebergabe", value: known_defects_from_delivery }] : []),
+            ...(additional_defects_at_return ? [{ label: "Neue Maengel bei Rueckgabe", value: additional_defects_at_return }] : []),
+            ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
+          ],
+          signatures: { customerData: customer_signature_data, staffData: staff_signature_data, staffName: staff_name },
+        });
+        const pdfBase64 = encodeBase64(pdfBytes);
+        const pdfFileName = fileName.replace(".html", ".pdf");
         const attachments = [{
-          filename: fileName,
-          content: htmlBase64,
-          content_type: "text/html; charset=utf-8",
+          filename: pdfFileName,
+          content: pdfBase64,
+          content_type: "application/pdf",
         }];
 
         const emailHtml = `
