@@ -108,6 +108,8 @@ const App = () => (
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
               <Route path="/b2b/registrieren" element={<B2BRegister />} />
+              <Route path="/b2b/passwort-vergessen" element={<ForgotPassword />} />
+              <Route path="/b2b/passwort-zuruecksetzen" element={<ResetPassword />} />
               <Route path="/b2b/dashboard" element={<B2BDashboard />} />
               <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
               <Route path="/b2b/produkte" element={<B2BProducts />} />
