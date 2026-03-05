@@ -52,6 +52,13 @@ export default function Index() {
     { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
   ];
 
+  const b2bSteps = [
+    { number: "1", icon: Building2, title: t("howItWorks.b2bStep1Title"), description: t("howItWorks.b2bStep1Desc") },
+    { number: "2", icon: Search, title: t("howItWorks.b2bStep2Title"), description: t("howItWorks.b2bStep2Desc") },
+    { number: "3", icon: Calendar, title: t("howItWorks.b2bStep3Title"), description: t("howItWorks.b2bStep3Desc") },
+    { number: "4", icon: CreditCard, title: t("howItWorks.b2bStep4Title"), description: t("howItWorks.b2bStep4Desc") },
+  ];
+
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
     { value: 1700, label: t("trust.rentalProducts"), prefix: "+", isCounter: true },
