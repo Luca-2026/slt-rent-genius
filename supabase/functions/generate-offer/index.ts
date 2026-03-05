@@ -435,6 +435,14 @@ Deno.serve(async (req: Request) => {
         const customerEmail = profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
+        // Location-specific contact data
+        const LOCATIONS: Record<string, { name: string; address: string; city: string; phone: string; email: string; manager: string }> = {
+          krefeld: { name: "SLT Rental Krefeld", address: "Anrather Straße 291", city: "47807 Krefeld", phone: "02151 417 99 04", email: "krefeld@slt-rental.de", manager: "Benedikt Nöchel" },
+          bonn: { name: "SLT Rental Bonn", address: "Drachenburgstraße 8", city: "53179 Bonn", phone: "0228 504 660 61", email: "bonn@slt-rental.de", manager: "Ersel Uzun" },
+          muelheim: { name: "SLT Rental Mülheim", address: "Ruhrorter Str. 122", city: "45478 Mülheim an der Ruhr", phone: "02151 417 99 04", email: "muelheim@slt-rental.de", manager: "Andreas Scherzow" },
+        };
+        const loc = LOCATIONS[profile.assigned_location || ""] || LOCATIONS["krefeld"];
+
         const formatDate = (dateStr: string) => {
           const d = new Date(dateStr + "T00:00:00");
           return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -452,6 +460,8 @@ Deno.serve(async (req: Request) => {
           </tr>
         `).join("");
 
+        const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+
         const emailHtml = `
 <!DOCTYPE html>
 <html lang="de">
@@ -459,7 +469,7 @@ Deno.serve(async (req: Request) => {
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:#00507d;padding:30px 40px;text-align:center;">
-      <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">SLT-Rental</h1>
+      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:60px;width:auto;margin-bottom:8px;" />
       <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Ihr individuelles Angebot</p>
     </div>
     <div style="padding:35px 40px;">
@@ -495,7 +505,7 @@ Deno.serve(async (req: Request) => {
         </p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
-        Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie auch in Ihrem B2B-Portal zum Download.
+        Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie auch als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://slt-rent-genius.lovable.app/b2b/reservations" 
@@ -505,13 +515,34 @@ Deno.serve(async (req: Request) => {
       </div>
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
-      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${SLT_COMPANY.phone} · E-Mail: ${SLT_COMPANY.email}</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0;">${SLT_COMPANY.web}</p>
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${loc.name}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">${loc.address}, ${loc.city}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${loc.phone} · E-Mail: ${loc.email}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Ihr Ansprechpartner: ${loc.manager}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">www.slt-rental.de</p>
     </div>
   </div>
 </body>
 </html>`;
+
+        // Download offer file to attach
+        let attachments: any[] = [];
+        try {
+          const { data: fileBytes } = await serviceClient.storage
+            .from("b2b-invoices")
+            .download(filePath);
+          if (fileBytes) {
+            const arrayBuffer = await fileBytes.arrayBuffer();
+            const base64Content = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+            attachments = [{
+              filename: fileName,
+              content: base64Content,
+              content_type: "text/html",
+            }];
+          }
+        } catch (attachErr: any) {
+          console.error("Could not attach offer file:", attachErr.message);
+        }
 
         const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
@@ -524,6 +555,7 @@ Deno.serve(async (req: Request) => {
             to: [customerEmail],
             subject: `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`,
             html: emailHtml,
+            attachments: attachments.length > 0 ? attachments : undefined,
           }),
         });
 
