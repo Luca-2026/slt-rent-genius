@@ -302,14 +302,13 @@ export default function Index() {
             </button>
           </div>
 
-          {/* Steps Timeline */}
+          {howItWorksTab === "private" && (
           <div className="relative">
             {/* Connection Line */}
             <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-border rounded-full" />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5 relative">
               {steps.map((step, index) => {
-                const isInteractive = step.action;
                 const cardContent = (
                   <>
                     {/* Step Card */}
@@ -324,13 +323,9 @@ export default function Index() {
                         </span>
                       </div>
                       
-                      {/* Title - fixed height */}
                       <h3 className="font-bold text-headline text-base mb-2 min-h-[24px]">{step.title}</h3>
-                      
-                      {/* Description - fixed height for alignment */}
                       <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px] flex-1">{step.description}</p>
 
-                      {/* CTA - only for interactive steps */}
                       {step.cta && (
                         <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-3">
                           {step.cta}
@@ -339,7 +334,6 @@ export default function Index() {
                       )}
                     </div>
                     
-                    {/* Arrow */}
                     {index < steps.length - 1 && (
                       <div className="hidden lg:flex absolute top-[52px] -right-2.5 w-5 h-5 bg-card border border-border rounded-full items-center justify-center z-10 shadow-sm">
                         <ArrowRight className="h-3 w-3 text-accent" />
@@ -368,6 +362,28 @@ export default function Index() {
               })}
             </div>
           </div>
+          )}
+
+          {howItWorksTab === "b2b" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            {b2bSteps.map((step, index) => (
+              <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
+                <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300 shrink-0">
+                      <step.icon className="h-5 w-5" />
+                    </div>
+                    <span className="text-xs font-bold text-accent uppercase tracking-wider">
+                      {t("steps.step")} {step.number}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-headline text-base mb-2">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">{step.description}</p>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+          )
 
           <AnimatedSection className="text-center mt-12" delay={500}>
             <Link to="/so-funktionierts">
