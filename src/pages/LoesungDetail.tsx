@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
