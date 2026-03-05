@@ -352,14 +352,14 @@ export function B2BMultiReservationDialog({
                       isExpanded ? "border-accent/40 bg-accent/5" : "border-border bg-muted/50"
                     )}
                   >
-                    <div className="flex items-center gap-3 p-2.5">
+                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5">
                       <img
                         src={sp.product.image || "/placeholder.svg"}
                         alt={sp.product.name}
-                        className="w-12 h-12 object-cover rounded-md flex-shrink-0"
+                        className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-md flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm text-headline truncate">
+                        <h4 className="font-medium text-xs sm:text-sm text-headline line-clamp-2">
                           {sp.product.name}
                         </h4>
                         <div className="flex items-center gap-2">
