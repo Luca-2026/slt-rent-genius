@@ -86,7 +86,7 @@ serve(async (req) => {
 
       documentNumber = dn.delivery_note_number;
       documentId = dn.id;
-      recipientEmail = profile.billing_email || profile.contact_email;
+      recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
       // Get items
