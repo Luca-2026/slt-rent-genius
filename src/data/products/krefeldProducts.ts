@@ -212,6 +212,8 @@ import steinsaege80cm3 from "@/assets/products/saegen/steinsaege-80cm-3.jpeg";
 import zwangsmischer140l1 from "@/assets/products/mischer/zwangsmischer-140l-1.jpeg";
 import zwangsmischer140l2 from "@/assets/products/mischer/zwangsmischer-140l-2.jpeg";
 import zwangsmischer140l3 from "@/assets/products/mischer/zwangsmischer-140l-3.jpeg";
+import rotationslaser1 from "@/assets/products/messtechnik/rotationslaser-grl400h-1.jpeg";
+import rotationslaser2 from "@/assets/products/messtechnik/rotationslaser-grl400h-2.jpeg";
 import hochdruckreiniger1 from "@/assets/products/hochdruckreiniger-1.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
@@ -1125,6 +1127,26 @@ export const werkzeugeProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "laser",
     rentwareCode: { krefeld: "61VZOZ" }
+  },
+  {
+    id: "rotationslaser-grl400h",
+    name: "Bosch Rotationslaser GRL 400H",
+    description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
+    detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
+    image: rotationslaser1,
+    images: [rotationslaser1, rotationslaser2],
+    category: "laser",
+    specifications: {
+      "Arbeitsbereich mit Empfänger": "bis zu 400 m (Durchmesser)",
+      "Arbeitsbereich ohne Empfänger": "bis zu 20 m (Durchmesser)",
+      "Nivelliergenauigkeit": "± 2,4 mm bei 30 m",
+      "Selbstnivellierbereich": "± 8 % (± 5°)",
+    },
+    rentalNotes: [
+      "Empfänger nicht im Set enthalten.",
+      "Nivelliergenauigkeit zzgl. einsatzabhängiger Abweichung.",
+    ],
+    onRequest: true,
   },
   {
     id: "bosch-ortungsgeraet-dtect200c",
