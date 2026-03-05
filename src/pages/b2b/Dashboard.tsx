@@ -461,7 +461,7 @@ export default function B2BDashboard() {
                 </div>
                 <CardTitle className="text-lg">Downloads</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <ul className="space-y-2 text-sm">
                   <li>
                     <a href="#" className="text-primary hover:underline">
