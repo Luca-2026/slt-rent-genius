@@ -1026,6 +1026,28 @@ export const werkzeugeProducts: Product[] = [
     rentwareCode: { krefeld: "4A7OZI" }
   },
   {
+    id: "steinsaege-80cm",
+    name: "Steinsäge 80cm Nasschneidetisch",
+    description: "Steinsäge mit Kühlwasserzufuhr – Nassschneidetisch für präzise Steinschnitte.",
+    detailedDescription: "Professioneller Nasschneidetisch für präzise Steinschnitte mit integrierter Kühlwasserzufuhr. Ideal zum Schneiden von Naturstein, Pflastersteinen, Fliesen und Betonsteinen. Die Messung des Verschleißes erfolgt bei der Abholung und Rückgabe. Je nach Durchmesser und Typ der Sägeblätter wird ein Einheitspreis pro 0,1 mm veranschlagt. Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt. Diamanttrennscheiben zum Kauf optional erhältlich.",
+    image: steinsaege80cm1,
+    images: [steinsaege80cm1, steinsaege80cm2, steinsaege80cm3],
+    category: "kreissaege",
+    specifications: {
+      "Durchmesser Sägeblatt": "350 mm",
+      "Nenneingangsleistung": "2.200 W",
+      "Gewicht": "70 kg",
+      "Abmessung (LxBxH)": "110 x 58 x 118 cm",
+    },
+    rentalNotes: [
+      "Die Messung des Verschleißes erfolgt bei der Abholung und Rückgabe.",
+      "Je nach Durchmesser und Typ der Sägeblätter wird ein Einheitspreis pro 0,1 mm veranschlagt.",
+      "Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt.",
+      "Diamanttrennscheiben zum Kauf optional erhältlich.",
+    ],
+    onRequest: true,
+  },
+  {
     id: "bosch-saebelsaege-gsa18v-li-c",
     name: "Bosch Akku Säbelsäge GSA 18V-LI C",
     description: "Akku-Säbelsäge mit variabler Geschwindigkeit",
