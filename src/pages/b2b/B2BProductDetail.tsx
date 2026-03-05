@@ -428,7 +428,7 @@ function B2BInquiryCard({
   const hasDiscount = discount > 0;
 
   return (
-    <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+    <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-3 md:space-y-4">
       {/* Price info */}
       {product.pricePerDay && (
         <div className="pb-4 border-b border-border">
