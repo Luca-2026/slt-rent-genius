@@ -115,6 +115,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
                   {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
               </div>
+              <PasswordStrengthIndicator password={newPassword} />
               {newPassword.length > 0 && newPassword.length < 8 && (
                 <p className="text-xs text-destructive">Mindestens 8 Zeichen erforderlich</p>
               )}

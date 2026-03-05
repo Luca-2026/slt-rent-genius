@@ -106,6 +106,7 @@ export default function ResetPassword() {
                     minLength={6}
                   />
                 </div>
+                <PasswordStrengthIndicator password={password} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Passwort bestätigen</Label>
