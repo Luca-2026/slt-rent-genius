@@ -191,24 +191,26 @@ Deno.serve(async (req: Request) => {
             type: "recovery",
             email: body.email!,
             options: {
-              redirectTo: "https://slt-rent-genius.lovable.app/",
+              redirectTo: "https://slt-rent-genius.lovable.app/b2b/passwort-zuruecksetzen",
             },
           });
 
         const resetLink = linkData?.properties?.action_link || "";
 
-        if (resendApiKey && resetLink) {
+        if (resendApiKey) {
           const roleLabel =
             body.role === "admin" ? "Administrator" :
             body.role === "standort_mitarbeiter" ? "Standortmitarbeiter" :
             body.role === "buchhaltung" ? "Buchhaltung" :
             "Lesezugriff";
 
+          const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+
           const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:#00507d;padding:30px 40px;text-align:center;">
-      <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">SLT-Rental</h1>
+      <img src="${logoUrl}" alt="SLT-Rental Logo" style="height:60px;width:auto;margin-bottom:8px;" />
       <p style="color:#b3d4e8;margin:6px 0 0;font-size:13px;">Willkommen im Team</p>
     </div>
     <div style="padding:35px 40px;">
@@ -217,17 +219,19 @@ Deno.serve(async (req: Request) => {
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;margin:0 0 6px;color:#333;"><strong>Ihre Zugangsdaten:</strong></p>
         <p style="font-size:14px;margin:0 0 4px;color:#555;">E-Mail: <strong>${body.email}</strong></p>
+        <p style="font-size:14px;margin:0 0 4px;color:#555;">Initialpasswort: <strong>${body.password}</strong></p>
         <p style="font-size:14px;margin:0;color:#555;">Rolle: <strong>${roleLabel}</strong></p>
       </div>
-      <p style="font-size:14px;color:#555;line-height:1.6;">Bitte setzen Sie Ihr persönliches Passwort über den folgenden Link:</p>
-      <div style="text-align:center;margin:30px 0;">
-        <a href="${resetLink}" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Passwort festlegen →</a>
-      </div>
-      <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Dieser Link ist aus Sicherheitsgründen nur begrenzte Zeit gültig. Falls er abgelaufen ist, können Sie auf der Login-Seite ein neues Passwort anfordern.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Bitte ändern Sie Ihr Passwort nach dem ersten Login über den folgenden Link:</p>
+      ${resetLink ? `<div style="text-align:center;margin:30px 0;">
+        <a href="${resetLink}" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Passwort ändern →</a>
+      </div>` : ""}
+      <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Falls der Link abgelaufen ist, können Sie sich mit dem Initialpasswort einloggen und über "Passwort vergessen" ein neues anfordern.</p>
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
-      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">SLT Sandhoff Licht- und Tontechnik e.K.</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0;">Diese E-Mail wurde automatisch generiert.</p>
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">SLT Technology Group GmbH & Co. KG</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: +49 (0) 2151 - 417 99 02 · E-Mail: info@slt-rental.de</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">www.slt-rental.de</p>
     </div>
   </div>
 </body></html>`;
