@@ -445,6 +445,7 @@ import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikha
 import imgHydraulikhammerShb40_3 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-3.jpeg";
 // Kabellöffel MS01 15cm image
 import imgTiefloeffelMs01_30cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-1.jpeg";
+import imgTiefloeffelMs01_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-50cm-1.jpeg";
 import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
@@ -4770,11 +4771,21 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-50cm-symlock",
     name: "MS01 Tieflöffel 50cm/45l Symlock",
-    description: "Tieflöffel 50cm für MS01 Symlock",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Tieflöffel 50cm für MS01 Symlock – Gewichtsklasse 1–2 t, 4 Zähne",
+    detailedDescription: "Der MS01 Tieflöffel 50cm/45l Symlock ist ein robuster Grabenlöffel mit 4 geschraubten Zähnen für anspruchsvolle Grab- und Aushubarbeiten. Mit 500 mm Arbeitsbreite und 45 Liter Volumen eignet er sich hervorragend für Fundamentarbeiten, Kanalisation und allgemeine Erdarbeiten. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
+    image: imgTiefloeffelMs01_50cm_1,
+    images: [imgTiefloeffelMs01_50cm_1],
     category: "tiefloeffel",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01 (Symlock)",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Volumen": "45 l",
+      "Arbeitsbreite": "500 mm",
+      "Zahnsystem": "geschraubt",
+      "Anzahl Zähne": "4",
+      "Gewicht": "48 kg",
+    },
     rentwareCode: { krefeld: "7A6LGC" }
   },
   {
