@@ -455,6 +455,7 @@ import imgDieselKanister10l_1 from "@/assets/products/erdbewegung/diesel-kaniste
 import imgDieselKanister20l_1 from "@/assets/products/erdbewegung/diesel-kanister-20l-1.jpeg";
 import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1.jpeg";
 import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-symlock-1.jpeg";
+import imgGrabenraeumloeffelMs03_140cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms03-140cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4946,6 +4947,22 @@ export const erdbewegungZusatzProducts: Product[] = [
     images: ["/placeholder.svg"],
     category: "grabenraeumloeffel",
     rentwareCode: { krefeld: "1G5LXK" }
+  },
+  {
+    id: "ms03-grabenraeumloeffel-140cm-symlock",
+    name: "MS03 Grabenräumlöffel starr 140cm/170l Symlock",
+    description: "Starrer Grabenräumlöffel 140cm für MS03 Symlock – 170 l Volumen",
+    detailedDescription: "Der MS03 Grabenräumlöffel starr 140cm/170l Symlock ist ein großer Planierungslöffel für Minibagger der 2,5- bis 3,5-Tonnen-Klasse. Mit 1400 mm Arbeitsbreite und 170 Liter Volumen eignet er sich hervorragend für großflächige Planierarbeiten, Böschungsprofilierung und das Räumen breiter Gräben.",
+    image: imgGrabenraeumloeffelMs03_140cm_1,
+    images: [imgGrabenraeumloeffelMs03_140cm_1],
+    category: "grabenraeumloeffel",
+    compatibleMachines: ["xcmg-xe27e"],
+    specifications: {
+      "Aufnahme": "MS03 (Symlock)",
+      "Volumen": "170 l",
+      "Arbeitsbreite": "1400 mm",
+      "Gewicht": "129 kg",
+    },
   },
   // Roderechen
   {
