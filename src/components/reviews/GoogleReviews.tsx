@@ -183,7 +183,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
       {/* Reviews grid */}
       {data.reviews.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data.reviews.map((review, index) => (
+          {(maxReviews ? data.reviews.slice(0, maxReviews) : data.reviews).map((review, index) => (
             <AnimatedSection key={index} delay={index * 80} animation="fade-in-up">
               <Card className="h-full hover:shadow-md transition-shadow">
                 <CardContent className="p-5">
