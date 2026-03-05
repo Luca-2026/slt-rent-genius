@@ -195,6 +195,8 @@ export interface Product {
   sortOrder?: number; // Explicit sort order within category (lower = first)
   rentwareCode?: Record<string, string>;
   compatibleMachines?: string[]; // IDs of machines this accessory is compatible with
+  onRequest?: boolean; // Product available on request only (no direct booking)
+  driveType?: string; // Drive type: diesel, elektro, benzin
 }
 
 export interface ProductCategory {
