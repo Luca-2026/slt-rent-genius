@@ -2,13 +2,14 @@ import { Product } from "@/data/rentalData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ShoppingCart, Percent, Check } from "lucide-react";
+import { ShoppingCart, Percent, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface B2BProductCardProps {
   product: Product;
   categorySlug: string;
+  locationId: string;
   discountPercent: number;
   onInquiry: (product: Product) => void;
   isSelected?: boolean;
@@ -19,12 +20,14 @@ interface B2BProductCardProps {
 export function B2BProductCard({
   product,
   categorySlug,
+  locationId,
   discountPercent,
   onInquiry,
   isSelected = false,
   onToggleSelect,
   selectionMode = false,
 }: B2BProductCardProps) {
+  const navigate = useNavigate();
   const imgSrc = product.image || "/placeholder.svg";
   const hasDiscount = discountPercent > 0;
 
@@ -32,6 +35,11 @@ export function B2BProductCard({
     if (onToggleSelect) {
       onToggleSelect(product);
     }
+  };
+
+  const handleDetailClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/mieten/${locationId}/${categorySlug}/${product.id}`);
   };
 
   return (
@@ -102,17 +110,28 @@ export function B2BProductCard({
             </p>
           )}
 
-          <Button
-            size="sm"
-            className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-            onClick={(e) => {
-              e.stopPropagation();
-              onInquiry(product);
-            }}
-          >
-            <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-            Einzelanfrage
-          </Button>
+          <div className="flex gap-1.5">
+            <Button
+              size="sm"
+              variant="outline"
+              className="flex-1 text-xs"
+              onClick={handleDetailClick}
+            >
+              <ExternalLink className="h-3 w-3 mr-1" />
+              Details
+            </Button>
+            <Button
+              size="sm"
+              className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover text-xs"
+              onClick={(e) => {
+                e.stopPropagation();
+                onInquiry(product);
+              }}
+            >
+              <ShoppingCart className="h-3 w-3 mr-1" />
+              Anfrage
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

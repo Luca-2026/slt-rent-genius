@@ -3,6 +3,8 @@ import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { B2BProductCard } from "@/components/b2b/B2BProductCard";
 import { B2BReservationDialog } from "@/components/b2b/B2BReservationDialog";
 import { B2BMultiReservationDialog } from "@/components/b2b/B2BMultiReservationDialog";
+import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
+import { categoryFilterMap, categorySearchPlaceholders } from "@/components/rental/categoryFilters";
 import { useB2BDiscounts } from "@/hooks/useB2BDiscounts";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
@@ -19,7 +21,7 @@ import {
   Product,
 } from "@/data/rentalData";
 import { locationData } from "@/data/locationData";
-import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X, MessageCircle } from "lucide-react";
+import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X, MessageCircle, Filter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface SelectedItem {
@@ -41,6 +43,12 @@ export default function B2BProducts() {
   const [inquiryProduct, setInquiryProduct] = useState<Product | null>(null);
   const [inquiryCategory, setInquiryCategory] = useState("");
 
+  // Category filter state
+  const [categoryFilters, setCategoryFilters] = useState<CategoryFilterState>({
+    search: "",
+    filters: {},
+  });
+
   // Multi-select state
   const [selectedItems, setSelectedItems] = useState<Map<string, SelectedItem>>(new Map());
   const [multiDialogOpen, setMultiDialogOpen] = useState(false);
@@ -51,10 +59,42 @@ export default function B2BProducts() {
     [selectedLocation]
   );
 
-  // Products filtered by location, category, and search
+  // Get filter config for selected category
+  const filterSections = useMemo(
+    () => (selectedCategory !== "alle" ? categoryFilterMap[selectedCategory] : undefined),
+    [selectedCategory]
+  );
+
+  const filterSearchPlaceholder = useMemo(
+    () => categorySearchPlaceholders[selectedCategory] || "Produkt suchen...",
+    [selectedCategory]
+  );
+
+  // Products filtered by location, category, search, and category-specific filters
   const filteredProducts = useMemo(() => {
     let products = getProductsForLocationCategory(selectedLocation, selectedCategory);
 
+    // Deduplicate: remove products with placeholder images when a similar product with real image exists
+    const seen = new Map<string, Product>();
+    const deduped: Product[] = [];
+    for (const p of products) {
+      const hasRealImage = p.image && p.image !== "/placeholder.svg";
+      const existing = seen.get(p.id);
+      if (existing) {
+        // Keep the one with real image
+        if (hasRealImage && (!existing.image || existing.image === "/placeholder.svg")) {
+          const idx = deduped.indexOf(existing);
+          if (idx >= 0) deduped[idx] = p;
+          seen.set(p.id, p);
+        }
+        continue;
+      }
+      seen.set(p.id, p);
+      deduped.push(p);
+    }
+    products = deduped;
+
+    // Global search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       products = products.filter(
@@ -65,8 +105,79 @@ export default function B2BProducts() {
       );
     }
 
+    // Apply category-specific filters
+    if (filterSections && selectedCategory !== "alle") {
+      // Search from category filter
+      if (categoryFilters.search) {
+        const q = categoryFilters.search.toLowerCase();
+        products = products.filter(
+          (p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.description?.toLowerCase().includes(q)
+        );
+      }
+
+      // Apply filter sections (simplified - tag/category matching)
+      Object.entries(categoryFilters.filters).forEach(([sectionId, selectedValues]) => {
+        if (selectedValues.length > 0) {
+          if (sectionId === "height") {
+            products = products.filter((p) => {
+              const heightMatch = p.name.match(/(\d+)m\s/);
+              const height = heightMatch ? parseInt(heightMatch[1], 10) : 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-10m") return height > 0 && height <= 10;
+                if (v === "10-15m") return height > 10 && height <= 15;
+                if (v === "ab-15m") return height > 15;
+                return p.tags?.includes(v);
+              });
+            });
+          } else if (sectionId === "weight") {
+            products = products.filter((p) => {
+              const w = p.weightKg || 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-1500") return w > 0 && w <= 1500;
+                if (v === "1500-2500") return w > 1500 && w <= 2500;
+                if (v === "ab-2500") return w > 2500;
+                if (v === "bis-100kg") return w > 0 && w <= 100;
+                if (v === "100-200kg") return w > 100 && w <= 200;
+                if (v === "ab-200kg") return w > 200;
+                return p.tags?.includes(v) || p.category === v;
+              });
+            });
+          } else if (sectionId === "antrieb" || sectionId === "power") {
+            products = products.filter((p) => {
+              const driveType = (p as any).driveType;
+              const nameLower = p.name.toLowerCase();
+              return selectedValues.some((v) => {
+                if (v === "akku") return nameLower.includes("akku");
+                if (v === "elektro") return driveType === "elektro" || nameLower.includes("elektro");
+                if (v === "benzin") return driveType === "benzin" || nameLower.includes("benzin");
+                if (v === "diesel") return driveType === "diesel" || nameLower.includes("diesel");
+                return p.tags?.includes(v) || driveType === v;
+              });
+            });
+          } else if (sectionId === "type" || sectionId === "maschinentyp" || sectionId === "anbaugeraet") {
+            const erdMachineCategories = ["minibagger", "radlader", "dumper"];
+            const erdAnbauCategories = ["tiefloeffel", "kabelloeffel", "grabenraeumloeffel", "hydraulikhammer", "sortiergreifer", "roderechen"];
+            products = products.filter((p) => {
+              return selectedValues.some((value) => {
+                if (value === "maschine") return p.tags?.includes("maschine") || erdMachineCategories.includes(p.category || "");
+                if (value === "anbaugeraet") return erdAnbauCategories.includes(p.category || "");
+                if (value === "zubehoer") return p.category === "zubehoer";
+                return p.tags?.includes(value) || p.category === value;
+              });
+            });
+          } else {
+            products = products.filter((p) =>
+              selectedValues.some((value) => p.tags?.includes(value) || p.category === value)
+            );
+          }
+        }
+      });
+    }
+
     return products;
-  }, [selectedLocation, selectedCategory, searchQuery]);
+  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections]);
 
   // Find category slug for a product (for discount lookup)
   const getCategoryForProduct = useCallback((product: Product): string => {
@@ -130,6 +241,11 @@ export default function B2BProducts() {
 
   const handleMultiSuccess = useCallback(() => {
     setSelectedItems(new Map());
+  }, []);
+
+  const handleCategoryChange = useCallback((catId: string) => {
+    setSelectedCategory(catId);
+    setCategoryFilters({ search: "", filters: {} });
   }, []);
 
   const selectedCount = selectedItems.size;
@@ -229,13 +345,13 @@ export default function B2BProducts() {
       {/* Selection hint */}
       <div className="flex items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
         <Package className="h-4 w-4 flex-shrink-0" />
-        <span>Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Einzelanfrage" für ein einzelnes Produkt.</span>
+        <span>Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Anfrage" für ein einzelnes Produkt.</span>
       </div>
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         {/* Location */}
-        <Select value={selectedLocation} onValueChange={(v) => { setSelectedLocation(v); setSelectedCategory("alle"); }}>
+        <Select value={selectedLocation} onValueChange={(v) => { setSelectedLocation(v); handleCategoryChange("alle"); }}>
           <SelectTrigger className="w-full sm:w-48">
             <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
             <SelectValue />
@@ -249,16 +365,18 @@ export default function B2BProducts() {
           </SelectContent>
         </Select>
 
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Produkt suchen..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
+        {/* Search (only when no category filter is shown) */}
+        {!filterSections && (
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Produkt suchen..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        )}
       </div>
 
       {/* Category pills */}
@@ -272,7 +390,7 @@ export default function B2BProducts() {
               variant={isActive ? "default" : "outline"}
               size="sm"
               className={`whitespace-nowrap ${isActive ? "bg-primary text-primary-foreground" : ""}`}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={() => handleCategoryChange(cat.id)}
             >
               {cat.title}
               {discount > 0 && (
@@ -285,13 +403,25 @@ export default function B2BProducts() {
         })}
       </div>
 
+      {/* Category-specific filters */}
+      {filterSections && (
+        <div className="mb-6">
+          <CategoryFilter
+            searchPlaceholder={t(filterSearchPlaceholder)}
+            sections={filterSections}
+            onFilterChange={setCategoryFilters}
+            variant="badges"
+          />
+        </div>
+      )}
+
       {/* Products Grid */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-16">
           <Package className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
           <p className="text-muted-foreground">
-            {searchQuery
-              ? `Keine Produkte für "${searchQuery}" gefunden.`
+            {searchQuery || categoryFilters.search
+              ? `Keine Produkte für "${searchQuery || categoryFilters.search}" gefunden.`
               : "Keine Produkte in dieser Kategorie verfügbar."}
           </p>
         </div>
@@ -305,6 +435,7 @@ export default function B2BProducts() {
                 key={product.id}
                 product={product}
                 categorySlug={catSlug}
+                locationId={selectedLocation}
                 discountPercent={discount}
                 onInquiry={handleInquiry}
                 isSelected={selectedItems.has(product.id)}
