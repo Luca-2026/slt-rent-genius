@@ -154,6 +154,15 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                             Ansehen
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => sendEmail(dn.id)}
+                          disabled={sendingId === dn.id}
+                        >
+                          <Send className="h-4 w-4 mr-1.5" />
+                          {sendingId === dn.id ? "Sende..." : dn.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
