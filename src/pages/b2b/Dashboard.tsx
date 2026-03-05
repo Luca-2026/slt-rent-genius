@@ -336,14 +336,14 @@ export default function B2BDashboard() {
 
             {/* Mietvorgänge */}
             <Link to="/b2b/mietvorgaenge">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardList className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle className="text-lg">Mietvorgänge</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Übersicht deiner bisherigen Mietvorgänge, Anfragen und deren Status.
                   </p>
