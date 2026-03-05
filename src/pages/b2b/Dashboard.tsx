@@ -36,6 +36,8 @@ import {
   ClipboardCheck,
   Undo2,
   MessageCircle,
+  BookOpen,
+  Send,
 } from "lucide-react";
 
 export default function B2BDashboard() {
@@ -478,6 +480,40 @@ export default function B2BDashboard() {
                 </ul>
               </CardContent>
             </Card>
+
+            {/* Angebote */}
+            <Link to="/b2b/angebote" className="block h-full">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
+                    <Send className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Meine Angebote</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <p className="text-sm text-muted-foreground">
+                    Alle erhaltenen Angebote einsehen, PDFs herunterladen und bestätigen.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Hilfe & Anleitungen */}
+            <Link to="/hilfe" className="block h-full">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
+                    <BookOpen className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Hilfe & Anleitungen</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <p className="text-sm text-muted-foreground">
+                    Bedienungsanleitungen, Sicherheitshinweise und Tipps für Ihre Mietgeräte.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* FAQ */}
             <Link to="/b2b/faq">
