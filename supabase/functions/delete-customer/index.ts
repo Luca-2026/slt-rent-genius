@@ -140,7 +140,49 @@ Deno.serve(async (req: Request) => {
       .eq("b2b_profile_id", profile_id);
     if (pricesErr) console.error("Error deleting prices:", pricesErr);
 
-    // 3. Delete offer items (via offers)
+    // 3. Delete return protocol items & return protocols
+    const { data: returnProtocols } = await serviceClient
+      .from("b2b_return_protocols")
+      .select("id")
+      .eq("b2b_profile_id", profile_id);
+
+    if (returnProtocols && returnProtocols.length > 0) {
+      const rpIds = returnProtocols.map((r: any) => r.id);
+      const { error: rpItemsErr } = await serviceClient
+        .from("b2b_return_protocol_items")
+        .delete()
+        .in("return_protocol_id", rpIds);
+      if (rpItemsErr) console.error("Error deleting return protocol items:", rpItemsErr);
+    }
+
+    const { error: rpErr } = await serviceClient
+      .from("b2b_return_protocols")
+      .delete()
+      .eq("b2b_profile_id", profile_id);
+    if (rpErr) console.error("Error deleting return protocols:", rpErr);
+
+    // 4. Delete delivery note items & delivery notes
+    const { data: deliveryNotes } = await serviceClient
+      .from("b2b_delivery_notes")
+      .select("id")
+      .eq("b2b_profile_id", profile_id);
+
+    if (deliveryNotes && deliveryNotes.length > 0) {
+      const dnIds = deliveryNotes.map((d: any) => d.id);
+      const { error: dnItemsErr } = await serviceClient
+        .from("b2b_delivery_note_items")
+        .delete()
+        .in("delivery_note_id", dnIds);
+      if (dnItemsErr) console.error("Error deleting delivery note items:", dnItemsErr);
+    }
+
+    const { error: dnErr } = await serviceClient
+      .from("b2b_delivery_notes")
+      .delete()
+      .eq("b2b_profile_id", profile_id);
+    if (dnErr) console.error("Error deleting delivery notes:", dnErr);
+
+    // 5. Delete offer items & offers
     const { data: customerOffers } = await serviceClient
       .from("b2b_offers")
       .select("id")
@@ -155,14 +197,13 @@ Deno.serve(async (req: Request) => {
       if (offerItemsErr) console.error("Error deleting offer items:", offerItemsErr);
     }
 
-    // 4. Delete offers
     const { error: offersErr } = await serviceClient
       .from("b2b_offers")
       .delete()
       .eq("b2b_profile_id", profile_id);
     if (offersErr) console.error("Error deleting offers:", offersErr);
 
-    // 5. Delete invoice items (via invoices)
+    // 6. Delete invoice items & invoices
     const { data: customerInvoices } = await serviceClient
       .from("b2b_invoices")
       .select("id")
@@ -177,7 +218,6 @@ Deno.serve(async (req: Request) => {
       if (invoiceItemsErr) console.error("Error deleting invoice items:", invoiceItemsErr);
     }
 
-    // 6. Delete invoices
     const { error: invoicesErr } = await serviceClient
       .from("b2b_invoices")
       .delete()
