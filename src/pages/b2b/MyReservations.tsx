@@ -396,24 +396,44 @@ export default function MyReservations() {
           {formatDate(r.created_at)}
         </TableCell>
         <TableCell className="text-right">
-          {r.status === "confirmed" && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                setReservationToReturn(r);
-                setReturnDialogOpen(true);
-              }}
-              disabled={returningId === r.id}
-            >
-              {returningId === r.id ? (
-                <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
-              ) : (
-                <LogOut className="h-3.5 w-3.5 mr-1" />
-              )}
-              Freimelden
-            </Button>
-          )}
+          <div className="flex items-center gap-1.5 justify-end">
+            {r.status === "confirmed" && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setReservationToReturn(r);
+                  setReturnDialogOpen(true);
+                }}
+                disabled={returningId === r.id}
+              >
+                {returningId === r.id ? (
+                  <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
+                ) : (
+                  <LogOut className="h-3.5 w-3.5 mr-1" />
+                )}
+                Freimelden
+              </Button>
+            )}
+            {r.status === "pending" && (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setReservationToDelete(r);
+                  setDeleteDialogOpen(true);
+                }}
+                disabled={deletingId === r.id}
+              >
+                {deletingId === r.id ? (
+                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="h-3.5 w-3.5" />
+                )}
+              </Button>
+            )}
+          </div>
         </TableCell>
       </TableRow>
     );
