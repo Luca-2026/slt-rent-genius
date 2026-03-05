@@ -6,14 +6,14 @@
  * IMPORTANT: window.open() must be called synchronously in the click handler
  * to avoid popup blockers, especially on mobile browsers.
  */
-export async function openInvoiceInNewWindow(fileUrl: string, invoiceNumber?: string): Promise<void> {
+export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: string, documentType?: string): Promise<void> {
   // Open the window immediately (synchronously) to avoid popup blockers on mobile
   const newWindow = window.open("", "_blank");
 
   try {
     const response = await fetch(fileUrl);
     if (!response.ok) {
-      throw new Error(`Fehler beim Laden der Rechnung: ${response.status}`);
+      throw new Error(`Fehler beim Laden des Dokuments: ${response.status}`);
     }
 
     // Explicitly decode as UTF-8 to prevent umlaut encoding issues
@@ -25,9 +25,17 @@ export async function openInvoiceInNewWindow(fileUrl: string, invoiceNumber?: st
       newWindow.document.write(html);
       newWindow.document.close();
 
-      // Set window title and favicon
-      if (invoiceNumber) {
-        newWindow.document.title = `Rechnung ${invoiceNumber}`;
+      // Set window title based on document type
+      if (documentNumber) {
+        let label = documentType || "Dokument";
+        if (!documentType && documentNumber) {
+          if (documentNumber.startsWith("ANG")) label = "Angebot";
+          else if (documentNumber.startsWith("RE")) label = "Rechnung";
+          else if (documentNumber.startsWith("UP")) label = "Übergabeprotokoll";
+          else if (documentNumber.startsWith("RP")) label = "Rückgabeprotokoll";
+          else label = "Rechnung";
+        }
+        newWindow.document.title = `${label} ${documentNumber}`;
       }
       const favicon = newWindow.document.createElement("link");
       favicon.rel = "icon";
