@@ -747,7 +747,7 @@ async function generateDocumentPdf(data: {
     for (const w of words) { const test = cur ? `${cur} ${w}` : w; if (f.widthOfTextAtSize(test, s) <= mw) cur = test; else { if (cur) lines.push(cur); cur = w; } }
     if (cur) lines.push(cur); return lines.length ? lines : [''];
   };
-  const fd = (d: string) => { const p = d.split('-'); return p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : d; };
+  const fd = (d: string) => { const sp = d.split(' '); const p = sp[0].split('-'); const dateStr = p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : sp[0]; return sp[1] ? `${dateStr} ${sp[1]} Uhr` : dateStr; };
   const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' EUR';
 
   try {
