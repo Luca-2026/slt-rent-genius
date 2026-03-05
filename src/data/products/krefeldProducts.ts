@@ -449,6 +449,7 @@ import imgTiefloeffelMs01_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel
 import imgKabelloeffelMs01_15cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms01-15cm-1.png";
 import imgGrabenraeumloeffelMs01_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-80cm-1.jpeg";
 import imgGrabenraeumloeffelMs01_80cm65l_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-100cm-1.jpeg";
+import imgGrabenraeumloeffelMs01Hydr_80cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-80cm-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4878,6 +4879,22 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Volumen": "65 l",
       "Arbeitsbreite": "800 mm",
       "Gewicht": "55 kg",
+    },
+  },
+  {
+    id: "ms01-grabenraeumloeffel-hydr-80cm",
+    name: "MS01 Grabenräumlöffel hydr. 80cm/52l",
+    description: "Hydraulischer Grabenräumlöffel 80cm für MS01 – schwenkbar",
+    detailedDescription: "Der MS01 Grabenräumlöffel hydr. 80cm/52l ist ein hydraulisch schwenkbarer Löffel für präzise Grabenräum- und Planierarbeiten. Dank der hydraulischen Schwenkfunktion kann der Löffel auch an Böschungen und in unebenem Gelände exakt ausgerichtet werden – ideal für saubere Grabensohlen und Profilierungsarbeiten.",
+    image: imgGrabenraeumloeffelMs01Hydr_80cm_1,
+    images: [imgGrabenraeumloeffelMs01Hydr_80cm_1],
+    category: "grabenraeumloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01",
+      "Volumen": "63 l",
+      "Arbeitsbreite": "800 mm",
+      "Gewicht": "92 kg",
     },
   },
   {
