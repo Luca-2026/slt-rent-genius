@@ -221,8 +221,23 @@ export default function LocationCategories() {
         </div>
       </section>
 
+      {/* Google Reviews */}
+      {getPlaceId(location.id) && (
+        <section className="py-12 lg:py-16 bg-muted/30">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <GoogleReviews
+                placeId={getPlaceId(location.id)!}
+                locationName={location.name}
+                variant="full"
+              />
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Weekend Info */}
-      <section className="py-12 lg:py-16 bg-muted/30">
+      <section className="py-12 lg:py-16 bg-background">
         <div className="section-container">
           <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
             <div className="max-w-2xl">
