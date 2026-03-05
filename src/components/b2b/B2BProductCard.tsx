@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 interface B2BProductCardProps {
   product: Product;
   categorySlug: string;
+  locationId: string;
   discountPercent: number;
   onInquiry: (product: Product) => void;
   isSelected?: boolean;
