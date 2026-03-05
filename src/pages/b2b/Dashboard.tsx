@@ -34,6 +34,7 @@ import {
   RefreshCw,
   ClipboardCheck,
   Undo2,
+  MessageCircle,
 } from "lucide-react";
 
 export default function B2BDashboard() {
@@ -318,21 +319,28 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Direct Contact */}
-            <Link to="/kontakt">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
-                    <Phone className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">Direktkontakt</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Dein persönlicher Ansprechpartner für alle Fragen rund um Miete und Equipment.
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
+            <Card className="h-full">
+              <CardHeader>
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
+                  <Phone className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Direktkontakt</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <a href="tel:+4915789150872" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Phone className="h-4 w-4 shrink-0" />
+                  +49 1578 9150872
+                </a>
+                <a href="https://wa.me/4915789150872" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors font-medium">
+                  <MessageCircle className="h-4 w-4 shrink-0" />
+                  WhatsApp schreiben
+                </a>
+                <a href="mailto:mieten@slt-rental.de" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Mail className="h-4 w-4 shrink-0" />
+                  mieten@slt-rental.de
+                </a>
+              </CardContent>
+            </Card>
 
             {/* Downloads */}
             <Card className="h-full">
