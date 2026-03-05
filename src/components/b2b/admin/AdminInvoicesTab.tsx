@@ -183,6 +183,53 @@ export function AdminInvoicesTab({
 
   const correctionTotal = correctionItems.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
 
+  const exportCsv = async () => {
+    setExporting(true);
+    try {
+      // Fetch all profiles to get tax_id per b2b_profile_id
+      const profileIds = [...new Set(invoices.map((i) => i.b2b_profile_id))];
+      const { data: profiles } = await supabase
+        .from("b2b_profiles")
+        .select("id, tax_id, vat_id_at_creation:tax_id")
+        .in("id", profileIds);
+
+      const taxMap: Record<string, string> = {};
+      profiles?.forEach((p: any) => { taxMap[p.id] = p.tax_id || ""; });
+
+      const header = "Rechnungsnummer;Kunde;USt-IdNr;Rechnungsdatum;Fälligkeitsdatum;Netto;MwSt;Brutto;Reverse-Charge;Status";
+      const rows = invoices.map((inv) => {
+        const taxId = (inv as any).vat_id_at_creation || taxMap[inv.b2b_profile_id] || "";
+        return [
+          inv.invoice_number,
+          `"${(inv.customer_company || "").replace(/"/g, '""')}"`,
+          taxId,
+          inv.invoice_date,
+          inv.due_date || "",
+          inv.net_amount.toFixed(2).replace(".", ","),
+          inv.vat_amount.toFixed(2).replace(".", ","),
+          inv.gross_amount.toFixed(2).replace(".", ","),
+          inv.is_reverse_charge ? "Ja" : "Nein",
+          inv.status === "paid" ? "Bezahlt" : inv.status === "overdue" ? "Überfällig" : inv.status === "cancelled" ? "Storniert" : "Offen",
+        ].join(";");
+      });
+
+      const csv = "\uFEFF" + [header, ...rows].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rechnungen_Export_${format(new Date(), "yyyy-MM-dd")}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toast({ title: "CSV exportiert", description: `${invoices.length} Rechnungen exportiert.` });
+    } catch (error: any) {
+      toast({ title: "Fehler beim Export", description: error.message, variant: "destructive" });
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -190,10 +237,21 @@ export function AdminInvoicesTab({
           <h2 className="text-lg font-semibold">Alle Rechnungen</h2>
           <p className="text-sm text-muted-foreground">Rechnungsstatus verwalten, Korrekturen und Gutschriften erstellen</p>
         </div>
-        <Button variant="outline" size="sm" onClick={onRefresh}>
-          <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-          Aktualisieren
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={exportCsv}
+            disabled={exporting || invoices.length === 0}
+          >
+            <Download className="h-3.5 w-3.5 mr-1.5" />
+            {exporting ? "Exportiere..." : "CSV Export"}
+          </Button>
+          <Button variant="outline" size="sm" onClick={onRefresh}>
+            <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+            Aktualisieren
+          </Button>
+        </div>
       </div>
 
       {invoices.length === 0 ? (
