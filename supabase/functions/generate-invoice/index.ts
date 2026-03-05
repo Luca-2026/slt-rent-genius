@@ -695,26 +695,11 @@ function generateInvoiceHtml(data: {
       </p>
     </div>
 
-    <!-- Footer -->
-    <div style="border-top:2px solid #00507d;padding-top:10px;font-size:10px;color:#595959;">
-      <div style="display:flex;justify-content:space-between;">
-        <div>
-          <p style="font-weight:600;color:#00507d;">${SLT_COMPANY.name}</p>
-          <p>${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
-          <p>Tel: ${SLT_COMPANY.phone}</p>
-        </div>
-        <div style="text-align:center;">
-          <p>E-Mail: ${SLT_COMPANY.email}</p>
-          <p>Web: ${SLT_COMPANY.web}</p>
-          <p>${SLT_COMPANY.registry}</p>
-        </div>
-        <div style="text-align:right;">
-          <p>${SLT_COMPANY.bankName}</p>
-          <p>IBAN: ${SLT_COMPANY.iban}</p>
-          <p>BIC: ${SLT_COMPANY.bic}</p>
-        </div>
-      </div>
-      <p style="text-align:center;margin-top:6px;font-size:9px;">${SLT_COMPANY.registry} · GF: ${SLT_COMPANY.managingDirector}</p>
+    <div style="border-top:2px solid #00507d;padding-top:10px;font-size:9px;color:#595959;text-align:center;line-height:1.8;">
+      <p>${SLT_COMPANY.name} - Geschäftsführer: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}</p>
+      <p>${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}</p>
+      <p>${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}</p>
+      <p>${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}</p>
     </div>
   </div>
 </body>
