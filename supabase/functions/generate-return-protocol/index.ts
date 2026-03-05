@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -325,6 +326,21 @@ Deno.serve(async (req: Request) => {
           : overall_condition === "minor_damage" ? "Leichte Gebrauchsspuren / kleine Mängel"
           : "Erhebliche Schäden dokumentiert";
 
+        const LOCATIONS: Record<string, { name: string; address: string; city: string; phone: string; email: string; manager: string }> = {
+          krefeld: { name: "SLT Rental Krefeld", address: "Anrather Straße 291", city: "47807 Krefeld", phone: "02151 417 99 04", email: "krefeld@slt-rental.de", manager: "Benedikt Nöchel" },
+          bonn: { name: "SLT Rental Bonn", address: "Drachenburgstraße 8", city: "53179 Bonn", phone: "0228 504 660 61", email: "bonn@slt-rental.de", manager: "Ersel Uzun" },
+          muelheim: { name: "SLT Rental Mülheim", address: "Ruhrorter Str. 122", city: "45478 Mülheim an der Ruhr", phone: "02151 417 99 04", email: "muelheim@slt-rental.de", manager: "Andreas Scherzow" },
+        };
+        const loc = LOCATIONS[profile.assigned_location || ""] || LOCATIONS["krefeld"];
+
+        // Prepare HTML attachment
+        const htmlBase64 = encodeBase64(htmlBytes);
+        const attachments = [{
+          filename: fileName,
+          content: htmlBase64,
+          content_type: "text/html; charset=utf-8",
+        }];
+
         const emailHtml = `
 <!DOCTYPE html>
 <html lang="de">
@@ -347,7 +363,7 @@ Deno.serve(async (req: Request) => {
         <p style="font-size:14px;color:#555;margin:0;">${conditionLabel}</p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
-        Das vollständige Rückgabeprotokoll mit Unterschriften finden Sie in Ihrem B2B-Portal.
+        Das vollständige Rückgabeprotokoll mit Unterschriften finden Sie als Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://slt-rent-genius.lovable.app/b2b/dashboard" 
@@ -357,9 +373,11 @@ Deno.serve(async (req: Request) => {
       </div>
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
-      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${SLT_COMPANY.phone} · E-Mail: ${SLT_COMPANY.email}</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0;">${SLT_COMPANY.web}</p>
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${loc.name}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">${loc.address}, ${loc.city}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${loc.phone} · E-Mail: ${loc.email}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Ihr Ansprechpartner: ${loc.manager}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">www.slt-rental.de</p>
     </div>
   </div>
 </body>
@@ -376,6 +394,7 @@ Deno.serve(async (req: Request) => {
             to: [customerEmail],
             subject: `Rückgabeprotokoll ${returnProtocolNumber} – SLT-Rental`,
             html: emailHtml,
+            attachments,
           }),
         });
 
