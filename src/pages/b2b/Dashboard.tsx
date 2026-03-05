@@ -491,7 +491,7 @@ export default function B2BDashboard() {
                   </div>
                   <CardTitle className="text-lg">FAQ</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Häufige Fragen zu Buchung, Abrechnung und Rahmenverträgen.
                   </p>
