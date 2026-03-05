@@ -1003,6 +1003,26 @@ export const werkzeugeProducts: Product[] = [
     rentwareCode: { krefeld: "JR8BYL" }
   },
   {
+    id: "makita-abbruchhammer-hm1812",
+    name: "Makita Abbruchhammer HM1812",
+    description: "Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.",
+    detailedDescription: "Der Makita HM1812 ist ein leistungsstarker Abbruchhammer mit 2.000 W und 72,8 J Schlagenergie. Dank AVT (Anti-Vibrations-Technologie) wird die Belastung für den Anwender deutlich reduziert. Im Lieferumfang enthalten: 1x Spitzmeißel und 1x Flachmeißel.",
+    image: imgAbbruchhammerHm1812,
+    images: [imgAbbruchhammerHm1812],
+    category: "abbruchhammer",
+    onRequest: true,
+    specifications: {
+      "Hersteller": "Makita",
+      "Schlagenergie": "72,8 J",
+      "Schlagzahl bei Nenndrehzahl": "870 bpm",
+      "Nenneingangsleistung": "2.000 W",
+      "Gewicht": "31 kg",
+      "Abmessung (LxB)": "84 x 60 cm",
+      "Werkzeugaufnahme": "HEX-28",
+      "Lieferumfang": "1x Spitzmeißel, 1x Flachmeißel",
+    },
+  },
+  {
     id: "bosch-bohrschrauber-gsr12v-15",
     name: "Bosch Akku Bohrschrauber GSR 12V-15",
     description: "Kompakter Akku-Bohrschrauber",
