@@ -7,6 +7,16 @@
  * to avoid popup blockers, especially on mobile browsers.
  */
 export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: string, documentType?: string): Promise<void> {
+  // Check if the URL points to a PDF file (by extension or content-type hint)
+  const isPdf = fileUrl.toLowerCase().includes('.pdf') || fileUrl.toLowerCase().includes('content-type=application/pdf');
+
+  if (isPdf) {
+    // For PDFs: open directly in browser's native PDF viewer
+    window.open(fileUrl, "_blank");
+    return;
+  }
+
+  // For HTML documents (invoices etc.): fetch and render in new window
   // Open the window immediately (synchronously) to avoid popup blockers on mobile
   const newWindow = window.open("", "_blank");
 
@@ -14,6 +24,18 @@ export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: s
     const response = await fetch(fileUrl);
     if (!response.ok) {
       throw new Error(`Fehler beim Laden des Dokuments: ${response.status}`);
+    }
+
+    // Check content-type header to detect PDFs that don't have .pdf in URL
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType.includes("application/pdf")) {
+      // It's a PDF after all - redirect the already-opened window
+      if (newWindow) {
+        newWindow.location.href = fileUrl;
+      } else {
+        window.open(fileUrl, "_blank");
+      }
+      return;
     }
 
     // Explicitly decode as UTF-8 to prevent umlaut encoding issues
