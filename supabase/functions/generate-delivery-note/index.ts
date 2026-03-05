@@ -294,6 +294,28 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Update reservation status to "active" (Mietvorgang ist jetzt aktiv)
+    if (offer.reservation_id) {
+      // Check for grouped reservations
+      if (reservation?.rental_group_id) {
+        const { error: groupUpdateErr } = await serviceClient
+          .from("b2b_reservations")
+          .update({ status: "active" })
+          .eq("rental_group_id", reservation.rental_group_id);
+        if (groupUpdateErr) {
+          console.error("Error updating grouped reservations to active:", groupUpdateErr);
+        } else {
+          console.log("All grouped reservations set to active for group:", reservation.rental_group_id);
+        }
+      } else {
+        await serviceClient
+          .from("b2b_reservations")
+          .update({ status: "active" })
+          .eq("id", offer.reservation_id);
+        console.log("Reservation set to active:", offer.reservation_id);
+      }
+    }
+
     // Send email
     let emailSent = false;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");

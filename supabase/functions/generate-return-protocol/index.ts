@@ -306,13 +306,24 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    // Update reservation status to completed
-    await serviceClient
-      .from("b2b_reservations")
-      .update({ status: "completed" })
-      .eq("id", reservation_id);
-
-    console.log("Reservation status set to completed:", reservation_id);
+    // Update reservation status to completed (including grouped reservations)
+    if (reservation.rental_group_id) {
+      const { error: groupUpdateErr } = await serviceClient
+        .from("b2b_reservations")
+        .update({ status: "completed" })
+        .eq("rental_group_id", reservation.rental_group_id);
+      if (groupUpdateErr) {
+        console.error("Error updating grouped reservations to completed:", groupUpdateErr);
+      } else {
+        console.log("All grouped reservations set to completed for group:", reservation.rental_group_id);
+      }
+    } else {
+      await serviceClient
+        .from("b2b_reservations")
+        .update({ status: "completed" })
+        .eq("id", reservation_id);
+      console.log("Reservation status set to completed:", reservation_id);
+    }
 
     // Send email notification
     let emailSent = false;
