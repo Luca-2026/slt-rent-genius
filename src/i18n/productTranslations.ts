@@ -99,6 +99,17 @@ export const specKeyTranslations: Record<string, string> = {
   "Umschaltung": "Direction Change",
   "Zubehör": "Accessories",
 
+  // Saws / Cutting
+  "Leerlaufdrehzahl": "No-Load Speed",
+  "Sägeblattdurchmesser": "Saw Blade Diameter",
+  "Sägeblattbohrungs-Ø": "Saw Blade Bore Ø",
+  "Akkuspannung": "Battery Voltage",
+  "Führungsschienenkompatibel": "Guide Rail Compatible",
+  "Gewicht ohne Akku": "Weight excl. Battery",
+  "Schnitttiefe 90°": "Cutting Depth 90°",
+  "Schnitttiefe 45°": "Cutting Depth 45°",
+  "Schallleistungspegel": "Sound Power Level",
+
   // Garden tools
   "Motor": "Engine",
   "Leistung": "Power",
