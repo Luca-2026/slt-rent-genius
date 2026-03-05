@@ -513,7 +513,7 @@ Deno.serve(async (req: Request) => {
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:25px;">
         <table style="width:100%;font-size:14px;color:#555;">
           <tr><td>Zwischensumme (Netto):</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
-          ${deliveryCost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(deliveryCost)}</td></tr>` : ""}
+          ${delivery_cost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(delivery_cost)}</td></tr>` : ""}
           ${isReverseCharge 
             ? `<tr><td style="font-size:12px;color:#64748b;">USt. (Reverse-Charge):</td><td style="text-align:right;font-size:12px;color:#64748b;">${formatCurrency(0)}</td></tr>` 
             : `<tr><td>zzgl. ${vatRate}% USt.:</td><td style="text-align:right;">${formatCurrency(vatAmount)}</td></tr>`}
