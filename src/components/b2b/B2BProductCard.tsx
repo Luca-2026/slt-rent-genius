@@ -20,12 +20,14 @@ interface B2BProductCardProps {
 export function B2BProductCard({
   product,
   categorySlug,
+  locationId,
   discountPercent,
   onInquiry,
   isSelected = false,
   onToggleSelect,
   selectionMode = false,
 }: B2BProductCardProps) {
+  const navigate = useNavigate();
   const imgSrc = product.image || "/placeholder.svg";
   const hasDiscount = discountPercent > 0;
 
@@ -33,6 +35,11 @@ export function B2BProductCard({
     if (onToggleSelect) {
       onToggleSelect(product);
     }
+  };
+
+  const handleDetailClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/mieten/${locationId}/${categorySlug}/${product.id}`);
   };
 
   return (
