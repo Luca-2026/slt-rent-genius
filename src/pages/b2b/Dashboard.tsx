@@ -500,25 +500,27 @@ export default function B2BDashboard() {
             </Link>
 
             {/* Profile */}
-            <Card className="h-full flex flex-col">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
-                  <User className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-lg">Mein Profil</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <p className="text-sm text-muted-foreground mb-3">
-                  Firmendaten und Kontaktinformationen bearbeiten.
-                </p>
-                {b2bProfile && (
-                  <div className="text-xs text-muted-foreground space-y-1">
-                    <p>{b2bProfile.company_name}</p>
-                    <p>{b2bProfile.contact_first_name} {b2bProfile.contact_last_name}</p>
+            <Link to="/b2b/profil" className="block h-full">
+              <Card className="h-full flex flex-col hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
+                    <User className="h-6 w-6 text-primary" />
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  <CardTitle className="text-lg">Mein Profil</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Firmendaten und Kontaktinformationen bearbeiten.
+                  </p>
+                  {b2bProfile && (
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <p>{b2bProfile.company_name}</p>
+                      <p>{b2bProfile.contact_first_name} {b2bProfile.contact_last_name}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
 
