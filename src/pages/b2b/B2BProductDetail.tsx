@@ -116,9 +116,9 @@ export default function B2BProductDetail() {
         Zurück zum Katalog
       </Button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* ── LEFT / MAIN COLUMN ── */}
-        <div className="lg:col-span-2 space-y-5">
+        <div className="lg:col-span-2 space-y-4 md:space-y-5">
           {/* Image Gallery */}
           <div className="bg-card rounded-xl border border-border overflow-hidden">
             <div className="relative bg-muted" style={{ aspectRatio: "4/3" }}>
