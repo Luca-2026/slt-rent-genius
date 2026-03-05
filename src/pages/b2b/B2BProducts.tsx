@@ -29,6 +29,7 @@ interface SelectedItem {
 
 export default function B2BProducts() {
   const { b2bProfile } = useAuth();
+  const { t } = useTranslation();
   const { getDiscountForCategory, loading: discountsLoading } = useB2BDiscounts();
 
   // State
