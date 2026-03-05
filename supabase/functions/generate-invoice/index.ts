@@ -226,6 +226,7 @@ Deno.serve(async (req: Request) => {
     console.log("Invoice number generated:", invoiceNumber);
 
     // Generate PDF HTML
+    const docTitle = is_correction ? "RECHNUNGSKORREKTUR" : "RECHNUNG";
     const pdfHtml = generateInvoiceHtml({
       invoiceNumber,
       invoiceDate,
@@ -240,6 +241,8 @@ Deno.serve(async (req: Request) => {
       isReverseCharge,
       notes: notes || null,
       paymentDueDays: payment_due_days,
+      isCorrection: is_correction,
+      originalInvoiceNumber: original_invoice_number || null,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
