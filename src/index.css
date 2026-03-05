@@ -185,7 +185,7 @@
   }
 
   .marquee-track {
-    animation: marquee-scroll 45s linear infinite;
+    animation: marquee-scroll 65s linear infinite;
     width: max-content;
   }
 }
