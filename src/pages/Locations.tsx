@@ -166,9 +166,9 @@ export default function Locations() {
 
       {/* Google Maps - All 3 Locations */}
       <AnimatedSection animation="fade-in">
-        <section className="h-96 lg:h-[500px]">
+        <section className="h-96 lg:h-[500px] relative">
           <iframe
-            src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=SLT+Rental&center=50.9,6.9&zoom=8"
+            src="https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=50.85,6.95&zoom=9&maptype=roadmap"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -176,8 +176,50 @@ export default function Locations() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="SLT Rental Standorte"
-            className="w-full h-full rounded-none"
+            className="w-full h-full"
           />
+          {/* Custom Location Markers */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Krefeld - 51.3396, 6.5678 → positioned relative to map center 50.85, 6.95 at zoom 9 */}
+            <Link
+              to="/mieten/krefeld"
+              className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
+              style={{ top: '22%', left: '32%' }}
+            >
+              <div className="flex flex-col items-center drop-shadow-lg">
+                <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg whitespace-nowrap border-2 border-primary-foreground/20">
+                  📍 Krefeld (Hauptsitz)
+                </div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
+              </div>
+            </Link>
+            {/* Mülheim a.d. Ruhr - 51.4272, 6.8825 */}
+            <Link
+              to="/mieten/muelheim"
+              className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
+              style={{ top: '17%', left: '47%' }}
+            >
+              <div className="flex flex-col items-center drop-shadow-lg">
+                <div className="bg-accent text-accent-foreground px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg whitespace-nowrap border-2 border-accent-foreground/20">
+                  📍 Mülheim a.d. Ruhr
+                </div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
+              </div>
+            </Link>
+            {/* Bonn - 50.6945, 7.1508 */}
+            <Link
+              to="/mieten/bonn"
+              className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
+              style={{ top: '62%', left: '55%' }}
+            >
+              <div className="flex flex-col items-center drop-shadow-lg">
+                <div className="bg-accent text-accent-foreground px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg whitespace-nowrap border-2 border-accent-foreground/20">
+                  📍 Bonn
+                </div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
+              </div>
+            </Link>
+          </div>
         </section>
       </AnimatedSection>
 
