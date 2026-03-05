@@ -94,6 +94,10 @@ import imgBobcatE10z_1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
 import imgBobcatE10z_2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
 import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
 import imgBobcatE10z_4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
+import imgBobcatE35z_1 from "@/assets/products/erdbewegung/bobcat-e35z-1.webp";
+import imgBobcatE35z_2 from "@/assets/products/erdbewegung/bobcat-e35z-2.webp";
+import imgBobcatE35z_3 from "@/assets/products/erdbewegung/bobcat-e35z-3.webp";
+import imgBobcatE35z_4 from "@/assets/products/erdbewegung/bobcat-e35z-4.webp";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
 import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
@@ -191,6 +195,8 @@ export interface Product {
   sortOrder?: number; // Explicit sort order within category (lower = first)
   rentwareCode?: Record<string, string>;
   compatibleMachines?: string[]; // IDs of machines this accessory is compatible with
+  onRequest?: boolean; // Product available on request only (no direct booking)
+  driveType?: string; // Drive type: diesel, elektro, benzin
 }
 
 export interface ProductCategory {
@@ -503,7 +509,7 @@ const trailerProducts: Product[] = [
     weightKg: 1800, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -705,6 +711,28 @@ const erdbewegungProductsUnsorted: Product[] = [
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],
     rentwareCode: { krefeld: "MBUX18" }
+  },
+  {
+    id: "bobcat-e35z",
+    name: "3,5t Bobcat E35z Minibagger",
+    description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
+    detailedDescription: "Der Bobcat E35z ist ein leistungsstarker Minibagger der 3,5-Tonnen-Klasse mit Nullheck-Design für beengte Einsatzorte. Mit einer Grabtiefe von bis zu 3,12 m und einer maximalen Reichweite von 5,26 m am Boden eignet er sich hervorragend für Aushub-, Kanal- und Landschaftsbauarbeiten. Der Stage V Motor mit 24,8 kW (33,4 PS) sorgt für kraftvollen und emissionsarmen Betrieb. Das Laufwerk ist serienmäßig mit Gummiketten ausgestattet, Stahlketten sind optional verfügbar.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel für Aushubarbeiten, Tieflöffel für Aushubarbeiten, Laserausrüstung für exakte Nivellierung.",
+    image: imgBobcatE35z_1,
+    images: [imgBobcatE35z_1, imgBobcatE35z_2, imgBobcatE35z_3, imgBobcatE35z_4],
+    weightKg: 3500,
+    category: "minibagger",
+    tags: ["minibagger", "diesel", "ab-2500", "maschine"],
+    onRequest: true,
+    specifications: {
+      "Betriebsgewicht": "ca. 3.500 kg",
+      "Motorleistung": "24,8 kW (33,4 PS)",
+      "Abgasnorm": "Stufe V",
+      "Grabtiefe": "bis zu 3,12 m",
+      "Reichweite am Boden": "ca. 5,26 m",
+      "Max. Ausschütthöhe": "ca. 3,5 m",
+      "Löffelvolumen": "0,1 – 0,15 m³",
+      "Laufwerk": "Gummiketten (Stahlketten optional)",
+    },
   },
   {
     id: "kramer-5045",

@@ -307,6 +307,15 @@ export const bonnErdbewegungProducts = [
     rentwareCode: { bonn: "CUDHTT" },
     driveType: "elektro",
   },
+  {
+    id: "bonn-bobcat-e35z",
+    name: "3,5t Bobcat E35z Minibagger",
+    description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
+    image: "/placeholder.svg",
+    weightKg: 3500,
+    driveType: "diesel",
+    onRequest: true,
+  },
 ];
 
 // ==================== ERDBEWEGUNG ZUBEHÖR (Schaufeln, Löffel) ====================
@@ -341,7 +350,7 @@ export const bonnErdbewegungZusatzProducts = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["xcmg-xe27e"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",
