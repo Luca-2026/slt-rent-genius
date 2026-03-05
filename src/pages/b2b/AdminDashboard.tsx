@@ -795,7 +795,7 @@ export default function AdminDashboard() {
         </TabsList>
 
         {/* Tabs Content */}
-        <TabsContent value="reservations">
+         <TabsContent value="reservations">
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
@@ -809,8 +809,10 @@ export default function AdminDashboard() {
             }}
             onEditOffer={handleEditOffer}
             onResendOffer={handleResendOffer}
+            onDeleteReservation={handleDeleteReservation}
             onRefresh={fetchData}
             resendingId={resendingId}
+            deletingId={deletingReservationId}
           />
         </TabsContent>
 
