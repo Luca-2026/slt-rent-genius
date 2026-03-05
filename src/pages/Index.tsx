@@ -353,6 +353,35 @@ export default function Index() {
         <ProductInspirationSlider />
       </Suspense>
 
+      {/* Google Reviews Section */}
+      <section className="py-16 lg:py-20 bg-muted/30">
+        <div className="section-container">
+          <AnimatedSection animation="fade-in-up">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
+                {t("reviews.title", "Das sagen unsere Kunden")}
+              </h2>
+              <p className="text-muted-foreground">
+                {t("reviews.subtitle", "Echte Bewertungen von Google")}
+              </p>
+            </div>
+            <div className="space-y-12">
+              {locationData
+                .filter((loc) => ["krefeld", "bonn"].includes(loc.id))
+                .map((loc) => {
+                  const placeId = loc.id === "krefeld" ? "ChIJRyajcmSxuEcRAHvlWgXfF5c" : "ChIJf2ituEblvkcRUGua8HYhHCA";
+                  return (
+                    <div key={loc.id}>
+                      <h3 className="text-lg font-semibold text-foreground mb-4">📍 {loc.name}</h3>
+                      <GoogleReviewsComponent placeId={placeId} locationName={loc.name} variant="full" />
+                    </div>
+                  );
+                })}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
         
