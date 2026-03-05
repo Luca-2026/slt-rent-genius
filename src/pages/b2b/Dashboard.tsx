@@ -507,7 +507,7 @@ export default function B2BDashboard() {
                 </div>
                 <CardTitle className="text-lg">Mein Profil</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground mb-3">
                   Firmendaten und Kontaktinformationen bearbeiten.
                 </p>
