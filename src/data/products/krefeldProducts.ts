@@ -222,6 +222,7 @@ import fliesenschneider4 from "@/assets/products/fliesenschneider/fliesenschneid
 import fliesenschneider5 from "@/assets/products/fliesenschneider/fliesenschneider-80cm-5.jpeg";
 import imgBohrschrauber18v55 from "@/assets/products/werkzeuge/bohrschrauber-gsr18v-55.jpeg";
 import kreissaegeGks18v from "@/assets/products/werkzeuge/kreissaege-gks18v-57g.jpeg";
+import imgDiamantbohrerGdb180 from "@/assets/products/werkzeuge/diamantbohrer-gdb180we.jpeg";
 import vertikutierer1 from "@/assets/products/vertikutierer-1.jpeg";
 import vertikutierer2 from "@/assets/products/vertikutierer-2.jpeg";
 import haeckslerAxt1 from "@/assets/products/haecksler-axt-1.jpeg";
@@ -1260,6 +1261,31 @@ export const werkzeugeProducts: Product[] = [
     images: [imgDiamantbohrer],
     category: "kernbohrer",
     rentwareCode: { krefeld: "I578B5" }
+  },
+  {
+    id: "bosch-diamantbohrer-gdb180we",
+    name: "Bosch Diamantbohrer GDB 180 WE",
+    description: "Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.",
+    detailedDescription: "Die Bosch GDB 180 WE ist eine leistungsstarke Diamantbohrmaschine mit 2.000 W Nenneingangsleistung für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Mit zwei Drehzahlstufen (900/2.800 min⁻¹) und einem Gewicht von nur 5,2 kg eignet sie sich hervorragend für professionelle Kernbohrungen. Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",
+    image: imgDiamantbohrerGdb180,
+    images: [imgDiamantbohrerGdb180],
+    category: "kernbohrer",
+    onRequest: true,
+    specifications: {
+      "Hersteller": "Bosch",
+      "Nenneingangsleistung": "2.000 W",
+      "Gewicht": "5,2 kg",
+      "Leerlaufdrehzahl": "900 / 2.800 min⁻¹",
+      "Bohrbereich": "bis 180 mm",
+      "Bohrspindelanschlussgewinde": "1 1/4\" UNC",
+      "Eignung": "Nassbohren in Beton",
+      "Spannung": "230 V",
+      "Beton, möglicher Bereich": "180 mm",
+      "Mauerwerk, möglicher Bereich": "180 mm",
+    },
+    rentalNotes: [
+      "Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",
+    ],
   },
   {
     id: "mauerschlitzfraese",
