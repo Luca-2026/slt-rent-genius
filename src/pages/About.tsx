@@ -50,8 +50,8 @@ export default function About() {
   const teamMembers = [
     { name: "Benedikt Nöchel", role: t("about.teamBenedikt"), image: imgBenedikt, email: "b.noechel@slt-rental.de" },
     { name: "Ersel Uzun", role: t("about.teamErsel"), image: imgErsel, email: "e.uzun@slt-rental.de" },
-    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null, email: "muelheim@slt-rental.de" },
-    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null, email: "mieten@slt-rental.de" },
+    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null, email: "a.scherzow@slt-rental.de" },
+    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null, email: "p.preuss@slt-rental.de" },
     { name: "Juno", role: t("about.teamJuno"), image: imgJuno, email: null },
   ];
 
