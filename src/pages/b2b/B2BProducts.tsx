@@ -239,7 +239,17 @@ export default function B2BProducts() {
               const nameLower = p.name.toLowerCase();
               return selectedValues.some((v) => {
                 if (v === "akku") return nameLower.includes("akku");
-                if (v === "elektro") return driveType === "elektro" || nameLower.includes("elektro");
+                if (v === "elektro") {
+                  if (driveType === "elektro" || nameLower.includes("elektro")) return true;
+                  const specs = p.specifications || {};
+                  const hasMainsVoltage = Object.values(specs).some(sv => 
+                    String(sv).includes("230 V") || String(sv).includes("230V") || String(sv).includes("220 V")
+                  );
+                  if (hasMainsVoltage) return true;
+                  const hasWattage = Object.values(specs).some(sv => String(sv).includes(" W"));
+                  if (hasWattage && !nameLower.includes("akku") && !nameLower.includes("benzin")) return true;
+                  return false;
+                }
                 if (v === "benzin") return driveType === "benzin" || nameLower.includes("benzin");
                 if (v === "diesel") return driveType === "diesel" || nameLower.includes("diesel");
                 return p.tags?.includes(v) || driveType === v;
