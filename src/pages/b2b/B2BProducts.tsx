@@ -113,8 +113,52 @@ export default function B2BProducts() {
       );
     }
 
-    // Apply category-specific filters
-    if (filterSections && selectedCategory !== "alle") {
+    // Apply trailer-specific filters
+    if (selectedCategory === "anhaenger") {
+      if (trailerFilters.search) {
+        const q = trailerFilters.search.toLowerCase();
+        products = products.filter(
+          (p) => p.name.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q)
+        );
+      }
+      if (trailerFilters.types.length > 0) {
+        products = products.filter((p) => {
+          const nameLower = p.name.toLowerCase();
+          return trailerFilters.types.some((type) =>
+            p.tags?.includes(type) ||
+            (type === "geschlossen" && (nameLower.includes("planen") || nameLower.includes("koffer"))) ||
+            (type === "baumaschine" && nameLower.includes("baumaschinen")) ||
+            (type === "autotransport" && nameLower.includes("autotransport")) ||
+            (type === "laubgitter" && (nameLower.includes("laubgitter") || nameLower.includes("kipp"))) ||
+            (type === "urlaub" && nameLower.includes("urlaub"))
+          );
+        });
+      }
+      if (trailerFilters.braking.length > 0) {
+        products = products.filter((p) => {
+          const parsed = p.name.match(/(\d{2,5})\s*kg/i);
+          const weight = p.weightKg || (parsed ? Number(parsed[1]) : 0);
+          const inferred = weight > 750 ? "gebremst" : "ungebremst";
+          return trailerFilters.braking.some((b) => p.tags?.includes(b) || b === inferred);
+        });
+      }
+      if (trailerFilters.weight.length > 0) {
+        products = products.filter((p) => {
+          const parsed = p.name.match(/(\d{2,5})\s*kg/i);
+          const productWeight = p.weightKg || (parsed ? Number(parsed[1]) : 0);
+          return trailerFilters.weight.some((weightId) => {
+            if (weightId === "bis-750") return productWeight <= 750;
+            if (weightId === "750-1500") return productWeight > 750 && productWeight <= 1500;
+            if (weightId === "1500-2500") return productWeight > 1500 && productWeight <= 2500;
+            if (weightId === "ab-2500") return productWeight > 2500;
+            return false;
+          });
+        });
+      }
+    }
+
+    // Apply category-specific filters (non-trailer)
+    if (filterSections && selectedCategory !== "alle" && selectedCategory !== "anhaenger") {
       // Search from category filter
       if (categoryFilters.search) {
         const q = categoryFilters.search.toLowerCase();
@@ -125,7 +169,7 @@ export default function B2BProducts() {
         );
       }
 
-      // Apply filter sections (simplified - tag/category matching)
+      // Apply filter sections
       Object.entries(categoryFilters.filters).forEach(([sectionId, selectedValues]) => {
         if (selectedValues.length > 0) {
           if (sectionId === "height") {
@@ -185,7 +229,7 @@ export default function B2BProducts() {
     }
 
     return products;
-  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections]);
+  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections, trailerFilters]);
 
   // Find category slug for a product (for discount lookup)
   const getCategoryForProduct = useCallback((product: Product): string => {
