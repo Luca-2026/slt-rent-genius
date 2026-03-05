@@ -1,0 +1,1 @@
+UPDATE public.b2b_profiles SET status = 'approved', contact_position = NULL WHERE company_name = 'Demo Firma GmbH';
