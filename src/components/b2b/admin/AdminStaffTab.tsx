@@ -21,6 +21,16 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -38,6 +48,7 @@ import {
   UserX,
   UserCheck,
   Pencil,
+  Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -89,6 +100,7 @@ export function AdminStaffTab() {
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [editRoleOpen, setEditRoleOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState<StaffProfile | null>(null);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -244,6 +256,37 @@ export function AdminStaffTab() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!selectedStaff) return;
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
+        body: {
+          action: "delete",
+          staff_user_id: selectedStaff.user_id,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: "Mitarbeiter gelöscht",
+        description: `${selectedStaff.first_name} ${selectedStaff.last_name} wurde endgültig gelöscht.`,
+      });
+      setDeleteConfirmOpen(false);
+      setSelectedStaff(null);
+      fetchStaff();
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Mitarbeiter konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const filteredStaff = staff.filter((s) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
@@ -366,6 +409,19 @@ export function AdminStaffTab() {
                                 <UserCheck className="h-3.5 w-3.5" />
                               )}
                             </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedStaff(s);
+                                setDeleteConfirmOpen(true);
+                              }}
+                              disabled={saving}
+                              title="Löschen"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -450,6 +506,19 @@ export function AdminStaffTab() {
                               Aktivieren
                             </>
                           )}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-9 px-3 text-destructive hover:text-destructive"
+                          onClick={() => {
+                            setSelectedStaff(s);
+                            setDeleteConfirmOpen(true);
+                          }}
+                          disabled={saving}
+                        >
+                          <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                          Löschen
                         </Button>
                       </div>
                     </div>
@@ -622,6 +691,33 @@ export function AdminStaffTab() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Mitarbeiter endgültig löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {selectedStaff && (
+                <>
+                  <strong>{selectedStaff.first_name} {selectedStaff.last_name}</strong> ({selectedStaff.email}) wird unwiderruflich gelöscht.
+                  Das Benutzerkonto, die Rolle und alle Zugangsdaten werden entfernt.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={saving}
+            >
+              {saving ? "Wird gelöscht..." : "Endgültig löschen"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

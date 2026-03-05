@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 interface CreateStaffRequest {
-  action: "create" | "update_role" | "deactivate" | "reactivate";
+  action: "create" | "update_role" | "deactivate" | "reactivate" | "delete";
   // For create
   email?: string;
   password?: string;
@@ -392,6 +392,63 @@ Deno.serve(async (req: Request) => {
       if (error) {
         return new Response(
           JSON.stringify({ error: "Failed to reactivate: " + error.message }),
+          {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ─── DELETE ──────────────────────────────────────────
+    if (body.action === "delete") {
+      if (!body.staff_user_id) {
+        return new Response(
+          JSON.stringify({ error: "Missing staff_user_id" }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      // Prevent self-deletion
+      if (body.staff_user_id === authUser.id) {
+        return new Response(
+          JSON.stringify({ error: "Sie können sich nicht selbst löschen." }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      // Delete roles
+      await serviceClient
+        .from("user_roles")
+        .delete()
+        .eq("user_id", body.staff_user_id);
+
+      // Delete staff profile
+      await serviceClient
+        .from("staff_profiles")
+        .delete()
+        .eq("user_id", body.staff_user_id);
+
+      // Delete auth user
+      const { error: deleteError } = await serviceClient.auth.admin.deleteUser(
+        body.staff_user_id
+      );
+
+      if (deleteError) {
+        console.error("Error deleting auth user:", deleteError);
+        return new Response(
+          JSON.stringify({ error: "Benutzer konnte nicht gelöscht werden: " + deleteError.message }),
           {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
