@@ -523,8 +523,12 @@ function generateInvoiceHtml(data: {
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr + "T00:00:00");
-    return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    const parts = dateStr.split(" ");
+    const datePart = parts[0];
+    const timePart = parts[1] || null;
+    const d = new Date(datePart + "T00:00:00");
+    const ds = d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    return timePart ? `${ds} ${timePart} Uhr` : ds;
   };
 
   const isCredit = data.isCorrection && data.notes?.includes("GUTSCHRIFT");
