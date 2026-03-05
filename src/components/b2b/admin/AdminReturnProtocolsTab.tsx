@@ -4,7 +4,7 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -42,7 +42,24 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
   const [protocols, setProtocols] = useState<ReturnProtocol[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const handleDelete = async (rp: ReturnProtocol) => {
+    if (!confirm(`Rückgabeprotokoll ${rp.return_protocol_number} wirklich löschen?`)) return;
+    setDeletingId(rp.id);
+    try {
+      await supabase.from("b2b_return_protocol_items").delete().eq("return_protocol_id", rp.id);
+      const { error } = await supabase.from("b2b_return_protocols").delete().eq("id", rp.id);
+      if (error) throw error;
+      toast({ title: "Rückgabeprotokoll gelöscht" });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const fetchProtocols = async () => {
     setLoading(true);
@@ -203,6 +220,18 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                         >
                           <Send className="h-4 w-4 mr-1.5" />
                           {sendingId === rp.id ? "Sende..." : rp.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(rp)}
+                          disabled={deletingId === rp.id}
+                        >
+                          {deletingId === rp.id ? (
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
                         </Button>
                       </div>
                     </div>

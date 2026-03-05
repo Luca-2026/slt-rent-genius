@@ -4,7 +4,7 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -40,7 +40,26 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
   const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const handleDelete = async (dn: DeliveryNote) => {
+    if (!confirm(`Übergabeprotokoll ${dn.delivery_note_number} wirklich löschen?`)) return;
+    setDeletingId(dn.id);
+    try {
+      await supabase.from("b2b_delivery_note_items").delete().eq("delivery_note_id", dn.id);
+      // Nullify references from return protocols
+      await supabase.from("b2b_return_protocols").update({ delivery_note_id: null }).eq("delivery_note_id", dn.id);
+      const { error } = await supabase.from("b2b_delivery_notes").delete().eq("id", dn.id);
+      if (error) throw error;
+      toast({ title: "Übergabeprotokoll gelöscht" });
+      fetchDeliveryNotes();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const fetchDeliveryNotes = async () => {
     setLoading(true);
@@ -178,6 +197,18 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                         >
                           <Send className="h-4 w-4 mr-1.5" />
                           {sendingId === dn.id ? "Sende..." : dn.email_sent ? "Erneut senden" : "Versenden"}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(dn)}
+                          disabled={deletingId === dn.id}
+                        >
+                          {deletingId === dn.id ? (
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
                         </Button>
                       </div>
                     </div>
