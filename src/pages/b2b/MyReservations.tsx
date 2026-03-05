@@ -17,12 +17,16 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
   FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
-  ChevronDown, ChevronRight, Layers,
+  ChevronDown, ChevronRight, Layers, Trash2, Pencil,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -172,6 +176,9 @@ export default function MyReservations() {
   const [reservationToReturn, setReservationToReturn] = useState<Reservation | null>(null);
   const [returningId, setReturningId] = useState<string | null>(null);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -252,6 +259,26 @@ export default function MyReservations() {
       });
     } finally {
       setReturningId(null);
+    }
+  };
+
+  const handleDeleteReservation = async () => {
+    if (!reservationToDelete) return;
+    setDeletingId(reservationToDelete.id);
+    try {
+      const { error } = await supabase
+        .from("b2b_reservations")
+        .delete()
+        .eq("id", reservationToDelete.id);
+      if (error) throw error;
+      toast({ title: "Anfrage gelöscht", description: "Die Mietanfrage wurde erfolgreich gelöscht." });
+      setDeleteDialogOpen(false);
+      setReservationToDelete(null);
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message || "Anfrage konnte nicht gelöscht werden.", variant: "destructive" });
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -369,24 +396,44 @@ export default function MyReservations() {
           {formatDate(r.created_at)}
         </TableCell>
         <TableCell className="text-right">
-          {r.status === "confirmed" && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                setReservationToReturn(r);
-                setReturnDialogOpen(true);
-              }}
-              disabled={returningId === r.id}
-            >
-              {returningId === r.id ? (
-                <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
-              ) : (
-                <LogOut className="h-3.5 w-3.5 mr-1" />
-              )}
-              Freimelden
-            </Button>
-          )}
+          <div className="flex items-center gap-1.5 justify-end">
+            {r.status === "confirmed" && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setReservationToReturn(r);
+                  setReturnDialogOpen(true);
+                }}
+                disabled={returningId === r.id}
+              >
+                {returningId === r.id ? (
+                  <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
+                ) : (
+                  <LogOut className="h-3.5 w-3.5 mr-1" />
+                )}
+                Freimelden
+              </Button>
+            )}
+            {r.status === "pending" && (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setReservationToDelete(r);
+                  setDeleteDialogOpen(true);
+                }}
+                disabled={deletingId === r.id}
+              >
+                {deletingId === r.id ? (
+                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="h-3.5 w-3.5" />
+                )}
+              </Button>
+            )}
+          </div>
         </TableCell>
       </TableRow>
     );
@@ -440,6 +487,24 @@ export default function MyReservations() {
               <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird freigemeldet...</>
             ) : (
               <><LogOut className="h-3.5 w-3.5 mr-1.5" />Gerät freimelden</>
+            )}
+          </Button>
+        )}
+        {r.status === "pending" && (
+          <Button
+            size="sm"
+            variant="destructive"
+            className="w-full"
+            onClick={() => {
+              setReservationToDelete(r);
+              setDeleteDialogOpen(true);
+            }}
+            disabled={deletingId === r.id}
+          >
+            {deletingId === r.id ? (
+              <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird gelöscht...</>
+            ) : (
+              <><Trash2 className="h-3.5 w-3.5 mr-1.5" />Anfrage löschen</>
             )}
           </Button>
         )}
@@ -820,6 +885,31 @@ export default function MyReservations() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Reservation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Anfrage löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchtest du die Anfrage für „{reservationToDelete?.product_name || reservationToDelete?.product_id}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteReservation}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deletingId ? (
+                <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird gelöscht...</>
+              ) : (
+                <><Trash2 className="h-4 w-4 mr-1.5" />Löschen</>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </B2BPortalLayout>
   );
 }

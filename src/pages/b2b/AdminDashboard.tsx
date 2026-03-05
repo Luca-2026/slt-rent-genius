@@ -587,7 +587,33 @@ export default function AdminDashboard() {
     }
   };
 
-  // ─── Derived data ─────────────────────────────────────
+  const [deletingReservationId, setDeletingReservationId] = useState<string | null>(null);
+
+  const handleDeleteReservation = async (res: any) => {
+    if (!confirm(`Anfrage "${res.product_name || res.product_id}" wirklich löschen?`)) return;
+    setDeletingReservationId(res.id);
+    try {
+      // Delete associated offer items & offers first
+      const { data: relatedOffers } = await supabase
+        .from("b2b_offers")
+        .select("id")
+        .eq("reservation_id", res.id);
+      if (relatedOffers && relatedOffers.length > 0) {
+        const offerIds = relatedOffers.map((o) => o.id);
+        await supabase.from("b2b_offer_items").delete().in("offer_id", offerIds);
+        await supabase.from("b2b_offers").delete().in("id", offerIds);
+      }
+      const { error } = await supabase.from("b2b_reservations").delete().eq("id", res.id);
+      if (error) throw error;
+      toast({ title: "Anfrage gelöscht" });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    } finally {
+      setDeletingReservationId(null);
+    }
+  };
+
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
@@ -769,7 +795,7 @@ export default function AdminDashboard() {
         </TabsList>
 
         {/* Tabs Content */}
-        <TabsContent value="reservations">
+         <TabsContent value="reservations">
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
@@ -783,8 +809,10 @@ export default function AdminDashboard() {
             }}
             onEditOffer={handleEditOffer}
             onResendOffer={handleResendOffer}
+            onDeleteReservation={handleDeleteReservation}
             onRefresh={fetchData}
             resendingId={resendingId}
+            deletingId={deletingReservationId}
           />
         </TabsContent>
 

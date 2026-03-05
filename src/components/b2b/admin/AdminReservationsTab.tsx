@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, RefreshCw, FileText, Send, Pencil } from "lucide-react";
+import { CheckCircle2, Clock, RefreshCw, FileText, Send, Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -55,8 +55,10 @@ interface Props {
   onCreateOffer: (reservation: Reservation) => void;
   onEditOffer: (offer: Offer, items: OfferItem[]) => void;
   onResendOffer: (offer: Offer) => void;
+  onDeleteReservation?: (reservation: Reservation) => void;
   onRefresh: () => void;
   resendingId: string | null;
+  deletingId?: string | null;
 }
 
 export function AdminReservationsTab({
@@ -67,8 +69,10 @@ export function AdminReservationsTab({
   onCreateOffer,
   onEditOffer,
   onResendOffer,
+  onDeleteReservation,
   onRefresh,
   resendingId,
+  deletingId,
 }: Props) {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
@@ -175,35 +179,49 @@ export function AdminReservationsTab({
                      <div className="flex gap-2 shrink-0">
                        {hasOffer ? (
                          <>
-                           <Button
-                             size="sm"
-                             variant="outline"
-                             onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
-                           >
-                             <Pencil className="h-3.5 w-3.5 mr-1" />
-                             Angebot ändern
-                           </Button>
-                           <Button
-                             size="sm"
-                             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                             onClick={() => onResendOffer(existingOffer)}
-                             disabled={resendingId === existingOffer.id}
-                           >
-                             <Send className="h-3.5 w-3.5 mr-1" />
-                             {resendingId === existingOffer.id ? "Wird gesendet..." : "Erneut senden"}
-                           </Button>
-                         </>
-                       ) : (
-                         <Button
-                           size="sm"
-                           className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                           onClick={() => onCreateOffer(res)}
-                         >
-                           <FileText className="h-3.5 w-3.5 mr-1" />
-                           Angebot erstellen
-                         </Button>
-                       )}
-                     </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
+                            >
+                              <Pencil className="h-3.5 w-3.5 mr-1" />
+                              Angebot ändern
+                            </Button>
+                            <Button
+                              size="sm"
+                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                              onClick={() => onResendOffer(existingOffer)}
+                              disabled={resendingId === existingOffer.id}
+                            >
+                              <Send className="h-3.5 w-3.5 mr-1" />
+                              {resendingId === existingOffer.id ? "Wird gesendet..." : "Erneut senden"}
+                            </Button>
+                          </>
+                        ) : (
+                          <Button
+                            size="sm"
+                            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                            onClick={() => onCreateOffer(res)}
+                          >
+                            <FileText className="h-3.5 w-3.5 mr-1" />
+                            Angebot erstellen
+                          </Button>
+                        )}
+                        {onDeleteReservation && (
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => onDeleteReservation(res)}
+                            disabled={deletingId === res.id}
+                          >
+                            {deletingId === res.id ? (
+                              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
+                        )}
+                      </div>
                    </div>
                 </CardContent>
               </Card>
