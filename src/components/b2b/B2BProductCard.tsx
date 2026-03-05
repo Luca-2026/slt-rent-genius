@@ -39,7 +39,7 @@ export function B2BProductCard({
 
   const handleDetailClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/mieten/${locationId}/${categorySlug}/${product.id}`);
+    navigate(`/b2b/produkte/${locationId}/${categorySlug}/${product.id}`);
   };
 
   return (
