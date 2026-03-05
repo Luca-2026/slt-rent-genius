@@ -507,7 +507,7 @@ const trailerProducts: Product[] = [
     weightKg: 1800, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
