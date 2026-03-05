@@ -14,6 +14,7 @@ interface B2BProfile {
   assigned_location: string | null;
   assigned_contact_override: Record<string, string> | null;
   deletion_requested_at: string | null;
+  credit_limit_requested_at: string | null;
 }
 
 interface AuthContextType {
