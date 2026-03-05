@@ -1469,6 +1469,26 @@ export type Database = {
         Returns: boolean
       }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
+      update_b2b_profile_with_pending: {
+        Args: {
+          _assigned_location: string
+          _billing_email: string
+          _city: string
+          _company_name: string
+          _contact_first_name: string
+          _contact_last_name: string
+          _contact_phone: string
+          _contact_position: string
+          _house_number: string
+          _legal_form: string
+          _postal_code: string
+          _street: string
+          _tax_id: string
+          _trade_register_number: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role:
