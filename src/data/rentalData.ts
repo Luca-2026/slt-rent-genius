@@ -800,7 +800,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 3000,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { krefeld: "PMJJCT" }
+    rentwareCode: { krefeld: "PMJJCT" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "knickdumper-kde550",
