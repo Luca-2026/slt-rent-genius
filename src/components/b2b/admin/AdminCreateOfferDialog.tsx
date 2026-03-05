@@ -53,6 +53,10 @@ interface OfferItemInput {
   quantity: number;
   unit_price: number;
   discount_percent: number;
+  rental_start?: string;
+  rental_end?: string;
+  start_time?: string;
+  end_time?: string;
 }
 
 export interface ExistingOffer {
@@ -146,7 +150,7 @@ export function AdminCreateOfferDialog({
           setSelectedServices(new Set());
         }
       } else if (isStandalone) {
-        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }]);
+        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
         setDeliveryCost(0);
         setNotes("");
         setDeposit("");
@@ -202,7 +206,7 @@ export function AdminCreateOfferDialog({
   const addItem = () => {
     setItems((prev) => [
       ...prev,
-      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 },
+      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" },
     ]);
   };
 
@@ -244,7 +248,8 @@ export function AdminCreateOfferDialog({
 
   const reservationId = existingOffer?.reservation_id || reservation?.id;
   const categorySlug = (reservation as any)?.category_slug;
-  const relevantServices = getServicesForCategory(categorySlug);
+  // In standalone mode, show ALL services (including MBV options)
+  const relevantServices = isStandalone ? ADDITIONAL_SERVICES : getServicesForCategory(categorySlug);
 
   const handleCreate = async () => {
     if (!isStandalone && !reservationId) return;
@@ -286,8 +291,10 @@ export function AdminCreateOfferDialog({
             quantity: item.quantity,
             unit_price: item.unit_price,
             discount_percent: item.discount_percent || undefined,
-            rental_start: startDate,
-            rental_end: endDate,
+            rental_start: item.rental_start || startDate,
+            rental_end: item.rental_end || endDate,
+            start_time: item.start_time || undefined,
+            end_time: item.end_time || undefined,
             image_url: getProductImageUrl(reservation?.product_id || "") || getProductImageUrlByName(item.product_name) || undefined,
           })),
           delivery_cost: deliveryCost,
@@ -477,6 +484,48 @@ export function AdminCreateOfferDialog({
                     />
                   </div>
                 </div>
+
+                {/* Rental period per item (standalone or editable) */}
+                {(isStandalone || isEditing) && (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-xs">Mietbeginn</Label>
+                      <Input
+                        type="date"
+                        value={item.rental_start || ""}
+                        onChange={(e) => updateItem(index, "rental_start", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Uhrzeit Beginn</Label>
+                      <Input
+                        type="time"
+                        value={item.start_time || ""}
+                        onChange={(e) => updateItem(index, "start_time", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Mietende</Label>
+                      <Input
+                        type="date"
+                        value={item.rental_end || ""}
+                        onChange={(e) => updateItem(index, "rental_end", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Uhrzeit Ende</Label>
+                      <Input
+                        type="time"
+                        value={item.end_time || ""}
+                        onChange={(e) => updateItem(index, "end_time", e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="text-right text-sm">
                   <span className="text-muted-foreground">Summe: </span>
