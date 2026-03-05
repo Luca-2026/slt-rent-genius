@@ -4,6 +4,7 @@ import { B2BProductCard } from "@/components/b2b/B2BProductCard";
 import { B2BReservationDialog } from "@/components/b2b/B2BReservationDialog";
 import { B2BMultiReservationDialog } from "@/components/b2b/B2BMultiReservationDialog";
 import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
+import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
 import { categoryFilterMap, categorySearchPlaceholders } from "@/components/rental/categoryFilters";
 import { useB2BDiscounts } from "@/hooks/useB2BDiscounts";
 import { useAuth } from "@/hooks/useAuth";
