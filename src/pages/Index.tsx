@@ -42,6 +42,7 @@ export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [howItWorksTab, setHowItWorksTab] = useState<"private" | "b2b">("private");
 
   const steps = [
     { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), action: "location" as const, cta: t("steps.step1Cta") },
