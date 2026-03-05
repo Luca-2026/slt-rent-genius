@@ -68,11 +68,9 @@ export default function Index() {
     <Layout>
       {/* Hero Section */}
       <section className="relative z-20 bg-primary py-16 lg:py-24">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
+        {/* Background Image Slider */}
+        <HeroBackgroundSlider />
+        <div className="absolute inset-0 bg-primary/85" />
         <div className="absolute inset-0 bg-primary/85" />
         <div className="section-container relative z-10">
           <div className="max-w-3xl">
