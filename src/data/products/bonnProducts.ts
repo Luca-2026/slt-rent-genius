@@ -359,7 +359,7 @@ export const bonnErdbewegungZusatzProducts = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z"],
+    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",
