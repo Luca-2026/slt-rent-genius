@@ -123,7 +123,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!v || profile) { onOpenChange(v); if (v && profile) resetForm(profile); } }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Kundendaten bearbeiten</DialogTitle>
