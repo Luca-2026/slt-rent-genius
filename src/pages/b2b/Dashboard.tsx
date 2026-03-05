@@ -36,6 +36,8 @@ import {
   ClipboardCheck,
   Undo2,
   MessageCircle,
+  BookOpen,
+  Send,
 } from "lucide-react";
 
 export default function B2BDashboard() {
