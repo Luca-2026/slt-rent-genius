@@ -81,6 +81,14 @@ export default function B2BDashboard() {
   const isPending = b2bProfile?.status === "pending";
   const isApproved = b2bProfile?.status === "approved";
   const isRejected = b2bProfile?.status === "rejected";
+  const assignedLocation = nearestLocation;
+
+  // WhatsApp numbers per location
+  const whatsappNumbers: Record<string, string> = {
+    krefeld: "+4915789150872",
+    bonn: "+4915757151584",
+  };
+  const locationWhatsApp = assignedLocation ? whatsappNumbers[assignedLocation.id] : null;
 
   const statusConfig = {
     pending: {
@@ -115,9 +123,21 @@ export default function B2BDashboard() {
         <div className="section-container">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-1">
-                Willkommen, {b2bProfile?.contact_first_name || "Benutzer"}!
-              </h1>
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
+                  Willkommen, {b2bProfile?.contact_first_name || "Benutzer"}!
+                </h1>
+                {b2bProfile && (
+                  <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
+                    status === "approved" ? "bg-green-500/20 text-green-200" : 
+                    status === "rejected" ? "bg-red-500/20 text-red-200" : 
+                    "bg-yellow-500/20 text-yellow-200"
+                  }`}>
+                    <StatusIcon className="h-3 w-3" />
+                    {statusConfig[status]?.label}
+                  </span>
+                )}
+              </div>
               <p className="text-primary-foreground/80">
                 {b2bProfile?.company_name || "B2B-Dashboard"}
               </p>
@@ -150,8 +170,32 @@ export default function B2BDashboard() {
 
       <section className="py-8 lg:py-12">
         <div className="section-container">
-          {/* Status Banner */}
-          {b2bProfile && (
+          {/* Standort Banner - for approved users */}
+          {isApproved && b2bProfile && assignedLocation && (
+            <Card className="mb-8 border-primary/20 bg-primary/5">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                    <MapPin className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="font-semibold text-lg text-headline">
+                      Dein Standort: {assignedLocation.name}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {assignedLocation.address}, {assignedLocation.city}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Dein Ansprechpartner: <span className="font-medium text-headline">{assignedLocation.manager.name}</span>
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Pending/Rejected Banner */}
+          {b2bProfile && !isApproved && (
             <Card className={`mb-8 ${statusConfig[status]?.bgColor}`}>
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
@@ -163,7 +207,7 @@ export default function B2BDashboard() {
                     <p className="text-muted-foreground">
                       {statusConfig[status]?.description}
                     </p>
-                    {isRejected && b2bProfile && (
+                    {isRejected && (
                       <Link to="/kontakt">
                         <Button size="sm" className="mt-3 bg-accent text-accent-foreground hover:bg-cta-orange-hover">
                           Kontakt aufnehmen
@@ -318,27 +362,38 @@ export default function B2BDashboard() {
               </Card>
             </Link>
 
-            {/* Direct Contact */}
+            {/* Direct Contact - personalized */}
             <Card className="h-full">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
                   <Phone className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Direktkontakt</CardTitle>
+                {assignedLocation && (
+                  <p className="text-xs text-muted-foreground">
+                    Standort {assignedLocation.name} · {assignedLocation.manager.name}
+                  </p>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
-                <a href="tel:+4915789150872" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <Phone className="h-4 w-4 shrink-0" />
-                  +49 1578 9150872
-                </a>
-                <a href="https://wa.me/4915789150872" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors font-medium">
-                  <MessageCircle className="h-4 w-4 shrink-0" />
-                  WhatsApp schreiben
-                </a>
-                <a href="mailto:mieten@slt-rental.de" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <Mail className="h-4 w-4 shrink-0" />
-                  mieten@slt-rental.de
-                </a>
+                {assignedLocation && (
+                  <a href={`tel:${assignedLocation.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <Phone className="h-4 w-4 shrink-0" />
+                    {assignedLocation.phone}
+                  </a>
+                )}
+                {locationWhatsApp && (
+                  <a href={`https://wa.me/${locationWhatsApp.replace('+', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors font-medium">
+                    <MessageCircle className="h-4 w-4 shrink-0" />
+                    WhatsApp schreiben
+                  </a>
+                )}
+                {assignedLocation && (
+                  <a href={`mailto:${assignedLocation.manager.email}`} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <Mail className="h-4 w-4 shrink-0" />
+                    {assignedLocation.manager.email}
+                  </a>
+                )}
               </CardContent>
             </Card>
 
