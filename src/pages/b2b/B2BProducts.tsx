@@ -83,66 +83,57 @@ export default function B2BProducts() {
     let products = getProductsForLocationCategory(selectedLocation, selectedCategory);
 
     // Deduplicate products that appear twice due to mergeWithFallback
-    // Strategy: normalize names and group similar products, keeping the richer entry
-    const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9äöüß]/g, "");
+    // Strategy: extract a canonical key from the name, keep the richer entry
+    const canonicalKey = (name: string): string => {
+      // Remove brand names and normalize to get core product identity
+      return name.toLowerCase()
+        .replace(/[^a-z0-9äöüßμ\/]/g, "")
+        // Remove common brand prefixes that differ between locations
+        .replace(/^bosch|^xcmg|^zoomlion|^allegra|^kärcher|^karcher|^doosan|^nifty|^europelift/g, "");
+    };
+
+    // Also extract a "model number" key for matching (e.g. "vp1644", "gs72xh", "zmp09")
+    const modelKey = (name: string): string | null => {
+      const n = name.toLowerCase();
+      // Match patterns like VP 16/44, HVP 30/50, GS72-XH, ZMP09, XG0807AC, TM18GTi, HR12L, ZS1012AC
+      const m = n.match(/([a-z]{1,4}\s*\d{2,6}[a-z]*[-\/]?\s*[a-z0-9]*)/);
+      return m ? m[1].replace(/[\s\-\/]/g, "") : null;
+    };
     
     const seenIds = new Set<string>();
-    const seenNames = new Map<string, Product>();
+    const seenKeys = new Map<string, Product>();
+    const seenModels = new Map<string, Product>();
     const deduped: Product[] = [];
+    
+    const richness = (p: Product) => {
+      const hasRealImage = p.image && p.image !== "/placeholder.svg";
+      const hasSpecs = p.specifications && Object.keys(p.specifications).length > 0;
+      return (hasRealImage ? 10 : 0) + (hasSpecs ? 5 : 0) + (p.detailedDescription ? 3 : 0) + (p.features?.length || 0);
+    };
     
     for (const p of products) {
       if (seenIds.has(p.id)) continue;
       seenIds.add(p.id);
 
-      const pn = normalise(p.name);
-      const hasRealImage = p.image && p.image !== "/placeholder.svg";
-      const hasSpecs = p.specifications && Object.keys(p.specifications).length > 0;
-      const richness = (hasRealImage ? 10 : 0) + (hasSpecs ? 5 : 0) + (p.detailedDescription ? 3 : 0) + (p.features?.length || 0);
+      const ck = canonicalKey(p.name);
+      const mk = modelKey(p.name);
       
-      // Check if a similar product already exists (by normalized name similarity)
-      let isDuplicate = false;
-      for (const [existingName, existingProduct] of seenNames) {
-        const en = existingName;
-        // Match if one name contains the other (min 10 chars to avoid false matches)
-        // Also extract the leading size pattern (e.g. "18m") for comparison
-        const pnSize = pn.match(/^(\d+[a-z]*)/)?.[1] || "";
-        const enSize = en.match(/^(\d+[a-z]*)/)?.[1] || "";
-        const sameSize = pnSize.length >= 2 && pnSize === enSize;
-        
-        // Extract the core type word (e.g. "scherenbühne", "mastbühne", "arbeitsbühne")
-        const pnType = pn.match(/(scherenb[uü]hne|mastb[uü]hne|gelenkteleskop|anhänger.*b[uü]hne|arbeitsbühne|anhängerb[uü]hne)/)?.[1] || "";
-        const enType = en.match(/(scherenb[uü]hne|mastb[uü]hne|gelenkteleskop|anhänger.*b[uü]hne|arbeitsbühne|anhängerb[uü]hne)/)?.[1] || "";
-        const sameType = pnType.length > 0 && enType.length > 0 && (
-          pnType === enType || pnType.includes(enType) || enType.includes(pnType)
-        );
-        
-        const similar = (pn.length >= 10 && en.length >= 10) && (
-          pn.includes(en) || en.includes(pn) ||
-          // Same size + same type (e.g. "18m...arbeitsbühne" matches "18m...anhängerbühne")
-          (sameSize && sameType) ||
-          // Same leading pattern
-          (pn.match(/^\d+/) && en.match(/^\d+/) && pn.slice(0, 12) === en.slice(0, 12))
-        );
-        
-        if (similar) {
-          isDuplicate = true;
-          // Replace existing if this one is richer
-          const existingHasImage = existingProduct.image && existingProduct.image !== "/placeholder.svg";
-          const existingSpecs = existingProduct.specifications && Object.keys(existingProduct.specifications).length > 0;
-          const existingRichness = (existingHasImage ? 10 : 0) + (existingSpecs ? 5 : 0) + (existingProduct.detailedDescription ? 3 : 0) + (existingProduct.features?.length || 0);
-          
-          if (richness > existingRichness) {
-            const idx = deduped.indexOf(existingProduct);
-            if (idx >= 0) deduped[idx] = p;
-            seenNames.delete(existingName);
-            seenNames.set(pn, p);
-          }
-          break;
+      // Check for duplicate by canonical key or model key
+      const existingByKey = seenKeys.get(ck);
+      const existingByModel = mk ? seenModels.get(mk) : undefined;
+      const existing = existingByKey || existingByModel;
+      
+      if (existing) {
+        // Replace if this one is richer
+        if (richness(p) > richness(existing)) {
+          const idx = deduped.indexOf(existing);
+          if (idx >= 0) deduped[idx] = p;
+          seenKeys.set(ck, p);
+          if (mk) seenModels.set(mk, p);
         }
-      }
-      
-      if (!isDuplicate) {
-        seenNames.set(pn, p);
+      } else {
+        seenKeys.set(ck, p);
+        if (mk) seenModels.set(mk, p);
         deduped.push(p);
       }
     }

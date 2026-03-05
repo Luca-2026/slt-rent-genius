@@ -256,32 +256,32 @@ export function B2BMultiReservationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-base">
             <Package className="h-5 w-5 text-primary" />
             Sammelanfrage ({selectedProducts.length} Artikel)
           </DialogTitle>
-          <DialogDescription>
-            Stellen Sie eine gemeinsame Anfrage für alle ausgewählten Produkte. Optional können Sie pro Artikel einen abweichenden Mietzeitraum festlegen.
+          <DialogDescription className="text-xs sm:text-sm">
+            Stellen Sie eine gemeinsame Anfrage für alle ausgewählten Produkte. Sie erhalten Ihr Angebot innerhalb von <strong>1 Stunde</strong>.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           {/* Location */}
           <div>
-            <label className="block text-sm font-medium text-headline mb-1.5">
+            <label className="block text-sm font-medium text-headline mb-1">
               <MapPin className="h-3.5 w-3.5 inline mr-1" />
               Standort
             </label>
             <Select value={locationId} onValueChange={setLocationId}>
-              <SelectTrigger>
+              <SelectTrigger className="h-9 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((loc) => (
                   <SelectItem key={loc.id} value={loc.id}>
-                    {loc.name} – {loc.address}
+                    {loc.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -338,7 +338,7 @@ export function B2BMultiReservationDialog({
             <label className="block text-sm font-medium text-headline mb-2">
               Ausgewählte Artikel
             </label>
-            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-[200px] sm:max-h-[300px] overflow-y-auto pr-1">
               {selectedProducts.map((sp) => {
                 const isExpanded = expandedItems.has(sp.product.id);
                 const override = itemOverrides[sp.product.id];
@@ -352,14 +352,14 @@ export function B2BMultiReservationDialog({
                       isExpanded ? "border-accent/40 bg-accent/5" : "border-border bg-muted/50"
                     )}
                   >
-                    <div className="flex items-center gap-3 p-2.5">
+                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5">
                       <img
                         src={sp.product.image || "/placeholder.svg"}
                         alt={sp.product.name}
-                        className="w-12 h-12 object-cover rounded-md flex-shrink-0"
+                        className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-md flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm text-headline truncate">
+                        <h4 className="font-medium text-xs sm:text-sm text-headline line-clamp-2">
                           {sp.product.name}
                         </h4>
                         <div className="flex items-center gap-2">
@@ -494,6 +494,14 @@ export function B2BMultiReservationDialog({
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
             />
+          </div>
+
+          {/* 1h Guarantee */}
+          <div className="flex items-center gap-2 bg-primary/5 rounded-lg p-2.5 border border-primary/10">
+            <CalendarDays className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-xs text-foreground">
+              Angebot innerhalb von <strong>1 Stunde</strong> – garantiert!
+            </p>
           </div>
 
           <Button
