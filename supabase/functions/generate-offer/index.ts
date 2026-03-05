@@ -671,8 +671,13 @@ async function generateOfferPdf(data: {
   };
 
   const fmtDate = (d: string) => {
-    const dt = new Date(d + "T00:00:00");
-    return dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    // Handle "YYYY-MM-DD HH:MM" or "YYYY-MM-DD"
+    const parts = d.split(" ");
+    const datePart = parts[0];
+    const timePart = parts[1] || null;
+    const dt = new Date(datePart + "T00:00:00");
+    const dateStr = dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    return timePart ? `${dateStr} ${timePart} Uhr` : dateStr;
   };
 
   const safe = (str: string) => str.replace(/[^\x20-\x7E\xA0-\xFF]/g, "");
