@@ -875,7 +875,6 @@ const erdbewegungProductsUnsorted: Product[] = [
     category: "dumper",
     tags: ["dumper", "benzin", "bis-1500", "maschine"],
     onRequest: true,
-    videoUrls: ["https://www.youtube.com/shorts/lAwx7bS6lFE"],
     specifications: {
       "Maschinengewicht": "450 kg",
       "Max. Tragfähigkeit": "800 kg",
@@ -892,8 +891,8 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Extras": "Rungen (für Transport von Holz oder Steinplatten)",
     },
     rentalNotes: [
-      "Inkl. 8 Betriebsstunden/Tag, Mehrstunden: brutto 8,00 €/Std.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Benzin: brutto 3,35 €/l.",
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
     ],
   },
   // Include all attachments from krefeldProducts
