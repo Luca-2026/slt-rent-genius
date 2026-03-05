@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/rentalData";
 import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
+import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 
 interface ProductCardProps {
   product: Product;
