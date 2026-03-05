@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   locations,
@@ -18,7 +19,8 @@ import {
   Product,
 } from "@/data/rentalData";
 import { locationData } from "@/data/locationData";
-import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X } from "lucide-react";
+import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X, MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface SelectedItem {
   product: Product;
