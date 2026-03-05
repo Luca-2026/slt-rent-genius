@@ -2,7 +2,7 @@ import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Award, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Users, Award, MapPin, Calendar, CheckCircle2, Mail } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
