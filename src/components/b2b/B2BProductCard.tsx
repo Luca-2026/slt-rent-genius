@@ -2,9 +2,9 @@ import { Product } from "@/data/rentalData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ShoppingCart, Percent, Check } from "lucide-react";
+import { ShoppingCart, Percent, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface B2BProductCardProps {
   product: Product;
