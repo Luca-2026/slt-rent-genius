@@ -418,10 +418,10 @@ export function AdminCreateOfferDialog({
 
                 <div>
                   <Label className="text-xs">Bezeichnung *</Label>
-                  <Input
+                  <ProductAutocomplete
                     value={item.product_name}
-                    onChange={(e) => updateItem(index, "product_name", e.target.value)}
-                    placeholder="z.B. Minibagger 1,5t"
+                    onChange={(name, productId, categorySlug) => updateItem(index, "product_name", name)}
+                    placeholder="Produkt suchen oder eingeben..."
                     className="h-8 text-sm"
                   />
                 </div>
