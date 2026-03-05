@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
