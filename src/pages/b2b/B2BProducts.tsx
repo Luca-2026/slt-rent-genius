@@ -136,8 +136,6 @@ export default function B2BProducts() {
         if (mk) seenModels.set(mk, p);
         deduped.push(p);
       }
-        deduped.push(p);
-      }
     }
     products = deduped;
 
