@@ -150,7 +150,7 @@ export function AdminCreateOfferDialog({
           setSelectedServices(new Set());
         }
       } else if (isStandalone) {
-        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }]);
+        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
         setDeliveryCost(0);
         setNotes("");
         setDeposit("");
