@@ -731,7 +731,11 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 2700,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { krefeld: "MBUX18" }
+    rentwareCode: { krefeld: "MBUX18" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
   },
   {
     id: "bobcat-e35z",
