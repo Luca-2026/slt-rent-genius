@@ -523,8 +523,12 @@ function generateInvoiceHtml(data: {
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr + "T00:00:00");
-    return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    const parts = dateStr.split(" ");
+    const datePart = parts[0];
+    const timePart = parts[1] || null;
+    const d = new Date(datePart + "T00:00:00");
+    const ds = d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    return timePart ? `${ds} ${timePart} Uhr` : ds;
   };
 
   const isCredit = data.isCorrection && data.notes?.includes("GUTSCHRIFT");
@@ -743,7 +747,7 @@ async function generateDocumentPdf(data: {
     for (const w of words) { const test = cur ? `${cur} ${w}` : w; if (f.widthOfTextAtSize(test, s) <= mw) cur = test; else { if (cur) lines.push(cur); cur = w; } }
     if (cur) lines.push(cur); return lines.length ? lines : [''];
   };
-  const fd = (d: string) => { const p = d.split('-'); return p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : d; };
+  const fd = (d: string) => { const sp = d.split(' '); const p = sp[0].split('-'); const dateStr = p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : sp[0]; return sp[1] ? `${dateStr} ${sp[1]} Uhr` : dateStr; };
   const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' EUR';
 
   try {

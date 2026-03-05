@@ -192,6 +192,15 @@ Deno.serve(async (req: Request) => {
     const offerItems = items.map((item) => {
       const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
+      // Append time to rental dates if available from reservation
+      let rentalStart = item.rental_start || reservation?.start_date || null;
+      let rentalEnd = item.rental_end || reservation?.end_date || null;
+      if (rentalStart && reservation?.start_time && !rentalStart.includes(" ")) {
+        rentalStart = `${rentalStart} ${reservation.start_time}`;
+      }
+      if (rentalEnd && reservation?.end_time && !rentalEnd.includes(" ")) {
+        rentalEnd = `${rentalEnd} ${reservation.end_time}`;
+      }
       return {
         product_name: item.product_name,
         description: item.description || null,
@@ -199,8 +208,8 @@ Deno.serve(async (req: Request) => {
         unit_price: item.unit_price,
         discount_percent: item.discount_percent || 0,
         total_price: totalPrice,
-        rental_start: item.rental_start || reservation?.start_date || null,
-        rental_end: item.rental_end || reservation?.end_date || null,
+        rental_start: rentalStart,
+        rental_end: rentalEnd,
         image_url: item.image_url || null,
       };
     });
@@ -442,8 +451,12 @@ Deno.serve(async (req: Request) => {
         const loc = LOCATIONS[profile.assigned_location || ""] || LOCATIONS["krefeld"];
 
         const formatDate = (dateStr: string) => {
-          const d = new Date(dateStr + "T00:00:00");
-          return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+          const parts = dateStr.split(" ");
+          const datePart = parts[0];
+          const timePart = parts[1] || null;
+          const d = new Date(datePart + "T00:00:00");
+          const ds = d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+          return timePart ? `${ds} ${timePart} Uhr` : ds;
         };
 
         const formatCurrency = (n: number) =>
@@ -662,8 +675,13 @@ async function generateOfferPdf(data: {
   };
 
   const fmtDate = (d: string) => {
-    const dt = new Date(d + "T00:00:00");
-    return dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    // Handle "YYYY-MM-DD HH:MM" or "YYYY-MM-DD"
+    const parts = d.split(" ");
+    const datePart = parts[0];
+    const timePart = parts[1] || null;
+    const dt = new Date(datePart + "T00:00:00");
+    const dateStr = dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    return timePart ? `${dateStr} ${timePart} Uhr` : dateStr;
   };
 
   const safe = (str: string) => str.replace(/[^\x20-\x7E\xA0-\xFF]/g, "");

@@ -30,12 +30,13 @@ import { ReturnProtocolDialog } from "@/components/b2b/admin/ReturnProtocolDialo
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -93,6 +94,8 @@ interface Reservation {
   location: string;
   start_date: string;
   end_date: string | null;
+  start_time?: string | null;
+  end_time?: string | null;
   quantity: number;
   status: string;
   original_price: number | null;
@@ -101,6 +104,12 @@ interface Reservation {
   notes: string | null;
   created_at: string;
   rental_group_id?: string | null;
+}
+
+interface InvoiceSurcharge {
+  id: string;
+  name: string;
+  amount: number;
 }
 
 // ─── Component ────────────────────────────────────────────
@@ -136,6 +145,9 @@ export default function AdminDashboard() {
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
   const [proformaMode, setProformaMode] = useState(false);
+  const [invoiceSurcharges, setInvoiceSurcharges] = useState<InvoiceSurcharge[]>([]);
+  const [newSurchargeName, setNewSurchargeName] = useState("");
+  const [newSurchargeAmount, setNewSurchargeAmount] = useState("");
   const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
   const [deliveryNoteOffer, setDeliveryNoteOffer] = useState<Offer | null>(null);
   const [returnProtocolOpen, setReturnProtocolOpen] = useState(false);
@@ -220,19 +232,32 @@ export default function AdminDashboard() {
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
+        const mainItems = items.map((item) => ({
+          product_name: item.product_name,
+          description: item.description || undefined,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          discount_percent: item.discount_percent || 0,
+          rental_start: item.rental_start || reservation.start_date,
+          rental_end: item.rental_end || reservation.end_date,
+          image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
+        }));
+
+        // Append surcharges as line items
+        const surchargeItems = invoiceSurcharges
+          .filter((s) => s.amount > 0 && s.name.trim())
+          .map((s) => ({
+            product_name: s.name,
+            description: "Zusatzkosten",
+            quantity: 1,
+            unit_price: s.amount,
+            discount_percent: 0,
+          }));
+
         invoiceBody = {
           reservation_id: reservation.id,
           delivery_cost: offer.delivery_cost || 0,
-          custom_items: items.map((item) => ({
-            product_name: item.product_name,
-            description: item.description || undefined,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            discount_percent: item.discount_percent || 0,
-            rental_start: item.rental_start || reservation.start_date,
-            rental_end: item.rental_end || reservation.end_date,
-            image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
-          })),
+          custom_items: [...mainItems, ...surchargeItems],
           notes: proformaMode
             ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
             : (offer.notes || undefined),
@@ -247,16 +272,18 @@ export default function AdminDashboard() {
           );
         }
 
-        invoiceBody.custom_items = targetReservations.map((r) => {
+        const mainItems = targetReservations.map((r) => {
           const unitPrice = r.original_price || 0;
           const discountPercent = r.discounted_price != null && r.original_price && r.original_price > 0
             ? Math.round((1 - r.discounted_price / r.original_price) * 100)
             : 0;
+          const timeStart = r.start_time ? ` ${r.start_time} Uhr` : "";
+          const timeEnd = r.end_time ? ` ${r.end_time} Uhr` : "";
           return {
             product_name: r.product_name || r.product_id,
             description: r.end_date
-              ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}`
-              : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}`,
+              ? `Mietzeitraum: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}${timeStart} – ${format(new Date(r.end_date), "dd.MM.yyyy", { locale: de })}${timeEnd}`
+              : `Ab: ${format(new Date(r.start_date), "dd.MM.yyyy", { locale: de })}${timeStart}`,
             quantity: r.quantity || 1,
             unit_price: unitPrice,
             discount_percent: discountPercent,
@@ -265,6 +292,19 @@ export default function AdminDashboard() {
             image_url: getProductImageUrl(r.product_id) || getProductImageUrlByName(r.product_name || r.product_id) || undefined,
           };
         });
+
+        // Append surcharges
+        const surchargeItems = invoiceSurcharges
+          .filter((s) => s.amount > 0 && s.name.trim())
+          .map((s) => ({
+            product_name: s.name,
+            description: "Zusatzkosten",
+            quantity: 1,
+            unit_price: s.amount,
+            discount_percent: 0,
+          }));
+
+        invoiceBody.custom_items = [...mainItems, ...surchargeItems];
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
@@ -279,6 +319,7 @@ export default function AdminDashboard() {
       setSelectedReservation(null);
       setInvoiceFromOffer(null);
       setProformaMode(false);
+      setInvoiceSurcharges([]);
       fetchData();
     } catch (error: any) {
       toast({
@@ -944,9 +985,12 @@ export default function AdminDashboard() {
         if (!open) {
           setInvoiceFromOffer(null);
           setProformaMode(false);
+          setInvoiceSurcharges([]);
+          setNewSurchargeName("");
+          setNewSurchargeAmount("");
         }
       }}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>
               {proformaMode ? "Proforma-Rechnung (Vorkasse)" : "Rechnung erstellen"}
@@ -995,7 +1039,9 @@ export default function AdminDashboard() {
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Zeitraum: {formatDate(selectedReservation.start_date)}
+                        {selectedReservation.start_time ? ` ${selectedReservation.start_time} Uhr` : ""}
                         {selectedReservation.end_date ? ` – ${formatDate(selectedReservation.end_date)}` : ""}
+                        {selectedReservation.end_time ? ` ${selectedReservation.end_time} Uhr` : ""}
                       </p>
                       {selectedReservation.original_price != null && (
                         <p className="text-sm">
@@ -1021,6 +1067,74 @@ export default function AdminDashboard() {
                   )}
                 </CardContent>
               </Card>
+
+              {/* Surcharges / Extra costs */}
+              <Card>
+                <CardContent className="p-4 space-y-3">
+                  <p className="text-sm font-semibold">Zusatzkosten (optional)</p>
+                  <p className="text-xs text-muted-foreground">
+                    z.B. Nachtanken, Reinigung, Beschädigungen
+                  </p>
+                  {invoiceSurcharges.map((s) => (
+                    <div key={s.id} className="flex items-center gap-2">
+                      <span className="text-sm flex-1">{s.name}</span>
+                      <span className="text-sm font-medium">{formatCurrency(s.amount)}</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-destructive"
+                        onClick={() => setInvoiceSurcharges((prev) => prev.filter((x) => x.id !== s.id))}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <Input
+                        placeholder="Bezeichnung"
+                        value={newSurchargeName}
+                        onChange={(e) => setNewSurchargeName(e.target.value)}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <div className="w-28">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="Betrag €"
+                        value={newSurchargeAmount}
+                        onChange={(e) => setNewSurchargeAmount(e.target.value)}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-9"
+                      disabled={!newSurchargeName.trim() || !newSurchargeAmount || parseFloat(newSurchargeAmount) <= 0}
+                      onClick={() => {
+                        setInvoiceSurcharges((prev) => [
+                          ...prev,
+                          { id: crypto.randomUUID(), name: newSurchargeName.trim(), amount: parseFloat(newSurchargeAmount) },
+                        ]);
+                        setNewSurchargeName("");
+                        setNewSurchargeAmount("");
+                      }}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  {invoiceSurcharges.length > 0 && (
+                    <div className="border-t pt-2 flex justify-between text-sm font-medium">
+                      <span>Zusatzkosten gesamt:</span>
+                      <span>{formatCurrency(invoiceSurcharges.reduce((sum, s) => sum + s.amount, 0))}</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               <div className="flex gap-3 justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
                 <Button
