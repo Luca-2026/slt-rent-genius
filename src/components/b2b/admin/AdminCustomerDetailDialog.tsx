@@ -333,6 +333,59 @@ export function AdminCustomerDetailDialog({
           </Button>
         </div>
 
+        {/* Pending Approval Banner */}
+        {profile.status === "pending" && (
+          <div className="flex items-center gap-2 p-3 rounded-lg border border-yellow-300 bg-yellow-50">
+            <Clock className="h-4 w-4 text-yellow-600 shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-yellow-800">Freigabe ausstehend</p>
+              <p className="text-xs text-yellow-700">
+                Dieser Kunde wartet auf eine Freigabe durch einen Administrator.
+              </p>
+            </div>
+            <div className="flex gap-2 shrink-0">
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={async () => {
+                  const { error } = await supabase
+                    .from("b2b_profiles")
+                    .update({ status: "rejected" as any, status_changed_at: new Date().toISOString(), status_changed_by: (await supabase.auth.getUser()).data.user?.id } as any)
+                    .eq("id", profile.id);
+                  if (error) {
+                    toast({ title: "Fehler", description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: "Abgelehnt", description: `${profile.company_name} wurde abgelehnt.` });
+                    onRefresh();
+                    onOpenChange(false);
+                  }
+                }}
+              >
+                Ablehnen
+              </Button>
+              <Button
+                size="sm"
+                className="bg-green-600 hover:bg-green-700 text-white"
+                onClick={async () => {
+                  const { error } = await supabase
+                    .from("b2b_profiles")
+                    .update({ status: "approved" as any, status_changed_at: new Date().toISOString(), status_changed_by: (await supabase.auth.getUser()).data.user?.id } as any)
+                    .eq("id", profile.id);
+                  if (error) {
+                    toast({ title: "Fehler", description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: "Freigegeben", description: `${profile.company_name} wurde erfolgreich freigegeben.` });
+                    onRefresh();
+                    onOpenChange(false);
+                  }
+                }}
+              >
+                Freigeben
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Deletion Request Banner */}
         {profile.deletion_requested_at && (
           <div className="flex items-center gap-2 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
