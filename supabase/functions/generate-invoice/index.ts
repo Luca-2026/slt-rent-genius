@@ -41,6 +41,8 @@ interface InvoiceRequest {
   payment_due_days?: number;
   notes?: string;
   image_url?: string; // Fallback image for auto-generated items
+  is_correction?: boolean;
+  original_invoice_number?: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -92,7 +94,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl } = body;
+    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number } = body;
 
     console.log("Generating invoice for reservation:", reservation_id);
 
@@ -224,6 +226,7 @@ Deno.serve(async (req: Request) => {
     console.log("Invoice number generated:", invoiceNumber);
 
     // Generate PDF HTML
+    const docTitle = is_correction ? "RECHNUNGSKORREKTUR" : "RECHNUNG";
     const pdfHtml = generateInvoiceHtml({
       invoiceNumber,
       invoiceDate,
@@ -238,10 +241,13 @@ Deno.serve(async (req: Request) => {
       isReverseCharge,
       notes: notes || null,
       paymentDueDays: payment_due_days,
+      isCorrection: is_correction,
+      originalInvoiceNumber: original_invoice_number || null,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
-    const fileName = `Rechnung_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
+    const filePrefix = is_correction ? "Rechnungskorrektur" : "Rechnung";
+    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
     const htmlBytes = new TextEncoder().encode(pdfHtml);
@@ -376,6 +382,8 @@ function generateInvoiceHtml(data: {
   isReverseCharge: boolean;
   notes: string | null;
   paymentDueDays: number;
+  isCorrection: boolean;
+  originalInvoiceNumber: string | null;
 }): string {
   const formatCurrency = (amount: number) =>
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -385,9 +393,14 @@ function generateInvoiceHtml(data: {
     return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
   };
 
+  const isCredit = data.isCorrection && data.notes?.includes("GUTSCHRIFT");
+
   const itemRows = data.items
     .map(
-      (item: any, i: number) => `
+      (item: any, i: number) => {
+        const displayPrice = isCredit ? -Math.abs(item.unit_price) : item.unit_price;
+        const displayTotal = isCredit ? -Math.abs(item.total_price) : item.total_price;
+        return `
     <tr>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${i + 1}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">
@@ -401,10 +414,11 @@ function generateInvoiceHtml(data: {
         </div>
       </td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.quantity}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${formatCurrency(item.unit_price)}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${formatCurrency(displayPrice)}</td>
       <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.discount_percent > 0 ? item.discount_percent + "%" : "–"}</td>
-      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:500;">${formatCurrency(item.total_price)}</td>
-    </tr>`
+      <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:500;">${formatCurrency(displayTotal)}</td>
+    </tr>`;
+      }
     )
     .join("");
 
@@ -417,7 +431,7 @@ function generateInvoiceHtml(data: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rechnung ${data.invoiceNumber}</title>
+  <title>${data.isCorrection ? "Rechnungskorrektur" : "Rechnung"} ${data.invoiceNumber}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -438,13 +452,14 @@ function generateInvoiceHtml(data: {
     <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:8mm;border-bottom:3px solid #00507d;">
       <div>
-        <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:120px;width:auto;margin-bottom:6px;" />
+        <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:160px;width:auto;margin-bottom:6px;" />
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.name}</p>
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
       </div>
       <div style="text-align:right;">
-        <p style="font-size:22px;font-weight:700;color:#393d46;">RECHNUNG</p>
+        <p style="font-size:22px;font-weight:700;color:#393d46;">${data.isCorrection ? "RECHNUNGSKORREKTUR" : "RECHNUNG"}</p>
         <p style="font-size:13px;color:#595959;margin-top:4px;">Nr. ${data.invoiceNumber}</p>
+        ${data.originalInvoiceNumber ? `<p style="font-size:12px;color:#595959;">Bezug: ${data.originalInvoiceNumber}</p>` : ""}
       </div>
     </div>
 
@@ -504,17 +519,17 @@ function generateInvoiceHtml(data: {
       <table style="font-size:14px;min-width:280px;">
         <tr>
           <td style="padding:4px 16px 4px 0;color:#595959;">Nettobetrag:</td>
-          <td style="padding:4px 0;text-align:right;">${formatCurrency(data.netAmount)}</td>
+          <td style="padding:4px 0;text-align:right;">${formatCurrency(isCredit ? -Math.abs(data.netAmount) : data.netAmount)}</td>
         </tr>
         <tr>
           <td style="padding:4px 16px 4px 0;color:#595959;">
             ${data.isReverseCharge ? "USt. (Reverse-Charge):" : `USt. (${data.vatRate}%):`}
           </td>
-          <td style="padding:4px 0;text-align:right;">${formatCurrency(data.vatAmount)}</td>
+          <td style="padding:4px 0;text-align:right;">${formatCurrency(isCredit ? -Math.abs(data.vatAmount) : data.vatAmount)}</td>
         </tr>
         <tr style="border-top:2px solid #00507d;">
-          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">Bruttobetrag:</td>
-          <td style="padding:8px 0 4px;text-align:right;font-weight:700;font-size:16px;color:#00507d;">${formatCurrency(data.grossAmount)}</td>
+          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">${isCredit ? "Erstattungsbetrag:" : "Bruttobetrag:"}</td>
+          <td style="padding:8px 0 4px;text-align:right;font-weight:700;font-size:16px;color:#00507d;">${formatCurrency(isCredit ? -Math.abs(data.grossAmount) : data.grossAmount)}</td>
         </tr>
       </table>
     </div>
