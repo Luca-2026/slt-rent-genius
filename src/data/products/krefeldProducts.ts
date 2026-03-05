@@ -453,6 +453,7 @@ import imgGrabenraeumloeffelMs01Hydr_80cm_1 from "@/assets/products/erdbewegung/
 import imgGrabenraeumloeffelMs01Hydr_100cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms01-hydr-100cm-1.jpeg";
 import imgDieselKanister10l_1 from "@/assets/products/erdbewegung/diesel-kanister-10l-1.jpeg";
 import imgDieselKanister20l_1 from "@/assets/products/erdbewegung/diesel-kanister-20l-1.jpeg";
+import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4930,11 +4931,19 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-roderechen-symlock",
     name: "MS01 Roderechen Symlock",
-    description: "Roderechen für MS01 Symlock",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Roderechen für MS01 Symlock – Gewichtsklasse 1–2 t, 9 Zähne",
+    detailedDescription: "Der MS01 Roderechen Symlock eignet sich ideal zum Roden, Sortieren und Aufsammeln von Wurzeln, Steinen und Gestrüpp. Mit 800 mm Arbeitsbreite und 9 robusten Zähnen arbeitet er effizient in der Boden- und Geländevorbereitung. Dank des Symlock-Schnellwechselsystems ist der Anbau an MS01-kompatible Minibagger in wenigen Sekunden erledigt.",
+    image: imgRoderechenMs01_1,
+    images: [imgRoderechenMs01_1],
     category: "roderechen",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01 (Symlock)",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Arbeitsbreite": "800 mm",
+      "Anzahl Zähne": "9",
+      "Gewicht": "36 kg",
+    },
     rentwareCode: { krefeld: "R5B2W9" }
   },
   // Hydraulikhammer
