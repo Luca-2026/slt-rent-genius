@@ -907,18 +907,18 @@ async function generateOfferPdf(data: {
   // ── FOOTER on every page ──
   const pages = doc.getPages();
   for (const p of pages) {
-    const fy = 35;
-    p.drawLine({ start: { x: margin, y: fy + 12 }, end: { x: pageWidth - margin, y: fy + 12 }, thickness: 1.5, color: blue });
-    p.drawText(safe(SLT_COMPANY.name), { x: margin, y: fy, font, size: 7, color: gray });
-    p.drawText(safe(SLT_COMPANY.street + ", " + SLT_COMPANY.city), { x: margin, y: fy - 9, font, size: 7, color: lightGray });
-    p.drawText("E-Mail: " + SLT_COMPANY.email, { x: 230, y: fy, font, size: 7, color: lightGray });
-    p.drawText("Web: " + SLT_COMPANY.web, { x: 230, y: fy - 9, font, size: 7, color: lightGray });
-    const ibanText = "IBAN: " + SLT_COMPANY.iban;
-    const ibanW = font.widthOfTextAtSize(ibanText, 7);
-    p.drawText(ibanText, { x: pageWidth - margin - ibanW, y: fy, font, size: 7, color: lightGray });
-    const bicText = "BIC: " + SLT_COMPANY.bic;
-    const bicW = font.widthOfTextAtSize(bicText, 7);
-    p.drawText(bicText, { x: pageWidth - margin - bicW, y: fy - 9, font, size: 7, color: lightGray });
+    const fy = 42;
+    p.drawLine({ start: { x: margin, y: fy + 14 }, end: { x: pageWidth - margin, y: fy + 14 }, thickness: 1.5, color: blue });
+    const footerLines = [
+      safe(`${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`),
+      safe(`${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`),
+      safe(`${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`),
+      safe(`${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`),
+    ];
+    footerLines.forEach((line, i) => {
+      const tw = font.widthOfTextAtSize(line, 6);
+      p.drawText(line, { x: (pageWidth - tw) / 2, y: fy - i * 8, font, size: 6, color: lightGray });
+    });
   }
 
   return await doc.save();

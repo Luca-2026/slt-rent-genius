@@ -945,11 +945,21 @@ async function generateDocumentPdf(data: {
     dt(`Mitarbeiter: ${data.signatures.staffName || ''}`, MG + CW / 2 + 10, y, font, 8, rgb(0.5, 0.5, 0.5));
   }
 
+  const footerLines = [
+    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`,
+    `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
+    `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
+    `${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`,
+  ];
   for (let i = 0; i < doc.getPageCount(); i++) {
     const p = doc.getPage(i);
-    p.drawRectangle({ x: MG, y: MG - 5, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
-    const ft = `${SLT_COMPANY.name} | ${SLT_COMPANY.street}, ${SLT_COMPANY.city} | ${SLT_COMPANY.web}`;
-    try { p.drawText(ft, { x: MG, y: MG - 17, size: 6, font, color: rgb(0.5, 0.5, 0.5) }); } catch {}
+    p.drawRectangle({ x: MG, y: MG + 20, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
+    footerLines.forEach((line, li) => {
+      try {
+        const tw = font.widthOfTextAtSize(line, 5.5);
+        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size: 5.5, font, color: rgb(0.5, 0.5, 0.5) });
+      } catch {}
+    });
   }
 
   return await doc.save();
