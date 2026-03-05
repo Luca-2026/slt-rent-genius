@@ -31,6 +31,8 @@ export interface Offer {
   b2b_profile_id: string;
   reservation_id: string | null;
   created_at: string;
+  deposit: number | null;
+  additional_services: any;
 }
 
 export interface OfferItem {
