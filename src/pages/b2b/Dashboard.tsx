@@ -159,7 +159,7 @@ export default function B2BDashboard() {
                 variant="outline"
                 size="sm"
                 className="border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20"
-                onClick={() => signOut()}
+                onClick={() => { signOut(); navigate("/b2b/login"); }}
               >
                 <LogOut className="h-4 w-4 mr-1.5" />
                 Abmelden

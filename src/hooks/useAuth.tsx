@@ -123,9 +123,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    // Clear state immediately before async call to prevent stale UI
+    setUser(null);
+    setSession(null);
     setB2BProfile(null);
     setIsAdmin(false);
+    await supabase.auth.signOut();
   };
 
   const isApprovedB2B = b2bProfile?.status === "approved";
