@@ -248,7 +248,8 @@ export function AdminCreateOfferDialog({
 
   const reservationId = existingOffer?.reservation_id || reservation?.id;
   const categorySlug = (reservation as any)?.category_slug;
-  const relevantServices = getServicesForCategory(categorySlug);
+  // In standalone mode, show ALL services (including MBV options)
+  const relevantServices = isStandalone ? ADDITIONAL_SERVICES : getServicesForCategory(categorySlug);
 
   const handleCreate = async () => {
     if (!isStandalone && !reservationId) return;
