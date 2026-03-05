@@ -93,8 +93,8 @@ interface Reservation {
   location: string;
   start_date: string;
   end_date: string | null;
-  start_time: string | null;
-  end_time: string | null;
+  start_time?: string | null;
+  end_time?: string | null;
   quantity: number;
   status: string;
   original_price: number | null;
