@@ -176,6 +176,9 @@ export default function MyReservations() {
   const [reservationToReturn, setReservationToReturn] = useState<Reservation | null>(null);
   const [returningId, setReturningId] = useState<string | null>(null);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
