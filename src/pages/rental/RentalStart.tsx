@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { LocationSelector } from "@/components/rental/LocationSelector";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Badge } from "@/components/ui/badge";
