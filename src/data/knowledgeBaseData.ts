@@ -87,9 +87,9 @@ export const kbCategories: KBCategory[] = [
   {
     id: "event-technik",
     title: "Eventtechnik",
-    description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Zelte.",
+    description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne, Zelte und Hüpfburgen.",
     icon: "PartyPopper",
-    articleCount: 6,
+    articleCount: 7,
   },
   {
     id: "leitern-gerueste",
@@ -911,6 +911,97 @@ export const kbArticles: KBArticle[] = [
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     tags: ["doosan", "g20", "g50", "g80", "g100", "aggregat", "stromerzeuger", "betriebsanleitung", "anleitung", "pdf", "diesel", "stage-v"],
     updatedAt: "2026-02-20",
+  },
+
+  // Hüpfburgen
+  {
+    id: "huepfburg-aufbau-sicherheit",
+    title: "Hüpfburg aufbauen, nutzen & abbauen – Sicherheitsanleitung",
+    description: "Schritt-für-Schritt-Anleitung für den sicheren Auf- und Abbau sowie Betrieb von Hüpfburgen. Inkl. Checkliste und Haftungshinweis.",
+    categoryId: "event-technik",
+    productIds: [
+      "huepfburg-lamar", "huepfburg-wasserpark", "huepfburg-rollercoaster-1",
+      "huepfburg-clown", "huepfburg-rollercoaster-2",
+      "bonn-huepfburg-lamar", "bonn-huepfburg-wasserpark",
+    ],
+    type: "sicherheit",
+    tags: ["hüpfburg", "aufbau", "abbau", "sicherheit", "kinder", "gebläse", "verankerung", "din en 14960", "bouncy castle"],
+    updatedAt: "2026-03-05",
+    sections: [
+      {
+        type: "warning",
+        icon: "AlertTriangle",
+        heading: "Wichtiger Hinweis",
+        text: "Hüpfburgen sind spaßige Mietgeräte, erfordern aber präzisen Auf- und Abbau sowie strenge Sicherheitsregeln, um Unfälle zu vermeiden. Bitte lesen Sie diese Anleitung vollständig, bevor Sie die Hüpfburg in Betrieb nehmen.",
+      },
+      {
+        icon: "MapPin",
+        heading: "1. Standortwahl und Vorbereitung",
+        items: [
+          "Wählen Sie eine ebene Fläche ohne Gefälle (max. 5 %), idealerweise Rasen, Asphalt oder Beton – Schotter vermeiden, da er den Boden beschädigt.",
+          "Räumen Sie Steine, Äste, Glas oder andere spitze Gegenstände weg und legen Sie die mitgelieferte Unterlegplane aus.",
+          "Schaffen Sie eine Sicherheitszone: Mind. 1,8 m an den Seiten, 3,5 m am Eingang und freien Luftraum über der Burg (keine Bäume, Leitungen).",
+        ],
+      },
+      {
+        icon: "ClipboardCheck",
+        heading: "2. Aufbau – Schritt für Schritt",
+        items: [
+          "Rollen Sie die Hüpfburg auf der Plane aus und schließen Sie alle Reiß- und Klettverschlüsse fest.",
+          "Verbinden Sie den Lufteinfüllschlauch mit dem Gebläse und fixieren Sie ihn mit Spanngurten – vermeiden Sie Knicke.",
+          "Stecken Sie das Gebläse in eine separate Steckdose (16 A / 220 V) und schalten Sie es ein; die Burg bläht sich in 3–5 Minuten auf.",
+          "Sobald prall aufgeblasen, sofort an allen Ösen verankern: Erdnägel (45°-Winkel) in weichen Untergrund oder Wassersäcke auf hartem Boden.",
+          "Letzte Kontrolle: Burg stabil, Gebläse läuft durchgehend, keine Risse oder lockere Teile.",
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Tipp",
+        text: "Bei Windstärke > 4 (Böen > 20 km/h) die Hüpfburg abbauen oder zusätzlich sichern.",
+      },
+      {
+        icon: "Eye",
+        heading: "3. Nutzungshinweise während des Betriebs",
+        items: [
+          "Ständige Aufsicht durch Erwachsene – keine Ausnahme!",
+          "Schuhe ausziehen, keine spitzen Gegenstände, Essen oder Getränke mitnehmen.",
+          "Maximale Kinderzahl und Gewichtsbeschränkung laut Herstellerangabe beachten – keine Erwachsenen auf der Burg.",
+          "Bei Regen pausieren (Rutschgefahr), bei Blitz oder starkem Wind sofort räumen und Gebläse abschalten.",
+        ],
+      },
+      {
+        icon: "Package",
+        heading: "4. Abbau – Schritt für Schritt",
+        items: [
+          "Alle Kinder entfernen, Gebläse ausschalten und Stecker ziehen. 5–10 Minuten warten, bis die Luft entwichen ist.",
+          "Alle Verankerungen (Nägel, Seile) lösen und beiseitelegen.",
+          "Hüpfburg eng zur Einfüllseite rollen (2 Personen ideal: einer rollt, einer drückt Luft raus). Schläuche hineindrücken und mit Gurtband sichern.",
+          "Burg sauber machen (nicht über den Boden schleifen), falten und transportbereit verpacken.",
+        ],
+      },
+      {
+        type: "info",
+        icon: "ClipboardCheck",
+        heading: "5. Sicherheits-Checkliste",
+        table: {
+          headers: ["Prüfpunkt", "Muss so sein", "Bei Problem …"],
+          rows: [
+            ["Untergrund", "Eben, sauber, Plane darunter", "Neu positionieren"],
+            ["Verankerung", "Alle Punkte fixiert, stabil", "Nachsichern / abbauen"],
+            ["Gebläse", "Läuft kontinuierlich, kein Knick", "Prüfen / stromfrei machen"],
+            ["Aufsicht", "Immer Erwachsener dabei", "Betrieb sofort stoppen"],
+            ["Wind", "< Windstärke 5, keine Böen", "Abbauen"],
+          ],
+        },
+      },
+      {
+        type: "legal",
+        icon: "AlertCircle",
+        heading: "Haftungshinweis für Mieter",
+        text: "Der Mieter haftet für ordnungsgemäßen Auf-/Abbau und Nutzung nach Herstelleranleitung sowie DIN EN 14960. Schäden durch Fehlanwendung (z. B. ungesicherter Aufbau, Überladung) gehen zu Mieterkosten. Bei Unsicherheit: Rufen Sie uns an!",
+      },
+    ],
   },
 ];
 

@@ -490,7 +490,38 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Dienstleistungs-Banner */}
+              {/* Hilfe-Artikel für Hüpfburgen */}
+              {categoryId === "huepfburgen" && (
+                <div className="space-y-3">
+                  <Link
+                    to="/hilfe"
+                    state={{ articleId: "huepfburg-aufbau-sicherheit" }}
+                    className="block"
+                  >
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <ShieldCheck className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            Hüpfburg sicher aufbauen & nutzen
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            Schritt-für-Schritt-Anleitung für Auf-/Abbau, Sicherheitsregeln und Checkliste nach DIN EN 14960.
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                            Zur Sicherheitsanleitung
+                            <ExternalLink className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+
+
               <ServiceBanner categoryId={categoryId} />
 
               {/* Kaufanfrage-Banner */}
