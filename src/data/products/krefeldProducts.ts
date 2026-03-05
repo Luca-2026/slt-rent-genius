@@ -458,6 +458,9 @@ import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tief
 import imgGrabenraeumloeffelMs03_140cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms03-140cm-1.jpeg";
 import imgKabelloeffelMs03_20cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms03-20cm-1.png";
 import imgTiefloeffelMs03_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms03-50cm-1.jpeg";
+import imgSortiergreiferSsg150_1 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-1.avif";
+import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-2.avif";
+import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-3.avif";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -5051,6 +5054,31 @@ export const erdbewegungZusatzProducts: Product[] = [
     category: "hydraulikhammer",
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e"],
     rentwareCode: { krefeld: "CRLJPA" }
+  },
+  // Sortiergreifer
+  {
+    id: "ms01-ms03-sortiergreifer-ssg150",
+    name: "MS01/MS03 Sortiergreifer SSG 150",
+    description: "Kompakter Sortiergreifer mit 6,75 kN Schließkraft – Gewichtsklasse 2–3 t",
+    detailedDescription: "Der SSG150 erzielt eine, in der Gewichtsklasse von 2–3 Tonnen, überdurchschnittliche Schließkraft von 6,75 kN – bei einem Eigengewicht von nur 150 kg. Die Schalenbreite beträgt 40 Zentimeter, die Öffnungsweite 92 Zentimeter.\n\nBei Qualität und Zuverlässigkeit spielt der SSG150 in derselben Liga wie seine großen Brüder. SEIFERT hat bei der Entwicklung den Fokus auf maximale Belastbarkeit gelegt.\n\nFür die Greifer der SEIFERT SSG-Baureihe sind, neben den standardmäßig im Lieferumfang enthaltenen Greiferzähnen, optionale Anbauschneiden erhältlich – als Wechselschneiden mit 2 Verschleißkanten oder als gezahnte Schneiden für maximalen Halt.\n\nAlle SEIFERT SSG-Sortiergreifer verfügen serienmäßig über ein Lasthalteventil, um gegriffene Objekte sicher zu halten und vor dem Herausrutschen zu schützen.",
+    image: imgSortiergreiferSsg150_1,
+    images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
+    category: "sortiergreifer",
+    compatibleMachines: ["xcmg-xe27e"],
+    videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
+    specifications: {
+      "Arbeitsbreite": "400 mm",
+      "Bauhöhe (geöffnet)": "680 mm",
+      "Betriebsdruck": "25 MPa",
+      "Gewicht": "150 kg",
+      "Gewichtsklasse Trägergerät": "2 – 3 t",
+      "Max. Schließkraft": "6,75 kN",
+      "Rotation": "360° / endlos",
+      "Rotation Betriebsdruck": "20 MPa",
+      "Rotation Öldurchfluss": "20 l/min",
+      "Öffnungsweite": "920 mm",
+      "Öldurchfluss": "35 l/min",
+    },
   },
   // Bodenschutz
   {
