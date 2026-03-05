@@ -2,7 +2,7 @@ import { Layout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Award, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Users, Award, MapPin, Calendar, CheckCircle2, Mail } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
@@ -48,11 +48,11 @@ export default function About() {
   ];
 
   const teamMembers = [
-    { name: "Benedikt Nöchel", role: t("about.teamBenedikt"), image: imgBenedikt },
-    { name: "Ersel Uzun", role: t("about.teamErsel"), image: imgErsel },
-    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null },
-    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null },
-    { name: "Juno", role: t("about.teamJuno"), image: imgJuno },
+    { name: "Benedikt Nöchel", role: t("about.teamBenedikt"), image: imgBenedikt, email: "b.noechel@slt-rental.de" },
+    { name: "Ersel Uzun", role: t("about.teamErsel"), image: imgErsel, email: "e.uzun@slt-rental.de" },
+    { name: "Andreas Scherzow", role: t("about.teamAndreas"), image: null, email: "muelheim@slt-rental.de" },
+    { name: "Patricia Preuss", role: t("about.teamPatricia"), image: null, email: "mieten@slt-rental.de" },
+    { name: "Juno", role: t("about.teamJuno"), image: imgJuno, email: null },
   ];
 
   const whyItems = t("about.whyItems", { returnObjects: true }) as string[];
@@ -133,6 +133,12 @@ export default function About() {
                   </Avatar>
                   <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
                   <p className="text-xs text-muted-foreground">{member.role}</p>
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-xs text-primary hover:text-accent transition-colors mt-1">
+                      <Mail className="h-3 w-3" />
+                      <span>{member.email}</span>
+                    </a>
+                  )}
                 </div>
               </AnimatedSection>
             ))}
