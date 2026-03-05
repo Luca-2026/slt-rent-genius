@@ -110,18 +110,18 @@ export default function B2BProductDetail() {
         variant="ghost"
         size="sm"
         onClick={() => navigate("/b2b/produkte")}
-        className="mb-4 -ml-2 text-muted-foreground hover:text-foreground"
+        className="mb-3 md:mb-4 -ml-2 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-1.5" />
         Zurück zum Katalog
       </Button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* ── LEFT / MAIN COLUMN ── */}
-        <div className="lg:col-span-2 space-y-5">
+        <div className="lg:col-span-2 space-y-4 md:space-y-5">
           {/* Image Gallery */}
           <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="relative bg-muted" style={{ aspectRatio: "4/3" }}>
+            <div className="relative bg-muted aspect-square sm:aspect-[4/3]">
               {images.length > 0 ? (
                 <>
                   <img
@@ -192,7 +192,7 @@ export default function B2BProductDetail() {
           </div>
 
           {/* Product Name + Description */}
-          <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+          <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-3 md:space-y-4">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-headline leading-tight">
                 {product.name}
@@ -341,9 +341,9 @@ export default function B2BProductDetail() {
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <div className="mt-10 pt-8 border-t border-border">
-          <h2 className="text-lg font-bold text-headline mb-5">Weitere Produkte in dieser Kategorie</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-6 md:mt-10 pt-6 md:pt-8 border-t border-border">
+          <h2 className="text-base md:text-lg font-bold text-headline mb-4 md:mb-5">Weitere Produkte in dieser Kategorie</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {relatedProducts.map((rp) => (
               <Link key={rp.id} to={`/b2b/produkte/${locationId}/${categoryId}/${rp.id}`}>
                 <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
@@ -374,7 +374,7 @@ export default function B2BProductDetail() {
 
       {/* Accessories for Erdbewegung */}
       {accessories.length > 0 && (
-        <div className="mt-10 pt-8 border-t border-border">
+        <div className="mt-6 md:mt-10 pt-6 md:pt-8 border-t border-border">
           <div className="flex items-center gap-2 mb-5">
             <HardHat className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-bold text-headline">Optionales Zubehör</h2>
@@ -428,7 +428,7 @@ function B2BInquiryCard({
   const hasDiscount = discount > 0;
 
   return (
-    <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+    <div className="bg-card rounded-xl border border-border p-4 md:p-5 space-y-3 md:space-y-4">
       {/* Price info */}
       {product.pricePerDay && (
         <div className="pb-4 border-b border-border">

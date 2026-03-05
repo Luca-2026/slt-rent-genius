@@ -319,7 +319,7 @@ export default function B2BProducts() {
       subtitle={`${filteredProducts.length} Produkte verfügbar`}
     >
       {/* Top info bar: Credit + Contact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 md:mb-6">
         {/* Credit Limit Card */}
         {creditLimit > 0 && (
           <Card>
@@ -396,13 +396,14 @@ export default function B2BProducts() {
       </div>
 
       {/* Selection hint */}
-      <div className="flex items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 mb-3 md:mb-4 p-2.5 md:p-3 bg-muted/50 rounded-lg text-xs md:text-sm text-muted-foreground">
         <Package className="h-4 w-4 flex-shrink-0" />
-        <span>Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Anfrage" für ein einzelnes Produkt.</span>
+        <span className="hidden sm:inline">Klicke auf Produkte, um sie für eine <strong>Sammelanfrage</strong> auszuwählen, oder nutze „Anfrage" für ein einzelnes Produkt.</span>
+        <span className="sm:hidden">Produkte für <strong>Sammelanfrage</strong> auswählen oder einzeln anfragen.</span>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 md:mb-6">
         {/* Location */}
         <Select value={selectedLocation} onValueChange={(v) => { setSelectedLocation(v); handleCategoryChange("alle"); }}>
           <SelectTrigger className="w-full sm:w-48">
@@ -433,7 +434,7 @@ export default function B2BProducts() {
       </div>
 
       {/* Category pills */}
-      <div className="flex gap-2 overflow-x-auto pb-3 mb-6 -mx-2 px-2">
+      <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-2 sm:pb-3 mb-4 md:mb-6 -mx-2 px-2 scrollbar-none">
         {availableCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const discount = cat.id !== "alle" ? getDiscountForCategory(cat.id) : 0;
@@ -486,7 +487,7 @@ export default function B2BProducts() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 pb-24">
           {filteredProducts.map((product) => {
             const catSlug = getCategoryForProduct(product);
             const discount = getDiscountForCategory(catSlug);
@@ -508,8 +509,8 @@ export default function B2BProducts() {
 
       {/* Floating selection bar */}
       {selectedCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
-          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg safe-area-bottom">
+          <div className="max-w-5xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
             <div className="flex items-center gap-3">
               <Badge className="bg-accent text-accent-foreground text-base px-3 py-1">
                 {selectedCount}

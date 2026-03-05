@@ -80,12 +80,12 @@ export function B2BProductCard({
       </div>
 
       {/* Content */}
-      <CardContent className="flex-1 flex flex-col p-4">
+      <CardContent className="flex-1 flex flex-col p-3 sm:p-4">
         <h3 className="font-semibold text-headline text-sm leading-tight mb-1 line-clamp-2">
           {product.name}
         </h3>
         {product.description && (
-          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+          <p className="text-xs text-muted-foreground mb-2 sm:mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
@@ -114,22 +114,22 @@ export function B2BProductCard({
             <Button
               size="sm"
               variant="outline"
-              className="flex-1 text-xs"
+              className="flex-1 text-xs px-2"
               onClick={handleDetailClick}
             >
-              <ExternalLink className="h-3 w-3 mr-1" />
-              Details
+              <ExternalLink className="h-3 w-3 sm:mr-1 flex-shrink-0" />
+              <span>Details</span>
             </Button>
             <Button
               size="sm"
-              className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover text-xs"
+              className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover text-xs px-2"
               onClick={(e) => {
                 e.stopPropagation();
                 onInquiry(product);
               }}
             >
-              <ShoppingCart className="h-3 w-3 mr-1" />
-              Anfrage
+              <ShoppingCart className="h-3 w-3 sm:mr-1 flex-shrink-0" />
+              <span>Anfrage</span>
             </Button>
           </div>
         </div>
