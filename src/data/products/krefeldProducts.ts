@@ -454,6 +454,7 @@ import imgGrabenraeumloeffelMs01Hydr_100cm_1 from "@/assets/products/erdbewegung
 import imgDieselKanister10l_1 from "@/assets/products/erdbewegung/diesel-kanister-10l-1.jpeg";
 import imgDieselKanister20l_1 from "@/assets/products/erdbewegung/diesel-kanister-20l-1.jpeg";
 import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1.jpeg";
+import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-symlock-1.jpeg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -4774,6 +4775,25 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Gewicht": "36 kg",
     },
     rentwareCode: { krefeld: "NXR6T1" }
+  },
+  {
+    id: "ms01-tiefloeffel-30cm-symlock",
+    name: "MS01 Tieflöffel 30cm/24l Symlock",
+    description: "Tieflöffel 30cm für MS01 Symlock – Gewichtsklasse 1–2 t, 3 Zähne",
+    detailedDescription: "Der MS01 Tieflöffel 30cm/24l Symlock ist ein kompakter Grabenlöffel mit 3 geschraubten Zähnen für anspruchsvolle Grab- und Aushubarbeiten in harten Böden. Mit 300 mm Arbeitsbreite und 24 Liter Volumen eignet er sich ideal für schmale Gräben und Fundamentarbeiten. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
+    image: imgTiefloeffelMs01_30cmSymlock_1,
+    images: [imgTiefloeffelMs01_30cmSymlock_1],
+    category: "tiefloeffel",
+    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e"],
+    specifications: {
+      "Aufnahme": "MS01 (Symlock)",
+      "Gewichtsklasse Trägergerät": "1 – 2 t",
+      "Volumen": "24 l",
+      "Arbeitsbreite": "300 mm",
+      "Zahnsystem": "geschraubt",
+      "Anzahl Zähne": "3",
+      "Gewicht": "36 kg",
+    },
   },
   {
     id: "ms01-tiefloeffel-50cm-symlock",
