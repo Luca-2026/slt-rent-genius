@@ -2,56 +2,58 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { useTranslation } from "react-i18next";
 import { 
   ArrowRight, 
   Wrench, 
   ClipboardList, 
   Truck, 
   ShieldCheck, 
-  PartyPopper, 
   Construction 
 } from "lucide-react";
 
-const services = [
-  {
-    icon: ClipboardList,
-    title: "Planung & Koordination",
-    description: "Wir übernehmen die komplette Projektplanung – von der Bedarfsermittlung bis zur Abstimmung mit Behörden und Bauämtern.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Verkehrssicherung",
-    description: "Absperrplanung, Halteverbotszonen einrichten, Antragsformulare und komplette Koordination mit Straßenverkehrsbehörden.",
-    externalLink: "https://www.slt-infra.de",
-    externalLabel: "slt-infra.de",
-  },
-  {
-    icon: Construction,
-    title: "Auf- & Abbau",
-    description: "Professioneller Auf- und Abbau von Zelten, Bühnen, Möbeln, Absperrtechnik und mehr – alles aus einer Hand.",
-  },
-  {
-    icon: Truck,
-    title: "Anlieferung & Abholung",
-    description: "Flexible Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ganz NRW.",
-    link: "/lieferung",
-    linkLabel: "Lieferkosten berechnen",
-  },
-];
-
 export function ServicesSection() {
+  const { t } = useTranslation();
+
+  const services = [
+    {
+      icon: ClipboardList,
+      title: t("services.planning"),
+      description: t("services.planningDesc"),
+    },
+    {
+      icon: ShieldCheck,
+      title: t("services.traffic"),
+      description: t("services.trafficDesc"),
+      externalLink: "https://www.slt-infra.de",
+      externalLabel: "slt-infra.de",
+    },
+    {
+      icon: Construction,
+      title: t("services.setup"),
+      description: t("services.setupDesc"),
+    },
+    {
+      icon: Truck,
+      title: t("services.delivery"),
+      description: t("services.deliveryDesc"),
+      link: "/lieferung",
+      linkLabel: t("services.deliveryLink"),
+    },
+  ];
+
   return (
     <section className="py-16 lg:py-20 bg-surface-light">
       <div className="section-container">
         <AnimatedSection className="text-center mb-12">
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-primary/20">
-            Mehr als nur Vermietung
+            {t("services.badge")}
           </span>
           <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-            Unsere Dienstleistungen
+            {t("services.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Wir bieten Ihnen nicht nur erstklassige Mietgeräte, sondern auch den kompletten Service drumherum – von der Planung bis zum Abbau.
+            {t("services.subtitle")}
           </p>
         </AnimatedSection>
 
@@ -99,7 +101,7 @@ export function ServicesSection() {
           <Link to="/kontakt">
             <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg hover:shadow-xl transition-all group">
               <Wrench className="mr-2 h-4 w-4" />
-              Dienstleistung anfragen
+              {t("services.cta")}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>

@@ -16,14 +16,13 @@ import {
   locations,
   Product,
 } from "@/data/rentalData";
+import { useTranslation } from "react-i18next";
 
-/** Pick `count` random products that have a real photo and are visually appealing */
 const excludedCategoryIds = new Set([
   "absperrtechnik", "kabel-stromverteiler",
 ]);
 
 function pickRandomProducts(count: number): (Product & { categoryId: string })[] {
-  // Gather products from all categories except excluded ones
   const all: (Product & { categoryId: string })[] = [];
   const location = locations.find((l) => l.id === "krefeld");
   if (!location) return [];
@@ -37,16 +36,15 @@ function pickRandomProducts(count: number): (Product & { categoryId: string })[]
     }
   }
 
-  // Shuffle
   const shuffled = [...all].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 }
 
 export function ProductInspirationSlider() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const products = useMemo(() => pickRandomProducts(16), []);
 
-  // Location dialog state
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<{ categoryId: string; id: string } | null>(null);
 
@@ -57,7 +55,6 @@ export function ProductInspirationSlider() {
     dragFree: true,
   });
 
-  // Auto-scroll
   const autoplay = useCallback(() => {
     if (!emblaApi) return;
     emblaApi.scrollNext();
@@ -90,18 +87,17 @@ export function ProductInspirationSlider() {
         <AnimatedSection className="text-center mb-10">
           <span className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
             <Sparkles className="h-3.5 w-3.5" />
-            Inspiration
+            {t("inspiration.badge")}
           </span>
           <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-            Entdecken Sie unser Sortiment
+            {t("inspiration.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Eine Auswahl aus über 1.700 Mietartikeln – von Baumaschinen bis Event-Equipment.
+            {t("inspiration.subtitle")}
           </p>
         </AnimatedSection>
       </div>
 
-      {/* Full-width carousel */}
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-4 pl-4 md:pl-8">
           {products.map((product) => (
@@ -131,7 +127,7 @@ export function ProductInspirationSlider() {
                       {product.description || ""}
                     </p>
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-accent mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Details ansehen
+                      {t("inspiration.viewDetails")}
                       <ArrowRight className="h-3 w-3" />
                     </span>
                   </CardContent>
@@ -142,16 +138,15 @@ export function ProductInspirationSlider() {
         </div>
       </div>
 
-      {/* Location selection dialog */}
       <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-primary" />
-              Standort wählen
+              {t("inspiration.selectLocation")}
             </DialogTitle>
             <DialogDescription>
-              Wählen Sie Ihren Standort, um Verfügbarkeit und Preise zu sehen.
+              {t("inspiration.selectLocationDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-3 mt-4">

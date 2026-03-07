@@ -6,6 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 interface Review {
   authorName: string;
@@ -24,9 +25,7 @@ interface ReviewData {
 interface GoogleReviewsProps {
   placeId: string;
   locationName: string;
-  /** Compact mode for location cards, full mode for dedicated sections */
   variant?: "compact" | "full";
-  /** Max number of reviews to display (useful for mobile) */
   maxReviews?: number;
 }
 
@@ -67,11 +66,11 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
 }
 
 export function GoogleReviews({ placeId, locationName, variant = "full", maxReviews }: GoogleReviewsProps) {
+  const { t } = useTranslation();
   const [data, setData] = useState<ReviewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Find the locationId from placeId
   const locationId = Object.entries(PLACE_IDS).find(([, id]) => id === placeId)?.[0] || "";
   const reviewUrl = GOOGLE_REVIEW_URLS[locationId];
 
@@ -99,7 +98,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
     return () => { cancelled = true; };
   }, [placeId]);
 
-  if (error) return null; // Silently fail - don't break the page
+  if (error) return null;
 
   if (variant === "compact") {
     return (
@@ -117,7 +116,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
               <a href={reviewUrl} target="_blank" rel="noopener noreferrer">
                 <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
                   <PenLine className="h-3 w-3" />
-                  Bewerten
+                  {t("reviews.rate")}
                 </Button>
               </a>
             )}
@@ -145,17 +144,16 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
 
   return (
     <div className="space-y-6">
-      {/* Header with rating summary */}
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <img src="https://www.google.com/favicon.ico" alt="Google" className="h-5 w-5" />
-            <span className="text-base font-bold text-foreground">Google Bewertungen</span>
+            <span className="text-base font-bold text-foreground">{t("reviews.googleReviews")}</span>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
             <StarRating rating={data.rating} size="lg" />
             <span className="text-lg font-bold text-foreground">{data.rating.toFixed(1)}</span>
-            <span className="text-sm text-muted-foreground whitespace-nowrap">({data.totalReviews} Bewertungen)</span>
+            <span className="text-sm text-muted-foreground whitespace-nowrap">({data.totalReviews} {t("reviews.reviews")})</span>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -163,7 +161,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
             <a href={reviewUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="gap-2">
                 <PenLine className="h-4 w-4" />
-                Bewertung schreiben
+                {t("reviews.writeReview")}
               </Button>
             </a>
           )}
@@ -174,13 +172,12 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
           >
             <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
               <ExternalLink className="h-4 w-4" />
-              Alle ansehen
+              {t("reviews.viewAll")}
             </Button>
           </a>
         </div>
       </div>
 
-      {/* Reviews grid */}
       {data.reviews.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {(maxReviews ? data.reviews.slice(0, maxReviews) : data.reviews).map((review, index) => (

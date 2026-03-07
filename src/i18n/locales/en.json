@@ -1612,5 +1612,37 @@
       "item2": "Incl. Batteries", "item2sub": "Ready to use immediately",
       "item3": "Multiple Sets", "item3sub": "For large teams"
     }
+  },
+  "services": {
+    "badge": "More Than Just Rentals",
+    "title": "Our Services",
+    "subtitle": "We don't just offer top-quality rental equipment – we also provide the complete service package, from planning to dismantling.",
+    "planning": "Planning & Coordination",
+    "planningDesc": "We handle complete project planning – from needs assessment to coordination with authorities and building offices.",
+    "traffic": "Traffic Safety",
+    "trafficDesc": "Barrier planning, setting up no-parking zones, application forms and full coordination with traffic authorities.",
+    "setup": "Setup & Dismantling",
+    "setupDesc": "Professional setup and dismantling of tents, stages, furniture, barrier equipment and more – all from a single source.",
+    "delivery": "Delivery & Collection",
+    "deliveryDesc": "Flexible delivery directly to your construction site or event venue throughout NRW.",
+    "deliveryLink": "Calculate delivery costs",
+    "cta": "Request a service"
+  },
+  "reviews": {
+    "title": "What Our Customers Say",
+    "subtitle": "Real reviews from Google",
+    "googleReviews": "Google Reviews",
+    "reviews": "Reviews",
+    "rate": "Rate",
+    "writeReview": "Write a review",
+    "viewAll": "View all"
+  },
+  "inspiration": {
+    "badge": "Inspiration",
+    "title": "Discover Our Range",
+    "subtitle": "A selection from over 1,700 rental items – from construction machinery to event equipment.",
+    "viewDetails": "View details",
+    "selectLocation": "Select Location",
+    "selectLocationDesc": "Choose your location to see availability and prices."
   }
 }

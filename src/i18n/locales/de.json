@@ -1610,5 +1610,37 @@
       "item2": "Inkl. Akkus", "item2sub": "Sofort einsatzbereit",
       "item3": "Mehrere Sets", "item3sub": "Für große Teams"
     }
+  },
+  "services": {
+    "badge": "Mehr als nur Vermietung",
+    "title": "Unsere Dienstleistungen",
+    "subtitle": "Wir bieten Ihnen nicht nur erstklassige Mietgeräte, sondern auch den kompletten Service drumherum – von der Planung bis zum Abbau.",
+    "planning": "Planung & Koordination",
+    "planningDesc": "Wir übernehmen die komplette Projektplanung – von der Bedarfsermittlung bis zur Abstimmung mit Behörden und Bauämtern.",
+    "traffic": "Verkehrssicherung",
+    "trafficDesc": "Absperrplanung, Halteverbotszonen einrichten, Antragsformulare und komplette Koordination mit Straßenverkehrsbehörden.",
+    "setup": "Auf- & Abbau",
+    "setupDesc": "Professioneller Auf- und Abbau von Zelten, Bühnen, Möbeln, Absperrtechnik und mehr – alles aus einer Hand.",
+    "delivery": "Anlieferung & Abholung",
+    "deliveryDesc": "Flexible Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ganz NRW.",
+    "deliveryLink": "Lieferkosten berechnen",
+    "cta": "Dienstleistung anfragen"
+  },
+  "reviews": {
+    "title": "Das sagen unsere Kunden",
+    "subtitle": "Echte Bewertungen von Google",
+    "googleReviews": "Google Bewertungen",
+    "reviews": "Bewertungen",
+    "rate": "Bewerten",
+    "writeReview": "Bewertung schreiben",
+    "viewAll": "Alle ansehen"
+  },
+  "inspiration": {
+    "badge": "Inspiration",
+    "title": "Entdecken Sie unser Sortiment",
+    "subtitle": "Eine Auswahl aus über 1.700 Mietartikeln – von Baumaschinen bis Event-Equipment.",
+    "viewDetails": "Details ansehen",
+    "selectLocation": "Standort wählen",
+    "selectLocationDesc": "Wählen Sie Ihren Standort, um Verfügbarkeit und Preise zu sehen."
   }
 }
