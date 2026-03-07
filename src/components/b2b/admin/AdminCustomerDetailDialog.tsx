@@ -21,8 +21,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
   Building2, CalendarDays, Clock, CreditCard, Edit, Eye, KeyRound, Mail, Package,
-  Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp,
+  Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp, Users,
 } from "lucide-react";
+import { AdminAuthorizedPersonsTab } from "./AdminAuthorizedPersonsTab";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
