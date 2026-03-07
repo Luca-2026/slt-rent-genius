@@ -18,7 +18,7 @@ export function RentwarePositioner() {
       // Position: centered in header row (40-120px, center=80px)
       // With 56px height: top = 80 - 28 = 52px
       el.style.position = "fixed";
-      el.style.top = "52px";
+      el.style.top = "40px";
       el.style.right = "16px";
       el.style.bottom = "unset";
       el.style.left = "unset";
