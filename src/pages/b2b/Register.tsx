@@ -87,7 +87,7 @@ export default function B2BRegister() {
   };
 
   const validateStep2 = () => {
-    if (!companyName || !firstName || !lastName || !phone || !street || !postalCode || !city) {
+    if (!companyName || !firstName || !lastName || !phone || !street || !houseNumber || !postalCode || !city) {
       toast({ title: "Bitte alle Pflichtfelder ausfüllen", variant: "destructive" });
       return false;
     }
