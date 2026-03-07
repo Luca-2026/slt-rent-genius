@@ -20,7 +20,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Building2, CalendarDays, Clock, CreditCard, Edit, Eye, Package,
+  Building2, CalendarDays, Clock, CreditCard, Edit, Eye, Mail, Package,
   Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp,
 } from "lucide-react";
 import { format } from "date-fns";
