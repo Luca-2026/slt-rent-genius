@@ -1204,6 +1204,22 @@ export const bonnZelteProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "6GI1UN" },
   },
+  {
+    id: "bonn-zeltboden-anthrazit",
+    name: "Zeltboden Anthrazit 0,86 m²",
+    description: "Robuste Kunststoff-Eventmatte mit Nut-und-Feder-System für lückenlosen, stabilen Zelt- und Eventboden. Anthrazit, rutschfeste Oberfläche. Besenrein zurückzugeben.",
+    image: "/placeholder.svg",
+    category: "zelt",
+    specifications: {
+      "Maße": "100 × 86 × 0,23 cm (0,86 m²/Stück)",
+      "Material": "Kunststoff mit Nut-und-Feder-Verbindung",
+      "Farbe": "Anthrazit",
+      "Belastbarkeit": "ca. 15 t/m² (fester Untergrund)",
+      "Gewicht": "15 kg/Stück",
+      "Rückgabe": "besenrein",
+    },
+    rentwareCode: { bonn: "266FGI" },
+  },
 ];
 
 // ==================== MÖBEL ====================
