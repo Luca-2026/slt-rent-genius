@@ -5,7 +5,7 @@ import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
-import { B2BChatAssistant } from "@/components/b2b/B2BChatAssistant";
+
 import { 
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2,
