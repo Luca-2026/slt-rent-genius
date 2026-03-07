@@ -319,6 +319,23 @@ export function ProductBookingDialog({
                       )}
                     </div>
 
+                    {/* Setup & supervision service - only for event categories */}
+                    {showSetupService && (
+                      <div className="flex items-center gap-3 border border-border rounded-lg p-4 bg-muted/30">
+                        <Checkbox
+                          id="inq-setup"
+                          checked={form.setupServiceRequested}
+                          onCheckedChange={(checked) =>
+                            setForm({ ...form, setupServiceRequested: checked === true })
+                          }
+                        />
+                        <Label htmlFor="inq-setup" className="flex items-center gap-2 cursor-pointer font-medium">
+                          <Wrench className="h-4 w-4 text-primary" />
+                          Betreuung / Auf- & Abbau gewünscht
+                        </Label>
+                      </div>
+                    )}
+
                     <Button
                       type="submit"
                       className="w-full"
