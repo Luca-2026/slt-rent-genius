@@ -371,7 +371,7 @@ export function AdminCreateOfferDialog({
         ) : (
           <Card>
             <CardContent className="p-4 space-y-2">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <p className="font-semibold text-foreground">{profile!.company_name}</p>
                   {reservation && (
