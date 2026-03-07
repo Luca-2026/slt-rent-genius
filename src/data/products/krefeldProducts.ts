@@ -102,6 +102,9 @@ import imgRollgeruestKrause84m3 from "@/assets/products/rollgeruest-krause-84m-3
 import imgRollgeruestKrause64m1 from "@/assets/products/rollgeruest-krause-64m-1.jpeg";
 import imgRollgeruestKrause64m2 from "@/assets/products/rollgeruest-krause-64m-2.jpeg";
 import imgRollgeruestKrause64m3 from "@/assets/products/rollgeruest-krause-64m-3.jpeg";
+import imgRollgeruestKrause54m1 from "@/assets/products/rollgeruest-krause-54m-1.jpeg";
+import imgRollgeruestKrause54m2 from "@/assets/products/rollgeruest-krause-54m-2.jpeg";
+import imgRollgeruestKrause54m3 from "@/assets/products/rollgeruest-krause-54m-3.jpeg";
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
 import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-2.jpeg";
@@ -3900,6 +3903,30 @@ export const leiternGeruesteProducts: Product[] = [
       "Arbeitshöhe": "4,4 m",
       "Gerüsthöhe": "3,5 m",
       "Standhöhe": "2,4 m",
+      "Arbeitsfläche": "2,00 × 0,75 m",
+      "Standfläche": "1,5 m²",
+      "Feldlängen": "2,00 m",
+      "Gerüstfeldbreite": "0,75 m",
+      "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
+      "Belastbarkeit": "200 kg/m² (Gerüstgruppe 3)",
+      "Norm": "DIN EN 1004-1, TÜV-geprüft",
+      "Material": "Aluminium (Traverse aus Stahl)",
+      "Verriegelung": "Selbstsicherndes KRAUSE-System",
+    },
+    onRequest: true,
+  },
+  {
+    id: "rollgeruest-krause-5-4m",
+    name: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 5,4 m Arbeitshöhe (6,4 m Arbeitshöhe, 5,5 m Gerüsthöhe, 4,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von 1,5 m² bietet einen sicheren Arbeitsplatz.",
+    detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
+    image: imgRollgeruestKrause54m1,
+    images: [imgRollgeruestKrause54m1, imgRollgeruestKrause54m2, imgRollgeruestKrause54m3],
+    category: "rollgeruest",
+    specifications: {
+      "Arbeitshöhe": "6,4 m",
+      "Gerüsthöhe": "5,5 m",
+      "Standhöhe": "4,4 m",
       "Arbeitsfläche": "2,00 × 0,75 m",
       "Standfläche": "1,5 m²",
       "Feldlängen": "2,00 m",
