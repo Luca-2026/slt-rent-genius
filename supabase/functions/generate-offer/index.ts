@@ -192,7 +192,6 @@ Deno.serve(async (req: Request) => {
     const offerItems = items.map((item) => {
       const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
-      // Append time to rental dates if available from reservation
       let rentalStart = item.rental_start || reservation?.start_date || null;
       let rentalEnd = item.rental_end || reservation?.end_date || null;
       if (rentalStart && reservation?.start_time && !rentalStart.includes(" ")) {
@@ -215,7 +214,21 @@ Deno.serve(async (req: Request) => {
     });
 
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
-    const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
+
+    // Calculate additional services surcharges
+    let servicesSurcharge = 0;
+    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[] = [];
+    if (additionalServices && additionalServices.length > 0) {
+      for (const svc of additionalServices) {
+        const pct = svc.pricePercent ?? null;
+        const amount = pct !== null ? Math.round(itemsTotal * (pct / 100) * 100) / 100 : 0;
+        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: pct, amount });
+        servicesSurcharge += amount;
+      }
+    }
+    servicesSurcharge = Math.round(servicesSurcharge * 100) / 100;
+
+    const netAmount = Math.round((itemsTotal + delivery_cost + servicesSurcharge) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
