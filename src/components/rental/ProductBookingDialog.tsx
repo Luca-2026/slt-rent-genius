@@ -51,6 +51,10 @@ export function ProductBookingDialog({
     startDate: "",
     endDate: "",
     message: "",
+    deliveryRequested: false,
+    deliveryStreet: "",
+    deliveryPostalCode: "",
+    deliveryCity: "",
   });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
