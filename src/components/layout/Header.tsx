@@ -95,7 +95,7 @@ export function Header() {
           {/* Right Side Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile/Tablet: Language + Menu pushed left of cart */}
-            <div className="flex items-center gap-1 lg:hidden">
+            <div className="flex items-center gap-1 lg:hidden mr-4">
               <LanguageSwitcher />
               <Button
                 variant="ghost"
