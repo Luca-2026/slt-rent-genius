@@ -176,20 +176,21 @@ export function AdminReservationsTab({
                          </p>
                        )}
                      </div>
-                     <div className="flex gap-2 shrink-0">
+                     <div className="flex flex-wrap gap-2 shrink-0 w-full md:w-auto">
                        {hasOffer ? (
                          <>
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => onEditOffer(existingOffer, existingOfferItemsList)}
+                              className="h-10 sm:h-9 flex-1 md:flex-none"
                             >
                               <Pencil className="h-3.5 w-3.5 mr-1" />
                               Angebot ändern
                             </Button>
                             <Button
                               size="sm"
-                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover h-10 sm:h-9 flex-1 md:flex-none"
                               onClick={() => onResendOffer(existingOffer)}
                               disabled={resendingId === existingOffer.id}
                             >
@@ -200,7 +201,7 @@ export function AdminReservationsTab({
                         ) : (
                           <Button
                             size="sm"
-                            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover h-10 sm:h-9 flex-1 md:flex-none"
                             onClick={() => onCreateOffer(res)}
                           >
                             <FileText className="h-3.5 w-3.5 mr-1" />
@@ -213,6 +214,7 @@ export function AdminReservationsTab({
                             variant="destructive"
                             onClick={() => onDeleteReservation(res)}
                             disabled={deletingId === res.id}
+                            className="h-10 sm:h-9"
                           >
                             {deletingId === res.id ? (
                               <RefreshCw className="h-3.5 w-3.5 animate-spin" />
