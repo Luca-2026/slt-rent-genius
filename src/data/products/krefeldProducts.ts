@@ -2792,6 +2792,25 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "K12XM9" }
   },
   {
+    id: "partyzelt-4x8m",
+    name: "Partyzelt 4x8m",
+    description: "Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    image: imgPartyzelt4x10_1,
+    images: [imgPartyzelt4x10_1],
+    category: "zelt",
+    specifications: {
+      "Grundfläche": "32 m² (4 m × 8 m)",
+      "Farbe": "weiß",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 53 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 45 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 100 € bei Nichtbeachtung)",
+    },
+    pdfUrl: "/manuals/partyzelt-4x6-aufbauanleitung.pdf",
+    videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
+    rentwareCode: { krefeld: "6QCPH6" }
+  },
+  {
     id: "partyzelt-4x10m",
     name: "Partyzelt 4x10m",
     description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
@@ -2809,7 +2828,7 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x10-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    rentwareCode: { krefeld: "PARTYZELT4X10" }
+    rentwareCode: { krefeld: "7EW3HR" }
   },
   {
     id: "partyzelt-4x14m",
@@ -2829,7 +2848,7 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    rentwareCode: { krefeld: "PARTYZELT4X14" }
+    rentwareCode: { krefeld: "JLHAH7" }
   },
   {
     id: "zeltboden-anthrazit",
@@ -2846,7 +2865,7 @@ export const moebelZelteProducts: Product[] = [
       "Gewicht": "15 kg/Stück",
       "Rückgabe": "besenrein",
     },
-    rentwareCode: { krefeld: "ZELTBODEN_ANT" }
+    rentwareCode: { krefeld: "2RKZVT" }
   },
   {
     id: "eventzelt-6x12m",
@@ -2866,7 +2885,7 @@ export const moebelZelteProducts: Product[] = [
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 130 € bei Nichtbeachtung)",
     },
     pdfUrl: "/manuals/eventzelt-6x12-aufbauanleitung.pdf",
-    rentwareCode: { krefeld: "7PGYQB" }
+    rentwareCode: { krefeld: "O3E6TK" }
   },
   {
     id: "eventzelt-6x8m",
@@ -2886,7 +2905,7 @@ export const moebelZelteProducts: Product[] = [
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
     },
     pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
-    rentwareCode: { krefeld: "EVENTZELT6X8" }
+    rentwareCode: { krefeld: "7PGYQB" }
   },
   {
     id: "bierzeltgarnitur-set",
