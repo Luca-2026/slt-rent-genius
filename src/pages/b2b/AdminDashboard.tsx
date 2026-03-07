@@ -1071,7 +1071,7 @@ export default function AdminDashboard() {
                         <span>{formatCurrency(invoiceFromOffer.gross_amount)}</span>
                       </div>
                     </>
-                  ) : (
+                  ) : selectedReservation ? (
                     <>
                       <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
                       <p className="text-sm text-muted-foreground">
@@ -1089,7 +1089,7 @@ export default function AdminDashboard() {
                         </p>
                       )}
                     </>
-                  )}
+                  ) : null}
                   {(() => {
                     const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);
                     return profile?.tax_id && profile.vat_id_verified ? (
