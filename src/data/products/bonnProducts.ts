@@ -537,8 +537,16 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-unkrautbrenner-gloria",
     name: "GLORIA Thermoflamm bio Professional PLUS",
-    description: "Gas Unkrautbrenner & Abflammgerät mit 5m Schlauch.",
-    image: "/placeholder.svg",
+    description: "Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.",
+    image: "/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg",
+    images: ["/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg", "/products/gartenpflege/gloria-thermoflamm-bio-anwendung.webp"],
+    specifications: {
+      "Hersteller": "GLORIA",
+      "Modell": "Thermoflamm bio Professional PLUS",
+      "Betrieb": "Gas (Propan/Butan)",
+      "Schlauchlänge": "5 m",
+      "Methode": "Thermisch (chemiefrei)",
+    },
     rentwareCode: { bonn: "XQOA86" },
   },
   {

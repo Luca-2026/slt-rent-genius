@@ -1430,6 +1430,22 @@ export const gartenpflegeProducts: Product[] = [
     rentwareCode: { krefeld: "" }
   },
   {
+    id: "unkrautbrenner-gloria-thermoflamm",
+    name: "GLORIA Thermoflamm bio Professional PLUS",
+    description: "Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.",
+    image: "/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg",
+    images: ["/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg", "/products/gartenpflege/gloria-thermoflamm-bio-anwendung.webp"],
+    specifications: {
+      "Hersteller": "GLORIA",
+      "Modell": "Thermoflamm bio Professional PLUS",
+      "Betrieb": "Gas (Propan/Butan)",
+      "Schlauchlänge": "5 m",
+      "Methode": "Thermisch (chemiefrei)",
+    },
+    category: "unkrautbrenner",
+    rentwareCode: { krefeld: "" }
+  },
+  {
     id: "freischneider-ps162",
     name: "Freischneider PS162",
     description: "Benzin-Freischneider für Dickicht",
