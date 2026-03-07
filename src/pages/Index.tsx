@@ -292,7 +292,7 @@ export default function Index() {
           </AnimatedSection>
 
           {/* Privat / B2B Toggle */}
-          <div className="flex items-center justify-center gap-3 mb-10">
+          <div className="flex items-stretch justify-center gap-3 mb-10">
             <button
               onClick={() => setHowItWorksTab("private")}
               className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
