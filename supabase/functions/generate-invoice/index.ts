@@ -322,7 +322,7 @@ Deno.serve(async (req: Request) => {
       .from("b2b_invoices")
       .insert({
         b2b_profile_id: profile.id,
-        reservation_id: reservation_id,
+        reservation_id: reservation_id || null,
         invoice_number: invoiceNumber,
         invoice_date: invoiceDate,
         due_date: dueDate,
