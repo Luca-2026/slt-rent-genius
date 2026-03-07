@@ -6,6 +6,9 @@ const corsHeaders = {
 };
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
+const HQ_ADDRESS = "Anrather Straße 291, 47807 Krefeld";
+const HQ_PHONE = "02151 417 99 04";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -30,6 +33,14 @@ serve(async (req) => {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
     const address = [street, postalCode, city].filter(Boolean).join(", ") || "nicht angegeben";
+
+    const footerHtml = `
+    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px; line-height: 1.6;">
+      ${COMPANY_NAME}<br>
+      ${HQ_ADDRESS}<br>
+      Tel: ${HQ_PHONE} · E-Mail: <a href="mailto:karriere@slt-rental.de" style="color: #f97316;">karriere@slt-rental.de</a><br>
+      <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
+    </p>`;
 
     // ── Internal notification email ──
     const internalHtml = `
@@ -60,9 +71,7 @@ serve(async (req) => {
     <p style="color: #6b7280; font-size: 13px; margin-top: 16px;">
       📌 Die vollständigen Bewerbungsunterlagen können im Admin-Bereich unter <strong>Karriere → Bewerbungen</strong> eingesehen und heruntergeladen werden.
     </p>
-    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
-      Diese Bewerbung wurde über das Karriereportal auf slt-rental.de eingereicht.
-    </p>
+    ${footerHtml}
   </div>
 </div>`.trim();
 
@@ -83,15 +92,13 @@ serve(async (req) => {
       Unser Team wird Ihre Unterlagen sorgfältig prüfen. Wir melden uns in der Regel innerhalb von 5–10 Werktagen bei Ihnen.
     </div>
     <p style="color: #374151; line-height: 1.6;">
-      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="mailto:karriere@slt-rental.de" style="color: #f97316;">karriere@slt-rental.de</a>.
+      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${HQ_PHONE.replace(/\s/g, '')}" style="color: #f97316;">${HQ_PHONE}</a> oder per E-Mail an <a href="mailto:karriere@slt-rental.de" style="color: #f97316;">karriere@slt-rental.de</a>.
     </p>
     <p style="color: #374151;">
       Mit freundlichen Grüßen,<br>
       <strong>Ihr SLT Rental Team</strong>
     </p>
-    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
-      SLT Rental GmbH · <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
-    </p>
+    ${footerHtml}
   </div>
 </div>`.trim();
 
