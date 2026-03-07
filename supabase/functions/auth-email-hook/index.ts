@@ -217,11 +217,29 @@ async function handleWebhook(req: Request): Promise<Response> {
   }
 
   // Build template props from payload.data (HookData structure)
+  // Rewrite confirmation URL to use production domain instead of Lovable preview
+  let confirmationUrl = payload.data.url || '';
+  const PRODUCTION_URL = `https://www.${ROOT_DOMAIN}`;
+  if (confirmationUrl) {
+    // Replace any Lovable preview URLs in the redirect_to parameter
+    try {
+      const urlObj = new URL(confirmationUrl);
+      const redirectTo = urlObj.searchParams.get('redirect_to');
+      if (redirectTo && (redirectTo.includes('.lovable.app') || redirectTo.includes('lovable.app'))) {
+        urlObj.searchParams.set('redirect_to', PRODUCTION_URL + '/');
+        confirmationUrl = urlObj.toString();
+      }
+    } catch (e) {
+      // If URL parsing fails, use as-is
+      console.warn('Could not parse confirmation URL', { url: confirmationUrl });
+    }
+  }
+
   const templateProps = {
     siteName: SITE_NAME,
-    siteUrl: `https://${ROOT_DOMAIN}`,
+    siteUrl: PRODUCTION_URL,
     recipient: payload.data.email,
-    confirmationUrl: payload.data.url,
+    confirmationUrl,
     token: payload.data.token,
     email: payload.data.email,
     newEmail: payload.data.new_email,
