@@ -272,7 +272,7 @@ export default function AdminDashboard() {
             : (offer.notes || undefined),
           is_proforma: proformaMode,
         };
-      } else {
+      } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals
         let targetReservations = [reservation];
         if (reservation.rental_group_id) {
