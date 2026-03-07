@@ -1229,7 +1229,8 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
     if (!ref) return p;
     return {
       ...p,
-      // Always use the canonical Krefeld name
+      // Always use the canonical Krefeld ID and name so product lookups work across locations
+      id:             ref.id,
       name:           ref.name,
       // Only fill if primary entry lacks the field
       image:          (p.image && p.image !== "/placeholder.svg") ? p.image : (ref.image ?? p.image),
@@ -1251,7 +1252,16 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
     .filter((k) => !isCovered(k))
     .map((k) => ({ ...k, rentwareCode: undefined }));
 
-  return [...enriched, ...fallbacks];
+  // Deduplicate by ID (in case multiple primary products resolved to the same canonical ID)
+  const seen = new Set<string>();
+  const result: Product[] = [];
+  for (const p of [...enriched, ...fallbacks]) {
+    if (!seen.has(p.id)) {
+      seen.add(p.id);
+      result.push(p);
+    }
+  }
+  return result;
 }
 
 // Locations with their available categories and products
