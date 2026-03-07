@@ -21,6 +21,10 @@ serve(async (req) => {
       startDate,
       endDate,
       message,
+      deliveryRequested,
+      deliveryStreet,
+      deliveryPostalCode,
+      deliveryCity,
     } = await req.json();
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -28,6 +32,10 @@ serve(async (req) => {
     const dateRange = startDate
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
+
+    const deliveryText = deliveryRequested
+      ? `\nLieferung gewünscht:\n- Straße: ${deliveryStreet}\n- PLZ / Ort: ${deliveryPostalCode} ${deliveryCity}`
+      : "\nLieferung: Nein (Selbstabholung)";
 
     const emailBody = `
 Neue Mietanfrage über die Website
@@ -41,6 +49,7 @@ Kontaktdaten:
 - Telefon: ${phone || "nicht angegeben"}
 
 Zeitraum: ${dateRange}
+${deliveryText}
 
 Nachricht:
 ${message || "keine weiteren Angaben"}
@@ -48,6 +57,12 @@ ${message || "keine weiteren Angaben"}
 ---
 Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
     `.trim();
+
+    const deliveryHtml = deliveryRequested
+      ? `
+      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${deliveryStreet}<br>${deliveryPostalCode} ${deliveryCity}</td></tr>`
+      : `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0;">Selbstabholung</td></tr>`;
 
     const htmlBody = `
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
@@ -69,6 +84,7 @@ Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${dateRange}</td></tr>
+      ${deliveryHtml}
     </table>
 
     ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${message}</p>` : ""}
@@ -80,7 +96,6 @@ Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
 </div>
     `.trim();
 
-    // Send via Resend if API key is available, otherwise just log
     if (RESEND_API_KEY) {
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -101,10 +116,8 @@ Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
       if (!res.ok) {
         const errBody = await res.text();
         console.error("Resend error:", errBody);
-        // Don't throw - fall through to success so user isn't blocked
       }
     } else {
-      // Log to console when no Resend key (dev/testing)
       console.log("=== INQUIRY (no RESEND_API_KEY set) ===");
       console.log(emailBody);
     }
