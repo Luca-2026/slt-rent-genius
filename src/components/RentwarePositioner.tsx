@@ -17,7 +17,7 @@ export function RentwarePositioner() {
 
       // 1. Inline styles on host element
       el.style.position = "fixed";
-      el.style.top = "75px"; // well below the ~36px marquee bar
+      el.style.top = "56px"; // below marquee, centered with header buttons
       el.style.right = "16px";
       el.style.bottom = "unset";
       el.style.left = "unset";
