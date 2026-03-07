@@ -137,6 +137,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Complete pending B2B registration after email confirmation
   useCompleteRegistration(user);
+
+  return (
     <AuthContext.Provider
       value={{
         user,
