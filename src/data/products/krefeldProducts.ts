@@ -2157,7 +2157,7 @@ export const absperrtechnikProducts: Product[] = [
       "Inklusive": "1× Fußplatte K1 TL",
       "Warnleuchte": "Optional erhältlich",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "ZLRA2E" }
   },
   {
     id: "blockbatterie-6v",
