@@ -30,6 +30,7 @@ serve(async (req) => {
       deliveryStreet,
       deliveryPostalCode,
       deliveryCity,
+      setupServiceRequested,
     } = await req.json();
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -43,6 +44,10 @@ serve(async (req) => {
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${deliveryStreet}<br>${deliveryPostalCode} ${deliveryCity}</td></tr>`
       : `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0;">Selbstabholung</td></tr>`;
+
+    const setupServiceHtml = setupServiceRequested
+      ? `<tr><td style="padding: 4px 0; color: #6b7280;">Betreuung / Auf- & Abbau:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>`
+      : '';
 
     const locEmail = locationEmail || "mieten@slt-rental.de";
     const locPhone = locationPhone || "02151 417 99 04";
