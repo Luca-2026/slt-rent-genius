@@ -101,7 +101,7 @@ export function ProductBookingDialog({
       if (container) container.innerHTML = '';
       setWidgetLoading(true);
       setSent(false);
-      setForm({ name: "", email: "", phone: "", startDate: "", endDate: "", message: "", deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "" });
+      setForm(defaultForm);
     }
   }, [isOpen, containerId]);
 
