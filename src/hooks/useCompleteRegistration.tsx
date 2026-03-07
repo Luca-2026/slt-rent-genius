@@ -70,6 +70,7 @@ export function useCompleteRegistration(user: User | null, onProfileCreated?: ()
         }
 
         localStorage.removeItem("b2b_pending_registration");
+        onProfileCreated?.();
 
         // Also store document info if available
         const docPending = localStorage.getItem("b2b_pending_document");
