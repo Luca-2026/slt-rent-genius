@@ -2707,7 +2707,7 @@ export const spezialeffekteProducts: Product[] = [
       "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
       "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "9OU48Z" }
   },
   {
     id: "tcm-fx-turbo-co2-jet",
