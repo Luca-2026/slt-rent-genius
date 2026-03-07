@@ -453,6 +453,7 @@ export default function AdminDashboard() {
             id: s.id,
             name: s.name,
             description: s.description,
+            pricePercent: s.pricePercent ?? null,
           }))
         : undefined;
 
