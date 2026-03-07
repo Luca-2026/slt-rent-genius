@@ -154,6 +154,9 @@ import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import imgRollgeruestKrause94m1 from "@/assets/products/rollgeruest-krause-94m-1.jpeg";
 import imgRollgeruestKrause94m2 from "@/assets/products/rollgeruest-krause-94m-2.jpeg";
 import imgRollgeruestKrause94m3 from "@/assets/products/rollgeruest-krause-94m-3.jpeg";
+import imgRollgeruestKrause44m1 from "@/assets/products/rollgeruest-krause-44m-1.jpeg";
+import imgRollgeruestKrause44m2 from "@/assets/products/rollgeruest-krause-44m-2.jpeg";
+import imgRollgeruestKrause44m3 from "@/assets/products/rollgeruest-krause-44m-3.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -1089,6 +1092,30 @@ export const bonnLeiternProducts = [
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
     rentwareCode: { bonn: "GTQBCT" },
+  },
+  {
+    id: "bonn-rollgeruest-krause-4-4m",
+    name: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 4,4 m Arbeitshöhe (3,5 m Gerüsthöhe, 2,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau.",
+    detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
+    image: imgRollgeruestKrause44m1,
+    images: [imgRollgeruestKrause44m1, imgRollgeruestKrause44m2, imgRollgeruestKrause44m3],
+    category: "rollgeruest",
+    specifications: {
+      "Arbeitshöhe": "4,4 m",
+      "Gerüsthöhe": "3,5 m",
+      "Standhöhe": "2,4 m",
+      "Arbeitsfläche": "2,00 × 0,75 m",
+      "Standfläche": "1,5 m²",
+      "Feldlängen": "2,00 m",
+      "Gerüstfeldbreite": "0,75 m",
+      "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
+      "Belastbarkeit": "200 kg/m² (Gerüstgruppe 3)",
+      "Norm": "DIN EN 1004-1, TÜV-geprüft",
+      "Material": "Aluminium (Traverse aus Stahl)",
+      "Verriegelung": "Selbstsicherndes KRAUSE-System",
+    },
+    onRequest: true,
   },
   {
     id: "bonn-hailo-l60-6",
