@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
  * After email confirmation, checks localStorage for pending B2B registration data
  * and creates the b2b_profile if it doesn't exist yet.
  */
-export function useCompleteRegistration(user: User | null) {
+export function useCompleteRegistration(user: User | null, onProfileCreated?: () => void) {
   const { toast } = useToast();
   const hasRun = useRef(false);
 
