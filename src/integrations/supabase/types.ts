@@ -641,6 +641,7 @@ export type Database = {
           deletion_requested_at: string | null
           document_filename: string | null
           document_url: string | null
+          email_confirmed: boolean
           house_number: string | null
           id: string
           internal_notes: string | null
@@ -678,6 +679,7 @@ export type Database = {
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
+          email_confirmed?: boolean
           house_number?: string | null
           id?: string
           internal_notes?: string | null
@@ -715,6 +717,7 @@ export type Database = {
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
+          email_confirmed?: boolean
           house_number?: string | null
           id?: string
           internal_notes?: string | null
