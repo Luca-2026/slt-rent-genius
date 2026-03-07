@@ -223,12 +223,16 @@ export default function AdminDashboard() {
     }
   };
 
-  const generateInvoice = async (reservation: Reservation) => {
+  const generateInvoice = async (reservation: Reservation | null) => {
     setGeneratingInvoice(true);
     try {
       // If invoice is being created from an accepted offer, use the offer items
       const offer = invoiceFromOffer;
-      let invoiceBody: any = { reservation_id: reservation.id, delivery_cost: 0 };
+      let invoiceBody: any = {};
+
+      if (reservation) {
+        invoiceBody.reservation_id = reservation.id;
+      }
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
@@ -238,9 +242,9 @@ export default function AdminDashboard() {
           quantity: item.quantity,
           unit_price: item.unit_price,
           discount_percent: item.discount_percent || 0,
-          rental_start: item.rental_start || reservation.start_date,
-          rental_end: item.rental_end || reservation.end_date,
-          image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
+          rental_start: item.rental_start || reservation?.start_date,
+          rental_end: item.rental_end || reservation?.end_date,
+          image_url: (reservation ? getProductImageUrl(reservation.product_id) : null) || getProductImageUrlByName(item.product_name) || undefined,
         }));
 
         // Append surcharges as line items
@@ -254,8 +258,13 @@ export default function AdminDashboard() {
             discount_percent: 0,
           }));
 
+        // For standalone offers (no reservation), use b2b_profile_id directly
+        if (!reservation) {
+          invoiceBody.b2b_profile_id = offer.b2b_profile_id;
+        }
+
         invoiceBody = {
-          reservation_id: reservation.id,
+          ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
           custom_items: [...mainItems, ...surchargeItems],
           notes: proformaMode
