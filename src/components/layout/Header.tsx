@@ -68,6 +68,19 @@ export function Header() {
       {/* Main Header */}
       <div className="section-container py-2">
         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
+          {/* Mobile/Tablet: Menu + Language on the left */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={t("nav.menu")}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+            <LanguageSwitcher />
+          </div>
+
           {/* Logo - oversized and clipped */}
           <Link to="/" className="flex items-center h-full overflow-hidden">
             <img 
@@ -94,7 +107,10 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
-            <LanguageSwitcher />
+            {/* Language switcher only on desktop */}
+            <div className="hidden lg:block">
+              <LanguageSwitcher />
+            </div>
             
             <Link to="/b2b/login">
               <Button variant="outline" size="sm" className="hidden sm:flex">
@@ -108,16 +124,8 @@ export function Header() {
               </Button>
             </Link>
 
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={t("nav.menu")}
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            {/* Space for Rentware cart icon (positioned via RentwarePositioner) */}
+            <div className="w-10 h-10 shrink-0" aria-hidden="true" />
           </div>
         </div>
       </div>
