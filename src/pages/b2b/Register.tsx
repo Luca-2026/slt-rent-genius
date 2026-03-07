@@ -113,10 +113,14 @@ export default function B2BRegister() {
       const { error: signUpError } = await signUp(email, password);
       if (signUpError) throw signUpError;
 
-      // Wait for session
+      // Wait briefly for session to be established
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
-        throw new Error("Benutzer konnte nicht erstellt werden");
+        throw new Error(
+          "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück."
+        );
       }
 
       const userId = session.user.id;
