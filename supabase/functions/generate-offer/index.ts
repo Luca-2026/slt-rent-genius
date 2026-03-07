@@ -858,8 +858,25 @@ async function generateOfferPdf(data: {
 
   // ── TOTALS ──
   const totX = 380;
+  const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
+  drawText("Zwischensumme Geraete:", totX, y, { s: 9, c: gray });
+  drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
+  y -= 14;
+
+  if (data.deliveryCost > 0) {
+    drawText("Transportkosten:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+
+  if (data.servicesSurcharge > 0) {
+    drawText("Zusatzleistungen:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.servicesSurcharge), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+
   drawText("Nettobetrag:", totX, y, { s: 10, c: gray });
-  drawTextRight(fmtCurrency(data.netAmount), pageWidth - margin, y, { s: 10 });
+  drawTextRight(fmtCurrency(data.netAmount), pageWidth - margin, y, { f: fontBold, s: 10 });
   y -= 16;
 
   if (data.isReverseCharge) {
