@@ -151,7 +151,7 @@ export function ProductSearch({
                   {result.category.icon && (
                     <img 
                       src={result.category.icon} 
-                      alt="" 
+                      alt={`Kategorie ${result.category.title}`} 
                       className="w-8 h-8 object-contain"
                     />
                   )}
