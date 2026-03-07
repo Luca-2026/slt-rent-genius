@@ -94,28 +94,30 @@ const machineTypeKeys: { value: CategoryKey; labelKey: string }[] = [
 
 // Map product categories to delivery price categories
 const categoryMapping: Record<string, CategoryKey> = {
+  // Erdbewegung (default 1t, user can switch)
   "erdbewegung": "1t-bagger",
-  "bagger-radlader": "2t-bagger",
+  // Verdichtung (Rüttelplatten etc.)
   "verdichtung": "1t-bagger",
-  "hebebuehnen": "3t-bagger",
-  "moebel-zelte": "event",
-  "geschirr": "event",
-  "besteck": "event",
-  "huepfburgen": "event",
-  "spezialeffekte": "event",
-  "led-spots": "event",
-  "beleuchtung": "event",
-  "heizung-klima": "event",
-  "buehnen-podeste": "event",
-  "gerueste": "geruest",
+  // Arbeitsbühnen
+  "arbeitsbuehnen": "2t-bagger",
+  // Gerüste & Leitern
   "leitern-gerueste": "geruest",
+  // Event-Tarif: Heizung, Trocknung, Möbel, Zelte, Geschirr, Gläser, Besteck, Beleuchtung, Beschallung
+  "heizung-trocknung": "event",
+  "moebel-zelte": "event",
+  "geschirr-glaeser-besteck": "event",
+  "beleuchtung": "event",
+  "beschallung": "event",
+  "buehne": "event",
+  "traversen-rigging": "event",
+  "spezialeffekte": "event",
+  "huepfburgen": "event",
+  "kommunikation": "event",
   "gartenpflege": "event",
   "werkzeuge": "event",
-  "kommunikation": "event",
-  "traversen": "event",
-  "stromerzeuger": "event",
-  "kabel-leitungen": "event",
-  "absperrung-sicherheit": "event",
+  "aggregate": "event",
+  "kabel-stromverteiler": "event",
+  "absperrtechnik": "event",
 };
 
 interface DeliveryCalculatorCompactProps {
