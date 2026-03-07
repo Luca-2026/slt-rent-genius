@@ -1411,6 +1411,25 @@ export const gartenpflegeProducts: Product[] = [
     rentwareCode: { krefeld: "JID3OY" }
   },
   {
+    id: "akku-heckenschere-ghe18v-60",
+    name: "Akku Heckenschere GHE 18V-60",
+    description: "Bosch Professional Akku-Heckenschere mit bürstenlosem Motor und Anti-Blocking System für sauberen, kraftvollen Heckenschnitt.",
+    detailedDescription: "Kraftvoller bürstenloser Motor für hohe Leistung und lange Lebensdauer. Schneidet dickere Äste ohne Verklemmen dank des patentierten Bosch Anti-Blocking Systems. Einfache Handhabung durch geringes Gewicht, ergonomisches Design und optimale Balance – ideal für längere Arbeiten.",
+    image: "/products/gartenpflege/bosch-ghe-18v-60-freisteller.webp",
+    images: ["/products/gartenpflege/bosch-ghe-18v-60-freisteller.webp", "/products/gartenpflege/bosch-ghe-18v-60-anwendung.webp"],
+    specifications: {
+      "Hersteller": "Bosch Professional",
+      "Modell": "GHE 18V-60",
+      "Antrieb": "18V Akku (ProCORE)",
+      "Motor": "Bürstenlos (Brushless)",
+      "Schwertlänge": "60 cm",
+      "Anti-Blocking": "Ja (Bosch ABS)",
+      "Gewicht": "ca. 3,6 kg (ohne Akku)",
+    },
+    category: "heckenschere",
+    rentwareCode: { krefeld: "" }
+  },
+  {
     id: "freischneider-ps162",
     name: "Freischneider PS162",
     description: "Benzin-Freischneider für Dickicht",
