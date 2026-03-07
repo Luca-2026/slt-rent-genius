@@ -488,9 +488,12 @@ export function AdminCustomerDetailDialog({
 
         {/* ─── Tabs ─────────────────────────────────────────── */}
         <Tabs defaultValue="discounts" className="mt-2">
-          <TabsList className="grid w-full grid-cols-3 h-10">
+          <TabsList className="grid w-full grid-cols-4 h-10">
             <TabsTrigger value="discounts" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Percent className="h-3.5 w-3.5 mr-1" /> Rabatte
+            </TabsTrigger>
+            <TabsTrigger value="persons" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Users className="h-3.5 w-3.5 mr-1" /> Mitarbeiter
             </TabsTrigger>
             <TabsTrigger value="rentals" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Package className="h-3.5 w-3.5 mr-1" /> Mietvorgänge
