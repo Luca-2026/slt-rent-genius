@@ -12,7 +12,7 @@ interface SEOProps {
 }
 
 const BASE_URL = "https://www.slt-rental.de";
-const DEFAULT_OG_IMAGE = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+const DEFAULT_OG_IMAGE = "https://www.slt-rental.de/og-image.jpg";
 
 export function SEO({
   title,
