@@ -154,6 +154,9 @@ import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import imgRollgeruestKrause94m1 from "@/assets/products/rollgeruest-krause-94m-1.jpeg";
 import imgRollgeruestKrause94m2 from "@/assets/products/rollgeruest-krause-94m-2.jpeg";
 import imgRollgeruestKrause94m3 from "@/assets/products/rollgeruest-krause-94m-3.jpeg";
+import imgRollgeruestKrause44m1 from "@/assets/products/rollgeruest-krause-44m-1.jpeg";
+import imgRollgeruestKrause44m2 from "@/assets/products/rollgeruest-krause-44m-2.jpeg";
+import imgRollgeruestKrause44m3 from "@/assets/products/rollgeruest-krause-44m-3.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
