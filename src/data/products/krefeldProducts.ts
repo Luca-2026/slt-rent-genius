@@ -597,7 +597,7 @@ export const aggregateProducts: Product[] = [
     image: aggregat50kva1,
     images: [aggregat50kva1],
     category: "aggregat",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "RDRWAR" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     detailedDescription: "Das Doosan G50 ist ein schallgedämmtes Diesel-Stromaggregat mit 60 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 35 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
@@ -649,7 +649,7 @@ export const aggregateProducts: Product[] = [
     image: aggregat80kva1,
     images: [aggregat80kva1],
     category: "aggregat",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "H8WHKV" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     detailedDescription: "Das Doosan G80 ist ein schallgedämmtes Diesel-Stromaggregat mit 90 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
@@ -831,7 +831,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: anhaengerbuehneTm18gti1,
     images: [anhaengerbuehneTm18gti1, anhaengerbuehneTm18gti2, anhaengerbuehneTm18gti3, anhaengerbuehneTm18gti4, anhaengerbuehneTm18gti5],
     category: "anhaengerbuehne",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "32EVXI" },
     detailedDescription: "Die EuropeLIFT TM18GTi ist eine benzinbetriebene Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und bis zu 10,50 m seitlicher Reichweite. Der Korb bietet Platz für 2 Personen (max. 220 kg bei 8 m bzw. 100 kg bei 11 m Reichweite). Zusatzausstattung: 230 V und Druckluft-Anschluss im Korb. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 22,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet.",
     specifications: {
       "Typ": "TM18GTi",
@@ -1893,7 +1893,7 @@ export const absperrtechnikProducts: Product[] = [
       "Genehmigung": "Min. 14 Werktage Vorlaufzeit bei Beantragung durch uns",
       "Hinweis": "Genehmigungs-Kopie an mieten@slt-rental.de",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "ONFC2E" }
   },
   {
     id: "vz-308-ra1",
@@ -2157,7 +2157,7 @@ export const absperrtechnikProducts: Product[] = [
       "Inklusive": "1× Fußplatte K1 TL",
       "Warnleuchte": "Optional erhältlich",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "ZLRA2E" }
   },
   {
     id: "blockbatterie-6v",
@@ -2172,7 +2172,7 @@ export const absperrtechnikProducts: Product[] = [
       "Packungsinhalt": "1 Stück",
       "Hinweis": "Verkaufsartikel",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "T17EOU" }
   },
   {
     id: "warnbarke-ra1",
@@ -2707,7 +2707,7 @@ export const spezialeffekteProducts: Product[] = [
       "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
       "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "9OU48Z" }
   },
   {
     id: "tcm-fx-turbo-co2-jet",
@@ -3182,7 +3182,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Spülmaschinenfest": "Ja",
       "Reinigungspauschale": "3,90 € (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "UK1Q7C" }
+    rentwareCode: { krefeld: "RH1TFT" }
   },
   {
     id: "kaffeetasse-12er",
