@@ -1091,7 +1091,8 @@ export default function AdminDashboard() {
                     </>
                   ) : null}
                   {(() => {
-                    const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);
+                    const profileId = selectedReservation?.b2b_profile_id || invoiceFromOffer?.b2b_profile_id;
+                    const profile = profileId ? profiles.find((p) => p.id === profileId) : null;
                     return profile?.tax_id && profile.vat_id_verified ? (
                       <Badge variant="outline" className="text-primary">
                         <Shield className="h-3 w-3 mr-1" />Reverse-Charge
