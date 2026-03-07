@@ -1562,9 +1562,14 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "rasenwalze",
     name: "Rasenwalze",
-    description: "Walze für Rasenpflege und -anlage",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Robuste Rasenwalze zum Einebnen und Verdichten von Rasenflächen nach Aussaat oder Verlegung von Rollrasen.",
+    image: "/products/gartenpflege/rasenwalze-freisteller.jpg",
+    images: ["/products/gartenpflege/rasenwalze-freisteller.jpg", "/products/gartenpflege/rasenwalze-anwendung.jpg"],
+    specifications: {
+      "Typ": "Hand-Rasenwalze",
+      "Befüllung": "Wasser oder Sand",
+      "Einsatz": "Rasenanlage, Rollrasen, Nachsaat",
+    },
     category: "rasenwalze",
     rentwareCode: { krefeld: "CH522H" }
   },

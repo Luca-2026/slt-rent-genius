@@ -666,8 +666,14 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-rasenwalze",
     name: "Rasenwalze",
-    description: "Für ebene Rasenflächen nach der Aussaat.",
-    image: "/placeholder.svg",
+    description: "Robuste Rasenwalze zum Einebnen und Verdichten von Rasenflächen nach Aussaat oder Verlegung von Rollrasen.",
+    image: "/products/gartenpflege/rasenwalze-freisteller.jpg",
+    images: ["/products/gartenpflege/rasenwalze-freisteller.jpg", "/products/gartenpflege/rasenwalze-anwendung.jpg"],
+    specifications: {
+      "Typ": "Hand-Rasenwalze",
+      "Befüllung": "Wasser oder Sand",
+      "Einsatz": "Rasenanlage, Rollrasen, Nachsaat",
+    },
     rentwareCode: { bonn: "S3ATTY" },
   },
 ];
