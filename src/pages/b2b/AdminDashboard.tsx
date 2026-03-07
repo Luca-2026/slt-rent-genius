@@ -889,34 +889,18 @@ export default function AdminDashboard() {
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
-              if (matchingReservation) {
-                setSelectedReservation(matchingReservation);
-                setInvoiceFromOffer(offer);
-                setInvoiceDialogOpen(true);
-              } else {
-                toast({
-                  title: "Fehler",
-                  description: "Keine zugehörige Reservierung gefunden.",
-                  variant: "destructive",
-                });
-              }
+              setSelectedReservation(matchingReservation);
+              setInvoiceFromOffer(offer);
+              setInvoiceDialogOpen(true);
             }}
             onCreateProformaInvoice={(offer) => {
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
-              if (matchingReservation) {
-                setSelectedReservation(matchingReservation);
-                setInvoiceFromOffer(offer);
-                setProformaMode(true);
-                setInvoiceDialogOpen(true);
-              } else {
-                toast({
-                  title: "Fehler",
-                  description: "Keine zugehörige Reservierung gefunden.",
-                  variant: "destructive",
-                });
-              }
+              setSelectedReservation(matchingReservation);
+              setInvoiceFromOffer(offer);
+              setProformaMode(true);
+              setInvoiceDialogOpen(true);
             }}
             onCreateDeliveryNote={(offer) => {
               setDeliveryNoteOffer(offer);
