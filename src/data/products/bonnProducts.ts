@@ -1128,7 +1128,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "NP1PGC" },
   },
   {
     id: "bonn-rollgeruest-krause-5-4m",
@@ -1152,7 +1152,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "ILQNCT" },
   },
   {
     id: "bonn-rollgeruest-krause-6-4m",
@@ -1176,7 +1176,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "XAC9I4" },
   },
   {
     id: "bonn-rollgeruest-krause-7-4m",
@@ -1200,7 +1200,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "LYF6UT" },
   },
   {
     id: "bonn-rollgeruest-krause-8-4m",
@@ -1225,7 +1225,7 @@ export const bonnLeiternProducts = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "KZJ688" },
   },
   {
     id: "bonn-hailo-l60-6",

@@ -3825,7 +3825,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_44" }
+    rentwareCode: { krefeld: "B9WD7T" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-5-4m",
@@ -3847,7 +3847,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_54" }
+    rentwareCode: { krefeld: "R5PHJN" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-6-4m",
@@ -3869,7 +3869,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_64" }
+    rentwareCode: { krefeld: "BNHOAY" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-9-4m",
@@ -4059,7 +4059,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_84" }
+    rentwareCode: { krefeld: "Z1NE9X" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-7-4m",
@@ -4081,7 +4081,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_74" }
+    rentwareCode: { krefeld: "IYWH71" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-10-4m",
@@ -4103,7 +4103,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_10" }
+    rentwareCode: { krefeld: "1VVWHI" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-11-4m",
@@ -4125,7 +4125,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_11" }
+    rentwareCode: { krefeld: "J5A49M" }
   },
   // --- Gerüstteile ---
   {
