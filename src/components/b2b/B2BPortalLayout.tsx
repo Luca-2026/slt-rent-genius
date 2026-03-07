@@ -41,6 +41,19 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Prevent search engines from indexing B2B portal pages
+  useEffect(() => {
+    let metaTag = document.querySelector('meta[name="robots"][data-b2b]') as HTMLMetaElement;
+    if (!metaTag) {
+      metaTag = document.createElement("meta");
+      metaTag.name = "robots";
+      metaTag.content = "noindex, nofollow";
+      metaTag.setAttribute("data-b2b", "true");
+      document.head.appendChild(metaTag);
+    }
+    return () => { metaTag?.remove(); };
+  }, []);
+
   useEffect(() => {
     if (!loading && !user) {
       navigate("/b2b/login");
