@@ -921,14 +921,22 @@ async function generateOfferPdf(data: {
   y -= 35;
 
   // ── ADDITIONAL SERVICES ──
-  if (data.additionalServices && data.additionalServices.length > 0) {
+  if (data.servicesWithPrices && data.servicesWithPrices.length > 0) {
     ensureSpace(50);
     drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
-    for (const svc of data.additionalServices) {
-      ensureSpace(20);
+    for (const svc of data.servicesWithPrices) {
+      ensureSpace(24);
+      const priceInfo = svc.amount > 0
+        ? " (" + svc.pricePercent + "% = " + fmtCurrency(svc.amount) + ")"
+        : " (inklusive)";
       drawText("- " + safe(svc.name), margin + 8, y, { s: 9, c: gray });
+      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 9, c: gray });
       y -= 12;
+      if (svc.description) {
+        drawText("  " + safe(svc.description).substring(0, 80), margin + 14, y, { s: 7, c: lightGray });
+        y -= 12;
+      }
     }
     y -= 8;
   }
