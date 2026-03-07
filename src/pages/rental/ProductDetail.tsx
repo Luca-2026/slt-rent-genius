@@ -43,7 +43,22 @@ export default function ProductDetail() {
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
   const category = useTranslatedCategory(rawCategory) || rawCategory;
-  const rawProduct = useMemo(() => getProductById(productId || ""), [productId]);
+  const rawProduct = useMemo(() => {
+    // First try to find the product in the specific location to get correct rentwareCode
+    if (location && categoryId) {
+      const locationProducts = getProductsForLocationCategory(location.id, categoryId);
+      const found = locationProducts.find((p) => p.id === productId);
+      if (found) return found;
+    }
+    // Also search all categories for this location
+    if (location) {
+      const allLocationProducts = Object.values(location.products || {}).flat() as Product[];
+      const found = allLocationProducts.find((p) => p.id === productId);
+      if (found) return found;
+    }
+    // Fallback to global search
+    return getProductById(productId || "");
+  }, [productId, location, categoryId]);
   const product = useTranslatedProduct(rawProduct);
 
   const rawRelatedProducts = useMemo(() => {
