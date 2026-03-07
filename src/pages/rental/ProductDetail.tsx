@@ -19,6 +19,7 @@ import {
   getCategoryById,
   getProductById,
   getProductsForLocationCategory,
+  getAllProductsForLocation,
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
