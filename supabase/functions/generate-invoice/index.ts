@@ -196,7 +196,7 @@ Deno.serve(async (req: Request) => {
           image_url: item.image_url || fallbackImageUrl || null,
         };
       });
-    } else {
+    } else if (reservation) {
       // Auto-generate items: check for grouped rentals (rental_group_id)
       let allReservations = [reservation];
 
@@ -233,6 +233,11 @@ Deno.serve(async (req: Request) => {
           rental_end: res.end_date,
           image_url: fallbackImageUrl || null,
         };
+      });
+    } else {
+      return new Response(JSON.stringify({ error: "custom_items required when no reservation_id is provided" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
