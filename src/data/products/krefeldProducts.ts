@@ -2172,7 +2172,7 @@ export const absperrtechnikProducts: Product[] = [
       "Packungsinhalt": "1 Stück",
       "Hinweis": "Verkaufsartikel",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "T17EOU" }
   },
   {
     id: "warnbarke-ra1",
