@@ -756,12 +756,9 @@ async function generateOfferPdf(data: {
   drawText("ANGEBOT", margin, y, { f: fontBold, s: 18, c: blue });
   y -= 22;
   drawText(data.offerNumber, margin, y, { f: fontBold, s: 11 });
-
-  // ── SENDER LINE ──
-  drawText(safe(SLT_COMPANY.name) + " | " + safe(SLT_COMPANY.street) + " | " + safe(SLT_COMPANY.city), margin, y, { s: 7, c: lightGray });
-  y -= 4;
-  page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.8, 0.8, 0.8) });
-  y -= 20;
+  const offerDateStr = `Datum: ${fmtDate(data.offerDate)}`;
+  drawTextRight(offerDateStr, pageWidth - margin, y, { s: 10 });
+  y -= 30;
 
   // ── ADDRESS BLOCK ──
   const addrY = y;
