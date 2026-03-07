@@ -37,7 +37,7 @@ export function RentwarePositioner() {
         styleTag.textContent = `
           :host {
             position: fixed !important;
-            top: 52px !important;
+            top: 40px !important;
             right: 16px !important;
             bottom: unset !important;
             left: unset !important;
