@@ -1061,6 +1061,31 @@ export const bonnStromProducts = [
 // ==================== LEITERN & GERÜSTE ====================
 export const bonnLeiternProducts = [
   {
+    id: "bonn-rollgeruest-krause-9-4m",
+    name: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 9,4 m Arbeitshöhe (8,4 m Arbeitshöhe, 7,5 m Gerüsthöhe). TÜV-geprüft nach DIN EN 1004-1. Das GuardMatic-System gewährleistet einen sicheren Aufbau mit 6-Punkt-Fixierung für maximale Stabilität.",
+    detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nDurch die Befestigung des Geländerrahmens GuardMatic-System vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDie Integration der Diagonalen in das GuardMatic-System gewährleistet eine einfache und sichere Montage. Für Transport oder Lagerung kann der Geländerrahmen platzsparend zusammengefaltet werden.\n\nDie 6-Punkt-Fixierung des GuardMatic-Systems sorgt für maximale Stabilität in der Höhe. Das einzigartige selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nDie innovative Form der Diagonalen bietet eine maximale Nutzfläche auf der Belagbühne und stört in keiner Weise.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von über 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
+    image: imgRollgeruestKrause94m1,
+    images: [imgRollgeruestKrause94m1, imgRollgeruestKrause94m2, imgRollgeruestKrause94m3],
+    category: "rollgeruest",
+    specifications: {
+      "Arbeitshöhe": "8,4 m",
+      "Gerüsthöhe": "7,5 m",
+      "Standhöhe": "6,4 m",
+      "Arbeitsfläche": "2,00 × 0,75 m",
+      "Standfläche": "über 1,5 m²",
+      "Feldlängen": "2,00 m",
+      "Gerüstfeldbreite": "0,75 m",
+      "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
+      "Belastbarkeit": "200 kg/m² (Gerüstgruppe 3)",
+      "Norm": "DIN EN 1004-1, TÜV-geprüft",
+      "Material": "Aluminium (Traverse aus Stahl)",
+      "Verriegelung": "Selbstsicherndes KRAUSE-System",
+      "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
+    },
+    rentwareCode: { bonn: "GTQBCT" },
+  },
+  {
     id: "bonn-hailo-l60-6",
     name: "Hailo L60 – 6 Stufen",
     description: "Alu-Stehleiter 6 Stufen, standfest und leicht.",
