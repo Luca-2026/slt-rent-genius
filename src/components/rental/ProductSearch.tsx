@@ -128,7 +128,7 @@ export function ProductSearch({
                 <>
                   <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                     {result.product.image ? (
-                      <img src={result.product.image} alt="" className="w-full h-full object-cover" />
+                      <img src={result.product.image} alt={result.product.name} className="w-full h-full object-cover" />
                     ) : (
                       <Search className="w-4 h-4 text-muted-foreground" />
                     )}
