@@ -314,8 +314,8 @@ export const bonnErdbewegungProducts = [
     description: "Kompakter Raupendumper für schwieriges Gelände.",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
-    rentwareCode: { bonn: "7Y1UTP" },
     driveType: "diesel",
+    onRequest: true,
   },
   {
     id: "bonn-knickdumper-kde550",
