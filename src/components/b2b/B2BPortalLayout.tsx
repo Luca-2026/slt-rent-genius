@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
