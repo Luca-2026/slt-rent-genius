@@ -31,5 +31,7 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.public-chat]
     verify_jwt = false
+  [functions.resend-confirmation]
+    verify_jwt = false
   [functions.sitemap]
     verify_jwt = false
