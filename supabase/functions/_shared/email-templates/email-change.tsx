@@ -9,6 +9,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Text,
@@ -27,33 +28,41 @@ export const EmailChangeEmail = ({
   newEmail,
   confirmationUrl,
 }: EmailChangeEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="de" dir="ltr">
     <Head />
-    <Preview>Confirm your email change for {siteName}</Preview>
+    <Preview>E-Mail-Adresse ändern – SLT Rental</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email change</Heading>
-        <Text style={text}>
-          You requested to change your email address for {siteName} from{' '}
-          <Link href={`mailto:${email}`} style={link}>
-            {email}
-          </Link>{' '}
-          to{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>
-            {newEmail}
-          </Link>
-          .
-        </Text>
-        <Text style={text}>
-          Click the button below to confirm this change:
-        </Text>
-        <Button style={button} href={confirmationUrl}>
-          Confirm Email Change
-        </Button>
-        <Text style={footer}>
-          If you didn't request this change, please secure your account
-          immediately.
-        </Text>
+        <div style={header}>
+          <Img
+            src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo.png"
+            alt="SLT Rental"
+            height="48"
+            style={{ margin: '0 auto' }}
+          />
+        </div>
+        <div style={content}>
+          <Heading style={h1}>E-Mail-Adresse ändern</Heading>
+          <Text style={text}>
+            Du hast angefordert, deine E-Mail-Adresse für das SLT Rental B2B-Portal von{' '}
+            <Link href={`mailto:${email}`} style={link}>{email}</Link>{' '}
+            zu{' '}
+            <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>{' '}
+            zu ändern.
+          </Text>
+          <Text style={text}>
+            Klicke auf den folgenden Button, um die Änderung zu bestätigen:
+          </Text>
+          <Button style={button} href={confirmationUrl}>
+            Änderung bestätigen
+          </Button>
+          <Text style={footer}>
+            Falls du diese Änderung nicht angefordert hast, sichere bitte umgehend dein Konto.
+          </Text>
+        </div>
+        <div style={footerBar}>
+          SLT Technology Group GmbH & Co. KG · Anrather Straße 291 · 47807 Krefeld
+        </div>
       </Container>
     </Body>
   </Html>
@@ -61,27 +70,43 @@ export const EmailChangeEmail = ({
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Montserrat', Arial, sans-serif" }
+const container = { maxWidth: '600px', margin: '0 auto', backgroundColor: '#ffffff' }
+const header = {
+  backgroundColor: '#ffffff',
+  padding: '24px 32px',
+  textAlign: 'center' as const,
+  borderBottom: '3px solid #ff8e02',
+}
+const content = { padding: '32px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#393d46',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  color: '#595959',
+  lineHeight: '1.6',
+  margin: '0 0 20px',
 }
-const link = { color: 'inherit', textDecoration: 'underline' }
+const link = { color: '#00507d', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#00507d',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
+  borderRadius: '6px',
+  padding: '12px 24px',
   textDecoration: 'none',
+  display: 'inline-block',
+  margin: '0 0 24px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '20px 0 0' }
+const footerBar = {
+  backgroundColor: '#f9f9f9',
+  padding: '16px 32px',
+  textAlign: 'center' as const,
+  fontSize: '12px',
+  color: '#999999',
+}

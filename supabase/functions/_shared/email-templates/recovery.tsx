@@ -9,6 +9,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -22,23 +23,34 @@ export const RecoveryEmail = ({
   siteName,
   confirmationUrl,
 }: RecoveryEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="de" dir="ltr">
     <Head />
-    <Preview>Reset your password for {siteName}</Preview>
+    <Preview>Passwort zurücksetzen – SLT Rental</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Reset your password</Heading>
-        <Text style={text}>
-          We received a request to reset your password for {siteName}. Click
-          the button below to choose a new password.
-        </Text>
-        <Button style={button} href={confirmationUrl}>
-          Reset Password
-        </Button>
-        <Text style={footer}>
-          If you didn't request a password reset, you can safely ignore this
-          email. Your password will not be changed.
-        </Text>
+        <div style={header}>
+          <Img
+            src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo.png"
+            alt="SLT Rental"
+            height="48"
+            style={{ margin: '0 auto' }}
+          />
+        </div>
+        <div style={content}>
+          <Heading style={h1}>Passwort zurücksetzen</Heading>
+          <Text style={text}>
+            Du hast angefordert, dein Passwort für das SLT Rental B2B-Portal zurückzusetzen. Klicke auf den folgenden Button, um ein neues Passwort zu wählen.
+          </Text>
+          <Button style={button} href={confirmationUrl}>
+            Neues Passwort wählen
+          </Button>
+          <Text style={footer}>
+            Falls du kein neues Passwort angefordert hast, kannst du diese E-Mail ignorieren. Dein Passwort bleibt unverändert.
+          </Text>
+        </div>
+        <div style={footerBar}>
+          SLT Technology Group GmbH & Co. KG · Anrather Straße 291 · 47807 Krefeld
+        </div>
       </Container>
     </Body>
   </Html>
@@ -46,26 +58,42 @@ export const RecoveryEmail = ({
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Montserrat', Arial, sans-serif" }
+const container = { maxWidth: '600px', margin: '0 auto', backgroundColor: '#ffffff' }
+const header = {
+  backgroundColor: '#ffffff',
+  padding: '24px 32px',
+  textAlign: 'center' as const,
+  borderBottom: '3px solid #ff8e02',
+}
+const content = { padding: '32px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#393d46',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  color: '#595959',
+  lineHeight: '1.6',
+  margin: '0 0 20px',
 }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#00507d',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
+  borderRadius: '6px',
+  padding: '12px 24px',
   textDecoration: 'none',
+  display: 'inline-block',
+  margin: '0 0 24px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '20px 0 0' }
+const footerBar = {
+  backgroundColor: '#f9f9f9',
+  padding: '16px 32px',
+  textAlign: 'center' as const,
+  fontSize: '12px',
+  color: '#999999',
+}
