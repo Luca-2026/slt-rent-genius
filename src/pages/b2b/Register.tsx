@@ -113,18 +113,13 @@ export default function B2BRegister() {
       const { error: signUpError, data: signUpData } = await signUp(email, password);
       if (signUpError) throw signUpError;
 
-      // Check if user was actually created
-      // When email confirmation is required, there's no session but user data is returned
       const user = signUpData?.user;
       
       if (!user) {
-        throw new Error(
-          "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück."
-        );
+        throw new Error("Benutzer konnte nicht erstellt werden. Bitte versuche es erneut.");
       }
 
-      // If the user has no identities, it means the email is already taken
-      // (Supabase returns a fake user object with empty identities for existing emails)
+      // If the user has no identities, the email is already taken
       if (user.identities && user.identities.length === 0) {
         throw new Error(
           "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück."
@@ -132,59 +127,71 @@ export default function B2BRegister() {
       }
 
       const userId = user.id;
-      
-      // Check if we have a session (auto-confirm on) or need email verification
       const hasSession = !!signUpData?.session;
 
-      // 2. Upload document
-      const fileExt = documentFile.name.split(".").pop();
-      const fileName = `${userId}/${Date.now()}.${fileExt}`;
-      
-      const { error: uploadError } = await supabase.storage
-        .from("b2b-documents")
-        .upload(fileName, documentFile);
+      if (hasSession) {
+        // Session available — upload document and create profile directly
+        const fileExt = documentFile.name.split(".").pop();
+        const fileName = `${userId}/${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from("b2b-documents")
+          .upload(fileName, documentFile);
 
-      if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("b2b-documents")
-        .getPublicUrl(fileName);
+        const { data: { publicUrl } } = supabase.storage
+          .from("b2b-documents")
+          .getPublicUrl(fileName);
 
-      // 3. Determine nearest location based on PLZ
-      const assignedLocation = getNearestLocation(postalCode);
+        const assignedLocation = getNearestLocation(postalCode);
 
-      // 4. Create B2B profile
-      const { error: profileError } = await supabase.from("b2b_profiles").insert({
-        user_id: userId,
-        company_name: companyName,
-        legal_form: legalForm,
-        tax_id: taxId,
-        trade_register_number: tradeRegisterNumber,
-        contact_first_name: firstName,
-        contact_last_name: lastName,
-        contact_position: position,
-        contact_phone: phone,
-        contact_email: email,
-        billing_email: billingEmail || null,
-        street: street,
-        house_number: houseNumber,
-        postal_code: postalCode,
-        city: city,
-        assigned_location: assignedLocation,
-        document_url: publicUrl,
-        document_filename: documentFile.name,
-        postal_invoice: postalInvoice,
-        status: "pending",
-      });
+        const { error: profileError } = await supabase.from("b2b_profiles").insert({
+          user_id: userId,
+          company_name: companyName,
+          legal_form: legalForm,
+          tax_id: taxId,
+          trade_register_number: tradeRegisterNumber,
+          contact_first_name: firstName,
+          contact_last_name: lastName,
+          contact_position: position,
+          contact_phone: phone,
+          contact_email: email,
+          billing_email: billingEmail || null,
+          street: street,
+          house_number: houseNumber,
+          postal_code: postalCode,
+          city: city,
+          assigned_location: assignedLocation,
+          document_url: publicUrl,
+          document_filename: documentFile.name,
+          postal_invoice: postalInvoice,
+          status: "pending",
+        });
 
-      if (profileError) throw profileError;
+        if (profileError) throw profileError;
 
-      toast({
-        title: "Registrierung erfolgreich!",
-        description: "Dein Antrag wird geprüft. Du erhältst eine E-Mail, sobald dein Konto freigeschaltet wurde.",
-      });
+        toast({
+          title: "Registrierung erfolgreich!",
+          description: "Dein Antrag wird geprüft. Du erhältst eine E-Mail, sobald dein Konto freigeschaltet wurde.",
+        });
+        navigate("/b2b/dashboard");
+      } else {
+        // No session — email confirmation required
+        // Store registration data in localStorage so we can complete profile after confirmation
+        localStorage.setItem("b2b_pending_registration", JSON.stringify({
+          companyName, legalForm, taxId, tradeRegisterNumber,
+          firstName, lastName, position, phone, email,
+          billingEmail, street, houseNumber, postalCode, city,
+          postalInvoice,
+        }));
 
-      navigate("/b2b/dashboard");
+        toast({
+          title: "Bestätigungs-E-Mail gesendet!",
+          description: "Bitte überprüfe dein E-Mail-Postfach und klicke auf den Bestätigungslink, um die Registrierung abzuschließen.",
+        });
+        navigate("/b2b/login");
+      }
     } catch (error: any) {
       console.error("Registration error:", error);
       
