@@ -192,12 +192,21 @@
 
 /* =============================================
    Rentware cart widget (rtr-checkout)
-   Positioned top-right, aligned with the header.
+   Positioned top-right, below the marquee bar.
    ============================================= */
 
 :root {
-  --rentware-cart-view-position-top: 44px;
-  --rentware-cart-view-position-right: 16px;
-  --rentware-cart-view-position-bottom: unset;
-  --rentware-cart-view-position-left: unset;
+  --rentware-cart-view-position-top: 56px !important;
+  --rentware-cart-view-position-right: 16px !important;
+  --rentware-cart-view-position-bottom: unset !important;
+  --rentware-cart-view-position-left: unset !important;
+}
+
+rtr-checkout {
+  position: fixed !important;
+  top: 56px !important;
+  right: 16px !important;
+  bottom: unset !important;
+  left: unset !important;
+  z-index: 51 !important;
 }
