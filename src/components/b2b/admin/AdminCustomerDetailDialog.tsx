@@ -21,8 +21,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
   Building2, CalendarDays, Clock, CreditCard, Edit, Eye, KeyRound, Mail, Package,
-  Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp,
+  Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp, Users,
 } from "lucide-react";
+import { AdminAuthorizedPersonsTab } from "./AdminAuthorizedPersonsTab";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -487,9 +488,12 @@ export function AdminCustomerDetailDialog({
 
         {/* ─── Tabs ─────────────────────────────────────────── */}
         <Tabs defaultValue="discounts" className="mt-2">
-          <TabsList className="grid w-full grid-cols-3 h-10">
+          <TabsList className="grid w-full grid-cols-4 h-10">
             <TabsTrigger value="discounts" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Percent className="h-3.5 w-3.5 mr-1" /> Rabatte
+            </TabsTrigger>
+            <TabsTrigger value="persons" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Users className="h-3.5 w-3.5 mr-1" /> Mitarbeiter
             </TabsTrigger>
             <TabsTrigger value="rentals" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Package className="h-3.5 w-3.5 mr-1" /> Mietvorgänge
@@ -549,6 +553,11 @@ export function AdminCustomerDetailDialog({
                 </Button>
               </>
             )}
+          </TabsContent>
+
+          {/* ── Authorized Persons Tab ─────────────────────── */}
+          <TabsContent value="persons">
+            <AdminAuthorizedPersonsTab profileId={profile.id} companyName={profile.company_name} />
           </TabsContent>
 
           {/* ── Rentals Tab ────────────────────────────────── */}

@@ -18,6 +18,14 @@ interface B2BProfile {
   credit_limit_requested_at: string | null;
 }
 
+interface AuthorizedPersonInfo {
+  b2b_profile_id: string;
+  first_name: string;
+  last_name: string;
+  max_rental_value: number;
+  is_active: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -25,6 +33,8 @@ interface AuthContextType {
   b2bProfile: B2BProfile | null;
   isAdmin: boolean;
   isApprovedB2B: boolean;
+  isAuthorizedPerson: boolean;
+  authorizedPersonInfo: AuthorizedPersonInfo | null;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string) => Promise<{ error: Error | null; data: any }>;
   signOut: () => Promise<void>;
@@ -39,15 +49,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [b2bProfile, setB2BProfile] = useState<B2BProfile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
 
   const fetchB2BProfile = async (userId: string) => {
+    // First try direct profile ownership
     const { data } = await supabase
       .from("b2b_profiles")
       .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
       .eq("user_id", userId)
       .single();
     
-    setB2BProfile(data as B2BProfile | null);
+    if (data) {
+      setB2BProfile(data as B2BProfile);
+      setAuthorizedPersonInfo(null);
+      return;
+    }
+
+    // If no direct profile, check if user is an authorized person
+    const { data: apData } = await supabase
+      .from("b2b_authorized_persons")
+      .select("b2b_profile_id, first_name, last_name, max_rental_value, is_active")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .single();
+
+    if (apData) {
+      setAuthorizedPersonInfo(apData as AuthorizedPersonInfo);
+      // Fetch the company's profile
+      const { data: companyProfile } = await supabase
+        .from("b2b_profiles")
+        .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
+        .eq("id", apData.b2b_profile_id)
+        .single();
+      setB2BProfile(companyProfile as B2BProfile | null);
+    } else {
+      setB2BProfile(null);
+      setAuthorizedPersonInfo(null);
+    }
   };
 
   const checkAdminRole = async (userId: string) => {
@@ -68,14 +106,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Defer Supabase calls with setTimeout
         if (session?.user) {
           setTimeout(() => {
             fetchB2BProfile(session.user.id);
@@ -84,11 +120,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setB2BProfile(null);
           setIsAdmin(false);
+          setAuthorizedPersonInfo(null);
         }
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -125,17 +161,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    // Clear state immediately before async call to prevent stale UI
     setUser(null);
     setSession(null);
     setB2BProfile(null);
     setIsAdmin(false);
+    setAuthorizedPersonInfo(null);
     await supabase.auth.signOut();
   };
 
   const isApprovedB2B = b2bProfile?.status === "approved";
+  const isAuthorizedPerson = !!authorizedPersonInfo;
 
-  // Complete pending B2B registration after email confirmation
   useCompleteRegistration(user, refreshB2BProfile);
 
   return (
@@ -147,6 +183,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         b2bProfile,
         isAdmin,
         isApprovedB2B,
+        isAuthorizedPerson,
+        authorizedPersonInfo,
         signIn,
         signUp,
         signOut,

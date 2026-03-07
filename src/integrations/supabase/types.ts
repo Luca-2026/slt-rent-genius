@@ -21,6 +21,7 @@ export type Database = {
           email: string | null
           first_name: string
           id: string
+          invited_at: string | null
           is_active: boolean
           last_name: string
           max_rental_value: number
@@ -28,6 +29,7 @@ export type Database = {
           phone: string | null
           position: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           b2b_profile_id: string
@@ -35,6 +37,7 @@ export type Database = {
           email?: string | null
           first_name: string
           id?: string
+          invited_at?: string | null
           is_active?: boolean
           last_name: string
           max_rental_value?: number
@@ -42,6 +45,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           b2b_profile_id?: string
@@ -49,6 +53,7 @@ export type Database = {
           email?: string | null
           first_name?: string
           id?: string
+          invited_at?: string | null
           is_active?: boolean
           last_name?: string
           max_rental_value?: number
@@ -56,6 +61,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -1467,6 +1473,10 @@ export type Database = {
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
       generate_return_protocol_number: { Args: never; Returns: string }
+      get_authorized_person_limit: {
+        Args: { _user_id: string }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1475,6 +1485,7 @@ export type Database = {
         Returns: boolean
       }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
+      is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       update_b2b_profile_with_pending: {
         Args: {
           _assigned_location: string
