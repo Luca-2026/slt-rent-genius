@@ -112,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    const redirectUrl = "https://www.slt-rental.de/";
     
     const { data, error } = await supabase.auth.signUp({
       email,

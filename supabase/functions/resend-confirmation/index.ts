@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
       type: "signup",
       email,
       options: {
-        redirectTo: `${Deno.env.get("SUPABASE_URL")?.replace('.supabase.co', '.lovableproject.com') || 'https://slt-rent-genius.lovable.app'}/`,
+        redirectTo: "https://www.slt-rental.de/",
       },
     });
 
