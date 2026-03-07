@@ -531,7 +531,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
-    rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR" } 
+    rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
 
   // === AUTOTRANSPORT ===
@@ -590,7 +590,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "plattform",
     tags: ["gebremst", "zweiachser"], 
-    rentwareCode: { krefeld: "BOLUXJ" } 
+    rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
   },
 
   // === LAUBGITTER ===
@@ -627,7 +627,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "motorrad",
     tags: ["motorrad", "ungebremst", "einachser"], 
-    rentwareCode: { krefeld: "9JL36T", bonn: "BJOMV6" } 
+    rentwareCode: { krefeld: "9JL36T", bonn: "BJOMV6", muelheim: "NTIF8C" } 
   },
   { 
     id: "motorrad-1500", 
@@ -686,7 +686,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 1000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "WNE69F" },
+    rentwareCode: { krefeld: "WNE69F", muelheim: "G63XIE" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
@@ -701,7 +701,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 1800,
     category: "minibagger",
     tags: ["minibagger", "diesel", "1500-2500", "maschine"],
-    rentwareCode: { krefeld: "BG4ZS8" },
+    rentwareCode: { krefeld: "BG4ZS8", muelheim: "HHFYMQ" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
@@ -800,7 +800,37 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 3000,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { krefeld: "PMJJCT" },
+    rentwareCode: { krefeld: "PMJJCT", muelheim: "ZC8JGH" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
+  },
+  {
+    id: "bobcat-l28-knicklader",
+    name: "Bobcat L28 Knicklader",
+    description: "Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen",
+    image: "/placeholder.svg",
+    images: ["/placeholder.svg"],
+    weightKg: 2800,
+    category: "radlader",
+    tags: ["radlader", "diesel", "ab-2500", "maschine"],
+    rentwareCode: { muelheim: "9K1LEX" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
+  },
+  {
+    id: "radlader-4t",
+    name: "4t Radlader",
+    description: "Einsatzgewicht: 4.000 kg | Dieselmotor | Schaufel inkl.",
+    image: "/placeholder.svg",
+    images: ["/placeholder.svg"],
+    weightKg: 4000,
+    category: "radlader",
+    tags: ["radlader", "diesel", "ab-2500", "maschine"],
+    rentwareCode: { muelheim: "M19UC7" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
@@ -815,7 +845,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 500,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "GH8W6W" },
+    rentwareCode: { krefeld: "GH8W6W", muelheim: "LKXBX6" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag (Laufzeit ca. 8–10 h).",
     ],
