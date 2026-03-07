@@ -91,6 +91,22 @@ export default function LocalAreaPage() {
 
   const managerRole = t("rental.locationManager");
 
+  const localFaqs = [
+    { question: `Wo kann ich in ${area.name} Baumaschinen mieten?`, answer: `Bei SLT Rental – Ihr nächster Standort ist in ${location?.name || area.name}, nur ${area.distance} km entfernt. Wir bieten Minibagger, Anhänger, Werkzeuge und vieles mehr.` },
+    { question: `Liefert SLT Rental auch nach ${area.name}?`, answer: `Ja! Wir liefern Equipment direkt auf Ihre Baustelle in ${area.name} und Umgebung. Die Lieferkosten können Sie bequem online berechnen.` },
+    { question: `Kann ich Geräte auch am Wochenende in ${area.name} mieten?`, answer: `Anhänger sind 24/7 per SMS-Code verfügbar. Für andere Geräte kontaktieren Sie uns – wir finden eine Lösung.` },
+  ];
+
+  const jsonLdArray = [
+    SLT_LOCATION_JSONLD(area.locationId),
+    SLT_BREADCRUMB_JSONLD([
+      { name: "Home", url: "/" },
+      { name: "Standorte", url: "/standorte" },
+      { name: area.name, url: `/mieten-in/${area.slug}` },
+    ]),
+    SLT_FAQ_JSONLD(localFaqs),
+  ];
+
   return (
     <Layout>
       <SEO
@@ -98,11 +114,7 @@ export default function LocalAreaPage() {
         description={area.description}
         canonical={`/mieten-in/${area.slug}`}
         keywords={area.keywords.join(", ")}
-        jsonLd={SLT_BREADCRUMB_JSONLD([
-          { name: "Home", url: "/" },
-          { name: "Standorte", url: "/standorte" },
-          { name: area.name, url: `/mieten-in/${area.slug}` },
-        ])}
+        jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
       />
       {/* Hero */}
       <section className="bg-primary py-12 lg:py-20">
