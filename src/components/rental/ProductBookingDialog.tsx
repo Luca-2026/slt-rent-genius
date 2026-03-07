@@ -47,23 +47,19 @@ export function ProductBookingDialog({
   product, 
   location, 
   isOpen, 
-  onClose 
+  onClose,
+  categoryId,
 }: ProductBookingDialogProps) {
   const articleId = product?.rentwareCode?.[location?.id || ""];
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
-  const [form, setForm] = useState<InquiryForm>({
-    name: "",
-    email: "",
-    phone: "",
-    startDate: "",
-    endDate: "",
-    message: "",
-    deliveryRequested: false,
-    deliveryStreet: "",
-    deliveryPostalCode: "",
-    deliveryCity: "",
-  });
+  const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
+  const defaultForm: InquiryForm = {
+    name: "", email: "", phone: "", startDate: "", endDate: "", message: "",
+    deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
+    setupServiceRequested: false,
+  };
+  const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
