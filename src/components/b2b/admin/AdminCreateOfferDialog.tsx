@@ -277,6 +277,7 @@ export function AdminCreateOfferDialog({
             id: s.id,
             name: s.name,
             description: s.description,
+            pricePercent: s.pricePercent,
           }))
         : undefined;
 
