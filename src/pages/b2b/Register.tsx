@@ -199,6 +199,20 @@ export default function B2BRegister() {
           postalInvoice,
         }));
 
+        // Notify b2b@slt-rental.de about new registration (even before email confirmation)
+        const assignedLocation = getNearestLocation(postalCode);
+        try {
+          await supabase.functions.invoke("notify-b2b-registration", {
+            body: {
+              companyName, legalForm, contactName: `${firstName} ${lastName}`,
+              contactEmail: email, contactPhone: phone,
+              city, postalCode, assignedLocation, taxId,
+            },
+          });
+        } catch (notifyErr) {
+          console.error("Notification failed (non-blocking):", notifyErr);
+        }
+
         toast({
           title: "Bestätigungs-E-Mail gesendet!",
           description: "Bitte überprüfe dein E-Mail-Postfach und klicke auf den Bestätigungslink, um die Registrierung abzuschließen.",
