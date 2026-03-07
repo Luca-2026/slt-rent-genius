@@ -19,5 +19,6 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 
-# Sitemap
+# Sitemaps
 Sitemap: https://www.slt-rental.de/sitemap.xml
+Sitemap: https://ccmxitxgyznethanixlg.supabase.co/functions/v1/sitemap
