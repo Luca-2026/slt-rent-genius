@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck } from "lucide-react";
+import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Product, LocationData } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +20,7 @@ interface ProductBookingDialogProps {
   location: LocationData | null;
   isOpen: boolean;
   onClose: () => void;
+  categoryId?: string;
 }
 
 interface InquiryForm {
@@ -33,29 +34,32 @@ interface InquiryForm {
   deliveryStreet: string;
   deliveryPostalCode: string;
   deliveryCity: string;
+  setupServiceRequested: boolean;
 }
+
+// Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
+const SETUP_SERVICE_CATEGORIES = [
+  'beleuchtung', 'beschallung', 'moebel-zelte', 'buehne', 'traversen-rigging',
+  'spezialeffekte', 'geschirr-glaeser-besteck', 'huepfburgen', 'kommunikation',
+];
 
 export function ProductBookingDialog({ 
   product, 
   location, 
   isOpen, 
-  onClose 
+  onClose,
+  categoryId,
 }: ProductBookingDialogProps) {
   const articleId = product?.rentwareCode?.[location?.id || ""];
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
-  const [form, setForm] = useState<InquiryForm>({
-    name: "",
-    email: "",
-    phone: "",
-    startDate: "",
-    endDate: "",
-    message: "",
-    deliveryRequested: false,
-    deliveryStreet: "",
-    deliveryPostalCode: "",
-    deliveryCity: "",
-  });
+  const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
+  const defaultForm: InquiryForm = {
+    name: "", email: "", phone: "", startDate: "", endDate: "", message: "",
+    deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
+    setupServiceRequested: false,
+  };
+  const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -97,7 +101,7 @@ export function ProductBookingDialog({
       if (container) container.innerHTML = '';
       setWidgetLoading(true);
       setSent(false);
-      setForm({ name: "", email: "", phone: "", startDate: "", endDate: "", message: "", deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "" });
+      setForm(defaultForm);
     }
   }, [isOpen, containerId]);
 
@@ -314,6 +318,23 @@ export function ProductBookingDialog({
                         </div>
                       )}
                     </div>
+
+                    {/* Setup & supervision service - only for event categories */}
+                    {showSetupService && (
+                      <div className="flex items-center gap-3 border border-border rounded-lg p-4 bg-muted/30">
+                        <Checkbox
+                          id="inq-setup"
+                          checked={form.setupServiceRequested}
+                          onCheckedChange={(checked) =>
+                            setForm({ ...form, setupServiceRequested: checked === true })
+                          }
+                        />
+                        <Label htmlFor="inq-setup" className="flex items-center gap-2 cursor-pointer font-medium">
+                          <Wrench className="h-4 w-4 text-primary" />
+                          Betreuung / Auf- & Abbau gewünscht
+                        </Label>
+                      </div>
+                    )}
 
                     <Button
                       type="submit"
