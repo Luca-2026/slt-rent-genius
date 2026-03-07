@@ -669,6 +669,8 @@ async function generateOfferPdf(data: {
   profile: any;
   items: any[];
   deliveryCost: number;
+  servicesSurcharge: number;
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
