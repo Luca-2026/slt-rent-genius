@@ -109,7 +109,7 @@ export default function B2BProductDetail() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => navigate("/b2b/produkte")}
+        onClick={() => navigate(-1)}
         className="mb-3 md:mb-4 -ml-2 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-1.5" />
