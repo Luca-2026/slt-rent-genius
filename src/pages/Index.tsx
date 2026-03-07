@@ -295,7 +295,7 @@ export default function Index() {
           <div className="flex items-center justify-center gap-3 mb-10">
             <button
               onClick={() => setHowItWorksTab("private")}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
+              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
                 howItWorksTab === "private"
                   ? "bg-primary text-primary-foreground border-primary shadow-md"
                   : "bg-background text-body border-border hover:border-primary/40"
@@ -306,7 +306,7 @@ export default function Index() {
             </button>
             <button
               onClick={() => setHowItWorksTab("b2b")}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
+              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
                 howItWorksTab === "b2b"
                   ? "bg-primary text-primary-foreground border-primary shadow-md"
                   : "bg-background text-body border-border hover:border-primary/40"
