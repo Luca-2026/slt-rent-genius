@@ -126,10 +126,10 @@ export function PublicChatAssistant() {
 
   return (
     <>
-      {/* Floating button – bottom-left on mobile, bottom-right on desktop */}
+      {/* Floating button – bottom-right on all devices */}
       <button
         onClick={() => setOpen(v => !v)}
-        className="fixed bottom-6 left-6 md:left-auto md:right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center"
         aria-label="KI-Assistent öffnen"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
