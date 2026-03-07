@@ -196,7 +196,7 @@
    ============================================= */
 
 :root {
-  --rentware-cart-view-position-top: 52px !important;
+  --rentware-cart-view-position-top: 40px !important;
   --rentware-cart-view-position-right: 16px !important;
   --rentware-cart-view-position-bottom: unset !important;
   --rentware-cart-view-position-left: unset !important;
