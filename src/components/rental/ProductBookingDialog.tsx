@@ -112,6 +112,8 @@ export function ProductBookingDialog({
           productName: product.name,
           locationName: location.name,
           locationEmail: location.email,
+          locationPhone: location.phone,
+          locationAddress: location.address,
           ...form,
         },
       });

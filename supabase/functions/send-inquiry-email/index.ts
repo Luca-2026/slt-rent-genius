@@ -6,6 +6,7 @@ const corsHeaders = {
 };
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -17,6 +18,8 @@ serve(async (req) => {
       productName,
       locationName,
       locationEmail,
+      locationPhone,
+      locationAddress,
       name,
       email,
       phone,
@@ -35,15 +38,23 @@ serve(async (req) => {
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
 
-    const deliveryText = deliveryRequested
-      ? `\nLieferung gewünscht:\n- Straße: ${deliveryStreet}\n- PLZ / Ort: ${deliveryPostalCode} ${deliveryCity}`
-      : "\nLieferung: Nein (Selbstabholung)";
-
     const deliveryHtml = deliveryRequested
       ? `
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${deliveryStreet}<br>${deliveryPostalCode} ${deliveryCity}</td></tr>`
       : `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0;">Selbstabholung</td></tr>`;
+
+    const locEmail = locationEmail || "mieten@slt-rental.de";
+    const locPhone = locationPhone || "02151 417 99 04";
+    const locAddress = locationAddress || "Anrather Straße 291, 47807 Krefeld";
+
+    const footerHtml = `
+    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px; line-height: 1.6;">
+      ${COMPANY_NAME}<br>
+      Standort ${locationName}: ${locAddress}<br>
+      Tel: ${locPhone} · E-Mail: <a href="mailto:${locEmail}" style="color: #f97316;">${locEmail}</a><br>
+      <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
+    </p>`;
 
     // ── Internal notification email ──
     const internalHtml = `
@@ -66,9 +77,7 @@ serve(async (req) => {
       ${deliveryHtml}
     </table>
     ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${message}</p>` : ""}
-    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
-      Diese Anfrage wurde über slt-rental.de gesendet.
-    </p>
+    ${footerHtml}
   </div>
 </div>`.trim();
 
@@ -91,15 +100,13 @@ serve(async (req) => {
       ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}` : ""}
     </div>
     <p style="color: #374151; line-height: 1.6;">
-      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns jederzeit unter der jeweiligen Standort-Telefonnummer oder per E-Mail.
+      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${locPhone.replace(/\s/g, '')}" style="color: #f97316;">${locPhone}</a> oder per E-Mail an <a href="mailto:${locEmail}" style="color: #f97316;">${locEmail}</a>.
     </p>
     <p style="color: #374151;">
       Mit freundlichen Grüßen,<br>
-      <strong>Ihr SLT Rental Team</strong>
+      <strong>Ihr SLT Rental Team – Standort ${locationName}</strong>
     </p>
-    <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
-      SLT Rental GmbH · <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
-    </p>
+    ${footerHtml}
   </div>
 </div>`.trim();
 
@@ -113,7 +120,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           from: "Anfragen <anfragen@slt-rental.de>",
-          to: [locationEmail || "mieten@slt-rental.de"],
+          to: [locEmail],
           reply_to: email,
           subject: `Mietanfrage: ${productName} – ${locationName}`,
           html: internalHtml,
