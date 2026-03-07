@@ -33,7 +33,14 @@ interface InquiryForm {
   deliveryStreet: string;
   deliveryPostalCode: string;
   deliveryCity: string;
+  setupServiceRequested: boolean;
 }
+
+// Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
+const SETUP_SERVICE_CATEGORIES = [
+  'beleuchtung', 'beschallung', 'moebel-zelte', 'buehne', 'traversen-rigging',
+  'spezialeffekte', 'geschirr-glaeser-besteck', 'huepfburgen', 'kommunikation',
+];
 
 export function ProductBookingDialog({ 
   product, 
