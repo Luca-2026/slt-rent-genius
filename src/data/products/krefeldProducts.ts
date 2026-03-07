@@ -2809,7 +2809,7 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x10-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    rentwareCode: { krefeld: "PARTYZELT4X10" }
+    rentwareCode: { krefeld: "7EW3HR" }
   },
   {
     id: "partyzelt-4x14m",
