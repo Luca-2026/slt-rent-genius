@@ -1225,7 +1225,7 @@ export const bonnLeiternProducts = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "KZJ688" },
   },
   {
     id: "bonn-hailo-l60-6",

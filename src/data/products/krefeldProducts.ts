@@ -4125,7 +4125,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_11" }
+    rentwareCode: { krefeld: "J5A49M" }
   },
   // --- Gerüstteile ---
   {
