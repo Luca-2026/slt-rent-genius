@@ -555,6 +555,11 @@ export function AdminCustomerDetailDialog({
             )}
           </TabsContent>
 
+          {/* ── Authorized Persons Tab ─────────────────────── */}
+          <TabsContent value="persons">
+            <AdminAuthorizedPersonsTab profileId={profile.id} companyName={profile.company_name} />
+          </TabsContent>
+
           {/* ── Rentals Tab ────────────────────────────────── */}
           <TabsContent value="rentals">
             {customerReservations.length === 0 ? (
