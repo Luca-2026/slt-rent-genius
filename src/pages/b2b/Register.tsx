@@ -452,12 +452,13 @@ export default function B2BRegister() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-headline mb-1.5">
-                            Hausnr.
+                            Hausnr. *
                           </label>
                           <Input
                             placeholder="123"
                             value={houseNumber}
                             onChange={(e) => setHouseNumber(e.target.value)}
+                            required
                           />
                         </div>
                         <div>
