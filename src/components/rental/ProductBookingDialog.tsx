@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar } from "lucide-react";
+import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { Product, LocationData } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -28,6 +29,10 @@ interface InquiryForm {
   startDate: string;
   endDate: string;
   message: string;
+  deliveryRequested: boolean;
+  deliveryStreet: string;
+  deliveryPostalCode: string;
+  deliveryCity: string;
 }
 
 export function ProductBookingDialog({ 
@@ -46,6 +51,10 @@ export function ProductBookingDialog({
     startDate: "",
     endDate: "",
     message: "",
+    deliveryRequested: false,
+    deliveryStreet: "",
+    deliveryPostalCode: "",
+    deliveryCity: "",
   });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -88,7 +97,7 @@ export function ProductBookingDialog({
       if (container) container.innerHTML = '';
       setWidgetLoading(true);
       setSent(false);
-      setForm({ name: "", email: "", phone: "", startDate: "", endDate: "", message: "" });
+      setForm({ name: "", email: "", phone: "", startDate: "", endDate: "", message: "", deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "" });
     }
   }, [isOpen, containerId]);
 
@@ -244,10 +253,64 @@ export function ProductBookingDialog({
                       <Textarea
                         id="inq-message"
                         rows={3}
-                        placeholder="z. B. Lieferadresse, Menge, besondere Anforderungen..."
+                        placeholder="z. B. Menge, besondere Anforderungen..."
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                       />
+                    </div>
+
+                    {/* Delivery section */}
+                    <div className="space-y-3 border border-border rounded-lg p-4 bg-muted/30">
+                      <div className="flex items-center gap-3">
+                        <Checkbox
+                          id="inq-delivery"
+                          checked={form.deliveryRequested}
+                          onCheckedChange={(checked) =>
+                            setForm({ ...form, deliveryRequested: checked === true })
+                          }
+                        />
+                        <Label htmlFor="inq-delivery" className="flex items-center gap-2 cursor-pointer font-medium">
+                          <Truck className="h-4 w-4 text-primary" />
+                          Lieferung gewünscht
+                        </Label>
+                      </div>
+
+                      {form.deliveryRequested && (
+                        <div className="space-y-3 pt-1">
+                          <div className="space-y-1.5">
+                            <Label htmlFor="inq-del-street">Straße + Hausnummer *</Label>
+                            <Input
+                              id="inq-del-street"
+                              required
+                              placeholder="Musterstraße 123"
+                              value={form.deliveryStreet}
+                              onChange={(e) => setForm({ ...form, deliveryStreet: e.target.value })}
+                            />
+                          </div>
+                          <div className="grid grid-cols-[120px_1fr] gap-3">
+                            <div className="space-y-1.5">
+                              <Label htmlFor="inq-del-plz">PLZ *</Label>
+                              <Input
+                                id="inq-del-plz"
+                                required
+                                placeholder="12345"
+                                value={form.deliveryPostalCode}
+                                onChange={(e) => setForm({ ...form, deliveryPostalCode: e.target.value })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor="inq-del-city">Ort *</Label>
+                              <Input
+                                id="inq-del-city"
+                                required
+                                placeholder="Musterstadt"
+                                value={form.deliveryCity}
+                                onChange={(e) => setForm({ ...form, deliveryCity: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <Button
