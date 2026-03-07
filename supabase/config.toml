@@ -35,3 +35,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.sitemap]
     verify_jwt = false
+  [functions.create-b2b-profile]
+    verify_jwt = false

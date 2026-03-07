@@ -212,15 +212,29 @@ export default function B2BRegister() {
         navigate("/b2b/dashboard");
       } else {
         // No session — email confirmation required
-        // Store registration data in localStorage so we can complete profile after confirmation
-        localStorage.setItem("b2b_pending_registration", JSON.stringify({
-          companyName, legalForm, taxId, tradeRegisterNumber,
-          firstName, lastName, position, phone, email,
-          billingEmail, street, houseNumber, postalCode, city,
-          postalInvoice,
-        }));
+        // Create profile immediately via edge function (service role) so admin can see it
+        try {
+          const { data: profileResult, error: profileFnError } = await supabase.functions.invoke("create-b2b-profile", {
+            body: {
+              userId,
+              companyName, legalForm, taxId, tradeRegisterNumber,
+              firstName, lastName, position, phone, email,
+              billingEmail, street, houseNumber, postalCode, city,
+              assignedLocation,
+              postalInvoice,
+              documentBase64,
+              documentFilename: documentFile.name,
+            },
+          });
 
-        // Send notification email with document attachment immediately
+          if (profileFnError) {
+            console.error("Profile creation failed:", profileFnError);
+          }
+        } catch (profileErr) {
+          console.error("Profile creation failed (non-blocking):", profileErr);
+        }
+
+        // Send notification email with document attachment to admin
         try {
           await supabase.functions.invoke("notify-b2b-registration", {
             body: notificationPayload,
