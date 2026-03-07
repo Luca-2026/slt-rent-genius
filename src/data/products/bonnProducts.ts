@@ -351,7 +351,7 @@ export const bonnErdbewegungProducts = [
     image: "/placeholder.svg",
     weightKg: 636,
     driveType: "benzin",
-    onRequest: true,
+    rentwareCode: { bonn: "7Y1UTP" },
   },
   {
     id: "bonn-kettendumper-rmd800",
