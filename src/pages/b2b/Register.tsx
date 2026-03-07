@@ -110,20 +110,31 @@ export default function B2BRegister() {
 
     try {
       // 1. Create user account
-      const { error: signUpError } = await signUp(email, password);
+      const { error: signUpError, data: signUpData } = await signUp(email, password);
       if (signUpError) throw signUpError;
 
-      // Wait briefly for session to be established
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) {
+      // Check if user was actually created
+      // When email confirmation is required, there's no session but user data is returned
+      const user = signUpData?.user;
+      
+      if (!user) {
         throw new Error(
           "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück."
         );
       }
 
-      const userId = session.user.id;
+      // If the user has no identities, it means the email is already taken
+      // (Supabase returns a fake user object with empty identities for existing emails)
+      if (user.identities && user.identities.length === 0) {
+        throw new Error(
+          "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück."
+        );
+      }
+
+      const userId = user.id;
+      
+      // Check if we have a session (auto-confirm on) or need email verification
+      const hasSession = !!signUpData?.session;
 
       // 2. Upload document
       const fileExt = documentFile.name.split(".").pop();
