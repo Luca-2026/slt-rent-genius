@@ -61,8 +61,7 @@ import imgKinderWasser2 from "@/assets/solutions/kinder/wasserrutsche-2.jpg";
 // Private Projekte images (reuse existing product images)
 import imgPrivateLaubgitter from "@/assets/products/anhaenger/kasten-laubgitter-1300.jpg";
 import imgPrivateHaecksler from "@/assets/products/haecksler-ls95-1.jpeg";
-import imgPrivateWerkzeug from "@/assets/products/werkzeuge/bohrhammer-gbh-12-52-1.jpeg";
-import imgPrivateRasenwalze from "/products/gartenpflege/rasenwalze-anwendung.jpg";
+import imgPrivateWerkzeug from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
 
 export interface Solution {
   id: string;
