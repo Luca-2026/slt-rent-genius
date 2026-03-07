@@ -9,6 +9,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -22,22 +23,30 @@ export const RecoveryEmail = ({
   siteName,
   confirmationUrl,
 }: RecoveryEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="de" dir="ltr">
     <Head />
-    <Preview>Reset your password for {siteName}</Preview>
+    <Preview>Passwort zurücksetzen – SLT Rental</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Reset your password</Heading>
+        <Img
+          src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png"
+          alt="SLT Rental"
+          width="160"
+          height="auto"
+          style={logo}
+        />
+        <Heading style={h1}>Passwort zurücksetzen</Heading>
         <Text style={text}>
-          We received a request to reset your password for {siteName}. Click
-          the button below to choose a new password.
+          Du hast eine Anfrage zum Zurücksetzen Deines Passworts bei SLT Rental
+          gestellt. Klicke auf den folgenden Button, um ein neues Passwort zu
+          vergeben.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Reset Password
+          Neues Passwort vergeben
         </Button>
         <Text style={footer}>
-          If you didn't request a password reset, you can safely ignore this
-          email. Your password will not be changed.
+          Falls Du kein Passwort-Reset angefordert hast, kannst Du diese E-Mail
+          ignorieren. Dein Passwort bleibt unverändert.
         </Text>
       </Container>
     </Body>
@@ -46,22 +55,23 @@ export const RecoveryEmail = ({
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Arial, sans-serif' }
 const container = { padding: '20px 25px' }
+const logo = { marginBottom: '24px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#393d46',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
+  color: '#595959',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#00507d',
   color: '#ffffff',
   fontSize: '14px',
   borderRadius: '8px',
