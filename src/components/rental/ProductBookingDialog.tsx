@@ -253,10 +253,64 @@ export function ProductBookingDialog({
                       <Textarea
                         id="inq-message"
                         rows={3}
-                        placeholder="z. B. Lieferadresse, Menge, besondere Anforderungen..."
+                        placeholder="z. B. Menge, besondere Anforderungen..."
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                       />
+                    </div>
+
+                    {/* Delivery section */}
+                    <div className="space-y-3 border border-border rounded-lg p-4 bg-muted/30">
+                      <div className="flex items-center gap-3">
+                        <Checkbox
+                          id="inq-delivery"
+                          checked={form.deliveryRequested}
+                          onCheckedChange={(checked) =>
+                            setForm({ ...form, deliveryRequested: checked === true })
+                          }
+                        />
+                        <Label htmlFor="inq-delivery" className="flex items-center gap-2 cursor-pointer font-medium">
+                          <Truck className="h-4 w-4 text-primary" />
+                          Lieferung gewünscht
+                        </Label>
+                      </div>
+
+                      {form.deliveryRequested && (
+                        <div className="space-y-3 pt-1">
+                          <div className="space-y-1.5">
+                            <Label htmlFor="inq-del-street">Straße + Hausnummer *</Label>
+                            <Input
+                              id="inq-del-street"
+                              required
+                              placeholder="Musterstraße 123"
+                              value={form.deliveryStreet}
+                              onChange={(e) => setForm({ ...form, deliveryStreet: e.target.value })}
+                            />
+                          </div>
+                          <div className="grid grid-cols-[120px_1fr] gap-3">
+                            <div className="space-y-1.5">
+                              <Label htmlFor="inq-del-plz">PLZ *</Label>
+                              <Input
+                                id="inq-del-plz"
+                                required
+                                placeholder="12345"
+                                value={form.deliveryPostalCode}
+                                onChange={(e) => setForm({ ...form, deliveryPostalCode: e.target.value })}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label htmlFor="inq-del-city">Ort *</Label>
+                              <Input
+                                id="inq-del-city"
+                                required
+                                placeholder="Musterstadt"
+                                value={form.deliveryCity}
+                                onChange={(e) => setForm({ ...form, deliveryCity: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <Button
