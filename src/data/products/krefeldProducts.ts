@@ -2846,7 +2846,7 @@ export const moebelZelteProducts: Product[] = [
       "Gewicht": "15 kg/Stück",
       "Rückgabe": "besenrein",
     },
-    rentwareCode: { krefeld: "ZELTBODEN_ANT" }
+    rentwareCode: { krefeld: "2RKZVT" }
   },
   {
     id: "eventzelt-6x12m",
