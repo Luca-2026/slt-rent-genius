@@ -44,19 +44,17 @@ export default function ProductDetail() {
   const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
   const category = useTranslatedCategory(rawCategory) || rawCategory;
   const rawProduct = useMemo(() => {
-    // First try to find the product in the specific location to get correct rentwareCode
+    // Find the product in the specific location to get correct rentwareCode
     if (location && categoryId) {
       const locationProducts = getProductsForLocationCategory(location.id, categoryId);
       const found = locationProducts.find((p) => p.id === productId);
       if (found) return found;
     }
-    // Also search all categories for this location
     if (location) {
-      const allLocationProducts = Object.values(location.products || {}).flat() as Product[];
+      const allLocationProducts = getAllProductsForLocation(location.id);
       const found = allLocationProducts.find((p) => p.id === productId);
       if (found) return found;
     }
-    // Fallback to global search
     return getProductById(productId || "");
   }, [productId, location, categoryId]);
   const product = useTranslatedProduct(rawProduct);
