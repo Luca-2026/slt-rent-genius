@@ -104,6 +104,7 @@ serve(async (req) => {
       <strong style="color: #ea580c;">Standort:</strong> ${locationName}<br>
       <strong style="color: #ea580c;">Zeitraum:</strong> ${dateRange}
       ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}` : ""}
+      ${setupServiceRequested ? `<br><strong style="color: #ea580c;">Betreuung / Auf- & Abbau:</strong> Gewünscht` : ""}
     </div>
     <p style="color: #374151; line-height: 1.6;">
       Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${locPhone.replace(/\s/g, '')}" style="color: #f97316;">${locPhone}</a> oder per E-Mail an <a href="mailto:${locEmail}" style="color: #f97316;">${locEmail}</a>.
