@@ -651,7 +651,7 @@ export function AdminInvoicesTab({
                 </div>
               )}
 
-              <div className="flex gap-3 justify-end pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
                 <Button variant="outline" onClick={() => setCorrectionDialogOpen(false)}>
                   Abbrechen
                 </Button>
