@@ -88,7 +88,7 @@ export default function ProductDetail() {
       }
 
       // SEO: Canonical URL
-      const canonicalUrl = `https://slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}`;
+      const canonicalUrl = `https://www.slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}`;
       let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (canonicalLink) {
         canonicalLink.href = canonicalUrl;

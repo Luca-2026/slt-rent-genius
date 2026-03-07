@@ -1,8 +1,12 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
 
 User-agent: Bingbot
 Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
 
 User-agent: Twitterbot
 Allow: /
@@ -12,10 +16,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
 
 # Sitemap
 Sitemap: https://www.slt-rental.de/sitemap.xml
-
-# Disallow admin/B2B protected areas
-Disallow: /b2b/dashboard
-Disallow: /b2b/projektanfrage
