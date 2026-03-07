@@ -1200,7 +1200,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    onRequest: true,
+    rentwareCode: { bonn: "LYF6UT" },
   },
   {
     id: "bonn-rollgeruest-krause-8-4m",
