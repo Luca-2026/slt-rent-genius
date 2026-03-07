@@ -58,6 +58,11 @@ import imgKinderKirmes from "@/assets/solutions/kinder/huepfburg-kirmes.jpg";
 import imgKinderWasser1 from "@/assets/solutions/kinder/wasserrutsche-1.jpg";
 import imgKinderWasser2 from "@/assets/solutions/kinder/wasserrutsche-2.jpg";
 
+// Private Projekte images (reuse existing product images)
+import imgPrivateLaubgitter from "@/assets/products/anhaenger/kasten-laubgitter-1300.jpg";
+import imgPrivateHaecksler from "@/assets/products/haecksler-ls95-1.jpeg";
+import imgPrivateWerkzeug from "@/assets/products/werkzeuge/bohrhammer-gbh18v-26f.jpg";
+
 export interface Solution {
   id: string;
   image: string;
@@ -118,7 +123,9 @@ export const solutionData: Solution[] = [{
   color: "from-red-500/20 to-red-600/10"
 }, {
   id: "private-projekte",
-  image: "/placeholder.svg",
+  image: imgPrivateLaubgitter,
+  images: [imgPrivateLaubgitter, imgPrivateHaecksler, imgPrivateWerkzeug],
+  imageCategories: ["anhaenger", "gartenpflege", "werkzeuge"],
   icon: Home,
   categories: ["gartenpflege", "werkzeuge", "anhaenger", "verdichtung"],
   color: "from-teal-500/20 to-teal-600/10"
