@@ -20,7 +20,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Building2, CalendarDays, Clock, CreditCard, Edit, Eye, Mail, Package,
+  Building2, CalendarDays, Clock, CreditCard, Edit, Eye, KeyRound, Mail, Package,
   Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -127,6 +127,7 @@ export function AdminCustomerDetailDialog({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [resendingEmail, setResendingEmail] = useState(false);
+  const [resettingPassword, setResettingPassword] = useState(false);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
@@ -317,13 +318,43 @@ export function AdminCustomerDetailDialog({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             size="sm"
             variant="outline"
             onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
           >
             <Edit className="h-3.5 w-3.5 mr-1" /> Stammdaten bearbeiten
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={resettingPassword}
+            onClick={async () => {
+              setResettingPassword(true);
+              try {
+                const { data, error } = await supabase.functions.invoke("admin-reset-password", {
+                  body: { email: profile.contact_email },
+                });
+                if (error) throw error;
+                if (data?.error) throw new Error(data.error);
+                toast({
+                  title: "Passwort-Reset gesendet",
+                  description: `Eine E-Mail zum Zurücksetzen des Passworts wurde an ${profile.contact_email} gesendet.`,
+                });
+              } catch (err: any) {
+                toast({
+                  title: "Fehler",
+                  description: err.message || "Passwort-Reset konnte nicht gesendet werden.",
+                  variant: "destructive",
+                });
+              } finally {
+                setResettingPassword(false);
+              }
+            }}
+          >
+            <KeyRound className="h-3.5 w-3.5 mr-1" />
+            {resettingPassword ? "Wird gesendet..." : "Passwort zurücksetzen"}
           </Button>
           <Button
             size="sm"

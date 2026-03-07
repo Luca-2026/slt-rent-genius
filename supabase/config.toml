@@ -37,3 +37,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.create-b2b-profile]
     verify_jwt = false
+  [functions.admin-reset-password]
+    verify_jwt = false
