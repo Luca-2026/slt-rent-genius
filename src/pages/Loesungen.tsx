@@ -123,7 +123,9 @@ export const solutionData: Solution[] = [{
   color: "from-red-500/20 to-red-600/10"
 }, {
   id: "private-projekte",
-  image: "/placeholder.svg",
+  image: imgPrivateLaubgitter,
+  images: [imgPrivateLaubgitter, imgPrivateHaecksler, imgPrivateWerkzeug],
+  imageCategories: ["anhaenger", "gartenpflege", "werkzeuge"],
   icon: Home,
   categories: ["gartenpflege", "werkzeuge", "anhaenger", "verdichtung"],
   color: "from-teal-500/20 to-teal-600/10"
