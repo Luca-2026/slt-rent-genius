@@ -136,8 +136,6 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
         </div>
       </main>
 
-      {/* AI Chat Assistant - only for customers, not admins */}
-      {!isAdmin && <B2BChatAssistant />}
     </Layout>
   );
 }
