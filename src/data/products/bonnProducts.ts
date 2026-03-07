@@ -169,6 +169,7 @@ import imgRollgeruestKrause64m3 from "@/assets/products/rollgeruest-krause-64m-3
 import imgRollgeruestKrause54m1 from "@/assets/products/rollgeruest-krause-54m-1.jpeg";
 import imgRollgeruestKrause54m2 from "@/assets/products/rollgeruest-krause-54m-2.jpeg";
 import imgRollgeruestKrause54m3 from "@/assets/products/rollgeruest-krause-54m-3.jpeg";
+import imgHailoL60 from "@/assets/products/hailo-l60-6stufen.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
