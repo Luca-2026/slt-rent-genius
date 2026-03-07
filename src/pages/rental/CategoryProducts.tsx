@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 import { Layout } from "@/components/layout";
+import { SEO, SLT_BREADCRUMB_JSONLD, SLT_FAQ_JSONLD, SLT_LOCATION_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets, Sparkles } from "lucide-react";
