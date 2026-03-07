@@ -173,6 +173,7 @@ export function B2BMultiReservationDialog({
             id: s.id,
             name: s.name,
             description: s.description,
+            pricePercent: s.pricePercent,
           }))
         : null;
 

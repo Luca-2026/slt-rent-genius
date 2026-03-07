@@ -192,7 +192,6 @@ Deno.serve(async (req: Request) => {
     const offerItems = items.map((item) => {
       const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
-      // Append time to rental dates if available from reservation
       let rentalStart = item.rental_start || reservation?.start_date || null;
       let rentalEnd = item.rental_end || reservation?.end_date || null;
       if (rentalStart && reservation?.start_time && !rentalStart.includes(" ")) {
@@ -215,7 +214,21 @@ Deno.serve(async (req: Request) => {
     });
 
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
-    const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
+
+    // Calculate additional services surcharges
+    let servicesSurcharge = 0;
+    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[] = [];
+    if (additionalServices && additionalServices.length > 0) {
+      for (const svc of additionalServices) {
+        const pct = svc.pricePercent ?? null;
+        const amount = pct !== null ? Math.round(itemsTotal * (pct / 100) * 100) / 100 : 0;
+        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: pct, amount });
+        servicesSurcharge += amount;
+      }
+    }
+    servicesSurcharge = Math.round(servicesSurcharge * 100) / 100;
+
+    const netAmount = Math.round((itemsTotal + delivery_cost + servicesSurcharge) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
@@ -266,6 +279,8 @@ Deno.serve(async (req: Request) => {
       profile,
       items: offerItems,
       deliveryCost: delivery_cost,
+      servicesSurcharge,
+      servicesWithPrices,
       netAmount,
       vatRate,
       vatAmount,
@@ -489,6 +504,14 @@ Deno.serve(async (req: Request) => {
           ? `<tr><td style="font-size:13px;color:#555;">zzgl. Kaution:</td><td style="text-align:right;font-size:13px;font-weight:600;">${formatCurrency(deposit)}</td></tr>`
           : "";
 
+        // Build services HTML for email
+        const servicesEmailHtml = servicesWithPrices.length > 0
+          ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+              <p style="font-size:13px;font-weight:600;color:#166534;margin:0 0 8px;">Zusatzleistungen:</p>
+              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)}${s.amount > 0 ? ` – <strong>${formatCurrency(s.amount)}</strong> (${s.pricePercent}%)` : ' – inklusive'}</p>`).join("")}
+            </div>`
+          : "";
+
         const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
 
         const emailHtml = `
@@ -524,10 +547,13 @@ Deno.serve(async (req: Request) => {
           <tbody>${itemsHtml}</tbody>
         </table>
       </div>
+      ${servicesEmailHtml}
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:25px;">
         <table style="width:100%;font-size:14px;color:#555;">
-          <tr><td>Zwischensumme (Netto):</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
+          <tr><td>Zwischensumme Mietgeräte:</td><td style="text-align:right;font-weight:600;">${formatCurrency(itemsTotal)}</td></tr>
           ${delivery_cost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(delivery_cost)}</td></tr>` : ""}
+          ${servicesSurcharge > 0 ? `<tr><td>Zusatzleistungen:</td><td style="text-align:right;">${formatCurrency(servicesSurcharge)}</td></tr>` : ""}
+          <tr><td style="font-weight:600;">Nettobetrag:</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
           ${isReverseCharge
             ? `<tr><td style="font-size:12px;color:#64748b;">USt. (Reverse-Charge):</td><td style="text-align:right;font-size:12px;color:#64748b;">${formatCurrency(0)}</td></tr>`
             : `<tr><td>zzgl. ${vatRate}% USt.:</td><td style="text-align:right;">${formatCurrency(vatAmount)}</td></tr>`}
@@ -549,7 +575,7 @@ Deno.serve(async (req: Request) => {
         </p>
       </div>
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://slt-rent-genius.lovable.app/b2b/reservations"
+        <a href="https://www.slt-rental.de/b2b/reservations"
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal →
         </a>
@@ -643,6 +669,8 @@ async function generateOfferPdf(data: {
   profile: any;
   items: any[];
   deliveryCost: number;
+  servicesSurcharge: number;
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
@@ -830,8 +858,25 @@ async function generateOfferPdf(data: {
 
   // ── TOTALS ──
   const totX = 380;
+  const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
+  drawText("Zwischensumme Geraete:", totX, y, { s: 9, c: gray });
+  drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
+  y -= 14;
+
+  if (data.deliveryCost > 0) {
+    drawText("Transportkosten:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+
+  if (data.servicesSurcharge > 0) {
+    drawText("Zusatzleistungen:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.servicesSurcharge), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+
   drawText("Nettobetrag:", totX, y, { s: 10, c: gray });
-  drawTextRight(fmtCurrency(data.netAmount), pageWidth - margin, y, { s: 10 });
+  drawTextRight(fmtCurrency(data.netAmount), pageWidth - margin, y, { f: fontBold, s: 10 });
   y -= 16;
 
   if (data.isReverseCharge) {
@@ -876,14 +921,22 @@ async function generateOfferPdf(data: {
   y -= 35;
 
   // ── ADDITIONAL SERVICES ──
-  if (data.additionalServices && data.additionalServices.length > 0) {
+  if (data.servicesWithPrices && data.servicesWithPrices.length > 0) {
     ensureSpace(50);
     drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
-    for (const svc of data.additionalServices) {
-      ensureSpace(20);
+    for (const svc of data.servicesWithPrices) {
+      ensureSpace(24);
+      const priceInfo = svc.amount > 0
+        ? " (" + svc.pricePercent + "% = " + fmtCurrency(svc.amount) + ")"
+        : " (inklusive)";
       drawText("- " + safe(svc.name), margin + 8, y, { s: 9, c: gray });
+      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 9, c: gray });
       y -= 12;
+      if (svc.description) {
+        drawText("  " + safe(svc.description).substring(0, 80), margin + 14, y, { s: 7, c: lightGray });
+        y -= 12;
+      }
     }
     y -= 8;
   }
