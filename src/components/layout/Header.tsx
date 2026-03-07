@@ -125,7 +125,9 @@ export function Header() {
             </div>
 
             {/* Space for Rentware cart icon (positioned via RentwarePositioner) */}
-            <div className="w-10 h-10 shrink-0" aria-hidden="true" />
+            {!location.pathname.startsWith("/b2b") && (
+              <div className="w-10 h-10 shrink-0" aria-hidden="true" />
+            )}
           </div>
         </div>
       </div>

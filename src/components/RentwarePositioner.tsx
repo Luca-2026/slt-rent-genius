@@ -1,13 +1,16 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 /**
  * RentwarePositioner
  *
  * Positions the rtr-checkout Web Component in the header area.
- * Marquee bar: 0-40px, Header row: 40-120px, center = 80px.
- * Target: vertically centered in header, same size as chat button (56px).
+ * Hides it on B2B portal routes.
  */
 export function RentwarePositioner() {
+  const location = useLocation();
+  const isB2B = location.pathname.startsWith("/b2b");
+
   useEffect(() => {
     let observer: MutationObserver | null = null;
 
@@ -15,8 +18,12 @@ export function RentwarePositioner() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      // Position: centered in header row (40-120px, center=80px)
-      // With 56px height: top = 80 - 28 = 52px
+      if (isB2B) {
+        el.style.display = "none";
+        return;
+      }
+
+      el.style.display = "";
       el.style.position = "fixed";
       el.style.top = "40px";
       el.style.right = "16px";
@@ -70,7 +77,7 @@ export function RentwarePositioner() {
       observer?.disconnect();
       window.removeEventListener("resize", applyStyles);
     };
-  }, []);
+  }, [isB2B]);
 
   return null;
 }
