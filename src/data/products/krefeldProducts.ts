@@ -2829,7 +2829,7 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    rentwareCode: { krefeld: "PARTYZELT4X14" }
+    rentwareCode: { krefeld: "JLHAH7" }
   },
   {
     id: "zeltboden-anthrazit",
