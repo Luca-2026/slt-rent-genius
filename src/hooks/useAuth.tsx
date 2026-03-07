@@ -33,6 +33,8 @@ interface AuthContextType {
   b2bProfile: B2BProfile | null;
   isAdmin: boolean;
   isApprovedB2B: boolean;
+  isAuthorizedPerson: boolean;
+  authorizedPersonInfo: AuthorizedPersonInfo | null;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string) => Promise<{ error: Error | null; data: any }>;
   signOut: () => Promise<void>;
