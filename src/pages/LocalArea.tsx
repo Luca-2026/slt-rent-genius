@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
-import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
+import { SEO, SLT_BREADCRUMB_JSONLD, SLT_LOCATION_JSONLD, SLT_FAQ_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
