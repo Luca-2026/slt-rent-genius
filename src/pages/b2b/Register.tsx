@@ -184,6 +184,7 @@ export default function B2BRegister() {
 
   return (
     <Layout>
+      <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>
       <section className="py-12 lg:py-16 bg-surface-light">
         <div className="section-container">
           <div className="max-w-2xl mx-auto">
