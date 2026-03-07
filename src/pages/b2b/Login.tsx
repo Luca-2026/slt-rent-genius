@@ -61,6 +61,7 @@ export default function B2BLogin() {
   return (
     <Layout>
       <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>
+      <section className="py-12 lg:py-20 bg-surface-light min-h-[calc(100vh-200px)]">
         <div className="section-container">
           <div className="max-w-md mx-auto">
             <Card>
