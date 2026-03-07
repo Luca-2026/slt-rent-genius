@@ -98,6 +98,14 @@ export default function LocationCategories() {
         description={description}
         canonical={`/mieten/${location.id}`}
         keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Equipment ${location.name}`}
+        jsonLd={[
+          SLT_LOCATION_JSONLD(location.id),
+          SLT_BREADCRUMB_JSONLD([
+            { name: "Home", url: "/" },
+            { name: "Mieten", url: "/mieten" },
+            { name: location.name, url: `/mieten/${location.id}` },
+          ]),
+        ] as unknown as Record<string, unknown>[]}
       />
       {/* Header with Location Info */}
       <section className="bg-primary py-8 lg:py-12">
