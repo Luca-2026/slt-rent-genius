@@ -686,7 +686,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 1000,
     category: "minibagger",
     tags: ["minibagger", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "WNE69F" },
+    rentwareCode: { krefeld: "WNE69F", muelheim: "G63XIE" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
