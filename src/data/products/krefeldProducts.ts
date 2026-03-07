@@ -3869,7 +3869,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
-    rentwareCode: { krefeld: "FSQFEL_64" }
+    rentwareCode: { krefeld: "BNHOAY" }
   },
   {
     id: "rollgeruest-krause-breitaufbau-9-4m",
