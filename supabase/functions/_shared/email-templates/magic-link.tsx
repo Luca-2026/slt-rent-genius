@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -23,29 +22,21 @@ export const MagicLinkEmail = ({
   siteName,
   confirmationUrl,
 }: MagicLinkEmailProps) => (
-  <Html lang="de" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Dein Login-Link für SLT Rental</Preview>
+    <Preview>Your login link for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img
-          src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png"
-          alt="SLT Rental"
-          width="160"
-          height="auto"
-          style={logo}
-        />
-        <Heading style={h1}>Dein Login-Link</Heading>
+        <Heading style={h1}>Your login link</Heading>
         <Text style={text}>
-          Klicke auf den folgenden Button, um Dich bei SLT Rental einzuloggen.
-          Dieser Link ist nur kurze Zeit gültig.
+          Click the button below to log in to {siteName}. This link will expire
+          shortly.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Jetzt einloggen
+          Log In
         </Button>
         <Text style={footer}>
-          Falls Du diesen Link nicht angefordert hast, kannst Du diese E-Mail
-          ignorieren.
+          If you didn't request this link, you can safely ignore this email.
         </Text>
       </Container>
     </Body>
@@ -54,23 +45,22 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
 const container = { padding: '20px 25px' }
-const logo = { marginBottom: '24px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#393d46',
+  color: '#000000',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#595959',
+  color: '#55575d',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
 const button = {
-  backgroundColor: '#00507d',
+  backgroundColor: '#000000',
   color: '#ffffff',
   fontSize: '14px',
   borderRadius: '8px',

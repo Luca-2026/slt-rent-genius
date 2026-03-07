@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
   Text,
@@ -26,33 +25,26 @@ export const InviteEmail = ({
   siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
-  <Html lang="de" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Du wurdest zu SLT Rental eingeladen</Preview>
+    <Preview>You've been invited to join {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img
-          src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png"
-          alt="SLT Rental"
-          width="160"
-          height="auto"
-          style={logo}
-        />
-        <Heading style={h1}>Du wurdest eingeladen</Heading>
+        <Heading style={h1}>You've been invited</Heading>
         <Text style={text}>
-          Du wurdest eingeladen,{' '}
+          You've been invited to join{' '}
           <Link href={siteUrl} style={link}>
-            <strong>SLT Rental</strong>
-          </Link>{' '}
-          beizutreten. Klicke auf den folgenden Button, um die Einladung
-          anzunehmen und Dein Konto zu erstellen.
+            <strong>{siteName}</strong>
+          </Link>
+          . Click the button below to accept the invitation and create your
+          account.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Einladung annehmen
+          Accept Invitation
         </Button>
         <Text style={footer}>
-          Falls Du diese Einladung nicht erwartet hast, kannst Du diese E-Mail
-          ignorieren.
+          If you weren't expecting this invitation, you can safely ignore this
+          email.
         </Text>
       </Container>
     </Body>
@@ -61,24 +53,23 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
 const container = { padding: '20px 25px' }
-const logo = { marginBottom: '24px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#393d46',
+  color: '#000000',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#595959',
+  color: '#55575d',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
-const link = { color: '#00507d', textDecoration: 'underline' }
+const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#00507d',
+  backgroundColor: '#000000',
   color: '#ffffff',
   fontSize: '14px',
   borderRadius: '8px',

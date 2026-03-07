@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
   Text,
@@ -28,38 +27,31 @@ export const SignupEmail = ({
   recipient,
   confirmationUrl,
 }: SignupEmailProps) => (
-  <Html lang="de" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Bestätige Deine E-Mail-Adresse für SLT Rental</Preview>
+    <Preview>Confirm your email for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img
-          src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png"
-          alt="SLT Rental"
-          width="160"
-          height="auto"
-          style={logo}
-        />
-        <Heading style={h1}>E-Mail-Adresse bestätigen</Heading>
+        <Heading style={h1}>Confirm your email</Heading>
         <Text style={text}>
-          Willkommen bei{' '}
+          Thanks for signing up for{' '}
           <Link href={siteUrl} style={link}>
-            <strong>SLT Rental</strong>
+            <strong>{siteName}</strong>
           </Link>
           !
         </Text>
         <Text style={text}>
-          Bitte bestätige Deine E-Mail-Adresse (
+          Please confirm your email address (
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
           </Link>
-          ), indem Du auf den folgenden Button klickst:
+          ) by clicking the button below:
         </Text>
         <Button style={button} href={confirmationUrl}>
-          E-Mail bestätigen
+          Verify Email
         </Button>
         <Text style={footer}>
-          Falls Du kein Konto erstellt hast, kannst Du diese E-Mail ignorieren.
+          If you didn't create an account, you can safely ignore this email.
         </Text>
       </Container>
     </Body>
@@ -68,24 +60,23 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
 const container = { padding: '20px 25px' }
-const logo = { marginBottom: '24px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#393d46',
+  color: '#000000',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#595959',
+  color: '#55575d',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
-const link = { color: '#00507d', textDecoration: 'underline' }
+const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#00507d',
+  backgroundColor: '#000000',
   color: '#ffffff',
   fontSize: '14px',
   borderRadius: '8px',
