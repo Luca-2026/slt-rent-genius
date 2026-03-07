@@ -87,6 +87,9 @@ import dessertellerSimply19_3 from "@/assets/products/geschirr/dessertteller-sim
 import dessertellerSimply19_4 from "@/assets/products/geschirr/dessertteller-simply-19-4.jpeg";
 import dessertellerSimply19_5 from "@/assets/products/geschirr/dessertteller-simply-19-5.jpeg";
 import rollgeruest10_4m_1 from "@/assets/products/rollgeruest-breitaufbau-10-4m-1.jpeg";
+import imgRollgeruestKrause94m1 from "@/assets/products/rollgeruest-krause-94m-1.jpeg";
+import imgRollgeruestKrause94m2 from "@/assets/products/rollgeruest-krause-94m-2.jpeg";
+import imgRollgeruestKrause94m3 from "@/assets/products/rollgeruest-krause-94m-3.jpeg";
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
 import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-2.jpeg";
