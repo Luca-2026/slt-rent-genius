@@ -649,7 +649,7 @@ export const aggregateProducts: Product[] = [
     image: aggregat80kva1,
     images: [aggregat80kva1],
     category: "aggregat",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "H8WHKV" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     detailedDescription: "Das Doosan G80 ist ein schallgedämmtes Diesel-Stromaggregat mit 90 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
