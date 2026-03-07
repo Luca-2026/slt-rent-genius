@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
-import { SEO } from "@/components/SEO";
+import { SEO, SLT_LOCATION_JSONLD, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { CategoryGrid } from "@/components/rental/CategoryGrid";
 import { ProductSearch } from "@/components/rental/ProductSearch";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
@@ -98,6 +98,14 @@ export default function LocationCategories() {
         description={description}
         canonical={`/mieten/${location.id}`}
         keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Equipment ${location.name}`}
+        jsonLd={[
+          SLT_LOCATION_JSONLD(location.id),
+          SLT_BREADCRUMB_JSONLD([
+            { name: "Home", url: "/" },
+            { name: "Mieten", url: "/mieten" },
+            { name: location.name, url: `/mieten/${location.id}` },
+          ]),
+        ] as unknown as Record<string, unknown>[]}
       />
       {/* Header with Location Info */}
       <section className="bg-primary py-8 lg:py-12">

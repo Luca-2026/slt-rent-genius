@@ -60,7 +60,7 @@ export function SEO({
   );
 }
 
-// Reusable JSON-LD for SLT Rental business
+// Reusable JSON-LD for SLT Rental business (with correct addresses & phone)
 export const SLT_ORGANIZATION_JSONLD = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
@@ -69,7 +69,7 @@ export const SLT_ORGANIZATION_JSONLD = {
   url: "https://www.slt-rental.de",
   logo: DEFAULT_OG_IMAGE,
   description: "Baumaschinen, Anhänger und Event-Equipment mieten in NRW. 3 Standorte in Krefeld, Bonn und Mülheim an der Ruhr.",
-  telephone: "+49 2151 417 99 02",
+  telephone: "+49 2151 4179904",
   email: "mieten@slt-rental.de",
   foundingDate: "2016",
   areaServed: {
@@ -87,16 +87,16 @@ export const SLT_ORGANIZATION_JSONLD = {
     },
     {
       "@type": "PostalAddress",
-      streetAddress: "Siemensstraße 20",
+      streetAddress: "Drachenburgstraße 8",
       addressLocality: "Bonn",
-      postalCode: "53121",
+      postalCode: "53179",
       addressCountry: "DE",
     },
     {
       "@type": "PostalAddress",
-      streetAddress: "Düsseldorfer Straße 60",
+      streetAddress: "Ruhrorter Str. 122",
       addressLocality: "Mülheim an der Ruhr",
-      postalCode: "45481",
+      postalCode: "45478",
       addressCountry: "DE",
     },
   ],
@@ -116,6 +116,107 @@ export const SLT_ORGANIZATION_JSONLD = {
     },
   ],
 };
+
+// Per-location LocalBusiness JSON-LD
+export const SLT_LOCATION_JSONLD = (locationId: string) => {
+  const locations: Record<string, Record<string, unknown>> = {
+    krefeld: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://www.slt-rental.de/mieten/krefeld",
+      name: "SLT Rental – Krefeld (Hauptsitz)",
+      legalName: "SLT Technology Group GmbH & Co. KG",
+      url: "https://www.slt-rental.de/mieten/krefeld",
+      logo: DEFAULT_OG_IMAGE,
+      image: DEFAULT_OG_IMAGE,
+      description: "Baumaschinen, Anhänger und Equipment mieten in Krefeld. Hauptsitz der SLT Rental am Niederrhein.",
+      telephone: "+49 2151 4179904",
+      email: "krefeld@slt-rental.de",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Anrather Straße 291",
+        addressLocality: "Krefeld",
+        postalCode: "47807",
+        addressRegion: "NRW",
+        addressCountry: "DE",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 51.3388, longitude: 6.5853 },
+      openingHoursSpecification: [
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:30", closes: "18:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "14:30" },
+      ],
+      priceRange: "€€",
+    },
+    bonn: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://www.slt-rental.de/mieten/bonn",
+      name: "SLT Rental – Bonn",
+      legalName: "SLT Technology Group GmbH & Co. KG",
+      url: "https://www.slt-rental.de/mieten/bonn",
+      logo: DEFAULT_OG_IMAGE,
+      image: DEFAULT_OG_IMAGE,
+      description: "Baumaschinen, Anhänger und Event-Equipment mieten in Bonn. SLT Rental Filiale im Rheinland.",
+      telephone: "+49 228 50466061",
+      email: "bonn@slt-rental.de",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Drachenburgstraße 8",
+        addressLocality: "Bonn",
+        postalCode: "53179",
+        addressRegion: "NRW",
+        addressCountry: "DE",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 50.6879, longitude: 7.1534 },
+      openingHoursSpecification: [
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:30", closes: "18:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "14:30" },
+      ],
+      priceRange: "€€",
+    },
+    muelheim: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://www.slt-rental.de/mieten/muelheim",
+      name: "SLT Rental – Mülheim an der Ruhr",
+      legalName: "SLT Technology Group GmbH & Co. KG",
+      url: "https://www.slt-rental.de/mieten/muelheim",
+      logo: DEFAULT_OG_IMAGE,
+      image: DEFAULT_OG_IMAGE,
+      description: "Baumaschinen und Anhänger mieten in Mülheim an der Ruhr. Corporate Filiale SLT x Bobcat im Ruhrgebiet.",
+      telephone: "+49 2151 4179904",
+      email: "muelheim@slt-rental.de",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Ruhrorter Str. 122",
+        addressLocality: "Mülheim an der Ruhr",
+        postalCode: "45478",
+        addressRegion: "NRW",
+        addressCountry: "DE",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 51.4181, longitude: 6.8807 },
+      openingHoursSpecification: [
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "00:00", closes: "23:59" },
+      ],
+      priceRange: "€€",
+    },
+  };
+  return locations[locationId] || locations.krefeld;
+};
+
+// FAQ JSON-LD helper
+export const SLT_FAQ_JSONLD = (faqs: { question: string; answer: string }[]) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+});
 
 export const SLT_BREADCRUMB_JSONLD = (items: { name: string; url: string }[]) => ({
   "@context": "https://schema.org",
