@@ -1,46 +1,35 @@
 project_id = "ccmxitxgyznethanixlg"
 
-[functions.public-chat]
-verify_jwt = false
-
-[functions.b2b-chat]
-verify_jwt = false
-
-[functions.generate-invoice]
-verify_jwt = false
-
-[functions.admin-create-customer]
-verify_jwt = false
-
-[functions.confirm-reservation]
-verify_jwt = false
-
-[functions.generate-offer]
-verify_jwt = false
-
-[functions.accept-offer]
-verify_jwt = false
-
-[functions.delete-customer]
-verify_jwt = false
-
-[functions.notify-device-return]
-verify_jwt = false
-
-[functions.generate-delivery-note]
-verify_jwt = false
-
-[functions.admin-manage-staff]
-verify_jwt = false
-
-[functions.generate-return-protocol]
-verify_jwt = false
-
-[functions.google-reviews]
-verify_jwt = false
-
-[functions.notify-profile-change]
-verify_jwt = false
-
-[functions.sitemap]
-verify_jwt = false
+[functions]
+  [functions.accept-offer]
+    verify_jwt = false
+  [functions.admin-create-customer]
+    verify_jwt = false
+  [functions.admin-manage-staff]
+    verify_jwt = false
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.b2b-chat]
+    verify_jwt = false
+  [functions.confirm-reservation]
+    verify_jwt = false
+  [functions.delete-customer]
+    verify_jwt = false
+  [functions.generate-delivery-note]
+    verify_jwt = false
+  [functions.generate-invoice]
+    verify_jwt = false
+  [functions.generate-offer]
+    verify_jwt = false
+  [functions.generate-return-protocol]
+    verify_jwt = false
+  [functions.google-reviews]
+    verify_jwt = false
+  [functions.notify-device-return]
+    verify_jwt = false
+  [functions.notify-profile-change]
+    verify_jwt = false
+  [functions.public-chat]
+    verify_jwt = false
+  [functions.sitemap]
+    verify_jwt = false
