@@ -20,6 +20,7 @@ interface ProductBookingDialogProps {
   location: LocationData | null;
   isOpen: boolean;
   onClose: () => void;
+  categoryId?: string;
 }
 
 interface InquiryForm {
