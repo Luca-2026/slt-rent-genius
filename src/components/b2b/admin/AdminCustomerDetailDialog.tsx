@@ -126,6 +126,7 @@ export function AdminCustomerDetailDialog({
   const [loadingDiscounts, setLoadingDiscounts] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [resendingEmail, setResendingEmail] = useState(false);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
