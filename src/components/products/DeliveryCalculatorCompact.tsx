@@ -108,6 +108,14 @@ const categoryMapping: Record<string, CategoryKey> = {
   "heizung-klima": "event",
   "buehnen-podeste": "event",
   "gerueste": "geruest",
+  "leitern-gerueste": "geruest",
+  "gartenpflege": "event",
+  "werkzeuge": "event",
+  "kommunikation": "event",
+  "traversen": "event",
+  "stromerzeuger": "event",
+  "kabel-leitungen": "event",
+  "absperrung-sicherheit": "event",
 };
 
 interface DeliveryCalculatorCompactProps {
