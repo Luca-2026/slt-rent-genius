@@ -138,7 +138,7 @@ export function PublicChatAssistant() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-24 left-6 md:left-auto md:right-6 z-50 w-[calc(100vw-3rem)] max-w-[360px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="fixed bottom-24 right-6 z-50 w-[calc(100vw-3rem)] max-w-[360px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           style={{ height: "520px" }}
         >
           {/* Header */}
