@@ -201,11 +201,12 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                           </p>
                         )}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                         {rp.file_url && (
                           <Button
                             variant="outline"
                             size="sm"
+                            className="h-10 sm:h-9 flex-1 sm:flex-none"
                             onClick={() => openInvoiceInNewWindow(rp.file_url!)}
                           >
                             <Eye className="h-4 w-4 mr-1.5" />
@@ -215,6 +216,7 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="h-10 sm:h-9 flex-1 sm:flex-none"
                           onClick={() => sendEmail(rp.id)}
                           disabled={sendingId === rp.id}
                         >
@@ -224,6 +226,7 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                         <Button
                           variant="destructive"
                           size="sm"
+                          className="h-10 sm:h-9"
                           onClick={() => handleDelete(rp)}
                           disabled={deletingId === rp.id}
                         >
