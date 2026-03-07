@@ -531,7 +531,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
-    rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR" } 
+    rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
 
   // === AUTOTRANSPORT ===
