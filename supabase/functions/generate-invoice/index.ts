@@ -242,11 +242,7 @@ Deno.serve(async (req: Request) => {
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
-    // Use service role client for admin operations
-    const serviceClient = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    // serviceClient already created above
 
     // Generate invoice number
     const { data: invoiceNumData, error: invoiceNumError } = await serviceClient
