@@ -223,12 +223,16 @@ export default function AdminDashboard() {
     }
   };
 
-  const generateInvoice = async (reservation: Reservation) => {
+  const generateInvoice = async (reservation: Reservation | null) => {
     setGeneratingInvoice(true);
     try {
       // If invoice is being created from an accepted offer, use the offer items
       const offer = invoiceFromOffer;
-      let invoiceBody: any = { reservation_id: reservation.id, delivery_cost: 0 };
+      let invoiceBody: any = {};
+
+      if (reservation) {
+        invoiceBody.reservation_id = reservation.id;
+      }
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
@@ -238,9 +242,9 @@ export default function AdminDashboard() {
           quantity: item.quantity,
           unit_price: item.unit_price,
           discount_percent: item.discount_percent || 0,
-          rental_start: item.rental_start || reservation.start_date,
-          rental_end: item.rental_end || reservation.end_date,
-          image_url: getProductImageUrl(reservation.product_id) || getProductImageUrlByName(item.product_name) || undefined,
+          rental_start: item.rental_start || reservation?.start_date,
+          rental_end: item.rental_end || reservation?.end_date,
+          image_url: (reservation ? getProductImageUrl(reservation.product_id) : null) || getProductImageUrlByName(item.product_name) || undefined,
         }));
 
         // Append surcharges as line items
@@ -254,8 +258,13 @@ export default function AdminDashboard() {
             discount_percent: 0,
           }));
 
+        // For standalone offers (no reservation), use b2b_profile_id directly
+        if (!reservation) {
+          invoiceBody.b2b_profile_id = offer.b2b_profile_id;
+        }
+
         invoiceBody = {
-          reservation_id: reservation.id,
+          ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
           custom_items: [...mainItems, ...surchargeItems],
           notes: proformaMode
@@ -263,7 +272,7 @@ export default function AdminDashboard() {
             : (offer.notes || undefined),
           is_proforma: proformaMode,
         };
-      } else {
+      } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals
         let targetReservations = [reservation];
         if (reservation.rental_group_id) {
@@ -889,34 +898,18 @@ export default function AdminDashboard() {
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
-              if (matchingReservation) {
-                setSelectedReservation(matchingReservation);
-                setInvoiceFromOffer(offer);
-                setInvoiceDialogOpen(true);
-              } else {
-                toast({
-                  title: "Fehler",
-                  description: "Keine zugehörige Reservierung gefunden.",
-                  variant: "destructive",
-                });
-              }
+              setSelectedReservation(matchingReservation);
+              setInvoiceFromOffer(offer);
+              setInvoiceDialogOpen(true);
             }}
             onCreateProformaInvoice={(offer) => {
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
-              if (matchingReservation) {
-                setSelectedReservation(matchingReservation);
-                setInvoiceFromOffer(offer);
-                setProformaMode(true);
-                setInvoiceDialogOpen(true);
-              } else {
-                toast({
-                  title: "Fehler",
-                  description: "Keine zugehörige Reservierung gefunden.",
-                  variant: "destructive",
-                });
-              }
+              setSelectedReservation(matchingReservation);
+              setInvoiceFromOffer(offer);
+              setProformaMode(true);
+              setInvoiceDialogOpen(true);
             }}
             onCreateDeliveryNote={(offer) => {
               setDeliveryNoteOffer(offer);
@@ -1050,7 +1043,7 @@ export default function AdminDashboard() {
                   : "Erstelle eine Rechnung für diesen Mietvertrag."}
             </DialogDescription>
           </DialogHeader>
-          {selectedReservation && (
+          {(selectedReservation || invoiceFromOffer) && (
             <div className="space-y-4">
               <Card>
                 <CardContent className="p-4 space-y-2">
@@ -1078,7 +1071,7 @@ export default function AdminDashboard() {
                         <span>{formatCurrency(invoiceFromOffer.gross_amount)}</span>
                       </div>
                     </>
-                  ) : (
+                  ) : selectedReservation ? (
                     <>
                       <p className="font-semibold">{selectedReservation.product_name || selectedReservation.product_id}</p>
                       <p className="text-sm text-muted-foreground">
@@ -1096,9 +1089,10 @@ export default function AdminDashboard() {
                         </p>
                       )}
                     </>
-                  )}
+                  ) : null}
                   {(() => {
-                    const profile = profiles.find((p) => p.id === selectedReservation.b2b_profile_id);
+                    const profileId = selectedReservation?.b2b_profile_id || invoiceFromOffer?.b2b_profile_id;
+                    const profile = profileId ? profiles.find((p) => p.id === profileId) : null;
                     return profile?.tax_id && profile.vat_id_verified ? (
                       <Badge variant="outline" className="text-primary">
                         <Shield className="h-3 w-3 mr-1" />Reverse-Charge

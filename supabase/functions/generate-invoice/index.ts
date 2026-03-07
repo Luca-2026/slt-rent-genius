@@ -31,7 +31,8 @@ const SLT_COMPANY = {
 };
 
 interface InvoiceRequest {
-  reservation_id: string;
+  reservation_id?: string;
+  b2b_profile_id?: string;
   custom_items?: Array<{
     product_name: string;
     description?: string;
@@ -45,10 +46,11 @@ interface InvoiceRequest {
   delivery_cost?: number;
   payment_due_days?: number;
   notes?: string;
-  image_url?: string; // Fallback image for auto-generated items
+  image_url?: string;
   is_correction?: boolean;
   original_invoice_number?: string;
   send_email?: boolean;
+  is_proforma?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -100,38 +102,73 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true } = body;
+    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false } = body;
 
-    console.log("Generating invoice for reservation:", reservation_id);
-
-    // Fetch reservation with profile
-    const { data: reservation, error: resError } = await supabase
-      .from("b2b_reservations")
-      .select("*")
-      .eq("id", reservation_id)
-      .single();
-
-    if (resError || !reservation) {
-      console.error("Reservation not found:", resError);
-      return new Response(JSON.stringify({ error: "Reservation not found" }), {
-        status: 404,
+    if (!reservation_id && !directProfileId) {
+      return new Response(JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }), {
+        status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Fetch B2B profile
-    const { data: profile, error: profileError } = await supabase
-      .from("b2b_profiles")
-      .select("*")
-      .eq("id", reservation.b2b_profile_id)
-      .single();
+    console.log("Generating invoice for", reservation_id ? `reservation: ${reservation_id}` : `profile: ${directProfileId}`);
 
-    if (profileError || !profile) {
-      console.error("Profile not found:", profileError);
-      return new Response(JSON.stringify({ error: "B2B profile not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    let reservation: any = null;
+    let profile: any = null;
+
+    const serviceClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    if (reservation_id) {
+      // Fetch reservation
+      const { data: resData, error: resError } = await supabase
+        .from("b2b_reservations")
+        .select("*")
+        .eq("id", reservation_id)
+        .single();
+
+      if (resError || !resData) {
+        console.error("Reservation not found:", resError);
+        return new Response(JSON.stringify({ error: "Reservation not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      reservation = resData;
+
+      // Fetch B2B profile via reservation
+      const { data: profileData, error: profileError } = await supabase
+        .from("b2b_profiles")
+        .select("*")
+        .eq("id", reservation.b2b_profile_id)
+        .single();
+
+      if (profileError || !profileData) {
+        console.error("Profile not found:", profileError);
+        return new Response(JSON.stringify({ error: "B2B profile not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      profile = profileData;
+    } else {
+      // Direct profile-based invoice (standalone, e.g. proforma from offer)
+      const { data: profileData, error: profileError } = await serviceClient
+        .from("b2b_profiles")
+        .select("*")
+        .eq("id", directProfileId)
+        .single();
+
+      if (profileError || !profileData) {
+        console.error("Profile not found:", profileError);
+        return new Response(JSON.stringify({ error: "B2B profile not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      profile = profileData;
     }
 
     // Use profile's payment terms, fallback to body override, then default 14
@@ -154,12 +191,12 @@ Deno.serve(async (req: Request) => {
           unit_price: item.unit_price,
           discount_percent: item.discount_percent || 0,
           total_price: Math.round(totalPrice * 100) / 100,
-          rental_start: item.rental_start || reservation.start_date,
-          rental_end: item.rental_end || reservation.end_date,
+          rental_start: item.rental_start || reservation?.start_date || null,
+          rental_end: item.rental_end || reservation?.end_date || null,
           image_url: item.image_url || fallbackImageUrl || null,
         };
       });
-    } else {
+    } else if (reservation) {
       // Auto-generate items: check for grouped rentals (rental_group_id)
       let allReservations = [reservation];
 
@@ -197,6 +234,11 @@ Deno.serve(async (req: Request) => {
           image_url: fallbackImageUrl || null,
         };
       });
+    } else {
+      return new Response(JSON.stringify({ error: "custom_items required when no reservation_id is provided" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Calculate totals
@@ -205,11 +247,7 @@ Deno.serve(async (req: Request) => {
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
-    // Use service role client for admin operations
-    const serviceClient = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    // serviceClient already created above
 
     // Generate invoice number
     const { data: invoiceNumData, error: invoiceNumError } = await serviceClient
@@ -284,7 +322,7 @@ Deno.serve(async (req: Request) => {
       .from("b2b_invoices")
       .insert({
         b2b_profile_id: profile.id,
-        reservation_id: reservation_id,
+        reservation_id: reservation_id || null,
         invoice_number: invoiceNumber,
         invoice_date: invoiceDate,
         due_date: dueDate,
