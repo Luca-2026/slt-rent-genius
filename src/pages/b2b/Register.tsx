@@ -109,6 +109,17 @@ export default function B2BRegister() {
     setIsLoading(true);
 
     try {
+      // Convert document to base64 for email attachment
+      const documentBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = (reader.result as string).split(",")[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(documentFile);
+      });
+
       // 1. Create user account
       const { error: signUpError, data: signUpData } = await signUp(email, password);
       if (signUpError) throw signUpError;
@@ -128,6 +139,22 @@ export default function B2BRegister() {
 
       const userId = user.id;
       const hasSession = !!signUpData?.session;
+      const assignedLocation = getNearestLocation(postalCode);
+
+      // Build notification payload with all data + document
+      const notificationPayload = {
+        companyName, legalForm,
+        contactName: `${firstName} ${lastName}`,
+        contactEmail: email, contactPhone: phone,
+        contactPosition: position,
+        billingEmail,
+        street, houseNumber,
+        city, postalCode, assignedLocation, taxId,
+        tradeRegisterNumber,
+        postalInvoice,
+        documentBase64,
+        documentFilename: documentFile.name,
+      };
 
       if (hasSession) {
         // Session available — upload document and create profile directly
@@ -143,8 +170,6 @@ export default function B2BRegister() {
         const { data: { publicUrl } } = supabase.storage
           .from("b2b-documents")
           .getPublicUrl(fileName);
-
-        const assignedLocation = getNearestLocation(postalCode);
 
         const { error: profileError } = await supabase.from("b2b_profiles").insert({
           user_id: userId,
@@ -171,14 +196,10 @@ export default function B2BRegister() {
 
         if (profileError) throw profileError;
 
-        // Notify b2b@slt-rental.de about new registration
+        // Send notification email with document attachment
         try {
           await supabase.functions.invoke("notify-b2b-registration", {
-            body: {
-              companyName, legalForm, contactName: `${firstName} ${lastName}`,
-              contactEmail: email, contactPhone: phone,
-              city, postalCode, assignedLocation, taxId,
-            },
+            body: notificationPayload,
           });
         } catch (notifyErr) {
           console.error("Notification failed (non-blocking):", notifyErr);
@@ -199,15 +220,10 @@ export default function B2BRegister() {
           postalInvoice,
         }));
 
-        // Notify b2b@slt-rental.de about new registration (even before email confirmation)
-        const assignedLocation = getNearestLocation(postalCode);
+        // Send notification email with document attachment immediately
         try {
           await supabase.functions.invoke("notify-b2b-registration", {
-            body: {
-              companyName, legalForm, contactName: `${firstName} ${lastName}`,
-              contactEmail: email, contactPhone: phone,
-              city, postalCode, assignedLocation, taxId,
-            },
+            body: notificationPayload,
           });
         } catch (notifyErr) {
           console.error("Notification failed (non-blocking):", notifyErr);
