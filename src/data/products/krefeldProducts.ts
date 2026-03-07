@@ -2886,7 +2886,7 @@ export const moebelZelteProducts: Product[] = [
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
     },
     pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
-    rentwareCode: { krefeld: "EVENTZELT6X8" }
+    rentwareCode: { krefeld: "7PGYQB" }
   },
   {
     id: "bierzeltgarnitur-set",
