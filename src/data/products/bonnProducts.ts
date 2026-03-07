@@ -1036,7 +1036,7 @@ export const bonnHeizungProducts = [
       "Elektroanschluss": "400 V (Drehstrom / CEE)",
       "Luftumwälzung": "845 m³/h",
     },
-    rentwareCode: { bonn: "" },
+    rentwareCode: { bonn: "QHFZ9G" },
   },
 ];
 
