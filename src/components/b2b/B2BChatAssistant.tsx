@@ -141,7 +141,7 @@ export function B2BChatAssistant() {
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-24 left-6 z-50 w-[360px] max-w-[calc(100vw-1.5rem)] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-1.5rem)] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           style={{ height: "520px" }}>
           {/* Header */}
           <div className="bg-primary px-4 py-3 flex items-center gap-3">
