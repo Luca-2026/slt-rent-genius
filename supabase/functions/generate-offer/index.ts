@@ -504,6 +504,14 @@ Deno.serve(async (req: Request) => {
           ? `<tr><td style="font-size:13px;color:#555;">zzgl. Kaution:</td><td style="text-align:right;font-size:13px;font-weight:600;">${formatCurrency(deposit)}</td></tr>`
           : "";
 
+        // Build services HTML for email
+        const servicesEmailHtml = servicesWithPrices.length > 0
+          ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+              <p style="font-size:13px;font-weight:600;color:#166534;margin:0 0 8px;">Zusatzleistungen:</p>
+              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)}${s.amount > 0 ? ` – <strong>${formatCurrency(s.amount)}</strong> (${s.pricePercent}%)` : ' – inklusive'}</p>`).join("")}
+            </div>`
+          : "";
+
         const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
 
         const emailHtml = `
