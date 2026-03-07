@@ -590,7 +590,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "plattform",
     tags: ["gebremst", "zweiachser"], 
-    rentwareCode: { krefeld: "BOLUXJ" } 
+    rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
   },
 
   // === LAUBGITTER ===

@@ -5239,7 +5239,7 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Anzahl Zähne": "4",
       "Gewicht": "48 kg",
     },
-    rentwareCode: { krefeld: "7A6LGC" }
+    rentwareCode: { krefeld: "7A6LGC", muelheim: "JM8TLN" }
   },
   {
     id: "ms03-tiefloeffel-30cm-symlock",
