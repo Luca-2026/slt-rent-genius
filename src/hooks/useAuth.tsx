@@ -135,7 +135,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isApprovedB2B = b2bProfile?.status === "approved";
 
-  return (
+  // Complete pending B2B registration after email confirmation
+  useCompleteRegistration(user);
     <AuthContext.Provider
       value={{
         user,
