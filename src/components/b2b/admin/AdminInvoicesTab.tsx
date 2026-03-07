@@ -258,14 +258,14 @@ export function AdminInvoicesTab({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3">
         <div>
-          <h2 className="text-lg font-semibold">Alle Rechnungen</h2>
+          <h2 className="text-base sm:text-lg font-semibold">Alle Rechnungen</h2>
           <p className="text-sm text-muted-foreground">Rechnungsstatus verwalten, Korrekturen und Gutschriften erstellen</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Select value={exportMonth} onValueChange={setExportMonth}>
-            <SelectTrigger className="w-[180px] h-9 text-sm">
+            <SelectTrigger className="w-full sm:w-[180px] h-10 sm:h-9 text-sm">
               <SelectValue placeholder="Monat wählen" />
             </SelectTrigger>
             <SelectContent>
@@ -279,11 +279,12 @@ export function AdminInvoicesTab({
             size="sm"
             onClick={exportCsv}
             disabled={exporting || invoices.length === 0}
+            className="h-10 sm:h-9"
           >
             <Download className="h-3.5 w-3.5 mr-1.5" />
             {exporting ? "Exportiere..." : "CSV Export"}
           </Button>
-          <Button variant="outline" size="sm" onClick={onRefresh}>
+          <Button variant="outline" size="sm" onClick={onRefresh} className="h-10 sm:h-9">
             <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
             Aktualisieren
           </Button>
@@ -301,26 +302,125 @@ export function AdminInvoicesTab({
           </CardContent>
         </Card>
       ) : (
-        <Card>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Rechnungsnr.</TableHead>
-                  <TableHead>Kunde</TableHead>
-                  <TableHead>Datum</TableHead>
-                  <TableHead>Fällig</TableHead>
-                  <TableHead className="text-right">Brutto</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoices.map((inv) => (
-                  <TableRow key={inv.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">{inv.invoice_number}</p>
+        <>
+          {/* Desktop table */}
+          <Card className="hidden md:block">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Rechnungsnr.</TableHead>
+                    <TableHead>Kunde</TableHead>
+                    <TableHead>Datum</TableHead>
+                    <TableHead>Fällig</TableHead>
+                    <TableHead className="text-right">Brutto</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Aktionen</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {invoices.map((inv) => (
+                    <TableRow key={inv.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-sm">{inv.invoice_number}</p>
+                          {inv.is_reverse_charge && (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
+                          )}
+                          {inv.notes?.includes("RECHNUNGSKORREKTUR") && (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-amber-600 border-amber-300">Korrektur</Badge>
+                          )}
+                          {inv.notes?.includes("GUTSCHRIFT") && (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
+                      <TableCell className="text-sm">{formatDate(inv.invoice_date)}</TableCell>
+                      <TableCell className="text-sm">
+                        {inv.due_date ? formatDate(inv.due_date) : "–"}
+                      </TableCell>
+                      <TableCell className="text-right font-medium text-sm">
+                        {formatCurrency(inv.gross_amount)}
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          value={inv.status}
+                          onValueChange={(v) => onStatusChange(inv.id, v)}
+                        >
+                          <SelectTrigger className={`w-[130px] h-8 text-xs border ${statusColor(inv.status)}`}>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="open">Offen</SelectItem>
+                            <SelectItem value="paid">Bezahlt</SelectItem>
+                            <SelectItem value="overdue">Überfällig</SelectItem>
+                            <SelectItem value="cancelled">Storniert</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          {inv.file_url && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              <span className="text-xs">PDF</span>
+                            </Button>
+                          )}
+                          {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
+                            <>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => openCorrectionDialog(inv, "correction")}
+                                title="Rechnungskorrektur erstellen"
+                              >
+                                <FileX className="h-3.5 w-3.5 mr-1" />
+                                <span className="hidden lg:inline text-xs">Korrektur</span>
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-red-600"
+                                onClick={() => openCorrectionDialog(inv, "credit")}
+                                title="Gutschrift erstellen"
+                              >
+                                <Minus className="h-3.5 w-3.5 mr-1" />
+                                <span className="hidden lg:inline text-xs">Gutschrift</span>
+                              </Button>
+                            </>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-destructive"
+                            onClick={() => setDeleteConfirmInvoice(inv)}
+                            title="Rechnung löschen"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+
+          {/* Mobile card layout */}
+          <div className="md:hidden space-y-3">
+            {invoices.map((inv) => (
+              <Card key={inv.id}>
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-sm">{inv.invoice_number}</span>
                         {inv.is_reverse_charge && (
                           <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                         )}
@@ -331,83 +431,79 @@ export function AdminInvoicesTab({
                           <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
                         )}
                       </div>
-                    </TableCell>
-                    <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
-                    <TableCell className="text-sm">{formatDate(inv.invoice_date)}</TableCell>
-                    <TableCell className="text-sm">
-                      {inv.due_date ? formatDate(inv.due_date) : "–"}
-                    </TableCell>
-                    <TableCell className="text-right font-medium text-sm">
-                      {formatCurrency(inv.gross_amount)}
-                    </TableCell>
-                    <TableCell>
-                      <Select
-                        value={inv.status}
-                        onValueChange={(v) => onStatusChange(inv.id, v)}
+                      <p className="text-sm text-muted-foreground">{inv.customer_company || "–"}</p>
+                    </div>
+                    <p className="font-semibold text-sm whitespace-nowrap">{formatCurrency(inv.gross_amount)}</p>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                    <span>Datum: {formatDate(inv.invoice_date)}</span>
+                    <span>Fällig: {inv.due_date ? formatDate(inv.due_date) : "–"}</span>
+                  </div>
+
+                  <Select
+                    value={inv.status}
+                    onValueChange={(v) => onStatusChange(inv.id, v)}
+                  >
+                    <SelectTrigger className={`w-full h-10 text-sm border ${statusColor(inv.status)}`}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="open">Offen</SelectItem>
+                      <SelectItem value="paid">Bezahlt</SelectItem>
+                      <SelectItem value="overdue">Überfällig</SelectItem>
+                      <SelectItem value="cancelled">Storniert</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <div className="flex flex-wrap gap-2">
+                    {inv.file_url && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                        className="h-10"
                       >
-                        <SelectTrigger className={`w-[130px] h-8 text-xs border ${statusColor(inv.status)}`}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="open">Offen</SelectItem>
-                          <SelectItem value="paid">Bezahlt</SelectItem>
-                          <SelectItem value="overdue">Überfällig</SelectItem>
-                          <SelectItem value="cancelled">Storniert</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        {inv.file_url && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            <span className="hidden sm:inline text-xs">PDF</span>
-                          </Button>
-                        )}
-                        {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => openCorrectionDialog(inv, "correction")}
-                              title="Rechnungskorrektur erstellen"
-                            >
-                              <FileX className="h-3.5 w-3.5 mr-1" />
-                              <span className="hidden lg:inline text-xs">Korrektur</span>
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="text-red-600"
-                              onClick={() => openCorrectionDialog(inv, "credit")}
-                              title="Gutschrift erstellen"
-                            >
-                              <Minus className="h-3.5 w-3.5 mr-1" />
-                              <span className="hidden lg:inline text-xs">Gutschrift</span>
-                            </Button>
-                           </>
-                        )}
+                        <Eye className="h-4 w-4 mr-1.5" />
+                        PDF
+                      </Button>
+                    )}
+                    {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
+                      <>
                         <Button
                           size="sm"
-                          variant="ghost"
-                          className="text-destructive"
-                          onClick={() => setDeleteConfirmInvoice(inv)}
-                          title="Rechnung löschen"
+                          variant="outline"
+                          onClick={() => openCorrectionDialog(inv, "correction")}
+                          className="h-10"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <FileX className="h-3.5 w-3.5 mr-1.5" />
+                          Korrektur
                         </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-red-600 h-10"
+                          onClick={() => openCorrectionDialog(inv, "credit")}
+                        >
+                          <Minus className="h-3.5 w-3.5 mr-1.5" />
+                          Gutschrift
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-destructive h-10"
+                      onClick={() => setDeleteConfirmInvoice(inv)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </Card>
+        </>
       )}
 
       {/* Correction / Credit Note Dialog */}
@@ -555,7 +651,7 @@ export function AdminInvoicesTab({
                 </div>
               )}
 
-              <div className="flex gap-3 justify-end pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
                 <Button variant="outline" onClick={() => setCorrectionDialogOpen(false)}>
                   Abbrechen
                 </Button>
