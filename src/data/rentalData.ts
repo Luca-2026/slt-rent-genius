@@ -627,7 +627,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "motorrad",
     tags: ["motorrad", "ungebremst", "einachser"], 
-    rentwareCode: { krefeld: "9JL36T", bonn: "BJOMV6" } 
+    rentwareCode: { krefeld: "9JL36T", bonn: "BJOMV6", muelheim: "NTIF8C" } 
   },
   { 
     id: "motorrad-1500", 
