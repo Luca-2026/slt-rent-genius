@@ -332,7 +332,7 @@ export default function B2BRegister() {
                             Firmenname *
                           </label>
                           <Input
-                            placeholder="Musterfirma GmbH"
+                            placeholder="Musterfirma (ohne Gesellschaftsform)"
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
                             required
