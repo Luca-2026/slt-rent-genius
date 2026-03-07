@@ -82,7 +82,7 @@ export default function B2BProductDetail() {
         <div className="text-center py-16">
           <Package className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
           <p className="text-muted-foreground mb-4">Das Produkt wurde nicht gefunden.</p>
-          <Button onClick={() => navigate("/b2b/produkte")}>
+          <Button onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Zurück zum Katalog
           </Button>
@@ -109,7 +109,7 @@ export default function B2BProductDetail() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => navigate("/b2b/produkte")}
+        onClick={() => navigate(-1)}
         className="mb-3 md:mb-4 -ml-2 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-1.5" />
