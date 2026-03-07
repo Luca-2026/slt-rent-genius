@@ -3182,7 +3182,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Spülmaschinenfest": "Ja",
       "Reinigungspauschale": "3,90 € (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "UK1Q7C" }
+    rentwareCode: { krefeld: "RH1TFT" }
   },
   {
     id: "kaffeetasse-12er",
