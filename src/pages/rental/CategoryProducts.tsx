@@ -689,6 +689,23 @@ export default function CategoryProducts() {
       });
     }
 
+    // Sort products for leitern-gerueste: Rollgerüste first, then Leitern, then Gerüstteile
+    if (category?.id === "leitern-gerueste") {
+      const categorySortOrder: Record<string, number> = {
+        rollgeruest: 0,
+        stehleiter: 1,
+        kombileiter: 2,
+        leiter: 3,
+        geruestteil: 4,
+        geruestteile: 4,
+      };
+      filtered.sort((a, b) => {
+        const orderA = categorySortOrder[a.category || ""] ?? 3;
+        const orderB = categorySortOrder[b.category || ""] ?? 3;
+        return orderA - orderB;
+      });
+    }
+
     return filtered;
   }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id]);
 
