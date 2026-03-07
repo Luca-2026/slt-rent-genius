@@ -171,6 +171,19 @@ export default function B2BRegister() {
 
         if (profileError) throw profileError;
 
+        // Notify b2b@slt-rental.de about new registration
+        try {
+          await supabase.functions.invoke("notify-b2b-registration", {
+            body: {
+              companyName, legalForm, contactName: `${firstName} ${lastName}`,
+              contactEmail: email, contactPhone: phone,
+              city, postalCode, assignedLocation, taxId,
+            },
+          });
+        } catch (notifyErr) {
+          console.error("Notification failed (non-blocking):", notifyErr);
+        }
+
         toast({
           title: "Registrierung erfolgreich!",
           description: "Dein Antrag wird geprüft. Du erhältst eine E-Mail, sobald dein Konto freigeschaltet wurde.",
@@ -185,6 +198,20 @@ export default function B2BRegister() {
           billingEmail, street, houseNumber, postalCode, city,
           postalInvoice,
         }));
+
+        // Notify b2b@slt-rental.de about new registration (even before email confirmation)
+        const assignedLocation = getNearestLocation(postalCode);
+        try {
+          await supabase.functions.invoke("notify-b2b-registration", {
+            body: {
+              companyName, legalForm, contactName: `${firstName} ${lastName}`,
+              contactEmail: email, contactPhone: phone,
+              city, postalCode, assignedLocation, taxId,
+            },
+          });
+        } catch (notifyErr) {
+          console.error("Notification failed (non-blocking):", notifyErr);
+        }
 
         toast({
           title: "Bestätigungs-E-Mail gesendet!",
