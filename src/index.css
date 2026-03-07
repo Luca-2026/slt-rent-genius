@@ -191,29 +191,13 @@
 }
 
 /* =============================================
-   Rentware floating cart widget (rtr-checkout)
-   
-   Strategy:
-   - Mobile  (≤768px): Rentware sits bottom-RIGHT at 24px (its natural default).
-     The SLT chat button moves to BOTTOM-LEFT on mobile so there is no overlap.
-   - Desktop (≥769px): Rentware is lifted to bottom: 96px (above chat button).
-     Chat button stays bottom-right as usual.
+   Rentware cart widget (rtr-checkout)
+   Positioned top-right, aligned with the header.
    ============================================= */
 
-/* Desktop default: Rentware above chat button */
 :root {
-  --rentware-cart-view-position-bottom: 96px;
-  --rentware-cart-view-position-right: 24px;
+  --rentware-cart-view-position-top: 52px;
+  --rentware-cart-view-position-right: 16px;
+  --rentware-cart-view-position-bottom: unset;
   --rentware-cart-view-position-left: unset;
-  --rentware-cart-view-position-top: unset;
-}
-
-/* Mobile: Rentware at natural bottom-right position */
-@media (max-width: 768px) {
-  :root {
-    --rentware-cart-view-position-bottom: 24px;
-    --rentware-cart-view-position-right: 24px;
-    --rentware-cart-view-position-left: unset;
-    --rentware-cart-view-position-top: unset;
-  }
 }

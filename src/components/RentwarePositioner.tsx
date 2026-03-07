@@ -3,15 +3,9 @@ import { useEffect } from "react";
 /**
  * RentwarePositioner
  *
- * The rtr-checkout Web Component positions its internal button via an
- * internal Shadow DOM that ignores all external CSS overrides.
- * The only reliable way to move it is to set inline styles on the
- * host element itself, which the Shadow DOM inherits for positioning.
- *
- * Strategy:
- * - Mobile  (< 769px): bottom-right at 24px – same side as the widget's
- *   natural default. The SLT chat button moves to bottom-LEFT on mobile.
- * - Desktop (≥ 769px): bottom-right at 96px – lifted above the chat button.
+ * Positions the rtr-checkout Web Component in the top-right corner
+ * of the viewport, aligned with the header area.
+ * Uses inline styles on the host element to override Shadow DOM defaults.
  */
 export function RentwarePositioner() {
   useEffect(() => {
@@ -21,24 +15,20 @@ export function RentwarePositioner() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      const isMobile = window.innerWidth < 769;
-
+      // Position in top-right, vertically centered with header
       el.style.position = "fixed";
-      el.style.bottom = isMobile ? "24px" : "96px";
-      el.style.right = "24px";
+      el.style.top = "52px"; // below marquee bar, aligned with header
+      el.style.right = "16px";
+      el.style.bottom = "unset";
       el.style.left = "unset";
-      el.style.top = "unset";
-      el.style.zIndex = "45";
+      el.style.zIndex = "51"; // above header z-50
     };
 
-    // Apply once DOM is ready
     applyStyles();
 
-    // Watch for the widget being added to DOM (it loads async)
     observer = new MutationObserver(() => applyStyles());
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Re-apply on resize
     window.addEventListener("resize", applyStyles);
 
     return () => {
