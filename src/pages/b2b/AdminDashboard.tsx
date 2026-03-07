@@ -1043,7 +1043,7 @@ export default function AdminDashboard() {
                   : "Erstelle eine Rechnung für diesen Mietvertrag."}
             </DialogDescription>
           </DialogHeader>
-          {selectedReservation && (
+          {(selectedReservation || invoiceFromOffer) && (
             <div className="space-y-4">
               <Card>
                 <CardContent className="p-4 space-y-2">
