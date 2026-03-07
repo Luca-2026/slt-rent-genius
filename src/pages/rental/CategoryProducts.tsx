@@ -746,8 +746,56 @@ export default function CategoryProducts() {
     );
   }
 
+  // SEO data for category page
+  const categoryDisplayName = category.title || categoryId || "";
+  const seoTitle = `${categoryDisplayName} mieten in ${location.name}`;
+  const seoDescription = `${categoryDisplayName} mieten in ${location.name} bei SLT Rental. ${products.length} Mietartikel verfügbar. Faire Preise, schnelle Abwicklung, persönliche Beratung.`;
+  const seoCanonical = `/mieten/${location.id}/${category.id}`;
+  const seoKeywords = `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
+
+  // Category-specific FAQs for FAQ schema
+  const categoryFaqs: Record<string, { question: string; answer: string }[]> = {
+    anhaenger: [
+      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen.` },
+      { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE.` },
+      { question: `Wie lange kann ich einen Anhänger mieten?`, answer: `Sie können unsere Anhänger stundenweise, tageweise oder wochenweise mieten. Langzeitmiete ist auf Anfrage ebenfalls möglich.` },
+    ],
+    erdbewegung: [
+      { question: `Kann ich einen Minibagger ohne Baggerschein mieten?`, answer: `Für private Bauprojekte auf Ihrem eigenen Grundstück benötigen Sie in der Regel keinen Baggerschein. Im öffentlichen Bereich ist ein Bedienerausweis erforderlich.` },
+      { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an.` },
+      { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch. Wir beraten Sie gerne!` },
+    ],
+    werkzeuge: [
+      { question: `Kann ich Werkzeuge auch nur für einen Tag mieten?`, answer: `Ja, alle Werkzeuge bei SLT Rental in ${location.name} können tageweise gemietet werden. Auch Wochenend- und Wochenmiete ist möglich.` },
+      { question: `Sind Verbrauchsmaterialien im Mietpreis enthalten?`, answer: `Verbrauchsmaterialien wie Bohrer, Trennscheiben etc. sind in der Regel nicht im Mietpreis enthalten, können aber separat erworben werden.` },
+    ],
+  };
+
+  const faqs = categoryFaqs[category.id] || [
+    { question: `Kann ich ${categoryDisplayName} in ${location.name} mieten?`, answer: `Ja! SLT Rental bietet ${categoryDisplayName} zur Miete in ${location.name} an. Wählen Sie aus ${products.length} verfügbaren Artikeln.` },
+    { question: `Wie kann ich bei SLT Rental ${categoryDisplayName} reservieren?`, answer: `Sie können direkt über unsere Website buchen oder uns telefonisch bzw. per E-Mail kontaktieren. Auf-Anfrage-Artikel werden innerhalb eines Werktages bestätigt.` },
+    { question: `Bietet SLT Rental Lieferung für ${categoryDisplayName} an?`, answer: `Ja, wir liefern ${categoryDisplayName} direkt zu Ihrem Einsatzort in ${location.name} und Umgebung. Die Lieferkosten können Sie mit unserem Online-Rechner ermitteln.` },
+  ];
+
+  const jsonLdArray = [
+    SLT_LOCATION_JSONLD(location.id),
+    SLT_BREADCRUMB_JSONLD([
+      { name: "Home", url: "/" },
+      { name: location.name, url: `/mieten/${location.id}` },
+      { name: categoryDisplayName, url: seoCanonical },
+    ]),
+    SLT_FAQ_JSONLD(faqs),
+  ];
+
   return (
     <Layout>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={seoCanonical}
+        keywords={seoKeywords}
+        jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
+      />
       {/* Header */}
       <section className="bg-primary py-8 lg:py-12">
         <div className="section-container">
