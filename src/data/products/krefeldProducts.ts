@@ -105,6 +105,7 @@ import imgRollgeruestKrause64m3 from "@/assets/products/rollgeruest-krause-64m-3
 import imgRollgeruestKrause54m1 from "@/assets/products/rollgeruest-krause-54m-1.jpeg";
 import imgRollgeruestKrause54m2 from "@/assets/products/rollgeruest-krause-54m-2.jpeg";
 import imgRollgeruestKrause54m3 from "@/assets/products/rollgeruest-krause-54m-3.jpeg";
+import imgHailoL60 from "@/assets/products/hailo-l60-6stufen.jpeg";
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
 import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-2.jpeg";
@@ -3723,13 +3724,14 @@ export const leiternGeruesteProducts: Product[] = [
   {
     id: "stehleiter-hailo-l60-6stufen",
     name: "Hailo L60 – 6 Stufen",
-    description: "Alu-Stehleiter 6 Stufen, standfest und leicht. Geeignet für Innen- und Außenarbeiten.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
+    description: "Alu-Stehleiter mit 5 Stufen, standfest und leicht. Geeignet für Innen- und Außenarbeiten.",
+    image: imgHailoL60,
+    images: [imgHailoL60],
     category: "stehleiter",
     specifications: {
-      "Stufenanzahl": "6",
-      "Arbeitshöhe": "ca. 2,8 m",
+      "Stufenanzahl": "5",
+      "Leiterlänge": "1,90 m",
+      "Plattformhöhe": "1,28 m",
       "Material": "Aluminium",
       "Max. Belastung": "150 kg",
     },

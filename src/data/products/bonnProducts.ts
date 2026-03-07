@@ -169,6 +169,7 @@ import imgRollgeruestKrause64m3 from "@/assets/products/rollgeruest-krause-64m-3
 import imgRollgeruestKrause54m1 from "@/assets/products/rollgeruest-krause-54m-1.jpeg";
 import imgRollgeruestKrause54m2 from "@/assets/products/rollgeruest-krause-54m-2.jpeg";
 import imgRollgeruestKrause54m3 from "@/assets/products/rollgeruest-krause-54m-3.jpeg";
+import imgHailoL60 from "@/assets/products/hailo-l60-6stufen.jpeg";
 
 // Shared images with Krefeld - Erdbewegung
 import imgBodenschutz1 from "@/assets/products/erdbewegung/bodenschutz-fahrmatten-1.jpg";
@@ -1229,12 +1230,14 @@ export const bonnLeiternProducts = [
   {
     id: "bonn-hailo-l60-6",
     name: "Hailo L60 – 6 Stufen",
-    description: "Alu-Stehleiter 6 Stufen, standfest und leicht.",
-    image: "/placeholder.svg",
+    description: "Alu-Stehleiter mit 5 Stufen, standfest und leicht.",
+    image: imgHailoL60,
+    images: [imgHailoL60],
     category: "stehleiter",
     specifications: {
-      "Stufenanzahl": "6",
-      "Arbeitshöhe": "ca. 2,8 m",
+      "Stufenanzahl": "5",
+      "Leiterlänge": "1,90 m",
+      "Plattformhöhe": "1,28 m",
       "Material": "Aluminium",
       "Max. Belastung": "150 kg",
     },
