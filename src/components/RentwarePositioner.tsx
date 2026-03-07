@@ -3,9 +3,9 @@ import { useEffect } from "react";
 /**
  * RentwarePositioner
  *
- * The rtr-checkout Web Component uses Shadow DOM for its internal button.
- * We use CSS custom properties (which DO penetrate Shadow DOM) plus
- * inline styles on the host element, plus direct Shadow DOM style injection.
+ * Positions the rtr-checkout Web Component in the header area.
+ * Marquee bar: 0-40px, Header row: 40-120px, center = 80px.
+ * Target: vertically centered in header, same size as chat button (56px).
  */
 export function RentwarePositioner() {
   useEffect(() => {
@@ -15,15 +15,18 @@ export function RentwarePositioner() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      // 1. Inline styles on host element
+      // Position: centered in header row (40-120px, center=80px)
+      // With 56px height: top = 80 - 28 = 52px
       el.style.position = "fixed";
-      el.style.top = "56px"; // below marquee, centered with header buttons
+      el.style.top = "52px";
       el.style.right = "16px";
       el.style.bottom = "unset";
       el.style.left = "unset";
       el.style.zIndex = "51";
+      el.style.width = "56px";
+      el.style.height = "56px";
 
-      // 2. Try to reach into Shadow DOM and style the internal button
+      // Shadow DOM style injection
       if (el.shadowRoot) {
         let styleTag = el.shadowRoot.querySelector("#slt-pos-override") as HTMLStyleElement;
         if (!styleTag) {
@@ -34,31 +37,33 @@ export function RentwarePositioner() {
         styleTag.textContent = `
           :host {
             position: fixed !important;
-            top: 56px !important;
+            top: 52px !important;
             right: 16px !important;
             bottom: unset !important;
             left: unset !important;
             z-index: 51 !important;
+            width: 56px !important;
+            height: 56px !important;
           }
-          /* Target common internal button wrappers */
+          /* Scale internal button to match 56px */
           .cart-button, .rtr-cart-button, [class*="cart"], [class*="toggle"], button {
             position: relative !important;
             top: 0 !important;
             right: 0 !important;
             bottom: unset !important;
+            width: 56px !important;
+            height: 56px !important;
+            min-width: 56px !important;
+            min-height: 56px !important;
           }
         `;
       }
     };
 
-    // Apply once DOM is ready
     applyStyles();
 
-    // Watch for the widget being added to DOM (it loads async)
     observer = new MutationObserver(() => applyStyles());
     observer.observe(document.body, { childList: true, subtree: true });
-
-    // Re-apply on resize
     window.addEventListener("resize", applyStyles);
 
     return () => {
