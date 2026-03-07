@@ -19,6 +19,7 @@ import {
   getCategoryById,
   getProductById,
   getProductsForLocationCategory,
+  getAllProductsForLocation,
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
@@ -43,7 +44,20 @@ export default function ProductDetail() {
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
   const category = useTranslatedCategory(rawCategory) || rawCategory;
-  const rawProduct = useMemo(() => getProductById(productId || ""), [productId]);
+  const rawProduct = useMemo(() => {
+    // Find the product in the specific location to get correct rentwareCode
+    if (location && categoryId) {
+      const locationProducts = getProductsForLocationCategory(location.id, categoryId);
+      const found = locationProducts.find((p) => p.id === productId);
+      if (found) return found;
+    }
+    if (location) {
+      const allLocationProducts = getAllProductsForLocation(location.id);
+      const found = allLocationProducts.find((p) => p.id === productId);
+      if (found) return found;
+    }
+    return getProductById(productId || "");
+  }, [productId, location, categoryId]);
   const product = useTranslatedProduct(rawProduct);
 
   const rawRelatedProducts = useMemo(() => {
