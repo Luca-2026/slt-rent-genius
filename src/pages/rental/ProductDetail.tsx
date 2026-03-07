@@ -764,6 +764,7 @@ export default function ProductDetail() {
         location={location}
         isOpen={showBookingDialog}
         onClose={() => setShowBookingDialog(false)}
+        categoryId={categoryId}
       />
     </Layout>
   );

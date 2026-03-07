@@ -1290,6 +1290,7 @@ export default function CategoryProducts() {
         location={location}
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
+        categoryId={categoryId}
       />
     </Layout>
   );
