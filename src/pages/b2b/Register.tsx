@@ -176,9 +176,28 @@ export default function B2BRegister() {
       navigate("/b2b/dashboard");
     } catch (error: any) {
       console.error("Registration error:", error);
+      
+      let errorTitle = "Registrierung fehlgeschlagen";
+      let errorDescription = error.message || "Ein Fehler ist aufgetreten. Bitte versuche es erneut.";
+      
+      const msg = (error.message || "").toLowerCase();
+      if (msg.includes("rate limit") || msg.includes("rate_limit")) {
+        errorTitle = "Zu viele Versuche";
+        errorDescription = "Bitte warte einige Minuten und versuche es dann erneut.";
+      } else if (msg.includes("already registered") || msg.includes("bereits registriert")) {
+        errorTitle = "E-Mail bereits vergeben";
+        errorDescription = "Diese E-Mail-Adresse ist bereits registriert. Bitte melde dich über die Login-Seite an oder setze dein Passwort zurück.";
+      } else if (msg.includes("password") && (msg.includes("short") || msg.includes("weak") || msg.includes("length"))) {
+        errorTitle = "Passwort zu schwach";
+        errorDescription = "Bitte wähle ein stärkeres Passwort mit mindestens 6 Zeichen.";
+      } else if (msg.includes("invalid") && msg.includes("email")) {
+        errorTitle = "Ungültige E-Mail";
+        errorDescription = "Bitte gib eine gültige E-Mail-Adresse ein.";
+      }
+      
       toast({
-        title: "Registrierung fehlgeschlagen",
-        description: error.message || "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+        title: errorTitle,
+        description: errorDescription,
         variant: "destructive",
       });
     } finally {
