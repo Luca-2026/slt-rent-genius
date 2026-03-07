@@ -87,7 +87,7 @@ export default function B2BRegister() {
   };
 
   const validateStep2 = () => {
-    if (!companyName || !firstName || !lastName || !phone || !street || !postalCode || !city) {
+    if (!companyName || !firstName || !lastName || !phone || !street || !houseNumber || !postalCode || !city) {
       toast({ title: "Bitte alle Pflichtfelder ausfüllen", variant: "destructive" });
       return false;
     }
@@ -332,7 +332,7 @@ export default function B2BRegister() {
                             Firmenname *
                           </label>
                           <Input
-                            placeholder="Musterfirma GmbH"
+                            placeholder="Musterfirma (ohne Gesellschaftsform)"
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
                             required
@@ -452,12 +452,13 @@ export default function B2BRegister() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-headline mb-1.5">
-                            Hausnr.
+                            Hausnr. *
                           </label>
                           <Input
                             placeholder="123"
                             value={houseNumber}
                             onChange={(e) => setHouseNumber(e.target.value)}
+                            required
                           />
                         </div>
                         <div>
