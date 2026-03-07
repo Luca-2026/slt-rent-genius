@@ -736,21 +736,29 @@ async function generateOfferPdf(data: {
     }
   };
 
-  // ── HEADER ──
-  drawText("SLT Technology Group GmbH & Co. KG", margin, y, { f: fontBold, s: 12, c: blue });
-  y -= 14;
-  drawText("SLT-Rental", margin, y, { f: fontBold, s: 9, c: gray });
-  drawTextRight("ANGEBOT", pageWidth - margin, pageHeight - 50, { f: fontBold, s: 22, c: black });
-  drawTextRight("Nr. " + data.offerNumber, pageWidth - margin, pageHeight - 68, { s: 11, c: gray });
-  y -= 8;
-  page.drawRectangle({ x: margin, y, width: contentWidth, height: 2.5, color: blue });
-  y -= 20;
+  // ── HEADER with Logo ──
+  try {
+    const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
+    const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
+    const logoImage = await doc.embedPng(logoBytes);
+    const logoScale = 45 / logoImage.height;
+    page.drawImage(logoImage, { x: margin, y: y - 45, width: logoImage.width * logoScale, height: 45 });
+  } catch {}
 
-  // ── SENDER LINE ──
-  drawText(safe(SLT_COMPANY.name) + " | " + safe(SLT_COMPANY.street) + " | " + safe(SLT_COMPANY.city), margin, y, { s: 7, c: lightGray });
-  y -= 4;
-  page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.8, 0.8, 0.8) });
-  y -= 20;
+  // Company info right-aligned
+  [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
+    const tw = font.widthOfTextAtSize(l, 7);
+    drawText(l, pageWidth - margin - tw, y - 10 - i * 10, { s: 7, c: lightGray });
+  });
+  y -= 60;
+  page.drawRectangle({ x: margin, y, width: contentWidth, height: 2.5, color: blue });
+  y -= 30;
+  drawText("ANGEBOT", margin, y, { f: fontBold, s: 18, c: blue });
+  y -= 22;
+  drawText(data.offerNumber, margin, y, { f: fontBold, s: 11 });
+  const offerDateStr = `Datum: ${fmtDate(data.offerDate)}`;
+  drawTextRight(offerDateStr, pageWidth - margin, y, { s: 10 });
+  y -= 30;
 
   // ── ADDRESS BLOCK ──
   const addrY = y;
