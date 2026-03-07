@@ -31,7 +31,8 @@ const SLT_COMPANY = {
 };
 
 interface InvoiceRequest {
-  reservation_id: string;
+  reservation_id?: string;
+  b2b_profile_id?: string;
   custom_items?: Array<{
     product_name: string;
     description?: string;
@@ -45,10 +46,11 @@ interface InvoiceRequest {
   delivery_cost?: number;
   payment_due_days?: number;
   notes?: string;
-  image_url?: string; // Fallback image for auto-generated items
+  image_url?: string;
   is_correction?: boolean;
   original_invoice_number?: string;
   send_email?: boolean;
+  is_proforma?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
