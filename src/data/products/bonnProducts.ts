@@ -314,8 +314,8 @@ export const bonnErdbewegungProducts = [
     description: "Kompakter Raupendumper für schwieriges Gelände.",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
-    rentwareCode: { bonn: "7Y1UTP" },
     driveType: "diesel",
+    onRequest: true,
   },
   {
     id: "bonn-knickdumper-kde550",
@@ -351,7 +351,7 @@ export const bonnErdbewegungProducts = [
     image: "/placeholder.svg",
     weightKg: 636,
     driveType: "benzin",
-    onRequest: true,
+    rentwareCode: { bonn: "7Y1UTP" },
   },
   {
     id: "bonn-kettendumper-rmd800",
@@ -360,7 +360,7 @@ export const bonnErdbewegungProducts = [
     image: "/placeholder.svg",
     weightKg: 450,
     driveType: "benzin",
-    onRequest: true,
+    rentwareCode: { bonn: "R1FU1X" },
   },
 ];
 
@@ -1036,7 +1036,7 @@ export const bonnHeizungProducts = [
       "Elektroanschluss": "400 V (Drehstrom / CEE)",
       "Luftumwälzung": "845 m³/h",
     },
-    rentwareCode: { bonn: "" },
+    rentwareCode: { bonn: "QHFZ9G" },
   },
 ];
 
