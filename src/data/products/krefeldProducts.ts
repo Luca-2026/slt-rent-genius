@@ -102,6 +102,9 @@ import imgRollgeruestKrause84m3 from "@/assets/products/rollgeruest-krause-84m-3
 import imgRollgeruestKrause64m1 from "@/assets/products/rollgeruest-krause-64m-1.jpeg";
 import imgRollgeruestKrause64m2 from "@/assets/products/rollgeruest-krause-64m-2.jpeg";
 import imgRollgeruestKrause64m3 from "@/assets/products/rollgeruest-krause-64m-3.jpeg";
+import imgRollgeruestKrause54m1 from "@/assets/products/rollgeruest-krause-54m-1.jpeg";
+import imgRollgeruestKrause54m2 from "@/assets/products/rollgeruest-krause-54m-2.jpeg";
+import imgRollgeruestKrause54m3 from "@/assets/products/rollgeruest-krause-54m-3.jpeg";
 import rollgeruest10_4m_2 from "@/assets/products/rollgeruest-breitaufbau-10-4m-2.jpeg";
 import rollgeruest11_4m_1 from "@/assets/products/rollgeruest-breitaufbau-11-4m-1.jpeg";
 import rollgeruest11_4m_2 from "@/assets/products/rollgeruest-breitaufbau-11-4m-2.jpeg";
