@@ -597,7 +597,7 @@ export const aggregateProducts: Product[] = [
     image: aggregat50kva1,
     images: [aggregat50kva1],
     category: "aggregat",
-    rentwareCode: { krefeld: "" },
+    rentwareCode: { krefeld: "RDRWAR" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     detailedDescription: "Das Doosan G50 ist ein schallgedämmtes Diesel-Stromaggregat mit 60 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 35 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
