@@ -67,7 +67,7 @@ export default function LoesungDetail() {
       {/* Hero Section */}
       <section className={`bg-gradient-to-br ${solution.color} py-12 lg:py-20 relative overflow-hidden`}>
         <div className="absolute inset-0">
-          <img src={solution.image} alt="" className="w-full h-full object-cover opacity-15" />
+          <img src={solution.image} alt={`${title} – SLT Rental Lösungen`} className="w-full h-full object-cover opacity-15" />
         </div>
         <div className="section-container relative z-10">
           <Link 

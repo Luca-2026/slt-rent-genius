@@ -109,7 +109,7 @@ export function ProductAutocomplete({ value, onChange, location, placeholder, cl
               {item.product.image && (
                 <img
                   src={item.product.image}
-                  alt=""
+                  alt={item.product.name}
                   className="w-8 h-8 rounded object-cover flex-shrink-0"
                 />
               )}
