@@ -1031,8 +1031,8 @@ export default function CategoryProducts() {
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-1 lg:order-1">
                 <div className="sticky top-4 space-y-4">
-                  {/* Scrollable filter area */}
-                  <div className="space-y-6 max-h-[calc(100vh-22rem)] overflow-y-auto pr-1 pb-2">
+                  {/* Scrollable filter area with delivery calculator included */}
+                  <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
                     {/* "Alle" category: Search + Category Filter */}
                     {category.id === "alle" && (
                       <>
@@ -1048,50 +1048,31 @@ export default function CategoryProducts() {
                               placeholder={t("rental.searchArticlesShort")}
                               value={allSearchQuery}
                               onChange={(e) => setAllSearchQuery(e.target.value)}
-                              className="pr-8"
+                              className="pl-4 bg-background"
                             />
-                            {allSearchQuery && (
-                              <button
-                                onClick={() => setAllSearchQuery("")}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                              >
-                                <X className="h-4 w-4" />
-                              </button>
-                            )}
                           </div>
                         </div>
-                        
-                        {/* Category Quick Filter with scroll */}
-                        <div className="bg-card border border-border rounded-xl p-4">
-                          <h3 className="font-semibold text-foreground mb-3">
-                            {t("rental.categoriesCount", { count: availableCategories.length })}
-                          </h3>
-                          <div className="space-y-1 max-h-[400px] overflow-y-auto pr-2">
-                            <button
-                              onClick={() => setSelectedCategoryFilter(null)}
-                              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                                selectedCategoryFilter === null
-                                  ? "bg-primary text-primary-foreground font-medium"
-                                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                              }`}
-                            >
-                              {t("rental.allCategories")}
-                            </button>
-                            {availableCategories.map((cat) => (
-                              <button
-                                key={cat.id}
-                                onClick={() => setSelectedCategoryFilter(cat.id === selectedCategoryFilter ? null : cat.id)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                                  selectedCategoryFilter === cat.id
-                                    ? "bg-primary text-primary-foreground font-medium"
-                                    : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                                }`}
-                              >
-                                {cat.title}
-                              </button>
-                            ))}
+                        {/* Category filter for "alle" */}
+                        {availableCategories.length > 0 && (
+                          <div className="bg-card border border-border rounded-xl p-4">
+                            <h3 className="font-semibold text-foreground mb-3">{t("rental.categories")}</h3>
+                            <div className="space-y-1">
+                              {availableCategories.map((cat) => (
+                                <button
+                                  key={cat.id}
+                                  onClick={() => setSelectedCategoryFilter(cat.id === selectedCategoryFilter ? null : cat.id)}
+                                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                                    selectedCategoryFilter === cat.id
+                                      ? "bg-primary text-primary-foreground font-medium"
+                                      : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                                  }`}
+                                >
+                                  {cat.title}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </>
                     )}
                     {category.id === "anhaenger" && (
@@ -1132,21 +1113,21 @@ export default function CategoryProducts() {
                         )}
                       </>
                     )}
-                  </div>
 
-                  {/* Delivery Calculator - always visible below filters (desktop only) */}
-                  {category.id !== "anhaenger" && (
-                    <div className="hidden lg:block">
-                      {category.id === "alle" ? (
-                        <DeliveryCalculatorCompact showAllCategories />
-                      ) : (
-                        <DeliveryCalculatorCompact 
-                          productCategoryId={category.id}
-                          categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
-                        />
-                      )}
-                    </div>
-                  )}
+                    {/* Delivery Calculator - inside scrollable area */}
+                    {category.id !== "anhaenger" && (
+                      <div className="hidden lg:block">
+                        {category.id === "alle" ? (
+                          <DeliveryCalculatorCompact showAllCategories />
+                        ) : (
+                          <DeliveryCalculatorCompact 
+                            productCategoryId={category.id}
+                            categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
