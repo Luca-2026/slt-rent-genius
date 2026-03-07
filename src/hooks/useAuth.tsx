@@ -18,6 +18,14 @@ interface B2BProfile {
   credit_limit_requested_at: string | null;
 }
 
+interface AuthorizedPersonInfo {
+  b2b_profile_id: string;
+  first_name: string;
+  last_name: string;
+  max_rental_value: number;
+  is_active: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
