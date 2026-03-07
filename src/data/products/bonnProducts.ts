@@ -360,7 +360,7 @@ export const bonnErdbewegungProducts = [
     image: "/placeholder.svg",
     weightKg: 450,
     driveType: "benzin",
-    onRequest: true,
+    rentwareCode: { bonn: "R1FU1X" },
   },
 ];
 
