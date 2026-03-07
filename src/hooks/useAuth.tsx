@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { useCompleteRegistration } from "@/hooks/useCompleteRegistration";
 
 interface B2BProfile {
   id: string;
@@ -133,6 +134,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const isApprovedB2B = b2bProfile?.status === "approved";
+
+  // Complete pending B2B registration after email confirmation
+  useCompleteRegistration(user, refreshB2BProfile);
 
   return (
     <AuthContext.Provider
