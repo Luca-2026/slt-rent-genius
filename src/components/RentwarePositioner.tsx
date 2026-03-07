@@ -17,7 +17,7 @@ export function RentwarePositioner() {
 
       // Position in top-right, vertically centered with header
       el.style.position = "fixed";
-      el.style.top = "52px"; // below marquee bar, aligned with header
+      el.style.top = "62px"; // below marquee bar, not covering scroller
       el.style.right = "16px";
       el.style.bottom = "unset";
       el.style.left = "unset";
