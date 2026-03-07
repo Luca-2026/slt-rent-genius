@@ -5463,7 +5463,7 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Betriebsdruck": "9 – 12 MPa",
       "Öldurchfluss": "15 – 25 l/min",
     },
-    rentwareCode: { krefeld: "DC6H9Z" }
+    rentwareCode: { krefeld: "DC6H9Z", muelheim: "11Y51V" }
   },
   {
     id: "ms01-ms03-hydraulikhammer-shb45",
