@@ -371,7 +371,7 @@ export function AdminCreateOfferDialog({
         ) : (
           <Card>
             <CardContent className="p-4 space-y-2">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <p className="font-semibold text-foreground">{profile!.company_name}</p>
                   {reservation && (
@@ -450,7 +450,7 @@ export function AdminCreateOfferDialog({
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div>
                     <Label className="text-xs">Menge</Label>
                     <Input
@@ -487,7 +487,7 @@ export function AdminCreateOfferDialog({
 
                 {/* Rental period per item (standalone or editable) */}
                 {(isStandalone || isEditing) && (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <div>
                       <Label className="text-xs">Mietbeginn</Label>
                       <Input
@@ -539,7 +539,7 @@ export function AdminCreateOfferDialog({
         <Separator />
 
         {/* Additional options */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <Label className="text-xs">Lieferkosten (€ netto)</Label>
             <Input
@@ -691,7 +691,7 @@ export function AdminCreateOfferDialog({
         </p>
 
         {/* Actions */}
-        <div className="flex gap-3 justify-end pt-2">
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Abbrechen
           </Button>
