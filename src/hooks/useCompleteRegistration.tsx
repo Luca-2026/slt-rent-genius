@@ -4,8 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 /**
- * After email confirmation, marks the b2b_profile as email_confirmed.
- * Also handles legacy localStorage-based registration (if any).
+ * After email confirmation, marks the b2b_profile as email_confirmed
+ * using a SECURITY DEFINER function to bypass RLS restrictions.
  */
 export function useCompleteRegistration(user: User | null, onProfileCreated?: () => void) {
   const { toast } = useToast();
@@ -30,18 +30,19 @@ export function useCompleteRegistration(user: User | null, onProfileCreated?: ()
           .maybeSingle();
 
         if (profile && !(profile as any).email_confirmed) {
-          // Mark email as confirmed
-          const { error } = await supabase
-            .from("b2b_profiles")
-            .update({ email_confirmed: true } as any)
-            .eq("id", profile.id);
+          // Use SECURITY DEFINER function to bypass RLS
+          const { error } = await supabase.rpc("confirm_b2b_email", {
+            _user_id: user.id,
+          });
 
           if (!error) {
             onProfileCreated?.();
             toast({
               title: "E-Mail bestätigt!",
-              description: "Dein Konto wird geprüft. Du erhältst eine E-Mail, sobald es freigeschaltet wurde.",
+              description: "Ihr Konto wird geprüft. Sie erhalten eine E-Mail, sobald es freigeschaltet wurde.",
             });
+          } else {
+            console.error("Error confirming email:", error);
           }
         } else if (profile) {
           onProfileCreated?.();

@@ -1,0 +1,1 @@
+UPDATE public.b2b_profiles SET email_confirmed = true WHERE id = 'bbaa4f39-356a-4573-b945-b8f310ada149';
