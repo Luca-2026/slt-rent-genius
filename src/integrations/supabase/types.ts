@@ -1469,6 +1469,7 @@ export type Database = {
       }
     }
     Functions: {
+      confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
