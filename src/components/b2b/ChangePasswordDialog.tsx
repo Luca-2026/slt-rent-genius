@@ -19,17 +19,34 @@ import { PasswordStrengthIndicator } from "@/components/b2b/PasswordStrengthIndi
 
 export function ChangePasswordDialog({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const isValid = newPassword.length >= 8 && newPassword === confirmPassword;
+  const isValid = currentPassword.length > 0 && newPassword.length >= 8 && newPassword === confirmPassword;
+
+  const resetForm = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!currentPassword) {
+      toast({
+        title: "Aktuelles Passwort erforderlich",
+        description: "Bitte gib dein aktuelles Passwort ein.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     if (newPassword.length < 8) {
       toast({
@@ -51,6 +68,25 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
 
     setLoading(true);
     try {
+      // Verify current password by attempting sign-in
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) throw new Error("Benutzer nicht gefunden");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+      });
+
+      if (signInError) {
+        toast({
+          title: "Falsches Passwort",
+          description: "Das aktuelle Passwort ist nicht korrekt.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Now update to new password
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
@@ -62,8 +98,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
         description: "Dein Passwort wurde erfolgreich aktualisiert.",
       });
       setOpen(false);
-      setNewPassword("");
-      setConfirmPassword("");
+      resetForm();
     } catch (error: any) {
       console.error("Password change error:", error);
       toast({
@@ -77,7 +112,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) { setNewPassword(""); setConfirmPassword(""); } }}>
+    <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className={cn(className)}>
           <KeyRound className="h-4 w-4 mr-2" />
@@ -89,10 +124,33 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
           <DialogHeader>
             <DialogTitle>Passwort ändern</DialogTitle>
             <DialogDescription>
-              Wähle ein neues Passwort mit mindestens 8 Zeichen.
+              Gib dein aktuelles Passwort ein und wähle ein neues Passwort.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="current-password">Aktuelles Passwort</Label>
+              <div className="relative">
+                <Input
+                  id="current-password"
+                  type={showCurrent ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Dein aktuelles Passwort"
+                  required
+                  autoComplete="current-password"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                  onClick={() => setShowCurrent(!showCurrent)}
+                >
+                  {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="new-password">Neues Passwort</Label>
               <div className="relative">
@@ -104,6 +162,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
                   placeholder="Mindestens 8 Zeichen"
                   minLength={8}
                   required
+                  autoComplete="new-password"
                 />
                 <Button
                   type="button"
@@ -121,7 +180,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirm-password">Passwort bestätigen</Label>
+              <Label htmlFor="confirm-password">Neues Passwort bestätigen</Label>
               <div className="relative">
                 <Input
                   id="confirm-password"
@@ -131,6 +190,7 @@ export function ChangePasswordDialog({ className }: { className?: string }) {
                   placeholder="Passwort wiederholen"
                   minLength={8}
                   required
+                  autoComplete="new-password"
                 />
                 <Button
                   type="button"
