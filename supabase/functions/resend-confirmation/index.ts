@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     );
 
     const { data, error } = await serviceClient.auth.admin.generateLink({
-      type: "signup",
+      type: "magiclink",
       email,
       options: {
         redirectTo: "https://www.slt-rental.de/",
