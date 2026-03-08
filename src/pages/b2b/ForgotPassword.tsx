@@ -21,7 +21,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/b2b/passwort-zuruecksetzen`,
+        redirectTo: "https://www.slt-rental.de/b2b/passwort-zuruecksetzen",
       });
 
       if (error) throw error;
