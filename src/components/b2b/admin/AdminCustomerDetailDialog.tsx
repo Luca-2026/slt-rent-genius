@@ -454,6 +454,14 @@ export function AdminCustomerDetailDialog({
                       toast({ title: "Fehler", description: error.message, variant: "destructive" });
                     } else {
                       toast({ title: "Freigegeben", description: `${profile.company_name} wurde erfolgreich freigegeben.` });
+                      // Send approval notification email
+                      supabase.functions.invoke("notify-profile-approval", {
+                        body: { profileId: profile.id },
+                      }).then(({ error: emailError }) => {
+                        if (emailError) {
+                          console.error("Approval email error:", emailError);
+                        }
+                      });
                       onRefresh();
                       onOpenChange(false);
                     }
