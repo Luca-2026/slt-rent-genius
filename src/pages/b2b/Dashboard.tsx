@@ -468,7 +468,6 @@ export default function B2BDashboard() {
                   <li>
                     <a 
                       href={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/brand-assets/downloads/AGB_Vermietbedingungen.pdf`}
-                      download="AGB_Vermietbedingungen.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline flex items-center gap-1.5"
