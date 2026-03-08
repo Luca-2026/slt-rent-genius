@@ -45,32 +45,24 @@ export const SignupEmail = ({
         </Section>
         <Section style={content}>
           <Heading style={h1}>E-Mail-Adresse bestätigen</Heading>
-          <Text style={text}>Hallo,</Text>
+          <Text style={text}>Sehr geehrte Damen und Herren,</Text>
           <Text style={text}>
-            vielen Dank für deine Registrierung im{' '}
-            <Link href="https://www.slt-rental.de" style={linkStyle}>
-              <strong>SLT Rental B2B-Portal</strong>
-            </Link>
-            !
+            vielen Dank für Ihre Registrierung im <strong>SLT Rental B2B-Portal</strong>.
           </Text>
           <Text style={text}>
-            Bitte bestätige deine E-Mail-Adresse (
-            <Link href={`mailto:${recipient}`} style={linkStyle}>
-              {recipient}
-            </Link>
-            ), indem du auf den folgenden Button klickst:
+            Klicken Sie auf den untenstehenden Button, um Ihre E-Mail-Adresse ({recipient}) zu bestätigen:
           </Text>
           <Section style={buttonContainer}>
             <Button style={button} href={confirmationUrl}>
-              E-Mail bestätigen
+              E-Mail-Adresse bestätigen
             </Button>
           </Section>
           <Text style={text}>
-            Nach der Bestätigung wird dein Konto geprüft und du erhältst eine weitere E-Mail, sobald es freigeschaltet wurde.
+            Nach der Bestätigung wird Ihr Konto geprüft und Sie erhalten eine weitere E-Mail, sobald es freigeschaltet wurde.
           </Text>
           <Hr style={divider} />
           <Text style={smallText}>
-            Falls du kein Konto erstellt hast, kannst du diese E-Mail ignorieren. Der Link ist 24 Stunden gültig.
+            Falls Sie kein Konto erstellt haben, können Sie diese E-Mail ignorieren. Der Link ist 24 Stunden gültig.
           </Text>
         </Section>
         <Section style={footerSection}>
