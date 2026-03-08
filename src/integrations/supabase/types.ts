@@ -1477,6 +1477,14 @@ export type Database = {
         Args: { _user_id: string }
         Returns: number
       }
+      get_authorized_profile_ids: {
+        Args: { _user_id: string }
+        Returns: string[]
+      }
+      get_b2b_profile_id_for_user: {
+        Args: { _user_id: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
