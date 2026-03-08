@@ -39,3 +39,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.admin-reset-password]
     verify_jwt = false
+  [functions.notify-profile-approval]
+    verify_jwt = false
