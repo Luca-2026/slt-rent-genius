@@ -16,12 +16,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Confirm your email',
-  invite: "You've been invited",
-  magiclink: 'Your login link',
-  recovery: 'Reset your password',
-  email_change: 'Confirm your new email',
-  reauthentication: 'Your verification code',
+  signup: 'E-Mail-Adresse bestätigen – SLT Rental B2B-Portal',
+  invite: 'Einladung zum SLT Rental B2B-Portal',
+  magiclink: 'Dein Login-Link – SLT Rental B2B-Portal',
+  recovery: 'Passwort zurücksetzen – SLT Rental B2B-Portal',
+  email_change: 'E-Mail-Adresse ändern – SLT Rental B2B-Portal',
+  reauthentication: 'Dein Bestätigungscode – SLT Rental',
 }
 
 // Template mapping
@@ -35,7 +35,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "slt-rent-genius"
+const SITE_NAME = "SLT-Rental"
 const SENDER_DOMAIN = "notify.slt-rental.de"
 const ROOT_DOMAIN = "slt-rental.de"
 const FROM_DOMAIN = "slt-rental.de" // Domain shown in From address (may be root or sender subdomain)
