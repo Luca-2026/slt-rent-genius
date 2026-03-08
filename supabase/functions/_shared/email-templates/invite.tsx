@@ -9,8 +9,10 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -20,31 +22,43 @@ interface InviteEmailProps {
   confirmationUrl: string
 }
 
+const LOGO_URL = 'https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png'
+
 export const InviteEmail = ({
   siteName,
   siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
-  <Html lang="en" dir="ltr">
-    <Head />
-    <Preview>You've been invited to join {siteName}</Preview>
+  <Html lang="de" dir="ltr">
+    <Head>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+    </Head>
+    <Preview>Einladung zu SLT Rental</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>You've been invited</Heading>
+        <Section style={logoSection}>
+          <Img src={LOGO_URL} width="180" height="auto" alt="SLT Rental" style={logo} />
+        </Section>
+        <Section style={divider} />
+        <Heading style={h1}>Sie wurden eingeladen</Heading>
         <Text style={text}>
-          You've been invited to join{' '}
+          Sie wurden eingeladen,{' '}
           <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          . Click the button below to accept the invitation and create your
-          account.
+            <strong>SLT Rental</strong>
+          </Link>{' '}
+          beizutreten. Klicken Sie auf den Button, um die Einladung anzunehmen und Ihr Konto zu erstellen.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Accept Invitation
-        </Button>
+        <Section style={buttonSection}>
+          <Button style={button} href={confirmationUrl}>
+            Einladung annehmen
+          </Button>
+        </Section>
         <Text style={footer}>
-          If you weren't expecting this invitation, you can safely ignore this
-          email.
+          Falls Sie diese Einladung nicht erwartet haben, können Sie diese E-Mail ignorieren.
+        </Text>
+        <Section style={divider} />
+        <Text style={footerBrand}>
+          © {new Date().getFullYear()} SLT Rental · Alle Rechte vorbehalten
         </Text>
       </Container>
     </Body>
@@ -53,27 +67,15 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
+const container = { padding: '40px 30px', maxWidth: '560px', margin: '0 auto' }
+const logoSection = { textAlign: 'center' as const, marginBottom: '24px' }
+const logo = { margin: '0 auto' }
+const divider = { borderTop: '2px solid hsl(201, 100%, 25%)', marginBottom: '28px', marginTop: '0' }
+const h1 = { fontSize: '24px', fontWeight: '700' as const, color: 'hsl(218, 10%, 25%)', margin: '0 0 20px', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
+const text = { fontSize: '15px', color: 'hsl(0, 0%, 35%)', lineHeight: '1.6', margin: '0 0 20px', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
+const link = { color: 'hsl(201, 100%, 25%)', textDecoration: 'underline' }
+const buttonSection = { textAlign: 'center' as const, margin: '28px 0' }
+const button = { backgroundColor: 'hsl(33, 100%, 50%)', color: '#ffffff', fontSize: '15px', fontWeight: '600' as const, borderRadius: '8px', padding: '14px 28px', textDecoration: 'none', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
+const footer = { fontSize: '13px', color: '#999999', margin: '24px 0 0', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
+const footerBrand = { fontSize: '12px', color: '#bbbbbb', textAlign: 'center' as const, margin: '0', fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif" }
