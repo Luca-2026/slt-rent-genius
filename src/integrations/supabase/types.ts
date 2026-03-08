@@ -1486,6 +1486,19 @@ export type Database = {
         Args: { _user_id: string }
         Returns: string
       }
+      get_b2b_profile_locked_fields: {
+        Args: { _profile_id: string }
+        Returns: {
+          assigned_location: string
+          credit_limit: number
+          internal_notes: string
+          rejection_reason: string
+          status: Database["public"]["Enums"]["b2b_status"]
+          status_changed_by: string
+          used_credit: number
+          vat_id_verified: boolean
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
