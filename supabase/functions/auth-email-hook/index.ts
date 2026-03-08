@@ -16,12 +16,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Confirm your email',
-  invite: "You've been invited",
-  magiclink: 'Your login link',
-  recovery: 'Reset your password',
-  email_change: 'Confirm your new email',
-  reauthentication: 'Your verification code',
+  signup: 'E-Mail-Adresse bestätigen – SLT Rental',
+  invite: 'Einladung zu SLT Rental',
+  magiclink: 'Ihr Anmeldelink – SLT Rental',
+  recovery: 'Passwort zurücksetzen – SLT Rental',
+  email_change: 'E-Mail-Adresse ändern – SLT Rental',
+  reauthentication: 'Ihr Bestätigungscode – SLT Rental',
 }
 
 // Template mapping
