@@ -83,14 +83,14 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-surface-light border-b border-border">
+      <section className="py-6 md:py-8 bg-surface-light border-b border-border">
         <div className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => (
               <AnimatedSection key={stat.label} animation="scale-in" delay={index * 120}>
                 <div className="text-center">
-                  <span className="block text-3xl lg:text-4xl font-bold text-primary">{stat.value}</span>
-                  <span className="text-muted-foreground">{stat.label}</span>
+                  <span className="block text-2xl md:text-3xl lg:text-4xl font-bold text-primary">{stat.value}</span>
+                  <span className="text-muted-foreground text-sm md:text-base">{stat.label}</span>
                 </div>
               </AnimatedSection>
             ))}
