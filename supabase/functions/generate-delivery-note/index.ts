@@ -123,11 +123,18 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating, customer_not_present = false } = body;
 
-    if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
+    if (!offer_id || !staff_signature_data || !staff_name) {
       return new Response(
-        JSON.stringify({ error: "offer_id, signature_data, staff_signature_data and staff_name are required" }),
+        JSON.stringify({ error: "offer_id, staff_signature_data and staff_name are required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!customer_not_present && !signature_data) {
+      return new Response(
+        JSON.stringify({ error: "signature_data is required when customer is present" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
