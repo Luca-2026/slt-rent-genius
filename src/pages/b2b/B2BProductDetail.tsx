@@ -197,6 +197,9 @@ export default function B2BProductDetail() {
               <h1 className="text-xl sm:text-2xl font-bold text-headline leading-tight">
                 {product.name}
               </h1>
+              {product.modelName && (
+                <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
+              )}
               {product.description && (
                 <p className="text-base text-muted-foreground mt-2 leading-relaxed">
                   {product.description}
