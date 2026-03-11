@@ -936,7 +936,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550 4x4 elektrisch",
+    name: "Raddumper / Knickdumper 4x4 elektrisch",
+    modelName: "KDe550",
     description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
     image: imgKnickdumperKde550_1,
     images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
