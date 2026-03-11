@@ -66,15 +66,16 @@ export default function About() {
         canonical="/ueber-uns"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Über uns", url: "/ueber-uns" }])}
       />
+
       {/* Hero */}
-      <section className="bg-primary py-10 md:py-14 lg:py-20">
+      <section className="bg-primary py-8 md:py-10 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
             <div className="max-w-3xl">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-3 md:mb-4">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-4">
                 {t("about.heroTitle")}
               </h1>
-              <p className="text-base md:text-lg text-primary-foreground/80">
+              <p className="text-sm md:text-base lg:text-lg text-primary-foreground/80 leading-relaxed">
                 {t("about.heroDesc")}
               </p>
             </div>
@@ -83,14 +84,14 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-6 md:py-8 bg-surface-light border-b border-border">
+      <section className="py-5 md:py-6 lg:py-8 bg-surface-light border-b border-border">
         <div className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-4 gap-2 md:gap-4 lg:gap-6">
             {stats.map((stat, index) => (
               <AnimatedSection key={stat.label} animation="scale-in" delay={index * 120}>
                 <div className="text-center">
-                  <span className="block text-2xl md:text-3xl lg:text-4xl font-bold text-primary">{stat.value}</span>
-                  <span className="text-muted-foreground text-sm md:text-base">{stat.label}</span>
+                  <span className="block text-lg md:text-2xl lg:text-4xl font-bold text-primary">{stat.value}</span>
+                  <span className="text-muted-foreground text-[10px] md:text-xs lg:text-base">{stat.label}</span>
                 </div>
               </AnimatedSection>
             ))}
@@ -99,15 +100,15 @@ export default function About() {
       </section>
 
       {/* Story */}
-      <section className="py-10 md:py-14 lg:py-20">
+      <section className="py-8 md:py-12 lg:py-20">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
             <AnimatedSection animation="slide-in-left" delay={0}>
               <div>
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-4 md:mb-5 lg:mb-6">
+                <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-3 md:mb-4 lg:mb-6">
                   {t("about.storyTitle")}
                 </h2>
-                <div className="space-y-3 md:space-y-4 text-muted-foreground text-sm md:text-base">
+                <div className="space-y-2.5 md:space-y-3 lg:space-y-4 text-muted-foreground text-xs md:text-sm lg:text-base leading-relaxed">
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP1") }} className="[&_strong]:text-headline" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP2") }} className="[&_strong]:text-headline" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP3") }} className="[&_strong]:text-headline" />
@@ -124,15 +125,16 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="py-10 md:py-14 lg:py-20">
+      <section className="py-8 md:py-12 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-3 md:mb-4 text-center">{t("about.teamTitle")}</h2>
-            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-6 md:mb-8 text-sm md:text-base">{t("about.teamDesc")}</p>
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-2 md:mb-3 lg:mb-4 text-center">{t("about.teamTitle")}</h2>
+            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-5 md:mb-6 lg:mb-8 text-xs md:text-sm lg:text-base">{t("about.teamDesc")}</p>
           </AnimatedSection>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
+          {/* Mobile: horizontal scroll, Tablet+Desktop: grid */}
+          <div className="flex md:grid md:grid-cols-5 gap-4 md:gap-4 lg:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory pb-2 md:pb-0 -mx-4 px-[calc((100vw-60vw)/2)] md:mx-0 md:px-0 scrollbar-hide">
             {teamMembers.map((member, index) => (
-              <AnimatedSection key={member.name} animation="scale-in" delay={index * 100}>
+              <AnimatedSection key={member.name} animation="scale-in" delay={index * 100} className="min-w-[60vw] sm:min-w-[40vw] md:min-w-0 snap-center">
                 <div className="text-center group">
                   {member.email ? (
                     <a href={`mailto:${member.email}`} className="block cursor-pointer">
@@ -149,6 +151,11 @@ export default function About() {
                   )}
                   <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
                   <p className="text-xs text-muted-foreground">{member.role}</p>
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-[10px] text-primary mt-1 hover:underline md:hidden">
+                      <Mail className="h-3 w-3" /> E-Mail
+                    </a>
+                  )}
                 </div>
               </AnimatedSection>
             ))}
@@ -157,21 +164,21 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-10 md:py-14 lg:py-20 bg-surface-light">
+      <section className="py-8 md:py-12 lg:py-20 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-6 md:mb-8 text-center">{t("about.valuesTitle")}</h2>
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-4 md:mb-6 lg:mb-8 text-center">{t("about.valuesTitle")}</h2>
           </AnimatedSection>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
             {values.map((value, index) => (
               <AnimatedSection key={value.title} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
-                  <CardContent className="p-4 md:p-4 lg:p-6 text-center">
-                    <div className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-3 md:mb-3 lg:mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                      <value.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-accent" />
+                  <CardContent className="p-3 md:p-4 lg:p-6 text-center">
+                    <div className="w-9 h-9 md:w-10 md:h-10 lg:w-14 lg:h-14 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-2 md:mb-3 lg:mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
+                      <value.icon className="h-4 w-4 md:h-5 md:w-5 lg:h-7 lg:w-7 text-accent" />
                     </div>
-                    <h3 className="font-semibold text-headline mb-1.5 md:mb-2 text-sm md:text-sm lg:text-base">{value.title}</h3>
-                    <p className="text-xs md:text-xs lg:text-sm text-muted-foreground">{value.description}</p>
+                    <h3 className="font-semibold text-headline mb-1 md:mb-1.5 lg:mb-2 text-xs md:text-sm lg:text-base leading-tight">{value.title}</h3>
+                    <p className="text-[10px] md:text-xs lg:text-sm text-muted-foreground leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
@@ -181,20 +188,20 @@ export default function About() {
       </section>
 
       {/* Why Us */}
-      <section className="py-12 lg:py-20">
+      <section className="py-8 md:py-12 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">{t("about.whyTitle")}</h2>
-              <p className="text-muted-foreground">{t("about.whyDesc")}</p>
+            <div className="max-w-3xl mx-auto text-center mb-6 md:mb-8 lg:mb-12">
+              <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-2 md:mb-3 lg:mb-4">{t("about.whyTitle")}</h2>
+              <p className="text-muted-foreground text-xs md:text-sm lg:text-base">{t("about.whyDesc")}</p>
             </div>
           </AnimatedSection>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-6 max-w-4xl mx-auto">
             {Array.isArray(whyItems) && whyItems.map((item, index) => (
               <AnimatedSection key={item} animation="fade-in-up" delay={index * 80}>
-                <div className="flex items-center gap-3 bg-surface-light p-4 rounded-lg hover:shadow-md hover:bg-background transition-all duration-300 group">
-                  <CheckCircle2 className="h-5 w-5 text-accent shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="text-headline">{item}</span>
+                <div className="flex items-center gap-2.5 md:gap-3 bg-surface-light p-3 md:p-3.5 lg:p-4 rounded-lg hover:shadow-md hover:bg-background transition-all duration-300 group">
+                  <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-accent shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-headline text-xs md:text-sm lg:text-base">{item}</span>
                 </div>
               </AnimatedSection>
             ))}
@@ -203,23 +210,23 @@ export default function About() {
       </section>
 
       {/* Partners */}
-      <section className="py-12 lg:py-16 bg-surface-light">
+      <section className="py-8 md:py-10 lg:py-16 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-xl font-bold text-headline mb-8 text-center">{t("about.partnersTitle")}</h2>
+            <h2 className="text-base md:text-lg lg:text-xl font-bold text-headline mb-4 md:mb-6 lg:mb-8 text-center">{t("about.partnersTitle")}</h2>
           </AnimatedSection>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4 lg:gap-6">
             {partners.map((partner, index) => (
               <AnimatedSection key={partner.name} animation="scale-in" delay={index * 100}>
-                <a href={partner.url} target="_blank" rel="noopener noreferrer" className="aspect-[3/2] bg-background rounded-lg border border-border flex items-center justify-center p-4 hover:shadow-md hover:border-primary/30 hover:-translate-y-1 transition-all duration-300">
-                  <img src={partner.logo} alt={partner.name} className="max-h-12 w-auto object-contain" />
+                <a href={partner.url} target="_blank" rel="noopener noreferrer" className="aspect-[3/2] bg-background rounded-lg border border-border flex items-center justify-center p-2.5 md:p-3 lg:p-4 hover:shadow-md hover:border-primary/30 hover:-translate-y-1 transition-all duration-300">
+                  <img src={partner.logo} alt={partner.name} className="max-h-8 md:max-h-10 lg:max-h-12 w-auto object-contain" />
                 </a>
               </AnimatedSection>
             ))}
           </div>
           <AnimatedSection animation="fade-in-up" delay={600}>
-            <div className="mt-8 p-4 bg-accent/10 border border-accent/20 rounded-lg text-center">
-              <p className="text-sm text-body">
+            <div className="mt-4 md:mt-6 lg:mt-8 p-3 md:p-4 bg-accent/10 border border-accent/20 rounded-lg text-center">
+              <p className="text-[10px] md:text-xs lg:text-sm text-body leading-relaxed">
                 <strong className="text-headline">{t("about.partnersTitle")}:</strong>{" "}
                 {t("about.partnerDealerNote").split("Zoomlion")[0]}
                 <a href="https://www.zoomlion-nrw.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Zoomlion</a>
@@ -233,17 +240,17 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="py-12 lg:py-16 bg-primary">
+      <section className="py-8 md:py-10 lg:py-16 bg-primary">
         <div className="section-container text-center">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-2xl lg:text-3xl font-bold text-primary-foreground mb-4">{t("about.ctaTitle")}</h2>
-            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-6">{t("about.ctaDesc")}</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-4">{t("about.ctaTitle")}</h2>
+            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-4 md:mb-5 lg:mb-6 text-xs md:text-sm lg:text-base">{t("about.ctaDesc")}</p>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Link to="/produkte">
-                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">{t("about.ctaProducts")}</Button>
+                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover text-sm md:text-base md:px-6 md:py-2.5">{t("about.ctaProducts")}</Button>
               </Link>
               <Link to="/kontakt">
-                <Button variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary">{t("about.ctaContact")}</Button>
+                <Button size="sm" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary text-sm md:text-base md:px-6 md:py-2.5">{t("about.ctaContact")}</Button>
               </Link>
             </div>
           </AnimatedSection>
