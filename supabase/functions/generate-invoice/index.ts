@@ -712,8 +712,13 @@ function generateInvoiceHtml(data: {
           </td>
           <td style="padding:4px 0;text-align:right;">${formatCurrency(isCredit ? -Math.abs(data.vatAmount) : data.vatAmount)}</td>
         </tr>
+        ${(data.depositTotal && data.depositTotal > 0) ? `
+        <tr>
+          <td style="padding:4px 16px 4px 0;color:#595959;">Kaution (umsatzsteuerfrei):</td>
+          <td style="padding:4px 0;text-align:right;">${formatCurrency(data.depositTotal)}</td>
+        </tr>` : ""}
         <tr style="border-top:2px solid #00507d;">
-          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">${isCredit ? "Erstattungsbetrag:" : "Bruttobetrag:"}</td>
+          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">${isCredit ? "Erstattungsbetrag:" : "Gesamtbetrag:"}</td>
           <td style="padding:8px 0 4px;text-align:right;font-weight:700;font-size:16px;color:#00507d;">${formatCurrency(isCredit ? -Math.abs(data.grossAmount) : data.grossAmount)}</td>
         </tr>
       </table>
