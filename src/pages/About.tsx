@@ -36,7 +36,8 @@ const partners = [
 
 export default function About() {
   const { t } = useTranslation();
-
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
   const stats = [
     { value: "2016", label: t("about.statFounded") },
     { value: "+3.500", label: t("about.statCustomers") },
