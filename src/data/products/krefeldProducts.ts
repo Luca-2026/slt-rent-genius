@@ -3815,7 +3815,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Belastbarkeit": "150 kg",
       "Material": "Aluminium",
     },
-    rentwareCode: { krefeld: "KL50_5" }
+    rentwareCode: { krefeld: "7I1HQL" }
   },
   // --- Rollgerüst ---
   {
