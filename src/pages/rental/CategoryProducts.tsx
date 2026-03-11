@@ -26,6 +26,8 @@ import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } f
 export default function CategoryProducts() {
   const { t } = useTranslation();
   const { locationId, categoryId } = useParams<{ locationId: string; categoryId: string }>();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [allSearchQuery, setAllSearchQuery] = useState("");
