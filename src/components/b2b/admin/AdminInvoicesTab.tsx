@@ -397,6 +397,25 @@ export function AdminInvoicesTab({
                               <span className="text-xs">PDF</span>
                             </Button>
                           )}
+                          {inv.file_url && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSendEmailConfirmInvoice(inv)}
+                              disabled={sendingEmailId === inv.id}
+                              title={inv.email_sent ? "Erneut per E-Mail senden" : "Per E-Mail senden"}
+                              className={inv.email_sent ? "text-primary" : "text-amber-600"}
+                            >
+                              {sendingEmailId === inv.id ? (
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                              ) : inv.email_sent ? (
+                                <CheckCircle className="h-3.5 w-3.5 mr-1" />
+                              ) : (
+                                <Send className="h-3.5 w-3.5 mr-1" />
+                              )}
+                              <span className="hidden lg:inline text-xs">{inv.email_sent ? "Gesendet" : "Senden"}</span>
+                            </Button>
+                          )
                           {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                             <>
                               <Button
