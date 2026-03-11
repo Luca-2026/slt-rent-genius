@@ -273,23 +273,23 @@ export default function About() {
       </section>
 
       {/* Partners */}
-      <section className="py-8 md:py-10 lg:py-20 xl:py-24">
+      <section className="py-8 md:py-10 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-base md:text-lg lg:text-2xl xl:text-3xl font-bold text-headline mb-4 md:mb-6 lg:mb-10 text-center">{t("about.partnersTitle")}</h2>
+            <h2 className="text-base md:text-lg lg:text-xl font-bold text-headline mb-4 md:mb-6 lg:mb-8 text-center">{t("about.partnersTitle")}</h2>
           </AnimatedSection>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4 lg:gap-6 xl:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4 lg:gap-6 max-w-4xl mx-auto">
             {partners.map((partner, index) => (
               <AnimatedSection key={partner.name} animation="scale-in" delay={index * 100}>
-                <a href={partner.url} target="_blank" rel="noopener noreferrer" className="aspect-[3/2] bg-surface-light rounded-lg lg:rounded-xl border border-border flex items-center justify-center p-2.5 md:p-3 lg:p-5 hover:shadow-lg hover:border-primary/30 hover:-translate-y-1 transition-all duration-400 group">
-                  <img src={partner.logo} alt={partner.name} className="max-h-8 md:max-h-10 lg:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
+                <a href={partner.url} target="_blank" rel="noopener noreferrer" className="aspect-[3/2] bg-surface-light rounded-lg border border-border flex items-center justify-center p-2.5 md:p-3 lg:p-4 hover:shadow-lg hover:border-primary/30 hover:-translate-y-1 transition-all duration-400 group">
+                  <img src={partner.logo} alt={partner.name} className="max-h-8 md:max-h-10 lg:max-h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
                 </a>
               </AnimatedSection>
             ))}
           </div>
           <AnimatedSection animation="fade-in-up" delay={600}>
-            <div className="mt-4 md:mt-6 lg:mt-10 p-3 md:p-4 lg:p-6 bg-accent/10 border border-accent/20 rounded-lg lg:rounded-xl text-center max-w-4xl mx-auto">
-              <p className="text-[10px] md:text-xs lg:text-sm xl:text-base text-body leading-relaxed">
+            <div className="mt-4 md:mt-6 lg:mt-8 p-3 md:p-4 bg-accent/10 border border-accent/20 rounded-lg text-center max-w-4xl mx-auto">
+              <p className="text-[10px] md:text-xs lg:text-sm text-body leading-relaxed">
                 <strong className="text-headline">{t("about.partnersTitle")}:</strong>{" "}
                 {t("about.partnerDealerNote").split("Zoomlion")[0]}
                 <a href="https://www.zoomlion-nrw.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Zoomlion</a>
