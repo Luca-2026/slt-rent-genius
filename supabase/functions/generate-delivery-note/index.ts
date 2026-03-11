@@ -63,7 +63,7 @@ function formatDateStr(dateStr: string): string {
 
 interface DeliveryNoteRequest {
   offer_id: string;
-  signature_data: string;
+  signature_data: string | null;
   staff_signature_data: string;
   staff_name: string;
   notes?: string;
@@ -75,6 +75,7 @@ interface DeliveryNoteRequest {
   operating_hours?: string;
   fuel_level?: string;
   cleanliness_rating?: number;
+  customer_not_present?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
