@@ -927,7 +927,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="delivery-notes">
+        <TabsContent value="delivery-notes" forceMount className="data-[state=inactive]:hidden">
           <AdminDeliveryNotesTab
             profiles={profiles as any}
             onRefresh={fetchData}
