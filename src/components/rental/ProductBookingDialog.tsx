@@ -137,9 +137,16 @@ export function ProductBookingDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent 
+        className={cn(
+          "max-h-[90vh] overflow-y-auto",
+          articleId 
+            ? "p-0 sm:p-0 max-w-lg sm:max-w-xl md:max-w-2xl w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] [&>button:last-child]:hidden" 
+            : "max-w-2xl p-0"
+        )}
+      >
         {articleId ? (
-          // Show Rentware widget when available
+          // Show Rentware widget when available — hide shadcn close button, Rentware has its own
           <div className="relative">
             {widgetLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
@@ -148,8 +155,9 @@ export function ProductBookingDialog({
             )}
             <div 
               id={containerId}
-              className="min-h-[500px] p-4"
+              className="min-h-[400px] sm:min-h-[500px] p-2 sm:p-4"
             />
+          </div>
           </div>
         ) : (
           // "Auf Anfrage" inquiry form
