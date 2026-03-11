@@ -136,14 +136,14 @@ export default function Locations() {
                     </div>
 
                     {/* Features */}
-                    <div className="mb-4 md:mb-3 lg:mb-6 min-h-[48px] md:min-h-[40px] lg:min-h-[60px]">
-                      <div className="flex flex-wrap gap-1.5 md:gap-1 lg:gap-2">
+                    <div className="mb-4 md:mb-4 lg:mb-6 min-h-[48px] lg:min-h-[60px]">
+                      <div className="flex flex-wrap gap-1.5 lg:gap-2">
                         {location.features.map((feature) => (
                           <span
                             key={feature}
-                            className="inline-flex items-center gap-1 bg-surface-light px-2 md:px-1.5 lg:px-2 py-1 md:py-0.5 lg:py-1 rounded text-xs md:text-[10px] lg:text-xs text-body"
+                            className="inline-flex items-center gap-1 bg-surface-light px-2 py-1 rounded text-xs text-body"
                           >
-                            <CheckCircle2 className="h-3 w-3 md:h-2.5 md:w-2.5 lg:h-3 lg:w-3 text-accent shrink-0" />
+                            <CheckCircle2 className="h-3 w-3 text-accent shrink-0" />
                             {feature}
                           </span>
                         ))}
