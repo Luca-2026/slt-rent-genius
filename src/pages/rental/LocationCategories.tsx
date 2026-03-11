@@ -32,7 +32,7 @@ const locationManagers: Record<string, { name: string; roleKey: string; image: s
   muelheim: { name: "Andreas Scherzow", roleKey: "rental.locationManager", image: null, email: "a.scherzow@slt-rental.de" },
 };
 
-// Location descriptions (kept as data, could be translated if needed)
+// Location descriptions
 const locationDescriptions: Record<string, { de: string; en: string }> = {
   krefeld: {
     de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
@@ -107,34 +107,35 @@ export default function LocationCategories() {
           ]),
         ] as unknown as Record<string, unknown>[]}
       />
+
       {/* Header with Location Info */}
-      <section className="bg-primary py-8 lg:py-12">
+      <section className="bg-primary py-6 md:py-8 lg:py-12">
         <div className="section-container">
           <Link 
             to="/mieten" 
-            className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-6 transition-colors"
+            className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 md:mb-6 transition-colors text-sm"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             {t("rental.changeLocation")}
           </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center">
             <div>
-              <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground mb-4">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary-foreground mb-2 md:mb-4">
                 SLT Rental in {location.name}
               </h1>
-              <p className="text-primary-foreground/80 text-lg mb-8">
+              <p className="text-primary-foreground/80 text-sm md:text-base lg:text-lg mb-5 md:mb-8">
                 {description}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-5 md:mb-8">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-primary-foreground" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="h-4 w-4 md:h-5 md:w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-primary-foreground mb-1">{t("rental.address")}</p>
-                    <p className="text-primary-foreground/80 text-sm">
+                    <p className="font-semibold text-primary-foreground mb-0.5 md:mb-1 text-sm">{t("rental.address")}</p>
+                    <p className="text-primary-foreground/80 text-xs md:text-sm">
                       {streetAddress}<br />
                       {cityAddress}
                     </p>
@@ -142,12 +143,12 @@ export default function LocationCategories() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="h-4 w-4 md:h-5 md:w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-primary-foreground mb-1">{t("rental.contactLabel")}</p>
-                    <p className="text-primary-foreground/80 text-sm">
+                    <p className="font-semibold text-primary-foreground mb-0.5 md:mb-1 text-sm">{t("rental.contactLabel")}</p>
+                    <p className="text-primary-foreground/80 text-xs md:text-sm">
                       <a href={`mailto:${location.email}`} className="hover:text-primary-foreground transition-colors">
                         {location.email}
                       </a><br />
@@ -159,10 +160,10 @@ export default function LocationCategories() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center gap-3 md:gap-4">
                 <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="secondary" className="gap-2">
-                    <Navigation className="h-4 w-4" />
+                  <Button variant="secondary" size="sm" className="gap-2 text-xs md:text-sm">
+                    <Navigation className="h-3.5 w-3.5 md:h-4 md:w-4" />
                     {t("rental.planRoute")}
                   </Button>
                 </a>
@@ -170,10 +171,10 @@ export default function LocationCategories() {
                 {locationManagers[location.id] && (
                   <a 
                     href={`mailto:${locationManagers[location.id].email}`}
-                    className="flex items-center gap-3 bg-primary-foreground/10 rounded-full pl-1 pr-4 py-1 hover:bg-primary-foreground/20 transition-colors cursor-pointer"
+                    className="flex items-center gap-2 md:gap-3 bg-primary-foreground/10 rounded-full pl-1 pr-3 md:pr-4 py-1 hover:bg-primary-foreground/20 transition-colors cursor-pointer"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <Avatar className="h-10 w-10 border-2 border-primary-foreground/20">
+                    <Avatar className="h-8 w-8 md:h-10 md:w-10 border-2 border-primary-foreground/20">
                       {locationManagers[location.id].image ? (
                         <AvatarImage 
                           src={locationManagers[location.id].image!} 
@@ -182,14 +183,14 @@ export default function LocationCategories() {
                         />
                       ) : null}
                       <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground">
-                        <User className="h-5 w-5" />
+                        <User className="h-4 w-4 md:h-5 md:w-5" />
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                      <p className="text-xs md:text-sm font-semibold text-primary-foreground leading-tight">
                         {locationManagers[location.id].name}
                       </p>
-                      <p className="text-xs text-primary-foreground/70">
+                      <p className="text-[10px] md:text-xs text-primary-foreground/70">
                         {t(locationManagers[location.id].roleKey)}
                       </p>
                     </div>
@@ -198,22 +199,22 @@ export default function LocationCategories() {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative hidden md:block">
               {locationImages[location.id] ? (
                 <img 
                   src={locationImages[location.id]} 
                   alt={`SLT Rental ${location.name}`}
-                  className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
+                  className="w-full h-48 md:h-64 lg:h-80 object-cover rounded-xl shadow-lg"
                 />
               ) : (
-                <div className="w-full h-64 lg:h-80 bg-primary-foreground/10 rounded-xl flex items-center justify-center">
-                  <MapPin className="h-16 w-16 text-primary-foreground/30" />
+                <div className="w-full h-48 md:h-64 lg:h-80 bg-primary-foreground/10 rounded-xl flex items-center justify-center">
+                  <MapPin className="h-12 w-12 md:h-16 md:w-16 text-primary-foreground/30" />
                 </div>
               )}
             </div>
           </div>
 
-          <div className="mt-8 lg:mt-12 max-w-xl">
+          <div className="mt-5 md:mt-8 lg:mt-12 max-w-xl">
             <ProductSearch 
               locationId={location.id}
               onCategorySelect={handleCategorySelect}
@@ -225,10 +226,10 @@ export default function LocationCategories() {
       </section>
 
       {/* Categories */}
-      <section className="py-12 lg:py-16">
+      <section className="py-8 md:py-10 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
-            <h2 className="text-xl font-bold text-foreground mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-4 md:mb-6">
               {t("rental.categoriesAtLocation", { name: location.name })}
             </h2>
             <CategoryGrid location={location} />
@@ -238,7 +239,7 @@ export default function LocationCategories() {
 
       {/* Google Reviews */}
       {getPlaceId(location.id) && (
-        <section className="py-12 lg:py-16 bg-muted/30">
+        <section className="py-8 md:py-10 lg:py-16 bg-muted/30">
           <div className="section-container">
             <AnimatedSection animation="fade-in-up">
               <GoogleReviews
@@ -252,17 +253,17 @@ export default function LocationCategories() {
       )}
 
       {/* Weekend Info */}
-      <section className="py-12 lg:py-16 bg-background">
+      <section className="py-8 md:py-10 lg:py-16 bg-background">
         <div className="section-container">
-          <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8 lg:p-12">
+          <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl md:rounded-2xl p-5 md:p-8 lg:p-12">
             <div className="max-w-2xl">
-              <span className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block bg-accent text-accent-foreground px-2.5 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-medium mb-3 md:mb-4">
                 💰 {t("rental.weekendRate")}
               </span>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+              <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-foreground mb-2 md:mb-4">
                 {t("rental.weekendTitle")}
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-xs md:text-sm lg:text-base text-muted-foreground">
                 {t("rental.weekendDesc")}
               </p>
             </div>
