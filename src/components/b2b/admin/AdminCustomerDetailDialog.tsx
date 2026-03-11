@@ -37,6 +37,7 @@ interface B2BProfile {
   contact_first_name: string;
   contact_last_name: string;
   contact_email: string;
+  contact_phone: string;
   billing_email: string | null;
   status: string;
   credit_limit: number;
@@ -306,7 +307,15 @@ export function AdminCustomerDetailDialog({
           <span>·</span>
           <span>{profile.contact_email}</span>
           <span>·</span>
+          <span>📞 {profile.contact_phone}</span>
+          <span>·</span>
           <span>{profile.street} {profile.house_number}, {profile.postal_code} {profile.city}</span>
+          {profile.billing_email && (
+            <>
+              <span>·</span>
+              <span>Rechnung: {profile.billing_email}</span>
+            </>
+          )}
           {profile.tax_id && (
             <>
               <span>·</span>
@@ -490,6 +499,27 @@ export function AdminCustomerDetailDialog({
               onClick={() => setDeleteDialogOpen(true)}
             >
               Jetzt löschen
+            </Button>
+          </div>
+        )}
+
+        {/* Credit Limit Request Banner */}
+        {profile.credit_limit_requested_at && profile.credit_limit === 0 && (
+          <div className="flex items-center gap-2 p-3 rounded-lg border border-amber-300 bg-amber-50">
+            <CreditCard className="h-4 w-4 text-amber-600 shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-amber-800">Kreditlimit beantragt</p>
+              <p className="text-xs text-amber-700">
+                Der Kunde hat am {formatDate(profile.credit_limit_requested_at)} ein Kreditlimit beantragt. Bitte über „Stammdaten bearbeiten" ein Limit vergeben.
+              </p>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="shrink-0 border-amber-300 text-amber-700 hover:bg-amber-100"
+              onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
+            >
+              <Edit className="h-3.5 w-3.5 mr-1" /> Limit vergeben
             </Button>
           </div>
         )}
