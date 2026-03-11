@@ -1224,7 +1224,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-linienlaser-gll3-80",
-    name: "Bosch Linienlaser GLL 3-80",
+    name: "Linienlaser",
+    modelName: "Bosch GLL 3-80",
     description: "360° Linienlaser für präzise Ausrichtung",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
