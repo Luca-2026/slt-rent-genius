@@ -187,6 +187,7 @@ import {
 export interface Product {
   id: string;
   name: string;
+  modelName?: string; // Manufacturer + model designation shown below the name
   description?: string;
   detailedDescription?: string; // Longer description for product detail page
   image?: string; // Primary image (first in images array)
