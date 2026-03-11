@@ -580,7 +580,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "rueckwaertskipp",
     tags: ["laubgitter", "gebremst", "zweiachser"], 
-    rentwareCode: { krefeld: "", bonn: "" } 
+    rentwareCode: { krefeld: "QNRXMH" } 
   },
   { 
     id: "rueckwaertskipp-2700", 
