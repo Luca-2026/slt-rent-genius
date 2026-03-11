@@ -108,6 +108,7 @@ Deno.serve(async (req: Request) => {
     const {
       reservation_id,
       customer_signature_data,
+      customer_not_present = false,
       staff_signature_data,
       staff_name,
       overall_condition,
