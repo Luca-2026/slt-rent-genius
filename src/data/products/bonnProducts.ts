@@ -400,7 +400,8 @@ export const bonnErdbewegungProducts = [
   // === DUMPER (absteigend nach Nutzlast) ===
   {
     id: "bonn-kettendumper-rmd800",
-    name: "Ketten-Dumper RMD-800",
+    name: "Ketten-Dumper",
+    modelName: "RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplatten",
     image: imgKettendumperRmd800_1,
     images: [imgKettendumperRmd800_1],
