@@ -469,8 +469,10 @@ Deno.serve(async (req: Request) => {
           id: deliveryNote.id,
           delivery_note_number: deliveryNoteNumber,
           file_url: fileUrl,
+          status: deliveryNoteStatus,
         },
         email_sent: emailSent,
+        customer_not_present,
       }),
       {
         status: 200,
