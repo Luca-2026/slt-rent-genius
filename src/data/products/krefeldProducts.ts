@@ -1062,7 +1062,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr18v-60c",
-    name: "Bosch Akku Bohrschrauber GSR 18V-60C",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 18V-60C",
     description: "Leistungsstarker Akku-Bohrschrauber mit Bluetooth",
     image: imgBohrschrauber60c,
     images: [imgBohrschrauber60c],
