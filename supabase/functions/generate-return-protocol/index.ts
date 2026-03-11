@@ -31,7 +31,8 @@ const SLT_COMPANY = {
 
 interface ReturnProtocolRequest {
   reservation_id: string;
-  customer_signature_data: string;
+  customer_signature_data: string | null;
+  customer_not_present?: boolean;
   staff_signature_data: string;
   staff_name: string;
   overall_condition: "good" | "minor_damage" | "major_damage";
