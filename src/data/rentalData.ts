@@ -660,9 +660,10 @@ const trailerProducts: Product[] = [
 
 // Erdbewegung category sort order: Machines first, then attachments, then accessories
 const erdbewegungCategoryOrder = [
-  // 1. Maschinen (Bagger nach Gewicht, dann Radlader, dann Dumper)
+  // 1. Maschinen (Bagger nach Gewicht, dann Radlader, dann Knicklader, dann Dumper)
   "minibagger",
   "radlader",
+  "knicklader",
   "dumper",
   // 2. Anbaugeräte
   "tiefloeffel",
