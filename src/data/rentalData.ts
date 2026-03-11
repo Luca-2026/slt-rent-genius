@@ -1150,13 +1150,35 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
   const normalise = (s: string | undefined | null) => (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
 
   /**
+   * Extract model numbers from a product name for fuzzy matching.
+   * Matches patterns like: ZS1012AC, XG0807AC, ZMP09, HR12L, TM18GTi, GS72-XH, KT200, etc.
+   */
+  function extractModels(name: string): string[] {
+    const n = name.toLowerCase();
+    const matches = n.match(/[a-z]{1,4}\s*[-]?\s*\d{2,6}\s*[-]?\s*[a-z0-9]*/g);
+    if (!matches) return [];
+    return matches.map((m) => m.replace(/[\s\-]/g, "")).filter((m) => m.length >= 4);
+  }
+
+  /**
+   * Check if two products share a distinctive model number.
+   */
+  function shareModel(nameA: string, nameB: string): boolean {
+    const modelsA = extractModels(nameA);
+    const modelsB = extractModels(nameB);
+    if (modelsA.length === 0 || modelsB.length === 0) return false;
+    return modelsA.some((ma) => modelsB.some((mb) => ma === mb || ma.includes(mb) || mb.includes(ma)));
+  }
+
+  /**
    * Find a Krefeld reference product for a primary product using multiple strategies:
    * 1. Exact ID match
    * 2. Exact normalised name match
-   * 3. Primary name is a prefix of the Krefeld name (e.g. "2.1 Soundsystem 1400W RMS" → longer Krefeld title)
-   * 4. Krefeld name is a prefix of the primary name (reverse)
-   * 5. Primary name is contained within the Krefeld name (e.g. "Funkmikrofon" inside "Sennheiser Funkmikrofon XSW 1-835")
+   * 3. Primary name is a prefix of the Krefeld name
+   * 4. Krefeld name is a prefix of the primary name
+   * 5. Primary name is contained within the Krefeld name
    * 6. Krefeld name is contained within the primary name
+   * 7. Shared model number (e.g. "ZS1012AC" in both names)
    */
   function findRef(p: Product): Product | undefined {
     const pn = normalise(p.name);
@@ -1181,7 +1203,7 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
       });
       if (byReversePrefix) return byReversePrefix;
 
-      // 5. Primary name is contained in Krefeld name (e.g. "Funkmikrofon" in "Sennheiser Funkmikrofon XSW 1-835")
+      // 5. Primary name is contained in Krefeld name
       const byContained = krefeld.find((k) => normalise(k.name).includes(pn));
       if (byContained) return byContained;
 
@@ -1192,6 +1214,10 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
       });
       if (byReverseContained) return byReverseContained;
     }
+
+    // 7. Model number match (e.g. "12m Scherenbühne ZS1012AC" ↔ "12m Scherenbühne Zoomlion ZS1012AC")
+    const byModel = krefeld.find((k) => shareModel(p.name, k.name));
+    if (byModel) return byModel;
 
     return undefined;
   }
@@ -1210,6 +1236,8 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
       if (kn.length >= 8 && pn.startsWith(kn)) return true;
       if (pn.length >= 8 && kn.includes(pn)) return true;
       if (kn.length >= 8 && pn.includes(kn)) return true;
+      // Model number match
+      if (shareModel(p.name, k.name)) return true;
       return false;
     });
   }
