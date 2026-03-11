@@ -58,16 +58,16 @@ export default function Locations() {
                       </div>
                     )}
                   </Link>
-                  <CardContent className="p-4 md:p-3 lg:p-6 flex flex-col flex-1">
-                    <div className="flex items-start justify-between mb-3 md:mb-2 lg:mb-4">
-                      <div>
-                        <h2 className="text-lg md:text-base lg:text-xl font-bold text-headline">{location.name}</h2>
-                        <span className="text-xs md:text-[11px] lg:text-sm text-accent font-medium">{location.subtitle}</span>
+                    <CardContent className="p-4 md:p-5 lg:p-6 flex flex-col flex-1">
+                      <div className="flex items-start justify-between mb-3 lg:mb-4">
+                        <div>
+                          <h2 className="text-lg md:text-lg lg:text-xl font-bold text-headline">{location.name}</h2>
+                          <span className="text-xs md:text-xs lg:text-sm text-accent font-medium">{location.subtitle}</span>
+                        </div>
+                        <div className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                          <MapPin className="h-4 w-4 md:h-4 md:w-4 lg:h-5 lg:w-5 text-primary" />
+                        </div>
                       </div>
-                      <div className="w-8 h-8 md:w-7 md:h-7 lg:w-10 lg:h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                        <MapPin className="h-4 w-4 md:h-3.5 md:w-3.5 lg:h-5 lg:w-5 text-primary" />
-                      </div>
-                    </div>
 
                     {/* Address & Contact */}
                     <div className="space-y-2 md:space-y-1.5 lg:space-y-3 mb-4 md:mb-3 lg:mb-6">
