@@ -157,7 +157,7 @@ export default function Index() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-3 lg:gap-6">
             {locationData.map((loc, index) => (
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
@@ -175,20 +175,20 @@ export default function Index() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <span className="text-xs text-accent font-medium uppercase tracking-wide">
+                    <div className="absolute bottom-3 left-3 right-3 md:bottom-2 md:left-2 md:right-2 lg:bottom-4 lg:left-4 lg:right-4">
+                      <span className="text-xs text-accent font-medium uppercase tracking-wide md:text-[10px] lg:text-xs">
                         {loc.subtitle}
                       </span>
-                      <h3 className="text-xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-white md:text-base lg:text-xl">
                         {loc.name}
                       </h3>
                     </div>
                   </Link>
                   
-                  <CardContent className="p-4 sm:p-5 flex flex-col flex-1">
+                  <CardContent className="p-4 sm:p-5 md:p-3 lg:p-5 flex flex-col flex-1">
                     {/* Address */}
-                    <div className="flex items-start gap-2 text-sm mb-1">
-                      <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm mb-1">
+                      <MapPin className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-primary shrink-0 mt-0.5" />
                       <div className="min-w-0">
                         <span className="block text-body break-words">{loc.address}</span>
                         <span className="block text-body break-words">{loc.city}</span>
@@ -198,32 +198,32 @@ export default function Index() {
                     {/* Phone */}
                     <a 
                       href={`tel:${loc.phone.replace(/\s/g, '')}`}
-                      className="flex items-center gap-2 text-sm text-muted-foreground mb-1 hover:text-primary transition-colors"
+                      className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm text-muted-foreground mb-1 hover:text-primary transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Phone className="h-4 w-4 shrink-0 text-primary" />
+                      <Phone className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 shrink-0 text-primary" />
                       <span>{loc.phone}</span>
                     </a>
 
                     {/* Email */}
                     <a 
                       href={`mailto:${loc.email}`}
-                      className="flex items-center gap-2 text-sm text-muted-foreground mb-3 hover:text-primary transition-colors"
+                      className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm text-muted-foreground mb-2 md:mb-2 lg:mb-3 hover:text-primary transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Mail className="h-4 w-4 shrink-0 text-primary" />
-                      <span>{loc.email}</span>
+                      <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 shrink-0 text-primary" />
+                      <span className="truncate">{loc.email}</span>
                     </a>
 
                     {/* Hours - fixed height */}
-                    <div className="mb-3 p-3 bg-surface-light rounded-lg min-h-[108px]">
-                      <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
-                        <Clock className="h-4 w-4 text-primary" />
+                    <div className="mb-2 md:mb-2 lg:mb-3 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg min-h-[90px] md:min-h-[80px] lg:min-h-[108px]">
+                      <div className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm font-medium text-headline mb-2 md:mb-1 lg:mb-2">
+                        <Clock className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-primary" />
                         {t("locations.openingHours")}
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1 md:space-y-0.5">
                         {loc.hours.map((h, idx) => (
-                          <div key={idx} className="flex justify-between gap-2 text-xs text-muted-foreground">
+                          <div key={idx} className="flex justify-between gap-2 md:gap-1 text-xs md:text-[10px] lg:text-xs text-muted-foreground">
                             <span className="shrink-0">{h.day}</span>
                             <span className="font-medium text-right">{h.time}</span>
                           </div>
@@ -234,29 +234,29 @@ export default function Index() {
                     {/* Manager - fixed height */}
                     <a 
                       href={`mailto:${loc.manager.email}`}
-                      className="flex items-center gap-3 mb-4 p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer min-h-[72px]"
+                      className="flex items-center gap-3 md:gap-2 lg:gap-3 mb-3 md:mb-2 lg:mb-4 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer min-h-[64px] md:min-h-[52px] lg:min-h-[72px]"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Avatar className="h-10 w-10">
+                      <Avatar className="h-10 w-10 md:h-7 md:w-7 lg:h-10 lg:w-10">
                         {loc.manager.image ? (
                           <AvatarImage src={loc.manager.image} alt={loc.manager.name} />
                         ) : null}
                         <AvatarFallback className="bg-primary/10 text-primary">
-                          <User className="h-4 w-4" />
+                          <User className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4" />
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-headline text-sm truncate">{loc.manager.name}</p>
-                        <p className="text-xs text-muted-foreground">{t(loc.manager.role)}</p>
+                        <p className="font-semibold text-headline text-sm md:text-xs lg:text-sm truncate">{loc.manager.name}</p>
+                        <p className="text-xs md:text-[10px] lg:text-xs text-muted-foreground">{t(loc.manager.role)}</p>
                       </div>
-                      <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
                     </a>
 
                     {/* CTA - pushed to bottom */}
                     <Link to={`/mieten/${loc.id}`} className="mt-auto">
-                      <Button className="w-full bg-primary hover:bg-primary/90">
+                      <Button className="w-full bg-primary hover:bg-primary/90 md:text-xs md:h-9 lg:text-sm lg:h-10">
                         {t("locations.viewCategories")}
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-1.5 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4" />
                       </Button>
                     </Link>
                   </CardContent>
