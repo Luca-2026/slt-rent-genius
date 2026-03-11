@@ -8,6 +8,31 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 RewriteCond %{HTTP_HOST} ^slt-rental\.de$ [NC]
 RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [R=301,L]
 
+# ===== Legacy URL 301 Redirects (SEO) =====
+
+# Old category routes: /kategorien-krefeld/{cat} → /mieten/krefeld/{cat}
+RewriteRule ^kategorien-krefeld/rigging$ /mieten/krefeld/traversen-rigging [R=301,L]
+RewriteRule ^kategorien-krefeld/buehnen$ /mieten/krefeld/buehne [R=301,L]
+RewriteRule ^kategorien-krefeld/(.+)$ /mieten/krefeld/$1 [R=301,L]
+
+# Old compound category routes: /kategorie/krefeld-{cat} → /mieten/krefeld/{cat}
+RewriteRule ^kategorie/krefeld-(.+?)(?:Zus)?$ /mieten/krefeld/$1 [R=301,L,NC]
+RewriteRule ^kategorie/bonn-(.+?)(?:Zus)?$ /mieten/bonn/$1 [R=301,L,NC]
+RewriteRule ^kategorie/(.+)$ /mieten/krefeld/$1 [R=301,L]
+
+# Old location-specific product routes → SPA handles the redirect
+# /produkte-bonn/{slug} → /mieten/bonn (SPA will find the product)
+RewriteRule ^produkte-bonn/(.+)$ /mieten/bonn/alle?legacy=$1 [R=301,L]
+RewriteRule ^produkte-duisburg/(.+)$ /mieten/muelheim/alle?legacy=$1 [R=301,L]
+RewriteRule ^produkte-muelheim/(.+)$ /mieten/muelheim/alle?legacy=$1 [R=301,L]
+
+# Old product detail routes: /produkte/{slug} → SPA handles lookup
+# Keep /produkte as-is (category overview), only redirect /produkte/{slug}
+RewriteCond %{REQUEST_URI} ^/produkte/[^/]+$
+RewriteRule ^produkte/(.+)$ /mieten/krefeld/alle?legacy=$1 [R=301,L]
+
+# ===== End Legacy Redirects =====
+
 # SPA: Route all requests to index.html (unless file/directory exists)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
