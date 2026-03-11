@@ -138,8 +138,23 @@ export default function Contact() {
                         <Input name="email" type="email" placeholder="max@beispiel.de" required />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")}</label>
-                        <Input name="phone" type="tel" placeholder="0151 123 456 78" />
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")} *</label>
+                        <Input name="phone" type="tel" placeholder="0151 123 456 78" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">Standort *</label>
+                        <Select name="location" required>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Standort wählen" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {locationData.map((loc) => (
+                              <SelectItem key={loc.id} value={loc.id}>
+                                {loc.name} {loc.subtitle === "Hauptsitz" ? "(Hauptsitz)" : ""}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
