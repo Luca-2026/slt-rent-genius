@@ -262,6 +262,13 @@ export const bonnAggregateProducts = [
     },
   },
   {
+    id: "bonn-aggregat-2-8kva",
+    name: "2,8 kVA Stromaggregat",
+    description: "Kompaktes Stromaggregat für kleinere Anwendungen.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "INO6QP" },
+  },
+  {
     id: "bonn-kompressor-5m3",
     name: "4m³ Kompressor",
     description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
