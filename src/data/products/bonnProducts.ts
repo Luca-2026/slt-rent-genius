@@ -431,7 +431,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-kettendumper-rmd650",
-    name: "Ketten-Dumper RMD-650",
+    name: "Ketten-Dumper",
+    modelName: "RMD-650",
     description: "Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.",
     image: "/placeholder.svg",
     driveType: "benzin",
