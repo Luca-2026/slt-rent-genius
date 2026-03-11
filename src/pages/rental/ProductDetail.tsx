@@ -282,7 +282,7 @@ export default function ProductDetail() {
               </div>
 
               {/* ── MOBILE ONLY: Booking Card inline ── */}
-              <div className="lg:hidden">
+              <div className="md:hidden">
                 <MobileBookingCard
                   product={product}
                   location={location}
