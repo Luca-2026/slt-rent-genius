@@ -110,6 +110,7 @@ import imgCormidiC60_2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
 import imgCormidiC60_3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
 import imgKramer5045_1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
 import imgKramer5045_2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
+import imgBobcatL28_1 from "@/assets/products/erdbewegung/bobcat-l28-1.jpeg";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
