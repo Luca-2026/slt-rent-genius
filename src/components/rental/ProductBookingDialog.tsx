@@ -159,7 +159,6 @@ export function ProductBookingDialog({
               className="min-h-[400px] sm:min-h-[500px] p-2 sm:p-4"
             />
           </div>
-          </div>
         ) : (
           // "Auf Anfrage" inquiry form
           <>
