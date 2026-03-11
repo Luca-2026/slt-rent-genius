@@ -70,9 +70,9 @@ export default function Locations() {
                       </div>
 
                     {/* Address & Contact */}
-                    <div className="space-y-2 md:space-y-1.5 lg:space-y-3 mb-4 md:mb-3 lg:mb-6">
-                      <div className="flex items-start gap-2 md:gap-1.5 lg:gap-3 text-sm md:text-xs lg:text-sm">
-                        <MapPin className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground mt-0.5 shrink-0" />
+                    <div className="space-y-2 md:space-y-2 lg:space-y-3 mb-4 md:mb-4 lg:mb-6">
+                      <div className="flex items-start gap-2 md:gap-2 lg:gap-3 text-sm md:text-sm lg:text-sm">
+                        <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                         <div>
                           <p className="text-headline">{location.address}</p>
                           <p className="text-muted-foreground">{location.city}</p>
