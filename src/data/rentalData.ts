@@ -960,8 +960,9 @@ function inferArbeitsbuehneCategory(name: string): string | undefined {
   return undefined;
 }
 
-function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "dumper" | undefined {
+function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
   const n = name.toLowerCase();
+  if (n.includes("knicklader")) return "knicklader";
   if (n.includes("radlader")) return "radlader";
   if (n.includes("dumper")) return "dumper";
   // default for typical excavator entries
