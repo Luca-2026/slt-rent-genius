@@ -1421,7 +1421,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "fugenschneider-bs50e",
-    name: "Fugenschneider BS50E - 13PS",
+    name: "Fugenschneider 13PS",
+    modelName: "BS50E",
     description: "Leistungsstarker Fugenschneider",
     image: imgFugenschneider1,
     images: [imgFugenschneider1, imgFugenschneider2],
