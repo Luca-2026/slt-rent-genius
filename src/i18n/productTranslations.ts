@@ -433,9 +433,9 @@ export const productTranslations: Record<string, { name?: string; description?: 
     detailedDescription: "The Bluetti Power Station offers 1,152 Wh capacity and up to 1,800 W output. Versatile connections (Schuko, USB-A, USB-C, 12V DC) enable simultaneous powering of various devices. Perfect as mobile power supply on construction sites, at events or outdoors."
   },
   "kompressor-5m3": {
-    name: "5 m³ Compressor Doosan 7/55",
-    description: "Powerful diesel construction compressor (EU Stage V) with 5 m³/min flow rate – incl. 8 operating hours/day.",
-    detailedDescription: "The Doosan 7/55 is a robust diesel construction compressor with 5 m³/min flow rate and max. 6.8 bar pressure. The EU Stage V emission class ensures eco-friendly operation. The 65-litre tank enables extended use. Includes 8 operating hours per day; extra hours are charged at €10.00 gross per hour. Fuel is billed separately – return with full tank agreed, diesel is charged at €2.45/l gross. Optionally available with trailer."
+    name: "4m³ Compressor",
+    description: "Compressor incl. generator – Doosan 7/45, 4m³/min flow rate, 6 kVA generator 400V/230V – incl. 8 operating hours/day.",
+    detailedDescription: "Compressor incl. Generator<br /><br />Brand: Doosan<br />Type: 7/45<br />Flow rate: 4m³/min<br />Max. pressure: 6.8 bar<br />Emission class: EU Stage V<br />Battery voltage: 12 V<br />Connections: 3x<br />Speed: 1500 rpm<br />Weight: approx. 680 kg<br />Tank capacity: 58 l<br />Fuel: Diesel<br />Emission standard: Stage V<br />Additional equipment: on chassis<br />Generator: 6 kVA 400V/230V<br /><br />Incl. 8 operating hours/day, extra hours charged at €10.00 gross per hour.<br />Plus consumption, fuel fill per rental unit – return with full tank agreed. Diesel charged at €2.85/l gross."
   },
 
   // ===== AERIAL WORK PLATFORMS =====
