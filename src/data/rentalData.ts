@@ -752,7 +752,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "xcmg-xe20e",
-    name: "2t XCMG XE20E Minibagger",
+    name: "2t Minibagger",
+    modelName: "XCMG XE20E",
     description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgXcmgXe20e_1,
     images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
