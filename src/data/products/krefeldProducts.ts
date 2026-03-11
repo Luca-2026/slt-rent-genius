@@ -1391,7 +1391,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-nageler-te-cn",
-    name: "Einhell Akku Nageler TE-CN",
+    name: "Akku Nageler",
+    modelName: "Einhell TE-CN",
     description: "Akku-Nagelpistole für Dachdecker",
     image: imgNageler,
     images: [imgNageler],
