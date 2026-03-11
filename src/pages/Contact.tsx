@@ -19,6 +19,7 @@ export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
