@@ -44,6 +44,7 @@ export default function CategoryProducts() {
     search: "",
     filters: {},
   });
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const productGridRef = useRef<HTMLDivElement>(null);
   const prevFiltersRef = useRef({ trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter });
