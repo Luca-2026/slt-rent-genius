@@ -82,12 +82,18 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   drawText("Übergebene Artikel", margin, y, 12, fontBold, darkBlue);
   y -= 18;
 
-  const colX = [margin, margin + 35, margin + 250, margin + 370];
+  const hasAnySerial = data.items.some(item => item.serial_number && item.serial_number.trim() !== "");
+  const colX = hasAnySerial
+    ? [margin, margin + 35, margin + 250, margin + 370]
+    : [margin, margin + 35, margin + 370];
+
   page.drawRectangle({ x: margin, y: y - 2, width: pageWidth - 2 * margin, height: 16, color: rgb(0.94, 0.96, 0.98) });
   drawText("Menge", colX[0] + 2, y, 9, fontBold);
   drawText("Bezeichnung", colX[1] + 2, y, 9, fontBold);
-  drawText("Seriennr.", colX[2] + 2, y, 9, fontBold);
-  drawText("Zustandsnotizen", colX[3] + 2, y, 9, fontBold);
+  if (hasAnySerial) {
+    drawText("Seriennr.", colX[2] + 2, y, 9, fontBold);
+  }
+  drawText("Zustandsnotizen", colX[hasAnySerial ? 3 : 2] + 2, y, 9, fontBold);
   y -= 18;
 
   for (const item of data.items) {
@@ -95,8 +101,10 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
     drawText(`${item.quantity}`, colX[0] + 2, y, 9);
     const nameText = item.description ? `${item.product_name} – ${item.description}` : item.product_name;
     drawText(nameText.substring(0, 40), colX[1] + 2, y, 9);
-    drawText((item.serial_number || "–").substring(0, 20), colX[2] + 2, y, 9);
-    drawText((item.condition_notes || "").substring(0, 25), colX[3] + 2, y, 9);
+    if (hasAnySerial) {
+      drawText((item.serial_number || "").substring(0, 20), colX[2] + 2, y, 9);
+    }
+    drawText((item.condition_notes || "").substring(0, 25), colX[hasAnySerial ? 3 : 2] + 2, y, 9);
     y -= 14;
     page.drawLine({ start: { x: margin, y: y + 4 }, end: { x: pageWidth - margin, y: y + 4 }, thickness: 0.5, color: lineGray });
   }
