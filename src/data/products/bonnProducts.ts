@@ -977,7 +977,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-winkelschleifer-gws18v",
-    name: "Bosch Akku Winkelschleifer GWS 18V-10",
+    name: "Akku Winkelschleifer",
+    modelName: "Bosch GWS 18V-10",
     description: "Kraftvoller Akku-Winkelschleifer.",
     image: imgWinkelschleifer,
     images: [imgWinkelschleifer],
