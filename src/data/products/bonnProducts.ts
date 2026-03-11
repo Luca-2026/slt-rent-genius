@@ -550,31 +550,6 @@ export const bonnAnhaengerProducts = [
     rentwareCode: { bonn: "3S1FQQ" },
     weightClass: "1300-2000",
   },
-  {
-    id: "bonn-kompressor-5m3",
-    name: "4m³ Kompressor",
-    description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
-    image: kompressor5m3_1,
-    images: [kompressor5m3_1, kompressor5m3_2],
-    rentwareCode: { bonn: "" },
-    detailedDescription: "Kompressor inkl. Generator – auf Fahrgestell.\n\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät – Rückgabe des Mietgeräts mit vollgetanktem Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
-    specifications: {
-      "Marke": "Doosan",
-      "Typ": "7/45",
-      "Volumenstrom": "4m³/min",
-      "Max. Druck": "6,8 bar",
-      "Emissionsklasse": "EU Stage V",
-      "Batteriespannung": "12 V",
-      "Anschlüsse": "3x",
-      "Drehzahl": "1500 U/min",
-      "Gewicht": "ca. 680 kg",
-      "Tankinhalt": "58 l",
-      "Kraftstoff": "Diesel",
-      "Abgasnorm": "Stage V",
-      "Zusatzausstattung": "auf Fahrgestell",
-      "Generator": "6 kVA 400V/230V",
-    },
-  },
 ];
 
 // ==================== GARTENPFLEGE ====================
