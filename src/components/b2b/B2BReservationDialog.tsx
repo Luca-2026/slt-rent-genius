@@ -45,8 +45,8 @@ export function B2BReservationDialog({
     e.preventDefault();
     if (!user || !b2bProfile) return;
 
-    if (!startDate) {
-      toast({ title: "Bitte Startdatum angeben", variant: "destructive" });
+    if (!startDate || !startTime || !endTime) {
+      toast({ title: "Bitte Startdatum und Uhrzeiten angeben", variant: "destructive" });
       return;
     }
 
@@ -170,12 +170,13 @@ export function B2BReservationDialog({
             </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
-                Uhrzeit (von)
+                Uhrzeit (von) <span className="text-destructive">*</span>
               </label>
               <Input
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
+                required
                 className="h-9 text-sm"
               />
             </div>
@@ -193,12 +194,13 @@ export function B2BReservationDialog({
             </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
-                Uhrzeit (bis)
+                Uhrzeit (bis) <span className="text-destructive">*</span>
               </label>
               <Input
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
+                required
                 className="h-9 text-sm"
               />
             </div>

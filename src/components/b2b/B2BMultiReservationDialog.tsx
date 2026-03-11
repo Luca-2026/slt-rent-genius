@@ -157,8 +157,8 @@ export function B2BMultiReservationDialog({
     e.preventDefault();
     if (!user || !b2bProfile) return;
 
-    if (!startDate) {
-      toast({ title: "Bitte Hauptzeitraum-Startdatum angeben", variant: "destructive" });
+    if (!startDate || !startTime || !endTime) {
+      toast({ title: "Bitte Startdatum und Uhrzeiten angeben", variant: "destructive" });
       return;
     }
 
@@ -307,11 +307,12 @@ export function B2BMultiReservationDialog({
                 />
               </div>
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (von)</label>
+                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (von) <span className="text-destructive">*</span></label>
                 <Input
                   type="time"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -324,11 +325,12 @@ export function B2BMultiReservationDialog({
                 />
               </div>
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (bis)</label>
+                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (bis) <span className="text-destructive">*</span></label>
                 <Input
                   type="time"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
+                  required
                 />
               </div>
             </div>
