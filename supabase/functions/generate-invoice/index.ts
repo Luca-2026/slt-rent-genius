@@ -241,11 +241,16 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Calculate totals
-    const itemsTotal = items.reduce((sum, item) => sum + item.total_price, 0);
+    // Separate deposit items (tax-free) from regular items
+    const depositItems = is_proforma ? items.filter(i => i.product_name === "Kaution") : [];
+    const taxableItems = is_proforma ? items.filter(i => i.product_name !== "Kaution") : items;
+    const depositTotal = depositItems.reduce((sum, item) => sum + item.total_price, 0);
+    
+    // Calculate totals (only on taxable items)
+    const itemsTotal = taxableItems.reduce((sum, item) => sum + item.total_price, 0);
     const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
-    const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
+    const grossAmount = Math.round((netAmount + vatAmount + depositTotal) * 100) / 100;
 
     // serviceClient already created above
 
@@ -288,6 +293,7 @@ Deno.serve(async (req: Request) => {
       isCorrection: is_correction,
       originalInvoiceNumber: original_invoice_number || null,
       isProforma: is_proforma,
+      depositTotal,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
@@ -558,6 +564,7 @@ function generateInvoiceHtml(data: {
   isCorrection: boolean;
   originalInvoiceNumber: string | null;
   isProforma?: boolean;
+  depositTotal?: number;
 }): string {
   const formatCurrency = (amount: number) =>
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -705,8 +712,13 @@ function generateInvoiceHtml(data: {
           </td>
           <td style="padding:4px 0;text-align:right;">${formatCurrency(isCredit ? -Math.abs(data.vatAmount) : data.vatAmount)}</td>
         </tr>
+        ${(data.depositTotal && data.depositTotal > 0) ? `
+        <tr>
+          <td style="padding:4px 16px 4px 0;color:#595959;">Kaution (umsatzsteuerfrei):</td>
+          <td style="padding:4px 0;text-align:right;">${formatCurrency(data.depositTotal)}</td>
+        </tr>` : ""}
         <tr style="border-top:2px solid #00507d;">
-          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">${isCredit ? "Erstattungsbetrag:" : "Bruttobetrag:"}</td>
+          <td style="padding:8px 16px 4px 0;font-weight:700;font-size:16px;color:#00507d;">${isCredit ? "Erstattungsbetrag:" : "Gesamtbetrag:"}</td>
           <td style="padding:8px 0 4px;text-align:right;font-weight:700;font-size:16px;color:#00507d;">${formatCurrency(isCredit ? -Math.abs(data.grossAmount) : data.grossAmount)}</td>
         </tr>
       </table>
