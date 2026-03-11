@@ -1034,7 +1034,6 @@ export const werkzeugeProducts: Product[] = [
     image: imgAbbruchhammerHm1812,
     images: [imgAbbruchhammerHm1812],
     category: "abbruchhammer",
-    onRequest: true,
     specifications: {
       "Hersteller": "Makita",
       "Schlagenergie": "72,8 J",
@@ -1045,6 +1044,7 @@ export const werkzeugeProducts: Product[] = [
       "Werkzeugaufnahme": "HEX-28",
       "Lieferumfang": "1x Spitzmeißel, 1x Flachmeißel",
     },
+    rentwareCode: { krefeld: "EFFXYJ" },
   },
   {
     id: "bosch-bohrschrauber-gsr12v-15",
@@ -1139,7 +1139,7 @@ export const werkzeugeProducts: Product[] = [
       "Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt.",
       "Diamanttrennscheiben zum Kauf optional erhältlich.",
     ],
-    onRequest: true,
+    rentwareCode: { krefeld: "L2QI1R" },
   },
   {
     id: "zwangsmischer-140l",
@@ -2003,7 +2003,7 @@ export const absperrtechnikProducts: Product[] = [
       "Abmessungen": "231 × 420 mm",
       "Größe": "Gr. 1",
     },
-    rentwareCode: { krefeld: "EGRK14" }
+    rentwareCode: { krefeld: "D2MTMY" }
   },
   {
     id: "vz-1000-22-ra1-gr2",
@@ -2319,7 +2319,7 @@ export const beschallungProducts: Product[] = [
       "XLR Kabel": "2× XLR Kabel 10m",
       "Gesamtgewicht": "ca. 130 kg",
     },
-    rentwareCode: { krefeld: "PLACEHOLDER_3500W" }
+    rentwareCode: { krefeld: "4WX78O" }
   },
   {
     id: "das-action-508a",
@@ -2530,7 +2530,7 @@ export const kommunikationProducts: Product[] = [
       "VOX-Freisprechfunktion": "Ja",
       "Lieferumfang": "6× Funkgerät + 6-fach Ladestation",
     },
-    rentwareCode: { krefeld: "4PPBU1" }
+    rentwareCode: { krefeld: "PGC49X" }
   },
   {
     id: "uhf-funkgeraet-lautsprecher",
@@ -2604,7 +2604,7 @@ export const beleuchtungProducts: Product[] = [
       "Lieferumfang": "2× 5m Anschlusskabel, 2× Stativ, 4× Tasche",
     },
     pdfUrl: "/manuals/led-beleuchtungsset-duo-manual.pdf",
-    rentwareCode: { krefeld: "YXVVZR" }
+    rentwareCode: { krefeld: "63GT72" }
   },
   {
     id: "led-moving-head-vector-spot",
@@ -3080,7 +3080,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
       "Glasbruch": "5,00 € pro Glas",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "SORKGR" }
   },
   {
     id: "wasserglas-passionata-25er",
@@ -3104,11 +3104,11 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
       "Glasbruch": "5,00 € pro Glas",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "PVBY61" }
   },
   {
-    id: "weissweinglas-passionata-10er",
-    name: "Weißweinglas Passionata, 10er Set",
+    id: "weissweinglas-passionata-25er",
+    name: "Weißwein Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
     image: weissweinPassionata1,
     images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
@@ -3123,14 +3123,14 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Farbe": "Klar",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Aromaverstärkend, kratzfest, nachhaltig",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "25 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "B98IC4" }
   },
   {
-    id: "rotweinglas-passionata-10er",
-    name: "Rotweinglas Passionata, 10er Set",
+    id: "rotweinglas-passionata-25er",
+    name: "Rotwein Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
@@ -3145,14 +3145,14 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "25 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "S2KNX3" }
   },
   {
-    id: "champagnerglas-passionata-10er",
-    name: "Champagnerglas Passionata, 10er Set",
+    id: "sektglas-passionata-36er",
+    name: "Sektglas Passionata, 36er Set",
     description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
     image: champagnerPassionata1,
     images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
@@ -3167,10 +3167,10 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Farbe": "Transparent",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "36 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "F66UKS" }
   },
   {
     id: "burgunderglas-brunelli-10er",
@@ -3799,7 +3799,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Höhe eingefahren": "3,5 m",
       "Material": "Aluminium",
     },
-    rentwareCode: { krefeld: "MZL3X12" }
+    rentwareCode: { krefeld: "7XT9BR" }
   },
   {
     id: "leiter-kaiserthal-l50-5-stufen",
@@ -3815,7 +3815,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Belastbarkeit": "150 kg",
       "Material": "Aluminium",
     },
-    rentwareCode: { krefeld: "KL50_5" }
+    rentwareCode: { krefeld: "7I1HQL" }
   },
   // --- Rollgerüst ---
   {
