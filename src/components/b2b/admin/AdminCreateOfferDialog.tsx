@@ -93,6 +93,7 @@ interface Props {
 
 export function AdminCreateOfferDialog({
   reservation,
+  allReservations,
   profile: profileProp,
   profiles: profilesList,
   open,
