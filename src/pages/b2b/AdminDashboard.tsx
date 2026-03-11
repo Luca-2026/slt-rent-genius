@@ -143,6 +143,7 @@ export default function AdminDashboard() {
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [createReservationOpen, setCreateReservationOpen] = useState(false);
   const [createOfferOpen, setCreateOfferOpen] = useState(false);
+  const [selectedGroupReservations, setSelectedGroupReservations] = useState<Reservation[]>([]);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
@@ -910,6 +911,11 @@ export default function AdminDashboard() {
             offerItems={offerItems}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
+              // Find all grouped reservations
+              const grouped = res.rental_group_id
+                ? pendingReservations.filter((r) => r.rental_group_id === res.rental_group_id)
+                : [res];
+              setSelectedGroupReservations(grouped);
               setEditingOffer(null);
               setEditingOfferItems([]);
               setCreateOfferOpen(true);
@@ -1346,6 +1352,7 @@ export default function AdminDashboard() {
       {/* Create / Edit Offer */}
       <AdminCreateOfferDialog
         reservation={selectedReservation}
+        allReservations={selectedGroupReservations}
         profile={
           editingOffer
             ? profiles.find((p) => p.id === editingOffer.b2b_profile_id) || null

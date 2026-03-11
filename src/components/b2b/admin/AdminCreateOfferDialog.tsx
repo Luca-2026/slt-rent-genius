@@ -38,6 +38,7 @@ interface Reservation {
   category_slug?: string | null;
   additional_services?: any;
   deposit?: number | null;
+  rental_group_id?: string | null;
 }
 
 interface B2BProfile {
@@ -80,6 +81,7 @@ export interface ExistingOfferItem {
 
 interface Props {
   reservation: Reservation | null;
+  allReservations?: Reservation[];
   profile: B2BProfile | null;
   profiles?: B2BProfile[];
   open: boolean;
@@ -91,6 +93,7 @@ interface Props {
 
 export function AdminCreateOfferDialog({
   reservation,
+  allReservations,
   profile: profileProp,
   profiles: profilesList,
   open,
@@ -175,25 +178,36 @@ export function AdminCreateOfferDialog({
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
 
+    // Determine all reservations to include: grouped or single
+    const targetReservations = allReservations && allReservations.length > 0
+      ? allReservations
+      : [reservation];
+
+    // Load customer prices for all products
     const { data: existingPrices } = await supabase
       .from("b2b_customer_prices")
       .select("*")
-      .eq("b2b_profile_id", profile.id)
-      .eq("product_name", reservation.product_name || reservation.product_id);
+      .eq("b2b_profile_id", profile.id);
 
-    const existingPrice = existingPrices?.[0];
+    const priceMap = new Map<string, number>();
+    existingPrices?.forEach((p) => {
+      priceMap.set(p.product_name, p.unit_price);
+    });
 
-    setItems([
-      {
-        product_name: reservation.product_name || reservation.product_id,
-        description: reservation.end_date
-          ? `Mietzeitraum: ${formatDate(reservation.start_date)} – ${formatDate(reservation.end_date)}`
-          : `Ab: ${formatDate(reservation.start_date)}`,
-        quantity: reservation.quantity || 1,
-        unit_price: existingPrice?.unit_price || reservation.original_price || 0,
-        discount_percent: 0,
-      },
-    ]);
+    setItems(
+      targetReservations.map((res) => {
+        const productName = res.product_name || res.product_id;
+        return {
+          product_name: productName,
+          description: res.end_date
+            ? `Mietzeitraum: ${formatDate(res.start_date)} – ${formatDate(res.end_date)}`
+            : `Ab: ${formatDate(res.start_date)}`,
+          quantity: res.quantity || 1,
+          unit_price: priceMap.get(productName) || res.original_price || 0,
+          discount_percent: 0,
+        };
+      })
+    );
     setDeliveryCost(0);
     setNotes(reservation.notes || "");
   };
