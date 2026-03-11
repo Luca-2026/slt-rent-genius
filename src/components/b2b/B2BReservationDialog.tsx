@@ -194,12 +194,13 @@ export function B2BReservationDialog({
             </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-headline mb-1">
-                Uhrzeit (bis)
+                Uhrzeit (bis) <span className="text-destructive">*</span>
               </label>
               <Input
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
+                required
                 className="h-9 text-sm"
               />
             </div>

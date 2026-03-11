@@ -157,8 +157,8 @@ export function B2BMultiReservationDialog({
     e.preventDefault();
     if (!user || !b2bProfile) return;
 
-    if (!startDate) {
-      toast({ title: "Bitte Hauptzeitraum-Startdatum angeben", variant: "destructive" });
+    if (!startDate || !startTime || !endTime) {
+      toast({ title: "Bitte Startdatum und Uhrzeiten angeben", variant: "destructive" });
       return;
     }
 
