@@ -31,6 +31,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -146,6 +148,7 @@ export default function AdminDashboard() {
   const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
   const [proformaMode, setProformaMode] = useState(false);
   const [invoiceSurcharges, setInvoiceSurcharges] = useState<InvoiceSurcharge[]>([]);
+  const [sendInvoiceEmail, setSendInvoiceEmail] = useState(false);
   const [newSurchargeName, setNewSurchargeName] = useState("");
   const [newSurchargeAmount, setNewSurchargeAmount] = useState("");
   const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
@@ -371,7 +374,7 @@ export default function AdminDashboard() {
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: invoiceBody,
+        body: { ...invoiceBody, send_email: sendInvoiceEmail },
       });
       if (error) throw error;
       toast({
@@ -1082,6 +1085,7 @@ export default function AdminDashboard() {
           setInvoiceSurcharges([]);
           setNewSurchargeName("");
           setNewSurchargeAmount("");
+          setSendInvoiceEmail(false);
         }
       }}>
         <DialogContent className="max-w-lg">
@@ -1237,6 +1241,18 @@ export default function AdminDashboard() {
                   )}
                 </CardContent>
               </Card>
+
+              <div className="flex items-center gap-2 pt-2 border-t">
+                <Checkbox
+                  id="send-invoice-email"
+                  checked={sendInvoiceEmail}
+                  onCheckedChange={(checked) => setSendInvoiceEmail(checked === true)}
+                />
+                <Label htmlFor="send-invoice-email" className="text-sm cursor-pointer">
+                  <Send className="h-3.5 w-3.5 inline mr-1.5" />
+                  Rechnung per E-Mail an den Kunden senden
+                </Label>
+              </div>
 
               <div className="flex gap-3 justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
