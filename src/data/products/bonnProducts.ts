@@ -825,7 +825,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-bohrschrauber-gsr18v55",
-    name: "Bosch Akku Bohrschrauber GSR 18V-55",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 18V-55",
     description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
     detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
     image: imgBohrschrauber18v55,
