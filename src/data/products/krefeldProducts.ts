@@ -3799,7 +3799,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Höhe eingefahren": "3,5 m",
       "Material": "Aluminium",
     },
-    rentwareCode: { krefeld: "MZL3X12" }
+    rentwareCode: { krefeld: "7XT9BR" }
   },
   {
     id: "leiter-kaiserthal-l50-5-stufen",
