@@ -1330,7 +1330,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-diamantbohrer-gdb180we",
-    name: "Bosch Diamantbohrer GDB 180 WE",
+    name: "Diamantbohrer",
+    modelName: "Bosch GDB 180 WE",
     description: "Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.",
     detailedDescription: "Die Bosch GDB 180 WE ist eine leistungsstarke Diamantbohrmaschine mit 2.000 W Nenneingangsleistung für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Mit zwei Drehzahlstufen (900/2.800 min⁻¹) und einem Gewicht von nur 5,2 kg eignet sie sich hervorragend für professionelle Kernbohrungen. Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",
     image: imgDiamantbohrerGdb180,
