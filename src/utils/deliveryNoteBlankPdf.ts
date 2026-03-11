@@ -191,5 +191,6 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   y -= 14;
   drawText("SLT-Rental GmbH · www.slt-rental.de · info@slt-rental.de", margin, y, 8, font, gray);
 
-  return doc.save();
+  const bytes = await doc.save();
+  return new Uint8Array(bytes) as unknown as Uint8Array;
 }
