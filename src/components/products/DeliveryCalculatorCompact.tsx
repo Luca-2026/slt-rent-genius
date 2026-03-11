@@ -300,12 +300,14 @@ export function DeliveryCalculatorCompact({
         </div>
 
         {/* Link to full calculator */}
-        <Link to="/lieferung">
-          <Button variant="outline" className="w-full text-sm">
-            {t("rental.detailedCalculator")}
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </Button>
-        </Link>
+        <div className="pt-3 mt-3 border-t border-border">
+          <Link to="/lieferung">
+            <Button variant="outline" className="w-full text-sm">
+              {t("rental.detailedCalculator")}
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
