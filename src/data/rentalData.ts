@@ -187,6 +187,7 @@ import {
 export interface Product {
   id: string;
   name: string;
+  modelName?: string; // Manufacturer + model designation shown below the name
   description?: string;
   detailedDescription?: string; // Longer description for product detail page
   image?: string; // Primary image (first in images array)
@@ -719,7 +720,8 @@ const erdbewegungCategoryOrder = [
 const erdbewegungProductsUnsorted: Product[] = [
   {
     id: "bobcat-e10z",
-    name: "1t Bobcat E10Z Minibagger",
+    name: "1t Minibagger",
+    modelName: "Bobcat E10Z",
     description: "Einsatzgewicht: 1.000 kg | Grabtiefe: 1.820 mm | Breite: 710 mm",
     image: imgBobcatE10z_1,
     images: [imgBobcatE10z_1, imgBobcatE10z_2, imgBobcatE10z_3, imgBobcatE10z_4],
@@ -734,7 +736,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e19",
-    name: "1,8t Bobcat E19 Minibagger",
+    name: "1,8t Minibagger",
+    modelName: "Bobcat E19",
     description: "Einsatzgewicht: 1.800 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgBobcatE19_1,
     images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
@@ -749,7 +752,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "xcmg-xe20e",
-    name: "2t XCMG XE20E Minibagger",
+    name: "2t Minibagger",
+    modelName: "XCMG XE20E",
     description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgXcmgXe20e_1,
     images: [imgXcmgXe20e_1, imgXcmgXe20e_2, imgXcmgXe20e_3],
@@ -764,7 +768,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "xcmg-xe27e",
-    name: "2,7t XCMG XE27E Minibagger",
+    name: "2,7t Minibagger",
+    modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
     image: imgXcmgXe27e_1,
     images: [imgXcmgXe27e_1, imgXcmgXe27e_2, imgXcmgXe27e_3],
@@ -779,7 +784,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e35z",
-    name: "3,5t Bobcat E35z Minibagger",
+    name: "3,5t Minibagger",
+    modelName: "Bobcat E35z",
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     detailedDescription: "Der Bobcat E35z ist ein leistungsstarker Minibagger der 3,5-Tonnen-Klasse mit Nullheck-Design für beengte Einsatzorte. Mit einer Grabtiefe von bis zu 3,12 m und einer maximalen Reichweite von 5,26 m am Boden eignet er sich hervorragend für Aushub-, Kanal- und Landschaftsbauarbeiten. Der Stage V Motor mit 24,8 kW (33,4 PS) sorgt für kraftvollen und emissionsarmen Betrieb. Das Laufwerk ist serienmäßig mit Gummiketten ausgestattet, Stahlketten sind optional verfügbar.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel für Aushubarbeiten, Tieflöffel für Aushubarbeiten, Laserausrüstung für exakte Nivellierung.",
     image: imgBobcatE35z_1,
@@ -805,7 +811,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e50z",
-    name: "5t Bobcat E50z Minibagger",
+    name: "5t Minibagger",
+    modelName: "Bobcat E50z",
     description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
     detailedDescription: "Der Bobcat E50z ist ein kraftvoller Minibagger der 5-Tonnen-Klasse mit Nullheck-Design. Mit einer maximalen Grabtiefe von 3,52 m, einer Reichweite von 5,98 m und einer Ausschütthöhe von 4,08 m meistert er anspruchsvolle Erd-, Kanal- und Abbrucharbeiten. Der Stage V Motor mit 36,4 kW (49,6 PS) und 99,2 l/min Hydraulikleistung bietet hervorragende Performance. Der Schwenkbereich des Auslegers beträgt 75° links und 55° rechts. Serienmäßig mit Gummiketten, Stahlketten optional.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel und Tieflöffel für Aushubarbeiten, Greifer zum sicheren Heben und Platzieren von Materialien.",
     image: imgBobcatE50z_1,
@@ -833,7 +840,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "kramer-5045",
-    name: "3t Radlader Kramer 5045",
+    name: "3t Radlader",
+    modelName: "Kramer 5045",
     description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
     image: imgKramer5045_1,
     images: [imgKramer5045_1, imgKramer5045_2],
@@ -848,7 +856,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "kramer-5050",
-    name: "Radlader 3t Kramer 5050",
+    name: "3t Radlader",
+    modelName: "Kramer 5050",
     description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
     image: imgKramer5045_1,
     images: [imgKramer5045_1, imgKramer5045_2],
@@ -863,7 +872,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-l28-knicklader",
-    name: "Bobcat L28 Knicklader",
+    name: "Knicklader",
+    modelName: "Bobcat L28",
     description: "Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen",
     image: imgBobcatL28_1,
     images: [imgBobcatL28_1],
@@ -878,7 +888,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "kettendumper-rmd800",
-    name: "Ketten-Dumper RMD-800",
+    name: "Ketten-Dumper",
+    modelName: "RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport",
     detailedDescription: "Der Ketten-Dumper RMD-800 ist ein kompakter Raupendumper mit 800 kg Tragfähigkeit und einer Muldenkapazität von 305 l (gestrichen) bzw. 400 l (gehäuft). Mit nur 80 cm Gesamtbreite eignet er sich hervorragend für enge Zugänge. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Serienmäßige Rungen ermöglichen den sicheren Transport von Holz oder Steinplatten.",
     image: imgKettendumperRmd800_1,
@@ -909,7 +920,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "cormidi-c60-hitip",
-    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    name: "Dumper mit Hochauskippfunktion",
+    modelName: "Cormidi C60 HI TIP",
     description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidiC60_1,
     images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
@@ -924,7 +936,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550 4x4 elektrisch",
+    name: "Raddumper / Knickdumper 4x4 elektrisch",
+    modelName: "KDe550",
     description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
     image: imgKnickdumperKde550_1,
     images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],

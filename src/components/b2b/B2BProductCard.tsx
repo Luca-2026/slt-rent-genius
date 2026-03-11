@@ -81,9 +81,12 @@ export function B2BProductCard({
 
       {/* Content */}
       <CardContent className="flex-1 flex flex-col p-3 sm:p-4">
-        <h3 className="font-semibold text-headline text-sm leading-tight mb-1 line-clamp-2">
+        <h3 className="font-semibold text-headline text-sm leading-tight mb-0.5 line-clamp-2">
           {product.name}
         </h3>
+        {product.modelName && (
+          <p className="text-xs text-muted-foreground font-medium mb-1">{product.modelName}</p>
+        )}
         {product.description && (
           <p className="text-xs text-muted-foreground mb-2 sm:mb-3 line-clamp-2">
             {product.description}

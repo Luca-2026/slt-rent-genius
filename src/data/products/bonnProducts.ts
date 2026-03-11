@@ -333,7 +333,8 @@ export const bonnErdbewegungProducts = [
   // === BAGGER (zuerst) ===
   {
     id: "bonn-bobcat-e10",
-    name: "1t Bobcat E10",
+    name: "1t Minibagger",
+    modelName: "Bobcat E10",
     description: "Kompakter Minibagger für enge Baustellen.",
     image: imgBobcatE10z1,
     images: [imgBobcatE10z1, imgBobcatE10z2, imgBobcatE10z3, imgBobcatE10z4],
@@ -343,7 +344,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-xcmg-xe20e",
-    name: "2t XCMG XE20E",
+    name: "2t Minibagger",
+    modelName: "XCMG XE20E",
     description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgXcmgXe20e1,
     images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
@@ -353,7 +355,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-xcmg-xe27e",
-    name: "2,7t XCMG XE27E",
+    name: "2,7t Minibagger",
+    modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
     image: imgXcmgXe27e1,
     images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
@@ -363,7 +366,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-bobcat-e35z",
-    name: "3,5t Bobcat E35z Minibagger",
+    name: "3,5t Minibagger",
+    modelName: "Bobcat E35z",
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 3500,
@@ -372,7 +376,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-bobcat-e50z",
-    name: "5t Bobcat E50z Minibagger",
+    name: "5t Minibagger",
+    modelName: "Bobcat E50z",
     description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 4800,
@@ -382,7 +387,8 @@ export const bonnErdbewegungProducts = [
   // === RADLADER ===
   {
     id: "bonn-radlader-kramer-5050",
-    name: "Radlader 3t Kramer 5050",
+    name: "3t Radlader",
+    modelName: "Kramer 5050",
     description: "Kompakter Radlader für vielseitige Einsätze.",
     image: imgKramer1,
     images: [imgKramer1, imgKramer2],
@@ -394,7 +400,8 @@ export const bonnErdbewegungProducts = [
   // === DUMPER (absteigend nach Nutzlast) ===
   {
     id: "bonn-kettendumper-rmd800",
-    name: "Ketten-Dumper RMD-800",
+    name: "Ketten-Dumper",
+    modelName: "RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplatten",
     image: imgKettendumperRmd800_1,
     images: [imgKettendumperRmd800_1],
@@ -404,7 +411,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-cormidi-c60",
-    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    name: "Dumper mit Hochauskippfunktion",
+    modelName: "Cormidi C60 HI TIP",
     description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
@@ -413,7 +421,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550",
+    name: "Raddumper / Knickdumper",
+    modelName: "KDe550",
     description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
     image: imgKnickdumper1,
     images: [imgKnickdumper1, imgKnickdumper2],
@@ -422,7 +431,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-kettendumper-rmd650",
-    name: "Ketten-Dumper RMD-650",
+    name: "Ketten-Dumper",
+    modelName: "RMD-650",
     description: "Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.",
     image: "/placeholder.svg",
     driveType: "benzin",
@@ -732,7 +742,8 @@ export const bonnGartenpflegeProducts = [
 export const bonnWerkzeugProducts = [
   {
     id: "bonn-fugenschneider-bs50e",
-    name: "Fugenschneider BS50E - 13PS",
+    name: "Fugenschneider 13PS",
+    modelName: "BS50E",
     description: "Leistungsstarker Fugenschneider für Asphalt und Beton.",
     image: imgFugenschneider1,
     images: [imgFugenschneider1, imgFugenschneider2],
@@ -740,7 +751,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-abbruchhammer-gsh16",
-    name: "Bosch Abbruchhammer GSH 16-28",
+    name: "Abbruchhammer",
+    modelName: "Bosch GSH 16-28",
     description: "Schwerer Abbruchhammer für harten Einsatz.",
     image: imgAbbruchhammer,
     images: [imgAbbruchhammer],
@@ -748,7 +760,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-abbruchhammer-hm1812",
-    name: "Makita Abbruchhammer HM1812",
+    name: "Abbruchhammer",
+    modelName: "Makita HM1812",
     description: "Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.",
     detailedDescription: "Der Makita HM1812 ist ein leistungsstarker Abbruchhammer mit 2.000 W und 72,8 J Schlagenergie. Dank AVT (Anti-Vibrations-Technologie) wird die Belastung für den Anwender deutlich reduziert. Im Lieferumfang enthalten: 1x Spitzmeißel und 1x Flachmeißel.",
     image: imgAbbruchhammerHm1812,
@@ -812,7 +825,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-bohrschrauber-gsr18v55",
-    name: "Bosch Akku Bohrschrauber GSR 18V-55",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 18V-55",
     description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
     detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
     image: imgBohrschrauber18v55,
@@ -835,7 +849,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-betonruettler-ir1000",
-    name: "Beton Rüttler 2m IR 1000",
+    name: "Beton Rüttler 2m",
+    modelName: "IR 1000",
     description: "Innenrüttler für die Betonverdichtung.",
     image: imgBetonruettler,
     images: [imgBetonruettler],
@@ -843,7 +858,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-handkreissaege-gks18v",
-    name: "Bosch Akku Hand-Kreissäge GKS 18V-57G",
+    name: "Akku Hand-Kreissäge",
+    modelName: "Bosch GKS 18V-57G",
     description: "Präzise Akku-Handkreissäge für Holzschnitte – führungsschienenkompatibel.",
     detailedDescription: "Die Bosch GKS 18V-57G ist eine leistungsstarke Akku-Handkreissäge mit 165 mm Sägeblatt und einer maximalen Schnitttiefe von 57 mm bei 90°. Dank Führungsschienenkompatibilität eignet sie sich ideal für präzise, gerade Schnitte in Holz. Mit nur 3,8 kg (ohne Akku) ist sie leicht und handlich.",
     image: kreissaegeGks18v,
@@ -881,7 +897,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-diamantbohrer-gdb180",
-    name: "Bosch Diamantbohrer GDB 180 WE",
+    name: "Diamantbohrer",
+    modelName: "Bosch GDB 180 WE",
     description: "Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.",
     detailedDescription: "Die Bosch GDB 180 WE ist eine leistungsstarke Diamantbohrmaschine mit 2.000 W Nenneingangsleistung für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Mit zwei Drehzahlstufen (900/2.800 min⁻¹) und einem Gewicht von nur 5,2 kg eignet sie sich hervorragend für professionelle Kernbohrungen. Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",
     image: imgDiamantbohrerGdb180,
@@ -906,14 +923,16 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-nasstrockensauger-gas35",
-    name: "Nass-/Trockensauger GAS 35 M AFC",
+    name: "Nass-/Trockensauger",
+    modelName: "Bosch GAS 35 M AFC",
     description: "Professioneller Industriesauger mit Filterreinigung.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "5FSVCT" },
   },
   {
     id: "bonn-rotationslaser-grl400h",
-    name: "Bosch Rotationslaser GRL 400H",
+    name: "Rotationslaser",
+    modelName: "Bosch GRL 400H",
     description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
     detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
     image: rotationslaser1,
@@ -958,7 +977,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-winkelschleifer-gws18v",
-    name: "Bosch Akku Winkelschleifer GWS 18V-10",
+    name: "Akku Winkelschleifer",
+    modelName: "Bosch GWS 18V-10",
     description: "Kraftvoller Akku-Winkelschleifer.",
     image: imgWinkelschleifer,
     images: [imgWinkelschleifer],

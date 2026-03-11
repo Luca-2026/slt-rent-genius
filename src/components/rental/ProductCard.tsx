@@ -121,9 +121,12 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
 
       {/* Content */}
       <CardContent className="p-4 flex flex-col flex-1">
-        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 min-h-[2.5rem]">
+        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-1 min-h-[2.5rem]">
           {product.name}
         </h3>
+        {product.modelName && (
+          <p className="text-xs text-muted-foreground font-medium mb-2">{product.modelName}</p>
+        )}
         
         {product.description && (
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">

@@ -298,6 +298,9 @@ export default function ProductDetail() {
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
                     {product.name}
                   </h1>
+                  {product.modelName && (
+                    <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
+                  )}
                   {product.description && (
                     <p className="text-base text-muted-foreground mt-2 leading-relaxed">
                       {product.description}

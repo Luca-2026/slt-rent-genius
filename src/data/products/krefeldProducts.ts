@@ -1001,7 +1001,8 @@ export const verdichtungProducts: Product[] = [
 export const werkzeugeProducts: Product[] = [
   {
     id: "bosch-bohrhammer-gbh18v-26f",
-    name: "Bosch Akku Bohrhammer GBH 18V-26 F",
+    name: "Akku Bohrhammer",
+    modelName: "Bosch GBH 18V-26 F",
     description: "Akku-Bohrhammer mit SDS-Plus Aufnahme",
     image: imgBohrhammer26f,
     images: [imgBohrhammer26f],
@@ -1010,7 +1011,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrhammer-gbh18v-45c",
-    name: "Bosch Akku Bohrhammer GBH 18V-45C",
+    name: "Akku Bohrhammer",
+    modelName: "Bosch GBH 18V-45C",
     description: "Schwerer Akku-Bohrhammer mit Bluetooth",
     image: imgBohrhammer45c,
     images: [imgBohrhammer45c],
@@ -1019,7 +1021,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-abbruchhammer-gsh16-28",
-    name: "Bosch Abbruchhammer GSH 16-28",
+    name: "Abbruchhammer",
+    modelName: "Bosch GSH 16-28",
     description: "Schwerer Abbruchhammer für anspruchsvolle Arbeiten",
     image: imgAbbruchhammer,
     images: [imgAbbruchhammer],
@@ -1028,7 +1031,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "makita-abbruchhammer-hm1812",
-    name: "Makita Abbruchhammer HM1812",
+    name: "Abbruchhammer",
+    modelName: "Makita HM1812",
     description: "Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.",
     detailedDescription: "Der Makita HM1812 ist ein leistungsstarker Abbruchhammer mit 2.000 W und 72,8 J Schlagenergie. Dank AVT (Anti-Vibrations-Technologie) wird die Belastung für den Anwender deutlich reduziert. Im Lieferumfang enthalten: 1x Spitzmeißel und 1x Flachmeißel.",
     image: imgAbbruchhammerHm1812,
@@ -1048,7 +1052,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr12v-15",
-    name: "Bosch Akku Bohrschrauber GSR 12V-15",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 12V-15",
     description: "Kompakter Akku-Bohrschrauber",
     image: imgBohrschrauber12v,
     images: [imgBohrschrauber12v],
@@ -1057,7 +1062,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr18v-60c",
-    name: "Bosch Akku Bohrschrauber GSR 18V-60C",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 18V-60C",
     description: "Leistungsstarker Akku-Bohrschrauber mit Bluetooth",
     image: imgBohrschrauber60c,
     images: [imgBohrschrauber60c],
@@ -1066,7 +1072,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bohrschrauber-gsr18v55",
-    name: "Bosch Akku Bohrschrauber GSR 18V-55",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 18V-55",
     description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
     detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
     image: imgBohrschrauber18v55,
@@ -1089,7 +1096,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-winkelschleifer-gws18v-10",
-    name: "Bosch Akku Winkelschleifer GWS 18V-10",
+    name: "Akku Winkelschleifer",
+    modelName: "Bosch GWS 18V-10",
     description: "Akku-Winkelschleifer mit 125mm Scheibe",
     image: imgWinkelschleifer,
     images: [imgWinkelschleifer],
@@ -1098,7 +1106,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-handkreissaege-gks18v-57g",
-    name: "Bosch Akku Hand-Kreissäge GKS 18V-57G",
+    name: "Akku Hand-Kreissäge",
+    modelName: "Bosch GKS 18V-57G",
     description: "Akku-Handkreissäge mit Führungsschiene – führungsschienenkompatibel.",
     detailedDescription: "Die Bosch GKS 18V-57G ist eine leistungsstarke Akku-Handkreissäge mit 165 mm Sägeblatt und einer maximalen Schnitttiefe von 57 mm bei 90°. Dank Führungsschienenkompatibilität eignet sie sich ideal für präzise, gerade Schnitte in Holz. Mit nur 3,8 kg (ohne Akku) ist sie leicht und handlich.",
     image: kreissaegeGks18v,
@@ -1165,7 +1174,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-saebelsaege-gsa18v-li-c",
-    name: "Bosch Akku Säbelsäge GSA 18V-LI C",
+    name: "Akku Säbelsäge",
+    modelName: "Bosch GSA 18V-LI C",
     description: "Akku-Säbelsäge mit variabler Geschwindigkeit",
     image: imgSaebelsaege,
     images: [imgSaebelsaege],
@@ -1174,7 +1184,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-multicutter-gop18v-28",
-    name: "Bosch Akku-Multicutter GOP 18V-28",
+    name: "Akku Multicutter",
+    modelName: "Bosch GOP 18V-28",
     description: "Multifunktionswerkzeug für verschiedene Anwendungen",
     image: imgMulticutter,
     images: [imgMulticutter],
@@ -1183,7 +1194,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-drehschlagschrauber-gds18v-1050h",
-    name: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H",
+    name: "Akku Drehschlagschrauber",
+    modelName: "Bosch GDS 18V-1050 H",
     description: "Hochleistungs-Schlagschrauber",
     image: imgDrehschlagschrauber1,
     images: [imgDrehschlagschrauber1, imgDrehschlagschrauber2],
@@ -1192,7 +1204,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-staubsauger-gas18v-10l",
-    name: "Bosch Staubsauger GAS 18V-10 L",
+    name: "Akku Staubsauger",
+    modelName: "Bosch GAS 18V-10 L",
     description: "Akku-Staubsauger für Baustellen",
     image: imgStaubsauger,
     images: [imgStaubsauger],
@@ -1201,7 +1214,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-staubsaugeraufsatz-gde18v-16",
-    name: "Bosch Staubsaugeraufsatz GDE 18V-16",
+    name: "Staubsaugeraufsatz",
+    modelName: "Bosch GDE 18V-16",
     description: "Staubabsaugung für Bohrhämmer",
     image: imgStaubsaugeraufsatz,
     images: [imgStaubsaugeraufsatz],
@@ -1210,7 +1224,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-linienlaser-gll3-80",
-    name: "Bosch Linienlaser GLL 3-80",
+    name: "Linienlaser",
+    modelName: "Bosch GLL 3-80",
     description: "360° Linienlaser für präzise Ausrichtung",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
@@ -1219,7 +1234,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "rotationslaser-grl400h",
-    name: "Bosch Rotationslaser GRL 400H",
+    name: "Rotationslaser",
+    modelName: "Bosch GRL 400H",
     description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
     detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
     image: rotationslaser1,
@@ -1254,7 +1270,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-dtect200c",
-    name: "Bosch Ortungsgerät D-TECT 200 C",
+    name: "Ortungsgerät",
+    modelName: "Bosch D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
     image: imgOrtungsgeraet,
     images: [imgOrtungsgeraet],
@@ -1263,7 +1280,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-gms120",
-    name: "Bosch Ortungsgerät GMS 120",
+    name: "Ortungsgerät",
+    modelName: "Bosch GMS 120",
     description: "Multidetektor für Metall und Leitungen",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
@@ -1272,7 +1290,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bauleuchte-gli18v-2200c",
-    name: "Bosch Akku Bauleuchte GLI 18V-2200 C",
+    name: "Akku Bauleuchte",
+    modelName: "Bosch GLI 18V-2200 C",
     description: "Akku-Bauleuchte mit 2200 Lumen",
     image: imgBauleuchte,
     images: [imgBauleuchte],
@@ -1281,7 +1300,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-bauleuchte-te-cl18-2000",
-    name: "Einhell Akku Bauleuchte TE-CL 18/2000",
+    name: "Akku Bauleuchte",
+    modelName: "Einhell TE-CL 18/2000",
     description: "LED-Bauleuchte mit 2000 Lumen",
     image: imgEinhellBauleuchte,
     images: [imgEinhellBauleuchte],
@@ -1290,7 +1310,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ladegeraet-gal18v6-80",
-    name: "Bosch 6-fach Ladegerät GAL 18V6-80",
+    name: "6-fach Ladegerät",
+    modelName: "Bosch GAL 18V6-80",
     description: "Schnellladegerät für 6 Akkus gleichzeitig",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
@@ -1299,7 +1320,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "eibenstock-diamantbohrer-ehd1500",
-    name: "Eibenstock Diamantbohrer EHD 1500",
+    name: "Diamantbohrer",
+    modelName: "Eibenstock EHD 1500",
     description: "Kernbohrgerät für Beton und Mauerwerk",
     image: imgDiamantbohrer,
     images: [imgDiamantbohrer],
@@ -1308,7 +1330,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-diamantbohrer-gdb180we",
-    name: "Bosch Diamantbohrer GDB 180 WE",
+    name: "Diamantbohrer",
+    modelName: "Bosch GDB 180 WE",
     description: "Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.",
     detailedDescription: "Die Bosch GDB 180 WE ist eine leistungsstarke Diamantbohrmaschine mit 2.000 W Nenneingangsleistung für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Mit zwei Drehzahlstufen (900/2.800 min⁻¹) und einem Gewicht von nur 5,2 kg eignet sie sich hervorragend für professionelle Kernbohrungen. Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",
     image: imgDiamantbohrerGdb180,
@@ -1358,7 +1381,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-laubbläser-gp-lb",
-    name: "Einhell Laubbläser GP-LB 36/210 Li",
+    name: "Akku Laubbläser",
+    modelName: "Einhell GP-LB 36/210 Li",
     description: "Akku-Laubbläser mit hoher Blasleistung",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
@@ -1367,7 +1391,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-nageler-te-cn",
-    name: "Einhell Akku Nageler TE-CN",
+    name: "Akku Nageler",
+    modelName: "Einhell TE-CN",
     description: "Akku-Nagelpistole für Dachdecker",
     image: imgNageler,
     images: [imgNageler],
@@ -1376,7 +1401,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-heissluftfoehn-te-ha18li",
-    name: "Einhell Akku Heißluftföhn TE-HA 18li",
+    name: "Akku Heißluftföhn",
+    modelName: "Einhell TE-HA 18li",
     description: "Akku-Heißluftgebläse",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
@@ -1385,7 +1411,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "trennschleifer-ts420",
-    name: "Benzin-Trennschleifer TS420",
+    name: "Benzin-Trennschleifer",
+    modelName: "TS420",
     description: "Benzin-Trennschleifer für Stein und Beton",
     image: imgTrennschleifer,
     images: [imgTrennschleifer],
@@ -1394,7 +1421,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "fugenschneider-bs50e",
-    name: "Fugenschneider BS50E - 13PS",
+    name: "Fugenschneider 13PS",
+    modelName: "BS50E",
     description: "Leistungsstarker Fugenschneider",
     image: imgFugenschneider1,
     images: [imgFugenschneider1, imgFugenschneider2],
@@ -1403,7 +1431,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "betonruettler-ir1000",
-    name: "Beton Rüttler 2m IR 1000",
+    name: "Beton Rüttler 2m",
+    modelName: "IR 1000",
     description: "Innenrüttler für Betonverdichtung",
     image: imgBetonruettler,
     images: [imgBetonruettler],
