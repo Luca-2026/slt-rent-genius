@@ -635,7 +635,7 @@ function generateInvoiceHtml(data: {
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
       </div>
       <div style="text-align:right;">
-        <p style="font-size:22px;font-weight:700;color:#393d46;">${data.isCorrection ? "RECHNUNGSKORREKTUR" : "RECHNUNG"}</p>
+        <p style="font-size:22px;font-weight:700;color:#393d46;">${data.isProforma ? "PROFORMA-RECHNUNG" : data.isCorrection ? "RECHNUNGSKORREKTUR" : "RECHNUNG"}</p>
         <p style="font-size:13px;color:#595959;margin-top:4px;">Nr. ${data.invoiceNumber}</p>
         ${data.originalInvoiceNumber ? `<p style="font-size:12px;color:#595959;">Bezug: ${data.originalInvoiceNumber}</p>` : ""}
       </div>
