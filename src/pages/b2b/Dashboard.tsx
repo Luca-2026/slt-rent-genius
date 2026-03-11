@@ -53,7 +53,7 @@ export default function B2BDashboard() {
 
   const fetchPendingCounts = useCallback(async () => {
     if (!b2bProfile?.id) return;
-    const [dnRes, rpRes] = await Promise.all([
+    const [dnRes, rpRes, offersRes] = await Promise.all([
       supabase
         .from("b2b_delivery_notes")
         .select("id", { count: "exact", head: true })
@@ -62,9 +62,14 @@ export default function B2BDashboard() {
         .from("b2b_return_protocols")
         .select("id", { count: "exact", head: true })
         .eq("status", "pending_customer_signature"),
+      supabase
+        .from("b2b_offers")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "sent"),
     ]);
     setPendingDeliveryNotes(dnRes.count ?? 0);
     setPendingReturnProtocols(rpRes.count ?? 0);
+    setPendingOffers(offersRes.count ?? 0);
   }, [b2bProfile?.id]);
 
   useEffect(() => {
