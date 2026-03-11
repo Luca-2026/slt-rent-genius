@@ -36,9 +36,22 @@ export function ProductSearch({
     const searchTerm = query.toLowerCase().trim();
     const results: SearchResult[] = [];
     
-    // Search products first
     const categories = productCategories.filter((cat) => cat.id !== "alle");
     
+    // Show matching categories first
+    for (const category of categories) {
+      const catTr = categoryTranslations[category.id];
+      if (
+        category.title.toLowerCase().includes(searchTerm) ||
+        category.description.toLowerCase().includes(searchTerm) ||
+        catTr?.title?.toLowerCase().includes(searchTerm) ||
+        catTr?.description?.toLowerCase().includes(searchTerm)
+      ) {
+        results.push({ type: "category", category });
+      }
+    }
+    
+    // Then add matching products
     for (const category of categories) {
       const products = getProductsForLocationCategory(locationId, category.id);
       
@@ -52,19 +65,6 @@ export function ProductSearch({
         ) {
           results.push({ type: "product", product, categoryId: category.id });
         }
-      }
-    }
-    
-    // Then add matching categories
-    for (const category of categories) {
-      const catTr = categoryTranslations[category.id];
-      if (
-        category.title.toLowerCase().includes(searchTerm) ||
-        category.description.toLowerCase().includes(searchTerm) ||
-        catTr?.title?.toLowerCase().includes(searchTerm) ||
-        catTr?.description?.toLowerCase().includes(searchTerm)
-      ) {
-        results.push({ type: "category", category });
       }
     }
     
