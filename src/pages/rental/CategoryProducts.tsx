@@ -579,6 +579,34 @@ export default function CategoryProducts() {
               return selectedValues.some((v) => ra.includes(v.toLowerCase()));
             });
           }
+          // Schilderart filter for absperrtechnik
+          else if (sectionId === "schilderart") {
+            filtered = filtered.filter((p) => {
+              if (p.category !== "verkehrszeichen") return false;
+              const bezeichnung = (p.specifications?.["Bezeichnung"] || "").toLowerCase();
+              const bedeutung = (p.specifications?.["Bedeutung"] || "").toLowerCase();
+              const nameLower = p.name.toLowerCase();
+              return selectedValues.some((v) => {
+                if (v === "gefahrschilder") {
+                  // VZ 1xx are warning signs (Gefahrzeichen)
+                  return bezeichnung.startsWith("vz 1") || bedeutung.includes("gefahr") || bedeutung.includes("arbeitsstelle") || bedeutung.includes("verengte fahrbahn");
+                }
+                if (v === "verbotsschilder") {
+                  // VZ 2xx (250-295) are prohibition signs
+                  return bezeichnung.startsWith("vz 26") || bezeichnung.startsWith("vz 28") || bedeutung.includes("verbot") || bedeutung.includes("haltverbot") || nameLower.includes("halteverbot") || nameLower.includes("halteverbots");
+                }
+                if (v === "richtschilder") {
+                  // VZ 2xx (200-249), VZ 3xx, VZ 1000+ are guidance/directional/supplementary
+                  return bezeichnung.startsWith("vz 24") || bezeichnung.startsWith("vz 30") || bezeichnung.startsWith("vz 35") || bezeichnung.startsWith("vz 1000") || bezeichnung.includes("zusatz") || nameLower.includes("zusatzschild") || nameLower.includes("blanko");
+                }
+                if (v === "geschwindigkeitsschilder") {
+                  // VZ 274 (speed limit), VZ 275 etc.
+                  return bezeichnung.startsWith("vz 274") || bezeichnung.startsWith("vz 275") || bedeutung.includes("geschwindigkeit") || bedeutung.includes("km/h");
+                }
+                return false;
+              });
+            });
+          }
           // Zeltgröße filter for moebel-zelte
           else if (sectionId === "zeltgroesse") {
             filtered = filtered.filter((p) => {
@@ -687,6 +715,15 @@ export default function CategoryProducts() {
             );
           }
         }
+      });
+    }
+
+    // Sort products for absperrtechnik: Verkehrsschilder last
+    if (category?.id === "absperrtechnik") {
+      filtered.sort((a, b) => {
+        const isVzA = a.category === "verkehrszeichen" ? 1 : 0;
+        const isVzB = b.category === "verkehrszeichen" ? 1 : 0;
+        return isVzA - isVzB;
       });
     }
 
