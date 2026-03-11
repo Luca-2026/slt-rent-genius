@@ -320,7 +320,7 @@ export default function AdminDashboard() {
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
-          custom_items: [...mainItems, ...surchargeItems, ...depositItems],
+          custom_items: [...mainItems, ...additionalServiceItems, ...surchargeItems, ...depositItems],
           notes: proformaMode
             ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
             : (offer.notes || undefined),
