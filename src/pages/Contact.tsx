@@ -43,7 +43,7 @@ export default function Contact() {
           phone: formData.get("phone"),
           subject: formData.get("subject"),
           message: formData.get("message"),
-          location: formData.get("location"),
+          location: selectedLocation,
         },
       });
 
