@@ -8,6 +8,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
+
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
 import { Loader2 } from "lucide-react";
 
