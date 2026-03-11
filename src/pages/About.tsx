@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { CarouselApi } from "@/components/ui/carousel";
 
 // Team images
