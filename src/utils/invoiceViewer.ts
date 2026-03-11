@@ -25,13 +25,33 @@ function extractStoragePath(fileUrl: string): { bucket: string; path: string } |
 
 /**
  * Opens/downloads a document (PDF or HTML).
- * For Supabase storage URLs: generates a fresh signed URL to avoid expiry issues.
- * For other URLs: opens directly.
+ * For storage URLs: fetches the file and opens it reliably even with popup blockers.
  */
 export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: string, _documentType?: string): Promise<void> {
   if (!fileUrl) return;
 
-  // If it's a Supabase storage URL, download the file directly (works with RLS)
+  // Open a blank tab synchronously during the user click to avoid popup blockers
+  const popup = window.open("", "_blank", "noopener,noreferrer");
+
+  const openInFallbackTab = (url: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const openInPopupOrFallback = (url: string) => {
+    if (popup && !popup.closed) {
+      popup.location.href = url;
+    } else {
+      openInFallbackTab(url);
+    }
+  };
+
+  // If it's a storage URL, download directly (works with RLS)
   const storagePath = extractStoragePath(fileUrl);
   if (storagePath) {
     try {
@@ -41,44 +61,24 @@ export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: 
 
       if (!error && data) {
         const blobUrl = URL.createObjectURL(data);
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        // Clean up after a delay to allow the browser to open the blob
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+        openInPopupOrFallback(blobUrl);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
         return;
       }
     } catch {
-      // Fall through to try signed URL or original URL
+      // continue with signed/original url fallback
     }
 
-    // Fallback: try creating a signed URL (works for admins/service role)
     const { data: signedData, error: signError } = await supabase.storage
       .from(storagePath.bucket)
       .createSignedUrl(storagePath.path, 60 * 60);
 
     if (!signError && signedData?.signedUrl) {
-      const a = document.createElement("a");
-      a.href = signedData.signedUrl;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      openInPopupOrFallback(signedData.signedUrl);
       return;
     }
   }
 
   // Last resort: open the original URL directly
-  const a = document.createElement("a");
-  a.href = fileUrl;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  openInPopupOrFallback(fileUrl);
 }
