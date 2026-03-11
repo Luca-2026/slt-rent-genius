@@ -811,7 +811,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e50z",
-    name: "5t Bobcat E50z Minibagger",
+    name: "5t Minibagger",
+    modelName: "Bobcat E50z",
     description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
     detailedDescription: "Der Bobcat E50z ist ein kraftvoller Minibagger der 5-Tonnen-Klasse mit Nullheck-Design. Mit einer maximalen Grabtiefe von 3,52 m, einer Reichweite von 5,98 m und einer Ausschütthöhe von 4,08 m meistert er anspruchsvolle Erd-, Kanal- und Abbrucharbeiten. Der Stage V Motor mit 36,4 kW (49,6 PS) und 99,2 l/min Hydraulikleistung bietet hervorragende Performance. Der Schwenkbereich des Auslegers beträgt 75° links und 55° rechts. Serienmäßig mit Gummiketten, Stahlketten optional.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel und Tieflöffel für Aushubarbeiten, Greifer zum sicheren Heben und Platzieren von Materialien.",
     image: imgBobcatE50z_1,
