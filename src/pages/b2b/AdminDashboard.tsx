@@ -951,7 +951,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="customers">
+        <TabsContent value="customers" forceMount className="data-[state=inactive]:hidden">
           <AdminCustomersTab
             profiles={profiles}
             invoices={invoices}
