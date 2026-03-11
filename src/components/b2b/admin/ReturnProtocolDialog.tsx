@@ -73,6 +73,7 @@ export function ReturnProtocolDialog({
 }: Props) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
+  const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
