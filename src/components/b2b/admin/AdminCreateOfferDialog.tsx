@@ -340,8 +340,11 @@ export function AdminCreateOfferDialog({
   if (!isEditing && !reservation && !isStandalone) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={(newOpen) => {
+        if (!newOpen) lastInitKey.current = null;
+        onOpenChange(newOpen);
+      }}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
