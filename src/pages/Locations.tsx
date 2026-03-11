@@ -96,7 +96,7 @@ export default function Locations() {
                     {location.manager && (
                       <a 
                         href={`mailto:${location.manager.email}`}
-                        className="flex items-center gap-2 md:gap-2 lg:gap-3 mb-4 md:mb-3 lg:mb-6 p-2.5 md:p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr h-[56px] md:h-[48px] lg:h-auto"
+                        className="flex items-center gap-2 md:gap-3 lg:gap-3 mb-4 md:mb-4 lg:mb-6 p-2.5 md:p-3 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
                       >
                         <Avatar className="h-10 w-10 md:h-8 md:w-8 lg:h-12 lg:w-12 shrink-0">
                           {location.manager.image ? (
