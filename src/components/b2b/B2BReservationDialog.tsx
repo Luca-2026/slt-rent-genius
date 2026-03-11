@@ -45,8 +45,8 @@ export function B2BReservationDialog({
     e.preventDefault();
     if (!user || !b2bProfile) return;
 
-    if (!startDate) {
-      toast({ title: "Bitte Startdatum angeben", variant: "destructive" });
+    if (!startDate || !startTime || !endTime) {
+      toast({ title: "Bitte Startdatum und Uhrzeiten angeben", variant: "destructive" });
       return;
     }
 
