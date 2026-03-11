@@ -157,7 +157,7 @@ export default function Index() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {locationData.map((loc, index) => (
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
@@ -223,9 +223,9 @@ export default function Index() {
                       </div>
                       <div className="space-y-1">
                         {loc.hours.map((h, idx) => (
-                          <div key={idx} className="flex justify-between text-xs text-muted-foreground">
-                            <span>{h.day}</span>
-                            <span className="font-medium">{h.time}</span>
+                          <div key={idx} className="flex justify-between gap-2 text-xs text-muted-foreground">
+                            <span className="shrink-0">{h.day}</span>
+                            <span className="font-medium text-right">{h.time}</span>
                           </div>
                         ))}
                       </div>
