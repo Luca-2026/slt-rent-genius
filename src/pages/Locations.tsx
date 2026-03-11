@@ -174,7 +174,7 @@ export default function Locations() {
 
       {/* Google Maps - All 3 Locations */}
       <AnimatedSection animation="fade-in">
-        <section className="h-96 lg:h-[500px] relative">
+        <section className="h-64 md:h-80 lg:h-[500px] relative">
           <iframe
             src="https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=50.85,6.95&zoom=9&maptype=roadmap"
             width="100%"
