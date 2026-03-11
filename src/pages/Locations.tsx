@@ -84,8 +84,8 @@ export default function Locations() {
                           {location.phone}
                         </a>
                       </div>
-                      <div className="flex items-center gap-2 md:gap-1.5 lg:gap-3 text-sm md:text-xs lg:text-sm">
-                        <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
+                      <div className="flex items-center gap-2 md:gap-2 lg:gap-3 text-sm md:text-sm lg:text-sm">
+                        <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
                         <a href={`mailto:${location.email}`} className="text-primary hover:text-accent truncate">
                           {location.email}
                         </a>
