@@ -486,7 +486,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "koffer",
     tags: ["geschlossen", "ungebremst", "einachser"], 
-    rentwareCode: { krefeld: "14KMC5" } 
+    rentwareCode: { krefeld: "14KMC5", bonn: "ZLNHYD" } 
   },
   { 
     id: "koffer-1500", 
