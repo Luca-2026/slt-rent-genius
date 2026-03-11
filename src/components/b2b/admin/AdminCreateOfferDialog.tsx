@@ -38,6 +38,7 @@ interface Reservation {
   category_slug?: string | null;
   additional_services?: any;
   deposit?: number | null;
+  rental_group_id?: string | null;
 }
 
 interface B2BProfile {
