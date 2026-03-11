@@ -258,6 +258,7 @@ Deno.serve(async (req: Request) => {
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
 
     const fileUrl = signedUrlData?.signedUrl || "";
+    const protocolStatus = customer_not_present ? "pending_customer_signature" : "signed";
     const now = new Date().toISOString();
 
     // Create return protocol record
@@ -268,7 +269,7 @@ Deno.serve(async (req: Request) => {
         b2b_profile_id: profile.id,
         delivery_note_id: deliveryNote?.id || null,
         return_protocol_number: returnProtocolNumber,
-        status: "signed",
+        status: protocolStatus,
         overall_condition,
         condition_notes: condition_notes || null,
         damage_description: damage_description || null,
@@ -280,10 +281,10 @@ Deno.serve(async (req: Request) => {
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
         photo_urls: photo_urls || [],
-        customer_signature_data,
+        customer_signature_data: customer_not_present ? null : customer_signature_data,
         staff_signature_data,
         staff_name,
-        signed_at: now,
+        signed_at: customer_not_present ? null : now,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
