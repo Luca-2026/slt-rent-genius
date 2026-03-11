@@ -193,9 +193,6 @@ import imgCormidi2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
 import imgCormidi3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
 import imgKnickdumper1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumper2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
-import imgKettendumperRmd650_1 from "@/assets/products/erdbewegung/kettendumper-rmd650-1.jpeg";
-import imgKettendumperRmd650_2 from "@/assets/products/erdbewegung/kettendumper-rmd650-2.jpeg";
-import imgKettendumperRmd650_3 from "@/assets/products/erdbewegung/kettendumper-rmd650-3.jpeg";
 import imgKettendumperRmd800_1 from "@/assets/products/erdbewegung/kettendumper-rmd800-1.jpeg";
 import imgSortiergreiferSsg150_1 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-1.avif";
 import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-2.avif";
@@ -354,25 +351,7 @@ export const bonnErdbewegungProducts = [
     driveType: "diesel",
   },
   // === DUMPER ===
-  {
-    id: "bonn-cormidi-c60",
-    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
-    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
-    image: imgCormidi1,
-    images: [imgCormidi1, imgCormidi2, imgCormidi3],
-    driveType: "diesel",
-    onRequest: true,
-  },
-  {
-    id: "bonn-kettendumper-rmd650",
-    name: "Ketten-Dumper RMD-650",
-    description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform",
-    image: imgKettendumperRmd650_1,
-    images: [imgKettendumperRmd650_1, imgKettendumperRmd650_2, imgKettendumperRmd650_3],
-    weightKg: 636,
-    driveType: "benzin",
-    rentwareCode: { bonn: "7Y1UTP" },
-  },
+  // === DUMPER (absteigend nach Nutzlast) ===
   {
     id: "bonn-kettendumper-rmd800",
     name: "Ketten-Dumper RMD-800",
@@ -382,6 +361,15 @@ export const bonnErdbewegungProducts = [
     weightKg: 450,
     driveType: "benzin",
     rentwareCode: { bonn: "R1FU1X" },
+  },
+  {
+    id: "bonn-cormidi-c60",
+    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
+    image: imgCormidi1,
+    images: [imgCormidi1, imgCormidi2, imgCormidi3],
+    driveType: "diesel",
+    onRequest: true,
   },
   {
     id: "bonn-knickdumper-kde550",

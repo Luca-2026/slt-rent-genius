@@ -102,9 +102,6 @@ import imgBobcatE50z_1 from "@/assets/products/erdbewegung/bobcat-e50z-1.webp";
 import imgBobcatE50z_2 from "@/assets/products/erdbewegung/bobcat-e50z-2.webp";
 import imgBobcatE50z_3 from "@/assets/products/erdbewegung/bobcat-e50z-3.webp";
 import imgBobcatE50z_4 from "@/assets/products/erdbewegung/bobcat-e50z-4.webp";
-import imgKettendumperRmd650_1 from "@/assets/products/erdbewegung/kettendumper-rmd650-1.jpeg";
-import imgKettendumperRmd650_2 from "@/assets/products/erdbewegung/kettendumper-rmd650-2.jpeg";
-import imgKettendumperRmd650_3 from "@/assets/products/erdbewegung/kettendumper-rmd650-3.jpeg";
 import imgKettendumperRmd800_1 from "@/assets/products/erdbewegung/kettendumper-rmd800-1.jpeg";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/knickdumper-kde550-1.jpg";
 import imgKnickdumperKde550_2 from "@/assets/products/erdbewegung/knickdumper-kde550-2.jpg";
@@ -839,64 +836,6 @@ const erdbewegungProductsUnsorted: Product[] = [
     ],
   },
   {
-    id: "knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550 4x4 elektrisch",
-    description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
-    image: imgKnickdumperKde550_1,
-    images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
-    weightKg: 500,
-    category: "dumper",
-    tags: ["dumper", "elektro", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "GH8W6W", muelheim: "LKXBX6" },
-    rentalNotes: [
-      "Preis gilt für 8 Betriebsstunden/Tag (Laufzeit ca. 8–10 h).",
-    ],
-  },
-  {
-    id: "cormidi-c60-hitip",
-    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
-    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
-    image: imgCormidiC60_1,
-    images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
-    weightKg: 600,
-    category: "dumper",
-    tags: ["dumper", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "EZHV9G" },
-    rentalNotes: [
-      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
-    ],
-  },
-  {
-    id: "kettendumper-rmd650",
-    name: "Ketten-Dumper RMD-650",
-    description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform | 2 Geschwindigkeitsstufen",
-    detailedDescription: "Der Ketten-Dumper RMD-650 ist ein kompakter und leistungsstarker Raupendumper mit 650 kg Tragfähigkeit und 0,26 m³ Mulde. Dank Raupenlaufwerk (nur 77 cm breit) meistert er auch schwieriges Gelände und enge Zugänge mühelos. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Die integrierte Mitfahrplattform sorgt für komfortables Arbeiten auf längeren Strecken.",
-    image: imgKettendumperRmd650_1,
-    images: [imgKettendumperRmd650_1, imgKettendumperRmd650_2, imgKettendumperRmd650_3],
-    weightKg: 636,
-    category: "dumper",
-    tags: ["dumper", "benzin", "bis-1500", "maschine"],
-    onRequest: true,
-    videoUrls: ["https://www.youtube.com/watch?v=5bguWODhjfY"],
-    specifications: {
-      "Maschinengewicht": "636 kg",
-      "Max. Tragfähigkeit": "650 kg",
-      "Muldengröße": "0,26 m³",
-      "Gesamtbreite": "77 cm",
-      "Gesamthöhe": "152 cm",
-      "Motorleistung": "6,2 PS",
-      "Kraftstoff": "Benzin",
-      "Tankinhalt": "5 l",
-      "Geschwindigkeitsstufen": "2",
-      "Extra": "Mitfahrplattform",
-    },
-    rentalNotes: [
-      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
-    ],
-  },
-  {
     id: "kettendumper-rmd800",
     name: "Ketten-Dumper RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport",
@@ -925,6 +864,35 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Super (Benzin): brutto 2,95 €/l.",
+    ],
+  },
+  {
+    id: "cormidi-c60-hitip",
+    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
+    image: imgCormidiC60_1,
+    images: [imgCormidiC60_1, imgCormidiC60_2, imgCormidiC60_3],
+    weightKg: 600,
+    category: "dumper",
+    tags: ["dumper", "diesel", "bis-1500", "maschine"],
+    rentwareCode: { krefeld: "EZHV9G" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+    ],
+  },
+  {
+    id: "knickdumper-kde550",
+    name: "Raddumper / Knickdumper KDe550 4x4 elektrisch",
+    description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
+    image: imgKnickdumperKde550_1,
+    images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
+    weightKg: 500,
+    category: "dumper",
+    tags: ["dumper", "elektro", "bis-1500", "maschine"],
+    rentwareCode: { krefeld: "GH8W6W", muelheim: "LKXBX6" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag (Laufzeit ca. 8–10 h).",
     ],
   },
   // Include all attachments from krefeldProducts
