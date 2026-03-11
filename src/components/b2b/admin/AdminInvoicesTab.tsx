@@ -77,6 +77,32 @@ export function AdminInvoicesTab({
   const [deleteConfirmInvoice, setDeleteConfirmInvoice] = useState<Invoice | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
+  const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+
+  const sendInvoiceEmail = async (invoice: Invoice) => {
+    setSendingEmailId(invoice.id);
+    setSendEmailConfirmInvoice(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-invoice-email", {
+        body: { invoice_id: invoice.id },
+      });
+      if (error) throw error;
+      toast({
+        title: "Rechnung versendet!",
+        description: `${invoice.invoice_number} wurde an ${data.recipient} gesendet (CC: debitoren@slt-tg.de, krefeld@slt-rental.de).`,
+      });
+      onRefresh();
+    } catch (error: any) {
+      toast({
+        title: "Fehler beim Versenden",
+        description: error.message || "E-Mail konnte nicht gesendet werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
