@@ -1194,7 +1194,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-drehschlagschrauber-gds18v-1050h",
-    name: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H",
+    name: "Akku Drehschlagschrauber",
+    modelName: "Bosch GDS 18V-1050 H",
     description: "Hochleistungs-Schlagschrauber",
     image: imgDrehschlagschrauber1,
     images: [imgDrehschlagschrauber1, imgDrehschlagschrauber2],
