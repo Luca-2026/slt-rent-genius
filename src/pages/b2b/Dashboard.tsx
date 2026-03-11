@@ -453,6 +453,11 @@ export default function B2BDashboard() {
                 <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Rückgabeprotokolle mit Zustandsbewertung für zurückgegebene Mietartikel.
+                    {pendingReturnProtocols > 0 && (
+                      <span className="block text-xs font-medium text-destructive mt-1">
+                        {pendingReturnProtocols} {pendingReturnProtocols === 1 ? "Protokoll wartet" : "Protokolle warten"} auf Ihre Unterschrift
+                      </span>
+                    )}
                   </p>
                   {!isApproved && (
                     <p className="text-xs text-yellow-600 mt-2">
