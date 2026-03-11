@@ -1106,7 +1106,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-handkreissaege-gks18v-57g",
-    name: "Bosch Akku Hand-Kreissäge GKS 18V-57G",
+    name: "Akku Hand-Kreissäge",
+    modelName: "Bosch GKS 18V-57G",
     description: "Akku-Handkreissäge mit Führungsschiene – führungsschienenkompatibel.",
     detailedDescription: "Die Bosch GKS 18V-57G ist eine leistungsstarke Akku-Handkreissäge mit 165 mm Sägeblatt und einer maximalen Schnitttiefe von 57 mm bei 90°. Dank Führungsschienenkompatibilität eignet sie sich ideal für präzise, gerade Schnitte in Holz. Mit nur 3,8 kg (ohne Akku) ist sie leicht und handlich.",
     image: kreissaegeGks18v,
