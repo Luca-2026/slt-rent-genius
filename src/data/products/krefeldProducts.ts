@@ -1320,7 +1320,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "eibenstock-diamantbohrer-ehd1500",
-    name: "Eibenstock Diamantbohrer EHD 1500",
+    name: "Diamantbohrer",
+    modelName: "Eibenstock EHD 1500",
     description: "Kernbohrgerät für Beton und Mauerwerk",
     image: imgDiamantbohrer,
     images: [imgDiamantbohrer],
