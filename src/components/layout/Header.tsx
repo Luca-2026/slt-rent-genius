@@ -43,7 +43,6 @@ export function Header() {
                   <Percent className="h-4 w-4" />
                   <span>{t("marquee.weekendRates")}</span>
                 </div>
-                <span className="text-primary-foreground/50">•</span>
                 <div className="flex items-center gap-1.5">
                   <span className="font-medium">{t("marquee.we")}:</span>
                   <span>{t("marquee.weFri")}</span>
