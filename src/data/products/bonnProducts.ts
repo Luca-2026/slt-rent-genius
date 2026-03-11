@@ -849,7 +849,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-betonruettler-ir1000",
-    name: "Beton Rüttler 2m IR 1000",
+    name: "Beton Rüttler 2m",
+    modelName: "IR 1000",
     description: "Innenrüttler für die Betonverdichtung.",
     image: imgBetonruettler,
     images: [imgBetonruettler],
