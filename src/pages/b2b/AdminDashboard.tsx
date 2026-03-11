@@ -886,7 +886,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="offers">
+        <TabsContent value="offers" forceMount className="data-[state=inactive]:hidden">
           <AdminOffersTab
             offers={offers}
             offerItems={offerItems}
