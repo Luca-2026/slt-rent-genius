@@ -305,23 +305,23 @@ export default function Products() {
             <h2 className="text-2xl font-bold text-headline mb-8">{t("products.categories")}</h2>
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
             {categories.map((cat, index) => (
-              <AnimatedSection key={cat.id} animation="fade-in-up" delay={index * 60}>
+              <AnimatedSection key={cat.id} animation="fade-in-up" delay={index * 50}>
                 <Link to={`/produkte/${cat.id}`}>
                   <Card className="category-card h-full group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-4">
+                    <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-3 md:p-4">
                       <img
                         src={cat.image}
                         alt={cat.title}
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-bold text-headline">{cat.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{cat.description}</p>
-                       <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent">
-                         {t("products.viewCategory")} <ArrowRight className="ml-1 h-4 w-4" />
+                    <CardContent className="p-3 md:p-4">
+                      <h3 className="font-bold text-headline text-sm md:text-base">{cat.title}</h3>
+                      <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">{cat.description}</p>
+                       <Button variant="link" className="p-0 mt-2 text-primary group-hover:text-accent text-xs md:text-sm">
+                         {t("products.viewCategory")} <ArrowRight className="ml-1 h-3.5 w-3.5 md:h-4 md:w-4" />
                       </Button>
                     </CardContent>
                   </Card>

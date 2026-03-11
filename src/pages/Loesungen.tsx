@@ -152,37 +152,37 @@ function SolutionCard({ solution }: { solution: Solution }) {
 
   return (
     <Link to={`/loesungen/${solution.id}`}>
-      <Card className="h-full group hover:shadow-lg transition-all duration-300 overflow-hidden border-2 hover:border-primary/20">
-        <div className={`aspect-[16/10] bg-gradient-to-br ${solution.color} relative overflow-hidden`}>
+      <Card className="h-full group hover:shadow-lg transition-all duration-300 overflow-hidden border-2 hover:border-primary/20 hover:-translate-y-1">
+        <div className={`aspect-[16/10] md:aspect-[16/9] bg-gradient-to-br ${solution.color} relative overflow-hidden`}>
           <img src={solution.image} alt={title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-background/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <Icon className="w-10 h-10 text-primary" />
+            <div className="w-16 h-16 md:w-14 md:h-14 lg:w-20 lg:h-20 rounded-2xl bg-background/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <Icon className="w-8 h-8 md:w-7 md:h-7 lg:w-10 lg:h-10 text-primary" />
             </div>
           </div>
         </div>
         
-        <CardContent className="p-6">
-          <h3 className="text-xl font-bold text-headline mb-1 group-hover:text-primary transition-colors">
+        <CardContent className="p-4 md:p-4 lg:p-6">
+          <h3 className="text-lg md:text-base lg:text-xl font-bold text-headline mb-1 group-hover:text-primary transition-colors">
             {title}
           </h3>
-          <p className="text-sm text-muted-foreground mb-3">{subtitle}</p>
+          <p className="text-xs md:text-xs lg:text-sm text-muted-foreground mb-2 md:mb-2 lg:mb-3">{subtitle}</p>
           
-          <p className="text-body-text text-sm mb-4 line-clamp-3">
+          <p className="text-body-text text-sm md:text-xs lg:text-sm mb-3 md:mb-2 lg:mb-4 line-clamp-2 md:line-clamp-2 lg:line-clamp-3">
             {description}
           </p>
           
-          <div className="space-y-1.5 mb-4">
+          <div className="space-y-1 md:space-y-0.5 lg:space-y-1.5 mb-3 md:mb-2 lg:mb-4">
             {Array.isArray(highlights) && highlights.slice(0, 3).map((highlight, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                <span className="text-muted-foreground">{highlight}</span>
+              <div key={index} className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                <span className="text-muted-foreground line-clamp-1">{highlight}</span>
               </div>
             ))}
           </div>
           
-          <div className="flex items-center text-primary font-medium text-sm group-hover:text-accent transition-colors">
-            {t("solutions.learnMore")} <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          <div className="flex items-center text-primary font-medium text-sm md:text-xs lg:text-sm group-hover:text-accent transition-colors">
+            {t("solutions.learnMore")} <ArrowRight className="ml-1 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 group-hover:translate-x-1 transition-transform" />
           </div>
         </CardContent>
       </Card>
