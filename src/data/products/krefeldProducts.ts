@@ -3083,6 +3083,30 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "" }
   },
   {
+    id: "wasserglas-passionata-25er",
+    name: "Wasserglas Passionata 460ml, 25er Set",
+    description: "Schott Zwiesel Passionata Wasserglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
+    image: wasserglasPassionata1,
+    images: [wasserglasPassionata1],
+    category: "glaeser",
+    detailedDescription: "Die Schott Zwiesel Passionata Wassergläser im 25er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Wasser, Softdrinks und erfrischende Getränke. Das kraftvolle, schlanke Design mit massivem Sockel garantiert gute Stabilität und liegt bequem in der Hand. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden. Ideal für Events, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas",
+      "Fassungsvermögen": "460 ml",
+      "Typ": "Wasserglas",
+      "Höhe": "11,6 cm",
+      "Durchmesser": "9,0 cm",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Kratzfest & bruchsicher",
+      "Stückzahl": "25 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+      "Glasbruch": "5,00 € pro Glas",
+    },
+    rentwareCode: { krefeld: "" }
+  },
+  {
     id: "weissweinglas-passionata-10er",
     name: "Weißweinglas Passionata, 10er Set",
     description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
