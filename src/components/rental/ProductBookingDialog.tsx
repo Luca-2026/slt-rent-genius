@@ -28,8 +28,13 @@ interface InquiryForm {
   name: string;
   email: string;
   phone: string;
+  street: string;
+  postalCode: string;
+  city: string;
   startDate: string;
+  startTime: string;
   endDate: string;
+  endTime: string;
   message: string;
   deliveryRequested: boolean;
   deliveryStreet: string;
@@ -56,7 +61,10 @@ export function ProductBookingDialog({
   const [widgetLoading, setWidgetLoading] = useState(true);
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
   const defaultForm: InquiryForm = {
-    name: "", email: "", phone: "", startDate: "", endDate: "", message: "",
+    name: "", email: "", phone: "",
+    street: "", postalCode: "", city: "",
+    startDate: "", startTime: "", endDate: "", endTime: "",
+    message: "",
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
   };
@@ -218,10 +226,11 @@ export function ProductBookingDialog({
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="inq-phone">Telefon</Label>
+                        <Label htmlFor="inq-phone">Telefon *</Label>
                         <Input
                           id="inq-phone"
                           type="tel"
+                          required
                           placeholder="+49 ..."
                           value={form.phone}
                           onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -241,23 +250,82 @@ export function ProductBookingDialog({
                       />
                     </div>
 
+                    {/* Address fields */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-semibold">Adresse *</Label>
+                      <div className="space-y-1.5">
+                        <Input
+                          id="inq-street"
+                          required
+                          placeholder="Straße + Hausnummer"
+                          value={form.street}
+                          onChange={(e) => setForm({ ...form, street: e.target.value })}
+                        />
+                      </div>
+                      <div className="grid grid-cols-[120px_1fr] gap-3">
+                        <div className="space-y-1.5">
+                          <Input
+                            id="inq-plz"
+                            required
+                            placeholder="PLZ"
+                            value={form.postalCode}
+                            onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <Input
+                            id="inq-city"
+                            required
+                            placeholder="Ort"
+                            value={form.city}
+                            onChange={(e) => setForm({ ...form, city: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="inq-start">Gewünschtes Startdatum</Label>
+                        <Label htmlFor="inq-start">Abholdatum *</Label>
                         <Input
                           id="inq-start"
                           type="date"
+                          required
                           value={form.startDate}
                           onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="inq-end">Rückgabedatum</Label>
+                        <Label htmlFor="inq-start-time">Abholung Uhrzeit *</Label>
+                        <Input
+                          id="inq-start-time"
+                          type="time"
+                          required
+                          value={form.startTime}
+                          onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="inq-end">Rückgabedatum *</Label>
                         <Input
                           id="inq-end"
                           type="date"
+                          required
                           value={form.endDate}
                           onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="inq-end-time">Rückgabe Uhrzeit *</Label>
+                        <Input
+                          id="inq-end-time"
+                          type="time"
+                          required
+                          value={form.endTime}
+                          onChange={(e) => setForm({ ...form, endTime: e.target.value })}
                         />
                       </div>
                     </div>
