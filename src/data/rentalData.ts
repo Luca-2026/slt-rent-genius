@@ -840,7 +840,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "kramer-5045",
-    name: "3t Radlader Kramer 5045",
+    name: "3t Radlader",
+    modelName: "Kramer 5045",
     description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
     image: imgKramer5045_1,
     images: [imgKramer5045_1, imgKramer5045_2],
