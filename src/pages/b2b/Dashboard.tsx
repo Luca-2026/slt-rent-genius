@@ -49,10 +49,11 @@ export default function B2BDashboard() {
   const [requestingDeletion, setRequestingDeletion] = useState(false);
   const [pendingDeliveryNotes, setPendingDeliveryNotes] = useState(0);
   const [pendingReturnProtocols, setPendingReturnProtocols] = useState(0);
+  const [pendingOffers, setPendingOffers] = useState(0);
 
   const fetchPendingCounts = useCallback(async () => {
     if (!b2bProfile?.id) return;
-    const [dnRes, rpRes] = await Promise.all([
+    const [dnRes, rpRes, offersRes] = await Promise.all([
       supabase
         .from("b2b_delivery_notes")
         .select("id", { count: "exact", head: true })
@@ -61,9 +62,14 @@ export default function B2BDashboard() {
         .from("b2b_return_protocols")
         .select("id", { count: "exact", head: true })
         .eq("status", "pending_customer_signature"),
+      supabase
+        .from("b2b_offers")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "sent"),
     ]);
     setPendingDeliveryNotes(dnRes.count ?? 0);
     setPendingReturnProtocols(rpRes.count ?? 0);
+    setPendingOffers(offersRes.count ?? 0);
   }, [b2bProfile?.id]);
 
   useEffect(() => {
@@ -270,7 +276,36 @@ export default function B2BDashboard() {
             </Card>
           )}
 
-          {/* Pending/Rejected Banner */}
+          {/* Pending Offers Banner */}
+          {isApproved && pendingOffers > 0 && (
+            <Card className="mb-8 border-accent/40 bg-accent/5">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center">
+                    <Send className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground">
+                      {pendingOffers === 1
+                        ? "Du hast ein offenes Angebot"
+                        : `Du hast ${pendingOffers} offene Angebote`}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Bitte prüfe und bestätige {pendingOffers === 1 ? "dein Angebot" : "deine Angebote"}, damit wir mit der Vorbereitung beginnen können.
+                    </p>
+                  </div>
+                  <Link to="/b2b/angebote">
+                    <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover whitespace-nowrap">
+                      <FileText className="h-4 w-4 mr-1.5" />
+                      Angebote ansehen
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+
           {b2bProfile && !isApproved && (
             <Card className={`mb-8 ${statusConfig[status]?.bgColor}`}>
               <CardContent className="p-6">
