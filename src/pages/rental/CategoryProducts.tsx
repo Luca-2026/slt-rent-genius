@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTranslatedProduct";
@@ -6,7 +6,7 @@ import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD, SLT_FAQ_JSONLD, SLT_LOCATION_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets, Sparkles } from "lucide-react";
+import { ArrowLeft, MapPin, Grid3X3, Package, Clock, Smartphone, Lock, Scale, Boxes, Gauge, Shovel, Truck, Zap, Leaf, Wrench, HardHat, Search, X, AlertTriangle, Thermometer, Wind, Droplets, Sparkles, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { 
   getLocationById, 
   getCategoryById, 
@@ -44,6 +44,7 @@ export default function CategoryProducts() {
     search: "",
     filters: {},
   });
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const productGridRef = useRef<HTMLDivElement>(null);
   const prevFiltersRef = useRef({ trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter });
@@ -1116,6 +1117,18 @@ export default function CategoryProducts() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-1 lg:order-1">
+                {/* Mobile/Tablet: collapsible filter toggle */}
+                <button
+                  onClick={() => setFiltersOpen(!filtersOpen)}
+                  className="lg:hidden w-full flex items-center justify-between gap-2 bg-card border border-border rounded-xl p-4 mb-4"
+                >
+                  <span className="flex items-center gap-2 font-semibold text-foreground">
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {t("rental.filters", "Filter")}
+                  </span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${filtersOpen ? "rotate-180" : ""}`} />
+                </button>
+                <div className={`${filtersOpen ? "block" : "hidden"} lg:block`}>
                 <div className="sticky top-4 space-y-4">
                   {/* Scrollable filter area with delivery calculator included */}
                   <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
@@ -1214,6 +1227,7 @@ export default function CategoryProducts() {
                       </div>
                     )}
                   </div>
+                </div>
                 </div>
               </div>
 
