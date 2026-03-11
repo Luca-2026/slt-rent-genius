@@ -128,8 +128,9 @@ export function DeliveryNoteDialog({
   };
 
   const handleGenerate = async () => {
-    if (!offer || !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden zuerst unterschreiben.", variant: "destructive" });
+    if (!offer) return;
+    if (!customerNotPresent && !customerSignature) {
+      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
       return;
     }
     if (!staffSignature) {
@@ -140,11 +141,11 @@ export function DeliveryNoteDialog({
       toast({ title: "Mitarbeitername fehlt", description: "Bitte geben Sie Ihren Namen ein.", variant: "destructive" });
       return;
     }
-    if (!agbAccepted) {
+    if (!customerNotPresent && !agbAccepted) {
       toast({ title: "AGB nicht akzeptiert", description: "Der Kunde muss die AGB akzeptieren.", variant: "destructive" });
       return;
     }
-    if (!offerAccepted) {
+    if (!customerNotPresent && !offerAccepted) {
       toast({ title: "Angebotsannahme fehlt", description: "Der Kunde muss das Angebot bestätigen.", variant: "destructive" });
       return;
     }
