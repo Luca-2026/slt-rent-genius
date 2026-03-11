@@ -6,9 +6,10 @@ interface SignaturePadProps {
   onSignatureChange: (dataUrl: string | null) => void;
   width?: number;
   height?: number;
+  label?: string;
 }
 
-export function SignaturePad({ onSignatureChange, width = 600, height = 200 }: SignaturePadProps) {
+export function SignaturePad({ onSignatureChange, width = 600, height = 200, label = "Unterschrift des Kunden" }: SignaturePadProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
@@ -106,7 +107,7 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200 }: S
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-foreground">Unterschrift des Kunden</p>
+        <p className="text-sm font-medium text-foreground">{label}</p>
         {hasSignature && (
           <Button
             type="button"
