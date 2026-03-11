@@ -3151,8 +3151,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "S2KNX3" }
   },
   {
-    id: "champagnerglas-passionata-10er",
-    name: "Champagnerglas Passionata, 10er Set",
+    id: "sektglas-passionata-36er",
+    name: "Sektglas Passionata, 36er Set",
     description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
     image: champagnerPassionata1,
     images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
