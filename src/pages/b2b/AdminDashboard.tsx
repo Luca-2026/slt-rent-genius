@@ -259,7 +259,13 @@ export default function AdminDashboard() {
           }));
 
         // Add deposit as a line item for proforma invoices
-        const depositItems: typeof mainItems = [];
+        const depositItems: Array<{
+          product_name: string;
+          description?: string;
+          quantity: number;
+          unit_price: number;
+          discount_percent: number;
+        }> = [];
         if (proformaMode && offer.deposit && offer.deposit > 0) {
           depositItems.push({
             product_name: "Kaution",
