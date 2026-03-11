@@ -900,16 +900,20 @@ const erdbewegungProductsUnsorted: Product[] = [
 ];
 
 // Sort erdbewegung: machines first (Bagger by weight, Radlader, Dumper), then attachments, then accessories
-const erdbewegungProducts = [...erdbewegungProductsUnsorted].sort((a, b) => {
-  const catIndexA = erdbewegungCategoryOrder.indexOf(a.category || "");
-  const catIndexB = erdbewegungCategoryOrder.indexOf(b.category || "");
-  const idxA = catIndexA >= 0 ? catIndexA : 999;
-  const idxB = catIndexB >= 0 ? catIndexB : 999;
-  if (idxA !== idxB) return idxA - idxB;
-  // Within same category, sort by weight (machines) or name (attachments)
-  if (a.weightKg && b.weightKg) return a.weightKg - b.weightKg;
-  return a.name.localeCompare(b.name);
-});
+function sortErdbewegung(products: Product[]): Product[] {
+  return [...products].sort((a, b) => {
+    const catIndexA = erdbewegungCategoryOrder.indexOf(a.category || "");
+    const catIndexB = erdbewegungCategoryOrder.indexOf(b.category || "");
+    const idxA = catIndexA >= 0 ? catIndexA : 999;
+    const idxB = catIndexB >= 0 ? catIndexB : 999;
+    if (idxA !== idxB) return idxA - idxB;
+    // Within same category, sort by weight (machines) or name (attachments)
+    if (a.weightKg && b.weightKg) return a.weightKg - b.weightKg;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+const erdbewegungProducts = sortErdbewegung(erdbewegungProductsUnsorted);
 
 // Sort trailer products by category order, then sortOrder (if defined), then weight
 const sortedTrailerProducts = [...trailerProducts].sort((a, b) => {
