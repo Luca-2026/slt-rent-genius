@@ -44,6 +44,14 @@ serve(async (req) => {
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
 
+    const timeRange = (startTime || endTime)
+      ? `${startTime ? `Abholung: ${startTime} Uhr` : ""}${startTime && endTime ? " · " : ""}${endTime ? `Rückgabe: ${endTime} Uhr` : ""}`
+      : null;
+
+    const customerAddress = (street || postalCode || city)
+      ? `${street || ""}${street ? ", " : ""}${postalCode || ""} ${city || ""}`.trim()
+      : null;
+
     const deliveryHtml = deliveryRequested
       ? `
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
