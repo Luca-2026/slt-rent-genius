@@ -1031,7 +1031,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "makita-abbruchhammer-hm1812",
-    name: "Makita Abbruchhammer HM1812",
+    name: "Abbruchhammer",
+    modelName: "Makita HM1812",
     description: "Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.",
     detailedDescription: "Der Makita HM1812 ist ein leistungsstarker Abbruchhammer mit 2.000 W und 72,8 J Schlagenergie. Dank AVT (Anti-Vibrations-Technologie) wird die Belastung für den Anwender deutlich reduziert. Im Lieferumfang enthalten: 1x Spitzmeißel und 1x Flachmeißel.",
     image: imgAbbruchhammerHm1812,
