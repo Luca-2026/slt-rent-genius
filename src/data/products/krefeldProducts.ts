@@ -2319,7 +2319,7 @@ export const beschallungProducts: Product[] = [
       "XLR Kabel": "2× XLR Kabel 10m",
       "Gesamtgewicht": "ca. 130 kg",
     },
-    rentwareCode: { krefeld: "PLACEHOLDER_3500W" }
+    rentwareCode: { krefeld: "4WX78O" }
   },
   {
     id: "das-action-508a",
