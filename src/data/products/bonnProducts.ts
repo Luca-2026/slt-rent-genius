@@ -387,7 +387,8 @@ export const bonnErdbewegungProducts = [
   // === RADLADER ===
   {
     id: "bonn-radlader-kramer-5050",
-    name: "Radlader 3t Kramer 5050",
+    name: "3t Radlader",
+    modelName: "Kramer 5050",
     description: "Kompakter Radlader für vielseitige Einsätze.",
     image: imgKramer1,
     images: [imgKramer1, imgKramer2],
