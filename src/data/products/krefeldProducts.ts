@@ -1280,7 +1280,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-gms120",
-    name: "Bosch Ortungsgerät GMS 120",
+    name: "Ortungsgerät",
+    modelName: "Bosch GMS 120",
     description: "Multidetektor für Metall und Leitungen",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
