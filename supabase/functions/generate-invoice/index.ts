@@ -293,6 +293,7 @@ Deno.serve(async (req: Request) => {
       isCorrection: is_correction,
       originalInvoiceNumber: original_invoice_number || null,
       isProforma: is_proforma,
+      depositTotal,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
