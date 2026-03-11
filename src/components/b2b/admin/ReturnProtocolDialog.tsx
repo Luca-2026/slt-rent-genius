@@ -196,8 +196,9 @@ export function ReturnProtocolDialog({
   };
 
   const handleGenerate = async () => {
-    if (!reservation || !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben.", variant: "destructive" });
+    if (!reservation) return;
+    if (!customerNotPresent && !customerSignature) {
+      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
       return;
     }
     if (!staffSignature) {
