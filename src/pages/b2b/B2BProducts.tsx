@@ -359,7 +359,7 @@ export default function B2BProducts() {
   const handleCategoryChange = useCallback((catId: string) => {
     setSelectedCategory(catId);
     setCategoryFilters({ search: "", filters: {} });
-    setTrailerFilters({ search: "", types: [], braking: [], weight: [] });
+    setTrailerFilters({ search: "", types: [], braking: [], weight: [], nutzlastRange: [0, 3000] });
   }, []);
 
   const selectedCount = selectedItems.size;
