@@ -355,9 +355,9 @@ export const bonnErdbewegungProducts = [
   },
   // === DUMPER ===
   {
-    id: "bonn-cormidi-dumper",
-    name: "Ketten-Dumper",
-    description: "Kompakter Raupendumper für schwieriges Gelände.",
+    id: "bonn-cormidi-c60",
+    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
     driveType: "diesel",
