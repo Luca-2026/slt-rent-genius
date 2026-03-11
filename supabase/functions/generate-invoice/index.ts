@@ -564,6 +564,7 @@ function generateInvoiceHtml(data: {
   isCorrection: boolean;
   originalInvoiceNumber: string | null;
   isProforma?: boolean;
+  depositTotal?: number;
 }): string {
   const formatCurrency = (amount: number) =>
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
