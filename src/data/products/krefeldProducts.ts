@@ -3196,11 +3196,11 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "rieslingglas-brunelli-12er",
     name: "Weißweinglas Brunelli, 12er Set",
-    description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
+    description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: weissweinglasBrunelli1,
     images: [weissweinglasBrunelli1],
     category: "glaeser",
-    detailedDescription: "Das Weißweinglas Brunelli von Leonardo im 12er Set – elegant, klar und stoßfest. Die schlanke Form mit 23,7 cm Höhe bringt Weißweine optimal zur Geltung. Spülmaschinenfest und ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Weißweinglas Brunelli von Leonardo im 12er Set – elegant, klar und stoßfest. Die schlanke Form mit 23,7 cm Höhe bringt Weißweine optimal zur Geltung. Spülmaschinenfest und ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
     specifications: {
       "Hersteller": "Leonardo",
       "Typ": "Weißweinglas",
@@ -3209,6 +3209,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Stückzahl": "12 Stück pro Set",
       "Eigenschaften": "Klar, stoßfest, spülmaschinenfest",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+      "Glasbruch": "5,00 € pro Glas",
     },
     rentwareCode: { krefeld: "CFDC7J" }
   },
