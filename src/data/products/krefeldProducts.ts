@@ -2604,7 +2604,7 @@ export const beleuchtungProducts: Product[] = [
       "Lieferumfang": "2× 5m Anschlusskabel, 2× Stativ, 4× Tasche",
     },
     pdfUrl: "/manuals/led-beleuchtungsset-duo-manual.pdf",
-    rentwareCode: { krefeld: "YXVVZR" }
+    rentwareCode: { krefeld: "63GT72" }
   },
   {
     id: "led-moving-head-vector-spot",
