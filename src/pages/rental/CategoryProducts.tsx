@@ -1228,6 +1228,7 @@ export default function CategoryProducts() {
                     )}
                   </div>
                 </div>
+                </div>
               </div>
 
               {/* Product Grid */}
