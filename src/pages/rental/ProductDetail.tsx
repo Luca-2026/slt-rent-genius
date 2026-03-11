@@ -652,50 +652,50 @@ export default function ProductDetail() {
 
             {/* ── RIGHT COLUMN (tablet + desktop sticky sidebar) ── */}
             <div className="hidden md:block">
-              <div className="sticky top-4 space-y-5">
+              <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card */}
-                <div className="bg-card rounded-xl border border-border p-5">
+                <div className="bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
                   {product.pricePerDay && (
-                    <div className="mb-4 pb-4 border-b border-border">
-                      <div className="text-3xl font-bold text-primary">
+                    <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
+                      <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
                         {product.pricePerDay}
-                        <span className="text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
                       </div>
                       {product.priceWeekend && (
-                        <p className="text-sm text-accent font-medium mt-1">
+                        <p className="text-sm md:text-xs lg:text-sm text-accent font-medium mt-1">
                           Weekend-Tarif: {product.priceWeekend}
                         </p>
                       )}
                     </div>
                   )}
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
                     <Button
                       size="lg"
-                      className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                      className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover md:h-9 md:text-sm lg:h-11 lg:text-base"
                       onClick={() => setShowBookingDialog(true)}
                     >
                       {t("rental.rentNow")}
                     </Button>
                     <Link to="/b2b/login" className="block">
-                      <Button size="lg" variant="default" className="w-full">
+                      <Button size="lg" variant="default" className="w-full md:h-9 md:text-sm lg:h-11 lg:text-base">
                         {t("rental.b2bConditions")}
                       </Button>
                     </Link>
                   </div>
 
                   {/* Location */}
-                  <div className="border-t border-border pt-4 space-y-2">
-                    <h3 className="text-sm font-semibold text-foreground">{t("rental.locationLabel")}</h3>
-                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                  <div className="border-t border-border pt-3 md:pt-2 lg:pt-4 space-y-1.5 md:space-y-1 lg:space-y-2">
+                    <h3 className="text-sm md:text-xs lg:text-sm font-semibold text-foreground">{t("rental.locationLabel")}</h3>
+                    <div className="flex items-start gap-2 text-sm md:text-xs lg:text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0 mt-0.5" />
                       <span>{location.address}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Phone className="h-4 w-4 flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-sm md:text-xs lg:text-sm text-muted-foreground">
+                      <Phone className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
                       <a href={`tel:${location.phone}`} className="hover:text-primary truncate">{location.phone}</a>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Mail className="h-4 w-4 flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-sm md:text-xs lg:text-sm text-muted-foreground">
+                      <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
                       <a href={`mailto:${location.email}`} className="hover:text-primary truncate">{location.email}</a>
                     </div>
                   </div>
