@@ -407,11 +407,23 @@ export default function B2BDashboard() {
                   <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-2">
                     <ClipboardCheck className="h-6 w-6 text-green-600" />
                   </div>
-                  <CardTitle className="text-lg">Übergabeprotokolle</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    Übergabeprotokolle
+                    {pendingDeliveryNotes > 0 && (
+                      <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold rounded-full bg-destructive text-destructive-foreground">
+                        {pendingDeliveryNotes}
+                      </span>
+                    )}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
                     Unterschriebene Übergabeprotokolle für alle übergebenen Mietartikel einsehen.
+                    {pendingDeliveryNotes > 0 && (
+                      <span className="block text-xs font-medium text-destructive mt-1">
+                        {pendingDeliveryNotes} {pendingDeliveryNotes === 1 ? "Protokoll wartet" : "Protokolle warten"} auf Ihre Unterschrift
+                      </span>
+                    )}
                   </p>
                   {!isApproved && (
                     <p className="text-xs text-yellow-600 mt-2">
@@ -429,7 +441,14 @@ export default function B2BDashboard() {
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
                     <Undo2 className="h-6 w-6 text-blue-600" />
                   </div>
-                  <CardTitle className="text-lg">Rückgabeprotokolle</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    Rückgabeprotokolle
+                    {pendingReturnProtocols > 0 && (
+                      <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold rounded-full bg-destructive text-destructive-foreground">
+                        {pendingReturnProtocols}
+                      </span>
+                    )}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
