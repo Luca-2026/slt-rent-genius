@@ -650,8 +650,8 @@ export default function ProductDetail() {
               />
             </div>
 
-            {/* ── RIGHT COLUMN (desktop sticky sidebar) ── */}
-            <div className="hidden lg:block">
+            {/* ── RIGHT COLUMN (tablet + desktop sticky sidebar) ── */}
+            <div className="hidden md:block">
               <div className="sticky top-4 space-y-5">
                 {/* Booking Card */}
                 <div className="bg-card rounded-xl border border-border p-5">
