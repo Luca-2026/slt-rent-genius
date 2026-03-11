@@ -7,6 +7,9 @@ import { Users, Award, MapPin, Calendar, CheckCircle2, Mail } from "lucide-react
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useState, useCallback, useEffect } from "react";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
