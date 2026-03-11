@@ -611,6 +611,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
+            cc: [loc.email],
             subject: `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`,
             html: emailHtml,
             attachments,
