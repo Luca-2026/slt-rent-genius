@@ -736,7 +736,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e19",
-    name: "1,8t Bobcat E19 Minibagger",
+    name: "1,8t Minibagger",
+    modelName: "Bobcat E19",
     description: "Einsatzgewicht: 1.800 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgBobcatE19_1,
     images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
