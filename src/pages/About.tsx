@@ -145,14 +145,14 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-5 md:py-6 lg:py-10 xl:py-12 bg-surface-light border-b border-border">
+      <section className="py-5 md:py-6 lg:py-8 bg-surface-light border-b border-border">
         <div className="section-container">
           <div className="grid grid-cols-4 gap-2 md:gap-4 lg:gap-8">
             {stats.map((stat, index) => (
               <AnimatedSection key={stat.label} animation="scale-in" delay={index * 120}>
-                <div className="text-center lg:py-4">
-                  <span className="block text-lg md:text-2xl lg:text-5xl xl:text-6xl font-bold text-primary tracking-tight">{stat.value}</span>
-                  <span className="text-muted-foreground text-[10px] md:text-xs lg:text-base xl:text-lg mt-1 block">{stat.label}</span>
+                <div className="text-center lg:py-2">
+                  <span className="block text-lg md:text-2xl lg:text-4xl font-bold text-primary tracking-tight">{stat.value}</span>
+                  <span className="text-muted-foreground text-[10px] md:text-xs lg:text-base mt-1 block">{stat.label}</span>
                 </div>
               </AnimatedSection>
             ))}
