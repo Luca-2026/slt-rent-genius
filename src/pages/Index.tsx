@@ -39,29 +39,7 @@ export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
-  const [howItWorksTab, setHowItWorksTab] = useState<"private" | "b2b">("private");
   const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const steps = [
-    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), action: "location" as const, cta: t("steps.step1Cta") },
-    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), action: "search" as const, cta: t("steps.step2Cta") },
-    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
-    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
-    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
-  ];
-
-  const b2bSteps = [
-    { number: "1", icon: Building2, title: t("howItWorks.b2bStep1Title"), description: t("howItWorks.b2bStep1Desc") },
-    { number: "2", icon: Search, title: t("howItWorks.b2bStep2Title"), description: t("howItWorks.b2bStep2Desc") },
-    { number: "3", icon: Calendar, title: t("howItWorks.b2bStep3Title"), description: t("howItWorks.b2bStep3Desc") },
-    { number: "4", icon: CreditCard, title: t("howItWorks.b2bStep4Title"), description: t("howItWorks.b2bStep4Desc") },
   ];
 
   const trustItems = [
