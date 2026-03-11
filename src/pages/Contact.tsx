@@ -145,7 +145,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-headline mb-1.5">Standort *</label>
-                        <Select name="location" required>
+                        <Select value={selectedLocation} onValueChange={setSelectedLocation} required>
                           <SelectTrigger>
                             <SelectValue placeholder="Standort wählen" />
                           </SelectTrigger>
