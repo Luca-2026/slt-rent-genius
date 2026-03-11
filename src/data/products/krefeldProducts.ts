@@ -1270,7 +1270,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-dtect200c",
-    name: "Bosch Ortungsgerät D-TECT 200 C",
+    name: "Ortungsgerät",
+    modelName: "Bosch D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
     image: imgOrtungsgeraet,
     images: [imgOrtungsgeraet],
