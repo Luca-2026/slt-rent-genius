@@ -1508,6 +1508,18 @@ export type Database = {
       }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
+      sign_delivery_note: {
+        Args: {
+          _agb_accepted?: boolean
+          _note_id: string
+          _signature_data: string
+        }
+        Returns: undefined
+      }
+      sign_return_protocol: {
+        Args: { _protocol_id: string; _signature_data: string }
+        Returns: undefined
+      }
       update_b2b_profile_with_pending: {
         Args: {
           _assigned_location: string

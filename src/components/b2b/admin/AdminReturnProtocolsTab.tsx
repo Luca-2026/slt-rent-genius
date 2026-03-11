@@ -4,7 +4,7 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2 } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2, FileSignature } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -87,6 +87,28 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
     }
   };
 
+  const sendForSignature = async (rp: ReturnProtocol) => {
+    setSendingId(rp.id);
+    try {
+      // Set status to pending_customer_signature
+      await supabase
+        .from("b2b_return_protocols")
+        .update({ status: "pending_customer_signature" })
+        .eq("id", rp.id);
+
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "return_protocol_signature_request", id: rp.id },
+      });
+      if (error) throw error;
+      toast({ title: "Unterschriftsanfrage versendet", description: `E-Mail an ${data.recipient} gesendet.` });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
+  };
+
   useEffect(() => {
     fetchProtocols();
   }, []);
@@ -111,6 +133,8 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
     switch (status) {
       case "signed":
         return <Badge className="bg-green-100 text-green-800 border-green-300">Unterschrieben</Badge>;
+      case "pending_customer_signature":
+        return <Badge className="bg-amber-100 text-amber-800 border-amber-300">Unterschrift ausstehend</Badge>;
       case "draft":
         return <Badge variant="secondary">Entwurf</Badge>;
       default:
@@ -213,6 +237,16 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                             Ansehen
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-10 sm:h-9 flex-1 sm:flex-none text-amber-700 border-amber-300 hover:bg-amber-50"
+                          onClick={() => sendForSignature(rp)}
+                          disabled={sendingId === rp.id}
+                        >
+                          <FileSignature className="h-4 w-4 mr-1.5" />
+                          Zur Unterschrift
+                        </Button>
                         <Button
                           variant="outline"
                           size="sm"
