@@ -79,6 +79,7 @@ import rotweinBrunelli1 from "@/assets/products/geschirr/rotweinglas-brunelli-1.
 import longdrinkPassionata1 from "@/assets/products/geschirr/longdrinkglas-passionata-1.avif";
 import longdrinkPassionata2 from "@/assets/products/geschirr/longdrinkglas-passionata-2.jpg";
 import longdrinkPassionata3 from "@/assets/products/geschirr/longdrinkglas-passionata-3.avif";
+import wasserglasPassionata1 from "@/assets/products/wasserglas-passionata.jpg";
 import rotweinBrunelli2 from "@/assets/products/geschirr/rotweinglas-brunelli-2.jpeg";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
 import speisetDarwin27_2 from "@/assets/products/geschirr/speiseteller-darwin-27-2.jpeg";
@@ -1449,6 +1450,30 @@ export const bonnGeschirrProducts = [
       "Material": "Tritan®-Kristallglas",
       "Fassungsvermögen": "460 ml",
       "Typ": "Longdrinkglas",
+      "Spülmaschinenfest": "Ja",
+      "Eigenschaft": "Kratzfest & bruchsicher",
+      "Stückzahl": "25 Stück pro Set",
+      "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+      "Glasbruch": "5,00 € pro Glas",
+    },
+    onRequest: true,
+    rentwareCode: { bonn: "" },
+  },
+  {
+    id: "bonn-wasserglas-passionata-25er",
+    name: "Wasserglas Passionata 460ml, 25er Set",
+    description: "Schott Zwiesel Passionata Wasserglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
+    image: wasserglasPassionata1,
+    images: [wasserglasPassionata1],
+    detailedDescription: "Die Schott Zwiesel Passionata Wassergläser im 25er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Wasser, Softdrinks und erfrischende Getränke. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden. Glasbruch wird mit 5,00 € pro Glas berechnet.",
+    specifications: {
+      "Hersteller": "Schott Zwiesel",
+      "Serie": "Passionata",
+      "Material": "Tritan®-Kristallglas",
+      "Fassungsvermögen": "460 ml",
+      "Typ": "Wasserglas",
+      "Höhe": "11,6 cm",
+      "Durchmesser": "9,0 cm",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Kratzfest & bruchsicher",
       "Stückzahl": "25 Stück pro Set",
