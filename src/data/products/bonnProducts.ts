@@ -355,7 +355,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-xcmg-xe27e",
-    name: "2,7t XCMG XE27E",
+    name: "2,7t Minibagger",
+    modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
     image: imgXcmgXe27e1,
     images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
