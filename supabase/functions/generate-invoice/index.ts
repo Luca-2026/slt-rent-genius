@@ -659,7 +659,7 @@ function generateInvoiceHtml(data: {
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">
           <tr><td style="color:#595959;padding-right:12px;">Rechnungsdatum:</td><td style="font-weight:500;">${formatDate(data.invoiceDate)}</td></tr>
-          <tr><td style="color:#595959;padding-right:12px;">Zahlungsziel:</td><td style="font-weight:500;">${formatDate(data.dueDate)}</td></tr>
+          <tr><td style="color:#595959;padding-right:12px;">Zahlungsziel:</td><td style="font-weight:500;">${data.isProforma ? "Vorkasse" : formatDate(data.dueDate)}</td></tr>
           <tr><td style="color:#595959;padding-right:12px;">Kundennr.:</td><td style="font-weight:500;">${data.profile.id.substring(0, 8).toUpperCase()}</td></tr>
           ${data.isReverseCharge ? `<tr><td style="color:#595959;padding-right:12px;">Verfahren:</td><td style="font-weight:500;color:#00507d;">Reverse-Charge</td></tr>` : ""}
         </table>
