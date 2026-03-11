@@ -823,7 +823,7 @@ export default function AdminDashboard() {
         </TabsList>
 
         {/* Tabs Content */}
-         <TabsContent value="reservations">
+         <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
@@ -844,7 +844,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="rentals">
+        <TabsContent value="rentals" forceMount className="data-[state=inactive]:hidden">
           <AdminRentalsTab
             reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed" || r.status === "pending" || r.status === "offer_sent")}
             profiles={profiles}
@@ -886,7 +886,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="offers">
+        <TabsContent value="offers" forceMount className="data-[state=inactive]:hidden">
           <AdminOffersTab
             offers={offers}
             offerItems={offerItems}
@@ -927,21 +927,21 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="delivery-notes">
+        <TabsContent value="delivery-notes" forceMount className="data-[state=inactive]:hidden">
           <AdminDeliveryNotesTab
             profiles={profiles as any}
             onRefresh={fetchData}
           />
         </TabsContent>
 
-        <TabsContent value="return-protocols">
+        <TabsContent value="return-protocols" forceMount className="data-[state=inactive]:hidden">
           <AdminReturnProtocolsTab
             profiles={profiles as any}
             onRefresh={fetchData}
           />
         </TabsContent>
 
-        <TabsContent value="invoices">
+        <TabsContent value="invoices" forceMount className="data-[state=inactive]:hidden">
           <AdminInvoicesTab
             invoices={invoices}
             onStatusChange={updateInvoiceStatus}
@@ -951,7 +951,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="customers">
+        <TabsContent value="customers" forceMount className="data-[state=inactive]:hidden">
           <AdminCustomersTab
             profiles={profiles}
             invoices={invoices}
@@ -975,11 +975,11 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="damages">
+        <TabsContent value="damages" forceMount className="data-[state=inactive]:hidden">
           <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 
-        <TabsContent value="staff">
+        <TabsContent value="staff" forceMount className="data-[state=inactive]:hidden">
           <AdminStaffTab />
         </TabsContent>
       </Tabs>
