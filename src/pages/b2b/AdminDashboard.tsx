@@ -1352,6 +1352,7 @@ export default function AdminDashboard() {
       {/* Create / Edit Offer */}
       <AdminCreateOfferDialog
         reservation={selectedReservation}
+        allReservations={selectedGroupReservations}
         profile={
           editingOffer
             ? profiles.find((p) => p.id === editingOffer.b2b_profile_id) || null
