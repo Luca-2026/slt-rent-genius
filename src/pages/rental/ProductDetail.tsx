@@ -215,16 +215,16 @@ export default function ProductDetail() {
       </div>
 
       {/* Main Content */}
-      <section className="py-6 lg:py-10">
+      <section className="py-6 md:py-8 lg:py-10">
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
 
             {/* ── LEFT / MAIN COLUMN ── */}
-            <div className="lg:col-span-2 space-y-5">
+            <div className="md:col-span-2 space-y-5">
 
               {/* Image Gallery */}
               <div className="bg-card rounded-xl border border-border overflow-hidden">
-                <div className="relative bg-muted" style={{ aspectRatio: "4/3" }}>
+                <div className="relative bg-muted aspect-[4/3] md:aspect-[16/10]">
                   {images.length > 0 ? (
                     <>
                       <img
