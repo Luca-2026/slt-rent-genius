@@ -55,6 +55,8 @@ export default function B2BProducts() {
     types: [],
     braking: [],
     weight: [],
+    nutzlastRange: [0, 3000],
+    weight: [],
   });
 
   // Multi-select state
