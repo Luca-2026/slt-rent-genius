@@ -90,9 +90,9 @@ function RentwareArticleWidget({ articleId, view = "cards" }: { articleId: strin
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = '';
-      const articleElement = document.createElement('rtr-article');
+      const articleElement = document.createElement('rtr-article-booking');
       articleElement.setAttribute('article-id', articleId);
-      articleElement.setAttribute('view', view);
+      articleElement.setAttribute('view', 'calendar');
       container.appendChild(articleElement);
     }
   }, [articleId, view]);
