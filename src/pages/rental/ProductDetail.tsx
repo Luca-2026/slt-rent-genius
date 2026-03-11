@@ -712,7 +712,7 @@ export default function ProductDetail() {
           </div>
 
           {/* ── MOBILE: Delivery / Trailer Info below ── */}
-          <div className="lg:hidden mt-5">
+          <div className="md:hidden mt-5">
             {categoryId === "anhaenger" ? (
               <TrailerInfoCard t={t} />
             ) : (
