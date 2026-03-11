@@ -241,11 +241,16 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Calculate totals
-    const itemsTotal = items.reduce((sum, item) => sum + item.total_price, 0);
+    // Separate deposit items (tax-free) from regular items
+    const depositItems = is_proforma ? items.filter(i => i.product_name === "Kaution") : [];
+    const taxableItems = is_proforma ? items.filter(i => i.product_name !== "Kaution") : items;
+    const depositTotal = depositItems.reduce((sum, item) => sum + item.total_price, 0);
+    
+    // Calculate totals (only on taxable items)
+    const itemsTotal = taxableItems.reduce((sum, item) => sum + item.total_price, 0);
     const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
-    const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
+    const grossAmount = Math.round((netAmount + vatAmount + depositTotal) * 100) / 100;
 
     // serviceClient already created above
 
