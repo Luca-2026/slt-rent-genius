@@ -28,8 +28,13 @@ interface InquiryForm {
   name: string;
   email: string;
   phone: string;
+  street: string;
+  postalCode: string;
+  city: string;
   startDate: string;
+  startTime: string;
   endDate: string;
+  endTime: string;
   message: string;
   deliveryRequested: boolean;
   deliveryStreet: string;
