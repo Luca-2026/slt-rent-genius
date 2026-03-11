@@ -128,9 +128,9 @@ export default function Locations() {
                           </div>
                         ))}
                       </div>
-                      <div className="min-h-[16px] md:min-h-[14px] lg:min-h-[20px]">
+                      <div className="min-h-[16px] lg:min-h-[20px]">
                         {"hoursNote" in location && location.hoursNote && (
-                          <p className="text-[10px] md:text-[9px] lg:text-xs text-muted-foreground mt-1.5 md:mt-1 lg:mt-2">{location.hoursNote}</p>
+                          <p className="text-[10px] lg:text-xs text-muted-foreground mt-1.5 lg:mt-2">{location.hoursNote}</p>
                         )}
                       </div>
                     </div>
