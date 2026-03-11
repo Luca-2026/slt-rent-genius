@@ -849,7 +849,12 @@ async function generateDocumentPdf(data: {
     else { dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9); const vT = fm(data.totals.vat); dt(vT, vx - font.widthOfTextAtSize(vT, 9), y, font, 9); }
     y -= 16; page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 1, color: rgb(0, 0.314, 0.49) });
     dt("Bruttobetrag:", tx, y, bold, 10); const gT = fm(data.totals.gross); dt(gT, vx - bold.widthOfTextAtSize(gT, 10), y, bold, 10); y -= 22;
-    if (data.totals.dueDate) { dt(`Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`, MG, y, font, 9); y -= 16; }
+    if (data.totals.dueDate) { 
+      const paymentText = data.totals.paymentDueDays === 0 
+        ? "Zahlungsziel: Vorkasse" 
+        : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
+      dt(paymentText, MG, y, font, 9); y -= 16; 
+    }
     if (data.totals.isReverseCharge) { dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse Charge)", MG, y, font, 8, rgb(0.5, 0.5, 0.5)); y -= 16; }
     y -= 5; dt("Bankverbindung:", MG, y, bold, 9); y -= 13;
     dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4)); y -= 20;
