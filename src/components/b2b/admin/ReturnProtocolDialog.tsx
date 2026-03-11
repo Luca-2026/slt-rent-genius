@@ -250,12 +250,19 @@ export function ReturnProtocolDialog({
 
       if (error) throw error;
 
-      toast({
-        title: "Rückgabeprotokoll erstellt!",
-        description: data.email_sent
-          ? `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt und per E-Mail versendet.`
-          : `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
-      });
+      if (customerNotPresent) {
+        toast({
+          title: "Rückgabeprotokoll erstellt!",
+          description: `${data.return_protocol?.return_protocol_number} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
+        });
+      } else {
+        toast({
+          title: "Rückgabeprotokoll erstellt!",
+          description: data.email_sent
+            ? `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt und per E-Mail versendet.`
+            : `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
+        });
+      }
 
       resetForm();
       onCreated();
