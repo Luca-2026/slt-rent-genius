@@ -285,7 +285,7 @@ export function ReturnProtocolDialog({
     (reservation.product_name || '').toLowerCase().includes(kw)
   );
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
-  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim();
+  const allValid = (customerNotPresent || !!customerSignature) && !!staffSignature && !!staffName.trim();
 
   return (
     <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) resetForm(); }}>
