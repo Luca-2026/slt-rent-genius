@@ -1153,7 +1153,8 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
    * Extract model numbers from a product name for fuzzy matching.
    * Matches patterns like: ZS1012AC, XG0807AC, ZMP09, HR12L, TM18GTi, GS72-XH, KT200, etc.
    */
-  function extractModels(name: string): string[] {
+  function extractModels(name: string | undefined | null): string[] {
+    if (!name) return [];
     const n = name.toLowerCase();
     const matches = n.match(/[a-z]{1,4}\s*[-]?\s*\d{2,6}\s*[-]?\s*[a-z0-9]*/g);
     if (!matches) return [];
