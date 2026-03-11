@@ -49,13 +49,6 @@ export default function Index() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Enable scroll-snap on homepage
-  useEffect(() => {
-    document.documentElement.style.scrollSnapType = "y proximity";
-    return () => {
-      document.documentElement.style.scrollSnapType = "";
-    };
-  }, []);
 
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
