@@ -158,18 +158,19 @@ export function DeliveryNoteDialog({
       const { data, error } = await supabase.functions.invoke("generate-delivery-note", {
         body: {
           offer_id: offer.id,
-          signature_data: customerSignature,
+          signature_data: customerNotPresent ? null : customerSignature,
           staff_signature_data: staffSignature,
           staff_name: staffName.trim(),
           notes: notes || undefined,
           known_defects: knownDefects || undefined,
           additional_defects: additionalDefects || undefined,
           photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
-          send_email: true,
-          agb_accepted: true,
+          send_email: !customerNotPresent, // Only send email if customer signed on-site
+          agb_accepted: customerNotPresent ? false : true,
           operating_hours: operatingHours || undefined,
           fuel_level: fuelLevel || undefined,
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
+          customer_not_present: customerNotPresent,
         },
       });
 
