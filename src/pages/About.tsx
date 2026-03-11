@@ -303,22 +303,22 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="py-8 md:py-10 lg:py-24 xl:py-28 bg-primary relative overflow-hidden">
+      <section className="py-8 md:py-10 lg:py-16 bg-primary relative overflow-hidden">
         <div className="hidden lg:block absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-primary-foreground/5 to-transparent" />
         <div className="hidden lg:block absolute -top-20 -right-20 w-72 h-72 rounded-full bg-accent/10 blur-3xl" />
         <div className="section-container text-center relative z-10">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-lg md:text-xl lg:text-4xl xl:text-5xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-5">{t("about.ctaTitle")}</h2>
-            <p className="text-primary-foreground/80 max-w-xl lg:max-w-2xl mx-auto mb-4 md:mb-5 lg:mb-8 text-xs md:text-sm lg:text-lg">{t("about.ctaDesc")}</p>
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-4">{t("about.ctaTitle")}</h2>
+            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-4 md:mb-5 lg:mb-6 text-xs md:text-sm lg:text-base">{t("about.ctaDesc")}</p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Link to="/produkte">
-                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover text-sm md:text-base lg:text-lg md:px-6 md:py-2.5 lg:px-8 lg:py-3 group">
+                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover text-sm md:text-base md:px-6 md:py-2.5 group">
                   {t("about.ctaProducts")}
-                  <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
               <Link to="/kontakt">
-                <Button size="sm" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary text-sm md:text-base lg:text-lg md:px-6 md:py-2.5 lg:px-8 lg:py-3">
+                <Button size="sm" variant="outline" className="border-primary text-primary bg-primary-foreground hover:border-accent hover:bg-primary-foreground hover:text-primary text-sm md:text-base md:px-6 md:py-2.5">
                   {t("about.ctaContact")}
                 </Button>
               </Link>
