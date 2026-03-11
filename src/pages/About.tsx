@@ -124,13 +124,13 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="py-12 lg:py-20">
+      <section className="py-10 md:py-14 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4 text-center">{t("about.teamTitle")}</h2>
-            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-8">{t("about.teamDesc")}</p>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-3 md:mb-4 text-center">{t("about.teamTitle")}</h2>
+            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-6 md:mb-8 text-sm md:text-base">{t("about.teamDesc")}</p>
           </AnimatedSection>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
             {teamMembers.map((member, index) => (
               <AnimatedSection key={member.name} animation="scale-in" delay={index * 100}>
                 <div className="text-center group">
