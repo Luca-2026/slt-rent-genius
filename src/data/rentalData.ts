@@ -70,6 +70,9 @@ import imgBaumaschinen1800_2 from "@/assets/products/anhaenger/baumaschinen-1800
 import imgBaumaschinen3500_1 from "@/assets/products/anhaenger/baumaschinen-3500-1.jpg";
 import imgBaumaschinen3500_2 from "@/assets/products/anhaenger/baumaschinen-3500-2.jpg";
 import imgBaumaschinen3500_3 from "@/assets/products/anhaenger/baumaschinen-3500-3.jpg";
+import imgRueckwaertskipp1500_1 from "@/assets/products/anhaenger/rueckwaertskipp-1500-1.jpg";
+import imgRueckwaertskipp1500_2 from "@/assets/products/anhaenger/rueckwaertskipp-1500-2.jpg";
+import imgRueckwaertskipp1500_3 from "@/assets/products/anhaenger/rueckwaertskipp-1500-3.jpg";
 import imgRueckwaertskipp2700_1 from "@/assets/products/anhaenger/rueckwaertskipp-2700-1.jpg";
 import imgRueckwaertskipp2700_2 from "@/assets/products/anhaenger/rueckwaertskipp-2700-2.jpg";
 import imgRueckwaertskipp2700_3 from "@/assets/products/anhaenger/rueckwaertskipp-2700-3.jpg";
