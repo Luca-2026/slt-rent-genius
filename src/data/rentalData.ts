@@ -1329,14 +1329,14 @@ export const locations: LocationData[] = [
         sortedTrailerProducts,
         "bonn"
       ),
-      "erdbewegung": mergeWithFallback(
+      "erdbewegung": sortErdbewegung(mergeWithFallback(
         normalizeBonnErdbewegung([
           ...(bonnErdbewegungProducts as unknown as Product[]),
           ...(bonnErdbewegungZusatzProducts as unknown as Product[]),
         ]),
         erdbewegungProducts,
         "bonn"
-      ),
+      )),
       "werkzeuge": mergeWithFallback(
         normalizeBonnWerkzeuge(bonnWerkzeugProducts as unknown as Product[]),
         werkzeugeProducts,
