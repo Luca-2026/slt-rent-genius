@@ -77,7 +77,7 @@ export function ProductBookingDialog({
       }
     };
     
-    if (customElements.get('rtr-article')) {
+    if (customElements.get('rtr-article-booking')) {
       const timer = setTimeout(mountWidget, 50);
       return () => clearTimeout(timer);
     } else {
