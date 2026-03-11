@@ -89,6 +89,7 @@ const App = () => (
               <Route path="/produkte-duisburg/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
               <Route path="/produkte-muelheim/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
               <Route path="/kategorien-krefeld/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
+              <Route path="/kategorie/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
               
               <Route path="/so-funktionierts" element={<HowItWorks />} />
               <Route path="/standorte" element={<Locations />} />
