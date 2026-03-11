@@ -434,6 +434,13 @@ export const bonnErdbewegungZusatzProducts = [
     rentwareCode: { bonn: "E3IB5R" },
   },
   {
+    id: "bonn-graben-abdeckung-150x100",
+    name: "Graben Abdeckung 150x100cm LowPro 15/10",
+    description: "Grabenabdeckplatte für sichere Überfahrt über offene Gräben.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "WLEUDP" },
+  },
+  {
     id: "bonn-ms01-grabenraeumloffel-100cm",
     name: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
     description: "Hydraulischer Grabenräumlöffel für präzise Grabenarbeiten.",
