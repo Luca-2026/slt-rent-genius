@@ -39,13 +39,13 @@ export default function Locations() {
       {/* Locations Grid – always 3 side by side */}
       <section className="py-6 md:py-10 lg:py-20">
         <div className="section-container">
-          {/* Mobile: horizontal scroll, Tablet+Desktop: proper grid */}
-          <div className="grid grid-cols-3 gap-3 md:gap-4 lg:gap-8">
+          {/* Mobile: horizontal scroll snap, Tablet+Desktop: grid */}
+          <div className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 lg:gap-8 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
             {locationData.map((location, index) => (
-              <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150}>
+              <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150} className="min-w-[75vw] md:min-w-0 snap-start">
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
-                  <Link to={`/mieten/${location.id}`} className="block h-20 md:h-32 lg:h-40 overflow-hidden bg-muted">
+                  <Link to={`/mieten/${location.id}`} className="block h-28 md:h-32 lg:h-40 overflow-hidden bg-muted">
                     {location.image ? (
                       <img
                         src={location.image}
@@ -59,41 +59,41 @@ export default function Locations() {
                     )}
                   </Link>
 
-                  <CardContent className="p-2.5 md:p-4 lg:p-6 flex flex-col flex-1">
+                  <CardContent className="p-3.5 md:p-4 lg:p-6 flex flex-col flex-1">
                     {/* Header */}
                     <div className="mb-2 md:mb-3 lg:mb-4">
-                      <h2 className="text-xs md:text-base lg:text-xl font-bold text-headline leading-tight">{location.name}</h2>
-                      <span className="text-[10px] md:text-xs lg:text-sm text-accent font-medium">{location.subtitle}</span>
+                      <h2 className="text-sm md:text-base lg:text-xl font-bold text-headline leading-tight">{location.name}</h2>
+                      <span className="text-[11px] md:text-xs lg:text-sm text-accent font-medium">{location.subtitle}</span>
                     </div>
 
                     {/* Address & Contact */}
-                    <div className="space-y-1 md:space-y-1.5 lg:space-y-3 mb-2 md:mb-3 lg:mb-6">
-                      <div className="flex items-start gap-1 md:gap-2 lg:gap-3">
-                        <MapPin className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground mt-0.5 shrink-0" />
-                        <div className="text-[10px] md:text-xs lg:text-sm">
+                    <div className="space-y-1.5 md:space-y-1.5 lg:space-y-3 mb-3 md:mb-3 lg:mb-6">
+                      <div className="flex items-start gap-1.5 md:gap-2 lg:gap-3">
+                        <MapPin className="h-3.5 w-3.5 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground mt-0.5 shrink-0" />
+                        <div className="text-xs md:text-xs lg:text-sm">
                           <p className="text-headline leading-tight">{location.address}</p>
                           <p className="text-muted-foreground leading-tight">{location.city}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 md:gap-2 lg:gap-3">
-                        <Phone className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
-                        <a href={`tel:${location.phone.replace(/\s/g, "")}`} className="text-[10px] md:text-xs lg:text-sm text-primary hover:text-accent truncate">
+                      <div className="flex items-center gap-1.5 md:gap-2 lg:gap-3">
+                        <Phone className="h-3.5 w-3.5 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
+                        <a href={`tel:${location.phone.replace(/\s/g, "")}`} className="text-xs md:text-xs lg:text-sm text-primary hover:text-accent">
                           {location.phone}
                         </a>
                       </div>
-                      <div className="flex items-center gap-1 md:gap-2 lg:gap-3">
-                        <Mail className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
-                        <a href={`mailto:${location.email}`} className="text-[10px] md:text-xs lg:text-sm text-primary hover:text-accent truncate">
+                      <div className="flex items-center gap-1.5 md:gap-2 lg:gap-3">
+                        <Mail className="h-3.5 w-3.5 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
+                        <a href={`mailto:${location.email}`} className="text-xs md:text-xs lg:text-sm text-primary hover:text-accent truncate">
                           {location.email}
                         </a>
                       </div>
                     </div>
 
-                    {/* Manager – hidden on mobile for space */}
+                    {/* Manager */}
                     {location.manager && (
                       <a
                         href={`mailto:${location.manager.email}`}
-                        className="hidden md:flex items-center gap-2 lg:gap-3 mb-3 lg:mb-6 p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
+                        className="flex items-center gap-2 lg:gap-3 mb-3 lg:mb-6 p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
                       >
                         <Avatar className="h-8 w-8 lg:h-12 lg:w-12 shrink-0">
                           {location.manager.image ? (
@@ -112,21 +112,21 @@ export default function Locations() {
                     )}
 
                     {/* Hours */}
-                    <div className="mb-2 md:mb-3 lg:mb-6">
-                      <div className="flex items-center gap-1 md:gap-2 text-[10px] md:text-xs lg:text-sm font-medium text-headline mb-1 md:mb-2">
-                        <Clock className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4" />
+                    <div className="mb-3 md:mb-3 lg:mb-6">
+                      <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-xs lg:text-sm font-medium text-headline mb-1.5 md:mb-2">
+                        <Clock className="h-3.5 w-3.5 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4" />
                         {t("locations.openingHours")}
                       </div>
                       <div className="space-y-0.5 md:space-y-1">
                         {location.hours.map((h) => (
-                          <div key={h.day} className="flex justify-between gap-1 text-[10px] md:text-xs lg:text-sm">
+                          <div key={h.day} className="flex justify-between gap-1 text-[11px] md:text-xs lg:text-sm">
                             <span className="text-muted-foreground shrink-0">{h.day}</span>
                             <span className="text-headline text-right">{h.time}</span>
                           </div>
                         ))}
                       </div>
                       {"hoursNote" in location && location.hoursNote && (
-                        <p className="text-[8px] md:text-[10px] lg:text-xs text-muted-foreground mt-1 lg:mt-2">{location.hoursNote}</p>
+                        <p className="text-[9px] md:text-[10px] lg:text-xs text-muted-foreground mt-1 lg:mt-2">{location.hoursNote}</p>
                       )}
                     </div>
 
@@ -146,15 +146,15 @@ export default function Locations() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex flex-col md:flex-row gap-1.5 md:gap-2 lg:gap-3 mt-auto">
-                      <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="md:flex-1">
-                        <Button variant="outline" className="w-full text-[10px] md:text-xs lg:text-sm h-7 md:h-8 lg:h-9 px-2 md:px-3" size="sm">
-                          <Navigation className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 mr-1 shrink-0" />
+                    <div className="flex gap-2 lg:gap-3 mt-auto">
+                      <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                        <Button variant="outline" className="w-full text-[11px] md:text-xs lg:text-sm h-8 md:h-8 lg:h-9 px-2 md:px-3" size="sm">
+                          <Navigation className="h-3.5 w-3.5 md:h-3.5 md:w-3.5 lg:h-4 lg:w-4 mr-1 shrink-0" />
                           {t("locations.route")}
                         </Button>
                       </a>
-                      <Link to={`/mieten/${location.id}`} className="md:flex-1">
-                        <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover text-[10px] md:text-xs lg:text-sm h-7 md:h-8 lg:h-9 px-2 md:px-3" size="sm">
+                      <Link to={`/mieten/${location.id}`} className="flex-1">
+                        <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover text-[11px] md:text-xs lg:text-sm h-8 md:h-8 lg:h-9 px-2 md:px-3" size="sm">
                           {t("locations.rentalArticles")}
                         </Button>
                       </Link>
