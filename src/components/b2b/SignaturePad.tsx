@@ -107,7 +107,7 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200, lab
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-foreground">Unterschrift des Kunden</p>
+        <p className="text-sm font-medium text-foreground">{label}</p>
         {hasSignature && (
           <Button
             type="button"
