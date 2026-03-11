@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { ServicesSection } from "@/components/home/ServicesSection";
+import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
 import { Loader2 } from "lucide-react";
 
@@ -17,17 +18,12 @@ const LocationSelectDialog = lazy(() => import("@/components/solutions/LocationS
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { 
-  Search, 
   Truck, 
   CheckCircle2,
   ArrowRight,
   MapPin,
   Clock,
   Phone,
-  Calendar,
-  ShoppingCart,
-  CreditCard,
-  Package,
   User,
   Mail,
   Building2
@@ -43,7 +39,6 @@ export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
-  const [howItWorksTab, setHowItWorksTab] = useState<"private" | "b2b">("private");
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -52,21 +47,6 @@ export default function Index() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
-
-  const steps = [
-    { number: "1", icon: MapPin, title: t("steps.step1Title"), description: t("steps.step1Desc"), action: "location" as const, cta: t("steps.step1Cta") },
-    { number: "2", icon: Search, title: t("steps.step2Title"), description: t("steps.step2Desc"), action: "search" as const, cta: t("steps.step2Cta") },
-    { number: "3", icon: Calendar, title: t("steps.step3Title"), description: t("steps.step3Desc") },
-    { number: "4", icon: CreditCard, title: t("steps.step4Title"), description: t("steps.step4Desc") },
-    { number: "5", icon: Package, title: t("steps.step5Title"), description: t("steps.step5Desc") },
-  ];
-
-  const b2bSteps = [
-    { number: "1", icon: Building2, title: t("howItWorks.b2bStep1Title"), description: t("howItWorks.b2bStep1Desc") },
-    { number: "2", icon: Search, title: t("howItWorks.b2bStep2Title"), description: t("howItWorks.b2bStep2Desc") },
-    { number: "3", icon: Calendar, title: t("howItWorks.b2bStep3Title"), description: t("howItWorks.b2bStep3Desc") },
-    { number: "4", icon: CreditCard, title: t("howItWorks.b2bStep4Title"), description: t("howItWorks.b2bStep4Desc") },
-  ];
 
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
@@ -276,140 +256,11 @@ export default function Index() {
         </div>
       </section>
 
-      {/* How it Works - Redesigned */}
-      <section className="py-20 lg:py-28 bg-surface-light overflow-hidden">
-        <div className="section-container">
-          <AnimatedSection className="text-center mb-8">
-            <span className="inline-block bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
-              {t("steps.badge")}
-            </span>
-            <h2 className="text-2xl lg:text-4xl font-bold text-headline mb-3">
-              {t("steps.title")}
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              {t("steps.subtitle")}
-            </p>
-          </AnimatedSection>
-
-          {/* Privat / B2B Toggle */}
-          <div className="flex items-stretch justify-center gap-3 mb-10">
-            <button
-              onClick={() => setHowItWorksTab("private")}
-              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
-                howItWorksTab === "private"
-                  ? "bg-primary text-primary-foreground border-primary shadow-md"
-                  : "bg-background text-body border-border hover:border-primary/40"
-              }`}
-            >
-              <User className="h-4 w-4" />
-              {t("howItWorks.tabPrivate", "Privatkunden")}
-            </button>
-            <button
-              onClick={() => setHowItWorksTab("b2b")}
-              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border-2 ${
-                howItWorksTab === "b2b"
-                  ? "bg-primary text-primary-foreground border-primary shadow-md"
-                  : "bg-background text-body border-border hover:border-primary/40"
-              }`}
-            >
-              <Building2 className="h-4 w-4" />
-              {t("howItWorks.tabB2B", "Geschäftskunden")}
-            </button>
-          </div>
-
-          {howItWorksTab === "private" && (
-          <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-border rounded-full" />
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5 relative">
-              {steps.map((step, index) => {
-                const cardContent = (
-                  <>
-                    {/* Step Card */}
-                    <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
-                      {/* Step Number Badge + Icon Row */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300 shrink-0">
-                          <step.icon className="h-5 w-5" />
-                        </div>
-                        <span className="text-xs font-bold text-accent uppercase tracking-wider">
-                          {t("steps.step")} {step.number}
-                        </span>
-                      </div>
-                      
-                      <h3 className="font-bold text-headline text-base mb-2 min-h-[24px]">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px] flex-1">{step.description}</p>
-
-                      {step.cta && (
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-3">
-                          {step.cta}
-                          <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      )}
-                    </div>
-                    
-                    {index < steps.length - 1 && (
-                      <div className="hidden lg:flex absolute top-[52px] -right-2.5 w-5 h-5 bg-card border border-border rounded-full items-center justify-center z-10 shadow-sm">
-                        <ArrowRight className="h-3 w-3 text-accent" />
-                      </div>
-                    )}
-                  </>
-                );
-
-                return (
-                  <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
-                    {step.action === "location" ? (
-                      <button onClick={() => setLocationDialogOpen(true)} className="relative group h-full block w-full text-left cursor-pointer">
-                        {cardContent}
-                      </button>
-                    ) : step.action === "search" ? (
-                      <button onClick={() => setSearchDialogOpen(true)} className="relative group h-full block w-full text-left cursor-pointer">
-                        {cardContent}
-                      </button>
-                    ) : (
-                      <div className="relative group h-full">
-                        {cardContent}
-                      </div>
-                    )}
-                  </AnimatedSection>
-                );
-              })}
-            </div>
-          </div>
-          )}
-
-          {howItWorksTab === "b2b" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            {b2bSteps.map((step, index) => (
-              <AnimatedSection key={step.number} delay={index * 100} animation="fade-in-up">
-                <div className="bg-card rounded-2xl p-5 h-full border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-accent transition-all duration-300 shrink-0">
-                      <step.icon className="h-5 w-5" />
-                    </div>
-                    <span className="text-xs font-bold text-accent uppercase tracking-wider">
-                      {t("steps.step")} {step.number}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-headline text-base mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">{step.description}</p>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-          )}
-
-          <AnimatedSection className="text-center mt-12" delay={500}>
-            <Link to="/so-funktionierts">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                {t("steps.learnMore")}
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* How it Works - Vertical Timeline */}
+      <HowItWorksTimeline
+        onLocationClick={() => setLocationDialogOpen(true)}
+        onSearchClick={() => setSearchDialogOpen(true)}
+      />
 
       {/* Services Section */}
       <ServicesSection />
