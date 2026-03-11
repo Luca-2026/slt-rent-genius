@@ -712,7 +712,7 @@ export const aggregateProducts: Product[] = [
     images: [kompressor5m3_1, kompressor5m3_2],
     category: "kompressor",
     rentwareCode: { krefeld: "4UGSQN" },
-    detailedDescription: "Kompressor inkl. Generator\n\nMarke: Doosan\nTyp: 7/45\nVolumenstrom: 4m³/min\nmax. Druck: 6,8 bar\nEmissionsklasse: EU Stage V\nBatteriespannung: 12 V\nAnschlüsse: 3x\nDrehzahl: 1500 U/min\nGewicht: ca. 680 kg\nTankinhalt: 58 l\nKraftstoff: Diesel\nAbgasnorm: Stage V\nZusatzausstattung: auf Fahrgestell\nGenerator: 6 kVA 400V/230V\n\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
+    detailedDescription: "Kompressor inkl. Generator – auf Fahrgestell.\n\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät – Rückgabe des Mietgeräts mit vollgetanktem Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
     specifications: {
       "Marke": "Doosan",
       "Typ": "7/45",

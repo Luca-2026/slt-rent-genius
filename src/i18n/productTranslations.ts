@@ -435,7 +435,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "kompressor-5m3": {
     name: "4m³ Compressor",
     description: "Compressor incl. generator – Doosan 7/45, 4m³/min flow rate, 6 kVA generator 400V/230V – incl. 8 operating hours/day.",
-    detailedDescription: "Compressor incl. Generator\n\nBrand: Doosan\nType: 7/45\nFlow rate: 4m³/min\nMax. pressure: 6.8 bar\nEmission class: EU Stage V\nBattery voltage: 12 V\nConnections: 3x\nSpeed: 1500 rpm\nWeight: approx. 680 kg\nTank capacity: 58 l\nFuel: Diesel\nEmission standard: Stage V\nAdditional equipment: on chassis\nGenerator: 6 kVA 400V/230V\n\nIncl. 8 operating hours/day, extra hours charged at €10.00 gross per hour.\nPlus consumption, fuel fill per rental unit – return with full tank agreed. Diesel charged at €2.85/l gross."
+    detailedDescription: "Compressor incl. generator – on chassis.\n\nIncl. 8 operating hours/day, extra hours charged at €10.00 gross per hour.\nPlus consumption, fuel fill per rental unit – return with full tank agreed. Diesel charged at €2.85/l gross."
   },
 
   // ===== AERIAL WORK PLATFORMS =====
