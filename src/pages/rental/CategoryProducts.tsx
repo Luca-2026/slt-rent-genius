@@ -37,6 +37,7 @@ export default function CategoryProducts() {
     types: [],
     braking: [],
     weight: [],
+    nutzlastRange: [0, 3000],
   });
   const [earthMovingFilters, setEarthMovingFilters] = useState<CategoryFilterState>({
     search: "",
@@ -230,6 +231,17 @@ export default function CategoryProducts() {
           const weight = p.weightKg || (parsed ? Number(parsed[1]) : 0);
           const inferred = weight > 750 ? "gebremst" : "ungebremst";
           return trailerFilters.braking.some((b) => p.tags?.includes(b) || b === inferred);
+        });
+      }
+
+      // Nutzlast range filter
+      if (trailerFilters.nutzlastRange[0] > 0 || trailerFilters.nutzlastRange[1] < 3000) {
+        filtered = filtered.filter((p) => {
+          const val = p.specifications?.["Nutzlast"];
+          if (!val) return true; // keep products without nutzlast data
+          const cleaned = val.replace(/[^0-9]/g, "");
+          const nutzlast = cleaned ? Number(cleaned) : 0;
+          return nutzlast >= trailerFilters.nutzlastRange[0] && nutzlast <= trailerFilters.nutzlastRange[1];
         });
       }
     }

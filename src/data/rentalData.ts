@@ -375,6 +375,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "kasten",
     tags: ["ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 120 kg", "Nutzlast": "ca. 630 kg" },
     rentwareCode: { krefeld: "3EA6HE" } 
   },
   
@@ -389,6 +390,7 @@ const trailerProducts: Product[] = [
     sortOrder: 1,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 180 kg", "Nutzlast": "ca. 570 kg" },
     rentwareCode: { krefeld: "LNQBH7" } 
   },
   { 
@@ -401,6 +403,7 @@ const trailerProducts: Product[] = [
     sortOrder: 2,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 200 kg", "Nutzlast": "ca. 550 kg" },
     rentwareCode: { krefeld: "7RLWP2", bonn: "Y9OVFR" } 
   },
   { 
@@ -413,6 +416,7 @@ const trailerProducts: Product[] = [
     sortOrder: 3,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 220 kg", "Nutzlast": "ca. 530 kg" },
     rentwareCode: { krefeld: "YNWU3V", bonn: "E4QDT5" } 
   },
   { 
@@ -425,6 +429,7 @@ const trailerProducts: Product[] = [
     sortOrder: 4,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 250 kg", "Nutzlast": "ca. 500 kg" },
     rentwareCode: { krefeld: "7HD28M", bonn: "3G3FM1" } 
   },
   { 
@@ -437,6 +442,7 @@ const trailerProducts: Product[] = [
     sortOrder: 5,
     category: "planen",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 280 kg", "Nutzlast": "ca. 470 kg" },
     rentwareCode: { krefeld: "86X7LN", bonn: "ENWG89" } 
   },
   { 
@@ -449,6 +455,7 @@ const trailerProducts: Product[] = [
     sortOrder: 6,
     category: "planen",
     tags: ["geschlossen", "gebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 450 kg", "Nutzlast": "ca. 850 kg" },
     rentwareCode: { krefeld: "EZQM77", bonn: "QDSW59" } 
   },
   { 
@@ -461,6 +468,7 @@ const trailerProducts: Product[] = [
     sortOrder: 7,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 674 kg", "Nutzlast": "ca. 2.826 kg" },
     rentwareCode: { krefeld: "5L3GWF" } 
   },
   { 
@@ -473,6 +481,7 @@ const trailerProducts: Product[] = [
     sortOrder: 8,
     category: "planen",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 750 kg", "Nutzlast": "ca. 2.750 kg" },
     rentwareCode: { krefeld: "SHR5LA" } 
   },
   
@@ -486,6 +495,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "koffer",
     tags: ["geschlossen", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 378 kg", "Nutzlast": "ca. 372 kg" },
     rentwareCode: { krefeld: "14KMC5", bonn: "ZLNHYD" } 
   },
   { 
@@ -497,6 +507,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "koffer",
     tags: ["geschlossen", "gebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 500 kg", "Nutzlast": "ca. 1.000 kg" },
     rentwareCode: { krefeld: "WWSMO3" } 
   },
   { 
@@ -508,6 +519,7 @@ const trailerProducts: Product[] = [
     weightKg: 2000, 
     category: "koffer",
     tags: ["geschlossen", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 600 kg", "Nutzlast": "ca. 1.400 kg" },
     rentwareCode: { krefeld: "WOH21S" } 
   },
 
@@ -521,6 +533,7 @@ const trailerProducts: Product[] = [
     weightKg: 1800, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
+    specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
     compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
@@ -533,6 +546,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
+    specifications: { "Eigengewicht": "ca. 674 kg", "Nutzlast": "ca. 2.826 kg" },
     compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
@@ -547,6 +561,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 360 kg", "Nutzlast": "ca. 1.140 kg" },
     rentwareCode: { krefeld: "95OAGP" } 
   },
   { 
@@ -558,6 +573,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 653 kg", "Nutzlast": "ca. 2.047 kg" },
     rentwareCode: { krefeld: "OXUI12", bonn: "EVZK31" } 
   },
   { 
@@ -569,6 +585,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 700 kg", "Nutzlast": "ca. 2.000 kg" },
     rentwareCode: { bonn: "4POSMU" } 
   },
   { 
@@ -580,6 +597,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "rueckwaertskipp",
     tags: ["laubgitter", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 410 kg", "Nutzlast": "ca. 1.090 kg" },
     rentwareCode: { krefeld: "QNRXMH" } 
   },
   { 
@@ -591,6 +609,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "rueckwaertskipp",
     tags: ["laubgitter", "gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 739 kg", "Nutzlast": "ca. 1.961 kg" },
     rentwareCode: { krefeld: "Q9IXR8", bonn: "131K99" } 
   },
 
@@ -604,6 +623,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500, 
     category: "plattform",
     tags: ["gebremst", "zweiachser"], 
+    specifications: { "Eigengewicht": "ca. 900 kg", "Nutzlast": "ca. 2.600 kg" },
     rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
   },
 
@@ -617,6 +637,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "laubgitter",
     tags: ["laubgitter", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 250 kg", "Nutzlast": "ca. 500 kg" },
     rentwareCode: { krefeld: "RTNVGC", bonn: "9RBYTF" } 
   },
   { 
@@ -628,6 +649,7 @@ const trailerProducts: Product[] = [
     weightKg: 1300, 
     category: "laubgitter",
     tags: ["laubgitter", "gebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 400 kg", "Nutzlast": "ca. 900 kg" },
     rentwareCode: { krefeld: "2B9AK5", bonn: "I6QV84" } 
   },
 
@@ -641,6 +663,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "motorrad",
     tags: ["motorrad", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 148 kg", "Nutzlast": "ca. 602 kg" },
     rentwareCode: { krefeld: "9JL36T", bonn: "BJOMV6", muelheim: "NTIF8C" } 
   },
   { 
@@ -652,6 +675,7 @@ const trailerProducts: Product[] = [
     weightKg: 1500, 
     category: "motorrad",
     tags: ["motorrad", "gebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 360 kg", "Nutzlast": "ca. 1.140 kg" },
     rentwareCode: { krefeld: "JT132X" } 
   },
 
@@ -665,6 +689,7 @@ const trailerProducts: Product[] = [
     weightKg: 750, 
     category: "urlaub",
     tags: ["urlaub", "ungebremst", "einachser"], 
+    specifications: { "Eigengewicht": "ca. 150 kg", "Nutzlast": "ca. 600 kg" },
     rentwareCode: { krefeld: "EM45ZK" } 
   },
   
