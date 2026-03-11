@@ -1242,6 +1242,18 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
+              <div className="flex items-center gap-2 pt-2 border-t">
+                <Checkbox
+                  id="send-invoice-email"
+                  checked={sendInvoiceEmail}
+                  onCheckedChange={(checked) => setSendInvoiceEmail(checked === true)}
+                />
+                <Label htmlFor="send-invoice-email" className="text-sm cursor-pointer">
+                  <Send className="h-3.5 w-3.5 inline mr-1.5" />
+                  Rechnung per E-Mail an den Kunden senden
+                </Label>
+              </div>
+
               <div className="flex gap-3 justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
                 <Button
