@@ -110,7 +110,7 @@ export default function Locations() {
                           <p className="font-semibold text-headline text-sm group-hover/mgr:text-primary transition-colors truncate">{location.manager.name}</p>
                           <p className="text-xs text-muted-foreground">{t(location.manager.role)}</p>
                         </div>
-                        <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors shrink-0" />
+                        <Mail className="h-4 w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors shrink-0" />
                       </a>
                     )}
 
