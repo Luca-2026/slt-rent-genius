@@ -2530,7 +2530,7 @@ export const kommunikationProducts: Product[] = [
       "VOX-Freisprechfunktion": "Ja",
       "Lieferumfang": "6× Funkgerät + 6-fach Ladestation",
     },
-    rentwareCode: { krefeld: "4PPBU1" }
+    rentwareCode: { krefeld: "PGC49X" }
   },
   {
     id: "uhf-funkgeraet-lautsprecher",
