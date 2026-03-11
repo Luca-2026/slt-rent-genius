@@ -19,7 +19,7 @@ const staticPages = [
   { path: '/faq', priority: '0.6', changefreq: 'monthly' },
   { path: '/karriere', priority: '0.5', changefreq: 'monthly' },
   { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
-  { path: '/wissensbasis', priority: '0.6', changefreq: 'monthly' },
+  { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   // Solutions
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
   { path: '/loesungen/tiefbau', priority: '0.6', changefreq: 'monthly' },

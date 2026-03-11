@@ -14,6 +14,9 @@ RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [R=301,L]
 RewriteRule ^loesungen/hochbau$ /loesungen/hochbau-renovierung [R=301,L]
 RewriteRule ^loesungen/tiefbau$ /loesungen/tiefbau-erdbewegung [R=301,L]
 
+# Old knowledge base URL
+RewriteRule ^wissensbasis$ /hilfe [R=301,L]
+
 # Old standalone location pages
 RewriteRule ^standort-krefeld$ /standorte/krefeld [R=301,L]
 RewriteRule ^standort-bonn$ /standorte/bonn [R=301,L]
