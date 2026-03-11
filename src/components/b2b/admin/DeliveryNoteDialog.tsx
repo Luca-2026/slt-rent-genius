@@ -59,6 +59,7 @@ export function DeliveryNoteDialog({
   const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
+  const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
