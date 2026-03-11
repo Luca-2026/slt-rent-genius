@@ -120,9 +120,9 @@ export default function Locations() {
                         <Clock className="h-4 w-4" />
                         {t("locations.openingHours")}
                       </div>
-                      <div className="space-y-1 md:space-y-0.5 min-h-[60px] md:min-h-[50px] lg:min-h-[72px]">
+                      <div className="space-y-1 min-h-[60px] lg:min-h-[72px]">
                         {location.hours.map((h) => (
-                          <div key={h.day} className="flex justify-between gap-2 text-sm md:text-[11px] lg:text-sm">
+                          <div key={h.day} className="flex justify-between gap-2 text-sm">
                             <span className="text-muted-foreground shrink-0">{h.day}</span>
                             <span className="text-headline text-right">{h.time}</span>
                           </div>
