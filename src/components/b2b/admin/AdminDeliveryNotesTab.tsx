@@ -122,7 +122,7 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
         contact_name: profile ? `${profile.contact_first_name} ${profile.contact_last_name}` : "–",
       });
 
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
