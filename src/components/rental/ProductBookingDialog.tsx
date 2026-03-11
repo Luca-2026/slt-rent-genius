@@ -61,7 +61,10 @@ export function ProductBookingDialog({
   const [widgetLoading, setWidgetLoading] = useState(true);
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
   const defaultForm: InquiryForm = {
-    name: "", email: "", phone: "", startDate: "", endDate: "", message: "",
+    name: "", email: "", phone: "",
+    street: "", postalCode: "", city: "",
+    startDate: "", startTime: "", endDate: "", endTime: "",
+    message: "",
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
   };
