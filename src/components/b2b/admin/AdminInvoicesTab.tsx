@@ -761,6 +761,49 @@ export function AdminInvoicesTab({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Send Email Confirmation */}
+      <AlertDialog open={!!sendEmailConfirmInvoice} onOpenChange={(open) => !open && setSendEmailConfirmInvoice(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              <Mail className="h-5 w-5 inline mr-2" />
+              Rechnung per E-Mail senden?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Die Rechnung <strong>{sendEmailConfirmInvoice?.invoice_number}</strong> wird an den Kunden{" "}
+                <strong>{sendEmailConfirmInvoice?.customer_company}</strong> gesendet.
+              </p>
+              <div className="bg-muted rounded-lg p-3 text-xs space-y-1 mt-2">
+                <p className="font-medium text-foreground">Empfänger:</p>
+                <p>• Kunde (billing_email / contact_email)</p>
+                <p>• CC: debitoren@slt-tg.de</p>
+                <p>• CC: krefeld@slt-rental.de</p>
+              </div>
+              {sendEmailConfirmInvoice?.email_sent && (
+                <p className="text-amber-600 text-sm font-medium mt-2">
+                  ⚠ Diese Rechnung wurde bereits per E-Mail versendet.
+                </p>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+              onClick={() => {
+                if (sendEmailConfirmInvoice) {
+                  sendInvoiceEmail(sendEmailConfirmInvoice);
+                }
+              }}
+            >
+              <Send className="h-4 w-4 mr-1.5" />
+              Jetzt senden
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
