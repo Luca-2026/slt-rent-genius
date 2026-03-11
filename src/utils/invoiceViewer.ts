@@ -1,7 +1,6 @@
 /**
- * Downloads a document (PDF or HTML) directly as a file.
- * For PDFs: fetches and triggers a browser download.
- * For HTML: fetches, converts to blob, and triggers download.
+ * Opens/downloads a document (PDF or HTML).
+ * Uses a hidden link with download attribute; falls back to window.open.
  */
 export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: string, documentType?: string): Promise<void> {
   try {
@@ -15,33 +14,33 @@ export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: s
       else label = "Dokument";
     }
 
-    const isPdf = fileUrl.toLowerCase().includes('.pdf') || fileUrl.toLowerCase().includes('content-type=application/pdf');
+    const filename = documentNumber
+      ? `${label}_${documentNumber}.pdf`
+      : `${label}.pdf`;
 
-    const response = await fetch(fileUrl);
-    if (!response.ok) {
-      throw new Error(`Fehler beim Laden des Dokuments: ${response.status}`);
+    // Try fetch + blob download first (works same-origin)
+    try {
+      const response = await fetch(fileUrl);
+      if (response.ok) {
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        return;
+      }
+    } catch {
+      // CORS or network error – fall through
     }
 
-    const contentType = response.headers.get("content-type") || "";
-    const blob = await response.blob();
-
-    const extension = (isPdf || contentType.includes("application/pdf")) ? ".pdf" : ".html";
-    const filename = documentNumber
-      ? `${label}_${documentNumber}${extension}`
-      : `${label}${extension}`;
-
-    // Trigger download
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+    // Fallback: open in new tab
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
   } catch (error) {
     console.error("Document download error:", error);
-    // Fallback: open in new tab
-    window.open(fileUrl, "_blank");
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
   }
 }
