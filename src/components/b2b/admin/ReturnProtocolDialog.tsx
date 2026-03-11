@@ -649,17 +649,37 @@ export function ReturnProtocolDialog({
 
         <Separator />
 
-        {/* Customer Signature */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <UserCheck className="h-4 w-4" />
-            Unterschrift Mieter (Kunde)
-          </Label>
-          <p className="text-xs text-muted-foreground">
-            {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
-          </p>
-          <SignaturePad onSignatureChange={setCustomerSignature} />
+        {/* Customer Not Present Toggle */}
+        <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+          <Checkbox
+            id="customer-not-present-rp"
+            checked={customerNotPresent}
+            onCheckedChange={(checked) => setCustomerNotPresent(checked === true)}
+          />
+          <label htmlFor="customer-not-present-rp" className="text-sm leading-relaxed cursor-pointer">
+            <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem Kunden im Portal zur digitalen Unterschrift bereitgestellt. Sie können das Protokoll trotzdem sofort herunterladen.
+          </label>
         </div>
+
+        {/* Customer Signature */}
+        {!customerNotPresent ? (
+          <div className="space-y-2">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <UserCheck className="h-4 w-4" />
+              Unterschrift Mieter (Kunde)
+            </Label>
+            <p className="text-xs text-muted-foreground">
+              {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
+            </p>
+            <SignaturePad onSignatureChange={setCustomerSignature} />
+          </div>
+        ) : (
+          <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
+            <p className="text-sm text-muted-foreground text-center">
+              📋 Das Protokoll wird dem Kunden <strong>{profile.contact_first_name} {profile.contact_last_name}</strong> im B2B-Portal zur digitalen Unterschrift bereitgestellt.
+            </p>
+          </div>
+        )}
 
         <Separator />
 
@@ -678,7 +698,7 @@ export function ReturnProtocolDialog({
               className="text-sm"
             />
           </div>
-          <SignaturePad onSignatureChange={setStaffSignature} />
+          <SignaturePad onSignatureChange={setStaffSignature} label="Unterschrift SLT-Mitarbeiter" />
         </div>
 
         <Separator />
