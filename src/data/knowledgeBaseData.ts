@@ -767,8 +767,8 @@ export const kbArticles: KBArticle[] = [
         items: [
           "Stell die Maschine auf ebenen Boden und klapp ggf. das Transportrad hoch.",
           "Benzinhahn öffnen (falls vorhanden).",
-          "Motor-Schalter auf „ON" stellen.",
-          "Choke auf „Start" (nur bei kaltem Motor nötig).",
+          "Motor-Schalter auf \u201EON\u201C stellen.",
+          "Choke auf \u201EStart\u201C (nur bei kaltem Motor nötig).",
           "Am Starterseil kräftig ziehen, bis der Motor läuft.",
           "Choke nach kurzer Zeit wieder öffnen, Motor 1–2 Minuten warmlaufen lassen.",
           "Gashebel langsam höher stellen, bis die Platte spürbar vibriert, aber noch gut kontrollierbar bleibt.",
