@@ -82,7 +82,7 @@ export function ProductInspirationSlider() {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-20 bg-background overflow-hidden snap-start">
+    <section className="py-16 lg:py-20 bg-background overflow-hidden">
       <div className="section-container">
         <AnimatedSection className="text-center mb-10">
           <span className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
