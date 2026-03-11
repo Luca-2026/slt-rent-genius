@@ -3174,12 +3174,12 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   },
   {
     id: "burgunderglas-brunelli-10er",
-    name: "Rotweinglas Brunelli, 10er Set",
+    name: "Rotweinglas Brunelli, 9er Set",
     description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinBrunelli1,
     images: [rotweinBrunelli1, rotweinBrunelli2],
     category: "glaeser",
-    detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 10er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 9er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
       "Hersteller": "Leonardo",
       "Typ": "Rotweinglas",
@@ -3187,7 +3187,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Durchmesser": "11,5 cm",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Klar & stoßfest",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "9 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { krefeld: "C2Z5S4" }
