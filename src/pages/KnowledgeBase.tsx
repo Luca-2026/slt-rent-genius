@@ -140,7 +140,7 @@ export default function KnowledgeBase() {
         </div>
       </section>
 
-      <main className="py-8 lg:py-12 min-h-[50vh]">
+      <main className="py-6 md:py-8 lg:py-12 min-h-[50vh]">
         <div className="section-container">
           {/* Article Detail View */}
           {selectedArticle && (
