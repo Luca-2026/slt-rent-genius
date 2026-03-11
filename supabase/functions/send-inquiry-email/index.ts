@@ -91,7 +91,9 @@ serve(async (req) => {
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${name}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
+      ${customerAddress ? `<tr><td style="padding: 4px 0; color: #6b7280;">Adresse:</td><td style="padding: 4px 0;">${customerAddress}</td></tr>` : ""}
       <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${dateRange}</td></tr>
+      ${timeRange ? `<tr><td style="padding: 4px 0; color: #6b7280;">Uhrzeiten:</td><td style="padding: 4px 0;">${timeRange}</td></tr>` : ""}
       ${deliveryHtml}
       ${setupServiceHtml}
     </table>
