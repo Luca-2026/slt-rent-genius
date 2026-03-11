@@ -251,20 +251,20 @@ export default function About() {
       </section>
 
       {/* Why Us */}
-      <section className="py-8 md:py-12 lg:py-24 xl:py-28 bg-surface-light">
+      <section className="py-8 md:py-12 lg:py-20 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <div className="max-w-3xl lg:max-w-4xl mx-auto text-center mb-6 md:mb-8 lg:mb-14">
-              <h2 className="text-lg md:text-xl lg:text-4xl xl:text-5xl font-bold text-headline mb-2 md:mb-3 lg:mb-5">{t("about.whyTitle")}</h2>
-              <p className="text-muted-foreground text-xs md:text-sm lg:text-lg">{t("about.whyDesc")}</p>
+            <div className="max-w-3xl mx-auto text-center mb-6 md:mb-8 lg:mb-12">
+              <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-2 md:mb-3 lg:mb-4">{t("about.whyTitle")}</h2>
+              <p className="text-muted-foreground text-xs md:text-sm lg:text-base">{t("about.whyDesc")}</p>
             </div>
           </AnimatedSection>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-5 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-4 max-w-4xl mx-auto">
             {Array.isArray(whyItems) && whyItems.map((item, index) => (
               <AnimatedSection key={item} animation="fade-in-up" delay={index * 80}>
-                <div className="flex items-center gap-2.5 md:gap-3 lg:gap-4 bg-background p-3 md:p-3.5 lg:p-5 xl:p-6 rounded-lg lg:rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-400 group border border-transparent hover:border-accent/10">
-                  <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-accent shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="text-headline text-xs md:text-sm lg:text-base xl:text-lg">{item}</span>
+                <div className="flex items-center gap-2.5 md:gap-3 lg:gap-4 bg-background p-3 md:p-3.5 lg:p-4 rounded-lg lg:rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-400 group border border-transparent hover:border-accent/10">
+                  <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-accent shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-headline text-xs md:text-sm lg:text-base">{item}</span>
                 </div>
               </AnimatedSection>
             ))}
