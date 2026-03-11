@@ -1052,7 +1052,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr12v-15",
-    name: "Bosch Akku Bohrschrauber GSR 12V-15",
+    name: "Akku Bohrschrauber",
+    modelName: "Bosch GSR 12V-15",
     description: "Kompakter Akku-Bohrschrauber",
     image: imgBohrschrauber12v,
     images: [imgBohrschrauber12v],
