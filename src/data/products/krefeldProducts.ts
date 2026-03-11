@@ -1001,7 +1001,8 @@ export const verdichtungProducts: Product[] = [
 export const werkzeugeProducts: Product[] = [
   {
     id: "bosch-bohrhammer-gbh18v-26f",
-    name: "Bosch Akku Bohrhammer GBH 18V-26 F",
+    name: "Akku Bohrhammer",
+    modelName: "Bosch GBH 18V-26 F",
     description: "Akku-Bohrhammer mit SDS-Plus Aufnahme",
     image: imgBohrhammer26f,
     images: [imgBohrhammer26f],
