@@ -1520,8 +1520,7 @@ export const bonnGeschirrProducts = [
       "Stückzahl": "10 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    onRequest: true,
-    rentwareCode: { bonn: "" },
+    rentwareCode: { bonn: "HCSX3O" },
   },
   {
     id: "bonn-champagnerglas-passionata-10er",
