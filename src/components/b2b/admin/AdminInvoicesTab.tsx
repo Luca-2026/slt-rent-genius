@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Eye, Receipt, RefreshCw, Plus, Minus, FileX, Trash2, Download } from "lucide-react";
+import { Eye, Receipt, RefreshCw, Plus, Minus, FileX, Trash2, Download, Send, Mail, CheckCircle } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -77,6 +77,32 @@ export function AdminInvoicesTab({
   const [deleteConfirmInvoice, setDeleteConfirmInvoice] = useState<Invoice | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
+  const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+
+  const sendInvoiceEmail = async (invoice: Invoice) => {
+    setSendingEmailId(invoice.id);
+    setSendEmailConfirmInvoice(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-invoice-email", {
+        body: { invoice_id: invoice.id },
+      });
+      if (error) throw error;
+      toast({
+        title: "Rechnung versendet!",
+        description: `${invoice.invoice_number} wurde an ${data.recipient} gesendet (CC: debitoren@slt-tg.de, krefeld@slt-rental.de).`,
+      });
+      onRefresh();
+    } catch (error: any) {
+      toast({
+        title: "Fehler beim Versenden",
+        description: error.message || "E-Mail konnte nicht gesendet werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -371,6 +397,25 @@ export function AdminInvoicesTab({
                               <span className="text-xs">PDF</span>
                             </Button>
                           )}
+                          {inv.file_url && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSendEmailConfirmInvoice(inv)}
+                              disabled={sendingEmailId === inv.id}
+                              title={inv.email_sent ? "Erneut per E-Mail senden" : "Per E-Mail senden"}
+                              className={inv.email_sent ? "text-primary" : "text-amber-600"}
+                            >
+                              {sendingEmailId === inv.id ? (
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                              ) : inv.email_sent ? (
+                                <CheckCircle className="h-3.5 w-3.5 mr-1" />
+                              ) : (
+                                <Send className="h-3.5 w-3.5 mr-1" />
+                              )}
+                              <span className="hidden lg:inline text-xs">{inv.email_sent ? "Gesendet" : "Senden"}</span>
+                            </Button>
+                          )}
                           {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                             <>
                               <Button
@@ -466,6 +511,24 @@ export function AdminInvoicesTab({
                       >
                         <Eye className="h-4 w-4 mr-1.5" />
                         PDF
+                      </Button>
+                    )}
+                    {inv.file_url && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setSendEmailConfirmInvoice(inv)}
+                        disabled={sendingEmailId === inv.id}
+                        className={`h-10 ${inv.email_sent ? "text-primary" : "text-amber-600"}`}
+                      >
+                        {sendingEmailId === inv.id ? (
+                          <RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                        ) : inv.email_sent ? (
+                          <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
+                        ) : (
+                          <Send className="h-3.5 w-3.5 mr-1.5" />
+                        )}
+                        {inv.email_sent ? "Erneut senden" : "E-Mail senden"}
                       </Button>
                     )}
                     {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
@@ -694,6 +757,49 @@ export function AdminInvoicesTab({
               }}
             >
               Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Send Email Confirmation */}
+      <AlertDialog open={!!sendEmailConfirmInvoice} onOpenChange={(open) => !open && setSendEmailConfirmInvoice(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              <Mail className="h-5 w-5 inline mr-2" />
+              Rechnung per E-Mail senden?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Die Rechnung <strong>{sendEmailConfirmInvoice?.invoice_number}</strong> wird an den Kunden{" "}
+                <strong>{sendEmailConfirmInvoice?.customer_company}</strong> gesendet.
+              </p>
+              <div className="bg-muted rounded-lg p-3 text-xs space-y-1 mt-2">
+                <p className="font-medium text-foreground">Empfänger:</p>
+                <p>• Kunde (billing_email / contact_email)</p>
+                <p>• CC: debitoren@slt-tg.de</p>
+                <p>• CC: krefeld@slt-rental.de</p>
+              </div>
+              {sendEmailConfirmInvoice?.email_sent && (
+                <p className="text-amber-600 text-sm font-medium mt-2">
+                  ⚠ Diese Rechnung wurde bereits per E-Mail versendet.
+                </p>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+              onClick={() => {
+                if (sendEmailConfirmInvoice) {
+                  sendInvoiceEmail(sendEmailConfirmInvoice);
+                }
+              }}
+            >
+              <Send className="h-4 w-4 mr-1.5" />
+              Jetzt senden
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
