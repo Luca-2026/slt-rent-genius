@@ -8,6 +8,13 @@ interface DeliveryNoteItem {
   condition_notes?: string | null;
 }
 
+export interface DeviceConditionData {
+  meter_reading: string;
+  fuel_level: string;
+  cleanliness: string;
+  additional_notes: string;
+}
+
 interface DeliveryNoteData {
   delivery_note_number: string;
   created_at: string;
@@ -17,6 +24,7 @@ interface DeliveryNoteData {
   items: DeliveryNoteItem[];
   company_name: string;
   contact_name: string;
+  deviceCondition?: DeviceConditionData;
 }
 
 export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Promise<Uint8Array> {
@@ -30,7 +38,7 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   let page = doc.addPage([pageWidth, pageHeight]);
   let y = pageHeight - margin;
 
-  const darkBlue = rgb(0, 0.314, 0.49); // #00507d
+  const darkBlue = rgb(0, 0.314, 0.49);
   const black = rgb(0, 0, 0);
   const gray = rgb(0.4, 0.4, 0.4);
   const lineGray = rgb(0.75, 0.75, 0.75);
@@ -52,7 +60,6 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   drawText("Übergabeprotokoll", margin, y, 14, fontBold, black);
   y -= 20;
 
-  // Line
   page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 2, color: darkBlue });
   y -= 25;
 
@@ -75,7 +82,6 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   drawText("Übergebene Artikel", margin, y, 12, fontBold, darkBlue);
   y -= 18;
 
-  // Table header
   const colX = [margin, margin + 35, margin + 250, margin + 370];
   page.drawRectangle({ x: margin, y: y - 2, width: pageWidth - 2 * margin, height: 16, color: rgb(0.94, 0.96, 0.98) });
   drawText("Menge", colX[0] + 2, y, 9, fontBold);
@@ -97,7 +103,7 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
 
   y -= 20;
 
-  // Notes section
+  // Notes
   if (data.known_defects) {
     checkPage(40);
     drawText("Bekannte Mängel:", margin, y, 10, fontBold);
@@ -122,68 +128,72 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
     y -= 20;
   }
 
-  // Meter readings / fuel / cleanliness section (blank for admin to fill)
+  // Device condition section
   checkPage(120);
   y -= 10;
   drawText("Gerätezustand bei Übergabe", margin, y, 12, fontBold, darkBlue);
   y -= 20;
 
-  const fieldLabels = [
-    "Betriebsstunden:",
-    "Tankstand:",
-    "Sauberkeit (1–5):",
-    "Sonstige Anmerkungen:",
+  const dc = data.deviceCondition;
+
+  const conditionFields: { label: string; value: string }[] = [
+    { label: "Betriebsstunden:", value: dc?.meter_reading || "" },
+    { label: "Tankfüllstand:", value: dc?.fuel_level || "" },
+    { label: "Sauberkeit (1–5):", value: dc?.cleanliness || "" },
+    { label: "Sonstige Anmerkungen:", value: dc?.additional_notes || "" },
   ];
 
-  for (const label of fieldLabels) {
+  for (const field of conditionFields) {
     checkPage(22);
-    drawText(label, margin, y, 10, fontBold);
-    // Blank line for filling in
-    page.drawLine({ start: { x: margin + 130, y: y - 2 }, end: { x: pageWidth - margin, y: y - 2 }, thickness: 0.5, color: lineGray });
+    drawText(field.label, margin, y, 10, fontBold);
+    if (field.value) {
+      // Pre-filled value
+      drawText(field.value, margin + 135, y, 10, font, black);
+    } else {
+      // Empty line
+      page.drawLine({ start: { x: margin + 130, y: y - 2 }, end: { x: pageWidth - margin, y: y - 2 }, thickness: 0.5, color: lineGray });
+    }
     y -= 22;
   }
 
-  // Signature fields
+  // Signature field – only customer (blank for them to sign)
   checkPage(140);
   y -= 30;
-  drawText("Unterschriften", margin, y, 12, fontBold, darkBlue);
-  y -= 30;
+  drawText("Unterschrift", margin, y, 12, fontBold, darkBlue);
+  y -= 10;
+  drawText("Mit meiner Unterschrift bestätige ich den Empfang der oben aufgeführten Mietgegenstände.", margin, y, 8, font, gray);
+  y -= 25;
 
-  // Customer signature
   const sigWidth = (pageWidth - 2 * margin - 30) / 2;
 
-  // Left: Customer
+  // Customer signature box
   page.drawRectangle({
     x: margin,
-    y: y - 60,
+    y: y - 70,
     width: sigWidth,
-    height: 70,
+    height: 80,
     borderColor: lineGray,
     borderWidth: 1,
   });
-  drawText("Unterschrift Kunde", margin + 5, y - 70, 8, font, gray);
-  page.drawLine({ start: { x: margin + 10, y: y - 48 }, end: { x: margin + sigWidth - 10, y: y - 48 }, thickness: 0.5, color: lineGray });
+  page.drawLine({ start: { x: margin + 10, y: y - 50 }, end: { x: margin + sigWidth - 10, y: y - 50 }, thickness: 0.5, color: lineGray });
+  drawText("Unterschrift Kunde", margin + 5, y - 65, 8, font, gray);
+  drawText("Datum: ____________________", margin + 5, y - 78, 8, font, gray);
 
-  // Right: Staff
+  // Staff signature (pre-filled label)
   const rightX = margin + sigWidth + 30;
   page.drawRectangle({
     x: rightX,
-    y: y - 60,
+    y: y - 70,
     width: sigWidth,
-    height: 70,
+    height: 80,
     borderColor: lineGray,
     borderWidth: 1,
   });
-  drawText("Unterschrift Mitarbeiter", rightX + 5, y - 70, 8, font, gray);
-  page.drawLine({ start: { x: rightX + 10, y: y - 48 }, end: { x: rightX + sigWidth - 10, y: y - 48 }, thickness: 0.5, color: lineGray });
+  page.drawLine({ start: { x: rightX + 10, y: y - 50 }, end: { x: rightX + sigWidth - 10, y: y - 50 }, thickness: 0.5, color: lineGray });
+  drawText("Unterschrift Mitarbeiter SLT", rightX + 5, y - 65, 8, font, gray);
+  drawText("Datum: ____________________", rightX + 5, y - 78, 8, font, gray);
 
-  y -= 90;
-
-  // Date fields under signatures
-  drawText("Datum: ____________________", margin, y, 9, font, gray);
-  drawText("Datum: ____________________", rightX, y, 9, font, gray);
-
-  y -= 30;
+  y -= 100;
 
   // Footer
   checkPage(30);
