@@ -361,16 +361,6 @@ export const bonnErdbewegungProducts = [
     onRequest: true,
   },
   {
-    id: "bonn-kettendumper-rmd650",
-    name: "Ketten-Dumper RMD-650",
-    description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform",
-    image: imgKettendumperRmd650_1,
-    images: [imgKettendumperRmd650_1, imgKettendumperRmd650_2, imgKettendumperRmd650_3],
-    weightKg: 636,
-    driveType: "benzin",
-    rentwareCode: { bonn: "7Y1UTP" },
-  },
-  {
     id: "bonn-kettendumper-rmd800",
     name: "Ketten-Dumper RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplatten",
