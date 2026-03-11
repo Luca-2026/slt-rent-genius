@@ -50,6 +50,7 @@ export default function Contact() {
       if (error) throw error;
 
       setIsSuccess(true);
+      setSelectedLocation("");
       form.reset();
     } catch (err) {
       console.error("Contact form error:", err);
