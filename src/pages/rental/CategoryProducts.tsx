@@ -718,6 +718,15 @@ export default function CategoryProducts() {
       });
     }
 
+    // Sort products for absperrtechnik: Verkehrsschilder last
+    if (category?.id === "absperrtechnik") {
+      filtered.sort((a, b) => {
+        const isVzA = a.category === "verkehrszeichen" ? 1 : 0;
+        const isVzB = b.category === "verkehrszeichen" ? 1 : 0;
+        return isVzA - isVzB;
+      });
+    }
+
     // Sort products for leitern-gerueste: Rollgerüste first, then Leitern, then Gerüstteile
     if (category?.id === "leitern-gerueste") {
       const categorySortOrder: Record<string, number> = {
