@@ -10,6 +10,20 @@ RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [R=301,L]
 
 # ===== Legacy URL 301 Redirects (SEO) =====
 
+# Old solution pages with short slugs
+RewriteRule ^loesungen/hochbau$ /loesungen/hochbau-renovierung [R=301,L]
+RewriteRule ^loesungen/tiefbau$ /loesungen/tiefbau-erdbewegung [R=301,L]
+
+# Old standalone location pages
+RewriteRule ^standort-krefeld$ /standorte/krefeld [R=301,L]
+RewriteRule ^standort-bonn$ /standorte/bonn [R=301,L]
+RewriteRule ^standort-duisburg$ /standorte/muelheim [R=301,L]
+RewriteRule ^standort-muelheim$ /standorte/muelheim [R=301,L]
+
+# Old paginated /produkte with query params → /mieten
+RewriteCond %{QUERY_STRING} .+
+RewriteRule ^produkte$ /mieten? [R=301,L]
+
 # Old paginated location pages: /produkte-krefeld?page=X → /mieten/krefeld
 RewriteCond %{QUERY_STRING} .+
 RewriteRule ^produkte-krefeld$ /mieten/krefeld? [R=301,L]
@@ -23,19 +37,20 @@ RewriteRule ^kategorien-krefeld/rigging$ /mieten/krefeld/traversen-rigging [R=30
 RewriteRule ^kategorien-krefeld/buehnen$ /mieten/krefeld/buehne [R=301,L]
 RewriteRule ^kategorien-krefeld/(.+)$ /mieten/krefeld/$1 [R=301,L]
 
+# Old category routes for Bonn: /kategorien-bonn/{cat} → /mieten/bonn/{cat}
+RewriteRule ^kategorien-bonn/(.+)$ /mieten/bonn/$1 [R=301,L]
+
 # Old compound category routes: /kategorie/krefeld-{cat} → /mieten/krefeld/{cat}
 RewriteRule ^kategorie/krefeld-(.+?)(?:Zus)?$ /mieten/krefeld/$1 [R=301,L,NC]
 RewriteRule ^kategorie/bonn-(.+?)(?:Zus)?$ /mieten/bonn/$1 [R=301,L,NC]
 RewriteRule ^kategorie/(.+)$ /mieten/krefeld/$1 [R=301,L]
 
 # Old location-specific product routes → SPA handles the redirect
-# /produkte-bonn/{slug} → /mieten/bonn (SPA will find the product)
 RewriteRule ^produkte-bonn/(.+)$ /mieten/bonn/alle?legacy=$1 [R=301,L]
 RewriteRule ^produkte-duisburg/(.+)$ /mieten/muelheim/alle?legacy=$1 [R=301,L]
 RewriteRule ^produkte-muelheim/(.+)$ /mieten/muelheim/alle?legacy=$1 [R=301,L]
 
 # Old product detail routes: /produkte/{slug} → SPA handles lookup
-# Keep /produkte as-is (category overview), only redirect /produkte/{slug}
 RewriteCond %{REQUEST_URI} ^/produkte/[^/]+$
 RewriteRule ^produkte/(.+)$ /mieten/krefeld/alle?legacy=$1 [R=301,L]
 
