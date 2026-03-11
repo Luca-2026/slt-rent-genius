@@ -37,6 +37,7 @@ interface B2BProfile {
   contact_first_name: string;
   contact_last_name: string;
   contact_email: string;
+  contact_phone: string;
   billing_email: string | null;
   status: string;
   credit_limit: number;
