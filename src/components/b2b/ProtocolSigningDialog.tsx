@@ -58,6 +58,15 @@ export function ProtocolSigningDialog({
       if (error) throw error;
 
       toast({ title: "Erfolgreich unterschrieben", description: `${protocolNumber} wurde digital signiert.` });
+
+      // Notify admins in background (don't block UI)
+      supabase.functions.invoke("notify-admin-protocol-signed", {
+        body: {
+          type: isDeliveryNote ? "delivery_note" : "return_protocol",
+          id: protocolId,
+        },
+      }).catch((e) => console.error("Admin notification failed:", e));
+
       onSigned();
       onOpenChange(false);
     } catch (err: any) {
