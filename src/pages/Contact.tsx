@@ -28,7 +28,10 @@ export default function Contact() {
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    if (!selectedLocation) {
+      toast({ title: "Bitte Standort wählen", description: "Wählen Sie einen Standort aus.", variant: "destructive" });
+      return;
+    }
     setIsSubmitting(true);
 
     const form = e.currentTarget;
