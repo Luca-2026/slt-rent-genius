@@ -43,7 +43,7 @@ export function ServicesSection() {
   ];
 
   return (
-    <section className="py-16 lg:py-20 bg-surface-light">
+    <section className="py-16 lg:py-20 bg-surface-light snap-start">
       <div className="section-container">
         <AnimatedSection className="text-center mb-12">
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-primary/20">

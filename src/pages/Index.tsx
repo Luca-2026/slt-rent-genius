@@ -49,6 +49,14 @@ export default function Index() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // Enable scroll-snap on homepage
+  useEffect(() => {
+    document.documentElement.style.scrollSnapType = "y proximity";
+    return () => {
+      document.documentElement.style.scrollSnapType = "";
+    };
+  }, []);
+
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
     { value: 1700, label: t("trust.rentalProducts"), prefix: "+", isCounter: true },
@@ -72,7 +80,7 @@ export default function Index() {
         keywords="Baumaschinen mieten, Anhänger mieten, Minibagger mieten, Event-Equipment mieten, NRW, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}
       />
-      <section className="relative z-20 bg-primary py-8 min-h-[calc(100svh-6.5rem)] flex items-center sm:py-12 md:py-10 md:min-h-[calc(100svh-15rem)] lg:py-0 lg:min-h-[calc(100svh-17rem)] lg:items-center">
+      <section className="relative z-20 bg-primary py-8 min-h-[calc(100svh-6.5rem)] flex items-center sm:py-12 md:py-10 md:min-h-[calc(100svh-15rem)] lg:py-0 lg:min-h-[calc(100svh-17rem)] lg:items-center snap-start">
         {/* Background Image Slider */}
         <HeroBackgroundSlider />
         <div className="absolute inset-0 bg-primary/85" />
@@ -101,7 +109,7 @@ export default function Index() {
       </section>
 
       {/* Trust Badges with CountUp */}
-      <section className="relative z-10 py-10 bg-background border-b border-border">
+      <section className="relative z-10 py-10 bg-background border-b border-border snap-start">
         <div className="section-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {trustItems.map((item, index) => (
@@ -127,7 +135,7 @@ export default function Index() {
       </section>
 
       {/* Locations / Standorte */}
-      <section className="py-16 lg:py-20">
+      <section className="py-16 lg:py-20 snap-start">
         <div className="section-container">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
@@ -272,7 +280,7 @@ export default function Index() {
       </Suspense>
 
       {/* Google Reviews Section */}
-      <section className="py-16 lg:py-20 bg-muted/30">
+      <section className="py-16 lg:py-20 bg-muted/30 snap-start">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <div className="text-center mb-10">
@@ -301,7 +309,7 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
+      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden snap-start">
         
         <div className="section-container text-center relative">
           <AnimatedSection>
@@ -328,7 +336,7 @@ export default function Index() {
       </section>
 
       {/* Benefits */}
-      <section className="py-16 lg:py-20 bg-background">
+      <section className="py-16 lg:py-20 bg-background snap-start">
         <div className="section-container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
