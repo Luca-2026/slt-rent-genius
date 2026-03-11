@@ -249,8 +249,8 @@ export default function Locations() {
                  </Button>
                </Link>
              </AnimatedSection>
-             <AnimatedSection animation="slide-in-right" delay={200} className="lg:w-96">
-               <div className="bg-background rounded-xl p-6 border border-border">
+             <AnimatedSection animation="slide-in-right" delay={200} className="md:w-72 lg:w-96 w-full">
+               <div className="bg-background rounded-xl p-4 md:p-4 lg:p-6 border border-border">
                  <h3 className="font-semibold text-headline mb-4">{t("locations.deliveryCostsTitle")}</h3>
                  <ul className="space-y-3 text-sm">
                    <li className="flex justify-between">
