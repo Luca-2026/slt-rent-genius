@@ -171,8 +171,8 @@ Deno.serve(async (req: Request) => {
       profile = profileData;
     }
 
-    // Use profile's payment terms, fallback to body override, then default 14
-    const payment_due_days = bodyPaymentDueDays ?? profile.payment_due_days ?? 14;
+    // Proforma invoices are always prepayment (Vorkasse) with 0 days
+    const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
 
     // Determine reverse charge status
     const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
@@ -287,10 +287,11 @@ Deno.serve(async (req: Request) => {
       paymentDueDays: payment_due_days,
       isCorrection: is_correction,
       originalInvoiceNumber: original_invoice_number || null,
+      isProforma: is_proforma,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
-    const filePrefix = is_correction ? "Rechnungskorrektur" : "Rechnung";
+    const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
     const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
@@ -556,6 +557,7 @@ function generateInvoiceHtml(data: {
   paymentDueDays: number;
   isCorrection: boolean;
   originalInvoiceNumber: string | null;
+  isProforma?: boolean;
 }): string {
   const formatCurrency = (amount: number) =>
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -633,7 +635,7 @@ function generateInvoiceHtml(data: {
         <p style="font-size:11px;color:#595959;">${SLT_COMPANY.street}, ${SLT_COMPANY.city}</p>
       </div>
       <div style="text-align:right;">
-        <p style="font-size:22px;font-weight:700;color:#393d46;">${data.isCorrection ? "RECHNUNGSKORREKTUR" : "RECHNUNG"}</p>
+        <p style="font-size:22px;font-weight:700;color:#393d46;">${data.isProforma ? "PROFORMA-RECHNUNG" : data.isCorrection ? "RECHNUNGSKORREKTUR" : "RECHNUNG"}</p>
         <p style="font-size:13px;color:#595959;margin-top:4px;">Nr. ${data.invoiceNumber}</p>
         ${data.originalInvoiceNumber ? `<p style="font-size:12px;color:#595959;">Bezug: ${data.originalInvoiceNumber}</p>` : ""}
       </div>
@@ -657,7 +659,7 @@ function generateInvoiceHtml(data: {
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">
           <tr><td style="color:#595959;padding-right:12px;">Rechnungsdatum:</td><td style="font-weight:500;">${formatDate(data.invoiceDate)}</td></tr>
-          <tr><td style="color:#595959;padding-right:12px;">Zahlungsziel:</td><td style="font-weight:500;">${formatDate(data.dueDate)}</td></tr>
+          <tr><td style="color:#595959;padding-right:12px;">Zahlungsziel:</td><td style="font-weight:500;">${data.isProforma ? "Vorkasse" : formatDate(data.dueDate)}</td></tr>
           <tr><td style="color:#595959;padding-right:12px;">Kundennr.:</td><td style="font-weight:500;">${data.profile.id.substring(0, 8).toUpperCase()}</td></tr>
           ${data.isReverseCharge ? `<tr><td style="color:#595959;padding-right:12px;">Verfahren:</td><td style="font-weight:500;color:#00507d;">Reverse-Charge</td></tr>` : ""}
         </table>
@@ -733,7 +735,9 @@ function generateInvoiceHtml(data: {
         <tr><td style="color:#595959;padding-right:16px;">Verwendungszweck:</td><td style="font-weight:500;">${data.invoiceNumber}</td></tr>
       </table>
       <p style="font-size:11px;color:#595959;margin-top:8px;">
-        Bitte überweisen Sie den Betrag bis zum <strong>${formatDate(data.dueDate)}</strong> (${data.paymentDueDays} Tage Zahlungsziel).
+        ${data.isProforma 
+          ? `Bitte überweisen Sie den Betrag <strong>vor Mietbeginn</strong> (Vorkasse). Verwendungszweck: <strong>${data.invoiceNumber}</strong>`
+          : `Bitte überweisen Sie den Betrag bis zum <strong>${formatDate(data.dueDate)}</strong> (${data.paymentDueDays} Tage Zahlungsziel).`}
       </p>
     </div>
 
@@ -845,7 +849,12 @@ async function generateDocumentPdf(data: {
     else { dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9); const vT = fm(data.totals.vat); dt(vT, vx - font.widthOfTextAtSize(vT, 9), y, font, 9); }
     y -= 16; page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 1, color: rgb(0, 0.314, 0.49) });
     dt("Bruttobetrag:", tx, y, bold, 10); const gT = fm(data.totals.gross); dt(gT, vx - bold.widthOfTextAtSize(gT, 10), y, bold, 10); y -= 22;
-    if (data.totals.dueDate) { dt(`Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`, MG, y, font, 9); y -= 16; }
+    if (data.totals.dueDate) { 
+      const paymentText = data.totals.paymentDueDays === 0 
+        ? "Zahlungsziel: Vorkasse" 
+        : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
+      dt(paymentText, MG, y, font, 9); y -= 16; 
+    }
     if (data.totals.isReverseCharge) { dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse Charge)", MG, y, font, 8, rgb(0.5, 0.5, 0.5)); y -= 16; }
     y -= 5; dt("Bankverbindung:", MG, y, bold, 9); y -= 13;
     dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4)); y -= 20;
