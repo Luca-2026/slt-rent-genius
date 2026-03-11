@@ -157,12 +157,12 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-12 lg:py-20 bg-surface-light">
+      <section className="py-10 md:py-14 lg:py-20 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-8 text-center">{t("about.valuesTitle")}</h2>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-6 md:mb-8 text-center">{t("about.valuesTitle")}</h2>
           </AnimatedSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
             {values.map((value, index) => (
               <AnimatedSection key={value.title} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
