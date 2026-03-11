@@ -260,6 +260,7 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signedUrlData?.signedUrl || "";
 
     const now = new Date().toISOString();
+    const deliveryNoteStatus = customer_not_present ? "pending_customer_signature" : "signed";
     const { data: deliveryNote, error: dnError } = await serviceClient
       .from("b2b_delivery_notes")
       .insert({
@@ -267,17 +268,17 @@ Deno.serve(async (req: Request) => {
         reservation_id: offer.reservation_id || null,
         b2b_profile_id: profile.id,
         delivery_note_number: deliveryNoteNumber,
-        status: "signed",
-        signature_data,
+        status: deliveryNoteStatus,
+        signature_data: signature_data || null,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
         known_defects: known_defects || null,
         additional_defects: additional_defects || null,
         photo_urls: photo_urls || [],
-        signed_at: now,
-        agb_accepted: agb_accepted,
-        agb_accepted_at: agb_accepted ? now : null,
+        signed_at: customer_not_present ? null : now,
+        agb_accepted: customer_not_present ? false : agb_accepted,
+        agb_accepted_at: (!customer_not_present && agb_accepted) ? now : null,
       })
       .select()
       .single();
