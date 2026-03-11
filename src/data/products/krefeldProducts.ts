@@ -1310,7 +1310,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ladegeraet-gal18v6-80",
-    name: "Bosch 6-fach Ladegerät GAL 18V6-80",
+    name: "6-fach Ladegerät",
+    modelName: "Bosch GAL 18V6-80",
     description: "Schnellladegerät für 6 Akkus gleichzeitig",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
