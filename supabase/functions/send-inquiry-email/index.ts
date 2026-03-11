@@ -118,6 +118,7 @@ serve(async (req) => {
       <strong style="color: #ea580c;">Artikel:</strong> ${productName}<br>
       <strong style="color: #ea580c;">Standort:</strong> ${locationName}<br>
       <strong style="color: #ea580c;">Zeitraum:</strong> ${dateRange}
+      ${timeRange ? `<br><strong style="color: #ea580c;">Uhrzeiten:</strong> ${timeRange}` : ""}
       ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}` : ""}
       ${setupServiceRequested ? `<br><strong style="color: #ea580c;">Betreuung / Auf- & Abbau:</strong> Gewünscht` : ""}
     </div>
