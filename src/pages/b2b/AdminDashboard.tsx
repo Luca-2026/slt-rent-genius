@@ -146,6 +146,7 @@ export default function AdminDashboard() {
   const [invoiceFromOffer, setInvoiceFromOffer] = useState<Offer | null>(null);
   const [proformaMode, setProformaMode] = useState(false);
   const [invoiceSurcharges, setInvoiceSurcharges] = useState<InvoiceSurcharge[]>([]);
+  const [sendInvoiceEmail, setSendInvoiceEmail] = useState(false);
   const [newSurchargeName, setNewSurchargeName] = useState("");
   const [newSurchargeAmount, setNewSurchargeAmount] = useState("");
   const [deliveryNoteOpen, setDeliveryNoteOpen] = useState(false);
