@@ -87,15 +87,15 @@ export default function KnowledgeBase() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-primary py-12 lg:py-16">
+      <section className="bg-primary py-10 md:py-12 lg:py-16">
         <div className="section-container text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <BookOpen className="h-8 w-8 text-accent" />
-            <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground">
+            <BookOpen className="h-7 w-7 md:h-8 md:w-8 text-accent" />
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground">
               {t("kb.title")}
             </h1>
           </div>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
+          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-6 md:mb-8 text-sm md:text-base">
             {t("kb.subtitle")}
           </p>
 
