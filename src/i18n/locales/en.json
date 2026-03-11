@@ -59,6 +59,7 @@
     "onRequest": "on request",
     "deliveryNote": "* Prices excl. VAT, depending on equipment",
     "route": "Route",
+    "rentalArticles": "Rental Articles",
     "details": "Details",
     "locationManager": "Location Manager"
   },
