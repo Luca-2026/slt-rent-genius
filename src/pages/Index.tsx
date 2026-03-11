@@ -128,7 +128,7 @@ export default function Index() {
       </section>
 
       {/* Locations / Standorte */}
-      <section className="py-16 lg:py-20 snap-start">
+      <section className="py-16 lg:py-20">
         <div className="section-container">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
