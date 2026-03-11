@@ -161,15 +161,15 @@ export default function About() {
       </section>
 
       {/* Story */}
-      <section className="py-8 md:py-12 lg:py-24 xl:py-28">
+      <section className="py-8 md:py-12 lg:py-20">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-16 xl:gap-20 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-14 items-center">
             <AnimatedSection animation="slide-in-left" delay={0}>
               <div>
-                <h2 className="text-lg md:text-xl lg:text-4xl xl:text-5xl font-bold text-headline mb-3 md:mb-4 lg:mb-8 leading-tight">
+                <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-3 md:mb-4 lg:mb-6 leading-tight">
                   {t("about.storyTitle")}
                 </h2>
-                <div className="space-y-2.5 md:space-y-3 lg:space-y-5 text-muted-foreground text-xs md:text-sm lg:text-base xl:text-lg leading-relaxed">
+                <div className="space-y-2.5 md:space-y-3 lg:space-y-4 text-muted-foreground text-xs md:text-sm lg:text-base leading-relaxed">
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP1") }} className="[&_strong]:text-headline [&_strong]:font-semibold" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP2") }} className="[&_strong]:text-headline [&_strong]:font-semibold" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP3") }} className="[&_strong]:text-headline [&_strong]:font-semibold" />
@@ -177,7 +177,7 @@ export default function About() {
               </div>
             </AnimatedSection>
             <AnimatedSection animation="slide-in-right" delay={200}>
-              <div className="rounded-2xl lg:rounded-3xl aspect-[4/3] overflow-hidden shadow-xl lg:shadow-2xl group">
+              <div className="rounded-2xl aspect-[4/3] overflow-hidden shadow-xl lg:shadow-2xl group">
                 <img src={imgTeamPhoto} alt="SLT Rental Team" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
               </div>
             </AnimatedSection>
