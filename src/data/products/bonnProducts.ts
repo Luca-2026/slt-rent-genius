@@ -2205,6 +2205,13 @@ export const bonnAbsperrtechnikProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "FD2IMJ" },
   },
+  {
+    id: "bonn-halteverbotsschilder-set",
+    name: "Halteverbotsschilder-Set",
+    description: "Komplettes Set mit Halteverbotsschildern inkl. Aufsteller.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "BDX3N5" },
+  },
 ];
 
 // ==================== EXPORT ALL BONN PRODUCTS ====================
