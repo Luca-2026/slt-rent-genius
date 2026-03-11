@@ -55,7 +55,7 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   };
 
   // Header
-  drawText("SLT-Rental GmbH", margin, y, 18, fontBold, darkBlue);
+  drawText("SLT Technology Group GmbH & Co. KG", margin, y, 14, fontBold, darkBlue);
   y -= 22;
   drawText("Übergabeprotokoll", margin, y, 14, fontBold, black);
   y -= 20;
