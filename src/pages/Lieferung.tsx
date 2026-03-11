@@ -87,7 +87,7 @@ export default function Lieferung() {
   const [category, setCategory] = useState<CategoryKey>("1t-bagger");
   const [distance, setDistance] = useState(20);
   const [twoMachines, setTwoMachines] = useState(false);
-  const [includeReturn, setIncludeReturn] = useState(true);
+  const [includeReturn, setIncludeReturn] = useState(false);
 
   const selectedCategory = deliveryPrices[category];
 
@@ -226,7 +226,7 @@ export default function Lieferung() {
                     <div className="flex items-center justify-between">
                       <div>
                         <Label htmlFor="return" className="text-sm font-medium">
-                          Hin- und Rückfahrt
+                          Anlieferung & Abholung
                         </Label>
                         <p className="text-xs text-muted-foreground">
                           Lieferung + Abholung nach Mietende
@@ -289,7 +289,7 @@ export default function Lieferung() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Fahrt:</span>
-                        <span className="font-medium">{includeReturn ? "Hin + Rück" : "Nur Hinfahrt"}</span>
+                        <span className="font-medium">{includeReturn ? "Anlieferung & Abholung" : "Nur Hinfahrt"}</span>
                       </div>
                       {twoMachines && (
                         <div className="flex justify-between">

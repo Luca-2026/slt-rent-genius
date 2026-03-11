@@ -147,7 +147,7 @@ export function DeliveryCalculatorCompact({
     
   const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
   const [distance, setDistance] = useState(20);
-  const [includeReturn, setIncludeReturn] = useState(true);
+  const [includeReturn, setIncludeReturn] = useState(false);
   const [twoMachines, setTwoMachines] = useState(false);
 
   const selectedCategory = deliveryPrices[selectedMachineType];
