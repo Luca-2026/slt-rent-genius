@@ -23,8 +23,13 @@ serve(async (req) => {
       name,
       email,
       phone,
+      street,
+      postalCode,
+      city,
       startDate,
+      startTime,
       endDate,
+      endTime,
       message,
       deliveryRequested,
       deliveryStreet,
@@ -38,6 +43,14 @@ serve(async (req) => {
     const dateRange = startDate
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
+
+    const timeRange = (startTime || endTime)
+      ? `${startTime ? `Abholung: ${startTime} Uhr` : ""}${startTime && endTime ? " · " : ""}${endTime ? `Rückgabe: ${endTime} Uhr` : ""}`
+      : null;
+
+    const customerAddress = (street || postalCode || city)
+      ? `${street || ""}${street ? ", " : ""}${postalCode || ""} ${city || ""}`.trim()
+      : null;
 
     const deliveryHtml = deliveryRequested
       ? `
@@ -78,7 +91,9 @@ serve(async (req) => {
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${name}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
+      ${customerAddress ? `<tr><td style="padding: 4px 0; color: #6b7280;">Adresse:</td><td style="padding: 4px 0;">${customerAddress}</td></tr>` : ""}
       <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${dateRange}</td></tr>
+      ${timeRange ? `<tr><td style="padding: 4px 0; color: #6b7280;">Uhrzeiten:</td><td style="padding: 4px 0;">${timeRange}</td></tr>` : ""}
       ${deliveryHtml}
       ${setupServiceHtml}
     </table>
@@ -103,6 +118,7 @@ serve(async (req) => {
       <strong style="color: #ea580c;">Artikel:</strong> ${productName}<br>
       <strong style="color: #ea580c;">Standort:</strong> ${locationName}<br>
       <strong style="color: #ea580c;">Zeitraum:</strong> ${dateRange}
+      ${timeRange ? `<br><strong style="color: #ea580c;">Uhrzeiten:</strong> ${timeRange}` : ""}
       ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}` : ""}
       ${setupServiceRequested ? `<br><strong style="color: #ea580c;">Betreuung / Auf- & Abbau:</strong> Gewünscht` : ""}
     </div>
