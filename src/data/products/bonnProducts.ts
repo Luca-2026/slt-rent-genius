@@ -333,7 +333,8 @@ export const bonnErdbewegungProducts = [
   // === BAGGER (zuerst) ===
   {
     id: "bonn-bobcat-e10",
-    name: "1t Bobcat E10",
+    name: "1t Minibagger",
+    modelName: "Bobcat E10",
     description: "Kompakter Minibagger für enge Baustellen.",
     image: imgBobcatE10z1,
     images: [imgBobcatE10z1, imgBobcatE10z2, imgBobcatE10z3, imgBobcatE10z4],
