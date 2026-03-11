@@ -530,7 +530,7 @@ export function AdminInvoicesTab({
                         )}
                         {inv.email_sent ? "Erneut senden" : "E-Mail senden"}
                       </Button>
-                    )
+                    )}
                     {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                       <>
                         <Button
