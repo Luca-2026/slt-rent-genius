@@ -934,7 +934,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="return-protocols">
+        <TabsContent value="return-protocols" forceMount className="data-[state=inactive]:hidden">
           <AdminReturnProtocolsTab
             profiles={profiles as any}
             onRefresh={fetchData}
