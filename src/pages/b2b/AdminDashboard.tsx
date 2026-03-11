@@ -239,6 +239,8 @@ export default function AdminDashboard() {
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
+        console.log("[Invoice Debug] offer.additional_services:", JSON.stringify(offer.additional_services));
+        console.log("[Invoice Debug] offer items count:", items.length, "offer deposit:", offer.deposit);
         const mainItems = items.map((item) => ({
           product_name: item.product_name,
           description: item.description || undefined,
