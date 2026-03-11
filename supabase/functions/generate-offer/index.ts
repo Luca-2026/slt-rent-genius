@@ -918,7 +918,18 @@ async function generateOfferPdf(data: {
     y -= 20;
   }
 
-  y -= 10;
+  // ── PAYMENT TERMS ──
+  y -= 5;
+  ensureSpace(40);
+  const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
+  const paymentDueDays = data.profile.payment_due_days || 14;
+  const paymentText = hasCreditLimit
+    ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fmtCurrency(data.profile.credit_limit)}).`
+    : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.";
+  page.drawRectangle({ x: margin, y: y - 6, width: contentWidth, height: 22, color: rgb(0.95, 0.97, 1) });
+  page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: blue });
+  drawText(paymentText, margin + 10, y + 2, { s: 8 });
+  y -= 35;
 
   // ── REVERSE CHARGE NOTE ──
   if (data.isReverseCharge) {
