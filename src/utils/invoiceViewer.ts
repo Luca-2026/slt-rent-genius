@@ -27,7 +27,7 @@ function extractStoragePath(fileUrl: string): { bucket: string; path: string } |
  * Opens/downloads a document (PDF or HTML).
  * For storage URLs: fetches the file and opens it reliably even with popup blockers.
  */
-export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: string, documentType?: string): Promise<void> {
+export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: string, _documentType?: string): Promise<void> {
   if (!fileUrl) return;
 
   // Open a blank tab synchronously during the user click to avoid popup blockers
@@ -43,20 +43,6 @@ export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: s
     document.body.removeChild(a);
   };
 
-  const forceDownload = (url: string, fileName: string) => {
-    if (popup && !popup.closed) {
-      popup.close();
-    }
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
   const openInPopupOrFallback = (url: string) => {
     if (popup && !popup.closed) {
       popup.location.href = url;
@@ -65,32 +51,14 @@ export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: s
     }
   };
 
-  // If it's a storage URL, download directly (works with RLS)
+  // Most offers already contain a signed storage URL -> open immediately while user gesture is active
+  if (/\/storage\/v1\/object\/sign\//.test(fileUrl)) {
+    openInPopupOrFallback(fileUrl);
+    return;
+  }
+
   const storagePath = extractStoragePath(fileUrl);
   if (storagePath) {
-    try {
-      const { data, error } = await supabase.storage
-        .from(storagePath.bucket)
-        .download(storagePath.path);
-
-      if (!error && data) {
-        const fileName =
-          storagePath.path.split("/").pop() ||
-          `${documentType ?? "Dokument"}-${documentNumber ?? "Datei"}.pdf`;
-
-        const pdfBlob = data.type === "application/pdf"
-          ? data
-          : new Blob([data], { type: "application/pdf" });
-
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        forceDownload(blobUrl, fileName);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
-        return;
-      }
-    } catch {
-      // continue with signed/original url fallback
-    }
-
     const { data: signedData, error: signError } = await supabase.storage
       .from(storagePath.bucket)
       .createSignedUrl(storagePath.path, 60 * 60);
@@ -98,6 +66,24 @@ export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: s
     if (!signError && signedData?.signedUrl) {
       openInPopupOrFallback(signedData.signedUrl);
       return;
+    }
+
+    try {
+      const { data, error } = await supabase.storage
+        .from(storagePath.bucket)
+        .download(storagePath.path);
+
+      if (!error && data) {
+        const pdfBlob = data.type === "application/pdf"
+          ? data
+          : new Blob([data], { type: "application/pdf" });
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        openInPopupOrFallback(blobUrl);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+        return;
+      }
+    } catch {
+      // continue with original url fallback
     }
   }
 
