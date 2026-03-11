@@ -372,7 +372,7 @@ export default function AdminDashboard() {
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: invoiceBody,
+        body: { ...invoiceBody, send_email: sendInvoiceEmail },
       });
       if (error) throw error;
       toast({
