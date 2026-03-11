@@ -51,6 +51,36 @@ export default function CategoryProducts() {
   const productGridRef = useRef<HTMLDivElement>(null);
   const prevFiltersRef = useRef({ trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter });
 
+  // Handle legacy ?legacy= redirects from .htaccess 301s
+  useEffect(() => {
+    const legacySlug = searchParams.get("legacy");
+    if (!legacySlug || !locationId) return;
+    
+    // Import dynamically to avoid circular deps at module level
+    import("@/data/rentalData").then(({ getProductWithContext, locations }) => {
+      // Try exact match
+      const ctx = getProductWithContext(legacySlug);
+      if (ctx) {
+        navigate(`/mieten/${ctx.locationId}/${ctx.categoryId}/${ctx.product.id}`, { replace: true });
+        return;
+      }
+      // Try normalised match
+      const norm = (s: string) => s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss");
+      const normalised = norm(legacySlug);
+      for (const loc of locations) {
+        for (const [catId, products] of Object.entries(loc.products)) {
+          const found = products.find((p) => norm(p.id) === normalised);
+          if (found) {
+            navigate(`/mieten/${loc.id}/${catId}/${found.id}`, { replace: true });
+            return;
+          }
+        }
+      }
+      // Fallback: stay on current page without the query param
+      navigate(`/mieten/${locationId}/${categoryId || "alle"}`, { replace: true });
+    });
+  }, [searchParams, locationId, categoryId, navigate]);
+
   // Scroll to product grid when filters change
   useEffect(() => {
     const prev = prevFiltersRef.current;
