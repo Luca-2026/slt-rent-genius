@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { CarouselApi } from "@/components/ui/carousel";
 
 // Team images
@@ -37,7 +37,7 @@ const partners = [
 function TeamMemberCard({ member, showEmail }: { member: { name: string; role: string; image: string | null; email: string | null }; showEmail?: boolean }) {
   const initials = member.name.split(' ').map(n => n[0]).join('');
   const avatarContent = (
-    <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-28 lg:w-28 xl:h-32 xl:w-32 mx-auto mb-2 md:mb-3 lg:mb-4 ring-2 ring-transparent group-hover:ring-accent transition-all duration-500 group-hover:shadow-xl group-hover:shadow-accent/10">
+    <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-28 lg:w-28 xl:h-32 xl:w-32 mx-auto mb-2 md:mb-3 lg:mb-4 ring-2 ring-transparent group-hover:ring-accent transition-all duration-500 group-hover:shadow-xl group-hover:shadow-accent/10 overflow-visible [&>span]:overflow-hidden [&>span]:rounded-full [&>img]:rounded-full">
       {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
       <AvatarFallback className="bg-primary/10 text-primary text-xl lg:text-2xl">{initials}</AvatarFallback>
     </Avatar>
@@ -99,6 +99,21 @@ export default function About() {
     carouselApi.on("select", onSelect);
     onSelect();
     return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
+
+  // Autoplay for mobile carousel
+  useEffect(() => {
+    if (!carouselApi) return;
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3500);
+    // Pause on interaction
+    const stop = () => clearInterval(interval);
+    carouselApi.on("pointerDown", stop);
+    return () => {
+      clearInterval(interval);
+      carouselApi.off("pointerDown", stop);
+    };
   }, [carouselApi]);
 
   return (
