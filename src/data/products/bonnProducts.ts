@@ -262,6 +262,13 @@ export const bonnAggregateProducts = [
     },
   },
   {
+    id: "bonn-aggregat-2-8kva",
+    name: "2,8 kVA Stromaggregat",
+    description: "Kompaktes Stromaggregat für kleinere Anwendungen.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "INO6QP" },
+  },
+  {
     id: "bonn-kompressor-5m3",
     name: "4m³ Kompressor",
     description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
@@ -311,6 +318,13 @@ export const bonnArbeitsbuehnenProducts = [
     description: "Kompakte elektrische Scherenbühne mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "M4H2CP" },
+  },
+  {
+    id: "bonn-scherenbuehne-12m",
+    name: "12m Scherenbühne ZS1012AC",
+    description: "Große elektrische Scherenbühne mit 12 m Arbeitshöhe für anspruchsvolle Einsätze.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "ADYTHS" },
   },
 ];
 
@@ -406,6 +420,14 @@ export const bonnErdbewegungProducts = [
     rentwareCode: { bonn: "CUDHTT" },
     driveType: "elektro",
   },
+  {
+    id: "bonn-kettendumper-rmd650",
+    name: "Ketten-Dumper RMD-650",
+    description: "Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.",
+    image: "/placeholder.svg",
+    driveType: "benzin",
+    rentwareCode: { bonn: "7Y1UTP" },
+  },
 ];
 
 // ==================== ERDBEWEGUNG ZUBEHÖR (Schaufeln, Löffel) ====================
@@ -417,6 +439,13 @@ export const bonnErdbewegungZusatzProducts = [
     image: imgBodenschutz1,
     images: [imgBodenschutz1, imgBodenschutz2, imgBodenschutz3, imgBodenschutz4],
     rentwareCode: { bonn: "E3IB5R" },
+  },
+  {
+    id: "bonn-graben-abdeckung-150x100",
+    name: "Graben Abdeckung 150x100cm LowPro 15/10",
+    description: "Grabenabdeckplatte für sichere Überfahrt über offene Gräben.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "WLEUDP" },
   },
   {
     id: "bonn-ms01-grabenraeumloffel-100cm",
@@ -1076,6 +1105,20 @@ export const bonnStromProducts = [
     description: "Verlängerungskabel CEE 32A, 20 Meter.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "9L9EQZ" },
+  },
+  {
+    id: "bonn-cee-kabel-16a-10m",
+    name: "CEE Kabel 16A rot 10m",
+    description: "Verlängerungskabel CEE 16A, 10 Meter.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "FZV4QW" },
+  },
+  {
+    id: "bonn-cee-kabel-16a-20m",
+    name: "CEE Kabel 16A rot 20m",
+    description: "Verlängerungskabel CEE 16A, 20 Meter.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "G9R37U" },
   },
 ];
 
@@ -2020,6 +2063,13 @@ export const bonnBeschallungProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "PX1N8H" },
   },
+  {
+    id: "bonn-das-soundsystem-3500w",
+    name: "D.A.S. Soundsystem 3500W RMS",
+    description: "Professionelles PA-System mit 3500W RMS Systemleistung für große Events.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "IGH3BH" },
+  },
 ];
 
 // ==================== SPEZIALEFFEKTE ====================
@@ -2154,6 +2204,13 @@ export const bonnAbsperrtechnikProducts = [
     description: "Reflektierende Warnbarke Klasse RA2.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "FD2IMJ" },
+  },
+  {
+    id: "bonn-halteverbotsschilder-set",
+    name: "Halteverbotsschilder-Set",
+    description: "Komplettes Set mit Halteverbotsschildern inkl. Aufsteller.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "BDX3N5" },
   },
 ];
 
