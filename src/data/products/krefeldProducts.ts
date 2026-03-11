@@ -1381,7 +1381,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-laubbläser-gp-lb",
-    name: "Einhell Laubbläser GP-LB 36/210 Li",
+    name: "Akku Laubbläser",
+    modelName: "Einhell GP-LB 36/210 Li",
     description: "Akku-Laubbläser mit hoher Blasleistung",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
