@@ -308,7 +308,7 @@ export default function Products() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
             {categories.map((cat, index) => (
               <AnimatedSection key={cat.id} animation="fade-in-up" delay={index * 50}>
-                <Link to={`/produkte/${cat.id}`}>
+                <Link to={`/mieten/krefeld/${cat.id}`}>
                   <Card className="category-card h-full group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                     <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center p-3 md:p-4">
                       <img
