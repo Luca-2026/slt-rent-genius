@@ -720,7 +720,8 @@ const erdbewegungCategoryOrder = [
 const erdbewegungProductsUnsorted: Product[] = [
   {
     id: "bobcat-e10z",
-    name: "1t Bobcat E10Z Minibagger",
+    name: "1t Minibagger",
+    modelName: "Bobcat E10Z",
     description: "Einsatzgewicht: 1.000 kg | Grabtiefe: 1.820 mm | Breite: 710 mm",
     image: imgBobcatE10z_1,
     images: [imgBobcatE10z_1, imgBobcatE10z_2, imgBobcatE10z_3, imgBobcatE10z_4],
