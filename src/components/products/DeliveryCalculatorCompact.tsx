@@ -115,7 +115,7 @@ const categoryMapping: Record<string, CategoryKey> = {
   "kommunikation": "event",
   "gartenpflege": "event",
   "werkzeuge": "event",
-  "aggregate": "event",
+  "aggregate": "2t-bagger",
   "kabel-stromverteiler": "event",
   "absperrtechnik": "event",
 };
