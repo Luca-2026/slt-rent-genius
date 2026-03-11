@@ -742,7 +742,8 @@ export const bonnGartenpflegeProducts = [
 export const bonnWerkzeugProducts = [
   {
     id: "bonn-fugenschneider-bs50e",
-    name: "Fugenschneider BS50E - 13PS",
+    name: "Fugenschneider 13PS",
+    modelName: "BS50E",
     description: "Leistungsstarker Fugenschneider für Asphalt und Beton.",
     image: imgFugenschneider1,
     images: [imgFugenschneider1, imgFugenschneider2],
