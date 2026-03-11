@@ -3107,8 +3107,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "PVBY61" }
   },
   {
-    id: "weissweinglas-passionata-10er",
-    name: "Weißweinglas Passionata, 10er Set",
+    id: "weissweinglas-passionata-25er",
+    name: "Weißwein Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
     image: weissweinPassionata1,
     images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
