@@ -101,6 +101,21 @@ export default function About() {
     return () => { carouselApi.off("select", onSelect); };
   }, [carouselApi]);
 
+  // Autoplay for mobile carousel
+  useEffect(() => {
+    if (!carouselApi) return;
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3500);
+    // Pause on interaction
+    const stop = () => clearInterval(interval);
+    carouselApi.on("pointerDown", stop);
+    return () => {
+      clearInterval(interval);
+      carouselApi.off("pointerDown", stop);
+    };
+  }, [carouselApi]);
+
   return (
     <Layout>
       <SEO
