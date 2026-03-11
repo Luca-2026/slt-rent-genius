@@ -979,7 +979,7 @@ export default function AdminDashboard() {
           <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 
-        <TabsContent value="staff">
+        <TabsContent value="staff" forceMount className="data-[state=inactive]:hidden">
           <AdminStaffTab />
         </TabsContent>
       </Tabs>
