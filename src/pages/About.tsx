@@ -67,14 +67,14 @@ export default function About() {
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Über uns", url: "/ueber-uns" }])}
       />
       {/* Hero */}
-      <section className="bg-primary py-12 lg:py-20">
+      <section className="bg-primary py-10 md:py-14 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
             <div className="max-w-3xl">
-              <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-3 md:mb-4">
                 {t("about.heroTitle")}
               </h1>
-              <p className="text-lg text-primary-foreground/80">
+              <p className="text-base md:text-lg text-primary-foreground/80">
                 {t("about.heroDesc")}
               </p>
             </div>
