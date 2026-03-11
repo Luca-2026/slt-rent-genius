@@ -10,6 +10,28 @@ function escapeHtml(str: string): string {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+const LOCATION_EMAILS: Record<string, string> = {
+  krefeld: "krefeld@slt-rental.de",
+  bonn: "bonn@slt-rental.de",
+  muelheim: "muelheim@slt-rental.de",
+};
+
+/**
+ * Extract bucket and path from a Supabase storage URL.
+ * Handles both signed and public URLs.
+ */
+function extractStoragePath(fileUrl: string): { bucket: string; path: string } | null {
+  // /object/sign/<bucket>/<path>?token=...
+  const signMatch = fileUrl.match(/\/object\/sign\/([^/]+)\/(.+?)(?:\?|$)/);
+  if (signMatch) return { bucket: signMatch[1], path: decodeURIComponent(signMatch[2]) };
+
+  // /object/public/<bucket>/<path>
+  const pubMatch = fileUrl.match(/\/object\/public\/([^/]+)\/(.+?)(?:\?|$)/);
+  if (pubMatch) return { bucket: pubMatch[1], path: decodeURIComponent(pubMatch[2]) };
+
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -53,25 +75,14 @@ serve(async (req) => {
       .select("user_id")
       .eq("role", "admin");
 
-    if (!adminRoles || adminRoles.length === 0) {
-      return new Response(JSON.stringify({ success: true, message: "No admins to notify" }), {
-        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Get admin emails from auth
     const adminEmails: string[] = [];
-    for (const role of adminRoles) {
-      const { data: userData } = await serviceClient.auth.admin.getUserById(role.user_id);
-      if (userData?.user?.email) {
-        adminEmails.push(userData.user.email);
+    if (adminRoles && adminRoles.length > 0) {
+      for (const role of adminRoles) {
+        const { data: userData } = await serviceClient.auth.admin.getUserById(role.user_id);
+        if (userData?.user?.email) {
+          adminEmails.push(userData.user.email);
+        }
       }
-    }
-
-    if (adminEmails.length === 0) {
-      return new Response(JSON.stringify({ success: true, message: "No admin emails found" }), {
-        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
     }
 
     let documentNumber = "";
@@ -79,6 +90,9 @@ serve(async (req) => {
     let contactName = "";
     let protocolType = "";
     let portalLink = "";
+    let fileUrl: string | null = null;
+    let fileName: string | null = null;
+    let assignedLocation: string | null = null;
 
     if (type === "delivery_note") {
       const { data: dn } = await serviceClient.from("b2b_delivery_notes").select("*").eq("id", id).single();
@@ -90,6 +104,9 @@ serve(async (req) => {
       contactName = profile ? `${profile.contact_first_name} ${profile.contact_last_name}` : "–";
       protocolType = "Übergabeprotokoll";
       portalLink = "https://www.slt-rental.de/b2b/admin";
+      fileUrl = dn.file_url;
+      fileName = dn.file_name || `${documentNumber}.pdf`;
+      assignedLocation = profile?.assigned_location || null;
     } else if (type === "return_protocol") {
       const { data: rp } = await serviceClient.from("b2b_return_protocols").select("*").eq("id", id).single();
       if (!rp) return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: corsHeaders });
@@ -100,9 +117,44 @@ serve(async (req) => {
       contactName = profile ? `${profile.contact_first_name} ${profile.contact_last_name}` : "–";
       protocolType = "Rückgabeprotokoll";
       portalLink = "https://www.slt-rental.de/b2b/admin";
+      fileUrl = rp.file_url;
+      fileName = rp.file_name || `${documentNumber}.pdf`;
+      assignedLocation = profile?.assigned_location || null;
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), { status: 400, headers: corsHeaders });
     }
+
+    // Determine location email for CC
+    const locationEmail = LOCATION_EMAILS[assignedLocation || ""] || LOCATION_EMAILS["krefeld"];
+
+    // Try to fetch the PDF from storage for attachment
+    let pdfAttachment: { filename: string; content: string } | null = null;
+    if (fileUrl) {
+      try {
+        const storagePath = extractStoragePath(fileUrl);
+        if (storagePath) {
+          const { data: fileData, error: dlError } = await serviceClient.storage
+            .from(storagePath.bucket)
+            .download(storagePath.path);
+
+          if (!dlError && fileData) {
+            const arrayBuffer = await fileData.arrayBuffer();
+            const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+            pdfAttachment = {
+              filename: fileName || `${documentNumber}.pdf`,
+              content: base64,
+            };
+          } else {
+            console.warn("Could not download PDF from storage:", dlError?.message);
+          }
+        }
+      } catch (pdfErr) {
+        console.warn("PDF attachment fetch failed:", pdfErr);
+      }
+    }
+
+    // Build CC list: location email (always), avoid duplicating if already in adminEmails
+    const ccRecipients = [locationEmail].filter(e => !adminEmails.includes(e));
 
     const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
@@ -134,18 +186,37 @@ serve(async (req) => {
   </div>
 </body></html>`;
 
+    // Build email payload
+    const emailPayload: any = {
+      from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+      to: adminEmails.length > 0 ? adminEmails : [locationEmail],
+      subject: `${protocolType} ${documentNumber} wurde unterschrieben – ${companyName}`,
+      html: emailHtml,
+    };
+
+    // Add CC if admins are the primary recipients
+    if (adminEmails.length > 0 && ccRecipients.length > 0) {
+      emailPayload.cc = ccRecipients;
+    }
+
+    // Attach PDF if available
+    if (pdfAttachment) {
+      emailPayload.attachments = [
+        {
+          filename: pdfAttachment.filename,
+          content: pdfAttachment.content,
+          type: "application/pdf",
+        },
+      ];
+    }
+
     const emailRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-        to: adminEmails,
-        subject: `${protocolType} ${documentNumber} wurde unterschrieben – ${companyName}`,
-        html: emailHtml,
-      }),
+      body: JSON.stringify(emailPayload),
     });
 
     if (!emailRes.ok) {
@@ -157,7 +228,7 @@ serve(async (req) => {
     await emailRes.text();
 
     return new Response(
-      JSON.stringify({ success: true, notified: adminEmails.length }),
+      JSON.stringify({ success: true, notified: adminEmails.length, locationEmail, hasPdf: !!pdfAttachment }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err: any) {
