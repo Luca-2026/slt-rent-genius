@@ -130,9 +130,15 @@ Deno.serve(async (req: Request) => {
       send_email = true,
     } = body;
 
-    if (!reservation_id || !customer_signature_data || !staff_signature_data || !staff_name) {
+    if (!reservation_id || !staff_signature_data || !staff_name) {
       return new Response(
-        JSON.stringify({ error: "reservation_id, customer_signature_data, staff_signature_data and staff_name are required" }),
+        JSON.stringify({ error: "reservation_id, staff_signature_data and staff_name are required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    if (!customer_not_present && !customer_signature_data) {
+      return new Response(
+        JSON.stringify({ error: "customer_signature_data is required when customer is present" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
