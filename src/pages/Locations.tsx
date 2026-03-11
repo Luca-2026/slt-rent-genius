@@ -24,13 +24,13 @@ export default function Locations() {
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Standorte", url: "/standorte" }])}
       />
       {/* Hero */}
-      <section className="bg-primary py-12 lg:py-16">
+      <section className="bg-primary py-10 md:py-12 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
-            <h1 className="text-3xl lg:text-4xl font-bold text-primary-foreground mb-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-3 md:mb-4">
               {t("locations.title")}
             </h1>
-            <p className="text-primary-foreground/80 max-w-2xl">
+            <p className="text-primary-foreground/80 max-w-2xl text-sm md:text-base">
               {t("locations.heroSubtitle")}
             </p>
           </AnimatedSection>
