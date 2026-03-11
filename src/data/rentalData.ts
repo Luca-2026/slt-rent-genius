@@ -70,6 +70,9 @@ import imgBaumaschinen1800_2 from "@/assets/products/anhaenger/baumaschinen-1800
 import imgBaumaschinen3500_1 from "@/assets/products/anhaenger/baumaschinen-3500-1.jpg";
 import imgBaumaschinen3500_2 from "@/assets/products/anhaenger/baumaschinen-3500-2.jpg";
 import imgBaumaschinen3500_3 from "@/assets/products/anhaenger/baumaschinen-3500-3.jpg";
+import imgRueckwaertskipp1500_1 from "@/assets/products/anhaenger/rueckwaertskipp-1500-1.jpg";
+import imgRueckwaertskipp1500_2 from "@/assets/products/anhaenger/rueckwaertskipp-1500-2.jpg";
+import imgRueckwaertskipp1500_3 from "@/assets/products/anhaenger/rueckwaertskipp-1500-3.jpg";
 import imgRueckwaertskipp2700_1 from "@/assets/products/anhaenger/rueckwaertskipp-2700-1.jpg";
 import imgRueckwaertskipp2700_2 from "@/assets/products/anhaenger/rueckwaertskipp-2700-2.jpg";
 import imgRueckwaertskipp2700_3 from "@/assets/products/anhaenger/rueckwaertskipp-2700-3.jpg";
@@ -567,6 +570,17 @@ const trailerProducts: Product[] = [
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
     rentwareCode: { krefeld: "4POSMU" } 
+  },
+  { 
+    id: "rueckwaertskipp-1500", 
+    name: "1500 kg Rückwärtskippanhänger & Laubgitter", 
+    description: "Ladefläche: 300 x 150 x 95 cm", 
+    image: imgRueckwaertskipp1500_1, 
+    images: [imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2, imgRueckwaertskipp1500_3], 
+    weightKg: 1500, 
+    category: "rueckwaertskipp",
+    tags: ["laubgitter", "gebremst", "zweiachser"], 
+    rentwareCode: { krefeld: "", bonn: "" } 
   },
   { 
     id: "rueckwaertskipp-2700", 
