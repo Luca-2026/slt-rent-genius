@@ -1214,7 +1214,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-staubsaugeraufsatz-gde18v-16",
-    name: "Bosch Staubsaugeraufsatz GDE 18V-16",
+    name: "Staubsaugeraufsatz",
+    modelName: "Bosch GDE 18V-16",
     description: "Staubabsaugung für Bohrhämmer",
     image: imgStaubsaugeraufsatz,
     images: [imgStaubsaugeraufsatz],
