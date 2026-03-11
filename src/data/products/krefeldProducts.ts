@@ -1401,7 +1401,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-heissluftfoehn-te-ha18li",
-    name: "Einhell Akku Heißluftföhn TE-HA 18li",
+    name: "Akku Heißluftföhn",
+    modelName: "Einhell TE-HA 18li",
     description: "Akku-Heißluftgebläse",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
