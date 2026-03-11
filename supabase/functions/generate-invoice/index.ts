@@ -735,7 +735,9 @@ function generateInvoiceHtml(data: {
         <tr><td style="color:#595959;padding-right:16px;">Verwendungszweck:</td><td style="font-weight:500;">${data.invoiceNumber}</td></tr>
       </table>
       <p style="font-size:11px;color:#595959;margin-top:8px;">
-        Bitte überweisen Sie den Betrag bis zum <strong>${formatDate(data.dueDate)}</strong> (${data.paymentDueDays} Tage Zahlungsziel).
+        ${data.isProforma 
+          ? `Bitte überweisen Sie den Betrag <strong>vor Mietbeginn</strong> (Vorkasse). Verwendungszweck: <strong>${data.invoiceNumber}</strong>`
+          : `Bitte überweisen Sie den Betrag bis zum <strong>${formatDate(data.dueDate)}</strong> (${data.paymentDueDays} Tage Zahlungsziel).`}
       </p>
     </div>
 
