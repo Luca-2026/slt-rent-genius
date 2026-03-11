@@ -223,9 +223,9 @@ export default function Index() {
                       </div>
                       <div className="space-y-1">
                         {loc.hours.map((h, idx) => (
-                          <div key={idx} className="flex justify-between text-xs text-muted-foreground">
-                            <span>{h.day}</span>
-                            <span className="font-medium">{h.time}</span>
+                          <div key={idx} className="flex justify-between gap-2 text-xs text-muted-foreground">
+                            <span className="shrink-0">{h.day}</span>
+                            <span className="font-medium text-right">{h.time}</span>
                           </div>
                         ))}
                       </div>
