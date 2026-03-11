@@ -74,10 +74,11 @@ export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: 
         .download(storagePath.path);
 
       if (!error && data) {
-        const pdfBlob = data.type === "application/pdf"
-          ? data
-          : new Blob([data], { type: "application/pdf" });
-        const blobUrl = URL.createObjectURL(pdfBlob);
+        // Determine correct MIME type based on file extension
+        const isHtml = storagePath.path.toLowerCase().endsWith('.html');
+        const mimeType = isHtml ? "text/html; charset=utf-8" : "application/pdf";
+        const blob = new Blob([data], { type: mimeType });
+        const blobUrl = URL.createObjectURL(blob);
         openInPopupOrFallback(blobUrl);
         setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
         return;
