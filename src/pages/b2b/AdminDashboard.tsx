@@ -823,7 +823,7 @@ export default function AdminDashboard() {
         </TabsList>
 
         {/* Tabs Content */}
-         <TabsContent value="reservations">
+         <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
