@@ -45,7 +45,7 @@ export default function Locations() {
               <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
-                  <Link to={`/mieten/${location.id}`} className="block h-32 md:h-28 lg:h-40 overflow-hidden bg-muted">
+                  <Link to={`/mieten/${location.id}`} className="block h-32 md:h-36 lg:h-40 overflow-hidden bg-muted">
                     {location.image ? (
                       <img 
                         src={location.image} 
