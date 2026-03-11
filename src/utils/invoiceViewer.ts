@@ -31,24 +31,51 @@ function extractStoragePath(fileUrl: string): { bucket: string; path: string } |
 export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: string, _documentType?: string): Promise<void> {
   if (!fileUrl) return;
 
-  let targetUrl = fileUrl;
-
-  // If it's a Supabase storage URL, generate a fresh signed URL
+  // If it's a Supabase storage URL, download the file directly (works with RLS)
   const storagePath = extractStoragePath(fileUrl);
   if (storagePath) {
-    const { data, error } = await supabase.storage
-      .from(storagePath.bucket)
-      .createSignedUrl(storagePath.path, 60 * 60); // 1 hour
+    try {
+      const { data, error } = await supabase.storage
+        .from(storagePath.bucket)
+        .download(storagePath.path);
 
-    if (!error && data?.signedUrl) {
-      targetUrl = data.signedUrl;
+      if (!error && data) {
+        const blobUrl = URL.createObjectURL(data);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Clean up after a delay to allow the browser to open the blob
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+        return;
+      }
+    } catch {
+      // Fall through to try signed URL or original URL
     }
-    // If signing fails, fall through to try the original URL
+
+    // Fallback: try creating a signed URL (works for admins/service role)
+    const { data: signedData, error: signError } = await supabase.storage
+      .from(storagePath.bucket)
+      .createSignedUrl(storagePath.path, 60 * 60);
+
+    if (!signError && signedData?.signedUrl) {
+      const a = document.createElement("a");
+      a.href = signedData.signedUrl;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
   }
 
-  // Open via anchor tag — works reliably in iframes and cross-origin contexts
+  // Last resort: open the original URL directly
   const a = document.createElement("a");
-  a.href = targetUrl;
+  a.href = fileUrl;
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   document.body.appendChild(a);
