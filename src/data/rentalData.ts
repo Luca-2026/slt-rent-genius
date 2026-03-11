@@ -572,6 +572,17 @@ const trailerProducts: Product[] = [
     rentwareCode: { krefeld: "4POSMU" } 
   },
   { 
+    id: "rueckwaertskipp-1500", 
+    name: "1500 kg Rückwärtskippanhänger & Laubgitter", 
+    description: "Ladefläche: 300 x 150 x 95 cm", 
+    image: imgRueckwaertskipp1500_1, 
+    images: [imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2, imgRueckwaertskipp1500_3], 
+    weightKg: 1500, 
+    category: "rueckwaertskipp",
+    tags: ["laubgitter", "gebremst", "zweiachser"], 
+    rentwareCode: { krefeld: "", bonn: "" } 
+  },
+  { 
     id: "rueckwaertskipp-2700", 
     name: "2700 kg Rückwärtskippanhänger", 
     description: "Ladefläche: 300 x 150 x 40 cm", 
