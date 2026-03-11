@@ -236,9 +236,9 @@ export default function Loesungen() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
             {solutionData.map((solution, index) => (
-              <AnimatedSection key={solution.id} animation="fade-in-up" delay={index * 0.05}>
+              <AnimatedSection key={solution.id} animation="fade-in-up" delay={index * 50}>
                 <SolutionCard solution={solution} />
               </AnimatedSection>
             ))}
