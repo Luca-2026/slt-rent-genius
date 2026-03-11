@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
+import { generateBlankDeliveryNotePdf } from "@/utils/deliveryNoteBlankPdf";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2 } from "lucide-react";
+import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2, Download, FileSignature } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,8 @@ interface DeliveryNote {
   email_sent: boolean;
   file_url: string | null;
   notes: string | null;
+  known_defects: string | null;
+  additional_defects: string | null;
   created_at: string;
 }
 
@@ -40,6 +43,8 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
   const [deliveryNotes, setDeliveryNotes] = useState<DeliveryNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [sendingSigId, setSendingSigId] = useState<string | null>(null);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -48,7 +53,6 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
     setDeletingId(dn.id);
     try {
       await supabase.from("b2b_delivery_note_items").delete().eq("delivery_note_id", dn.id);
-      // Nullify references from return protocols
       await supabase.from("b2b_return_protocols").update({ delivery_note_id: null }).eq("delivery_note_id", dn.id);
       const { error } = await supabase.from("b2b_delivery_notes").delete().eq("id", dn.id);
       if (error) throw error;
@@ -84,6 +88,107 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
       toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
     } finally {
       setSendingId(null);
+    }
+  };
+
+  const fetchItemsForNote = async (dnId: string) => {
+    const { data } = await supabase
+      .from("b2b_delivery_note_items")
+      .select("*")
+      .eq("delivery_note_id", dnId);
+    return data || [];
+  };
+
+  const downloadBlankPdf = async (dn: DeliveryNote) => {
+    setDownloadingId(dn.id);
+    try {
+      const items = await fetchItemsForNote(dn.id);
+      const profile = profiles.find((p) => p.id === dn.b2b_profile_id);
+
+      const pdfBytes = await generateBlankDeliveryNotePdf({
+        delivery_note_number: dn.delivery_note_number,
+        created_at: dn.created_at,
+        notes: dn.notes,
+        known_defects: dn.known_defects,
+        additional_defects: dn.additional_defects,
+        items: items.map((i: any) => ({
+          product_name: i.product_name,
+          quantity: i.quantity,
+          description: i.description,
+          serial_number: i.serial_number,
+          condition_notes: i.condition_notes,
+        })),
+        company_name: profile?.company_name || "–",
+        contact_name: profile ? `${profile.contact_first_name} ${profile.contact_last_name}` : "–",
+      });
+
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${dn.delivery_note_number}-blanko.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast({ title: "PDF heruntergeladen" });
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setDownloadingId(null);
+    }
+  };
+
+  const sendSignatureRequest = async (dn: DeliveryNote) => {
+    setSendingSigId(dn.id);
+    try {
+      // Generate PDF
+      const items = await fetchItemsForNote(dn.id);
+      const profile = profiles.find((p) => p.id === dn.b2b_profile_id);
+
+      const pdfBytes = await generateBlankDeliveryNotePdf({
+        delivery_note_number: dn.delivery_note_number,
+        created_at: dn.created_at,
+        notes: dn.notes,
+        known_defects: dn.known_defects,
+        additional_defects: dn.additional_defects,
+        items: items.map((i: any) => ({
+          product_name: i.product_name,
+          quantity: i.quantity,
+          description: i.description,
+          serial_number: i.serial_number,
+          condition_notes: i.condition_notes,
+        })),
+        company_name: profile?.company_name || "–",
+        contact_name: profile ? `${profile.contact_first_name} ${profile.contact_last_name}` : "–",
+      });
+
+      // Upload to storage
+      const fileName = `${dn.delivery_note_number}-blanko.pdf`;
+      const storagePath = `${dn.b2b_profile_id}/${fileName}`;
+      const { error: uploadError } = await supabase.storage
+        .from("b2b-documents")
+        .upload(storagePath, pdfBytes, {
+          contentType: "application/pdf",
+          upsert: true,
+        });
+      if (uploadError) throw uploadError;
+
+      // Send email via edge function
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: {
+          type: "delivery_note_signature_request",
+          id: dn.id,
+          pdf_storage_path: storagePath,
+        },
+      });
+      if (error) throw error;
+      toast({
+        title: "Unterschriftsanfrage versendet",
+        description: `E-Mail an ${data.recipient} gesendet.`,
+      });
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setSendingSigId(null);
     }
   };
 
@@ -179,6 +284,28 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                         )}
                       </div>
                       <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                        {/* Download blank PDF */}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-10 sm:h-9 flex-1 sm:flex-none"
+                          onClick={() => downloadBlankPdf(dn)}
+                          disabled={downloadingId === dn.id}
+                        >
+                          <Download className="h-4 w-4 mr-1.5" />
+                          {downloadingId === dn.id ? "Erstelle..." : "Blanko PDF"}
+                        </Button>
+                        {/* Send for signature */}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-10 sm:h-9 flex-1 sm:flex-none text-amber-700 border-amber-300 hover:bg-amber-50"
+                          onClick={() => sendSignatureRequest(dn)}
+                          disabled={sendingSigId === dn.id}
+                        >
+                          <FileSignature className="h-4 w-4 mr-1.5" />
+                          {sendingSigId === dn.id ? "Sende..." : "Zur Unterschrift"}
+                        </Button>
                         {dn.file_url && (
                           <Button
                             variant="outline"
