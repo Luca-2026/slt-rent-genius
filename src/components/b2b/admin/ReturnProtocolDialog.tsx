@@ -218,7 +218,8 @@ export function ReturnProtocolDialog({
       const { data, error } = await supabase.functions.invoke("generate-return-protocol", {
         body: {
           reservation_id: reservation.id,
-          customer_signature_data: customerSignature,
+          customer_signature_data: customerNotPresent ? null : customerSignature,
+          customer_not_present: customerNotPresent,
           staff_signature_data: staffSignature,
           staff_name: staffName.trim(),
           overall_condition: overallCondition,
