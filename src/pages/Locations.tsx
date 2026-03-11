@@ -151,16 +151,16 @@ export default function Locations() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 md:gap-1.5 lg:gap-3 mt-auto">
+                    <div className="flex gap-2 lg:gap-3 mt-auto">
                       <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                        <Button variant="outline" className="w-full md:text-[10px] md:px-2 lg:text-sm lg:px-4" size="sm">
-                         <Navigation className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 mr-1.5 md:mr-1 lg:mr-2 shrink-0" />
+                        <Button variant="outline" className="w-full text-sm" size="sm">
+                         <Navigation className="h-4 w-4 mr-1.5 lg:mr-2 shrink-0" />
                            {t("locations.route")}
                         </Button>
                       </a>
                       <Link to={`/mieten/${location.id}`} className="flex-1">
-                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover md:text-[10px] md:px-2 lg:text-sm lg:px-4" size="sm">
-                           Mietartikel
+                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover text-sm" size="sm">
+                           {t("locations.rentalArticles")}
                         </Button>
                       </Link>
                     </div>
