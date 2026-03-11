@@ -226,7 +226,7 @@ export default function Lieferung() {
                     <div className="flex items-center justify-between">
                       <div>
                         <Label htmlFor="return" className="text-sm font-medium">
-                          Hin- und Rückfahrt
+                          Anlieferung & Abholung
                         </Label>
                         <p className="text-xs text-muted-foreground">
                           Lieferung + Abholung nach Mietende
