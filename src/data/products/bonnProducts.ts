@@ -376,7 +376,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-bobcat-e50z",
-    name: "5t Bobcat E50z Minibagger",
+    name: "5t Minibagger",
+    modelName: "Bobcat E50z",
     description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 4800,
