@@ -10,6 +10,14 @@ RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [R=301,L]
 
 # ===== Legacy URL 301 Redirects (SEO) =====
 
+# Old paginated location pages: /produkte-krefeld?page=X → /mieten/krefeld
+RewriteCond %{QUERY_STRING} .+
+RewriteRule ^produkte-krefeld$ /mieten/krefeld? [R=301,L]
+RewriteRule ^produkte-krefeld$ /mieten/krefeld [R=301,L]
+RewriteRule ^produkte-bonn$ /mieten/bonn [R=301,L]
+RewriteRule ^produkte-muelheim$ /mieten/muelheim [R=301,L]
+RewriteRule ^produkte-duisburg$ /mieten/muelheim [R=301,L]
+
 # Old category routes: /kategorien-krefeld/{cat} → /mieten/krefeld/{cat}
 RewriteRule ^kategorien-krefeld/rigging$ /mieten/krefeld/traversen-rigging [R=301,L]
 RewriteRule ^kategorien-krefeld/buehnen$ /mieten/krefeld/buehne [R=301,L]
