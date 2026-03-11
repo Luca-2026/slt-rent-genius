@@ -941,7 +941,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="invoices">
+        <TabsContent value="invoices" forceMount className="data-[state=inactive]:hidden">
           <AdminInvoicesTab
             invoices={invoices}
             onStatusChange={updateInvoiceStatus}
