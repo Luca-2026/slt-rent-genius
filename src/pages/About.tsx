@@ -143,34 +143,33 @@ export default function About() {
             <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-2 md:mb-3 lg:mb-4 text-center">{t("about.teamTitle")}</h2>
             <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-5 md:mb-6 lg:mb-8 text-xs md:text-sm lg:text-base">{t("about.teamDesc")}</p>
           </AnimatedSection>
-          {/* Mobile: horizontal scroll, Tablet+Desktop: grid */}
-          <div className="flex md:grid md:grid-cols-5 gap-4 md:gap-4 lg:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory pb-2 md:pb-0 -mx-4 px-[calc((100vw-60vw)/2)] md:mx-0 md:px-0 scrollbar-hide">
+          {/* Mobile: Carousel, Tablet+Desktop: grid */}
+          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6">
             {teamMembers.map((member, index) => (
-              <AnimatedSection key={member.name} animation="scale-in" delay={index * 100} className="min-w-[60vw] sm:min-w-[40vw] md:min-w-0 snap-center">
-                <div className="text-center group">
-                  {member.email ? (
-                    <a href={`mailto:${member.email}`} className="block cursor-pointer">
-                      <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-24 lg:w-24 mx-auto mb-2 md:mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
-                        {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
-                        <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                      </Avatar>
-                    </a>
-                  ) : (
-                    <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-24 lg:w-24 mx-auto mb-2 md:mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
-                      {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
-                      <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                    </Avatar>
-                  )}
-                  <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                  {member.email && (
-                    <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-[10px] text-primary mt-1 hover:underline md:hidden">
-                      <Mail className="h-3 w-3" /> E-Mail
-                    </a>
-                  )}
-                </div>
+              <AnimatedSection key={member.name} animation="scale-in" delay={index * 100}>
+                <TeamMemberCard member={member} />
               </AnimatedSection>
             ))}
+          </div>
+          <div className="md:hidden">
+            <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: true }} className="w-full">
+              <CarouselContent className="-ml-2">
+                {teamMembers.map((member) => (
+                  <CarouselItem key={member.name} className="pl-2 basis-[70%]">
+                    <TeamMemberCard member={member} showEmail />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+            <div className="flex justify-center gap-1.5 mt-3">
+              {teamMembers.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => carouselApi?.scrollTo(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? "w-4 bg-primary" : "w-1.5 bg-primary/30"}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
