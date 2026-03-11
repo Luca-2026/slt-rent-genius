@@ -312,22 +312,22 @@ export default function KnowledgeBase() {
                   return (
                     <Card
                       key={cat.id}
-                      className="cursor-pointer hover:shadow-md hover:border-primary/30 transition-all group"
+                      className="cursor-pointer hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 group"
                       onClick={() => setSelectedCategory(cat.id)}
                     >
-                      <CardHeader className="pb-3">
+                      <CardHeader className="p-4 md:p-5 pb-2 md:pb-3">
                         <div className="flex items-start justify-between">
-                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <IconComp className="h-5 w-5 text-primary" />
+                          <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <IconComp className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                           </div>
-                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                         </div>
-                        <CardTitle className="text-base mt-3">{cat.title}</CardTitle>
+                        <CardTitle className="text-sm md:text-base mt-2 md:mt-3">{cat.title}</CardTitle>
                         <CardDescription className="text-xs line-clamp-2">
                           {cat.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0">
+                      <CardContent className="pt-0 px-4 md:px-5 pb-4 md:pb-5">
                         <span className="text-xs text-muted-foreground">
                           {cat.articleCount === 0
                             ? t("kb.guidesComingSoon")
