@@ -1300,7 +1300,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-bauleuchte-te-cl18-2000",
-    name: "Einhell Akku Bauleuchte TE-CL 18/2000",
+    name: "Akku Bauleuchte",
+    modelName: "Einhell TE-CL 18/2000",
     description: "LED-Bauleuchte mit 2000 Lumen",
     image: imgEinhellBauleuchte,
     images: [imgEinhellBauleuchte],
