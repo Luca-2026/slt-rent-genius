@@ -72,7 +72,7 @@ export function ProductBookingDialog({
     const mountWidget = () => {
       const container = document.getElementById(containerId);
       if (container) {
-        container.innerHTML = `<rtr-article article-id="${articleId}" view="calendar"></rtr-article>`;
+        container.innerHTML = `<rtr-article-booking article-id="${articleId}" view="calendar"></rtr-article-booking>`;
         setWidgetLoading(false);
       }
     };
