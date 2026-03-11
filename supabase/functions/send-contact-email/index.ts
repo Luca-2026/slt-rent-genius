@@ -7,15 +7,27 @@ const corsHeaders = {
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
 
+const locationEmails: Record<string, string> = {
+  krefeld: "krefeld@slt-rental.de",
+  bonn: "bonn@slt-rental.de",
+  muelheim: "muelheim@slt-rental.de",
+};
+
+const locationNames: Record<string, string> = {
+  krefeld: "Krefeld",
+  bonn: "Bonn",
+  muelheim: "Mülheim an der Ruhr",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const { firstName, lastName, email, phone, subject, message } = await req.json();
+    const { firstName, lastName, email, phone, subject, message, location } = await req.json();
 
-    if (!firstName || !lastName || !email || !subject || !message) {
+    if (!firstName || !lastName || !email || !phone || !subject || !message) {
       return new Response(
         JSON.stringify({ error: "Pflichtfelder fehlen" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -23,6 +35,14 @@ serve(async (req) => {
     }
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+
+    const recipientEmail = location && locationEmails[location]
+      ? locationEmails[location]
+      : "mieten@slt-rental.de";
+
+    const locationLabel = location && locationNames[location]
+      ? locationNames[location]
+      : "Nicht angegeben";
 
     const htmlBody = `
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
@@ -41,7 +61,8 @@ serve(async (req) => {
     <table style="width: 100%; border-collapse: collapse;">
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${firstName} ${lastName}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Standort:</td><td style="padding: 4px 0; font-weight: 500;">${locationLabel}</td></tr>
     </table>
 
     <h3 style="color: #374151;">Nachricht</h3>
@@ -62,7 +83,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           from: "Kontaktformular <anfragen@slt-rental.de>",
-          to: ["mieten@slt-rental.de"],
+          to: [recipientEmail],
           reply_to: email,
           subject: `Kontaktanfrage: ${subject}`,
           html: htmlBody,
@@ -75,7 +96,7 @@ serve(async (req) => {
       }
     } else {
       console.log("=== CONTACT FORM (no RESEND_API_KEY) ===");
-      console.log({ firstName, lastName, email, phone, subject, message });
+      console.log({ firstName, lastName, email, phone, subject, message, location, recipientEmail });
     }
 
     return new Response(

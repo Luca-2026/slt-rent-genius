@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle, Loader2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
@@ -18,15 +19,19 @@ export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
     { icon: Mail, title: t("contact.emailTitle"), primary: t("contact.emailAddress"), secondary: t("contact.emailResponse"), href: "mailto:mieten@slt-rental.de" },
-    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: t("contact.whatsappNumber"), secondary: t("contact.whatsappDesc"), href: "https://wa.me/49021514179904" },
+    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: "+49 1578 9150872", secondary: t("contact.whatsappDesc"), href: "https://wa.me/4915789150872" },
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    if (!selectedLocation) {
+      toast({ title: "Bitte Standort wählen", description: "Wählen Sie einen Standort aus.", variant: "destructive" });
+      return;
+    }
     setIsSubmitting(true);
 
     const form = e.currentTarget;
@@ -41,12 +46,14 @@ export default function Contact() {
           phone: formData.get("phone"),
           subject: formData.get("subject"),
           message: formData.get("message"),
+          location: selectedLocation,
         },
       });
 
       if (error) throw error;
 
       setIsSuccess(true);
+      setSelectedLocation("");
       form.reset();
     } catch (err) {
       console.error("Contact form error:", err);
@@ -136,8 +143,23 @@ export default function Contact() {
                         <Input name="email" type="email" placeholder="max@beispiel.de" required />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")}</label>
-                        <Input name="phone" type="tel" placeholder="0151 123 456 78" />
+                        <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.phone")} *</label>
+                        <Input name="phone" type="tel" placeholder="0151 123 456 78" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-1.5">Standort *</label>
+                        <Select value={selectedLocation} onValueChange={setSelectedLocation} required>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Standort wählen" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {locationData.map((loc) => (
+                              <SelectItem key={loc.id} value={loc.id}>
+                                {loc.name} {loc.subtitle === "Hauptsitz" ? "(Hauptsitz)" : ""}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
