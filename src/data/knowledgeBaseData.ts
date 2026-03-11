@@ -703,11 +703,154 @@ export const kbArticles: KBArticle[] = [
   {
     id: "ruettelplatte-bedienung",
     title: "Rüttelplatte – Bedienung & Verdichtungstipps",
-    description: "Einstellungen, Betriebsstoffe und optimale Verdichtungstechnik.",
+    description: "Einsteiger-Anleitung: Rüttelplatte sicher starten, bewegen und richtig verdichten – Schritt für Schritt erklärt.",
     categoryId: "verdichtung",
+    productIds: [
+      "ruettelplatte-vp16-44",
+      "ruettelplatte-vp25-50",
+      "ruettelplatte-hvp30-50",
+      "ruettelplatte-hvp38-60",
+      "bonn-ruettelplatte-vp16",
+      "bonn-ruettelplatte-vp25",
+      "bonn-ruettelplatte-hvp30",
+      "bonn-ruettelplatte-hvp38",
+    ],
     type: "anleitung",
-    tags: ["rüttelplatte", "verdichtung", "pflaster", "erde"],
-    updatedAt: "2026-02-08",
+    tags: ["rüttelplatte", "verdichtung", "pflaster", "erde", "schotter", "terrasse", "einfahrt"],
+    updatedAt: "2026-03-11",
+    sections: [
+      {
+        icon: "Info",
+        heading: "1. Was eine Rüttelplatte macht",
+        text: "Eine Rüttelplatte verdichtet losen Boden, Schotter oder Pflastersplitt, damit später nichts absackt oder Wellen bekommt. Du brauchst sie z.\u00a0B. für Terrasse, Einfahrt, Gartenwege oder unter Fundamente.",
+      },
+      {
+        type: "warning",
+        icon: "ShieldCheck",
+        heading: "2. Sicherheit: Bevor du startest",
+        items: [
+          "Trage Sicherheitsschuhe, Gehörschutz, Arbeitshandschuhe und Schutzbrille.",
+          "Arbeite nur auf festem, nicht glattem Untergrund – nicht auf Eis oder steilen Hängen.",
+          "Schau dir die Maschine an: Nichts darf locker, kaputt oder undicht sein, alle Abdeckungen müssen dran sein.",
+          "Lies einmal die Bedienungsanleitung des genauen Geräts durch – dort stehen alle Besonderheiten.",
+        ],
+      },
+      {
+        icon: "Fuel",
+        heading: "3. Betriebsstoffe ganz einfach erklärt",
+        subSections: [
+          {
+            heading: "Kraftstoff",
+            items: [
+              "Benzingeräte: Nur normalen, passenden Kraftstoff laut Typenschild/Handbuch verwenden.",
+              "Dieselgeräte: Nur Diesel tanken.",
+            ],
+          },
+          {
+            heading: "Öl & Luftfilter",
+            items: [
+              "Vor dem ersten Einsatz Ölstand mit dem Stab kontrollieren – bei zu wenig Öl nicht starten.",
+              "Luftfilter: Sichtprüfung – stark verschmutzt = reinigen oder tauschen, sonst läuft der Motor schlecht.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Tipp: Mietgeräte",
+        text: "Wenn du mietest, sind Tank und Öl meistens schon passend gefüllt – im Zweifel bei uns nachfragen.",
+      },
+      {
+        icon: "PlayCircle",
+        heading: "4. Schritt-für-Schritt: Rüttelplatte starten",
+        items: [
+          "Stell die Maschine auf ebenen Boden und klapp ggf. das Transportrad hoch.",
+          "Benzinhahn öffnen (falls vorhanden).",
+          "Motor-Schalter auf „ON" stellen.",
+          "Choke auf „Start" (nur bei kaltem Motor nötig).",
+          "Am Starterseil kräftig ziehen, bis der Motor läuft.",
+          "Choke nach kurzer Zeit wieder öffnen, Motor 1–2 Minuten warmlaufen lassen.",
+          "Gashebel langsam höher stellen, bis die Platte spürbar vibriert, aber noch gut kontrollierbar bleibt.",
+        ],
+      },
+      {
+        type: "tip",
+        icon: "Lightbulb",
+        heading: "Anfänger-Tipp",
+        text: "Immer mit mittlerer bis niedriger Leistung anfangen – nicht Vollgas.",
+      },
+      {
+        icon: "Move",
+        heading: "5. So bewegst du die Rüttelplatte",
+        items: [
+          "Halte den Lenkbügel mit beiden Händen, Arme leicht gestreckt, Körper neben oder etwas hinter der Maschine.",
+          "Vorwärts laufende Platte: Du schiebst sie in Laufrichtung.",
+          "Reversierbare Geräte können per Hebel vorwärts oder rückwärts fahren.",
+          "Fahre in ruhigen, geraden Bahnen – nicht ruckartig ziehen oder drücken.",
+          "Wenn du stoppen willst, nimm Gas weg – die Maschine wird langsamer und „steht" dann praktisch auf der Stelle.",
+        ],
+      },
+      {
+        icon: "Layers",
+        heading: "6. Richtige Verdichtungstechnik (für Anfänger)",
+        subSections: [
+          {
+            heading: "In Schichten arbeiten",
+            items: [
+              "Schotter oder Kies max. 10–20 cm dick aufbringen, dann abrütteln.",
+              "Nächste Schicht drauf, wieder rütteln – so arbeitest du dich Schicht für Schicht hoch.",
+            ],
+          },
+          {
+            heading: "Bahnen fahren",
+            items: [
+              "Fläche in parallelen Bahnen abfahren.",
+              "Jede neue Bahn etwas über die vorige überlappen, damit keine Streifen locker bleiben.",
+            ],
+          },
+          {
+            heading: "Kreuzweise rütteln",
+            items: [
+              "Für wichtige Flächen (Terrasse, Einfahrt) mindestens zwei Durchgänge: einmal längs, einmal quer.",
+            ],
+          },
+          {
+            heading: "Randbereiche",
+            items: [
+              "Dort, wo du mit der Platte nicht hinkommst (z.\u00a0B. direkt an der Mauer), nimmst du einen Handstampfer.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip",
+        icon: "CheckCircle",
+        heading: "Verdichtungs-Test",
+        text: "Wenn die Platte beim Rütteln kaum noch sichtbare Spuren hinterlässt und der Boden nicht mehr nachgibt, ist er meist ausreichend verdichtet.",
+      },
+      {
+        icon: "Grid3x3",
+        heading: "7. Pflastersteine rütteln (nur das Wichtigste)",
+        items: [
+          "Schutzmatte montieren: Immer eine Gummi- oder Kunststoffmatte unter die Rüttelplatte bauen, bevor du Betonpflaster rüttelst – sonst gibt es Kratzer oder Kantenbrüche.",
+          "Nur Betonpflaster rütteln – keinen Naturstein oder sehr empfindliche Platten.",
+          "Fugen mit Sand oder Splitt füllen, Material einkehren, erst danach rütteln.",
+          "Platte langsam und gleichmäßig über die Fläche führen – nicht lange auf einer Stelle stehen bleiben.",
+        ],
+      },
+      {
+        icon: "Power",
+        heading: "8. Ausschalten und nach der Arbeit",
+        items: [
+          "Gashebel auf Leerlauf zurückstellen.",
+          "Motor über den Aus-Schalter abstellen.",
+          "Benzinhahn schließen (falls vorhanden).",
+          "Maschine kurz abkühlen lassen, dann groben Schmutz mit Besen oder Bürste entfernen.",
+          "Transportrad ausklappen und Maschine sauber und trocken abstellen.",
+        ],
+      },
+    ],
   },
 
   // Leitern & Gerüste
