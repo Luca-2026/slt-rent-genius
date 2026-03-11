@@ -227,21 +227,21 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-8 md:py-12 lg:py-24 xl:py-28">
+      <section className="py-8 md:py-12 lg:py-20">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-lg md:text-xl lg:text-4xl xl:text-5xl font-bold text-headline mb-4 md:mb-6 lg:mb-12 text-center">{t("about.valuesTitle")}</h2>
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-4 md:mb-6 lg:mb-8 text-center">{t("about.valuesTitle")}</h2>
           </AnimatedSection>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
             {values.map((value, index) => (
               <AnimatedSection key={value.title} animation="fade-in-up" delay={index * 150}>
-                <Card className="h-full hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group border-border/50 lg:border-transparent lg:hover:border-accent/20">
-                  <CardContent className="p-3 md:p-4 lg:p-8 xl:p-10 text-center">
-                    <div className="w-9 h-9 md:w-10 md:h-10 lg:w-16 lg:h-16 xl:w-20 xl:h-20 bg-accent/10 rounded-xl lg:rounded-2xl flex items-center justify-center mx-auto mb-2 md:mb-3 lg:mb-6 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-500">
-                      <value.icon className="h-4 w-4 md:h-5 md:w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-accent" />
+                <Card className="h-full hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group border-border/50 lg:hover:border-accent/20">
+                  <CardContent className="p-3 md:p-4 lg:p-6 text-center">
+                    <div className="w-9 h-9 md:w-10 md:h-10 lg:w-14 lg:h-14 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-2 md:mb-3 lg:mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-500">
+                      <value.icon className="h-4 w-4 md:h-5 md:w-5 lg:h-7 lg:w-7 text-accent" />
                     </div>
-                    <h3 className="font-semibold text-headline mb-1 md:mb-1.5 lg:mb-3 text-xs md:text-sm lg:text-lg xl:text-xl leading-tight">{value.title}</h3>
-                    <p className="text-[10px] md:text-xs lg:text-sm xl:text-base text-muted-foreground leading-relaxed">{value.description}</p>
+                    <h3 className="font-semibold text-headline mb-1 md:mb-1.5 lg:mb-2 text-xs md:text-sm lg:text-base leading-tight">{value.title}</h3>
+                    <p className="text-[10px] md:text-xs lg:text-sm text-muted-foreground leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
