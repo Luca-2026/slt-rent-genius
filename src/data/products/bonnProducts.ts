@@ -1616,7 +1616,6 @@ export const bonnGeschirrProducts = [
     description: "Wasserglas 0,2L geeicht von VAN WELL. Spülmaschinenfest. Die Gläser müssen gereinigt zurückgegeben werden. Reinigungspauschale: 3,90 €.",
     image: bierglas02_1,
     images: [bierglas02_1],
-    onRequest: true,
     detailedDescription: "Hochwertiges Wasserglas 0,2L geeicht vom Hersteller VAN WELL im praktischen 40er Set. Die Gläser sind spülmaschinenfest und eignen sich ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € erhoben.",
     specifications: {
       "Hersteller": "VAN WELL",
@@ -1628,7 +1627,7 @@ export const bonnGeschirrProducts = [
       "Spülmaschinenfest": "Ja",
       "Reinigungspauschale": "3,90 € (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { bonn: "" },
+    rentwareCode: { bonn: "3BLGZO" },
   },
   // === GESCHIRR - Teller & Schüsseln ===
   {
