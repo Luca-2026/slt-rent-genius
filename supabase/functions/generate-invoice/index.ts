@@ -291,7 +291,7 @@ Deno.serve(async (req: Request) => {
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
-    const filePrefix = is_correction ? "Rechnungskorrektur" : "Rechnung";
+    const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
     const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
