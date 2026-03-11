@@ -73,6 +73,7 @@ export function ReturnProtocolDialog({
 }: Props) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
+  const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
@@ -111,6 +112,7 @@ export function ReturnProtocolDialog({
 
   // Reset when reservation changes
   const resetForm = () => {
+    setCustomerNotPresent(false);
     setCustomerSignature(null);
     setStaffSignature(null);
     setStaffName("");
@@ -194,8 +196,9 @@ export function ReturnProtocolDialog({
   };
 
   const handleGenerate = async () => {
-    if (!reservation || !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben.", variant: "destructive" });
+    if (!reservation) return;
+    if (!customerNotPresent && !customerSignature) {
+      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
       return;
     }
     if (!staffSignature) {
@@ -215,7 +218,8 @@ export function ReturnProtocolDialog({
       const { data, error } = await supabase.functions.invoke("generate-return-protocol", {
         body: {
           reservation_id: reservation.id,
-          customer_signature_data: customerSignature,
+          customer_signature_data: customerNotPresent ? null : customerSignature,
+          customer_not_present: customerNotPresent,
           staff_signature_data: staffSignature,
           staff_name: staffName.trim(),
           overall_condition: overallCondition,
@@ -246,12 +250,19 @@ export function ReturnProtocolDialog({
 
       if (error) throw error;
 
-      toast({
-        title: "Rückgabeprotokoll erstellt!",
-        description: data.email_sent
-          ? `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt und per E-Mail versendet.`
-          : `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
-      });
+      if (customerNotPresent) {
+        toast({
+          title: "Rückgabeprotokoll erstellt!",
+          description: `${data.return_protocol?.return_protocol_number} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
+        });
+      } else {
+        toast({
+          title: "Rückgabeprotokoll erstellt!",
+          description: data.email_sent
+            ? `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt und per E-Mail versendet.`
+            : `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
+        });
+      }
 
       resetForm();
       onCreated();
@@ -274,7 +285,7 @@ export function ReturnProtocolDialog({
     (reservation.product_name || '').toLowerCase().includes(kw)
   );
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
-  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim();
+  const allValid = (customerNotPresent || !!customerSignature) && !!staffSignature && !!staffName.trim();
 
   return (
     <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) resetForm(); }}>
@@ -638,17 +649,37 @@ export function ReturnProtocolDialog({
 
         <Separator />
 
-        {/* Customer Signature */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <UserCheck className="h-4 w-4" />
-            Unterschrift Mieter (Kunde)
-          </Label>
-          <p className="text-xs text-muted-foreground">
-            {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
-          </p>
-          <SignaturePad onSignatureChange={setCustomerSignature} />
+        {/* Customer Not Present Toggle */}
+        <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+          <Checkbox
+            id="customer-not-present-rp"
+            checked={customerNotPresent}
+            onCheckedChange={(checked) => setCustomerNotPresent(checked === true)}
+          />
+          <label htmlFor="customer-not-present-rp" className="text-sm leading-relaxed cursor-pointer">
+            <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem Kunden im Portal zur digitalen Unterschrift bereitgestellt. Sie können das Protokoll trotzdem sofort herunterladen.
+          </label>
         </div>
+
+        {/* Customer Signature */}
+        {!customerNotPresent ? (
+          <div className="space-y-2">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <UserCheck className="h-4 w-4" />
+              Unterschrift Mieter (Kunde)
+            </Label>
+            <p className="text-xs text-muted-foreground">
+              {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
+            </p>
+            <SignaturePad onSignatureChange={setCustomerSignature} />
+          </div>
+        ) : (
+          <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
+            <p className="text-sm text-muted-foreground text-center">
+              📋 Das Protokoll wird dem Kunden <strong>{profile.contact_first_name} {profile.contact_last_name}</strong> im B2B-Portal zur digitalen Unterschrift bereitgestellt.
+            </p>
+          </div>
+        )}
 
         <Separator />
 
@@ -667,7 +698,7 @@ export function ReturnProtocolDialog({
               className="text-sm"
             />
           </div>
-          <SignaturePad onSignatureChange={setStaffSignature} />
+          <SignaturePad onSignatureChange={setStaffSignature} label="Unterschrift SLT-Mitarbeiter" />
         </div>
 
         <Separator />

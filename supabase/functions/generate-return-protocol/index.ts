@@ -31,7 +31,8 @@ const SLT_COMPANY = {
 
 interface ReturnProtocolRequest {
   reservation_id: string;
-  customer_signature_data: string;
+  customer_signature_data: string | null;
+  customer_not_present?: boolean;
   staff_signature_data: string;
   staff_name: string;
   overall_condition: "good" | "minor_damage" | "major_damage";
@@ -107,6 +108,7 @@ Deno.serve(async (req: Request) => {
     const {
       reservation_id,
       customer_signature_data,
+      customer_not_present = false,
       staff_signature_data,
       staff_name,
       overall_condition,
@@ -128,9 +130,15 @@ Deno.serve(async (req: Request) => {
       send_email = true,
     } = body;
 
-    if (!reservation_id || !customer_signature_data || !staff_signature_data || !staff_name) {
+    if (!reservation_id || !staff_signature_data || !staff_name) {
       return new Response(
-        JSON.stringify({ error: "reservation_id, customer_signature_data, staff_signature_data and staff_name are required" }),
+        JSON.stringify({ error: "reservation_id, staff_signature_data and staff_name are required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    if (!customer_not_present && !customer_signature_data) {
+      return new Response(
+        JSON.stringify({ error: "customer_signature_data is required when customer is present" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -250,6 +258,7 @@ Deno.serve(async (req: Request) => {
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
 
     const fileUrl = signedUrlData?.signedUrl || "";
+    const protocolStatus = customer_not_present ? "pending_customer_signature" : "signed";
     const now = new Date().toISOString();
 
     // Create return protocol record
@@ -260,7 +269,7 @@ Deno.serve(async (req: Request) => {
         b2b_profile_id: profile.id,
         delivery_note_id: deliveryNote?.id || null,
         return_protocol_number: returnProtocolNumber,
-        status: "signed",
+        status: protocolStatus,
         overall_condition,
         condition_notes: condition_notes || null,
         damage_description: damage_description || null,
@@ -272,10 +281,10 @@ Deno.serve(async (req: Request) => {
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
         photo_urls: photo_urls || [],
-        customer_signature_data,
+        customer_signature_data: customer_not_present ? null : customer_signature_data,
         staff_signature_data,
         staff_name,
-        signed_at: now,
+        signed_at: customer_not_present ? null : now,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
