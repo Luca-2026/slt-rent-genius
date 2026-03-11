@@ -99,15 +99,15 @@ export default function About() {
       </section>
 
       {/* Story */}
-      <section className="py-12 lg:py-20">
+      <section className="py-10 md:py-14 lg:py-20">
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 lg:gap-12 items-center">
             <AnimatedSection animation="slide-in-left" delay={0}>
               <div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-6">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-headline mb-4 md:mb-5 lg:mb-6">
                   {t("about.storyTitle")}
                 </h2>
-                <div className="space-y-4 text-muted-foreground">
+                <div className="space-y-3 md:space-y-4 text-muted-foreground text-sm md:text-base">
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP1") }} className="[&_strong]:text-headline" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP2") }} className="[&_strong]:text-headline" />
                   <p dangerouslySetInnerHTML={{ __html: t("about.storyP3") }} className="[&_strong]:text-headline" />
