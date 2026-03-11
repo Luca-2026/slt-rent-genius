@@ -235,6 +235,7 @@ export const productCategories: ProductCategory[] = [
     description: "Alle verfügbaren Mietprodukte an diesem Standort.",
     icon: "",
   },
+  // === BAU & HANDWERK ===
   {
     id: "anhaenger",
     title: "Anhänger",
@@ -246,6 +247,18 @@ export const productCategories: ProductCategory[] = [
     title: "Erdbewegung",
     description: "Minibagger (1t–5t), Radlader, Dumper sowie Tieflöffel, Kabellöffel, Grabenräumlöffel, Hydraulikhämmer & Sortiergreifer mieten.",
     icon: iconBagger,
+  },
+  {
+    id: "verdichtung",
+    title: "Verdichtung",
+    description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
+    icon: iconVerdichtung,
+  },
+  {
+    id: "arbeitsbuehnen",
+    title: "Arbeitsbühnen",
+    description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
+    icon: iconHebebuehne,
   },
   {
     id: "werkzeuge",
@@ -260,34 +273,22 @@ export const productCategories: ProductCategory[] = [
     icon: iconGartenpflege,
   },
   {
+    id: "leitern-gerueste",
+    title: "Leitern & Gerüste",
+    description: "Leitern, Rollgerüste und Arbeitsplattformen.",
+    icon: iconLeiterGeruest,
+  },
+  {
     id: "aggregate",
     title: "Aggregate",
     description: "Stromerzeuger und Notstromgeräte für Baustelle und Event.",
     icon: iconAggregat,
   },
   {
-    id: "arbeitsbuehnen",
-    title: "Arbeitsbühnen",
-    description: "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten.",
-    icon: iconHebebuehne,
-  },
-  {
-    id: "verdichtung",
-    title: "Verdichtung",
-    description: "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung.",
-    icon: iconVerdichtung,
-  },
-  {
     id: "kabel-stromverteiler",
     title: "Kabel & Stromverteiler",
     description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
     icon: iconKabel,
-  },
-  {
-    id: "leitern-gerueste",
-    title: "Leitern & Gerüste",
-    description: "Leitern, Rollgerüste und Arbeitsplattformen.",
-    icon: iconLeiterGeruest,
   },
   {
     id: "heizung-trocknung",
@@ -301,23 +302,18 @@ export const productCategories: ProductCategory[] = [
     description: "Verkehrszeichen, Bauzäune, Warnbaken und komplette Verkehrssicherung.",
     icon: iconAbsperrgitter,
   },
-  {
-    id: "beschallung",
-    title: "Beschallung",
-    description: "Lautsprecher, Mikrofone, Mischpulte und PA-Anlagen.",
-    icon: iconBeschallung,
-  },
-  {
-    id: "kommunikation",
-    title: "Kommunikation",
-    description: "Funkgeräte und Kommunikationstechnik für Events und Baustellen.",
-    icon: iconKommunikation,
-  },
+  // === EVENT & VERANSTALTUNG ===
   {
     id: "beleuchtung",
     title: "Beleuchtung",
     description: "LED Spots, Flutlicht, Bühnenlicht und mobile Beleuchtung.",
     icon: iconBeleuchtungNeu,
+  },
+  {
+    id: "beschallung",
+    title: "Beschallung",
+    description: "Lautsprecher, Mikrofone, Mischpulte und PA-Anlagen.",
+    icon: iconBeschallung,
   },
   {
     id: "buehne",
@@ -330,6 +326,12 @@ export const productCategories: ProductCategory[] = [
     title: "Traversen & Rigging",
     description: "Traversen, Rigging-Equipment und Bühnenkonstruktionen.",
     icon: iconTraverse,
+  },
+  {
+    id: "kommunikation",
+    title: "Kommunikation",
+    description: "Funkgeräte und Kommunikationstechnik für Events und Baustellen.",
+    icon: iconKommunikation,
   },
   {
     id: "moebel-zelte",

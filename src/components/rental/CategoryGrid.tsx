@@ -22,19 +22,19 @@ export function CategoryGrid({ location }: CategoryGridProps) {
         >
           <Card className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer">
             {/* Icon Area */}
-            <div className="aspect-square bg-muted/50 flex items-center justify-center p-4 group-hover:bg-primary/5 transition-colors">
+            <div className="aspect-square bg-muted/50 flex items-center justify-center p-3 md:p-4 group-hover:bg-primary/5 transition-colors">
               {category.id === "alle" ? (
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Grid3X3 className="h-8 w-8 text-primary" />
+                <div className="w-20 h-20 md:w-24 md:h-24 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Grid3X3 className="h-10 w-10 md:h-12 md:w-12 text-primary" />
                 </div>
               ) : category.icon ? (
                 <img
                   src={category.icon}
                   alt={category.title}
-                  className="w-3/4 h-3/4 object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="w-[85%] h-[85%] object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (
-                <div className="w-16 h-16 bg-muted rounded-full" />
+                <div className="w-20 h-20 bg-muted rounded-full" />
               )}
             </div>
 
