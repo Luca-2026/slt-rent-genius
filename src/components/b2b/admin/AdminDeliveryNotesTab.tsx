@@ -211,6 +211,8 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
     switch (status) {
       case "signed":
         return <Badge className="bg-green-100 text-green-800 border-green-300">Unterschrieben</Badge>;
+      case "pending_customer_signature":
+        return <Badge className="bg-amber-100 text-amber-800 border-amber-300">Unterschrift ausstehend</Badge>;
       case "draft":
         return <Badge variant="secondary">Entwurf</Badge>;
       default:
