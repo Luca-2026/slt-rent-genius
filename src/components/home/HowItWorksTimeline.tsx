@@ -70,7 +70,7 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-surface-light overflow-hidden">
+    <section className="py-20 lg:py-28 bg-surface-light overflow-hidden snap-start">
       <div className="section-container">
         {/* Header */}
         <AnimatedSection className="text-center mb-8">
