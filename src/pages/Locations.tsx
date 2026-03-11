@@ -115,9 +115,9 @@ export default function Locations() {
                     )}
 
                     {/* Hours */}
-                    <div className="mb-4 md:mb-3 lg:mb-6">
-                      <div className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm font-medium text-headline mb-2 md:mb-1 lg:mb-2">
-                        <Clock className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4" />
+                    <div className="mb-4 md:mb-4 lg:mb-6">
+                      <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
+                        <Clock className="h-4 w-4" />
                         {t("locations.openingHours")}
                       </div>
                       <div className="space-y-1 md:space-y-0.5 min-h-[60px] md:min-h-[50px] lg:min-h-[72px]">
