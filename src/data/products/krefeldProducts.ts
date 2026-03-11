@@ -1021,7 +1021,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-abbruchhammer-gsh16-28",
-    name: "Bosch Abbruchhammer GSH 16-28",
+    name: "Abbruchhammer",
+    modelName: "Bosch GSH 16-28",
     description: "Schwerer Abbruchhammer für anspruchsvolle Arbeiten",
     image: imgAbbruchhammer,
     images: [imgAbbruchhammer],
