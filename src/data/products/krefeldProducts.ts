@@ -1204,7 +1204,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-staubsauger-gas18v-10l",
-    name: "Bosch Staubsauger GAS 18V-10 L",
+    name: "Akku Staubsauger",
+    modelName: "Bosch GAS 18V-10 L",
     description: "Akku-Staubsauger für Baustellen",
     image: imgStaubsauger,
     images: [imgStaubsauger],
