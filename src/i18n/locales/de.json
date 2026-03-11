@@ -59,6 +59,7 @@
     "onRequest": "auf Anfrage",
     "deliveryNote": "* Preise zzgl. MwSt., abhängig vom Equipment",
     "route": "Route",
+    "rentalArticles": "Mietartikel",
     "details": "Details",
     "locationManager": "Standortleiter"
   },
