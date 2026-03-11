@@ -872,7 +872,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-l28-knicklader",
-    name: "Bobcat L28 Knicklader",
+    name: "Knicklader",
+    modelName: "Bobcat L28",
     description: "Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen",
     image: imgBobcatL28_1,
     images: [imgBobcatL28_1],
