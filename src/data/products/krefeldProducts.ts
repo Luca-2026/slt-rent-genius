@@ -2003,7 +2003,7 @@ export const absperrtechnikProducts: Product[] = [
       "Abmessungen": "231 × 420 mm",
       "Größe": "Gr. 1",
     },
-    rentwareCode: { krefeld: "EGRK14" }
+    rentwareCode: { krefeld: "D2MTMY" }
   },
   {
     id: "vz-1000-22-ra1-gr2",
