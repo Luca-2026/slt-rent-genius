@@ -1457,8 +1457,7 @@ export const bonnGeschirrProducts = [
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
       "Glasbruch": "5,00 € pro Glas",
     },
-    onRequest: true,
-    rentwareCode: { bonn: "" },
+    rentwareCode: { bonn: "BJRX3W" },
   },
   {
     id: "bonn-wasserglas-passionata-25er",
