@@ -860,10 +860,10 @@ async function generateOfferPdf(data: {
   // ── DELIVERY ROW ──
   if (data.deliveryCost > 0) {
     ensureSpace(40);
-    drawText("Lieferung / Transport", margin + 34, y, { f: fontBold, s: 9 });
-    drawText("1", margin + 275, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), margin + 380, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin - 4, y, { s: 9 });
+    drawText("Lieferung / Transport", colName, y, { f: fontBold, s: 9 });
+    drawTextRight("1", colQty + 30, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colUnit + 50, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colTotal, y, { s: 9 });
     y -= 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
     y -= 15;
