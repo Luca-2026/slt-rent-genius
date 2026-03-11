@@ -217,7 +217,7 @@ export function DeliveryNoteDialog({
   const needsEquipmentFields = items.some(item =>
     EQUIPMENT_KEYWORDS.some(kw => item.product_name.toLowerCase().includes(kw))
   );
-  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim() && agbAccepted && offerAccepted && itemsReceived;
+  const allValid = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && agbAccepted && offerAccepted && itemsReceived));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
