@@ -87,15 +87,15 @@ export default function KnowledgeBase() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-primary py-12 lg:py-16">
+      <section className="bg-primary py-10 md:py-12 lg:py-16">
         <div className="section-container text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <BookOpen className="h-8 w-8 text-accent" />
-            <h1 className="text-2xl lg:text-4xl font-bold text-primary-foreground">
+            <BookOpen className="h-7 w-7 md:h-8 md:w-8 text-accent" />
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground">
               {t("kb.title")}
             </h1>
           </div>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
+          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-6 md:mb-8 text-sm md:text-base">
             {t("kb.subtitle")}
           </p>
 
@@ -140,7 +140,7 @@ export default function KnowledgeBase() {
         </div>
       </section>
 
-      <main className="py-8 lg:py-12 min-h-[50vh]">
+      <main className="py-6 md:py-8 lg:py-12 min-h-[50vh]">
         <div className="section-container">
           {/* Article Detail View */}
           {selectedArticle && (
@@ -306,28 +306,28 @@ export default function KnowledgeBase() {
               <h2 className="text-lg font-semibold text-foreground mb-6">
                 {t("kb.browseCategories")}
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {categoriesWithCounts.map((cat) => {
                   const IconComp = iconMap[cat.icon] || Info;
                   return (
                     <Card
                       key={cat.id}
-                      className="cursor-pointer hover:shadow-md hover:border-primary/30 transition-all group"
+                      className="cursor-pointer hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 group"
                       onClick={() => setSelectedCategory(cat.id)}
                     >
-                      <CardHeader className="pb-3">
+                      <CardHeader className="p-4 md:p-5 pb-2 md:pb-3">
                         <div className="flex items-start justify-between">
-                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <IconComp className="h-5 w-5 text-primary" />
+                          <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <IconComp className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                           </div>
-                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                         </div>
-                        <CardTitle className="text-base mt-3">{cat.title}</CardTitle>
+                        <CardTitle className="text-sm md:text-base mt-2 md:mt-3">{cat.title}</CardTitle>
                         <CardDescription className="text-xs line-clamp-2">
                           {cat.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0">
+                      <CardContent className="pt-0 px-4 md:px-5 pb-4 md:pb-5">
                         <span className="text-xs text-muted-foreground">
                           {cat.articleCount === 0
                             ? t("kb.guidesComingSoon")
@@ -393,10 +393,10 @@ function ArticleCard({
   const categoryData = kbCategories.find((c) => c.id === article.categoryId);
 
   return (
-    <Card className="hover:shadow-sm transition-shadow cursor-pointer" onClick={onClick}>
-      <CardContent className="py-4 px-5 flex items-start gap-4">
-        <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 mt-0.5">
-          <TypeIcon className="h-5 w-5 text-primary" />
+    <Card className="hover:shadow-sm hover:border-primary/20 transition-all duration-200 cursor-pointer" onClick={onClick}>
+      <CardContent className="py-3 md:py-4 px-4 md:px-5 flex items-start gap-3 md:gap-4">
+        <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 mt-0.5">
+          <TypeIcon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -451,7 +451,7 @@ function ArticleSection({ section }: { section: KBArticleSection }) {
       : "text-primary";
 
   return (
-    <div className={`rounded-xl border p-5 ${bgClass}`}>
+    <div className={`rounded-xl border p-4 md:p-5 ${bgClass}`}>
       {section.heading && (
         <div className="flex items-center gap-2.5 mb-3">
           {SectionIcon && (
