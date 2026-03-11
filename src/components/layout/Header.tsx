@@ -47,7 +47,6 @@ export function Header() {
                   <span className="font-medium">{t("marquee.we")}:</span>
                   <span>{t("marquee.weFri")}</span>
                 </div>
-                <span className="text-primary-foreground/50">•</span>
                 <div className="flex items-center gap-1.5">
                   <span className="font-medium">{t("marquee.longWe")}:</span>
                   <span>{t("marquee.longWeFri")}</span>
