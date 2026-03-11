@@ -31,7 +31,7 @@ export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: 
   if (!fileUrl) return;
 
   // Open a blank tab synchronously during the user click to avoid popup blockers
-  const popup = window.open("", "_blank", "noopener,noreferrer");
+  const popup = window.open("about:blank", "_blank");
 
   const openInFallbackTab = (url: string) => {
     const a = document.createElement("a");
