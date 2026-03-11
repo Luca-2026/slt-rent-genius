@@ -59,6 +59,7 @@ export function DeliveryNoteDialog({
   const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
+  const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
@@ -127,8 +128,9 @@ export function DeliveryNoteDialog({
   };
 
   const handleGenerate = async () => {
-    if (!offer || !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden zuerst unterschreiben.", variant: "destructive" });
+    if (!offer) return;
+    if (!customerNotPresent && !customerSignature) {
+      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
       return;
     }
     if (!staffSignature) {
@@ -139,11 +141,11 @@ export function DeliveryNoteDialog({
       toast({ title: "Mitarbeitername fehlt", description: "Bitte geben Sie Ihren Namen ein.", variant: "destructive" });
       return;
     }
-    if (!agbAccepted) {
+    if (!customerNotPresent && !agbAccepted) {
       toast({ title: "AGB nicht akzeptiert", description: "Der Kunde muss die AGB akzeptieren.", variant: "destructive" });
       return;
     }
-    if (!offerAccepted) {
+    if (!customerNotPresent && !offerAccepted) {
       toast({ title: "Angebotsannahme fehlt", description: "Der Kunde muss das Angebot bestätigen.", variant: "destructive" });
       return;
     }
@@ -156,31 +158,41 @@ export function DeliveryNoteDialog({
       const { data, error } = await supabase.functions.invoke("generate-delivery-note", {
         body: {
           offer_id: offer.id,
-          signature_data: customerSignature,
+          signature_data: customerNotPresent ? null : customerSignature,
           staff_signature_data: staffSignature,
           staff_name: staffName.trim(),
           notes: notes || undefined,
           known_defects: knownDefects || undefined,
           additional_defects: additionalDefects || undefined,
           photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
-          send_email: true,
-          agb_accepted: true,
+          send_email: !customerNotPresent, // Only send email if customer signed on-site
+          agb_accepted: customerNotPresent ? false : true,
           operating_hours: operatingHours || undefined,
           fuel_level: fuelLevel || undefined,
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
+          customer_not_present: customerNotPresent,
         },
       });
 
       if (error) throw error;
 
-      toast({
-        title: "Übergabeprotokoll erstellt!",
-        description: data.email_sent
-          ? `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt und per E-Mail versendet.`
-          : `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
-      });
+      const dnNumber = data.delivery_note?.delivery_note_number;
+      if (customerNotPresent) {
+        toast({
+          title: "Übergabeprotokoll erstellt!",
+          description: `${dnNumber} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
+        });
+      } else {
+        toast({
+          title: "Übergabeprotokoll erstellt!",
+          description: data.email_sent
+            ? `${dnNumber} wurde erstellt und per E-Mail versendet.`
+            : `${dnNumber} wurde erstellt. (E-Mail nicht konfiguriert)`,
+        });
+      }
 
       setCustomerSignature(null);
+      setCustomerNotPresent(false);
       setStaffSignature(null);
       setStaffName("");
       setNotes("");
@@ -213,7 +225,7 @@ export function DeliveryNoteDialog({
   const needsEquipmentFields = items.some(item =>
     EQUIPMENT_KEYWORDS.some(kw => item.product_name.toLowerCase().includes(kw))
   );
-  const allValid = !!customerSignature && !!staffSignature && !!staffName.trim() && agbAccepted && offerAccepted && itemsReceived;
+  const allValid = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && agbAccepted && offerAccepted && itemsReceived));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -445,72 +457,105 @@ export function DeliveryNoteDialog({
 
         <Separator />
 
-        {/* Legal Confirmations */}
-        <div className="space-y-3">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4" />
-            Rechtliche Bestätigungen
-          </Label>
-
-          {/* Items received confirmation */}
-          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-            <Checkbox
-              id="items-received"
-              checked={itemsReceived}
-              onCheckedChange={(checked) => setItemsReceived(checked === true)}
-            />
-            <label htmlFor="items-received" className="text-sm leading-relaxed cursor-pointer">
-              Der Kunde bestätigt hiermit den <strong>vollständigen und ordnungsgemäßen Empfang</strong> aller 
-              oben aufgeführten Mietgegenstände. Etwaige Mängel sind in der Mängeldokumentation vermerkt.
-            </label>
-          </div>
-
-          {/* Offer acceptance */}
-          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-            <Checkbox
-              id="offer-accept"
-              checked={offerAccepted}
-              onCheckedChange={(checked) => setOfferAccepted(checked === true)}
-            />
-            <label htmlFor="offer-accept" className="text-sm leading-relaxed cursor-pointer">
-              Der Kunde bestätigt hiermit die Annahme des Angebots{" "}
-              <strong>{offer.offer_number}</strong> der SLT Technology Group GmbH & Co. KG 
-              und erkennt die darin enthaltenen Konditionen, Preise und Mietbedingungen als verbindlich an 
-              (§§ 145 ff. BGB).
-            </label>
-          </div>
-
-          {/* AGB acceptance */}
-          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-            <Checkbox
-              id="agb-accept"
-              checked={agbAccepted}
-              onCheckedChange={(checked) => setAgbAccepted(checked === true)}
-            />
-            <label htmlFor="agb-accept" className="text-sm leading-relaxed cursor-pointer">
-              Der Kunde erklärt hiermit, die{" "}
-              <a href="/agb" target="_blank" className="text-primary underline hover:text-primary/80">
-                Allgemeinen Geschäftsbedingungen (AGB)
-              </a>{" "}
-              der SLT Technology Group GmbH & Co. KG vor Vertragsschluss zur Kenntnis genommen 
-              und deren Geltung ausdrücklich anerkannt zu haben.
-            </label>
-          </div>
+        {/* Customer presence toggle */}
+        <div className="flex items-start space-x-3 p-4 border-2 border-amber-300 rounded-lg bg-amber-50">
+          <Checkbox
+            id="customer-not-present"
+            checked={customerNotPresent}
+            onCheckedChange={(checked) => {
+              setCustomerNotPresent(checked === true);
+              if (checked) {
+                setCustomerSignature(null);
+                setAgbAccepted(false);
+                setOfferAccepted(false);
+                setItemsReceived(false);
+              }
+            }}
+          />
+          <label htmlFor="customer-not-present" className="text-sm leading-relaxed cursor-pointer">
+            <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem Kunden im Portal zur digitalen Unterschrift bereitgestellt. Sie können das Protokoll trotzdem sofort herunterladen.
+          </label>
         </div>
 
-        <Separator />
+        {/* Legal Confirmations - only when customer is present */}
+        {!customerNotPresent && (
+          <>
+            <div className="space-y-3">
+              <Label className="text-base font-semibold flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4" />
+                Rechtliche Bestätigungen
+              </Label>
 
-        {/* Customer Signature */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <UserCheck className="h-4 w-4" />
-            Unterschrift Mieter (Kunde)
-          </Label>
-          <p className="text-xs text-muted-foreground">
-            {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
-          </p>
-          <SignaturePad onSignatureChange={setCustomerSignature} />
-        </div>
+              {/* Items received confirmation */}
+              <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+                <Checkbox
+                  id="items-received"
+                  checked={itemsReceived}
+                  onCheckedChange={(checked) => setItemsReceived(checked === true)}
+                />
+                <label htmlFor="items-received" className="text-sm leading-relaxed cursor-pointer">
+                  Der Kunde bestätigt hiermit den <strong>vollständigen und ordnungsgemäßen Empfang</strong> aller 
+                  oben aufgeführten Mietgegenstände. Etwaige Mängel sind in der Mängeldokumentation vermerkt.
+                </label>
+              </div>
+
+              {/* Offer acceptance */}
+              <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+                <Checkbox
+                  id="offer-accept"
+                  checked={offerAccepted}
+                  onCheckedChange={(checked) => setOfferAccepted(checked === true)}
+                />
+                <label htmlFor="offer-accept" className="text-sm leading-relaxed cursor-pointer">
+                  Der Kunde bestätigt hiermit die Annahme des Angebots{" "}
+                  <strong>{offer.offer_number}</strong> der SLT Technology Group GmbH & Co. KG 
+                  und erkennt die darin enthaltenen Konditionen, Preise und Mietbedingungen als verbindlich an 
+                  (§§ 145 ff. BGB).
+                </label>
+              </div>
+
+              {/* AGB acceptance */}
+              <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+                <Checkbox
+                  id="agb-accept"
+                  checked={agbAccepted}
+                  onCheckedChange={(checked) => setAgbAccepted(checked === true)}
+                />
+                <label htmlFor="agb-accept" className="text-sm leading-relaxed cursor-pointer">
+                  Der Kunde erklärt hiermit, die{" "}
+                  <a href="/agb" target="_blank" className="text-primary underline hover:text-primary/80">
+                    Allgemeinen Geschäftsbedingungen (AGB)
+                  </a>{" "}
+                  der SLT Technology Group GmbH & Co. KG vor Vertragsschluss zur Kenntnis genommen 
+                  und deren Geltung ausdrücklich anerkannt zu haben.
+                </label>
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Customer Signature */}
+            <div className="space-y-2">
+              <Label className="text-base font-semibold flex items-center gap-2">
+                <UserCheck className="h-4 w-4" />
+                Unterschrift Mieter (Kunde)
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
+              </p>
+              <SignaturePad onSignatureChange={setCustomerSignature} />
+            </div>
+          </>
+        )}
+
+        {customerNotPresent && (
+          <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
+            <p className="text-sm text-muted-foreground text-center">
+              📋 Das Protokoll wird dem Kunden <strong>{profile.contact_first_name} {profile.contact_last_name}</strong> im B2B-Portal zur digitalen Unterschrift bereitgestellt.
+              Die AGB-Akzeptanz und Bestätigungen erfolgen dann durch den Kunden im Portal.
+            </p>
+          </div>
+        )}
 
         <Separator />
 
@@ -552,7 +597,7 @@ export function DeliveryNoteDialog({
             ) : (
               <>
                 <ShieldCheck className="h-4 w-4 mr-1.5" />
-                Übergabeprotokoll erstellen & senden
+                {customerNotPresent ? "Protokoll erstellen (ohne Kundenunterschrift)" : "Übergabeprotokoll erstellen & senden"}
               </>
             )}
           </Button>

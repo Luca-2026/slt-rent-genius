@@ -63,7 +63,7 @@ function formatDateStr(dateStr: string): string {
 
 interface DeliveryNoteRequest {
   offer_id: string;
-  signature_data: string;
+  signature_data: string | null;
   staff_signature_data: string;
   staff_name: string;
   notes?: string;
@@ -75,6 +75,7 @@ interface DeliveryNoteRequest {
   operating_hours?: string;
   fuel_level?: string;
   cleanliness_rating?: number;
+  customer_not_present?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -122,11 +123,18 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating, customer_not_present = false } = body;
 
-    if (!offer_id || !signature_data || !staff_signature_data || !staff_name) {
+    if (!offer_id || !staff_signature_data || !staff_name) {
       return new Response(
-        JSON.stringify({ error: "offer_id, signature_data, staff_signature_data and staff_name are required" }),
+        JSON.stringify({ error: "offer_id, staff_signature_data and staff_name are required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!customer_not_present && !signature_data) {
+      return new Response(
+        JSON.stringify({ error: "signature_data is required when customer is present" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -252,6 +260,7 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signedUrlData?.signedUrl || "";
 
     const now = new Date().toISOString();
+    const deliveryNoteStatus = customer_not_present ? "pending_customer_signature" : "signed";
     const { data: deliveryNote, error: dnError } = await serviceClient
       .from("b2b_delivery_notes")
       .insert({
@@ -259,17 +268,17 @@ Deno.serve(async (req: Request) => {
         reservation_id: offer.reservation_id || null,
         b2b_profile_id: profile.id,
         delivery_note_number: deliveryNoteNumber,
-        status: "signed",
-        signature_data,
+        status: deliveryNoteStatus,
+        signature_data: signature_data || null,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
         known_defects: known_defects || null,
         additional_defects: additional_defects || null,
         photo_urls: photo_urls || [],
-        signed_at: now,
-        agb_accepted: agb_accepted,
-        agb_accepted_at: agb_accepted ? now : null,
+        signed_at: customer_not_present ? null : now,
+        agb_accepted: customer_not_present ? false : agb_accepted,
+        agb_accepted_at: (!customer_not_present && agb_accepted) ? now : null,
       })
       .select()
       .single();
@@ -460,8 +469,10 @@ Deno.serve(async (req: Request) => {
           id: deliveryNote.id,
           delivery_note_number: deliveryNoteNumber,
           file_url: fileUrl,
+          status: deliveryNoteStatus,
         },
         email_sent: emailSent,
+        customer_not_present,
       }),
       {
         status: 200,
