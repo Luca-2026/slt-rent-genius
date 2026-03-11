@@ -923,7 +923,8 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-nasstrockensauger-gas35",
-    name: "Nass-/Trockensauger GAS 35 M AFC",
+    name: "Nass-/Trockensauger",
+    modelName: "Bosch GAS 35 M AFC",
     description: "Professioneller Industriesauger mit Filterreinigung.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "5FSVCT" },
