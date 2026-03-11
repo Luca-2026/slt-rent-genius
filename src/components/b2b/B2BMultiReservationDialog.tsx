@@ -307,11 +307,12 @@ export function B2BMultiReservationDialog({
                 />
               </div>
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (von)</label>
+                <label className="block text-xs text-muted-foreground mb-1">Uhrzeit (von) <span className="text-destructive">*</span></label>
                 <Input
                   type="time"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
+                  required
                 />
               </div>
               <div>
