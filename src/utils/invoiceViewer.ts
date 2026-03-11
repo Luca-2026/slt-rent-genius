@@ -27,7 +27,7 @@ function extractStoragePath(fileUrl: string): { bucket: string; path: string } |
  * Opens/downloads a document (PDF or HTML).
  * For storage URLs: fetches the file and opens it reliably even with popup blockers.
  */
-export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: string, _documentType?: string): Promise<void> {
+export async function openInvoiceInNewWindow(fileUrl: string, documentNumber?: string, documentType?: string): Promise<void> {
   if (!fileUrl) return;
 
   // Open a blank tab synchronously during the user click to avoid popup blockers
@@ -37,6 +37,20 @@ export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: 
     const a = document.createElement("a");
     a.href = url;
     a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const forceDownload = (url: string, fileName: string) => {
+    if (popup && !popup.closed) {
+      popup.close();
+    }
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
     a.rel = "noopener noreferrer";
     document.body.appendChild(a);
     a.click();
@@ -60,9 +74,17 @@ export async function openInvoiceInNewWindow(fileUrl: string, _documentNumber?: 
         .download(storagePath.path);
 
       if (!error && data) {
-        const blobUrl = URL.createObjectURL(data);
-        openInPopupOrFallback(blobUrl);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+        const fileName =
+          storagePath.path.split("/").pop() ||
+          `${documentType ?? "Dokument"}-${documentNumber ?? "Datei"}.pdf`;
+
+        const pdfBlob = data.type === "application/pdf"
+          ? data
+          : new Blob([data], { type: "application/pdf" });
+
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        forceDownload(blobUrl, fileName);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
         return;
       }
     } catch {
