@@ -611,6 +611,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
+            cc: [loc.email],
             subject: `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`,
             html: emailHtml,
             attachments,
@@ -811,12 +812,18 @@ async function generateOfferPdf(data: {
   // ── ITEMS TABLE HEADER ──
   page.drawRectangle({ x: margin, y: y - 4, width: contentWidth, height: 20, color: blue });
   const hdrY = y;
-  drawText("Pos.", margin + 4, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Bezeichnung", margin + 34, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Menge", margin + 265, hdrY, { f: fontBold, s: 8, c: white });
-  drawTextRight("Einzelpreis", margin + 380, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Rabatt", margin + 390, hdrY, { f: fontBold, s: 8, c: white });
-  drawTextRight("Gesamt", pageWidth - margin - 4, hdrY, { f: fontBold, s: 8, c: white });
+  const colPos = margin + 4;
+  const colName = margin + 30;
+  const colQty = margin + 240;
+  const colUnit = margin + 310;
+  const colDisc = margin + 395;
+  const colTotal = pageWidth - margin - 4;
+  drawText("Pos.", colPos, hdrY, { f: fontBold, s: 8, c: white });
+  drawText("Bezeichnung", colName, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Menge", colQty + 30, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Einzelpreis", colUnit + 50, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Rabatt", colDisc + 35, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Gesamt", colTotal, hdrY, { f: fontBold, s: 8, c: white });
   y -= 22;
 
   // ── ITEM ROWS ──
@@ -825,26 +832,26 @@ async function generateOfferPdf(data: {
     const item = data.items[i];
     const rowY = y;
 
-    drawText(String(i + 1), margin + 4, rowY, { s: 9 });
+    drawText(String(i + 1), colPos, rowY, { s: 9 });
 
-    const pName = safe(item.product_name).substring(0, 45);
-    drawText(pName, margin + 34, rowY, { f: fontBold, s: 9 });
+    const pName = safe(item.product_name).substring(0, 40);
+    drawText(pName, colName, rowY, { f: fontBold, s: 9 });
 
     let subY = rowY;
     if (item.rental_start) {
       subY -= 11;
       const period = fmtDate(item.rental_start) + (item.rental_end ? " - " + fmtDate(item.rental_end) : "");
-      drawText(period, margin + 34, subY, { s: 7, c: lightGray });
+      drawText(period, colName, subY, { s: 7, c: lightGray });
     }
     if (item.description) {
       subY -= 11;
-      drawText(safe(item.description).substring(0, 55), margin + 34, subY, { s: 7, c: gray });
+      drawText(safe(item.description).substring(0, 50), colName, subY, { s: 7, c: gray });
     }
 
-    drawText(String(item.quantity), margin + 275, rowY, { s: 9 });
-    drawTextRight(fmtCurrency(item.unit_price), margin + 380, rowY, { s: 9 });
-    drawText(item.discount_percent > 0 ? item.discount_percent + "%" : "-", margin + 400, rowY, { s: 9 });
-    drawTextRight(fmtCurrency(item.total_price), pageWidth - margin - 4, rowY, { s: 9 });
+    drawTextRight(String(item.quantity), colQty + 30, rowY, { s: 9 });
+    drawTextRight(fmtCurrency(item.unit_price), colUnit + 50, rowY, { s: 9 });
+    drawTextRight(item.discount_percent > 0 ? item.discount_percent + "%" : "-", colDisc + 35, rowY, { s: 9 });
+    drawTextRight(fmtCurrency(item.total_price), colTotal, rowY, { s: 9 });
 
     y = subY - 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
@@ -854,10 +861,10 @@ async function generateOfferPdf(data: {
   // ── DELIVERY ROW ──
   if (data.deliveryCost > 0) {
     ensureSpace(40);
-    drawText("Lieferung / Transport", margin + 34, y, { f: fontBold, s: 9 });
-    drawText("1", margin + 275, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), margin + 380, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin - 4, y, { s: 9 });
+    drawText("Lieferung / Transport", colName, y, { f: fontBold, s: 9 });
+    drawTextRight("1", colQty + 30, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colUnit + 50, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colTotal, y, { s: 9 });
     y -= 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
     y -= 15;

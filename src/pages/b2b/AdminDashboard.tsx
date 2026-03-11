@@ -620,6 +620,16 @@ export default function AdminDashboard() {
         ? reservations.find((r) => r.id === offer.reservation_id)
         : null;
 
+      // Calculate valid_days from existing offer data to preserve original validity
+      let validDays = 14;
+      if (offer.offer_date && offer.valid_until) {
+        const offerDate = new Date(offer.offer_date);
+        const validUntil = new Date(offer.valid_until);
+        const diffMs = validUntil.getTime() - offerDate.getTime();
+        const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        if (diffDays > 0) validDays = diffDays;
+      }
+
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
           reservation_id: offer.reservation_id || undefined,
@@ -639,6 +649,7 @@ export default function AdminDashboard() {
           deposit: offer.deposit || undefined,
           additional_services: offer.additional_services ? (typeof offer.additional_services === 'string' ? JSON.parse(offer.additional_services) : offer.additional_services) : undefined,
           notes: offer.notes || undefined,
+          valid_days: validDays,
           send_email: true,
           save_prices: false,
         },
