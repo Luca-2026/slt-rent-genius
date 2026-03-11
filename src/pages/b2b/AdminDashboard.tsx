@@ -271,12 +271,16 @@ export default function AdminDashboard() {
           unit_price: number;
           discount_percent: number;
         }> = [];
-        if (offer.additional_services && Array.isArray(offer.additional_services)) {
+        let parsedServices = offer.additional_services;
+        if (typeof parsedServices === "string") {
+          try { parsedServices = JSON.parse(parsedServices); } catch { parsedServices = null; }
+        }
+        if (parsedServices && Array.isArray(parsedServices)) {
           const itemsNetTotal = items.reduce((sum, item) => {
             const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
             return sum + discounted * item.quantity;
           }, 0);
-          for (const svc of offer.additional_services as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
+          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
             if (svc.pricePercent !== null && svc.pricePercent > 0) {
               const amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
               additionalServiceItems.push({
