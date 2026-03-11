@@ -1099,6 +1099,20 @@ export const bonnStromProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "9L9EQZ" },
   },
+  {
+    id: "bonn-cee-kabel-16a-10m",
+    name: "CEE Kabel 16A rot 10m",
+    description: "Verlängerungskabel CEE 16A, 10 Meter.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "FZV4QW" },
+  },
+  {
+    id: "bonn-cee-kabel-16a-20m",
+    name: "CEE Kabel 16A rot 20m",
+    description: "Verlängerungskabel CEE 16A, 20 Meter.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "G9R37U" },
+  },
 ];
 
 // ==================== LEITERN & GERÜSTE ====================
