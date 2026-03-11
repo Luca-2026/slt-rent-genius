@@ -87,7 +87,7 @@ export default function Lieferung() {
   const [category, setCategory] = useState<CategoryKey>("1t-bagger");
   const [distance, setDistance] = useState(20);
   const [twoMachines, setTwoMachines] = useState(false);
-  const [includeReturn, setIncludeReturn] = useState(true);
+  const [includeReturn, setIncludeReturn] = useState(false);
 
   const selectedCategory = deliveryPrices[category];
 
