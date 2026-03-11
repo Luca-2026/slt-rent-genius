@@ -258,6 +258,42 @@ export default function AdminDashboard() {
             discount_percent: 0,
           }));
 
+        // Add additional services (Haftungsfreistellung, MBV etc.) as line items
+        const additionalServiceItems: Array<{
+          product_name: string;
+          description?: string;
+          quantity: number;
+          unit_price: number;
+          discount_percent: number;
+        }> = [];
+        if (offer.additional_services && Array.isArray(offer.additional_services)) {
+          const itemsNetTotal = items.reduce((sum, item) => {
+            const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
+            return sum + discounted * item.quantity;
+          }, 0);
+          for (const svc of offer.additional_services as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
+            if (svc.pricePercent !== null && svc.pricePercent > 0) {
+              const amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
+              additionalServiceItems.push({
+                product_name: svc.name,
+                description: svc.description || "Zusatzleistung",
+                quantity: 1,
+                unit_price: amount,
+                discount_percent: 0,
+              });
+            } else if (svc.pricePercent === null || svc.pricePercent === 0) {
+              // Free services – still list them with 0€
+              additionalServiceItems.push({
+                product_name: svc.name,
+                description: svc.description || "Zusatzleistung (inkl.)",
+                quantity: 1,
+                unit_price: 0,
+                discount_percent: 0,
+              });
+            }
+          }
+        }
+
         // Add deposit as a line item for proforma invoices
         const depositItems: Array<{
           product_name: string;
