@@ -1184,7 +1184,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-multicutter-gop18v-28",
-    name: "Bosch Akku-Multicutter GOP 18V-28",
+    name: "Akku Multicutter",
+    modelName: "Bosch GOP 18V-28",
     description: "Multifunktionswerkzeug für verschiedene Anwendungen",
     image: imgMulticutter,
     images: [imgMulticutter],
