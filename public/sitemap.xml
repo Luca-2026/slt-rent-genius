@@ -10,7 +10,7 @@
   <url><loc>https://www.slt-rental.de/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/karriere</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/ueber-uns</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/wissensbasis</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
+  <url><loc>https://www.slt-rental.de/hilfe</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-11</lastmod></url>
   
   <!-- Location Pages -->
   <url><loc>https://www.slt-rental.de/mieten/krefeld</loc><changefreq>weekly</changefreq><priority>0.9</priority><lastmod>2026-03-07</lastmod></url>
@@ -61,8 +61,8 @@
 
   <!-- Solutions -->
   <url><loc>https://www.slt-rental.de/loesungen</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/loesungen/tiefbau</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/loesungen/hochbau</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
+  <url><loc>https://www.slt-rental.de/loesungen/tiefbau-erdbewegung</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-11</lastmod></url>
+  <url><loc>https://www.slt-rental.de/loesungen/hochbau-renovierung</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-11</lastmod></url>
   <url><loc>https://www.slt-rental.de/loesungen/galabau</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/loesungen/events</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/loesungen/handwerk</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-07</lastmod></url>

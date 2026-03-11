@@ -22,8 +22,8 @@ const staticPages = [
   { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   // Solutions
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
-  { path: '/loesungen/tiefbau', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/hochbau', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/tiefbau-erdbewegung', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/hochbau-renovierung', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/galabau', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/events', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/handwerk', priority: '0.6', changefreq: 'monthly' },
