@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProductWithContext, locations } from "@/data/rentalData";
+import { getProductWithContext, locations, productCategories } from "@/data/rentalData";
 
 /**
  * Redirects old /produkte/:productSlug URLs to new /mieten/:location/:category/:product
- * Also handles /produkte-bonn/:slug, /produkte-duisburg/:slug, /produkte-muelheim/:slug
+ * Also handles old /produkte/:category routes by checking if slug matches a category first.
  */
 export function LegacyProductRedirect() {
   const { productSlug } = useParams<{ productSlug: string }>();
@@ -16,6 +16,13 @@ export function LegacyProductRedirect() {
       return;
     }
 
+    // Check if this is actually an old category slug (e.g. /produkte/arbeitsbuehnen)
+    const isCategory = productCategories.some((c) => c.id === productSlug);
+    if (isCategory) {
+      navigate(`/mieten/krefeld/${productSlug}`, { replace: true });
+      return;
+    }
+
     // Try to find the product by ID across all locations
     const ctx = getProductWithContext(productSlug);
     if (ctx) {
@@ -23,16 +30,14 @@ export function LegacyProductRedirect() {
       return;
     }
 
-    // Try normalised matching (remove umlauts differences like "bühne" vs "buhne")
+    // Try normalised matching (handle umlaut differences like "bühne" vs "buhne")
     const normalised = productSlug.toLowerCase();
     for (const location of locations) {
       for (const [categoryId, products] of Object.entries(location.products)) {
         const found = products.find((p) => {
           const pid = p.id.toLowerCase();
-          // Exact or close match (handle umlaut differences in URLs)
-          return pid === normalised || 
-            pid.replace(/[äöüß]/g, (c) => ({ ä: "a", ö: "o", ü: "u", ß: "ss" }[c] || c)) === normalised ||
-            normalised.replace(/[äöüß]/g, (c) => ({ ä: "a", ö: "o", ü: "u", ß: "ss" }[c] || c)) === pid.replace(/[äöüß]/g, (c) => ({ ä: "a", ö: "o", ü: "u", ß: "ss" }[c] || c));
+          const norm = (s: string) => s.replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss");
+          return pid === normalised || norm(pid) === norm(normalised);
         });
         if (found) {
           navigate(`/mieten/${location.id}/${categoryId}/${found.id}`, { replace: true });
