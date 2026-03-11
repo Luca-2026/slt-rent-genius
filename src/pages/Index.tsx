@@ -280,7 +280,7 @@ export default function Index() {
       </Suspense>
 
       {/* Google Reviews Section */}
-      <section className="py-16 lg:py-20 bg-muted/30">
+      <section className="py-16 lg:py-20 bg-muted/30 snap-start">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <div className="text-center mb-10">
