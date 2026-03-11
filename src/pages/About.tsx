@@ -142,7 +142,7 @@ export default function About() {
                       </Avatar>
                     </a>
                   ) : (
-                    <Avatar className="h-24 w-24 mx-auto mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
+                    <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-24 lg:w-24 mx-auto mb-2 md:mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
                       {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
                       <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                     </Avatar>
