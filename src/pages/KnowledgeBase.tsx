@@ -306,7 +306,7 @@ export default function KnowledgeBase() {
               <h2 className="text-lg font-semibold text-foreground mb-6">
                 {t("kb.browseCategories")}
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {categoriesWithCounts.map((cat) => {
                   const IconComp = iconMap[cat.icon] || Info;
                   return (
