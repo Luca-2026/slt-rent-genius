@@ -126,17 +126,17 @@ export default function About() {
       />
 
       {/* Hero */}
-      <section className="bg-primary py-8 md:py-10 lg:py-24 xl:py-28 relative overflow-hidden">
+      <section className="bg-primary py-8 md:py-10 lg:py-20 relative overflow-hidden">
         {/* Decorative background elements for desktop */}
         <div className="hidden lg:block absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary-foreground/5 to-transparent" />
         <div className="hidden lg:block absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-accent/5 blur-3xl" />
         <div className="section-container relative z-10">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <div className="max-w-3xl lg:max-w-4xl">
-              <h1 className="text-xl md:text-2xl lg:text-5xl xl:text-6xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-6 leading-tight">
+            <div className="max-w-3xl">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary-foreground mb-2 md:mb-3 lg:mb-4 leading-tight">
                 {t("about.heroTitle")}
               </h1>
-              <p className="text-sm md:text-base lg:text-xl text-primary-foreground/80 leading-relaxed max-w-2xl">
+              <p className="text-sm md:text-base lg:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
                 {t("about.heroDesc")}
               </p>
             </div>
