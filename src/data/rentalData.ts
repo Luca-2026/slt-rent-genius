@@ -569,7 +569,7 @@ const trailerProducts: Product[] = [
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    rentwareCode: { krefeld: "4POSMU" } 
+    rentwareCode: { bonn: "4POSMU" } 
   },
   { 
     id: "rueckwaertskipp-1500", 
