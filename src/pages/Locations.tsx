@@ -40,7 +40,7 @@ export default function Locations() {
       {/* Locations Grid */}
       <section className="py-10 md:py-12 lg:py-20">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-8">
             {locationData.map((location, index) => (
               <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
