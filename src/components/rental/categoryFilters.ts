@@ -337,6 +337,17 @@ export const absperrtechnikFilterSections: FilterSection[] = [
     ],
   },
   {
+    id: "schilderart",
+    label: "catFilters.schilderart",
+    defaultExpanded: false,
+    options: [
+      { id: "richtschilder", label: "catFilters.richtschilder", sublabel: "catFilters.richtschilder_sub" },
+      { id: "gefahrschilder", label: "catFilters.gefahrschilder", sublabel: "catFilters.gefahrschilder_sub" },
+      { id: "verbotsschilder", label: "catFilters.verbotsschilder", sublabel: "catFilters.verbotsschilder_sub" },
+      { id: "geschwindigkeitsschilder", label: "catFilters.geschwindigkeitsschilder", sublabel: "catFilters.geschwindigkeitsschilder_sub" },
+    ],
+  },
+  {
     id: "reflektionsklasse",
     label: "catFilters.reflektionsklasse",
     defaultExpanded: false,
