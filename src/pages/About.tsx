@@ -166,12 +166,12 @@ export default function About() {
             {values.map((value, index) => (
               <AnimatedSection key={value.title} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                      <value.icon className="h-7 w-7 text-accent" />
+                  <CardContent className="p-4 md:p-4 lg:p-6 text-center">
+                    <div className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-3 md:mb-3 lg:mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
+                      <value.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-accent" />
                     </div>
-                    <h3 className="font-semibold text-headline mb-2">{value.title}</h3>
-                    <p className="text-sm text-muted-foreground">{value.description}</p>
+                    <h3 className="font-semibold text-headline mb-1.5 md:mb-2 text-sm md:text-sm lg:text-base">{value.title}</h3>
+                    <p className="text-xs md:text-xs lg:text-sm text-muted-foreground">{value.description}</p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
