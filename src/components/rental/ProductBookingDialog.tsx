@@ -85,7 +85,7 @@ export function ProductBookingDialog({
       const maxAttempts = 50;
       const interval = setInterval(() => {
         attempts++;
-        if (customElements.get('rtr-article') || attempts >= maxAttempts) {
+        if (customElements.get('rtr-article-booking') || attempts >= maxAttempts) {
           clearInterval(interval);
           mountWidget();
         }
