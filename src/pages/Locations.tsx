@@ -40,12 +40,12 @@ export default function Locations() {
       {/* Locations Grid */}
       <section className="py-10 md:py-12 lg:py-20">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-8">
             {locationData.map((location, index) => (
               <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150}>
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
-                  <Link to={`/mieten/${location.id}`} className="block h-32 md:h-28 lg:h-40 overflow-hidden bg-muted">
+                  <Link to={`/mieten/${location.id}`} className="block h-32 md:h-36 lg:h-40 overflow-hidden bg-muted">
                     {location.image ? (
                       <img 
                         src={location.image} 
@@ -58,34 +58,34 @@ export default function Locations() {
                       </div>
                     )}
                   </Link>
-                  <CardContent className="p-4 md:p-3 lg:p-6 flex flex-col flex-1">
-                    <div className="flex items-start justify-between mb-3 md:mb-2 lg:mb-4">
-                      <div>
-                        <h2 className="text-lg md:text-base lg:text-xl font-bold text-headline">{location.name}</h2>
-                        <span className="text-xs md:text-[11px] lg:text-sm text-accent font-medium">{location.subtitle}</span>
+                    <CardContent className="p-4 md:p-5 lg:p-6 flex flex-col flex-1">
+                      <div className="flex items-start justify-between mb-3 lg:mb-4">
+                        <div>
+                          <h2 className="text-lg md:text-lg lg:text-xl font-bold text-headline">{location.name}</h2>
+                          <span className="text-xs md:text-xs lg:text-sm text-accent font-medium">{location.subtitle}</span>
+                        </div>
+                        <div className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                          <MapPin className="h-4 w-4 md:h-4 md:w-4 lg:h-5 lg:w-5 text-primary" />
+                        </div>
                       </div>
-                      <div className="w-8 h-8 md:w-7 md:h-7 lg:w-10 lg:h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                        <MapPin className="h-4 w-4 md:h-3.5 md:w-3.5 lg:h-5 lg:w-5 text-primary" />
-                      </div>
-                    </div>
 
                     {/* Address & Contact */}
-                    <div className="space-y-2 md:space-y-1.5 lg:space-y-3 mb-4 md:mb-3 lg:mb-6">
-                      <div className="flex items-start gap-2 md:gap-1.5 lg:gap-3 text-sm md:text-xs lg:text-sm">
-                        <MapPin className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground mt-0.5 shrink-0" />
+                    <div className="space-y-2 md:space-y-2 lg:space-y-3 mb-4 md:mb-4 lg:mb-6">
+                      <div className="flex items-start gap-2 md:gap-2 lg:gap-3 text-sm md:text-sm lg:text-sm">
+                        <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                         <div>
                           <p className="text-headline">{location.address}</p>
                           <p className="text-muted-foreground">{location.city}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 md:gap-1.5 lg:gap-3 text-sm md:text-xs lg:text-sm">
-                        <Phone className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
+                      <div className="flex items-center gap-2 md:gap-2 lg:gap-3 text-sm md:text-sm lg:text-sm">
+                        <Phone className="h-4 w-4 text-muted-foreground shrink-0" />
                         <a href={`tel:${location.phone.replace(/\s/g, "")}`} className="text-primary hover:text-accent">
                           {location.phone}
                         </a>
                       </div>
-                      <div className="flex items-center gap-2 md:gap-1.5 lg:gap-3 text-sm md:text-xs lg:text-sm">
-                        <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
+                      <div className="flex items-center gap-2 md:gap-2 lg:gap-3 text-sm md:text-sm lg:text-sm">
+                        <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
                         <a href={`mailto:${location.email}`} className="text-primary hover:text-accent truncate">
                           {location.email}
                         </a>
@@ -96,54 +96,54 @@ export default function Locations() {
                     {location.manager && (
                       <a 
                         href={`mailto:${location.manager.email}`}
-                        className="flex items-center gap-2 md:gap-2 lg:gap-3 mb-4 md:mb-3 lg:mb-6 p-2.5 md:p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr h-[56px] md:h-[48px] lg:h-auto"
+                        className="flex items-center gap-2 md:gap-3 lg:gap-3 mb-4 md:mb-4 lg:mb-6 p-2.5 md:p-3 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
                       >
-                        <Avatar className="h-10 w-10 md:h-8 md:w-8 lg:h-12 lg:w-12 shrink-0">
+                        <Avatar className="h-10 w-10 md:h-10 md:w-10 lg:h-12 lg:w-12 shrink-0">
                           {location.manager.image ? (
                             <AvatarImage src={location.manager.image} alt={location.manager.name} />
                           ) : null}
                           <AvatarFallback className="bg-primary/10 text-primary">
-                            <User className="h-4 w-4 md:h-3 md:w-3 lg:h-5 lg:w-5" />
+                            <User className="h-4 w-4 lg:h-5 lg:w-5" />
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-headline text-sm md:text-xs lg:text-sm group-hover/mgr:text-primary transition-colors truncate">{location.manager.name}</p>
-                          <p className="text-xs md:text-[10px] lg:text-xs text-muted-foreground">{t(location.manager.role)}</p>
+                          <p className="font-semibold text-headline text-sm group-hover/mgr:text-primary transition-colors truncate">{location.manager.name}</p>
+                          <p className="text-xs text-muted-foreground">{t(location.manager.role)}</p>
                         </div>
-                        <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors shrink-0" />
+                        <Mail className="h-4 w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors shrink-0" />
                       </a>
                     )}
 
                     {/* Hours */}
-                    <div className="mb-4 md:mb-3 lg:mb-6">
-                      <div className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm font-medium text-headline mb-2 md:mb-1 lg:mb-2">
-                        <Clock className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4" />
+                    <div className="mb-4 md:mb-4 lg:mb-6">
+                      <div className="flex items-center gap-2 text-sm font-medium text-headline mb-2">
+                        <Clock className="h-4 w-4" />
                         {t("locations.openingHours")}
                       </div>
-                      <div className="space-y-1 md:space-y-0.5 min-h-[60px] md:min-h-[50px] lg:min-h-[72px]">
+                      <div className="space-y-1 min-h-[60px] lg:min-h-[72px]">
                         {location.hours.map((h) => (
-                          <div key={h.day} className="flex justify-between gap-2 text-sm md:text-[11px] lg:text-sm">
+                          <div key={h.day} className="flex justify-between gap-2 text-sm">
                             <span className="text-muted-foreground shrink-0">{h.day}</span>
                             <span className="text-headline text-right">{h.time}</span>
                           </div>
                         ))}
                       </div>
-                      <div className="min-h-[16px] md:min-h-[14px] lg:min-h-[20px]">
+                      <div className="min-h-[16px] lg:min-h-[20px]">
                         {"hoursNote" in location && location.hoursNote && (
-                          <p className="text-[10px] md:text-[9px] lg:text-xs text-muted-foreground mt-1.5 md:mt-1 lg:mt-2">{location.hoursNote}</p>
+                          <p className="text-[10px] lg:text-xs text-muted-foreground mt-1.5 lg:mt-2">{location.hoursNote}</p>
                         )}
                       </div>
                     </div>
 
                     {/* Features */}
-                    <div className="mb-4 md:mb-3 lg:mb-6 min-h-[48px] md:min-h-[40px] lg:min-h-[60px]">
-                      <div className="flex flex-wrap gap-1.5 md:gap-1 lg:gap-2">
+                    <div className="mb-4 md:mb-4 lg:mb-6 min-h-[48px] lg:min-h-[60px]">
+                      <div className="flex flex-wrap gap-1.5 lg:gap-2">
                         {location.features.map((feature) => (
                           <span
                             key={feature}
-                            className="inline-flex items-center gap-1 bg-surface-light px-2 md:px-1.5 lg:px-2 py-1 md:py-0.5 lg:py-1 rounded text-xs md:text-[10px] lg:text-xs text-body"
+                            className="inline-flex items-center gap-1 bg-surface-light px-2 py-1 rounded text-xs text-body"
                           >
-                            <CheckCircle2 className="h-3 w-3 md:h-2.5 md:w-2.5 lg:h-3 lg:w-3 text-accent shrink-0" />
+                            <CheckCircle2 className="h-3 w-3 text-accent shrink-0" />
                             {feature}
                           </span>
                         ))}
@@ -151,16 +151,16 @@ export default function Locations() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 md:gap-1.5 lg:gap-3 mt-auto">
+                    <div className="flex gap-2 lg:gap-3 mt-auto">
                       <a href={location.mapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                        <Button variant="outline" className="w-full md:text-[10px] md:px-2 lg:text-sm lg:px-4" size="sm">
-                         <Navigation className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 mr-1.5 md:mr-1 lg:mr-2 shrink-0" />
+                        <Button variant="outline" className="w-full text-sm" size="sm">
+                         <Navigation className="h-4 w-4 mr-1.5 lg:mr-2 shrink-0" />
                            {t("locations.route")}
                         </Button>
                       </a>
                       <Link to={`/mieten/${location.id}`} className="flex-1">
-                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover md:text-[10px] md:px-2 lg:text-sm lg:px-4" size="sm">
-                           Mietartikel
+                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover text-sm" size="sm">
+                           {t("locations.rentalArticles")}
                         </Button>
                       </Link>
                     </div>
