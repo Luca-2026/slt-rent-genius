@@ -1083,10 +1083,18 @@ export default function AdminDashboard() {
                             <span>{formatCurrency(invoiceFromOffer.delivery_cost)}</span>
                           </div>
                         )}
+                        {proformaMode && invoiceFromOffer.deposit != null && invoiceFromOffer.deposit > 0 && (
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Kaution</span>
+                            <span>{formatCurrency(invoiceFromOffer.deposit)}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="border-t pt-2 flex justify-between font-semibold">
-                        <span>Brutto</span>
-                        <span>{formatCurrency(invoiceFromOffer.gross_amount)}</span>
+                        <span>Brutto {proformaMode && invoiceFromOffer.deposit ? "(inkl. Kaution)" : ""}</span>
+                        <span>{formatCurrency(
+                          invoiceFromOffer.gross_amount + (proformaMode && invoiceFromOffer.deposit ? invoiceFromOffer.deposit : 0)
+                        )}</span>
                       </div>
                     </>
                   ) : selectedReservation ? (
