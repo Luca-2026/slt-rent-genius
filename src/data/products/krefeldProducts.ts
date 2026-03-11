@@ -1034,7 +1034,6 @@ export const werkzeugeProducts: Product[] = [
     image: imgAbbruchhammerHm1812,
     images: [imgAbbruchhammerHm1812],
     category: "abbruchhammer",
-    onRequest: true,
     specifications: {
       "Hersteller": "Makita",
       "Schlagenergie": "72,8 J",
@@ -1045,6 +1044,7 @@ export const werkzeugeProducts: Product[] = [
       "Werkzeugaufnahme": "HEX-28",
       "Lieferumfang": "1x Spitzmeißel, 1x Flachmeißel",
     },
+    rentwareCode: { krefeld: "EFFXYJ" },
   },
   {
     id: "bosch-bohrschrauber-gsr12v-15",
