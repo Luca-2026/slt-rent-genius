@@ -411,7 +411,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-cormidi-c60",
-    name: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
+    name: "Dumper mit Hochauskippfunktion",
+    modelName: "Cormidi C60 HI TIP",
     description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
