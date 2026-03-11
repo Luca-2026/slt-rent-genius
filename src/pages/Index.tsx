@@ -302,7 +302,7 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden snap-start">
+      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
         
         <div className="section-container text-center relative">
           <AnimatedSection>
