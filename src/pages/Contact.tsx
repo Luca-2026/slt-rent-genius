@@ -23,7 +23,7 @@ export default function Contact() {
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
     { icon: Mail, title: t("contact.emailTitle"), primary: t("contact.emailAddress"), secondary: t("contact.emailResponse"), href: "mailto:mieten@slt-rental.de" },
-    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: t("contact.whatsappNumber"), secondary: t("contact.whatsappDesc"), href: "https://wa.me/49021514179904" },
+    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: "+49 1578 9150872", secondary: t("contact.whatsappDesc"), href: "https://wa.me/4915789150872" },
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
