@@ -104,6 +104,19 @@ export function LegacyCategoryRedirect({ locationId }: { locationId: string }) {
       return;
     }
 
+    // Handle compound slugs like "krefeld-anhaengerZus" from /kategorie/ routes
+    let slug = categorySlug;
+    // Strip location prefix if present (e.g. "krefeld-anhaenger" → "anhaenger")
+    const locationPrefixes = ["krefeld-", "bonn-", "muelheim-", "duisburg-"];
+    for (const prefix of locationPrefixes) {
+      if (slug.toLowerCase().startsWith(prefix)) {
+        slug = slug.substring(prefix.length);
+        break;
+      }
+    }
+    // Remove trailing suffixes like "Zus" or other junk
+    slug = slug.replace(/Zus$/i, "").toLowerCase();
+
     // Map old category names to new ones
     const categoryMap: Record<string, string> = {
       "rigging": "traversen-rigging",
@@ -128,7 +141,7 @@ export function LegacyCategoryRedirect({ locationId }: { locationId: string }) {
       "gartenpflege": "gartenpflege",
     };
 
-    const mapped = categoryMap[categorySlug] || categorySlug;
+    const mapped = categoryMap[slug] || slug;
     navigate(`/mieten/${locationId}/${mapped}`, { replace: true });
   }, [categorySlug, locationId, navigate]);
 
