@@ -421,7 +421,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550",
+    name: "Raddumper / Knickdumper",
+    modelName: "KDe550",
     description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
     image: imgKnickdumper1,
     images: [imgKnickdumper1, imgKnickdumper2],
