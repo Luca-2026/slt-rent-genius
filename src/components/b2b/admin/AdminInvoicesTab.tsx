@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Eye, Receipt, RefreshCw, Plus, Minus, FileX, Trash2, Download } from "lucide-react";
+import { Eye, Receipt, RefreshCw, Plus, Minus, FileX, Trash2, Download, Send, Mail, CheckCircle } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
