@@ -40,7 +40,6 @@ export default function Index() {
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  ];
 
   const trustItems = [
     { value: 3500, label: t("trust.satisfiedCustomers"), prefix: "+", isCounter: true },
