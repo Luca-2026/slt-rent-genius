@@ -1234,7 +1234,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "rotationslaser-grl400h",
-    name: "Bosch Rotationslaser GRL 400H",
+    name: "Rotationslaser",
+    modelName: "Bosch GRL 400H",
     description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
     detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
     image: rotationslaser1,
