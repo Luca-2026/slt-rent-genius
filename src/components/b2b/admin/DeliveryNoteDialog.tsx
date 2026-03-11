@@ -574,7 +574,7 @@ export function DeliveryNoteDialog({
               className="text-sm"
             />
           </div>
-          <SignaturePad onSignatureChange={setStaffSignature} />
+          <SignaturePad onSignatureChange={setStaffSignature} label="Unterschrift SLT-Mitarbeiter" />
         </div>
 
         <Separator />
