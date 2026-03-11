@@ -164,46 +164,47 @@ Deno.serve(async (req: Request) => {
     const attachments: { filename: string; content: string }[] = [];
     if (invoice.file_url) {
       try {
-        // Extract storage path from file_url
-        const storagePathMatch = invoice.file_url.match(/\/object\/(?:public|sign)\/(.+?)(?:\?|$)/);
         let pdfBytes: Uint8Array | null = null;
-        
-        if (storagePathMatch) {
-          const fullPath = decodeURIComponent(storagePathMatch[1]);
-          const bucketName = fullPath.split("/")[0];
-          const filePath = fullPath.split("/").slice(1).join("/");
+
+        // Try downloading directly from the b2b-invoices bucket using the file path
+        const pathAfterBucket = invoice.file_url.includes("b2b-invoices/")
+          ? invoice.file_url.split("b2b-invoices/").pop()?.split("?")[0]
+          : null;
+
+        if (pathAfterBucket) {
+          const decodedPath = decodeURIComponent(pathAfterBucket);
+          console.info(`Downloading PDF from bucket path: ${decodedPath}`);
           const { data: fileData, error: fileError } = await serviceClient.storage
-            .from(bucketName)
-            .download(filePath);
+            .from("b2b-invoices")
+            .download(decodedPath);
           if (!fileError && fileData) {
             pdfBytes = new Uint8Array(await fileData.arrayBuffer());
-          }
-        }
-        
-        // Fallback: try direct download
-        if (!pdfBytes) {
-          // Generate a signed URL for private buckets
-          const pathAfterBucket = invoice.file_url.includes("b2b-invoices/")
-            ? invoice.file_url.split("b2b-invoices/").pop()
-            : null;
-          if (pathAfterBucket) {
+            console.info(`PDF downloaded: ${pdfBytes.length} bytes`);
+          } else {
+            console.error("Direct download failed:", fileError?.message);
+            // Fallback: create a signed URL and fetch
             const { data: signedData } = await serviceClient.storage
               .from("b2b-invoices")
-              .createSignedUrl(decodeURIComponent(pathAfterBucket), 120);
+              .createSignedUrl(decodedPath, 120);
             if (signedData?.signedUrl) {
               const resp = await fetch(signedData.signedUrl);
               if (resp.ok) {
                 pdfBytes = new Uint8Array(await resp.arrayBuffer());
+                console.info(`PDF downloaded via signed URL: ${pdfBytes.length} bytes`);
               }
             }
           }
         }
 
-        if (pdfBytes) {
+        if (pdfBytes && pdfBytes.length > 0) {
+          const attachFilename = invoice.file_name || `${invoiceNumber}.pdf`;
           attachments.push({
-            filename: invoice.file_name || `${invoiceNumber}.pdf`,
+            filename: attachFilename.endsWith(".pdf") ? attachFilename : attachFilename.replace(/\.html$/, ".pdf"),
             content: encodeBase64(pdfBytes),
           });
+          console.info(`PDF attached: ${attachments[0].filename}`);
+        } else {
+          console.error("Could not download PDF for attachment");
         }
       } catch (e) {
         console.error("Failed to attach PDF:", e);

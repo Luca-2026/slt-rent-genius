@@ -274,38 +274,44 @@ Deno.serve(async (req: Request) => {
 
     console.log("Invoice number generated:", invoiceNumber);
 
-    // Generate PDF HTML
-    const docTitle = is_correction ? "RECHNUNGSKORREKTUR" : "RECHNUNG";
-    const pdfHtml = generateInvoiceHtml({
-      invoiceNumber,
-      invoiceDate,
-      dueDate,
+    // Generate PDF document
+    const pdfBytes = await generateDocumentPdf({
+      title: is_correction ? "RECHNUNGSKORREKTUR" : (is_proforma ? "PROFORMA-RECHNUNG" : "RECHNUNG"),
+      documentNumber: invoiceNumber,
+      date: invoiceDate,
       profile,
-      items,
-      deliveryCost: delivery_cost,
-      netAmount,
-      vatRate,
-      vatAmount,
-      grossAmount,
-      isReverseCharge,
-      notes: notes || null,
-      paymentDueDays: payment_due_days,
-      isCorrection: is_correction,
-      originalInvoiceNumber: original_invoice_number || null,
-      isProforma: is_proforma,
-      depositTotal,
+      items: items.map((item: any) => ({
+        name: item.product_name,
+        description: item.description || undefined,
+        quantity: item.quantity,
+        unitPrice: item.unit_price,
+        totalPrice: item.total_price,
+        discount: item.discount_percent,
+      })),
+      sections: [
+        ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
+      ],
+      totals: {
+        net: netAmount,
+        vatRate,
+        vat: vatAmount,
+        gross: grossAmount,
+        deliveryCost: delivery_cost,
+        isReverseCharge,
+        paymentDueDays: payment_due_days,
+        dueDate,
+      },
     });
 
-    // Store as HTML file (can be rendered/printed as PDF by browser)
+    // Store as PDF file
     const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
-    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
+    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.pdf`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
-    const htmlBytes = new TextEncoder().encode(pdfHtml);
     const { error: uploadError } = await serviceClient.storage
       .from("b2b-invoices")
-      .upload(filePath, htmlBytes, {
-        contentType: "text/html; charset=utf-8",
+      .upload(filePath, pdfBytes, {
+        contentType: "application/pdf",
         upsert: true,
       });
 
@@ -414,38 +420,10 @@ Deno.serve(async (req: Request) => {
           `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}: ${item.total_price.toFixed(2).replace(".", ",")} €</li>`
         ).join("");
 
-        // Generate PDF for email attachment
-        const pdfBytes = await generateDocumentPdf({
-          title: is_correction ? "RECHNUNGSKORREKTUR" : "RECHNUNG",
-          documentNumber: invoiceNumber,
-          date: invoiceDate,
-          profile,
-          items: items.map((item: any) => ({
-            name: item.product_name,
-            description: item.description || undefined,
-            quantity: item.quantity,
-            unitPrice: item.unit_price,
-            totalPrice: item.total_price,
-            discount: item.discount_percent,
-          })),
-          sections: [
-            ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
-          ],
-          totals: {
-            net: netAmount,
-            vatRate,
-            vat: vatAmount,
-            gross: grossAmount,
-            deliveryCost: delivery_cost,
-            isReverseCharge,
-            paymentDueDays: payment_due_days,
-            dueDate,
-          },
-        });
+        // Use the already-generated PDF for email attachment
         const pdfBase64 = encodeBase64(pdfBytes);
-        const pdfFileName = fileName.replace(".html", ".pdf");
         const attachments = [{
-          filename: pdfFileName,
+          filename: fileName,
           content: pdfBase64,
           content_type: "application/pdf",
         }];
