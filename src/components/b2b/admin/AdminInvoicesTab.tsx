@@ -415,7 +415,7 @@ export function AdminInvoicesTab({
                               )}
                               <span className="hidden lg:inline text-xs">{inv.email_sent ? "Gesendet" : "Senden"}</span>
                             </Button>
-                          )
+                          )}
                           {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                             <>
                               <Button
