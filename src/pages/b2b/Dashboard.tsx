@@ -49,6 +49,7 @@ export default function B2BDashboard() {
   const [requestingDeletion, setRequestingDeletion] = useState(false);
   const [pendingDeliveryNotes, setPendingDeliveryNotes] = useState(0);
   const [pendingReturnProtocols, setPendingReturnProtocols] = useState(0);
+  const [pendingOffers, setPendingOffers] = useState(0);
 
   const fetchPendingCounts = useCallback(async () => {
     if (!b2bProfile?.id) return;
