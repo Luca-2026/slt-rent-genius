@@ -758,8 +758,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-baumaschinenanhanger-1800": { name: "1800 kg Machinery Trailer", description: "Robust trailer for transporting construction machinery." },
   "bonn-aggregatanhaenger-1300": { name: "1300 kg Generator Trailer", description: "Special trailer for power generators." },
   "bonn-kompressor-5m3": {
-    name: "5 m³ Compressor Doosan 7/55",
-    description: "Powerful diesel construction compressor (EU Stage V) with 5 m³/min flow rate – incl. 8 operating hours/day."
+    name: "4m³ Compressor",
+    description: "Compressor incl. generator – Doosan 7/45, 4m³/min flow rate, 6 kVA generator 400V/230V – incl. 8 operating hours/day."
   },
   "bonn-unkrautbrenner-gloria": { name: "GLORIA Thermoflamm bio Professional PLUS", description: "Gas weed burner with 5m hose." },
   "bonn-akku-kettensaege": { name: "Cordless Chainsaw GKE 18V-40", description: "Bosch cordless chainsaw for cable-free cutting." },
