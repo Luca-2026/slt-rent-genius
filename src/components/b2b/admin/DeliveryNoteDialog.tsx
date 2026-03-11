@@ -184,6 +184,7 @@ export function DeliveryNoteDialog({
       });
 
       setCustomerSignature(null);
+      setCustomerNotPresent(false);
       setStaffSignature(null);
       setStaffName("");
       setNotes("");
