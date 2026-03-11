@@ -788,7 +788,7 @@ export const kbArticles: KBArticle[] = [
           "Vorwärts laufende Platte: Du schiebst sie in Laufrichtung.",
           "Reversierbare Geräte können per Hebel vorwärts oder rückwärts fahren.",
           "Fahre in ruhigen, geraden Bahnen – nicht ruckartig ziehen oder drücken.",
-          "Wenn du stoppen willst, nimm Gas weg – die Maschine wird langsamer und „steht" dann praktisch auf der Stelle.",
+          "Wenn du stoppen willst, nimm Gas weg \u2013 die Maschine wird langsamer und \u201Esteht\u201C dann praktisch auf der Stelle.",
         ],
       },
       {
