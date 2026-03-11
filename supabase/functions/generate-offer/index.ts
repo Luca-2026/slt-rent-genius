@@ -831,26 +831,26 @@ async function generateOfferPdf(data: {
     const item = data.items[i];
     const rowY = y;
 
-    drawText(String(i + 1), margin + 4, rowY, { s: 9 });
+    drawText(String(i + 1), colPos, rowY, { s: 9 });
 
-    const pName = safe(item.product_name).substring(0, 45);
-    drawText(pName, margin + 34, rowY, { f: fontBold, s: 9 });
+    const pName = safe(item.product_name).substring(0, 40);
+    drawText(pName, colName, rowY, { f: fontBold, s: 9 });
 
     let subY = rowY;
     if (item.rental_start) {
       subY -= 11;
       const period = fmtDate(item.rental_start) + (item.rental_end ? " - " + fmtDate(item.rental_end) : "");
-      drawText(period, margin + 34, subY, { s: 7, c: lightGray });
+      drawText(period, colName, subY, { s: 7, c: lightGray });
     }
     if (item.description) {
       subY -= 11;
-      drawText(safe(item.description).substring(0, 55), margin + 34, subY, { s: 7, c: gray });
+      drawText(safe(item.description).substring(0, 50), colName, subY, { s: 7, c: gray });
     }
 
-    drawText(String(item.quantity), margin + 275, rowY, { s: 9 });
-    drawTextRight(fmtCurrency(item.unit_price), margin + 380, rowY, { s: 9 });
-    drawText(item.discount_percent > 0 ? item.discount_percent + "%" : "-", margin + 400, rowY, { s: 9 });
-    drawTextRight(fmtCurrency(item.total_price), pageWidth - margin - 4, rowY, { s: 9 });
+    drawTextRight(String(item.quantity), colQty + 30, rowY, { s: 9 });
+    drawTextRight(fmtCurrency(item.unit_price), colUnit + 50, rowY, { s: 9 });
+    drawTextRight(item.discount_percent > 0 ? item.discount_percent + "%" : "-", colDisc + 35, rowY, { s: 9 });
+    drawTextRight(fmtCurrency(item.total_price), colTotal, rowY, { s: 9 });
 
     y = subY - 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
