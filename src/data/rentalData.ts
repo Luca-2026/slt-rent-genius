@@ -888,7 +888,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "kettendumper-rmd800",
-    name: "Ketten-Dumper RMD-800",
+    name: "Ketten-Dumper",
+    modelName: "RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport",
     detailedDescription: "Der Ketten-Dumper RMD-800 ist ein kompakter Raupendumper mit 800 kg Tragfähigkeit und einer Muldenkapazität von 305 l (gestrichen) bzw. 400 l (gehäuft). Mit nur 80 cm Gesamtbreite eignet er sich hervorragend für enge Zugänge. Der 6,2 PS Benzinmotor bietet zuverlässige Leistung, zwei Geschwindigkeitsstufen ermöglichen flexibles Arbeiten. Serienmäßige Rungen ermöglichen den sicheren Transport von Holz oder Steinplatten.",
     image: imgKettendumperRmd800_1,
