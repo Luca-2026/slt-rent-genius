@@ -1174,7 +1174,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-saebelsaege-gsa18v-li-c",
-    name: "Bosch Akku Säbelsäge GSA 18V-LI C",
+    name: "Akku Säbelsäge",
+    modelName: "Bosch GSA 18V-LI C",
     description: "Akku-Säbelsäge mit variabler Geschwindigkeit",
     image: imgSaebelsaege,
     images: [imgSaebelsaege],
