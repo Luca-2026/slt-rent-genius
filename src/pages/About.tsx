@@ -34,6 +34,33 @@ const partners = [
   { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion-nrw.de/" },
 ];
 
+function TeamMemberCard({ member, showEmail }: { member: { name: string; role: string; image: string | null; email: string | null }; showEmail?: boolean }) {
+  return (
+    <div className="text-center group">
+      {member.email ? (
+        <a href={`mailto:${member.email}`} className="block cursor-pointer">
+          <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-24 lg:w-24 mx-auto mb-2 md:mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
+            {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
+            <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+          </Avatar>
+        </a>
+      ) : (
+        <Avatar className="h-20 w-20 md:h-20 md:w-20 lg:h-24 lg:w-24 mx-auto mb-2 md:mb-3 ring-2 ring-transparent group-hover:ring-accent transition-all duration-300 group-hover:shadow-lg">
+          {member.image ? <AvatarImage src={member.image} alt={member.name} className="object-cover" /> : null}
+          <AvatarFallback className="bg-primary/10 text-primary text-xl">{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+        </Avatar>
+      )}
+      <h3 className="font-semibold text-headline text-sm group-hover:text-primary transition-colors duration-300">{member.name}</h3>
+      <p className="text-xs text-muted-foreground">{member.role}</p>
+      {showEmail && member.email && (
+        <a href={`mailto:${member.email}`} className="inline-flex items-center gap-1 text-[10px] text-primary mt-1 hover:underline">
+          <Mail className="h-3 w-3" /> E-Mail
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function About() {
   const { t } = useTranslation();
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
