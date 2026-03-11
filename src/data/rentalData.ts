@@ -110,6 +110,7 @@ import imgCormidiC60_2 from "@/assets/products/erdbewegung/cormidi-c60-2.jpg";
 import imgCormidiC60_3 from "@/assets/products/erdbewegung/cormidi-c60-3.jpg";
 import imgKramer5045_1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
 import imgKramer5045_2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
+import imgBobcatL28_1 from "@/assets/products/erdbewegung/bobcat-l28-1.jpeg";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
@@ -659,9 +660,10 @@ const trailerProducts: Product[] = [
 
 // Erdbewegung category sort order: Machines first, then attachments, then accessories
 const erdbewegungCategoryOrder = [
-  // 1. Maschinen (Bagger nach Gewicht, dann Radlader, dann Dumper)
+  // 1. Maschinen (Bagger nach Gewicht, dann Radlader, dann Knicklader, dann Dumper)
   "minibagger",
   "radlader",
+  "knicklader",
   "dumper",
   // 2. Anbaugeräte
   "tiefloeffel",
@@ -806,30 +808,30 @@ const erdbewegungProductsUnsorted: Product[] = [
     ],
   },
   {
-    id: "bobcat-l28-knicklader",
-    name: "Bobcat L28 Knicklader",
-    description: "Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 2800,
+    id: "kramer-5050",
+    name: "Radlader 3t Kramer 5050",
+    description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
+    image: imgKramer5045_1,
+    images: [imgKramer5045_1, imgKramer5045_2],
+    weightKg: 3000,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { muelheim: "9K1LEX" },
+    onRequest: true,
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
     ],
   },
   {
-    id: "radlader-4t",
-    name: "4t Radlader",
-    description: "Einsatzgewicht: 4.000 kg | Dieselmotor | Schaufel inkl.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    weightKg: 4000,
-    category: "radlader",
-    tags: ["radlader", "diesel", "ab-2500", "maschine"],
-    rentwareCode: { muelheim: "M19UC7" },
+    id: "bobcat-l28-knicklader",
+    name: "Bobcat L28 Knicklader",
+    description: "Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen",
+    image: imgBobcatL28_1,
+    images: [imgBobcatL28_1],
+    weightKg: 2800,
+    category: "knicklader",
+    tags: ["knicklader", "diesel", "ab-2500", "maschine"],
+    onRequest: true,
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
@@ -958,8 +960,9 @@ function inferArbeitsbuehneCategory(name: string): string | undefined {
   return undefined;
 }
 
-function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "dumper" | undefined {
+function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
   const n = name.toLowerCase();
+  if (n.includes("knicklader")) return "knicklader";
   if (n.includes("radlader")) return "radlader";
   if (n.includes("dumper")) return "dumper";
   // default for typical excavator entries

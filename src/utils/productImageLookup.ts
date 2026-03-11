@@ -19,6 +19,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "knickdumper-kde550-1", "knickdumper-kde550-2",
   "kettendumper-rmd800-1",
   "kramer-5045-1", "kramer-5045-2",
+  "bobcat-l28-1",
   "xcmg-xe20e-1", "xcmg-xe20e-2", "xcmg-xe20e-3",
   "xcmg-xe27e-1", "xcmg-xe27e-2", "xcmg-xe27e-3",
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "erdbewegung"));
