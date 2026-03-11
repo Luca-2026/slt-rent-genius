@@ -239,6 +239,8 @@ export default function AdminDashboard() {
 
       if (offer) {
         const items = offerItems.filter((i) => i.offer_id === offer.id);
+        console.log("[Invoice Debug] offer.additional_services:", JSON.stringify(offer.additional_services));
+        console.log("[Invoice Debug] offer items count:", items.length, "offer deposit:", offer.deposit);
         const mainItems = items.map((item) => ({
           product_name: item.product_name,
           description: item.description || undefined,
@@ -320,10 +322,14 @@ export default function AdminDashboard() {
           invoiceBody.b2b_profile_id = offer.b2b_profile_id;
         }
 
+        const allCustomItems = [...mainItems, ...additionalServiceItems, ...surchargeItems, ...depositItems];
+        console.log("[Invoice Debug] additionalServiceItems:", JSON.stringify(additionalServiceItems));
+        console.log("[Invoice Debug] all custom_items:", allCustomItems.length, "items:", allCustomItems.map(i => `${i.product_name}: ${i.unit_price}`));
+
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
-          custom_items: [...mainItems, ...additionalServiceItems, ...surchargeItems, ...depositItems],
+          custom_items: allCustomItems,
           notes: proformaMode
             ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
             : (offer.notes || undefined),
