@@ -4,33 +4,32 @@ import { Eraser, Check } from "lucide-react";
 
 interface SignaturePadProps {
   onSignatureChange: (dataUrl: string | null) => void;
-  width?: number;
   height?: number;
   label?: string;
 }
 
-export function SignaturePad({ onSignatureChange, width = 600, height = 200, label = "Unterschrift des Kunden" }: SignaturePadProps) {
+export function SignaturePad({ onSignatureChange, height = 180, label = "Unterschrift des Kunden" }: SignaturePadProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
 
   const getContext = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return null;
-    return ctx;
+    return canvas.getContext("2d");
   }, []);
 
-  useEffect(() => {
+  const initCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
-    // Set canvas resolution for retina displays
+    const containerWidth = container.clientWidth;
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
+    canvas.width = containerWidth * dpr;
     canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
+    canvas.style.width = `${containerWidth}px`;
     canvas.style.height = `${height}px`;
 
     const ctx = canvas.getContext("2d");
@@ -41,7 +40,14 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200, lab
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
     }
-  }, [width, height]);
+  }, [height]);
+
+  useEffect(() => {
+    initCanvas();
+    const handleResize = () => initCanvas();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [initCanvas]);
 
   const getPosition = (e: React.TouchEvent | React.MouseEvent) => {
     const canvas = canvasRef.current;
@@ -86,7 +92,6 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200, lab
     if (!isDrawing) return;
     setIsDrawing(false);
     setHasSignature(true);
-    // Export signature as PNG data URL
     const canvas = canvasRef.current;
     if (canvas) {
       onSignatureChange(canvas.toDataURL("image/png"));
@@ -121,7 +126,10 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200, lab
           </Button>
         )}
       </div>
-      <div className="relative border-2 border-dashed border-muted-foreground/30 rounded-lg bg-white overflow-hidden touch-none">
+      <div
+        ref={containerRef}
+        className="relative border-2 border-dashed border-muted-foreground/30 rounded-lg bg-white overflow-hidden touch-none"
+      >
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}
@@ -131,19 +139,18 @@ export function SignaturePad({ onSignatureChange, width = 600, height = 200, lab
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={stopDrawing}
-          className="cursor-crosshair w-full"
-          style={{ width: "100%", height: `${height}px` }}
+          className="cursor-crosshair block w-full"
+          style={{ height: `${height}px` }}
         />
         {!hasSignature && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="text-muted-foreground/40 text-sm">
+            <p className="text-muted-foreground/40 text-sm text-center px-4">
               Hier unterschreiben (Finger oder Stift)
             </p>
           </div>
         )}
-        {/* Signature line */}
-        <div className="absolute bottom-8 left-8 right-8 border-b border-muted-foreground/20 pointer-events-none" />
-        <p className="absolute bottom-2 left-8 text-[10px] text-muted-foreground/40 pointer-events-none">
+        <div className="absolute bottom-8 left-4 right-4 sm:left-8 sm:right-8 border-b border-muted-foreground/20 pointer-events-none" />
+        <p className="absolute bottom-2 left-4 sm:left-8 text-[10px] text-muted-foreground/40 pointer-events-none">
           Datum & Unterschrift
         </p>
       </div>
