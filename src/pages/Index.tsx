@@ -157,7 +157,7 @@ export default function Index() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {locationData.map((loc, index) => (
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
