@@ -186,15 +186,15 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="py-8 md:py-12 lg:py-24 xl:py-28 bg-surface-light">
+      <section className="py-8 md:py-12 lg:py-20 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up" delay={0}>
-            <h2 className="text-lg md:text-xl lg:text-4xl xl:text-5xl font-bold text-headline mb-2 md:mb-3 lg:mb-4 text-center">{t("about.teamTitle")}</h2>
-            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-5 md:mb-6 lg:mb-12 text-xs md:text-sm lg:text-lg">{t("about.teamDesc")}</p>
+            <h2 className="text-lg md:text-xl lg:text-3xl font-bold text-headline mb-2 md:mb-3 lg:mb-4 text-center">{t("about.teamTitle")}</h2>
+            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-5 md:mb-6 lg:mb-10 text-xs md:text-sm lg:text-base">{t("about.teamDesc")}</p>
           </AnimatedSection>
 
           {/* Desktop: grid */}
-          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-8 xl:gap-10">
+          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-8">
             {teamMembers.map((member, index) => (
               <AnimatedSection key={member.name} animation="fade-in-up" delay={index * 120}>
                 <TeamMemberCard member={member} />
