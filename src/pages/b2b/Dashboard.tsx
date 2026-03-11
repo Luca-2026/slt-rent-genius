@@ -47,6 +47,30 @@ export default function B2BDashboard() {
   const { toast } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [requestingDeletion, setRequestingDeletion] = useState(false);
+  const [pendingDeliveryNotes, setPendingDeliveryNotes] = useState(0);
+  const [pendingReturnProtocols, setPendingReturnProtocols] = useState(0);
+
+  const fetchPendingCounts = useCallback(async () => {
+    if (!b2bProfile?.id) return;
+    const [dnRes, rpRes] = await Promise.all([
+      supabase
+        .from("b2b_delivery_notes")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending_customer_signature"),
+      supabase
+        .from("b2b_return_protocols")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending_customer_signature"),
+    ]);
+    setPendingDeliveryNotes(dnRes.count ?? 0);
+    setPendingReturnProtocols(rpRes.count ?? 0);
+  }, [b2bProfile?.id]);
+
+  useEffect(() => {
+    if (b2bProfile?.status === "approved") {
+      fetchPendingCounts();
+    }
+  }, [b2bProfile?.status, fetchPendingCounts]);
 
   // Get the nearest location based on assigned_location or default to Krefeld
   const nearestLocation = useMemo(() => {
