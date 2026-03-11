@@ -74,6 +74,7 @@ import rotweinBrunelli1 from "@/assets/products/geschirr/rotweinglas-brunelli-1.
 import longdrinkPassionata1 from "@/assets/products/geschirr/longdrinkglas-passionata-1.avif";
 import longdrinkPassionata2 from "@/assets/products/geschirr/longdrinkglas-passionata-2.jpg";
 import longdrinkPassionata3 from "@/assets/products/geschirr/longdrinkglas-passionata-3.avif";
+import wasserglasPassionata1 from "@/assets/products/wasserglas-passionata.jpg";
 import rotweinBrunelli2 from "@/assets/products/geschirr/rotweinglas-brunelli-2.jpeg";
 import kaffeetasse12er_2 from "@/assets/products/geschirr/kaffeetasse-12er-2.png";
 import speisetDarwin27_1 from "@/assets/products/geschirr/speiseteller-darwin-27-1.jpeg";
