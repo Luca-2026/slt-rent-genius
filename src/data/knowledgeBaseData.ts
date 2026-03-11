@@ -82,7 +82,7 @@ export const kbCategories: KBCategory[] = [
     title: "Verdichtung",
     description: "Betriebsanleitungen für Rüttelplatten, Stampfer und Walzen.",
     icon: "Layers",
-    articleCount: 0,
+    articleCount: 1,
   },
   {
     id: "event-technik",
