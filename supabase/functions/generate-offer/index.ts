@@ -194,11 +194,13 @@ Deno.serve(async (req: Request) => {
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
       let rentalStart = item.rental_start || reservation?.start_date || null;
       let rentalEnd = item.rental_end || reservation?.end_date || null;
-      if (rentalStart && reservation?.start_time && !rentalStart.includes(" ")) {
-        rentalStart = `${rentalStart} ${reservation.start_time}`;
+      const startTime = item.start_time || reservation?.start_time || null;
+      const endTime = item.end_time || reservation?.end_time || null;
+      if (rentalStart && startTime && !rentalStart.includes(" ")) {
+        rentalStart = `${rentalStart} ${startTime}`;
       }
-      if (rentalEnd && reservation?.end_time && !rentalEnd.includes(" ")) {
-        rentalEnd = `${rentalEnd} ${reservation.end_time}`;
+      if (rentalEnd && endTime && !rentalEnd.includes(" ")) {
+        rentalEnd = `${rentalEnd} ${endTime}`;
       }
       return {
         product_name: item.product_name,
