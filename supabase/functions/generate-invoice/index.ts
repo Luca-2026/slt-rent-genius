@@ -287,6 +287,7 @@ Deno.serve(async (req: Request) => {
       paymentDueDays: payment_due_days,
       isCorrection: is_correction,
       originalInvoiceNumber: original_invoice_number || null,
+      isProforma: is_proforma,
     });
 
     // Store as HTML file (can be rendered/printed as PDF by browser)
