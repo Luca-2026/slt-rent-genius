@@ -1655,10 +1655,10 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-rotweinglas-brunelli-10er",
     name: "Rotweinglas Brunelli, 9er Set",
-    description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
+    description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: rotweinBrunelli1,
     images: [rotweinBrunelli1, rotweinBrunelli2],
-    detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 9er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 9er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
     specifications: {
       "Hersteller": "Leonardo",
       "Typ": "Rotweinglas",
@@ -1668,6 +1668,7 @@ export const bonnGeschirrProducts = [
       "Eigenschaft": "Klar & stoßfest",
       "Stückzahl": "9 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+      "Glasbruch": "5,00 € pro Glas",
     },
     onRequest: true,
     rentwareCode: { bonn: "" },
