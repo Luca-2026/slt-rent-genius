@@ -451,7 +451,7 @@ function ArticleSection({ section }: { section: KBArticleSection }) {
       : "text-primary";
 
   return (
-    <div className={`rounded-xl border p-5 ${bgClass}`}>
+    <div className={`rounded-xl border p-4 md:p-5 ${bgClass}`}>
       {section.heading && (
         <div className="flex items-center gap-2.5 mb-3">
           {SectionIcon && (
