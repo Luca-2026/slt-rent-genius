@@ -844,7 +844,7 @@ export default function AdminDashboard() {
           />
         </TabsContent>
 
-        <TabsContent value="rentals">
+        <TabsContent value="rentals" forceMount className="data-[state=inactive]:hidden">
           <AdminRentalsTab
             reservations={reservations.filter((r) => r.status === "confirmed" || r.status === "completed" || r.status === "pending" || r.status === "offer_sent")}
             profiles={profiles}
