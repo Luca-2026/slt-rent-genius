@@ -258,6 +258,24 @@ export default function AdminDashboard() {
             discount_percent: 0,
           }));
 
+        // Add deposit as a line item for proforma invoices
+        const depositItems: Array<{
+          product_name: string;
+          description?: string;
+          quantity: number;
+          unit_price: number;
+          discount_percent: number;
+        }> = [];
+        if (proformaMode && offer.deposit && offer.deposit > 0) {
+          depositItems.push({
+            product_name: "Kaution",
+            description: "Rückerstattung bei ordnungsgemäßer Rückgabe",
+            quantity: 1,
+            unit_price: offer.deposit,
+            discount_percent: 0,
+          });
+        }
+
         // For standalone offers (no reservation), use b2b_profile_id directly
         if (!reservation) {
           invoiceBody.b2b_profile_id = offer.b2b_profile_id;
@@ -266,7 +284,7 @@ export default function AdminDashboard() {
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
-          custom_items: [...mainItems, ...surchargeItems],
+          custom_items: [...mainItems, ...surchargeItems, ...depositItems],
           notes: proformaMode
             ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
             : (offer.notes || undefined),
