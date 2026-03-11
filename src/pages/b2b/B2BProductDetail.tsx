@@ -233,7 +233,7 @@ export default function B2BProductDetail() {
                   <Info className="h-4 w-4 text-primary flex-shrink-0" />
                   Beschreibung
                 </h2>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
                   {product.detailedDescription}
                 </p>
               </div>
