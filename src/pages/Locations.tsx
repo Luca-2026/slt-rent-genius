@@ -98,7 +98,7 @@ export default function Locations() {
                         href={`mailto:${location.manager.email}`}
                         className="flex items-center gap-2 md:gap-3 lg:gap-3 mb-4 md:mb-4 lg:mb-6 p-2.5 md:p-3 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
                       >
-                        <Avatar className="h-10 w-10 md:h-8 md:w-8 lg:h-12 lg:w-12 shrink-0">
+                        <Avatar className="h-10 w-10 md:h-10 md:w-10 lg:h-12 lg:w-12 shrink-0">
                           {location.manager.image ? (
                             <AvatarImage src={location.manager.image} alt={location.manager.name} />
                           ) : null}
