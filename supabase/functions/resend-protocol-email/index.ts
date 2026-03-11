@@ -156,7 +156,7 @@ serve(async (req) => {
         }
       }
 
-      emailSubject = `Übergabeprotokoll ${documentNumber} – Bitte unterschrieben zurücksenden`;
+      emailSubject = `Übergabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -168,12 +168,14 @@ serve(async (req) => {
     </div>
     <div style="padding:35px 40px;">
       <p style="font-size:15px;color:#333;">Sehr geehrte/r ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">anbei erhalten Sie das Übergabeprotokoll <strong>${documentNumber}</strong> für Ihre Mietgeräte.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">für Ihre Mietgeräte wurde das Übergabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
       <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
-        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">Bitte beachten Sie:</p>
-        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">Bitte drucken Sie das beigefügte Übergabeprotokoll aus, unterschreiben Sie es und senden Sie es uns per E-Mail an <a href="mailto:${SLT_COMPANY.email}" style="color:#00507d;font-weight:600;">${SLT_COMPANY.email}</a> zurück.</p>
+        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">Bitte unterschreiben Sie digital:</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">Loggen Sie sich in Ihr B2B-Portal ein und unterschreiben Sie das Protokoll direkt online. Alternativ finden Sie das Dokument auch als PDF im Anhang.</p>
       </div>
-      <p style="font-size:14px;color:#555;line-height:1.6;">Alternativ können Sie das unterschriebene Dokument auch als Foto oder Scan per E-Mail zurücksenden.</p>
+      <div style="text-align:center;margin:30px 0;">
+        <a href="https://www.slt-rental.de/b2b/uebergabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>
+      </div>
       <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir Ihnen gerne zur Verfügung.</p>
       <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">Mit freundlichen Grüßen<br/><strong>Ihr SLT-Rental Team</strong></p>
     </div>
