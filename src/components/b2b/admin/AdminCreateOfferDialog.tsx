@@ -81,6 +81,7 @@ export interface ExistingOfferItem {
 
 interface Props {
   reservation: Reservation | null;
+  allReservations?: Reservation[];
   profile: B2BProfile | null;
   profiles?: B2BProfile[];
   open: boolean;
