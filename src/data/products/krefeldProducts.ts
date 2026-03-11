@@ -1011,7 +1011,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrhammer-gbh18v-45c",
-    name: "Bosch Akku Bohrhammer GBH 18V-45C",
+    name: "Akku Bohrhammer",
+    modelName: "Bosch GBH 18V-45C",
     description: "Schwerer Akku-Bohrhammer mit Bluetooth",
     image: imgBohrhammer45c,
     images: [imgBohrhammer45c],
