@@ -208,7 +208,7 @@ export default function Locations() {
               style={{ top: '17%', left: '47%' }}
             >
               <div className="flex flex-col items-center drop-shadow-lg">
-                <div className="bg-accent text-accent-foreground px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg whitespace-nowrap border-2 border-accent-foreground/20">
+                <div className="bg-accent text-accent-foreground px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-lg whitespace-nowrap border-2 border-accent-foreground/20">
                   📍 Mülheim a.d. Ruhr
                 </div>
                 <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-accent" />
