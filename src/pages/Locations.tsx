@@ -232,9 +232,9 @@ export default function Locations() {
       </AnimatedSection>
 
       {/* Delivery Info */}
-      <section className="py-12 lg:py-16 bg-surface-light">
+      <section className="py-10 md:py-12 lg:py-16 bg-surface-light">
         <div className="section-container">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 lg:gap-16">
             <AnimatedSection animation="slide-in-left" className="flex-1">
               <Truck className="h-12 w-12 text-accent mb-4" />
                <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-4">
