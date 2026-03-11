@@ -784,7 +784,8 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e35z",
-    name: "3,5t Bobcat E35z Minibagger",
+    name: "3,5t Minibagger",
+    modelName: "Bobcat E35z",
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     detailedDescription: "Der Bobcat E35z ist ein leistungsstarker Minibagger der 3,5-Tonnen-Klasse mit Nullheck-Design für beengte Einsatzorte. Mit einer Grabtiefe von bis zu 3,12 m und einer maximalen Reichweite von 5,26 m am Boden eignet er sich hervorragend für Aushub-, Kanal- und Landschaftsbauarbeiten. Der Stage V Motor mit 24,8 kW (33,4 PS) sorgt für kraftvollen und emissionsarmen Betrieb. Das Laufwerk ist serienmäßig mit Gummiketten ausgestattet, Stahlketten sind optional verfügbar.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel für Aushubarbeiten, Tieflöffel für Aushubarbeiten, Laserausrüstung für exakte Nivellierung.",
     image: imgBobcatE35z_1,
