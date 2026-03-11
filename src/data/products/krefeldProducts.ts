@@ -3129,8 +3129,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "B98IC4" }
   },
   {
-    id: "rotweinglas-passionata-10er",
-    name: "Rotweinglas Passionata, 10er Set",
+    id: "rotweinglas-passionata-25er",
+    name: "Rotwein Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
