@@ -233,6 +233,17 @@ export default function CategoryProducts() {
           return trailerFilters.braking.some((b) => p.tags?.includes(b) || b === inferred);
         });
       }
+
+      // Nutzlast range filter
+      if (trailerFilters.nutzlastRange[0] > 0 || trailerFilters.nutzlastRange[1] < 3000) {
+        filtered = filtered.filter((p) => {
+          const val = p.specifications?.["Nutzlast"];
+          if (!val) return true; // keep products without nutzlast data
+          const cleaned = val.replace(/[^0-9]/g, "");
+          const nutzlast = cleaned ? Number(cleaned) : 0;
+          return nutzlast >= trailerFilters.nutzlastRange[0] && nutzlast <= trailerFilters.nutzlastRange[1];
+        });
+      }
     }
 
     // Apply earth moving filters for erdbewegung category
