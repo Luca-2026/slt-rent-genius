@@ -171,8 +171,8 @@ Deno.serve(async (req: Request) => {
       profile = profileData;
     }
 
-    // Use profile's payment terms, fallback to body override, then default 14
-    const payment_due_days = bodyPaymentDueDays ?? profile.payment_due_days ?? 14;
+    // Proforma invoices are always prepayment (Vorkasse) with 0 days
+    const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
 
     // Determine reverse charge status
     const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
