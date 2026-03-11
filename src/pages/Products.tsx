@@ -260,7 +260,7 @@ export default function Products() {
                 .slice(0, 8)
                 .map((cat, index) => (
                   <AnimatedSection key={cat.id} animation="scale-in" delay={index * 60}>
-                    <Link to={`/produkte/${cat.id}`}>
+                    <Link to={`/mieten/krefeld/${cat.id}`}>
                       <Card className="h-full hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
                         <div className="aspect-square bg-muted flex items-center justify-center p-4">
                           <img 
