@@ -161,7 +161,7 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
         URL.revokeObjectURL(url);
         toast({ title: "PDF heruntergeladen" });
       } else {
-        // Upload + send email
+        // Upload + send email + set status to pending_customer_signature
         const fileName = `${dialogDn.delivery_note_number}-blanko.pdf`;
         const storagePath = `${dialogDn.b2b_profile_id}/${fileName}`;
         const { error: uploadError } = await supabase.storage
@@ -171,6 +171,12 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
             upsert: true,
           });
         if (uploadError) throw uploadError;
+
+        // Set status to pending_customer_signature
+        await supabase
+          .from("b2b_delivery_notes")
+          .update({ status: "pending_customer_signature" })
+          .eq("id", dialogDn.id);
 
         const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
           body: {
@@ -182,7 +188,7 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
         if (error) throw error;
         toast({
           title: "Unterschriftsanfrage versendet",
-          description: `E-Mail an ${data.recipient} gesendet.`,
+          description: `E-Mail an ${data.recipient} gesendet. Status auf 'Unterschrift ausstehend' gesetzt.`,
         });
       }
 
