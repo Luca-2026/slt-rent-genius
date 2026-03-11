@@ -40,9 +40,9 @@ export default function Locations() {
       <section className="py-6 md:py-10 lg:py-20">
         <div className="section-container">
           {/* Mobile: horizontal scroll snap, Tablet+Desktop: grid */}
-          <div className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 lg:gap-8 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+          <div className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 lg:gap-8 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory pb-3 md:pb-0 -mx-4 px-[calc((100vw-75vw)/2)] md:mx-0 md:px-0 scrollbar-hide scroll-smooth">
             {locationData.map((location, index) => (
-              <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150} className="min-w-[75vw] md:min-w-0 snap-start">
+              <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150} className="min-w-[75vw] md:min-w-0 snap-center">
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
                   <Link to={`/mieten/${location.id}`} className="block h-28 md:h-32 lg:h-40 overflow-hidden bg-muted">
