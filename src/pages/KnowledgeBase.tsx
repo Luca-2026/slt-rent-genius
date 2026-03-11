@@ -87,6 +87,13 @@ export default function KnowledgeBase() {
 
   return (
     <Layout>
+      <SEO
+        title="Hilfe & Wissensbasis – Anleitungen & Tipps | SLT Rental"
+        description="Anleitungen, Sicherheitshinweise und Tipps für Ihre Miete bei SLT Rental. Alles zu Anhängern, Baumaschinen, Event-Equipment und mehr."
+        canonical="/hilfe"
+        keywords="Mietgeräte Anleitung, Baumaschinen Tipps, Anhänger beladen, Hüpfburg Sicherheit"
+        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Hilfe & Wissensbasis", url: "/hilfe" }])}
+      />
       {/* Hero */}
       <section className="bg-primary py-10 md:py-12 lg:py-16">
         <div className="section-container text-center">
