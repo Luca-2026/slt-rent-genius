@@ -1085,6 +1085,7 @@ export default function AdminDashboard() {
           setInvoiceSurcharges([]);
           setNewSurchargeName("");
           setNewSurchargeAmount("");
+          setSendInvoiceEmail(false);
         }
       }}>
         <DialogContent className="max-w-lg">
