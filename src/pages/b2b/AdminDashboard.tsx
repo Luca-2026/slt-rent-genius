@@ -911,6 +911,11 @@ export default function AdminDashboard() {
             offerItems={offerItems}
             onCreateOffer={(res) => {
               setSelectedReservation(res);
+              // Find all grouped reservations
+              const grouped = res.rental_group_id
+                ? pendingReservations.filter((r) => r.rental_group_id === res.rental_group_id)
+                : [res];
+              setSelectedGroupReservations(grouped);
               setEditingOffer(null);
               setEditingOfferItems([]);
               setCreateOfferOpen(true);
