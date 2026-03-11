@@ -3145,10 +3145,10 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "25 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "S2KNX3" }
   },
   {
     id: "champagnerglas-passionata-10er",
