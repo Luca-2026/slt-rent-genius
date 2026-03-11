@@ -112,6 +112,7 @@ export function ReturnProtocolDialog({
 
   // Reset when reservation changes
   const resetForm = () => {
+    setCustomerNotPresent(false);
     setCustomerSignature(null);
     setStaffSignature(null);
     setStaffName("");
