@@ -75,9 +75,9 @@ export default function LocationCategories() {
     navigate(`/mieten/${location.id}/${categoryId}`);
   };
 
-  const handleProductSelect = (product: Product) => {
-    setSelectedProduct(product);
-    setIsDialogOpen(true);
+  const handleProductSelect = (product: Product, categoryId?: string) => {
+    const catId = categoryId || "alle";
+    navigate(`/mieten/${location.id}/${catId}/${product.id}`);
   };
 
   const handleCloseDialog = () => {
