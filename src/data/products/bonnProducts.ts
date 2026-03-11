@@ -1615,11 +1615,11 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-champagnerglas-brunelli-14er",
     name: "Champagnerglas Brunelli, 36er Set",
-    description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Die Gläser müssen gereinigt zurückgegeben werden. Reinigungspauschale: 3,90 €/Set.",
+    description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: champagnerBrunelli1,
     images: [champagnerBrunelli1, champagnerBrunelli2],
     onRequest: true,
-    detailedDescription: "Das Champagnerglas Brunelli von Leonardo im praktischen 36er Set besticht durch seine elegante, schlanke Silhouette. Ideal für Sekt, Champagner und Prosecco bei Veranstaltungen, Hochzeiten und Caterings. Die Gläser sind spülmaschinenfest, klar und stoßfest. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Champagnerglas Brunelli von Leonardo im praktischen 36er Set besticht durch seine elegante, schlanke Silhouette. Ideal für Sekt, Champagner und Prosecco bei Veranstaltungen, Hochzeiten und Caterings. Die Gläser sind spülmaschinenfest, klar und stoßfest. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
     specifications: {
       "Hersteller": "Leonardo",
       "Typ": "Sekt-/Champagnerglas",
@@ -1629,6 +1629,7 @@ export const bonnGeschirrProducts = [
       "Spülmaschinenfest": "Ja",
       "Eigenschaften": "Klar & stoßfest",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
+      "Glasbruch": "5,00 € pro Glas",
     },
     rentwareCode: { bonn: "" },
   },
