@@ -3104,7 +3104,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
       "Glasbruch": "5,00 € pro Glas",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "PVBY61" }
   },
   {
     id: "weissweinglas-passionata-10er",
