@@ -3123,10 +3123,10 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Farbe": "Klar",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Aromaverstärkend, kratzfest, nachhaltig",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "25 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "B98IC4" }
   },
   {
     id: "rotweinglas-passionata-10er",
