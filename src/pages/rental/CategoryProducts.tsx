@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategory, useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 import { Layout } from "@/components/layout";
