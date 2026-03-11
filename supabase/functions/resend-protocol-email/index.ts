@@ -235,6 +235,50 @@ serve(async (req) => {
   </div>
 </body></html>`;
 
+    } else if (type === "return_protocol_signature_request") {
+      tableName = "b2b_return_protocols";
+      const { data: rp } = await serviceClient.from("b2b_return_protocols").select("*").eq("id", id).single();
+      if (!rp) return new Response(JSON.stringify({ error: "Return protocol not found" }), { status: 404, headers: corsHeaders });
+
+      const { data: profile } = await serviceClient.from("b2b_profiles").select("*").eq("id", rp.b2b_profile_id).single();
+      if (!profile) return new Response(JSON.stringify({ error: "Profile not found" }), { status: 404, headers: corsHeaders });
+
+      documentNumber = rp.return_protocol_number;
+      documentId = rp.id;
+      recipientEmail = profile.contact_email;
+      recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+
+      emailSubject = `Rückgabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
+      emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#ffffff;padding:25px 40px;text-align:center;border-bottom:3px solid #00507d;">
+      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
+    </div>
+    <div style="background:#00507d;padding:14px 40px;text-align:center;">
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Rückgabeprotokoll zur Unterschrift</p>
+    </div>
+    <div style="padding:35px 40px;">
+      <p style="font-size:15px;color:#333;">Sehr geehrte/r ${escapeHtml(recipientName)},</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">für Ihre zurückgegebenen Mietgeräte wurde das Rückgabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
+      <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
+        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">Bitte unterschreiben Sie digital:</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">Loggen Sie sich in Ihr B2B-Portal ein und unterschreiben Sie das Protokoll direkt online.</p>
+      </div>
+      <div style="text-align:center;margin:30px 0;">
+        <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>
+      </div>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir Ihnen gerne zur Verfügung.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">Mit freundlichen Grüßen<br/><strong>Ihr SLT-Rental Team</strong></p>
+    </div>
+    <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
+      <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: ${SLT_COMPANY.phone} · E-Mail: ${SLT_COMPANY.email}</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0;">${SLT_COMPANY.web}</p>
+    </div>
+  </div>
+</body></html>`;
+
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), { status: 400, headers: corsHeaders });
     }
