@@ -1117,6 +1117,18 @@ export default function CategoryProducts() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Sidebar with Filters */}
               <div className="lg:col-span-1 order-1 lg:order-1">
+                {/* Mobile/Tablet: collapsible filter toggle */}
+                <button
+                  onClick={() => setFiltersOpen(!filtersOpen)}
+                  className="lg:hidden w-full flex items-center justify-between gap-2 bg-card border border-border rounded-xl p-4 mb-4"
+                >
+                  <span className="flex items-center gap-2 font-semibold text-foreground">
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {t("rental.filters", "Filter")}
+                  </span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${filtersOpen ? "rotate-180" : ""}`} />
+                </button>
+                <div className={`${filtersOpen ? "block" : "hidden"} lg:block`}>
                 <div className="sticky top-4 space-y-4">
                   {/* Scrollable filter area with delivery calculator included */}
                   <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
