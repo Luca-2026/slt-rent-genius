@@ -1139,7 +1139,7 @@ export const werkzeugeProducts: Product[] = [
       "Im Mietpreis ist ein Mindestbetrag für 0,25 mm berücksichtigt.",
       "Diamanttrennscheiben zum Kauf optional erhältlich.",
     ],
-    onRequest: true,
+    rentwareCode: { krefeld: "L2QI1R" },
   },
   {
     id: "zwangsmischer-140l",
