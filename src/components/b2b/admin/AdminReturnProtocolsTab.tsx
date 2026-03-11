@@ -87,6 +87,28 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
     }
   };
 
+  const sendForSignature = async (rp: ReturnProtocol) => {
+    setSendingId(rp.id);
+    try {
+      // Set status to pending_customer_signature
+      await supabase
+        .from("b2b_return_protocols")
+        .update({ status: "pending_customer_signature" })
+        .eq("id", rp.id);
+
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "return_protocol_signature_request", id: rp.id },
+      });
+      if (error) throw error;
+      toast({ title: "Unterschriftsanfrage versendet", description: `E-Mail an ${data.recipient} gesendet.` });
+      fetchProtocols();
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message, variant: "destructive" });
+    } finally {
+      setSendingId(null);
+    }
+  };
+
   useEffect(() => {
     fetchProtocols();
   }, []);
