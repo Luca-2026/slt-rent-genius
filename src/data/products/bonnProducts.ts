@@ -293,6 +293,7 @@ export const bonnArbeitsbuehnenProducts = [
 
 // ==================== ERDBEWEGUNG ====================
 export const bonnErdbewegungProducts = [
+  // === BAGGER (zuerst) ===
   {
     id: "bonn-bobcat-e10",
     name: "1t Bobcat E10",
@@ -324,34 +325,6 @@ export const bonnErdbewegungProducts = [
     driveType: "diesel",
   },
   {
-    id: "bonn-radlader-kramer-5050",
-    name: "Radlader 3t Kramer 5050",
-    description: "Kompakter Radlader für vielseitige Einsätze.",
-    image: imgKramer1,
-    images: [imgKramer1, imgKramer2],
-    rentwareCode: { bonn: "EEJXMU" },
-    weightKg: 3000,
-    driveType: "diesel",
-  },
-  {
-    id: "bonn-cormidi-dumper",
-    name: "Ketten-Dumper",
-    description: "Kompakter Raupendumper für schwieriges Gelände.",
-    image: imgCormidi1,
-    images: [imgCormidi1, imgCormidi2, imgCormidi3],
-    driveType: "diesel",
-    onRequest: true,
-  },
-  {
-    id: "bonn-knickdumper-kde550",
-    name: "Raddumper / Knickdumper KDe550",
-    description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
-    image: imgKnickdumper1,
-    images: [imgKnickdumper1, imgKnickdumper2],
-    rentwareCode: { bonn: "CUDHTT" },
-    driveType: "elektro",
-  },
-  {
     id: "bonn-bobcat-e35z",
     name: "3,5t Bobcat E35z Minibagger",
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
@@ -369,11 +342,33 @@ export const bonnErdbewegungProducts = [
     driveType: "diesel",
     onRequest: true,
   },
+  // === RADLADER ===
+  {
+    id: "bonn-radlader-kramer-5050",
+    name: "Radlader 3t Kramer 5050",
+    description: "Kompakter Radlader für vielseitige Einsätze.",
+    image: imgKramer1,
+    images: [imgKramer1, imgKramer2],
+    rentwareCode: { bonn: "EEJXMU" },
+    weightKg: 3000,
+    driveType: "diesel",
+  },
+  // === DUMPER ===
+  {
+    id: "bonn-cormidi-dumper",
+    name: "Ketten-Dumper",
+    description: "Kompakter Raupendumper für schwieriges Gelände.",
+    image: imgCormidi1,
+    images: [imgCormidi1, imgCormidi2, imgCormidi3],
+    driveType: "diesel",
+    onRequest: true,
+  },
   {
     id: "bonn-kettendumper-rmd650",
     name: "Ketten-Dumper RMD-650",
     description: "Nutzlast: 650 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Mitfahrplattform",
-    image: "/placeholder.svg",
+    image: imgKettendumperRmd650_1,
+    images: [imgKettendumperRmd650_1, imgKettendumperRmd650_2, imgKettendumperRmd650_3],
     weightKg: 636,
     driveType: "benzin",
     rentwareCode: { bonn: "7Y1UTP" },
@@ -382,10 +377,20 @@ export const bonnErdbewegungProducts = [
     id: "bonn-kettendumper-rmd800",
     name: "Ketten-Dumper RMD-800",
     description: "Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplatten",
-    image: "/placeholder.svg",
+    image: imgKettendumperRmd800_1,
+    images: [imgKettendumperRmd800_1],
     weightKg: 450,
     driveType: "benzin",
     rentwareCode: { bonn: "R1FU1X" },
+  },
+  {
+    id: "bonn-knickdumper-kde550",
+    name: "Raddumper / Knickdumper KDe550",
+    description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
+    image: imgKnickdumper1,
+    images: [imgKnickdumper1, imgKnickdumper2],
+    rentwareCode: { bonn: "CUDHTT" },
+    driveType: "elektro",
   },
 ];
 
