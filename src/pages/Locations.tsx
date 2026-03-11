@@ -103,7 +103,7 @@ export default function Locations() {
                             <AvatarImage src={location.manager.image} alt={location.manager.name} />
                           ) : null}
                           <AvatarFallback className="bg-primary/10 text-primary">
-                            <User className="h-4 w-4 md:h-3 md:w-3 lg:h-5 lg:w-5" />
+                            <User className="h-4 w-4 lg:h-5 lg:w-5" />
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
