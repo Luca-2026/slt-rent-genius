@@ -280,7 +280,7 @@ export default function AdminDashboard() {
             const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
             return sum + discounted * item.quantity;
           }, 0);
-          for (const svc of offer.additional_services as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
+          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
             if (svc.pricePercent !== null && svc.pricePercent > 0) {
               const amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
               additionalServiceItems.push({
