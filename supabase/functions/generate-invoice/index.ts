@@ -420,38 +420,10 @@ Deno.serve(async (req: Request) => {
           `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}: ${item.total_price.toFixed(2).replace(".", ",")} €</li>`
         ).join("");
 
-        // Generate PDF for email attachment
-        const pdfBytes = await generateDocumentPdf({
-          title: is_correction ? "RECHNUNGSKORREKTUR" : "RECHNUNG",
-          documentNumber: invoiceNumber,
-          date: invoiceDate,
-          profile,
-          items: items.map((item: any) => ({
-            name: item.product_name,
-            description: item.description || undefined,
-            quantity: item.quantity,
-            unitPrice: item.unit_price,
-            totalPrice: item.total_price,
-            discount: item.discount_percent,
-          })),
-          sections: [
-            ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
-          ],
-          totals: {
-            net: netAmount,
-            vatRate,
-            vat: vatAmount,
-            gross: grossAmount,
-            deliveryCost: delivery_cost,
-            isReverseCharge,
-            paymentDueDays: payment_due_days,
-            dueDate,
-          },
-        });
+        // Use the already-generated PDF for email attachment
         const pdfBase64 = encodeBase64(pdfBytes);
-        const pdfFileName = fileName.replace(".html", ".pdf");
         const attachments = [{
-          filename: pdfFileName,
+          filename: fileName,
           content: pdfBase64,
           content_type: "application/pdf",
         }];
