@@ -1411,7 +1411,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "trennschleifer-ts420",
-    name: "Benzin-Trennschleifer TS420",
+    name: "Benzin-Trennschleifer",
+    modelName: "TS420",
     description: "Benzin-Trennschleifer für Stein und Beton",
     image: imgTrennschleifer,
     images: [imgTrennschleifer],
