@@ -344,7 +344,8 @@ export const bonnErdbewegungProducts = [
   },
   {
     id: "bonn-xcmg-xe20e",
-    name: "2t XCMG XE20E",
+    name: "2t Minibagger",
+    modelName: "XCMG XE20E",
     description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
     image: imgXcmgXe20e1,
     images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
