@@ -176,12 +176,20 @@ export function DeliveryNoteDialog({
 
       if (error) throw error;
 
-      toast({
-        title: "Übergabeprotokoll erstellt!",
-        description: data.email_sent
-          ? `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt und per E-Mail versendet.`
-          : `Übergabeprotokoll ${data.delivery_note?.delivery_note_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
-      });
+      const dnNumber = data.delivery_note?.delivery_note_number;
+      if (customerNotPresent) {
+        toast({
+          title: "Übergabeprotokoll erstellt!",
+          description: `${dnNumber} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
+        });
+      } else {
+        toast({
+          title: "Übergabeprotokoll erstellt!",
+          description: data.email_sent
+            ? `${dnNumber} wurde erstellt und per E-Mail versendet.`
+            : `${dnNumber} wurde erstellt. (E-Mail nicht konfiguriert)`,
+        });
+      }
 
       setCustomerSignature(null);
       setCustomerNotPresent(false);
