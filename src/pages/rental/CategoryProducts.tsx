@@ -38,7 +38,6 @@ export default function CategoryProducts() {
     braking: [],
     weight: [],
     nutzlastRange: [0, 3000],
-    weight: [],
   });
   const [earthMovingFilters, setEarthMovingFilters] = useState<CategoryFilterState>({
     search: "",
