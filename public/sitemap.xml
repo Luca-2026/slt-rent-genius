@@ -19,8 +19,8 @@
 
   <!-- Category Pages - Krefeld -->
   <url><loc>https://www.slt-rental.de/mieten/krefeld/anhaenger</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/mieten/krefeld/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/mieten/krefeld/werkzeuge</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
+  <url><loc>https://www.slt-rental.de/mieten/krefeld/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-11</lastmod></url>
+  <url><loc>https://www.slt-rental.de/mieten/krefeld/werkzeuge</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-11</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/krefeld/gartenpflege</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/krefeld/aggregate</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/krefeld/arbeitsbuehnen</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
@@ -41,8 +41,8 @@
 
   <!-- Category Pages - Bonn -->
   <url><loc>https://www.slt-rental.de/mieten/bonn/anhaenger</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/mieten/bonn/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/mieten/bonn/werkzeuge</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
+  <url><loc>https://www.slt-rental.de/mieten/bonn/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-11</lastmod></url>
+  <url><loc>https://www.slt-rental.de/mieten/bonn/werkzeuge</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-11</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/bonn/gartenpflege</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/bonn/aggregate</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/bonn/arbeitsbuehnen</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
@@ -57,7 +57,7 @@
 
   <!-- Category Pages - Mülheim -->
   <url><loc>https://www.slt-rental.de/mieten/muelheim/anhaenger</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2026-03-07</lastmod></url>
-  <url><loc>https://www.slt-rental.de/mieten/muelheim/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
+  <url><loc>https://www.slt-rental.de/mieten/muelheim/erdbewegung</loc><changefreq>weekly</changefreq><priority>0.7</priority><lastmod>2026-03-11</lastmod></url>
 
   <!-- Solutions -->
   <url><loc>https://www.slt-rental.de/loesungen</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-03-07</lastmod></url>
