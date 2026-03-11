@@ -17,7 +17,6 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "dieseltankstelle-400l-1", "dieseltankstelle-400l-2",
   "hydraulikhammer-shb45-1", "hydraulikhammer-shb45-2", "hydraulikhammer-shb45-3",
   "knickdumper-kde550-1", "knickdumper-kde550-2",
-  "kettendumper-rmd650-1", "kettendumper-rmd650-2", "kettendumper-rmd650-3",
   "kettendumper-rmd800-1",
   "kramer-5045-1", "kramer-5045-2",
   "xcmg-xe20e-1", "xcmg-xe20e-2", "xcmg-xe20e-3",
