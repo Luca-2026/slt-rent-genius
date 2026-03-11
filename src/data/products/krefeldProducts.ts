@@ -1290,7 +1290,8 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bauleuchte-gli18v-2200c",
-    name: "Bosch Akku Bauleuchte GLI 18V-2200 C",
+    name: "Akku Bauleuchte",
+    modelName: "Bosch GLI 18V-2200 C",
     description: "Akku-Bauleuchte mit 2200 Lumen",
     image: imgBauleuchte,
     images: [imgBauleuchte],
