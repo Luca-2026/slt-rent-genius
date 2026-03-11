@@ -62,6 +62,14 @@ export default function About() {
 
   const whyItems = t("about.whyItems", { returnObjects: true }) as string[];
 
+  useEffect(() => {
+    if (!carouselApi) return;
+    const onSelect = () => setCurrentSlide(carouselApi.selectedScrollSnap());
+    carouselApi.on("select", onSelect);
+    onSelect();
+    return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
+
   return (
     <Layout>
       <SEO
