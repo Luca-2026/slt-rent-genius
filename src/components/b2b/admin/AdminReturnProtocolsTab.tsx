@@ -240,6 +240,16 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="h-10 sm:h-9 flex-1 sm:flex-none text-amber-700 border-amber-300 hover:bg-amber-50"
+                          onClick={() => sendForSignature(rp)}
+                          disabled={sendingId === rp.id}
+                        >
+                          <FileSignature className="h-4 w-4 mr-1.5" />
+                          Zur Unterschrift
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
                           className="h-10 sm:h-9 flex-1 sm:flex-none"
                           onClick={() => sendEmail(rp.id)}
                           disabled={sendingId === rp.id}
