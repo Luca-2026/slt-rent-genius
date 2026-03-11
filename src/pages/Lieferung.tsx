@@ -289,7 +289,7 @@ export default function Lieferung() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Fahrt:</span>
-                        <span className="font-medium">{includeReturn ? "Hin + Rück" : "Nur Hinfahrt"}</span>
+                        <span className="font-medium">{includeReturn ? "Anlieferung & Abholung" : "Nur Hinfahrt"}</span>
                       </div>
                       {twoMachines && (
                         <div className="flex justify-between">
