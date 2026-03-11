@@ -18,17 +18,12 @@ const LocationSelectDialog = lazy(() => import("@/components/solutions/LocationS
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { 
-  Search, 
   Truck, 
   CheckCircle2,
   ArrowRight,
   MapPin,
   Clock,
   Phone,
-  Calendar,
-  ShoppingCart,
-  CreditCard,
-  Package,
   User,
   Mail,
   Building2
