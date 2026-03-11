@@ -143,6 +143,7 @@ export default function AdminDashboard() {
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [createReservationOpen, setCreateReservationOpen] = useState(false);
   const [createOfferOpen, setCreateOfferOpen] = useState(false);
+  const [selectedGroupReservations, setSelectedGroupReservations] = useState<Reservation[]>([]);
   const [generatingInvoice, setGeneratingInvoice] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
