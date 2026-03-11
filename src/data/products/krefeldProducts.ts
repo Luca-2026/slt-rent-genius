@@ -3167,10 +3167,10 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Farbe": "Transparent",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
-      "Stückzahl": "10 Stück pro Set",
+      "Stückzahl": "36 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "F66UKS" }
   },
   {
     id: "burgunderglas-brunelli-10er",
