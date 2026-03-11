@@ -811,12 +811,18 @@ async function generateOfferPdf(data: {
   // ── ITEMS TABLE HEADER ──
   page.drawRectangle({ x: margin, y: y - 4, width: contentWidth, height: 20, color: blue });
   const hdrY = y;
-  drawText("Pos.", margin + 4, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Bezeichnung", margin + 34, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Menge", margin + 265, hdrY, { f: fontBold, s: 8, c: white });
-  drawTextRight("Einzelpreis", margin + 380, hdrY, { f: fontBold, s: 8, c: white });
-  drawText("Rabatt", margin + 390, hdrY, { f: fontBold, s: 8, c: white });
-  drawTextRight("Gesamt", pageWidth - margin - 4, hdrY, { f: fontBold, s: 8, c: white });
+  const colPos = margin + 4;
+  const colName = margin + 30;
+  const colQty = margin + 240;
+  const colUnit = margin + 310;
+  const colDisc = margin + 395;
+  const colTotal = pageWidth - margin - 4;
+  drawText("Pos.", colPos, hdrY, { f: fontBold, s: 8, c: white });
+  drawText("Bezeichnung", colName, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Menge", colQty + 30, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Einzelpreis", colUnit + 50, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Rabatt", colDisc + 35, hdrY, { f: fontBold, s: 8, c: white });
+  drawTextRight("Gesamt", colTotal, hdrY, { f: fontBold, s: 8, c: white });
   y -= 22;
 
   // ── ITEM ROWS ──
