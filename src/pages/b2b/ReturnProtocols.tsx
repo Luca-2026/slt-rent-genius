@@ -122,37 +122,37 @@ export default function B2BReturnProtocols() {
   return (
     <B2BPortalLayout title="Rückgabeprotokolle" subtitle={`${protocols.length} Rückgabeprotokolle`}>
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Undo2 className="h-5 w-5 text-primary" />
+          <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <Undo2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{protocols.length}</p>
-              <p className="text-xs text-muted-foreground">Gesamt</p>
+              <p className="text-xl sm:text-2xl font-bold">{protocols.length}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Gesamt</p>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-              <FileSignature className="h-5 w-5 text-amber-600" />
+          <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+              <FileSignature className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{pendingCount}</p>
-              <p className="text-xs text-muted-foreground">Offen</p>
+              <p className="text-xl sm:text-2xl font-bold">{pendingCount}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Offen</p>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
+          <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{signedCount}</p>
-              <p className="text-xs text-muted-foreground">Unterschrieben</p>
+              <p className="text-xl sm:text-2xl font-bold">{signedCount}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Unterschrieben</p>
             </div>
           </CardContent>
         </Card>
