@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -109,6 +109,8 @@ export function AdminCreateOfferDialog({
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
   const [selectedProfileId, setSelectedProfileId] = useState("");
+  // Track the context key that was used to initialize the form, so we only reset when the context actually changes
+  const lastInitKey = useRef<string | null>(null);
 
   const isEditing = !!existingOffer;
   const isStandalone = !reservation && !isEditing;
@@ -120,45 +122,48 @@ export function AdminCreateOfferDialog({
 
   const approvedProfiles = (profilesList || []).filter((p: any) => p.status === "approved");
 
-  // Initialize form when dialog opens (only on open change, not on profile change)
+  // Initialize form when dialog opens with a NEW context (different reservation/offer), not on every open toggle
   useEffect(() => {
-    if (open) {
-      if (existingOffer && existingItems && existingItems.length > 0) {
-        setItems(
-          existingItems.map((item) => ({
-            product_name: item.product_name,
-            description: item.description || "",
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            discount_percent: item.discount_percent,
-          }))
-        );
-        setDeliveryCost(existingOffer.delivery_cost || 0);
-        setNotes(existingOffer.notes || "");
-        setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
-        if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
-          setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
-        } else {
-          setSelectedServices(new Set());
-        }
-      } else if (reservation) {
-        // Will load prices once profile is available
-        setDeposit(reservation.deposit ? String(reservation.deposit) : "");
-        if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
-          setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
-        } else {
-          setSelectedServices(new Set());
-        }
-      } else if (isStandalone) {
-        setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
-        setDeliveryCost(0);
-        setNotes("");
-        setDeposit("");
+    if (!open) return;
+
+    const contextKey = existingOffer?.id || reservation?.id || "standalone";
+    if (lastInitKey.current === contextKey) return; // Already initialized for this context
+    lastInitKey.current = contextKey;
+
+    if (existingOffer && existingItems && existingItems.length > 0) {
+      setItems(
+        existingItems.map((item) => ({
+          product_name: item.product_name,
+          description: item.description || "",
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          discount_percent: item.discount_percent,
+        }))
+      );
+      setDeliveryCost(existingOffer.delivery_cost || 0);
+      setNotes(existingOffer.notes || "");
+      setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
+      if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
+        setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
+      } else {
         setSelectedServices(new Set());
-        setSelectedProfileId("");
       }
+    } else if (reservation) {
+      setDeposit(reservation.deposit ? String(reservation.deposit) : "");
+      if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
+        setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
+      } else {
+        setSelectedServices(new Set());
+      }
+    } else if (isStandalone) {
+      setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
+      setDeliveryCost(0);
+      setNotes("");
+      setDeposit("");
+      setSelectedServices(new Set());
+      setSelectedProfileId("");
     }
-  }, [open]); // Only run on open change
+  }, [open, existingOffer?.id, reservation?.id]);
 
   // Load customer prices when reservation + profile are available
   useEffect(() => {
@@ -335,8 +340,11 @@ export function AdminCreateOfferDialog({
   if (!isEditing && !reservation && !isStandalone) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={(newOpen) => {
+        if (!newOpen) lastInitKey.current = null;
+        onOpenChange(newOpen);
+      }}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
