@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { LegacyProductRedirect, LegacyLocationProductRedirect, LegacyCategoryRedirect } from "@/components/LegacyRedirects";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -81,9 +82,14 @@ const App = () => (
               <Route path="/mieten/:locationId/:categoryId" element={<CategoryProducts />} />
               <Route path="/mieten/:locationId/:categoryId/:productId" element={<ProductDetail />} />
               
-              {/* Legacy products route */}
+              {/* Legacy product/category routes - redirects for SEO */}
               <Route path="/produkte" element={<RentalStart />} />
-              <Route path="/produkte/:category" element={<Products />} />
+              <Route path="/produkte/:productSlug" element={<LegacyProductRedirect />} />
+              <Route path="/produkte-bonn/:productSlug" element={<LegacyLocationProductRedirect locationId="bonn" />} />
+              <Route path="/produkte-duisburg/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
+              <Route path="/produkte-muelheim/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
+              <Route path="/kategorien-krefeld/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
+              <Route path="/kategorie/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
               
               <Route path="/so-funktionierts" element={<HowItWorks />} />
               <Route path="/standorte" element={<Locations />} />
