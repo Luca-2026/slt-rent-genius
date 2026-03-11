@@ -2063,6 +2063,13 @@ export const bonnBeschallungProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "PX1N8H" },
   },
+  {
+    id: "bonn-das-soundsystem-3500w",
+    name: "D.A.S. Soundsystem 3500W RMS",
+    description: "Professionelles PA-System mit 3500W RMS Systemleistung für große Events.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "IGH3BH" },
+  },
 ];
 
 // ==================== SPEZIALEFFEKTE ====================
