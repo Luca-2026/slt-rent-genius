@@ -393,8 +393,8 @@ function ArticleCard({
   const categoryData = kbCategories.find((c) => c.id === article.categoryId);
 
   return (
-    <Card className="hover:shadow-sm transition-shadow cursor-pointer" onClick={onClick}>
-      <CardContent className="py-4 px-5 flex items-start gap-4">
+    <Card className="hover:shadow-sm hover:border-primary/20 transition-all duration-200 cursor-pointer" onClick={onClick}>
+      <CardContent className="py-3 md:py-4 px-4 md:px-5 flex items-start gap-3 md:gap-4">
         <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 mt-0.5">
           <TypeIcon className="h-5 w-5 text-primary" />
         </div>
