@@ -307,7 +307,15 @@ export function AdminCustomerDetailDialog({
           <span>·</span>
           <span>{profile.contact_email}</span>
           <span>·</span>
+          <span>📞 {profile.contact_phone}</span>
+          <span>·</span>
           <span>{profile.street} {profile.house_number}, {profile.postal_code} {profile.city}</span>
+          {profile.billing_email && (
+            <>
+              <span>·</span>
+              <span>Rechnung: {profile.billing_email}</span>
+            </>
+          )}
           {profile.tax_id && (
             <>
               <span>·</span>
