@@ -348,6 +348,54 @@ export default function Index() {
           </div>
         </div>
       </section>
+      {/* SEO Content Section */}
+      <section className="py-16 lg:py-20 bg-muted/30 border-t border-border">
+        <div className="section-container">
+          <AnimatedSection>
+            <div className="max-w-4xl mx-auto prose prose-sm text-muted-foreground">
+              <h2 className="text-2xl font-bold text-headline mb-6">Baumaschinen & Equipment mieten in NRW – Ihr Partner für jedes Projekt</h2>
+              <p>
+                SLT Rental ist Ihr Spezialist für die Vermietung von Baumaschinen, Anhängern und Event-Equipment in Nordrhein-Westfalen. 
+                Mit drei Standorten in <strong>Krefeld</strong>, <strong>Bonn</strong> und <strong>Mülheim an der Ruhr</strong> sind wir immer in Ihrer Nähe – 
+                egal ob Sie einen Minibagger für den Garten, eine Arbeitsbühne für die Fassade oder eine Hüpfburg für den Kindergeburtstag suchen.
+              </p>
+              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Über 1.700 Mietartikel für Bau, Garten & Events</h3>
+              <p>
+                Unser Sortiment umfasst alles, was Sie für Ihr Projekt brauchen: Von <strong>Minibaggern und Radladern</strong> über 
+                <strong> Rüttelplatten und Bautrockner</strong> bis hin zu <strong>Stromverteilern, Rollgerüsten und Werkzeugen</strong>. 
+                Für Veranstaltungen bieten wir Partyzelte, Bierzeltgarnituren, Geschirr-Sets, PA-Anlagen, Beleuchtungstechnik 
+                und professionelle Bühnensysteme. In Mülheim finden Sie zudem unser Bobcat-Programm mit Kompaktbaggern, 
+                Knickdumpern und Radladern für professionelle Erdbewegung.
+              </p>
+              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Anhänger mieten – 24/7 per SMS-Code</h3>
+              <p>
+                Unsere <strong>Anhänger</strong> sind rund um die Uhr verfügbar – auch an Wochenenden und Feiertagen. 
+                Dank unserem SMS-Code-System können Sie Ihren Anhänger jederzeit selbstständig abholen und zurückbringen. 
+                Ob Planenanhänger, Autotransporter, Baumaschinenanhänger oder Kastenanhänger mit Laubgitter: 
+                Bei uns finden Sie das passende Modell für jeden Einsatz.
+              </p>
+              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Faire Preise & Tiefpreisgarantie</h3>
+              <p>
+                Bei SLT Rental profitieren Sie von unserer <strong>Tiefpreisgarantie</strong>: Wir sind mindestens 10 % günstiger 
+                als jeder vergleichbare Anbieter. Nutzen Sie unsere attraktiven <strong>Wochenend-Tarife</strong> – 
+                freitags ab 16 Uhr mieten, montags bis 9 Uhr zurückgeben und nur einen Tag bezahlen. 
+                Für Geschäftskunden bieten wir individuelle Rahmenverträge mit Sonderkonditionen über unser B2B-Portal.
+              </p>
+              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Lieferung direkt auf Ihre Baustelle</h3>
+              <p>
+                Sie können Ihr Equipment bequem an einem unserer Standorte abholen oder wir liefern es direkt zu Ihnen. 
+                Unser Liefergebiet umfasst den gesamten <strong>Niederrhein</strong>, das <strong>Rheinland</strong> und das <strong>Ruhrgebiet</strong> – 
+                von Krefeld über Düsseldorf und Duisburg bis nach Bonn, Essen und Bochum. 
+                Die Lieferkosten berechnen Sie transparent mit unserem Online-Kalkulator.
+              </p>
+              <p className="mt-6">
+                <strong>SLT Rental – über 1.700 Mietartikel, 3 Standorte, 1 Versprechen: Das beste Equipment zum besten Preis.</strong>
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       <Suspense fallback={null}>
         <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
       </Suspense>
