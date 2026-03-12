@@ -828,10 +828,45 @@ export default function CategoryProducts() {
     );
   }
 
-  // SEO data for category page
+  // SEO data for category page - CTR-optimized
   const categoryDisplayName = category.title || categoryId || "";
-  const seoTitle = `${categoryDisplayName} mieten in ${location.name}`;
-  const seoDescription = `${categoryDisplayName} mieten in ${location.name} bei SLT Rental. ${products.length} Mietartikel verfügbar. Faire Preise, schnelle Abwicklung, persönliche Beratung.`;
+  
+  // Category-specific SEO titles with CTR triggers
+  const categorySeoTitles: Record<string, string> = {
+    anhaenger: `Anhänger mieten ${location.name} – 24/7 Abholung, ab 19 €/Tag`,
+    erdbewegung: `Minibagger & Bagger mieten ${location.name} – inkl. Lieferung`,
+    werkzeuge: `Werkzeuge mieten ${location.name} – Profi-Geräte ab 10 €/Tag`,
+    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name} – Steiger bis 18m Höhe`,
+    gartenpflege: `Gartengeräte mieten ${location.name} – Häcksler, Erdbohrer & mehr`,
+    aggregate: `Stromaggregat mieten ${location.name} – 2,8 bis 100 kVA`,
+    verdichtung: `Rüttelplatte mieten ${location.name} – ab 25 €/Tag`,
+    huepfburgen: `Hüpfburg mieten ${location.name} – für Kindergeburtstag & Events`,
+    "leitern-gerueste": `Rollgerüst & Leiter mieten ${location.name} – bis 8,4m Höhe`,
+    "heizung-trocknung": `Bautrockner & Heizung mieten ${location.name} – Sofort verfügbar`,
+    "moebel-zelte": `Partyzelt & Mobiliar mieten ${location.name} – für Events & Feiern`,
+    "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
+    absperrtechnik: `Absperrtechnik mieten ${location.name} – Halteverbotsschilder & Bauzaun`,
+    "kabel-stromverteiler": `Kabel & Stromverteiler mieten ${location.name} – CEE 16A bis 63A`,
+    beschallung: `PA-Anlage & Beschallung mieten ${location.name} – Professionell`,
+    beleuchtung: `Beleuchtung mieten ${location.name} – LED Moving Heads & Bars`,
+    buehne: `Bühne mieten ${location.name} – Bühnenpodeste & Zubehör`,
+    "traversen-rigging": `Traversen mieten ${location.name} – Rigging & Bühnentechnik`,
+    spezialeffekte: `Spezialeffekte mieten ${location.name} – Funkenfontänen & Co.`,
+    kommunikation: `Funkmikrofon & Kommunikation mieten ${location.name}`,
+  };
+  
+  const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
+  
+  // CTR-optimized descriptions with checkmarks and USPs
+  const categorySeoDescriptions: Record<string, string> = {
+    anhaenger: `Anhänger mieten in ${location.name} ✓ ${products.length} Modelle ✓ 24/7 Abholung per SMS-Code ✓ Pkw- & Baumaschinenanhänger ✓ Wochenend-Tarife ✓ Tiefpreisgarantie`,
+    erdbewegung: `Minibagger & Bagger mieten in ${location.name} ✓ ${products.length} Geräte ✓ Anbaugeräte inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
+    arbeitsbuehnen: `Arbeitsbühne & Hubsteiger mieten in ${location.name} ✓ ${products.length} Modelle bis 18m ✓ Scheren- & Gelenkteleskopbühnen ✓ Anhängerbühnen ✓ Lieferung möglich`,
+    huepfburgen: `Hüpfburg mieten in ${location.name} ✓ ${products.length} Modelle für Kindergeburtstag & Events ✓ Lieferung & Aufbau ✓ Faire Wochenend-Tarife`,
+  };
+  
+  const seoDescription = categorySeoDescriptions[category.id] || 
+    `${categoryDisplayName} mieten in ${location.name} ✓ ${products.length} Mietartikel ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Persönliche Beratung ✓ Lieferung möglich`;
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
   const seoKeywords = `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
 

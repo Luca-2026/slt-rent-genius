@@ -32,7 +32,7 @@ const locationManagers: Record<string, { name: string; roleKey: string; image: s
   muelheim: { name: "Andreas Scherzow", roleKey: "rental.locationManager", image: null, email: "a.scherzow@slt-rental.de" },
 };
 
-// Location descriptions
+// Location descriptions (visible on page)
 const locationDescriptions: Record<string, { de: string; en: string }> = {
   krefeld: {
     de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
@@ -45,6 +45,38 @@ const locationDescriptions: Record<string, { de: string; en: string }> = {
   muelheim: {
     de: "Miete bei uns Minibagger, Anhänger, Stromaggregate, Eventequipment und vieles mehr für dein nächstes Projekt zum besten Preis!",
     en: "Rent mini excavators, trailers, generators, event equipment and much more for your next project at the best price!",
+  },
+};
+
+// SEO-optimized meta descriptions (different from visible text for better CTR)
+const locationSeoDescriptions: Record<string, { de: string; en: string }> = {
+  krefeld: {
+    de: "Baumaschinen & Anhänger mieten in Krefeld ✓ Minibagger, Arbeitsbühnen, Event-Equipment ✓ 24/7 Anhänger-Abholung ✓ Tiefpreisgarantie ✓ Faire Mietpreise ab 15 €/Tag",
+    en: "Rent construction equipment & trailers in Krefeld ✓ Mini excavators, aerial platforms, event equipment ✓ 24/7 trailer pickup ✓ Fair rental prices",
+  },
+  bonn: {
+    de: "Baumaschinen & Equipment mieten in Bonn ✓ Minibagger, Anhänger, Arbeitsbühnen, Hüpfburgen ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie ✓ Wochenend-Tarife",
+    en: "Rent construction equipment in Bonn ✓ Mini excavators, trailers, aerial platforms ✓ Delivery to your site ✓ Weekend rates available",
+  },
+  muelheim: {
+    de: "Baumaschinen mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Professionelle Erdbewegung ✓ Tiefpreisgarantie ✓ Lieferung im Ruhrgebiet",
+    en: "Rent construction equipment in Mülheim an der Ruhr ✓ Bobcat excavators, dumpers, wheel loaders ✓ Professional earthmoving ✓ Delivery in the Ruhr area",
+  },
+};
+
+// SEO-optimized title tags
+const locationSeoTitles: Record<string, { de: string; en: string }> = {
+  krefeld: {
+    de: "Baumaschinen & Anhänger mieten Krefeld – ab 15 €/Tag",
+    en: "Rent Equipment & Trailers in Krefeld",
+  },
+  bonn: {
+    de: "Baumaschinen & Equipment mieten Bonn – Tiefpreisgarantie",
+    en: "Rent Equipment in Bonn – Best Price Guarantee",
+  },
+  muelheim: {
+    de: "Baumaschinen mieten Mülheim a.d. Ruhr – Bobcat & mehr",
+    en: "Rent Construction Equipment in Mülheim an der Ruhr",
   },
 };
 
