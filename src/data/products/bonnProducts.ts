@@ -271,7 +271,7 @@ export const bonnAggregateProducts = [
   {
     id: "bonn-kompressor-5m3",
     name: "4m³ Kompressor",
-    description: "Kompressor inkl. Generator\nMarke: Doosan\nTyp: 7/45\nVolumenstrom: 4m³/min \nmax. Druck: 6,8 bar \nEmissionsklasse: EU Stage V \nBatteriespannung: 12 V \nAnschlüsse: 3x  \nDrehzahl: 1500 U/min \nGewicht: ca. 680 kg \nTankinhalt: 58 l \nKraftstoff: Diesel \nAbgasnorm: Stage V\nZusatzausstattung: auf Fahrgestell\nGenerator: 6 kVA 400V/230V\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
+    description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
     image: kompressor5m3_1,
     images: [kompressor5m3_1, kompressor5m3_2],
     rentwareCode: { bonn: "" },
@@ -474,7 +474,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms01-ms03-sortiergreifer",
     name: "MS01/MS03 Sortiergreifer SSG 150",
-    description: "Arbeitsbreite:400mm\nBauhöhe (geöffnet):680mm\nBetriebsdruck:25MPa\nGewicht:150 kg\nMax. Schließkraft: 6,75kN\nRotation: 360 Grad / endlos\nRotation Betriebsdruck: 20MPa\nRotation Öldurchfluss: 20l/min\nÖffnungsweite: 920mm\nÖldurchfluss: 35l/min\nAusführung: Mit Schneide",
+    description: "Kompakter Sortiergreifer mit 6,75 kN Schließkraft – Gewichtsklasse 2–3 t",
     detailedDescription: "Der SSG150 erzielt eine, in der Gewichtsklasse von 2–3 Tonnen, überdurchschnittliche Schließkraft von 6,75 kN – bei einem Eigengewicht von nur 150 kg. Die Schalenbreite beträgt 40 Zentimeter, die Öffnungsweite 92 Zentimeter.\n\nBei Qualität und Zuverlässigkeit spielt der SSG150 in derselben Liga wie seine großen Brüder. SEIFERT hat bei der Entwicklung den Fokus auf maximale Belastbarkeit gelegt.\n\nFür die Greifer der SEIFERT SSG-Baureihe sind, neben den standardmäßig im Lieferumfang enthaltenen Greiferzähnen, optionale Anbauschneiden erhältlich – als Wechselschneiden mit 2 Verschleißkanten oder als gezahnte Schneiden für maximalen Halt.\n\nAlle SEIFERT SSG-Sortiergreifer verfügen serienmäßig über ein Lasthalteventil, um gegriffene Objekte sicher zu halten und vor dem Herausrutschen zu schützen.\n\nDie Greifer der SEIFERT SSG-Baureihe besitzen einen besonders robusten, wartungsfreundlichen Aufbau und glänzen mit einem hervorragenden Preis-Leistungs-Verhältnis, Zuverlässigkeit sowie Langlebigkeit.",
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
@@ -662,7 +662,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-baumstumpffraese-f360",
     name: "Baumstumpffräse F-360",
-    description: "Hersteller: Laski\nTyp: F-360 SW/11\nMotorleistung: 12 PS\nFräskapazität max.: 300 mm\nGewicht: 145 kg\nAbmessung (LxBxH): 180 cm (130 cm*) x 65 cm x 120 cm  (114 cm*) *Transportzustand\nSchwenkbereich: 80 cm\nTankinhalt: 5 l\nKraftstoff: Benzin\nSonderausstattung: auf Rollen\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Benzin wird mit brutto 2,80€/l berechnet.",
+    description: "Einachsige Baumstumpffräse mit Honda GX-390 Motor",
     detailedDescription: "Einachsige Baumstumpffräse ohne Fahrantrieb mit auf Drehkranz gelagertem Oberteil und 60° Schwenkbereich. Angetrieben vom Honda GX-390 Motor (8,2 kW / 11 PS) mit Seilzugstart. Das Schneidrad mit acht DoublePro-Fräsmessern wird über einen dreifachen Keilriementrieb direkt angetrieben. Betriebsbremse auf beide Räder wirkend, Maschinenbreite 650 mm.",
     image: baumstumpffraeseF360_1,
     images: [baumstumpffraeseF360_1, baumstumpffraeseF360_2],
@@ -693,7 +693,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-haecksler-ls95gx",
     name: "Häcksler LS-95 GX",
-    description: "Hersteller: Laski\nTyp: LS-95 GX\nMotorleistung: 12 PS\nSchneidekapazität max.: 80 mm\nGewicht: 130 kg\nAbmessung (LxBxH): 153 cm x 80 cm x 158 cm \nTankinhalt: 10 l\nKraftstoff: Benzin\nSonderausstattung: auf Rollen\nHinweis: Nur stehender Transport!\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Benzin wird mit brutto 2,80€/l berechnet.",
+    description: "Benzin-Häcksler für größere Äste und Zweige.",
     detailedDescription: "Der Buschholzhäcksler LS 95/CH zeichnet sich durch hohe Arbeitsleistung und einfache Bauart aus. Angetrieben von einem leistungsstarken Kohler Motor, zerkleinert er Äste bis 7,5 cm Durchmesser zuverlässig. Zwei Zerkleinerungsmesser und eine ortsfeste Gegenschneide sorgen für effizientes Häckseln. Der Messerwechsel ist denkbar einfach – nur Rutsche abkippen. Der Einzug erfolgt automatisch durch das Eigengewicht des Materials. Große Laufräder machen das Manövrieren auch in schwierigem Gelände problemlos.",
     image: haeckslerLs95_1,
     images: [haeckslerLs95_1],
@@ -726,7 +726,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-rasenwalze",
     name: "Rasenwalze",
-    description: "Eine handbedienbare Gartenwalze, die mit Wasser gefüllt werden kann. \nFüllvolumen ca.: 46 L\nArbeitsbreite: 57 cm\nGesamthöhe mit Schubbügel ca. 106 cm\nDurchmesser: 32 cm\nGewicht: 13 kg",
+    description: "Robuste Rasenwalze zum Einebnen und Verdichten von Rasenflächen nach Aussaat oder Verlegung von Rollrasen.",
     image: "/products/gartenpflege/rasenwalze-freisteller.jpg",
     images: ["/products/gartenpflege/rasenwalze-freisteller.jpg", "/products/gartenpflege/rasenwalze-anwendung.jpg"],
     specifications: {
@@ -804,7 +804,7 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-zwangsmischer-140l",
     name: "Zwangsmischer 140L",
-    description: "Typ: Compakt 140L\nMotorleistung: 2.200 W / 230V\nRührwerk N: 27,5 min-1\nTrommelvolumen: max. 140 L\nGewicht: 130 kg\nAbmessung (LxBxH): 82 cm x 77 cm x 121 cm \nDer Zwangsmischer ist gereinigt zurückzugeben, anderfalls berechnen wir eine Reinigungspauschale in Höhe von 150€",
+    description: "Zwangsmischer Compakt 140L – für gleichmäßige Beton- und Mörtelmischungen.",
     detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle. Der Zwangsmischer ist gereinigt zurückzugeben, andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
     image: zwangsmischer140l1,
     images: [zwangsmischer140l1, zwangsmischer140l2, zwangsmischer140l3],
@@ -883,7 +883,7 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-fliesenschneider-80cm",
     name: "Fliesenschneider 80cm",
-    description: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. \nSchnittlänge max.: 800 mm\nSchneidleistung  max.: 14 mm\nDiagonal-Schnittlänge mit Auflage: 565 mm",
+    description: "Profi-Fliesenschneider zum präzisen Schneiden und Trennen von Keramikfliesen.",
     detailedDescription: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. Mit einer maximalen Schnittlänge von 800 mm und einer Schneidleistung bis 14 mm ist er ideal für Fliesen- und Plattenleger.",
     image: fliesenschneider1,
     images: [fliesenschneider1, fliesenschneider2, fliesenschneider3, fliesenschneider4, fliesenschneider5],
@@ -933,7 +933,7 @@ export const bonnWerkzeugProducts = [
     id: "bonn-rotationslaser-grl400h",
     name: "Rotationslaser",
     modelName: "Bosch GRL 400H",
-    description: "Rotationslaser bis 400m Arbeitsbereich\nArbeitsbereich mit Empfänger*: bis zu 400 m (Durchmesser)\nArbeitsbereich ohne Empfänger*: bis zu 20 m (Durchmesser)\nNivelliergenauigkeit*: ± 2,4 mm bei 30 m* (* zzgl. einsatzabhängiger Abweichung)\nSelbstnivellierbereich: ± 8 % (± 5°)\n*Empfänger nicht im Set enthalten",
+    description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
     detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
     image: rotationslaser1,
     images: [rotationslaser1, rotationslaser2],
@@ -953,7 +953,7 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-mauerschlitzfraese",
     name: "Mauerschlitzfräse",
-    description: "Leistungsaufnahme: 2.300 W\nNennspannung: 230 V\nmax. Schlitztiefe: 45 mm\nmax. Schlitzbreite: 46 mm\nNenndrehzahl: 4.300 U/min\nLeerlaufdrehzahl: 7.500 U/min\nWerkzeugaufnahme: 22,2 mm\nScheibendurchmesser: max. 150 mm\nGewicht: 6,1 kg\nIm Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. \nDiamanttrennscheiben zum Kauf optional erhältlich.",
+    description: "Für präzise Schlitze in Mauerwerk – bis 45 mm Tiefe und 46 mm Breite.",
     detailedDescription: "Leistungsstarke Mauerschlitzfräse mit 2.300 W für das Fräsen von Kabelschlitzen in Mauerwerk. Mit einer maximalen Schlitztiefe von 45 mm und Schlitzbreite von 46 mm ideal für Elektroinstallationen. Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. Diamanttrennscheiben zum Kauf optional erhältlich.",
     image: imgMauerschlitzfraese,
     images: [imgMauerschlitzfraese],
@@ -991,7 +991,7 @@ export const bonnTrocknungProducts = [
   {
     id: "bonn-bautrockner-kt200",
     name: "Allegra Bautrockner KT200",
-    description: "Hersteller: Allegra\nintegrierter Stromzähler: ja (geeichter MID-konformen Stromzähler PH10)\nTrocknungsfläche: 20 m²\nEntfeuchtungsleistung: bis zu 20 l/24h\nLeistung: 350 W\nLuftumwälzung: 260 m³/h\nStromanschluss: 230V - 16A\nArbeitsbereich: 5 °C - 35 °C\nBetriebsstundenzähler: Ja\nKapazität Wassertank: 4 Liter, Gerät schaltet bei vollem Tank automatisch ab\nSchlauchanschluss: ja, möglich\nGewicht: 18,50 kg",
+    description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt200_1,
     images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
     category: "bautrockner",
@@ -1016,7 +1016,7 @@ export const bonnTrocknungProducts = [
   {
     id: "bonn-bautrockner-kt554",
     name: "Allegra Bautrockner KT553/KT554",
-    description: "Hersteller: Allegra\nintegrierter Stromzähler: ja (geeichter MID-konformen Stromzähler PH10)\nTrocknungsfläche: 50-60 m²\nEntfeuchtungsleistung: bis zu 50 l/24h\nLeistung: 700 W\nLuftumwälzung: 330 m³/h\nStromanschluss: 230V - 16A\nArbeitsbereich: 5 °C - 35 °C\nBetriebsstundenzähler: Ja\nKapazität Wassertank: 4 Liter, Gerät schaltet bei vollem Tank automatisch ab\nSchlauchanschluss: ja, möglich\nGewicht: 30 kg",
+    description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt553_1,
     images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
     category: "bautrockner",
@@ -1378,7 +1378,7 @@ export const bonnGeruestteileProducts = [
   {
     id: "bonn-krause-fahrbase-75",
     name: "Krause Fahrbase 75",
-    description: "2x Diagonale für 2,00 m Feldlänge\n2x Basisstrebe 1,70 m\n2x Stahl-Fahrtraverse\n4x Fußplatte\n4x Höhenvst. Fahrrollen ø 150 mm",
+    description: "Fahrwerk-Set für Krause Rollgerüste, Breite 75 cm.",
     image: "/placeholder.svg",
     category: "geruestteil",
     specifications: { "Breite": "75 cm" },
@@ -1504,7 +1504,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-longdrinkglas-passionata-10er",
     name: "Longdrink Passionata 460ml, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Longdrinkglas\nGröße: 460ml\nHöhe: 11,6 cm\nDurchmesser: 9,0 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: longdrinkPassionata2,
     images: [longdrinkPassionata2, longdrinkPassionata1, longdrinkPassionata3],
     detailedDescription: "Die Schott Zwiesel Passionata Longdrinkgläser im 25er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Longdrinks, Cocktails, Mocktails oder einfach erfrischendes Wasser. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden. Glasbruch wird mit 5,00 € pro Glas berechnet.",
@@ -1525,7 +1525,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-wasserglas-passionata-25er",
     name: "Wasserglas Passionata 460ml, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Wasserglas\nGröße: 460ml\nHöhe: 11,6 cm\nDurchmesser: 9,0 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Wasserglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: wasserglasPassionata1,
     images: [wasserglasPassionata1],
     detailedDescription: "Die Schott Zwiesel Passionata Wassergläser im 25er Set – zeitloses Design trifft auf hochwertigen Luxus. Hergestellt aus Tritan®-Kristallglas, sind diese Gläser klar, kratzfest und extrem bruchsicher. Mit 460 ml Fassungsvermögen perfekt für Wasser, Softdrinks und erfrischende Getränke. Spülmaschinenfest – bleibt immer klar, ohne matt zu werden. Glasbruch wird mit 5,00 € pro Glas berechnet.",
@@ -1548,7 +1548,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-weissweinglas-passionata-10er",
     name: "Weißwein Passionata, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Weißweinglas\nHöhe: 23,1 cm\nDurchmesser: 8,8 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
     image: weissweinPassionata1,
     images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
     detailedDescription: "Das Schott Zwiesel Passionata Weißweinglas im 10er Set – optimiert für den aromatischen Ausdruck von Weißweinen. Hergestellt aus Tritan®-Kristallglas – klar, kratzfest und extrem bruchsicher. Spülmaschinenfest und nachhaltig hergestellt.",
@@ -1568,7 +1568,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-rotweinglas-passionata-10er",
     name: "Rotwein Passionata, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Rotweinglas\nHöhe: 23,8 cm\nDurchmesser: 9,4 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
     detailedDescription: "Das Schott Zwiesel Passionata Rotweinglas im 10er Set – bruchsichere Klasse für Rotwein. Hergestellt aus Tritan®-Kristallglas, extrem bruchfest und kratzfest. Spülmaschinenfest mit langanhaltende Glanz.",
@@ -1610,7 +1610,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-champagnerglas-brunelli-14er",
     name: "Champagnerglas Brunelli, 36er Set",
-    description: "Hersteller: Leonardo\nTyp: Sekt/Champagnerglas\nHöhe: 25,4 cm\nDurchmesser: 7,8 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurückgegeben werden. \nReinigungspauschale: 3,90€/Set\nGlasbruch: 5,00€/Glas",
+    description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: champagnerBrunelli1,
     images: [champagnerBrunelli1, champagnerBrunelli2],
     onRequest: true,
@@ -1631,7 +1631,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-weisweinglas-brunelli-12er",
     name: "Weißweinglas Brunelli, 25er Set",
-    description: "Hersteller: Leonardo\nTyp: Weißweinglas\nHöhe: 23,7 cm\nDurchmesser: 8,5 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: weissweinglasBrunelli1,
     images: [weissweinglasBrunelli1],
     detailedDescription: "Das Weißweinglas Brunelli von Leonardo im 25er Set – elegant, klar und stoßfest. Die schlanke Form mit 23,7 cm Höhe bringt Weißweine optimal zur Geltung. Spülmaschinenfest und ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
@@ -1650,7 +1650,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-rotweinglas-brunelli-10er",
     name: "Rotweinglas Brunelli, 9er Set",
-    description: "Hersteller: Leonardo\nTyp: Rotweinglas\nHöhe: 23,8 cm\nDurchmesser: 11,5 cm\nSpülmaschinenfest\nklar & stoßfest\nDie Gläser müssen gereinigt zurückgegeben werden. \nReinigungspauschal 3,90€/Set",
+    description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: rotweinBrunelli1,
     images: [rotweinBrunelli1, rotweinBrunelli2],
     detailedDescription: "Das Rotweinglas Brunelli von Leonardo im 9er Set – ein elegantes Burgunderglas mit großzügigem Kelch für optimale Aromaentfaltung. Klar, stoßfest und spülmaschinenfest. Mit 23,8 cm Höhe und 11,5 cm Durchmesser ideal für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben. Glasbruch wird mit 5,00 € pro Glas berechnet.",
@@ -1672,7 +1672,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-bierglas-0-2l-40er",
     name: "Wasserglas Willi 200ml, 40er Set",
-    description: "Hersteller: VAN WELL\nGröße: 200ml geeicht\nHöhe: 13,5 \nDurchmesser: 6cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurückgegeben werden\nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Wasserglas 0,2L geeicht von VAN WELL. Spülmaschinenfest. Die Gläser müssen gereinigt zurückgegeben werden. Reinigungspauschale: 3,90 €.",
     image: bierglas02_1,
     images: [bierglas02_1],
     detailedDescription: "Hochwertiges Wasserglas 0,2L geeicht vom Hersteller VAN WELL im praktischen 40er Set. Die Gläser sind spülmaschinenfest und eignen sich ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € erhoben.",
@@ -1753,7 +1753,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-teller-deluxe-27",
     name: "Teller Deluxe 27, 10er Set",
-    description: "Speiseteller 27 cm\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: speisetDarwin27_1,
     images: [speisetDarwin27_1, speisetDarwin27_2, speisetDarwin27_3, speisetDarwin27_4, speisetDarwin27_5, speisetDarwin27_6],
     onRequest: true,
@@ -1772,7 +1772,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-dessertteller-deluxe-21-10er",
     name: "Dessertteller Deluxe 21, 10er Set",
-    description: "Dessertteller - ØxH: 21,8x2,3 cm\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Dessertteller ØxH: 21,8x2,3 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: dessertellerDeluxe21_1,
     images: [dessertellerDeluxe21_1, dessertellerDeluxe21_2, dessertellerDeluxe21_3, dessertellerDeluxe21_4, dessertellerDeluxe21_5, dessertellerDeluxe21_6],
     onRequest: true,
@@ -1791,7 +1791,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-schuessel-deluxe-18",
     name: "Schüssel Deluxe 18, 10er Set",
-    description: "Suppenteller 18cm - Füllmenge 700ml\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Suppenteller 18 cm, Füllmenge 700 ml. Hersteller Sänger, Serie Darwin. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: schuessDeluxeDarwin18_1,
     images: [schuessDeluxeDarwin18_1, schuessDeluxeDarwin18_2, schuessDeluxeDarwin18_3, schuessDeluxeDarwin18_4, schuessDeluxeDarwin18_5, schuessDeluxeDarwin18_6],
     detailedDescription: "Die Schüssel Deluxe 18 im 10er Set aus der Serie Darwin von Sänger. Mit 18 cm Durchmesser und 700 ml Füllmenge ideal als Suppenteller oder Schale für Salate und Beilagen. Das schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen. Spülmaschinenfest. Bitte beachten: Das Geschirr muss gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € erhoben.",
@@ -1812,7 +1812,7 @@ export const bonnGeschirrProducts = [
   {
     id: "bonn-kaffeetasse-12er",
     name: "Kaffeetasse, 12er Set",
-    description: "Kaffeetasse weiß aus Porzelan inkl. Untertasse\nFassungsvermögen: ca. 200 ml\nDurchmesser Untertasse: 16 cm\nDie Tassen müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€/Set",
+    description: "Kaffeetasse weiß aus Porzellan inkl. Untertasse. Fassungsvermögen ca. 200 ml. Die Tassen müssen gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €/Set.",
     image: kaffeetasse12er_1,
     images: [kaffeetasse12er_1, kaffeetasse12er_2],
     detailedDescription: "Klassische Kaffeetasse im 12er Set aus weißem Porzellan, inklusive passender Untertasse. Mit einem Fassungsvermögen von ca. 200 ml und einem Untertassen-Durchmesser von 16 cm ideal für Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Tassen müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 2,50 € pro Set erhoben.",
