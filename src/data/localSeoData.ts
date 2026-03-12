@@ -268,8 +268,8 @@ export const localAreas: LocalArea[] = [
     distance: 8,
     population: 583000,
     postalCodes: ["45127", "45128", "45130", "45131", "45133", "45134", "45136", "45138", "45139", "45141", "45143", "45144", "45145", "45147", "45149"],
-    description: "Baumaschinen und Anhänger mieten in Essen. SLT Rental Mülheim bedient ganz Essen – nur 8 km vom Standort entfernt.",
-    keywords: ["Baumaschinen mieten Essen", "Anhänger mieten Essen", "Minibagger Essen", "Bagger mieten Essen"],
+    description: "Baumaschinen & Anhänger mieten in Essen ✓ Minibagger, Arbeitsbühnen, Werkzeuge ✓ Lieferung in ganz Essen ✓ SLT Rental Mülheim nur 8 km entfernt ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Essen", "Anhänger mieten Essen", "Minibagger Essen", "Bagger mieten Essen", "Arbeitsbühne mieten Essen"],
   },
   {
     slug: "oberhausen",
