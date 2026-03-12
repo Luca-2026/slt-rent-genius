@@ -126,10 +126,10 @@ export default function LocationCategories() {
   return (
     <Layout>
       <SEO
-        title={`Equipment mieten in ${location.name} | SLT Rental`}
-        description={description}
+        title={`${locationSeoTitles[location.id]?.[lang] || locationSeoTitles[location.id]?.de || `Equipment mieten in ${location.name}`} | SLT Rental`}
+        description={locationSeoDescriptions[location.id]?.[lang] || locationSeoDescriptions[location.id]?.de || description}
         canonical={`/mieten/${location.id}`}
-        keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Equipment ${location.name}`}
+        keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Minibagger mieten ${location.name}, Equipment ${location.name}`}
         jsonLd={[
           SLT_LOCATION_JSONLD(location.id),
           SLT_BREADCRUMB_JSONLD([
