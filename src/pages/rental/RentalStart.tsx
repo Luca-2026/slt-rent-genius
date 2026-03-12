@@ -11,8 +11,8 @@ export default function RentalStart() {
   return (
     <Layout>
       <SEO
-        title="Equipment mieten – Standort wählen | SLT Rental"
-        description="Wählen Sie Ihren SLT Rental Standort: Krefeld, Bonn oder Mülheim. Über 1.700 Mietartikel – Baumaschinen, Anhänger, Event-Equipment und mehr."
+        title="Equipment mieten in NRW – Standort wählen | SLT Rental"
+        description="Baumaschinen, Anhänger & Event-Equipment mieten ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Über 1.700 Mietartikel ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung auf die Baustelle"
         canonical="/mieten"
         keywords="Baumaschinen mieten NRW, Anhänger mieten, Equipment Vermietung"
       />

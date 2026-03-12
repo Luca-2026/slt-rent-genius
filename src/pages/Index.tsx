@@ -67,10 +67,10 @@ export default function Index() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen & Anhänger mieten in NRW – ab 15 €/Tag | SLT Rental"
-        description="Baumaschinen, Anhänger & Event-Equipment mieten ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ 1.700+ Mietartikel ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung auf die Baustelle"
+        title="Baumaschinen, Anhänger & Event-Equipment mieten in NRW | SLT Rental"
+        description="Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen, Hüpfburgen & Event-Equipment ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung"
         canonical="/"
-        keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Bagger mieten, Event-Equipment mieten, Krefeld, Bonn, Mülheim an der Ruhr"
+        keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Arbeitsbühne mieten, Hüpfburg mieten, Event-Equipment mieten, Werkzeuge mieten, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}
       />
       <section className="relative z-20 bg-primary py-8 min-h-[calc(100svh-6.5rem)] flex items-center sm:py-12 md:py-10 md:min-h-[calc(100svh-15rem)] lg:py-0 lg:min-h-[calc(100svh-17rem)] lg:items-center">

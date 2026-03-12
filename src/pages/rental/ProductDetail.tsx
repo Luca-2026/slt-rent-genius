@@ -85,12 +85,33 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (product && location && category) {
-      // SEO: Title optimized for search (keyword-rich, <60 chars target)
-      const seoTitle = `${product.name} mieten – ${location.name} | SLT Rental`;
-      document.title = seoTitle.length > 60 ? `${product.name} mieten | SLT Rental` : seoTitle;
+      // SEO: Title optimized for CTR (keyword-rich, <60 chars target)
+      const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
+      const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
+      const seoTitleShort = `${product.name} mieten ${location.name}`;
+      const seoTitle = seoTitleFull.length <= 55 
+        ? `${seoTitleFull} | SLT Rental`
+        : seoTitleShort.length <= 55 
+          ? `${seoTitleShort} | SLT Rental`
+          : `${product.name} mieten | SLT Rental`;
+      document.title = seoTitle;
 
-      // SEO: Meta description (<160 chars)
-      const descText = `${product.name} günstig mieten in ${location.name}. ${product.description || ""} Jetzt online buchen bei SLT Rental.`.slice(0, 160);
+      // SEO: Meta description with CTR triggers (<160 chars)
+      const productDesc = product.description ? ` ${product.description}` : "";
+      const descParts = [
+        `${product.name} mieten in ${location.name}`,
+        product.pricePerDay ? ` ✓ Ab ${product.pricePerDay}/Tag` : "",
+        ` ✓ Sofort verfügbar`,
+        ` ✓ Lieferung möglich`,
+        ` ✓ Tiefpreisgarantie`,
+        productDesc,
+      ];
+      let descText = descParts[0];
+      for (let i = 1; i < descParts.length; i++) {
+        if ((descText + descParts[i]).length <= 155) {
+          descText += descParts[i];
+        }
+      }
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
