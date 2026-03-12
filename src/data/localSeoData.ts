@@ -345,8 +345,8 @@ export const localAreas: LocalArea[] = [
     distance: 14,
     population: 70000,
     postalCodes: ["46535", "46537", "46539"],
-    description: "Mietgeräte in Dinslaken. SLT Rental Mülheim ist Ihr Partner für Baumaschinen und Anhänger – nur 14 km entfernt.",
-    keywords: ["Baumaschinen mieten Dinslaken", "Anhänger mieten Dinslaken", "Minibagger Dinslaken"],
+    description: "Baumaschinen & Anhänger mieten in Dinslaken ✓ Minibagger, Werkzeuge, Rüttelplatten ✓ Nur 14 km von SLT Rental Mülheim ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Dinslaken", "Anhänger mieten Dinslaken", "Minibagger Dinslaken", "Anhängerverleih Dinslaken"],
   },
 ];
 
