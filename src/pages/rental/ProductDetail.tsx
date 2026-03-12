@@ -323,7 +323,7 @@ export default function ProductDetail() {
                     <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
                   )}
                   {product.description && (
-                    <p className="text-base text-muted-foreground mt-2 leading-relaxed">
+                    <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
                       {product.description}
                     </p>
                   )}

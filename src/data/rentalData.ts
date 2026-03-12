@@ -1618,7 +1618,7 @@ export const locations: LocationData[] = [
           {
             id: "mh-heizluefter-2kw",
             name: "2 kW Elektro Heizlüfter",
-            description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen.",
+            description: "Kompakter Elektro-Heizlüfter mit zwei Heizstufen (1 kW & 2 kW) – ideal für kleine Räume und Baustellen. Robustes Metallgehäuse mit Tragegriff.",
             image: heizluefter2kw1,
             images: [heizluefter2kw1, heizluefter2kw2],
             category: "heizluefter",
@@ -1633,7 +1633,7 @@ export const locations: LocationData[] = [
           {
             id: "mh-heizluefter-3kw",
             name: "Allegra 3 kW Elektro Heizlüfter",
-            description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose.",
+            description: "Kompakter Allegra Elektroheizlüfter mit zwei Heizstufen (1,5 kW & 3 kW) – ideal für mittlere Räume und Baustellen. 230 V Normsteckdose, robustes Metallgehäuse mit Tragegriff.",
             image: heizluefter3kw1,
             images: [heizluefter3kw1, heizluefter3kw2],
             category: "heizluefter",
@@ -1649,7 +1649,7 @@ export const locations: LocationData[] = [
           {
             id: "mh-heizluefter-9kw",
             name: "Allegra 9 kW Elektro Heizlüfter",
-            description: "Leistungsstarker Industrie-Elektroheizlüfter mit zwei Heizstufen (4,5 kW & 9 kW) – 400 V Drehstrom.",
+            description: "Leistungsstarker Industrie-Elektroheizlüfter von Allegra mit zwei Heizstufen (4,5 kW & 9 kW) – ideal für große Baustellen, Hallen und Werkstätten. 400 V Drehstrom.",
             image: heizluefter9kw1,
             images: [heizluefter9kw1, heizluefter9kw2],
             category: "heizluefter",
