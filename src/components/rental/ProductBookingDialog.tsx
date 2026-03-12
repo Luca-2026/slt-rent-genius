@@ -208,7 +208,7 @@ export function ProductBookingDialog({
   if (!product || !location) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal={!articleId}>
       <DialogContent 
         className={cn(
           articleId 
@@ -218,7 +218,14 @@ export function ProductBookingDialog({
       >
         {articleId ? (
           // Show Rentware widget when available
-          <div className="relative">
+          <>
+            <DialogHeader className="sr-only">
+              <DialogTitle>Buchung für {product.name}</DialogTitle>
+              <DialogDescription>
+                Verfügbarkeitskalender und Zeitfenster für {product.name} am Standort {location.name}.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="relative">
             {widgetLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
