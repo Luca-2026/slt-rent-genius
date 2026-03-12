@@ -456,7 +456,7 @@ export const bonnErdbewegungProducts = [
     id: "bonn-knickdumper-kde550",
     name: "Raddumper / Knickdumper",
     modelName: "KDe550",
-    description: "Elektrischer Knickdumper mit 4x4 Antrieb - 8-10h Laufzeit.",
+    description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
     specifications: {
       "Maschinengewicht": "318 kg",
       "max. Tragfähigkeit": "550 kg",
@@ -504,7 +504,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms01-grabenraeumloffel-100cm",
     name: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
-    description: "Hydraulischer Grabenräumlöffel für präzise Grabenarbeiten.",
+    description: "Hydraulischer Grabenräumlöffel 100cm für MS01 Symlock – schwenkbar",
     specifications: {
       "Aufnahme": "MS01 (Symlock)",
       "Gewichtsklasse": "1 - 2 t",
@@ -520,7 +520,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms03-grabenraeumloffel-120cm",
     name: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
-    description: "Großer hydraulischer Grabenräumlöffel.",
+    description: "Hydraulischer Grabenräumlöffel 120cm für MS03 Symlock",
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Gewichtsklasse": "2,5 - 4 t",
@@ -561,7 +561,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms01-kabelloffel-15cm",
     name: "MS01 Kabellöffel 15cm Symlock",
-    description: "Schmaler Löffel für Kabelgräben.",
+    description: "Kabellöffel 15cm für MS01 Symlock – Gewichtsklasse 1–2 t",
     specifications: {
       "Aufnahme": "MS01",
       "Gewichtsklasse": "1 - 2 t",
@@ -582,7 +582,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms03-kabelloffel-20cm",
     name: "MS03 Kabellöffel 20cm Symlock",
-    description: "Kabellöffel für breitere Gräben.",
+    description: "Kabellöffel 20cm für MS03 Symlock – Gewichtsklasse 2,5–4 t",
     specifications: {
       "Aufnahme": "MS03",
       "Gewichtsklasse": "2,5 - 4 t",
@@ -596,7 +596,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms01-tiefloffel-20cm",
     name: "MS01 Tieflöffel 20cm/14l",
-    description: "Kompakter Tieflöffel für präzise Grabarbeiten.",
+    description: "Tieflöffel 20cm für MS01 Schnellwechsler",
     specifications: {
       "Aufnahme": "MS01",
       "Gewichtsklasse": "0,5 - 2 t",
@@ -612,7 +612,7 @@ export const bonnErdbewegungZusatzProducts = [
   {
     id: "bonn-ms03-tiefloffel-30cm",
     name: "MS03 Tieflöffel 30cm/41l Symlock",
-    description: "Mittlerer Tieflöffel für Standardarbeiten.",
+    description: "Tieflöffel 30cm für MS03 Symlock",
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Gewichtsklasse": "1 - 2 t",
@@ -671,7 +671,7 @@ export const bonnAnhaengerProducts = [
   {
     id: "bonn-baumaschinenanhanger-1800",
     name: "1800 kg Baumaschinenanhänger",
-    description: "Robuster Anhänger für den Transport von Baumaschinen.",
+    description: "Ladefläche: 260 x 150 x 25 cm",
     specifications: {
       "Hersteller": "Temared",
       "Ladeflächenmaß": "(LxBxH)2600 x 150 x 25 cm",
@@ -689,7 +689,7 @@ export const bonnAnhaengerProducts = [
   {
     id: "bonn-aggregatanhaenger-1300",
     name: "1300 kg Aggregatanhänger",
-    description: "Spezieller Anhänger für Stromaggregate.",
+    description: "Anhänger für Transport von Aggregaten",
     specifications: {
       "Marke / Hersteller": "Temared",
       "Ladeflächenmaß (LxBxH)": "ca. 260 x 120 cm",
@@ -798,7 +798,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-haecksler-axt25tc",
     name: "Häcksler AXT25TC",
-    description: "Elektrischer Leisehäcksler für Gartenabfälle.",
+    description: "Elektro-Häcksler für Gartenabfälle",
     specifications: {
       "Hersteller": "Bosch",
       "Typ": "AXT25TC",
@@ -815,7 +815,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-haecksler-ls95gx",
     name: "Häcksler LS-95 GX",
-    description: "Benzin-Häcksler für größere Äste und Zweige.",
+    description: "Benzin-Häcksler für größere Mengen",
     detailedDescription: "Der Buschholzhäcksler LS 95/CH zeichnet sich durch hohe Arbeitsleistung und einfache Bauart aus. Angetrieben von einem leistungsstarken Kohler Motor, zerkleinert er Äste bis 7,5 cm Durchmesser zuverlässig. Zwei Zerkleinerungsmesser und eine ortsfeste Gegenschneide sorgen für effizientes Häckseln. Der Messerwechsel ist denkbar einfach – nur Rutsche abkippen. Der Einzug erfolgt automatisch durch das Eigengewicht des Materials. Große Laufräder machen das Manövrieren auch in schwierigem Gelände problemlos.",
     image: haeckslerLs95_1,
     images: [haeckslerLs95_1],
@@ -832,7 +832,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-vertikutierer-sa35v",
     name: "Vertikutierer SA35-V EL",
-    description: "Elektrischer Vertikutierer für die Rasenpflege.",
+    description: "Elektro-Vertikutierer für Rasenpflege",
     specifications: {
       "Hersteller": "Sabo",
       "Typ": "SA35-V EL",
@@ -849,7 +849,7 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-vertikutierer-sa38bv",
     name: "Vertikutierer SA38 BV",
-    description: "Benzin-Vertikutierer für größere Rasenflächen.",
+    description: "Benzin-Vertikutierer für große Flächen",
     specifications: {
       "Hersteller": "Sabo",
       "Typ": "SA38 BV",
@@ -992,7 +992,7 @@ export const bonnWerkzeugProducts = [
     id: "bonn-betonruettler-ir1000",
     name: "Beton Rüttler 2m",
     modelName: "IR 1000",
-    description: "Innenrüttler für die Betonverdichtung.",
+    description: "Innenrüttler für Betonverdichtung",
     specifications: {
       "Vibrationsflaschen Durchmesser": "35 mm",
       "Leistung": "230V / 1000 W",
@@ -1112,7 +1112,7 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-mauerschlitzfraese",
     name: "Mauerschlitzfräse",
-    description: "Für präzise Schlitze in Mauerwerk – bis 45 mm Tiefe und 46 mm Breite.",
+    description: "Elektrofräse für Kabelschlitze – bis 45 mm Tiefe und 46 mm Breite.",
     detailedDescription: "Leistungsstarke Mauerschlitzfräse mit 2.300 W für das Fräsen von Kabelschlitzen in Mauerwerk. Mit einer maximalen Schlitztiefe von 45 mm und Schlitzbreite von 46 mm ideal für Elektroinstallationen. Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. Diamanttrennscheiben zum Kauf optional erhältlich.",
     image: imgMauerschlitzfraese,
     images: [imgMauerschlitzfraese],
@@ -1581,7 +1581,7 @@ export const bonnZelteProducts = [
   {
     id: "bonn-partyzelt-3x3",
     name: "Partyzelt 3x3m",
-    description: "Kompaktes Partyzelt für kleine Feiern.",
+    description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     specifications: {
       "Grundfläche": "3 m x 3 m",
       "Farbe": "weiß",
@@ -1606,7 +1606,7 @@ export const bonnZelteProducts = [
   {
     id: "bonn-partyzelt-4x6",
     name: "Partyzelt 4x6m",
-    description: "Mittelgroßes Partyzelt für Gartenpartys.",
+    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     specifications: {
       "Grundfläche (BxL)": "4 m x 6 m",
       "Farbe": "weiß",
@@ -1672,7 +1672,7 @@ export const bonnMoebelProducts = [
   {
     id: "bonn-stuhl-weiss",
     name: "Stuhl weiß",
-    description: "Stapelbarer Kunststoffstuhl in Weiß.",
+    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
     specifications: {
       "Farbe": "weiß",
       "Material": "100% Polypropylen",
@@ -2246,7 +2246,7 @@ export const bonnBeschallungProducts = [
   {
     id: "bonn-soundboks-batteryboks",
     name: "Soundboks Batteryboks",
-    description: "Zusatzakku für Soundboks Speaker.",
+    description: "Ersatz-Akku passend für Soundboks Gen.3 und Gen.4. Mit 40 Stunden Akkulaufzeit bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke und einer Ladezeit von nur 3,5 Stunden.",
     specifications: {
       "Ladezeit": "3,5 Stunden",
       "Akkulaufzeit": "40 Stunden bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke",
@@ -2258,7 +2258,7 @@ export const bonnBeschallungProducts = [
   {
     id: "bonn-soundboks-gen3",
     name: "Soundboks Gen.3",
-    description: "Leistungsstarker mobiler Bluetooth-Lautsprecher.",
+    description: "Tragbarer Outdoor-Lautsprecher mit 126 dB max. SPL und bis zu 40 Stunden Akkulaufzeit bei halber Lautstärke. Bluetooth 5.0 mit SKAA-Technologie: Bis zu 5 Soundboks lassen sich im \"TeamUP\"-Modus drahtlos verbinden (kostenlose App im App Store / Play Store). Im nächsten Schritt können Sie zusätzliche Akkus reservieren.",
     specifications: {
       "Leistung": "3 x 72 W",
       "Lautsprecherbestückung": "2x10 \" Subwoofer und 1x 1\" Hochtöner",
@@ -2394,7 +2394,7 @@ export const bonnAbsperrtechnikProducts = [
   {
     id: "bonn-warnleuchte-gelb",
     name: "TL-Warnleuchte, gelb",
-    description: "LED-Warnleuchte für Absperrbaken.",
+    description: "LED Warnleuchte nach EN 12352, gelbe Streuscheibe, doppelseitig, Ø 180 mm. Blink-/Dauerlicht per Lampenschlüssel umschaltbar. Batterien optional.",
     specifications: {
       "Streuscheibe": "gelb, doppelseitig",
     },
