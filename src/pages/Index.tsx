@@ -401,7 +401,14 @@ export default function Index() {
         <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
       </Suspense>
       <Suspense fallback={null}>
-        <LocationSelectDialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen} />
+        <LocationSelectDialog
+          open={locationDialogOpen}
+          onOpenChange={(open) => {
+            setLocationDialogOpen(open);
+            if (!open) setSeoLocationTarget(undefined);
+          }}
+          targetCategoryId={seoLocationTarget}
+        />
       </Suspense>
     </Layout>
   );
