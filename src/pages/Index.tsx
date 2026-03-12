@@ -40,6 +40,7 @@ export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [seoLocationTarget, setSeoLocationTarget] = useState<string | undefined>(undefined);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -349,46 +350,46 @@ export default function Index() {
         </div>
       </section>
       {/* SEO Content Section */}
-      <section className="py-16 lg:py-20 bg-muted/30 border-t border-border">
+      <section className="py-12 md:py-16 lg:py-20 bg-muted/30 border-t border-border">
         <div className="section-container">
           <AnimatedSection>
-            <div className="max-w-4xl mx-auto prose prose-sm text-muted-foreground">
-              <h2 className="text-2xl font-bold text-headline mb-6">Baumaschinen & Equipment mieten in NRW – Ihr Partner für jedes Projekt</h2>
+            <div className="max-w-4xl mx-auto prose prose-sm sm:prose-base text-muted-foreground px-1 sm:px-0">
+              <h2 className="text-xl sm:text-2xl font-bold text-headline mb-4 sm:mb-6">Baumaschinen & Equipment mieten in NRW – Ihr Partner für jedes Projekt</h2>
               <p>
                 SLT Rental ist Ihr Spezialist für die Vermietung von Baumaschinen, Anhängern und Event-Equipment in Nordrhein-Westfalen. 
-                Mit drei Standorten in <strong>Krefeld</strong>, <strong>Bonn</strong> und <strong>Mülheim an der Ruhr</strong> sind wir immer in Ihrer Nähe – 
-                egal ob Sie einen Minibagger für den Garten, eine Arbeitsbühne für die Fassade oder eine Hüpfburg für den Kindergeburtstag suchen.
+                Mit drei Standorten in <Link to="/mieten/krefeld" className="text-primary hover:underline font-medium">Krefeld</Link>, <Link to="/mieten/bonn" className="text-primary hover:underline font-medium">Bonn</Link> und <Link to="/mieten/muelheim" className="text-primary hover:underline font-medium">Mülheim an der Ruhr</Link> sind wir immer in Ihrer Nähe – 
+                egal ob Sie einen <button type="button" onClick={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Minibagger</button> für den Garten, eine <button type="button" onClick={() => { setSeoLocationTarget("arbeitsbuehnen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Arbeitsbühne</button> für die Fassade oder eine <button type="button" onClick={() => { setSeoLocationTarget("huepfburgen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Hüpfburg</button> für den Kindergeburtstag suchen.
               </p>
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Über 1.700 Mietartikel für Bau, Garten & Events</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">Über 1.700 Mietartikel für Bau, Garten & Events</h3>
               <p>
-                Unser Sortiment umfasst alles, was Sie für Ihr Projekt brauchen: Von <strong>Minibaggern und Radladern</strong> über 
-                <strong> Rüttelplatten und Bautrockner</strong> bis hin zu <strong>Stromverteilern, Rollgerüsten und Werkzeugen</strong>. 
-                Für Veranstaltungen bieten wir Partyzelte, Bierzeltgarnituren, Geschirr-Sets, PA-Anlagen, Beleuchtungstechnik 
-                und professionelle Bühnensysteme. In Mülheim finden Sie zudem unser Bobcat-Programm mit Kompaktbaggern, 
+                Unser Sortiment umfasst alles, was Sie für Ihr Projekt brauchen: Von <button type="button" onClick={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>Minibaggern und Radladern</strong></button> über 
+                <button type="button" onClick={() => { setSeoLocationTarget("verdichtung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong> Rüttelplatten</strong></button> und <button type="button" onClick={() => { setSeoLocationTarget("bautrocknung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>Bautrockner</strong></button> bis hin zu <button type="button" onClick={() => { setSeoLocationTarget("werkzeuge"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>Werkzeugen</strong></button>. 
+                Für Veranstaltungen bieten wir <button type="button" onClick={() => { setSeoLocationTarget("zelte"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Partyzelte</button>, <button type="button" onClick={() => { setSeoLocationTarget("mobiliar"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Bierzeltgarnituren</button>, <button type="button" onClick={() => { setSeoLocationTarget("geschirr"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Geschirr-Sets</button>, <button type="button" onClick={() => { setSeoLocationTarget("veranstaltungstechnik"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">PA-Anlagen und Beleuchtungstechnik</button> 
+                und professionelle <button type="button" onClick={() => { setSeoLocationTarget("buehnensysteme"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">Bühnensysteme</button>. In Mülheim finden Sie zudem unser <Link to="/mieten/muelheim/erdbewegung" className="text-primary hover:underline font-medium">Bobcat-Programm</Link> mit Kompaktbaggern, 
                 Knickdumpern und Radladern für professionelle Erdbewegung.
               </p>
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Anhänger mieten – 24/7 per SMS-Code</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">Anhänger mieten – 24/7 per SMS-Code</h3>
               <p>
-                Unsere <strong>Anhänger</strong> sind rund um die Uhr verfügbar – auch an Wochenenden und Feiertagen. 
+                Unsere <button type="button" onClick={() => { setSeoLocationTarget("anhaenger"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>Anhänger</strong></button> sind rund um die Uhr verfügbar – auch an Wochenenden und Feiertagen. 
                 Dank unserem SMS-Code-System können Sie Ihren Anhänger jederzeit selbstständig abholen und zurückbringen. 
                 Ob Planenanhänger, Autotransporter, Baumaschinenanhänger oder Kastenanhänger mit Laubgitter: 
                 Bei uns finden Sie das passende Modell für jeden Einsatz.
               </p>
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Faire Preise & Tiefpreisgarantie</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">Faire Preise & Tiefpreisgarantie</h3>
               <p>
                 Bei SLT Rental profitieren Sie von unserer <strong>Tiefpreisgarantie</strong>: Wir sind mindestens 10 % günstiger 
                 als jeder vergleichbare Anbieter. Nutzen Sie unsere attraktiven <strong>Wochenend-Tarife</strong> – 
-                freitags ab 16 Uhr mieten, montags bis 9 Uhr zurückgeben und nur einen Tag bezahlen. 
-                Für Geschäftskunden bieten wir individuelle Rahmenverträge mit Sonderkonditionen über unser B2B-Portal.
+                freitags ab 16 Uhr mieten, montags bis 09:30 Uhr zurückgeben und nur einen Tag bezahlen. 
+                Für Geschäftskunden bieten wir individuelle Rahmenverträge mit Sonderkonditionen über unser <Link to="/b2b" className="text-primary hover:underline font-medium">B2B-Portal</Link>.
               </p>
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-3">Lieferung direkt auf Ihre Baustelle</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">Lieferung direkt auf Ihre Baustelle</h3>
               <p>
-                Sie können Ihr Equipment bequem an einem unserer Standorte abholen oder wir liefern es direkt zu Ihnen. 
+                Sie können Ihr Equipment bequem an einem unserer <Link to="/standorte" className="text-primary hover:underline font-medium">Standorte</Link> abholen oder wir liefern es direkt zu Ihnen. 
                 Unser Liefergebiet umfasst den gesamten <strong>Niederrhein</strong>, das <strong>Rheinland</strong> und das <strong>Ruhrgebiet</strong> – 
                 von Krefeld über Düsseldorf und Duisburg bis nach Bonn, Essen und Bochum. 
-                Die Lieferkosten berechnen Sie transparent mit unserem Online-Kalkulator.
+                Die Lieferkosten berechnen Sie transparent mit unserem <Link to="/lieferung" className="text-primary hover:underline font-medium">Online-Kalkulator</Link>.
               </p>
-              <p className="mt-6">
+              <p className="mt-4 sm:mt-6">
                 <strong>SLT Rental – über 1.700 Mietartikel, 3 Standorte, 1 Versprechen: Das beste Equipment zum besten Preis.</strong>
               </p>
             </div>
@@ -400,7 +401,14 @@ export default function Index() {
         <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
       </Suspense>
       <Suspense fallback={null}>
-        <LocationSelectDialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen} />
+        <LocationSelectDialog
+          open={locationDialogOpen}
+          onOpenChange={(open) => {
+            setLocationDialogOpen(open);
+            if (!open) setSeoLocationTarget(undefined);
+          }}
+          targetCategoryId={seoLocationTarget}
+        />
       </Suspense>
     </Layout>
   );
