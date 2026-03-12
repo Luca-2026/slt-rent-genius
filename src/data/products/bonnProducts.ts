@@ -361,46 +361,59 @@ export const bonnErdbewegungProducts = [
     rentwareCode: { bonn: "FQZBM1" },
     weightKg: 1000,
     driveType: "diesel",
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   {
     id: "bonn-xcmg-xe20e",
     name: "2t Minibagger",
     modelName: "XCMG XE20E",
     description: "Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
-    specifications: {
-      "Betriebsgewicht": "2050kg",
-      "Gesamtbreite": "1300 mm einfahrbar auf 990 mm",
-      "Gesamthöhe": "2350 mm",
-      "Löffelklasse": "MS01",
-      "PS": "15,8",
-      "Kraftstoff": "Diesel (25 l)",
-      "Anbaugeräte & Schaufeln": "Tieflöffel 30cm inkl. weiteres können Sie im 2. Schritt auswählen",
-    },
     image: imgXcmgXe20e1,
     images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
     rentwareCode: { bonn: "PV2RQZ" },
     weightKg: 2000,
     driveType: "diesel",
+    specifications: {
+      "Betriebsgewicht": "2050 kg",
+      "Gesamtbreite": "1300 mm einfahrbar auf 990 mm",
+      "Gesamthöhe": "2350 mm",
+      "Löffelklasse": "MS01",
+      "Mech. Schnellwechsler": "Ja",
+      "PS": "15,8",
+      "Kraftstoff": "Diesel (25 l)",
+      "Anbaugeräte": "Tieflöffel 30 cm inkl.",
+    },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   {
     id: "bonn-xcmg-xe27e",
     name: "2,7t Minibagger",
     modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
+    image: imgXcmgXe27e1,
+    images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
+    rentwareCode: { bonn: "QU4BYW" },
+    weightKg: 2700,
+    driveType: "diesel",
     specifications: {
       "Betriebsgewicht": "2780 kg",
       "Gesamtbreite": "1500 mm",
       "Gesamthöhe": "2580 mm",
       "Löffelklasse": "MS03",
       "PS": "21",
-      "Anbaugeräte": "Tieflöffel 300mm inklusive",
+      "Anbaugeräte": "Tieflöffel 300 mm inklusive",
       "Kraftstoff": "Diesel (33 l)",
     },
-    image: imgXcmgXe27e1,
-    images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
-    rentwareCode: { bonn: "QU4BYW" },
-    weightKg: 2700,
-    driveType: "diesel",
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   {
     id: "bonn-bobcat-e35z",
@@ -411,6 +424,10 @@ export const bonnErdbewegungProducts = [
     weightKg: 3500,
     driveType: "diesel",
     onRequest: true,
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   {
     id: "bonn-bobcat-e50z",
@@ -421,6 +438,10 @@ export const bonnErdbewegungProducts = [
     weightKg: 4800,
     driveType: "diesel",
     onRequest: true,
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   // === RADLADER ===
   {
@@ -433,8 +454,11 @@ export const bonnErdbewegungProducts = [
     rentwareCode: { bonn: "EEJXMU" },
     weightKg: 3000,
     driveType: "diesel",
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
-  // === DUMPER ===
   // === DUMPER (absteigend nach Nutzlast) ===
   {
     id: "bonn-kettendumper-rmd800",
@@ -446,6 +470,10 @@ export const bonnErdbewegungProducts = [
     weightKg: 450,
     driveType: "benzin",
     rentwareCode: { bonn: "R1FU1X" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Benzin: brutto 2,95 €/l.",
+    ],
   },
   {
     id: "bonn-cormidi-c60",
@@ -456,6 +484,10 @@ export const bonnErdbewegungProducts = [
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
     driveType: "diesel",
     onRequest: true,
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
   },
   {
     id: "bonn-knickdumper-kde550",
@@ -464,14 +496,14 @@ export const bonnErdbewegungProducts = [
     description: "Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb",
     specifications: {
       "Maschinengewicht": "318 kg",
-      "max. Tragfähigkeit": "550 kg",
+      "Max. Tragfähigkeit": "550 kg",
       "Muldengröße": "0,3 m³",
       "Gesamtbreite": "78 cm",
       "Gesamthöhe": "117 cm",
-      "Kraftstoff": "Elektro",
-      "Ladezeit von 0-100%": "ca. 7-8h",
-      "Antriebsmotoren": "2x1000W",
-      "Ladegerät": "integriert mit 5m Kabel (230V)",
+      "Antrieb": "Elektro",
+      "Ladezeit von 0-100%": "ca. 7-8 h",
+      "Antriebsmotoren": "2x 1000 W",
+      "Ladegerät": "integriert mit 5 m Kabel (230 V)",
     },
     image: imgKnickdumper1,
     images: [imgKnickdumper1, imgKnickdumper2],
@@ -486,6 +518,10 @@ export const bonnErdbewegungProducts = [
     image: "/placeholder.svg",
     driveType: "benzin",
     rentwareCode: { bonn: "7Y1UTP" },
+    rentalNotes: [
+      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Benzin: brutto 2,95 €/l.",
+    ],
   },
 ];
 
