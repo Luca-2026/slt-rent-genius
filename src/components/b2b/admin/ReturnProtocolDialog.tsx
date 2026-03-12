@@ -289,7 +289,7 @@ export function ReturnProtocolDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) resetForm(); }}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ClipboardCheck className="h-5 w-5" />
@@ -303,18 +303,18 @@ export function ReturnProtocolDialog({
         {/* Customer & Reservation Info */}
         <Card>
           <CardContent className="p-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-foreground">{profile.company_name}</p>
-                <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate">{profile.company_name}</p>
+                <p className="text-sm text-muted-foreground truncate">
                   {profile.contact_first_name} {profile.contact_last_name}
                 </p>
               </div>
-              <div className="text-right">
-                <Badge variant="outline" className="text-primary border-primary capitalize">
+              <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
+                <Badge variant="outline" className="text-primary border-primary capitalize shrink-0">
                   {reservation.location}
                 </Badge>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground">
                   {formatDate(reservation.start_date)}
                   {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
                 </p>
@@ -545,7 +545,7 @@ export function ReturnProtocolDialog({
               <Gauge className="h-4 w-4" />
               Gerätedaten
             </Label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Betriebsstunden (Übergabe)</Label>
                 <Input
@@ -565,7 +565,7 @@ export function ReturnProtocolDialog({
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Tankfüllstand (Übergabe)</Label>
                 <Select value={fuelLevelStart} onValueChange={setFuelLevelStart}>
@@ -704,14 +704,14 @@ export function ReturnProtocolDialog({
         <Separator />
 
         {/* Actions */}
-        <div className="flex gap-3 justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end pt-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
             Abbrechen
           </Button>
           <Button
             onClick={handleGenerate}
             disabled={saving || !allValid}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
           >
             {saving ? (
               <>
@@ -721,7 +721,7 @@ export function ReturnProtocolDialog({
             ) : (
               <>
                 <ClipboardCheck className="h-4 w-4 mr-1.5" />
-                Rückgabeprotokoll erstellen & senden
+                <span className="truncate">{customerNotPresent ? "Protokoll erstellen" : "Erstellen & senden"}</span>
               </>
             )}
           </Button>
