@@ -148,10 +148,9 @@ export function ProductBookingDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent 
         className={cn(
-          "max-h-[90vh] overflow-y-auto",
           articleId 
-            ? "p-0 sm:p-0 max-w-md w-[calc(100%-1rem)] sm:w-auto" 
-            : "max-w-2xl p-0"
+            ? "p-0 sm:p-0 max-w-md w-[calc(100%-1rem)] sm:w-auto max-h-[90vh] overflow-visible" 
+            : "max-w-2xl p-0 max-h-[90vh] overflow-y-auto"
         )}
       >
         {articleId ? (
