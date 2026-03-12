@@ -379,7 +379,7 @@ export default function Index() {
               <p>
                 Bei SLT Rental profitieren Sie von unserer <strong>Tiefpreisgarantie</strong>: Wir sind mindestens 10 % günstiger 
                 als jeder vergleichbare Anbieter. Nutzen Sie unsere attraktiven <strong>Wochenend-Tarife</strong> – 
-                freitags ab 16 Uhr mieten, montags bis 09:30 Uhr zurückgeben und nur einen Tag bezahlen. 
+                freitags ab 16 Uhr mieten, montags bis 09:30 Uhr zurückgeben – zu attraktiven Konditionen. 
                 Für Geschäftskunden bieten wir individuelle Rahmenverträge mit Sonderkonditionen über unser <Link to="/b2b" className="text-primary hover:underline font-medium">B2B-Portal</Link>.
               </p>
               <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">Lieferung direkt auf Ihre Baustelle</h3>
