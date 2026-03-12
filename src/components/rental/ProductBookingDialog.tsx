@@ -75,32 +75,63 @@ export function ProductBookingDialog({
   // Inject Rentware widget when dialog opens
   useEffect(() => {
     if (!isOpen || !articleId) return;
-    
+
     setWidgetLoading(true);
-    
+
+    let mountTimer: number | undefined;
+    let definitionPoll: number | undefined;
+    let pickerObserver: MutationObserver | null = null;
+
+    const setupTimePickerObserver = (container: HTMLElement) => {
+      pickerObserver = new MutationObserver(() => {
+        const expandedList = container.querySelector(
+          "rentware-time-picker rentware-expanded-picker > div"
+        ) as HTMLElement | null;
+
+        if (expandedList) {
+          expandedList.style.overflowY = "auto";
+          expandedList.style.setProperty("-webkit-overflow-scrolling", "touch");
+          expandedList.style.touchAction = "pan-y";
+          expandedList.style.overscrollBehavior = "contain";
+
+          // Always start from top to avoid getting "stuck" in a mid-range slot window on mobile
+          if (expandedList.scrollTop > 0) {
+            expandedList.scrollTop = 0;
+          }
+        }
+      });
+
+      pickerObserver.observe(container, { childList: true, subtree: true });
+    };
+
     const mountWidget = () => {
       const container = document.getElementById(containerId);
-      if (container) {
-        container.innerHTML = `<rtr-article-booking article-id="${articleId}" view="calendar"></rtr-article-booking>`;
-        setWidgetLoading(false);
-      }
+      if (!container) return;
+
+      container.innerHTML = `<rtr-article-booking article-id="${articleId}" view="calendar"></rtr-article-booking>`;
+      setupTimePickerObserver(container);
+      setWidgetLoading(false);
     };
-    
-    if (customElements.get('rtr-article-booking')) {
-      const timer = setTimeout(mountWidget, 50);
-      return () => clearTimeout(timer);
+
+    if (customElements.get("rtr-article-booking")) {
+      mountTimer = window.setTimeout(mountWidget, 50);
     } else {
       let attempts = 0;
       const maxAttempts = 50;
-      const interval = setInterval(() => {
+      definitionPoll = window.setInterval(() => {
         attempts++;
-        if (customElements.get('rtr-article-booking') || attempts >= maxAttempts) {
-          clearInterval(interval);
+        if (customElements.get("rtr-article-booking") || attempts >= maxAttempts) {
+          if (definitionPoll) window.clearInterval(definitionPoll);
           mountWidget();
         }
       }, 100);
-      return () => clearInterval(interval);
     }
+
+    return () => {
+      if (mountTimer) window.clearTimeout(mountTimer);
+      if (definitionPoll) window.clearInterval(definitionPoll);
+      pickerObserver?.disconnect();
+    };
   }, [isOpen, articleId, containerId]);
 
   // Cleanup on close
