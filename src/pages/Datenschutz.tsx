@@ -15,17 +15,17 @@ export default function Datenschutz() {
     <Layout>
       <SEO title="Datenschutz | SLT Rental" description="Datenschutzerklärung der SLT Technology Group GmbH & Co. KG. Informationen zur Datenverarbeitung gemäß DSGVO." canonical="/datenschutz" noIndex />
       <div className="bg-gradient-to-b from-primary/5 to-background">
-        <div className="section-container py-16 md:py-24">
+        <div className="section-container py-10 md:py-24">
           <AnimatedSection animation="fade-in-up">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Shield className="h-7 w-7 text-primary" />
+            <div className="flex items-center gap-3 md:gap-4 mb-4">
+              <div className="w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                <Shield className="h-5 w-5 md:h-7 md:w-7 text-primary" />
               </div>
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground">{t("datenschutz.title")}</h1>
+              <div className="min-w-0">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground break-words">{t("datenschutz.title")}</h1>
               </div>
             </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mt-4">{t("datenschutz.subtitle")}</p>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mt-4">{t("datenschutz.subtitle")}</p>
           </AnimatedSection>
         </div>
       </div>
