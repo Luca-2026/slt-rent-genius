@@ -148,6 +148,8 @@ import bonnAggregat7kva1 from "@/assets/products/aggregat-7kva-1.jpeg";
 import bonnAggregat7kva2 from "@/assets/products/aggregat-7kva-2.jpeg";
 import bonnAggregat7kva3 from "@/assets/products/aggregat-7kva-3.jpeg";
 import bonnAggregat20kva1 from "@/assets/products/aggregat-20kva-1.jpeg";
+import bonnAggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
+import bonnAggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 
