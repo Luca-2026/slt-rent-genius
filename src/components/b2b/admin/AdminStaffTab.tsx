@@ -460,67 +460,65 @@ export function AdminStaffTab() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        {roleInfo ? (
-                          <Badge className={`${roleInfo.color} flex items-center gap-1 text-xs`}>
-                            {roleInfo.icon}
-                            {roleInfo.label}
-                          </Badge>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {roleInfo ? (
+                        <Badge className={`${roleInfo.color} flex items-center gap-1 text-xs`}>
+                          {roleInfo.icon}
+                          {roleInfo.label}
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="text-xs">{role}</Badge>
+                      )}
+                      <span className="text-xs text-muted-foreground">
+                        {format(new Date(s.created_at), "dd.MM.yy", { locale: de })}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 px-3 flex-1 min-w-0"
+                        onClick={() => {
+                          setSelectedStaff(s);
+                          setNewRole(getStaffRole(s.user_id));
+                          setEditRoleOpen(true);
+                        }}
+                      >
+                        <Pencil className="h-3.5 w-3.5 mr-1.5 shrink-0" />
+                        Rolle
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 px-3 flex-1 min-w-0"
+                        onClick={() => handleToggleActive(s)}
+                        disabled={saving}
+                      >
+                        {s.is_active ? (
+                          <>
+                            <UserX className="h-3.5 w-3.5 mr-1.5 shrink-0" />
+                            Deaktivieren
+                          </>
                         ) : (
-                          <Badge variant="secondary" className="text-xs">{role}</Badge>
+                          <>
+                            <UserCheck className="h-3.5 w-3.5 mr-1.5 shrink-0" />
+                            Aktivieren
+                          </>
                         )}
-                        <span className="text-xs text-muted-foreground">
-                          {format(new Date(s.created_at), "dd.MM.yy", { locale: de })}
-                        </span>
-                      </div>
-                      <div className="flex gap-2 shrink-0">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-9 px-3"
-                          onClick={() => {
-                            setSelectedStaff(s);
-                            setNewRole(getStaffRole(s.user_id));
-                            setEditRoleOpen(true);
-                          }}
-                        >
-                          <Pencil className="h-3.5 w-3.5 mr-1.5" />
-                          Rolle
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-9 px-3"
-                          onClick={() => handleToggleActive(s)}
-                          disabled={saving}
-                        >
-                          {s.is_active ? (
-                            <>
-                              <UserX className="h-3.5 w-3.5 mr-1.5" />
-                              Deaktivieren
-                            </>
-                          ) : (
-                            <>
-                              <UserCheck className="h-3.5 w-3.5 mr-1.5" />
-                              Aktivieren
-                            </>
-                          )}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-9 px-3 text-destructive hover:text-destructive"
-                          onClick={() => {
-                            setSelectedStaff(s);
-                            setDeleteConfirmOpen(true);
-                          }}
-                          disabled={saving}
-                        >
-                          <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-                          Löschen
-                        </Button>
-                      </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 px-3 text-destructive hover:text-destructive"
+                        onClick={() => {
+                          setSelectedStaff(s);
+                          setDeleteConfirmOpen(true);
+                        }}
+                        disabled={saving}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
                   </div>
                 );
