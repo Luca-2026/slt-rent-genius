@@ -90,7 +90,7 @@ export function ProductBookingDialog({
 
         if (expandedList) {
           expandedList.style.overflowY = "auto";
-          expandedList.style.webkitOverflowScrolling = "touch";
+          expandedList.style.setProperty("-webkit-overflow-scrolling", "touch");
           expandedList.style.touchAction = "pan-y";
           expandedList.style.overscrollBehavior = "contain";
 
