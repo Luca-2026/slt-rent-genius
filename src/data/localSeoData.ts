@@ -134,8 +134,8 @@ export const localAreas: LocalArea[] = [
     distance: 0,
     population: 331000,
     postalCodes: ["53111", "53113", "53115", "53117", "53119", "53121", "53123", "53125", "53127", "53129", "53173", "53175", "53177", "53179"],
-    description: "Mieten Sie Baumaschinen, Anhänger, Event-Equipment und mehr direkt in Bonn. SLT Rental bietet das volle Sortiment inkl. Bühnentechnik, Traversen und Veranstaltungstechnik.",
-    keywords: ["Baumaschinen mieten Bonn", "Anhänger mieten Bonn", "Bagger mieten Bonn", "Minibagger Bonn", "Bühnentechnik mieten Bonn", "Event-Equipment Bonn", "Traversen mieten Bonn"],
+    description: "Baumaschinen, Anhänger & Event-Equipment mieten in Bonn ✓ Minibagger, Arbeitsbühnen, Hüpfburgen, Bühnentechnik ✓ Direkt vor Ort ✓ Lieferung im Raum Bonn ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Bonn", "Anhänger mieten Bonn", "Bagger mieten Bonn", "Minibagger Bonn", "Arbeitsbühne mieten Bonn", "Hüpfburg mieten Bonn", "Event-Equipment Bonn"],
   },
   {
     slug: "bad-godesberg",
