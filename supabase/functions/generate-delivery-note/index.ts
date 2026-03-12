@@ -270,6 +270,8 @@ Deno.serve(async (req: Request) => {
         delivery_note_number: deliveryNoteNumber,
         status: deliveryNoteStatus,
         signature_data: signature_data || null,
+        staff_signature_data: staff_signature_data || null,
+        staff_name: staff_name || null,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
