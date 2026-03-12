@@ -74,7 +74,7 @@ export default function Index() {
         keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Arbeitsbühne mieten, Hüpfburg mieten, Event-Equipment mieten, Werkzeuge mieten, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}
       />
-      <section className="relative z-20 bg-primary py-8 min-h-[calc(100svh-6.5rem)] flex items-center sm:py-12 md:py-10 md:min-h-[calc(100svh-15rem)] lg:py-0 lg:min-h-[calc(100svh-14.5rem)] lg:items-center">
+      <section className="relative z-20 bg-primary py-8 min-h-[calc(100svh-6.5rem)] flex items-center sm:py-12 md:py-10 md:min-h-[calc(100svh-15rem)] lg:py-0 lg:min-h-[calc(100svh-15.5rem)] lg:items-center">
         {/* Background Image Slider */}
         <HeroBackgroundSlider />
         <div className="absolute inset-0 bg-primary/85" />
