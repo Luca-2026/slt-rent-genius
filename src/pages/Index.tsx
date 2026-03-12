@@ -103,7 +103,7 @@ export default function Index() {
       </section>
 
       {/* Trust Badges with CountUp */}
-      <section className="relative z-10 py-10 bg-background border-b border-border">
+      <section className="relative z-10 py-8 lg:py-10 bg-background border-b border-border">
         <div className="section-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {trustItems.map((item, index) => (
