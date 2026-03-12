@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -81,35 +82,62 @@ export function ProductBookingDialog({
     let mountTimer: number | undefined;
     let definitionPoll: number | undefined;
     let pickerObserver: MutationObserver | null = null;
+    let mountedContainer: HTMLElement | null = null;
+    let lastPatchedList: HTMLElement | null = null;
 
-    const setupTimePickerObserver = (container: HTMLElement) => {
+    const patchExpandedList = (resetPosition: boolean) => {
+      if (!mountedContainer) return;
+
+      const expandedList = mountedContainer.querySelector(
+        "rentware-time-picker rentware-expanded-picker > div"
+      ) as HTMLElement | null;
+
+      if (!expandedList) return;
+
+      expandedList.style.overflowY = "auto";
+      expandedList.style.setProperty("-webkit-overflow-scrolling", "touch");
+      expandedList.style.touchAction = "pan-y";
+      expandedList.style.overscrollBehavior = "contain";
+      expandedList.style.pointerEvents = "auto";
+
+      if (resetPosition || expandedList !== lastPatchedList) {
+        expandedList.scrollTop = 0;
+      }
+
+      lastPatchedList = expandedList;
+    };
+
+    const handleTimePickerOpen = (event: Event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      if (target.closest("rentware-time-picker button")) {
+        window.setTimeout(() => patchExpandedList(true), 0);
+        window.setTimeout(() => patchExpandedList(true), 120);
+      }
+    };
+
+    const setupTimePickerObserver = () => {
+      if (!mountedContainer) return;
+
       pickerObserver = new MutationObserver(() => {
-        const expandedList = container.querySelector(
-          "rentware-time-picker rentware-expanded-picker > div"
-        ) as HTMLElement | null;
-
-        if (expandedList) {
-          expandedList.style.overflowY = "auto";
-          expandedList.style.setProperty("-webkit-overflow-scrolling", "touch");
-          expandedList.style.touchAction = "pan-y";
-          expandedList.style.overscrollBehavior = "contain";
-
-          // Always start from top to avoid getting "stuck" in a mid-range slot window on mobile
-          if (expandedList.scrollTop > 0) {
-            expandedList.scrollTop = 0;
-          }
-        }
+        patchExpandedList(false);
       });
 
-      pickerObserver.observe(container, { childList: true, subtree: true });
+      pickerObserver.observe(mountedContainer, { childList: true, subtree: true });
+      mountedContainer.addEventListener("click", handleTimePickerOpen, true);
+      mountedContainer.addEventListener("touchstart", handleTimePickerOpen, {
+        capture: true,
+        passive: true,
+      });
     };
 
     const mountWidget = () => {
-      const container = document.getElementById(containerId);
-      if (!container) return;
+      mountedContainer = document.getElementById(containerId);
+      if (!mountedContainer) return;
 
-      container.innerHTML = `<rtr-article-booking article-id="${articleId}" view="calendar"></rtr-article-booking>`;
-      setupTimePickerObserver(container);
+      mountedContainer.innerHTML = `<rtr-article-booking article-id="${articleId}" view="calendar"></rtr-article-booking>`;
+      setupTimePickerObserver();
       setWidgetLoading(false);
     };
 
@@ -130,6 +158,10 @@ export function ProductBookingDialog({
     return () => {
       if (mountTimer) window.clearTimeout(mountTimer);
       if (definitionPoll) window.clearInterval(definitionPoll);
+      if (mountedContainer) {
+        mountedContainer.removeEventListener("click", handleTimePickerOpen, true);
+        mountedContainer.removeEventListener("touchstart", handleTimePickerOpen, true);
+      }
       pickerObserver?.disconnect();
     };
   }, [isOpen, articleId, containerId]);
@@ -176,7 +208,7 @@ export function ProductBookingDialog({
   if (!product || !location) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal={!articleId}>
       <DialogContent 
         className={cn(
           articleId 
@@ -186,7 +218,14 @@ export function ProductBookingDialog({
       >
         {articleId ? (
           // Show Rentware widget when available
-          <div className="relative">
+          <>
+            <DialogHeader className="sr-only">
+              <DialogTitle>Buchung für {product.name}</DialogTitle>
+              <DialogDescription>
+                Verfügbarkeitskalender und Zeitfenster für {product.name} am Standort {location.name}.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="relative">
             {widgetLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -196,9 +235,9 @@ export function ProductBookingDialog({
               id={containerId}
               className="min-h-[400px] sm:min-h-[500px] p-2 sm:p-4"
             />
-          </div>
+            </div>
+          </>
         ) : (
-          // "Auf Anfrage" inquiry form
           <>
             <DialogHeader className="p-6 pb-4 border-b border-border">
               <div className="flex items-start gap-4">
