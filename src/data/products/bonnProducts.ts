@@ -244,7 +244,7 @@ export const bonnAggregateProducts = [
     image: bonnAggregat20kva1,
     images: [bonnAggregat20kva1],
     rentwareCode: { bonn: "GMKLML" },
-    detailedDescription: "Das Doosan G20 ist ein schallgedämmtes Diesel-Stromaggregat mit 20 kVA Spitzenleistung und EU Stage V Emissionsklasse. Mit 181 Liter Tankinhalt erreicht es bis zu 47 Stunden Autonomie bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    detailedDescription: "Das Doosan G20 ist ein schallgedämmtes Diesel-Stromaggregat mit 20 kVA Spitzenleistung und EU Stage V Emissionsklasse. Mit 181 Liter Tankinhalt erreicht es bis zu 47 Stunden Autonomie bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
       "Spitzenleistung": "20 kVA",
       "Dauerleistung": "19 kVA / 15,2 kW",

@@ -593,7 +593,7 @@ export const aggregateProducts: Product[] = [
     category: "aggregat",
     rentwareCode: { krefeld: "CGYRQH" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
-    detailedDescription: "Das Doosan G20 ist ein schallgedämmtes Diesel-Stromaggregat mit 20 kVA Spitzenleistung und EU Stage V Emissionsklasse. Mit 181 Liter Tankinhalt erreicht es bis zu 47 Stunden Autonomie bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    detailedDescription: "Das Doosan G20 ist ein schallgedämmtes Diesel-Stromaggregat mit 20 kVA Spitzenleistung und EU Stage V Emissionsklasse. Mit 181 Liter Tankinhalt erreicht es bis zu 47 Stunden Autonomie bei Nennleistung. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 10,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
       "Spitzenleistung": "20 kVA",
       "Dauerleistung": "19 kVA / 15,2 kW",
@@ -619,7 +619,7 @@ export const aggregateProducts: Product[] = [
     category: "aggregat",
     rentwareCode: { krefeld: "RDRWAR" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
-    detailedDescription: "Das Doosan G50 ist ein schallgedämmtes Diesel-Stromaggregat mit 60 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 35 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    detailedDescription: "Das Doosan G50 ist ein schallgedämmtes Diesel-Stromaggregat mit 60 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 35 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
       "Spitzenleistung": "60 kVA",
       "Dauerleistung": "50 kVA / 24 kW",
@@ -645,7 +645,7 @@ export const aggregateProducts: Product[] = [
     category: "aggregat",
     rentwareCode: { krefeld: "E7TNYQ" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
-    detailedDescription: "Das Doosan G100 ist ein schallgedämmtes Diesel-Stromaggregat mit 120 kVA Spitzenleistung und EU Stage V Emissionsklasse, montiert auf einem PKW-Anhänger. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart. Diesel wird mit brutto 2,45 €/l berechnet, AdBlue mit brutto 1,45 €/l.",
+    detailedDescription: "Das Doosan G100 ist ein schallgedämmtes Diesel-Stromaggregat mit 120 kVA Spitzenleistung und EU Stage V Emissionsklasse, montiert auf einem PKW-Anhänger. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart. Diesel wird mit brutto 2,85 €/l berechnet, AdBlue mit brutto 1,45 €/l.",
     specifications: {
       "Spitzenleistung": "120 kVA",
       "Dauerleistung": "100 kVA / 80 kW",
@@ -671,7 +671,7 @@ export const aggregateProducts: Product[] = [
     category: "aggregat",
     rentwareCode: { krefeld: "H8WHKV" },
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
-    detailedDescription: "Das Doosan G80 ist ein schallgedämmtes Diesel-Stromaggregat mit 90 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet. Optional mit Anhänger verfügbar.",
+    detailedDescription: "Das Doosan G80 ist ein schallgedämmtes Diesel-Stromaggregat mit 90 kVA Spitzenleistung und EU Stage V Emissionsklasse. Der 176-Liter-Tank ermöglicht ca. 11 Stunden Autonomie bei 75 % Last. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet. Optional mit Anhänger verfügbar.",
     specifications: {
       "Spitzenleistung": "90 kVA",
       "Dauerleistung": "80 kVA / 64 kW",
@@ -854,7 +854,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     images: [anhaengerbuehneTm18gti1, anhaengerbuehneTm18gti2, anhaengerbuehneTm18gti3, anhaengerbuehneTm18gti4, anhaengerbuehneTm18gti5],
     category: "anhaengerbuehne",
     rentwareCode: { krefeld: "32EVXI" },
-    detailedDescription: "Die EuropeLIFT TM18GTi ist eine benzinbetriebene Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und bis zu 10,50 m seitlicher Reichweite. Der Korb bietet Platz für 2 Personen (max. 220 kg bei 8 m bzw. 100 kg bei 11 m Reichweite). Zusatzausstattung: 230 V und Druckluft-Anschluss im Korb. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 22,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,45 €/l berechnet.",
+    detailedDescription: "Die EuropeLIFT TM18GTi ist eine benzinbetriebene Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und bis zu 10,50 m seitlicher Reichweite. Der Korb bietet Platz für 2 Personen (max. 220 kg bei 8 m bzw. 100 kg bei 11 m Reichweite). Zusatzausstattung: 230 V und Druckluft-Anschluss im Korb. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 22,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet.",
     specifications: {
       "Typ": "TM18GTi",
       "Arbeitshöhe": "18 m",
