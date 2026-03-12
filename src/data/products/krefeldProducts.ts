@@ -691,7 +691,7 @@ export const aggregateProducts: Product[] = [
   {
     id: "akkupack-bluetti",
     name: "Bluetti Akkupack 1152 Wh",
-    description: "Akkupack mit 1152 Wh\nLeistung max.: 1800w\nAnschlüsse: 2x Schuko, 4x USB-A, 1x USB-C, 1x 12V DC\nTelefon (10 Wh) 115 Mal aufladen\nLaptop (60 Wh) 20 Mal aufladen",
+    description: "Tragbare Powerstation mit 1.800 W Maximalleistung – ideal für Baustellen ohne Stromanschluss, Events und Outdoor-Einsätze.",
     image: akkupackBluetti1,
     images: [akkupackBluetti1],
     category: "aggregat",
@@ -708,7 +708,7 @@ export const aggregateProducts: Product[] = [
   {
     id: "kompressor-5m3",
     name: "4m³ Kompressor",
-    description: "Kompressor inkl. Generator\nMarke: Doosan\nTyp: 7/45\nVolumenstrom: 4m³/min \nmax. Druck: 6,8 bar \nEmissionsklasse: EU Stage V \nBatteriespannung: 12 V \nAnschlüsse: 3x  \nDrehzahl: 1500 U/min \nGewicht: ca. 680 kg \nTankinhalt: 58 l \nKraftstoff: Diesel \nAbgasnorm: Stage V\nZusatzausstattung: auf Fahrgestell\nGenerator: 6 kVA 400V/230V\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
+    description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
     image: kompressor5m3_1,
     images: [kompressor5m3_1, kompressor5m3_2],
     category: "kompressor",
@@ -1003,7 +1003,22 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrhammer-gbh18v-26f",
     name: "Akku Bohrhammer",
     modelName: "Bosch GBH 18V-26 F",
-    description: "Hersteller: Bosch\nSchlagenergie (gemäß EPTA 05/2016): 2,6 J\nSchlagzahl bei Nenndrehzahl: 0 – 4.350 bpm\nNenndrehzahl: 0 – 980 min-1\nAkkuspannung: 18,0 V\nWerkzeugaufnahme SDS plus\nVerpackungsabmessungen (Breite x Länge x Höhe): 251 x 398 x 104 mm\nBohrbereich:\nBohr-Ø in Beton mit Hammerbohrern: 4 – 26 mm\nOptimaler Einsatzbereich Beton mit Hammerbohrern: 8 – 16 mm\nMax. Bohrdurchmesser in Metall: 13 mm\nMax. Bohr-Ø Holz: 30 mm\nGeräusch-/Vibrationsinformation\nSchalldruckpegel: 88 dB(A)\nSchallleistungspegel: 99 dB(A)\nUnsicherheit K: 3 dB",
+    description: "Akku-Bohrhammer mit SDS-Plus Aufnahme",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Schlagenergie (gemäß EPTA 05/2016)": "2,6 J",
+      "Schlagzahl bei Nenndrehzahl": "0 – 4.350 bpm",
+      "Nenndrehzahl": "0 – 980 min-1",
+      "Akkuspannung": "18,0 V",
+      "Verpackungsabmessungen (Breite x Länge x Höhe)": "251 x 398 x 104 mm",
+      "Bohr-Ø in Beton mit Hammerbohrern": "4 – 26 mm",
+      "Optimaler Einsatzbereich Beton mit Hammerbohrern": "8 – 16 mm",
+      "Max. Bohrdurchmesser in Metall": "13 mm",
+      "Max. Bohr-Ø Holz": "30 mm",
+      "Schalldruckpegel": "88 dB(A)",
+      "Schallleistungspegel": "99 dB(A)",
+      "Unsicherheit K": "3 dB",
+    },
     image: imgBohrhammer26f,
     images: [imgBohrhammer26f],
     category: "bohrhammer",
@@ -1013,7 +1028,22 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bohrhammer-gbh18v-45c",
     name: "Akku Bohrhammer",
     modelName: "Bosch GBH 18V-45C",
-    description: "Hersteller: Bosch\nSchlagenergie (gemäß EPTA 05/2016): 2,6 J\nSchlagzahl bei Nenndrehzahl: 0 – 4.350 bpm\nNenndrehzahl: 0 – 980 min-1\nAkkuspannung: 18,0 V\nWerkzeugaufnahme SDS plus\nVerpackungsabmessungen (Breite x Länge x Höhe): 251 x 398 x 104 mm\nBohrbereich:\nBohr-Ø in Beton mit Hammerbohrern: 4 – 26 mm\nOptimaler Einsatzbereich Beton mit Hammerbohrern: 8 – 16 mm\nMax. Bohrdurchmesser in Metall: 13 mm\nMax. Bohr-Ø Holz: 30 mm\nGeräusch-/Vibrationsinformation\nSchalldruckpegel: 88 dB(A)\nSchallleistungspegel: 99 dB(A)\nUnsicherheit K: 3 dB",
+    description: "Schwerer Akku-Bohrhammer mit Bluetooth",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Schlagenergie (gemäß EPTA 05/2016)": "2,6 J",
+      "Schlagzahl bei Nenndrehzahl": "0 – 4.350 bpm",
+      "Nenndrehzahl": "0 – 980 min-1",
+      "Akkuspannung": "18,0 V",
+      "Verpackungsabmessungen (Breite x Länge x Höhe)": "251 x 398 x 104 mm",
+      "Bohr-Ø in Beton mit Hammerbohrern": "4 – 26 mm",
+      "Optimaler Einsatzbereich Beton mit Hammerbohrern": "8 – 16 mm",
+      "Max. Bohrdurchmesser in Metall": "13 mm",
+      "Max. Bohr-Ø Holz": "30 mm",
+      "Schalldruckpegel": "88 dB(A)",
+      "Schallleistungspegel": "99 dB(A)",
+      "Unsicherheit K": "3 dB",
+    },
     image: imgBohrhammer45c,
     images: [imgBohrhammer45c],
     category: "bohrhammer",
@@ -1153,7 +1183,7 @@ export const werkzeugeProducts: Product[] = [
   {
     id: "zwangsmischer-140l",
     name: "Zwangsmischer 140L",
-    description: "Typ: Compakt 140L\nMotorleistung: 2.200 W / 230V\nRührwerk N: 27,5 min-1\nTrommelvolumen: max. 140 L\nGewicht: 130 kg\nAbmessung (LxBxH): 82 cm x 77 cm x 121 cm \nDer Zwangsmischer ist gereinigt zurückzugeben, anderfalls berechnen wir eine Reinigungspauschale in Höhe von 150€",
+    description: "Zwangsmischer Compakt 140L – für gleichmäßige Beton- und Mörtelmischungen.",
     detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle. Der Zwangsmischer ist gereinigt zurückzugeben, andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
     image: zwangsmischer140l1,
     images: [zwangsmischer140l1, zwangsmischer140l2, zwangsmischer140l3],
@@ -1226,7 +1256,25 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-linienlaser-gll3-80",
     name: "Linienlaser",
     modelName: "Bosch GLL 3-80",
-    description: "Hersteller: Bosch\nLaserdiode Linie: 630 - 650 nm, < 10mW\nBetriebstemperatur: -10 – 40 °C\nLaserklasse: 2\nArbeitsbereich*: bis zu 30 m\nArbeitsbereich mit Empfänger*: bis zu 120 m\nNivelliergenauigkeit*: ± 0,3 mm/m\nSelbstnivellierbereich: ± 4°\nNivellierzeit: 4 s\nStaub- und Spritzwasserschutz: IP 54\nBetriebsdauer, max.: 4 h in 3-Linien-Modus\nStativ-Gewinde: 1/4\", 5/8\"\nGewicht, ca.: 0,82 kg\nFarbe Laserlinie: rot\nProjektion: 3 x 360° Linie\nKompatible Laser-Empfänger: LR 6 + 7 \n* Zzgl. einsatzabhängiger Abweichung.\nStative können im Zubehör ausgewählt werden.",
+    description: "360° Linienlaser für präzise Ausrichtung",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Laserdiode Linie": "630 - 650 nm, < 10mW",
+      "Betriebstemperatur": "-10 – 40 °C",
+      "Laserklasse": "2",
+      "Arbeitsbereich*": "bis zu 30 m",
+      "Arbeitsbereich mit Empfänger*": "bis zu 120 m",
+      "Nivelliergenauigkeit*": "± 0,3 mm/m",
+      "Selbstnivellierbereich": "± 4°",
+      "Nivellierzeit": "4 s",
+      "Staub- und Spritzwasserschutz": "IP 54",
+      "Betriebsdauer, max.": "4 h in 3-Linien-Modus",
+      "Stativ-Gewinde": "1/4\", 5/8\"",
+      "Gewicht, ca.": "0,82 kg",
+      "Farbe Laserlinie": "rot",
+      "Projektion": "3 x 360° Linie",
+      "Kompatible Laser-Empfänger": "LR 6 + 7",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "laser",
@@ -1236,7 +1284,7 @@ export const werkzeugeProducts: Product[] = [
     id: "rotationslaser-grl400h",
     name: "Rotationslaser",
     modelName: "Bosch GRL 400H",
-    description: "Rotationslaser bis 400m Arbeitsbereich\nArbeitsbereich mit Empfänger*: bis zu 400 m (Durchmesser)\nArbeitsbereich ohne Empfänger*: bis zu 20 m (Durchmesser)\nNivelliergenauigkeit*: ± 2,4 mm bei 30 m* (* zzgl. einsatzabhängiger Abweichung)\nSelbstnivellierbereich: ± 8 % (± 5°)\n*Empfänger nicht im Set enthalten",
+    description: "Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.",
     detailedDescription: "Professioneller Bosch Rotationslaser GRL 400H mit bis zu 400 m Arbeitsbereich (Durchmesser) mit Empfänger. Ideal für horizontale Nivellierarbeiten auf großen Baustellen. Empfänger nicht im Set enthalten.",
     image: rotationslaser1,
     images: [rotationslaser1, rotationslaser2],
@@ -1256,7 +1304,7 @@ export const werkzeugeProducts: Product[] = [
   {
     id: "fliesenschneider-80cm",
     name: "Fliesenschneider 80cm",
-    description: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. \nSchnittlänge max.: 800 mm\nSchneidleistung  max.: 14 mm\nDiagonal-Schnittlänge mit Auflage: 565 mm",
+    description: "Profi-Fliesenschneider zum präzisen Schneiden und Trennen von Keramikfliesen.",
     detailedDescription: "Der Profi-Fliesenschneider eignet sich zum präzisen Schneiden und Trennen von Keramikfliesen. Mit einer maximalen Schnittlänge von 800 mm und einer Schneidleistung bis 14 mm ist er ideal für Fliesen- und Plattenleger.",
     image: fliesenschneider1,
     images: [fliesenschneider1, fliesenschneider2, fliesenschneider3, fliesenschneider4, fliesenschneider5],
@@ -1292,7 +1340,17 @@ export const werkzeugeProducts: Product[] = [
     id: "bosch-bauleuchte-gli18v-2200c",
     name: "Akku Bauleuchte",
     modelName: "Bosch GLI 18V-2200 C",
-    description: "Hersteller: Bosch\nGewicht exkl. Akku: 1,9 kg\nAkkuspannung: 14,4–18 V\nLichtstrom: 2.200 lm\nMax. Betriebszeit 14,4 V: 80 min/Ah\nMax. Betriebszeit 18 V: 100 min/Ah\nAnzahl der Helligkeitsstufen: 2\nVerpackungsabmessungen (Breite x Länge x Höhe): 196 x 332 x 178 mm\nBosch Akkus sind optional erhältlich",
+    description: "Akku-Bauleuchte mit 2200 Lumen",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Gewicht exkl. Akku": "1,9 kg",
+      "Akkuspannung": "14,4–18 V",
+      "Lichtstrom": "2.200 lm",
+      "Max. Betriebszeit 14,4 V": "80 min/Ah",
+      "Max. Betriebszeit 18 V": "100 min/Ah",
+      "Anzahl der Helligkeitsstufen": "2",
+      "Verpackungsabmessungen (Breite x Länge x Höhe)": "196 x 332 x 178 mm",
+    },
     image: imgBauleuchte,
     images: [imgBauleuchte],
     category: "bauleuchte",
@@ -1302,7 +1360,17 @@ export const werkzeugeProducts: Product[] = [
     id: "einhell-bauleuchte-te-cl18-2000",
     name: "Akku Bauleuchte",
     modelName: "Einhell TE-CL 18/2000",
-    description: "Hersteller: Bosch\nGewicht exkl. Akku: 1,9 kg\nAkkuspannung: 14,4–18 V\nLichtstrom: 2.200 lm\nMax. Betriebszeit 14,4 V: 80 min/Ah\nMax. Betriebszeit 18 V: 100 min/Ah\nAnzahl der Helligkeitsstufen: 2\nVerpackungsabmessungen (Breite x Länge x Höhe): 196 x 332 x 178 mm\nBosch Akkus sind optional erhältlich",
+    description: "LED-Bauleuchte mit 2000 Lumen",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Gewicht exkl. Akku": "1,9 kg",
+      "Akkuspannung": "14,4–18 V",
+      "Lichtstrom": "2.200 lm",
+      "Max. Betriebszeit 14,4 V": "80 min/Ah",
+      "Max. Betriebszeit 18 V": "100 min/Ah",
+      "Anzahl der Helligkeitsstufen": "2",
+      "Verpackungsabmessungen (Breite x Länge x Höhe)": "196 x 332 x 178 mm",
+    },
     image: imgEinhellBauleuchte,
     images: [imgEinhellBauleuchte],
     category: "bauleuchte",
@@ -1357,7 +1425,7 @@ export const werkzeugeProducts: Product[] = [
   {
     id: "mauerschlitzfraese",
     name: "Mauerschlitzfräse",
-    description: "Leistungsaufnahme: 2.300 W\nNennspannung: 230 V\nmax. Schlitztiefe: 45 mm\nmax. Schlitzbreite: 46 mm\nNenndrehzahl: 4.300 U/min\nLeerlaufdrehzahl: 7.500 U/min\nWerkzeugaufnahme: 22,2 mm\nScheibendurchmesser: max. 150 mm\nGewicht: 6,1 kg\nIm Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. \nDiamanttrennscheiben zum Kauf optional erhältlich.",
+    description: "Elektrofräse für Kabelschlitze – bis 45 mm Tiefe und 46 mm Breite.",
     detailedDescription: "Leistungsstarke Mauerschlitzfräse mit 2.300 W für das Fräsen von Kabelschlitzen in Mauerwerk. Mit einer maximalen Schlitztiefe von 45 mm und Schlitzbreite von 46 mm ideal für Elektroinstallationen. Im Mietpreis sind 2 mm Verschleiß je Diamanttrennscheibe enthalten. Diamanttrennscheiben zum Kauf optional erhältlich.",
     image: imgMauerschlitzfraese,
     images: [imgMauerschlitzfraese],
@@ -1433,7 +1501,11 @@ export const werkzeugeProducts: Product[] = [
     id: "betonruettler-ir1000",
     name: "Beton Rüttler 2m",
     modelName: "IR 1000",
-    description: "Betonrüttler für kleine bis mittlere Flächen\nVibrationsflaschen Durchmesser: 35 mm\nLeistung: 230V / 1000 W\nSchlauchlänge 2 m\ninkl. Schultertragegurt",
+    description: "Innenrüttler für Betonverdichtung",
+    specifications: {
+      "Vibrationsflaschen Durchmesser": "35 mm",
+      "Leistung": "230V / 1000 W",
+    },
     image: imgBetonruettler,
     images: [imgBetonruettler],
     category: "betonruettler",
@@ -1442,7 +1514,7 @@ export const werkzeugeProducts: Product[] = [
   {
     id: "sds-plus-bohrer-meissel-set",
     name: "SDS-Plus Bohrer-/Meißel-Set",
-    description: "17-teiliges Set bestehend aus 12 Hammerbohreren und 5 Meißeln\nBohrer (ØxLänge) 5, 6, 8, 10 x 110 mm, 6, 8, 10, 12 x 160 mm, 8, 10 x 210 mm, 12, 14 x 260 mm\nSpitzmeißel 140, 250 mm\nFlachmeißel 140x20, 250x20 mm\nBreitmeißel 250x40 mm",
+    description: "Umfangreiches Set für Bohrhämmer",
     image: imgSdsPlusSet,
     images: [imgSdsPlusSet],
     category: "zubehoer",
@@ -1517,7 +1589,13 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "stihl-erdbohrer-4308",
     name: "Stihl 4308 Erdbohrer",
-    description: "Hersteller: Stihl\nLeistung: 1,4 kW\nKraftstoff: 40 cm\nGewicht: 12 kg\nDie passende Bohrspitze bitte im nächsten Schritt auswählen.\nDas Gerät wird immer mit einem zusätzlichen 5l Kanister, gefüllt mit Stihl MotoMix Kraftstoffgemisch ausgehändigt. Die Abrechnung erfolgt nach verbrauch.",
+    description: "Professioneller Erdbohrer von Stihl",
+    specifications: {
+      "Hersteller": "Stihl",
+      "Leistung": "1,4 kW",
+      "Kraftstoff": "40 cm",
+      "Gewicht": "12 kg",
+    },
     image: imgErdbohrer1,
     images: [imgErdbohrer1, imgErdbohrer2, imgErdbohrer3, imgErdbohrer4],
     category: "erdbohrer",
@@ -1526,7 +1604,13 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "hochdruckreiniger",
     name: "Hochdruckreiniger",
-    description: "Leistung: 150 bar - 810 l/h\nSchlauchlänge: 5m\nDurchflussrate: ‎8.1E+2 Liter pro Stunde\nGewicht: 35 kg",
+    description: "Professioneller Hochdruckreiniger",
+    specifications: {
+      "Leistung": "150 bar - 810 l/h",
+      "Schlauchlänge": "5m",
+      "Durchflussrate": "‎8.1E+2 Liter pro Stunde",
+      "Gewicht": "35 kg",
+    },
     image: hochdruckreiniger1,
     images: [hochdruckreiniger1],
     category: "hochdruckreiniger",
@@ -1544,7 +1628,7 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "baumstumpffraese-f360",
     name: "Baumstumpffräse F-360",
-    description: "Hersteller: Laski\nTyp: F-360 SW/11\nMotorleistung: 12 PS\nFräskapazität max.: 300 mm\nGewicht: 145 kg\nAbmessung (LxBxH): 180 cm (130 cm*) x 65 cm x 120 cm  (114 cm*) *Transportzustand\nSchwenkbereich: 80 cm\nTankinhalt: 5 l\nKraftstoff: Benzin\nSonderausstattung: auf Rollen\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Benzin wird mit brutto 2,80€/l berechnet.",
+    description: "Einachsige Baumstumpffräse mit Honda GX-390 Motor",
     detailedDescription: "Einachsige Baumstumpffräse ohne Fahrantrieb mit auf Drehkranz gelagertem Oberteil und 60° Schwenkbereich. Angetrieben vom Honda GX-390 Motor (8,2 kW / 11 PS) mit Seilzugstart. Das Schneidrad mit acht DoublePro-Fräsmessern wird über einen dreifachen Keilriementrieb direkt angetrieben. Betriebsbremse auf beide Räder wirkend, Maschinenbreite 650 mm.",
     image: baumstumpffraeseF360_1,
     images: [baumstumpffraeseF360_1, baumstumpffraeseF360_2],
@@ -1568,7 +1652,16 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "haecksler-axt25tc",
     name: "Häcksler AXT25TC",
-    description: "Hersteller: Bosch\nTyp: AXT25TC\nMotorleistung: 2.500 W\nAnschluss: 230V Schuko\nSchneidekapazität max.: 45 mm\nGewicht: 30,500 kg\nExtras: Fangbox mit 53 l",
+    description: "Elektro-Häcksler für Gartenabfälle",
+    specifications: {
+      "Hersteller": "Bosch",
+      "Typ": "AXT25TC",
+      "Motorleistung": "2.500 W",
+      "Anschluss": "230V Schuko",
+      "Schneidekapazität max.": "45 mm",
+      "Gewicht": "30,500 kg",
+      "Extras": "Fangbox mit 53 l",
+    },
     image: haeckslerAxt1,
     images: [haeckslerAxt1],
     category: "haecksler",
@@ -1577,7 +1670,7 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "haecksler-ls95-gx",
     name: "Häcksler LS-95 GX",
-    description: "Hersteller: Laski\nTyp: LS-95 GX\nMotorleistung: 12 PS\nSchneidekapazität max.: 80 mm\nGewicht: 130 kg\nAbmessung (LxBxH): 153 cm x 80 cm x 158 cm \nTankinhalt: 10 l\nKraftstoff: Benzin\nSonderausstattung: auf Rollen\nHinweis: Nur stehender Transport!\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät - Rückgabe des Mietgeräts mit vollgetankten Tank vereinbart. Benzin wird mit brutto 2,80€/l berechnet.",
+    description: "Benzin-Häcksler für größere Mengen",
     detailedDescription: "Der Buschholzhäcksler LS 95/CH zeichnet sich durch hohe Arbeitsleistung und einfache Bauart aus. Angetrieben von einem leistungsstarken Kohler Motor, zerkleinert er Äste bis 7,5 cm Durchmesser zuverlässig. Zwei Zerkleinerungsmesser und eine ortsfeste Gegenschneide sorgen für effizientes Häckseln. Der Messerwechsel ist denkbar einfach – nur Rutsche abkippen. Der Einzug erfolgt automatisch durch das Eigengewicht des Materials. Große Laufräder machen das Manövrieren auch in schwierigem Gelände problemlos.",
     image: haeckslerLs95_1,
     images: [haeckslerLs95_1],
@@ -1595,7 +1688,16 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "vertikutierer-sa35-vel",
     name: "Vertikutierer SA35-V EL",
-    description: "Hersteller: Sabo\nTyp: SA35-V EL\nArbeitsbreite: 35 cm\nMessersystem: 15 Scheiben/ drei Zähne\nMotorleistung: 1.600 W\nAnschluss: 230V Schuko\nGewicht: 18,500 kg",
+    description: "Elektro-Vertikutierer für Rasenpflege",
+    specifications: {
+      "Hersteller": "Sabo",
+      "Typ": "SA35-V EL",
+      "Arbeitsbreite": "35 cm",
+      "Messersystem": "15 Scheiben/ drei Zähne",
+      "Motorleistung": "1.600 W",
+      "Anschluss": "230V Schuko",
+      "Gewicht": "18,500 kg",
+    },
     image: vertikutierer1,
     images: [vertikutierer1, vertikutierer2],
     category: "vertikutierer",
@@ -1604,7 +1706,17 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "vertikutierer-sa38-bv",
     name: "Vertikutierer SA38 BV",
-    description: "Hersteller: Sabo\nTyp: SA38 BV\nArbeitsbreite: 38 cm\nMessersystem: 15 Scheiben/ drei Zähne\nMotorleistung: 2.300 W / 3,1 PS\nTankinhalt: 5 l\nKraftstoff: Benzin\nGewicht: 37 kg",
+    description: "Benzin-Vertikutierer für große Flächen",
+    specifications: {
+      "Hersteller": "Sabo",
+      "Typ": "SA38 BV",
+      "Arbeitsbreite": "38 cm",
+      "Messersystem": "15 Scheiben/ drei Zähne",
+      "Motorleistung": "2.300 W / 3,1 PS",
+      "Tankinhalt": "5 l",
+      "Kraftstoff": "Benzin",
+      "Gewicht": "37 kg",
+    },
     image: vertikutiererBenzin1,
     images: [vertikutiererBenzin1],
     category: "vertikutierer",
@@ -1613,7 +1725,7 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "rasenwalze",
     name: "Rasenwalze",
-    description: "Eine handbedienbare Gartenwalze, die mit Wasser gefüllt werden kann. \nFüllvolumen ca.: 46 L\nArbeitsbreite: 57 cm\nGesamthöhe mit Schubbügel ca. 106 cm\nDurchmesser: 32 cm\nGewicht: 13 kg",
+    description: "Robuste Rasenwalze zum Einebnen und Verdichten von Rasenflächen nach Aussaat oder Verlegung von Rollrasen.",
     image: "/products/gartenpflege/rasenwalze-freisteller.jpg",
     images: ["/products/gartenpflege/rasenwalze-freisteller.jpg", "/products/gartenpflege/rasenwalze-anwendung.jpg"],
     specifications: {
@@ -1697,7 +1809,7 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "bautrockner-kt200",
     name: "Allegra Bautrockner KT200",
-    description: "Hersteller: Allegra\nintegrierter Stromzähler: ja (geeichter MID-konformen Stromzähler PH10)\nTrocknungsfläche: 20 m²\nEntfeuchtungsleistung: bis zu 20 l/24h\nLeistung: 350 W\nLuftumwälzung: 260 m³/h\nStromanschluss: 230V - 16A\nArbeitsbereich: 5 °C - 35 °C\nBetriebsstundenzähler: Ja\nKapazität Wassertank: 4 Liter, Gerät schaltet bei vollem Tank automatisch ab\nSchlauchanschluss: ja, möglich\nGewicht: 18,50 kg",
+    description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt200_1,
     images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
     category: "bautrockner",
@@ -1722,7 +1834,7 @@ export const heizungTrocknungProducts: Product[] = [
   {
     id: "bautrockner-kt553",
     name: "Allegra Bautrockner KT553/KT554",
-    description: "Hersteller: Allegra\nintegrierter Stromzähler: ja (geeichter MID-konformen Stromzähler PH10)\nTrocknungsfläche: 50-60 m²\nEntfeuchtungsleistung: bis zu 50 l/24h\nLeistung: 700 W\nLuftumwälzung: 330 m³/h\nStromanschluss: 230V - 16A\nArbeitsbereich: 5 °C - 35 °C\nBetriebsstundenzähler: Ja\nKapazität Wassertank: 4 Liter, Gerät schaltet bei vollem Tank automatisch ab\nSchlauchanschluss: ja, möglich\nGewicht: 30 kg",
+    description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt553_1,
     images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
     category: "bautrockner",
@@ -1922,7 +2034,11 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-283-42cm",
     name: "Verkehrszeichen 283, Absolutes Haltverbot 42 cm",
-    description: "Absolutes Haltverbot\nDurchmesser: 42 cm\nReflektionsklasse: RA1",
+    description: "Kleines Halteverbotsschild",
+    specifications: {
+      "Durchmesser": "42 cm",
+      "Reflektionsklasse": "RA1",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "verkehrszeichen",
@@ -1983,7 +2099,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-12-ra1-gr1",
     name: "VZ 1000-12, RA1, Gr. 1",
-    description: "Verkehrszeichen 1000-12\nBedeutung: Fußgänger Gehweg links gegenüber benutzen\nReflektionsklasse: RA1\nFlachform: 2 mm\nSeitenlänge: 231 mm x 420 mm",
+    description: "Fußgänger Gehweg links gegenüber benutzen – Zusatzzeichen 231 × 420 mm, Flachform 2 mm, Reflektionsklasse RA1.",
     image: imgVz100012Ra1Gr1,
     images: [imgVz100012Ra1Gr1],
     category: "verkehrszeichen",
@@ -2001,7 +2117,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-12-ra1-gr2",
     name: "VZ 1000-12, RA1, Gr. 2",
-    description: "Verkehrszeichen 1000-12\nBedeutung: Fußgänger Gehweg links gegenüber benutzen \nReflektionsklasse: RA1\nFlachform: 2 mm\nSeitenlänge: 330 mm x 600 mm",
+    description: "Zusatzzeichen VZ 1000-12: Fußgänger – Gehweg links gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
     image: imgVz100012Ra1,
     images: [imgVz100012Ra1],
     category: "verkehrszeichen",
@@ -2019,7 +2135,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-22-ra1-gr1",
     name: "VZ 1000-22, RA1, Gr. 1",
-    description: "Verkehrszeichen 1000-22\nBedeutung: Fußgänger Gehweg rechts gegenüber benutzen\nReflektionsklasse: RA1\nFlachform: 2 mm\nSeitenlänge: 231 mm x 420 mm",
+    description: "Fußgänger Gehweg rechts gegenüber benutzen – Zusatzzeichen 231 × 420 mm, Flachform 2 mm, Reflektionsklasse RA1.",
     image: imgVz100022Ra1Gr1,
     images: [imgVz100022Ra1Gr1],
     category: "verkehrszeichen",
@@ -2037,7 +2153,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-1000-22-ra1-gr2",
     name: "VZ 1000-22, RA1, Gr. 2",
-    description: "Verkehrszeichen 1000-22\nBedeutung: Fußgänger Gehweg rechts gegenüber benutzen\nReflektionsklasse: RA1\nFlachform: 2 mm\nSeitenlänge: 330 mm x 600 mm",
+    description: "Zusatzzeichen VZ 1000-22: Fußgänger – Gehweg rechts gegenüber benutzen. Flachform 2 mm, Reflektionsklasse RA1.",
     image: imgVz100022Ra1Gr2,
     images: [imgVz100022Ra1Gr2],
     category: "verkehrszeichen",
@@ -2055,7 +2171,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "vz-zusatz-neutral-ra1-gr2",
     name: "VZ Zusatz Neutral, RA1, Gr. 2",
-    description: "Verkehrszeichen Zusatz\nBedeutung: Zusatzzeichen mit Rand (neutral)\nReflektionsklasse: RA1\nFlachform: 2 mm\nSeitenlänge: 330 mm x 600 mm",
+    description: "Zusatzzeichen mit schwarzem Rand (neutral/unbeschriftet), Reflektionsklasse RA1, Flachform 2 mm, 330 × 600 mm.",
     image: imgVzZusatzNeutralRa1Gr2,
     images: [imgVzZusatzNeutralRa1Gr2],
     category: "verkehrszeichen",
@@ -2083,7 +2199,7 @@ export const absperrtechnikProducts: Product[] = [
   {
     id: "tl-warnleuchte-gelb",
     name: "TL-Warnleuchte, gelb",
-    description: "LED Warnleuchte\nEntspricht EN 12352\nStreuscheibe: gelb, doppelseitig\neffektiver Lichtaustritt Ø 180 mm\nverbrauchsarme LED-Technik\nUmschaltung Blink-/Dauerlicht mittels Lampenschlüssel (bitte separat bestellen)\n(Batterien können im nächsten Schritt käuflich erworben werden)",
+    description: "LED Warnleuchte nach EN 12352, gelbe Streuscheibe, doppelseitig, Ø 180 mm. Blink-/Dauerlicht per Lampenschlüssel umschaltbar. Batterien optional.",
     image: imgTlWarnleuchteGelb,
     images: [imgTlWarnleuchteGelb, imgTlWarnleuchteGelbFront, imgTlWarnleuchteGelbSeite],
     category: "warnleuchte",
@@ -2275,7 +2391,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "soundboks-gen3",
     name: "Soundboks Gen.3",
-    description: "Tragbarer Outdoor-Lautsprecher\nLeistung: 3 x 72 W\nintelligenter Merus Audio Eximo Class-D Verstärker\nLautsprecherbestückung: 2x10 \" Subwoofer und 1x 1\" Hochtöner\nmax. SPL: 126 dB\nmit Bluetooth 5.0 Technologie - bis zu 5 Soundboks lassen sich im \"TeamUP\" Modus per SKAA Technologie\ndrahtlos verbinden (App zur Steuerung im AppStore bzw. Playstore kostenfrei erhältlich)\n1x Akku mit 5 stufiger LED-Anzeige\nLadegerät 230 V\nLadezeit: 3,5 Stunden\nAkkulaufzeit: 40 Stunden bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke\nGewicht: 15,4 kg\nIm nächsten Schritt können Sie noch zusätzliche Akkus reservieren.",
+    description: "Tragbarer Outdoor-Lautsprecher mit 126 dB max. SPL und bis zu 40 Stunden Akkulaufzeit bei halber Lautstärke. Bluetooth 5.0 mit SKAA-Technologie: Bis zu 5 Soundboks lassen sich im \"TeamUP\"-Modus drahtlos verbinden (kostenlose App im App Store / Play Store). Im nächsten Schritt können Sie zusätzliche Akkus reservieren.",
     image: imgSoundboksGen31,
     images: [imgSoundboksGen31, imgSoundboksGen32, imgSoundboksGen33],
     category: "bluetooth-speaker",
@@ -2299,7 +2415,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "soundboks-batteryboks",
     name: "Soundboks Batteryboks",
-    description: "Ersatz-Akku passend für Soundboks Gen3 und Gen4\nLadezeit: 3,5 Stunden\nAkkulaufzeit: 40 Stunden bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke\nGewicht: 15,4 kg\nIm nächsten Schritt können Sie noch zusätzliche Akkus reservieren.",
+    description: "Ersatz-Akku passend für Soundboks Gen.3 und Gen.4. Mit 40 Stunden Akkulaufzeit bei halber Lautstärke bzw. 5 Stunden bei voller Lautstärke und einer Ladezeit von nur 3,5 Stunden.",
     image: imgSoundboksBatteryboks1,
     images: [imgSoundboksBatteryboks1],
     category: "zubehoer",
@@ -2353,7 +2469,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-action-508a",
     name: "D.A.S. Audio Action 508A",
-    description: "aktiv 720 W Lautsprecher\nBestückung: (1x 8\", 1,4\" Tweeter)\nAbstrahlwinkel: 90° x 60 °\nMaximum Peak SPL at 1 m: 122dB max. \nOptional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    description: "Aktiver 8\" Lautsprecher mit 720 W und 122 dB max. SPL. Ideal für kleinere Veranstaltungen, Sprachbeschallungen und als Monitor. Optional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
     image: imgDasAction508a1,
     images: [imgDasAction508a1, imgDasAction508a2],
     category: "lautsprecher",
@@ -2370,7 +2486,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-vantec-12a",
     name: "D.A.S. Audio Vantec 12A",
-    description: "aktiv 1500 W Lautsprecher (Bluetooth fähig)\nBestückung: (1x 12\", 3\" Tweeter)\nAbstrahlwinkel: 90° x 50°\nMaximum Peak SPL at 1 m: 135dB max. \nOptional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    description: "Aktiver 12\" Lautsprecher mit 1500 W und Bluetooth. Ideal für Veranstaltungen, Partys und Sprachbeschallungen. Optional sind Lautsprecherstative erhältlich, welche Sie im nächsten Schritt auswählen können.",
     image: imgDasVantec12a1,
     images: [imgDasVantec12a1, imgDasVantec12a2, imgDasVantec12a3],
     category: "lautsprecher",
@@ -2389,7 +2505,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "das-vantec-18a",
     name: "D.A.S. Audio Vantec 18A",
-    description: "aktiv 2000 W Subwoofer\nBestückung: (1x 18\")\nMaximum Peak SPL at 1 m: 134dB max. \nOptional sind Distanzstangen erhältlich, welche Sie im nächsten Schritt auswählen können.",
+    description: "Aktiver 18\" Subwoofer mit 2000 W und 134 dB max. SPL. Kraftvoller Bass für Veranstaltungen jeder Größe. Optional sind Distanzstangen erhältlich, welche Sie im nächsten Schritt auswählen können.",
     image: imgDasVantec18a1,
     images: [imgDasVantec18a1, imgDasVantec18a2, imgDasVantec18a3],
     category: "subwoofer",
@@ -2419,7 +2535,12 @@ export const beschallungProducts: Product[] = [
   {
     id: "midas-dl16-stagebox",
     name: "Midas DL16 Digital Stagebox",
-    description: "24 Kanal Digital Stagebox\nKanäle: 24\nEingänge: 16x XLR + 1x AES50\nAusgänge: 8x XLR + 1x AES50",
+    description: "16-Kanal digitale Stagebox",
+    specifications: {
+      "Kanäle": "24",
+      "Eingänge": "16x XLR + 1x AES50",
+      "Ausgänge": "8x XLR + 1x AES50",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "stagebox",
@@ -2455,7 +2576,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "pioneer-cdj2000-nxs",
     name: "Pioneer CDJ 2000 NXS",
-    description: "Abspielbare Medien: sämtliche Smartphones, USB-Speichermedien, SD-Karten, Audio CD, CD-R/RW, DVD\nAbspielbare Dateien: MP3, AAC, WAV, AIFF\nFrequenzgang: 4 Hz – 20 kHz\nRauschabstand: 115 dB oder größer\nKlirrfaktor: 0,0018% oder kleiner\n2x USB Anschluss\nAudioausgänge: 1x Stereo Out (Cinch), 1x Digital Out (Koaxial)\nweitere Anschlüsse: 1x LAN, 1x Control (3,5 mm Minibuchse)\nDer Multiplayer von Pioneer  bietet nun Kompatibilität mit Mobilgeräten über USB oder Wi-Fi. \nDer CDJ 2000 Nexus ähnelt sehr dem Vorgänger Modell CDJ 2000, bietet jedoch noch weitere Funktionen und eine noch höhere Qualität. \nNeben Beat-Sync für perfektes Beat Matching bietet der CDJ 2000 Nexus ein detaillierteres Display und eine Wave-Zoom Funktion, für noch genauere Informationen.",
+    description: "Professioneller DJ-Multiplayer mit Kompatibilität für Smartphones (USB/Wi-Fi), USB-Speichermedien, SD-Karten und CDs. Mit Beat-Sync, detailliertem Display und Wave-Zoom Funktion für präzises Beat Matching.",
     image: imgPioneerCdj2000Nxs1,
     images: [imgPioneerCdj2000Nxs1, imgPioneerCdj2000Nxs2, imgPioneerCdj2000Nxs3],
     category: "dj-equipment",
@@ -2475,7 +2596,7 @@ export const beschallungProducts: Product[] = [
   {
     id: "pioneer-djm900-nxs2",
     name: "Pioneer DJM 900 NXS2",
-    description: "Anzahl Kanäle: 4x Audiokanäle, 2x Mikrofonkanäle\n1x Send (6,3 mm Klinke), 1x Return (6,3 mm Klinke)\n2x USB-B-Anschluss\n1x Link Anschluss\nD/A-Wandler: 32-Bit\nA/D-Wandler: 24-Bit\nFrequenzgang: 20 Hz – 40 kHz\nKlirrfaktor: 0,005 % oder niedriger\nMaße: 333 x 414 × 108 mm\nGewicht: 8 kg\nDer neue DJM 900 NXS2 unterstützt den ersten 64-bit mixing Prozessor von Pioneer, der für einen wärmeren und detaillierten Sound sorgt. \nDer EQ und die Fader Kurven wurden verbessert und die FX Steuerung wurde erweitert, um noch mehr kreative Möglichkeiten zu bieten. \nDer vielseitige DJM 900 Nexus 2 hat unabhängige Send/Return Wege, 4 Phono Eingänge und 2 USB Ports, für noch mehr Flexibilität.",
+    description: "Der neue DJM 900 NXS2 unterstützt den ersten 64-bit Mixing Prozessor von Pioneer, der für einen wärmeren und detaillierten Sound sorgt. Der EQ und die Fader Kurven wurden verbessert und die FX Steuerung wurde erweitert, um noch mehr kreative Möglichkeiten zu bieten. Der vielseitige DJM 900 Nexus 2 hat unabhängige Send/Return Wege, 4 Phono Eingänge und 2 USB Ports, für noch mehr Flexibilität.",
     image: imgPioneerDjm900Nxs21,
     images: [imgPioneerDjm900Nxs21, imgPioneerDjm900Nxs22, imgPioneerDjm900Nxs23],
     category: "dj-equipment",
@@ -2497,7 +2618,10 @@ export const beschallungProducts: Product[] = [
   {
     id: "shure-qlxd4e-empfaenger",
     name: "Shure QLXD4E Empfänger",
-    description: "QLXD4E Funk Empfänger \nFrequenzbereich: 606-670MHz",
+    description: "Digitaler Funkempfänger",
+    specifications: {
+      "Frequenzbereich": "606-670MHz",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "mikrofon",
@@ -2506,7 +2630,10 @@ export const beschallungProducts: Product[] = [
   {
     id: "shure-qlxd2-beta58-handsender",
     name: "Shure QLXD2/Beta58 Handsender",
-    description: "Funk Handsender inkl. Beta 58 Mikrofonkopf (dynamisch, Superniere) \nFrequenzbereich: 606-670MHz",
+    description: "Handfunkmikrofon",
+    specifications: {
+      "Frequenzbereich": "606-670MHz",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "mikrofon",
@@ -2515,7 +2642,10 @@ export const beschallungProducts: Product[] = [
   {
     id: "shure-qlxd1-taschensender",
     name: "Shure QLXD1 Taschensender",
-    description: "QLXD1 Funk Taschensender\nFrequenzbereich: 606-670MHz",
+    description: "Taschensender für Headsets",
+    specifications: {
+      "Frequenzbereich": "606-670MHz",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "mikrofon",
@@ -2564,7 +2694,10 @@ export const kommunikationProducts: Product[] = [
   {
     id: "uhf-funkgeraet-lautsprecher",
     name: "UHF Funkgerät Lautsprecher",
-    description: "Lautsprecher für Typ: Retevis RT29\ninkl. Kopfhöreranschluss (3,5mm Klinke)",
+    description: "Externer Lautsprecher für Funkgerät",
+    specifications: {
+      "Lautsprecher für Typ": "Retevis RT29",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "zubehoer",
@@ -2790,7 +2923,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-3x3m",
     name: "Partyzelt 3x3m",
-    description: "Partyzelt mit 9m²\nGrundfläche: 3 m x 3 m\nFarbe: weiß\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 60€",
+    description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     image: imgPartyzelt3x3_1,
     images: [imgPartyzelt3x3_1, imgPartyzelt3x3_2],
     category: "zelt",
@@ -2807,7 +2940,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x4m",
     name: "Partyzelt 4x4m",
-    description: "Partyzelt mit 16 m²\nGrundfläche: 4 m x 4 m\nFarbe: weiß\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 60€",
+    description: "Partyzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     image: imgPartyzelt4x4_1,
     images: [imgPartyzelt4x4_1],
     category: "zelt",
@@ -2826,7 +2959,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x6m",
     name: "Partyzelt 4x6m",
-    description: "Partyzelt mit 24 m²\nGrundfläche (BxL): 4 m x 6 m\nFarbe: weiß\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 100€",
+    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x6_1,
     images: [imgPartyzelt4x6_1],
     category: "zelt",
@@ -2845,7 +2978,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x8m",
     name: "Partyzelt 4x8m",
-    description: "Partyzelt mit 32 m²\nGrundfläche (BxL): 4 m x 8 m\nFarbe: weiß\nGebaut werden 2x 4x4m Zelte mit Regenrinne zur trockenen Verbindung\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 100€",
+    description: "Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
     images: [imgPartyzelt4x10_1],
     category: "zelt",
@@ -2864,7 +2997,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x10m",
     name: "Partyzelt 4x10m",
-    description: "Partyzelt mit 40 m²\nGrundfläche (BxL): 4 m x 10 m\nFarbe: weiß\nGebaut wird ein 4x6m & 4x4m Zelt mit Regenrinne zur trockenen Verbindung\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 100€",
+    description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
     images: [imgPartyzelt4x10_1, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
     category: "zelt",
@@ -2884,7 +3017,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-4x14m",
     name: "Partyzelt 4x14m",
-    description: "Partyzelt mit 56 m²\nGrundfläche (BxL): 4 m x 14 m\nFarbe: weiß\nGebaut wird ein 4x6m & 2x 4x4m Zelt mit Regenrinne zur trockenen Verbindung\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 100€",
+    description: "Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x14_1,
     images: [imgPartyzelt4x14_1, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
     category: "zelt",
@@ -2921,7 +3054,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "eventzelt-6x12m",
     name: "Eventzelt 6x12m extra hoch",
-    description: "Partyzelt mit 72 m² mit extra hoher Durchgangshöhge (2,6m)\nGrundfläche (BxL): 6 m x 12 m\nDurchgangshöhe: 2,6m\nFeuerfest nach EN-13501-1\nFarbe: weiß\ninkl. Dachspanner gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 130€",
+    description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
     image: imgEventzelt6x12_1,
     images: [imgEventzelt6x12_1, imgEventzelt6x12_2],
     category: "zelt",
@@ -2941,7 +3074,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "eventzelt-6x8m",
     name: "Eventzelt 6x8m extra hoch",
-    description: "Eventzelt mit 48 m² und extra hohen Seiten (2,6m)\nGrundfläche (BxL): 6 m x 8 m\nDurchgangshöhe: 2,6m\nFarbe: weiß\ninkl. Seiten und Stirnwände\ninkl. Dachstangen gegen die Bildung von Wassersäcken\nUV-beständiges 500 g/m² PVC Plane, ähnlich einer LKW Plane- rasterfaserverstärkt\nPlatzberechnung: \nohne Bestuhlung/Stehtische: 0,6m²/Person\nReihenbestuhlung/Bierzeltgarnituren: 0,71m²/Person\nDas Zelt ist trocken zurückzugeben, anderfalls berechnen wir eine Trocknungspauschale in Höhe von 150€",
+    description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
     image: imgEventzelt6x8_1,
     images: [imgEventzelt6x8_1, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
@@ -3034,7 +3167,7 @@ export const moebelZelteProducts: Product[] = [
   {
     id: "stuhl-weiss",
     name: "Stuhl weiß",
-    description: "Farbe: weiß\nMaterial: 100% Polypropylen\nwetterfest\nmaximale Belastbarkeit: ca. 120 kg\nSitzhöhe: ca. 42,5 cm\nSitztiefe: ca. 38 cm\nHöhe Rückenlehne: ca. 37,5 cm",
+    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
     image: imgStuhlWeiss1,
     images: [imgStuhlWeiss1],
     category: "moebel",
@@ -3092,7 +3225,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "longdrinkglas-passionata-10er",
     name: "Longdrink Passionata 460ml, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Longdrinkglas\nGröße: 460ml\nHöhe: 11,6 cm\nDurchmesser: 9,0 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: longdrinkPassionata2,
     images: [longdrinkPassionata2, longdrinkPassionata1, longdrinkPassionata3],
     category: "glaeser",
@@ -3114,7 +3247,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "wasserglas-passionata-25er",
     name: "Wasserglas Passionata 460ml, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Wasserglas\nGröße: 460ml\nHöhe: 11,6 cm\nDurchmesser: 9,0 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Wasserglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: wasserglasPassionata1,
     images: [wasserglasPassionata1],
     category: "glaeser",
@@ -3138,7 +3271,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "weissweinglas-passionata-25er",
     name: "Weißwein Passionata, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Weißweinglas\nHöhe: 23,1 cm\nDurchmesser: 8,8 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
     image: weissweinPassionata1,
     images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
     category: "glaeser",
@@ -3160,7 +3293,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "rotweinglas-passionata-25er",
     name: "Rotwein Passionata, 25er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Rotweinglas\nHöhe: 23,8 cm\nDurchmesser: 9,4 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
     category: "glaeser",
@@ -3182,7 +3315,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "sektglas-passionata-36er",
     name: "Sektglas Passionata, 36er Set",
-    description: "Hersteller: Schott Zwiesel\nTyp: Sekt/Champagnerglas\nHöhe: 23,6 cm\nDurchmesser: 7,2 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurückgegeben werden. \nReinigungspauschale: 3,90€/Set\nGlasbruch: 5,00€/Glas",
+    description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
     image: champagnerPassionata1,
     images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
     category: "glaeser",
@@ -3204,7 +3337,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "burgunderglas-brunelli-10er",
     name: "Rotweinglas Brunelli, 9er Set",
-    description: "Hersteller: Leonardo\nTyp: Rotweinglas\nHöhe: 23,8 cm\nDurchmesser: 11,5 cm\nSpülmaschinenfest\nklar & stoßfest\nDie Gläser müssen gereinigt zurückgegeben werden. \nReinigungspauschal 3,90€/Set",
+    description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: rotweinBrunelli1,
     images: [rotweinBrunelli1, rotweinBrunelli2],
     category: "glaeser",
@@ -3225,7 +3358,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "rieslingglas-brunelli-12er",
     name: "Weißweinglas Brunelli, 25er Set",
-    description: "Hersteller: Leonardo\nTyp: Weißweinglas\nHöhe: 23,7 cm\nDurchmesser: 8,5 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 3,90€\nGlasbruch: 5,00€/Glas",
+    description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: weissweinglasBrunelli1,
     images: [weissweinglasBrunelli1],
     category: "glaeser",
@@ -3245,7 +3378,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "champagnerglas-brunelli-14er",
     name: "Champagnerglas Brunelli, 36er Set",
-    description: "Hersteller: Leonardo\nTyp: Sekt/Champagnerglas\nHöhe: 25,4 cm\nDurchmesser: 7,8 cm\nSpülmaschinenfest\nDie Gläser müssen gereinigt zurückgegeben werden. \nReinigungspauschale: 3,90€/Set\nGlasbruch: 5,00€/Glas",
+    description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: champagnerBrunelli1,
     images: [champagnerBrunelli1, champagnerBrunelli2],
     category: "glaeser",
@@ -3285,7 +3418,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "kaffeetasse-12er",
     name: "Kaffeetasse, 12er Set",
-    description: "Kaffeetasse weiß aus Porzelan inkl. Untertasse\nFassungsvermögen: ca. 200 ml\nDurchmesser Untertasse: 16 cm\nDie Tassen müssen gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€/Set",
+    description: "Kaffeetasse weiß aus Porzellan inkl. Untertasse. Fassungsvermögen ca. 200 ml. Die Tassen müssen gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €/Set.",
     image: kaffeetasse12er_1,
     images: [kaffeetasse12er_1, kaffeetasse12er_2],
     category: "tassen",
@@ -3303,7 +3436,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "teller-deluxe-27-10er",
     name: "Teller Deluxe 27, 10er Set",
-    description: "Speiseteller 27 cm\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: speisetDarwin27_1,
     images: [speisetDarwin27_1, speisetDarwin27_2, speisetDarwin27_3, speisetDarwin27_4, speisetDarwin27_5, speisetDarwin27_6],
     category: "teller",
@@ -3322,7 +3455,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "dessertteller-deluxe-21-10er",
     name: "Dessertteller Deluxe 21, 10er Set",
-    description: "Dessertteller - ØxH: 21,8x2,3 cm\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Dessertteller ØxH: 21,8x2,3 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: dessertellerDeluxe21_1,
     images: [dessertellerDeluxe21_1, dessertellerDeluxe21_2, dessertellerDeluxe21_3, dessertellerDeluxe21_4, dessertellerDeluxe21_5, dessertellerDeluxe21_6],
     category: "teller",
@@ -3390,7 +3523,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "schuessel-deluxe-18-10er",
     name: "Schüssel Deluxe 18, 10er Set",
-    description: "Suppenteller 18cm - Füllmenge 700ml\nHersteller: Sänger\nSerie: Darwin\nSpülmaschinenfest\nDas schlichte und dennoch elegante Design des Darwin Sets fügt sich nahtlos in jede Tischdekoration ein und passt zu verschiedenen Anlässen\nDas Geschirr muss gereinigt zurück gegeben werden. \nReinigungspauschale: 2,50€",
+    description: "Suppenteller 18 cm, Füllmenge 700 ml. Hersteller Sänger, Serie Darwin. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: schuessDeluxeDarwin18_1,
     images: [schuessDeluxeDarwin18_1, schuessDeluxeDarwin18_2, schuessDeluxeDarwin18_3, schuessDeluxeDarwin18_4, schuessDeluxeDarwin18_5, schuessDeluxeDarwin18_6],
     category: "schuessel",
@@ -4246,7 +4379,7 @@ export const leiternGeruesteProducts: Product[] = [
   {
     id: "krause-fahrbase-150",
     name: "Krause Fahrbase 150",
-    description: "2x Diagonale für 2,00 m Feldlänge\n2x Basisstrebe 2,00 m\n2x Stahl-Fahrtraverse\n4x Fußplatte\n4x Höhenvst. Fahrrollen ø 150 mm",
+    description: "Fahrwerk-Set für Krause Rollgerüste, Breite 150 cm.",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "geruestteil",
@@ -4291,7 +4424,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-16a-uv-5xschuko",
     name: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko",
-    description: "Produktmaße: 120 x 47 x 44 mm\nInput Stromanschluss: CEE 16 A männlich 5 pol Anschluss\nMax. Ladung: 3 x 16A\nOutput Stromanschluss: 5 Stck. Schutzkontakt\nIP-Klassifizierung: IP-44\nKabellänge: 1,5 m",
+    description: "Verteiler CEE 16A auf 5x Schuko",
     image: cee16aUv5xSchuko1,
     images: [cee16aUv5xSchuko1],
     category: "stromverteiler",
@@ -4308,7 +4441,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-16a-uv-3xschuko",
     name: "CEE 16A UV auf 3x 16A Schuko",
-    description: "Produktmaße: 165 x 190 x 85 mm\nmit 16 A CEE-Eingang und 3 Schutzkontakt-Ausgängen\nmax. Strom: 3 x 16 A\nSchutzart: IP44",
+    description: "mit 16 A CEE-Eingang und 3 Schutzkontakt-Ausgängen",
     image: cee16aUv3xSchuko1,
     images: [cee16aUv3xSchuko1],
     category: "stromverteiler",
@@ -4324,7 +4457,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-32a-uv-6xschuko",
     name: "CEE 32A UV auf 6x 16A Schuko",
-    description: "Produktmaße: 465 x 165 x 125 mm \nGewicht: 4,5 kg \nEingangsspannung: 380V, 32A \nEingangsanschluss: CEE, 32A, 5-polig \nStromausgabe: 6 x 230V, 32A \nAusgangsanschluss: Schuko \nSicherungen: 6 x C-16",
+    description: "Verteiler CEE 32A auf 6x Schuko",
     image: cee32aUv6xSchuko1,
     images: [cee32aUv6xSchuko1],
     category: "stromverteiler",
@@ -4342,7 +4475,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-63a-uv-2x32a-1x16a-6xschuko",
     name: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko",
-    description: "Produktmaße: 48,3 x 31 x 13,35 cm\nGewicht: 8,15 kg\nSpannungsversorgung: 380-400V AC, 50Hz\nStromanschluss:63A 5-pol Stecker\nStromausgang: 2 x CEE 32A 5-pol (W) Einbauversion abgesichert, 1 x CEE 16A 5-pol (W) Einbauversion abgesichert, 6x Schuko 16A\nAbsicherung: 1 x Fehlerstromschutzschalter (FI) Typ A 63A/0,03A 4-pol, 2 x Sicherungsautomat C 16A 3-pol, 2 x Sicherungsautomat C 32A 3-pol\nPhasenpräsenzanzeige: 3\nVollgummiverteiler",
+    description: "Vollgummiverteiler mit CEE 63A Eingang, 2x CEE 32A, 1x CEE 16A und 6x Schuko Ausgängen",
     image: cee63aUv2x32a1x16a6xSchuko1,
     images: [cee63aUv2x32a1x16a6xSchuko1],
     category: "stromverteiler",
@@ -4360,7 +4493,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-63a-uv-2x32a-2x16a",
     name: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A",
-    description: "Produktmaße: 48,3 x 31 x 13,35 cm\nGewicht: 8,15 kg\nSpannungsversorgung: 380-400V AC, 50Hz\nStromanschluss: Festes Stromanschlusskabel mit CEE\n63A 5-pol\nAufbau Kabel: 5 x 16 mm² H07RN-F\nKabellänge: 1 m\nStromausgang: 2 x CEE 32A 5-pol (W) Einbauversion abgesichert, 2 x CEE 16A 5-pol (W) Einbauversion abgesichert\nAbsicherung: 1 x Fehlerstromschutzschalter (FI) Typ B 63A/0,03A 4-pol, 2 x Sicherungsautomat C 16A 3-pol, 2 x Sicherungsautomat C 32A 3-pol\nPhasenpräsenzanzeige: 3\nGehäusebauform: (19\") 48,3 cm Rackeinbau 3 HE",
+    description: "19\"-Rackeinbau Stromverteiler (3 HE) mit CEE 63A Eingang, 2x CEE 32A und 2x CEE 16A Ausgängen, FI Typ B 63A",
     image: cee63aUv2x32a2x16a1,
     images: [cee63aUv2x32a2x16a1],
     category: "stromverteiler",
@@ -4379,7 +4512,11 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "anschlussschrank-55kva",
     name: "Anschlussschrank 55 kVA",
-    description: "Produktmaße: 1430 x 500 x 285 mm\nGewicht: 45 kg\nRobustes und stabiles Stahlblechgehäuse\nVerzinkt und orange pulverbeschichtet\nFeuerverzinktes Standgestell\nHochwertige Verdrahtung\nStückgeprüft\nAnschlußleistung 55 kVA mit einem Zählerfeld",
+    description: "Großer Anschlussschrank",
+    specifications: {
+      "Produktmaße": "1430 x 500 x 285 mm",
+      "Gewicht": "45 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "anschlussschrank",
@@ -4388,7 +4525,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "anschlussverteilerschrank-24kva",
     name: "Anschlussverteilerschrank 24 kVA",
-    description: "Anschlußleistung 24 kVA mit einem Zählerfeld\nProduktmaße: 1270 x 710 x 360 mm\nGewicht: 49 kg\nRobustes und stabiles Stahlblechgehäuse\nVerzinkt und orange pulverbeschichtet\nFeuerverzinktes Standgestell\nHochwertige Verdrahtung und Steckvorrichtungen\nStückgeprüf",
+    description: "Anschlußleistung 24 kVA mit einem Zählerfeld. Robustes, verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell.",
     image: anschlussverteilerschrank24kva1,
     images: [anschlussverteilerschrank24kva1, anschlussverteilerschrank24kva2, anschlussverteilerschrank24kva3],
     category: "anschlussschrank",
@@ -4404,7 +4541,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "anschlussverteilerschrank-44kva",
     name: "Anschlussverteilerschrank 44kVA",
-    description: "Anschlußleistung 44 kVA mit einem Zählerfeld\nProduktmaße: 1270 x 710 x 360 mm\nGewicht: 49 kg\nRobustes und stabiles Stahlblechgehäuse\nVerzinkt und orange pulverbeschichtet\nFeuerverzinktes Standgestell\nHochwertige Verdrahtung und Steckvorrichtungen\nStückgeprüft",
+    description: "Anschlußleistung 44 kVA mit einem Zählerfeld",
     image: anschlussverteilerschrank44kva1,
     images: [anschlussverteilerschrank44kva1, anschlussverteilerschrank44kva2, anschlussverteilerschrank44kva3],
     category: "anschlussschrank",
@@ -4421,7 +4558,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "verteilerschrank-44kva",
     name: "Verteilerschrank 44 kVA",
-    description: "Produktmaße: 935 x 710 x 360 mm\nGewicht: 40 kg\nRobustes und stabiles Stahlblechgehäuse\nVerzinkt und orange pulverbeschichtet\nFeuerverzinktes Standgestell\nHochwertige Verdrahtung und Steckvorrichtungen\nStückgeprüft\nAnschlußleistung 44 kVA",
+    description: "Anschlußleistung 44 kVA",
     image: verteilerschrank44kva1,
     images: [verteilerschrank44kva1, verteilerschrank44kva2, verteilerschrank44kva3],
     category: "anschlussschrank",
@@ -4439,7 +4576,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-3m",
     name: "CEE Kabel 16A rot 3 m",
-    description: "Marke / Hersteller: Mannekes / Titanex\nKabellänge: 3 m\nGewicht: 1,5 kg\n3 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G2,5 - 16A rot",
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
     image: ceeKabel16aRot3m1,
     images: [ceeKabel16aRot3m1],
     category: "cee-kabel",
@@ -4454,7 +4591,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-5m",
     name: "CEE Kabel 16A rot 5 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 5 m\nGewicht: 2,2 kg\n5m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G2,5 - 16A rot",
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
     image: ceeKabel16aRot5m1,
     images: [ceeKabel16aRot5m1],
     category: "cee-kabel",
@@ -4469,7 +4606,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-10m",
     name: "CEE Kabel 16A rot 10 m",
-    description: "10 m Verlängerungskabel mit Stecker und Kupplung\nMarke / Hersteller: Mennekes / Titanex \nKabel- Typ: H07RN-F5G2,5 - A16 rot \nKabellänge: 10 m \nGewicht: 3,9 kg",
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
     image: ceeKabel16aRot10m1,
     images: [ceeKabel16aRot10m1],
     category: "cee-kabel",
@@ -4484,7 +4621,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-16a-20m",
     name: "CEE Kabel 16A rot 20 m",
-    description: "20 m Verlängerungskabel mit Stecker und Kupplung\nMarke / Hersteller: Mennekes / Titanex\nKabel- Typ: H07RN-F5G2,5 - 16A rot\nKabellänge: 20m\nGewicht: 7,3 kg",
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot",
     image: ceeKabel16aRot20m1,
     images: [ceeKabel16aRot20m1],
     category: "cee-kabel",
@@ -4499,7 +4636,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-3m",
     name: "CEE Kabel 32A rot 3 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 3 m\nGewicht: 2,4 kg\n3 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G6 - 32A rot",
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
     image: ceeKabel32aRot3m1,
     images: [ceeKabel32aRot3m1],
     category: "cee-kabel",
@@ -4514,7 +4651,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-5m",
     name: "CEE Kabel 32A rot 5 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 5 m\nGewicht: 3,6 kg \n5 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G6 - 32A rot",
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
     image: ceeKabel32aRot5m1,
     images: [ceeKabel32aRot5m1],
     category: "cee-kabel",
@@ -4529,7 +4666,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-10m",
     name: "CEE Kabel 32A rot 10 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 10 m\nGewicht: 6,8 kg\n10 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G6 - 32A rot",
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
     image: ceeKabel32aRot10m1,
     images: [ceeKabel32aRot10m1],
     category: "cee-kabel",
@@ -4544,7 +4681,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-20m",
     name: "CEE Kabel 32A rot 20 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 20 m\nGewicht: 13,1 kg\n20 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G6 - 32A rot",
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
     image: ceeKabel32aRot20m1,
     images: [ceeKabel32aRot20m1],
     category: "cee-kabel",
@@ -4559,7 +4696,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-32a-50m",
     name: "CEE Kabel 32A rot 50 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 50m\nGewicht: 7,3 kg\n20 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G6 - 32A rot",
+    description: "50 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G6 – 32A rot",
     image: ceeKabel32aRot50m1,
     images: [ceeKabel32aRot50m1],
     category: "cee-kabel",
@@ -4574,7 +4711,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-3m",
     name: "CEE Kabel 63A rot 3 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 3 m\nGewicht: 4,5 kg\n3 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G16 - 63A rot",
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
     image: ceeKabel63aRot3m1,
     images: [ceeKabel63aRot3m1],
     category: "cee-kabel",
@@ -4589,7 +4726,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-5m",
     name: "CEE Kabel 63A rot 5 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 5 m\nGewicht: 7 kg\n5 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G16 - 63A rot",
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
     image: ceeKabel63a5m1,
     images: [ceeKabel63a5m1],
     category: "cee-kabel",
@@ -4604,7 +4741,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-10m",
     name: "CEE Kabel 63A rot 10 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 10 m\nGewicht: 14,5 kg\n10 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G16 - 63A rot",
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
     image: ceeKabel63aRot10m1,
     images: [ceeKabel63aRot10m1],
     category: "cee-kabel",
@@ -4619,7 +4756,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "cee-kabel-63a-20m",
     name: "CEE Kabel 63A rot 20 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nKabellänge: 20 m\nGewicht: 29 kg\n20 m Verlängerungskabel mit Stecker und Kupplung\nKabel- Typ: H07RN-F5G16 - 63A rot",
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G16 – 63A rot",
     image: ceeKabel63aRot20m1,
     images: [ceeKabel63aRot20m1],
     category: "cee-kabel",
@@ -4635,7 +4772,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-3m",
     name: "Schukokabel 3 m",
-    description: "Marke / Hersteller: Mennekes / Titanex \nProduktmaße: 3 m \nGewicht: ca. 1,2 kg\n3m Verlängerungskabel mit Stecker und Kupplung\nTyp: H07RN-F3G2,5 - 16A",
+    description: "3 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
     image: schukokabel3m1,
     images: [schukokabel3m1],
     category: "schuko-kabel",
@@ -4650,7 +4787,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-5m",
     name: "Schukokabel 5 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nProduktmaße: 5 m\nGewicht: ca. 1,7 kg\n5m Verlängerungskabel mit Stecker und Kupplung\nTyp: H07RN-F3G2,5 - 16A",
+    description: "5 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
     image: schukokabel5m1,
     images: [schukokabel5m1],
     category: "schuko-kabel",
@@ -4665,7 +4802,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-10m",
     name: "Schukokabel 10 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nProduktmaße: 10 m\nGewicht: ca. 2,9 kg\n10 m Verlängerungskabel mit Stecker und Kupplung\nTyp: H07RN-F3G2,5 - 16A",
+    description: "10 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
     image: schukokabel10m1,
     images: [schukokabel10m1],
     category: "schuko-kabel",
@@ -4680,7 +4817,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "schukokabel-20m",
     name: "Schukokabel 20 m",
-    description: "Marke / Hersteller: Mennekes / Titanex\nProduktmaße: 20 m\nGewicht: ca. 5,2 kg\n20 m Verlängerungskabel mit Stecker und Kupplung\nTyp: H07RN-F3G2,5 - 16A",
+    description: "20 m Verlängerungskabel mit Stecker und Kupplung, Typ: H07RN-F3G2,5 – 16A",
     image: schukokabel20m1,
     images: [schukokabel20m1],
     category: "schuko-kabel",
@@ -4788,7 +4925,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-3m-cat7",
     name: "Major EtherCon Kabel 3 m, Cat 7",
-    description: "Marke / Hersteller: Major \nKabellänge: 3 m \n3 m Cat 7 Netzwerkkabel",
+    description: "3 m Cat6a Netzwerkkabel",
     image: etherconCat7_3m1,
     images: [etherconCat7_3m1],
     category: "netzwerkkabel",
@@ -4802,7 +4939,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-20m-cat5e",
     name: "Major EtherCon Kabel Cat-5e 20m",
-    description: "Marke / Hersteller: Major \nKabellänge: 20 m \n20 m Cat-5e Netzwerkkabel",
+    description: "20 m Cat-5e Netzwerkkabel",
     image: etherconCat5e20m1,
     images: [etherconCat5e20m1],
     category: "netzwerkkabel",
@@ -4816,7 +4953,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "ethercon-kabel-25m-cat5e",
     name: "Major EtherCon Kabel Cat-5e 25m",
-    description: "Marke / Hersteller: Major\nKabellänge: 25 m\n25 m Cat-5e Netzwerkkabel",
+    description: "25 m Cat-5e Netzwerkkabel",
     image: etherconCat5e25m1,
     images: [etherconCat5e25m1],
     category: "netzwerkkabel",
@@ -4844,7 +4981,11 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-30m-cat7",
     name: "Major Netzwerkkabel Cat-7 30m",
-    description: "Marke / Hersteller: Major \nKabellänge: 30 m \n30 m Cat-7 Netzwerkkabel",
+    description: "30 m Cat-7 Netzwerkkabel",
+    specifications: {
+      "Marke / Hersteller": "Major",
+      "Kabellänge": "30 m",
+    },
     image: netzwerkkabelCat7_30m1,
     images: [netzwerkkabelCat7_30m1],
     category: "netzwerkkabel",
@@ -4853,7 +4994,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-2m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 2m",
-    description: "Marke / Hersteller: Major\nProduktmaße: 2 m\n2 m Cat-5e Netzwerkkabel",
+    description: "2 m Cat-5e Netzwerkkabel",
     image: netzwerkkabelCat5e2m1,
     images: [netzwerkkabelCat5e2m1],
     category: "netzwerkkabel",
@@ -4867,7 +5008,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-5m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 5m",
-    description: "Marke / Hersteller: Major\nProduktmaße: 5 m\n5 m Cat-5e Netzwerkkabel",
+    description: "5 m Cat-5e Netzwerkkabel",
     image: netzwerkkabelCat5e5m1,
     images: [netzwerkkabelCat5e5m1],
     category: "netzwerkkabel",
@@ -4880,7 +5021,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "netzwerkkabel-20m-cat5e",
     name: "Major Netzwerkkabel Cat-5e 20 m",
-    description: "Marke / Hersteller: Major\nProduktmaße: 20 m\n20 m Cat-5e Netzwerkkabel",
+    description: "20 m Cat-5e Netzwerkkabel",
     image: netzwerkkabelCat5e20m1,
     images: [netzwerkkabelCat5e20m1],
     category: "netzwerkkabel",
@@ -4968,7 +5109,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "powercon-true1-linkkabel-5m",
     name: "PowerCon TRUE1 Top Linkkabel 5 m",
-    description: "Marke / Hersteller: Neutrik / Titanex \nTyp: 3 m Linkkable H07RN-F3G2,5 - 16A\nKabellänge: 5 m \nGewicht: ca. 1,3 kg",
+    description: "Neutrik / Titanex – 5 m Linkkabel H07RN-F3G2,5 – 16A, ca. 1,3 kg",
     image: powerconTrue1Linkkabel5m1,
     images: [powerconTrue1Linkkabel5m1],
     specifications: {
@@ -5028,7 +5169,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "defender-micro-2",
     name: "Defender Micro 2 Kabelbrücke",
-    description: "Typ: 535-5, Kabelkanäle: 2 \nLänge 100 cm\nBreite: 28 cm\nHöhe: 4,5 cm\nAchslast (max): 2 t\nBrandschutzklasse: B2",
+    description: "Kabelbrücke mit 2 Kabelkanälen, Typ 535-5",
     image: defenderMicro2_1,
     images: [defenderMicro2_1, defenderMicro2_2],
     category: "kabelbruecke",
@@ -5046,7 +5187,7 @@ export const kabelStromverteilerProducts: Product[] = [
   {
     id: "defender-midi-5",
     name: "Defender Midi 5 Kabelbrücke",
-    description: "Typ: 535-5, Kabelkanäle: 5 \nLänge: 80 cm\nBreite: 90 cm\nHöhe: 0,5 cm\nAchslast (max): 5 t\nBrandschutzklasse: B2",
+    description: "Kabelbrücke Typ 535-5 mit 5 Kabelkanälen, max. Achslast 5 t, Brandschutzklasse B2",
     image: defenderMidi5_1,
     images: [defenderMidi5_1, defenderMidi5_2],
     category: "kabelbruecke",
@@ -5158,7 +5299,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-multicube-black",
     name: "Milos M290 Multicube black",
-    description: "Boxcorner QCHB1 geschweißt schwarz\nHalb- Konusverbinder können Sie im nächsten Schritt optional dazu buchen.",
+    description: "Traversenverbinder schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traversenverbinder",
@@ -5167,7 +5308,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-qtu-500-black",
     name: "Milos M290 P4 QTU 500 black",
-    description: "0,5 m Traverse (4 Punkt) schwarz\ninkl. 4x Konusverbinder & 4x Konusbolzen mit M8 Gewinde",
+    description: "4-Punkt Traverse 0,5m schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traverse",
@@ -5176,7 +5317,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-qtu-1000-black",
     name: "Milos M290 P4 QTU 1000 black",
-    description: "1 m Traverse (4 Punkt) schwarz\ninkl. 4x Konusverbinder & 4x Konusbolzen mit M8 Gewinde",
+    description: "4-Punkt Traverse 1m schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traverse",
@@ -5185,7 +5326,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-qtu-1500-black",
     name: "Milos M290 P4 QTU 1500 black",
-    description: "1,5 m Traverse (4 Punkt) schwarz\ninkl. 4x Konusverbinder & 4x Konusbolzen mit M8 Gewinde",
+    description: "4-Punkt Traverse 1,5m schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traverse",
@@ -5194,7 +5335,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-qtu-2000-black",
     name: "Milos M290 P4 QTU 2000 black",
-    description: "2 m Traverse (4 Punkt) schwarz\ninkl. 4x Konusverbinder & 4x Konusbolzen mit M8 Gewinde",
+    description: "4-Punkt Traverse 2m schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traverse",
@@ -5203,7 +5344,7 @@ export const traversenRiggingProducts: Product[] = [
   {
     id: "milos-m290-ubpqc-base-black",
     name: "Milos M290 P4 UBPQC Base black",
-    description: "4 Punkt Traversenbodenplatte schwarz\nAluminium (30 cm x 30 cm x 0,05 cm)",
+    description: "Traversenbodenplatte schwarz",
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "traversen-zubehoer",
@@ -5235,7 +5376,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-20cm",
     name: "MS01 Tieflöffel 20cm/14l",
-    description: "Aufnahme: MS01\nGewichtsklasse: 0,5 - 2 t\nVolumen: 14 l\nArbeitsbreite: 300 mm \nZahnsystem: geschraubt\nAnzahl Zähne: 2\nGewicht: 22 kg",
+    description: "Tieflöffel 20cm für MS01 Schnellwechsler",
+    specifications: {
+      "Aufnahme": "MS01",
+      "Gewichtsklasse": "0,5 - 2 t",
+      "Volumen": "14 l",
+      "Arbeitsbreite": "300 mm",
+      "Zahnsystem": "geschraubt",
+      "Anzahl Zähne": "2",
+      "Gewicht": "22 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
@@ -5245,7 +5395,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-30cm",
     name: "MS01 Tieflöffel 30cm/24l",
-    description: "Aufnahme: MS01\nGewichtsklasse: 1 - 2 t\nVolumen: 24 l\nArbeitsbreite: 300 mm \nZahnsystem: ohne Zähne\nAnzahl Zähne: 0\nGewicht: 36 kg",
+    description: "Tieflöffel 30cm für MS01 Schnellwechsler – Gewichtsklasse 1–2 t",
     detailedDescription: "Der MS01 Tieflöffel 30cm/24l eignet sich ideal für Grab- und Aushubarbeiten mit Minibaggern der 1- bis 2-Tonnen-Klasse. Mit 300 mm Arbeitsbreite und 24 Liter Volumen ist er vielseitig einsetzbar – von Fundamentaushub bis Leitungsgräben. Der zahnlose Löffel schont empfindliche Untergründe und ermöglicht saubere Grabensohlen.",
     image: imgTiefloeffelMs01_30cm_1,
     images: [imgTiefloeffelMs01_30cm_1],
@@ -5265,7 +5415,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-30cm-symlock",
     name: "MS01 Tieflöffel 30cm/24l Symlock",
-    description: "Aufnahme: MS01 (Symlock)\nGewichtsklasse: 1 - 2 t\nVolumen: 24 l\nArbeitsbreite: 300 mm \nZahnsystem: geschraubt\nAnzahl Zähne: 3\nGewicht: 36 kg",
+    description: "Tieflöffel 30cm für MS01 Symlock – Gewichtsklasse 1–2 t, 3 Zähne",
     detailedDescription: "Der MS01 Tieflöffel 30cm/24l Symlock ist ein kompakter Grabenlöffel mit 3 geschraubten Zähnen für anspruchsvolle Grab- und Aushubarbeiten in harten Böden. Mit 300 mm Arbeitsbreite und 24 Liter Volumen eignet er sich ideal für schmale Gräben und Fundamentarbeiten. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
     image: imgTiefloeffelMs01_30cmSymlock_1,
     images: [imgTiefloeffelMs01_30cmSymlock_1],
@@ -5284,7 +5434,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-tiefloeffel-50cm-symlock",
     name: "MS01 Tieflöffel 50cm/45l Symlock",
-    description: "Aufnahme: MS01 (Symlock)\nGewichtsklasse: 1 - 2 t\nVolumen: 45 l\nArbeitsbreite: 500 mm \nZahnsystem: geschraubt\nAnzahl Zähne: 4\nGewicht: 48 kg",
+    description: "Tieflöffel 50cm für MS01 Symlock – Gewichtsklasse 1–2 t, 4 Zähne",
     detailedDescription: "Der MS01 Tieflöffel 50cm/45l Symlock ist ein robuster Grabenlöffel mit 4 geschraubten Zähnen für anspruchsvolle Grab- und Aushubarbeiten. Mit 500 mm Arbeitsbreite und 45 Liter Volumen eignet er sich hervorragend für Fundamentarbeiten, Kanalisation und allgemeine Erdarbeiten. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
     image: imgTiefloeffelMs01_50cm_1,
     images: [imgTiefloeffelMs01_50cm_1],
@@ -5304,7 +5454,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms03-tiefloeffel-30cm-symlock",
     name: "MS03 Tieflöffel 30cm/41l Symlock",
-    description: "Aufnahme: MS03 (Symlock)\nGewichtsklasse: 1 - 2 t\nVolumen: 41 l\nArbeitsbreite: 300 mm \nZahnsystem: geschraubt\nAnzahl Zähne: 3\nGewicht: 36 kg",
+    description: "Tieflöffel 30cm für MS03 Symlock",
+    specifications: {
+      "Aufnahme": "MS03 (Symlock)",
+      "Gewichtsklasse": "1 - 2 t",
+      "Volumen": "41 l",
+      "Arbeitsbreite": "300 mm",
+      "Zahnsystem": "geschraubt",
+      "Anzahl Zähne": "3",
+      "Gewicht": "36 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
@@ -5313,7 +5472,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms03-tiefloeffel-50cm-symlock",
     name: "MS03 Tieflöffel 50cm/107l Symlock",
-    description: "Aufnahme: MS03\nGewichtsklasse: 2,5 - 4 t\nVolumen: 107 l\nArbeitsbreite: 500 mm \nZahnsystem: geschraubt\nAnzahl Zähne: 4\nGewicht: 79 kg",
+    description: "Tieflöffel 50cm für MS03 Symlock – 4 Zähne, 107 l Volumen",
     detailedDescription: "Der MS03 Tieflöffel 50cm/107l Symlock ist ein leistungsstarker Grabenlöffel mit 4 geschraubten Zähnen für anspruchsvolle Aushubarbeiten. Mit 500 mm Arbeitsbreite und 107 Liter Volumen eignet er sich für Fundamentarbeiten, Kanalisation und allgemeine Erdarbeiten mit Baggern der 2,5- bis 4-Tonnen-Klasse.",
     image: imgTiefloeffelMs03_50cm_1,
     images: [imgTiefloeffelMs03_50cm_1],
@@ -5331,7 +5490,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "cw05-tiefloeffel-40cm",
     name: "CW05 Tieflöffel 40cm/30l",
-    description: "Aufnahme: CW05\nGewichtsklasse: 2 - 3 t\nVolumen: 30 l\nArbeitsbreite: 500 mm \nZahnsystem: ohne Zähne\nAnzahl Zähne: 0\nGewicht: 36 kg",
+    description: "Tieflöffel 40cm für CW05 Schnellwechsler",
+    specifications: {
+      "Aufnahme": "CW05",
+      "Gewichtsklasse": "2 - 3 t",
+      "Volumen": "30 l",
+      "Arbeitsbreite": "500 mm",
+      "Zahnsystem": "ohne Zähne",
+      "Anzahl Zähne": "0",
+      "Gewicht": "36 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
@@ -5340,7 +5508,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "cw05-tiefloeffel-50cm",
     name: "CW05 Tieflöffel 50cm/45l",
-    description: "Aufnahme: CW05\nGewichtsklasse: 1 - 2 t\nVolumen: 45 l\nArbeitsbreite: 500 mm \nZahnsystem: ohne Zähne\nAnzahl Zähne: 0\nGewicht: 48 kg",
+    description: "Tieflöffel 50cm für CW05 Schnellwechsler",
+    specifications: {
+      "Aufnahme": "CW05",
+      "Gewichtsklasse": "1 - 2 t",
+      "Volumen": "45 l",
+      "Arbeitsbreite": "500 mm",
+      "Zahnsystem": "ohne Zähne",
+      "Anzahl Zähne": "0",
+      "Gewicht": "48 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "tiefloeffel",
@@ -5350,7 +5527,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-kabelloeffel-15cm-symlock",
     name: "MS01 Kabellöffel 15cm Symlock",
-    description: "Aufnahme: MS01\nGewichtsklasse: 1 - 2 t\nArbeitsbreite: 150 mm \nAnzahl Zähne: 0\nGewicht: 36 kg",
+    description: "Kabellöffel 15cm für MS01 Symlock – Gewichtsklasse 1–2 t",
     detailedDescription: "Der MS01 Kabellöffel 15cm Symlock ist ein schmaler Löffel ohne Zähne, speziell für das präzise Freilegen und Verlegen von Kabeln und Leitungen in engen Gräben. Die 150 mm Arbeitsbreite ermöglicht akkurates Arbeiten bei minimalem Aushub. Dank des Symlock-Schnellwechselsystems ist der Anbau an MS01-kompatible Minibagger der 1- bis 2-Tonnen-Klasse in wenigen Sekunden erledigt.",
     image: imgKabelloeffelMs01_15cm_1,
     images: [imgKabelloeffelMs01_15cm_1],
@@ -5368,7 +5545,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "cw05-kabelloeffel-25cm",
     name: "CW05 Kabellöffel 25cm/18l",
-    description: "Aufnahme: CW05\nGewichtsklasse: 2 - 3 t\nVolumen: 18 l\nArbeitsbreite: 300 mm \nZahnsystem: keine Zäne\nAnzahl Zähne: 0\nGewicht: 27 kg",
+    description: "Kabellöffel 25cm für CW05 Schnellwechsler",
+    specifications: {
+      "Aufnahme": "CW05",
+      "Gewichtsklasse": "2 - 3 t",
+      "Volumen": "18 l",
+      "Arbeitsbreite": "300 mm",
+      "Zahnsystem": "keine Zäne",
+      "Anzahl Zähne": "0",
+      "Gewicht": "27 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "kabelloeffel",
@@ -5377,7 +5563,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms03-kabelloeffel-20cm-symlock",
     name: "MS03 Kabellöffel 20cm Symlock",
-    description: "Aufnahme: MS03\nGewichtsklasse: 2,5 - 4 t\nArbeitsbreite: 200 mm \nAnzahl Zähne: 0\nGewicht: 46 kg",
+    description: "Kabellöffel 20cm für MS03 Symlock – Gewichtsklasse 2,5–4 t",
     detailedDescription: "Der MS03 Kabellöffel 20cm Symlock ist ein schmaler Löffel ohne Zähne, speziell für das präzise Freilegen und Verlegen von Kabeln und Leitungen in engen Gräben. Die 200 mm Arbeitsbreite ermöglicht akkurates Arbeiten bei minimalem Aushub. Dank des Symlock-Schnellwechselsystems ist der Anbau an MS03-kompatible Bagger der 2,5- bis 4-Tonnen-Klasse in wenigen Sekunden erledigt.",
     image: imgKabelloeffelMs03_20cm_1,
     images: [imgKabelloeffelMs03_20cm_1],
@@ -5394,7 +5580,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-grabenraeumloeffel-80cm",
     name: "MS01 Grabenräumlöffel starr 80cm/45l",
-    description: "Aufnahme: MS01\nGewichtsklasse: 1 - 2 t\nVolumen: 45 l\nArbeitsbreite: 800 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 46 kg",
+    description: "Starrer Grabenräumlöffel 80cm für MS01 – Gewichtsklasse 1–2 t",
     detailedDescription: "Der MS01 Grabenräumlöffel starr 80cm/45l ist ideal zum sauberen Profilieren und Räumen von Gräben. Mit 800 mm Arbeitsbreite und 45 Liter Volumen eignet er sich für Planierarbeiten, Böschungsprofilierung und das Anlegen von Gräben. Die starre Bauweise sorgt für maximale Stabilität bei der Arbeit.",
     image: imgGrabenraeumloeffelMs01_80cm_1,
     images: [imgGrabenraeumloeffelMs01_80cm_1],
@@ -5412,7 +5598,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-grabenraeumloeffel-80cm-65l",
     name: "MS01 Grabenräumlöffel starr 80cm/65l",
-    description: "Aufnahme: MS01\nGewichtsklasse: 1 - 2 t\nVolumen: 65 l\nArbeitsbreite: 800 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 59 kg",
+    description: "Starrer Grabenräumlöffel 80cm/65l für MS01 – größeres Volumen",
     detailedDescription: "Der MS01 Grabenräumlöffel starr 80cm/65l bietet mit 65 Liter Volumen eine größere Kapazität als das 45l-Modell bei gleicher Arbeitsbreite von 800 mm. Ideal für Planierarbeiten, Böschungsprofilierung und das effiziente Räumen breiterer Gräben mit MS01-kompatiblen Minibaggern.",
     image: imgGrabenraeumloeffelMs01_80cm65l_1,
     images: [imgGrabenraeumloeffelMs01_80cm65l_1],
@@ -5428,7 +5614,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-grabenraeumloeffel-hydr-80cm",
     name: "MS01 Grabenräumlöffel hydr. 80cm/52l",
-    description: "Aufnahme: MS01\nGewichtsklasse: 1 - 2 t\nVolumen: 52 l\nArbeitsbreite: 800 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 74 kg",
+    description: "Hydraulischer Grabenräumlöffel 80cm für MS01 – schwenkbar",
     detailedDescription: "Der MS01 Grabenräumlöffel hydr. 80cm/52l ist ein hydraulisch schwenkbarer Löffel für präzise Grabenräum- und Planierarbeiten. Dank der hydraulischen Schwenkfunktion kann der Löffel auch an Böschungen und in unebenem Gelände exakt ausgerichtet werden – ideal für saubere Grabensohlen und Profilierungsarbeiten.",
     image: imgGrabenraeumloeffelMs01Hydr_80cm_1,
     images: [imgGrabenraeumloeffelMs01Hydr_80cm_1],
@@ -5444,7 +5630,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-grabenraeumloeffel-100cm-symlock",
     name: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
-    description: "Aufnahme: MS01 (Symlock)\nGewichtsklasse: 1 - 2 t\nVolumen: 80 l\nArbeitsbreite: 1000 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 104 kg",
+    description: "Hydraulischer Grabenräumlöffel 100cm für MS01 Symlock – schwenkbar",
     detailedDescription: "Der MS01 Grabenräumlöffel hydr. 100cm/80l Symlock ist ein hydraulisch schwenkbarer Löffel mit 1000 mm Arbeitsbreite und 80 Liter Volumen. Dank der hydraulischen Schwenkfunktion lassen sich Gräben und Böschungen auch in unebenem Gelände exakt profilieren. Das Symlock-Schnellwechselsystem ermöglicht den werkzeuglosen Anbau an MS01-kompatible Minibagger.",
     image: imgGrabenraeumloeffelMs01Hydr_100cm_1,
     images: [imgGrabenraeumloeffelMs01Hydr_100cm_1],
@@ -5461,7 +5647,16 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms03-grabenraeumloeffel-120cm-symlock",
     name: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
-    description: "Aufnahme: MS03 (Symlock)\nGewichtsklasse: 2,5 - 4 t\nVolumen: 120 l\nArbeitsbreite: 1200 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 114 kg",
+    description: "Hydraulischer Grabenräumlöffel 120cm für MS03 Symlock",
+    specifications: {
+      "Aufnahme": "MS03 (Symlock)",
+      "Gewichtsklasse": "2,5 - 4 t",
+      "Volumen": "120 l",
+      "Arbeitsbreite": "1200 mm",
+      "Zahnsystem": "keine Zähne",
+      "Anzahl Zähne": "0",
+      "Gewicht": "114 kg",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     category: "grabenraeumloeffel",
@@ -5470,7 +5665,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms03-grabenraeumloeffel-140cm-symlock",
     name: "MS03 Grabenräumlöffel starr 140cm/170l Symlock",
-    description: "Aufnahme: MS03 (Symlock)\nGewichtsklasse: 2,5 - 4 t\nVolumen: 170 l\nArbeitsbreite: 1400 mm \nZahnsystem: keine Zähne\nAnzahl Zähne: 0\nGewicht: 129 kg",
+    description: "Starrer Grabenräumlöffel 140cm für MS03 Symlock – 170 l Volumen",
     detailedDescription: "Der MS03 Grabenräumlöffel starr 140cm/170l Symlock ist ein großer Planierungslöffel für Minibagger der 2,5- bis 3,5-Tonnen-Klasse. Mit 1400 mm Arbeitsbreite und 170 Liter Volumen eignet er sich hervorragend für großflächige Planierarbeiten, Böschungsprofilierung und das Räumen breiter Gräben.",
     image: imgGrabenraeumloeffelMs03_140cm_1,
     images: [imgGrabenraeumloeffelMs03_140cm_1],
@@ -5506,7 +5701,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-hydraulikhammer-shb40",
     name: "MS01 Hydraulikhammer SHB40",
-    description: "Betriebsdruck: 9 - 12 MPa\nGewicht: 105 kg\nGewichtsklasse: 1 - 2,5 t\nHöhe: 109 cm\nMeißel Durchmesser: 40 mm\nSchlaganzahl: 800 - 1400 bpm\nSchlagkraft: 280 J\nÖldurchfluss: 15 - 25 l/min",
+    description: "Hydraulikhammer für MS01 Schnellwechsler – Gewichtsklasse 1–2,5 t",
     detailedDescription: "Der SHB40 Hydraulikhammer ist das ideale Anbaugerät für Minibagger der 1- bis 2,5-Tonnen-Klasse mit MS01 Schnellwechsler. Mit einer Schlagkraft von 280 Joule und 800–1.400 Schlägen pro Minute eignet er sich hervorragend zum Aufbrechen von Beton, Asphalt und Gestein. Das kompakte Eigengewicht von nur 105 kg ermöglicht den Einsatz auch auf kleineren Maschinen ohne Stabilitätsverlust.",
     image: imgHydraulikhammerShb40_1,
     images: [imgHydraulikhammerShb40_1, imgHydraulikhammerShb40_2, imgHydraulikhammerShb40_3],
@@ -5528,7 +5723,17 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-ms03-hydraulikhammer-shb45",
     name: "MS01/MS03 Hydraulikhammer SHB45",
-    description: "Betriebsdruck: 9 - 12 MPa\nGewicht: 126 kg\nGewichtsklasse: 1 - 3,5 t\nHöhe: 109 cm\nMeißel Durchmesser: 45 mm\nSchlaganzahl: 800 - 1400 bpm\nSchlagkraft: 350 J\nÖldurchfluss: 20 - 30 l/min\nBitte geben Sie bei der Buchung an, welche Aufnahmengröße Sie benötigen.",
+    description: "Hydraulikhammer für MS01/MS03 Schnellwechsler",
+    specifications: {
+      "Betriebsdruck": "9 - 12 MPa",
+      "Gewicht": "126 kg",
+      "Gewichtsklasse": "1 - 3,5 t",
+      "Höhe": "109 cm",
+      "Meißel Durchmesser": "45 mm",
+      "Schlaganzahl": "800 - 1400 bpm",
+      "Schlagkraft": "350 J",
+      "Öldurchfluss": "20 - 30 l/min",
+    },
     image: imgHydraulikhammer1,
     images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
@@ -5539,7 +5744,7 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "ms01-ms03-sortiergreifer-ssg150",
     name: "MS01/MS03 Sortiergreifer SSG 150",
-    description: "Arbeitsbreite:400mm\nBauhöhe (geöffnet):680mm\nBetriebsdruck:25MPa\nGewicht:150 kg\nMax. Schließkraft: 6,75kN\nRotation: 360 Grad / endlos\nRotation Betriebsdruck: 20MPa\nRotation Öldurchfluss: 20l/min\nÖffnungsweite: 920mm\nÖldurchfluss: 35l/min\nAusführung: Mit Schneide",
+    description: "Kompakter Sortiergreifer mit 6,75 kN Schließkraft – Gewichtsklasse 2–3 t",
     detailedDescription: "Der SSG150 erzielt eine, in der Gewichtsklasse von 2–3 Tonnen, überdurchschnittliche Schließkraft von 6,75 kN – bei einem Eigengewicht von nur 150 kg. Die Schalenbreite beträgt 40 Zentimeter, die Öffnungsweite 92 Zentimeter.\n\nBei Qualität und Zuverlässigkeit spielt der SSG150 in derselben Liga wie seine großen Brüder. SEIFERT hat bei der Entwicklung den Fokus auf maximale Belastbarkeit gelegt.\n\nFür die Greifer der SEIFERT SSG-Baureihe sind, neben den standardmäßig im Lieferumfang enthaltenen Greiferzähnen, optionale Anbauschneiden erhältlich – als Wechselschneiden mit 2 Verschleißkanten oder als gezahnte Schneiden für maximalen Halt.\n\nAlle SEIFERT SSG-Sortiergreifer verfügen serienmäßig über ein Lasthalteventil, um gegriffene Objekte sicher zu halten und vor dem Herausrutschen zu schützen.",
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
@@ -5574,7 +5779,12 @@ export const erdbewegungZusatzProducts: Product[] = [
   {
     id: "dieseltankstelle-400l",
     name: "Sirocco Mobile Dieseltankstelle 400L/50L",
-    description: "Dieseltank 400L\nAdBluetank: 50L\njeweils eigene 12V Pumpe\nMaße: 120 x 80 x 78,5 cm\nLeergewicht: 45kg (nur Tank)\nin Freistellung nach ADR, gemäß Absatz 1.1.3.1 C\nDer Tank wird leer übergeben!",
+    description: "Mobile Tankstelle mit AdBlue-Tank",
+    specifications: {
+      "AdBluetank": "50L",
+      "Maße": "120 x 80 x 78,5 cm",
+      "Leergewicht": "45kg (nur Tank)",
+    },
     image: imgDieseltankstelle1,
     images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
@@ -5619,7 +5829,16 @@ export const anhaengerZusatzProducts: Product[] = [
   {
     id: "aggregatanhaenger-1300kg",
     name: "1300 kg Aggregatanhänger",
-    description: "Marke / Hersteller: Temared\nLadeflächenmaß (LxBxH): ca. 260 x 120 cm\nGesamtgewicht: 1300 kg\nNutzlast: ca. 1050 kg\nBenötigter Führerschein: Klasse 3, BE oder B wenn der PKW weniger als 2150 kg z.GG hat\nAnschluss Typ: 13 Pol (Adapter erhältlich)\nVoraussetzung 100 Km/h: Zugfahrzeug muss ein Leergewicht von 1228 Kg eingetragen haben",
+    description: "Anhänger für Transport von Aggregaten",
+    specifications: {
+      "Marke / Hersteller": "Temared",
+      "Ladeflächenmaß (LxBxH)": "ca. 260 x 120 cm",
+      "Gesamtgewicht": "1300 kg",
+      "Nutzlast": "ca. 1050 kg",
+      "Benötigter Führerschein": "Klasse 3, BE oder B wenn der PKW weniger als 2150 kg z.GG hat",
+      "Anschluss Typ": "13 Pol (Adapter erhältlich)",
+      "Voraussetzung 100 Km/h": "Zugfahrzeug muss ein Leergewicht von 1228 Kg eingetragen haben",
+    },
     image: "/placeholder.svg",
     images: ["/placeholder.svg"],
     weightKg: 1300,
