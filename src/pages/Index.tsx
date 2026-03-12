@@ -40,6 +40,7 @@ export default function Index() {
   const { t } = useTranslation();
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [seoLocationTarget, setSeoLocationTarget] = useState<string | undefined>(undefined);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
