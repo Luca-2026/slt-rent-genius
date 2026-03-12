@@ -257,8 +257,8 @@ export const localAreas: LocalArea[] = [
     distance: 0,
     population: 171000,
     postalCodes: ["45468", "45470", "45472", "45473", "45475", "45476", "45478", "45479", "45481"],
-    description: "Mieten Sie Baumaschinen und Anhänger direkt in Mülheim an der Ruhr. SLT Rental ist Ihr lokaler Partner im Ruhrgebiet.",
-    keywords: ["Baumaschinen mieten Mülheim", "Anhänger mieten Mülheim", "Bagger mieten Mülheim an der Ruhr"],
+    description: "Baumaschinen & Anhänger mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Direkt vor Ort ✓ Professionelle Erdbewegung ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Mülheim", "Anhänger mieten Mülheim", "Bagger mieten Mülheim an der Ruhr", "Bobcat mieten Mülheim"],
   },
   {
     slug: "essen",
