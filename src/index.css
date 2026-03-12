@@ -215,10 +215,19 @@ rtr-checkout {
 
 /* Mobile: improve touch scrolling in Rentware time dropdown */
 @media (max-width: 767px) {
-  rtr-article-booking rentware-time-picker rentware-expanded-picker,
+  rtr-article-booking rentware-time-picker rentware-expanded-picker {
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    z-index: 9999 !important;
+  }
+
   rtr-article-booking rentware-time-picker rentware-expanded-picker > div {
     touch-action: pan-y !important;
     overscroll-behavior: contain !important;
     -webkit-overflow-scrolling: touch !important;
+    overflow-y: auto !important;
+    max-height: min(42dvh, 280px) !important;
+    pointer-events: auto !important;
   }
 }
