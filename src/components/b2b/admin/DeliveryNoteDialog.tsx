@@ -389,7 +389,7 @@ export function DeliveryNoteDialog({
                 <Gauge className="h-4 w-4" />
                 Gerätedaten bei Übergabe
               </Label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <Label className="text-xs">Betriebsstunden</Label>
                   <Input

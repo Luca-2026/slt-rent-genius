@@ -8,7 +8,7 @@ interface SignaturePadProps {
   label?: string;
 }
 
-export function SignaturePad({ onSignatureChange, height = 180, label = "Unterschrift des Kunden" }: SignaturePadProps) {
+export function SignaturePad({ onSignatureChange, height = 150, label = "Unterschrift des Kunden" }: SignaturePadProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
