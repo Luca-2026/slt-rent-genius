@@ -149,7 +149,7 @@ export function ProductBookingDialog({
       <DialogContent 
         className={cn(
           articleId 
-            ? "p-0 sm:p-0 max-w-md w-[calc(100%-1rem)] sm:w-auto max-h-[90vh] overflow-visible" 
+            ? "p-0 sm:p-0 max-w-md w-[calc(100%-1rem)] sm:w-auto max-h-[92dvh] overflow-visible top-2 translate-y-0 sm:top-[50%] sm:translate-y-[-50%] touch-pan-y" 
             : "max-w-2xl p-0 max-h-[90vh] overflow-y-auto"
         )}
       >
