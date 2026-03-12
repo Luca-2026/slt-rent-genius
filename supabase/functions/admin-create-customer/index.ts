@@ -173,7 +173,7 @@ Deno.serve(async (req: Request) => {
         Bitte prüfen Sie Ihre hinterlegten Firmendaten im Portal und bestätigen Sie deren Richtigkeit.
       </p>
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://slt-rent-genius.lovable.app/b2b/login" 
+        <a href="https://www.slt-rental.de/b2b/login" 
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal einloggen →
         </a>
