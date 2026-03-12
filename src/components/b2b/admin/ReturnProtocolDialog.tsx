@@ -704,14 +704,14 @@ export function ReturnProtocolDialog({
         <Separator />
 
         {/* Actions */}
-        <div className="flex gap-3 justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end pt-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
             Abbrechen
           </Button>
           <Button
             onClick={handleGenerate}
             disabled={saving || !allValid}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
           >
             {saving ? (
               <>
@@ -721,7 +721,7 @@ export function ReturnProtocolDialog({
             ) : (
               <>
                 <ClipboardCheck className="h-4 w-4 mr-1.5" />
-                Rückgabeprotokoll erstellen & senden
+                <span className="truncate">{customerNotPresent ? "Protokoll erstellen" : "Erstellen & senden"}</span>
               </>
             )}
           </Button>
