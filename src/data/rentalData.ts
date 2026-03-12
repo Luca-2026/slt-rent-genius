@@ -740,7 +740,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "WNE69F", muelheim: "G63XIE" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -765,7 +765,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "BG4ZS8", muelheim: "HHFYMQ" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -790,7 +790,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "UZEDUY" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -815,7 +815,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "MBUX18" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -842,7 +842,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -871,7 +871,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -887,7 +887,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "PMJJCT", muelheim: "ZC8JGH" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -903,7 +903,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     onRequest: true,
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -927,7 +927,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     onRequest: true,
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
@@ -975,7 +975,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     rentwareCode: { krefeld: "EZHV9G" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,90 €/l.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
   {
