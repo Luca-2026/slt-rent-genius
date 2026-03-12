@@ -238,6 +238,8 @@ export type Database = {
           reservation_id: string | null
           signature_data: string | null
           signed_at: string | null
+          staff_name: string | null
+          staff_signature_data: string | null
           status: string
           updated_at: string
         }
@@ -260,6 +262,8 @@ export type Database = {
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
+          staff_name?: string | null
+          staff_signature_data?: string | null
           status?: string
           updated_at?: string
         }
@@ -282,6 +286,8 @@ export type Database = {
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
+          staff_name?: string | null
+          staff_signature_data?: string | null
           status?: string
           updated_at?: string
         }
