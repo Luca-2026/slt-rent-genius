@@ -192,6 +192,40 @@ Deno.serve(async (req: Request) => {
         .eq("id", offer.reservation_id)
         .single();
       reservation = resData;
+    } else {
+      // Auto-create reservation for standalone offers so the rental appears in Mietvorgänge
+      console.log("Offer has no reservation_id, auto-creating reservation...");
+      const firstItem = offerItems?.[0];
+      const { data: newRes, error: newResErr } = await serviceClient
+        .from("b2b_reservations")
+        .insert({
+          b2b_profile_id: offer.b2b_profile_id,
+          user_id: profile.user_id,
+          product_id: firstItem?.product_name || "standalone",
+          product_name: firstItem?.product_name || "Mietvorgang",
+          location: profile.assigned_location || "krefeld",
+          start_date: firstItem?.rental_start || new Date().toISOString().split("T")[0],
+          end_date: firstItem?.rental_end || null,
+          quantity: firstItem?.quantity || 1,
+          status: "active",
+          original_price: offer.net_amount || null,
+          discounted_price: offer.net_amount || null,
+          notes: `Automatisch erstellt aus Angebot ${offer.offer_number}`,
+        })
+        .select()
+        .single();
+
+      if (newResErr) {
+        console.error("Error auto-creating reservation:", newResErr);
+      } else if (newRes) {
+        reservation = newRes;
+        // Link reservation to the offer
+        await serviceClient
+          .from("b2b_offers")
+          .update({ reservation_id: newRes.id })
+          .eq("id", offer_id);
+        console.log("Auto-created reservation:", newRes.id, "and linked to offer:", offer_id);
+      }
     }
 
     const { data: noteNumber, error: numError } = await serviceClient

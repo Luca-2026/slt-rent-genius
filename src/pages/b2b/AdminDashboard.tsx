@@ -773,7 +773,7 @@ export default function AdminDashboard() {
           </span>
           <span className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs">
-              {reservations.filter((r) => r.status === "confirmed").length}
+              {reservations.filter((r) => r.status === "active" || r.status === "confirmed").length}
             </Badge>
             <ArrowRight className="h-4 w-4 text-muted-foreground" />
           </span>
@@ -931,7 +931,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals" forceMount className="data-[state=inactive]:hidden">
           <AdminRentalsTab
-            reservations={reservations.filter((r) => r.status === "active")}
+            reservations={reservations.filter((r) => r.status === "active" || r.status === "confirmed")}
             profiles={profiles}
             invoices={invoices}
             offers={offers}
