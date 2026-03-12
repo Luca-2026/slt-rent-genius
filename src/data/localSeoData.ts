@@ -77,8 +77,8 @@ export const localAreas: LocalArea[] = [
     distance: 14,
     population: 104000,
     postalCodes: ["47441", "47443", "47445", "47447"],
-    description: "Equipment mieten in Moers. Bei SLT Rental Krefeld finden Sie Minibagger, Anhänger und Baugeräte zur Miete – nur 14 km entfernt.",
-    keywords: ["Baumaschinen mieten Moers", "Anhänger mieten Moers", "Minibagger mieten Moers"],
+    description: "Baumaschinen & Anhänger mieten in Moers ✓ Minibagger, Rüttelplatten, Arbeitsbühnen ✓ Nur 14 km von SLT Rental Krefeld ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Moers", "Anhänger mieten Moers", "Minibagger mieten Moers", "Bagger mieten Moers", "Rüttelplatte mieten Moers"],
   },
   {
     slug: "duisburg-west",
