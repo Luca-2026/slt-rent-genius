@@ -243,19 +243,19 @@ export function DeliveryNoteDialog({
         {/* Customer & Offer Info */}
         <Card>
           <CardContent className="p-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-foreground">{profile.company_name}</p>
-                <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate">{profile.company_name}</p>
+                <p className="text-sm text-muted-foreground truncate">
                   {profile.contact_first_name} {profile.contact_last_name}
                 </p>
               </div>
-              <div className="text-right">
-                <Badge variant="outline" className="text-primary border-primary">
+              <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
+                <Badge variant="outline" className="text-primary border-primary shrink-0">
                   {offer.offer_number}
                 </Badge>
                 {reservation && (
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground">
                     Standort: <span className="capitalize">{reservation.location}</span>
                   </p>
                 )}
