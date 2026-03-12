@@ -235,9 +235,9 @@ export function ProductBookingDialog({
               id={containerId}
               className="min-h-[400px] sm:min-h-[500px] p-2 sm:p-4"
             />
-          </div>
+            </div>
+          </>
         ) : (
-          // "Auf Anfrage" inquiry form
           <>
             <DialogHeader className="p-6 pb-4 border-b border-border">
               <div className="flex items-start gap-4">
