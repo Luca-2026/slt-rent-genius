@@ -279,8 +279,8 @@ export const localAreas: LocalArea[] = [
     distance: 6,
     population: 210000,
     postalCodes: ["46045", "46047", "46049", "46117", "46119", "46145", "46147", "46149"],
-    description: "Mietgeräte in Oberhausen. SLT Rental Mülheim bietet Baumaschinen und Anhänger – nur 6 km von Oberhausen entfernt.",
-    keywords: ["Baumaschinen mieten Oberhausen", "Anhänger mieten Oberhausen", "Bagger Oberhausen"],
+    description: "Baumaschinen & Anhänger mieten in Oberhausen ✓ Minibagger, Werkzeuge, Rüttelplatten ✓ Nur 6 km von SLT Rental Mülheim ✓ Lieferung auf die Baustelle ✓ Faire Preise",
+    keywords: ["Baumaschinen mieten Oberhausen", "Anhänger mieten Oberhausen", "Bagger Oberhausen", "Minibagger mieten Oberhausen"],
   },
   {
     slug: "duisburg-sued",
