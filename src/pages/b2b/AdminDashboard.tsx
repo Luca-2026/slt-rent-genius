@@ -773,7 +773,7 @@ export default function AdminDashboard() {
           </span>
           <span className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs">
-              {reservations.filter((r) => r.status === "active" || r.status === "confirmed").length}
+              {reservations.filter((r) => r.status === "active").length}
             </Badge>
             <ArrowRight className="h-4 w-4 text-muted-foreground" />
           </span>
