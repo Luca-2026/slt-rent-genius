@@ -77,8 +77,8 @@ export const localAreas: LocalArea[] = [
     distance: 14,
     population: 104000,
     postalCodes: ["47441", "47443", "47445", "47447"],
-    description: "Equipment mieten in Moers. Bei SLT Rental Krefeld finden Sie Minibagger, Anhänger und Baugeräte zur Miete – nur 14 km entfernt.",
-    keywords: ["Baumaschinen mieten Moers", "Anhänger mieten Moers", "Minibagger mieten Moers"],
+    description: "Baumaschinen & Anhänger mieten in Moers ✓ Minibagger, Rüttelplatten, Arbeitsbühnen ✓ Nur 14 km von SLT Rental Krefeld ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Moers", "Anhänger mieten Moers", "Minibagger mieten Moers", "Bagger mieten Moers", "Rüttelplatte mieten Moers"],
   },
   {
     slug: "duisburg-west",
@@ -134,8 +134,8 @@ export const localAreas: LocalArea[] = [
     distance: 0,
     population: 331000,
     postalCodes: ["53111", "53113", "53115", "53117", "53119", "53121", "53123", "53125", "53127", "53129", "53173", "53175", "53177", "53179"],
-    description: "Mieten Sie Baumaschinen, Anhänger, Event-Equipment und mehr direkt in Bonn. SLT Rental bietet das volle Sortiment inkl. Bühnentechnik, Traversen und Veranstaltungstechnik.",
-    keywords: ["Baumaschinen mieten Bonn", "Anhänger mieten Bonn", "Bagger mieten Bonn", "Minibagger Bonn", "Bühnentechnik mieten Bonn", "Event-Equipment Bonn", "Traversen mieten Bonn"],
+    description: "Baumaschinen, Anhänger & Event-Equipment mieten in Bonn ✓ Minibagger, Arbeitsbühnen, Hüpfburgen, Bühnentechnik ✓ Direkt vor Ort ✓ Lieferung im Raum Bonn ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Bonn", "Anhänger mieten Bonn", "Bagger mieten Bonn", "Minibagger Bonn", "Arbeitsbühne mieten Bonn", "Hüpfburg mieten Bonn", "Event-Equipment Bonn"],
   },
   {
     slug: "bad-godesberg",
@@ -257,8 +257,8 @@ export const localAreas: LocalArea[] = [
     distance: 0,
     population: 171000,
     postalCodes: ["45468", "45470", "45472", "45473", "45475", "45476", "45478", "45479", "45481"],
-    description: "Mieten Sie Baumaschinen und Anhänger direkt in Mülheim an der Ruhr. SLT Rental ist Ihr lokaler Partner im Ruhrgebiet.",
-    keywords: ["Baumaschinen mieten Mülheim", "Anhänger mieten Mülheim", "Bagger mieten Mülheim an der Ruhr"],
+    description: "Baumaschinen & Anhänger mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Direkt vor Ort ✓ Professionelle Erdbewegung ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Mülheim", "Anhänger mieten Mülheim", "Bagger mieten Mülheim an der Ruhr", "Bobcat mieten Mülheim"],
   },
   {
     slug: "essen",
@@ -268,8 +268,8 @@ export const localAreas: LocalArea[] = [
     distance: 8,
     population: 583000,
     postalCodes: ["45127", "45128", "45130", "45131", "45133", "45134", "45136", "45138", "45139", "45141", "45143", "45144", "45145", "45147", "45149"],
-    description: "Baumaschinen und Anhänger mieten in Essen. SLT Rental Mülheim bedient ganz Essen – nur 8 km vom Standort entfernt.",
-    keywords: ["Baumaschinen mieten Essen", "Anhänger mieten Essen", "Minibagger Essen", "Bagger mieten Essen"],
+    description: "Baumaschinen & Anhänger mieten in Essen ✓ Minibagger, Arbeitsbühnen, Werkzeuge ✓ Lieferung in ganz Essen ✓ SLT Rental Mülheim nur 8 km entfernt ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Essen", "Anhänger mieten Essen", "Minibagger Essen", "Bagger mieten Essen", "Arbeitsbühne mieten Essen"],
   },
   {
     slug: "oberhausen",
@@ -279,8 +279,8 @@ export const localAreas: LocalArea[] = [
     distance: 6,
     population: 210000,
     postalCodes: ["46045", "46047", "46049", "46117", "46119", "46145", "46147", "46149"],
-    description: "Mietgeräte in Oberhausen. SLT Rental Mülheim bietet Baumaschinen und Anhänger – nur 6 km von Oberhausen entfernt.",
-    keywords: ["Baumaschinen mieten Oberhausen", "Anhänger mieten Oberhausen", "Bagger Oberhausen"],
+    description: "Baumaschinen & Anhänger mieten in Oberhausen ✓ Minibagger, Werkzeuge, Rüttelplatten ✓ Nur 6 km von SLT Rental Mülheim ✓ Lieferung auf die Baustelle ✓ Faire Preise",
+    keywords: ["Baumaschinen mieten Oberhausen", "Anhänger mieten Oberhausen", "Bagger Oberhausen", "Minibagger mieten Oberhausen"],
   },
   {
     slug: "duisburg-sued",
@@ -345,8 +345,8 @@ export const localAreas: LocalArea[] = [
     distance: 14,
     population: 70000,
     postalCodes: ["46535", "46537", "46539"],
-    description: "Mietgeräte in Dinslaken. SLT Rental Mülheim ist Ihr Partner für Baumaschinen und Anhänger – nur 14 km entfernt.",
-    keywords: ["Baumaschinen mieten Dinslaken", "Anhänger mieten Dinslaken", "Minibagger Dinslaken"],
+    description: "Baumaschinen & Anhänger mieten in Dinslaken ✓ Minibagger, Werkzeuge, Rüttelplatten ✓ Nur 14 km von SLT Rental Mülheim ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Dinslaken", "Anhänger mieten Dinslaken", "Minibagger Dinslaken", "Anhängerverleih Dinslaken"],
   },
 ];
 
