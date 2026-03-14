@@ -109,7 +109,7 @@ export function Footer() {
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {locations.map((loc) => {
-              const areas = getAreasForLocation(loc.id).filter(a => a.distance > 0).slice(0, 6);
+              const areas = getAreasForLocation(loc.id).filter(a => a.distance > 0);
               return (
                 <div key={loc.id}>
                   <span className="text-xs font-medium text-white/70 block mb-1">{t("footer.region", { name: loc.name })}</span>
