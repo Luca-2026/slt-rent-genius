@@ -172,6 +172,15 @@ function ServiceBannerItem({ service }: { service: ServiceInfo }) {
               <ExternalLink className="h-3 w-3" />
             </a>
           )}
+          {service.emailLink && (
+            <a
+              href={`mailto:${service.emailLink}`}
+              className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {service.emailLink}
+            </a>
+          )}
         </div>
       </div>
     </div>
