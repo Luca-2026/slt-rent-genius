@@ -97,16 +97,51 @@ const categoryServices: Record<string, ServiceInfo> = {
   },
 };
 
-// Workshop service for Krefeld & Bonn (categories: anhaenger, erdbewegung)
-const workshopService: ServiceInfo = {
-  icon: Wrench,
-  title: "Eigene Werkstatt: Wartung & Reparatur",
-  description: "Wir warten und reparieren auch Fremdgeräte – Anhänger, Minibagger und Baumaschinen aller Hersteller. Sprechen Sie uns an für einen Werkstatttermin.",
-  colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
-  iconBgClass: "bg-primary/10",
+// Workshop service for Krefeld & Bonn
+const workshopServices: Record<string, ServiceInfo> = {
+  anhaenger: {
+    icon: Wrench,
+    title: "Eigene Werkstatt: Anhänger-Service",
+    description: "Wir warten und reparieren auch Fremdgeräte – Anhänger aller Hersteller. Kontaktieren Sie uns für einen Werkstatttermin.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+    emailLink: "service@slt-rental.de",
+  },
+  erdbewegung: {
+    icon: Wrench,
+    title: "Eigene Werkstatt: Baumaschinen-Service",
+    description: "Wir warten und reparieren auch Fremdgeräte – Minibagger, Radlader und Baumaschinen aller Hersteller.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+    emailLink: "service@slt-rental.de",
+  },
+  verdichtung: {
+    icon: Wrench,
+    title: "Eigene Werkstatt: Verdichtungstechnik-Service",
+    description: "Wir warten und reparieren auch Fremdgeräte – Rüttelplatten, Stampfer und Verdichtungstechnik aller Hersteller.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+    emailLink: "service@slt-rental.de",
+  },
+  arbeitsbuehnen: {
+    icon: Wrench,
+    title: "Eigene Werkstatt: Arbeitsbühnen-Service",
+    description: "Wir warten und reparieren auch Fremdgeräte – Scheren- und Gelenkbühnen aller Hersteller.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+    emailLink: "service@slt-rental.de",
+  },
+  aggregate: {
+    icon: Wrench,
+    title: "Eigene Werkstatt: Aggregat-Service",
+    description: "Wir warten und reparieren auch Fremdgeräte – Stromerzeuger und Aggregate aller Hersteller.",
+    colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+    iconBgClass: "bg-primary/10",
+    emailLink: "service@slt-rental.de",
+  },
 };
 
-const workshopCategories = ["anhaenger", "erdbewegung"];
+const workshopCategories = ["anhaenger", "erdbewegung", "verdichtung", "arbeitsbuehnen", "aggregate"];
 const workshopLocations = ["krefeld", "bonn"];
 
 function ServiceBannerItem({ service }: { service: ServiceInfo }) {
