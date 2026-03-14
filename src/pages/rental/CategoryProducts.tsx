@@ -916,7 +916,7 @@ export default function CategoryProducts() {
     ],
     verdichtung: [
       `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
-      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt bieten wir Wartung und Reparatur von Verdichtungstechnik aller Hersteller an – auch für Fremdgeräte. Kontakt: service@slt-rental.de" : ""}`,
+      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt bieten wir Wartung und Reparatur von Verdichtungstechnik aller Hersteller an – auch für Fremdgeräte." : ""}`,
     ],
     huepfburgen: [
       `Hüpfburg mieten in ${location.name} – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen und Designs für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Lieferung und Aufbau in ${location.name} und Umgebung möglich.`,
