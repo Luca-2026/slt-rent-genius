@@ -98,6 +98,15 @@ export function ServicesSection() {
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   )}
+                  {service.emailLink && (
+                    <a
+                      href={`mailto:${service.emailLink}`}
+                      className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-3 hover:underline"
+                    >
+                      <Mail className="h-3 w-3" />
+                      {service.emailLink}
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             </AnimatedSection>
