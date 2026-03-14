@@ -863,6 +863,22 @@ export default function CategoryProducts() {
     erdbewegung: `Minibagger & Bagger mieten in ${location.name} ✓ ${products.length} Geräte ✓ Anbaugeräte inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
     arbeitsbuehnen: `Arbeitsbühne & Hubsteiger mieten in ${location.name} ✓ ${products.length} Modelle bis 18m ✓ Scheren- & Gelenkteleskopbühnen ✓ Anhängerbühnen ✓ Lieferung möglich`,
     huepfburgen: `Hüpfburg mieten in ${location.name} ✓ ${products.length} Modelle für Kindergeburtstag & Events ✓ Lieferung & Aufbau ✓ Faire Wochenend-Tarife`,
+    werkzeuge: `Werkzeuge mieten in ${location.name} ✓ ${products.length} Profi-Geräte ✓ Kernbohrer, Stemmhammer, Trennschleifer & mehr ✓ Ab 10 €/Tag ✓ Tiefpreisgarantie`,
+    gartenpflege: `Gartengeräte mieten in ${location.name} ✓ ${products.length} Geräte ✓ Häcksler, Erdbohrer, Vertikutierer ✓ Ab 25 €/Tag ✓ Wochenend-Tarife`,
+    aggregate: `Stromaggregat mieten in ${location.name} ✓ ${products.length} Modelle ✓ 2,8 bis 100 kVA ✓ Für Baustelle & Event ✓ Lieferung möglich`,
+    verdichtung: `Rüttelplatte & Stampfer mieten in ${location.name} ✓ ${products.length} Verdichtungsgeräte ✓ Ab 25 €/Tag ✓ Für Pflaster- & Erdarbeiten`,
+    "leitern-gerueste": `Rollgerüst & Leiter mieten in ${location.name} ✓ ${products.length} Modelle ✓ Arbeitshöhe bis 8,4m ✓ Steh- & Kombileitern ✓ Sofort verfügbar`,
+    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${location.name} ✓ ${products.length} Geräte ✓ Für Estrichtrocknung & Neubau ✓ Sofort verfügbar`,
+    "moebel-zelte": `Partyzelt & Mobiliar mieten in ${location.name} ✓ ${products.length} Artikel ✓ Zelte, Tische, Stühle, Bänke ✓ Für Hochzeit, Geburtstag & Firmenfeier`,
+    "geschirr-glaeser-besteck": `Geschirr & Gläser mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sets ab 5 € ✓ Hochwertiges Eventgeschirr ✓ Spülservice möglich`,
+    absperrtechnik: `Absperrtechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ Halteverbotsschilder, Bauzaun, Absperrgitter ✓ Verkehrszeichen nach StVO`,
+    "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${location.name} ✓ ${products.length} Artikel ✓ CEE 16A bis 63A ✓ Kabeltrommel, Kabelbrücke ✓ Für Event & Baustelle`,
+    beschallung: `PA-Anlage & Lautsprecher mieten in ${location.name} ✓ ${products.length} Artikel ✓ Bluetooth-Speaker bis Profi-PA ✓ Für 30 bis 250 Personen`,
+    beleuchtung: `Veranstaltungstechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ LED Spots, Moving Heads, Scheinwerfer ✓ Für Event & Bühne`,
+    buehne: `Bühne & Podeste mieten in ${location.name} ✓ ${products.length} Artikel ✓ Modulare Bühnenpodeste ✓ Für Konzert, Firmenevent & Rede`,
+    "traversen-rigging": `Traversen & Rigging mieten in ${location.name} ✓ ${products.length} Artikel ✓ Alu-Traversen, Motoren, Zubehör ✓ Professionelle Bühnentechnik`,
+    spezialeffekte: `Spezialeffekte mieten in ${location.name} ✓ ${products.length} Artikel ✓ Funkenfontänen, Nebelmaschine, Seifenblasen ✓ Für Events & Shows`,
+    kommunikation: `Funkmikrofon & Headset mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sennheiser Profi-Equipment ✓ Für Event, Konferenz & Hochzeit`,
   };
   
   const seoDescription = categorySeoDescriptions[category.id] || 
@@ -870,21 +886,161 @@ export default function CategoryProducts() {
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
   const seoKeywords = `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
 
+  // SEO text content for each category page (array of paragraphs)
+  const categorySeoTexts: Record<string, string[]> = {
+    anhaenger: [
+      `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per SMS-Code verfügbar, auch am Wochenende und an Feiertagen.`,
+      `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per SMS. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
+      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.`,
+    ],
+    erdbewegung: [
+      `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
+      `Zusätzlich bieten wir ein umfangreiches Sortiment an Anbaugeräten: Tieflöffel in verschiedenen Breiten, Grabenräumlöffel, Hydraulikhammer für Abbrucharbeiten und Sortiergreifer. Alle Anbaugeräte mit MS01 oder MS03 Aufnahme. Lieferung direkt auf Ihre Baustelle in ${location.name} möglich – berechnen Sie die Lieferkosten mit unserem Online-Rechner.`,
+      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.`,
+    ],
+    werkzeuge: [
+      `Professionelle Werkzeuge mieten in ${location.name} – bei SLT Rental leihen Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Betonrüttler, Fliesenschneider, Baulaser und vieles mehr. Alle Geräte sind von Markenherstellern und werden regelmäßig gewartet.`,
+      `Ob für Renovierung, Umbau oder Neubau: Profi-Werkzeuge zum kleinen Preis ab 10 €/Tag. Wochenend-Tarife und Tiefpreisgarantie sorgen für faire Konditionen. Persönliche Beratung inklusive – wir helfen Ihnen bei der Wahl des richtigen Geräts.`,
+    ],
+    arbeitsbuehnen: [
+      `Arbeitsbühne mieten in ${location.name} – bei SLT Rental finden Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m. Ideal für Fassadenarbeiten, Baumschnitt, Dacharbeiten oder Montagen in der Höhe.`,
+      `Unsere Hubarbeitsbühnen sind regelmäßig geprüft und sofort einsatzbereit. Lieferung und Abholung in ${location.name} und Umgebung möglich. Für motorisierte Arbeitsbühnen ist ein Bedienerausweis erforderlich – sprechen Sie uns an, wir beraten Sie gerne.`,
+    ],
+    gartenpflege: [
+      `Gartengeräte mieten in ${location.name} – Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Stubbenfräsen und mehr bei SLT Rental. Professionelle Gartengeräte für Privatpersonen und Landschaftsgärtner zum fairen Tagesmietpreis.`,
+      `Sparen Sie sich die Anschaffung teurer Spezialgeräte: Mieten Sie Gartengeräte genau dann, wenn Sie sie brauchen. Von der Hecke schneiden bis zum Baum fällen – wir haben das passende Equipment für Ihr Gartenprojekt in ${location.name}.`,
+    ],
+    aggregate: [
+      `Stromaggregat mieten in ${location.name} – von 2,8 kVA für den Marktstand bis 100 kVA für die Großbaustelle. SLT Rental bietet leise Inverter-Stromerzeuger für Events und leistungsstarke Diesel-Aggregate für Baustellen ohne Stromanschluss.`,
+      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.`,
+    ],
+    verdichtung: [
+      `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
+      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.`,
+    ],
+    huepfburgen: [
+      `Hüpfburg mieten in ${location.name} – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen und Designs für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Lieferung und Aufbau in ${location.name} und Umgebung möglich.`,
+      `Unsere Hüpfburgen sind TÜV-geprüft und werden sauber und einsatzbereit geliefert. Inkl. Gebläse. Attraktive Wochenend-Tarife für Samstag/Sonntag-Events.`,
+    ],
+    "leitern-gerueste": [
+      `Rollgerüst und Leiter mieten in ${location.name} – Arbeitshöhen bis 8,4m für Maler-, Fassaden- und Montagearbeiten. Bei SLT Rental leihen Sie Steh- und Kombileitern sowie mobile Rollgerüste zum fairen Tagesmietpreis.`,
+      `Alle Gerüste und Leitern entsprechen den aktuellen Sicherheitsnormen und werden regelmäßig geprüft. Ideal für Handwerker, Maler und Heimwerker in ${location.name}.`,
+    ],
+    "heizung-trocknung": [
+      `Bautrockner und Heizlüfter mieten in ${location.name} – für Estrichtrocknung, Neubau-Trocknung, Wasserschaden-Sanierung oder Baustellenbeheizung. SLT Rental bietet professionelle Trocknungs- und Heizgeräte sofort verfügbar.`,
+      `Unsere Bautrockner haben Trocknungsflächen bis zu 80 m². Heizlüfter bis 9 kW für die Baustellenbeheizung. Wir beraten Sie zur richtigen Gerätekombination für Ihr Trocknungsprojekt.`,
+    ],
+    "moebel-zelte": [
+      `Partyzelt und Eventmobiliar mieten in ${location.name} – Zelte, Tische, Stühle, Bänke und Bierzeltgarnituren für Hochzeit, Geburtstag, Firmenfeier oder Vereinsfest. Bei SLT Rental finden Sie alles für Ihre Veranstaltung unter einem Dach.`,
+      `Von der kleinen Gartenparty bis zum großen Firmenevent: Wir bieten Partyzelte in verschiedenen Größen und passende Bestuhlung. Lieferung und Abholung in ${location.name} und Umgebung.`,
+    ],
+    "geschirr-glaeser-besteck": [
+      `Geschirr, Gläser und Besteck mieten in ${location.name} – 10er-Sets ab 5 €. Hochwertiges Eventgeschirr der Linien Passionata und Darwin sowie praktisches Standard-Geschirr der Linien Simply und Brunelli. Perfekt für Hochzeit, Firmenevent oder Gartenparty.`,
+      `Das Beste: Sie geben das Geschirr einfach ungespült zurück! Wir übernehmen die Reinigung für Sie. Kombinieren Sie Geschirr, Gläser und Besteck zu Ihrem individuellen Event-Set.`,
+    ],
+    absperrtechnik: [
+      `Absperrtechnik mieten in ${location.name} – Absperrgitter, Bauzäune, Halteverbotsschilder und Verkehrszeichen nach StVO. Bei SLT Rental finden Sie professionelle Absperr- und Sicherheitstechnik für Baustellen, Events und Umzüge.`,
+      `Halteverbotsschilder für Umzüge, Bauzäune für die Baustellen-Absicherung, Warn- und Hinweisschilder nach StVO – alles zur Miete in ${location.name}. Bitte beachten Sie: Die Genehmigung für Halteverbotszonen beantragen Sie beim zuständigen Ordnungsamt.`,
+    ],
+    "kabel-stromverteiler": [
+      `Kabel und Stromverteiler mieten in ${location.name} – CEE-Kabel, Schuko-Kabeltrommeln, Kabelbrücken, Anschlussschränke und Stromverteiler für Event und Baustelle. Bei SLT Rental finden Sie die richtige Stromversorgung für jedes Projekt.`,
+      `Von der 16A Schuko-Kabeltrommel bis zum 63A CEE-Anschlussschrank – wir beraten Sie zur richtigen Stromverteilung für Ihr Event oder Ihre Baustelle in ${location.name}.`,
+    ],
+    beschallung: [
+      `PA-Anlage und Lautsprecher mieten in ${location.name} – vom Bluetooth-Speaker für die Gartenparty bis zur professionellen PA-Anlage für 250 Personen. SLT Rental bietet professionelle Beschallungstechnik für jeden Anlass.`,
+      `Komplette Sound-Pakete mit Lautsprechern, Subwoofern und Mischpult. Für Hochzeiten, Firmenfeiern, Sportveranstaltungen und Konzerte in ${location.name} und Umgebung.`,
+    ],
+    beleuchtung: [
+      `Eventbeleuchtung mieten in ${location.name} – LED Spots, Moving Heads, PAR-Scheinwerfer, LED Bars und Baustellenstrahler. SLT Rental bietet professionelle Lichttechnik für Events, Bühnen und Baustellen.`,
+      `Von der stimmungsvollen Ambientebeleuchtung bis zur professionellen Bühnenbeleuchtung – wir haben die passende Lichttechnik für Ihr Event in ${location.name}.`,
+    ],
+    buehne: [
+      `Bühne und Podeste mieten in ${location.name} – modulare Bühnenpodeste für Konzerte, Reden, Modenschauen und Firmenevents. Flexible Bühnengrößen individuell konfigurierbar.`,
+      `Alle Bühnenpodeste sind wetterfest und indoor/outdoor einsetzbar. Kombinieren Sie mit Traversen und Beleuchtung für eine komplette Event-Lösung in ${location.name}.`,
+    ],
+    "traversen-rigging": [
+      `Traversen und Rigging mieten in ${location.name} – Alu-Traversen, Kettenzüge und Rigging-Zubehör für professionelle Veranstaltungstechnik. Traversensysteme für Licht, Ton und Dekoration.`,
+      `Ob Ground-Support oder Flugtraverse – wir bieten professionelle Traversensysteme für Events jeder Größe in ${location.name} und NRW.`,
+    ],
+    spezialeffekte: [
+      `Spezialeffekte mieten in ${location.name} – Funkenfontänen, Nebelmaschinen, Hazer, Seifenblasenmaschinen und Konfettikanonen für spektakuläre Events. Professionelle Effekttechnik bei SLT Rental.`,
+      `Machen Sie Ihr Event unvergesslich! Unsere Spezialeffekte sind einfach zu bedienen und sorgen für den Wow-Faktor bei Hochzeiten, Firmenfeiern und Shows.`,
+    ],
+    kommunikation: [
+      `Funkmikrofon und Headset mieten in ${location.name} – professionelle Sennheiser-Funkstrecken für Konferenzen, Hochzeiten, Reden und Events. Handmikrofone, Headsets und Ansteckmikrofone verfügbar.`,
+      `Hochwertige drahtlose Mikrofonsysteme für klare Sprachübertragung bei jeder Veranstaltung. Einfache Bedienung, zuverlässiger Empfang.`,
+    ],
+  };
+
   // Category-specific FAQs for FAQ schema
   const categoryFaqs: Record<string, { question: string; answer: string }[]> = {
     anhaenger: [
-      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen.` },
-      { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE.` },
+      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen. Sie benötigen lediglich eine Online-Buchung.` },
+      { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE oder B96.` },
       { question: `Wie lange kann ich einen Anhänger mieten?`, answer: `Sie können unsere Anhänger stundenweise, tageweise oder wochenweise mieten. Langzeitmiete ist auf Anfrage ebenfalls möglich.` },
+      { question: `Was kostet ein Anhänger mieten in ${location.name}?`, answer: `Unsere Anhänger gibt es ab 19 €/Tag. Der Preis variiert je nach Größe und Typ. Wochenend-Tarife bieten besonders günstige Konditionen.` },
+      { question: `Welche Anhänger kann ich in ${location.name} mieten?`, answer: `Bei SLT Rental in ${location.name} finden Sie Pkw-Anhänger, Planenanhänger, Kofferanhänger, Baumaschinenanhänger, Autotransporter und Kippanhänger – gebremst und ungebremst.` },
     ],
     erdbewegung: [
       { question: `Kann ich einen Minibagger ohne Baggerschein mieten?`, answer: `Für private Bauprojekte auf Ihrem eigenen Grundstück benötigen Sie in der Regel keinen Baggerschein. Im öffentlichen Bereich ist ein Bedienerausweis erforderlich.` },
-      { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an.` },
-      { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch. Wir beraten Sie gerne!` },
+      { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an. Die Lieferkosten berechnen Sie online.` },
+      { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch, Sortiergreifer zum Sortieren. Wir beraten Sie gerne!` },
+      { question: `Was kostet ein Minibagger mieten in ${location.name}?`, answer: `Minibagger gibt es bei SLT Rental ab ca. 95 €/Tag. Der Preis hängt von der Größe (1t bis 5t) und der Mietdauer ab. Wochen- und Monatstarife sind günstiger.` },
+      { question: `Welche Bagger kann ich in ${location.name} mieten?`, answer: `Wir vermieten Minibagger von 1t bis 5t, Radlader und Dumper. Alle Maschinen inklusive passendem Tieflöffel. Weitere Anbaugeräte auf Anfrage.` },
     ],
     werkzeuge: [
       { question: `Kann ich Werkzeuge auch nur für einen Tag mieten?`, answer: `Ja, alle Werkzeuge bei SLT Rental in ${location.name} können tageweise gemietet werden. Auch Wochenend- und Wochenmiete ist möglich.` },
       { question: `Sind Verbrauchsmaterialien im Mietpreis enthalten?`, answer: `Verbrauchsmaterialien wie Bohrer, Trennscheiben etc. sind in der Regel nicht im Mietpreis enthalten, können aber separat erworben werden.` },
+      { question: `Welche Werkzeuge kann ich in ${location.name} mieten?`, answer: `Bei SLT Rental mieten Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Rüttler, Fliesenschneider, Laser und vieles mehr.` },
+      { question: `Was kostet Werkzeuge mieten in ${location.name}?`, answer: `Profi-Werkzeuge gibt es ab ca. 10 €/Tag. Stemmhammer, Kernbohrer und Spezialwerkzeuge kosten je nach Gerät zwischen 15 und 50 €/Tag.` },
+    ],
+    arbeitsbuehnen: [
+      { question: `Brauche ich einen Schein für eine Arbeitsbühne?`, answer: `Ja, für motorisierte Hubarbeitsbühnen ist ein Bedienerausweis (IPAF-Schulung) erforderlich. Für Anhängerbühnen reicht oft eine Einweisung.` },
+      { question: `Welche Arbeitsbühnen gibt es in ${location.name}?`, answer: `Bei SLT Rental in ${location.name} mieten Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m.` },
+      { question: `Was kostet eine Arbeitsbühne mieten?`, answer: `Arbeitsbühnen gibt es ab ca. 50 €/Tag. Der Preis variiert je nach Arbeitshöhe und Typ. Wochenpreise bieten bis zu 30% Ersparnis.` },
+    ],
+    gartenpflege: [
+      { question: `Welche Gartengeräte kann ich in ${location.name} mieten?`, answer: `Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Rasenmäher, Laubbläser und Stubbenfräsen – alles bei SLT Rental.` },
+      { question: `Was kostet ein Häcksler mieten?`, answer: `Gartenhäcksler gibt es ab ca. 35 €/Tag. Professionelle Walzenhäcksler sind ab ca. 75 €/Tag verfügbar. Wochenend-Tarife sind besonders günstig.` },
+    ],
+    huepfburgen: [
+      { question: `Was kostet eine Hüpfburg mieten in ${location.name}?`, answer: `Hüpfburgen gibt es bei SLT Rental ab ca. 69 €/Tag. Größere Modelle und Wochenend-Pakete sind ebenfalls verfügbar.` },
+      { question: `Liefert SLT Rental die Hüpfburg?`, answer: `Ja, wir liefern Hüpfburgen direkt zu Ihrem Event in ${location.name} und Umgebung. Auf Wunsch inklusive Aufbau.` },
+      { question: `Für welches Alter sind die Hüpfburgen geeignet?`, answer: `Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Wir haben verschiedene Größen für Kindergeburtstage, Schulfeste und Firmenfeiern.` },
+    ],
+    aggregate: [
+      { question: `Welche Stromaggregate kann ich in ${location.name} mieten?`, answer: `Wir vermieten Stromaggregate von 2,8 kVA bis 100 kVA – für Baustelle, Event, Marktstand oder Notstromversorgung.` },
+      { question: `Was kostet ein Stromaggregat mieten?`, answer: `Kleine Stromerzeuger gibt es ab ca. 25 €/Tag. Größere Aggregate für Events kosten je nach Leistung ab 50 €/Tag.` },
+    ],
+    verdichtung: [
+      { question: `Was kostet eine Rüttelplatte mieten in ${location.name}?`, answer: `Rüttelplatten gibt es ab ca. 25 €/Tag. Vibrationsplatten und Vibrationsstampfer für alle Verdichtungsarbeiten verfügbar.` },
+      { question: `Welche Rüttelplatte brauche ich?`, answer: `Für Pflasterarbeiten reicht eine leichte Vorwärts-Rüttelplatte. Für Erdarbeiten empfehlen wir reversierbare Platten oder Vibrationsstampfer.` },
+    ],
+    "heizung-trocknung": [
+      { question: `Was kostet ein Bautrockner mieten in ${location.name}?`, answer: `Bautrockner gibt es ab ca. 15 €/Tag. Für Neubau-Trocknung empfehlen wir unsere leistungsstarken Geräte mit großer Trocknungsfläche.` },
+      { question: `Wann brauche ich einen Bautrockner?`, answer: `Nach Wasserschäden, bei Neubau-Trocknung, Estrichtrocknung oder zur Schimmelvermeidung. Wir beraten Sie zur richtigen Gerätegröße.` },
+    ],
+    "moebel-zelte": [
+      { question: `Was kostet ein Partyzelt mieten in ${location.name}?`, answer: `Partyzelte gibt es ab ca. 49 €/Tag. Größere Zelte für Hochzeiten und Firmenfeiern sind ab ca. 99 €/Tag verfügbar. Bierzeltgarnituren ab 10 €/Tag.` },
+      { question: `Welche Möbel kann ich für Events mieten?`, answer: `Tische, Stühle, Bänke, Bierzeltgarnituren, Stehtische und Polstermöbel – alles bei SLT Rental in ${location.name}.` },
+    ],
+    "geschirr-glaeser-besteck": [
+      { question: `Was kostet Geschirr mieten in ${location.name}?`, answer: `Geschirr-Sets gibt es ab 5 € pro 10er-Set. Wir bieten Standard- und Premiumgeschirr für jeden Anlass – von der Gartenparty bis zur Hochzeit.` },
+      { question: `Muss ich das Geschirr sauber zurückgeben?`, answer: `Nein! Bei SLT Rental können Sie das Geschirr ungespült zurückgeben. Wir übernehmen die Reinigung für Sie.` },
+    ],
+    absperrtechnik: [
+      { question: `Kann ich Halteverbotsschilder in ${location.name} mieten?`, answer: `Ja, wir vermieten Halteverbotsschilder nach StVO. Bitte beachten Sie: Die Genehmigung beim Ordnungsamt müssen Sie selbst beantragen.` },
+      { question: `Was kostet Absperrtechnik mieten?`, answer: `Absperrgitter, Bauzäune und Verkehrszeichen gibt es ab ca. 3 €/Tag. Komplett-Sets für Baustellen-Absicherung auf Anfrage.` },
+    ],
+    beschallung: [
+      { question: `Was kostet eine PA-Anlage mieten in ${location.name}?`, answer: `Bluetooth-Speaker gibt es ab ca. 25 €/Tag. Professionelle PA-Anlagen für bis zu 250 Personen ab ca. 79 €/Tag.` },
+      { question: `Welche Beschallung brauche ich für mein Event?`, answer: `Für bis zu 30 Personen reicht ein Bluetooth-Speaker. Für 30-75 Personen empfehlen wir ein Kompakt-Set. Ab 75 Personen eine professionelle PA-Anlage.` },
+    ],
+    beleuchtung: [
+      { question: `Was kostet Eventbeleuchtung mieten in ${location.name}?`, answer: `LED-Spots gibt es ab ca. 10 €/Tag. Moving Heads ab 35 €/Tag. Komplette Licht-Sets für Events auf Anfrage.` },
+    ],
+    kommunikation: [
+      { question: `Was kostet ein Funkmikrofon mieten?`, answer: `Professionelle Funkmikrofone (Sennheiser) gibt es ab ca. 25 €/Tag. Headsets und Ansteckmikrofone sind ebenfalls verfügbar.` },
     ],
   };
 
@@ -948,7 +1104,7 @@ export default function CategoryProducts() {
                 <span>{location.name}</span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                {category.title}
+                {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
                 {category.description}
@@ -1380,6 +1536,46 @@ export default function CategoryProducts() {
           )}
         </div>
       </section>
+
+      {/* SEO Content Text Block */}
+      {category.id !== "alle" && (
+        <section className="py-10 lg:py-14">
+          <div className="section-container">
+            <div className="max-w-3xl mx-auto prose prose-sm">
+              <h2 className="text-xl font-bold text-headline mb-4">
+                {categoryDisplayName} mieten in {location.name} – günstig & unkompliziert
+              </h2>
+              <p className="text-muted-foreground mb-4">
+                {categorySeoTexts[category.id]?.[0] || `Bei SLT Rental in ${location.name} finden Sie ${categoryDisplayName} zur Miete – schnell, fair und unkompliziert. Ob für Ihr Bauprojekt, Ihren Garten oder Ihr Event: Wir haben das passende Equipment für Sie.`}
+              </p>
+              <p className="text-muted-foreground mb-4">
+                {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
+              </p>
+              {categorySeoTexts[category.id]?.[2] && (
+                <p className="text-muted-foreground">
+                  {categorySeoTexts[category.id][2]}
+                </p>
+              )}
+
+              {/* FAQ Section */}
+              <h3 className="text-lg font-semibold text-headline mt-8 mb-4">
+                Häufige Fragen: {categoryDisplayName} mieten in {location.name}
+              </h3>
+              <div className="space-y-4">
+                {faqs.map((faq, idx) => (
+                  <details key={idx} className="group border border-border rounded-lg">
+                    <summary className="cursor-pointer px-4 py-3 font-medium text-foreground hover:text-primary transition-colors list-none flex items-center justify-between">
+                      {faq.question}
+                      <ChevronDown className="h-4 w-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0 ml-2" />
+                    </summary>
+                    <p className="px-4 pb-3 text-sm text-muted-foreground">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Other Categories */}
       {otherCategories.length > 0 && (

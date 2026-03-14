@@ -92,9 +92,12 @@ export default function LocalAreaPage() {
   const managerRole = t("rental.locationManager");
 
   const localFaqs = [
-    { question: `Wo kann ich in ${area.name} Baumaschinen mieten?`, answer: `Bei SLT Rental – Ihr nächster Standort ist in ${location?.name || area.name}, nur ${area.distance} km entfernt. Wir bieten Minibagger, Anhänger, Werkzeuge und vieles mehr.` },
-    { question: `Liefert SLT Rental auch nach ${area.name}?`, answer: `Ja! Wir liefern Equipment direkt auf Ihre Baustelle in ${area.name} und Umgebung. Die Lieferkosten können Sie bequem online berechnen.` },
-    { question: `Kann ich Geräte auch am Wochenende in ${area.name} mieten?`, answer: `Anhänger sind 24/7 per SMS-Code verfügbar. Für andere Geräte kontaktieren Sie uns – wir finden eine Lösung.` },
+    { question: `Wo kann ich in ${area.name} Baumaschinen mieten?`, answer: `Bei SLT Rental – Ihr nächster Standort ist in ${location?.name || area.name}, nur ${area.distance} km entfernt. Wir bieten Minibagger, Radlader, Dumper, Anhänger, Werkzeuge und vieles mehr.` },
+    { question: `Liefert SLT Rental auch nach ${area.name}?`, answer: `Ja! Wir liefern Equipment direkt auf Ihre Baustelle in ${area.name} und Umgebung – Minibagger, Rüttelplatten, Stromaggregate und mehr. Die Lieferkosten können Sie bequem online berechnen.` },
+    { question: `Kann ich Geräte auch am Wochenende in ${area.name} mieten?`, answer: `Anhänger sind 24/7 per SMS-Code verfügbar. Für Minibagger, Werkzeuge und andere Geräte kontaktieren Sie uns – wir finden eine Lösung.` },
+    { question: `Was kostet Anhänger mieten in der Nähe von ${area.name}?`, answer: `Anhänger gibt es bei SLT Rental ab 19 €/Tag. Pkw-Anhänger, Planenanhänger, Kofferanhänger und Baumaschinenanhänger – rund um die Uhr verfügbar am Standort ${location?.name || area.name}.` },
+    { question: `Kann ich einen Minibagger in der Nähe von ${area.name} mieten?`, answer: `Ja! Am Standort ${location?.name || area.name} (${area.distance} km) vermieten wir Minibagger von 1t bis 5t. Lieferung direkt nach ${area.name} möglich.` },
+    { question: `Gibt es Hüpfburgen zum Mieten in der Nähe von ${area.name}?`, answer: `Ja, bei SLT Rental am Standort ${location?.name || area.name} finden Sie Hüpfburgen für Kindergeburtstage und Events. Lieferung nach ${area.name} möglich.` },
   ];
 
   const jsonLdArray = [
