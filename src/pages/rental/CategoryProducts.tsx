@@ -1104,7 +1104,7 @@ export default function CategoryProducts() {
                 <span>{location.name}</span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                {category.title}
+                {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
                 {category.description}
