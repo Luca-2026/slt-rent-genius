@@ -9,7 +9,8 @@ import {
   ClipboardList, 
   Truck, 
   ShieldCheck, 
-  Construction 
+  Construction,
+  Mail
 } from "lucide-react";
 
 export function ServicesSection() {
@@ -39,6 +40,12 @@ export function ServicesSection() {
       description: t("services.deliveryDesc"),
       link: "/lieferung",
       linkLabel: t("services.deliveryLink"),
+    },
+    {
+      icon: Wrench,
+      title: "Werkstatt & Reparatur",
+      description: "Eigene Werkstatt für Wartung & Reparatur an Anhängern, Baumaschinen und Aggregaten – auch für Fremdgeräte.",
+      emailLink: "service@slt-rental.de",
     },
   ];
 
