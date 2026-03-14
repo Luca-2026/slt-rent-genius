@@ -1184,7 +1184,7 @@ export default function CategoryProducts() {
 
       {/* Info Banner for Erdbewegung */}
       {category.id === "erdbewegung" && (
-        <section className="hidden lg:block bg-accent/10 border-y border-accent/20">
+        <section className="bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
             {/* Main Description */}
              <p className="text-foreground mb-6">
