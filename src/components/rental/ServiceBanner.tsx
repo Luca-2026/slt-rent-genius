@@ -11,6 +11,7 @@ interface ServiceInfo {
   description: string;
   externalLink?: string;
   externalLabel?: string;
+  emailLink?: string;
   colorClass: string;
   iconBgClass: string;
 }
