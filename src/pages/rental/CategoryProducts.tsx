@@ -863,6 +863,22 @@ export default function CategoryProducts() {
     erdbewegung: `Minibagger & Bagger mieten in ${location.name} ✓ ${products.length} Geräte ✓ Anbaugeräte inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
     arbeitsbuehnen: `Arbeitsbühne & Hubsteiger mieten in ${location.name} ✓ ${products.length} Modelle bis 18m ✓ Scheren- & Gelenkteleskopbühnen ✓ Anhängerbühnen ✓ Lieferung möglich`,
     huepfburgen: `Hüpfburg mieten in ${location.name} ✓ ${products.length} Modelle für Kindergeburtstag & Events ✓ Lieferung & Aufbau ✓ Faire Wochenend-Tarife`,
+    werkzeuge: `Werkzeuge mieten in ${location.name} ✓ ${products.length} Profi-Geräte ✓ Kernbohrer, Stemmhammer, Trennschleifer & mehr ✓ Ab 10 €/Tag ✓ Tiefpreisgarantie`,
+    gartenpflege: `Gartengeräte mieten in ${location.name} ✓ ${products.length} Geräte ✓ Häcksler, Erdbohrer, Vertikutierer ✓ Ab 25 €/Tag ✓ Wochenend-Tarife`,
+    aggregate: `Stromaggregat mieten in ${location.name} ✓ ${products.length} Modelle ✓ 2,8 bis 100 kVA ✓ Für Baustelle & Event ✓ Lieferung möglich`,
+    verdichtung: `Rüttelplatte & Stampfer mieten in ${location.name} ✓ ${products.length} Verdichtungsgeräte ✓ Ab 25 €/Tag ✓ Für Pflaster- & Erdarbeiten`,
+    "leitern-gerueste": `Rollgerüst & Leiter mieten in ${location.name} ✓ ${products.length} Modelle ✓ Arbeitshöhe bis 8,4m ✓ Steh- & Kombileitern ✓ Sofort verfügbar`,
+    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${location.name} ✓ ${products.length} Geräte ✓ Für Estrichtrocknung & Neubau ✓ Sofort verfügbar`,
+    "moebel-zelte": `Partyzelt & Mobiliar mieten in ${location.name} ✓ ${products.length} Artikel ✓ Zelte, Tische, Stühle, Bänke ✓ Für Hochzeit, Geburtstag & Firmenfeier`,
+    "geschirr-glaeser-besteck": `Geschirr & Gläser mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sets ab 5 € ✓ Hochwertiges Eventgeschirr ✓ Spülservice möglich`,
+    absperrtechnik: `Absperrtechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ Halteverbotsschilder, Bauzaun, Absperrgitter ✓ Verkehrszeichen nach StVO`,
+    "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${location.name} ✓ ${products.length} Artikel ✓ CEE 16A bis 63A ✓ Kabeltrommel, Kabelbrücke ✓ Für Event & Baustelle`,
+    beschallung: `PA-Anlage & Lautsprecher mieten in ${location.name} ✓ ${products.length} Artikel ✓ Bluetooth-Speaker bis Profi-PA ✓ Für 30 bis 250 Personen`,
+    beleuchtung: `Veranstaltungstechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ LED Spots, Moving Heads, Scheinwerfer ✓ Für Event & Bühne`,
+    buehne: `Bühne & Podeste mieten in ${location.name} ✓ ${products.length} Artikel ✓ Modulare Bühnenpodeste ✓ Für Konzert, Firmenevent & Rede`,
+    "traversen-rigging": `Traversen & Rigging mieten in ${location.name} ✓ ${products.length} Artikel ✓ Alu-Traversen, Motoren, Zubehör ✓ Professionelle Bühnentechnik`,
+    spezialeffekte: `Spezialeffekte mieten in ${location.name} ✓ ${products.length} Artikel ✓ Funkenfontänen, Nebelmaschine, Seifenblasen ✓ Für Events & Shows`,
+    kommunikation: `Funkmikrofon & Headset mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sennheiser Profi-Equipment ✓ Für Event, Konferenz & Hochzeit`,
   };
   
   const seoDescription = categorySeoDescriptions[category.id] || 
@@ -873,18 +889,72 @@ export default function CategoryProducts() {
   // Category-specific FAQs for FAQ schema
   const categoryFaqs: Record<string, { question: string; answer: string }[]> = {
     anhaenger: [
-      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen.` },
-      { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE.` },
+      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen. Sie benötigen lediglich eine Online-Buchung.` },
+      { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE oder B96.` },
       { question: `Wie lange kann ich einen Anhänger mieten?`, answer: `Sie können unsere Anhänger stundenweise, tageweise oder wochenweise mieten. Langzeitmiete ist auf Anfrage ebenfalls möglich.` },
+      { question: `Was kostet ein Anhänger mieten in ${location.name}?`, answer: `Unsere Anhänger gibt es ab 19 €/Tag. Der Preis variiert je nach Größe und Typ. Wochenend-Tarife bieten besonders günstige Konditionen.` },
+      { question: `Welche Anhänger kann ich in ${location.name} mieten?`, answer: `Bei SLT Rental in ${location.name} finden Sie Pkw-Anhänger, Planenanhänger, Kofferanhänger, Baumaschinenanhänger, Autotransporter und Kippanhänger – gebremst und ungebremst.` },
     ],
     erdbewegung: [
       { question: `Kann ich einen Minibagger ohne Baggerschein mieten?`, answer: `Für private Bauprojekte auf Ihrem eigenen Grundstück benötigen Sie in der Regel keinen Baggerschein. Im öffentlichen Bereich ist ein Bedienerausweis erforderlich.` },
-      { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an.` },
-      { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch. Wir beraten Sie gerne!` },
+      { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an. Die Lieferkosten berechnen Sie online.` },
+      { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch, Sortiergreifer zum Sortieren. Wir beraten Sie gerne!` },
+      { question: `Was kostet ein Minibagger mieten in ${location.name}?`, answer: `Minibagger gibt es bei SLT Rental ab ca. 95 €/Tag. Der Preis hängt von der Größe (1t bis 5t) und der Mietdauer ab. Wochen- und Monatstarife sind günstiger.` },
+      { question: `Welche Bagger kann ich in ${location.name} mieten?`, answer: `Wir vermieten Minibagger von 1t bis 5t, Radlader und Dumper. Alle Maschinen inklusive passendem Tieflöffel. Weitere Anbaugeräte auf Anfrage.` },
     ],
     werkzeuge: [
       { question: `Kann ich Werkzeuge auch nur für einen Tag mieten?`, answer: `Ja, alle Werkzeuge bei SLT Rental in ${location.name} können tageweise gemietet werden. Auch Wochenend- und Wochenmiete ist möglich.` },
       { question: `Sind Verbrauchsmaterialien im Mietpreis enthalten?`, answer: `Verbrauchsmaterialien wie Bohrer, Trennscheiben etc. sind in der Regel nicht im Mietpreis enthalten, können aber separat erworben werden.` },
+      { question: `Welche Werkzeuge kann ich in ${location.name} mieten?`, answer: `Bei SLT Rental mieten Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Rüttler, Fliesenschneider, Laser und vieles mehr.` },
+      { question: `Was kostet Werkzeuge mieten in ${location.name}?`, answer: `Profi-Werkzeuge gibt es ab ca. 10 €/Tag. Stemmhammer, Kernbohrer und Spezialwerkzeuge kosten je nach Gerät zwischen 15 und 50 €/Tag.` },
+    ],
+    arbeitsbuehnen: [
+      { question: `Brauche ich einen Schein für eine Arbeitsbühne?`, answer: `Ja, für motorisierte Hubarbeitsbühnen ist ein Bedienerausweis (IPAF-Schulung) erforderlich. Für Anhängerbühnen reicht oft eine Einweisung.` },
+      { question: `Welche Arbeitsbühnen gibt es in ${location.name}?`, answer: `Bei SLT Rental in ${location.name} mieten Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m.` },
+      { question: `Was kostet eine Arbeitsbühne mieten?`, answer: `Arbeitsbühnen gibt es ab ca. 50 €/Tag. Der Preis variiert je nach Arbeitshöhe und Typ. Wochenpreise bieten bis zu 30% Ersparnis.` },
+    ],
+    gartenpflege: [
+      { question: `Welche Gartengeräte kann ich in ${location.name} mieten?`, answer: `Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Rasenmäher, Laubbläser und Stubbenfräsen – alles bei SLT Rental.` },
+      { question: `Was kostet ein Häcksler mieten?`, answer: `Gartenhäcksler gibt es ab ca. 35 €/Tag. Professionelle Walzenhäcksler sind ab ca. 75 €/Tag verfügbar. Wochenend-Tarife sind besonders günstig.` },
+    ],
+    huepfburgen: [
+      { question: `Was kostet eine Hüpfburg mieten in ${location.name}?`, answer: `Hüpfburgen gibt es bei SLT Rental ab ca. 69 €/Tag. Größere Modelle und Wochenend-Pakete sind ebenfalls verfügbar.` },
+      { question: `Liefert SLT Rental die Hüpfburg?`, answer: `Ja, wir liefern Hüpfburgen direkt zu Ihrem Event in ${location.name} und Umgebung. Auf Wunsch inklusive Aufbau.` },
+      { question: `Für welches Alter sind die Hüpfburgen geeignet?`, answer: `Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Wir haben verschiedene Größen für Kindergeburtstage, Schulfeste und Firmenfeiern.` },
+    ],
+    aggregate: [
+      { question: `Welche Stromaggregate kann ich in ${location.name} mieten?`, answer: `Wir vermieten Stromaggregate von 2,8 kVA bis 100 kVA – für Baustelle, Event, Marktstand oder Notstromversorgung.` },
+      { question: `Was kostet ein Stromaggregat mieten?`, answer: `Kleine Stromerzeuger gibt es ab ca. 25 €/Tag. Größere Aggregate für Events kosten je nach Leistung ab 50 €/Tag.` },
+    ],
+    verdichtung: [
+      { question: `Was kostet eine Rüttelplatte mieten in ${location.name}?`, answer: `Rüttelplatten gibt es ab ca. 25 €/Tag. Vibrationsplatten und Vibrationsstampfer für alle Verdichtungsarbeiten verfügbar.` },
+      { question: `Welche Rüttelplatte brauche ich?`, answer: `Für Pflasterarbeiten reicht eine leichte Vorwärts-Rüttelplatte. Für Erdarbeiten empfehlen wir reversierbare Platten oder Vibrationsstampfer.` },
+    ],
+    "heizung-trocknung": [
+      { question: `Was kostet ein Bautrockner mieten in ${location.name}?`, answer: `Bautrockner gibt es ab ca. 15 €/Tag. Für Neubau-Trocknung empfehlen wir unsere leistungsstarken Geräte mit großer Trocknungsfläche.` },
+      { question: `Wann brauche ich einen Bautrockner?`, answer: `Nach Wasserschäden, bei Neubau-Trocknung, Estrichtrocknung oder zur Schimmelvermeidung. Wir beraten Sie zur richtigen Gerätegröße.` },
+    ],
+    "moebel-zelte": [
+      { question: `Was kostet ein Partyzelt mieten in ${location.name}?`, answer: `Partyzelte gibt es ab ca. 49 €/Tag. Größere Zelte für Hochzeiten und Firmenfeiern sind ab ca. 99 €/Tag verfügbar. Bierzeltgarnituren ab 10 €/Tag.` },
+      { question: `Welche Möbel kann ich für Events mieten?`, answer: `Tische, Stühle, Bänke, Bierzeltgarnituren, Stehtische und Polstermöbel – alles bei SLT Rental in ${location.name}.` },
+    ],
+    "geschirr-glaeser-besteck": [
+      { question: `Was kostet Geschirr mieten in ${location.name}?`, answer: `Geschirr-Sets gibt es ab 5 € pro 10er-Set. Wir bieten Standard- und Premiumgeschirr für jeden Anlass – von der Gartenparty bis zur Hochzeit.` },
+      { question: `Muss ich das Geschirr sauber zurückgeben?`, answer: `Nein! Bei SLT Rental können Sie das Geschirr ungespült zurückgeben. Wir übernehmen die Reinigung für Sie.` },
+    ],
+    absperrtechnik: [
+      { question: `Kann ich Halteverbotsschilder in ${location.name} mieten?`, answer: `Ja, wir vermieten Halteverbotsschilder nach StVO. Bitte beachten Sie: Die Genehmigung beim Ordnungsamt müssen Sie selbst beantragen.` },
+      { question: `Was kostet Absperrtechnik mieten?`, answer: `Absperrgitter, Bauzäune und Verkehrszeichen gibt es ab ca. 3 €/Tag. Komplett-Sets für Baustellen-Absicherung auf Anfrage.` },
+    ],
+    beschallung: [
+      { question: `Was kostet eine PA-Anlage mieten in ${location.name}?`, answer: `Bluetooth-Speaker gibt es ab ca. 25 €/Tag. Professionelle PA-Anlagen für bis zu 250 Personen ab ca. 79 €/Tag.` },
+      { question: `Welche Beschallung brauche ich für mein Event?`, answer: `Für bis zu 30 Personen reicht ein Bluetooth-Speaker. Für 30-75 Personen empfehlen wir ein Kompakt-Set. Ab 75 Personen eine professionelle PA-Anlage.` },
+    ],
+    beleuchtung: [
+      { question: `Was kostet Eventbeleuchtung mieten in ${location.name}?`, answer: `LED-Spots gibt es ab ca. 10 €/Tag. Moving Heads ab 35 €/Tag. Komplette Licht-Sets für Events auf Anfrage.` },
+    ],
+    kommunikation: [
+      { question: `Was kostet ein Funkmikrofon mieten?`, answer: `Professionelle Funkmikrofone (Sennheiser) gibt es ab ca. 25 €/Tag. Headsets und Ansteckmikrofone sind ebenfalls verfügbar.` },
     ],
   };
 
