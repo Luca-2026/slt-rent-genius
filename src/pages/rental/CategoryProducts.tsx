@@ -891,12 +891,12 @@ export default function CategoryProducts() {
     anhaenger: [
       `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per SMS-Code verfügbar, auch am Wochenende und an Feiertagen.`,
       `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per SMS. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
-      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.`,
+      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.${(location.id === "krefeld" || location.id === "bonn") ? " Übrigens: In unserer eigenen Werkstatt führen wir auch Wartungs- und Reparaturarbeiten an Anhängern durch – auch an Fremdgeräten." : ""}`,
     ],
     erdbewegung: [
       `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
       `Zusätzlich bieten wir ein umfangreiches Sortiment an Anbaugeräten: Tieflöffel in verschiedenen Breiten, Grabenräumlöffel, Hydraulikhammer für Abbrucharbeiten und Sortiergreifer. Alle Anbaugeräte mit MS01 oder MS03 Aufnahme. Lieferung direkt auf Ihre Baustelle in ${location.name} möglich – berechnen Sie die Lieferkosten mit unserem Online-Rechner.`,
-      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.`,
+      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt bieten wir zudem Wartung und Reparatur von Baumaschinen aller Hersteller an – auch für Fremdgeräte." : ""}`,
     ],
     werkzeuge: [
       `Professionelle Werkzeuge mieten in ${location.name} – bei SLT Rental leihen Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Betonrüttler, Fliesenschneider, Baulaser und vieles mehr. Alle Geräte sind von Markenherstellern und werden regelmäßig gewartet.`,
@@ -1307,7 +1307,7 @@ export default function CategoryProducts() {
       {category.id !== "alle" && category.id !== "absperrtechnik" && (
         <section className="pt-4 lg:pt-6">
           <div className="section-container">
-            <ServiceBanner categoryId={category.id} />
+            <ServiceBanner categoryId={category.id} locationId={location.id} />
           </div>
         </section>
       )}

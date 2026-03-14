@@ -1,7 +1,8 @@
-import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Sparkles, Zap } from "lucide-react";
+import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Sparkles, Zap, Wrench } from "lucide-react";
 
 interface ServiceBannerProps {
   categoryId?: string;
+  locationId?: string;
 }
 
 interface ServiceInfo {
@@ -96,13 +97,21 @@ const categoryServices: Record<string, ServiceInfo> = {
   },
 };
 
-export function ServiceBanner({ categoryId }: ServiceBannerProps) {
-  if (!categoryId || !categoryServices[categoryId]) return null;
+// Workshop service for Krefeld & Bonn (categories: anhaenger, erdbewegung)
+const workshopService: ServiceInfo = {
+  icon: Wrench,
+  title: "Eigene Werkstatt: Wartung & Reparatur",
+  description: "Wir warten und reparieren auch Fremdgeräte – Anhänger, Minibagger und Baumaschinen aller Hersteller. Sprechen Sie uns an für einen Werkstatttermin.",
+  colorClass: "bg-primary/5 border-primary/20 hover:bg-primary/10",
+  iconBgClass: "bg-primary/10",
+};
 
-  const service = categoryServices[categoryId];
+const workshopCategories = ["anhaenger", "erdbewegung"];
+const workshopLocations = ["krefeld", "bonn"];
+
+function ServiceBannerItem({ service }: { service: ServiceInfo }) {
   const Icon = service.icon;
-
-  const content = (
+  return (
     <div className={`border rounded-xl p-4 transition-colors group ${service.colorClass}`}>
       <div className="flex items-start gap-3">
         <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${service.iconBgClass}`}>
@@ -131,6 +140,20 @@ export function ServiceBanner({ categoryId }: ServiceBannerProps) {
       </div>
     </div>
   );
+}
 
-  return content;
+export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
+  if (!categoryId) return null;
+
+  const service = categoryServices[categoryId];
+  const showWorkshop = workshopCategories.includes(categoryId) && workshopLocations.includes(locationId || "");
+
+  if (!service && !showWorkshop) return null;
+
+  return (
+    <div className="space-y-3">
+      {service && <ServiceBannerItem service={service} />}
+      {showWorkshop && <ServiceBannerItem service={workshopService} />}
+    </div>
+  );
 }
