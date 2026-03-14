@@ -886,6 +886,92 @@ export default function CategoryProducts() {
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
   const seoKeywords = `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
 
+  // SEO text content for each category page (array of paragraphs)
+  const categorySeoTexts: Record<string, string[]> = {
+    anhaenger: [
+      `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per SMS-Code verfügbar, auch am Wochenende und an Feiertagen.`,
+      `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per SMS. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
+      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.`,
+    ],
+    erdbewegung: [
+      `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
+      `Zusätzlich bieten wir ein umfangreiches Sortiment an Anbaugeräten: Tieflöffel in verschiedenen Breiten, Grabenräumlöffel, Hydraulikhammer für Abbrucharbeiten und Sortiergreifer. Alle Anbaugeräte mit MS01 oder MS03 Aufnahme. Lieferung direkt auf Ihre Baustelle in ${location.name} möglich – berechnen Sie die Lieferkosten mit unserem Online-Rechner.`,
+      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.`,
+    ],
+    werkzeuge: [
+      `Professionelle Werkzeuge mieten in ${location.name} – bei SLT Rental leihen Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Betonrüttler, Fliesenschneider, Baulaser und vieles mehr. Alle Geräte sind von Markenherstellern und werden regelmäßig gewartet.`,
+      `Ob für Renovierung, Umbau oder Neubau: Profi-Werkzeuge zum kleinen Preis ab 10 €/Tag. Wochenend-Tarife und Tiefpreisgarantie sorgen für faire Konditionen. Persönliche Beratung inklusive – wir helfen Ihnen bei der Wahl des richtigen Geräts.`,
+    ],
+    arbeitsbuehnen: [
+      `Arbeitsbühne mieten in ${location.name} – bei SLT Rental finden Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m. Ideal für Fassadenarbeiten, Baumschnitt, Dacharbeiten oder Montagen in der Höhe.`,
+      `Unsere Hubarbeitsbühnen sind regelmäßig geprüft und sofort einsatzbereit. Lieferung und Abholung in ${location.name} und Umgebung möglich. Für motorisierte Arbeitsbühnen ist ein Bedienerausweis erforderlich – sprechen Sie uns an, wir beraten Sie gerne.`,
+    ],
+    gartenpflege: [
+      `Gartengeräte mieten in ${location.name} – Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Stubbenfräsen und mehr bei SLT Rental. Professionelle Gartengeräte für Privatpersonen und Landschaftsgärtner zum fairen Tagesmietpreis.`,
+      `Sparen Sie sich die Anschaffung teurer Spezialgeräte: Mieten Sie Gartengeräte genau dann, wenn Sie sie brauchen. Von der Hecke schneiden bis zum Baum fällen – wir haben das passende Equipment für Ihr Gartenprojekt in ${location.name}.`,
+    ],
+    aggregate: [
+      `Stromaggregat mieten in ${location.name} – von 2,8 kVA für den Marktstand bis 100 kVA für die Großbaustelle. SLT Rental bietet leise Inverter-Stromerzeuger für Events und leistungsstarke Diesel-Aggregate für Baustellen ohne Stromanschluss.`,
+      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.`,
+    ],
+    verdichtung: [
+      `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
+      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.`,
+    ],
+    huepfburgen: [
+      `Hüpfburg mieten in ${location.name} – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen und Designs für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Lieferung und Aufbau in ${location.name} und Umgebung möglich.`,
+      `Unsere Hüpfburgen sind TÜV-geprüft und werden sauber und einsatzbereit geliefert. Inkl. Gebläse. Attraktive Wochenend-Tarife für Samstag/Sonntag-Events.`,
+    ],
+    "leitern-gerueste": [
+      `Rollgerüst und Leiter mieten in ${location.name} – Arbeitshöhen bis 8,4m für Maler-, Fassaden- und Montagearbeiten. Bei SLT Rental leihen Sie Steh- und Kombileitern sowie mobile Rollgerüste zum fairen Tagesmietpreis.`,
+      `Alle Gerüste und Leitern entsprechen den aktuellen Sicherheitsnormen und werden regelmäßig geprüft. Ideal für Handwerker, Maler und Heimwerker in ${location.name}.`,
+    ],
+    "heizung-trocknung": [
+      `Bautrockner und Heizlüfter mieten in ${location.name} – für Estrichtrocknung, Neubau-Trocknung, Wasserschaden-Sanierung oder Baustellenbeheizung. SLT Rental bietet professionelle Trocknungs- und Heizgeräte sofort verfügbar.`,
+      `Unsere Bautrockner haben Trocknungsflächen bis zu 80 m². Heizlüfter bis 9 kW für die Baustellenbeheizung. Wir beraten Sie zur richtigen Gerätekombination für Ihr Trocknungsprojekt.`,
+    ],
+    "moebel-zelte": [
+      `Partyzelt und Eventmobiliar mieten in ${location.name} – Zelte, Tische, Stühle, Bänke und Bierzeltgarnituren für Hochzeit, Geburtstag, Firmenfeier oder Vereinsfest. Bei SLT Rental finden Sie alles für Ihre Veranstaltung unter einem Dach.`,
+      `Von der kleinen Gartenparty bis zum großen Firmenevent: Wir bieten Partyzelte in verschiedenen Größen und passende Bestuhlung. Lieferung und Abholung in ${location.name} und Umgebung.`,
+    ],
+    "geschirr-glaeser-besteck": [
+      `Geschirr, Gläser und Besteck mieten in ${location.name} – 10er-Sets ab 5 €. Hochwertiges Eventgeschirr der Linien Passionata und Darwin sowie praktisches Standard-Geschirr der Linien Simply und Brunelli. Perfekt für Hochzeit, Firmenevent oder Gartenparty.`,
+      `Das Beste: Sie geben das Geschirr einfach ungespült zurück! Wir übernehmen die Reinigung für Sie. Kombinieren Sie Geschirr, Gläser und Besteck zu Ihrem individuellen Event-Set.`,
+    ],
+    absperrtechnik: [
+      `Absperrtechnik mieten in ${location.name} – Absperrgitter, Bauzäune, Halteverbotsschilder und Verkehrszeichen nach StVO. Bei SLT Rental finden Sie professionelle Absperr- und Sicherheitstechnik für Baustellen, Events und Umzüge.`,
+      `Halteverbotsschilder für Umzüge, Bauzäune für die Baustellen-Absicherung, Warn- und Hinweisschilder nach StVO – alles zur Miete in ${location.name}. Bitte beachten Sie: Die Genehmigung für Halteverbotszonen beantragen Sie beim zuständigen Ordnungsamt.`,
+    ],
+    "kabel-stromverteiler": [
+      `Kabel und Stromverteiler mieten in ${location.name} – CEE-Kabel, Schuko-Kabeltrommeln, Kabelbrücken, Anschlussschränke und Stromverteiler für Event und Baustelle. Bei SLT Rental finden Sie die richtige Stromversorgung für jedes Projekt.`,
+      `Von der 16A Schuko-Kabeltrommel bis zum 63A CEE-Anschlussschrank – wir beraten Sie zur richtigen Stromverteilung für Ihr Event oder Ihre Baustelle in ${location.name}.`,
+    ],
+    beschallung: [
+      `PA-Anlage und Lautsprecher mieten in ${location.name} – vom Bluetooth-Speaker für die Gartenparty bis zur professionellen PA-Anlage für 250 Personen. SLT Rental bietet professionelle Beschallungstechnik für jeden Anlass.`,
+      `Komplette Sound-Pakete mit Lautsprechern, Subwoofern und Mischpult. Für Hochzeiten, Firmenfeiern, Sportveranstaltungen und Konzerte in ${location.name} und Umgebung.`,
+    ],
+    beleuchtung: [
+      `Eventbeleuchtung mieten in ${location.name} – LED Spots, Moving Heads, PAR-Scheinwerfer, LED Bars und Baustellenstrahler. SLT Rental bietet professionelle Lichttechnik für Events, Bühnen und Baustellen.`,
+      `Von der stimmungsvollen Ambientebeleuchtung bis zur professionellen Bühnenbeleuchtung – wir haben die passende Lichttechnik für Ihr Event in ${location.name}.`,
+    ],
+    buehne: [
+      `Bühne und Podeste mieten in ${location.name} – modulare Bühnenpodeste für Konzerte, Reden, Modenschauen und Firmenevents. Flexible Bühnengrößen individuell konfigurierbar.`,
+      `Alle Bühnenpodeste sind wetterfest und indoor/outdoor einsetzbar. Kombinieren Sie mit Traversen und Beleuchtung für eine komplette Event-Lösung in ${location.name}.`,
+    ],
+    "traversen-rigging": [
+      `Traversen und Rigging mieten in ${location.name} – Alu-Traversen, Kettenzüge und Rigging-Zubehör für professionelle Veranstaltungstechnik. Traversensysteme für Licht, Ton und Dekoration.`,
+      `Ob Ground-Support oder Flugtraverse – wir bieten professionelle Traversensysteme für Events jeder Größe in ${location.name} und NRW.`,
+    ],
+    spezialeffekte: [
+      `Spezialeffekte mieten in ${location.name} – Funkenfontänen, Nebelmaschinen, Hazer, Seifenblasenmaschinen und Konfettikanonen für spektakuläre Events. Professionelle Effekttechnik bei SLT Rental.`,
+      `Machen Sie Ihr Event unvergesslich! Unsere Spezialeffekte sind einfach zu bedienen und sorgen für den Wow-Faktor bei Hochzeiten, Firmenfeiern und Shows.`,
+    ],
+    kommunikation: [
+      `Funkmikrofon und Headset mieten in ${location.name} – professionelle Sennheiser-Funkstrecken für Konferenzen, Hochzeiten, Reden und Events. Handmikrofone, Headsets und Ansteckmikrofone verfügbar.`,
+      `Hochwertige drahtlose Mikrofonsysteme für klare Sprachübertragung bei jeder Veranstaltung. Einfache Bedienung, zuverlässiger Empfang.`,
+    ],
+  };
+
   // Category-specific FAQs for FAQ schema
   const categoryFaqs: Record<string, { question: string; answer: string }[]> = {
     anhaenger: [
