@@ -64,7 +64,7 @@ export function ServicesSection() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {services.map((service, index) => (
             <AnimatedSection key={service.title} delay={index * 100} animation="fade-in-up">
               <Card className="h-full hover:shadow-lg transition-all duration-300 border-2">
