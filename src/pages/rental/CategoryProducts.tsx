@@ -904,7 +904,7 @@ export default function CategoryProducts() {
     ],
     arbeitsbuehnen: [
       `Arbeitsbühne mieten in ${location.name} – bei SLT Rental finden Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m. Ideal für Fassadenarbeiten, Baumschnitt, Dacharbeiten oder Montagen in der Höhe.`,
-      `Unsere Hubarbeitsbühnen sind regelmäßig geprüft und sofort einsatzbereit. Lieferung und Abholung in ${location.name} und Umgebung möglich. Für motorisierte Arbeitsbühnen ist ein Bedienerausweis erforderlich – sprechen Sie uns an, wir beraten Sie gerne.`,
+      `Unsere Hubarbeitsbühnen sind regelmäßig geprüft und sofort einsatzbereit. Lieferung und Abholung in ${location.name} und Umgebung möglich. Für motorisierte Arbeitsbühnen ist ein Bedienerausweis erforderlich – sprechen Sie uns an, wir beraten Sie gerne.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt übernehmen wir auch Wartung und Reparatur von Arbeitsbühnen aller Hersteller – auch Fremdgeräte. Kontakt: service@slt-rental.de" : ""}`,
     ],
     gartenpflege: [
       `Gartengeräte mieten in ${location.name} – Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Stubbenfräsen und mehr bei SLT Rental. Professionelle Gartengeräte für Privatpersonen und Landschaftsgärtner zum fairen Tagesmietpreis.`,
@@ -912,11 +912,11 @@ export default function CategoryProducts() {
     ],
     aggregate: [
       `Stromaggregat mieten in ${location.name} – von 2,8 kVA für den Marktstand bis 100 kVA für die Großbaustelle. SLT Rental bietet leise Inverter-Stromerzeuger für Events und leistungsstarke Diesel-Aggregate für Baustellen ohne Stromanschluss.`,
-      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.`,
+      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt warten und reparieren wir auch Stromerzeuger und Aggregate aller Hersteller – Fremdgeräte willkommen. Kontakt: service@slt-rental.de" : ""}`,
     ],
     verdichtung: [
       `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
-      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.`,
+      `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt bieten wir Wartung und Reparatur von Verdichtungstechnik aller Hersteller an – auch für Fremdgeräte. Kontakt: service@slt-rental.de" : ""}`,
     ],
     huepfburgen: [
       `Hüpfburg mieten in ${location.name} – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen und Designs für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Lieferung und Aufbau in ${location.name} und Umgebung möglich.`,

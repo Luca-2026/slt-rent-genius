@@ -9,7 +9,8 @@ import {
   ClipboardList, 
   Truck, 
   ShieldCheck, 
-  Construction 
+  Construction,
+  Mail
 } from "lucide-react";
 
 export function ServicesSection() {
@@ -40,6 +41,12 @@ export function ServicesSection() {
       link: "/lieferung",
       linkLabel: t("services.deliveryLink"),
     },
+    {
+      icon: Wrench,
+      title: "Werkstatt & Reparatur",
+      description: "Eigene Werkstatt für Wartung & Reparatur an Anhängern, Baumaschinen und Aggregaten – auch für Fremdgeräte.",
+      emailLink: "service@slt-rental.de",
+    },
   ];
 
   return (
@@ -57,7 +64,7 @@ export function ServicesSection() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {services.map((service, index) => (
             <AnimatedSection key={service.title} delay={index * 100} animation="fade-in-up">
               <Card className="h-full hover:shadow-lg transition-all duration-300 border-2">
@@ -90,6 +97,15 @@ export function ServicesSection() {
                       {service.linkLabel}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
+                  )}
+                  {service.emailLink && (
+                    <a
+                      href={`mailto:${service.emailLink}`}
+                      className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-3 hover:underline"
+                    >
+                      <Mail className="h-3 w-3" />
+                      {service.emailLink}
+                    </a>
                   )}
                 </CardContent>
               </Card>
