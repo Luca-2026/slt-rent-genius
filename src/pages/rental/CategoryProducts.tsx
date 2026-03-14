@@ -896,7 +896,7 @@ export default function CategoryProducts() {
     erdbewegung: [
       `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
       `Zusätzlich bieten wir ein umfangreiches Sortiment an Anbaugeräten: Tieflöffel in verschiedenen Breiten, Grabenräumlöffel, Hydraulikhammer für Abbrucharbeiten und Sortiergreifer. Alle Anbaugeräte mit MS01 oder MS03 Aufnahme. Lieferung direkt auf Ihre Baustelle in ${location.name} möglich – berechnen Sie die Lieferkosten mit unserem Online-Rechner.`,
-      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.`,
+      `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt bieten wir zudem Wartung und Reparatur von Baumaschinen aller Hersteller an – auch für Fremdgeräte." : ""}`,
     ],
     werkzeuge: [
       `Professionelle Werkzeuge mieten in ${location.name} – bei SLT Rental leihen Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Betonrüttler, Fliesenschneider, Baulaser und vieles mehr. Alle Geräte sind von Markenherstellern und werden regelmäßig gewartet.`,
