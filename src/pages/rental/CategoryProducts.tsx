@@ -891,7 +891,7 @@ export default function CategoryProducts() {
     anhaenger: [
       `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per SMS-Code verfügbar, auch am Wochenende und an Feiertagen.`,
       `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per SMS. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
-      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.`,
+      `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.${(location.id === "krefeld" || location.id === "bonn") ? " Übrigens: In unserer eigenen Werkstatt führen wir auch Wartungs- und Reparaturarbeiten an Anhängern durch – auch an Fremdgeräten." : ""}`,
     ],
     erdbewegung: [
       `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
