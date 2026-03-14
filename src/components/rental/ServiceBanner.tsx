@@ -198,7 +198,7 @@ export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
   return (
     <div className="space-y-3">
       {service && <ServiceBannerItem service={service} />}
-      {showWorkshop && <ServiceBannerItem service={workshopService} />}
+      {showWorkshop && workshopServices[categoryId] && <ServiceBannerItem service={workshopServices[categoryId]} />}
     </div>
   );
 }
