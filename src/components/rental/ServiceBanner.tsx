@@ -178,7 +178,7 @@ function ServiceBannerItem({ service }: { service: ServiceInfo }) {
               className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
-              {service.emailLink}
+              Jetzt Kontakt aufnehmen
             </a>
           )}
         </div>
