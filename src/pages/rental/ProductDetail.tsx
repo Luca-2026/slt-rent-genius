@@ -386,11 +386,6 @@ export default function ProductDetail() {
                       </div>
                     ))}
                   </div>
-                  {product.weightKg && categoryId !== "anhaenger" && (
-                    <p className="text-xs text-muted-foreground mt-3">
-                      {t("rental.payload")}: {product.weightKg >= 1000 ? `${(product.weightKg / 1000).toFixed(1)} t` : `${product.weightKg} kg`}
-                    </p>
-                  )}
                 </div>
               )}
 
