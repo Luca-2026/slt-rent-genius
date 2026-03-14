@@ -154,7 +154,7 @@ export default function LocationCategories() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center">
             <div>
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary-foreground mb-2 md:mb-4">
-                SLT Rental in {location.name}
+                Baumaschinen & Equipment mieten in {location.name}
               </h1>
               <p className="text-primary-foreground/80 text-sm md:text-base lg:text-lg mb-5 md:mb-8">
                 {description}
