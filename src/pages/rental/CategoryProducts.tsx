@@ -912,7 +912,7 @@ export default function CategoryProducts() {
     ],
     aggregate: [
       `Stromaggregat mieten in ${location.name} – von 2,8 kVA für den Marktstand bis 100 kVA für die Großbaustelle. SLT Rental bietet leise Inverter-Stromerzeuger für Events und leistungsstarke Diesel-Aggregate für Baustellen ohne Stromanschluss.`,
-      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt warten und reparieren wir auch Stromerzeuger und Aggregate aller Hersteller – Fremdgeräte willkommen. Kontakt: service@slt-rental.de" : ""}`,
+      `Alle Stromaggregate werden betankt und einsatzbereit übergeben. Lieferung zu Ihrer Baustelle oder Ihrem Veranstaltungsort in ${location.name} möglich.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt warten und reparieren wir auch Stromerzeuger und Aggregate aller Hersteller – Fremdgeräte willkommen." : ""}`,
     ],
     verdichtung: [
       `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
