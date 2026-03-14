@@ -1548,17 +1548,37 @@ export default function CategoryProducts() {
               <p className="text-muted-foreground mb-4">
                 {categorySeoTexts[category.id]?.[0] || `Bei SLT Rental in ${location.name} finden Sie ${categoryDisplayName} zur Miete – schnell, fair und unkompliziert. Ob für Ihr Bauprojekt, Ihren Garten oder Ihr Event: Wir haben das passende Equipment für Sie.`}
               </p>
-              <p className="text-muted-foreground mb-4">
-                {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
-              </p>
-              {categorySeoTexts[category.id]?.[2] && (
-                <p className="text-muted-foreground">
-                  {categorySeoTexts[category.id][2]}
+              {/* Additional paragraphs hidden on mobile, visible on desktop */}
+              <div className="hidden lg:block">
+                <p className="text-muted-foreground mb-4">
+                  {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
                 </p>
-              )}
+                {categorySeoTexts[category.id]?.[2] && (
+                  <p className="text-muted-foreground">
+                    {categorySeoTexts[category.id][2]}
+                  </p>
+                )}
+              </div>
+              {/* Mobile: collapsible extra text */}
+              <details className="lg:hidden group mb-2">
+                <summary className="cursor-pointer text-sm text-primary font-medium list-none flex items-center gap-1">
+                  Mehr erfahren
+                  <ChevronDown className="h-3.5 w-3.5 group-open:rotate-180 transition-transform" />
+                </summary>
+                <div className="mt-3">
+                  <p className="text-muted-foreground mb-4">
+                    {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
+                  </p>
+                  {categorySeoTexts[category.id]?.[2] && (
+                    <p className="text-muted-foreground">
+                      {categorySeoTexts[category.id][2]}
+                    </p>
+                  )}
+                </div>
+              </details>
 
               {/* FAQ Section */}
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-4">
+              <h3 className="text-lg font-semibold text-headline mt-8 lg:mt-8 mt-4 mb-4">
                 Häufige Fragen: {categoryDisplayName} mieten in {location.name}
               </h3>
               <div className="space-y-4">
