@@ -1116,7 +1116,7 @@ export default function CategoryProducts() {
 
       {/* 24/7 Info Banner for Anhänger */}
       {category.id === "anhaenger" && (
-        <section className="hidden lg:block bg-accent/10 border-y border-accent/20">
+        <section className="bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-3">
