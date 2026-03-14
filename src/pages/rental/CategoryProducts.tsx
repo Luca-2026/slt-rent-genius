@@ -1116,7 +1116,7 @@ export default function CategoryProducts() {
 
       {/* 24/7 Info Banner for Anhänger */}
       {category.id === "anhaenger" && (
-        <section className="bg-accent/10 border-y border-accent/20">
+        <section className="hidden lg:block bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-3">
@@ -1184,7 +1184,7 @@ export default function CategoryProducts() {
 
       {/* Info Banner for Erdbewegung */}
       {category.id === "erdbewegung" && (
-        <section className="bg-accent/10 border-y border-accent/20">
+        <section className="hidden lg:block bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
             {/* Main Description */}
              <p className="text-foreground mb-6">
@@ -1548,17 +1548,37 @@ export default function CategoryProducts() {
               <p className="text-muted-foreground mb-4">
                 {categorySeoTexts[category.id]?.[0] || `Bei SLT Rental in ${location.name} finden Sie ${categoryDisplayName} zur Miete – schnell, fair und unkompliziert. Ob für Ihr Bauprojekt, Ihren Garten oder Ihr Event: Wir haben das passende Equipment für Sie.`}
               </p>
-              <p className="text-muted-foreground mb-4">
-                {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
-              </p>
-              {categorySeoTexts[category.id]?.[2] && (
-                <p className="text-muted-foreground">
-                  {categorySeoTexts[category.id][2]}
+              {/* Additional paragraphs hidden on mobile, visible on desktop */}
+              <div className="hidden lg:block">
+                <p className="text-muted-foreground mb-4">
+                  {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
                 </p>
-              )}
+                {categorySeoTexts[category.id]?.[2] && (
+                  <p className="text-muted-foreground">
+                    {categorySeoTexts[category.id][2]}
+                  </p>
+                )}
+              </div>
+              {/* Mobile: collapsible extra text */}
+              <details className="lg:hidden group mb-2">
+                <summary className="cursor-pointer text-sm text-primary font-medium list-none flex items-center gap-1">
+                  Mehr erfahren
+                  <ChevronDown className="h-3.5 w-3.5 group-open:rotate-180 transition-transform" />
+                </summary>
+                <div className="mt-3">
+                  <p className="text-muted-foreground mb-4">
+                    {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
+                  </p>
+                  {categorySeoTexts[category.id]?.[2] && (
+                    <p className="text-muted-foreground">
+                      {categorySeoTexts[category.id][2]}
+                    </p>
+                  )}
+                </div>
+              </details>
 
               {/* FAQ Section */}
-              <h3 className="text-lg font-semibold text-headline mt-8 mb-4">
+              <h3 className="text-lg font-semibold text-headline mt-8 lg:mt-8 mt-4 mb-4">
                 Häufige Fragen: {categoryDisplayName} mieten in {location.name}
               </h3>
               <div className="space-y-4">
