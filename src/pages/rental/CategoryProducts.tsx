@@ -1186,9 +1186,12 @@ export default function CategoryProducts() {
       {category.id === "erdbewegung" && (
         <section className="bg-accent/10 border-y border-accent/20">
           <div className="section-container py-6">
-            {/* Main Description */}
-             <p className="text-foreground mb-6">
+            {/* Main Description - short on mobile, full on desktop */}
+             <p className="text-foreground mb-6 hidden lg:block">
                {t("rental.earthMovingDesc")}
+              </p>
+             <p className="text-foreground mb-6 lg:hidden">
+               Minibagger, Dumper oder Radlader mieten – wir haben die passende Maschine für Ihr Bauprojekt.
               </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
