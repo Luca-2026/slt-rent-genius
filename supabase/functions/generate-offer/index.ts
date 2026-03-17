@@ -359,6 +359,8 @@ Deno.serve(async (req: Request) => {
           email_sent: false,
           deposit: deposit || null,
           additional_services: servicesJson,
+          issuing_location: issuingLocation || null,
+          return_location: returnLocation || null,
         })
         .eq("id", offer_id)
         .select()
@@ -397,6 +399,10 @@ Deno.serve(async (req: Request) => {
           email_sent: false,
           deposit: deposit || null,
           additional_services: servicesJson,
+          created_by_user_id: authUser.id,
+          created_by_staff_name: staffName,
+          issuing_location: issuingLocation || null,
+          return_location: returnLocation || null,
         })
         .select()
         .single();
