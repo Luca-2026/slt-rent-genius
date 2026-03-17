@@ -51,6 +51,7 @@ const localAreaPages = [
   // Bonn region
   'bonn', 'bad-godesberg', 'koenigswinter', 'bad-honnef', 'sankt-augustin',
   'siegburg', 'troisdorf', 'alfter', 'bornheim', 'meckenheim', 'rheinbach',
+  'wachtberg', 'bad-neuenahr-ahrweiler', 'remagen', 'sinzig', 'grafschaft', 'swisttal',
   // Mülheim region
   'muelheim-an-der-ruhr', 'essen', 'oberhausen', 'duisburg-sued', 'bottrop',
   'gelsenkirchen', 'ratingen', 'bochum-west', 'dinslaken',
