@@ -218,6 +218,9 @@ export function AdminCreateOfferDialog({
       setIssuingLocation(draft.issuingLocation);
       setReturnLocation(draft.returnLocation);
       setSelectedProfileId(draft.selectedProfileId);
+      setDeliveryAddressStreet(draft.deliveryAddressStreet || "");
+      setDeliveryAddressPostalCode(draft.deliveryAddressPostalCode || "");
+      setDeliveryAddressCity(draft.deliveryAddressCity || "");
       return;
     }
 
