@@ -433,6 +433,10 @@ export function AdminCreateOfferDialog({
             : `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
       });
 
+      // Clear draft after successful save
+      offerDraftStore.key = null;
+      offerDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
