@@ -300,12 +300,30 @@ export function AdminCreateOfferDialog({
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
       setIssuingLocation((reservation as any).location || "krefeld");
       setReturnLocation("");
-      if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
-        setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
-      } else {
-        setSelectedServices(new Set());
+      // Collect additional_services from all grouped reservations
+      const allGroupRes = allReservations && allReservations.length > 0 ? allReservations : [reservation];
+      const collectedServiceIds = new Set<string>();
+      for (const res of allGroupRes) {
+        if (res.additional_services && Array.isArray(res.additional_services)) {
+          for (const s of res.additional_services as any[]) {
+            if (s.id) collectedServiceIds.add(s.id);
+          }
+        }
       }
+      setSelectedServices(collectedServiceIds);
       setCustomServicePrices({});
+      // Parse delivery address from reservation notes
+      const resNotes = reservation.notes || "";
+      const deliveryMatch = resNotes.match(/🚚\s*Lieferung gewünscht:\s*(.+),\s*(\d{4,5})\s+(.+)/);
+      if (deliveryMatch) {
+        setDeliveryAddressStreet(deliveryMatch[1]?.trim() || "");
+        setDeliveryAddressPostalCode(deliveryMatch[2]?.trim() || "");
+        setDeliveryAddressCity(deliveryMatch[3]?.trim() || "");
+      } else {
+        setDeliveryAddressStreet("");
+        setDeliveryAddressPostalCode("");
+        setDeliveryAddressCity("");
+      }
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
       setDeliveryCostDelivery(0);
