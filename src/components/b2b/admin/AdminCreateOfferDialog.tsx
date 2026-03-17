@@ -305,6 +305,9 @@ export function AdminCreateOfferDialog({
       setSelectedProfileId("");
       setIssuingLocation("krefeld");
       setReturnLocation("");
+      setDeliveryAddressStreet("");
+      setDeliveryAddressPostalCode("");
+      setDeliveryAddressCity("");
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
