@@ -43,6 +43,8 @@ interface OfferRequest {
   offer_id?: string;
   items: OfferItem[];
   delivery_cost?: number;
+  delivery_cost_delivery?: number;
+  delivery_cost_return?: number;
   valid_days?: number;
   notes?: string;
   send_email?: boolean;
@@ -106,6 +108,8 @@ Deno.serve(async (req: Request) => {
       offer_id,
       items,
       delivery_cost = 0,
+      delivery_cost_delivery = 0,
+      delivery_cost_return = 0,
       valid_days = 14,
       notes,
       send_email = true,
@@ -299,6 +303,8 @@ Deno.serve(async (req: Request) => {
       profile,
       items: offerItems,
       deliveryCost: delivery_cost,
+      deliveryCostDelivery: delivery_cost_delivery,
+      deliveryCostReturn: delivery_cost_return,
       servicesSurcharge,
       servicesWithPrices,
       netAmount,
@@ -582,7 +588,8 @@ Deno.serve(async (req: Request) => {
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:25px;">
         <table style="width:100%;font-size:14px;color:#555;">
           <tr><td>Zwischensumme Mietgeräte:</td><td style="text-align:right;font-weight:600;">${formatCurrency(itemsTotal)}</td></tr>
-          ${delivery_cost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(delivery_cost)}</td></tr>` : ""}
+          ${delivery_cost_delivery > 0 ? `<tr><td>Anlieferung:</td><td style="text-align:right;">${formatCurrency(delivery_cost_delivery)}</td></tr>` : ""}
+          ${delivery_cost_return > 0 ? `<tr><td>Rücklieferung:</td><td style="text-align:right;">${formatCurrency(delivery_cost_return)}</td></tr>` : ""}
           ${servicesSurcharge > 0 ? `<tr><td>Zusatzleistungen:</td><td style="text-align:right;">${formatCurrency(servicesSurcharge)}</td></tr>` : ""}
           <tr><td style="font-weight:600;">Nettobetrag:</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
           ${isReverseCharge
@@ -701,6 +708,8 @@ async function generateOfferPdf(data: {
   profile: any;
   items: any[];
   deliveryCost: number;
+  deliveryCostDelivery: number;
+  deliveryCostReturn: number;
   servicesSurcharge: number;
   servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[];
   netAmount: number;
@@ -915,16 +924,28 @@ async function generateOfferPdf(data: {
     y -= 12;
   }
 
-  // ── DELIVERY ROW ──
-  if (data.deliveryCost > 0) {
+  // ── DELIVERY ROWS ──
+  if (data.deliveryCostDelivery > 0) {
     ensureSpace(40);
-    drawText("Lieferung / Transport", colName, y, { f: fontBold, s: 9 });
+    drawText("Anlieferung", colName, y, { f: fontBold, s: 9 });
     drawTextRight("1", colQty + 30, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), colUnit + 50, y, { s: 9 });
-    drawTextRight(fmtCurrency(data.deliveryCost), colTotal, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCostDelivery), colUnit + 50, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCostDelivery), colTotal, y, { s: 9 });
+    y -= 8;
+    page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
+    y -= 12;
+  }
+  if (data.deliveryCostReturn > 0) {
+    ensureSpace(40);
+    drawText("Rücklieferung", colName, y, { f: fontBold, s: 9 });
+    drawTextRight("1", colQty + 30, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCostReturn), colUnit + 50, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCostReturn), colTotal, y, { s: 9 });
     y -= 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
     y -= 15;
+  } else if (data.deliveryCostDelivery > 0) {
+    y -= 3;
   }
 
   y -= 10;
@@ -937,9 +958,14 @@ async function generateOfferPdf(data: {
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
-  if (data.deliveryCost > 0) {
-    drawText("Transportkosten:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin, y, { s: 9 });
+  if (data.deliveryCostDelivery > 0) {
+    drawText("Anlieferung:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCostDelivery), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+  if (data.deliveryCostReturn > 0) {
+    drawText("Rücklieferung:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCostReturn), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 

@@ -25,7 +25,9 @@ import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete"
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
   items: OfferItemInput[];
-  deliveryCost: number;
+  deliveryCostDelivery: number;
+  deliveryCostReturn: number;
+  includeReturn: boolean;
   validDays: number;
   notes: string;
   sendEmail: boolean;
@@ -129,7 +131,9 @@ export function AdminCreateOfferDialog({
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [items, setItems] = useState<OfferItemInput[]>([]);
-  const [deliveryCost, setDeliveryCost] = useState(0);
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  const [includeReturn, setIncludeReturn] = useState(false);
   const [validDays, setValidDays] = useState(14);
   const [notes, setNotes] = useState("");
   const [sendEmail, setSendEmail] = useState(true);
@@ -158,7 +162,9 @@ export function AdminCreateOfferDialog({
     offerDraftStore.key = contextKey;
     offerDraftStore.data = {
       items: [...items],
-      deliveryCost,
+      deliveryCostDelivery,
+      deliveryCostReturn,
+      includeReturn,
       validDays,
       notes,
       sendEmail,
@@ -169,7 +175,7 @@ export function AdminCreateOfferDialog({
       returnLocation,
       selectedProfileId,
     };
-  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
@@ -191,7 +197,9 @@ export function AdminCreateOfferDialog({
     if (offerDraftStore.key === contextKey && offerDraftStore.data) {
       const draft = offerDraftStore.data;
       setItems(draft.items);
-      setDeliveryCost(draft.deliveryCost);
+      setDeliveryCostDelivery(draft.deliveryCostDelivery ?? 0);
+      setDeliveryCostReturn(draft.deliveryCostReturn ?? 0);
+      setIncludeReturn(draft.includeReturn ?? false);
       setValidDays(draft.validDays);
       setNotes(draft.notes);
       setSendEmail(draft.sendEmail);
@@ -234,7 +242,20 @@ export function AdminCreateOfferDialog({
           };
         })
       );
-      setDeliveryCost(existingOffer.delivery_cost || 0);
+      // Parse delivery costs: try structured format first, fall back to legacy single value
+      const existingDeliveryCost = existingOffer.delivery_cost || 0;
+      const existingNotes = existingOffer.notes || "";
+      // Check if notes contain structured delivery info (from our format)
+      const deliveryMatch = existingNotes.match(/\[DELIVERY:(\d+(?:\.\d+)?)\|RETURN:(\d+(?:\.\d+)?)\]/);
+      if (deliveryMatch) {
+        setDeliveryCostDelivery(Number(deliveryMatch[1]));
+        setDeliveryCostReturn(Number(deliveryMatch[2]));
+        setIncludeReturn(Number(deliveryMatch[2]) > 0);
+      } else {
+        setDeliveryCostDelivery(existingDeliveryCost);
+        setDeliveryCostReturn(0);
+        setIncludeReturn(false);
+      }
       setNotes(existingOffer.notes || "");
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
@@ -262,7 +283,9 @@ export function AdminCreateOfferDialog({
       setCustomServicePrices({});
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
-      setDeliveryCost(0);
+      setDeliveryCostDelivery(0);
+      setDeliveryCostReturn(0);
+      setIncludeReturn(false);
       setNotes("");
       setDeposit("");
       setSelectedServices(new Set());
@@ -313,7 +336,9 @@ export function AdminCreateOfferDialog({
         };
       })
     );
-    setDeliveryCost(0);
+    setDeliveryCostDelivery(0);
+    setDeliveryCostReturn(0);
+    setIncludeReturn(false);
     setNotes(reservation.notes || "");
   };
 
@@ -388,7 +413,8 @@ export function AdminCreateOfferDialog({
   // Base = item totals only (excl. delivery & deposit) for service % calculation
   const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
   const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal, customServicePrices);
-  const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
+  const totalDeliveryCost = deliveryCostDelivery + (includeReturn ? deliveryCostReturn : 0);
+  const netAmount = itemsNetTotal + totalDeliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
   const vatRate = isReverseCharge ? 0 : 19;
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
@@ -463,7 +489,9 @@ export function AdminCreateOfferDialog({
             end_time: item.end_time || undefined,
             image_url: getProductImageUrl(reservation?.product_id || "") || getProductImageUrlByName(item.product_name) || undefined,
           })),
-          delivery_cost: deliveryCost,
+          delivery_cost: totalDeliveryCost,
+          delivery_cost_delivery: deliveryCostDelivery,
+          delivery_cost_return: includeReturn ? deliveryCostReturn : 0,
           valid_days: validDays,
           notes: notes || undefined,
           send_email: shouldSendEmail,
@@ -768,14 +796,33 @@ export function AdminCreateOfferDialog({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label className="text-xs">Lieferkosten (€ netto)</Label>
+            <Label className="text-xs">Anlieferung (€ netto)</Label>
             <Input
               type="number"
               min={0}
               step={0.01}
-              value={deliveryCost}
-              onChange={(e) => setDeliveryCost(Number(e.target.value))}
+              value={deliveryCostDelivery}
+              onChange={(e) => setDeliveryCostDelivery(Number(e.target.value))}
               className="h-8 text-sm"
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Checkbox
+                id="include-return"
+                checked={includeReturn}
+                onCheckedChange={(checked) => setIncludeReturn(!!checked)}
+              />
+              <Label htmlFor="include-return" className="text-xs cursor-pointer">Rücklieferung</Label>
+            </div>
+            <Input
+              type="number"
+              min={0}
+              step={0.01}
+              value={deliveryCostReturn}
+              onChange={(e) => setDeliveryCostReturn(Number(e.target.value))}
+              className="h-8 text-sm"
+              disabled={!includeReturn}
             />
           </div>
           <div>
@@ -879,10 +926,16 @@ export function AdminCreateOfferDialog({
                 <span className="text-muted-foreground">Positionen:</span>
                 <span>{formatCurrency(itemsNetTotal)}</span>
               </div>
-              {deliveryCost > 0 && (
+              {deliveryCostDelivery > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Lieferkosten:</span>
-                  <span>{formatCurrency(deliveryCost)}</span>
+                  <span className="text-muted-foreground">Anlieferung:</span>
+                  <span>{formatCurrency(deliveryCostDelivery)}</span>
+                </div>
+              )}
+              {includeReturn && deliveryCostReturn > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Rücklieferung:</span>
+                  <span>{formatCurrency(deliveryCostReturn)}</span>
                 </div>
               )}
               {servicesSurcharge > 0 && (
