@@ -926,10 +926,16 @@ export function AdminCreateOfferDialog({
                 <span className="text-muted-foreground">Positionen:</span>
                 <span>{formatCurrency(itemsNetTotal)}</span>
               </div>
-              {deliveryCost > 0 && (
+              {deliveryCostDelivery > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Lieferkosten:</span>
-                  <span>{formatCurrency(deliveryCost)}</span>
+                  <span className="text-muted-foreground">Anlieferung:</span>
+                  <span>{formatCurrency(deliveryCostDelivery)}</span>
+                </div>
+              )}
+              {includeReturn && deliveryCostReturn > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Rücklieferung:</span>
+                  <span>{formatCurrency(deliveryCostReturn)}</span>
                 </div>
               )}
               {servicesSurcharge > 0 && (
