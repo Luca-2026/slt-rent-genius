@@ -923,26 +923,35 @@ async function generateOfferPdf(data: {
 
   // ── PRE-FETCH PRODUCT IMAGES ──
   const imageCache = new Map<string, any>();
-  for (const item of data.items) {
-    if (item.image_url && !imageCache.has(item.image_url)) {
+  const imageFetchPromises = data.items
+    .filter((item) => item.image_url && !imageCache.has(item.image_url))
+    .map(async (item) => {
+      const url = item.image_url!;
       try {
-        const imgResp = await fetch(item.image_url);
-        if (imgResp.ok) {
-          const imgBytes = new Uint8Array(await imgResp.arrayBuffer());
-          const contentType = imgResp.headers.get("content-type") || "";
-          let embeddedImg;
-          if (contentType.includes("png")) {
-            embeddedImg = await doc.embedPng(imgBytes);
-          } else {
-            embeddedImg = await doc.embedJpg(imgBytes);
-          }
-          imageCache.set(item.image_url, embeddedImg);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const imgResp = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (!imgResp.ok) return;
+        const contentType = imgResp.headers.get("content-type") || "";
+        // Skip if not an actual image (e.g. HTML page returned)
+        if (!contentType.includes("image/")) {
+          console.error("Skipping non-image response for:", url, "content-type:", contentType);
+          return;
         }
+        const imgBytes = new Uint8Array(await imgResp.arrayBuffer());
+        let embeddedImg;
+        if (contentType.includes("png")) {
+          embeddedImg = await doc.embedPng(imgBytes);
+        } else {
+          embeddedImg = await doc.embedJpg(imgBytes);
+        }
+        imageCache.set(url, embeddedImg);
       } catch (e) {
-        console.error("Failed to embed image:", item.image_url, e);
+        console.error("Failed to embed image:", url, e);
       }
-    }
-  }
+    });
+  await Promise.all(imageFetchPromises);
 
   const imgSize = 38; // thumbnail size in PDF
   const colNameWithImg = colName + imgSize + 6; // shift text right when image present

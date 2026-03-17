@@ -170,5 +170,31 @@ export function getProductImageUrlByName(productName: string): string | null {
 
 function toAbsoluteUrl(imagePath: string): string {
   if (imagePath.startsWith("http")) return imagePath;
-  return `${window.location.origin}${imagePath}`;
+  // Use the preview/published URL for stable access from edge functions
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  return `${origin}${imagePath}`;
+}
+
+/**
+ * Returns a stable public path (without origin) for use in PDFs.
+ * Edge functions should prepend their own base URL.
+ */
+export function getProductImageStablePath(productId: string): string | null {
+  const product = getProductById(productId);
+  if (!product?.image) return null;
+  return vitePathToStablePath(product.image);
+}
+
+export function getProductImageStablePathByName(productName: string): string | null {
+  for (const location of locations) {
+    for (const products of Object.values(location.products)) {
+      const found = (products as Product[]).find(
+        (p) => p.name === productName || p.id === productName
+      );
+      if (found?.image) {
+        return vitePathToStablePath(found.image);
+      }
+    }
+  }
+  return null;
 }

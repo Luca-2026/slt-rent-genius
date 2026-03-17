@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
-import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
+import { getProductImageUrl, getProductImageUrlByName, getProductImageStablePath, getProductImageStablePathByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
 
@@ -300,12 +300,30 @@ export function AdminCreateOfferDialog({
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
       setIssuingLocation((reservation as any).location || "krefeld");
       setReturnLocation("");
-      if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
-        setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
-      } else {
-        setSelectedServices(new Set());
+      // Collect additional_services from all grouped reservations
+      const allGroupRes = allReservations && allReservations.length > 0 ? allReservations : [reservation];
+      const collectedServiceIds = new Set<string>();
+      for (const res of allGroupRes) {
+        if (res.additional_services && Array.isArray(res.additional_services)) {
+          for (const s of res.additional_services as any[]) {
+            if (s.id) collectedServiceIds.add(s.id);
+          }
+        }
       }
+      setSelectedServices(collectedServiceIds);
       setCustomServicePrices({});
+      // Parse delivery address from reservation notes
+      const resNotes = reservation.notes || "";
+      const deliveryMatch = resNotes.match(/🚚\s*Lieferung gewünscht:\s*(.+),\s*(\d{4,5})\s+(.+)/);
+      if (deliveryMatch) {
+        setDeliveryAddressStreet(deliveryMatch[1]?.trim() || "");
+        setDeliveryAddressPostalCode(deliveryMatch[2]?.trim() || "");
+        setDeliveryAddressCity(deliveryMatch[3]?.trim() || "");
+      } else {
+        setDeliveryAddressStreet("");
+        setDeliveryAddressPostalCode("");
+        setDeliveryAddressCity("");
+      }
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
       setDeliveryCostDelivery(0);
@@ -367,7 +385,13 @@ export function AdminCreateOfferDialog({
     setDeliveryCostDelivery(0);
     setDeliveryCostReturn(0);
     setIncludeReturn(false);
-    setNotes(reservation.notes || "");
+    // Clean delivery/batch metadata from visible notes
+    const cleanedNotes = (reservation.notes || "")
+      .replace(/🚚\s*Lieferung gewünscht:[^\n]*/g, "")
+      .replace(/Sammelanfrage BATCH-\d+[^\n]*/g, "")
+      .replace(/Abholung:.*?Rückgabe:[^\n]*/g, "")
+      .trim();
+    setNotes(cleanedNotes);
   };
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
@@ -515,7 +539,11 @@ export function AdminCreateOfferDialog({
             rental_end: item.rental_end || endDate,
             start_time: item.start_time || undefined,
             end_time: item.end_time || undefined,
-            image_url: getProductImageUrl(reservation?.product_id || "") || getProductImageUrlByName(item.product_name) || undefined,
+            image_url: (() => {
+              const stablePath = getProductImageStablePath(reservation?.product_id || "") || getProductImageStablePathByName(item.product_name);
+              if (stablePath) return `${window.location.origin}${stablePath}`;
+              return undefined;
+            })(),
           })),
           delivery_cost: totalDeliveryCost,
           delivery_cost_delivery: deliveryCostDelivery,
