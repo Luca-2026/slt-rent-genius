@@ -35,7 +35,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Maschinenbruchversicherung (SB 1.500 €)",
     description:
       "MBV für Bagger, Arbeitsbühnen, Radlader, Dumper und Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["erdbewegung", "arbeitsbuehnen", "aggregate"],
+    applicableCategories: ["erdbewegung", "arbeitsbuehnen", "aggregate", "verdichtung"],
     pricePercent: 12,
     mandatory: true,
     calculationBase: "mbv_items",
@@ -46,7 +46,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 1.000 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
@@ -57,7 +57,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 500 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 500 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
@@ -68,7 +68,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
       "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: 20,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
@@ -130,7 +130,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
 export const DEPOSIT_OPTIONS = [15, 50, 100, 150, 300, 750, 1000, 1500, 2000];
 
 /** Categories that should trigger MBV suggestions */
-export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen"];
+export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"];
 
 const TRAILER_CATEGORIES = ["anhaenger"];
 
