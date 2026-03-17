@@ -112,7 +112,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Für die Fahrt in das europäische Ausland.",
     applicableCategories: ["anhaenger"],
-    pricePercent: 15,
+    pricePercent: 17,
     calculationBase: "trailer_items",
   },
   // ── Kostenfreie Stornierung ──
