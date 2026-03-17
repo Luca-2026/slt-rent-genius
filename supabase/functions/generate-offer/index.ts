@@ -1174,7 +1174,7 @@ async function generateOfferPdf(data: {
   }
   if (data.deliveryCostReturn > 0) {
     ensureSpace(40);
-    drawText("Rücklieferung", colName, y, { f: fontBold, s: 9 });
+    drawText("Ruecklieferung", colName, y, { f: fontBold, s: 9 });
     drawTextRight("1", colQty + 30, y, { s: 9 });
     drawTextRight(fmtCurrency(data.deliveryCostReturn), colUnit + 50, y, { s: 9 });
     drawTextRight(fmtCurrency(data.deliveryCostReturn), colTotal, y, { s: 9 });
@@ -1183,6 +1183,17 @@ async function generateOfferPdf(data: {
     y -= 15;
   } else if (data.deliveryCostDelivery > 0) {
     y -= 3;
+  }
+  // Fallback: if delivery_cost > 0 but split values are both 0, show a single row
+  if (data.deliveryCost > 0 && data.deliveryCostDelivery <= 0 && data.deliveryCostReturn <= 0) {
+    ensureSpace(40);
+    drawText("Lieferkosten", colName, y, { f: fontBold, s: 9 });
+    drawTextRight("1", colQty + 30, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colUnit + 50, y, { s: 9 });
+    drawTextRight(fmtCurrency(data.deliveryCost), colTotal, y, { s: 9 });
+    y -= 8;
+    page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
+    y -= 15;
   }
 
   y -= 10;
