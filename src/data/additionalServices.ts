@@ -35,7 +35,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Maschinenbruchversicherung (SB 1.500 €)",
     description:
       "MBV für Bagger, Arbeitsbühnen, Radlader, Dumper und Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["erdbewegung", "arbeitsbuehnen", "aggregate"],
+    applicableCategories: ["erdbewegung", "arbeitsbuehnen", "aggregate", "verdichtung"],
     pricePercent: 12,
     mandatory: true,
     calculationBase: "mbv_items",
