@@ -51,6 +51,7 @@ interface InvoiceRequest {
   original_invoice_number?: string;
   send_email?: boolean;
   is_proforma?: boolean;
+  save_as_draft?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
