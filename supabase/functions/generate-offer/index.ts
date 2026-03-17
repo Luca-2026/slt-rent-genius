@@ -572,7 +572,7 @@ Deno.serve(async (req: Request) => {
         const servicesEmailHtml = servicesWithPrices.length > 0
           ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
               <p style="font-size:13px;font-weight:600;color:#166534;margin:0 0 8px;">Zusatzleistungen:</p>
-              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)}${s.amount > 0 ? ` – <strong>${formatCurrency(s.amount)}</strong> (${s.pricePercent}%)` : ' – inklusive'}</p>`).join("")}
+              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)} – <strong>${formatCurrency(s.amount)}</strong></p>`).join("")}
             </div>`
           : "";
 
@@ -1156,9 +1156,8 @@ async function generateOfferPdf(data: {
     y -= 14;
     for (const svc of data.servicesWithPrices) {
       ensureSpace(40);
-      const priceLabel = svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.";
-      // Price on the right
-      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 8, c: gray });
+      // Always show the calculated price, never "inkl."
+      drawTextRight(fmtCurrency(svc.amount), pageWidth - margin, y, { s: 8, c: gray });
       // Wrap service name to max width (leave space for price column)
       const maxNameWidth = contentWidth - 120;
       const nameText = safe("- " + svc.name);
