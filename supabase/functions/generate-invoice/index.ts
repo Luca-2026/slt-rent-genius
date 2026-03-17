@@ -315,7 +315,7 @@ Deno.serve(async (req: Request) => {
         amount: item.total_price,
       })),
       sections: [
-        ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
+        ...(notes && !is_proforma ? [{ label: "Bemerkungen", value: notes }] : []),
       ],
       totals: {
         net: netAmount,
