@@ -282,8 +282,8 @@ export function B2BMultiReservationDialog({
         body: {
           companyName: b2bProfile.company_name,
           contactName: `${b2bProfile.contact_first_name} ${b2bProfile.contact_last_name}`,
-          contactEmail: b2bProfile.billing_email || "",
-          contactPhone: "",
+          contactEmail: b2bProfile.contact_email,
+          contactPhone: b2bProfile.contact_phone,
           locationId,
           items: emailItems,
           deliveryRequested,
