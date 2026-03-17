@@ -43,6 +43,7 @@ interface InvoiceRequest {
     rental_end?: string;
     image_url?: string;
     item_type?: 'product' | 'service' | 'surcharge' | 'deposit';
+    parent_item_index?: number;
   }>;
   delivery_cost?: number;
   payment_due_days?: number;
