@@ -996,15 +996,16 @@ async function generateDocumentPdf(data: {
     page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   }
 
-  // ── Additional services section ──
-  if (data.serviceItems.length > 0) {
+  // ── Additional services section (only unassigned services) ──
+  const unassignedServiceItems = data.serviceItems.filter((svc) => svc.parentItemIndex == null);
+  if (unassignedServiceItems.length > 0) {
     checkPage(25);
     y -= 5;
     page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(0.96, 0.97, 0.98) });
     dt("Zusatzleistungen / Versicherungen", colName, y + 7, bold, 8, rgb(0.3, 0.3, 0.3));
     y -= 14;
 
-    data.serviceItems.forEach((svc) => {
+    unassignedServiceItems.forEach((svc) => {
       checkPage(30);
       dt(`${posNum}`, colPos, y, font, 9);
       posNum++;
