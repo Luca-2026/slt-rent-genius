@@ -50,7 +50,7 @@ interface OfferRequest {
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
-  additional_services?: { id: string; name: string; description?: string; pricePercent?: number }[];
+  additional_services?: { id: string; name: string; description?: string; pricePercent?: number; customPrice?: number }[];
   issuing_location?: string;
   return_location?: string;
 }
