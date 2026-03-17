@@ -303,6 +303,9 @@ Deno.serve(async (req: Request) => {
       validDays: valid_days,
       deposit,
       additionalServices,
+      staffName,
+      issuingLocation: issuingLocation || reservation?.location || profile.assigned_location || "krefeld",
+      returnLocation: returnLocation || undefined,
     });
 
     // Store as PDF file
