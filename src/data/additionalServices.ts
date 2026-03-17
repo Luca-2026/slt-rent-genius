@@ -47,7 +47,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
-    pricePercent: 3,
+    pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
     calculationBase: "mbv_items",
@@ -58,7 +58,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 500 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
-    pricePercent: 5,
+    pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
     calculationBase: "mbv_items",
@@ -69,7 +69,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
-    pricePercent: 10,
+    pricePercent: 20,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
     calculationBase: "mbv_items",
