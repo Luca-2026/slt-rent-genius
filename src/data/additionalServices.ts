@@ -68,7 +68,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
       "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: 20,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
