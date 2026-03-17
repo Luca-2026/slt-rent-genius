@@ -690,7 +690,7 @@ export default function AdminDashboard() {
             discount_percent: item.discount_percent || undefined,
             rental_start: item.rental_start || matchingReservation?.start_date,
             rental_end: item.rental_end || matchingReservation?.end_date,
-            image_url: matchingReservation ? (getProductImageUrl(matchingReservation.product_id) || getProductImageUrlByName(item.product_name) || undefined) : undefined,
+            image_url: getProductImageUrlByName(item.product_name) || (matchingReservation ? getProductImageUrl(matchingReservation.product_id) : undefined) || undefined,
           })),
           delivery_cost: offer.delivery_cost,
           deposit: offer.deposit || undefined,

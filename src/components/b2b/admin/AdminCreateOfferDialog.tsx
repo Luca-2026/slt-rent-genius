@@ -610,7 +610,8 @@ export function AdminCreateOfferDialog({
             end_time: item.end_time || undefined,
             category_slug: item.category_slug || undefined,
             image_url: (() => {
-              const stablePath = getProductImageStablePath(reservation?.product_id || "") || getProductImageStablePathByName(item.product_name);
+              // Prioritize item-specific name lookup to avoid all items getting the same reservation image
+              const stablePath = getProductImageStablePathByName(item.product_name) || getProductImageStablePath(reservation?.product_id || "");
               if (stablePath) return `${window.location.origin}${stablePath}`;
               return undefined;
             })(),
