@@ -1175,24 +1175,22 @@ async function generateOfferPdf(data: {
   // ── TOTALS ──
   const totX = 340;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
-  drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
+  const servicesSubtotal = (data.servicesWithPrices || []).reduce((sum, svc) => sum + (svc.amount || 0), 0);
+  const deliverySubtotal = (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0);
+
+  drawText("Teilsumme Mietartikel:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
-  if (data.deliveryCostDelivery > 0) {
-    drawText("Anlieferung:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCostDelivery), pageWidth - margin, y, { s: 9 });
-    y -= 14;
-  }
-  if (data.deliveryCostReturn > 0) {
-    drawText("Rücklieferung:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCostReturn), pageWidth - margin, y, { s: 9 });
+  if (servicesSubtotal > 0) {
+    drawText("Teilsumme Zusatzoptionen:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(servicesSubtotal), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 
-  if (data.servicesSurcharge > 0) {
-    drawText("Zusatzleistungen:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.servicesSurcharge), pageWidth - margin, y, { s: 9 });
+  if (deliverySubtotal > 0) {
+    drawText("Teilsumme Logistik:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(deliverySubtotal), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 
