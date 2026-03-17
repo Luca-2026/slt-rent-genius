@@ -1124,11 +1124,12 @@ async function generateOfferPdf(data: {
   }
 
   // ── NOTES ──
-  if (data.notes) {
+  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
+  if (visibleNotes) {
     ensureSpace(40);
     drawText("Anmerkungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
-    const words = safe(data.notes).split(" ");
+    const words = safe(visibleNotes).split(" ");
     let line = "";
     for (const word of words) {
       const test = line + (line ? " " : "") + word;
