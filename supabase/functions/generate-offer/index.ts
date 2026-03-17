@@ -926,7 +926,7 @@ async function generateOfferPdf(data: {
   // ── TOTALS ──
   const totX = 380;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
-  drawText("Zwischensumme Geraete:", totX, y, { s: 9, c: gray });
+  drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
