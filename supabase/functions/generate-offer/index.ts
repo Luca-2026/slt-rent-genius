@@ -572,7 +572,7 @@ Deno.serve(async (req: Request) => {
         const servicesEmailHtml = servicesWithPrices.length > 0
           ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
               <p style="font-size:13px;font-weight:600;color:#166534;margin:0 0 8px;">Zusatzleistungen:</p>
-              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)}${s.amount > 0 ? ` – <strong>${formatCurrency(s.amount)}</strong> (${s.pricePercent}%)` : ' – inklusive'}</p>`).join("")}
+              ${servicesWithPrices.map(s => `<p style="font-size:13px;color:#555;margin:0 0 4px;">• ${escapeHtml(s.name)} – <strong>${formatCurrency(s.amount)}</strong></p>`).join("")}
             </div>`
           : "";
 
