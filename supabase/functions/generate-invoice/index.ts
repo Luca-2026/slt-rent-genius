@@ -1070,14 +1070,14 @@ async function generateDocumentPdf(data: {
     const tx = MG + CW * 0.55;
     const vx = W - MG;
 
-    // Subtotal items
+    // Subtotals
     const itemsSubtotal = data.productItems.reduce((s, i) => s + (i.totalPrice || 0), 0);
-    dt("Zwischensumme Positionen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+    dt("Teilsumme Mietartikel:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
     dtr(fm(itemsSubtotal), vx, y, font, 9);
     y -= 14;
 
     if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
-      dt("Anlieferung / Transport:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+      dt("Teilsumme Logistik:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
       dtr(fm(data.totals.deliveryCost), vx, y, font, 9);
       y -= 14;
     }
@@ -1085,7 +1085,7 @@ async function generateDocumentPdf(data: {
     if (data.serviceItems.length > 0) {
       const svcTotal = data.serviceItems.reduce((s, i) => s + i.amount, 0);
       if (svcTotal > 0) {
-        dt("Zusatzleistungen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+        dt("Teilsumme Zusatzoptionen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
         dtr(fm(svcTotal), vx, y, font, 9);
         y -= 14;
       }
