@@ -413,7 +413,8 @@ export function AdminCreateOfferDialog({
   // Base = item totals only (excl. delivery & deposit) for service % calculation
   const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
   const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal, customServicePrices);
-  const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
+  const totalDeliveryCost = deliveryCostDelivery + (includeReturn ? deliveryCostReturn : 0);
+  const netAmount = itemsNetTotal + totalDeliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
   const vatRate = isReverseCharge ? 0 : 19;
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
