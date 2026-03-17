@@ -480,7 +480,13 @@ export function AdminCreateOfferDialog({
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Compute mandatory service IDs for current items
+  const currentCategorySlugs = items.map((i) => i.category_slug).filter((s): s is string => !!s);
+  const mandatoryServiceIds = getMandatoryServiceIds(currentCategorySlugs);
+
   const toggleService = (serviceId: string) => {
+    // Prevent deselecting mandatory services
+    if (mandatoryServiceIds.has(serviceId)) return;
     setSelectedServices((prev) => {
       const next = new Set(prev);
       // Find the service being toggled
