@@ -473,6 +473,7 @@ export function AdminCreateOfferDialog({
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
+      console.error("Offer save error:", error);
       toast({
         title: "Fehler",
         description: error.message || "Angebot konnte nicht gespeichert werden.",
