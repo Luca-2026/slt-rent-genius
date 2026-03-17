@@ -148,6 +148,7 @@ export function B2BReservationDialog({
       setDeliveryStreet("");
       setDeliveryPostalCode("");
       setDeliveryCity("");
+      setSelectedServices(new Set(mandatoryServiceIds));
     } catch (error: any) {
       toast({
         title: "Fehler beim Senden",
