@@ -1102,6 +1102,42 @@ async function generateOfferPdf(data: {
     drawTextRight(item.discount_percent > 0 ? item.discount_percent + "%" : "-", colDisc + 35, rowY, { s: 9 });
     drawTextRight(fmtCurrency(item.total_price), colTotal, rowY, { s: 9 });
 
+    // Additional options directly under their product row
+    const linkedServices = servicesByItem.get(i) || [];
+    for (const svc of linkedServices) {
+      subY -= 11;
+      const svcPrefix = "↳ Zusatzoption: ";
+      const svcText = safe(`${svcPrefix}${svc.name}`);
+      const svcWords = svcText.split(" ");
+      let svcLine = "";
+      let firstLine = true;
+      for (const w of svcWords) {
+        const test = svcLine + (svcLine ? " " : "") + w;
+        if (font.widthOfTextAtSize(test, 7) > maxNameWidth && svcLine) {
+          drawText(svcLine, textColName, subY, { s: 7, c: gray });
+          if (firstLine) {
+            drawTextRight(fmtCurrency(svc.amount), colTotal, subY, { s: 8, c: gray });
+            firstLine = false;
+          }
+          subY -= 10;
+          svcLine = w;
+        } else {
+          svcLine = test;
+        }
+      }
+      if (svcLine) {
+        drawText(svcLine, textColName, subY, { s: 7, c: gray });
+        if (firstLine) {
+          drawTextRight(fmtCurrency(svc.amount), colTotal, subY, { s: 8, c: gray });
+        }
+      }
+
+      if (svc.description) {
+        subY -= 10;
+        drawText(safe(svc.description), textColName + 8, subY, { s: 6.5, c: lightGray });
+      }
+    }
+
     // Use the lower of text bottom or image bottom
     const imgBottomY = embeddedImg ? (rowY - imgSize + 2) : subY;
     y = Math.min(subY, imgBottomY) - 8;
