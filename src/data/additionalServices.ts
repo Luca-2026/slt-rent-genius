@@ -77,6 +77,33 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: null, // always available
     pricePercent: 7,
   },
+  // ── Anhänger-Versicherungen ──
+  {
+    id: "vollkasko-500",
+    name: "Vollkaskoversicherung (SB 500 €)",
+    description:
+      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 500 € je Schadenfall. Gilt nur in Deutschland! 30% des Netto-Mietpreises.",
+    applicableCategories: ["anhaenger"],
+    pricePercent: 30,
+    exclusionGroup: "anhaenger-kasko",
+  },
+  {
+    id: "vollkasko-300",
+    name: "Vollkaskoversicherung (SB 300 €)",
+    description:
+      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 300 € je Schadenfall. Gilt nur in Deutschland! 35% des Netto-Mietpreises.",
+    applicableCategories: ["anhaenger"],
+    pricePercent: 35,
+    exclusionGroup: "anhaenger-kasko",
+  },
+  {
+    id: "auslandsfahrt",
+    name: "Auslandsfahrt (europäisches Ausland)",
+    description:
+      "Für die Fahrt in das europäische Ausland. 15% des Netto-Mietpreises.",
+    applicableCategories: ["anhaenger"],
+    pricePercent: 15,
+  },
   // ── Kostenfreie Stornierung ──
   {
     id: "kostenfreie-stornierung",
