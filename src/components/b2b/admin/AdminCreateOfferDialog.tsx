@@ -285,10 +285,12 @@ export function AdminCreateOfferDialog({
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
       setReturnLocation(existingOffer.return_location || "");
-      if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
-        setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
+      const rawServices = existingOffer.additional_services;
+      const parsedServices = typeof rawServices === 'string' ? JSON.parse(rawServices) : rawServices;
+      if (parsedServices && Array.isArray(parsedServices) && parsedServices.length > 0) {
+        setSelectedServices(new Set(parsedServices.map((s: any) => s.id)));
         const restoredPrices: Record<string, number> = {};
-        for (const s of existingOffer.additional_services as any[]) {
+        for (const s of parsedServices as any[]) {
           if (s.customPrice) restoredPrices[s.id] = s.customPrice;
         }
         setCustomServicePrices(restoredPrices);
