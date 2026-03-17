@@ -363,7 +363,9 @@ export function AdminCreateOfferDialog({
   // In standalone mode, show ALL services (including MBV options)
   const relevantServices = isStandalone ? ADDITIONAL_SERVICES : getServicesForCategory(categorySlug);
 
-  const handleCreate = async () => {
+  const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
+
+  const handleSave = async (mode: "draft" | "finalize") => {
     if (!isStandalone && !reservationId) return;
     if (isStandalone && !profile) {
       toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
@@ -380,6 +382,7 @@ export function AdminCreateOfferDialog({
     }
 
     setSaving(true);
+    setSaveMode(mode);
     try {
       const startDate = reservation?.start_date || undefined;
       const endDate = reservation?.end_date || undefined;
@@ -392,6 +395,8 @@ export function AdminCreateOfferDialog({
             pricePercent: s.pricePercent,
           }))
         : undefined;
+
+      const shouldSendEmail = mode === "finalize" && sendEmail;
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
@@ -413,7 +418,8 @@ export function AdminCreateOfferDialog({
           delivery_cost: deliveryCost,
           valid_days: validDays,
           notes: notes || undefined,
-          send_email: sendEmail,
+          send_email: shouldSendEmail,
+          save_as_draft: mode === "draft",
           save_prices: true,
           deposit: deposit && deposit !== "none" ? Number(deposit) : undefined,
           additional_services: servicesArray,
@@ -424,14 +430,19 @@ export function AdminCreateOfferDialog({
 
       if (error) throw error;
 
-      toast({
-        title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
-        description: data.email_sent
-          ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
-          : sendEmail
-            ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"}. (E-Mail nicht konfiguriert)`
-            : `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
-      });
+      if (mode === "draft") {
+        toast({
+          title: "Entwurf gespeichert",
+          description: `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
+        });
+      } else {
+        toast({
+          title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
+          description: data.email_sent
+            ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
+            : `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "fertiggestellt"}.`,
+        });
+      }
 
       // Clear draft after successful save
       offerDraftStore.key = null;
@@ -442,11 +453,12 @@ export function AdminCreateOfferDialog({
     } catch (error: any) {
       toast({
         title: "Fehler",
-        description: error.message || "Angebot konnte nicht erstellt werden.",
+        description: error.message || "Angebot konnte nicht gespeichert werden.",
         variant: "destructive",
       });
     } finally {
       setSaving(false);
+      setSaveMode(null);
     }
   };
 
@@ -823,7 +835,7 @@ export function AdminCreateOfferDialog({
           </CardContent>
         </Card>
 
-        {/* Email toggle */}
+        {/* Email toggle — only relevant for finalize */}
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -833,7 +845,7 @@ export function AdminCreateOfferDialog({
             className="rounded border-muted-foreground"
           />
           <label htmlFor="sendEmail" className="text-sm text-muted-foreground">
-            Angebot per E-Mail an den Kunden senden
+            Beim Fertigstellen das Angebot per E-Mail an den Kunden senden
           </label>
         </div>
 
@@ -845,7 +857,6 @@ export function AdminCreateOfferDialog({
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
           <Button variant="outline" onClick={() => {
-            // Clear draft on explicit cancel
             offerDraftStore.key = null;
             offerDraftStore.data = null;
             lastInitKey.current = null;
@@ -854,11 +865,28 @@ export function AdminCreateOfferDialog({
             Abbrechen
           </Button>
           <Button
-            onClick={handleCreate}
+            variant="secondary"
+            onClick={() => handleSave("draft")}
+            disabled={saving}
+          >
+            {saving && saveMode === "draft" ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
+                Wird gespeichert...
+              </>
+            ) : (
+              <>
+                <FileText className="h-4 w-4 mr-1.5" />
+                Als Entwurf speichern
+              </>
+            )}
+          </Button>
+          <Button
+            onClick={() => handleSave("finalize")}
             disabled={saving}
             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           >
-            {saving ? (
+            {saving && saveMode === "finalize" ? (
               <>
                 <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
                 Wird {isEditing ? "aktualisiert" : "erstellt"}...
@@ -866,7 +894,7 @@ export function AdminCreateOfferDialog({
             ) : (
               <>
                 <Send className="h-4 w-4 mr-1.5" />
-                {isEditing ? "Angebot aktualisieren & senden" : "Angebot erstellen & senden"}
+                {isEditing ? "Angebot aktualisieren" : "Fertigstellen"}{sendEmail ? " & Senden" : ""}
               </>
             )}
           </Button>

@@ -46,6 +46,7 @@ interface OfferRequest {
   valid_days?: number;
   notes?: string;
   send_email?: boolean;
+  save_as_draft?: boolean;
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
@@ -108,6 +109,7 @@ Deno.serve(async (req: Request) => {
       valid_days = 14,
       notes,
       send_email = true,
+      save_as_draft = false,
       save_prices = true,
       skip_status_update = false,
       deposit = 0,
@@ -340,7 +342,7 @@ Deno.serve(async (req: Request) => {
     let offer: any;
 
     if (offer_id) {
-      const updateStatus = send_email ? "sent" : "draft";
+      const updateStatus = save_as_draft ? "draft" : (send_email ? "sent" : "sent");
       const { data: updatedOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .update({
@@ -377,7 +379,7 @@ Deno.serve(async (req: Request) => {
       offer = updatedOffer;
       await serviceClient.from("b2b_offer_items").delete().eq("offer_id", offer_id);
     } else {
-      const offerStatus = send_email ? "sent" : "draft";
+      const offerStatus = save_as_draft ? "draft" : (send_email ? "sent" : "sent");
       const { data: newOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .insert({
