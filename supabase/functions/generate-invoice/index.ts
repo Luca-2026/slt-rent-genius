@@ -774,25 +774,30 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
-// ─── PDF Generator for Email Attachment ─────────────────────
+// ─── PDF Generator for Invoice ─────────────────────
 async function generateDocumentPdf(data: {
   title: string;
   documentNumber: string;
   date: string;
   profile: any;
-  items: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string }>;
+  serviceItems: Array<{ name: string; description?: string; amount: number }>;
+  surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
   signatures?: { customerData?: string; staffData?: string; staffName?: string };
-  totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string };
+  totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string; depositTotal?: number };
+  isProforma?: boolean;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const italic = await doc.embedFont(StandardFonts.HelveticaOblique);
   const W = 595.28, H = 841.89, MG = 50, CW = W - 2 * MG;
+  const FOOTER_ZONE = MG + 50;
   let page = doc.addPage([W, H]);
   let y = H - MG;
 
-  const checkPage = (need: number) => { if (y - need < MG + 40) { page = doc.addPage([W, H]); y = H - MG; } };
+  const checkPage = (need: number) => { if (y - need < FOOTER_ZONE) { page = doc.addPage([W, H]); y = H - MG; } };
   const dt = (t: string, x: number, yy: number, f = font, s = 10, c = rgb(0.2, 0.2, 0.2)) => {
     try { page.drawText(t || '', { x, y: yy, size: s, font: f, color: c }); } catch {}
   };
@@ -805,6 +810,7 @@ async function generateDocumentPdf(data: {
   const fd = (d: string) => { const sp = d.split(' '); const p = sp[0].split('-'); const dateStr = p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : sp[0]; return sp[1] ? `${dateStr} ${sp[1]} Uhr` : dateStr; };
   const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' EUR';
 
+  // ── Logo ──
   try {
     const lr = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
     const lb = new Uint8Array(await lr.arrayBuffer()); const li = await doc.embedPng(lb);
@@ -821,6 +827,7 @@ async function generateDocumentPdf(data: {
   dt(data.documentNumber, MG, y, bold, 11);
   const ds = `Datum: ${fd(data.date)}`; dt(ds, W - MG - font.widthOfTextAtSize(ds, 10), y, font, 10); y -= 30;
 
+  // ── Customer address ──
   dt("Kunde:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
   dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
   dt(`${data.profile.contact_first_name} ${data.profile.contact_last_name}`, MG, y, font, 10); y -= 14;
@@ -829,57 +836,214 @@ async function generateDocumentPdf(data: {
   if (data.profile.tax_id) { y -= 14; dt(`USt-IdNr.: ${data.profile.tax_id}`, MG, y, font, 9, rgb(0.4, 0.4, 0.4)); }
   y -= 25;
 
-  const hp = data.items.some(i => i.unitPrice != null);
-  page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 18, color: rgb(0.96, 0.97, 0.98) });
-  dt("Pos.", MG + 4, y + 8, bold, 8); dt("Bezeichnung", MG + 30, y + 8, bold, 8);
-  dt("Menge", MG + CW * (hp ? 0.55 : 0.8), y + 8, bold, 8);
-  if (hp) { dt("Einzelpreis", MG + CW * 0.67, y + 8, bold, 8); dt("Gesamt", MG + CW * 0.87, y + 8, bold, 8); }
-  y -= 5; page.drawRectangle({ x: MG, y, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 14;
-
-  data.items.forEach((item, i) => {
-    checkPage(30); dt(`${i + 1}`, MG + 4, y, font, 9);
-    let desc = item.name; if (item.description) desc += ` - ${item.description}`;
-    if (item.discount && item.discount > 0) desc += ` (${item.discount}% Rabatt)`;
-    const maxNW = CW * (hp ? 0.5 : 0.72); const nl = wt(desc, font, 9, maxNW);
-    nl.forEach((line, li) => {
-      dt(line, MG + 30, y, font, 9);
-      if (li === 0) { dt(`${item.quantity}`, MG + CW * (hp ? 0.57 : 0.82), y, font, 9);
-        if (hp && item.unitPrice != null) { dt(fm(item.unitPrice), MG + CW * 0.67, y, font, 9); dt(fm(item.totalPrice || 0), MG + CW * 0.87, y, font, 9); }
-      } y -= 13;
-    }); y -= 3;
-    page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
-  });
-  y -= 10;
-
-  if (data.totals) {
-    checkPage(100); const tx = MG + CW * 0.6; const vx = W - MG - 5;
-    if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
-      dt("Transportkosten:", tx, y, font, 9); const dcT = fm(data.totals.deliveryCost); dt(dcT, vx - font.widthOfTextAtSize(dcT, 9), y, font, 9); y -= 16;
-    }
-    page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
-    dt("Nettobetrag:", tx, y, font, 9); const ntT = fm(data.totals.net); dt(ntT, vx - font.widthOfTextAtSize(ntT, 9), y, font, 9); y -= 16;
-    if (data.totals.isReverseCharge) { dt("USt. (Reverse Charge):", tx, y, font, 9); dt("0,00 EUR", vx - font.widthOfTextAtSize("0,00 EUR", 9), y, font, 9); }
-    else { dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9); const vT = fm(data.totals.vat); dt(vT, vx - font.widthOfTextAtSize(vT, 9), y, font, 9); }
-    y -= 16; page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 1, color: rgb(0, 0.314, 0.49) });
-    dt("Bruttobetrag:", tx, y, bold, 10); const gT = fm(data.totals.gross); dt(gT, vx - bold.widthOfTextAtSize(gT, 10), y, bold, 10); y -= 22;
-    if (data.totals.dueDate) { 
-      const paymentText = data.totals.paymentDueDays === 0 
-        ? "Zahlungsziel: Vorkasse" 
-        : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
-      dt(paymentText, MG, y, font, 9); y -= 16; 
-    }
-    if (data.totals.isReverseCharge) { dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse Charge)", MG, y, font, 8, rgb(0.5, 0.5, 0.5)); y -= 16; }
-    y -= 5; dt("Bankverbindung:", MG, y, bold, 9); y -= 13;
-    dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4)); y -= 20;
+  // ── Proforma notice ──
+  if (data.isProforma) {
+    checkPage(40);
+    page.drawRectangle({ x: MG, y: y - 25, width: CW, height: 30, color: rgb(1, 0.97, 0.88) });
+    page.drawRectangle({ x: MG, y: y - 25, width: 3, height: 30, color: rgb(0.85, 0.55, 0) });
+    dt("Hinweis: Diese Proforma-Rechnung ist vor Mietbeginn zu begleichen. Die Bereitstellung", MG + 10, y - 5, bold, 8, rgb(0.45, 0.25, 0));
+    dt("der Mietgeraete erfolgt erst nach vollstaendigem Zahlungseingang.", MG + 10, y - 16, bold, 8, rgb(0.45, 0.25, 0));
+    y -= 35;
   }
 
+  // ── Items table header ──
+  const hasPrice = data.productItems.some(i => i.unitPrice != null);
+  page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 18, color: rgb(0, 0.314, 0.49) });
+  dt("Pos.", MG + 4, y + 8, bold, 8, rgb(1, 1, 1));
+  dt("Bezeichnung", MG + 30, y + 8, bold, 8, rgb(1, 1, 1));
+  dt("Menge", MG + CW * 0.55, y + 8, bold, 8, rgb(1, 1, 1));
+  if (hasPrice) {
+    dt("Einzelpreis", MG + CW * 0.67, y + 8, bold, 8, rgb(1, 1, 1));
+    dt("Gesamt", MG + CW * 0.87, y + 8, bold, 8, rgb(1, 1, 1));
+  }
+  y -= 5;
+  page.drawRectangle({ x: MG, y, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) });
+  y -= 14;
+
+  let posNum = 1;
+
+  // ── Product items with their services underneath ──
+  data.productItems.forEach((item) => {
+    checkPage(40);
+    dt(`${posNum}`, MG + 4, y, font, 9);
+    posNum++;
+
+    // Product name
+    let desc = item.name;
+    if (item.discount && item.discount > 0) desc += ` (${item.discount}% Rabatt)`;
+    const maxNW = CW * 0.50;
+    const nl = wt(desc, bold, 9, maxNW);
+    nl.forEach((line, li) => {
+      dt(line, MG + 30, y, bold, 9);
+      if (li === 0) {
+        dt(`${item.quantity}`, MG + CW * 0.57, y, font, 9);
+        if (hasPrice && item.unitPrice != null) {
+          dt(fm(item.unitPrice), MG + CW * 0.67, y, font, 9);
+          dt(fm(item.totalPrice || 0), MG + CW * 0.87, y, font, 9);
+        }
+      }
+      y -= 13;
+    });
+
+    // Description / rental period
+    if (item.description) {
+      const descLines = wt(item.description, font, 8, maxNW);
+      descLines.forEach(line => {
+        checkPage(13);
+        dt(line, MG + 30, y, font, 8, rgb(0.4, 0.4, 0.4));
+        y -= 11;
+      });
+    }
+    if (item.rentalStart) {
+      const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' - ' + fd(item.rentalEnd) : ''}`;
+      dt(period, MG + 30, y, font, 8, rgb(0.4, 0.4, 0.4));
+      y -= 11;
+    }
+
+    y -= 3;
+    page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+  });
+
+  // ── Additional services section ──
+  if (data.serviceItems.length > 0) {
+    checkPage(20);
+    y -= 5;
+    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(0.96, 0.97, 0.98) });
+    dt("Zusatzleistungen / Versicherungen", MG + 30, y + 7, bold, 8, rgb(0.3, 0.3, 0.3));
+    y -= 14;
+
+    data.serviceItems.forEach((svc) => {
+      checkPage(25);
+      dt(`${posNum}`, MG + 4, y, font, 9);
+      posNum++;
+
+      const svcLines = wt(svc.name, font, 9, CW * 0.50);
+      svcLines.forEach((line, li) => {
+        dt(line, MG + 30, y, font, 9);
+        if (li === 0 && hasPrice) {
+          dt(fm(svc.amount), MG + CW * 0.87, y, font, 9);
+        }
+        y -= 13;
+      });
+      if (svc.description) {
+        const descLines = wt(svc.description, font, 7, CW * 0.50);
+        descLines.forEach(line => {
+          checkPage(11);
+          dt(line, MG + 30, y, italic, 7, rgb(0.5, 0.5, 0.5));
+          y -= 10;
+        });
+      }
+      y -= 2;
+      page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+    });
+  }
+
+  // ── Surcharges ──
+  if (data.surchargeItems.length > 0) {
+    checkPage(20);
+    y -= 5;
+    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(1, 0.97, 0.94) });
+    dt("Zusatzkosten", MG + 30, y + 7, bold, 8, rgb(0.4, 0.2, 0.1));
+    y -= 14;
+
+    data.surchargeItems.forEach((sc) => {
+      checkPage(20);
+      dt(`${posNum}`, MG + 4, y, font, 9);
+      posNum++;
+      dt(sc.name, MG + 30, y, font, 9);
+      if (hasPrice) dt(fm(sc.amount), MG + CW * 0.87, y, font, 9);
+      y -= 13;
+      if (sc.description) {
+        dt(sc.description, MG + 30, y, font, 7, rgb(0.5, 0.5, 0.5));
+        y -= 10;
+      }
+      y -= 2;
+      page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+    });
+  }
+
+  y -= 10;
+
+  // ── Totals ──
+  if (data.totals) {
+    checkPage(120);
+    const tx = MG + CW * 0.6;
+    const vx = W - MG - 5;
+
+    if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
+      dt("Transportkosten:", tx, y, font, 9);
+      const dcT = fm(data.totals.deliveryCost);
+      dt(dcT, vx - font.widthOfTextAtSize(dcT, 9), y, font, 9);
+      y -= 16;
+    }
+
+    page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
+    dt("Nettobetrag:", tx, y, font, 9);
+    const ntT = fm(data.totals.net);
+    dt(ntT, vx - font.widthOfTextAtSize(ntT, 9), y, font, 9);
+    y -= 16;
+
+    if (data.totals.isReverseCharge) {
+      dt("USt. (Reverse Charge):", tx, y, font, 9);
+      dt("0,00 EUR", vx - font.widthOfTextAtSize("0,00 EUR", 9), y, font, 9);
+    } else {
+      dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9);
+      const vT = fm(data.totals.vat);
+      dt(vT, vx - font.widthOfTextAtSize(vT, 9), y, font, 9);
+    }
+    y -= 16;
+
+    // Deposit (tax-free) - shown separately
+    if (data.totals.depositTotal && data.totals.depositTotal > 0) {
+      page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
+      dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
+      const depT = fm(data.totals.depositTotal);
+      dt(depT, vx - font.widthOfTextAtSize(depT, 9), y, font, 9, rgb(0.3, 0.3, 0.3));
+      y -= 16;
+    }
+
+    page.drawRectangle({ x: tx, y: y + 12, width: CW * 0.4, height: 1.5, color: rgb(0, 0.314, 0.49) });
+    dt("Gesamtbetrag:", tx, y, bold, 11, rgb(0, 0.314, 0.49));
+    const gT = fm(data.totals.gross);
+    dt(gT, vx - bold.widthOfTextAtSize(gT, 11), y, bold, 11, rgb(0, 0.314, 0.49));
+    y -= 22;
+
+    // Payment terms
+    if (data.totals.dueDate) {
+      const paymentText = data.isProforma
+        ? "Zahlungsziel: Vorkasse (vor Mietbeginn)"
+        : data.totals.paymentDueDays === 0
+          ? "Zahlungsziel: Vorkasse"
+          : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
+      dt(paymentText, MG, y, bold, 9);
+      y -= 16;
+    }
+
+    if (data.totals.isReverseCharge) {
+      dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse Charge)", MG, y, font, 8, rgb(0.5, 0.5, 0.5));
+      y -= 16;
+    }
+
+    y -= 5;
+    dt("Bankverbindung:", MG, y, bold, 9);
+    y -= 13;
+    dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4));
+    y -= 13;
+    dt(`Verwendungszweck: ${data.documentNumber}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4));
+    y -= 20;
+  }
+
+  // ── Sections (notes) ──
   for (const sec of data.sections) {
-    checkPage(30); dt(sec.label + ":", MG, y, bold, 9); y -= 14;
+    checkPage(30);
+    dt(sec.label + ":", MG, y, bold, 9);
+    y -= 14;
     const lines = wt(sec.value, font, 9, CW);
     for (const line of lines) { checkPage(15); dt(line, MG, y, font, 9); y -= 13; }
     y -= 8;
   }
 
+  // ── Signatures ──
   if (data.signatures) {
     checkPage(90); y -= 10;
     page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 55;
@@ -898,11 +1062,12 @@ async function generateDocumentPdf(data: {
     dt(`Mitarbeiter: ${data.signatures.staffName || ''}`, MG + CW / 2 + 10, y, font, 8, rgb(0.5, 0.5, 0.5));
   }
 
+  // ── Footer on all pages ──
   const footerLines = [
-    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`,
+    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone}`,
     `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
     `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
-    `${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`,
+    `${SLT_COMPANY.web} - ${SLT_COMPANY.email}`,
   ];
   for (let i = 0; i < doc.getPageCount(); i++) {
     const p = doc.getPage(i);
