@@ -86,11 +86,20 @@ const App = () => (
               {/* Legacy product/category routes - redirects for SEO */}
               <Route path="/produkte" element={<RentalStart />} />
               <Route path="/produkte/:productSlug" element={<LegacyProductRedirect />} />
+              <Route path="/produkte-krefeld" element={<LegacyLocationProductRedirect locationId="krefeld" />} />
+              <Route path="/produkte-krefeld/:productSlug" element={<LegacyLocationProductRedirect locationId="krefeld" />} />
               <Route path="/produkte-bonn/:productSlug" element={<LegacyLocationProductRedirect locationId="bonn" />} />
               <Route path="/produkte-duisburg/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
               <Route path="/produkte-muelheim/:productSlug" element={<LegacyLocationProductRedirect locationId="muelheim" />} />
               <Route path="/kategorien-krefeld/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
+              <Route path="/kategorien-bonn/:categorySlug" element={<LegacyCategoryRedirect locationId="bonn" />} />
+              <Route path="/kategorien-muelheim/:categorySlug" element={<LegacyCategoryRedirect locationId="muelheim" />} />
               <Route path="/kategorie/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
+              
+              {/* Legacy /standort/:id → /standorte (old GSC URLs) */}
+              <Route path="/standort/krefeld" element={<Locations />} />
+              <Route path="/standort/bonn" element={<Locations />} />
+              <Route path="/standort/muelheim" element={<Locations />} />
               
               <Route path="/so-funktionierts" element={<HowItWorks />} />
               <Route path="/standorte" element={<Locations />} />
