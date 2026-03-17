@@ -386,12 +386,14 @@ export default function AdminDashboard() {
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: { ...invoiceBody, send_email: sendInvoiceEmail },
+        body: { ...invoiceBody, send_email: asDraft ? false : sendInvoiceEmail, save_as_draft: asDraft },
       });
       if (error) throw error;
       toast({
-        title: proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!",
-        description: `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
+        title: asDraft ? "Entwurf gespeichert!" : (proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!"),
+        description: asDraft
+          ? `Rechnungsentwurf ${data.invoice?.invoice_number} wurde gespeichert. Sie können ihn im Rechnungs-Tab einsehen und später versenden.`
+          : `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
