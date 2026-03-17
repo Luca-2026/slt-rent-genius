@@ -952,7 +952,7 @@ async function generateOfferPdf(data: {
   ensureSpace(120);
 
   // ── TOTALS ──
-  const totX = 380;
+  const totX = 340;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
   drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
@@ -990,8 +990,8 @@ async function generateOfferPdf(data: {
   page.drawLine({ start: { x: totX, y }, end: { x: pageWidth - margin, y }, thickness: 1.5, color: blue });
   y -= 16;
 
-  drawText("Bruttobetrag:", totX, y, { f: fontBold, s: 14, c: blue });
-  drawTextRight(fmtCurrency(data.grossAmount), pageWidth - margin, y, { f: fontBold, s: 14, c: blue });
+  drawText("Bruttobetrag:", totX, y, { f: fontBold, s: 12, c: blue });
+  drawTextRight(fmtCurrency(data.grossAmount), pageWidth - margin, y, { f: fontBold, s: 12, c: blue });
   y -= 20;
 
   // ── DEPOSIT ──
