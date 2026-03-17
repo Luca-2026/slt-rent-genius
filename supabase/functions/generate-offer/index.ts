@@ -108,6 +108,8 @@ Deno.serve(async (req: Request) => {
       offer_id,
       items,
       delivery_cost = 0,
+      delivery_cost_delivery = 0,
+      delivery_cost_return = 0,
       valid_days = 14,
       notes,
       send_email = true,
