@@ -588,7 +588,8 @@ Deno.serve(async (req: Request) => {
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:25px;">
         <table style="width:100%;font-size:14px;color:#555;">
           <tr><td>Zwischensumme Mietgeräte:</td><td style="text-align:right;font-weight:600;">${formatCurrency(itemsTotal)}</td></tr>
-          ${delivery_cost > 0 ? `<tr><td>Transportkosten:</td><td style="text-align:right;">${formatCurrency(delivery_cost)}</td></tr>` : ""}
+          ${delivery_cost_delivery > 0 ? `<tr><td>Anlieferung:</td><td style="text-align:right;">${formatCurrency(delivery_cost_delivery)}</td></tr>` : ""}
+          ${delivery_cost_return > 0 ? `<tr><td>Rücklieferung:</td><td style="text-align:right;">${formatCurrency(delivery_cost_return)}</td></tr>` : ""}
           ${servicesSurcharge > 0 ? `<tr><td>Zusatzleistungen:</td><td style="text-align:right;">${formatCurrency(servicesSurcharge)}</td></tr>` : ""}
           <tr><td style="font-weight:600;">Nettobetrag:</td><td style="text-align:right;font-weight:600;">${formatCurrency(netAmount)}</td></tr>
           ${isReverseCharge
