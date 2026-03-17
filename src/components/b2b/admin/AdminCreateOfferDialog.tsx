@@ -388,11 +388,10 @@ export function AdminCreateOfferDialog({
     setItems(
       targetReservations.map((res) => {
         const productName = res.product_name || res.product_id;
+        const productDesc = getProductDescription(productName);
         return {
           product_name: productName,
-          description: res.end_date
-            ? `Mietzeitraum: ${formatDate(res.start_date)} – ${formatDate(res.end_date)}`
-            : `Ab: ${formatDate(res.start_date)}`,
+          description: productDesc || "",
           quantity: res.quantity || 1,
           unit_price: priceMap.get(productName) || res.original_price || 0,
           discount_percent: 0,
