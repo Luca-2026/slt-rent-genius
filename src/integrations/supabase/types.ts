@@ -539,9 +539,11 @@ export type Database = {
       }
       b2b_offers: {
         Row: {
+          accepted_at: string | null
           additional_services: Json | null
           b2b_profile_id: string
           created_at: string
+          customer_signature_data: string | null
           delivery_cost: number
           deposit: number | null
           email_sent: boolean
@@ -563,9 +565,11 @@ export type Database = {
           vat_rate: number
         }
         Insert: {
+          accepted_at?: string | null
           additional_services?: Json | null
           b2b_profile_id: string
           created_at?: string
+          customer_signature_data?: string | null
           delivery_cost?: number
           deposit?: number | null
           email_sent?: boolean
@@ -587,9 +591,11 @@ export type Database = {
           vat_rate?: number
         }
         Update: {
+          accepted_at?: string | null
           additional_services?: Json | null
           b2b_profile_id?: string
           created_at?: string
+          customer_signature_data?: string | null
           delivery_cost?: number
           deposit?: number | null
           email_sent?: boolean

@@ -26,8 +26,9 @@ import {
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
   FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
-  ChevronDown, ChevronRight, Layers, Trash2, Pencil,
+  ChevronDown, ChevronRight, Layers, Trash2, Pencil, PenTool,
 } from "lucide-react";
+import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -179,6 +180,7 @@ export default function MyReservations() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [signatureData, setSignatureData] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -209,20 +211,21 @@ export default function MyReservations() {
   }, [user]);
 
   const handleAcceptOffer = async () => {
-    if (!offerToAccept) return;
+    if (!offerToAccept || !signatureData) return;
     setAcceptingOfferId(offerToAccept.id);
     try {
       const { data, error } = await supabase.functions.invoke("accept-offer", {
-        body: { offer_id: offerToAccept.id },
+        body: { offer_id: offerToAccept.id, signature_data: signatureData },
       });
       if (error) throw error;
 
       toast({
         title: "Angebot bestätigt!",
-        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt.`,
+        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich unterschrieben und bestätigt.`,
       });
       setConfirmDialogOpen(false);
       setOfferToAccept(null);
+      setSignatureData(null);
       fetchData();
     } catch (error: any) {
       toast({
@@ -334,6 +337,7 @@ export default function MyReservations() {
             className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
             onClick={() => {
               setOfferToAccept(offer);
+              setSignatureData(null);
               setConfirmDialogOpen(true);
             }}
             disabled={acceptingOfferId === offer.id}
@@ -341,9 +345,9 @@ export default function MyReservations() {
             {acceptingOfferId === offer.id ? (
               <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
             ) : (
-              <ThumbsUp className="h-3 w-3 mr-1" />
+              <PenTool className="h-3 w-3 mr-1" />
             )}
-            Bestätigen
+            Annehmen
           </Button>
         )}
         {offer.status === "accepted" && (
@@ -782,16 +786,19 @@ export default function MyReservations() {
         </>
       )}
 
-      {/* Confirm Offer Dialog */}
-      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <DialogContent>
+      {/* Confirm Offer Dialog with Signature */}
+      <Dialog open={confirmDialogOpen} onOpenChange={(open) => {
+        setConfirmDialogOpen(open);
+        if (!open) { setSignatureData(null); setOfferToAccept(null); }
+      }}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <ThumbsUp className="h-5 w-5 text-primary" />
-              Angebot bestätigen
+              <PenTool className="h-5 w-5 text-primary" />
+              Angebot annehmen & unterschreiben
             </DialogTitle>
             <DialogDescription>
-              Möchten Sie dieses Angebot verbindlich annehmen?
+              Bitte unterschreiben Sie das Angebot, um es verbindlich anzunehmen.
             </DialogDescription>
           </DialogHeader>
           {offerToAccept && (
@@ -809,8 +816,14 @@ export default function MyReservations() {
                 </CardContent>
               </Card>
 
+              <SignaturePad 
+                onSignatureChange={setSignatureData} 
+                height={180}
+                label="Ihre Unterschrift"
+              />
+
               <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden.</p>
+                <p>Mit Ihrer Unterschrift nehmen Sie das Angebot verbindlich an. Das unterschriebene Angebot wird als PDF gespeichert.</p>
               </div>
 
               <div className="flex gap-3 justify-end">
@@ -820,7 +833,7 @@ export default function MyReservations() {
                 <Button
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
                   onClick={handleAcceptOffer}
-                  disabled={acceptingOfferId === offerToAccept.id}
+                  disabled={acceptingOfferId === offerToAccept.id || !signatureData}
                 >
                   {acceptingOfferId === offerToAccept.id ? (
                     <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
