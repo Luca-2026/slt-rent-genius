@@ -555,6 +555,7 @@ export function AdminCreateOfferDialog({
             description: s.description,
             pricePercent: s.pricePercent,
             applicableCategories: s.applicableCategories,
+            calculationBase: s.calculationBase,
             customPrice: s.customPriceInput ? (customServicePrices[s.id] || 0) : undefined,
           }))
         : undefined;
