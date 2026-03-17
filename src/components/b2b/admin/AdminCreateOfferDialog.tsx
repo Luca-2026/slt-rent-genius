@@ -316,10 +316,29 @@ export function AdminCreateOfferDialog({
   };
 
   const addItem = () => {
+    const firstItem = items[0];
     setItems((prev) => [
       ...prev,
-      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" },
+      {
+        product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0,
+        rental_start: firstItem?.rental_start || "",
+        rental_end: firstItem?.rental_end || "",
+        start_time: firstItem?.start_time || "",
+        end_time: firstItem?.end_time || "",
+      },
     ]);
+  };
+
+  const applyRentalPeriodFromFirst = (index: number) => {
+    const firstItem = items[0];
+    if (!firstItem) return;
+    setItems((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? { ...item, rental_start: firstItem.rental_start, rental_end: firstItem.rental_end, start_time: firstItem.start_time, end_time: firstItem.end_time }
+          : item
+      )
+    );
   };
 
   const removeItem = (index: number) => {
