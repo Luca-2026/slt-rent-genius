@@ -353,10 +353,11 @@ Deno.serve(async (req: Request) => {
       ? additionalServices
       : null;
 
-    // Encode delivery address into notes as structured tag
+    // Encode structured delivery metadata into notes so edit/resend can restore exact values
     let finalNotes = notes || "";
+    finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "");
+    finalNotes += `[DELIVERY:${delivery_cost_delivery || 0}|${delivery_cost_return || 0}]`;
     if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
-      finalNotes = finalNotes.replace(/\[DELADDR:[^\]]*\]/g, "");
       finalNotes += `[DELADDR:${deliveryAddress.street || ""}|${deliveryAddress.postal_code || ""}|${deliveryAddress.city || ""}]`;
     }
 
