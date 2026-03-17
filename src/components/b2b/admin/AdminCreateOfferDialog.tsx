@@ -555,14 +555,22 @@ export function AdminCreateOfferDialog({
       toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
       return;
     }
-    const validItems = items.filter((item) => item.product_name && item.unit_price > 0);
+    const validItems = items.filter((item) => item.product_name.trim());
     if (validItems.length === 0) {
       toast({
         title: "Fehler",
-        description: "Bitte mindestens einen Artikel mit Preis angeben.",
+        description: "Bitte mindestens einen Artikel angeben.",
         variant: "destructive",
       });
       return;
+    }
+    const zeroPriceItems = validItems.filter((item) => !item.unit_price || item.unit_price <= 0);
+    if (zeroPriceItems.length > 0) {
+      const names = zeroPriceItems.map((i) => `"${i.product_name}"`).join(", ");
+      const confirmed = window.confirm(
+        `Folgende Positionen haben keinen Preis: ${names}.\n\nMöchten Sie trotzdem fortfahren?`
+      );
+      if (!confirmed) return;
     }
 
     setSaving(true);
