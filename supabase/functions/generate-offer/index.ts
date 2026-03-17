@@ -779,7 +779,7 @@ async function generateOfferPdf(data: {
   deliveryCostDelivery: number;
   deliveryCostReturn: number;
   servicesSurcharge: number;
-  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[];
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[] }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
