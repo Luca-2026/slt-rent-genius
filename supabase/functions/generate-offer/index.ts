@@ -1026,8 +1026,24 @@ async function generateOfferPdf(data: {
       drawText(period, textColName, subY, { s: 7, c: lightGray });
     }
     if (item.description) {
-      subY -= 11;
-      drawText(safe(item.description).substring(0, 50), textColName, subY, { s: 7, c: gray });
+      // Word-wrap description
+      const descText = safe(item.description);
+      const descWords = descText.split(" ");
+      let descLine = "";
+      for (const w of descWords) {
+        const test = descLine + (descLine ? " " : "") + w;
+        if (font.widthOfTextAtSize(test, 7) > maxNameWidth && descLine) {
+          subY -= 11;
+          drawText(descLine, textColName, subY, { s: 7, c: gray });
+          descLine = w;
+        } else {
+          descLine = test;
+        }
+      }
+      if (descLine) {
+        subY -= 11;
+        drawText(descLine, textColName, subY, { s: 7, c: gray });
+      }
     }
 
     drawTextRight(String(item.quantity), colQty + 30, rowY, { s: 9 });
