@@ -1045,13 +1045,15 @@ async function generateOfferPdf(data: {
 
   // ── CLOSING ──
   ensureSpace(60);
-  drawText("Wir freuen uns auf Ihre Rueckmeldung und stehen Ihnen", margin, y, { s: 9 });
+  drawText("Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen", margin, y, { s: 9 });
   y -= 12;
-  drawText("fuer Rueckfragen gerne zur Verfuegung.", margin, y, { s: 9 });
+  drawText("f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", margin, y, { s: 9 });
   y -= 20;
-  drawText("Mit freundlichen Gruessen", margin, y, { s: 9 });
+  drawText("Mit freundlichen Gr\u00FC\u00DFen", margin, y, { s: 9 });
   y -= 14;
-  drawText("SLT-Rental", margin, y, { f: fontBold, s: 9 });
+  drawText(safe(data.staffName), margin, y, { f: fontBold, s: 9 });
+  y -= 10;
+  drawText("SLT-Rental", margin, y, { s: 8, c: gray });
 
   // ── FOOTER on every page ──
   const pages = doc.getPages();
