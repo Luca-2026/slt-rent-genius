@@ -516,6 +516,11 @@ export function AdminCreateOfferDialog({
           additional_services: servicesArray,
           issuing_location: issuingLocation || undefined,
           return_location: returnLocation || undefined,
+          delivery_address: (deliveryAddressStreet || deliveryAddressCity) ? {
+            street: deliveryAddressStreet,
+            postal_code: deliveryAddressPostalCode,
+            city: deliveryAddressCity,
+          } : undefined,
         },
       });
 
