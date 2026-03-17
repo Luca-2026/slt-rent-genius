@@ -139,9 +139,15 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
 /** Standard deposit values in EUR */
 export const DEPOSIT_OPTIONS = [15, 50, 100, 150, 300, 750, 1000, 1500, 2000];
 
-/** Categories that should trigger MBV / Verladehilfe suggestions */
-export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"];
+/** Categories that should trigger MBV suggestions */
+export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen"];
 
+const TRAILER_CATEGORIES = ["anhaenger"];
+
+export interface ServicePricingItem {
+  netAmount: number;
+  categorySlug?: string | null;
+}
 /**
  * Returns the additional services relevant for a given category slug.
  * If categorySlug is null/undefined, returns only the always-available ones.
