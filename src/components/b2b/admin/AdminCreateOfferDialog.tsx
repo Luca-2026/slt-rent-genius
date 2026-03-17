@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  FileText, Send, Plus, Trash2, RefreshCw, Euro, Package,
+  FileText, Send, Plus, Trash2, RefreshCw, Euro, Package, Copy,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -316,10 +316,29 @@ export function AdminCreateOfferDialog({
   };
 
   const addItem = () => {
+    const firstItem = items[0];
     setItems((prev) => [
       ...prev,
-      { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" },
+      {
+        product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0,
+        rental_start: firstItem?.rental_start || "",
+        rental_end: firstItem?.rental_end || "",
+        start_time: firstItem?.start_time || "",
+        end_time: firstItem?.end_time || "",
+      },
     ]);
+  };
+
+  const applyRentalPeriodFromFirst = (index: number) => {
+    const firstItem = items[0];
+    if (!firstItem) return;
+    setItems((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? { ...item, rental_start: firstItem.rental_start, rental_end: firstItem.rental_end, start_time: firstItem.start_time, end_time: firstItem.end_time }
+          : item
+      )
+    );
   };
 
   const removeItem = (index: number) => {
@@ -626,42 +645,56 @@ export function AdminCreateOfferDialog({
 
                 {/* Rental period per item (standalone or editable) */}
                 {(isStandalone || isEditing) && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <div>
-                      <Label className="text-xs">Mietbeginn</Label>
-                      <Input
-                        type="date"
-                        value={item.rental_start || ""}
-                        onChange={(e) => updateItem(index, "rental_start", e.target.value)}
-                        className="h-8 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-xs">Uhrzeit Beginn</Label>
-                      <Input
-                        type="time"
-                        value={item.start_time || ""}
-                        onChange={(e) => updateItem(index, "start_time", e.target.value)}
-                        className="h-8 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-xs">Mietende</Label>
-                      <Input
-                        type="date"
-                        value={item.rental_end || ""}
-                        onChange={(e) => updateItem(index, "rental_end", e.target.value)}
-                        className="h-8 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-xs">Uhrzeit Ende</Label>
-                      <Input
-                        type="time"
-                        value={item.end_time || ""}
-                        onChange={(e) => updateItem(index, "end_time", e.target.value)}
-                        className="h-8 text-sm"
-                      />
+                  <div className="space-y-2">
+                    {index > 0 && items[0]?.rental_start && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs"
+                        onClick={() => applyRentalPeriodFromFirst(index)}
+                      >
+                        <Copy className="h-3 w-3 mr-1" />
+                        Selber Mietzeitraum wie Position 1
+                      </Button>
+                    )}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div>
+                        <Label className="text-xs">Mietbeginn</Label>
+                        <Input
+                          type="date"
+                          value={item.rental_start || ""}
+                          onChange={(e) => updateItem(index, "rental_start", e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Uhrzeit Beginn</Label>
+                        <Input
+                          type="time"
+                          value={item.start_time || ""}
+                          onChange={(e) => updateItem(index, "start_time", e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Mietende</Label>
+                        <Input
+                          type="date"
+                          value={item.rental_end || ""}
+                          onChange={(e) => updateItem(index, "rental_end", e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Uhrzeit Ende</Label>
+                        <Input
+                          type="time"
+                          value={item.end_time || ""}
+                          onChange={(e) => updateItem(index, "end_time", e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
