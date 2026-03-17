@@ -72,6 +72,7 @@ function B2BOffers() {
       supabase
         .from("b2b_offers")
         .select("id, reservation_id, offer_number, offer_date, valid_until, status, gross_amount, net_amount, vat_amount, file_url, notes, created_at")
+        .neq("status", "draft")
         .order("created_at", { ascending: false }),
       supabase
         .from("b2b_offer_items")

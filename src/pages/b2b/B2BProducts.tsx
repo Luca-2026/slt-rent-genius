@@ -389,9 +389,9 @@ export default function B2BProducts() {
   );
 
   return (
-    <B2BPortalLayout
+     <B2BPortalLayout
       title="Produkte & Anfragen"
-      subtitle={`${filteredProducts.length} Produkte verfügbar`}
+      subtitle={`${totalProductCount} Produkte verfügbar`}
     >
       {/* Top info bar: Credit + Contact */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 md:mb-6">
