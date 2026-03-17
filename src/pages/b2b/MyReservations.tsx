@@ -786,16 +786,19 @@ export default function MyReservations() {
         </>
       )}
 
-      {/* Confirm Offer Dialog */}
-      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <DialogContent>
+      {/* Confirm Offer Dialog with Signature */}
+      <Dialog open={confirmDialogOpen} onOpenChange={(open) => {
+        setConfirmDialogOpen(open);
+        if (!open) { setSignatureData(null); setOfferToAccept(null); }
+      }}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <ThumbsUp className="h-5 w-5 text-primary" />
-              Angebot bestätigen
+              <PenTool className="h-5 w-5 text-primary" />
+              Angebot annehmen & unterschreiben
             </DialogTitle>
             <DialogDescription>
-              Möchten Sie dieses Angebot verbindlich annehmen?
+              Bitte unterschreiben Sie das Angebot, um es verbindlich anzunehmen.
             </DialogDescription>
           </DialogHeader>
           {offerToAccept && (
@@ -813,8 +816,14 @@ export default function MyReservations() {
                 </CardContent>
               </Card>
 
+              <SignaturePad 
+                onSignatureChange={setSignatureData} 
+                height={180}
+                label="Ihre Unterschrift"
+              />
+
               <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden.</p>
+                <p>Mit Ihrer Unterschrift nehmen Sie das Angebot verbindlich an. Das unterschriebene Angebot wird als PDF gespeichert.</p>
               </div>
 
               <div className="flex gap-3 justify-end">
@@ -824,7 +833,7 @@ export default function MyReservations() {
                 <Button
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
                   onClick={handleAcceptOffer}
-                  disabled={acceptingOfferId === offerToAccept.id}
+                  disabled={acceptingOfferId === offerToAccept.id || !signatureData}
                 >
                   {acceptingOfferId === offerToAccept.id ? (
                     <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
