@@ -377,6 +377,23 @@ export function AdminCreateOfferDialog({
     }
   }, [open, reservation, profile, isEditing]);
 
+  // Auto-select mandatory services whenever item categories change
+  useEffect(() => {
+    const categorySlugs = items
+      .map((item) => item.category_slug)
+      .filter((s): s is string => !!s);
+    const mandatoryIds = getMandatoryServiceIds(categorySlugs);
+    if (mandatoryIds.size > 0) {
+      setSelectedServices((prev) => {
+        const next = new Set(prev);
+        for (const id of mandatoryIds) {
+          next.add(id);
+        }
+        return next;
+      });
+    }
+  }, [items]);
+
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
 
