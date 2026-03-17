@@ -431,7 +431,7 @@ export function AdminCreateOfferDialog({
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
           reservation_id: reservationId || undefined,
-          b2b_profile_id: isStandalone ? profile!.id : undefined,
+          b2b_profile_id: isStandalone ? profile!.id : (isEditing && !reservationId ? existingOffer?.b2b_profile_id : undefined),
           offer_id: existingOffer?.id || undefined,
           items: validItems.map((item) => ({
             product_name: item.product_name,
