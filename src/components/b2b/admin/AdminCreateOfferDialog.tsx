@@ -197,7 +197,9 @@ export function AdminCreateOfferDialog({
     if (offerDraftStore.key === contextKey && offerDraftStore.data) {
       const draft = offerDraftStore.data;
       setItems(draft.items);
-      setDeliveryCost(draft.deliveryCost);
+      setDeliveryCostDelivery(draft.deliveryCostDelivery ?? 0);
+      setDeliveryCostReturn(draft.deliveryCostReturn ?? 0);
+      setIncludeReturn(draft.includeReturn ?? false);
       setValidDays(draft.validDays);
       setNotes(draft.notes);
       setSendEmail(draft.sendEmail);
