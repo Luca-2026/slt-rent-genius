@@ -196,6 +196,7 @@ Deno.serve(async (req: Request) => {
           rental_start: item.rental_start || reservation?.start_date || null,
           rental_end: item.rental_end || reservation?.end_date || null,
           image_url: item.image_url || fallbackImageUrl || null,
+          item_type: item.item_type || 'product',
         };
       });
     } else if (reservation) {
