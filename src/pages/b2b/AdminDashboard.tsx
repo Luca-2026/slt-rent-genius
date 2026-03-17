@@ -228,8 +228,9 @@ export default function AdminDashboard() {
     }
   };
 
-  const generateInvoice = async (reservation: Reservation | null) => {
+  const generateInvoice = async (reservation: Reservation | null, asDraft = false) => {
     setGeneratingInvoice(true);
+    try {
     try {
       // If invoice is being created from an accepted offer, use the offer items
       const offer = invoiceFromOffer;
