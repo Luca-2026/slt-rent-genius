@@ -211,20 +211,21 @@ export default function MyReservations() {
   }, [user]);
 
   const handleAcceptOffer = async () => {
-    if (!offerToAccept) return;
+    if (!offerToAccept || !signatureData) return;
     setAcceptingOfferId(offerToAccept.id);
     try {
       const { data, error } = await supabase.functions.invoke("accept-offer", {
-        body: { offer_id: offerToAccept.id },
+        body: { offer_id: offerToAccept.id, signature_data: signatureData },
       });
       if (error) throw error;
 
       toast({
         title: "Angebot bestätigt!",
-        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt.`,
+        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich unterschrieben und bestätigt.`,
       });
       setConfirmDialogOpen(false);
       setOfferToAccept(null);
+      setSignatureData(null);
       fetchData();
     } catch (error: any) {
       toast({
