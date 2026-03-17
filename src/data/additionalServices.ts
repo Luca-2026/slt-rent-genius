@@ -82,9 +82,10 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "elektronikversicherung",
     name: "Elektronikversicherung (SB 300 €)",
     description:
-      "Versicherung für Mietartikel mit Stecker. Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
-    applicableCategories: null, // always available
+      "Versicherung für Mietartikel mit Stecker (Akkuwerkzeuge, Veranstaltungstechnik etc.). Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
+    applicableCategories: ["werkzeuge"],
     pricePercent: 7,
+    mandatory: true,
   },
   // ── Anhänger-Versicherungen ──
   {
