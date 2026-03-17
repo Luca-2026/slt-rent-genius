@@ -37,6 +37,9 @@ interface OfferFormDraft {
   issuingLocation: string;
   returnLocation: string;
   selectedProfileId: string;
+  deliveryAddressStreet: string;
+  deliveryAddressPostalCode: string;
+  deliveryAddressCity: string;
 }
 
 const offerDraftStore: { key: string | null; data: OfferFormDraft | null } = {
@@ -143,6 +146,9 @@ export function AdminCreateOfferDialog({
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [deliveryAddressStreet, setDeliveryAddressStreet] = useState("");
+  const [deliveryAddressPostalCode, setDeliveryAddressPostalCode] = useState("");
+  const [deliveryAddressCity, setDeliveryAddressCity] = useState("");
   const lastInitKey = useRef<string | null>(null);
   const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -174,8 +180,11 @@ export function AdminCreateOfferDialog({
       issuingLocation,
       returnLocation,
       selectedProfileId,
+      deliveryAddressStreet,
+      deliveryAddressPostalCode,
+      deliveryAddressCity,
     };
-  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, deliveryAddressStreet, deliveryAddressPostalCode, deliveryAddressCity, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
@@ -209,6 +218,9 @@ export function AdminCreateOfferDialog({
       setIssuingLocation(draft.issuingLocation);
       setReturnLocation(draft.returnLocation);
       setSelectedProfileId(draft.selectedProfileId);
+      setDeliveryAddressStreet(draft.deliveryAddressStreet || "");
+      setDeliveryAddressPostalCode(draft.deliveryAddressPostalCode || "");
+      setDeliveryAddressCity(draft.deliveryAddressCity || "");
       return;
     }
 
@@ -256,7 +268,20 @@ export function AdminCreateOfferDialog({
         setDeliveryCostReturn(0);
         setIncludeReturn(false);
       }
-      setNotes(existingOffer.notes || "");
+      // Parse delivery address from notes
+      const existingNotesFull = existingOffer.notes || "";
+      const delAddrMatch = existingNotesFull.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
+      if (delAddrMatch) {
+        setDeliveryAddressStreet(delAddrMatch[1] || "");
+        setDeliveryAddressPostalCode(delAddrMatch[2] || "");
+        setDeliveryAddressCity(delAddrMatch[3] || "");
+      } else {
+        setDeliveryAddressStreet("");
+        setDeliveryAddressPostalCode("");
+        setDeliveryAddressCity("");
+      }
+      // Remove structured tags from visible notes
+      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim());
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
       setReturnLocation(existingOffer.return_location || "");
@@ -293,6 +318,9 @@ export function AdminCreateOfferDialog({
       setSelectedProfileId("");
       setIssuingLocation("krefeld");
       setReturnLocation("");
+      setDeliveryAddressStreet("");
+      setDeliveryAddressPostalCode("");
+      setDeliveryAddressCity("");
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
@@ -501,6 +529,11 @@ export function AdminCreateOfferDialog({
           additional_services: servicesArray,
           issuing_location: issuingLocation || undefined,
           return_location: returnLocation || undefined,
+          delivery_address: (deliveryAddressStreet || deliveryAddressCity) ? {
+            street: deliveryAddressStreet,
+            postal_code: deliveryAddressPostalCode,
+            city: deliveryAddressCity,
+          } : undefined,
         },
       });
 
@@ -792,6 +825,35 @@ export function AdminCreateOfferDialog({
                 <SelectItem value="muelheim">Mülheim a. d. Ruhr</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+        </div>
+
+        {/* Delivery Address */}
+        <div>
+          <Label className="text-xs font-semibold">Lieferadresse (optional)</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1">
+            <div className="sm:col-span-2">
+              <Input
+                value={deliveryAddressStreet}
+                onChange={(e) => setDeliveryAddressStreet(e.target.value)}
+                placeholder="Straße + Hausnr."
+                className="h-8 text-sm"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Input
+                value={deliveryAddressPostalCode}
+                onChange={(e) => setDeliveryAddressPostalCode(e.target.value)}
+                placeholder="PLZ"
+                className="h-8 text-sm"
+              />
+              <Input
+                value={deliveryAddressCity}
+                onChange={(e) => setDeliveryAddressCity(e.target.value)}
+                placeholder="Ort"
+                className="h-8 text-sm"
+              />
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

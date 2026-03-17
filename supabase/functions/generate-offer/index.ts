@@ -55,6 +55,7 @@ interface OfferRequest {
   additional_services?: { id: string; name: string; description?: string; pricePercent?: number; customPrice?: number }[];
   issuing_location?: string;
   return_location?: string;
+  delivery_address?: { street?: string; postal_code?: string; city?: string };
 }
 
 Deno.serve(async (req: Request) => {
@@ -120,6 +121,7 @@ Deno.serve(async (req: Request) => {
       additional_services: additionalServices,
       issuing_location: issuingLocation,
       return_location: returnLocation,
+      delivery_address: deliveryAddress,
     } = body;
 
     if (!items || items.length === 0) {
@@ -319,6 +321,7 @@ Deno.serve(async (req: Request) => {
       staffName,
       issuingLocation: issuingLocation || reservation?.location || profile.assigned_location || "krefeld",
       returnLocation: returnLocation || undefined,
+      deliveryAddress: deliveryAddress || undefined,
     });
 
     // Store as PDF file
@@ -350,6 +353,13 @@ Deno.serve(async (req: Request) => {
       ? JSON.stringify(additionalServices)
       : null;
 
+    // Encode delivery address into notes as structured tag
+    let finalNotes = notes || "";
+    if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
+      finalNotes = finalNotes.replace(/\[DELADDR:[^\]]*\]/g, "");
+      finalNotes += `[DELADDR:${deliveryAddress.street || ""}|${deliveryAddress.postal_code || ""}|${deliveryAddress.city || ""}]`;
+    }
+
     let offer: any;
 
     if (offer_id) {
@@ -366,7 +376,7 @@ Deno.serve(async (req: Request) => {
           gross_amount: grossAmount,
           delivery_cost,
           is_reverse_charge: isReverseCharge,
-          notes: notes || null,
+          notes: finalNotes || null,
           file_url: fileUrl,
           file_name: fileName,
           email_sent: false,
@@ -406,7 +416,7 @@ Deno.serve(async (req: Request) => {
           gross_amount: grossAmount,
           delivery_cost,
           is_reverse_charge: isReverseCharge,
-          notes: notes || null,
+          notes: finalNotes || null,
           file_url: fileUrl,
           file_name: fileName,
           email_sent: false,
@@ -724,6 +734,7 @@ async function generateOfferPdf(data: {
   staffName: string;
   issuingLocation: string;
   returnLocation?: string;
+  deliveryAddress?: { street?: string; postal_code?: string; city?: string };
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -867,7 +878,25 @@ async function generateOfferPdf(data: {
     drawTextRight("Reverse-Charge", metaValX, metaY, { s: 9, c: blue });
   }
 
-  y -= 20;
+  // ── DELIVERY ADDRESS (if provided) ──
+  if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
+    y -= 20;
+    ensureSpace(60);
+    drawText("Lieferadresse:", margin, y, { f: fontBold, s: 10 });
+    y -= 14;
+    if (data.deliveryAddress.street) {
+      drawText(safe(data.deliveryAddress.street), margin, y, { s: 10 });
+      y -= 13;
+    }
+    const plzCity = [data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(" ");
+    if (plzCity) {
+      drawText(safe(plzCity), margin, y, { s: 10 });
+      y -= 13;
+    }
+    y -= 7;
+  } else {
+    y -= 20;
+  }
 
   // ── INTRO TEXT ──
   drawText("Sehr geehrte Damen und Herren,", margin, y, { s: 10 });
@@ -1037,7 +1066,7 @@ async function generateOfferPdf(data: {
     drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
     for (const svc of data.servicesWithPrices) {
-      ensureSpace(24);
+      ensureSpace(40);
       let priceLabel = "";
       if (svc.customPrice && svc.customPrice > 0) {
         priceLabel = fmtCurrency(svc.amount);
@@ -1046,23 +1075,61 @@ async function generateOfferPdf(data: {
       } else {
         priceLabel = "inkl.";
       }
-      drawText("- " + safe(svc.name), margin + 8, y, { s: 9, c: gray });
-      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 9, c: gray });
-      y -= 12;
-      if (svc.description) {
-        drawText("  " + safe(svc.description).substring(0, 90), margin + 14, y, { s: 7, c: lightGray });
-        y -= 12;
+      // Price on the right
+      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 8, c: gray });
+      // Wrap service name to max width (leave space for price column)
+      const maxNameWidth = contentWidth - 120;
+      const nameText = safe("- " + svc.name);
+      const nameWords = nameText.split(" ");
+      let nameLine = "";
+      for (const w of nameWords) {
+        const test = nameLine + (nameLine ? " " : "") + w;
+        if (font.widthOfTextAtSize(test, 8) > maxNameWidth && nameLine) {
+          drawText(nameLine, margin + 8, y, { s: 8, c: gray });
+          y -= 11;
+          ensureSpace(20);
+          nameLine = w;
+        } else {
+          nameLine = test;
+        }
       }
+      if (nameLine) {
+        drawText(nameLine, margin + 8, y, { s: 8, c: gray });
+        y -= 11;
+      }
+      if (svc.description) {
+        // Wrap description too
+        const maxDescWidth = contentWidth - 30;
+        const descWords = safe(svc.description).split(" ");
+        let descLine = "";
+        for (const w of descWords) {
+          const test = descLine + (descLine ? " " : "") + w;
+          if (font.widthOfTextAtSize(test, 7) > maxDescWidth && descLine) {
+            drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
+            y -= 10;
+            ensureSpace(16);
+            descLine = w;
+          } else {
+            descLine = test;
+          }
+        }
+        if (descLine) {
+          drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
+          y -= 10;
+        }
+      }
+      y -= 4;
     }
     y -= 8;
   }
 
   // ── NOTES ──
-  if (data.notes) {
+  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
+  if (visibleNotes) {
     ensureSpace(40);
     drawText("Anmerkungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
-    const words = safe(data.notes).split(" ");
+    const words = safe(visibleNotes).split(" ");
     let line = "";
     for (const word of words) {
       const test = line + (line ? " " : "") + word;
