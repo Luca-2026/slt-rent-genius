@@ -46,7 +46,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 1.000 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
