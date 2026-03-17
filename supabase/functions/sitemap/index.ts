@@ -21,16 +21,15 @@ const staticPages = [
   { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
   { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   { path: '/tiefpreisgarantie', priority: '0.6', changefreq: 'monthly' },
-  { path: '/produkte', priority: '0.7', changefreq: 'weekly' },
-  // Solutions
+  // Solutions (canonical URLs – no redirecting slugs!)
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
   { path: '/loesungen/tiefbau-erdbewegung', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/hochbau-renovierung', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/galabau', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/events', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/handwerk', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/transport', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/kinder', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/garten-landschaftsbau', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/events-veranstaltungen', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/handwerk-gewerbe', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/umzug-transport', priority: '0.6', changefreq: 'monthly' },
+  { path: '/loesungen/kindergeburtstage', priority: '0.6', changefreq: 'monthly' },
   // Legal
   { path: '/impressum', priority: '0.3', changefreq: 'yearly' },
   { path: '/datenschutz', priority: '0.3', changefreq: 'yearly' },
