@@ -92,7 +92,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description:
       "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 500 € je Schadenfall. Gilt nur in Deutschland!",
     applicableCategories: ["anhaenger"],
-    pricePercent: 30,
+    pricePercent: 28,
     exclusionGroup: "anhaenger-kasko",
     calculationBase: "trailer_items",
   },
