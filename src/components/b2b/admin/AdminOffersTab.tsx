@@ -146,6 +146,7 @@ export function AdminOffersTab({
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-10">#</TableHead>
                   <TableHead>Angebotsnr.</TableHead>
                   <TableHead>Kunde</TableHead>
                   <TableHead>Datum</TableHead>
