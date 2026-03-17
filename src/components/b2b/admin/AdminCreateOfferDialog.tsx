@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -21,6 +21,25 @@ import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
+
+// ─── Module-level draft storage (survives component unmount/remount) ───
+interface OfferFormDraft {
+  items: OfferItemInput[];
+  deliveryCost: number;
+  validDays: number;
+  notes: string;
+  sendEmail: boolean;
+  deposit: string;
+  selectedServices: string[];
+  issuingLocation: string;
+  returnLocation: string;
+  selectedProfileId: string;
+}
+
+const offerDraftStore: { key: string | null; data: OfferFormDraft | null } = {
+  key: null,
+  data: null,
+};
 
 interface Reservation {
   id: string;
@@ -118,8 +137,8 @@ export function AdminCreateOfferDialog({
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
-  // Track the context key that was used to initialize the form, so we only reset when the context actually changes
   const lastInitKey = useRef<string | null>(null);
+  const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isEditing = !!existingOffer;
   const isStandalone = !reservation && !isEditing;
@@ -131,13 +150,55 @@ export function AdminCreateOfferDialog({
 
   const approvedProfiles = (profilesList || []).filter((p: any) => p.status === "approved");
 
-  // Initialize form when dialog opens with a NEW context (different reservation/offer), not on every open toggle
+  // Save current form state to module-level draft store
+  const saveDraft = useCallback(() => {
+    const contextKey = existingOffer?.id || reservation?.id || "standalone";
+    offerDraftStore.key = contextKey;
+    offerDraftStore.data = {
+      items: [...items],
+      deliveryCost,
+      validDays,
+      notes,
+      sendEmail,
+      deposit,
+      selectedServices: Array.from(selectedServices),
+      issuingLocation,
+      returnLocation,
+      selectedProfileId,
+    };
+  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+
+  // Auto-save draft on every state change (debounced)
+  useEffect(() => {
+    if (!open) return;
+    if (draftSaveTimer.current) clearTimeout(draftSaveTimer.current);
+    draftSaveTimer.current = setTimeout(() => saveDraft(), 300);
+    return () => { if (draftSaveTimer.current) clearTimeout(draftSaveTimer.current); };
+  }, [open, saveDraft]);
+
+  // Initialize form when dialog opens — restore draft if available for same context
   useEffect(() => {
     if (!open) return;
 
     const contextKey = existingOffer?.id || reservation?.id || "standalone";
-    if (lastInitKey.current === contextKey) return; // Already initialized for this context
+    if (lastInitKey.current === contextKey) return;
     lastInitKey.current = contextKey;
+
+    // Check if we have a saved draft for this exact context
+    if (offerDraftStore.key === contextKey && offerDraftStore.data) {
+      const draft = offerDraftStore.data;
+      setItems(draft.items);
+      setDeliveryCost(draft.deliveryCost);
+      setValidDays(draft.validDays);
+      setNotes(draft.notes);
+      setSendEmail(draft.sendEmail);
+      setDeposit(draft.deposit);
+      setSelectedServices(new Set(draft.selectedServices));
+      setIssuingLocation(draft.issuingLocation);
+      setReturnLocation(draft.returnLocation);
+      setSelectedProfileId(draft.selectedProfileId);
+      return;
+    }
 
     if (existingOffer && existingItems && existingItems.length > 0) {
       setItems(
@@ -372,6 +433,10 @@ export function AdminCreateOfferDialog({
             : `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
       });
 
+      // Clear draft after successful save
+      offerDraftStore.key = null;
+      offerDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
@@ -391,7 +456,10 @@ export function AdminCreateOfferDialog({
 
   return (
     <Dialog open={open} onOpenChange={(newOpen) => {
-        if (!newOpen) lastInitKey.current = null;
+        if (!newOpen) {
+          // Save draft before closing so data persists across tab switches
+          saveDraft();
+        }
         onOpenChange(newOpen);
       }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" onInteractOutside={(e) => e.preventDefault()}>
@@ -776,7 +844,13 @@ export function AdminCreateOfferDialog({
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => {
+            // Clear draft on explicit cancel
+            offerDraftStore.key = null;
+            offerDraftStore.data = null;
+            lastInitKey.current = null;
+            onOpenChange(false);
+          }}>
             Abbrechen
           </Button>
           <Button
