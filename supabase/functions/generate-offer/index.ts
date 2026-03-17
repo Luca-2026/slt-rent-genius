@@ -379,7 +379,7 @@ Deno.serve(async (req: Request) => {
       offer = updatedOffer;
       await serviceClient.from("b2b_offer_items").delete().eq("offer_id", offer_id);
     } else {
-      const offerStatus = send_email ? "sent" : "draft";
+      const offerStatus = save_as_draft ? "draft" : (send_email ? "sent" : "sent");
       const { data: newOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .insert({
