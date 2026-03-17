@@ -35,6 +35,16 @@ function getProductDescription(productName: string): string {
   return "";
 }
 
+/** Resolve category slug from product name for edit/reload flows */
+function getProductCategorySlug(productName: string): string | undefined {
+  for (const loc of locations) {
+    for (const [categorySlug, products] of Object.entries(loc.products)) {
+      if (products.some((p) => p.name === productName)) return categorySlug;
+    }
+  }
+  return undefined;
+}
+
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
   items: OfferItemInput[];
