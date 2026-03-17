@@ -242,7 +242,20 @@ export function AdminCreateOfferDialog({
           };
         })
       );
-      setDeliveryCost(existingOffer.delivery_cost || 0);
+      // Parse delivery costs: try structured format first, fall back to legacy single value
+      const existingDeliveryCost = existingOffer.delivery_cost || 0;
+      const existingNotes = existingOffer.notes || "";
+      // Check if notes contain structured delivery info (from our format)
+      const deliveryMatch = existingNotes.match(/\[DELIVERY:(\d+(?:\.\d+)?)\|RETURN:(\d+(?:\.\d+)?)\]/);
+      if (deliveryMatch) {
+        setDeliveryCostDelivery(Number(deliveryMatch[1]));
+        setDeliveryCostReturn(Number(deliveryMatch[2]));
+        setIncludeReturn(Number(deliveryMatch[2]) > 0);
+      } else {
+        setDeliveryCostDelivery(existingDeliveryCost);
+        setDeliveryCostReturn(0);
+        setIncludeReturn(false);
+      }
       setNotes(existingOffer.notes || "");
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
