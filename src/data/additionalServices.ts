@@ -10,6 +10,8 @@ export interface AdditionalService {
   pricePercent: number | null;
   /** Whether this service supports a custom (manual) price input instead of percentage */
   customPriceInput?: boolean;
+  /** Group key for mutual exclusion (only one from same group can be selected) */
+  exclusionGroup?: string;
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
@@ -21,46 +23,61 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     pricePercent: null,
     customPriceInput: true,
   },
+  // ── Basis-MBV (immer enthalten, SB 1.500€) ──
   {
     id: "mbv-selbstfahrend",
-    name: "Maschinenbruchversicherung – Selbstfahrende Maschinen",
+    name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
     description:
-      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper). 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
+      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
   },
   {
     id: "mbv-stationaer",
-    name: "Maschinenbruchversicherung – Stationäre Maschinen",
+    name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
     description:
-      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger). 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
+      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
     applicableCategories: ["aggregate", "werkzeuge", "verdichtung"],
     pricePercent: 7,
   },
+  // ── Reduzierungen der SB (on top, gegenseitig ausschließend) ──
   {
     id: "mbv-1000",
     name: "Reduzierung MBV auf 1.000 € SB",
     description:
-      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 1.000 € je Schadenfall.",
+      "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: null,
+    exclusionGroup: "mbv-reduktion",
   },
   {
     id: "mbv-500",
     name: "Reduzierung MBV auf 500 € SB",
     description:
-      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 500 € je Schadenfall.",
+      "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 500 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 5,
+    exclusionGroup: "mbv-reduktion",
   },
   {
     id: "mbv-0",
     name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
-      "Haftungsfreistellung. Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 0 € je Schadenfall.",
+      "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 10,
+    exclusionGroup: "mbv-reduktion",
   },
+  // ── Elektronikversicherung ──
+  {
+    id: "elektronikversicherung",
+    name: "Elektronikversicherung (SB 300 €)",
+    description:
+      "Versicherung für Mietartikel mit Stecker. Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
+    applicableCategories: null, // always available
+    pricePercent: 7,
+  },
+  // ── Kostenfreie Stornierung ──
   {
     id: "kostenfreie-stornierung",
     name: "Kostenfreie Stornierung",
