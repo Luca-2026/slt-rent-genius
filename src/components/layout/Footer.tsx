@@ -36,6 +36,7 @@ export function Footer() {
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
+    { to: "/tiefpreisgarantie", label: "Tiefpreisgarantie" },
     { to: "/standorte", label: t("footer.locations") },
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },

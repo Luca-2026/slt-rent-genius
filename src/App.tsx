@@ -54,6 +54,7 @@ const KnowledgeBase = lazy(() => import("./pages/KnowledgeBase"));
 const AGB = lazy(() => import("./pages/AGB"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
+const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
