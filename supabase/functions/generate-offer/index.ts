@@ -474,8 +474,8 @@ Deno.serve(async (req: Request) => {
       console.log("Customer prices saved permanently for", profile.company_name);
     }
 
-    // Update reservation status
-    if (reservation_id && !skip_status_update) {
+    // Update reservation status (only when finalizing, not for drafts)
+    if (reservation_id && !skip_status_update && !save_as_draft) {
       await serviceClient
         .from("b2b_reservations")
         .update({
