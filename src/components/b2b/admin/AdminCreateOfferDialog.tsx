@@ -814,6 +814,35 @@ export function AdminCreateOfferDialog({
             </Select>
           </div>
         </div>
+
+        {/* Delivery Address */}
+        <div>
+          <Label className="text-xs font-semibold">Lieferadresse (optional)</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1">
+            <div className="sm:col-span-2">
+              <Input
+                value={deliveryAddressStreet}
+                onChange={(e) => setDeliveryAddressStreet(e.target.value)}
+                placeholder="Straße + Hausnr."
+                className="h-8 text-sm"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Input
+                value={deliveryAddressPostalCode}
+                onChange={(e) => setDeliveryAddressPostalCode(e.target.value)}
+                placeholder="PLZ"
+                className="h-8 text-sm"
+              />
+              <Input
+                value={deliveryAddressCity}
+                onChange={(e) => setDeliveryAddressCity(e.target.value)}
+                placeholder="Ort"
+                className="h-8 text-sm"
+              />
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <Label className="text-xs">Anlieferung (€ netto)</Label>
