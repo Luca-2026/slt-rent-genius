@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // First try direct profile ownership
     const { data } = await supabase
       .from("b2b_profiles")
-      .select("id, company_name, status, contact_first_name, contact_last_name, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
+      .select("id, company_name, status, contact_first_name, contact_last_name, contact_email, contact_phone, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
       .eq("user_id", userId)
       .single();
     
