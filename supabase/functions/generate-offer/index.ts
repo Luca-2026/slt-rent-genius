@@ -986,8 +986,8 @@ async function generateOfferPdf(data: {
     ensureSpace(50);
     page.drawRectangle({ x: margin, y: y - 8, width: contentWidth, height: 32, color: rgb(0.94, 0.97, 0.98) });
     page.drawRectangle({ x: margin, y: y - 8, width: 3, height: 32, color: blue });
-    drawText("Hinweis: Steuerschuldnerschaft des Leistungsempfaengers (Reverse-Charge-Verfahren", margin + 10, y + 10, { s: 8 });
-    drawText("gem. 13b UStG). Die Umsatzsteuer ist vom Leistungsempfaenger zu entrichten.", margin + 10, y, { s: 8 });
+    drawText("Hinweis: Steuerschuldnerschaft des Leistungsempf\u00E4ngers (Reverse-Charge-Verfahren", margin + 10, y + 10, { s: 8 });
+    drawText("gem\u00E4\u00DF \u00A713b UStG). Die Umsatzsteuer ist vom Leistungsempf\u00E4nger zu entrichten.", margin + 10, y, { s: 8 });
     y -= 45;
   }
 
