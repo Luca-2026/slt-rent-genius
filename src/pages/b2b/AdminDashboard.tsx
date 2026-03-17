@@ -1298,11 +1298,22 @@ export default function AdminDashboard() {
                 </Label>
               </div>
 
-              <div className="flex gap-3 justify-end">
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
                 <Button
+                  variant="outline"
+                  onClick={() => generateInvoice(selectedReservation, true)}
+                  disabled={generatingInvoice}
+                >
+                  {generatingInvoice ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird gespeichert...</>
+                  ) : (
+                    <><Eye className="h-4 w-4 mr-1.5" />Als Entwurf speichern</>
+                  )}
+                </Button>
+                <Button
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={() => generateInvoice(selectedReservation)}
+                  onClick={() => generateInvoice(selectedReservation, false)}
                   disabled={generatingInvoice}
                 >
                   {generatingInvoice ? (
