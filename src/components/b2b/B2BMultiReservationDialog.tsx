@@ -505,10 +505,47 @@ export function B2BMultiReservationDialog({
           {relevantServices.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-headline mb-2">
-                Zusatzoptionen
+                Versicherungen & Zusatzoptionen
               </label>
               <div className="space-y-2 rounded-lg border p-3 bg-muted/30">
-                {relevantServices.map((service) => (
+                {/* Mandatory services first */}
+                {relevantServices.filter(s => mandatoryServiceIds.has(s.id)).map((service) => (
+                  <div key={service.id} className="flex items-start gap-2 bg-primary/5 rounded-md p-2 border border-primary/10">
+                    <Checkbox
+                      checked={true}
+                      disabled
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">{service.name}</p>
+                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">Inkl.</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{service.description}</p>
+                    </div>
+                  </div>
+                ))}
+                {/* Optional upgrade services */}
+                {relevantServices.filter(s => s.isUpgrade).length > 0 && (
+                  <div className="pt-1">
+                    <p className="text-xs font-medium text-muted-foreground mb-1.5">Optionale Reduzierung der Selbstbeteiligung:</p>
+                    {relevantServices.filter(s => s.isUpgrade).map((service) => (
+                      <label key={service.id} className="flex items-start gap-2 cursor-pointer py-1">
+                        <Checkbox
+                          checked={selectedServices.has(service.id)}
+                          onCheckedChange={() => toggleService(service.id)}
+                          className="mt-0.5"
+                        />
+                        <div>
+                          <p className="text-sm font-medium">{service.name}</p>
+                          <p className="text-xs text-muted-foreground">{service.description}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                {/* Other optional services */}
+                {relevantServices.filter(s => !mandatoryServiceIds.has(s.id) && !s.isUpgrade).map((service) => (
                   <label key={service.id} className="flex items-start gap-2 cursor-pointer">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
