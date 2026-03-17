@@ -281,32 +281,24 @@ export default function AdminDashboard() {
           try { parsedServices = JSON.parse(parsedServices); } catch { parsedServices = null; }
         }
         if (parsedServices && Array.isArray(parsedServices)) {
-          const itemsNetTotal = items.reduce((sum, item) => {
-            const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
-            return sum + discounted * item.quantity;
-          }, 0);
-          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
-            if (svc.pricePercent !== null && svc.pricePercent > 0) {
-              const amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
-              additionalServiceItems.push({
-                product_name: svc.name,
-                description: svc.description || "Zusatzleistung",
-                quantity: 1,
-                unit_price: amount,
-                discount_percent: 0,
-                item_type: 'service' as const,
-              });
-            } else if (svc.pricePercent === null || svc.pricePercent === 0) {
-              // Services with no percentage - show with 0€ price
-              additionalServiceItems.push({
-                product_name: svc.name,
-                description: svc.description || "Zusatzleistung",
-                quantity: 1,
-                unit_price: 0,
-                discount_percent: 0,
-                item_type: 'service' as const,
-              });
+          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string; amount?: number; customPrice?: number }>) {
+            // Use pre-calculated amount from offer if available, otherwise fallback to percentage calc
+            let amount = 0;
+            if (svc.amount != null && svc.amount > 0) {
+              amount = svc.amount;
+            } else if (svc.customPrice && svc.customPrice > 0) {
+              amount = svc.customPrice;
+            } else if (svc.pricePercent !== null && svc.pricePercent > 0) {
+              amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
             }
+            additionalServiceItems.push({
+              product_name: svc.name,
+              description: svc.description || "Zusatzleistung",
+              quantity: 1,
+              unit_price: amount,
+              discount_percent: 0,
+              item_type: 'service' as const,
+            });
           }
         }
 
