@@ -356,7 +356,7 @@ Deno.serve(async (req: Request) => {
     // Encode structured delivery metadata into notes so edit/resend can restore exact values
     let finalNotes = notes || "";
     finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "");
-    finalNotes += `[DELIVERY:${delivery_cost_delivery || 0}|${delivery_cost_return || 0}]`;
+    finalNotes += `[DELIVERY:${delivery_cost_delivery || 0}|RETURN:${delivery_cost_return || 0}]`;
     if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
       finalNotes += `[DELADDR:${deliveryAddress.street || ""}|${deliveryAddress.postal_code || ""}|${deliveryAddress.city || ""}]`;
     }
