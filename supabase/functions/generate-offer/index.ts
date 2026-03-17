@@ -958,9 +958,14 @@ async function generateOfferPdf(data: {
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
-  if (data.deliveryCost > 0) {
-    drawText("Transportkosten:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCost), pageWidth - margin, y, { s: 9 });
+  if (data.deliveryCostDelivery > 0) {
+    drawText("Anlieferung:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCostDelivery), pageWidth - margin, y, { s: 9 });
+    y -= 14;
+  }
+  if (data.deliveryCostReturn > 0) {
+    drawText("Rücklieferung:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(data.deliveryCostReturn), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 
