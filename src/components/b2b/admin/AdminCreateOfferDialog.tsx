@@ -385,7 +385,13 @@ export function AdminCreateOfferDialog({
     setDeliveryCostDelivery(0);
     setDeliveryCostReturn(0);
     setIncludeReturn(false);
-    setNotes(reservation.notes || "");
+    // Clean delivery/batch metadata from visible notes
+    const cleanedNotes = (reservation.notes || "")
+      .replace(/🚚\s*Lieferung gewünscht:[^\n]*/g, "")
+      .replace(/Sammelanfrage BATCH-\d+[^\n]*/g, "")
+      .replace(/Abholung:.*?Rückgabe:[^\n]*/g, "")
+      .trim();
+    setNotes(cleanedNotes);
   };
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
