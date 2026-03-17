@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
 import { CalendarDays, MapPin, Send, Package, Clock, Truck } from "lucide-react";
+import { ADDITIONAL_SERVICES, getServicesForCategory, getMandatoryServiceIds, type AdditionalService } from "@/data/additionalServices";
 
 interface B2BReservationDialogProps {
   product: Product | null;
