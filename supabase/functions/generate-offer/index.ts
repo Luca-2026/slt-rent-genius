@@ -421,7 +421,7 @@ Deno.serve(async (req: Request) => {
           file_name: fileName,
           email_sent: false,
           deposit: deposit || null,
-          additional_services: servicesJson,
+          additional_services: servicesData,
           created_by_user_id: authUser.id,
           created_by_staff_name: staffName,
           issuing_location: issuingLocation || null,
