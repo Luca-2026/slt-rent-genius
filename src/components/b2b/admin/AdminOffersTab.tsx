@@ -92,6 +92,8 @@ export function AdminOffersTab({
 
   const statusBadge = (status: string) => {
     switch (status) {
+      case "draft":
+        return <Badge variant="secondary" className="text-muted-foreground"><FileText className="h-3 w-3 mr-1" />Entwurf</Badge>;
       case "sent":
         return <Badge variant="outline" className="text-primary border-primary"><Send className="h-3 w-3 mr-1" />Gesendet</Badge>;
       case "accepted":
