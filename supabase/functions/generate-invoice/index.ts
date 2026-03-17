@@ -53,6 +53,7 @@ interface InvoiceRequest {
   send_email?: boolean;
   is_proforma?: boolean;
   save_as_draft?: boolean;
+  delivery_address?: { street?: string; postal_code?: string; city?: string };
 }
 
 Deno.serve(async (req: Request) => {
