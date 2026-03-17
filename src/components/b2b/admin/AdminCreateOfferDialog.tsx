@@ -268,7 +268,20 @@ export function AdminCreateOfferDialog({
         setDeliveryCostReturn(0);
         setIncludeReturn(false);
       }
-      setNotes(existingOffer.notes || "");
+      // Parse delivery address from notes
+      const existingNotesFull = existingOffer.notes || "";
+      const delAddrMatch = existingNotesFull.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
+      if (delAddrMatch) {
+        setDeliveryAddressStreet(delAddrMatch[1] || "");
+        setDeliveryAddressPostalCode(delAddrMatch[2] || "");
+        setDeliveryAddressCity(delAddrMatch[3] || "");
+      } else {
+        setDeliveryAddressStreet("");
+        setDeliveryAddressPostalCode("");
+        setDeliveryAddressCity("");
+      }
+      // Remove structured tags from visible notes
+      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim());
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
       setReturnLocation(existingOffer.return_location || "");
