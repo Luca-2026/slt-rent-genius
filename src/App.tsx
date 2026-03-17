@@ -82,6 +82,7 @@ const App = () => (
               <Route path="/mieten/:locationId" element={<LocationCategories />} />
               <Route path="/mieten/:locationId/:categoryId" element={<CategoryProducts />} />
               <Route path="/mieten/:locationId/:categoryId/:productId" element={<ProductDetail />} />
+              <Route path="/mieten/:locationId/alle" element={<LegacyAlleRedirect />} />
               
               {/* Legacy product/category routes - redirects for SEO */}
               <Route path="/produkte" element={<RentalStart />} />
