@@ -46,6 +46,7 @@ interface OfferRequest {
   valid_days?: number;
   notes?: string;
   send_email?: boolean;
+  save_as_draft?: boolean;
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
