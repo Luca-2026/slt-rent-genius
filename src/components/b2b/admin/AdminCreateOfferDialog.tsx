@@ -162,7 +162,9 @@ export function AdminCreateOfferDialog({
     offerDraftStore.key = contextKey;
     offerDraftStore.data = {
       items: [...items],
-      deliveryCost,
+      deliveryCostDelivery,
+      deliveryCostReturn,
+      includeReturn,
       validDays,
       notes,
       sendEmail,
@@ -173,7 +175,7 @@ export function AdminCreateOfferDialog({
       returnLocation,
       selectedProfileId,
     };
-  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
