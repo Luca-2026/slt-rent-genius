@@ -1067,7 +1067,7 @@ async function generateOfferPdf(data: {
       });
     }
 
-    const maxNameWidth = (embeddedImg ? colQty - colNameWithImg - 5 : colQty - colName - 5);
+    const maxNameWidth = colQty - colNameWithImg - 5;
     const pName = safe(item.product_name);
     // Word-wrap product name
     const nameWords = pName.split(" ");
