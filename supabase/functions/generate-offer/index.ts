@@ -416,7 +416,7 @@ Deno.serve(async (req: Request) => {
           gross_amount: grossAmount,
           delivery_cost,
           is_reverse_charge: isReverseCharge,
-          notes: notes || null,
+          notes: finalNotes || null,
           file_url: fileUrl,
           file_name: fileName,
           email_sent: false,
