@@ -241,8 +241,14 @@ export function AdminCreateOfferDialog({
       setReturnLocation(existingOffer.return_location || "");
       if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
         setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
+        const restoredPrices: Record<string, number> = {};
+        for (const s of existingOffer.additional_services as any[]) {
+          if (s.customPrice) restoredPrices[s.id] = s.customPrice;
+        }
+        setCustomServicePrices(restoredPrices);
       } else {
         setSelectedServices(new Set());
+        setCustomServicePrices({});
       }
     } else if (reservation) {
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
