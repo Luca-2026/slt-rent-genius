@@ -32,7 +32,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-selbstfahrend",
     name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
     description:
-      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
+      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
     mandatory: true,
