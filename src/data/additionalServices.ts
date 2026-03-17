@@ -31,21 +31,11 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
   },
   // ── Basis-MBV (immer enthalten, SB 1.500€) ──
   {
-    id: "mbv-selbstfahrend",
-    name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
+    id: "mbv-basis",
+    name: "Maschinenbruchversicherung (SB 1.500 €)",
     description:
-      "MBV für Bagger, Arbeitsbühnen, Radlader und Dumper mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
-    pricePercent: 12,
-    mandatory: true,
-    calculationBase: "mbv_items",
-  },
-  {
-    id: "mbv-stationaer",
-    name: "Maschinenbruchversicherung – Aggregate (SB 1.500 €)",
-    description:
-      "MBV für Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["aggregate"],
+      "MBV für Bagger, Arbeitsbühnen, Radlader, Dumper und Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
+    applicableCategories: ["erdbewegung", "arbeitsbuehnen", "aggregate"],
     pricePercent: 12,
     mandatory: true,
     calculationBase: "mbv_items",
