@@ -180,6 +180,9 @@ export function AdminCreateOfferDialog({
       issuingLocation,
       returnLocation,
       selectedProfileId,
+      deliveryAddressStreet,
+      deliveryAddressPostalCode,
+      deliveryAddressCity,
     };
   }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
 
