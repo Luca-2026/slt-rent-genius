@@ -293,6 +293,7 @@ export default function AdminDashboard() {
                 quantity: 1,
                 unit_price: amount,
                 discount_percent: 0,
+                item_type: 'service' as const,
               });
             } else if (svc.pricePercent === null || svc.pricePercent === 0) {
               // Free services – still list them with 0€
@@ -302,6 +303,7 @@ export default function AdminDashboard() {
                 quantity: 1,
                 unit_price: 0,
                 discount_percent: 0,
+                item_type: 'service' as const,
               });
             }
           }
