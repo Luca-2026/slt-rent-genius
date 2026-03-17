@@ -515,7 +515,11 @@ export function AdminCreateOfferDialog({
             rental_end: item.rental_end || endDate,
             start_time: item.start_time || undefined,
             end_time: item.end_time || undefined,
-            image_url: getProductImageUrl(reservation?.product_id || "") || getProductImageUrlByName(item.product_name) || undefined,
+            image_url: (() => {
+              const stablePath = getProductImageStablePath(reservation?.product_id || "") || getProductImageStablePathByName(item.product_name);
+              if (stablePath) return `${window.location.origin}${stablePath}`;
+              return undefined;
+            })(),
           })),
           delivery_cost: totalDeliveryCost,
           delivery_cost_delivery: deliveryCostDelivery,
