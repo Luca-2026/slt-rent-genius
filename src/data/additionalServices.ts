@@ -90,7 +90,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
   // ── Anhänger-Versicherungen ──
   {
     id: "vollkasko-500",
-    name: "Vollkaskoversicherung (SB 500 €)",
+    name: "Vollkaskoversicherung (SB 500 €) (für Anhänger)",
     description:
       "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 500 € je Schadenfall. Gilt nur in Deutschland! 30% des Netto-Mietpreises.",
     applicableCategories: ["anhaenger"],
