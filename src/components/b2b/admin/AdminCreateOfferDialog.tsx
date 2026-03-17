@@ -598,6 +598,31 @@ export function AdminCreateOfferDialog({
         <Separator />
 
         {/* Additional options */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <Label className="text-xs">Ausgabestandort</Label>
+            <Select value={issuingLocation} onValueChange={setIssuingLocation}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Standort wählen" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="krefeld">Krefeld</SelectItem>
+                <SelectItem value="bonn">Bonn</SelectItem>
+                <SelectItem value="muelheim">Mülheim a. d. Ruhr</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-xs">Rückgabestandort (optional)</Label>
+            <Select value={returnLocation || "same"} onValueChange={(v) => setReturnLocation(v === "same" ? "" : v)}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Gleicher Standort" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="same">Gleicher Standort</SelectItem>
+                <SelectItem value="krefeld">Krefeld</SelectItem>
+                <SelectItem value="bonn">Bonn</SelectItem>
+                <SelectItem value="muelheim">Mülheim a. d. Ruhr</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <Label className="text-xs">Lieferkosten (€ netto)</Label>

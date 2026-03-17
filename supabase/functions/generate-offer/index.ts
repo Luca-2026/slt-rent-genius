@@ -1061,10 +1061,10 @@ async function generateOfferPdf(data: {
     const fy = 42;
     p.drawLine({ start: { x: margin, y: fy + 14 }, end: { x: pageWidth - margin, y: fy + 14 }, thickness: 1.5, color: blue });
     const footerLines = [
-      safe(`${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`),
-      safe(`${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`),
-      safe(`${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`),
-      safe(`${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`),
+      safe(`${SLT_COMPANY.name} \u00B7 GF: ${SLT_COMPANY.managingDirector} \u00B7 Tel: ${SLT_COMPANY.phone}`),
+      safe(`${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city} \u00B7 Steuer-Nr. ${SLT_COMPANY.steuerNr} \u00B7 USt-ID ${SLT_COMPANY.ustId}`),
+      safe(`${SLT_COMPANY.registry} \u00B7 ${SLT_COMPANY.bankName} \u00B7 IBAN: ${SLT_COMPANY.iban} \u00B7 BIC: ${SLT_COMPANY.bic}`),
+      safe(`${SLT_COMPANY.web} \u00B7 ${SLT_COMPANY.email}`),
     ];
     footerLines.forEach((line, i) => {
       const tw = font.widthOfTextAtSize(line, 6);
