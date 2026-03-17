@@ -789,6 +789,7 @@ async function generateDocumentPdf(data: {
   signatures?: { customerData?: string; staffData?: string; staffName?: string };
   totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string; depositTotal?: number };
   isProforma?: boolean;
+  deliveryAddress?: { street?: string; postal_code?: string; city?: string };
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
