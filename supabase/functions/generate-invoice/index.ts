@@ -292,7 +292,7 @@ Deno.serve(async (req: Request) => {
       documentNumber: invoiceNumber,
       date: invoiceDate,
       profile,
-      productItems: productItems.map((item: any) => ({
+      productItems: productItems.map((item: any, idx: number) => ({
         name: item.product_name,
         description: item.description || undefined,
         quantity: item.quantity,
@@ -301,6 +301,7 @@ Deno.serve(async (req: Request) => {
         discount: item.discount_percent,
         rentalStart: item.rental_start,
         rentalEnd: item.rental_end,
+        itemIndex: idx,
       })),
       serviceItems: serviceItems.map((item: any) => ({
         name: item.product_name,
