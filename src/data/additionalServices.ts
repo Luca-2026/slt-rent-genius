@@ -12,6 +12,10 @@ export interface AdditionalService {
   customPriceInput?: boolean;
   /** Group key for mutual exclusion (only one from same group can be selected) */
   exclusionGroup?: string;
+  /** If true, this service is automatically included for matching categories (customer cannot deselect) */
+  mandatory?: boolean;
+  /** If true, this is an upgrade/add-on to a mandatory base service */
+  isUpgrade?: boolean;
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
@@ -31,14 +35,16 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
       "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
+    mandatory: true,
   },
   {
     id: "mbv-stationaer",
     name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
     description:
       "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
-    applicableCategories: ["aggregate", "werkzeuge", "verdichtung"],
+    applicableCategories: ["aggregate", "verdichtung"],
     pricePercent: 7,
+    mandatory: true,
   },
   // ── Reduzierungen der SB (on top, gegenseitig ausschließend) ──
   {
@@ -49,6 +55,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 3,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   {
     id: "mbv-500",
@@ -58,6 +65,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   {
     id: "mbv-0",
@@ -67,15 +75,17 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   // ── Elektronikversicherung ──
   {
     id: "elektronikversicherung",
     name: "Elektronikversicherung (SB 300 €)",
     description:
-      "Versicherung für Mietartikel mit Stecker. Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
-    applicableCategories: null, // always available
+      "Versicherung für Mietartikel mit Stecker (Akkuwerkzeuge, Veranstaltungstechnik etc.). Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
+    applicableCategories: ["werkzeuge"],
     pricePercent: 7,
+    mandatory: true,
   },
   // ── Anhänger-Versicherungen ──
   {
@@ -128,6 +138,28 @@ export function getServicesForCategory(categorySlug?: string | null): Additional
   return ADDITIONAL_SERVICES.filter(
     (s) => s.applicableCategories === null || (categorySlug && s.applicableCategories.includes(categorySlug))
   );
+}
+
+/**
+ * Returns mandatory services for the given category slugs.
+ * These should be auto-selected and shown as "included".
+ */
+export function getMandatoryServiceIds(categorySlugs: string[]): Set<string> {
+  const ids = new Set<string>();
+  for (const service of ADDITIONAL_SERVICES) {
+    if (!service.mandatory) continue;
+    if (service.applicableCategories === null) {
+      ids.add(service.id);
+    } else {
+      for (const slug of categorySlugs) {
+        if (service.applicableCategories.includes(slug)) {
+          ids.add(service.id);
+          break;
+        }
+      }
+    }
+  }
+  return ids;
 }
 
 /**

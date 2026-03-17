@@ -12,7 +12,7 @@ import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
 import { CalendarDays, MapPin, Send, Package, X, ChevronUp, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ADDITIONAL_SERVICES, getServicesForCategory, type AdditionalService } from "@/data/additionalServices";
+import { ADDITIONAL_SERVICES, getServicesForCategory, getMandatoryServiceIds, type AdditionalService } from "@/data/additionalServices";
 
 interface SelectedProduct {
   product: Product;
@@ -65,8 +65,11 @@ export function B2BMultiReservationDialog({
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   // Determine relevant additional services based on all selected product categories
+  const categorySlugs = useMemo(() => Array.from(new Set(selectedProducts.map((sp) => sp.categorySlug))), [selectedProducts]);
+
+  const mandatoryServiceIds = useMemo(() => getMandatoryServiceIds(categorySlugs), [categorySlugs]);
+
   const relevantServices = useMemo(() => {
-    const categorySlugs = new Set(selectedProducts.map((sp) => sp.categorySlug));
     const allServices = new Map<string, AdditionalService>();
 
     for (const slug of categorySlugs) {
@@ -80,7 +83,20 @@ export function B2BMultiReservationDialog({
     if (storno) allServices.set(storno.id, storno);
 
     return Array.from(allServices.values());
-  }, [selectedProducts]);
+  }, [categorySlugs]);
+
+  // Auto-select mandatory services when categories change
+  useMemo(() => {
+    if (mandatoryServiceIds.size > 0) {
+      setSelectedServices((prev) => {
+        const next = new Set(prev);
+        for (const id of mandatoryServiceIds) {
+          next.add(id);
+        }
+        return next;
+      });
+    }
+  }, [mandatoryServiceIds]);
 
   if (selectedProducts.length === 0) return null;
 
@@ -91,11 +107,18 @@ export function B2BMultiReservationDialog({
   };
 
   const toggleService = (serviceId: string) => {
+    // Prevent deselecting mandatory services
+    if (mandatoryServiceIds.has(serviceId)) return;
+
     setSelectedServices((prev) => {
       const next = new Set(prev);
-      if (serviceId.startsWith("mbv-")) {
-        for (const id of next) {
-          if (id.startsWith("mbv-")) next.delete(id);
+      const toggledService = ADDITIONAL_SERVICES.find(s => s.id === serviceId);
+      // If it has an exclusion group, remove others in the same group
+      if (toggledService?.exclusionGroup) {
+        for (const s of ADDITIONAL_SERVICES) {
+          if (s.id !== serviceId && s.exclusionGroup === toggledService.exclusionGroup) {
+            next.delete(s.id);
+          }
         }
       }
       if (next.has(serviceId)) {
@@ -482,10 +505,47 @@ export function B2BMultiReservationDialog({
           {relevantServices.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-headline mb-2">
-                Zusatzoptionen
+                Versicherungen & Zusatzoptionen
               </label>
               <div className="space-y-2 rounded-lg border p-3 bg-muted/30">
-                {relevantServices.map((service) => (
+                {/* Mandatory services first */}
+                {relevantServices.filter(s => mandatoryServiceIds.has(s.id)).map((service) => (
+                  <div key={service.id} className="flex items-start gap-2 bg-primary/5 rounded-md p-2 border border-primary/10">
+                    <Checkbox
+                      checked={true}
+                      disabled
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">{service.name}</p>
+                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">Inkl.</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{service.description}</p>
+                    </div>
+                  </div>
+                ))}
+                {/* Optional upgrade services */}
+                {relevantServices.filter(s => s.isUpgrade).length > 0 && (
+                  <div className="pt-1">
+                    <p className="text-xs font-medium text-muted-foreground mb-1.5">Optionale Reduzierung der Selbstbeteiligung:</p>
+                    {relevantServices.filter(s => s.isUpgrade).map((service) => (
+                      <label key={service.id} className="flex items-start gap-2 cursor-pointer py-1">
+                        <Checkbox
+                          checked={selectedServices.has(service.id)}
+                          onCheckedChange={() => toggleService(service.id)}
+                          className="mt-0.5"
+                        />
+                        <div>
+                          <p className="text-sm font-medium">{service.name}</p>
+                          <p className="text-xs text-muted-foreground">{service.description}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                {/* Other optional services */}
+                {relevantServices.filter(s => !mandatoryServiceIds.has(s.id) && !s.isUpgrade).map((service) => (
                   <label key={service.id} className="flex items-start gap-2 cursor-pointer">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
