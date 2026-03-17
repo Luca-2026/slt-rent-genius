@@ -35,14 +35,16 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
       "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
+    mandatory: true,
   },
   {
     id: "mbv-stationaer",
     name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
     description:
       "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
-    applicableCategories: ["aggregate", "werkzeuge", "verdichtung"],
+    applicableCategories: ["aggregate", "verdichtung"],
     pricePercent: 7,
+    mandatory: true,
   },
   // ── Reduzierungen der SB (on top, gegenseitig ausschließend) ──
   {
@@ -53,6 +55,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 3,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   {
     id: "mbv-500",
@@ -62,6 +65,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   {
     id: "mbv-0",
@@ -71,6 +75,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
+    isUpgrade: true,
   },
   // ── Elektronikversicherung ──
   {
