@@ -196,7 +196,7 @@ export function AdminCustomersTab({
                         </span>
                         <span className="flex items-center gap-1.5">
                           <Clock className="h-3.5 w-3.5" />
-                          {profile.payment_due_days} Tage Zahlungsziel
+                          {profile.credit_limit === 0 ? "Vorkasse" : `${profile.payment_due_days} Tage Zahlungsziel`}
                         </span>
                         <span className="flex items-center gap-1.5">
                           <Receipt className="h-3.5 w-3.5" />

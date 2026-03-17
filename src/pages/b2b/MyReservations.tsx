@@ -194,6 +194,7 @@ export default function MyReservations() {
       supabase
         .from("b2b_offers")
         .select("id, reservation_id, offer_number, offer_date, valid_until, status, gross_amount, file_url")
+        .neq("status", "draft")
         .order("created_at", { ascending: false }),
     ]);
 
