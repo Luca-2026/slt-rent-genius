@@ -106,6 +106,15 @@ export function B2BReservationDialog({
 
       const fullNotes = [timeInfo, deliveryInfo, notes].filter(Boolean).join("\n") || null;
 
+      const servicesArray = selectedServices.size > 0
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+            pricePercent: s.pricePercent,
+          }))
+        : null;
+
       const { error } = await supabase.from("b2b_reservations").insert({
         b2b_profile_id: b2bProfile.id,
         user_id: user.id,
@@ -116,6 +125,7 @@ export function B2BReservationDialog({
         start_date: startDate,
         end_date: endDate || null,
         quantity: parseInt(quantity) || 1,
+        additional_services: servicesArray,
         notes: fullNotes,
         status: "pending",
       } as any);
