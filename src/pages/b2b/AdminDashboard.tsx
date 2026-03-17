@@ -281,6 +281,10 @@ export default function AdminDashboard() {
           try { parsedServices = JSON.parse(parsedServices); } catch { parsedServices = null; }
         }
         if (parsedServices && Array.isArray(parsedServices)) {
+          const itemsNetTotal = items.reduce((sum, item) => {
+            const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
+            return sum + discounted * item.quantity;
+          }, 0);
           for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string; amount?: number; customPrice?: number }>) {
             // Use pre-calculated amount from offer if available, otherwise fallback to percentage calc
             let amount = 0;
