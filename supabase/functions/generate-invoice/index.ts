@@ -914,7 +914,7 @@ async function generateDocumentPdf(data: {
   let posNum = 1;
 
   // ── Product items ──
-  data.productItems.forEach((item) => {
+  data.productItems.forEach((item, productIndex) => {
     checkPage(45);
     dt(`${posNum}`, colPos, y, font, 9);
     posNum++;
