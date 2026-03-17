@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
-import { CalendarDays, MapPin, Send, Package, X, ChevronUp } from "lucide-react";
+import { CalendarDays, MapPin, Send, Package, X, ChevronUp, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ADDITIONAL_SERVICES, getServicesForCategory, type AdditionalService } from "@/data/additionalServices";
 

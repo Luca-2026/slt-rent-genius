@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
-import { CalendarDays, MapPin, Send, Package, Clock } from "lucide-react";
+import { CalendarDays, MapPin, Send, Package, Clock, Truck } from "lucide-react";
 
 interface B2BReservationDialogProps {
   product: Product | null;
@@ -38,6 +39,10 @@ export function B2BReservationDialog({
   const [endTime, setEndTime] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [notes, setNotes] = useState("");
+  const [deliveryRequested, setDeliveryRequested] = useState(false);
+  const [deliveryStreet, setDeliveryStreet] = useState("");
+  const [deliveryPostalCode, setDeliveryPostalCode] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
 
   if (!product) return null;
 
@@ -50,15 +55,24 @@ export function B2BReservationDialog({
       return;
     }
 
+    if (deliveryRequested && (!deliveryStreet || !deliveryPostalCode || !deliveryCity)) {
+      toast({ title: "Bitte vollständige Lieferadresse angeben", variant: "destructive" });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Build notes with time info
       const timeInfo = [
         startTime ? `Abholung: ${startTime} Uhr` : "",
         endTime ? `Rückgabe: ${endTime} Uhr` : "",
       ].filter(Boolean).join(" · ");
-      const fullNotes = [timeInfo, notes].filter(Boolean).join("\n") || null;
+
+      const deliveryInfo = deliveryRequested
+        ? `🚚 Lieferung gewünscht: ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}`
+        : "";
+
+      const fullNotes = [timeInfo, deliveryInfo, notes].filter(Boolean).join("\n") || null;
 
       const { error } = await supabase.from("b2b_reservations").insert({
         b2b_profile_id: b2bProfile.id,
@@ -81,13 +95,17 @@ export function B2BReservationDialog({
         description: `Ihre Anfrage für "${product.name}" wurde übermittelt. Wir melden uns in Kürze.`,
       });
       onOpenChange(false);
-      // Reset form
+
       setStartDate("");
       setStartTime("");
       setEndDate("");
       setEndTime("");
       setQuantity("1");
       setNotes("");
+      setDeliveryRequested(false);
+      setDeliveryStreet("");
+      setDeliveryPostalCode("");
+      setDeliveryCity("");
     } catch (error: any) {
       toast({
         title: "Fehler beim Senden",
@@ -220,13 +238,63 @@ export function B2BReservationDialog({
             />
           </div>
 
+          {/* Delivery */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <Checkbox
+                checked={deliveryRequested}
+                onCheckedChange={(checked) => setDeliveryRequested(checked === true)}
+              />
+              <span className="text-sm font-medium text-headline flex items-center gap-1.5">
+                <Truck className="h-3.5 w-3.5" />
+                Lieferung gewünscht
+              </span>
+            </label>
+            {deliveryRequested && (
+              <div className="space-y-2 pl-6 border-l-2 border-primary/20">
+                <div>
+                  <label className="block text-xs font-medium text-headline mb-1">Straße & Hausnr. *</label>
+                  <Input
+                    value={deliveryStreet}
+                    onChange={(e) => setDeliveryStreet(e.target.value)}
+                    placeholder="Musterstraße 123"
+                    className="h-9 text-sm"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-headline mb-1">PLZ *</label>
+                    <Input
+                      value={deliveryPostalCode}
+                      onChange={(e) => setDeliveryPostalCode(e.target.value)}
+                      placeholder="47807"
+                      className="h-9 text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-headline mb-1">Ort *</label>
+                    <Input
+                      value={deliveryCity}
+                      onChange={(e) => setDeliveryCity(e.target.value)}
+                      placeholder="Krefeld"
+                      className="h-9 text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Notes */}
           <div>
             <label className="block text-sm font-medium text-headline mb-1">
               Anmerkungen
             </label>
             <Textarea
-              placeholder="z.B. gewünschte Lieferung, spezielle Anforderungen..."
+              placeholder="z.B. spezielle Anforderungen..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
