@@ -958,7 +958,7 @@ async function generateDocumentPdf(data: {
     const linkedServices = data.serviceItems.filter((svc) => svc.parentItemIndex === productIndex);
     linkedServices.forEach((svc) => {
       checkPage(18);
-      const svcLines = wt(`↳ Zusatzoption: ${svc.name}`, font, 7, nameMaxW);
+      const svcLines = wt(`> Zusatzoption: ${svc.name}`, font, 7, nameMaxW);
       svcLines.forEach((line, li) => {
         dt(line, colName + 8, y, font, 7, rgb(0.45, 0.45, 0.45));
         if (li === 0 && hasPrice) {
