@@ -303,6 +303,8 @@ Deno.serve(async (req: Request) => {
       profile,
       items: offerItems,
       deliveryCost: delivery_cost,
+      deliveryCostDelivery: delivery_cost_delivery,
+      deliveryCostReturn: delivery_cost_return,
       servicesSurcharge,
       servicesWithPrices,
       netAmount,
