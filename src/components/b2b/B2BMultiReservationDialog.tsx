@@ -210,7 +210,10 @@ export function B2BMultiReservationDialog({
           : "";
 
         const effectiveTimeInfo = dates.hasOverride ? timeInfo : mainTimeInfo;
-        const fullNotes = [batchNote, effectiveTimeInfo, notes].filter(Boolean).join("\n") || null;
+        const deliveryInfo = deliveryRequested
+          ? `🚚 Lieferung gewünscht: ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}`
+          : "";
+        const fullNotes = [batchNote, effectiveTimeInfo, deliveryInfo, notes].filter(Boolean).join("\n") || null;
 
         return {
           b2b_profile_id: b2bProfile.id,
