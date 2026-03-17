@@ -109,6 +109,7 @@ Deno.serve(async (req: Request) => {
       valid_days = 14,
       notes,
       send_email = true,
+      save_as_draft = false,
       save_prices = true,
       skip_status_update = false,
       deposit = 0,
