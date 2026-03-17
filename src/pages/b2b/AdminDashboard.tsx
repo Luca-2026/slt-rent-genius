@@ -251,7 +251,7 @@ export default function AdminDashboard() {
           discount_percent: item.discount_percent || 0,
           rental_start: item.rental_start || reservation?.start_date,
           rental_end: item.rental_end || reservation?.end_date,
-          image_url: (reservation ? getProductImageUrl(reservation.product_id) : null) || getProductImageUrlByName(item.product_name) || undefined,
+          image_url: getProductImageUrlByName(item.product_name) || (reservation ? getProductImageUrl(reservation.product_id) : null) || undefined,
           item_type: 'product' as const,
         }));
 
