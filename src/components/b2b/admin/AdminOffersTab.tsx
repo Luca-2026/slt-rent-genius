@@ -33,6 +33,9 @@ export interface Offer {
   created_at: string;
   deposit: number | null;
   additional_services: any;
+  created_by_staff_name?: string | null;
+  issuing_location?: string | null;
+  return_location?: string | null;
 }
 
 export interface OfferItem {
