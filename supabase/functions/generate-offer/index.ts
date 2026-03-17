@@ -1121,7 +1121,7 @@ async function generateOfferPdf(data: {
     const linkedServices = servicesByItem.get(i) || [];
     for (const svc of linkedServices) {
       subY -= 11;
-      const svcPrefix = "↳ Zusatzoption: ";
+      const svcPrefix = "> Zusatzoption: ";
       const svcText = safe(`${svcPrefix}${svc.name}`);
       const svcWords = svcText.split(" ");
       let svcLine = "";
