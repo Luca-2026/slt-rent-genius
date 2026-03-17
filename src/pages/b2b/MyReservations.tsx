@@ -26,8 +26,9 @@ import {
 import {
   Package, Calendar, MapPin, Clock, CheckCircle2, XCircle,
   FileText, Filter, RefreshCw, Download, Send, ThumbsUp, LogOut,
-  ChevronDown, ChevronRight, Layers, Trash2, Pencil,
+  ChevronDown, ChevronRight, Layers, Trash2, Pencil, PenTool,
 } from "lucide-react";
+import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
