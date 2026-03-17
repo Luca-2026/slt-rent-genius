@@ -132,6 +132,32 @@ export function B2BReservationDialog({
 
       if (error) throw error;
 
+      // Send notification emails (fire-and-forget)
+      supabase.functions.invoke("notify-b2b-reservation", {
+        body: {
+          companyName: b2bProfile.company_name,
+          contactName: `${b2bProfile.contact_first_name} ${b2bProfile.contact_last_name}`,
+          contactEmail: b2bProfile.contact_email,
+          contactPhone: b2bProfile.contact_phone,
+          locationId,
+          items: [{
+            productName: product.name,
+            quantity: parseInt(quantity) || 1,
+            startDate: startDate,
+            endDate: endDate || null,
+            startTime: startTime || null,
+            endTime: endTime || null,
+          }],
+          deliveryRequested,
+          deliveryStreet,
+          deliveryPostalCode,
+          deliveryCity,
+          additionalServices: servicesArray,
+          notes: notes || null,
+          isBatch: false,
+        },
+      }).catch((e: any) => console.error("Email notification failed:", e));
+
       toast({
         title: "Anfrage gesendet!",
         description: `Ihre Anfrage für "${product.name}" wurde übermittelt. Wir melden uns in Kürze.`,

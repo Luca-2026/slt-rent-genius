@@ -41,3 +41,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.notify-profile-approval]
     verify_jwt = false
+  [functions.notify-b2b-reservation]
+    verify_jwt = false

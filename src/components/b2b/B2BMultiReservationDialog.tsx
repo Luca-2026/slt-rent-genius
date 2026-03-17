@@ -261,6 +261,41 @@ export function B2BMultiReservationDialog({
 
       if (error) throw error;
 
+      // Send notification emails (fire-and-forget)
+      const emailItems = selectedProducts.map((sp) => {
+        const dates = getEffectiveDates(sp.product.id);
+        return {
+          productName: sp.product.name,
+          quantity: getQuantity(sp.product.id),
+          startDate: dates.startDate,
+          endDate: dates.endDate || null,
+          startTime: dates.startTime || startTime || null,
+          endTime: dates.endTime || endTime || null,
+        };
+      });
+
+      const servicesForEmail = selectedServices.size > 0
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({ name: s.name }))
+        : [];
+
+      supabase.functions.invoke("notify-b2b-reservation", {
+        body: {
+          companyName: b2bProfile.company_name,
+          contactName: `${b2bProfile.contact_first_name} ${b2bProfile.contact_last_name}`,
+          contactEmail: b2bProfile.contact_email,
+          contactPhone: b2bProfile.contact_phone,
+          locationId,
+          items: emailItems,
+          deliveryRequested,
+          deliveryStreet,
+          deliveryPostalCode,
+          deliveryCity,
+          additionalServices: servicesForEmail,
+          notes: notes || null,
+          isBatch: true,
+        },
+      }).catch((e: any) => console.error("Email notification failed:", e));
+
       toast({
         title: "Sammelanfrage gesendet!",
         description: `${selectedProducts.length} Artikel wurden als Anfrage übermittelt. Wir melden uns in Kürze.`,
