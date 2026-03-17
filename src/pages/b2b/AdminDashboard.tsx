@@ -317,6 +317,7 @@ export default function AdminDashboard() {
           quantity: number;
           unit_price: number;
           discount_percent: number;
+          item_type: string;
         }> = [];
         if (proformaMode && offer.deposit && offer.deposit > 0) {
           depositItems.push({
@@ -325,6 +326,7 @@ export default function AdminDashboard() {
             quantity: 1,
             unit_price: offer.deposit,
             discount_percent: 0,
+            item_type: 'deposit',
           });
         }
 
