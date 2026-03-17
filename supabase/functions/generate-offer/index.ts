@@ -1250,61 +1250,6 @@ async function generateOfferPdf(data: {
   drawText("G\u00FCltigkeit: Dieses Angebot ist g\u00FCltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
   y -= 35;
 
-  // ── ADDITIONAL SERVICES ──
-  if (data.servicesWithPrices && data.servicesWithPrices.length > 0) {
-    ensureSpace(50);
-    drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
-    y -= 14;
-    for (const svc of data.servicesWithPrices) {
-      ensureSpace(40);
-      // Always show the calculated price, never "inkl."
-      drawTextRight(fmtCurrency(svc.amount), pageWidth - margin, y, { s: 8, c: gray });
-      // Wrap service name to max width (leave space for price column)
-      const maxNameWidth = contentWidth - 120;
-      const nameText = safe("- " + svc.name);
-      const nameWords = nameText.split(" ");
-      let nameLine = "";
-      for (const w of nameWords) {
-        const test = nameLine + (nameLine ? " " : "") + w;
-        if (font.widthOfTextAtSize(test, 8) > maxNameWidth && nameLine) {
-          drawText(nameLine, margin + 8, y, { s: 8, c: gray });
-          y -= 11;
-          ensureSpace(20);
-          nameLine = w;
-        } else {
-          nameLine = test;
-        }
-      }
-      if (nameLine) {
-        drawText(nameLine, margin + 8, y, { s: 8, c: gray });
-        y -= 11;
-      }
-      if (svc.description) {
-        // Wrap description too
-        const maxDescWidth = contentWidth - 30;
-        const descWords = safe(svc.description).split(" ");
-        let descLine = "";
-        for (const w of descWords) {
-          const test = descLine + (descLine ? " " : "") + w;
-          if (font.widthOfTextAtSize(test, 7) > maxDescWidth && descLine) {
-            drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
-            y -= 10;
-            ensureSpace(16);
-            descLine = w;
-          } else {
-            descLine = test;
-          }
-        }
-        if (descLine) {
-          drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
-          y -= 10;
-        }
-      }
-      y -= 4;
-    }
-    y -= 8;
-  }
-
   // ── NOTES ──
   const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
   if (visibleNotes) {
