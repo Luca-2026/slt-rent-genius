@@ -137,6 +137,16 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // Look up staff profile for Sachbearbeiter
+    const { data: staffProfile } = await serviceClient
+      .from("staff_profiles")
+      .select("first_name, last_name")
+      .eq("user_id", authUser.id)
+      .single();
+    const staffName = staffProfile
+      ? `${staffProfile.first_name} ${staffProfile.last_name}`
+      : authUser.email || "Admin";
+
     let reservation: any = null;
     let profile: any = null;
 
