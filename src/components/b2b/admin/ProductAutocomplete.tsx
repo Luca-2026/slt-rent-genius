@@ -102,7 +102,7 @@ export function ProductAutocomplete({ value, onChange, location, placeholder, cl
               className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent/10 transition-colors"
               onClick={() => {
                 setQuery(item.product.name);
-                onChange(item.product.name, item.product.id, item.categorySlug);
+                onChange(item.product.name, item.product.id, item.categorySlug, item.product.description || undefined);
                 setOpen(false);
               }}
             >
