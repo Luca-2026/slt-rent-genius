@@ -365,8 +365,8 @@ Deno.serve(async (req: Request) => {
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    const servicesData = additionalServices && additionalServices.length > 0
-      ? additionalServices
+    const servicesData = servicesWithPrices && servicesWithPrices.length > 0
+      ? servicesWithPrices
       : null;
 
     // Encode structured delivery metadata into notes so edit/resend can restore exact values

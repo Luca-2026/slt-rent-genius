@@ -285,28 +285,24 @@ export default function AdminDashboard() {
             const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
             return sum + discounted * item.quantity;
           }, 0);
-          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string }>) {
-            if (svc.pricePercent !== null && svc.pricePercent > 0) {
-              const amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
-              additionalServiceItems.push({
-                product_name: svc.name,
-                description: svc.description || "Zusatzleistung",
-                quantity: 1,
-                unit_price: amount,
-                discount_percent: 0,
-                item_type: 'service' as const,
-              });
-            } else if (svc.pricePercent === null || svc.pricePercent === 0) {
-              // Services with no percentage - show with 0€ price
-              additionalServiceItems.push({
-                product_name: svc.name,
-                description: svc.description || "Zusatzleistung",
-                quantity: 1,
-                unit_price: 0,
-                discount_percent: 0,
-                item_type: 'service' as const,
-              });
+          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string; amount?: number; customPrice?: number }>) {
+            // Use pre-calculated amount from offer if available, otherwise fallback to percentage calc
+            let amount = 0;
+            if (svc.amount != null && svc.amount > 0) {
+              amount = svc.amount;
+            } else if (svc.customPrice && svc.customPrice > 0) {
+              amount = svc.customPrice;
+            } else if (svc.pricePercent !== null && svc.pricePercent > 0) {
+              amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
             }
+            additionalServiceItems.push({
+              product_name: svc.name,
+              description: svc.description || "Zusatzleistung",
+              quantity: 1,
+              unit_price: amount,
+              discount_percent: 0,
+              item_type: 'service' as const,
+            });
           }
         }
 
@@ -339,14 +335,22 @@ export default function AdminDashboard() {
         console.log("[Invoice Debug] additionalServiceItems:", JSON.stringify(additionalServiceItems));
         console.log("[Invoice Debug] all custom_items:", allCustomItems.length, "items:", allCustomItems.map(i => `${i.product_name}: ${i.unit_price}`));
 
+        // Extract delivery address from offer notes [DELADDR:street|postal_code|city]
+        const offerNotes = offer.notes || "";
+        const delAddrMatch = offerNotes.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
+        const deliveryAddress = delAddrMatch
+          ? { street: delAddrMatch[1], postal_code: delAddrMatch[2], city: delAddrMatch[3] }
+          : undefined;
+
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
           custom_items: allCustomItems,
           notes: proformaMode
-            ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
-            : (offer.notes || undefined),
+            ? `PROFORMA-RECHNUNG (Vorkasse) – ${offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim()}`.trim()
+            : (offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() || undefined),
           is_proforma: proformaMode,
+          delivery_address: deliveryAddress,
         };
       } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals

@@ -53,6 +53,7 @@ interface InvoiceRequest {
   send_email?: boolean;
   is_proforma?: boolean;
   save_as_draft?: boolean;
+  delivery_address?: { street?: string; postal_code?: string; city?: string };
 }
 
 Deno.serve(async (req: Request) => {
@@ -104,7 +105,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false } = body;
+    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
 
     if (!reservation_id && !directProfileId) {
       return new Response(JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }), {
@@ -324,6 +325,7 @@ Deno.serve(async (req: Request) => {
         depositTotal,
       },
       isProforma: is_proforma,
+      deliveryAddress: deliveryAddress,
     });
 
     // Store as PDF file
@@ -787,6 +789,7 @@ async function generateDocumentPdf(data: {
   signatures?: { customerData?: string; staffData?: string; staffName?: string };
   totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string; depositTotal?: number };
   isProforma?: boolean;
+  deliveryAddress?: { street?: string; postal_code?: string; city?: string };
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -859,13 +862,23 @@ async function generateDocumentPdf(data: {
   y -= 30;
 
   // ── Customer address ──
-  dt("Kunde:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
+  dt("Rechnungsadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
   dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
   dt(`${data.profile.contact_first_name} ${data.profile.contact_last_name}`, MG, y, font, 10); y -= 14;
   dt(`${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, MG, y, font, 10); y -= 14;
   dt(`${data.profile.postal_code} ${data.profile.city}`, MG, y, font, 10);
   if (data.profile.tax_id) { y -= 14; dt(`USt-IdNr.: ${data.profile.tax_id}`, MG, y, font, 9, rgb(0.4, 0.4, 0.4)); }
-  y -= 25;
+  y -= 20;
+
+  // ── Delivery address (if different) ──
+  if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
+    dt("Lieferadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
+    if (data.deliveryAddress.street) { dt(data.deliveryAddress.street, MG, y, font, 10); y -= 14; }
+    const delCityLine = [data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(' ');
+    if (delCityLine) { dt(delCityLine, MG, y, font, 10); y -= 14; }
+    y -= 6;
+  }
+  y -= 5;
 
   // ── Proforma notice ──
   if (data.isProforma) {
