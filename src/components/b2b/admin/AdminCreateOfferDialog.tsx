@@ -613,7 +613,9 @@ export function AdminCreateOfferDialog({
               // Prioritize item-specific name lookup to avoid all items getting the same reservation image
               const stablePath = getProductImageStablePathByName(item.product_name) || getProductImageStablePath(reservation?.product_id || "");
               if (stablePath) return `${window.location.origin}${stablePath}`;
-              return undefined;
+              // Fallback: use Vite URL (works in dev/preview, may break after rebuild)
+              const viteUrl = getProductImageUrlByName(item.product_name) || (reservation ? getProductImageUrl(reservation.product_id) : null);
+              return viteUrl || undefined;
             })(),
           })),
           delivery_cost: totalDeliveryCost,

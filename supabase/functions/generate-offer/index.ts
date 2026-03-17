@@ -1048,7 +1048,8 @@ async function generateOfferPdf(data: {
     ensureSpace(60);
     const item = data.items[i];
     const embeddedImg = item.image_url ? imageCache.get(item.image_url) : null;
-    const textColName = embeddedImg ? colNameWithImg : colName;
+    // Always use indented text position so items with and without images align consistently
+    const textColName = colNameWithImg;
     const rowY = y;
 
     drawText(String(i + 1), colPos, rowY, { s: 9 });
@@ -1066,7 +1067,7 @@ async function generateOfferPdf(data: {
       });
     }
 
-    const maxNameWidth = (embeddedImg ? colQty - colNameWithImg - 5 : colQty - colName - 5);
+    const maxNameWidth = colQty - colNameWithImg - 5;
     const pName = safe(item.product_name);
     // Word-wrap product name
     const nameWords = pName.split(" ");
