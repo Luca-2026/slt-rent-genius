@@ -43,3 +43,19 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.notify-b2b-reservation]
     verify_jwt = false
+  [functions.notify-b2b-registration]
+    verify_jwt = false
+  [functions.notify-admin-protocol-signed]
+    verify_jwt = false
+  [functions.invite-authorized-person]
+    verify_jwt = false
+  [functions.resend-protocol-email]
+    verify_jwt = false
+  [functions.send-application-email]
+    verify_jwt = false
+  [functions.send-contact-email]
+    verify_jwt = false
+  [functions.send-inquiry-email]
+    verify_jwt = false
+  [functions.send-invoice-email]
+    verify_jwt = false
