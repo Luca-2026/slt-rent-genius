@@ -146,6 +146,9 @@ export function AdminCreateOfferDialog({
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [deliveryAddressStreet, setDeliveryAddressStreet] = useState("");
+  const [deliveryAddressPostalCode, setDeliveryAddressPostalCode] = useState("");
+  const [deliveryAddressCity, setDeliveryAddressCity] = useState("");
   const lastInitKey = useRef<string | null>(null);
   const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
