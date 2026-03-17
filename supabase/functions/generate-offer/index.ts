@@ -349,8 +349,8 @@ Deno.serve(async (req: Request) => {
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    const servicesJson = additionalServices && additionalServices.length > 0
-      ? JSON.stringify(additionalServices)
+    const servicesData = additionalServices && additionalServices.length > 0
+      ? additionalServices
       : null;
 
     // Encode delivery address into notes as structured tag
