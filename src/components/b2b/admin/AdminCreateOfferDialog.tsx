@@ -83,6 +83,7 @@ interface OfferItemInput {
   rental_end?: string;
   start_time?: string;
   end_time?: string;
+  category_slug?: string;
 }
 
 export interface ExistingOffer {
