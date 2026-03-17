@@ -22,11 +22,16 @@ RewriteRule ^loesungen/kinder$ /loesungen/kindergeburtstage [R=301,L]
 # Old knowledge base URL
 RewriteRule ^wissensbasis$ /hilfe [R=301,L]
 
-# Old standalone location pages
+# Old standalone location pages (with hyphen)
 RewriteRule ^standort-krefeld$ /standorte/krefeld [R=301,L]
 RewriteRule ^standort-bonn$ /standorte/bonn [R=301,L]
 RewriteRule ^standort-duisburg$ /standorte/muelheim [R=301,L]
 RewriteRule ^standort-muelheim$ /standorte/muelheim [R=301,L]
+
+# Old /standort/{id} URLs (without 'e') — high GSC traffic
+RewriteRule ^standort/krefeld$ /mieten/krefeld [R=301,L]
+RewriteRule ^standort/bonn$ /mieten/bonn [R=301,L]
+RewriteRule ^standort/muelheim$ /mieten/muelheim [R=301,L]
 
 # Old paginated /produkte with query params → /mieten
 RewriteCond %{QUERY_STRING} .+
