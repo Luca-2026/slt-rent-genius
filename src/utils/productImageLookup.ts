@@ -119,17 +119,25 @@ function vitePathToStablePath(vitePath: string): string | null {
     return vitePath;
   }
 
-  // Match Vite-hashed pattern: /assets/FILENAME-HASH.EXT
-  // Vite hashes are typically 8 alphanumeric characters
-  const match = vitePath.match(/\/assets\/(.+)-[a-zA-Z0-9]{7,10}\.(jpg|jpeg|png|webp)$/i);
-  if (!match) return null;
+  // Match Vite-hashed pattern (production): /assets/FILENAME-HASH.EXT
+  const hashMatch = vitePath.match(/\/assets\/(.+)-[a-zA-Z0-9]{7,10}\.(jpg|jpeg|png|webp)$/i);
+  if (hashMatch) {
+    const baseName = hashMatch[1];
+    const ext = hashMatch[2];
+    const dir = IMAGE_DIR_MAP[baseName];
+    if (dir) return `/product-images/${dir}/${baseName}.${ext}`;
+  }
 
-  const baseName = match[1];
-  const ext = match[2];
-  const dir = IMAGE_DIR_MAP[baseName];
+  // Match dev-mode pattern: /src/assets/products/FILENAME.EXT
+  const devMatch = vitePath.match(/\/src\/assets\/products\/(.+)\.(jpg|jpeg|png|webp)$/i);
+  if (devMatch) {
+    const baseName = devMatch[1];
+    const ext = devMatch[2];
+    const dir = IMAGE_DIR_MAP[baseName];
+    if (dir) return `/product-images/${dir}/${baseName}.${ext}`;
+  }
 
-  if (!dir) return null;
-  return `/product-images/${dir}/${baseName}.${ext}`;
+  return null;
 }
 
 /**

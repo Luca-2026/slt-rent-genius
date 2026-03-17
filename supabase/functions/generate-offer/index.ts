@@ -804,7 +804,7 @@ async function generateOfferPdf(data: {
     const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
-    const logoHeight = 55;
+    const logoHeight = 75;
     const logoScale = logoHeight / logoImage.height;
     const logoWidth = logoImage.width * logoScale;
     page.drawImage(logoImage, { x: pageWidth - margin - logoWidth, y: y - logoHeight, width: logoWidth, height: logoHeight });
@@ -813,7 +813,7 @@ async function generateOfferPdf(data: {
   // Sender line (small, left-aligned)
   drawText(SLT_COMPANY.name, margin, y - 8, { s: 7, c: lightGray });
   drawText(`${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city} \u00B7 Tel: ${SLT_COMPANY.phone}`, margin, y - 18, { s: 7, c: lightGray });
-  y -= 65;
+  y -= 85;
   page.drawRectangle({ x: margin, y, width: contentWidth, height: 2.5, color: blue });
   y -= 30;
   drawText("ANGEBOT", margin, y, { f: fontBold, s: 18, c: blue });
