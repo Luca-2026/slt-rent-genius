@@ -131,7 +131,9 @@ export function AdminCreateOfferDialog({
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [items, setItems] = useState<OfferItemInput[]>([]);
-  const [deliveryCost, setDeliveryCost] = useState(0);
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  const [includeReturn, setIncludeReturn] = useState(false);
   const [validDays, setValidDays] = useState(14);
   const [notes, setNotes] = useState("");
   const [sendEmail, setSendEmail] = useState(true);
