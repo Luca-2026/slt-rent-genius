@@ -16,6 +16,8 @@ export interface AdditionalService {
   mandatory?: boolean;
   /** If true, this is an upgrade/add-on to a mandatory base service */
   isUpgrade?: boolean;
+  /** Defines which item subtotal this percentage applies to. */
+  calculationBase?: "all_items" | "mbv_items" | "trailer_items" | "applicable_categories";
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
