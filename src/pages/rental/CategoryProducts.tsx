@@ -831,22 +831,22 @@ export default function CategoryProducts() {
   // SEO data for category page - CTR-optimized
   const categoryDisplayName = category.title || categoryId || "";
   
-  // Category-specific SEO titles with CTR triggers
+  // Category-specific SEO titles with CTR triggers – optimized per GSC high-impression keywords
   const categorySeoTitles: Record<string, string> = {
     anhaenger: `Anhänger mieten ${location.name} – 24/7 Abholung, ab 19 €/Tag`,
-    erdbewegung: `Minibagger & Bagger mieten ${location.name} – inkl. Lieferung`,
+    erdbewegung: `Minibagger, Dumper & Radlader mieten ${location.name} – inkl. Lieferung`,
     werkzeuge: `Werkzeuge mieten ${location.name} – Profi-Geräte ab 10 €/Tag`,
-    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name} – Steiger bis 18m Höhe`,
-    gartenpflege: `Gartengeräte mieten ${location.name} – Häcksler, Erdbohrer & mehr`,
-    aggregate: `Stromaggregat mieten ${location.name} – 2,8 bis 100 kVA`,
-    verdichtung: `Rüttelplatte mieten ${location.name} – ab 25 €/Tag`,
+    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name} – Hubsteiger & Scherenbühne bis 18m`,
+    gartenpflege: `Gartengeräte mieten ${location.name} – Häcksler, Rasenwalze & mehr`,
+    aggregate: `Stromaggregat & Kompressor mieten ${location.name} – 2,8 bis 100 kVA`,
+    verdichtung: `Rüttelplatte & Stampfer mieten ${location.name} – ab 25 €/Tag`,
     huepfburgen: `Hüpfburg mieten ${location.name} – für Kindergeburtstag & Events`,
     "leitern-gerueste": `Rollgerüst & Leiter mieten ${location.name} – bis 8,4m Höhe`,
     "heizung-trocknung": `Bautrockner & Heizung mieten ${location.name} – Sofort verfügbar`,
     "moebel-zelte": `Partyzelt & Mobiliar mieten ${location.name} – für Events & Feiern`,
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
-    absperrtechnik: `Absperrtechnik mieten ${location.name} – Halteverbotsschilder & Bauzaun`,
-    "kabel-stromverteiler": `Kabel & Stromverteiler mieten ${location.name} – CEE 16A bis 63A`,
+    absperrtechnik: `Bauzaun & Halteverbotsschilder mieten ${location.name} – StVO-konform`,
+    "kabel-stromverteiler": `Stromverteiler & Kabel mieten ${location.name} – CEE 16A bis 63A`,
     beschallung: `PA-Anlage & Beschallung mieten ${location.name} – Professionell`,
     beleuchtung: `Beleuchtung mieten ${location.name} – LED Moving Heads & Bars`,
     buehne: `Bühne mieten ${location.name} – Bühnenpodeste & Zubehör`,
