@@ -333,7 +333,9 @@ export function AdminCreateOfferDialog({
         title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
         description: data.email_sent
           ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
-          : `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"}. (E-Mail nicht konfiguriert)`,
+          : sendEmail
+            ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"}. (E-Mail nicht konfiguriert)`
+            : `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
       });
 
       onCreated();

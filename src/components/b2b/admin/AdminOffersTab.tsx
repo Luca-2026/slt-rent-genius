@@ -92,6 +92,8 @@ export function AdminOffersTab({
 
   const statusBadge = (status: string) => {
     switch (status) {
+      case "draft":
+        return <Badge variant="secondary" className="text-muted-foreground"><FileText className="h-3 w-3 mr-1" />Entwurf</Badge>;
       case "sent":
         return <Badge variant="outline" className="text-primary border-primary"><Send className="h-3 w-3 mr-1" />Gesendet</Badge>;
       case "accepted":
@@ -144,6 +146,7 @@ export function AdminOffersTab({
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-10">#</TableHead>
                   <TableHead>Angebotsnr.</TableHead>
                   <TableHead>Kunde</TableHead>
                   <TableHead>Datum</TableHead>
@@ -154,12 +157,14 @@ export function AdminOffersTab({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {offers.map((offer) => {
+                {offers.map((offer, index) => {
                   const profile = profiles.find((p) => p.id === offer.b2b_profile_id);
                   const items = offerItems.filter((i) => i.offer_id === offer.id);
                   const isNoCreditLimit = !profile || profile.credit_limit === 0;
+                  const isDraft = offer.status === "draft";
                   return (
                     <TableRow key={offer.id}>
+                      <TableCell className="text-sm text-muted-foreground">{offers.length - index}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm">{offer.offer_number}</p>
@@ -211,7 +216,7 @@ export function AdminOffersTab({
                               </Button>
                             </>
                           )}
-                          {(offer.status === "sent" || offer.status === "accepted") && isNoCreditLimit && (
+                          {(offer.status === "sent" || offer.status === "accepted" || isDraft) && isNoCreditLimit && (
                             <Button
                               size="sm"
                               variant="ghost"
@@ -235,7 +240,8 @@ export function AdminOffersTab({
                             variant="ghost"
                             onClick={() => onResendOffer(offer)}
                             disabled={resendingId === offer.id}
-                            title="Erneut senden"
+                            title={isDraft ? "Angebot senden" : "Erneut senden"}
+                            className={isDraft ? "text-primary" : ""}
                           >
                             {resendingId === offer.id ? (
                               <RefreshCw className="h-4 w-4 animate-spin" />

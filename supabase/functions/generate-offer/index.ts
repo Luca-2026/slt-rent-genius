@@ -326,12 +326,13 @@ Deno.serve(async (req: Request) => {
     let offer: any;
 
     if (offer_id) {
+      const updateStatus = send_email ? "sent" : "draft";
       const { data: updatedOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .update({
           offer_date: offerDate,
           valid_until: validUntil,
-          status: "sent",
+          status: updateStatus,
           net_amount: netAmount,
           vat_rate: vatRate,
           vat_amount: vatAmount,
@@ -360,6 +361,7 @@ Deno.serve(async (req: Request) => {
       offer = updatedOffer;
       await serviceClient.from("b2b_offer_items").delete().eq("offer_id", offer_id);
     } else {
+      const offerStatus = send_email ? "sent" : "draft";
       const { data: newOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .insert({
@@ -368,7 +370,7 @@ Deno.serve(async (req: Request) => {
           offer_number: offerNumber,
           offer_date: offerDate,
           valid_until: validUntil,
-          status: "sent",
+          status: offerStatus,
           net_amount: netAmount,
           vat_rate: vatRate,
           vat_amount: vatAmount,
