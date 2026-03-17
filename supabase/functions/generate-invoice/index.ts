@@ -42,6 +42,7 @@ interface InvoiceRequest {
     rental_start?: string;
     rental_end?: string;
     image_url?: string;
+    item_type?: 'product' | 'service' | 'surcharge' | 'deposit';
   }>;
   delivery_cost?: number;
   payment_due_days?: number;
