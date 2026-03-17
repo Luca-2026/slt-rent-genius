@@ -805,7 +805,7 @@ export function AdminCreateOfferDialog({
               {relevantServices.map((service) => {
                 const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
                 return (
-                  <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                  <div key={service.id} className="flex items-start gap-2">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
                       onCheckedChange={() => toggleService(service.id)}
@@ -814,7 +814,7 @@ export function AdminCreateOfferDialog({
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-xs font-medium">{service.name}</p>
-                        {service.pricePercent !== null && (
+                        {service.pricePercent !== null && !service.customPriceInput && (
                           <span className="text-[11px] text-muted-foreground whitespace-nowrap">
                             {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
                               ? `(${formatCurrency(surchargeEntry.amount)})`
@@ -823,8 +823,26 @@ export function AdminCreateOfferDialog({
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                      {service.customPriceInput && selectedServices.has(service.id) && (
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <Euro className="h-3.5 w-3.5 text-muted-foreground" />
+                          <Input
+                            type="number"
+                            min={0}
+                            step={0.01}
+                            placeholder="Preis (netto)"
+                            value={customServicePrices[service.id] || ""}
+                            onChange={(e) => setCustomServicePrices(prev => ({
+                              ...prev,
+                              [service.id]: parseFloat(e.target.value) || 0,
+                            }))}
+                            className="h-7 text-xs w-32"
+                          />
+                          <span className="text-[11px] text-muted-foreground">€ netto</span>
+                        </div>
+                      )}
                     </div>
-                  </label>
+                  </div>
                 );
               })}
               {servicesSurcharge > 0 && (
