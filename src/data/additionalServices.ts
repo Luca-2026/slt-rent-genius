@@ -16,6 +16,8 @@ export interface AdditionalService {
   mandatory?: boolean;
   /** If true, this is an upgrade/add-on to a mandatory base service */
   isUpgrade?: boolean;
+  /** Defines which item subtotal this percentage applies to. */
+  calculationBase?: "all_items" | "mbv_items" | "trailer_items" | "applicable_categories";
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
@@ -32,19 +34,21 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-selbstfahrend",
     name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
     description:
-      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
+      "MBV für Bagger, Arbeitsbühnen, Radlader und Dumper mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
     mandatory: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-stationaer",
-    name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
+    name: "Maschinenbruchversicherung – Aggregate (SB 1.500 €)",
     description:
-      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["aggregate", "verdichtung"],
-    pricePercent: 7,
+      "MBV für Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
+    applicableCategories: ["aggregate"],
+    pricePercent: 12,
     mandatory: true,
+    calculationBase: "mbv_items",
   },
   // ── Reduzierungen der SB (on top, gegenseitig ausschließend) ──
   {
@@ -52,30 +56,33 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 1.000 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 3,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-500",
     name: "Reduzierung MBV auf 500 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 500 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-0",
     name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
       "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   // ── Elektronikversicherung ──
   {
@@ -86,6 +93,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["werkzeuge"],
     pricePercent: 7,
     mandatory: true,
+    calculationBase: "applicable_categories",
   },
   // ── Anhänger-Versicherungen ──
   {
@@ -96,6 +104,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["anhaenger"],
     pricePercent: 30,
     exclusionGroup: "anhaenger-kasko",
+    calculationBase: "trailer_items",
   },
   {
     id: "vollkasko-300",
@@ -105,6 +114,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["anhaenger"],
     pricePercent: 35,
     exclusionGroup: "anhaenger-kasko",
+    calculationBase: "trailer_items",
   },
   {
     id: "auslandsfahrt",
@@ -113,6 +123,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
       "Für die Fahrt in das europäische Ausland.",
     applicableCategories: ["anhaenger"],
     pricePercent: 15,
+    calculationBase: "trailer_items",
   },
   // ── Kostenfreie Stornierung ──
   {
@@ -121,15 +132,22 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description: "Mit dieser Option ist die Stornierung bis 72h vor Mietbeginn kostenfrei.",
     applicableCategories: null, // always available
     pricePercent: 7,
+    calculationBase: "all_items",
   },
 ];
 
 /** Standard deposit values in EUR */
 export const DEPOSIT_OPTIONS = [15, 50, 100, 150, 300, 750, 1000, 1500, 2000];
 
-/** Categories that should trigger MBV / Verladehilfe suggestions */
-export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"];
+/** Categories that should trigger MBV suggestions */
+export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen"];
 
+const TRAILER_CATEGORIES = ["anhaenger"];
+
+export interface ServicePricingItem {
+  netAmount: number;
+  categorySlug?: string | null;
+}
 /**
  * Returns the additional services relevant for a given category slug.
  * If categorySlug is null/undefined, returns only the always-available ones.
@@ -164,16 +182,24 @@ export function getMandatoryServiceIds(categorySlugs: string[]): Set<string> {
 
 /**
  * Calculate the surcharge for selected additional services.
- * Base = net item total (excluding delivery costs and deposit).
- * customPrices: map of service id -> manual price for customPriceInput services.
+ * Percent bases always use discounted article net totals only (no delivery, no deposit, no other extras).
  */
 export function calculateServicesSurcharge(
   selectedServiceIds: Set<string>,
   baseNetAmount: number,
-  customPrices?: Record<string, number>
+  customPrices?: Record<string, number>,
+  itemTotals?: ServicePricingItem[]
 ): { total: number; breakdown: { service: AdditionalService; amount: number }[] } {
   const breakdown: { service: AdditionalService; amount: number }[] = [];
   let total = 0;
+
+  const hasItemContext = !!itemTotals?.length;
+  const sumItems = (predicate?: (item: ServicePricingItem) => boolean) => {
+    if (!itemTotals || itemTotals.length === 0) return baseNetAmount;
+    return itemTotals
+      .filter((item) => !predicate || predicate(item))
+      .reduce((sum, item) => sum + (item.netAmount || 0), 0);
+  };
 
   for (const service of ADDITIONAL_SERVICES) {
     if (!selectedServiceIds.has(service.id)) continue;
@@ -184,11 +210,36 @@ export function calculateServicesSurcharge(
         breakdown.push({ service, amount: customAmount });
         total += customAmount;
       }
-    } else if (service.pricePercent !== null) {
-      const amount = Math.round(baseNetAmount * (service.pricePercent / 100) * 100) / 100;
-      breakdown.push({ service, amount });
-      total += amount;
+      continue;
     }
+
+    if (service.pricePercent === null) continue;
+
+    let baseForService = baseNetAmount;
+    if (hasItemContext) {
+      switch (service.calculationBase) {
+        case "all_items":
+          baseForService = sumItems();
+          break;
+        case "mbv_items":
+          baseForService = sumItems((item) => !!item.categorySlug && MBV_CATEGORIES.includes(item.categorySlug));
+          break;
+        case "trailer_items":
+          baseForService = sumItems((item) => !!item.categorySlug && TRAILER_CATEGORIES.includes(item.categorySlug));
+          break;
+        case "applicable_categories":
+        default:
+          baseForService = service.applicableCategories === null
+            ? sumItems()
+            : sumItems((item) => !!item.categorySlug && service.applicableCategories!.includes(item.categorySlug));
+          break;
+      }
+    }
+
+    const amount = Math.round(baseForService * (service.pricePercent / 100) * 100) / 100;
+    if (amount <= 0) continue;
+    breakdown.push({ service, amount });
+    total += amount;
   }
 
   return { total: Math.round(total * 100) / 100, breakdown };

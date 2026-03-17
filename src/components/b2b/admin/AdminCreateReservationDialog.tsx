@@ -129,7 +129,11 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     return Math.round(discounted * item.quantity * 100) / 100;
   };
 
-  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+  const itemTotalsForServices = items.map((item) => ({
+    netAmount: calculateItemTotal(item),
+    categorySlug: item.categorySlug || null,
+  }));
+  const itemsNetTotal = itemTotalsForServices.reduce((sum, item) => sum + item.netAmount, 0);
 
   // Services based on all categories
   const allCategorySlugs = new Set(items.map((i) => i.categorySlug).filter(Boolean));
@@ -144,7 +148,12 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   if (storno) relevantServicesMap.set(storno.id, storno);
   const relevantServices = Array.from(relevantServicesMap.values());
 
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(
+    selectedServices,
+    itemsNetTotal,
+    undefined,
+    itemTotalsForServices
+  );
   const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
   const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
@@ -176,19 +185,17 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       }
 
       // Build additional services array
+      const surchargeByServiceId = new Map(servicesBreakdown.map((entry) => [entry.service.id, entry.amount]));
       const servicesArray = selectedServices.size > 0
-        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
-            const surcharge = s.pricePercent !== null
-              ? Math.round(itemsNetTotal * (s.pricePercent / 100) * 100) / 100
-              : 0;
-            return {
-              id: s.id,
-              name: s.name,
-              description: s.description,
-              pricePercent: s.pricePercent,
-              calculatedAmount: surcharge,
-            };
-          })
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+            pricePercent: s.pricePercent,
+            applicableCategories: s.applicableCategories,
+            calculationBase: s.calculationBase,
+            calculatedAmount: surchargeByServiceId.get(s.id) || 0,
+          }))
         : null;
 
       // Build time notes
@@ -243,6 +250,9 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
               id: s.id,
               name: s.name,
               description: s.description,
+              pricePercent: s.pricePercent,
+              applicableCategories: s.applicableCategories,
+              calculationBase: s.calculationBase,
             }))
           : undefined;
 
@@ -256,6 +266,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
           discount_percent: item.discount || undefined,
           rental_start: startDateStr,
           rental_end: endDateStr,
+          category_slug: item.categorySlug || undefined,
           image_url: getProductImageUrl(item.productId) || getProductImageUrlByName(item.productName) || undefined,
         }));
 

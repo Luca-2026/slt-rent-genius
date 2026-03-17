@@ -35,6 +35,16 @@ function getProductDescription(productName: string): string {
   return "";
 }
 
+/** Resolve category slug from product name for edit/reload flows */
+function getProductCategorySlug(productName: string): string | undefined {
+  for (const loc of locations) {
+    for (const [categorySlug, products] of Object.entries(loc.products)) {
+      if (products.some((p) => p.name === productName)) return categorySlug;
+    }
+  }
+  return undefined;
+}
+
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
   items: OfferItemInput[];
@@ -265,6 +275,7 @@ export function AdminCreateOfferDialog({
             rental_end: rentalEnd,
             start_time: startTime,
             end_time: endTime,
+            category_slug: getProductCategorySlug(item.product_name),
           };
         })
       );
@@ -480,8 +491,17 @@ export function AdminCreateOfferDialog({
   };
 
   // Base = item totals only (excl. delivery & deposit) for service % calculation
-  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal, customServicePrices);
+  const itemTotalsForServices = items.map((item) => ({
+    netAmount: calculateItemTotal(item),
+    categorySlug: item.category_slug || null,
+  }));
+  const itemsNetTotal = itemTotalsForServices.reduce((sum, item) => sum + item.netAmount, 0);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(
+    selectedServices,
+    itemsNetTotal,
+    customServicePrices,
+    itemTotalsForServices
+  );
   const totalDeliveryCost = deliveryCostDelivery + (includeReturn ? deliveryCostReturn : 0);
   const netAmount = itemsNetTotal + totalDeliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
@@ -535,6 +555,7 @@ export function AdminCreateOfferDialog({
             description: s.description,
             pricePercent: s.pricePercent,
             applicableCategories: s.applicableCategories,
+            calculationBase: s.calculationBase,
             customPrice: s.customPriceInput ? (customServicePrices[s.id] || 0) : undefined,
           }))
         : undefined;

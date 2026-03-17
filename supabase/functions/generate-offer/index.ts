@@ -258,15 +258,30 @@ Deno.serve(async (req: Request) => {
     }[] = [];
 
     if (additionalServices && additionalServices.length > 0) {
-      for (const svc of additionalServices) {
-        const applicableIndexes = offerItems
-          .map((_, idx) => idx)
-          .filter((idx) => {
-            if (!svc.applicableCategories || svc.applicableCategories.length === 0) return true;
-            const itemCategory = items[idx]?.category_slug;
-            return !!(itemCategory && svc.applicableCategories.includes(itemCategory));
-          });
+      const mbvCategories = new Set(["erdbewegung", "aggregate", "arbeitsbuehnen"]);
+      const trailerCategories = new Set(["anhaenger"]);
 
+      const getApplicableIndexes = (svc: { id: string; applicableCategories?: string[] | null; calculationBase?: string }) => {
+        const allIndexes = offerItems.map((_, idx) => idx);
+        const base = svc.calculationBase;
+
+        if (base === "all_items" || svc.id === "kostenfreie-stornierung") return allIndexes;
+        if (base === "mbv_items" || svc.id.startsWith("mbv-")) {
+          return allIndexes.filter((idx) => mbvCategories.has(items[idx]?.category_slug || ""));
+        }
+        if (base === "trailer_items" || svc.id === "vollkasko-500" || svc.id === "vollkasko-300" || svc.id === "auslandsfahrt") {
+          return allIndexes.filter((idx) => trailerCategories.has(items[idx]?.category_slug || ""));
+        }
+
+        return allIndexes.filter((idx) => {
+          if (!svc.applicableCategories || svc.applicableCategories.length === 0) return true;
+          const itemCategory = items[idx]?.category_slug;
+          return !!(itemCategory && svc.applicableCategories.includes(itemCategory));
+        });
+      };
+
+      for (const svc of additionalServices) {
+        const applicableIndexes = getApplicableIndexes(svc as any);
         const baseForService = applicableIndexes.reduce((sum, idx) => sum + (offerItems[idx]?.total_price || 0), 0);
 
         let amount = 0;
