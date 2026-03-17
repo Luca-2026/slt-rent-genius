@@ -349,9 +349,17 @@ Deno.serve(async (req: Request) => {
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    const servicesJson = additionalServices && additionalServices.length > 0
-      ? JSON.stringify(additionalServices)
-      : null;
+    // Store services + delivery address in one JSON blob
+    const servicesData: any = {};
+    if (additionalServices && additionalServices.length > 0) {
+      servicesData.services = additionalServices;
+    }
+    if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
+      servicesData.delivery_address = deliveryAddress;
+    }
+    const servicesJson = Object.keys(servicesData).length > 0
+      ? JSON.stringify(servicesData.services ? (servicesData.delivery_address ? servicesData : servicesData.services) : servicesData)
+      : (additionalServices && additionalServices.length > 0 ? JSON.stringify(additionalServices) : null);
 
     let offer: any;
 
