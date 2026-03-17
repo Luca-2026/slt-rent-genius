@@ -55,6 +55,10 @@ export function B2BMultiReservationDialog({
   const [notes, setNotes] = useState("");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [deliveryRequested, setDeliveryRequested] = useState(false);
+  const [deliveryStreet, setDeliveryStreet] = useState("");
+  const [deliveryPostalCode, setDeliveryPostalCode] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
 
   // Per-item date overrides
   const [itemOverrides, setItemOverrides] = useState<Record<string, ItemDateOverride>>({});
