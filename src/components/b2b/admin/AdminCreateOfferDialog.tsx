@@ -115,6 +115,8 @@ export function AdminCreateOfferDialog({
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [issuingLocation, setIssuingLocation] = useState("krefeld");
+  const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
   // Track the context key that was used to initialize the form, so we only reset when the context actually changes
   const lastInitKey = useRef<string | null>(null);
