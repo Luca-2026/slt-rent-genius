@@ -19,7 +19,7 @@ import {
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName, getProductImageStablePath, getProductImageStablePathByName } from "@/utils/productImageLookup";
-import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
+import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge, getMandatoryServiceIds } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
 import { locations } from "@/data/rentalData";
 
@@ -377,6 +377,23 @@ export function AdminCreateOfferDialog({
     }
   }, [open, reservation, profile, isEditing]);
 
+  // Auto-select mandatory services whenever item categories change
+  useEffect(() => {
+    const categorySlugs = items
+      .map((item) => item.category_slug)
+      .filter((s): s is string => !!s);
+    const mandatoryIds = getMandatoryServiceIds(categorySlugs);
+    if (mandatoryIds.size > 0) {
+      setSelectedServices((prev) => {
+        const next = new Set(prev);
+        for (const id of mandatoryIds) {
+          next.add(id);
+        }
+        return next;
+      });
+    }
+  }, [items]);
+
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
 
@@ -463,7 +480,13 @@ export function AdminCreateOfferDialog({
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Compute mandatory service IDs for current items
+  const currentCategorySlugs = items.map((i) => i.category_slug).filter((s): s is string => !!s);
+  const mandatoryServiceIds = getMandatoryServiceIds(currentCategorySlugs);
+
   const toggleService = (serviceId: string) => {
+    // Prevent deselecting mandatory services
+    if (mandatoryServiceIds.has(serviceId)) return;
     setSelectedServices((prev) => {
       const next = new Set(prev);
       // Find the service being toggled
@@ -989,16 +1012,21 @@ export function AdminCreateOfferDialog({
             <div className="space-y-1.5 rounded-md border p-3 bg-muted/30">
               {relevantServices.map((service) => {
                 const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
+                const isMandatory = mandatoryServiceIds.has(service.id);
                 return (
                   <div key={service.id} className="flex items-start gap-2">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
                       onCheckedChange={() => toggleService(service.id)}
+                      disabled={isMandatory}
                       className="mt-0.5"
                     />
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs font-medium">{service.name}</p>
+                        <p className="text-xs font-medium">
+                          {service.name}
+                          {isMandatory && <span className="text-[10px] text-primary ml-1">(Pflicht)</span>}
+                        </p>
                         {service.pricePercent !== null && !service.customPriceInput && (
                           <span className="text-[11px] text-muted-foreground whitespace-nowrap">
                             {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
