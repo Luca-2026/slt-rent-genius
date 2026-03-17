@@ -237,37 +237,78 @@ Deno.serve(async (req: Request) => {
 
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
 
-    // Calculate additional services surcharges
-    // Each service's percentage is calculated only against items matching its applicableCategories
+    // Calculate additional services surcharges and allocate them to matching items
+    const sanitizeServiceDescription = (description?: string | null) => {
+      if (!description) return undefined;
+      return description
+        .replace(/\s*\d+\s*%\s*des\s*Netto[^.]*\.?/gi, "")
+        .replace(/\s{2,}/g, " ")
+        .trim() || undefined;
+    };
+
     let servicesSurcharge = 0;
-    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; customPrice?: number }[] = [];
+    const servicesWithPrices: {
+      id: string;
+      name: string;
+      description?: string;
+      pricePercent: number | null;
+      amount: number;
+      customPrice?: number;
+      allocations: { itemIndex: number; amount: number }[];
+    }[] = [];
+
     if (additionalServices && additionalServices.length > 0) {
       for (const svc of additionalServices) {
+        const applicableIndexes = offerItems
+          .map((_, idx) => idx)
+          .filter((idx) => {
+            if (!svc.applicableCategories || svc.applicableCategories.length === 0) return true;
+            const itemCategory = items[idx]?.category_slug;
+            return !!(itemCategory && svc.applicableCategories.includes(itemCategory));
+          });
+
+        const baseForService = applicableIndexes.reduce((sum, idx) => sum + (offerItems[idx]?.total_price || 0), 0);
+
         let amount = 0;
         if (svc.customPrice && svc.customPrice > 0) {
           amount = Math.round(svc.customPrice * 100) / 100;
         } else {
           const pct = svc.pricePercent ?? null;
-          if (pct !== null) {
-            // Calculate base: only items whose category matches the service's applicableCategories
-            let base = itemsTotal; // fallback: all items
-            if (svc.applicableCategories && Array.isArray(svc.applicableCategories) && svc.applicableCategories.length > 0) {
-              base = offerItems.reduce((sum: number, item: any, idx: number) => {
-                const catSlug = items[idx]?.category_slug;
-                if (catSlug && svc.applicableCategories!.includes(catSlug)) {
-                  return sum + item.total_price;
-                }
-                // If item has no category info, don't include it in category-specific calculation
-                return sum;
-              }, 0);
-            }
-            amount = Math.round(base * (pct / 100) * 100) / 100;
+          if (pct !== null && baseForService > 0) {
+            amount = Math.round(baseForService * (pct / 100) * 100) / 100;
           }
         }
-        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: svc.pricePercent ?? null, amount, customPrice: svc.customPrice });
+
+        const allocations: { itemIndex: number; amount: number }[] = [];
+        if (amount > 0 && applicableIndexes.length > 0 && baseForService > 0) {
+          let allocated = 0;
+          applicableIndexes.forEach((idx, pos) => {
+            const isLast = pos === applicableIndexes.length - 1;
+            const rawShare = amount * ((offerItems[idx]?.total_price || 0) / baseForService);
+            const share = isLast
+              ? Math.round((amount - allocated) * 100) / 100
+              : Math.round(rawShare * 100) / 100;
+            if (share > 0) {
+              allocations.push({ itemIndex: idx, amount: share });
+              allocated += share;
+            }
+          });
+        }
+
+        servicesWithPrices.push({
+          id: svc.id,
+          name: svc.name,
+          description: sanitizeServiceDescription(svc.description),
+          pricePercent: svc.pricePercent ?? null,
+          amount,
+          customPrice: svc.customPrice,
+          allocations,
+        });
+
         servicesSurcharge += amount;
       }
     }
+
     servicesSurcharge = Math.round(servicesSurcharge * 100) / 100;
 
     const netAmount = Math.round((itemsTotal + delivery_cost + servicesSurcharge) * 100) / 100;
