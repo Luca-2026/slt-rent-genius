@@ -793,8 +793,9 @@ async function generateOfferPdf(data: {
     page.drawText(t, { x: rightX - w, y: yPos, font: f, size: s, color: opts.c || black });
   };
 
+  const footerSafeZoneY = 100;
   const ensureSpace = (needed: number) => {
-    if (y < needed) {
+    if (y - needed < footerSafeZoneY) {
       page = doc.addPage([pageWidth, pageHeight]);
       y = pageHeight - 50;
     }
