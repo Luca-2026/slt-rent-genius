@@ -129,7 +129,11 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
     return Math.round(discounted * item.quantity * 100) / 100;
   };
 
-  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+  const itemTotalsForServices = items.map((item) => ({
+    netAmount: calculateItemTotal(item),
+    categorySlug: item.categorySlug || null,
+  }));
+  const itemsNetTotal = itemTotalsForServices.reduce((sum, item) => sum + item.netAmount, 0);
 
   // Services based on all categories
   const allCategorySlugs = new Set(items.map((i) => i.categorySlug).filter(Boolean));
@@ -144,7 +148,12 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
   if (storno) relevantServicesMap.set(storno.id, storno);
   const relevantServices = Array.from(relevantServicesMap.values());
 
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(
+    selectedServices,
+    itemsNetTotal,
+    undefined,
+    itemTotalsForServices
+  );
   const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
   const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * 0.19 * 100) / 100;
   const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
