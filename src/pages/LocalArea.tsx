@@ -355,8 +355,15 @@ export default function LocalAreaPage() {
               <p className="text-muted-foreground mb-4">
                 {exampleList} – {t("localArea.seoP2")}{specialNote}
               </p>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 {t("localArea.seoP3", { area: area.name })}
+              </p>
+              <p className="text-muted-foreground">
+                Übrigens: Mit unserer{" "}
+                <Link to="/tiefpreisgarantie" className="text-primary font-semibold hover:text-accent transition-colors underline">
+                  Tiefpreisgarantie
+                </Link>{" "}
+                erhalten Sie bei SLT Rental immer den besten Preis. Finden Sie ein identisches Mietangebot günstiger, bieten wir Ihnen 10 % Rabatt auf den Nettopreis.
               </p>
             </AnimatedSection>
           </div>
