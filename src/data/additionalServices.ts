@@ -32,7 +32,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-selbstfahrend",
     name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
     description:
-      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
+      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
     mandatory: true,
@@ -41,7 +41,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-stationaer",
     name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
     description:
-      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
+      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["aggregate", "verdichtung"],
     pricePercent: 7,
     mandatory: true,
@@ -82,7 +82,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "elektronikversicherung",
     name: "Elektronikversicherung (SB 300 €)",
     description:
-      "Versicherung für Mietartikel mit Stecker (Akkuwerkzeuge, Veranstaltungstechnik etc.). Selbstbeteiligung in Höhe von 300 € je Schadenfall. 7% des Netto-Mietpreises (ohne Zubehör und Lieferkosten).",
+      "Versicherung für Mietartikel mit Stecker (Akkuwerkzeuge, Veranstaltungstechnik etc.). Selbstbeteiligung in Höhe von 300 € je Schadenfall.",
     applicableCategories: ["werkzeuge"],
     pricePercent: 7,
     mandatory: true,
@@ -92,7 +92,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "vollkasko-500",
     name: "Vollkaskoversicherung (SB 500 €) (für Anhänger)",
     description:
-      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 500 € je Schadenfall. Gilt nur in Deutschland! 30% des Netto-Mietpreises.",
+      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 500 € je Schadenfall. Gilt nur in Deutschland!",
     applicableCategories: ["anhaenger"],
     pricePercent: 30,
     exclusionGroup: "anhaenger-kasko",
@@ -101,7 +101,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "vollkasko-300",
     name: "Vollkaskoversicherung (SB 300 €) (für Anhänger)",
     description:
-      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 300 € je Schadenfall. Gilt nur in Deutschland! 35% des Netto-Mietpreises.",
+      "Erweiterung der Haftpflichtversicherung auf eine Vollkaskoversicherung mit einer Selbstbeteiligung in Höhe von 300 € je Schadenfall. Gilt nur in Deutschland!",
     applicableCategories: ["anhaenger"],
     pricePercent: 35,
     exclusionGroup: "anhaenger-kasko",
@@ -110,7 +110,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "auslandsfahrt",
     name: "Auslandsfahrt (europäisches Ausland)",
     description:
-      "Für die Fahrt in das europäische Ausland. 15% des Netto-Mietpreises.",
+      "Für die Fahrt in das europäische Ausland.",
     applicableCategories: ["anhaenger"],
     pricePercent: 15,
   },
