@@ -79,6 +79,11 @@ export default function B2BProducts() {
     [selectedCategory]
   );
 
+  // Total product count before dedup (for display)
+  const totalProductCount = useMemo(() => {
+    return getProductsForLocationCategory(selectedLocation, "alle").length;
+  }, [selectedLocation]);
+
   // Products filtered by location, category, search, and category-specific filters
   const filteredProducts = useMemo(() => {
     let products = getProductsForLocationCategory(selectedLocation, selectedCategory);
