@@ -474,8 +474,8 @@ Deno.serve(async (req: Request) => {
       console.log("Customer prices saved permanently for", profile.company_name);
     }
 
-    // Update reservation status
-    if (reservation_id && !skip_status_update) {
+    // Update reservation status (only when finalizing, not for drafts)
+    if (reservation_id && !skip_status_update && !save_as_draft) {
       await serviceClient
         .from("b2b_reservations")
         .update({
@@ -952,7 +952,7 @@ async function generateOfferPdf(data: {
   ensureSpace(120);
 
   // ── TOTALS ──
-  const totX = 380;
+  const totX = 340;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
   drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
@@ -990,8 +990,8 @@ async function generateOfferPdf(data: {
   page.drawLine({ start: { x: totX, y }, end: { x: pageWidth - margin, y }, thickness: 1.5, color: blue });
   y -= 16;
 
-  drawText("Bruttobetrag:", totX, y, { f: fontBold, s: 14, c: blue });
-  drawTextRight(fmtCurrency(data.grossAmount), pageWidth - margin, y, { f: fontBold, s: 14, c: blue });
+  drawText("Bruttobetrag:", totX, y, { f: fontBold, s: 12, c: blue });
+  drawTextRight(fmtCurrency(data.grossAmount), pageWidth - margin, y, { f: fontBold, s: 12, c: blue });
   y -= 20;
 
   // ── DEPOSIT ──
@@ -1082,16 +1082,16 @@ async function generateOfferPdf(data: {
   }
 
   // ── CLOSING ──
-  ensureSpace(60);
+  ensureSpace(90);
   drawText("Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen", margin, y, { s: 9 });
   y -= 12;
   drawText("f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", margin, y, { s: 9 });
-  y -= 20;
+  y -= 24;
   drawText("Mit freundlichen Gr\u00FC\u00DFen", margin, y, { s: 9 });
-  y -= 14;
+  y -= 16;
   drawText(safe(data.staffName), margin, y, { f: fontBold, s: 9 });
-  y -= 10;
-  drawText("SLT-Rental", margin, y, { s: 8, c: gray });
+  y -= 12;
+  drawText("SLT Rental", margin, y, { s: 8, c: gray });
 
   // ── FOOTER on every page ──
   const pages = doc.getPages();
