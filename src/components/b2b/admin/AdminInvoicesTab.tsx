@@ -112,6 +112,7 @@ export function AdminInvoicesTab({
       case "paid": return "bg-primary/10 text-primary border-primary/20";
       case "overdue": return "bg-destructive/10 text-destructive border-destructive/20";
       case "cancelled": return "bg-muted text-muted-foreground";
+      case "draft": return "bg-amber-100 text-amber-700 border-amber-300";
       default: return "bg-accent/10 text-accent border-accent/20";
     }
   };
