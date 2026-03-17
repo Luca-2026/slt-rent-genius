@@ -258,7 +258,7 @@ Deno.serve(async (req: Request) => {
     }[] = [];
 
     if (additionalServices && additionalServices.length > 0) {
-      const mbvCategories = new Set(["erdbewegung", "aggregate", "arbeitsbuehnen"]);
+      const mbvCategories = new Set(["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"]);
       const trailerCategories = new Set(["anhaenger"]);
 
       const getApplicableIndexes = (svc: { id: string; applicableCategories?: string[] | null; calculationBase?: string }) => {
