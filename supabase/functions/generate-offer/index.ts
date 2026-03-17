@@ -43,6 +43,8 @@ interface OfferRequest {
   offer_id?: string;
   items: OfferItem[];
   delivery_cost?: number;
+  delivery_cost_delivery?: number;
+  delivery_cost_return?: number;
   valid_days?: number;
   notes?: string;
   send_email?: boolean;
