@@ -182,16 +182,24 @@ export function getMandatoryServiceIds(categorySlugs: string[]): Set<string> {
 
 /**
  * Calculate the surcharge for selected additional services.
- * Base = net item total (excluding delivery costs and deposit).
- * customPrices: map of service id -> manual price for customPriceInput services.
+ * Percent bases always use discounted article net totals only (no delivery, no deposit, no other extras).
  */
 export function calculateServicesSurcharge(
   selectedServiceIds: Set<string>,
   baseNetAmount: number,
-  customPrices?: Record<string, number>
+  customPrices?: Record<string, number>,
+  itemTotals?: ServicePricingItem[]
 ): { total: number; breakdown: { service: AdditionalService; amount: number }[] } {
   const breakdown: { service: AdditionalService; amount: number }[] = [];
   let total = 0;
+
+  const hasItemContext = !!itemTotals?.length;
+  const sumItems = (predicate?: (item: ServicePricingItem) => boolean) => {
+    if (!itemTotals || itemTotals.length === 0) return baseNetAmount;
+    return itemTotals
+      .filter((item) => !predicate || predicate(item))
+      .reduce((sum, item) => sum + (item.netAmount || 0), 0);
+  };
 
   for (const service of ADDITIONAL_SERVICES) {
     if (!selectedServiceIds.has(service.id)) continue;
@@ -202,11 +210,36 @@ export function calculateServicesSurcharge(
         breakdown.push({ service, amount: customAmount });
         total += customAmount;
       }
-    } else if (service.pricePercent !== null) {
-      const amount = Math.round(baseNetAmount * (service.pricePercent / 100) * 100) / 100;
-      breakdown.push({ service, amount });
-      total += amount;
+      continue;
     }
+
+    if (service.pricePercent === null) continue;
+
+    let baseForService = baseNetAmount;
+    if (hasItemContext) {
+      switch (service.calculationBase) {
+        case "all_items":
+          baseForService = sumItems();
+          break;
+        case "mbv_items":
+          baseForService = sumItems((item) => !!item.categorySlug && MBV_CATEGORIES.includes(item.categorySlug));
+          break;
+        case "trailer_items":
+          baseForService = sumItems((item) => !!item.categorySlug && TRAILER_CATEGORIES.includes(item.categorySlug));
+          break;
+        case "applicable_categories":
+        default:
+          baseForService = service.applicableCategories === null
+            ? sumItems()
+            : sumItems((item) => !!item.categorySlug && service.applicableCategories!.includes(item.categorySlug));
+          break;
+      }
+    }
+
+    const amount = Math.round(baseForService * (service.pricePercent / 100) * 100) / 100;
+    if (amount <= 0) continue;
+    breakdown.push({ service, amount });
+    total += amount;
   }
 
   return { total: Math.round(total * 100) / 100, breakdown };
