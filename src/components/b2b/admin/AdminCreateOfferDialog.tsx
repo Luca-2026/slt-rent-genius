@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -21,6 +21,25 @@ import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
+
+// ─── Module-level draft storage (survives component unmount/remount) ───
+interface OfferFormDraft {
+  items: OfferItemInput[];
+  deliveryCost: number;
+  validDays: number;
+  notes: string;
+  sendEmail: boolean;
+  deposit: string;
+  selectedServices: string[];
+  issuingLocation: string;
+  returnLocation: string;
+  selectedProfileId: string;
+}
+
+const offerDraftStore: { key: string | null; data: OfferFormDraft | null } = {
+  key: null,
+  data: null,
+};
 
 interface Reservation {
   id: string;
