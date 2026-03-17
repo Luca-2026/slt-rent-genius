@@ -502,13 +502,63 @@ export function B2BMultiReservationDialog({
             </div>
           )}
 
+          {/* Delivery */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <Checkbox
+                checked={deliveryRequested}
+                onCheckedChange={(checked) => setDeliveryRequested(checked === true)}
+              />
+              <span className="text-sm font-medium text-headline flex items-center gap-1.5">
+                <Truck className="h-3.5 w-3.5" />
+                Lieferung gewünscht
+              </span>
+            </label>
+            {deliveryRequested && (
+              <div className="space-y-2 pl-6 border-l-2 border-primary/20">
+                <div>
+                  <label className="block text-xs font-medium text-headline mb-1">Straße & Hausnr. *</label>
+                  <Input
+                    value={deliveryStreet}
+                    onChange={(e) => setDeliveryStreet(e.target.value)}
+                    placeholder="Musterstraße 123"
+                    className="h-9 text-sm"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-headline mb-1">PLZ *</label>
+                    <Input
+                      value={deliveryPostalCode}
+                      onChange={(e) => setDeliveryPostalCode(e.target.value)}
+                      placeholder="47807"
+                      className="h-9 text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-headline mb-1">Ort *</label>
+                    <Input
+                      value={deliveryCity}
+                      onChange={(e) => setDeliveryCity(e.target.value)}
+                      placeholder="Krefeld"
+                      className="h-9 text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Notes */}
           <div>
             <label className="block text-sm font-medium text-headline mb-1.5">
               Anmerkungen
             </label>
             <Textarea
-              placeholder="z.B. gewünschte Lieferung, spezielle Anforderungen..."
+              placeholder="z.B. spezielle Anforderungen..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
