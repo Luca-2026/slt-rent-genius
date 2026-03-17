@@ -105,7 +105,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false } = body;
+    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
 
     if (!reservation_id && !directProfileId) {
       return new Response(JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }), {
