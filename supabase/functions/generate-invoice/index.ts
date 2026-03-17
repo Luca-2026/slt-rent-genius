@@ -403,7 +403,7 @@ Deno.serve(async (req: Request) => {
     // Send email to customer
     let emailSent = false;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    if (resendApiKey && send_email) {
+    if (resendApiKey && send_email && !save_as_draft) {
       try {
         const customerEmail = profile.billing_email || profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
