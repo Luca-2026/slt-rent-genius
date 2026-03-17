@@ -1156,9 +1156,8 @@ async function generateOfferPdf(data: {
     y -= 14;
     for (const svc of data.servicesWithPrices) {
       ensureSpace(40);
-      const priceLabel = svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.";
-      // Price on the right
-      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 8, c: gray });
+      // Always show the calculated price, never "inkl."
+      drawTextRight(fmtCurrency(svc.amount), pageWidth - margin, y, { s: 8, c: gray });
       // Wrap service name to max width (leave space for price column)
       const maxNameWidth = contentWidth - 120;
       const nameText = safe("- " + svc.name);
