@@ -256,6 +256,10 @@ export function B2BMultiReservationDialog({
       setItemOverrides({});
       setExpandedItems(new Set());
       setSelectedServices(new Set());
+      setDeliveryRequested(false);
+      setDeliveryStreet("");
+      setDeliveryPostalCode("");
+      setDeliveryCity("");
     } catch (error: any) {
       toast({
         title: "Fehler beim Senden",
