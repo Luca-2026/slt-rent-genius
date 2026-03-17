@@ -65,8 +65,11 @@ export function B2BMultiReservationDialog({
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   // Determine relevant additional services based on all selected product categories
+  const categorySlugs = useMemo(() => Array.from(new Set(selectedProducts.map((sp) => sp.categorySlug))), [selectedProducts]);
+
+  const mandatoryServiceIds = useMemo(() => getMandatoryServiceIds(categorySlugs), [categorySlugs]);
+
   const relevantServices = useMemo(() => {
-    const categorySlugs = new Set(selectedProducts.map((sp) => sp.categorySlug));
     const allServices = new Map<string, AdditionalService>();
 
     for (const slug of categorySlugs) {
@@ -80,7 +83,20 @@ export function B2BMultiReservationDialog({
     if (storno) allServices.set(storno.id, storno);
 
     return Array.from(allServices.values());
-  }, [selectedProducts]);
+  }, [categorySlugs]);
+
+  // Auto-select mandatory services when categories change
+  useMemo(() => {
+    if (mandatoryServiceIds.size > 0) {
+      setSelectedServices((prev) => {
+        const next = new Set(prev);
+        for (const id of mandatoryServiceIds) {
+          next.add(id);
+        }
+        return next;
+      });
+    }
+  }, [mandatoryServiceIds]);
 
   if (selectedProducts.length === 0) return null;
 
