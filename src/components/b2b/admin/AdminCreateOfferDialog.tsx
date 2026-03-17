@@ -137,8 +137,8 @@ export function AdminCreateOfferDialog({
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
-  // Track the context key that was used to initialize the form, so we only reset when the context actually changes
   const lastInitKey = useRef<string | null>(null);
+  const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isEditing = !!existingOffer;
   const isStandalone = !reservation && !isEditing;
@@ -150,13 +150,55 @@ export function AdminCreateOfferDialog({
 
   const approvedProfiles = (profilesList || []).filter((p: any) => p.status === "approved");
 
-  // Initialize form when dialog opens with a NEW context (different reservation/offer), not on every open toggle
+  // Save current form state to module-level draft store
+  const saveDraft = useCallback(() => {
+    const contextKey = existingOffer?.id || reservation?.id || "standalone";
+    offerDraftStore.key = contextKey;
+    offerDraftStore.data = {
+      items: [...items],
+      deliveryCost,
+      validDays,
+      notes,
+      sendEmail,
+      deposit,
+      selectedServices: Array.from(selectedServices),
+      issuingLocation,
+      returnLocation,
+      selectedProfileId,
+    };
+  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+
+  // Auto-save draft on every state change (debounced)
+  useEffect(() => {
+    if (!open) return;
+    if (draftSaveTimer.current) clearTimeout(draftSaveTimer.current);
+    draftSaveTimer.current = setTimeout(() => saveDraft(), 300);
+    return () => { if (draftSaveTimer.current) clearTimeout(draftSaveTimer.current); };
+  }, [open, saveDraft]);
+
+  // Initialize form when dialog opens — restore draft if available for same context
   useEffect(() => {
     if (!open) return;
 
     const contextKey = existingOffer?.id || reservation?.id || "standalone";
-    if (lastInitKey.current === contextKey) return; // Already initialized for this context
+    if (lastInitKey.current === contextKey) return;
     lastInitKey.current = contextKey;
+
+    // Check if we have a saved draft for this exact context
+    if (offerDraftStore.key === contextKey && offerDraftStore.data) {
+      const draft = offerDraftStore.data;
+      setItems(draft.items);
+      setDeliveryCost(draft.deliveryCost);
+      setValidDays(draft.validDays);
+      setNotes(draft.notes);
+      setSendEmail(draft.sendEmail);
+      setDeposit(draft.deposit);
+      setSelectedServices(new Set(draft.selectedServices));
+      setIssuingLocation(draft.issuingLocation);
+      setReturnLocation(draft.returnLocation);
+      setSelectedProfileId(draft.selectedProfileId);
+      return;
+    }
 
     if (existingOffer && existingItems && existingItems.length > 0) {
       setItems(
