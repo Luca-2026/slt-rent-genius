@@ -491,8 +491,17 @@ export function AdminCreateOfferDialog({
   };
 
   // Base = item totals only (excl. delivery & deposit) for service % calculation
-  const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal, customServicePrices);
+  const itemTotalsForServices = items.map((item) => ({
+    netAmount: calculateItemTotal(item),
+    categorySlug: item.category_slug || null,
+  }));
+  const itemsNetTotal = itemTotalsForServices.reduce((sum, item) => sum + item.netAmount, 0);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(
+    selectedServices,
+    itemsNetTotal,
+    customServicePrices,
+    itemTotalsForServices
+  );
   const totalDeliveryCost = deliveryCostDelivery + (includeReturn ? deliveryCostReturn : 0);
   const netAmount = itemsNetTotal + totalDeliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
