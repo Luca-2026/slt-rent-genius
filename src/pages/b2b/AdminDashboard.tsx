@@ -274,6 +274,7 @@ export default function AdminDashboard() {
           quantity: number;
           unit_price: number;
           discount_percent: number;
+          item_type: string;
         }> = [];
         let parsedServices = offer.additional_services;
         if (typeof parsedServices === "string") {
