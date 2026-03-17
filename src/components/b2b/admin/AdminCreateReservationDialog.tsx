@@ -250,6 +250,9 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
               id: s.id,
               name: s.name,
               description: s.description,
+              pricePercent: s.pricePercent,
+              applicableCategories: s.applicableCategories,
+              calculationBase: s.calculationBase,
             }))
           : undefined;
 
