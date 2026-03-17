@@ -268,7 +268,8 @@ Deno.serve(async (req: Request) => {
     });
 
     // File name updated to Übergabeprotokoll
-    const fileName = `Uebergabeprotokoll_SLTRental_${deliveryNoteNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
+    const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+    const fileName = `Uebergabeprotokoll_SLTRental_${deliveryNoteNumber}_${safeName}.html`;
     const filePath = `delivery-notes/${profile.id}/${fileName}`;
 
     const htmlBytes = new TextEncoder().encode(html);

@@ -397,7 +397,8 @@ Deno.serve(async (req: Request) => {
     });
 
     // Store as PDF file
-    const fileName = `Angebot_SLTRental_${offerNumber}_${profile.company_name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
+    const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+    const fileName = `Angebot_SLTRental_${offerNumber}_${safeName}.pdf`;
     const filePath = `offers/${profile.id}/${fileName}`;
 
     const { error: uploadError } = await serviceClient.storage

@@ -233,7 +233,8 @@ Deno.serve(async (req: Request) => {
     });
 
     // Upload HTML to storage
-    const fileName = `Rueckgabeprotokoll_SLTRental_${returnProtocolNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.html`;
+    const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+    const fileName = `Rueckgabeprotokoll_SLTRental_${returnProtocolNumber}_${safeName}.html`;
     const filePath = `return-protocols/${profile.id}/${fileName}`;
 
     const htmlBytes = new TextEncoder().encode(html);
