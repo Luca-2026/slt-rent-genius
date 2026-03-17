@@ -37,6 +37,9 @@ interface OfferFormDraft {
   issuingLocation: string;
   returnLocation: string;
   selectedProfileId: string;
+  deliveryAddressStreet: string;
+  deliveryAddressPostalCode: string;
+  deliveryAddressCity: string;
 }
 
 const offerDraftStore: { key: string | null; data: OfferFormDraft | null } = {
