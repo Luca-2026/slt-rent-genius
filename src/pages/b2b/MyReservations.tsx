@@ -337,6 +337,7 @@ export default function MyReservations() {
             className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
             onClick={() => {
               setOfferToAccept(offer);
+              setSignatureData(null);
               setConfirmDialogOpen(true);
             }}
             disabled={acceptingOfferId === offer.id}
@@ -344,9 +345,9 @@ export default function MyReservations() {
             {acceptingOfferId === offer.id ? (
               <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
             ) : (
-              <ThumbsUp className="h-3 w-3 mr-1" />
+              <PenTool className="h-3 w-3 mr-1" />
             )}
-            Bestätigen
+            Annehmen
           </Button>
         )}
         {offer.status === "accepted" && (
