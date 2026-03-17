@@ -544,6 +544,7 @@ export function AdminCreateOfferDialog({
             rental_end: item.rental_end || endDate,
             start_time: item.start_time || undefined,
             end_time: item.end_time || undefined,
+            category_slug: item.category_slug || undefined,
             image_url: (() => {
               const stablePath = getProductImageStablePath(reservation?.product_id || "") || getProductImageStablePathByName(item.product_name);
               if (stablePath) return `${window.location.origin}${stablePath}`;
