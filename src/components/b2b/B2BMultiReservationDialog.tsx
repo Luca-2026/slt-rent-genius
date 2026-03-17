@@ -12,7 +12,7 @@ import { Product } from "@/data/rentalData";
 import { locations } from "@/data/rentalData";
 import { CalendarDays, MapPin, Send, Package, X, ChevronUp, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ADDITIONAL_SERVICES, getServicesForCategory, type AdditionalService } from "@/data/additionalServices";
+import { ADDITIONAL_SERVICES, getServicesForCategory, getMandatoryServiceIds, type AdditionalService } from "@/data/additionalServices";
 
 interface SelectedProduct {
   product: Product;
