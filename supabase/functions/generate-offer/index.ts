@@ -1140,14 +1140,7 @@ async function generateOfferPdf(data: {
     y -= 14;
     for (const svc of data.servicesWithPrices) {
       ensureSpace(40);
-      let priceLabel = "";
-      if (svc.customPrice && svc.customPrice > 0) {
-        priceLabel = fmtCurrency(svc.amount);
-      } else if (svc.amount > 0 && svc.pricePercent) {
-        priceLabel = svc.pricePercent + "% = " + fmtCurrency(svc.amount);
-      } else {
-        priceLabel = "inkl.";
-      }
+      const priceLabel = svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.";
       // Price on the right
       drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 8, c: gray });
       // Wrap service name to max width (leave space for price column)
