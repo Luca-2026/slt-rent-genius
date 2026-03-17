@@ -801,7 +801,10 @@ async function generateOfferPdf(data: {
 
   // ── HEADER with Logo (right-aligned, bigger) ──
   try {
-    const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
+    const logoController = new AbortController();
+    const logoTimeout = setTimeout(() => logoController.abort(), 2000);
+    const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png", { signal: logoController.signal });
+    clearTimeout(logoTimeout);
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
     const logoHeight = 75;
@@ -921,7 +924,7 @@ async function generateOfferPdf(data: {
   drawTextRight("Gesamt", colTotal, hdrY, { f: fontBold, s: 8, c: white });
   y -= 22;
 
-  // ── PRE-FETCH PRODUCT IMAGES ──
+  // ── PRE-FETCH PRODUCT IMAGES (with short timeout to avoid slowdowns) ──
   const imageCache = new Map<string, any>();
   const imageFetchPromises = data.items
     .filter((item) => item.image_url && !imageCache.has(item.image_url))
@@ -929,12 +932,11 @@ async function generateOfferPdf(data: {
       const url = item.image_url!;
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
+        const timeout = setTimeout(() => controller.abort(), 2000);
         const imgResp = await fetch(url, { signal: controller.signal });
         clearTimeout(timeout);
         if (!imgResp.ok) return;
         const contentType = imgResp.headers.get("content-type") || "";
-        // Skip if not an actual image (e.g. HTML page returned)
         if (!contentType.includes("image/")) {
           console.error("Skipping non-image response for:", url, "content-type:", contentType);
           return;
@@ -948,7 +950,7 @@ async function generateOfferPdf(data: {
         }
         imageCache.set(url, embeddedImg);
       } catch (e) {
-        console.error("Failed to embed image:", url, e);
+        console.error("Failed to embed image (skipping):", url);
       }
     });
   await Promise.all(imageFetchPromises);
