@@ -252,6 +252,7 @@ export default function AdminDashboard() {
           rental_start: item.rental_start || reservation?.start_date,
           rental_end: item.rental_end || reservation?.end_date,
           image_url: (reservation ? getProductImageUrl(reservation.product_id) : null) || getProductImageUrlByName(item.product_name) || undefined,
+          item_type: 'product' as const,
         }));
 
         // Append surcharges as line items
@@ -263,6 +264,7 @@ export default function AdminDashboard() {
             quantity: 1,
             unit_price: s.amount,
             discount_percent: 0,
+            item_type: 'surcharge' as const,
           }));
 
         // Add additional services (Haftungsfreistellung, MBV etc.) as line items
