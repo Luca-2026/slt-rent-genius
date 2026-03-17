@@ -796,14 +796,33 @@ export function AdminCreateOfferDialog({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label className="text-xs">Lieferkosten (€ netto)</Label>
+            <Label className="text-xs">Anlieferung (€ netto)</Label>
             <Input
               type="number"
               min={0}
               step={0.01}
-              value={deliveryCost}
-              onChange={(e) => setDeliveryCost(Number(e.target.value))}
+              value={deliveryCostDelivery}
+              onChange={(e) => setDeliveryCostDelivery(Number(e.target.value))}
               className="h-8 text-sm"
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Checkbox
+                id="include-return"
+                checked={includeReturn}
+                onCheckedChange={(checked) => setIncludeReturn(!!checked)}
+              />
+              <Label htmlFor="include-return" className="text-xs cursor-pointer">Rücklieferung</Label>
+            </div>
+            <Input
+              type="number"
+              min={0}
+              step={0.01}
+              value={deliveryCostReturn}
+              onChange={(e) => setDeliveryCostReturn(Number(e.target.value))}
+              className="h-8 text-sm"
+              disabled={!includeReturn}
             />
           </div>
           <div>
