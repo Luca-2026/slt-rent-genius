@@ -55,6 +55,7 @@ interface OfferRequest {
   additional_services?: { id: string; name: string; description?: string; pricePercent?: number; customPrice?: number }[];
   issuing_location?: string;
   return_location?: string;
+  delivery_address?: { street?: string; postal_code?: string; city?: string };
 }
 
 Deno.serve(async (req: Request) => {
