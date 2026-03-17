@@ -831,22 +831,22 @@ export default function CategoryProducts() {
   // SEO data for category page - CTR-optimized
   const categoryDisplayName = category.title || categoryId || "";
   
-  // Category-specific SEO titles with CTR triggers
+  // Category-specific SEO titles with CTR triggers – optimized per GSC high-impression keywords
   const categorySeoTitles: Record<string, string> = {
     anhaenger: `Anhänger mieten ${location.name} – 24/7 Abholung, ab 19 €/Tag`,
-    erdbewegung: `Minibagger & Bagger mieten ${location.name} – inkl. Lieferung`,
+    erdbewegung: `Minibagger, Dumper & Radlader mieten ${location.name} – inkl. Lieferung`,
     werkzeuge: `Werkzeuge mieten ${location.name} – Profi-Geräte ab 10 €/Tag`,
-    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name} – Steiger bis 18m Höhe`,
-    gartenpflege: `Gartengeräte mieten ${location.name} – Häcksler, Erdbohrer & mehr`,
-    aggregate: `Stromaggregat mieten ${location.name} – 2,8 bis 100 kVA`,
-    verdichtung: `Rüttelplatte mieten ${location.name} – ab 25 €/Tag`,
+    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name} – Hubsteiger & Scherenbühne bis 18m`,
+    gartenpflege: `Gartengeräte mieten ${location.name} – Häcksler, Rasenwalze & mehr`,
+    aggregate: `Stromaggregat & Kompressor mieten ${location.name} – 2,8 bis 100 kVA`,
+    verdichtung: `Rüttelplatte & Stampfer mieten ${location.name} – ab 25 €/Tag`,
     huepfburgen: `Hüpfburg mieten ${location.name} – für Kindergeburtstag & Events`,
     "leitern-gerueste": `Rollgerüst & Leiter mieten ${location.name} – bis 8,4m Höhe`,
     "heizung-trocknung": `Bautrockner & Heizung mieten ${location.name} – Sofort verfügbar`,
     "moebel-zelte": `Partyzelt & Mobiliar mieten ${location.name} – für Events & Feiern`,
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
-    absperrtechnik: `Absperrtechnik mieten ${location.name} – Halteverbotsschilder & Bauzaun`,
-    "kabel-stromverteiler": `Kabel & Stromverteiler mieten ${location.name} – CEE 16A bis 63A`,
+    absperrtechnik: `Bauzaun & Halteverbotsschilder mieten ${location.name} – StVO-konform`,
+    "kabel-stromverteiler": `Stromverteiler & Kabel mieten ${location.name} – CEE 16A bis 63A`,
     beschallung: `PA-Anlage & Beschallung mieten ${location.name} – Professionell`,
     beleuchtung: `Beleuchtung mieten ${location.name} – LED Moving Heads & Bars`,
     buehne: `Bühne mieten ${location.name} – Bühnenpodeste & Zubehör`,
@@ -857,22 +857,22 @@ export default function CategoryProducts() {
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
   
-  // CTR-optimized descriptions with checkmarks and USPs
+  // CTR-optimized descriptions – enriched with GSC high-impression synonym keywords
   const categorySeoDescriptions: Record<string, string> = {
-    anhaenger: `Anhänger mieten in ${location.name} ✓ ${products.length} Modelle ✓ 24/7 Abholung per SMS-Code ✓ Pkw- & Baumaschinenanhänger ✓ Wochenend-Tarife ✓ Tiefpreisgarantie`,
-    erdbewegung: `Minibagger & Bagger mieten in ${location.name} ✓ ${products.length} Geräte ✓ Anbaugeräte inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
-    arbeitsbuehnen: `Arbeitsbühne & Hubsteiger mieten in ${location.name} ✓ ${products.length} Modelle bis 18m ✓ Scheren- & Gelenkteleskopbühnen ✓ Anhängerbühnen ✓ Lieferung möglich`,
+    anhaenger: `Anhänger mieten in ${location.name} ✓ ${products.length} Modelle ✓ 24/7 Abholung per SMS-Code ✓ Pkw-, Plattform- & Baumaschinenanhänger ✓ Wochenend-Tarife ✓ Tiefpreisgarantie`,
+    erdbewegung: `Minibagger, Dumper & Radlader mieten in ${location.name} ✓ ${products.length} Geräte von 1t–5t ✓ Anbaugeräte & Grabenräumlöffel inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
+    arbeitsbuehnen: `Arbeitsbühne & Hubsteiger mieten in ${location.name} ✓ ${products.length} Modelle ✓ Scherenbühne, Hebebühne & LKW-Arbeitsbühne bis 18m ✓ Anhängerbühnen ✓ Lieferung möglich`,
     huepfburgen: `Hüpfburg mieten in ${location.name} ✓ ${products.length} Modelle für Kindergeburtstag & Events ✓ Lieferung & Aufbau ✓ Faire Wochenend-Tarife`,
-    werkzeuge: `Werkzeuge mieten in ${location.name} ✓ ${products.length} Profi-Geräte ✓ Kernbohrer, Stemmhammer, Trennschleifer & mehr ✓ Ab 10 €/Tag ✓ Tiefpreisgarantie`,
-    gartenpflege: `Gartengeräte mieten in ${location.name} ✓ ${products.length} Geräte ✓ Häcksler, Erdbohrer, Vertikutierer ✓ Ab 25 €/Tag ✓ Wochenend-Tarife`,
-    aggregate: `Stromaggregat mieten in ${location.name} ✓ ${products.length} Modelle ✓ 2,8 bis 100 kVA ✓ Für Baustelle & Event ✓ Lieferung möglich`,
-    verdichtung: `Rüttelplatte & Stampfer mieten in ${location.name} ✓ ${products.length} Verdichtungsgeräte ✓ Ab 25 €/Tag ✓ Für Pflaster- & Erdarbeiten`,
-    "leitern-gerueste": `Rollgerüst & Leiter mieten in ${location.name} ✓ ${products.length} Modelle ✓ Arbeitshöhe bis 8,4m ✓ Steh- & Kombileitern ✓ Sofort verfügbar`,
-    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${location.name} ✓ ${products.length} Geräte ✓ Für Estrichtrocknung & Neubau ✓ Sofort verfügbar`,
-    "moebel-zelte": `Partyzelt & Mobiliar mieten in ${location.name} ✓ ${products.length} Artikel ✓ Zelte, Tische, Stühle, Bänke ✓ Für Hochzeit, Geburtstag & Firmenfeier`,
+    werkzeuge: `Werkzeuge mieten in ${location.name} ✓ ${products.length} Profi-Geräte ✓ Kernbohrer, Stemmhammer, Fliesenschneider, Abbruchhammer ✓ Ab 10 €/Tag ✓ Tiefpreisgarantie`,
+    gartenpflege: `Gartengeräte mieten in ${location.name} ✓ ${products.length} Geräte ✓ Häcksler, Rasenwalze, Hochdruckreiniger, Erdbohrer, Gartenfräse ✓ Ab 25 €/Tag`,
+    aggregate: `Stromaggregat & Baukompressor mieten in ${location.name} ✓ ${products.length} Modelle ✓ 2,8 bis 100 kVA ✓ Für Baustelle & Event ✓ Lieferung möglich`,
+    verdichtung: `Rüttelplatte & Stampfer mieten in ${location.name} ✓ ${products.length} Verdichtungsgeräte ✓ Ab 25 €/Tag ✓ Für Pflaster- & Erdarbeiten ✓ Tiefpreisgarantie`,
+    "leitern-gerueste": `Rollgerüst & Leiter mieten in ${location.name} ✓ ${products.length} Modelle ✓ Arbeitshöhe bis 8,4m ✓ 10- & 12-Meter Leitern ✓ Sofort verfügbar`,
+    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${location.name} ✓ ${products.length} Geräte ✓ Estrichtrocknung, Neubautrocknung & Wasserschaden ✓ Sofort lieferbar`,
+    "moebel-zelte": `Partyzelt & Mobiliar mieten in ${location.name} ✓ ${products.length} Artikel ✓ Zelte, Tische, Stühle, Bänke, Pavillon ✓ Für Hochzeit, Geburtstag & Firmenfeier`,
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sets ab 5 € ✓ Hochwertiges Eventgeschirr ✓ Spülservice möglich`,
-    absperrtechnik: `Absperrtechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ Halteverbotsschilder, Bauzaun, Absperrgitter ✓ Verkehrszeichen nach StVO`,
-    "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${location.name} ✓ ${products.length} Artikel ✓ CEE 16A bis 63A ✓ Kabeltrommel, Kabelbrücke ✓ Für Event & Baustelle`,
+    absperrtechnik: `Bauzaun & Absperrtechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ Halteverbotsschilder, Absperrgitter, Warnbarken ✓ StVO-konform`,
+    "kabel-stromverteiler": `Verteilerschrank & Kabel mieten in ${location.name} ✓ ${products.length} Artikel ✓ CEE 16A bis 63A ✓ Kabeltrommel, Kabelbrücke ✓ Für Event & Baustelle`,
     beschallung: `PA-Anlage & Lautsprecher mieten in ${location.name} ✓ ${products.length} Artikel ✓ Bluetooth-Speaker bis Profi-PA ✓ Für 30 bis 250 Personen`,
     beleuchtung: `Veranstaltungstechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ LED Spots, Moving Heads, Scheinwerfer ✓ Für Event & Bühne`,
     buehne: `Bühne & Podeste mieten in ${location.name} ✓ ${products.length} Artikel ✓ Modulare Bühnenpodeste ✓ Für Konzert, Firmenevent & Rede`,
@@ -884,7 +884,27 @@ export default function CategoryProducts() {
   const seoDescription = categorySeoDescriptions[category.id] || 
     `${categoryDisplayName} mieten in ${location.name} ✓ ${products.length} Mietartikel ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Persönliche Beratung ✓ Lieferung möglich`;
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
-  const seoKeywords = `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
+  
+  // Expanded keywords based on GSC high-impression search queries
+  const categoryKeywordMap: Record<string, string> = {
+    anhaenger: `Anhänger mieten ${location.name}, Anhängerverleih ${location.name}, Pkw-Anhänger mieten, Plattformanhänger mieten, Baumaschinenanhänger mieten, Autoanhänger mieten ${location.name}, Schwerlastanhänger mieten`,
+    erdbewegung: `Minibagger mieten ${location.name}, Bagger mieten ${location.name}, Dumper mieten ${location.name}, Radlader mieten ${location.name}, Teleskoplader mieten ${location.name}, Grabenräumlöffel mieten, Kettendumper mieten, Bobcat mieten`,
+    arbeitsbuehnen: `Arbeitsbühne mieten ${location.name}, Hubsteiger mieten ${location.name}, Scherenbühne mieten ${location.name}, Hebebühne mieten ${location.name}, Steiger mieten ${location.name}, LKW-Arbeitsbühne mieten ${location.name}, Anhängerbühne mieten`,
+    gartenpflege: `Häcksler mieten ${location.name}, Rasenwalze mieten ${location.name}, Hochdruckreiniger mieten ${location.name}, Erdbohrer mieten, Gartenfräse mieten, Bodenhacke mieten, Gartengeräte leihen ${location.name}`,
+    werkzeuge: `Werkzeuge mieten ${location.name}, Fliesenschneider mieten ${location.name}, Abbruchhammer mieten, Kernbohrer mieten, Stemmhammer mieten, Winkelschleifer mieten`,
+    aggregate: `Stromaggregat mieten ${location.name}, Kompressor mieten ${location.name}, Baukompressor mieten, Generator mieten ${location.name}`,
+    verdichtung: `Rüttelplatte mieten ${location.name}, Stampfer mieten ${location.name}, Verdichtungsgerät mieten, Betonrüttler mieten`,
+    huepfburgen: `Hüpfburg mieten ${location.name}, Hüpfburgen leihen, Kindergeburtstag Equipment ${location.name}`,
+    "leitern-gerueste": `Rollgerüst mieten ${location.name}, Leiter mieten ${location.name}, 12 Meter Leiter mieten, 10 Meter Leiter mieten, Gerüst leihen ${location.name}`,
+    "heizung-trocknung": `Bautrockner mieten ${location.name}, Heizlüfter mieten, Trocknung mieten, Baustellen Heizlüfter mieten`,
+    absperrtechnik: `Bauzaun mieten ${location.name}, Halteverbotsschilder mieten ${location.name}, Absperrgitter mieten, Warnbarke mieten`,
+    "moebel-zelte": `Partyzelt mieten ${location.name}, Zelt mieten ${location.name}, Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
+    "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
+    "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
+  };
+  
+  const seoKeywords = categoryKeywordMap[category.id] || 
+    `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
 
   // SEO text content for each category page (array of paragraphs)
   const categorySeoTexts: Record<string, string[]> = {
