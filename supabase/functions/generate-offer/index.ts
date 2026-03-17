@@ -1012,14 +1012,19 @@ async function generateOfferPdf(data: {
     y -= 14;
     for (const svc of data.servicesWithPrices) {
       ensureSpace(24);
-      const priceInfo = svc.amount > 0
-        ? " (" + svc.pricePercent + "% = " + fmtCurrency(svc.amount) + ")"
-        : " (inklusive)";
+      let priceLabel = "";
+      if (svc.customPrice && svc.customPrice > 0) {
+        priceLabel = fmtCurrency(svc.amount);
+      } else if (svc.amount > 0 && svc.pricePercent) {
+        priceLabel = svc.pricePercent + "% = " + fmtCurrency(svc.amount);
+      } else {
+        priceLabel = "inkl.";
+      }
       drawText("- " + safe(svc.name), margin + 8, y, { s: 9, c: gray });
       drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 9, c: gray });
       y -= 12;
       if (svc.description) {
-        drawText("  " + safe(svc.description).substring(0, 80), margin + 14, y, { s: 7, c: lightGray });
+        drawText("  " + safe(svc.description).substring(0, 90), margin + 14, y, { s: 7, c: lightGray });
         y -= 12;
       }
     }
