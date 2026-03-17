@@ -110,7 +110,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "auslandsfahrt",
     name: "Auslandsfahrt (europäisches Ausland)",
     description:
-      "Für die Fahrt in das europäische Ausland. 15% des Netto-Mietpreises.",
+      "Für die Fahrt in das europäische Ausland.",
     applicableCategories: ["anhaenger"],
     pricePercent: 15,
   },
