@@ -955,6 +955,27 @@ async function generateDocumentPdf(data: {
       });
     }
 
+    const linkedServices = data.serviceItems.filter((svc) => svc.parentItemIndex === productIndex);
+    linkedServices.forEach((svc) => {
+      checkPage(18);
+      const svcLines = wt(`↳ Zusatzoption: ${svc.name}`, font, 7, nameMaxW);
+      svcLines.forEach((line, li) => {
+        dt(line, colName + 8, y, font, 7, rgb(0.45, 0.45, 0.45));
+        if (li === 0 && hasPrice) {
+          dtr(fm(svc.amount), colTotal, y, font, 8, rgb(0.45, 0.45, 0.45));
+        }
+        y -= 10;
+      });
+      if (svc.description) {
+        const descLines = wt(svc.description, italic, 6.5, nameMaxW - 8);
+        descLines.forEach(line => {
+          checkPage(10);
+          dt(line, colName + 14, y, italic, 6.5, rgb(0.55, 0.55, 0.55));
+          y -= 9;
+        });
+      }
+    });
+
     y -= 3;
     page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   });
