@@ -6,8 +6,10 @@ export interface AdditionalService {
   description: string;
   /** If null, always suggest. Otherwise only suggest for these category slugs. */
   applicableCategories: string[] | null;
-  /** Percentage of order value (net, excl. deposit & delivery). null = no extra charge. */
+  /** Percentage of order value (net, excl. deposit & delivery). null = no extra charge / custom price. */
   pricePercent: number | null;
+  /** Whether this service supports a custom (manual) price input instead of percentage */
+  customPriceInput?: boolean;
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
@@ -17,29 +19,46 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description: "Unterstützung beim Verladen und Verzurren der Baumaschinen.",
     applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "verdichtung"],
     pricePercent: null,
+    customPriceInput: true,
+  },
+  {
+    id: "mbv-selbstfahrend",
+    name: "Maschinenbruchversicherung – Selbstfahrende Maschinen",
+    description:
+      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper). 12% des Netto-Mietpreises der Maschinen (ohne Lieferkosten/Zubehör).",
+    applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
+    pricePercent: 12,
+  },
+  {
+    id: "mbv-stationaer",
+    name: "Maschinenbruchversicherung – Stationäre Maschinen",
+    description:
+      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger). 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
+    applicableCategories: ["aggregate", "werkzeuge", "verdichtung"],
+    pricePercent: 7,
   },
   {
     id: "mbv-1000",
-    name: "Reduzierung Maschinenbruchversicherung auf 1000€ SB",
+    name: "Reduzierung MBV auf 1.000 € SB",
     description:
-      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 1000€ je Schadenfall.",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
-    pricePercent: null, // included / no surcharge
+      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 1.000 € je Schadenfall.",
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    pricePercent: null,
   },
   {
     id: "mbv-500",
-    name: "Reduzierung Maschinenbruchversicherung auf 500€ SB",
+    name: "Reduzierung MBV auf 500 € SB",
     description:
-      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 500€ je Schadenfall.",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
+      "Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 500 € je Schadenfall.",
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 5,
   },
   {
     id: "mbv-0",
-    name: "Reduzierung Maschinenbruchversicherung auf 0€ SB",
+    name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
-      "Haftungsfreistellung. Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 0€ je Schadenfall.",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"],
+      "Haftungsfreistellung. Reduzierung der Maschinenbruchversicherung auf eine Selbstbeteiligung in Höhe von 0 € je Schadenfall.",
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
     pricePercent: 10,
   },
   {
@@ -55,7 +74,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
 export const DEPOSIT_OPTIONS = [50, 100, 150, 750, 1000];
 
 /** Categories that should trigger MBV / Verladehilfe suggestions */
-export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge"];
+export const MBV_CATEGORIES = ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"];
 
 /**
  * Returns the additional services relevant for a given category slug.
@@ -70,16 +89,26 @@ export function getServicesForCategory(categorySlug?: string | null): Additional
 /**
  * Calculate the surcharge for selected additional services.
  * Base = net item total (excluding delivery costs and deposit).
+ * customPrices: map of service id -> manual price for customPriceInput services.
  */
 export function calculateServicesSurcharge(
   selectedServiceIds: Set<string>,
-  baseNetAmount: number
+  baseNetAmount: number,
+  customPrices?: Record<string, number>
 ): { total: number; breakdown: { service: AdditionalService; amount: number }[] } {
   const breakdown: { service: AdditionalService; amount: number }[] = [];
   let total = 0;
 
   for (const service of ADDITIONAL_SERVICES) {
-    if (selectedServiceIds.has(service.id) && service.pricePercent !== null) {
+    if (!selectedServiceIds.has(service.id)) continue;
+
+    if (service.customPriceInput) {
+      const customAmount = customPrices?.[service.id] || 0;
+      if (customAmount > 0) {
+        breakdown.push({ service, amount: customAmount });
+        total += customAmount;
+      }
+    } else if (service.pricePercent !== null) {
       const amount = Math.round(baseNetAmount * (service.pricePercent / 100) * 100) / 100;
       breakdown.push({ service, amount });
       total += amount;

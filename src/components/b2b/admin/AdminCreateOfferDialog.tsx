@@ -31,6 +31,7 @@ interface OfferFormDraft {
   sendEmail: boolean;
   deposit: string;
   selectedServices: string[];
+  customServicePrices: Record<string, number>;
   issuingLocation: string;
   returnLocation: string;
   selectedProfileId: string;
@@ -134,6 +135,7 @@ export function AdminCreateOfferDialog({
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [customServicePrices, setCustomServicePrices] = useState<Record<string, number>>({});
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
@@ -162,11 +164,12 @@ export function AdminCreateOfferDialog({
       sendEmail,
       deposit,
       selectedServices: Array.from(selectedServices),
+      customServicePrices: { ...customServicePrices },
       issuingLocation,
       returnLocation,
       selectedProfileId,
     };
-  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
@@ -194,6 +197,7 @@ export function AdminCreateOfferDialog({
       setSendEmail(draft.sendEmail);
       setDeposit(draft.deposit);
       setSelectedServices(new Set(draft.selectedServices));
+      setCustomServicePrices(draft.customServicePrices || {});
       setIssuingLocation(draft.issuingLocation);
       setReturnLocation(draft.returnLocation);
       setSelectedProfileId(draft.selectedProfileId);
@@ -237,8 +241,14 @@ export function AdminCreateOfferDialog({
       setReturnLocation(existingOffer.return_location || "");
       if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
         setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
+        const restoredPrices: Record<string, number> = {};
+        for (const s of existingOffer.additional_services as any[]) {
+          if (s.customPrice) restoredPrices[s.id] = s.customPrice;
+        }
+        setCustomServicePrices(restoredPrices);
       } else {
         setSelectedServices(new Set());
+        setCustomServicePrices({});
       }
     } else if (reservation) {
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
@@ -249,12 +259,14 @@ export function AdminCreateOfferDialog({
       } else {
         setSelectedServices(new Set());
       }
+      setCustomServicePrices({});
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
       setDeliveryCost(0);
       setNotes("");
       setDeposit("");
       setSelectedServices(new Set());
+      setCustomServicePrices({});
       setSelectedProfileId("");
       setIssuingLocation("krefeld");
       setReturnLocation("");
@@ -370,7 +382,7 @@ export function AdminCreateOfferDialog({
 
   // Base = item totals only (excl. delivery & deposit) for service % calculation
   const itemsNetTotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal);
+  const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(selectedServices, itemsNetTotal, customServicePrices);
   const netAmount = itemsNetTotal + deliveryCost + servicesSurcharge;
   const isReverseCharge = !!(profile?.tax_id && profile?.vat_id_verified);
   const vatRate = isReverseCharge ? 0 : 19;
@@ -423,6 +435,7 @@ export function AdminCreateOfferDialog({
             name: s.name,
             description: s.description,
             pricePercent: s.pricePercent,
+            customPrice: s.customPriceInput ? (customServicePrices[s.id] || 0) : undefined,
           }))
         : undefined;
 
@@ -792,7 +805,7 @@ export function AdminCreateOfferDialog({
               {relevantServices.map((service) => {
                 const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
                 return (
-                  <label key={service.id} className="flex items-start gap-2 cursor-pointer">
+                  <div key={service.id} className="flex items-start gap-2">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
                       onCheckedChange={() => toggleService(service.id)}
@@ -801,7 +814,7 @@ export function AdminCreateOfferDialog({
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-xs font-medium">{service.name}</p>
-                        {service.pricePercent !== null && (
+                        {service.pricePercent !== null && !service.customPriceInput && (
                           <span className="text-[11px] text-muted-foreground whitespace-nowrap">
                             {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
                               ? `(${formatCurrency(surchargeEntry.amount)})`
@@ -810,8 +823,26 @@ export function AdminCreateOfferDialog({
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                      {service.customPriceInput && selectedServices.has(service.id) && (
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <Euro className="h-3.5 w-3.5 text-muted-foreground" />
+                          <Input
+                            type="number"
+                            min={0}
+                            step={0.01}
+                            placeholder="Preis (netto)"
+                            value={customServicePrices[service.id] || ""}
+                            onChange={(e) => setCustomServicePrices(prev => ({
+                              ...prev,
+                              [service.id]: parseFloat(e.target.value) || 0,
+                            }))}
+                            className="h-7 text-xs w-32"
+                          />
+                          <span className="text-[11px] text-muted-foreground">€ netto</span>
+                        </div>
+                      )}
                     </div>
-                  </label>
+                  </div>
                 );
               })}
               {servicesSurcharge > 0 && (
