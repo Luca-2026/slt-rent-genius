@@ -356,6 +356,8 @@ export function AdminCreateOfferDialog({
           save_prices: true,
           deposit: deposit && deposit !== "none" ? Number(deposit) : undefined,
           additional_services: servicesArray,
+          issuing_location: issuingLocation || undefined,
+          return_location: returnLocation || undefined,
         },
       });
 
