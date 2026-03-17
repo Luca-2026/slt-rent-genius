@@ -354,6 +354,9 @@ export function AdminInvoicesTab({
                           {inv.is_reverse_charge && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                           )}
+                          {inv.status === "draft" && (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-amber-50 text-amber-700 border-amber-300">Entwurf</Badge>
+                          )}
                           {inv.notes?.includes("RECHNUNGSKORREKTUR") && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-amber-600 border-amber-300">Korrektur</Badge>
                           )}
