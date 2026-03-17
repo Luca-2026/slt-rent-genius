@@ -844,7 +844,13 @@ export function AdminCreateOfferDialog({
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => {
+            // Clear draft on explicit cancel
+            offerDraftStore.key = null;
+            offerDraftStore.data = null;
+            lastInitKey.current = null;
+            onOpenChange(false);
+          }}>
             Abbrechen
           </Button>
           <Button
