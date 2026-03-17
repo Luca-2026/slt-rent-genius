@@ -21,6 +21,19 @@ import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName, getProductImageStablePath, getProductImageStablePathByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
+import { locations } from "@/data/rentalData";
+
+/** Look up product description (e.g. "Ladefläche: 200 x 108 x 30 cm") from rental data */
+function getProductDescription(productName: string): string {
+  for (const loc of locations) {
+    for (const products of Object.values(loc.products)) {
+      for (const p of products) {
+        if (p.name === productName) return p.description || "";
+      }
+    }
+  }
+  return "";
+}
 
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
