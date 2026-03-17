@@ -334,7 +334,8 @@ Deno.serve(async (req: Request) => {
 
     // Store as PDF file
     const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
-    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${profile.company_name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}.pdf`;
+    const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${safeName}.pdf`;
     const filePath = `invoices/${profile.id}/${fileName}`;
 
     const { error: uploadError } = await serviceClient.storage
