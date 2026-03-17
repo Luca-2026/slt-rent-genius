@@ -275,34 +275,60 @@ export default function AdminDashboard() {
           unit_price: number;
           discount_percent: number;
           item_type: string;
+          parent_item_index?: number;
         }> = [];
+
+        const sanitizeServiceDescription = (description?: string | null) =>
+          description
+            ? description.replace(/\s*\d+\s*%\s*des\s*Netto[^.]*\.?/gi, "").replace(/\s{2,}/g, " ").trim() || undefined
+            : undefined;
+
         let parsedServices = offer.additional_services;
         if (typeof parsedServices === "string") {
           try { parsedServices = JSON.parse(parsedServices); } catch { parsedServices = null; }
         }
+
         if (parsedServices && Array.isArray(parsedServices)) {
-          const itemsNetTotal = items.reduce((sum, item) => {
-            const discounted = item.unit_price * (1 - (item.discount_percent || 0) / 100);
-            return sum + discounted * item.quantity;
-          }, 0);
-          for (const svc of parsedServices as Array<{ id: string; name: string; pricePercent: number | null; description?: string; amount?: number; customPrice?: number }>) {
-            // Use pre-calculated amount from offer if available, otherwise fallback to percentage calc
-            let amount = 0;
-            if (svc.amount != null && svc.amount > 0) {
-              amount = svc.amount;
-            } else if (svc.customPrice && svc.customPrice > 0) {
-              amount = svc.customPrice;
-            } else if (svc.pricePercent !== null && svc.pricePercent > 0) {
-              amount = Math.round(itemsNetTotal * (svc.pricePercent / 100) * 100) / 100;
+          for (const svc of parsedServices as Array<{
+            id: string;
+            name: string;
+            description?: string;
+            amount?: number;
+            customPrice?: number;
+            allocations?: Array<{ itemIndex: number; amount: number }>;
+          }>) {
+            const cleanedDescription = sanitizeServiceDescription(svc.description) || "Zusatzleistung";
+
+            if (Array.isArray(svc.allocations) && svc.allocations.length > 0) {
+              for (const alloc of svc.allocations) {
+                if (!alloc || alloc.amount <= 0) continue;
+                additionalServiceItems.push({
+                  product_name: svc.name,
+                  description: cleanedDescription,
+                  quantity: 1,
+                  unit_price: alloc.amount,
+                  discount_percent: 0,
+                  item_type: 'service' as const,
+                  parent_item_index: alloc.itemIndex,
+                });
+              }
+              continue;
             }
-            additionalServiceItems.push({
-              product_name: svc.name,
-              description: svc.description || "Zusatzleistung",
-              quantity: 1,
-              unit_price: amount,
-              discount_percent: 0,
-              item_type: 'service' as const,
-            });
+
+            const amount = svc.amount && svc.amount > 0
+              ? svc.amount
+              : (svc.customPrice && svc.customPrice > 0 ? svc.customPrice : 0);
+
+            if (amount > 0) {
+              additionalServiceItems.push({
+                product_name: svc.name,
+                description: cleanedDescription,
+                quantity: 1,
+                unit_price: amount,
+                discount_percent: 0,
+                item_type: 'service' as const,
+              });
+            }
           }
         }
 
