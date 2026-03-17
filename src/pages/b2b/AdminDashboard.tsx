@@ -252,6 +252,7 @@ export default function AdminDashboard() {
           rental_start: item.rental_start || reservation?.start_date,
           rental_end: item.rental_end || reservation?.end_date,
           image_url: (reservation ? getProductImageUrl(reservation.product_id) : null) || getProductImageUrlByName(item.product_name) || undefined,
+          item_type: 'product' as const,
         }));
 
         // Append surcharges as line items
@@ -263,6 +264,7 @@ export default function AdminDashboard() {
             quantity: 1,
             unit_price: s.amount,
             discount_percent: 0,
+            item_type: 'surcharge' as const,
           }));
 
         // Add additional services (Haftungsfreistellung, MBV etc.) as line items
@@ -272,6 +274,7 @@ export default function AdminDashboard() {
           quantity: number;
           unit_price: number;
           discount_percent: number;
+          item_type: string;
         }> = [];
         let parsedServices = offer.additional_services;
         if (typeof parsedServices === "string") {
@@ -291,6 +294,7 @@ export default function AdminDashboard() {
                 quantity: 1,
                 unit_price: amount,
                 discount_percent: 0,
+                item_type: 'service' as const,
               });
             } else if (svc.pricePercent === null || svc.pricePercent === 0) {
               // Free services – still list them with 0€
@@ -300,6 +304,7 @@ export default function AdminDashboard() {
                 quantity: 1,
                 unit_price: 0,
                 discount_percent: 0,
+                item_type: 'service' as const,
               });
             }
           }
@@ -312,6 +317,7 @@ export default function AdminDashboard() {
           quantity: number;
           unit_price: number;
           discount_percent: number;
+          item_type: string;
         }> = [];
         if (proformaMode && offer.deposit && offer.deposit > 0) {
           depositItems.push({
@@ -320,6 +326,7 @@ export default function AdminDashboard() {
             quantity: 1,
             unit_price: offer.deposit,
             discount_percent: 0,
+            item_type: 'deposit',
           });
         }
 
