@@ -382,6 +382,7 @@ export function AdminInvoicesTab({
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="draft">Entwurf</SelectItem>
                             <SelectItem value="open">Offen</SelectItem>
                             <SelectItem value="paid">Bezahlt</SelectItem>
                             <SelectItem value="overdue">Überfällig</SelectItem>
