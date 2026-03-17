@@ -361,9 +361,14 @@ export function AdminCreateOfferDialog({
   const toggleService = (serviceId: string) => {
     setSelectedServices((prev) => {
       const next = new Set(prev);
-      if (serviceId.startsWith("mbv-")) {
-        for (const id of next) {
-          if (id.startsWith("mbv-")) next.delete(id);
+      // Find the service being toggled
+      const toggledService = ADDITIONAL_SERVICES.find(s => s.id === serviceId);
+      // If it has an exclusion group, remove others in the same group
+      if (toggledService?.exclusionGroup) {
+        for (const s of ADDITIONAL_SERVICES) {
+          if (s.id !== serviceId && s.exclusionGroup === toggledService.exclusionGroup) {
+            next.delete(s.id);
+          }
         }
       }
       if (next.has(serviceId)) {
