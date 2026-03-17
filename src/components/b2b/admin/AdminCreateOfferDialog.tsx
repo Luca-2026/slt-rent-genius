@@ -476,17 +476,8 @@ export function AdminCreateOfferDialog({
   const grossAmount = Math.round((netAmount + vatAmount) * 100) / 100;
 
   const reservationId = existingOffer?.reservation_id || reservation?.id;
-  const categorySlug = (reservation as any)?.category_slug;
-  // In standalone mode, show ALL services. Otherwise show category-relevant + any already selected by customer.
-  const relevantServices = isStandalone
-    ? ADDITIONAL_SERVICES
-    : (() => {
-        const categoryServices = getServicesForCategory(categorySlug);
-        const categoryIds = new Set(categoryServices.map(s => s.id));
-        // Also include any service the customer already selected (even if not matching category)
-        const extraSelected = ADDITIONAL_SERVICES.filter(s => selectedServices.has(s.id) && !categoryIds.has(s.id));
-        return [...categoryServices, ...extraSelected];
-      })();
+  // Always show ALL services in admin mode so staff can add any option regardless of category
+  const relevantServices = ADDITIONAL_SERVICES;
 
   const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
 
