@@ -232,12 +232,17 @@ Deno.serve(async (req: Request) => {
 
     // Calculate additional services surcharges
     let servicesSurcharge = 0;
-    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[] = [];
+    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; customPrice?: number }[] = [];
     if (additionalServices && additionalServices.length > 0) {
       for (const svc of additionalServices) {
-        const pct = svc.pricePercent ?? null;
-        const amount = pct !== null ? Math.round(itemsTotal * (pct / 100) * 100) / 100 : 0;
-        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: pct, amount });
+        let amount = 0;
+        if (svc.customPrice && svc.customPrice > 0) {
+          amount = Math.round(svc.customPrice * 100) / 100;
+        } else {
+          const pct = svc.pricePercent ?? null;
+          amount = pct !== null ? Math.round(itemsTotal * (pct / 100) * 100) / 100 : 0;
+        }
+        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: svc.pricePercent ?? null, amount, customPrice: svc.customPrice });
         servicesSurcharge += amount;
       }
     }
