@@ -20,6 +20,9 @@ const staticPages = [
   { path: '/karriere', priority: '0.5', changefreq: 'monthly' },
   { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
   { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
+  { path: '/tiefpreisgarantie', priority: '0.6', changefreq: 'monthly' },
+  { path: '/produkte', priority: '0.7', changefreq: 'weekly' },
+  { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   // Solutions
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
   { path: '/loesungen/tiefbau-erdbewegung', priority: '0.6', changefreq: 'monthly' },
