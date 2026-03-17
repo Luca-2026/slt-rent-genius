@@ -705,6 +705,9 @@ async function generateOfferPdf(data: {
   validDays: number;
   deposit: number;
   additionalServices?: any[];
+  staffName: string;
+  issuingLocation: string;
+  returnLocation?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -728,16 +731,24 @@ async function generateOfferPdf(data: {
   };
 
   const fmtDate = (d: string) => {
-    // Handle "YYYY-MM-DD HH:MM" or "YYYY-MM-DD"
     const parts = d.split(" ");
     const datePart = parts[0];
     const timePart = parts[1] || null;
     const dt = new Date(datePart + "T00:00:00");
     const dateStr = dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-    return timePart ? `${dateStr} ${timePart} Uhr` : dateStr;
+    return timePart ? `${dateStr} - ${timePart} Uhr` : dateStr;
   };
 
   const safe = (str: string) => str.replace(/[^\x20-\x7E\xA0-\xFF]/g, "");
+
+  // Location data
+  const LOCATIONS: Record<string, { name: string; address: string; city: string; phone: string; email: string }> = {
+    krefeld: { name: "SLT Rental Krefeld", address: "Anrather Str. 291", city: "47807 Krefeld", phone: "02151 417 990 4", email: "krefeld@slt-rental.de" },
+    bonn: { name: "SLT Rental Bonn", address: "Drachenburgstr. 8", city: "53179 Bonn", phone: "0228 504 660 61", email: "bonn@slt-rental.de" },
+    muelheim: { name: "SLT Rental M\u00FClheim", address: "Ruhrorter Str. 122", city: "45478 M\u00FClheim a. d. Ruhr", phone: "02151 417 990 4", email: "muelheim@slt-rental.de" },
+  };
+  const issuingLoc = LOCATIONS[data.issuingLocation] || LOCATIONS["krefeld"];
+  const returnLoc = data.returnLocation ? LOCATIONS[data.returnLocation] : null;
 
   let page = doc.addPage([pageWidth, pageHeight]);
   let y = pageHeight - 50;
@@ -761,21 +772,21 @@ async function generateOfferPdf(data: {
     }
   };
 
-  // ── HEADER with Logo ──
+  // ── HEADER with Logo (right-aligned, bigger) ──
   try {
     const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
-    const logoScale = 45 / logoImage.height;
-    page.drawImage(logoImage, { x: margin, y: y - 45, width: logoImage.width * logoScale, height: 45 });
+    const logoHeight = 55;
+    const logoScale = logoHeight / logoImage.height;
+    const logoWidth = logoImage.width * logoScale;
+    page.drawImage(logoImage, { x: pageWidth - margin - logoWidth, y: y - logoHeight, width: logoWidth, height: logoHeight });
   } catch {}
 
-  // Company info right-aligned
-  [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
-    const tw = font.widthOfTextAtSize(l, 7);
-    drawText(l, pageWidth - margin - tw, y - 10 - i * 10, { s: 7, c: lightGray });
-  });
-  y -= 60;
+  // Sender line (small, left-aligned)
+  drawText(SLT_COMPANY.name, margin, y - 8, { s: 7, c: lightGray });
+  drawText(`${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city} \u00B7 Tel: ${SLT_COMPANY.phone}`, margin, y - 18, { s: 7, c: lightGray });
+  y -= 65;
   page.drawRectangle({ x: margin, y, width: contentWidth, height: 2.5, color: blue });
   y -= 30;
   drawText("ANGEBOT", margin, y, { f: fontBold, s: 18, c: blue });
