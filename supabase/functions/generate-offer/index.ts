@@ -995,7 +995,7 @@ async function generateOfferPdf(data: {
   ensureSpace(40);
   page.drawRectangle({ x: margin, y: y - 6, width: contentWidth, height: 22, color: rgb(1, 0.98, 0.92) });
   page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: rgb(0.96, 0.62, 0.04) });
-  drawText("Gueltigkeit: Dieses Angebot ist gueltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
+  drawText("G\u00FCltigkeit: Dieses Angebot ist g\u00FCltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
   y -= 35;
 
   // ── ADDITIONAL SERVICES ──
