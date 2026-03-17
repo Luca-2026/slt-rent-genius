@@ -185,19 +185,17 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
       }
 
       // Build additional services array
+      const surchargeByServiceId = new Map(servicesBreakdown.map((entry) => [entry.service.id, entry.amount]));
       const servicesArray = selectedServices.size > 0
-        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => {
-            const surcharge = s.pricePercent !== null
-              ? Math.round(itemsNetTotal * (s.pricePercent / 100) * 100) / 100
-              : 0;
-            return {
-              id: s.id,
-              name: s.name,
-              description: s.description,
-              pricePercent: s.pricePercent,
-              calculatedAmount: surcharge,
-            };
-          })
+        ? ADDITIONAL_SERVICES.filter((s) => selectedServices.has(s.id)).map((s) => ({
+            id: s.id,
+            name: s.name,
+            description: s.description,
+            pricePercent: s.pricePercent,
+            applicableCategories: s.applicableCategories,
+            calculationBase: s.calculationBase,
+            calculatedAmount: surchargeByServiceId.get(s.id) || 0,
+          }))
         : null;
 
       // Build time notes
