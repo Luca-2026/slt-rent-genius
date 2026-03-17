@@ -385,7 +385,10 @@ export function AdminCreateOfferDialog({
   const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
 
   const handleSave = async (mode: "draft" | "finalize") => {
-    if (!isStandalone && !reservationId) return;
+    if (!isStandalone && !reservationId) {
+      toast({ title: "Fehler", description: "Keine Reservierung ausgewählt.", variant: "destructive" });
+      return;
+    }
     if (isStandalone && !profile) {
       toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
       return;
@@ -470,6 +473,7 @@ export function AdminCreateOfferDialog({
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
+      console.error("Offer save error:", error);
       toast({
         title: "Fehler",
         description: error.message || "Angebot konnte nicht gespeichert werden.",
