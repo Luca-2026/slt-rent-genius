@@ -83,6 +83,7 @@ interface OfferItemInput {
   rental_end?: string;
   start_time?: string;
   end_time?: string;
+  category_slug?: string;
 }
 
 export interface ExistingOffer {
@@ -382,6 +383,7 @@ export function AdminCreateOfferDialog({
           quantity: res.quantity || 1,
           unit_price: priceMap.get(productName) || res.original_price || 0,
           discount_percent: 0,
+          category_slug: res.category_slug || undefined,
         };
       })
     );
@@ -520,6 +522,7 @@ export function AdminCreateOfferDialog({
             name: s.name,
             description: s.description,
             pricePercent: s.pricePercent,
+            applicableCategories: s.applicableCategories,
             customPrice: s.customPriceInput ? (customServicePrices[s.id] || 0) : undefined,
           }))
         : undefined;
@@ -541,6 +544,7 @@ export function AdminCreateOfferDialog({
             rental_end: item.rental_end || endDate,
             start_time: item.start_time || undefined,
             end_time: item.end_time || undefined,
+            category_slug: item.category_slug || undefined,
             image_url: (() => {
               const stablePath = getProductImageStablePath(reservation?.product_id || "") || getProductImageStablePathByName(item.product_name);
               if (stablePath) return `${window.location.origin}${stablePath}`;
@@ -713,7 +717,10 @@ export function AdminCreateOfferDialog({
                   <Label className="text-xs">Bezeichnung *</Label>
                   <ProductAutocomplete
                     value={item.product_name}
-                    onChange={(name, productId, categorySlug) => updateItem(index, "product_name", name)}
+                    onChange={(name, productId, categorySlug) => {
+                      updateItem(index, "product_name", name);
+                      if (categorySlug) updateItem(index, "category_slug", categorySlug);
+                    }}
                     placeholder="Produkt suchen oder eingeben..."
                     className="h-8 text-sm"
                   />

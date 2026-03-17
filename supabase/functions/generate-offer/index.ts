@@ -35,6 +35,7 @@ interface OfferItem {
   rental_start?: string;
   rental_end?: string;
   image_url?: string;
+  category_slug?: string;
 }
 
 interface OfferRequest {
@@ -52,7 +53,7 @@ interface OfferRequest {
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
-  additional_services?: { id: string; name: string; description?: string; pricePercent?: number; customPrice?: number }[];
+  additional_services?: { id: string; name: string; description?: string; pricePercent?: number; customPrice?: number; applicableCategories?: string[] | null }[];
   issuing_location?: string;
   return_location?: string;
   delivery_address?: { street?: string; postal_code?: string; city?: string };
@@ -237,6 +238,7 @@ Deno.serve(async (req: Request) => {
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
 
     // Calculate additional services surcharges
+    // Each service's percentage is calculated only against items matching its applicableCategories
     let servicesSurcharge = 0;
     const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; customPrice?: number }[] = [];
     if (additionalServices && additionalServices.length > 0) {
@@ -246,7 +248,21 @@ Deno.serve(async (req: Request) => {
           amount = Math.round(svc.customPrice * 100) / 100;
         } else {
           const pct = svc.pricePercent ?? null;
-          amount = pct !== null ? Math.round(itemsTotal * (pct / 100) * 100) / 100 : 0;
+          if (pct !== null) {
+            // Calculate base: only items whose category matches the service's applicableCategories
+            let base = itemsTotal; // fallback: all items
+            if (svc.applicableCategories && Array.isArray(svc.applicableCategories) && svc.applicableCategories.length > 0) {
+              base = offerItems.reduce((sum: number, item: any, idx: number) => {
+                const catSlug = items[idx]?.category_slug;
+                if (catSlug && svc.applicableCategories!.includes(catSlug)) {
+                  return sum + item.total_price;
+                }
+                // If item has no category info, don't include it in category-specific calculation
+                return sum;
+              }, 0);
+            }
+            amount = Math.round(base * (pct / 100) * 100) / 100;
+          }
         }
         servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: svc.pricePercent ?? null, amount, customPrice: svc.customPrice });
         servicesSurcharge += amount;
