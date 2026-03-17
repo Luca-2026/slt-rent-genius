@@ -135,6 +135,7 @@ export function AdminCreateOfferDialog({
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [customServicePrices, setCustomServicePrices] = useState<Record<string, number>>({});
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
