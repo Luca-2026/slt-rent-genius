@@ -164,11 +164,12 @@ export function AdminCreateOfferDialog({
       sendEmail,
       deposit,
       selectedServices: Array.from(selectedServices),
+      customServicePrices: { ...customServicePrices },
       issuingLocation,
       returnLocation,
       selectedProfileId,
     };
-  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCost, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
