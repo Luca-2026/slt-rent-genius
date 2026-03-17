@@ -385,9 +385,17 @@ export function AdminCreateOfferDialog({
   const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
 
   const handleSave = async (mode: "draft" | "finalize") => {
-    if (!isStandalone && !reservationId) {
+    if (!isStandalone && !isEditing && !reservationId) {
       toast({ title: "Fehler", description: "Keine Reservierung ausgewählt.", variant: "destructive" });
       return;
+    }
+    if (isEditing && !profile) {
+      // When editing a standalone offer, ensure profile is resolved
+      const editProfile = profilesList?.find(p => p.id === existingOffer?.b2b_profile_id);
+      if (!editProfile && !reservationId) {
+        toast({ title: "Fehler", description: "Kundenprofil nicht gefunden.", variant: "destructive" });
+        return;
+      }
     }
     if (isStandalone && !profile) {
       toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
