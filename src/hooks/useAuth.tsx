@@ -9,6 +9,8 @@ interface B2BProfile {
   status: "pending" | "approved" | "rejected";
   contact_first_name: string;
   contact_last_name: string;
+  contact_email: string;
+  contact_phone: string;
   billing_email: string | null;
   credit_limit: number;
   used_credit: number;
