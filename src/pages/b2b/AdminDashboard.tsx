@@ -601,6 +601,10 @@ export default function AdminDashboard() {
       delivery_cost: offer.delivery_cost,
       notes: offer.notes,
       b2b_profile_id: offer.b2b_profile_id,
+      deposit: offer.deposit,
+      additional_services: offer.additional_services,
+      issuing_location: (offer as any).issuing_location,
+      return_location: (offer as any).return_location,
     });
     setEditingOfferItems(
       items.map((i) => ({
@@ -609,6 +613,8 @@ export default function AdminDashboard() {
         quantity: i.quantity,
         unit_price: i.unit_price,
         discount_percent: i.discount_percent,
+        rental_start: i.rental_start,
+        rental_end: i.rental_end,
       }))
     );
     setCreateOfferOpen(true);

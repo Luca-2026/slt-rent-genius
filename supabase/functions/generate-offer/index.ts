@@ -11,17 +11,14 @@ const corsHeaders = {
 const SLT_COMPANY = {
   name: "SLT Technology Group GmbH & Co. KG",
   brand: "SLT-Rental",
-  street: "Anrather Straße 291",
+  street: "Anrather Stra\u00DFe 291",
   city: "47807 Krefeld",
   country: "Deutschland",
-  phone: "+49 2151 417 99 02",
-  fax: "+49 2151 417 99 04",
-  mobil: "+49 1578 915 08 72",
+  phone: "02151 417 990 4",
   email: "mieten@slt-rental.de",
   web: "www.slt-rental.de",
-  facebook: "www.facebook.com/slt-rental",
   registry: "Registergericht Krefeld HRA7075",
-  managingDirector: "Benedikt Nöchel",
+  managingDirector: "Benedikt N\u00F6chel",
   steuerNr: "117/5717/1398",
   ustId: "DE340481717",
   bankName: "Sparkasse Krefeld",
@@ -52,7 +49,9 @@ interface OfferRequest {
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
-  additional_services?: { id: string; name: string; description?: string }[];
+  additional_services?: { id: string; name: string; description?: string; pricePercent?: number }[];
+  issuing_location?: string;
+  return_location?: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -113,6 +112,8 @@ Deno.serve(async (req: Request) => {
       skip_status_update = false,
       deposit = 0,
       additional_services: additionalServices,
+      issuing_location: issuingLocation,
+      return_location: returnLocation,
     } = body;
 
     if (!items || items.length === 0) {
@@ -135,6 +136,16 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
+
+    // Look up staff profile for Sachbearbeiter
+    const { data: staffProfile } = await serviceClient
+      .from("staff_profiles")
+      .select("first_name, last_name")
+      .eq("user_id", authUser.id)
+      .single();
+    const staffName = staffProfile
+      ? `${staffProfile.first_name} ${staffProfile.last_name}`
+      : authUser.email || "Admin";
 
     let reservation: any = null;
     let profile: any = null;
@@ -292,6 +303,9 @@ Deno.serve(async (req: Request) => {
       validDays: valid_days,
       deposit,
       additionalServices,
+      staffName,
+      issuingLocation: issuingLocation || reservation?.location || profile.assigned_location || "krefeld",
+      returnLocation: returnLocation || undefined,
     });
 
     // Store as PDF file
@@ -345,6 +359,8 @@ Deno.serve(async (req: Request) => {
           email_sent: false,
           deposit: deposit || null,
           additional_services: servicesJson,
+          issuing_location: issuingLocation || null,
+          return_location: returnLocation || null,
         })
         .eq("id", offer_id)
         .select()
@@ -383,6 +399,10 @@ Deno.serve(async (req: Request) => {
           email_sent: false,
           deposit: deposit || null,
           additional_services: servicesJson,
+          created_by_user_id: authUser.id,
+          created_by_staff_name: staffName,
+          issuing_location: issuingLocation || null,
+          return_location: returnLocation || null,
         })
         .select()
         .single();
@@ -685,6 +705,9 @@ async function generateOfferPdf(data: {
   validDays: number;
   deposit: number;
   additionalServices?: any[];
+  staffName: string;
+  issuingLocation: string;
+  returnLocation?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -708,16 +731,24 @@ async function generateOfferPdf(data: {
   };
 
   const fmtDate = (d: string) => {
-    // Handle "YYYY-MM-DD HH:MM" or "YYYY-MM-DD"
     const parts = d.split(" ");
     const datePart = parts[0];
     const timePart = parts[1] || null;
     const dt = new Date(datePart + "T00:00:00");
     const dateStr = dt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-    return timePart ? `${dateStr} ${timePart} Uhr` : dateStr;
+    return timePart ? `${dateStr} - ${timePart} Uhr` : dateStr;
   };
 
   const safe = (str: string) => str.replace(/[^\x20-\x7E\xA0-\xFF]/g, "");
+
+  // Location data
+  const LOCATIONS: Record<string, { name: string; address: string; city: string; phone: string; email: string }> = {
+    krefeld: { name: "SLT Rental Krefeld", address: "Anrather Str. 291", city: "47807 Krefeld", phone: "02151 417 990 4", email: "krefeld@slt-rental.de" },
+    bonn: { name: "SLT Rental Bonn", address: "Drachenburgstr. 8", city: "53179 Bonn", phone: "0228 504 660 61", email: "bonn@slt-rental.de" },
+    muelheim: { name: "SLT Rental M\u00FClheim", address: "Ruhrorter Str. 122", city: "45478 M\u00FClheim a. d. Ruhr", phone: "02151 417 990 4", email: "muelheim@slt-rental.de" },
+  };
+  const issuingLoc = LOCATIONS[data.issuingLocation] || LOCATIONS["krefeld"];
+  const returnLoc = data.returnLocation ? LOCATIONS[data.returnLocation] : null;
 
   let page = doc.addPage([pageWidth, pageHeight]);
   let y = pageHeight - 50;
@@ -741,21 +772,21 @@ async function generateOfferPdf(data: {
     }
   };
 
-  // ── HEADER with Logo ──
+  // ── HEADER with Logo (right-aligned, bigger) ──
   try {
     const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
-    const logoScale = 45 / logoImage.height;
-    page.drawImage(logoImage, { x: margin, y: y - 45, width: logoImage.width * logoScale, height: 45 });
+    const logoHeight = 55;
+    const logoScale = logoHeight / logoImage.height;
+    const logoWidth = logoImage.width * logoScale;
+    page.drawImage(logoImage, { x: pageWidth - margin - logoWidth, y: y - logoHeight, width: logoWidth, height: logoHeight });
   } catch {}
 
-  // Company info right-aligned
-  [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
-    const tw = font.widthOfTextAtSize(l, 7);
-    drawText(l, pageWidth - margin - tw, y - 10 - i * 10, { s: 7, c: lightGray });
-  });
-  y -= 60;
+  // Sender line (small, left-aligned)
+  drawText(SLT_COMPANY.name, margin, y - 8, { s: 7, c: lightGray });
+  drawText(`${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city} \u00B7 Tel: ${SLT_COMPANY.phone}`, margin, y - 18, { s: 7, c: lightGray });
+  y -= 65;
   page.drawRectangle({ x: margin, y, width: contentWidth, height: 2.5, color: blue });
   y -= 30;
   drawText("ANGEBOT", margin, y, { f: fontBold, s: 18, c: blue });
@@ -785,18 +816,35 @@ async function generateOfferPdf(data: {
     y -= 13;
   }
 
-  // ── METADATA (right side) ──
+  // ── METADATA + LOCATION (right side) ──
   let metaY = addrY;
-  const metaLabelX = 380;
+  const metaLabelX = 370;
   const metaValX = pageWidth - margin;
   drawText("Angebotsdatum:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(fmtDate(data.offerDate), metaValX, metaY, { s: 9 });
   metaY -= 14;
-  drawText("Gueltig bis:", metaLabelX, metaY, { s: 9, c: gray });
+  drawText("G\u00FCltig bis:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(fmtDate(data.validUntil), metaValX, metaY, { s: 9, c: rgb(0.7, 0.26, 0.04) });
   metaY -= 14;
   drawText("Kundennr.:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(data.profile.id.substring(0, 8).toUpperCase(), metaValX, metaY, { s: 9 });
+  metaY -= 14;
+  drawText("Sachbearbeiter:", metaLabelX, metaY, { s: 9, c: gray });
+  drawTextRight(safe(data.staffName), metaValX, metaY, { s: 9 });
+  metaY -= 14;
+  drawText("Ausgabestandort:", metaLabelX, metaY, { s: 9, c: gray });
+  drawTextRight(safe(issuingLoc.name), metaValX, metaY, { s: 9 });
+  metaY -= 10;
+  drawTextRight(`${safe(issuingLoc.address)}, ${safe(issuingLoc.city)}`, metaValX, metaY, { s: 7, c: lightGray });
+  metaY -= 8;
+  drawTextRight(`Tel: ${issuingLoc.phone}`, metaValX, metaY, { s: 7, c: lightGray });
+  if (returnLoc && data.returnLocation !== data.issuingLocation) {
+    metaY -= 14;
+    drawText("R\u00FCckgabestandort:", metaLabelX, metaY, { s: 9, c: gray });
+    drawTextRight(safe(returnLoc.name), metaValX, metaY, { s: 9 });
+    metaY -= 10;
+    drawTextRight(`${safe(returnLoc.address)}, ${safe(returnLoc.city)}`, metaValX, metaY, { s: 7, c: lightGray });
+  }
   if (data.isReverseCharge) {
     metaY -= 14;
     drawText("Verfahren:", metaLabelX, metaY, { s: 9, c: gray });
@@ -808,7 +856,7 @@ async function generateOfferPdf(data: {
   // ── INTRO TEXT ──
   drawText("Sehr geehrte Damen und Herren,", margin, y, { s: 10 });
   y -= 14;
-  drawText("vielen Dank fuer Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:", margin, y, { s: 10 });
+  drawText("vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:", margin, y, { s: 10 });
   y -= 25;
 
   // ── ITEMS TABLE HEADER ──
@@ -878,7 +926,7 @@ async function generateOfferPdf(data: {
   // ── TOTALS ──
   const totX = 380;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
-  drawText("Zwischensumme Geraete:", totX, y, { s: 9, c: gray });
+  drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
@@ -938,8 +986,8 @@ async function generateOfferPdf(data: {
     ensureSpace(50);
     page.drawRectangle({ x: margin, y: y - 8, width: contentWidth, height: 32, color: rgb(0.94, 0.97, 0.98) });
     page.drawRectangle({ x: margin, y: y - 8, width: 3, height: 32, color: blue });
-    drawText("Hinweis: Steuerschuldnerschaft des Leistungsempfaengers (Reverse-Charge-Verfahren", margin + 10, y + 10, { s: 8 });
-    drawText("gem. 13b UStG). Die Umsatzsteuer ist vom Leistungsempfaenger zu entrichten.", margin + 10, y, { s: 8 });
+    drawText("Hinweis: Steuerschuldnerschaft des Leistungsempf\u00E4ngers (Reverse-Charge-Verfahren", margin + 10, y + 10, { s: 8 });
+    drawText("gem\u00E4\u00DF \u00A713b UStG). Die Umsatzsteuer ist vom Leistungsempf\u00E4nger zu entrichten.", margin + 10, y, { s: 8 });
     y -= 45;
   }
 
@@ -947,7 +995,7 @@ async function generateOfferPdf(data: {
   ensureSpace(40);
   page.drawRectangle({ x: margin, y: y - 6, width: contentWidth, height: 22, color: rgb(1, 0.98, 0.92) });
   page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: rgb(0.96, 0.62, 0.04) });
-  drawText("Gueltigkeit: Dieses Angebot ist gueltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
+  drawText("G\u00FCltigkeit: Dieses Angebot ist g\u00FCltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
   y -= 35;
 
   // ── ADDITIONAL SERVICES ──
@@ -997,13 +1045,15 @@ async function generateOfferPdf(data: {
 
   // ── CLOSING ──
   ensureSpace(60);
-  drawText("Wir freuen uns auf Ihre Rueckmeldung und stehen Ihnen", margin, y, { s: 9 });
+  drawText("Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen", margin, y, { s: 9 });
   y -= 12;
-  drawText("fuer Rueckfragen gerne zur Verfuegung.", margin, y, { s: 9 });
+  drawText("f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", margin, y, { s: 9 });
   y -= 20;
-  drawText("Mit freundlichen Gruessen", margin, y, { s: 9 });
+  drawText("Mit freundlichen Gr\u00FC\u00DFen", margin, y, { s: 9 });
   y -= 14;
-  drawText("SLT-Rental", margin, y, { f: fontBold, s: 9 });
+  drawText(safe(data.staffName), margin, y, { f: fontBold, s: 9 });
+  y -= 10;
+  drawText("SLT-Rental", margin, y, { s: 8, c: gray });
 
   // ── FOOTER on every page ──
   const pages = doc.getPages();
@@ -1011,10 +1061,10 @@ async function generateOfferPdf(data: {
     const fy = 42;
     p.drawLine({ start: { x: margin, y: fy + 14 }, end: { x: pageWidth - margin, y: fy + 14 }, thickness: 1.5, color: blue });
     const footerLines = [
-      safe(`${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`),
-      safe(`${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`),
-      safe(`${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`),
-      safe(`${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`),
+      safe(`${SLT_COMPANY.name} \u00B7 GF: ${SLT_COMPANY.managingDirector} \u00B7 Tel: ${SLT_COMPANY.phone}`),
+      safe(`${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city} \u00B7 Steuer-Nr. ${SLT_COMPANY.steuerNr} \u00B7 USt-ID ${SLT_COMPANY.ustId}`),
+      safe(`${SLT_COMPANY.registry} \u00B7 ${SLT_COMPANY.bankName} \u00B7 IBAN: ${SLT_COMPANY.iban} \u00B7 BIC: ${SLT_COMPANY.bic}`),
+      safe(`${SLT_COMPANY.web} \u00B7 ${SLT_COMPANY.email}`),
     ];
     footerLines.forEach((line, i) => {
       const tw = font.widthOfTextAtSize(line, 6);

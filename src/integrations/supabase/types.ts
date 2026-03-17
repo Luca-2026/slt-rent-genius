@@ -543,6 +543,8 @@ export type Database = {
           additional_services: Json | null
           b2b_profile_id: string
           created_at: string
+          created_by_staff_name: string | null
+          created_by_user_id: string | null
           customer_signature_data: string | null
           delivery_cost: number
           deposit: number | null
@@ -553,11 +555,13 @@ export type Database = {
           gross_amount: number
           id: string
           is_reverse_charge: boolean
+          issuing_location: string | null
           net_amount: number
           notes: string | null
           offer_date: string
           offer_number: string
           reservation_id: string | null
+          return_location: string | null
           status: string
           updated_at: string
           valid_until: string | null
@@ -569,6 +573,8 @@ export type Database = {
           additional_services?: Json | null
           b2b_profile_id: string
           created_at?: string
+          created_by_staff_name?: string | null
+          created_by_user_id?: string | null
           customer_signature_data?: string | null
           delivery_cost?: number
           deposit?: number | null
@@ -579,11 +585,13 @@ export type Database = {
           gross_amount?: number
           id?: string
           is_reverse_charge?: boolean
+          issuing_location?: string | null
           net_amount?: number
           notes?: string | null
           offer_date: string
           offer_number: string
           reservation_id?: string | null
+          return_location?: string | null
           status?: string
           updated_at?: string
           valid_until?: string | null
@@ -595,6 +603,8 @@ export type Database = {
           additional_services?: Json | null
           b2b_profile_id?: string
           created_at?: string
+          created_by_staff_name?: string | null
+          created_by_user_id?: string | null
           customer_signature_data?: string | null
           delivery_cost?: number
           deposit?: number | null
@@ -605,11 +615,13 @@ export type Database = {
           gross_amount?: number
           id?: string
           is_reverse_charge?: boolean
+          issuing_location?: string | null
           net_amount?: number
           notes?: string | null
           offer_date?: string
           offer_number?: string
           reservation_id?: string | null
+          return_location?: string | null
           status?: string
           updated_at?: string
           valid_until?: string | null

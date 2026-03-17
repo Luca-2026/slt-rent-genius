@@ -33,6 +33,9 @@ export interface Offer {
   created_at: string;
   deposit: number | null;
   additional_services: any;
+  created_by_staff_name?: string | null;
+  issuing_location?: string | null;
+  return_location?: string | null;
 }
 
 export interface OfferItem {
@@ -166,10 +169,15 @@ export function AdminOffersTab({
                     <TableRow key={offer.id}>
                       <TableCell className="text-sm text-muted-foreground">{offers.length - index}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium text-sm">{offer.offer_number}</p>
-                          {offer.is_reverse_charge && (
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
+                        <div className="flex flex-col gap-0.5">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-sm">{offer.offer_number}</p>
+                            {offer.is_reverse_charge && (
+                              <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
+                            )}
+                          </div>
+                          {offer.created_by_staff_name && (
+                            <p className="text-[11px] text-muted-foreground">{offer.created_by_staff_name}</p>
                           )}
                         </div>
                       </TableCell>

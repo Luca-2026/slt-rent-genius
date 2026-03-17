@@ -69,6 +69,8 @@ export interface ExistingOffer {
   b2b_profile_id: string;
   deposit?: number | null;
   additional_services?: any;
+  issuing_location?: string | null;
+  return_location?: string | null;
 }
 
 export interface ExistingOfferItem {
@@ -77,6 +79,8 @@ export interface ExistingOfferItem {
   quantity: number;
   unit_price: number;
   discount_percent: number;
+  rental_start?: string | null;
+  rental_end?: string | null;
 }
 
 interface Props {
@@ -111,6 +115,8 @@ export function AdminCreateOfferDialog({
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [issuingLocation, setIssuingLocation] = useState("krefeld");
+  const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
   // Track the context key that was used to initialize the form, so we only reset when the context actually changes
   const lastInitKey = useRef<string | null>(null);
@@ -135,17 +141,39 @@ export function AdminCreateOfferDialog({
 
     if (existingOffer && existingItems && existingItems.length > 0) {
       setItems(
-        existingItems.map((item) => ({
-          product_name: item.product_name,
-          description: item.description || "",
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          discount_percent: item.discount_percent,
-        }))
+        existingItems.map((item) => {
+          let rentalStart = "";
+          let startTime = "";
+          let rentalEnd = "";
+          let endTime = "";
+          if (item.rental_start) {
+            const parts = item.rental_start.split(" ");
+            rentalStart = parts[0] || "";
+            startTime = parts[1] || "";
+          }
+          if (item.rental_end) {
+            const parts = item.rental_end.split(" ");
+            rentalEnd = parts[0] || "";
+            endTime = parts[1] || "";
+          }
+          return {
+            product_name: item.product_name,
+            description: item.description || "",
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            discount_percent: item.discount_percent,
+            rental_start: rentalStart,
+            rental_end: rentalEnd,
+            start_time: startTime,
+            end_time: endTime,
+          };
+        })
       );
       setDeliveryCost(existingOffer.delivery_cost || 0);
       setNotes(existingOffer.notes || "");
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
+      setIssuingLocation(existingOffer.issuing_location || "krefeld");
+      setReturnLocation(existingOffer.return_location || "");
       if (existingOffer.additional_services && Array.isArray(existingOffer.additional_services)) {
         setSelectedServices(new Set(existingOffer.additional_services.map((s: any) => s.id)));
       } else {
@@ -153,6 +181,8 @@ export function AdminCreateOfferDialog({
       }
     } else if (reservation) {
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
+      setIssuingLocation((reservation as any).location || "krefeld");
+      setReturnLocation("");
       if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
         setSelectedServices(new Set(reservation.additional_services.map((s: any) => s.id)));
       } else {
@@ -165,6 +195,8 @@ export function AdminCreateOfferDialog({
       setDeposit("");
       setSelectedServices(new Set());
       setSelectedProfileId("");
+      setIssuingLocation("krefeld");
+      setReturnLocation("");
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
@@ -324,6 +356,8 @@ export function AdminCreateOfferDialog({
           save_prices: true,
           deposit: deposit && deposit !== "none" ? Number(deposit) : undefined,
           additional_services: servicesArray,
+          issuing_location: issuingLocation || undefined,
+          return_location: returnLocation || undefined,
         },
       });
 
@@ -564,6 +598,31 @@ export function AdminCreateOfferDialog({
         <Separator />
 
         {/* Additional options */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <Label className="text-xs">Ausgabestandort</Label>
+            <Select value={issuingLocation} onValueChange={setIssuingLocation}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Standort wählen" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="krefeld">Krefeld</SelectItem>
+                <SelectItem value="bonn">Bonn</SelectItem>
+                <SelectItem value="muelheim">Mülheim a. d. Ruhr</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-xs">Rückgabestandort (optional)</Label>
+            <Select value={returnLocation || "same"} onValueChange={(v) => setReturnLocation(v === "same" ? "" : v)}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Gleicher Standort" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="same">Gleicher Standort</SelectItem>
+                <SelectItem value="krefeld">Krefeld</SelectItem>
+                <SelectItem value="bonn">Bonn</SelectItem>
+                <SelectItem value="muelheim">Mülheim a. d. Ruhr</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <Label className="text-xs">Lieferkosten (€ netto)</Label>
