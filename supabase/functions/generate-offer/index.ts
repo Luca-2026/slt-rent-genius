@@ -921,26 +921,84 @@ async function generateOfferPdf(data: {
   drawTextRight("Gesamt", colTotal, hdrY, { f: fontBold, s: 8, c: white });
   y -= 22;
 
+  // ── PRE-FETCH PRODUCT IMAGES ──
+  const imageCache = new Map<string, any>();
+  for (const item of data.items) {
+    if (item.image_url && !imageCache.has(item.image_url)) {
+      try {
+        const imgResp = await fetch(item.image_url);
+        if (imgResp.ok) {
+          const imgBytes = new Uint8Array(await imgResp.arrayBuffer());
+          const contentType = imgResp.headers.get("content-type") || "";
+          let embeddedImg;
+          if (contentType.includes("png")) {
+            embeddedImg = await doc.embedPng(imgBytes);
+          } else {
+            embeddedImg = await doc.embedJpg(imgBytes);
+          }
+          imageCache.set(item.image_url, embeddedImg);
+        }
+      } catch (e) {
+        console.error("Failed to embed image:", item.image_url, e);
+      }
+    }
+  }
+
+  const imgSize = 38; // thumbnail size in PDF
+  const colNameWithImg = colName + imgSize + 6; // shift text right when image present
+
   // ── ITEM ROWS ──
   for (let i = 0; i < data.items.length; i++) {
     ensureSpace(60);
     const item = data.items[i];
+    const embeddedImg = item.image_url ? imageCache.get(item.image_url) : null;
+    const textColName = embeddedImg ? colNameWithImg : colName;
     const rowY = y;
 
     drawText(String(i + 1), colPos, rowY, { s: 9 });
 
-    const pName = safe(item.product_name).substring(0, 40);
-    drawText(pName, colName, rowY, { f: fontBold, s: 9 });
+    // Draw product image thumbnail
+    if (embeddedImg) {
+      const scale = Math.min(imgSize / embeddedImg.width, imgSize / embeddedImg.height);
+      const drawW = embeddedImg.width * scale;
+      const drawH = embeddedImg.height * scale;
+      page.drawImage(embeddedImg, {
+        x: colName,
+        y: rowY - (imgSize - 10),
+        width: drawW,
+        height: drawH,
+      });
+    }
 
-    let subY = rowY;
+    const maxNameWidth = (embeddedImg ? colQty - colNameWithImg - 5 : colQty - colName - 5);
+    const pName = safe(item.product_name);
+    // Word-wrap product name
+    const nameWords = pName.split(" ");
+    let nameLine = "";
+    let nameStartY = rowY;
+    for (const w of nameWords) {
+      const test = nameLine + (nameLine ? " " : "") + w;
+      if (fontBold.widthOfTextAtSize(test, 9) > maxNameWidth && nameLine) {
+        drawText(nameLine, textColName, nameStartY, { f: fontBold, s: 9 });
+        nameStartY -= 11;
+        nameLine = w;
+      } else {
+        nameLine = test;
+      }
+    }
+    if (nameLine) {
+      drawText(nameLine, textColName, nameStartY, { f: fontBold, s: 9 });
+    }
+
+    let subY = nameStartY;
     if (item.rental_start) {
       subY -= 11;
       const period = fmtDate(item.rental_start) + (item.rental_end ? " - " + fmtDate(item.rental_end) : "");
-      drawText(period, colName, subY, { s: 7, c: lightGray });
+      drawText(period, textColName, subY, { s: 7, c: lightGray });
     }
     if (item.description) {
       subY -= 11;
-      drawText(safe(item.description).substring(0, 50), colName, subY, { s: 7, c: gray });
+      drawText(safe(item.description).substring(0, 50), textColName, subY, { s: 7, c: gray });
     }
 
     drawTextRight(String(item.quantity), colQty + 30, rowY, { s: 9 });
@@ -948,7 +1006,9 @@ async function generateOfferPdf(data: {
     drawTextRight(item.discount_percent > 0 ? item.discount_percent + "%" : "-", colDisc + 35, rowY, { s: 9 });
     drawTextRight(fmtCurrency(item.total_price), colTotal, rowY, { s: 9 });
 
-    y = subY - 8;
+    // Use the lower of text bottom or image bottom
+    const imgBottomY = embeddedImg ? (rowY - imgSize + 2) : subY;
+    y = Math.min(subY, imgBottomY) - 8;
     page.drawLine({ start: { x: margin, y }, end: { x: pageWidth - margin, y }, thickness: 0.5, color: rgb(0.9, 0.9, 0.9) });
     y -= 12;
   }
