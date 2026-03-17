@@ -12,6 +12,10 @@ export interface AdditionalService {
   customPriceInput?: boolean;
   /** Group key for mutual exclusion (only one from same group can be selected) */
   exclusionGroup?: string;
+  /** If true, this service is automatically included for matching categories (customer cannot deselect) */
+  mandatory?: boolean;
+  /** If true, this is an upgrade/add-on to a mandatory base service */
+  isUpgrade?: boolean;
 }
 
 export const ADDITIONAL_SERVICES: AdditionalService[] = [
