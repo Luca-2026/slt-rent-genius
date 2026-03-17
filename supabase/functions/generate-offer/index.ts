@@ -1059,7 +1059,7 @@ async function generateOfferPdf(data: {
     drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
     y -= 14;
     for (const svc of data.servicesWithPrices) {
-      ensureSpace(24);
+      ensureSpace(40);
       let priceLabel = "";
       if (svc.customPrice && svc.customPrice > 0) {
         priceLabel = fmtCurrency(svc.amount);
@@ -1068,13 +1068,50 @@ async function generateOfferPdf(data: {
       } else {
         priceLabel = "inkl.";
       }
-      drawText("- " + safe(svc.name), margin + 8, y, { s: 9, c: gray });
-      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 9, c: gray });
-      y -= 12;
-      if (svc.description) {
-        drawText("  " + safe(svc.description).substring(0, 90), margin + 14, y, { s: 7, c: lightGray });
-        y -= 12;
+      // Price on the right
+      drawTextRight(svc.amount > 0 ? fmtCurrency(svc.amount) : "inkl.", pageWidth - margin, y, { s: 8, c: gray });
+      // Wrap service name to max width (leave space for price column)
+      const maxNameWidth = contentWidth - 120;
+      const nameText = safe("- " + svc.name);
+      const nameWords = nameText.split(" ");
+      let nameLine = "";
+      for (const w of nameWords) {
+        const test = nameLine + (nameLine ? " " : "") + w;
+        if (font.widthOfTextAtSize(test, 8) > maxNameWidth && nameLine) {
+          drawText(nameLine, margin + 8, y, { s: 8, c: gray });
+          y -= 11;
+          ensureSpace(20);
+          nameLine = w;
+        } else {
+          nameLine = test;
+        }
       }
+      if (nameLine) {
+        drawText(nameLine, margin + 8, y, { s: 8, c: gray });
+        y -= 11;
+      }
+      if (svc.description) {
+        // Wrap description too
+        const maxDescWidth = contentWidth - 30;
+        const descWords = safe(svc.description).split(" ");
+        let descLine = "";
+        for (const w of descWords) {
+          const test = descLine + (descLine ? " " : "") + w;
+          if (font.widthOfTextAtSize(test, 7) > maxDescWidth && descLine) {
+            drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
+            y -= 10;
+            ensureSpace(16);
+            descLine = w;
+          } else {
+            descLine = test;
+          }
+        }
+        if (descLine) {
+          drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
+          y -= 10;
+        }
+      }
+      y -= 4;
     }
     y -= 8;
   }
