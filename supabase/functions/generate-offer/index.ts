@@ -342,7 +342,7 @@ Deno.serve(async (req: Request) => {
     let offer: any;
 
     if (offer_id) {
-      const updateStatus = send_email ? "sent" : "draft";
+      const updateStatus = save_as_draft ? "draft" : (send_email ? "sent" : "sent");
       const { data: updatedOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .update({
