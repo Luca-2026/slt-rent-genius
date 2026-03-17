@@ -180,6 +180,7 @@ export default function MyReservations() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [signatureData, setSignatureData] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
