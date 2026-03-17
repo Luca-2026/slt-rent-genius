@@ -862,13 +862,23 @@ async function generateDocumentPdf(data: {
   y -= 30;
 
   // ── Customer address ──
-  dt("Kunde:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
+  dt("Rechnungsadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
   dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
   dt(`${data.profile.contact_first_name} ${data.profile.contact_last_name}`, MG, y, font, 10); y -= 14;
   dt(`${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, MG, y, font, 10); y -= 14;
   dt(`${data.profile.postal_code} ${data.profile.city}`, MG, y, font, 10);
   if (data.profile.tax_id) { y -= 14; dt(`USt-IdNr.: ${data.profile.tax_id}`, MG, y, font, 9, rgb(0.4, 0.4, 0.4)); }
-  y -= 25;
+  y -= 20;
+
+  // ── Delivery address (if different) ──
+  if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
+    dt("Lieferadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
+    if (data.deliveryAddress.street) { dt(data.deliveryAddress.street, MG, y, font, 10); y -= 14; }
+    const delCityLine = [data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(' ');
+    if (delCityLine) { dt(delCityLine, MG, y, font, 10); y -= 14; }
+    y -= 6;
+  }
+  y -= 5;
 
   // ── Proforma notice ──
   if (data.isProforma) {
