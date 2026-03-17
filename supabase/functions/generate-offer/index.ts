@@ -804,7 +804,7 @@ async function generateOfferPdf(data: {
     const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
-    const logoHeight = 55;
+    const logoHeight = 75;
     const logoScale = logoHeight / logoImage.height;
     const logoWidth = logoImage.width * logoScale;
     page.drawImage(logoImage, { x: pageWidth - margin - logoWidth, y: y - logoHeight, width: logoWidth, height: logoHeight });
