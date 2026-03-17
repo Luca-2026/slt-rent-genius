@@ -112,6 +112,7 @@ export function AdminInvoicesTab({
       case "paid": return "bg-primary/10 text-primary border-primary/20";
       case "overdue": return "bg-destructive/10 text-destructive border-destructive/20";
       case "cancelled": return "bg-muted text-muted-foreground";
+      case "draft": return "bg-amber-100 text-amber-700 border-amber-300";
       default: return "bg-accent/10 text-accent border-accent/20";
     }
   };
@@ -353,6 +354,9 @@ export function AdminInvoicesTab({
                           {inv.is_reverse_charge && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                           )}
+                          {inv.status === "draft" && (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-amber-50 text-amber-700 border-amber-300">Entwurf</Badge>
+                          )}
                           {inv.notes?.includes("RECHNUNGSKORREKTUR") && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-amber-600 border-amber-300">Korrektur</Badge>
                           )}
@@ -378,6 +382,7 @@ export function AdminInvoicesTab({
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="draft">Entwurf</SelectItem>
                             <SelectItem value="open">Offen</SelectItem>
                             <SelectItem value="paid">Bezahlt</SelectItem>
                             <SelectItem value="overdue">Überfällig</SelectItem>
@@ -469,6 +474,9 @@ export function AdminInvoicesTab({
                         {inv.is_reverse_charge && (
                           <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                         )}
+                        {inv.status === "draft" && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-amber-50 text-amber-700 border-amber-300">Entwurf</Badge>
+                        )}
                         {inv.notes?.includes("RECHNUNGSKORREKTUR") && (
                           <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-amber-600 border-amber-300">Korrektur</Badge>
                         )}
@@ -494,6 +502,7 @@ export function AdminInvoicesTab({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="draft">Entwurf</SelectItem>
                       <SelectItem value="open">Offen</SelectItem>
                       <SelectItem value="paid">Bezahlt</SelectItem>
                       <SelectItem value="overdue">Überfällig</SelectItem>

@@ -59,6 +59,7 @@ export default function B2BInvoices() {
     const { data, error } = await supabase
       .from("b2b_invoices")
       .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, created_at")
+      .neq("status", "draft")
       .order("invoice_date", { ascending: false });
 
     if (!error && data) {

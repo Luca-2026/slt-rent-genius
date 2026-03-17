@@ -51,6 +51,7 @@ interface InvoiceRequest {
   original_invoice_number?: string;
   send_email?: boolean;
   is_proforma?: boolean;
+  save_as_draft?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -102,7 +103,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false } = body;
+    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false } = body;
 
     if (!reservation_id && !directProfileId) {
       return new Response(JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }), {
@@ -347,7 +348,7 @@ Deno.serve(async (req: Request) => {
         delivery_cost: delivery_cost,
         is_reverse_charge: isReverseCharge,
         vat_id_at_creation: profile.tax_id || null,
-        status: "open",
+        status: save_as_draft ? "draft" : "open",
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
@@ -402,7 +403,7 @@ Deno.serve(async (req: Request) => {
     // Send email to customer
     let emailSent = false;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    if (resendApiKey && send_email) {
+    if (resendApiKey && send_email && !save_as_draft) {
       try {
         const customerEmail = profile.billing_email || profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;

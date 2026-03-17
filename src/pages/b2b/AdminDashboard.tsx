@@ -38,7 +38,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -228,7 +228,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const generateInvoice = async (reservation: Reservation | null) => {
+  const generateInvoice = async (reservation: Reservation | null, asDraft = false) => {
     setGeneratingInvoice(true);
     try {
       // If invoice is being created from an accepted offer, use the offer items
@@ -386,12 +386,14 @@ export default function AdminDashboard() {
       }
 
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: { ...invoiceBody, send_email: sendInvoiceEmail },
+        body: { ...invoiceBody, send_email: asDraft ? false : sendInvoiceEmail, save_as_draft: asDraft },
       });
       if (error) throw error;
       toast({
-        title: proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!",
-        description: `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
+        title: asDraft ? "Entwurf gespeichert!" : (proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!"),
+        description: asDraft
+          ? `Rechnungsentwurf ${data.invoice?.invoice_number} wurde gespeichert. Sie können ihn im Rechnungs-Tab einsehen und später versenden.`
+          : `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
@@ -1296,11 +1298,22 @@ export default function AdminDashboard() {
                 </Label>
               </div>
 
-              <div className="flex gap-3 justify-end">
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
                 <Button variant="outline" onClick={() => setInvoiceDialogOpen(false)}>Abbrechen</Button>
                 <Button
+                  variant="outline"
+                  onClick={() => generateInvoice(selectedReservation, true)}
+                  disabled={generatingInvoice}
+                >
+                  {generatingInvoice ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird gespeichert...</>
+                  ) : (
+                    <><Eye className="h-4 w-4 mr-1.5" />Als Entwurf speichern</>
+                  )}
+                </Button>
+                <Button
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={() => generateInvoice(selectedReservation)}
+                  onClick={() => generateInvoice(selectedReservation, false)}
                   disabled={generatingInvoice}
                 >
                   {generatingInvoice ? (
