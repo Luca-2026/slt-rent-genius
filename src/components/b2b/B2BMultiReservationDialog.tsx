@@ -166,6 +166,11 @@ export function B2BMultiReservationDialog({
       return;
     }
 
+    if (deliveryRequested && (!deliveryStreet || !deliveryPostalCode || !deliveryCity)) {
+      toast({ title: "Bitte vollständige Lieferadresse angeben", variant: "destructive" });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
