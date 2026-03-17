@@ -363,7 +363,9 @@ export function AdminCreateOfferDialog({
   // In standalone mode, show ALL services (including MBV options)
   const relevantServices = isStandalone ? ADDITIONAL_SERVICES : getServicesForCategory(categorySlug);
 
-  const handleCreate = async () => {
+  const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
+
+  const handleSave = async (mode: "draft" | "finalize") => {
     if (!isStandalone && !reservationId) return;
     if (isStandalone && !profile) {
       toast({ title: "Fehler", description: "Bitte einen Kunden auswählen.", variant: "destructive" });
@@ -380,6 +382,7 @@ export function AdminCreateOfferDialog({
     }
 
     setSaving(true);
+    setSaveMode(mode);
     try {
       const startDate = reservation?.start_date || undefined;
       const endDate = reservation?.end_date || undefined;
@@ -392,6 +395,8 @@ export function AdminCreateOfferDialog({
             pricePercent: s.pricePercent,
           }))
         : undefined;
+
+      const shouldSendEmail = mode === "finalize" && sendEmail;
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
@@ -413,7 +418,8 @@ export function AdminCreateOfferDialog({
           delivery_cost: deliveryCost,
           valid_days: validDays,
           notes: notes || undefined,
-          send_email: sendEmail,
+          send_email: shouldSendEmail,
+          save_as_draft: mode === "draft",
           save_prices: true,
           deposit: deposit && deposit !== "none" ? Number(deposit) : undefined,
           additional_services: servicesArray,
@@ -424,14 +430,19 @@ export function AdminCreateOfferDialog({
 
       if (error) throw error;
 
-      toast({
-        title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
-        description: data.email_sent
-          ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
-          : sendEmail
-            ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"}. (E-Mail nicht konfiguriert)`
-            : `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
-      });
+      if (mode === "draft") {
+        toast({
+          title: "Entwurf gespeichert",
+          description: `Angebot ${data.offer?.offer_number} wurde als Entwurf gespeichert.`,
+        });
+      } else {
+        toast({
+          title: isEditing ? "Angebot aktualisiert!" : "Angebot erstellt!",
+          description: data.email_sent
+            ? `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "erstellt"} und per E-Mail versendet.`
+            : `Angebot ${data.offer?.offer_number} wurde ${isEditing ? "aktualisiert" : "fertiggestellt"}.`,
+        });
+      }
 
       // Clear draft after successful save
       offerDraftStore.key = null;
@@ -442,11 +453,12 @@ export function AdminCreateOfferDialog({
     } catch (error: any) {
       toast({
         title: "Fehler",
-        description: error.message || "Angebot konnte nicht erstellt werden.",
+        description: error.message || "Angebot konnte nicht gespeichert werden.",
         variant: "destructive",
       });
     } finally {
       setSaving(false);
+      setSaveMode(null);
     }
   };
 
