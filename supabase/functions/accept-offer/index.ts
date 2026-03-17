@@ -317,6 +317,61 @@ Deno.serve(async (req: Request) => {
 
     console.log("Offer accepted successfully:", offer.offer_number);
 
+    // Send notification email to location (don't block response)
+    const locationEmails: Record<string, string> = {
+      krefeld: "krefeld@slt-rental.de",
+      bonn: "bonn@slt-rental.de",
+      muelheim: "muelheim@slt-rental.de",
+    };
+
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    const RESEND_DOMAIN = Deno.env.get("RESEND_DOMAIN");
+    if (RESEND_API_KEY && RESEND_DOMAIN) {
+      const location = offer.issuing_location || profile?.assigned_location || "krefeld";
+      const locationEmail = locationEmails[location] || locationEmails["krefeld"];
+      const signerName = profile
+        ? `${profile.contact_first_name} ${profile.contact_last_name}`
+        : "Kunde";
+      const companyName = profile?.company_name || "Unbekannt";
+      const acceptDate = new Date().toLocaleDateString("de-DE", {
+        day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
+      });
+
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: `SLT-Rental <mieten@${RESEND_DOMAIN}>`,
+          to: [locationEmail],
+          subject: `✅ Angebot ${offer.offer_number} angenommen – ${companyName}`,
+          html: `
+            <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background: #00507d; padding: 20px; text-align: center;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 20px;">Angebot angenommen</h1>
+              </div>
+              <div style="padding: 24px; background: #ffffff;">
+                <p style="font-size: 15px; color: #333;">Das Angebot <strong>${offer.offer_number}</strong> wurde soeben vom Kunden digital unterschrieben und angenommen.</p>
+                <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                  <tr><td style="padding: 8px 0; color: #666; width: 140px;">Firma:</td><td style="padding: 8px 0; font-weight: bold;">${companyName}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #666;">Unterzeichner:</td><td style="padding: 8px 0;">${signerName}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #666;">Angenommen am:</td><td style="padding: 8px 0;">${acceptDate}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #666;">Nettobetrag:</td><td style="padding: 8px 0;">${Number(offer.net_amount).toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #666;">Bruttobetrag:</td><td style="padding: 8px 0; font-weight: bold;">${Number(offer.gross_amount).toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</td></tr>
+                </table>
+                <p style="font-size: 13px; color: #999; margin-top: 24px;">Diese E-Mail wurde automatisch generiert.</p>
+              </div>
+              <div style="background: #f5f5f5; padding: 16px; text-align: center; font-size: 12px; color: #999;">
+                SLT Technology Group GmbH & Co. KG
+              </div>
+            </div>
+          `,
+        }),
+      }).catch((e) => console.error("Location notification email failed:", e));
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
