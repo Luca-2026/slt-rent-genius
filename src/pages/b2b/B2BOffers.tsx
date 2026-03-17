@@ -13,8 +13,9 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+import { SignaturePad } from "@/components/b2b/SignaturePad";
 import {
-  FileText, RefreshCw, Download, Send, ThumbsUp, Clock, CheckCircle2, XCircle,
+  FileText, RefreshCw, Download, Send, ThumbsUp, Clock, CheckCircle2, XCircle, PenTool,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -62,6 +63,7 @@ function B2BOffers() {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [offerToAccept, setOfferToAccept] = useState<Offer | null>(null);
   const [acceptingOfferId, setAcceptingOfferId] = useState<string | null>(null);
+  const [signatureData, setSignatureData] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -85,19 +87,20 @@ function B2BOffers() {
   }, [user]);
 
   const handleAcceptOffer = async () => {
-    if (!offerToAccept) return;
+    if (!offerToAccept || !signatureData) return;
     setAcceptingOfferId(offerToAccept.id);
     try {
       const { error } = await supabase.functions.invoke("accept-offer", {
-        body: { offer_id: offerToAccept.id },
+        body: { offer_id: offerToAccept.id, signature_data: signatureData },
       });
       if (error) throw error;
       toast({
         title: "Angebot bestätigt!",
-        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich bestätigt.`,
+        description: `Angebot ${offerToAccept.offer_number} wurde erfolgreich unterschrieben und bestätigt.`,
       });
       setConfirmDialogOpen(false);
       setOfferToAccept(null);
+      setSignatureData(null);
       fetchData();
     } catch (error: any) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
@@ -115,6 +118,12 @@ function B2BOffers() {
 
   const sentCount = offers.filter((o) => o.status === "sent").length;
   const acceptedCount = offers.filter((o) => o.status === "accepted").length;
+
+  const openAcceptDialog = (offer: Offer) => {
+    setOfferToAccept(offer);
+    setSignatureData(null);
+    setConfirmDialogOpen(true);
+  };
 
   return (
     <B2BPortalLayout title="Meine Angebote" subtitle={`${offers.length} Angebote insgesamt`}>
@@ -227,12 +236,9 @@ function B2BOffers() {
                           <Button
                             size="sm"
                             className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-accent/80"
-                            onClick={() => {
-                              setOfferToAccept(offer);
-                              setConfirmDialogOpen(true);
-                            }}
+                            onClick={() => openAcceptDialog(offer)}
                           >
-                            <ThumbsUp className="h-3 w-3 mr-1" />
+                            <PenTool className="h-3 w-3 mr-1" />
                             Annehmen
                           </Button>
                         )}
@@ -305,13 +311,10 @@ function B2BOffers() {
                             <Button
                               size="sm"
                               className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-accent/80"
-                              onClick={() => {
-                                setOfferToAccept(offer);
-                                setConfirmDialogOpen(true);
-                              }}
+                              onClick={() => openAcceptDialog(offer)}
                             >
-                              <ThumbsUp className="h-3 w-3 mr-1" />
-                              Annehmen
+                              <PenTool className="h-3 w-3 mr-1" />
+                              Annehmen & Unterschreiben
                             </Button>
                           )}
                         </div>
@@ -325,20 +328,27 @@ function B2BOffers() {
         </>
       )}
 
-      {/* Confirm Dialog */}
-      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <DialogContent>
+      {/* Accept + Signature Dialog */}
+      <Dialog open={confirmDialogOpen} onOpenChange={(open) => {
+        setConfirmDialogOpen(open);
+        if (!open) {
+          setSignatureData(null);
+          setOfferToAccept(null);
+        }
+      }}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <ThumbsUp className="h-5 w-5 text-primary" />
-              Angebot bestätigen
+              <PenTool className="h-5 w-5 text-primary" />
+              Angebot annehmen & unterschreiben
             </DialogTitle>
             <DialogDescription>
-              Möchten Sie dieses Angebot verbindlich annehmen?
+              Bitte unterschreiben Sie das Angebot, um es verbindlich anzunehmen.
             </DialogDescription>
           </DialogHeader>
           {offerToAccept && (
             <div className="space-y-4">
+              {/* Offer summary */}
               <Card>
                 <CardContent className="p-4 space-y-2">
                   <div className="flex items-center justify-between">
@@ -349,11 +359,31 @@ function B2BOffers() {
                     Angebotsdatum: {formatDate(offerToAccept.offer_date)}
                     {offerToAccept.valid_until && ` · Gültig bis: ${formatDate(offerToAccept.valid_until)}`}
                   </p>
+                  {/* Items preview */}
+                  {getItemsForOffer(offerToAccept.id).length > 0 && (
+                    <div className="pt-2 border-t border-border space-y-1">
+                      {getItemsForOffer(offerToAccept.id).map((item) => (
+                        <div key={item.id} className="flex justify-between text-sm">
+                          <span>{item.quantity}x {item.product_name}</span>
+                          <span className="text-muted-foreground">{formatCurrency(item.total_price)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
+
+              {/* Signature Pad */}
+              <SignaturePad 
+                onSignatureChange={setSignatureData} 
+                height={180}
+                label="Ihre Unterschrift"
+              />
+
               <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit der Bestätigung nehmen Sie das Angebot verbindlich an. Unser Team wird sich in Kürze bei Ihnen melden.</p>
+                <p>Mit Ihrer Unterschrift nehmen Sie das Angebot verbindlich an. Das unterschriebene Angebot wird als PDF gespeichert.</p>
               </div>
+
               <div className="flex gap-3 justify-end">
                 <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
                   Abbrechen
@@ -361,7 +391,7 @@ function B2BOffers() {
                 <Button
                   className="bg-accent text-accent-foreground hover:bg-accent/80"
                   onClick={handleAcceptOffer}
-                  disabled={acceptingOfferId === offerToAccept.id}
+                  disabled={acceptingOfferId === offerToAccept.id || !signatureData}
                 >
                   {acceptingOfferId === offerToAccept.id ? (
                     <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
