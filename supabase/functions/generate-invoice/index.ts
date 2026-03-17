@@ -786,8 +786,8 @@ async function generateDocumentPdf(data: {
   documentNumber: string;
   date: string;
   profile: any;
-  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string }>;
-  serviceItems: Array<{ name: string; description?: string; amount: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
+  serviceItems: Array<{ name: string; description?: string; amount: number; parentItemIndex?: number }>;
   surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
   signatures?: { customerData?: string; staffData?: string; staffName?: string };
