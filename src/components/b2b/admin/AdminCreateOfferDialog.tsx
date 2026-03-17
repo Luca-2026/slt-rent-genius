@@ -69,6 +69,8 @@ export interface ExistingOffer {
   b2b_profile_id: string;
   deposit?: number | null;
   additional_services?: any;
+  issuing_location?: string | null;
+  return_location?: string | null;
 }
 
 export interface ExistingOfferItem {
@@ -77,6 +79,8 @@ export interface ExistingOfferItem {
   quantity: number;
   unit_price: number;
   discount_percent: number;
+  rental_start?: string | null;
+  rental_end?: string | null;
 }
 
 interface Props {
