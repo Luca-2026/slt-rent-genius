@@ -41,7 +41,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-stationaer",
     name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
     description:
-      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall. 7% des Netto-Mietpreises der Maschinen (ohne Zubehör/Transport).",
+      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["aggregate", "verdichtung"],
     pricePercent: 7,
     mandatory: true,
