@@ -335,14 +335,22 @@ export default function AdminDashboard() {
         console.log("[Invoice Debug] additionalServiceItems:", JSON.stringify(additionalServiceItems));
         console.log("[Invoice Debug] all custom_items:", allCustomItems.length, "items:", allCustomItems.map(i => `${i.product_name}: ${i.unit_price}`));
 
+        // Extract delivery address from offer notes [DELADDR:street|postal_code|city]
+        const offerNotes = offer.notes || "";
+        const delAddrMatch = offerNotes.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
+        const deliveryAddress = delAddrMatch
+          ? { street: delAddrMatch[1], postal_code: delAddrMatch[2], city: delAddrMatch[3] }
+          : undefined;
+
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
           custom_items: allCustomItems,
           notes: proformaMode
-            ? `PROFORMA-RECHNUNG (Vorkasse) – ${offer.notes || ""}`.trim()
-            : (offer.notes || undefined),
+            ? `PROFORMA-RECHNUNG (Vorkasse) – ${offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim()}`.trim()
+            : (offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() || undefined),
           is_proforma: proformaMode,
+          delivery_address: deliveryAddress,
         };
       } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals
