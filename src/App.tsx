@@ -54,6 +54,7 @@ const KnowledgeBase = lazy(() => import("./pages/KnowledgeBase"));
 const AGB = lazy(() => import("./pages/AGB"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
+const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -114,6 +115,7 @@ const App = () => (
               <Route path="/agb" element={<AGB />} />
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/datenschutz" element={<Datenschutz />} />
+              <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
