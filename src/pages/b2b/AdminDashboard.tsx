@@ -38,7 +38,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2,
+  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
