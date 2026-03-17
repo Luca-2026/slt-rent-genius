@@ -275,6 +275,7 @@ export function AdminCreateOfferDialog({
             rental_end: rentalEnd,
             start_time: startTime,
             end_time: endTime,
+            category_slug: getProductCategorySlug(item.product_name),
           };
         })
       );
