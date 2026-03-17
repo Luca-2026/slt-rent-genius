@@ -34,19 +34,21 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     id: "mbv-selbstfahrend",
     name: "Maschinenbruchversicherung – Selbstfahrende Maschinen (SB 1.500 €)",
     description:
-      "MBV für selbstfahrende Maschinen (Bagger, Arbeitsbühnen, Radlader, Dumper) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
+      "MBV für Bagger, Arbeitsbühnen, Radlader und Dumper mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
     applicableCategories: ["erdbewegung", "arbeitsbuehnen"],
     pricePercent: 12,
     mandatory: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-stationaer",
-    name: "Maschinenbruchversicherung – Stationäre Maschinen (SB 1.500 €)",
+    name: "Maschinenbruchversicherung – Aggregate (SB 1.500 €)",
     description:
-      "MBV für stationäre Maschinen (Stromaggregate, Werkzeuge, Rüttelplatten etc., außer Anhänger) mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
-    applicableCategories: ["aggregate", "verdichtung"],
-    pricePercent: 7,
+      "MBV für Aggregate mit einer Selbstbeteiligung in Höhe von 1.500 € je Schadenfall.",
+    applicableCategories: ["aggregate"],
+    pricePercent: 12,
     mandatory: true,
+    calculationBase: "mbv_items",
   },
   // ── Reduzierungen der SB (on top, gegenseitig ausschließend) ──
   {
@@ -54,30 +56,33 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     name: "Reduzierung MBV auf 1.000 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 1.000 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 3,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-500",
     name: "Reduzierung MBV auf 500 € SB",
     description:
       "Reduzierung der Selbstbeteiligung der Maschinenbruchversicherung auf 500 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 5,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   {
     id: "mbv-0",
     name: "Reduzierung MBV auf 0 € SB (Haftungsfreistellung)",
     description:
       "Haftungsfreistellung. Reduzierung der Selbstbeteiligung auf 0 € je Schadenfall (zusätzlich zur Basis-MBV).",
-    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen", "werkzeuge", "verdichtung"],
+    applicableCategories: ["erdbewegung", "aggregate", "arbeitsbuehnen"],
     pricePercent: 10,
     exclusionGroup: "mbv-reduktion",
     isUpgrade: true,
+    calculationBase: "mbv_items",
   },
   // ── Elektronikversicherung ──
   {
@@ -88,6 +93,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["werkzeuge"],
     pricePercent: 7,
     mandatory: true,
+    calculationBase: "applicable_categories",
   },
   // ── Anhänger-Versicherungen ──
   {
@@ -98,6 +104,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["anhaenger"],
     pricePercent: 30,
     exclusionGroup: "anhaenger-kasko",
+    calculationBase: "trailer_items",
   },
   {
     id: "vollkasko-300",
@@ -107,6 +114,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     applicableCategories: ["anhaenger"],
     pricePercent: 35,
     exclusionGroup: "anhaenger-kasko",
+    calculationBase: "trailer_items",
   },
   {
     id: "auslandsfahrt",
@@ -115,6 +123,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
       "Für die Fahrt in das europäische Ausland.",
     applicableCategories: ["anhaenger"],
     pricePercent: 15,
+    calculationBase: "trailer_items",
   },
   // ── Kostenfreie Stornierung ──
   {
@@ -123,6 +132,7 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
     description: "Mit dieser Option ist die Stornierung bis 72h vor Mietbeginn kostenfrei.",
     applicableCategories: null, // always available
     pricePercent: 7,
+    calculationBase: "all_items",
   },
 ];
 
