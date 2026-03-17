@@ -660,6 +660,14 @@ export default function AdminDashboard() {
           valid_days: validDays,
           send_email: true,
           save_prices: false,
+          issuing_location: (offer as any).issuing_location || undefined,
+          return_location: (offer as any).return_location || undefined,
+          delivery_address: (() => {
+            const n = offer.notes || "";
+            const m = n.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
+            if (m) return { street: m[1], postal_code: m[2], city: m[3] };
+            return undefined;
+          })(),
         },
       });
 

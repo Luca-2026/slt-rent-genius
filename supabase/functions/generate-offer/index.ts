@@ -349,8 +349,8 @@ Deno.serve(async (req: Request) => {
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
-    const servicesJson = additionalServices && additionalServices.length > 0
-      ? JSON.stringify(additionalServices)
+    const servicesData = additionalServices && additionalServices.length > 0
+      ? additionalServices
       : null;
 
     // Encode delivery address into notes as structured tag
@@ -381,7 +381,7 @@ Deno.serve(async (req: Request) => {
           file_name: fileName,
           email_sent: false,
           deposit: deposit || null,
-          additional_services: servicesJson,
+          additional_services: servicesData,
           issuing_location: issuingLocation || null,
           return_location: returnLocation || null,
         })
@@ -421,7 +421,7 @@ Deno.serve(async (req: Request) => {
           file_name: fileName,
           email_sent: false,
           deposit: deposit || null,
-          additional_services: servicesJson,
+          additional_services: servicesData,
           created_by_user_id: authUser.id,
           created_by_staff_name: staffName,
           issuing_location: issuingLocation || null,
