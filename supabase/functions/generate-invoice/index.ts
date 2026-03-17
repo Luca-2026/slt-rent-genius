@@ -277,19 +277,37 @@ Deno.serve(async (req: Request) => {
 
     console.log("Invoice number generated:", invoiceNumber);
 
+    // Separate items by type for PDF rendering
+    const productItems = items.filter(i => (i.item_type || 'product') === 'product');
+    const serviceItems = items.filter(i => i.item_type === 'service');
+    const surchargeItems = items.filter(i => i.item_type === 'surcharge');
+    const depositItemsForPdf = items.filter(i => i.item_type === 'deposit');
+
     // Generate PDF document
     const pdfBytes = await generateDocumentPdf({
       title: is_correction ? "RECHNUNGSKORREKTUR" : (is_proforma ? "PROFORMA-RECHNUNG" : "RECHNUNG"),
       documentNumber: invoiceNumber,
       date: invoiceDate,
       profile,
-      items: items.map((item: any) => ({
+      productItems: productItems.map((item: any) => ({
         name: item.product_name,
         description: item.description || undefined,
         quantity: item.quantity,
         unitPrice: item.unit_price,
         totalPrice: item.total_price,
         discount: item.discount_percent,
+        rentalStart: item.rental_start,
+        rentalEnd: item.rental_end,
+      })),
+      serviceItems: serviceItems.map((item: any) => ({
+        name: item.product_name,
+        description: item.description || undefined,
+        amount: item.total_price,
+      })),
+      surchargeItems: surchargeItems.map((item: any) => ({
+        name: item.product_name,
+        description: item.description || undefined,
+        amount: item.total_price,
       })),
       sections: [
         ...(notes ? [{ label: "Bemerkungen", value: notes }] : []),
@@ -303,7 +321,9 @@ Deno.serve(async (req: Request) => {
         isReverseCharge,
         paymentDueDays: payment_due_days,
         dueDate,
+        depositTotal,
       },
+      isProforma: is_proforma,
     });
 
     // Store as PDF file
