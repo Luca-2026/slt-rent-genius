@@ -266,6 +266,7 @@ export function AdminCreateReservationDialog({ profiles, open, onOpenChange, onC
           discount_percent: item.discount || undefined,
           rental_start: startDateStr,
           rental_end: endDateStr,
+          category_slug: item.categorySlug || undefined,
           image_url: getProductImageUrl(item.productId) || getProductImageUrlByName(item.productName) || undefined,
         }));
 
