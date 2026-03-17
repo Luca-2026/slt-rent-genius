@@ -325,6 +325,7 @@ Deno.serve(async (req: Request) => {
         depositTotal,
       },
       isProforma: is_proforma,
+      deliveryAddress: deliveryAddress,
     });
 
     // Store as PDF file
