@@ -35,6 +35,7 @@ interface OfferItem {
   rental_start?: string;
   rental_end?: string;
   image_url?: string;
+  category_slug?: string;
 }
 
 interface OfferRequest {
