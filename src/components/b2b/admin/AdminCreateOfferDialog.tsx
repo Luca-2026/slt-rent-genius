@@ -452,7 +452,10 @@ export function AdminCreateOfferDialog({
 
   return (
     <Dialog open={open} onOpenChange={(newOpen) => {
-        if (!newOpen) lastInitKey.current = null;
+        if (!newOpen) {
+          // Save draft before closing so data persists across tab switches
+          saveDraft();
+        }
         onOpenChange(newOpen);
       }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" onInteractOutside={(e) => e.preventDefault()}>
