@@ -121,6 +121,7 @@ Deno.serve(async (req: Request) => {
       additional_services: additionalServices,
       issuing_location: issuingLocation,
       return_location: returnLocation,
+      delivery_address: deliveryAddress,
     } = body;
 
     if (!items || items.length === 0) {
