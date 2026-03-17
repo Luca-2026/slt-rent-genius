@@ -31,6 +31,7 @@ interface OfferFormDraft {
   sendEmail: boolean;
   deposit: string;
   selectedServices: string[];
+  customServicePrices: Record<string, number>;
   issuingLocation: string;
   returnLocation: string;
   selectedProfileId: string;
