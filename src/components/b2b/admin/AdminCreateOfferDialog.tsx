@@ -197,6 +197,7 @@ export function AdminCreateOfferDialog({
       setSendEmail(draft.sendEmail);
       setDeposit(draft.deposit);
       setSelectedServices(new Set(draft.selectedServices));
+      setCustomServicePrices(draft.customServicePrices || {});
       setIssuingLocation(draft.issuingLocation);
       setReturnLocation(draft.returnLocation);
       setSelectedProfileId(draft.selectedProfileId);
