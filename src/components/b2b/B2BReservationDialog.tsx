@@ -44,6 +44,37 @@ export function B2BReservationDialog({
   const [deliveryStreet, setDeliveryStreet] = useState("");
   const [deliveryPostalCode, setDeliveryPostalCode] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+
+  const mandatoryServiceIds = useMemo(() => getMandatoryServiceIds([categorySlug]), [categorySlug]);
+  const relevantServices = useMemo(() => getServicesForCategory(categorySlug), [categorySlug]);
+
+  // Auto-select mandatory services
+  useMemo(() => {
+    if (mandatoryServiceIds.size > 0) {
+      setSelectedServices((prev) => {
+        const next = new Set(prev);
+        for (const id of mandatoryServiceIds) next.add(id);
+        return next;
+      });
+    }
+  }, [mandatoryServiceIds]);
+
+  const toggleService = (serviceId: string) => {
+    if (mandatoryServiceIds.has(serviceId)) return;
+    setSelectedServices((prev) => {
+      const next = new Set(prev);
+      const svc = ADDITIONAL_SERVICES.find(s => s.id === serviceId);
+      if (svc?.exclusionGroup) {
+        for (const s of ADDITIONAL_SERVICES) {
+          if (s.id !== serviceId && s.exclusionGroup === svc.exclusionGroup) next.delete(s.id);
+        }
+      }
+      if (next.has(serviceId)) next.delete(serviceId);
+      else next.add(serviceId);
+      return next;
+    });
+  };
 
   if (!product) return null;
 
