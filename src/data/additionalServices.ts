@@ -141,6 +141,28 @@ export function getServicesForCategory(categorySlug?: string | null): Additional
 }
 
 /**
+ * Returns mandatory services for the given category slugs.
+ * These should be auto-selected and shown as "included".
+ */
+export function getMandatoryServiceIds(categorySlugs: string[]): Set<string> {
+  const ids = new Set<string>();
+  for (const service of ADDITIONAL_SERVICES) {
+    if (!service.mandatory) continue;
+    if (service.applicableCategories === null) {
+      ids.add(service.id);
+    } else {
+      for (const slug of categorySlugs) {
+        if (service.applicableCategories.includes(slug)) {
+          ids.add(service.id);
+          break;
+        }
+      }
+    }
+  }
+  return ids;
+}
+
+/**
  * Calculate the surcharge for selected additional services.
  * Base = net item total (excluding delivery costs and deposit).
  * customPrices: map of service id -> manual price for customPriceInput services.
