@@ -801,7 +801,10 @@ async function generateOfferPdf(data: {
 
   // ── HEADER with Logo (right-aligned, bigger) ──
   try {
-    const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
+    const logoController = new AbortController();
+    const logoTimeout = setTimeout(() => logoController.abort(), 2000);
+    const logoResp = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png", { signal: logoController.signal });
+    clearTimeout(logoTimeout);
     const logoBytes = new Uint8Array(await logoResp.arrayBuffer());
     const logoImage = await doc.embedPng(logoBytes);
     const logoHeight = 75;
