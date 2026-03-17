@@ -871,7 +871,25 @@ async function generateOfferPdf(data: {
     drawTextRight("Reverse-Charge", metaValX, metaY, { s: 9, c: blue });
   }
 
-  y -= 20;
+  // ── DELIVERY ADDRESS (if provided) ──
+  if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
+    y -= 20;
+    ensureSpace(60);
+    drawText("Lieferadresse:", margin, y, { f: fontBold, s: 10 });
+    y -= 14;
+    if (data.deliveryAddress.street) {
+      drawText(safe(data.deliveryAddress.street), margin, y, { s: 10 });
+      y -= 13;
+    }
+    const plzCity = [data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(" ");
+    if (plzCity) {
+      drawText(safe(plzCity), margin, y, { s: 10 });
+      y -= 13;
+    }
+    y -= 7;
+  } else {
+    y -= 20;
+  }
 
   // ── INTRO TEXT ──
   drawText("Sehr geehrte Damen und Herren,", margin, y, { s: 10 });
