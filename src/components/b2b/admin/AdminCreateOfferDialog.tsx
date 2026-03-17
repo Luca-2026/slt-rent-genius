@@ -1012,16 +1012,21 @@ export function AdminCreateOfferDialog({
             <div className="space-y-1.5 rounded-md border p-3 bg-muted/30">
               {relevantServices.map((service) => {
                 const surchargeEntry = servicesBreakdown.find((b) => b.service.id === service.id);
+                const isMandatory = mandatoryServiceIds.has(service.id);
                 return (
                   <div key={service.id} className="flex items-start gap-2">
                     <Checkbox
                       checked={selectedServices.has(service.id)}
                       onCheckedChange={() => toggleService(service.id)}
+                      disabled={isMandatory}
                       className="mt-0.5"
                     />
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs font-medium">{service.name}</p>
+                        <p className="text-xs font-medium">
+                          {service.name}
+                          {isMandatory && <span className="text-[10px] text-primary ml-1">(Pflicht)</span>}
+                        </p>
                         {service.pricePercent !== null && !service.customPriceInput && (
                           <span className="text-[11px] text-muted-foreground whitespace-nowrap">
                             {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
