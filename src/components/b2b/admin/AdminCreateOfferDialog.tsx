@@ -21,6 +21,19 @@ import { de } from "date-fns/locale";
 import { getProductImageUrl, getProductImageUrlByName, getProductImageStablePath, getProductImageStablePathByName } from "@/utils/productImageLookup";
 import { DEPOSIT_OPTIONS, ADDITIONAL_SERVICES, getServicesForCategory, calculateServicesSurcharge } from "@/data/additionalServices";
 import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete";
+import { locations } from "@/data/rentalData";
+
+/** Look up product description (e.g. "Ladefläche: 200 x 108 x 30 cm") from rental data */
+function getProductDescription(productName: string): string {
+  for (const loc of locations) {
+    for (const products of Object.values(loc.products)) {
+      for (const p of products) {
+        if (p.name === productName) return p.description || "";
+      }
+    }
+  }
+  return "";
+}
 
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
@@ -375,11 +388,10 @@ export function AdminCreateOfferDialog({
     setItems(
       targetReservations.map((res) => {
         const productName = res.product_name || res.product_id;
+        const productDesc = getProductDescription(productName);
         return {
           product_name: productName,
-          description: res.end_date
-            ? `Mietzeitraum: ${formatDate(res.start_date)} – ${formatDate(res.end_date)}`
-            : `Ab: ${formatDate(res.start_date)}`,
+          description: productDesc || "",
           quantity: res.quantity || 1,
           unit_price: priceMap.get(productName) || res.original_price || 0,
           discount_percent: 0,
@@ -717,9 +729,10 @@ export function AdminCreateOfferDialog({
                   <Label className="text-xs">Bezeichnung *</Label>
                   <ProductAutocomplete
                     value={item.product_name}
-                    onChange={(name, productId, categorySlug) => {
+                    onChange={(name, productId, categorySlug, productDescription) => {
                       updateItem(index, "product_name", name);
                       if (categorySlug) updateItem(index, "category_slug", categorySlug);
+                      if (productDescription) updateItem(index, "description", productDescription);
                     }}
                     placeholder="Produkt suchen oder eingeben..."
                     className="h-8 text-sm"
