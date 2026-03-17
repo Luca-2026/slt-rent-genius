@@ -1017,6 +1017,16 @@ async function generateOfferPdf(data: {
   const imgSize = 38; // thumbnail size in PDF
   const colNameWithImg = colName + imgSize + 6; // shift text right when image present
 
+  const servicesByItem = new Map<number, { name: string; description?: string; amount: number }[]>();
+  for (const svc of data.servicesWithPrices || []) {
+    const allocs = svc.allocations || [];
+    for (const alloc of allocs) {
+      const current = servicesByItem.get(alloc.itemIndex) || [];
+      current.push({ name: svc.name, description: svc.description, amount: alloc.amount });
+      servicesByItem.set(alloc.itemIndex, current);
+    }
+  }
+
   // ── ITEM ROWS ──
   for (let i = 0; i < data.items.length; i++) {
     ensureSpace(60);
