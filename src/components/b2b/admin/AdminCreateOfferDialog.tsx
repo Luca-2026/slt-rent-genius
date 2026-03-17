@@ -835,7 +835,7 @@ export function AdminCreateOfferDialog({
           </CardContent>
         </Card>
 
-        {/* Email toggle */}
+        {/* Email toggle — only relevant for finalize */}
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -845,7 +845,7 @@ export function AdminCreateOfferDialog({
             className="rounded border-muted-foreground"
           />
           <label htmlFor="sendEmail" className="text-sm text-muted-foreground">
-            Angebot per E-Mail an den Kunden senden
+            Beim Fertigstellen das Angebot per E-Mail an den Kunden senden
           </label>
         </div>
 
@@ -857,7 +857,6 @@ export function AdminCreateOfferDialog({
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
           <Button variant="outline" onClick={() => {
-            // Clear draft on explicit cancel
             offerDraftStore.key = null;
             offerDraftStore.data = null;
             lastInitKey.current = null;
@@ -866,11 +865,28 @@ export function AdminCreateOfferDialog({
             Abbrechen
           </Button>
           <Button
-            onClick={handleCreate}
+            variant="secondary"
+            onClick={() => handleSave("draft")}
+            disabled={saving}
+          >
+            {saving && saveMode === "draft" ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
+                Wird gespeichert...
+              </>
+            ) : (
+              <>
+                <FileText className="h-4 w-4 mr-1.5" />
+                Als Entwurf speichern
+              </>
+            )}
+          </Button>
+          <Button
+            onClick={() => handleSave("finalize")}
             disabled={saving}
             className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           >
-            {saving ? (
+            {saving && saveMode === "finalize" ? (
               <>
                 <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
                 Wird {isEditing ? "aktualisiert" : "erstellt"}...
@@ -878,7 +894,7 @@ export function AdminCreateOfferDialog({
             ) : (
               <>
                 <Send className="h-4 w-4 mr-1.5" />
-                {isEditing ? "Angebot aktualisieren & senden" : "Angebot erstellen & senden"}
+                {isEditing ? "Angebot aktualisieren" : "Fertigstellen"}{sendEmail ? " & Senden" : ""}
               </>
             )}
           </Button>
