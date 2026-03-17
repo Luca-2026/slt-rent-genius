@@ -307,6 +307,7 @@ Deno.serve(async (req: Request) => {
         name: item.product_name,
         description: item.description || undefined,
         amount: item.total_price,
+        parentItemIndex: item.parent_item_index,
       })),
       surchargeItems: surchargeItems.map((item: any) => ({
         name: item.product_name,
