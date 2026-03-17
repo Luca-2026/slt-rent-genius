@@ -344,12 +344,13 @@ export function AdminCreateOfferDialog({
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
-  // Load customer prices when reservation + profile are available
+  // Load customer prices only for NEW offers from reservations.
+  // For editing existing offers, keep persisted values (delivery costs/address/services) untouched.
   useEffect(() => {
-    if (open && reservation && profile) {
+    if (open && reservation && profile && !isEditing) {
       loadCustomerPrices();
     }
-  }, [open, reservation, profile]);
+  }, [open, reservation, profile, isEditing]);
 
   const loadCustomerPrices = async () => {
     if (!profile || !reservation) return;
