@@ -25,7 +25,9 @@ import { ProductAutocomplete } from "@/components/b2b/admin/ProductAutocomplete"
 // ─── Module-level draft storage (survives component unmount/remount) ───
 interface OfferFormDraft {
   items: OfferItemInput[];
-  deliveryCost: number;
+  deliveryCostDelivery: number;
+  deliveryCostReturn: number;
+  includeReturn: boolean;
   validDays: number;
   notes: string;
   sendEmail: boolean;
