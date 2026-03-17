@@ -816,18 +816,35 @@ async function generateOfferPdf(data: {
     y -= 13;
   }
 
-  // ── METADATA (right side) ──
+  // ── METADATA + LOCATION (right side) ──
   let metaY = addrY;
-  const metaLabelX = 380;
+  const metaLabelX = 370;
   const metaValX = pageWidth - margin;
   drawText("Angebotsdatum:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(fmtDate(data.offerDate), metaValX, metaY, { s: 9 });
   metaY -= 14;
-  drawText("Gueltig bis:", metaLabelX, metaY, { s: 9, c: gray });
+  drawText("G\u00FCltig bis:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(fmtDate(data.validUntil), metaValX, metaY, { s: 9, c: rgb(0.7, 0.26, 0.04) });
   metaY -= 14;
   drawText("Kundennr.:", metaLabelX, metaY, { s: 9, c: gray });
   drawTextRight(data.profile.id.substring(0, 8).toUpperCase(), metaValX, metaY, { s: 9 });
+  metaY -= 14;
+  drawText("Sachbearbeiter:", metaLabelX, metaY, { s: 9, c: gray });
+  drawTextRight(safe(data.staffName), metaValX, metaY, { s: 9 });
+  metaY -= 14;
+  drawText("Ausgabestandort:", metaLabelX, metaY, { s: 9, c: gray });
+  drawTextRight(safe(issuingLoc.name), metaValX, metaY, { s: 9 });
+  metaY -= 10;
+  drawTextRight(`${safe(issuingLoc.address)}, ${safe(issuingLoc.city)}`, metaValX, metaY, { s: 7, c: lightGray });
+  metaY -= 8;
+  drawTextRight(`Tel: ${issuingLoc.phone}`, metaValX, metaY, { s: 7, c: lightGray });
+  if (returnLoc && data.returnLocation !== data.issuingLocation) {
+    metaY -= 14;
+    drawText("R\u00FCckgabestandort:", metaLabelX, metaY, { s: 9, c: gray });
+    drawTextRight(safe(returnLoc.name), metaValX, metaY, { s: 9 });
+    metaY -= 10;
+    drawTextRight(`${safe(returnLoc.address)}, ${safe(returnLoc.city)}`, metaValX, metaY, { s: 7, c: lightGray });
+  }
   if (data.isReverseCharge) {
     metaY -= 14;
     drawText("Verfahren:", metaLabelX, metaY, { s: 9, c: gray });
@@ -839,7 +856,7 @@ async function generateOfferPdf(data: {
   // ── INTRO TEXT ──
   drawText("Sehr geehrte Damen und Herren,", margin, y, { s: 10 });
   y -= 14;
-  drawText("vielen Dank fuer Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:", margin, y, { s: 10 });
+  drawText("vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:", margin, y, { s: 10 });
   y -= 25;
 
   // ── ITEMS TABLE HEADER ──
