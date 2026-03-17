@@ -92,7 +92,8 @@ export function LegacyLocationProductRedirect({ locationId }: { locationId: stri
 }
 
 /**
- * Redirects old /kategorien-krefeld/:category to /mieten/krefeld/:category
+ * Redirects old /kategorien-{loc}/:category and /kategorie/:compound to /mieten/:loc/:category
+ * Detects location prefix in compound slugs like "bonn-anhaenger" or "krefeld-huepfburgen"
  */
 export function LegacyCategoryRedirect({ locationId }: { locationId: string }) {
   const { categorySlug } = useParams<{ categorySlug: string }>();
@@ -104,18 +105,32 @@ export function LegacyCategoryRedirect({ locationId }: { locationId: string }) {
       return;
     }
 
-    // Handle compound slugs like "krefeld-anhaengerZus" from /kategorie/ routes
     let slug = categorySlug;
-    // Strip location prefix if present (e.g. "krefeld-anhaenger" → "anhaenger")
-    const locationPrefixes = ["krefeld-", "bonn-", "muelheim-", "duisburg-"];
-    for (const prefix of locationPrefixes) {
+    let resolvedLocation = locationId;
+
+    // Detect and strip location prefix (e.g. "bonn-anhaenger" → location=bonn, slug=anhaenger)
+    const locationPrefixes: Record<string, string> = {
+      "krefeld-": "krefeld",
+      "bonn-": "bonn",
+      "muelheim-": "muelheim",
+      "duisburg-": "muelheim",
+    };
+    for (const [prefix, locId] of Object.entries(locationPrefixes)) {
       if (slug.toLowerCase().startsWith(prefix)) {
+        resolvedLocation = locId;
         slug = slug.substring(prefix.length);
         break;
       }
     }
+
     // Remove trailing suffixes like "Zus" or other junk
     slug = slug.replace(/Zus$/i, "").toLowerCase();
+
+    // Handle "alle-produkte" or "alle" → redirect to location overview
+    if (slug === "alle-produkte" || slug === "alle") {
+      navigate(`/mieten/${resolvedLocation}`, { replace: true });
+      return;
+    }
 
     // Map old category names to new ones
     const categoryMap: Record<string, string> = {
@@ -142,8 +157,22 @@ export function LegacyCategoryRedirect({ locationId }: { locationId: string }) {
     };
 
     const mapped = categoryMap[slug] || slug;
-    navigate(`/mieten/${locationId}/${mapped}`, { replace: true });
+    navigate(`/mieten/${resolvedLocation}/${mapped}`, { replace: true });
   }, [categorySlug, locationId, navigate]);
+
+  return null;
+}
+
+/**
+ * Redirects /mieten/:locationId/alle to /mieten/:locationId
+ */
+export function LegacyAlleRedirect() {
+  const { locationId } = useParams<{ locationId: string }>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/mieten/${locationId || ""}`, { replace: true });
+  }, [locationId, navigate]);
 
   return null;
 }
