@@ -348,7 +348,7 @@ Deno.serve(async (req: Request) => {
         delivery_cost: delivery_cost,
         is_reverse_charge: isReverseCharge,
         vat_id_at_creation: profile.tax_id || null,
-        status: "open",
+        status: save_as_draft ? "draft" : "open",
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
