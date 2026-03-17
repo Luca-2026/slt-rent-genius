@@ -49,7 +49,9 @@ interface OfferRequest {
   save_prices?: boolean;
   skip_status_update?: boolean;
   deposit?: number;
-  additional_services?: { id: string; name: string; description?: string }[];
+  additional_services?: { id: string; name: string; description?: string; pricePercent?: number }[];
+  issuing_location?: string;
+  return_location?: string;
 }
 
 Deno.serve(async (req: Request) => {
