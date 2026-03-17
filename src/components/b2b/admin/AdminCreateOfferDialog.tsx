@@ -336,7 +336,9 @@ export function AdminCreateOfferDialog({
         };
       })
     );
-    setDeliveryCost(0);
+    setDeliveryCostDelivery(0);
+    setDeliveryCostReturn(0);
+    setIncludeReturn(false);
     setNotes(reservation.notes || "");
   };
 
