@@ -266,6 +266,7 @@ export function AdminCreateOfferDialog({
       setNotes("");
       setDeposit("");
       setSelectedServices(new Set());
+      setCustomServicePrices({});
       setSelectedProfileId("");
       setIssuingLocation("krefeld");
       setReturnLocation("");
