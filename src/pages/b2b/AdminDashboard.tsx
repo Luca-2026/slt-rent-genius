@@ -297,10 +297,10 @@ export default function AdminDashboard() {
                 item_type: 'service' as const,
               });
             } else if (svc.pricePercent === null || svc.pricePercent === 0) {
-              // Free services – still list them with 0€
+              // Services with no percentage - show with 0€ price
               additionalServiceItems.push({
                 product_name: svc.name,
-                description: svc.description || "Zusatzleistung (inkl.)",
+                description: svc.description || "Zusatzleistung",
                 quantity: 1,
                 unit_price: 0,
                 discount_percent: 0,
