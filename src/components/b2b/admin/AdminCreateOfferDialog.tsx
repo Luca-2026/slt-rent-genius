@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  FileText, Send, Plus, Trash2, RefreshCw, Euro, Package,
+  FileText, Send, Plus, Trash2, RefreshCw, Euro, Package, Copy,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
