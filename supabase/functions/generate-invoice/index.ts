@@ -43,6 +43,7 @@ interface InvoiceRequest {
     rental_end?: string;
     image_url?: string;
     item_type?: 'product' | 'service' | 'surcharge' | 'deposit';
+    parent_item_index?: number;
   }>;
   delivery_cost?: number;
   payment_due_days?: number;
@@ -198,6 +199,7 @@ Deno.serve(async (req: Request) => {
           rental_end: item.rental_end || reservation?.end_date || null,
           image_url: item.image_url || fallbackImageUrl || null,
           item_type: item.item_type || 'product',
+          parent_item_index: item.parent_item_index,
         };
       });
     } else if (reservation) {
@@ -290,7 +292,7 @@ Deno.serve(async (req: Request) => {
       documentNumber: invoiceNumber,
       date: invoiceDate,
       profile,
-      productItems: productItems.map((item: any) => ({
+      productItems: productItems.map((item: any, idx: number) => ({
         name: item.product_name,
         description: item.description || undefined,
         quantity: item.quantity,
@@ -299,11 +301,13 @@ Deno.serve(async (req: Request) => {
         discount: item.discount_percent,
         rentalStart: item.rental_start,
         rentalEnd: item.rental_end,
+        itemIndex: idx,
       })),
       serviceItems: serviceItems.map((item: any) => ({
         name: item.product_name,
         description: item.description || undefined,
         amount: item.total_price,
+        parentItemIndex: item.parent_item_index,
       })),
       surchargeItems: surchargeItems.map((item: any) => ({
         name: item.product_name,
@@ -782,8 +786,8 @@ async function generateDocumentPdf(data: {
   documentNumber: string;
   date: string;
   profile: any;
-  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string }>;
-  serviceItems: Array<{ name: string; description?: string; amount: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
+  serviceItems: Array<{ name: string; description?: string; amount: number; parentItemIndex?: number }>;
   surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
   signatures?: { customerData?: string; staffData?: string; staffName?: string };
@@ -910,7 +914,7 @@ async function generateDocumentPdf(data: {
   let posNum = 1;
 
   // ── Product items ──
-  data.productItems.forEach((item) => {
+  data.productItems.forEach((item, productIndex) => {
     checkPage(45);
     dt(`${posNum}`, colPos, y, font, 9);
     posNum++;
@@ -951,6 +955,27 @@ async function generateDocumentPdf(data: {
       });
     }
 
+    const linkedServices = data.serviceItems.filter((svc) => svc.parentItemIndex === productIndex);
+    linkedServices.forEach((svc) => {
+      checkPage(18);
+      const svcLines = wt(`↳ Zusatzoption: ${svc.name}`, font, 7, nameMaxW);
+      svcLines.forEach((line, li) => {
+        dt(line, colName + 8, y, font, 7, rgb(0.45, 0.45, 0.45));
+        if (li === 0 && hasPrice) {
+          dtr(fm(svc.amount), colTotal, y, font, 8, rgb(0.45, 0.45, 0.45));
+        }
+        y -= 10;
+      });
+      if (svc.description) {
+        const descLines = wt(svc.description, italic, 6.5, nameMaxW - 8);
+        descLines.forEach(line => {
+          checkPage(10);
+          dt(line, colName + 14, y, italic, 6.5, rgb(0.55, 0.55, 0.55));
+          y -= 9;
+        });
+      }
+    });
+
     y -= 3;
     page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   });
@@ -971,15 +996,16 @@ async function generateDocumentPdf(data: {
     page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   }
 
-  // ── Additional services section ──
-  if (data.serviceItems.length > 0) {
+  // ── Additional services section (only unassigned services) ──
+  const unassignedServiceItems = data.serviceItems.filter((svc) => svc.parentItemIndex == null);
+  if (unassignedServiceItems.length > 0) {
     checkPage(25);
     y -= 5;
     page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(0.96, 0.97, 0.98) });
     dt("Zusatzleistungen / Versicherungen", colName, y + 7, bold, 8, rgb(0.3, 0.3, 0.3));
     y -= 14;
 
-    data.serviceItems.forEach((svc) => {
+    unassignedServiceItems.forEach((svc) => {
       checkPage(30);
       dt(`${posNum}`, colPos, y, font, 9);
       posNum++;
@@ -1044,14 +1070,14 @@ async function generateDocumentPdf(data: {
     const tx = MG + CW * 0.55;
     const vx = W - MG;
 
-    // Subtotal items
+    // Subtotals
     const itemsSubtotal = data.productItems.reduce((s, i) => s + (i.totalPrice || 0), 0);
-    dt("Zwischensumme Positionen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+    dt("Teilsumme Mietartikel:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
     dtr(fm(itemsSubtotal), vx, y, font, 9);
     y -= 14;
 
     if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
-      dt("Anlieferung / Transport:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+      dt("Teilsumme Logistik:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
       dtr(fm(data.totals.deliveryCost), vx, y, font, 9);
       y -= 14;
     }
@@ -1059,7 +1085,7 @@ async function generateDocumentPdf(data: {
     if (data.serviceItems.length > 0) {
       const svcTotal = data.serviceItems.reduce((s, i) => s + i.amount, 0);
       if (svcTotal > 0) {
-        dt("Zusatzleistungen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+        dt("Teilsumme Zusatzoptionen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
         dtr(fm(svcTotal), vx, y, font, 9);
         y -= 14;
       }

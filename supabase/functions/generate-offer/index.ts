@@ -237,37 +237,78 @@ Deno.serve(async (req: Request) => {
 
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
 
-    // Calculate additional services surcharges
-    // Each service's percentage is calculated only against items matching its applicableCategories
+    // Calculate additional services surcharges and allocate them to matching items
+    const sanitizeServiceDescription = (description?: string | null) => {
+      if (!description) return undefined;
+      return description
+        .replace(/\s*\d+\s*%\s*des\s*Netto[^.]*\.?/gi, "")
+        .replace(/\s{2,}/g, " ")
+        .trim() || undefined;
+    };
+
     let servicesSurcharge = 0;
-    const servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; customPrice?: number }[] = [];
+    const servicesWithPrices: {
+      id: string;
+      name: string;
+      description?: string;
+      pricePercent: number | null;
+      amount: number;
+      customPrice?: number;
+      allocations: { itemIndex: number; amount: number }[];
+    }[] = [];
+
     if (additionalServices && additionalServices.length > 0) {
       for (const svc of additionalServices) {
+        const applicableIndexes = offerItems
+          .map((_, idx) => idx)
+          .filter((idx) => {
+            if (!svc.applicableCategories || svc.applicableCategories.length === 0) return true;
+            const itemCategory = items[idx]?.category_slug;
+            return !!(itemCategory && svc.applicableCategories.includes(itemCategory));
+          });
+
+        const baseForService = applicableIndexes.reduce((sum, idx) => sum + (offerItems[idx]?.total_price || 0), 0);
+
         let amount = 0;
         if (svc.customPrice && svc.customPrice > 0) {
           amount = Math.round(svc.customPrice * 100) / 100;
         } else {
           const pct = svc.pricePercent ?? null;
-          if (pct !== null) {
-            // Calculate base: only items whose category matches the service's applicableCategories
-            let base = itemsTotal; // fallback: all items
-            if (svc.applicableCategories && Array.isArray(svc.applicableCategories) && svc.applicableCategories.length > 0) {
-              base = offerItems.reduce((sum: number, item: any, idx: number) => {
-                const catSlug = items[idx]?.category_slug;
-                if (catSlug && svc.applicableCategories!.includes(catSlug)) {
-                  return sum + item.total_price;
-                }
-                // If item has no category info, don't include it in category-specific calculation
-                return sum;
-              }, 0);
-            }
-            amount = Math.round(base * (pct / 100) * 100) / 100;
+          if (pct !== null && baseForService > 0) {
+            amount = Math.round(baseForService * (pct / 100) * 100) / 100;
           }
         }
-        servicesWithPrices.push({ id: svc.id, name: svc.name, description: svc.description, pricePercent: svc.pricePercent ?? null, amount, customPrice: svc.customPrice });
+
+        const allocations: { itemIndex: number; amount: number }[] = [];
+        if (amount > 0 && applicableIndexes.length > 0 && baseForService > 0) {
+          let allocated = 0;
+          applicableIndexes.forEach((idx, pos) => {
+            const isLast = pos === applicableIndexes.length - 1;
+            const rawShare = amount * ((offerItems[idx]?.total_price || 0) / baseForService);
+            const share = isLast
+              ? Math.round((amount - allocated) * 100) / 100
+              : Math.round(rawShare * 100) / 100;
+            if (share > 0) {
+              allocations.push({ itemIndex: idx, amount: share });
+              allocated += share;
+            }
+          });
+        }
+
+        servicesWithPrices.push({
+          id: svc.id,
+          name: svc.name,
+          description: sanitizeServiceDescription(svc.description),
+          pricePercent: svc.pricePercent ?? null,
+          amount,
+          customPrice: svc.customPrice,
+          allocations,
+        });
+
         servicesSurcharge += amount;
       }
     }
+
     servicesSurcharge = Math.round(servicesSurcharge * 100) / 100;
 
     const netAmount = Math.round((itemsTotal + delivery_cost + servicesSurcharge) * 100) / 100;
@@ -738,7 +779,7 @@ async function generateOfferPdf(data: {
   deliveryCostDelivery: number;
   deliveryCostReturn: number;
   servicesSurcharge: number;
-  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number }[];
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[] }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
@@ -976,6 +1017,16 @@ async function generateOfferPdf(data: {
   const imgSize = 38; // thumbnail size in PDF
   const colNameWithImg = colName + imgSize + 6; // shift text right when image present
 
+  const servicesByItem = new Map<number, { name: string; description?: string; amount: number }[]>();
+  for (const svc of data.servicesWithPrices || []) {
+    const allocs = svc.allocations || [];
+    for (const alloc of allocs) {
+      const current = servicesByItem.get(alloc.itemIndex) || [];
+      current.push({ name: svc.name, description: svc.description, amount: alloc.amount });
+      servicesByItem.set(alloc.itemIndex, current);
+    }
+  }
+
   // ── ITEM ROWS ──
   for (let i = 0; i < data.items.length; i++) {
     ensureSpace(60);
@@ -1051,6 +1102,42 @@ async function generateOfferPdf(data: {
     drawTextRight(item.discount_percent > 0 ? item.discount_percent + "%" : "-", colDisc + 35, rowY, { s: 9 });
     drawTextRight(fmtCurrency(item.total_price), colTotal, rowY, { s: 9 });
 
+    // Additional options directly under their product row
+    const linkedServices = servicesByItem.get(i) || [];
+    for (const svc of linkedServices) {
+      subY -= 11;
+      const svcPrefix = "↳ Zusatzoption: ";
+      const svcText = safe(`${svcPrefix}${svc.name}`);
+      const svcWords = svcText.split(" ");
+      let svcLine = "";
+      let firstLine = true;
+      for (const w of svcWords) {
+        const test = svcLine + (svcLine ? " " : "") + w;
+        if (font.widthOfTextAtSize(test, 7) > maxNameWidth && svcLine) {
+          drawText(svcLine, textColName, subY, { s: 7, c: gray });
+          if (firstLine) {
+            drawTextRight(fmtCurrency(svc.amount), colTotal, subY, { s: 8, c: gray });
+            firstLine = false;
+          }
+          subY -= 10;
+          svcLine = w;
+        } else {
+          svcLine = test;
+        }
+      }
+      if (svcLine) {
+        drawText(svcLine, textColName, subY, { s: 7, c: gray });
+        if (firstLine) {
+          drawTextRight(fmtCurrency(svc.amount), colTotal, subY, { s: 8, c: gray });
+        }
+      }
+
+      if (svc.description) {
+        subY -= 10;
+        drawText(safe(svc.description), textColName + 8, subY, { s: 6.5, c: lightGray });
+      }
+    }
+
     // Use the lower of text bottom or image bottom
     const imgBottomY = embeddedImg ? (rowY - imgSize + 2) : subY;
     y = Math.min(subY, imgBottomY) - 8;
@@ -1088,24 +1175,22 @@ async function generateOfferPdf(data: {
   // ── TOTALS ──
   const totX = 340;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + item.total_price, 0);
-  drawText("Zwischensumme Ger\u00E4te:", totX, y, { s: 9, c: gray });
+  const servicesSubtotal = (data.servicesWithPrices || []).reduce((sum, svc) => sum + (svc.amount || 0), 0);
+  const deliverySubtotal = (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0);
+
+  drawText("Teilsumme Mietartikel:", totX, y, { s: 9, c: gray });
   drawTextRight(fmtCurrency(itemsTotal), pageWidth - margin, y, { s: 9 });
   y -= 14;
 
-  if (data.deliveryCostDelivery > 0) {
-    drawText("Anlieferung:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCostDelivery), pageWidth - margin, y, { s: 9 });
-    y -= 14;
-  }
-  if (data.deliveryCostReturn > 0) {
-    drawText("Rücklieferung:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.deliveryCostReturn), pageWidth - margin, y, { s: 9 });
+  if (servicesSubtotal > 0) {
+    drawText("Teilsumme Zusatzoptionen:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(servicesSubtotal), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 
-  if (data.servicesSurcharge > 0) {
-    drawText("Zusatzleistungen:", totX, y, { s: 9, c: gray });
-    drawTextRight(fmtCurrency(data.servicesSurcharge), pageWidth - margin, y, { s: 9 });
+  if (deliverySubtotal > 0) {
+    drawText("Teilsumme Logistik:", totX, y, { s: 9, c: gray });
+    drawTextRight(fmtCurrency(deliverySubtotal), pageWidth - margin, y, { s: 9 });
     y -= 14;
   }
 
@@ -1164,61 +1249,6 @@ async function generateOfferPdf(data: {
   page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: rgb(0.96, 0.62, 0.04) });
   drawText("G\u00FCltigkeit: Dieses Angebot ist g\u00FCltig bis zum " + fmtDate(data.validUntil) + " (" + data.validDays + " Tage).", margin + 10, y + 2, { s: 8 });
   y -= 35;
-
-  // ── ADDITIONAL SERVICES ──
-  if (data.servicesWithPrices && data.servicesWithPrices.length > 0) {
-    ensureSpace(50);
-    drawText("Zusatzleistungen:", margin, y, { f: fontBold, s: 10 });
-    y -= 14;
-    for (const svc of data.servicesWithPrices) {
-      ensureSpace(40);
-      // Always show the calculated price, never "inkl."
-      drawTextRight(fmtCurrency(svc.amount), pageWidth - margin, y, { s: 8, c: gray });
-      // Wrap service name to max width (leave space for price column)
-      const maxNameWidth = contentWidth - 120;
-      const nameText = safe("- " + svc.name);
-      const nameWords = nameText.split(" ");
-      let nameLine = "";
-      for (const w of nameWords) {
-        const test = nameLine + (nameLine ? " " : "") + w;
-        if (font.widthOfTextAtSize(test, 8) > maxNameWidth && nameLine) {
-          drawText(nameLine, margin + 8, y, { s: 8, c: gray });
-          y -= 11;
-          ensureSpace(20);
-          nameLine = w;
-        } else {
-          nameLine = test;
-        }
-      }
-      if (nameLine) {
-        drawText(nameLine, margin + 8, y, { s: 8, c: gray });
-        y -= 11;
-      }
-      if (svc.description) {
-        // Wrap description too
-        const maxDescWidth = contentWidth - 30;
-        const descWords = safe(svc.description).split(" ");
-        let descLine = "";
-        for (const w of descWords) {
-          const test = descLine + (descLine ? " " : "") + w;
-          if (font.widthOfTextAtSize(test, 7) > maxDescWidth && descLine) {
-            drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
-            y -= 10;
-            ensureSpace(16);
-            descLine = w;
-          } else {
-            descLine = test;
-          }
-        }
-        if (descLine) {
-          drawText(descLine, margin + 14, y, { s: 7, c: lightGray });
-          y -= 10;
-        }
-      }
-      y -= 4;
-    }
-    y -= 8;
-  }
 
   // ── NOTES ──
   const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
