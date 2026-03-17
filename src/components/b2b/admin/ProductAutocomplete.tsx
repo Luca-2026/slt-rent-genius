@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   value: string;
-  onChange: (name: string, productId: string, categorySlug: string) => void;
+  onChange: (name: string, productId: string, categorySlug: string, productDescription?: string) => void;
   location?: string;
   placeholder?: string;
   className?: string;
