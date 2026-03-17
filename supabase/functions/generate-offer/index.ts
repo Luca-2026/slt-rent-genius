@@ -112,6 +112,8 @@ Deno.serve(async (req: Request) => {
       skip_status_update = false,
       deposit = 0,
       additional_services: additionalServices,
+      issuing_location: issuingLocation,
+      return_location: returnLocation,
     } = body;
 
     if (!items || items.length === 0) {
