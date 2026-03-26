@@ -147,10 +147,10 @@ interface DeliveryCalculatorCompactProps {
 function getErdbewegungCategory(productName?: string): CategoryKey {
   if (!productName) return "1t-bagger";
   const lower = productName.toLowerCase();
-  // 2t+ class: Radlader, Knicklader, 2t+/2.7t/XE20/XE27 Bagger
-  if (/radlader|knicklader|xe20|xe27|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
-  // 3t class: 3t Bagger  
-  if (/3[.,]?\s*t/i.test(lower)) return "3t-bagger";
+  // 3t+ class: XE27 (2,7t aufgerundet), 3t+ Bagger, Bobcat E35/E50/E55
+  if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000/i.test(lower)) return "3t-bagger";
+  // 2t class: Radlader, Knicklader, XE20, 2t Bagger
+  if (/radlader|knicklader|xe20|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
   // Default: 1t (1t Bagger, Dumper, E10, small machines)
   return "1t-bagger";
 }
