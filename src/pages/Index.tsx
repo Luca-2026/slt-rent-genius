@@ -162,9 +162,9 @@ export default function Index() {
                       <span className="text-xs text-accent font-medium uppercase tracking-wide md:text-[10px] lg:text-xs">
                         {loc.subtitle}
                       </span>
-                      <h3 className="text-xl font-bold text-white md:text-base lg:text-xl">
+                      <p className="text-xl font-bold text-white md:text-base lg:text-xl">
                         {loc.name}
-                      </h3>
+                      </p>
                     </div>
                   </Link>
                   
@@ -340,7 +340,7 @@ export default function Index() {
                     <benefit.icon className="h-7 w-7 text-accent group-hover:text-accent-foreground transition-colors" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-headline mb-1">{benefit.title}</h3>
+                    <p className="font-bold text-headline mb-1">{benefit.title}</p>
                     <p className="text-sm text-muted-foreground">{benefit.text}</p>
                   </div>
                 </div>
