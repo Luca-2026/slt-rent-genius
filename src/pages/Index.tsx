@@ -68,8 +68,8 @@ export default function Index() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen, Anhänger & Event-Equipment mieten in NRW | SLT Rental"
-        description="Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen, Hüpfburgen & Event-Equipment ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung"
+        title="Baumaschinen & Equipment mieten in NRW | SLT Rental"
+        description="Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen & Event-Equipment ✓ 3 Standorte in NRW ✓ Tiefpreisgarantie ✓ Wochenend-Tarife"
         canonical="/"
         keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Arbeitsbühne mieten, Hüpfburg mieten, Event-Equipment mieten, Werkzeuge mieten, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}
@@ -162,9 +162,9 @@ export default function Index() {
                       <span className="text-xs text-accent font-medium uppercase tracking-wide md:text-[10px] lg:text-xs">
                         {loc.subtitle}
                       </span>
-                      <h3 className="text-xl font-bold text-white md:text-base lg:text-xl">
+                      <p className="text-xl font-bold text-white md:text-base lg:text-xl">
                         {loc.name}
-                      </h3>
+                      </p>
                     </div>
                   </Link>
                   
@@ -340,7 +340,7 @@ export default function Index() {
                     <benefit.icon className="h-7 w-7 text-accent group-hover:text-accent-foreground transition-colors" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-headline mb-1">{benefit.title}</h3>
+                    <p className="font-bold text-headline mb-1">{benefit.title}</p>
                     <p className="text-sm text-muted-foreground">{benefit.text}</p>
                   </div>
                 </div>
@@ -390,7 +390,7 @@ export default function Index() {
                 Die Lieferkosten berechnen Sie transparent mit unserem <Link to="/lieferung" className="text-primary hover:underline font-medium">Online-Kalkulator</Link>.
               </p>
               <p className="mt-4 sm:mt-6">
-                <strong>SLT Rental – über 1.700 Mietartikel, 3 Standorte, 1 Versprechen: Das beste Equipment zum besten Preis.</strong>
+                <strong>SLT Rental – Das beste Equipment zum besten Preis.</strong>
               </p>
             </div>
           </AnimatedSection>
