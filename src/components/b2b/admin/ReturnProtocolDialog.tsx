@@ -21,6 +21,30 @@ import {
   UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload, Gauge,
 } from "lucide-react";
 import { format } from "date-fns";
+
+interface ReturnProtocolDraft {
+  staffName: string;
+  notes: string;
+  knownDefectsFromDelivery: string;
+  additionalDefectsAtReturn: string;
+  customerNotPresent: boolean;
+  overallCondition: "good" | "minor_damage" | "major_damage";
+  conditionNotes: string;
+  damageDescription: string;
+  cleaningRequired: boolean;
+  allItemsReturned: boolean;
+  missingItemsNotes: string;
+  meterReadingStart: string;
+  meterReadingEnd: string;
+  fuelLevelStart: string;
+  fuelLevelEnd: string;
+  cleanlinessRating: number;
+}
+
+const returnProtocolDraftStore: { key: string | null; data: ReturnProtocolDraft | null } = {
+  key: null,
+  data: null,
+};
 import { de } from "date-fns/locale";
 
 interface Reservation {

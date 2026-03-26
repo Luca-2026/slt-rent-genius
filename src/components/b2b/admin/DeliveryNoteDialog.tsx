@@ -259,6 +259,9 @@ export function DeliveryNoteDialog({
       setOperatingHours("");
       setFuelLevel("");
       setCleanlinessRating(0);
+      deliveryNoteDraftStore.key = null;
+      deliveryNoteDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
