@@ -119,6 +119,49 @@ export function ReturnProtocolDialog({
   const [fuelLevelEnd, setFuelLevelEnd] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
   const [currentTime] = useState(new Date());
+  const lastInitKey = useRef<string | null>(null);
+
+  // Save draft on every relevant state change
+  const saveDraft = useCallback(() => {
+    const contextKey = reservation?.id || "standalone";
+    returnProtocolDraftStore.key = contextKey;
+    returnProtocolDraftStore.data = {
+      staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn,
+      customerNotPresent, overallCondition, conditionNotes, damageDescription,
+      cleaningRequired, allItemsReturned, missingItemsNotes,
+      meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating,
+    };
+  }, [reservation?.id, staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn, customerNotPresent, overallCondition, conditionNotes, damageDescription, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating]);
+
+  useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  // Restore draft when dialog opens
+  useEffect(() => {
+    if (!open || !reservation) return;
+    const contextKey = reservation.id;
+    if (lastInitKey.current === contextKey) return;
+    lastInitKey.current = contextKey;
+
+    if (returnProtocolDraftStore.key === contextKey && returnProtocolDraftStore.data) {
+      const d = returnProtocolDraftStore.data;
+      setStaffName(d.staffName);
+      setNotes(d.notes);
+      setKnownDefectsFromDelivery(d.knownDefectsFromDelivery);
+      setAdditionalDefectsAtReturn(d.additionalDefectsAtReturn);
+      setCustomerNotPresent(d.customerNotPresent);
+      setOverallCondition(d.overallCondition);
+      setConditionNotes(d.conditionNotes);
+      setDamageDescription(d.damageDescription);
+      setCleaningRequired(d.cleaningRequired);
+      setAllItemsReturned(d.allItemsReturned);
+      setMissingItemsNotes(d.missingItemsNotes);
+      setMeterReadingStart(d.meterReadingStart);
+      setMeterReadingEnd(d.meterReadingEnd);
+      setFuelLevelStart(d.fuelLevelStart);
+      setFuelLevelEnd(d.fuelLevelEnd);
+      setCleanlinessRating(d.cleanlinessRating);
+    }
+  }, [open, reservation]);
 
   // Build items list from reservation
   const items: ItemCondition[] = reservation
