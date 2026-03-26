@@ -23,6 +23,8 @@ import {
 import { format } from "date-fns";
 
 interface ReturnProtocolDraft {
+  customerSignature: string | null;
+  staffSignature: string | null;
   staffName: string;
   notes: string;
   knownDefectsFromDelivery: string;
@@ -39,6 +41,7 @@ interface ReturnProtocolDraft {
   fuelLevelStart: string;
   fuelLevelEnd: string;
   cleanlinessRating: number;
+  itemConditions: ItemCondition[];
 }
 
 const returnProtocolDraftStore: { key: string | null; data: ReturnProtocolDraft | null } = {
@@ -121,48 +124,6 @@ export function ReturnProtocolDialog({
   const [currentTime] = useState(new Date());
   const lastInitKey = useRef<string | null>(null);
 
-  // Save draft on every relevant state change
-  const saveDraft = useCallback(() => {
-    const contextKey = reservation?.id || "standalone";
-    returnProtocolDraftStore.key = contextKey;
-    returnProtocolDraftStore.data = {
-      staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn,
-      customerNotPresent, overallCondition, conditionNotes, damageDescription,
-      cleaningRequired, allItemsReturned, missingItemsNotes,
-      meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating,
-    };
-  }, [reservation?.id, staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn, customerNotPresent, overallCondition, conditionNotes, damageDescription, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating]);
-
-  useEffect(() => { saveDraft(); }, [saveDraft]);
-
-  // Restore draft when dialog opens
-  useEffect(() => {
-    if (!open || !reservation) return;
-    const contextKey = reservation.id;
-    if (lastInitKey.current === contextKey) return;
-    lastInitKey.current = contextKey;
-
-    if (returnProtocolDraftStore.key === contextKey && returnProtocolDraftStore.data) {
-      const d = returnProtocolDraftStore.data;
-      setStaffName(d.staffName);
-      setNotes(d.notes);
-      setKnownDefectsFromDelivery(d.knownDefectsFromDelivery);
-      setAdditionalDefectsAtReturn(d.additionalDefectsAtReturn);
-      setCustomerNotPresent(d.customerNotPresent);
-      setOverallCondition(d.overallCondition);
-      setConditionNotes(d.conditionNotes);
-      setDamageDescription(d.damageDescription);
-      setCleaningRequired(d.cleaningRequired);
-      setAllItemsReturned(d.allItemsReturned);
-      setMissingItemsNotes(d.missingItemsNotes);
-      setMeterReadingStart(d.meterReadingStart);
-      setMeterReadingEnd(d.meterReadingEnd);
-      setFuelLevelStart(d.fuelLevelStart);
-      setFuelLevelEnd(d.fuelLevelEnd);
-      setCleanlinessRating(d.cleanlinessRating);
-    }
-  }, [open, reservation]);
-
   // Build items list from reservation
   const items: ItemCondition[] = reservation
     ? [
@@ -177,8 +138,8 @@ export function ReturnProtocolDialog({
 
   const [itemConditions, setItemConditions] = useState<ItemCondition[]>(items);
 
-  // Reset when reservation changes
-  const resetForm = () => {
+  // Reset form for current reservation context
+  const resetForm = useCallback(() => {
     setCustomerNotPresent(false);
     setCustomerSignature(null);
     setStaffSignature(null);
@@ -198,6 +159,7 @@ export function ReturnProtocolDialog({
     setFuelLevelStart("");
     setFuelLevelEnd("");
     setCleanlinessRating(0);
+
     if (reservation) {
       setItemConditions([
         {
@@ -207,8 +169,79 @@ export function ReturnProtocolDialog({
           condition_notes: "",
         },
       ]);
+      return;
     }
-  };
+
+    setItemConditions([]);
+  }, [reservation]);
+
+  // Save draft on every relevant state change
+  const saveDraft = useCallback(() => {
+    if (!open || !reservation) return;
+    const contextKey = reservation.id;
+    returnProtocolDraftStore.key = contextKey;
+    returnProtocolDraftStore.data = {
+      customerSignature,
+      staffSignature,
+      staffName,
+      notes,
+      knownDefectsFromDelivery,
+      additionalDefectsAtReturn,
+      customerNotPresent,
+      overallCondition,
+      conditionNotes,
+      damageDescription,
+      cleaningRequired,
+      allItemsReturned,
+      missingItemsNotes,
+      meterReadingStart,
+      meterReadingEnd,
+      fuelLevelStart,
+      fuelLevelEnd,
+      cleanlinessRating,
+      itemConditions,
+    };
+  }, [open, reservation, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn, customerNotPresent, overallCondition, conditionNotes, damageDescription, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, itemConditions]);
+
+  useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  useEffect(() => {
+    if (!open) lastInitKey.current = null;
+  }, [open]);
+
+  // Restore draft when dialog opens
+  useEffect(() => {
+    if (!open || !reservation) return;
+    const contextKey = reservation.id;
+    if (lastInitKey.current === contextKey) return;
+    lastInitKey.current = contextKey;
+
+    if (returnProtocolDraftStore.key === contextKey && returnProtocolDraftStore.data) {
+      const d = returnProtocolDraftStore.data;
+      setCustomerSignature(d.customerSignature);
+      setStaffSignature(d.staffSignature);
+      setStaffName(d.staffName);
+      setNotes(d.notes);
+      setKnownDefectsFromDelivery(d.knownDefectsFromDelivery);
+      setAdditionalDefectsAtReturn(d.additionalDefectsAtReturn);
+      setCustomerNotPresent(d.customerNotPresent);
+      setOverallCondition(d.overallCondition);
+      setConditionNotes(d.conditionNotes);
+      setDamageDescription(d.damageDescription);
+      setCleaningRequired(d.cleaningRequired);
+      setAllItemsReturned(d.allItemsReturned);
+      setMissingItemsNotes(d.missingItemsNotes);
+      setMeterReadingStart(d.meterReadingStart);
+      setMeterReadingEnd(d.meterReadingEnd);
+      setFuelLevelStart(d.fuelLevelStart);
+      setFuelLevelEnd(d.fuelLevelEnd);
+      setCleanlinessRating(d.cleanlinessRating);
+      setItemConditions(d.itemConditions);
+      return;
+    }
+
+    resetForm();
+  }, [open, reservation, resetForm]);
 
   const updateItemCondition = (index: number, field: keyof ItemCondition, value: string) => {
     setItemConditions((prev) => {
@@ -358,7 +391,7 @@ export function ReturnProtocolDialog({
   const allValid = (customerNotPresent || !!customerSignature) && !!staffSignature && !!staffName.trim();
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) resetForm(); }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100vw-1.5rem)] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

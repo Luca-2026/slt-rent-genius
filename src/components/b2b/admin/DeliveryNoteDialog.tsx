@@ -23,6 +23,8 @@ import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
 
 interface DeliveryNoteDraft {
+  customerSignature: string | null;
+  staffSignature: string | null;
   staffName: string;
   notes: string;
   knownDefects: string;
@@ -97,18 +99,50 @@ export function DeliveryNoteDialog({
 
   const lastInitKey = useRef<string | null>(null);
 
+  const resetForm = useCallback(() => {
+    setCustomerSignature(null);
+    setCustomerNotPresent(false);
+    setStaffSignature(null);
+    setStaffName("");
+    setNotes("");
+    setKnownDefects("");
+    setAdditionalDefects("");
+    setDefectPhotos([]);
+    setAgbAccepted(false);
+    setOfferAccepted(false);
+    setItemsReceived(false);
+    setOperatingHours("");
+    setFuelLevel("");
+    setCleanlinessRating(0);
+  }, []);
+
   // Save draft on every relevant state change
   const saveDraft = useCallback(() => {
-    const contextKey = offer?.id || "standalone";
+    if (!open || !offer) return;
+    const contextKey = offer.id;
     deliveryNoteDraftStore.key = contextKey;
     deliveryNoteDraftStore.data = {
-      staffName, notes, knownDefects, additionalDefects,
-      customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
-      operatingHours, fuelLevel, cleanlinessRating,
+      customerSignature,
+      staffSignature,
+      staffName,
+      notes,
+      knownDefects,
+      additionalDefects,
+      customerNotPresent,
+      agbAccepted,
+      offerAccepted,
+      itemsReceived,
+      operatingHours,
+      fuelLevel,
+      cleanlinessRating,
     };
-  }, [offer?.id, staffName, notes, knownDefects, additionalDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, operatingHours, fuelLevel, cleanlinessRating]);
+  }, [open, offer, customerSignature, staffSignature, staffName, notes, knownDefects, additionalDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, operatingHours, fuelLevel, cleanlinessRating]);
 
   useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  useEffect(() => {
+    if (!open) lastInitKey.current = null;
+  }, [open]);
 
   // Restore draft when dialog opens
   useEffect(() => {
@@ -119,6 +153,8 @@ export function DeliveryNoteDialog({
 
     if (deliveryNoteDraftStore.key === contextKey && deliveryNoteDraftStore.data) {
       const d = deliveryNoteDraftStore.data;
+      setCustomerSignature(d.customerSignature);
+      setStaffSignature(d.staffSignature);
       setStaffName(d.staffName);
       setNotes(d.notes);
       setKnownDefects(d.knownDefects);
@@ -130,8 +166,11 @@ export function DeliveryNoteDialog({
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
+      return;
     }
-  }, [open, offer]);
+
+    resetForm();
+  }, [open, offer, resetForm]);
 
   // Update timestamp every second while dialog is open
   useState(() => {
@@ -245,20 +284,7 @@ export function DeliveryNoteDialog({
         });
       }
 
-      setCustomerSignature(null);
-      setCustomerNotPresent(false);
-      setStaffSignature(null);
-      setStaffName("");
-      setNotes("");
-      setKnownDefects("");
-      setAdditionalDefects("");
-      setDefectPhotos([]);
-      setAgbAccepted(false);
-      setOfferAccepted(false);
-      setItemsReceived(false);
-      setOperatingHours("");
-      setFuelLevel("");
-      setCleanlinessRating(0);
+      resetForm();
       deliveryNoteDraftStore.key = null;
       deliveryNoteDraftStore.data = null;
       lastInitKey.current = null;
