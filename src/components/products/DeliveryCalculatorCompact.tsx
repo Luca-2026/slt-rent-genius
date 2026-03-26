@@ -14,7 +14,19 @@ const deliveryPrices = {
     name: "1t Bagger, Dumper & 8m Scherenbühne",
     multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 70 },
+      { km: 15, brutto: 75 },
+      { km: 20, brutto: 90 },
+      { km: 25, brutto: 99 },
+      { km: 30, brutto: 115 },
+      { km: 35, brutto: 130 },
+      { km: 50, brutto: 155 },
+    ],
+  },
+  "zwangsmischer": {
+    name: "Zwangsmischer / Häcksler / Steinsäge / Fugenschneider",
+    multiplier: 1,
+    distances: [
+      { km: 15, brutto: 75 },
       { km: 20, brutto: 90 },
       { km: 25, brutto: 99 },
       { km: 30, brutto: 115 },
@@ -26,24 +38,24 @@ const deliveryPrices = {
     name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
     multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 80 },
-      { km: 20, brutto: 99 },
-      { km: 25, brutto: 115 },
-      { km: 30, brutto: 130 },
-      { km: 35, brutto: 155 },
-      { km: 50, brutto: 180 },
-    ],
-  },
-  "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
-    multiplier: 1.7,
-    distances: [
       { km: 15, brutto: 90 },
       { km: 20, brutto: 109 },
       { km: 25, brutto: 125 },
       { km: 30, brutto: 139 },
       { km: 35, brutto: 150 },
       { km: 50, brutto: 165 },
+    ],
+  },
+  "3t-bagger": {
+    name: "3t Bagger & 12m Scherenbühne",
+    multiplier: 1.7,
+    distances: [
+      { km: 15, brutto: 80 },
+      { km: 20, brutto: 99 },
+      { km: 25, brutto: 115 },
+      { km: 30, brutto: 130 },
+      { km: 35, brutto: 155 },
+      { km: 50, brutto: 180 },
     ],
   },
   "geruest": {
@@ -79,6 +91,7 @@ type CategoryKey = keyof typeof deliveryPrices;
 // All category options for the dropdown (use i18n keys)
 const allCategoryKeys: { value: CategoryKey; labelKey: string }[] = [
   { value: "1t-bagger", labelKey: "rental.cat1tBagger" },
+  { value: "zwangsmischer", labelKey: "rental.catZwangsmischer" },
   { value: "2t-bagger", labelKey: "rental.cat2tBagger" },
   { value: "3t-bagger", labelKey: "rental.cat3tBagger" },
   { value: "geruest", labelKey: "rental.catScaffolding" },
@@ -98,6 +111,8 @@ const categoryMapping: Record<string, CategoryKey> = {
   "erdbewegung": "1t-bagger",
   // Verdichtung (Rüttelplatten etc.)
   "verdichtung": "1t-bagger",
+  // Werkzeuge (Zwangsmischer, Häcksler, Steinsäge, Fugenschneider)
+  "werkzeuge": "zwangsmischer",
   // Arbeitsbühnen
   "arbeitsbuehnen": "2t-bagger",
   // Gerüste & Leitern
