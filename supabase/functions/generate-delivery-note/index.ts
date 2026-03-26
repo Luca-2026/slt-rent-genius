@@ -246,6 +246,25 @@ Deno.serve(async (req: Request) => {
     const germanDate = getGermanDateString();
     const germanDateTime = getGermanDateTimeString();
 
+    // Convert storage paths to signed URLs for photos
+    const resolvedPhotoUrls: string[] = [];
+    if (photo_urls && photo_urls.length > 0) {
+      for (const photoPath of photo_urls) {
+        // If it's already a full URL (legacy), keep it
+        if (photoPath.startsWith("http")) {
+          resolvedPhotoUrls.push(photoPath);
+        } else {
+          // Generate signed URL from storage path using service client
+          const { data: signedData } = await serviceClient.storage
+            .from("b2b-documents")
+            .createSignedUrl(photoPath, 60 * 60 * 24 * 365); // 1 year
+          if (signedData?.signedUrl) {
+            resolvedPhotoUrls.push(signedData.signedUrl);
+          }
+        }
+      }
+    }
+
     const html = generateDeliveryNoteHtml({
       deliveryNoteNumber,
       date: germanDate,
@@ -261,7 +280,7 @@ Deno.serve(async (req: Request) => {
       knownDefects: known_defects || null,
       additionalDefects: additional_defects || null,
       agbAccepted: agb_accepted,
-      photoUrls: photo_urls || [],
+      photoUrls: resolvedPhotoUrls,
       operatingHours: operating_hours || null,
       fuelLevel: fuel_level || null,
       cleanlinessRating: cleanliness_rating || null,
