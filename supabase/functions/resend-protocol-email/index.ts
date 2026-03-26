@@ -283,10 +283,40 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Invalid type" }), { status: 400, headers: corsHeaders });
     }
 
+    // Determine CC based on customer's assigned location
+    let ccEmail: string | null = null;
+    // We need the profile for location - fetch it if not already available
+    let profileForLocation: any = null;
+    if (type === "delivery_note" || type === "delivery_note_signature_request") {
+      const { data: dn } = await serviceClient.from("b2b_delivery_notes").select("b2b_profile_id").eq("id", id).single();
+      if (dn) {
+        const { data: p } = await serviceClient.from("b2b_profiles").select("assigned_location").eq("id", dn.b2b_profile_id).single();
+        profileForLocation = p;
+      }
+    } else if (type === "return_protocol" || type === "return_protocol_signature_request") {
+      const { data: rp } = await serviceClient.from("b2b_return_protocols").select("b2b_profile_id").eq("id", id).single();
+      if (rp) {
+        const { data: p } = await serviceClient.from("b2b_profiles").select("assigned_location").eq("id", rp.b2b_profile_id).single();
+        profileForLocation = p;
+      }
+    }
+
+    const locationEmailMap: Record<string, string> = {
+      krefeld: "krefeld@slt-rental.de",
+      bonn: "bonn@slt-rental.de",
+      muelheim: "muelheim@slt-rental.de",
+    };
+    if (profileForLocation?.assigned_location) {
+      ccEmail = locationEmailMap[profileForLocation.assigned_location] || "krefeld@slt-rental.de";
+    } else {
+      ccEmail = "krefeld@slt-rental.de";
+    }
+
     // Build email payload
     const emailPayload: any = {
       from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
       to: [recipientEmail],
+      cc: [ccEmail],
       subject: emailSubject,
       html: emailHtml,
     };
