@@ -124,6 +124,17 @@ export const localAreas: LocalArea[] = [
     description: "Baumaschinen mieten in Kaarst. SLT Rental Krefeld ist nur 10 km entfernt und bietet Anhänger, Bagger und mehr.",
     keywords: ["Baumaschinen mieten Kaarst", "Anhänger mieten Kaarst", "Bagger Kaarst"],
   },
+  {
+    slug: "duesseldorf",
+    name: "Düsseldorf",
+    region: "Rheinland",
+    locationId: "krefeld",
+    distance: 20,
+    population: 620000,
+    postalCodes: ["40210", "40211", "40212", "40213", "40215", "40217", "40219", "40221", "40223", "40225", "40227", "40229", "40231", "40233", "40235", "40237", "40239"],
+    description: "Baumaschinen & Anhänger mieten für Düsseldorf ✓ Minibagger, Dumper, Arbeitsbühnen ✓ Lieferung aus SLT Rental Krefeld ✓ Auch Mülheim in der Nähe ✓ Tiefpreisgarantie",
+    keywords: ["Baumaschinen mieten Düsseldorf", "Anhänger mieten Düsseldorf", "Bagger mieten Düsseldorf", "Dumper mieten Düsseldorf", "Arbeitsbühne mieten Düsseldorf", "Minibagger Düsseldorf"],
+  },
 
   // === BONN (53179) - 15km radius ===
   {
