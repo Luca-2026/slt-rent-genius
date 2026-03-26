@@ -147,12 +147,17 @@ interface DeliveryCalculatorCompactProps {
 function getErdbewegungCategory(productName?: string): CategoryKey {
   if (!productName) return "1t-bagger";
   const lower = productName.toLowerCase();
-  // 3t+ class: XE27 (2,7t aufgerundet), 3t+ Bagger, Bobcat E35/E50/E55
   if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000/i.test(lower)) return "3t-bagger";
-  // 2t class: Radlader, Knicklader, XE20, 2t Bagger
   if (/radlader|knicklader|xe20|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
-  // Default: 1t (1t Bagger, Dumper, E10, small machines)
   return "1t-bagger";
+}
+
+// Override category based on specific product name (e.g. Häcksler in gartenpflege → zwangsmischer tariff)
+function getProductOverrideCategory(productName?: string): CategoryKey | null {
+  if (!productName) return null;
+  const lower = productName.toLowerCase();
+  if (/häcksler|haecksler|baumstumpf|fugenschneider|zwangsmischer|steinsäge|steinsaege/i.test(lower)) return "zwangsmischer";
+  return null;
 }
 
 export function DeliveryCalculatorCompact({ 
@@ -169,12 +174,13 @@ export function DeliveryCalculatorCompact({
   // Show all categories when showAllCategories is true (for "alle" page)
   const showCategoryDropdown = showAllCategories || isErdbewegung;
   
-  // Determine initial category based on product
-  const initialCategory = isErdbewegung
-    ? getErdbewegungCategory(productName)
-    : productCategoryId 
-      ? categoryMapping[productCategoryId] || "2t-bagger"
-      : "2t-bagger";
+  // Determine initial category based on product (with product-name override)
+  const initialCategory = (() => {
+    const override = getProductOverrideCategory(productName);
+    if (override) return override;
+    if (isErdbewegung) return getErdbewegungCategory(productName);
+    return productCategoryId ? categoryMapping[productCategoryId] || "2t-bagger" : "2t-bagger";
+  })();
     
   const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
   const [distance, setDistance] = useState(20);
