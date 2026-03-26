@@ -65,6 +65,19 @@ function stripNoteTags(text: string): string {
   return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
 }
 
+/** Parse [DELADDR:street|postal_code|city] from notes */
+function parseDeliveryAddress(notes: string | null): { street: string; postal_code: string; city: string } | null {
+  if (!notes) return null;
+  const match = notes.match(/\[DELADDR:([^\]]*)\]/i);
+  if (!match) return null;
+  const parts = match[1].split("|");
+  const street = (parts[0] || "").trim();
+  const postal_code = (parts[1] || "").trim();
+  const city = (parts[2] || "").trim();
+  if (!street && !city) return null;
+  return { street, postal_code, city };
+}
+
 interface DeliveryNoteRequest {
   signature_data: string | null;
   staff_signature_data: string;
