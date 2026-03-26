@@ -65,8 +65,8 @@ if (!$isBot) {
 // ── Page Meta Data Map ──────────────────────────────────────
 $pages = [
     '/' => [
-        'title' => 'Baumaschinen, Anhänger & Event-Equipment mieten in NRW | SLT Rental',
-        'description' => 'Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen, Hüpfburgen & Event-Equipment ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung',
+        'title' => 'Baumaschinen & Equipment mieten in NRW | SLT Rental',
+        'description' => 'Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen & Event-Equipment ✓ 3 Standorte in NRW ✓ Tiefpreisgarantie ✓ Wochenend-Tarife',
     ],
     '/mieten' => [
         'title' => 'Equipment mieten in NRW – Standort wählen | SLT Rental',
@@ -273,7 +273,7 @@ if (!$meta && preg_match('#^/standorte/(krefeld|bonn|muelheim)$#', $path, $m)) {
 // Fallback
 if (!$meta) {
     $meta = [
-        'title' => 'Baumaschinen, Anhänger & Event-Equipment mieten in NRW | SLT Rental',
+        'title' => 'Baumaschinen & Equipment mieten in NRW | SLT Rental',
         'description' => 'Über 1.700 Mietartikel ✓ 3 Standorte in NRW ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Lieferung möglich',
     ];
 }
