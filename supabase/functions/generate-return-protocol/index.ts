@@ -547,6 +547,7 @@ function generateReturnProtocolHtml(data: {
   photoUrls: string[];
   notes: string | null;
   deliveryNoteNumber: string | null;
+  deliveryAddress: { street: string; postal_code: string; city: string } | null;
 }): string {
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr + "T00:00:00");
