@@ -204,6 +204,23 @@ Deno.serve(async (req: Request) => {
     const returnProtocolNumber = rpNumber as string;
     console.log("Return protocol number:", returnProtocolNumber);
 
+    // Convert storage paths to signed URLs for photos
+    const resolvedPhotoUrls: string[] = [];
+    if (photo_urls && photo_urls.length > 0) {
+      for (const photoPath of photo_urls) {
+        if (photoPath.startsWith("http")) {
+          resolvedPhotoUrls.push(photoPath);
+        } else {
+          const { data: signedData } = await serviceClient.storage
+            .from("b2b-documents")
+            .createSignedUrl(photoPath, 60 * 60 * 24 * 365);
+          if (signedData?.signedUrl) {
+            resolvedPhotoUrls.push(signedData.signedUrl);
+          }
+        }
+      }
+    }
+
     // Generate HTML document
     const html = generateReturnProtocolHtml({
       returnProtocolNumber,
@@ -227,7 +244,7 @@ Deno.serve(async (req: Request) => {
       cleanlinessRating: cleanliness_rating || null,
       knownDefectsFromDelivery: known_defects_from_delivery || null,
       additionalDefectsAtReturn: additional_defects_at_return || null,
-      photoUrls: photo_urls || [],
+      photoUrls: resolvedPhotoUrls,
       notes: notes || null,
       deliveryNoteNumber: deliveryNote?.delivery_note_number || null,
     });
@@ -281,7 +298,7 @@ Deno.serve(async (req: Request) => {
         meter_reading_end: meter_reading_end || null,
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
-        photo_urls: photo_urls || [],
+        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []),
         customer_signature_data: customer_not_present ? null : customer_signature_data,
         staff_signature_data,
         staff_name,
@@ -418,7 +435,7 @@ Deno.serve(async (req: Request) => {
         Das vollständige Rückgabeprotokoll mit Unterschriften finden Sie als Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://slt-rent-genius.lovable.app/b2b/dashboard" 
+        <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" 
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal →
         </a>
@@ -802,10 +819,12 @@ function generateReturnProtocolHtml(data: {
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Rückgabe bestätigt durch Mieter:</p>
         <div style="height:100px;margin-bottom:4px;">
-          <img src="${data.customerSignatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />
+          ${data.customerSignatureData 
+            ? `<img src="${data.customerSignatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />`
+            : `<p style="color:#999;font-size:11px;font-style:italic;padding-top:30px;">Ausstehend – Kunde nicht vor Ort</p>`}
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">${dateTimeStr} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
+        <p style="font-size:11px;color:#595959;">${data.customerSignatureData ? dateTimeStr + ' · ' : ''}${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
         <p style="font-size:10px;color:#999;">Vertretungsberechtigte Person, ${escapeHtml(data.profile.company_name)}</p>
       </div>
     </div>
