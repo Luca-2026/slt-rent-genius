@@ -181,7 +181,7 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
                         <span className="text-xs font-bold text-accent uppercase tracking-wider mb-2 block">
                           {t("steps.step")} {step.number}
                         </span>
-                        <h3 className="font-bold text-headline text-lg mb-2">{step.title}</h3>
+                        <p className="font-bold text-headline text-lg mb-2">{step.title}</p>
                         <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
 
                         {step.cta && (
