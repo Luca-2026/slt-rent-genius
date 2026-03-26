@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2 } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2, Undo2 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -67,6 +67,7 @@ interface Props {
   onCreateInvoice: (offer: Offer) => void;
   onCreateProformaInvoice: (offer: Offer) => void;
   onCreateDeliveryNote: (offer: Offer) => void;
+  onCreateReturnProtocol: (offer: Offer) => void;
   onCreateOffer: () => void;
   onDelete: (offerId: string) => void;
   resendingId: string | null;
@@ -83,6 +84,7 @@ export function AdminOffersTab({
   onCreateInvoice,
   onCreateProformaInvoice,
   onCreateDeliveryNote,
+  onCreateReturnProtocol,
   onCreateOffer,
   onDelete,
   resendingId,
@@ -202,27 +204,34 @@ export function AdminOffersTab({
                               <Eye className="h-4 w-4" />
                             </Button>
                           )}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => onCreateDeliveryNote(offer)}
+                            title="Übergabeprotokoll erstellen"
+                            className="text-green-600"
+                          >
+                            <ClipboardCheck className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => onCreateReturnProtocol(offer)}
+                            title="Rückgabeprotokoll erstellen"
+                            className="text-amber-600"
+                          >
+                            <Undo2 className="h-4 w-4" />
+                          </Button>
                           {offer.status === "accepted" && (
-                            <>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => onCreateDeliveryNote(offer)}
-                                title="Übergabeprotokoll erstellen"
-                                className="text-green-600"
-                              >
-                                <ClipboardCheck className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => onCreateInvoice(offer)}
-                                title="Rechnung erstellen"
-                                className="text-primary"
-                              >
-                                <Receipt className="h-4 w-4" />
-                              </Button>
-                            </>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onCreateInvoice(offer)}
+                              title="Rechnung erstellen"
+                              className="text-primary"
+                            >
+                              <Receipt className="h-4 w-4" />
+                            </Button>
                           )}
                           {(offer.status === "sent" || offer.status === "accepted" || isDraft) && isNoCreditLimit && (
                             <Button
