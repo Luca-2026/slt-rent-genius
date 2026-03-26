@@ -331,7 +331,7 @@ Deno.serve(async (req: Request) => {
         notes: notes || null,
         known_defects: known_defects || null,
         additional_defects: additional_defects || null,
-        photo_urls: photo_urls || [],
+        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []),
         signed_at: customer_not_present ? null : now,
         agb_accepted: customer_not_present ? false : agb_accepted,
         agb_accepted_at: (!customer_not_present && agb_accepted) ? now : null,
