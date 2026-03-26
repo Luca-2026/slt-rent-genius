@@ -1053,6 +1053,24 @@ export default function AdminDashboard() {
               setDeliveryNoteOffer(offer);
               setDeliveryNoteOpen(true);
             }}
+            onCreateReturnProtocol={(offer) => {
+              // Find existing reservation for this offer
+              if (offer.reservation_id) {
+                const res = reservations.find((r) => r.id === offer.reservation_id);
+                if (res) {
+                  setReturnProtocolReservation(res);
+                  setReturnProtocolOpen(true);
+                } else {
+                  toast({ title: "Fehler", description: "Verknüpfte Reservierung nicht gefunden.", variant: "destructive" });
+                }
+              } else {
+                // No reservation yet – admin must create delivery note first (which auto-creates reservation)
+                toast({
+                  title: "Hinweis",
+                  description: "Bitte erstellen Sie zunächst ein Übergabeprotokoll. Dabei wird automatisch ein Mietvorgang angelegt, der für das Rückgabeprotokoll benötigt wird.",
+                });
+              }
+            }}
             onCreateOffer={() => {
               setSelectedReservation(null);
               setEditingOffer(null);
