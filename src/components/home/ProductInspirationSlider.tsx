@@ -120,9 +120,9 @@ export function ProductInspirationSlider() {
                     />
                   </div>
                   <CardContent className="p-4 flex-1 flex flex-col">
-                    <h3 className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-accent transition-colors">
+                    <p className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-accent transition-colors">
                       {product.name}
-                    </h3>
+                    </p>
                     <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
                       {product.description || ""}
                     </p>

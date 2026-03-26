@@ -72,9 +72,9 @@ export function ServicesSection() {
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                     <service.icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-headline mb-2">
+                  <p className="font-bold text-headline mb-2">
                     {service.title}
-                  </h3>
+                  </p>
                   <p className="text-sm text-muted-foreground leading-relaxed flex-1">
                     {service.description}
                   </p>
