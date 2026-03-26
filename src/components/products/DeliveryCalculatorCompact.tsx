@@ -140,13 +140,27 @@ interface DeliveryCalculatorCompactProps {
   showAllCategories?: boolean;
   className?: string;
   categoryDisplayName?: string;
+  productName?: string;
+}
+
+// Determine the right delivery category for erdbewegung products based on name
+function getErdbewegungCategory(productName?: string): CategoryKey {
+  if (!productName) return "1t-bagger";
+  const lower = productName.toLowerCase();
+  // 2t+ class: Radlader, Knicklader, 2t+/2.7t/XE20/XE27 Bagger
+  if (/radlader|knicklader|xe20|xe27|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
+  // 3t class: 3t Bagger  
+  if (/3[.,]?\s*t/i.test(lower)) return "3t-bagger";
+  // Default: 1t (1t Bagger, Dumper, E10, small machines)
+  return "1t-bagger";
 }
 
 export function DeliveryCalculatorCompact({ 
   productCategoryId,
   showAllCategories = false,
   className = "",
-  categoryDisplayName
+  categoryDisplayName,
+  productName
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
   // Determine if this is erdbewegung category (show machine type selector)
@@ -156,9 +170,11 @@ export function DeliveryCalculatorCompact({
   const showCategoryDropdown = showAllCategories || isErdbewegung;
   
   // Determine initial category based on product
-  const initialCategory = productCategoryId 
-    ? categoryMapping[productCategoryId] || "2t-bagger"
-    : "2t-bagger";
+  const initialCategory = isErdbewegung
+    ? getErdbewegungCategory(productName)
+    : productCategoryId 
+      ? categoryMapping[productCategoryId] || "2t-bagger"
+      : "2t-bagger";
     
   const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
   const [distance, setDistance] = useState(20);
