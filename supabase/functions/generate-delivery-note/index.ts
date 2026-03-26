@@ -65,6 +65,19 @@ function stripNoteTags(text: string): string {
   return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
 }
 
+/** Parse [DELADDR:street|postal_code|city] from notes */
+function parseDeliveryAddress(notes: string | null): { street: string; postal_code: string; city: string } | null {
+  if (!notes) return null;
+  const match = notes.match(/\[DELADDR:([^\]]*)\]/i);
+  if (!match) return null;
+  const parts = match[1].split("|");
+  const street = (parts[0] || "").trim();
+  const postal_code = (parts[1] || "").trim();
+  const city = (parts[2] || "").trim();
+  if (!street && !city) return null;
+  return { street, postal_code, city };
+}
+
 interface DeliveryNoteRequest {
   signature_data: string | null;
   staff_signature_data: string;
@@ -268,6 +281,9 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Parse delivery address from offer notes
+    const deliveryAddress = parseDeliveryAddress(offer.notes);
+
     const html = generateDeliveryNoteHtml({
       deliveryNoteNumber,
       date: germanDate,
@@ -287,6 +303,7 @@ Deno.serve(async (req: Request) => {
       operatingHours: operating_hours || null,
       fuelLevel: fuel_level || null,
       cleanlinessRating: cleanliness_rating || null,
+      deliveryAddress,
     });
 
     // File name updated to Übergabeprotokoll
@@ -567,6 +584,7 @@ function generateDeliveryNoteHtml(data: {
   operatingHours: string | null;
   fuelLevel: string | null;
   cleanlinessRating: number | null;
+  deliveryAddress: { street: string; postal_code: string; city: string } | null;
 }): string {
   const itemRows = data.items
     .map(
@@ -646,6 +664,12 @@ function generateDeliveryNoteHtml(data: {
         <p style="font-size:13px;">${escapeHtml(data.profile.street)}${data.profile.house_number ? " " + escapeHtml(data.profile.house_number) : ""}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.postal_code)} ${escapeHtml(data.profile.city)}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.country || "Deutschland")}</p>
+        ${data.deliveryAddress ? `
+        <div style="margin-top:8px;padding-top:6px;border-top:1px solid #e5e7eb;">
+          <p style="font-size:11px;color:#595959;font-weight:600;margin-bottom:2px;">📍 Lieferadresse:</p>
+          ${data.deliveryAddress.street ? `<p style="font-size:13px;">${escapeHtml(data.deliveryAddress.street)}</p>` : ""}
+          <p style="font-size:13px;">${[data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(" ")}</p>
+        </div>` : ""}
       </div>
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">

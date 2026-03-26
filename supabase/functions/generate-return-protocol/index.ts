@@ -189,6 +189,17 @@ Deno.serve(async (req: Request) => {
       .limit(1)
       .maybeSingle();
 
+    // Find linked offer to get delivery address
+    const { data: linkedOffer } = await serviceClient
+      .from("b2b_offers")
+      .select("notes")
+      .eq("reservation_id", reservation_id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const deliveryAddress = parseDeliveryAddress(linkedOffer?.notes || null);
+
     // Generate return protocol number
     const { data: rpNumber, error: numError } = await serviceClient
       .rpc("generate_return_protocol_number");
@@ -247,6 +258,7 @@ Deno.serve(async (req: Request) => {
       photoUrls: resolvedPhotoUrls,
       notes: notes || null,
       deliveryNoteNumber: deliveryNote?.delivery_note_number || null,
+      deliveryAddress,
     });
 
     // Upload HTML to storage
@@ -535,6 +547,7 @@ function generateReturnProtocolHtml(data: {
   photoUrls: string[];
   notes: string | null;
   deliveryNoteNumber: string | null;
+  deliveryAddress: { street: string; postal_code: string; city: string } | null;
 }): string {
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr + "T00:00:00");
@@ -648,6 +661,12 @@ function generateReturnProtocolHtml(data: {
         <p style="font-size:13px;">${escapeHtml(data.profile.street)}${data.profile.house_number ? " " + escapeHtml(data.profile.house_number) : ""}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.postal_code)} ${escapeHtml(data.profile.city)}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.country || "Deutschland")}</p>
+        ${data.deliveryAddress ? `
+        <div style="margin-top:8px;padding-top:6px;border-top:1px solid #e5e7eb;">
+          <p style="font-size:11px;color:#595959;font-weight:600;margin-bottom:2px;">📍 Lieferadresse:</p>
+          ${data.deliveryAddress.street ? `<p style="font-size:13px;">${escapeHtml(data.deliveryAddress.street)}</p>` : ""}
+          <p style="font-size:13px;">${[data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(" ")}</p>
+        </div>` : ""}
       </div>
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">
@@ -860,6 +879,19 @@ function escapeHtml(str: string): string {
 
 function stripNoteTags(text: string): string {
   return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
+}
+
+/** Parse [DELADDR:street|postal_code|city] from notes */
+function parseDeliveryAddress(notes: string | null): { street: string; postal_code: string; city: string } | null {
+  if (!notes) return null;
+  const match = notes.match(/\[DELADDR:([^\]]*)\]/i);
+  if (!match) return null;
+  const parts = match[1].split("|");
+  const street = (parts[0] || "").trim();
+  const postal_code = (parts[1] || "").trim();
+  const city = (parts[2] || "").trim();
+  if (!street && !city) return null;
+  return { street, postal_code, city };
 }
 
 async function generateDocumentPdf(data: {
