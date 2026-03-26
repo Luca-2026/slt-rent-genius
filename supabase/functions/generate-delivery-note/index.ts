@@ -764,10 +764,12 @@ function generateDeliveryNoteHtml(data: {
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Empfang bestätigt durch Mieter:</p>
         <div style="height:100px;margin-bottom:4px;">
-          <img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />
+          ${data.signatureData 
+            ? `<img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />`
+            : `<p style="color:#999;font-size:11px;font-style:italic;padding-top:30px;">Ausstehend – Kunde nicht vor Ort</p>`}
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">${data.dateTime} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
+        <p style="font-size:11px;color:#595959;">${data.signatureData ? data.dateTime + ' · ' : ''}${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
         <p style="font-size:10px;color:#999;">Vertretungsberechtigte Person, ${escapeHtml(data.profile.company_name)}</p>
       </div>
     </div>
