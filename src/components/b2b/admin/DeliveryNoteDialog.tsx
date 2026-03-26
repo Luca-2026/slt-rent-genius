@@ -95,6 +95,44 @@ export function DeliveryNoteDialog({
   const [fuelLevel, setFuelLevel] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
 
+  const lastInitKey = useRef<string | null>(null);
+
+  // Save draft on every relevant state change
+  const saveDraft = useCallback(() => {
+    const contextKey = offer?.id || "standalone";
+    deliveryNoteDraftStore.key = contextKey;
+    deliveryNoteDraftStore.data = {
+      staffName, notes, knownDefects, additionalDefects,
+      customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
+      operatingHours, fuelLevel, cleanlinessRating,
+    };
+  }, [offer?.id, staffName, notes, knownDefects, additionalDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, operatingHours, fuelLevel, cleanlinessRating]);
+
+  useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  // Restore draft when dialog opens
+  useEffect(() => {
+    if (!open || !offer) return;
+    const contextKey = offer.id;
+    if (lastInitKey.current === contextKey) return;
+    lastInitKey.current = contextKey;
+
+    if (deliveryNoteDraftStore.key === contextKey && deliveryNoteDraftStore.data) {
+      const d = deliveryNoteDraftStore.data;
+      setStaffName(d.staffName);
+      setNotes(d.notes);
+      setKnownDefects(d.knownDefects);
+      setAdditionalDefects(d.additionalDefects);
+      setCustomerNotPresent(d.customerNotPresent);
+      setAgbAccepted(d.agbAccepted);
+      setOfferAccepted(d.offerAccepted);
+      setItemsReceived(d.itemsReceived);
+      setOperatingHours(d.operatingHours);
+      setFuelLevel(d.fuelLevel);
+      setCleanlinessRating(d.cleanlinessRating);
+    }
+  }, [open, offer]);
+
   // Update timestamp every second while dialog is open
   useState(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
