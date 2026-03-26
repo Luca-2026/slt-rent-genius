@@ -661,6 +661,12 @@ function generateReturnProtocolHtml(data: {
         <p style="font-size:13px;">${escapeHtml(data.profile.street)}${data.profile.house_number ? " " + escapeHtml(data.profile.house_number) : ""}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.postal_code)} ${escapeHtml(data.profile.city)}</p>
         <p style="font-size:13px;">${escapeHtml(data.profile.country || "Deutschland")}</p>
+        ${data.deliveryAddress ? `
+        <div style="margin-top:8px;padding-top:6px;border-top:1px solid #e5e7eb;">
+          <p style="font-size:11px;color:#595959;font-weight:600;margin-bottom:2px;">📍 Lieferadresse:</p>
+          ${data.deliveryAddress.street ? `<p style="font-size:13px;">${escapeHtml(data.deliveryAddress.street)}</p>` : ""}
+          <p style="font-size:13px;">${[data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(" ")}</p>
+        </div>` : ""}
       </div>
       <div style="text-align:right;">
         <table style="font-size:13px;margin-left:auto;">
