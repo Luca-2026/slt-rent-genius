@@ -281,6 +281,9 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Parse delivery address from offer notes
+    const deliveryAddress = parseDeliveryAddress(offer.notes);
+
     const html = generateDeliveryNoteHtml({
       deliveryNoteNumber,
       date: germanDate,
@@ -300,6 +303,7 @@ Deno.serve(async (req: Request) => {
       operatingHours: operating_hours || null,
       fuelLevel: fuel_level || null,
       cleanlinessRating: cleanliness_rating || null,
+      deliveryAddress,
     });
 
     // File name updated to Übergabeprotokoll
