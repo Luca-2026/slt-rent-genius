@@ -754,11 +754,14 @@ function generateReturnProtocolHtml(data: {
       </div>
     </div>` : ""}
 
-    ${data.notes ? `
+    ${(() => {
+      const cleanNotes = data.notes ? stripNoteTags(data.notes) : null;
+      return cleanNotes ? `
     <div style="margin-bottom:8mm;">
       <p style="font-weight:600;margin-bottom:4px;">Anmerkungen:</p>
-      <p style="color:#595959;font-size:12px;">${escapeHtml(data.notes)}</p>
-    </div>` : ""}
+      <p style="color:#595959;font-size:12px;">${escapeHtml(cleanNotes)}</p>
+    </div>` : "";
+    })()}
 
     <!-- Legal Declarations -->
     <div style="background:#f0f7fb;border-left:4px solid #00507d;padding:14px 18px;margin-bottom:8mm;font-size:12px;line-height:1.7;">
@@ -836,7 +839,10 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
-// ─── PDF Generator for Email Attachment ─────────────────────
+function stripNoteTags(text: string): string {
+  return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
+}
+
 async function generateDocumentPdf(data: {
   title: string;
   documentNumber: string;
