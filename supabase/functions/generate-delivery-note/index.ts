@@ -60,9 +60,12 @@ function formatDateStr(dateStr: string): string {
   const d = new Date(year, month - 1, day);
   return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
+/** Strip internal tags like [DELIVERY:...], [RETURN:...], [DELADDR:...] from notes */
+function stripNoteTags(text: string): string {
+  return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
+}
 
 interface DeliveryNoteRequest {
-  offer_id: string;
   signature_data: string | null;
   staff_signature_data: string;
   staff_name: string;
@@ -276,7 +279,7 @@ Deno.serve(async (req: Request) => {
       signatureData: signature_data,
       staffSignatureData: staff_signature_data,
       staffName: staff_name,
-      notes: notes || offer.notes || null,
+      notes: stripNoteTags(notes || offer.notes || ''),
       knownDefects: known_defects || null,
       additionalDefects: additional_defects || null,
       agbAccepted: agb_accepted,
@@ -424,7 +427,7 @@ Deno.serve(async (req: Request) => {
             ...(operating_hours ? [{ label: "Betriebsstunden", value: operating_hours }] : []),
             ...(fuel_level ? [{ label: "Tankfuellstand", value: fuel_level }] : []),
             ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
-            ...(notes || offer.notes ? [{ label: "Bemerkungen", value: notes || offer.notes }] : []),
+            ...(stripNoteTags(notes || offer.notes || '') ? [{ label: "Bemerkungen", value: stripNoteTags(notes || offer.notes || '') }] : []),
             ...(agb_accepted ? [{ label: "AGB", value: "Wurden akzeptiert" }] : []),
           ],
           signatures: { customerData: signature_data, staffData: staff_signature_data, staffName: staff_name },
@@ -711,11 +714,15 @@ function generateDeliveryNoteHtml(data: {
       </div>
     </div>` : ""}
 
-    ${data.notes ? `
+    ${(() => {
+      // Strip [DELIVERY:...], [RETURN:...], [DELADDR:...] tags from notes
+      const cleanNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim() : null;
+      return cleanNotes ? `
     <div style="margin-bottom:8mm;">
       <p style="font-weight:600;margin-bottom:4px;">Anmerkungen:</p>
-      <p style="color:#595959;font-size:12px;">${escapeHtml(data.notes)}</p>
-    </div>` : ""}
+      <p style="color:#595959;font-size:12px;">${escapeHtml(cleanNotes)}</p>
+    </div>` : "";
+    })()}
 
     <!-- Legal Declarations -->
     <div style="background:#f0f7fb;border-left:4px solid #00507d;padding:14px 18px;margin-bottom:8mm;font-size:12px;line-height:1.7;">
@@ -760,10 +767,12 @@ function generateDeliveryNoteHtml(data: {
       <div style="flex:1;border:1px solid #e5e7eb;border-radius:6px;padding:12px;">
         <p style="font-weight:600;font-size:12px;margin-bottom:4px;color:#00507d;">Empfang bestätigt durch Mieter:</p>
         <div style="height:100px;margin-bottom:4px;">
-          <img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />
+          ${data.signatureData 
+            ? `<img src="${data.signatureData}" alt="Unterschrift Mieter" style="max-height:90px;max-width:100%;" />`
+            : `<p style="color:#999;font-size:11px;font-style:italic;padding-top:30px;">Ausstehend – Kunde nicht vor Ort</p>`}
         </div>
         <div style="border-bottom:1px solid #393d46;margin-bottom:4px;"></div>
-        <p style="font-size:11px;color:#595959;">${data.dateTime} · ${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
+        <p style="font-size:11px;color:#595959;">${data.signatureData ? data.dateTime + ' · ' : ''}${escapeHtml(data.profile.contact_first_name)} ${escapeHtml(data.profile.contact_last_name)}</p>
         <p style="font-size:10px;color:#999;">Vertretungsberechtigte Person, ${escapeHtml(data.profile.company_name)}</p>
       </div>
     </div>
