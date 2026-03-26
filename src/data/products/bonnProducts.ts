@@ -808,9 +808,17 @@ export const bonnGartenpflegeProducts = [
   {
     id: "bonn-bodenhacke-af1212",
     name: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212",
-    description: "Motorhacke für Gartenarbeiten",
+    description: "4-Takt-Benzinmotor | 4 kW bei 3600 U/min | Arbeitsbreite 360–850 mm | bis zu 6 Fräswerkzeuge",
+    detailedDescription: "Leistungsstarke Benzin-Bodenhacke mit 212 ccm 4-Takt-Motor und 4 kW Leistung. Ideal für die Bodenbearbeitung im Garten – ob Umgraben, Lockern oder Beetvorbereitung. Die Arbeitsbreite lässt sich flexibel von 360 bis 850 mm einstellen, mit bis zu 6 Fräswerkzeugen für effizientes Arbeiten.",
     image: benzinBodenhacke1,
     images: [benzinBodenhacke1, benzinBodenhacke2],
+    specifications: {
+      "Motor": "4-Takt-Benzinmotor",
+      "Hubraum": "212 ccm",
+      "Max. Leistung": "4 kW bei 3600 U/min",
+      "Arbeitsbreite": "360–850 mm",
+      "Fräswerkzeuge": "bis zu 6"
+    },
     rentwareCode: { bonn: "1JEK78" },
   },
   {
