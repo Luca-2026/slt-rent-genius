@@ -22,6 +22,25 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
 
+interface DeliveryNoteDraft {
+  staffName: string;
+  notes: string;
+  knownDefects: string;
+  additionalDefects: string;
+  customerNotPresent: boolean;
+  agbAccepted: boolean;
+  offerAccepted: boolean;
+  itemsReceived: boolean;
+  operatingHours: string;
+  fuelLevel: string;
+  cleanlinessRating: number;
+}
+
+const deliveryNoteDraftStore: { key: string | null; data: DeliveryNoteDraft | null } = {
+  key: null,
+  data: null,
+};
+
 interface B2BProfile {
   id: string;
   company_name: string;
