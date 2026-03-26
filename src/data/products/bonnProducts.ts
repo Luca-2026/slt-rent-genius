@@ -926,9 +926,21 @@ export const bonnWerkzeugProducts = [
     id: "bonn-fugenschneider-bs50e",
     name: "Fugenschneider 13PS",
     modelName: "BS50E",
-    description: "Leistungsstarker Fugenschneider",
+    description: "Motor: 1-Zylinder-4-Takt-Benzin | 13 PS | E-Start | Max. Trennscheibe: 500 mm | Gewicht: 280 kg",
+    detailedDescription: "Leistungsstarker Fugenschneider mit 13 PS Benzinmotor und Elektro-Start für den professionellen Einsatz. Ideal zum Schneiden von Asphalt, Beton und Frischbeton. Die maximale Trennscheibengröße beträgt 500 mm. Mit regulierbarer Schleiflast (80–200 kg) und einer Schleifgeschwindigkeit von 450 U/min ist das Gerät vielseitig einsetzbar – auch als Schleifmaschine mit 500 mm Schnittbreite.",
     image: imgFugenschneider1,
     images: [imgFugenschneider1, imgFugenschneider2],
+    specifications: {
+      "Motor": "1-Zylinder-4-Takt-Benzinmotor",
+      "Leistung": "13 PS",
+      "Startsystem": "Elektro-Start (E-Start)",
+      "Max. Trennscheibengröße": "500 mm",
+      "Schnittbreite": "500 mm",
+      "Einsatzgebiete": "Asphalt, Beton, Frischbeton",
+      "Gewicht (ohne Ballast)": "280 kg",
+      "Regulierbare Schleiflast": "80 – 200 kg",
+      "Schleifgeschwindigkeit": "450 U/min"
+    },
     rentwareCode: { bonn: "RC3QNC" },
   },
   {
