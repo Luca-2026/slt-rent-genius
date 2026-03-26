@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2 } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2, Undo2 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -220,7 +220,7 @@ export function AdminOffersTab({
                             title="Rückgabeprotokoll erstellen"
                             className="text-amber-600"
                           >
-                            <ClipboardCheck className="h-4 w-4" />
+                            <Undo2 className="h-4 w-4" />
                           </Button>
                           {offer.status === "accepted" && (
                             <Button
