@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -21,6 +21,30 @@ import {
   UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload, Gauge,
 } from "lucide-react";
 import { format } from "date-fns";
+
+interface ReturnProtocolDraft {
+  staffName: string;
+  notes: string;
+  knownDefectsFromDelivery: string;
+  additionalDefectsAtReturn: string;
+  customerNotPresent: boolean;
+  overallCondition: "good" | "minor_damage" | "major_damage";
+  conditionNotes: string;
+  damageDescription: string;
+  cleaningRequired: boolean;
+  allItemsReturned: boolean;
+  missingItemsNotes: string;
+  meterReadingStart: string;
+  meterReadingEnd: string;
+  fuelLevelStart: string;
+  fuelLevelEnd: string;
+  cleanlinessRating: number;
+}
+
+const returnProtocolDraftStore: { key: string | null; data: ReturnProtocolDraft | null } = {
+  key: null,
+  data: null,
+};
 import { de } from "date-fns/locale";
 
 interface Reservation {
@@ -95,6 +119,49 @@ export function ReturnProtocolDialog({
   const [fuelLevelEnd, setFuelLevelEnd] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
   const [currentTime] = useState(new Date());
+  const lastInitKey = useRef<string | null>(null);
+
+  // Save draft on every relevant state change
+  const saveDraft = useCallback(() => {
+    const contextKey = reservation?.id || "standalone";
+    returnProtocolDraftStore.key = contextKey;
+    returnProtocolDraftStore.data = {
+      staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn,
+      customerNotPresent, overallCondition, conditionNotes, damageDescription,
+      cleaningRequired, allItemsReturned, missingItemsNotes,
+      meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating,
+    };
+  }, [reservation?.id, staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn, customerNotPresent, overallCondition, conditionNotes, damageDescription, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating]);
+
+  useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  // Restore draft when dialog opens
+  useEffect(() => {
+    if (!open || !reservation) return;
+    const contextKey = reservation.id;
+    if (lastInitKey.current === contextKey) return;
+    lastInitKey.current = contextKey;
+
+    if (returnProtocolDraftStore.key === contextKey && returnProtocolDraftStore.data) {
+      const d = returnProtocolDraftStore.data;
+      setStaffName(d.staffName);
+      setNotes(d.notes);
+      setKnownDefectsFromDelivery(d.knownDefectsFromDelivery);
+      setAdditionalDefectsAtReturn(d.additionalDefectsAtReturn);
+      setCustomerNotPresent(d.customerNotPresent);
+      setOverallCondition(d.overallCondition);
+      setConditionNotes(d.conditionNotes);
+      setDamageDescription(d.damageDescription);
+      setCleaningRequired(d.cleaningRequired);
+      setAllItemsReturned(d.allItemsReturned);
+      setMissingItemsNotes(d.missingItemsNotes);
+      setMeterReadingStart(d.meterReadingStart);
+      setMeterReadingEnd(d.meterReadingEnd);
+      setFuelLevelStart(d.fuelLevelStart);
+      setFuelLevelEnd(d.fuelLevelEnd);
+      setCleanlinessRating(d.cleanlinessRating);
+    }
+  }, [open, reservation]);
 
   // Build items list from reservation
   const items: ItemCondition[] = reservation
@@ -265,6 +332,9 @@ export function ReturnProtocolDialog({
       }
 
       resetForm();
+      returnProtocolDraftStore.key = null;
+      returnProtocolDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {

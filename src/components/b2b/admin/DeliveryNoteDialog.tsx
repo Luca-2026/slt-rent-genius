@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +21,25 @@ import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenT
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
+
+interface DeliveryNoteDraft {
+  staffName: string;
+  notes: string;
+  knownDefects: string;
+  additionalDefects: string;
+  customerNotPresent: boolean;
+  agbAccepted: boolean;
+  offerAccepted: boolean;
+  itemsReceived: boolean;
+  operatingHours: string;
+  fuelLevel: string;
+  cleanlinessRating: number;
+}
+
+const deliveryNoteDraftStore: { key: string | null; data: DeliveryNoteDraft | null } = {
+  key: null,
+  data: null,
+};
 
 interface B2BProfile {
   id: string;
@@ -75,6 +94,44 @@ export function DeliveryNoteDialog({
   const [operatingHours, setOperatingHours] = useState("");
   const [fuelLevel, setFuelLevel] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
+
+  const lastInitKey = useRef<string | null>(null);
+
+  // Save draft on every relevant state change
+  const saveDraft = useCallback(() => {
+    const contextKey = offer?.id || "standalone";
+    deliveryNoteDraftStore.key = contextKey;
+    deliveryNoteDraftStore.data = {
+      staffName, notes, knownDefects, additionalDefects,
+      customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
+      operatingHours, fuelLevel, cleanlinessRating,
+    };
+  }, [offer?.id, staffName, notes, knownDefects, additionalDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, operatingHours, fuelLevel, cleanlinessRating]);
+
+  useEffect(() => { saveDraft(); }, [saveDraft]);
+
+  // Restore draft when dialog opens
+  useEffect(() => {
+    if (!open || !offer) return;
+    const contextKey = offer.id;
+    if (lastInitKey.current === contextKey) return;
+    lastInitKey.current = contextKey;
+
+    if (deliveryNoteDraftStore.key === contextKey && deliveryNoteDraftStore.data) {
+      const d = deliveryNoteDraftStore.data;
+      setStaffName(d.staffName);
+      setNotes(d.notes);
+      setKnownDefects(d.knownDefects);
+      setAdditionalDefects(d.additionalDefects);
+      setCustomerNotPresent(d.customerNotPresent);
+      setAgbAccepted(d.agbAccepted);
+      setOfferAccepted(d.offerAccepted);
+      setItemsReceived(d.itemsReceived);
+      setOperatingHours(d.operatingHours);
+      setFuelLevel(d.fuelLevel);
+      setCleanlinessRating(d.cleanlinessRating);
+    }
+  }, [open, offer]);
 
   // Update timestamp every second while dialog is open
   useState(() => {
@@ -202,6 +259,9 @@ export function DeliveryNoteDialog({
       setOperatingHours("");
       setFuelLevel("");
       setCleanlinessRating(0);
+      deliveryNoteDraftStore.key = null;
+      deliveryNoteDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
