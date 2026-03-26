@@ -104,7 +104,7 @@ export function DeliveryNoteDialog({
   const uploadPhotos = async (profileId: string): Promise<string[]> => {
     if (defectPhotos.length === 0) return [];
     setUploadingPhotos(true);
-    const urls: string[] = [];
+    const paths: string[] = [];
     try {
       for (const photo of defectPhotos) {
         const ext = photo.file.name.split(".").pop() || "jpg";
@@ -116,15 +116,12 @@ export function DeliveryNoteDialog({
           console.error("Photo upload error:", uploadError);
           continue;
         }
-        const { data: signedData } = await supabase.storage
-          .from("b2b-documents")
-          .createSignedUrl(path, 60 * 60 * 24 * 365);
-        if (signedData?.signedUrl) urls.push(signedData.signedUrl);
+        paths.push(path);
       }
     } finally {
       setUploadingPhotos(false);
     }
-    return urls;
+    return paths;
   };
 
   const handleGenerate = async () => {
