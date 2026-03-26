@@ -723,40 +723,8 @@ export default function ProductDetail() {
                 {/* Delivery / Trailer Info */}
                 {categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
-                ) : (
-                  <>
-                    <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
-                    {product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) && (
-                      <Card className="mt-4 border-accent/30 bg-accent/5">
-                        <CardContent className="pt-5 pb-4 flex items-start gap-3">
-                          <Truck className="h-5 w-5 text-accent mt-0.5 shrink-0" />
-                          <div>
-                            <p className="font-semibold text-sm text-headline">{t("rental.heavyTransportTitle", "Tiefladertransport")}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{t("rental.heavyTransportDesc", "Diese Maschine wird per Tieflader transportiert. Transportkosten auf Anfrage.")}</p>
-                            <Link to="/kontakt" className="inline-block mt-2">
-                              <Button size="sm" variant="outline" className="text-xs h-7">
-                                {t("rental.heavyTransportCta", "Transport anfragen")}
-                              </Button>
-                            </Link>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* ── MOBILE: Delivery / Trailer Info below ── */}
-          <div className="md:hidden mt-5">
-            {categoryId === "anhaenger" ? (
-              <TrailerInfoCard t={t} />
-            ) : (
-              <>
-                <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
-                {product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) && (
-                  <Card className="mt-4 border-accent/30 bg-accent/5">
+                ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
+                  <Card className="border-accent/30 bg-accent/5">
                     <CardContent className="pt-5 pb-4 flex items-start gap-3">
                       <Truck className="h-5 w-5 text-accent mt-0.5 shrink-0" />
                       <div>
@@ -770,8 +738,34 @@ export default function ProductDetail() {
                       </div>
                     </CardContent>
                   </Card>
+                ) : (
+                  <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
                 )}
-              </>
+              </div>
+            </div>
+          </div>
+
+          {/* ── MOBILE: Delivery / Trailer Info below ── */}
+          <div className="md:hidden mt-5">
+            {categoryId === "anhaenger" ? (
+              <TrailerInfoCard t={t} />
+            ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
+              <Card className="border-accent/30 bg-accent/5">
+                <CardContent className="pt-5 pb-4 flex items-start gap-3">
+                  <Truck className="h-5 w-5 text-accent mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-semibold text-sm text-headline">{t("rental.heavyTransportTitle", "Tiefladertransport")}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{t("rental.heavyTransportDesc", "Diese Maschine wird per Tieflader transportiert. Transportkosten auf Anfrage.")}</p>
+                    <Link to="/kontakt" className="inline-block mt-2">
+                      <Button size="sm" variant="outline" className="text-xs h-7">
+                        {t("rental.heavyTransportCta", "Transport anfragen")}
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
             )}
           </div>
 
