@@ -65,8 +65,7 @@ function stripNoteTags(text: string): string {
   return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
 }
 
-
-  offer_id: string;
+interface DeliveryNoteRequest {
   signature_data: string | null;
   staff_signature_data: string;
   staff_name: string;
