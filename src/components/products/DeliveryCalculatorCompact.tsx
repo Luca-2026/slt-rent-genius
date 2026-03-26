@@ -129,7 +129,7 @@ const categoryMapping: Record<string, CategoryKey> = {
   "huepfburgen": "event",
   "kommunikation": "event",
   "gartenpflege": "event",
-  "werkzeuge": "event",
+  
   "aggregate": "2t-bagger",
   "kabel-stromverteiler": "event",
   "absperrtechnik": "event",
