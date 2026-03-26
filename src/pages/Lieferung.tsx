@@ -15,9 +15,21 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 const deliveryPrices = {
   "1t-bagger": {
     name: "1t Bagger, Dumper & 8m Scherenbühne",
-    multiplier: 1.5, // für 2 Baumaschinen
+    multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 70 },
+      { km: 15, brutto: 75 },
+      { km: 20, brutto: 90 },
+      { km: 25, brutto: 99 },
+      { km: 30, brutto: 115 },
+      { km: 35, brutto: 130 },
+      { km: 50, brutto: 155 },
+    ],
+  },
+  "zwangsmischer": {
+    name: "Zwangsmischer / Häcksler / Steinsäge / Fugenschneider",
+    multiplier: 1,
+    distances: [
+      { km: 15, brutto: 75 },
       { km: 20, brutto: 90 },
       { km: 25, brutto: 99 },
       { km: 30, brutto: 115 },
@@ -29,24 +41,24 @@ const deliveryPrices = {
     name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
     multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 80 },
-      { km: 20, brutto: 99 },
-      { km: 25, brutto: 115 },
-      { km: 30, brutto: 130 },
-      { km: 35, brutto: 155 },
-      { km: 50, brutto: 180 },
-    ],
-  },
-  "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
-    multiplier: 1.7,
-    distances: [
       { km: 15, brutto: 90 },
       { km: 20, brutto: 109 },
       { km: 25, brutto: 125 },
       { km: 30, brutto: 139 },
       { km: 35, brutto: 150 },
       { km: 50, brutto: 165 },
+    ],
+  },
+  "3t-bagger": {
+    name: "3t Bagger & 12m Scherenbühne",
+    multiplier: 1.7,
+    distances: [
+      { km: 15, brutto: 80 },
+      { km: 20, brutto: 99 },
+      { km: 25, brutto: 115 },
+      { km: 30, brutto: 130 },
+      { km: 35, brutto: 155 },
+      { km: 50, brutto: 180 },
     ],
   },
   "geruest": {

@@ -14,7 +14,19 @@ const deliveryPrices = {
     name: "1t Bagger, Dumper & 8m Scherenbühne",
     multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 70 },
+      { km: 15, brutto: 75 },
+      { km: 20, brutto: 90 },
+      { km: 25, brutto: 99 },
+      { km: 30, brutto: 115 },
+      { km: 35, brutto: 130 },
+      { km: 50, brutto: 155 },
+    ],
+  },
+  "zwangsmischer": {
+    name: "Zwangsmischer / Häcksler / Steinsäge / Fugenschneider",
+    multiplier: 1,
+    distances: [
+      { km: 15, brutto: 75 },
       { km: 20, brutto: 90 },
       { km: 25, brutto: 99 },
       { km: 30, brutto: 115 },
@@ -26,24 +38,24 @@ const deliveryPrices = {
     name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
     multiplier: 1.5,
     distances: [
-      { km: 15, brutto: 80 },
-      { km: 20, brutto: 99 },
-      { km: 25, brutto: 115 },
-      { km: 30, brutto: 130 },
-      { km: 35, brutto: 155 },
-      { km: 50, brutto: 180 },
-    ],
-  },
-  "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
-    multiplier: 1.7,
-    distances: [
       { km: 15, brutto: 90 },
       { km: 20, brutto: 109 },
       { km: 25, brutto: 125 },
       { km: 30, brutto: 139 },
       { km: 35, brutto: 150 },
       { km: 50, brutto: 165 },
+    ],
+  },
+  "3t-bagger": {
+    name: "3t Bagger & 12m Scherenbühne",
+    multiplier: 1.7,
+    distances: [
+      { km: 15, brutto: 80 },
+      { km: 20, brutto: 99 },
+      { km: 25, brutto: 115 },
+      { km: 30, brutto: 130 },
+      { km: 35, brutto: 155 },
+      { km: 50, brutto: 180 },
     ],
   },
   "geruest": {
@@ -79,6 +91,7 @@ type CategoryKey = keyof typeof deliveryPrices;
 // All category options for the dropdown (use i18n keys)
 const allCategoryKeys: { value: CategoryKey; labelKey: string }[] = [
   { value: "1t-bagger", labelKey: "rental.cat1tBagger" },
+  { value: "zwangsmischer", labelKey: "rental.catZwangsmischer" },
   { value: "2t-bagger", labelKey: "rental.cat2tBagger" },
   { value: "3t-bagger", labelKey: "rental.cat3tBagger" },
   { value: "geruest", labelKey: "rental.catScaffolding" },
@@ -98,6 +111,8 @@ const categoryMapping: Record<string, CategoryKey> = {
   "erdbewegung": "1t-bagger",
   // Verdichtung (Rüttelplatten etc.)
   "verdichtung": "1t-bagger",
+  // Werkzeuge (Zwangsmischer, Häcksler, Steinsäge, Fugenschneider)
+  "werkzeuge": "zwangsmischer",
   // Arbeitsbühnen
   "arbeitsbuehnen": "2t-bagger",
   // Gerüste & Leitern
@@ -114,7 +129,7 @@ const categoryMapping: Record<string, CategoryKey> = {
   "huepfburgen": "event",
   "kommunikation": "event",
   "gartenpflege": "event",
-  "werkzeuge": "event",
+  
   "aggregate": "2t-bagger",
   "kabel-stromverteiler": "event",
   "absperrtechnik": "event",
@@ -125,13 +140,27 @@ interface DeliveryCalculatorCompactProps {
   showAllCategories?: boolean;
   className?: string;
   categoryDisplayName?: string;
+  productName?: string;
+}
+
+// Determine the right delivery category for erdbewegung products based on name
+function getErdbewegungCategory(productName?: string): CategoryKey {
+  if (!productName) return "1t-bagger";
+  const lower = productName.toLowerCase();
+  // 2t+ class: Radlader, Knicklader, 2t+/2.7t/XE20/XE27 Bagger
+  if (/radlader|knicklader|xe20|xe27|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
+  // 3t class: 3t Bagger  
+  if (/3[.,]?\s*t/i.test(lower)) return "3t-bagger";
+  // Default: 1t (1t Bagger, Dumper, E10, small machines)
+  return "1t-bagger";
 }
 
 export function DeliveryCalculatorCompact({ 
   productCategoryId,
   showAllCategories = false,
   className = "",
-  categoryDisplayName
+  categoryDisplayName,
+  productName
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
   // Determine if this is erdbewegung category (show machine type selector)
@@ -141,9 +170,11 @@ export function DeliveryCalculatorCompact({
   const showCategoryDropdown = showAllCategories || isErdbewegung;
   
   // Determine initial category based on product
-  const initialCategory = productCategoryId 
-    ? categoryMapping[productCategoryId] || "2t-bagger"
-    : "2t-bagger";
+  const initialCategory = isErdbewegung
+    ? getErdbewegungCategory(productName)
+    : productCategoryId 
+      ? categoryMapping[productCategoryId] || "2t-bagger"
+      : "2t-bagger";
     
   const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
   const [distance, setDistance] = useState(20);

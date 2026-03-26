@@ -724,7 +724,7 @@ export default function ProductDetail() {
                 {categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
                 ) : (
-                  <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} />
+                  <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
                 )}
               </div>
             </div>
@@ -735,7 +735,7 @@ export default function ProductDetail() {
             {categoryId === "anhaenger" ? (
               <TrailerInfoCard t={t} />
             ) : (
-              <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} />
+              <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
             )}
           </div>
 
