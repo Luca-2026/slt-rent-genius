@@ -332,6 +332,9 @@ export function ReturnProtocolDialog({
       }
 
       resetForm();
+      returnProtocolDraftStore.key = null;
+      returnProtocolDraftStore.data = null;
+      lastInitKey.current = null;
       onCreated();
       onOpenChange(false);
     } catch (error: any) {
