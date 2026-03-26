@@ -189,6 +189,17 @@ Deno.serve(async (req: Request) => {
       .limit(1)
       .maybeSingle();
 
+    // Find linked offer to get delivery address
+    const { data: linkedOffer } = await serviceClient
+      .from("b2b_offers")
+      .select("notes")
+      .eq("reservation_id", reservation_id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const deliveryAddress = parseDeliveryAddress(linkedOffer?.notes || null);
+
     // Generate return protocol number
     const { data: rpNumber, error: numError } = await serviceClient
       .rpc("generate_return_protocol_number");
@@ -247,6 +258,7 @@ Deno.serve(async (req: Request) => {
       photoUrls: resolvedPhotoUrls,
       notes: notes || null,
       deliveryNoteNumber: deliveryNote?.delivery_note_number || null,
+      deliveryAddress,
     });
 
     // Upload HTML to storage
