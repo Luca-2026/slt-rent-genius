@@ -204,6 +204,23 @@ Deno.serve(async (req: Request) => {
     const returnProtocolNumber = rpNumber as string;
     console.log("Return protocol number:", returnProtocolNumber);
 
+    // Convert storage paths to signed URLs for photos
+    const resolvedPhotoUrls: string[] = [];
+    if (photo_urls && photo_urls.length > 0) {
+      for (const photoPath of photo_urls) {
+        if (photoPath.startsWith("http")) {
+          resolvedPhotoUrls.push(photoPath);
+        } else {
+          const { data: signedData } = await serviceClient.storage
+            .from("b2b-documents")
+            .createSignedUrl(photoPath, 60 * 60 * 24 * 365);
+          if (signedData?.signedUrl) {
+            resolvedPhotoUrls.push(signedData.signedUrl);
+          }
+        }
+      }
+    }
+
     // Generate HTML document
     const html = generateReturnProtocolHtml({
       returnProtocolNumber,
@@ -227,7 +244,7 @@ Deno.serve(async (req: Request) => {
       cleanlinessRating: cleanliness_rating || null,
       knownDefectsFromDelivery: known_defects_from_delivery || null,
       additionalDefectsAtReturn: additional_defects_at_return || null,
-      photoUrls: photo_urls || [],
+      photoUrls: resolvedPhotoUrls,
       notes: notes || null,
       deliveryNoteNumber: deliveryNote?.delivery_note_number || null,
     });
