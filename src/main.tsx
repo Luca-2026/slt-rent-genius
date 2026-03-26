@@ -61,13 +61,35 @@ const ensureStorageAccess = () => {
   }
 };
 
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+  throw new Error("Root container not found");
+}
+
+const root = createRoot(rootElement);
+
+root.render(
+  <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">
+    Seite wird geladen…
+  </div>
+);
+
 const bootstrap = async () => {
   ensureStorageAccess();
 
   await import("./i18n");
   const { default: App } = await import("./App.tsx");
 
-  createRoot(document.getElementById("root")!).render(<App />);
+  root.render(<App />);
 };
 
-bootstrap();
+void bootstrap().catch((error) => {
+  console.error("App bootstrap failed:", error);
+
+  root.render(
+    <div className="min-h-screen flex items-center justify-center bg-background px-6 text-center text-foreground">
+      <p>Die Seite konnte nicht geladen werden. Bitte aktualisiere die Vorschau.</p>
+    </div>
+  );
+});
