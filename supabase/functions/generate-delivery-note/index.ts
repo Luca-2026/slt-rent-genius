@@ -60,8 +60,12 @@ function formatDateStr(dateStr: string): string {
   const d = new Date(year, month - 1, day);
   return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
+/** Strip internal tags like [DELIVERY:...], [RETURN:...], [DELADDR:...] from notes */
+function stripNoteTags(text: string): string {
+  return text.replace(/\[DELIVERY:[^\]]*\]/gi, '').replace(/\[RETURN:[^\]]*\]/gi, '').replace(/\[DELADDR:[^\]]*\]/gi, '').trim();
+}
 
-interface DeliveryNoteRequest {
+
   offer_id: string;
   signature_data: string | null;
   staff_signature_data: string;
