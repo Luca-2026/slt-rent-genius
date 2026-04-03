@@ -89,20 +89,26 @@ export default function ProductDetail() {
   // Get product-specific SEO data from Excel
   const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
 
+  // Helper: replace multi-location strings in Excel SEO data with current location only
+  const localizeText = useMemo(() => {
+    if (!location) return (text: string) => text;
+    const name = location.name;
+    return (text: string): string => {
+      return text
+        .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Bonn\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Bonn/gi, name)
+        .replace(/Bonn\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Bonn/gi, name);
+    };
+  }, [location]);
+
   useEffect(() => {
     if (product && location && category) {
-      // Helper: replace multi-location strings with current location only
-      const localizeText = (text: string): string => {
-        return text
-          .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, location.name)
-          .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, location.name)
-          .replace(/Bonn\s*[&,]\s*Krefeld/gi, location.name)
-          .replace(/Krefeld\s*[&,]\s*Bonn/gi, location.name)
-          .replace(/Bonn\s*[&,]\s*Mülheim/gi, location.name)
-          .replace(/Krefeld\s*[&,]\s*Mülheim/gi, location.name)
-          .replace(/Mülheim\s*[&,]\s*Krefeld/gi, location.name)
-          .replace(/Mülheim\s*[&,]\s*Bonn/gi, location.name);
-      };
 
       // SEO: Title - prefer Excel data, fallback to generated
       let seoTitle: string;
