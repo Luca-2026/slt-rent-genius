@@ -739,13 +739,6 @@ export default function Verkauf() {
           </AnimatedSection>
         </div>
       </section>
-
-      {/* Sticky CTA */}
-      <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${showSticky ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
-        <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-2xl rounded-full px-6" onClick={scrollToForm}>
-          📩 Kaufanfrage stellen
-        </Button>
-      </div>
     </Layout>
   );
 }
