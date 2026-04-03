@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import zoomlionLogo from "@/assets/logos/zoomlion.png";
 import temaredLogo from "@/assets/logos/temared.webp";
 import baumaxLogo from "@/assets/logos/baumax.png";
+import iconBagger from "@/assets/icons/category-bagger.png";
+import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
+import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
+import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
+import iconWerkzeug from "@/assets/icons/werkzeug.png";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -85,11 +90,11 @@ const brands = [
     detail: "Wir bieten die Zoomlion-Produktlinie für Erdbewegung und Arbeitsbühnen – von kompakten Elektro-Minibaggern für beengte Innenstadtbaustellen bis hin zu leistungsstarken Radladern und Teleskopladern für Bau, Industrie und Logistik.",
     h3: "Produktkategorien Zoomlion bei SLT Rental",
     products: [
-      "🏗️ Minibagger & Bagger: 2 t bis 50 t, für Erdbewegung, Abbruch und Tiefbau",
-      "🚜 Radlader: Kompaktradlader 1,5 t bis 5 t für Bau, Recycling und Landwirtschaft",
-      "📏 Teleskoplader: Reichweiten bis 18 m, für Bau, Industrie und Veranstaltungslogistik",
-      "🔼 Scherenbühnen (Zoomlion Access): Elektrisch & Diesel, 8–32 m Arbeitshöhe",
-      "🔧 Gelenkteleskopsteiger: Bis 28 m Arbeitshöhe, für Außen- und Innenbereich",
+      { icon: iconBagger, text: "Minibagger & Bagger: 2 t bis 50 t, für Erdbewegung, Abbruch und Tiefbau" },
+      { icon: iconBagger, text: "Radlader: Kompaktradlader 1,5 t bis 5 t für Bau, Recycling und Landwirtschaft" },
+      { icon: iconBagger, text: "Teleskoplader: Reichweiten bis 18 m, für Bau, Industrie und Veranstaltungslogistik" },
+      { icon: iconHebebuehne, text: "Scherenbühnen (Zoomlion Access): Elektrisch & Diesel, 8–32 m Arbeitshöhe" },
+      { icon: iconHebebuehne, text: "Gelenkteleskopsteiger: Bis 28 m Arbeitshöhe, für Außen- und Innenbereich" },
     ],
     website: "https://www.zoomlion-nrw.de",
     websiteLabel: "Zur Zoomlion NRW Website",
@@ -105,12 +110,12 @@ const brands = [
     detail: "",
     h3: "BAUMAX Produktkategorien bei SLT Rental",
     products: [
-      "🔨 Vorwärtslaufende Rüttelplatten (VP-Serie): 70–170 kg, für Pflaster & Wege",
-      "⚙️ Reversierbare Rüttelplatten (HVP/RVP-Serie): Hydraulisch & mechanisch, für Profi-Verdichtung",
-      "💪 Vibrationsstampfer (GS-Serie): Mit Honda-Motor, für Gräben & enge Flächen",
-      "🚛 Minidumper & Raddumper: Elektrisch (RDe550, KDe550) & Diesel, bis 650 kg Nutzlast",
-      "🪨 Steinsägen & Trennschleifer: SST-Serie, für Beton, Naturstein und Fliesen",
-      "🔧 Betonrüttler & Fugenschneider: Für Tiefbau und Betonarbeiten",
+      { icon: iconVerdichtung, text: "Vorwärtslaufende Rüttelplatten (VP-Serie): 70–170 kg, für Pflaster & Wege" },
+      { icon: iconVerdichtung, text: "Reversierbare Rüttelplatten (HVP/RVP-Serie): Hydraulisch & mechanisch, für Profi-Verdichtung" },
+      { icon: iconVerdichtung, text: "Vibrationsstampfer (GS-Serie): Mit Honda-Motor, für Gräben & enge Flächen" },
+      { icon: iconBagger, text: "Minidumper & Raddumper: Elektrisch (RDe550, KDe550) & Diesel, bis 650 kg Nutzlast" },
+      { icon: iconWerkzeug, text: "Steinsägen & Trennschleifer: SST-Serie, für Beton, Naturstein und Fliesen" },
+      { icon: iconWerkzeug, text: "Betonrüttler & Fugenschneider: Für Tiefbau und Betonarbeiten" },
     ],
     website: "https://www.baumax-baumaschinen.de",
     websiteLabel: "Zur offiziellen BAUMAX-Website",
@@ -126,13 +131,13 @@ const brands = [
     detail: "",
     h3: "Temared Anhänger-Kategorien bei SLT Rental",
     products: [
-      "📦 PKW-Kastenanhänger: 750 kg – 3.500 kg, mit & ohne Laubgitter",
-      "🚗 Planenanhänger: S, M, L, XL, XXL – für trockenen Transport",
-      "🔒 Kofferanhänger: 750 kg – 2.000 kg, abschließbar",
-      "🏎️ Autotransportanhänger: 1.500 kg – 2.700 kg, mit Auffahrrampen",
-      "🏗️ Baumaschinenanhänger: 1.800 kg – 3.500 kg, für Bagger & Kompaktmaschinen",
-      "🏍️ Motorrad- & Quadanhänger: 750 kg, 2- und 3-fach-Belegung",
-      "⬆️ Kippanhänger: 1.500 kg – 2.700 kg, rückwärtskippend",
+      { icon: iconAnhaenger, text: "PKW-Kastenanhänger: 750 kg – 3.500 kg, mit & ohne Laubgitter" },
+      { icon: iconAnhaenger, text: "Planenanhänger: S, M, L, XL, XXL – für trockenen Transport" },
+      { icon: iconAnhaenger, text: "Kofferanhänger: 750 kg – 2.000 kg, abschließbar" },
+      { icon: iconAnhaenger, text: "Autotransportanhänger: 1.500 kg – 2.700 kg, mit Auffahrrampen" },
+      { icon: iconAnhaenger, text: "Baumaschinenanhänger: 1.800 kg – 3.500 kg, für Bagger & Kompaktmaschinen" },
+      { icon: iconAnhaenger, text: "Motorrad- & Quadanhänger: 750 kg, 2- und 3-fach-Belegung" },
+      { icon: iconAnhaenger, text: "Kippanhänger: 1.500 kg – 2.700 kg, rückwärtskippend" },
     ],
     website: "https://temared.com/de",
     websiteLabel: "Zur offiziellen Temared-Website",
@@ -397,9 +402,12 @@ export default function Verkauf() {
                   {brand.detail && <p className="text-muted-foreground leading-relaxed">{brand.detail}</p>}
 
                   <h3 className="text-lg font-bold text-foreground">{brand.h3}</h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {brand.products.map((p) => (
-                      <li key={p} className="text-sm text-muted-foreground">{p}</li>
+                      <li key={p.text} className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <img src={p.icon} alt="" className="h-6 w-6 object-contain shrink-0" />
+                        <span>{p.text}</span>
+                      </li>
                     ))}
                   </ul>
 
