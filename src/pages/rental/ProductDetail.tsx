@@ -94,16 +94,24 @@ export default function ProductDetail() {
     if (!location) return (text: string) => text;
     const name = location.name;
     return (text: string): string => {
-      return text
-        .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, name)
-        .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, name)
-        .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, name)
+      let result = text
+        // First replace multi-location combinations
+        .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
+        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, name)
         .replace(/Bonn\s*[&,]\s*Krefeld/gi, name)
         .replace(/Krefeld\s*[&,]\s*Bonn/gi, name)
-        .replace(/Bonn\s*[&,]\s*Mülheim/gi, name)
-        .replace(/Krefeld\s*[&,]\s*Mülheim/gi, name)
-        .replace(/Mülheim\s*[&,]\s*Krefeld/gi, name)
-        .replace(/Mülheim\s*[&,]\s*Bonn/gi, name);
+        .replace(/Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
+        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn/gi, name);
+      // Then replace standalone location names (but only as whole words)
+      if (name !== "Krefeld") result = result.replace(/\bKrefeld\b/g, name);
+      if (name !== "Bonn") result = result.replace(/\bBonn\b/g, name);
+      if (name !== "Mülheim" && name !== "Mülheim an der Ruhr") {
+        result = result.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, name);
+      }
+      return result;
     };
   }, [location]);
 
