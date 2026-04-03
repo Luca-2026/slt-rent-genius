@@ -32,6 +32,7 @@ RewriteRule ^standort-muelheim$ /standorte/muelheim [R=301,L]
 RewriteRule ^standort/krefeld$ /mieten/krefeld [R=301,L]
 RewriteRule ^standort/bonn$ /mieten/bonn [R=301,L]
 RewriteRule ^standort/muelheim$ /mieten/muelheim [R=301,L]
+RewriteRule ^standort/muehlheim$ /mieten/muelheim [R=301,L]
 
 # Old paginated /produkte with query params → /mieten
 RewriteCond %{QUERY_STRING} .+
@@ -53,10 +54,24 @@ RewriteRule ^kategorien-krefeld/(.+)$ /mieten/krefeld/$1 [R=301,L]
 # Old category routes for Bonn: /kategorien-bonn/{cat} → /mieten/bonn/{cat}
 RewriteRule ^kategorien-bonn/(.+)$ /mieten/bonn/$1 [R=301,L]
 
+# Old category routes WITHOUT location prefix: /kategorien/{cat} → /mieten/krefeld/{cat}
+RewriteRule ^kategorien/rigging$ /mieten/krefeld/traversen-rigging [R=301,L]
+RewriteRule ^kategorien/buehnen$ /mieten/krefeld/buehne [R=301,L]
+RewriteRule ^kategorien/strom.*$ /mieten/krefeld/aggregate [R=301,L]
+RewriteRule ^kategorien/bagger.*$ /mieten/krefeld/erdbewegung [R=301,L]
+RewriteRule ^kategorien/(.+)$ /mieten/krefeld/$1 [R=301,L]
+
+# Typo: /kategroien-duisburg/ (missing 'e' in kategorien) → /mieten/muelheim/
+RewriteRule ^kategroien-duisburg/bagger-dumper$ /mieten/muelheim/erdbewegung [R=301,L]
+RewriteRule ^kategroien-duisburg/(.+)$ /mieten/muelheim/$1 [R=301,L]
+
 # Old compound category routes: /kategorie/krefeld-{cat} → /mieten/krefeld/{cat}
-RewriteRule ^kategorie/krefeld-(.+?)(?:Zus)?$ /mieten/krefeld/$1 [R=301,L,NC]
-RewriteRule ^kategorie/bonn-(.+?)(?:Zus)?$ /mieten/bonn/$1 [R=301,L,NC]
+RewriteRule ^kategorie/krefeld-(.+?)(?:Zus|Tarife.*|Die)?$ /mieten/krefeld/$1 [R=301,L,NC]
+RewriteRule ^kategorie/bonn-(.+?)(?:Zus|Tarife.*|Die)?$ /mieten/bonn/$1 [R=301,L,NC]
 RewriteRule ^kategorie/(.+)$ /mieten/krefeld/$1 [R=301,L]
+
+# Strip junk suffixes from /mieten/ URLs (Die, Ebenso, Tarif*, Zus etc.)
+RewriteRule ^(mieten/[^/]+/[a-z0-9-]+?)(Die|Ebenso|Tarif.*)$ /$1 [R=301,L,NC]
 
 # Old location-specific product routes → SPA handles the redirect
 RewriteRule ^produkte-bonn/(.+)$ /mieten/bonn/alle?legacy=$1 [R=301,L]
@@ -68,6 +83,13 @@ RewriteCond %{REQUEST_URI} ^/produkte/[^/]+$
 RewriteRule ^produkte/(.+)$ /mieten/krefeld/alle?legacy=$1 [R=301,L]
 
 # ===== End Legacy Redirects =====
+
+# ===== Manuals: block indexing of PDF manuals =====
+<IfModule mod_headers.c>
+  <FilesMatch "\.pdf$">
+    Header set X-Robots-Tag "noindex, nofollow"
+  </FilesMatch>
+</IfModule>
 
 # ===== Bot Meta-Tag Prerendering =====
 # Route social media crawlers through PHP for correct OG meta tags
