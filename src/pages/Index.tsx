@@ -86,9 +86,10 @@ export default function Index() {
               <span className="text-accent font-bold text-lg">{t("hero.claim")}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
               {t("hero.title")}
-              <span className="text-accent"> {t("hero.titleHighlight")}</span>
+              <br />
+              <span className="text-accent">{t("hero.titleHighlight")}</span>
             </h1>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl">
               {t("hero.subtitle")}
