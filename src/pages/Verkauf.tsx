@@ -394,9 +394,9 @@ export default function Verkauf() {
             <AnimatedSection key={brand.id} delay={i * 100}>
               <div className="bg-background rounded-2xl border border-border overflow-hidden">
                 {/* Brand Header */}
-                <div className="bg-primary p-6 lg:p-8">
-                  <span className="text-2xl lg:text-3xl font-bold text-primary-foreground">{brand.name}</span>
-                  <p className="text-primary-foreground/70 mt-1">{brand.tagline}</p>
+                <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
+                  <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain brightness-0 invert" />
+                  <p className="text-primary-foreground/70">{brand.tagline}</p>
                 </div>
 
                 <div className="p-6 lg:p-8 space-y-6">
