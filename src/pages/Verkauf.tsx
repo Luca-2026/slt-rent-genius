@@ -183,6 +183,10 @@ const jsonLdAutoDealer = {
   name: "SLT Rental – Fachhändler für Baumaschinen & Anhänger",
   url: "https://www.slt-rental.de/verkauf",
   description: "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
+  telephone: "+49 2151 4179904",
+  email: "kaufanfrage@slt-rental.de",
+  image: "https://www.slt-rental.de/og-image.jpg",
+  priceRange: "€€€",
   brand: [
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
@@ -192,16 +196,29 @@ const jsonLdAutoDealer = {
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
     { "@type": "PostalAddress", streetAddress: "Anrather Straße 291", addressLocality: "Krefeld", addressRegion: "NRW", postalCode: "47807", addressCountry: "DE" },
   ],
+  geo: [
+    { "@type": "GeoCoordinates", latitude: 50.6879, longitude: 7.1534 },
+    { "@type": "GeoCoordinates", latitude: 51.3388, longitude: 6.5853 },
+  ],
   areaServed: { "@type": "State", name: "Nordrhein-Westfalen" },
+  openingHoursSpecification: [
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:30", closes: "18:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "14:30" },
+  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Baumaschinen & Anhänger zum Kauf",
     itemListElement: [
-      { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Elektrobagger, Radlader, Teleskoplader, Scherenbühnen" },
-      { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Dumper, Stampfer, Steinsägen" },
-      { "@type": "OfferCatalog", name: "Temared Anhänger", description: "PKW-Anhänger, Baumaschinenanhänger, Autotransporter" },
+      { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
+      { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
+      { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
     ],
   },
+  makesOffer: [
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
+  ],
 };
 
 const jsonLdFaq = {
