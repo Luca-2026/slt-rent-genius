@@ -10,6 +10,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
 
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
+import { SalesTeaser } from "@/components/home/SalesTeaser";
 import { Loader2 } from "lucide-react";
 
 // Lazy load components that pull in rentalData (~100 product images)
