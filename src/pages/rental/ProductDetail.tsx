@@ -661,6 +661,14 @@ export default function ProductDetail() {
               )}
 
 
+              {/* SEO Content Block */}
+              <ProductSEOContent
+                product={product}
+                location={location}
+                categoryId={categoryId || ""}
+                categoryTitle={category.title}
+              />
+
               {/* Kaufanfrage-Banner */}
               <PurchaseInquiryBanner
                 productName={product.name}
