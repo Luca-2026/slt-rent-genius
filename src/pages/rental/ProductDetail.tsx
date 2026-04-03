@@ -162,7 +162,21 @@ export default function ProductDetail() {
         scriptTag.setAttribute("data-product-jsonld", "true");
         document.head.appendChild(scriptTag);
       }
-      scriptTag.textContent = JSON.stringify(jsonLd);
+      // Combine Product + FAQ JSON-LD
+      const seoContent = categoryId ? seoCategoryContent[categoryId] : null;
+      const jsonLdArray: Record<string, unknown>[] = [jsonLd];
+      if (seoContent?.faqs?.length) {
+        jsonLdArray.push({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": seoContent.faqs.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a },
+          })),
+        });
+      }
+      scriptTag.textContent = JSON.stringify(jsonLdArray);
 
       return () => {
         document.title = "SLT Rental";
