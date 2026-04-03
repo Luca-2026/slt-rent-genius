@@ -4,6 +4,8 @@ const corsHeaders = {
 };
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -75,11 +77,12 @@ Diese Anfrage wurde automatisch über das Kaufanfrageformular
 auf www.slt-rental.de/verkauf gesendet.
 ────────────────────────────────────────────────`;
 
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch(`${GATEWAY_URL}/emails`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+        "X-Connection-Api-Key": RESEND_API_KEY!,
       },
       body: JSON.stringify({
         from: "SLT-Rental Kaufanfrage <noreply@notify.slt-rental.de>",
