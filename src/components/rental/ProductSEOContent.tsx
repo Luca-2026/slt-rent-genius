@@ -11,7 +11,7 @@ interface ProductSEOContentProps {
 }
 
 // Category-specific rental tips and use cases
-const categoryContent: Record<string, {
+export const categoryContent: Record<string, {
   useCases: string[];
   tips: string[];
   faqs: { q: string; a: string }[];
