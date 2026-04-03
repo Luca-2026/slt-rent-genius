@@ -175,6 +175,18 @@ const faqs = [
     q: "Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?",
     a: "Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger.",
   },
+  {
+    q: "Kann ich eine Baumaschine erst mieten und dann kaufen?",
+    a: "Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell.",
+  },
+  {
+    q: "Liefert SLT Rental Baumaschinen und Anhänger auch an?",
+    a: "Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit.",
+  },
+  {
+    q: "Welche Finanzierungsmöglichkeiten gibt es beim Kauf?",
+    a: "Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen.",
+  },
 ];
 
 const jsonLdAutoDealer = {
