@@ -124,8 +124,8 @@ export default function ProductDetail() {
         seoTitle = localizeText(productSEO.seoTitle);
       } else {
         const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
-        const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
-        const seoTitleShort = `${product.name} mieten ${location.name}`;
+        const seoTitleFull = `${product.name} mieten in ${location.name}${priceInfo}`;
+        const seoTitleShort = `${product.name} mieten in ${location.name}`;
         seoTitle = seoTitleFull.length <= 55 
           ? `${seoTitleFull} | SLT Rental`
           : seoTitleShort.length <= 55 
