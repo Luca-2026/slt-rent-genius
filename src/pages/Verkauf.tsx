@@ -175,6 +175,18 @@ const faqs = [
     q: "Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?",
     a: "Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger.",
   },
+  {
+    q: "Kann ich eine Baumaschine erst mieten und dann kaufen?",
+    a: "Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell.",
+  },
+  {
+    q: "Liefert SLT Rental Baumaschinen und Anhänger auch an?",
+    a: "Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit.",
+  },
+  {
+    q: "Welche Finanzierungsmöglichkeiten gibt es beim Kauf?",
+    a: "Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen.",
+  },
 ];
 
 const jsonLdAutoDealer = {
@@ -183,6 +195,10 @@ const jsonLdAutoDealer = {
   name: "SLT Rental – Fachhändler für Baumaschinen & Anhänger",
   url: "https://www.slt-rental.de/verkauf",
   description: "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
+  telephone: "+49 2151 4179904",
+  email: "kaufanfrage@slt-rental.de",
+  image: "https://www.slt-rental.de/og-image.jpg",
+  priceRange: "€€€",
   brand: [
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
@@ -192,16 +208,29 @@ const jsonLdAutoDealer = {
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
     { "@type": "PostalAddress", streetAddress: "Anrather Straße 291", addressLocality: "Krefeld", addressRegion: "NRW", postalCode: "47807", addressCountry: "DE" },
   ],
+  geo: [
+    { "@type": "GeoCoordinates", latitude: 50.6879, longitude: 7.1534 },
+    { "@type": "GeoCoordinates", latitude: 51.3388, longitude: 6.5853 },
+  ],
   areaServed: { "@type": "State", name: "Nordrhein-Westfalen" },
+  openingHoursSpecification: [
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:30", closes: "18:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "14:30" },
+  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Baumaschinen & Anhänger zum Kauf",
     itemListElement: [
-      { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Elektrobagger, Radlader, Teleskoplader, Scherenbühnen" },
-      { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Dumper, Stampfer, Steinsägen" },
-      { "@type": "OfferCatalog", name: "Temared Anhänger", description: "PKW-Anhänger, Baumaschinenanhänger, Autotransporter" },
+      { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
+      { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
+      { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
     ],
   },
+  makesOffer: [
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
+  ],
 };
 
 const jsonLdFaq = {
@@ -318,17 +347,17 @@ export default function Verkauf() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen kaufen NRW – Zoomlion, BAUMAX & Temared Händler | SLT Rental"
-        description="Autorisierter Fachhändler für Zoomlion, BAUMAX Baumaschinen & Temared in NRW. Bagger, Radlader, Rüttelplatten, Dumper & Anhänger kaufen. Servicestützpunkt in Bonn & Krefeld."
+        title="Baumaschinen kaufen NRW – Zoomlion, BAUMAX & Temared | SLT Rental"
+        description="Baumaschinen & Anhänger kaufen beim autorisierten Fachhändler in NRW ✓ Zoomlion Bagger & Radlader ✓ BAUMAX Rüttelplatten ✓ Temared Anhänger ✓ Service in Bonn & Krefeld"
         canonical="/verkauf"
-        keywords="Zoomlion Händler NRW, BAUMAX Baumaschinen Fachhändler, Temared Anhänger kaufen NRW, Bagger kaufen NRW, Rüttelplatte kaufen, Dumper kaufen, Anhänger kaufen Bonn, Baumaschinen kaufen Krefeld"
+        keywords="Baumaschinen kaufen NRW, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
         ogType="website"
         jsonLd={[
           jsonLdAutoDealer,
           jsonLdFaq,
           SLT_BREADCRUMB_JSONLD([
             { name: "Home", url: "/" },
-            { name: "Verkauf", url: "/verkauf" },
+            { name: "Baumaschinen & Anhänger kaufen", url: "/verkauf" },
           ]),
         ]}
       />
