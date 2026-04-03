@@ -319,49 +319,225 @@
         "title": "Garten- & Landschaftsbau",
         "subtitle": "Vom Privatgarten bis zur Parkanlage",
         "description": "Komplette Ausstattung für GaLaBau-Betriebe und ambitionierte Hobbygärtner. Von der Baumstumpffräse bis zum Minibagger – alles für die professionelle Gartengestaltung.",
-        "highlights": ["Minibagger 1t - 2,7t (Diesel)", "Baumstumpffräse & Häcksler", "Rüttelplatten & Stampfer", "Anhänger für Grünschnitt & Material"]
+        "highlights": ["Minibagger 1t - 2,7t (Diesel)", "Baumstumpffräse & Häcksler", "Rüttelplatten & Stampfer", "Anhänger für Grünschnitt & Material"],
+        "contentSections": [
+          {
+            "heading": "Typische Projekte im GaLaBau",
+            "text": "Ob Neuanlage eines Gartens, Teichbau, Pflasterarbeiten oder die Rodung verwilderter Grundstücke – im Garten- und Landschaftsbau braucht es zuverlässiges Equipment. Mit einem Minibagger hebst du Erdreich für Fundamente, Teiche oder Drainagen aus. Rüttelplatten verdichten den Untergrund für Terrassen und Wege. Baumstumpffräsen entfernen Wurzelstöcke bodennah, ohne aufwändige Grabarbeiten. Häcksler zerkleinern Strauchschnitt und Astwerk direkt vor Ort – das spart Entsorgungsfahrten und schafft wertvolles Mulchmaterial."
+          },
+          {
+            "heading": "Welches Equipment brauchst du?",
+            "text": "Für Erdarbeiten empfehlen wir unsere Minibagger ab 1 Tonne – kompakt genug für Gartentore, stark genug für Aushub bis 2,5 m Tiefe. Bei Pflaster- und Wegebau sind Rüttelplatten unverzichtbar: Die leichten Modelle (ab 50 kg) eignen sich für Gehwege, die schweren (bis 500 kg) für Einfahrten. Für den Abtransport von Erdreich, Grünschnitt oder Baumaterial stehen Kastenanhänger mit Laubgitteraufsatz bereit. Bei größeren Projekten lohnt sich der Einsatz eines Radladers für effizientes Materialhandling."
+          },
+          {
+            "heading": "Praxis-Tipps für dein GaLaBau-Projekt",
+            "text": "Plane den Maschineneinsatz in der richtigen Reihenfolge: Erst roden und räumen, dann ausheben und profilieren, abschließend verdichten und gestalten. Achte bei Minibaggern auf die Durchfahrtsbreite deines Grundstücks – unsere 1-Tonnen-Modelle passen durch Gartentore ab 80 cm. Bei Pflasterarbeiten sollte die Tragschicht mindestens 20 cm betragen und lagenweise verdichtet werden. Nutze den Wochenend-Tarif für mehrtägige Projekte und spare bis zu 40 % der Mietkosten."
+          }
+        ],
+        "advantages": ["Kompakte Maschinen für enge Gartenzugänge", "Komplettausstattung aus einer Hand", "Persönliche Beratung durch Fachpersonal", "Flexible Mietzeiten ab 1 Tag"],
+        "faq": [
+          {"q": "Welcher Minibagger passt durch mein Gartentor?", "a": "Unsere 1-Tonnen-Minibagger haben eine Breite ab 72 cm und passen durch Standard-Gartentore ab 80 cm. Für besonders enge Zugänge beraten wir dich gerne vor Ort."},
+          {"q": "Kann ich Grünschnitt direkt vor Ort häckseln?", "a": "Ja, unsere Häcksler zerkleinern Äste bis 10 cm Durchmesser direkt auf der Baustelle. Das spart Entsorgungsfahrten und der Häcksel eignet sich als Mulch für Beete."},
+          {"q": "Welche Rüttelplatte brauche ich für Pflasterarbeiten?", "a": "Für Gehwege und Terrassen reicht eine leichte Rüttelplatte (50-90 kg). Für Einfahrten und befahrbare Flächen empfehlen wir Modelle ab 200 kg mit höherer Verdichtungsleistung."},
+          {"q": "Bietet ihr auch Lieferung der Maschinen an?", "a": "Ja, wir liefern Minibagger, Rüttelplatten und Anhänger direkt zu deinem Einsatzort. Die Kosten richten sich nach der Entfernung – ab 25 km Umkreis ist die Lieferung besonders günstig."},
+          {"q": "Was kostet ein Minibagger für ein Wochenende?", "a": "Wir bieten attraktive Wochenend-Tarife: Du zahlst für 3 Tage zum Preis von einem Tag. So kannst du dein Gartenprojekt in Ruhe am Wochenende umsetzen."}
+        ]
       },
       "tiefbau-erdbewegung": {
         "title": "Tiefbau & Erdbewegung",
         "subtitle": "Kanalbau, Hausanschlüsse, Erdarbeiten",
         "description": "Professionelle Baumaschinen für anspruchsvolle Tiefbauprojekte. Mit unseren Minibaggern, Dumpern und dem passenden Zubehör meisterst du jede Erdarbeit.",
-        "highlights": ["Minibagger 1t - 2,7t mit Anbaugeräten", "Elektro-Dumper für leisen Materialtransport", "Grabenräumlöffel & Tieflöffel", "Baumaschinenanhänger 1,8t - 3,5t", "Verkehrssicherung & Absperrung"]
+        "highlights": ["Minibagger 1t - 2,7t mit Anbaugeräten", "Elektro-Dumper für leisen Materialtransport", "Grabenräumlöffel & Tieflöffel", "Baumaschinenanhänger 1,8t - 3,5t", "Verkehrssicherung & Absperrung"],
+        "contentSections": [
+          {
+            "heading": "Professioneller Tiefbau mit dem richtigen Equipment",
+            "text": "Tiefbauprojekte erfordern präzise Planung und leistungsstarke Maschinen. Ob Kanalbau, Hausanschlüsse für Gas, Wasser und Strom oder Fundamentarbeiten – mit unseren Minibaggern, Dumpern und Verdichtungsgeräten bist du für jede Herausforderung gerüstet. Unsere Maschinen sind regelmäßig gewartet und entsprechen den aktuellen Sicherheitsstandards. Für Arbeiten im öffentlichen Straßenraum bieten wir über unseren Partner SLT Infra die komplette Verkehrssicherung mit an."
+          },
+          {
+            "heading": "Equipment-Empfehlung nach Projekttyp",
+            "text": "Hausanschlüsse: Minibagger 1,5t mit Tieflöffel (30-60 cm) und Grabenräumlöffel. Kanalbau: Minibagger 2,7t mit hydraulischem Schnellwechsler für flexible Löffelwechsel. Fundamentarbeiten: Minibagger plus Rüttelplatte für die Verdichtung der Sohle. Materialtransport: Elektro-Dumper für leisen Einsatz in Wohngebieten oder Raddumper für größere Mengen. Für die Absicherung der Baustelle stehen Absperrschranken, Warnleuchten und Verkehrszeichen bereit."
+          },
+          {
+            "heading": "Sicherheit & Genehmigungen im Tiefbau",
+            "text": "Vor Beginn der Erdarbeiten müssen Leitungspläne eingeholt und Schachtgenehmigungen beantragt werden. Bei Arbeiten im Straßenraum ist eine Verkehrsrechtliche Anordnung (VRA) erforderlich. Unser Partner SLT Infra unterstützt dich bei der Absperrplanung, der Einrichtung von Halteverbotszonen und der Koordination mit Straßenverkehrsbehörden. So kannst du dich auf die eigentliche Bauarbeit konzentrieren."
+          }
+        ],
+        "advantages": ["Minibagger mit verschiedenen Anbaugeräten", "Verkehrssicherung durch SLT Infra", "Elektro-Dumper für leise Wohngebiete", "Baumaschinenanhänger für den Transport"],
+        "faq": [
+          {"q": "Welchen Minibagger brauche ich für Hausanschlüsse?", "a": "Für Hausanschlüsse empfehlen wir unseren 1,5t-Minibagger mit Tieflöffel (30-60 cm Breite). Er ist kompakt genug für Vorgärten und bietet eine Grabtiefe bis 2,5 m – ideal für Wasser-, Gas- und Stromanschlüsse."},
+          {"q": "Brauche ich für Tiefbauarbeiten eine Genehmigung?", "a": "Ja, für Arbeiten im öffentlichen Straßenraum benötigst du eine Schachtgenehmigung und ggf. eine Verkehrsrechtliche Anordnung (VRA). Unser Partner SLT Infra unterstützt dich bei der Antragstellung und Koordination mit Behörden."},
+          {"q": "Was ist ein Elektro-Dumper und wann brauche ich ihn?", "a": "Ein Elektro-Dumper ist ein batteriebetriebener Materialtransporter. Er ist besonders in Wohngebieten ideal, da er nahezu geräuschlos und emissionsfrei arbeitet. Perfekt für Erdaushub, Schüttgut oder Baumaterial."},
+          {"q": "Bietet ihr auch Absperrtechnik für Baustellen?", "a": "Ja, wir haben Absperrschranken, Warnleuchten, Verkehrszeichen und Leitbaken im Sortiment. Für die komplette Verkehrssicherungsplanung und -durchführung empfehlen wir unseren Partner SLT Infra (www.slt-infra.de)."},
+          {"q": "Kann ich einen Minibagger ohne Führerschein bedienen?", "a": "Für Minibagger auf privaten Baustellen ist kein spezieller Führerschein erforderlich. Wir empfehlen jedoch eine Einweisung, die wir bei Abholung kostenlos anbieten. Im öffentlichen Straßenverkehr gelten andere Regelungen."}
+        ]
       },
       "hochbau-renovierung": {
         "title": "Hochbau & Renovierung",
         "subtitle": "Neubau, Sanierung, Ausbau",
         "description": "Vom Rohbau bis zum Feinschliff: Werkzeuge, Arbeitsbühnen und Gerüste für jede Bauphase. Unsere Profi-Geräte machen auch anspruchsvolle Projekte zum Kinderspiel.",
-        "highlights": ["Scherenbühnen bis 12m Höhe", "Rollgerüste bis 11m", "Abbruchhammer & Bohrhammer", "Bautrockner für die Trocknung"]
+        "highlights": ["Scherenbühnen bis 12m Höhe", "Rollgerüste bis 11m", "Abbruchhammer & Bohrhammer", "Bautrockner für die Trocknung"],
+        "contentSections": [
+          {
+            "heading": "Arbeitsbühnen & Gerüste für sichere Höhenarbeit",
+            "text": "Arbeiten in der Höhe erfordern das richtige Equipment für Sicherheit und Effizienz. Unsere Scherenbühnen eignen sich ideal für Fassadenarbeiten, Innenausbau und Hallenprojekte. Sie bieten eine stabile Arbeitsfläche und sind einfach zu bedienen. Für engere Bereiche und Treppenhäuser empfehlen wir Rollgerüste – sie lassen sich flexibel aufbauen und an verschiedene Höhen anpassen. Gelenkbühnen erreichen auch schwer zugängliche Stellen wie Dachüberstände oder Innenhöfe."
+          },
+          {
+            "heading": "Elektrowerkzeuge für jede Bauphase",
+            "text": "Im Rohbau kommen Abbruchhämmer und Bohrhämmer zum Einsatz – für Durchbrüche, Schlitze und Demontagearbeiten. In der Ausbauphase benötigst du Mauerschlitzfräsen für Elektroinstallationen, Diamantbohrer für Kernbohrungen und Rührwerke für Estrich und Putz. Bei der Sanierung sind Bautrockner unverzichtbar: Sie entziehen der Bausubstanz Feuchtigkeit und verkürzen die Trocknungszeit erheblich. Für die Beheizung während der Bauphase stehen Elektroheizer und Ölheizer bereit."
+          },
+          {
+            "heading": "Projektplanung: So wählst du das richtige Equipment",
+            "text": "Beginne mit einer Bestandsaufnahme: Welche Arbeiten stehen an? In welcher Höhe wird gearbeitet? Gibt es Zugangsbeschränkungen? Für Außenfassaden bis 12 m empfehlen wir Scherenbühnen, für Innenbereiche Rollgerüste. Bei Neubau-Projekten lohnt sich ein Komplettpaket aus Werkzeugen, Gerüsten und Bautrocknern. Sprich uns auf individuelle Mietpakete an – wir stellen dir das optimale Setup zusammen und beraten dich bei der Einsatzplanung."
+          }
+        ],
+        "advantages": ["Arbeitsbühnen für Innen- und Außeneinsatz", "Profi-Werkzeuge von Bosch & Hilti", "Bautrockner für schnelle Trocknungszeiten", "Kompetente Beratung bei der Gerätewahl"],
+        "faq": [
+          {"q": "Welche Arbeitsbühne eignet sich für Fassadenarbeiten?", "a": "Für Fassadenarbeiten bis 12 m Höhe empfehlen wir unsere Scherenbühnen. Sie bieten eine große, stabile Arbeitsfläche und lassen sich präzise positionieren. Für schwer zugängliche Stellen wie Dachüberstände eignen sich Gelenkbühnen."},
+          {"q": "Wie lange muss ich einen Bautrockner einsetzen?", "a": "Die Trocknungsdauer hängt von der Feuchtigkeit der Bausubstanz und der Raumgröße ab. Als Faustregel gelten 2-4 Wochen für Neubauten. Wir beraten dich gerne zur optimalen Gerätezahl und Aufstellposition."},
+          {"q": "Kann ich ein Rollgerüst im Treppenhaus aufbauen?", "a": "Ja, unsere Rollgerüste sind modular aufgebaut und lassen sich an Treppenhaus-Geometrien anpassen. Die höhenverstellbaren Füße gleichen Stufen aus. Wir zeigen dir bei der Abholung, wie der Aufbau funktioniert."},
+          {"q": "Was brauche ich für Kernbohrungen in Beton?", "a": "Für Kernbohrungen bieten wir Diamantbohrkronen in verschiedenen Durchmessern (ab 50 mm). Dazu benötigst du einen Bohrständer für präzise Ergebnisse. Für kleinere Durchbrüche reicht oft ein leistungsstarker Bohrhammer."},
+          {"q": "Gibt es Scherenbühnen für den Inneneinsatz?", "a": "Ja, unsere Elektro-Scherenbühnen sind speziell für den Inneneinsatz geeignet. Sie sind emissionsfrei, haben nicht-markierende Reifen und passen durch Standard-Türen. Ideal für Hallen, Lagerhäuser und Innenräume."}
+        ]
       },
       "events-veranstaltungen": {
         "title": "Events & Veranstaltungen",
         "subtitle": "Firmenfeiern, Hochzeiten, Festivals",
         "description": "Alles für unvergessliche Events: Von der Beschallung über Beleuchtung bis zu Zelten und Möbeln. Wir statten Veranstaltungen jeder Größe professionell aus.",
-        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Partyzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"]
+        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Partyzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"],
+        "contentSections": [
+          {
+            "heading": "Eventausstattung für jede Veranstaltungsgröße",
+            "text": "Egal ob Hochzeit im Garten, Firmenjubiläum, Straßenfest oder privates Sommerfest – wir liefern die komplette Eventtechnik und Ausstattung. Unsere PA-Systeme sorgen für kristallklaren Sound bei bis zu 500 Gästen. LED-Scheinwerfer und Moving Heads setzen Location und Bühne perfekt in Szene. Partyzelte schützen vor Regen und Sonne und schaffen einen eleganten Rahmen. Dazu bieten wir Geschirr, Gläser und Besteck in Gastro-Qualität – sauber und einsatzbereit."
+          },
+          {
+            "heading": "Planung deines Events: Schritt für Schritt",
+            "text": "1. Gästezahl festlegen: Davon hängt die Zeltgröße, die Beschallungsleistung und die Menge an Geschirr ab. 2. Location prüfen: Gibt es Stromanschlüsse? Wie sind die Platzverhältnisse? 3. Equipment reservieren: Buche frühzeitig – besonders in der Hochzeitssaison (Mai–September) sind beliebte Artikel schnell vergriffen. 4. Auf- und Abbau planen: Wir bieten professionellen Auf- und Abbauservice für Zelte, Bühnen und Technik. 5. Backup einplanen: Bei Outdoor-Events empfehlen wir immer ein Regenzelt als Plan B."
+          },
+          {
+            "heading": "Sound & Licht: Die richtige Technik wählen",
+            "text": "Für Hintergrundmusik bei Empfängen und Dinner reicht eine Soundboks oder ein kompaktes PA-System. Bei Partys und Tanzveranstaltungen empfehlen wir PA-Systeme mit Subwoofer für satte Bässe. Die Beleuchtung setzt Akzente: LED-Scheinwerfer in Warmweiß für elegante Atmosphäre, RGB-Strahler für farbige Effekte, Moving Heads für dynamische Shows. Nebelmaschinen und Seifenblasenmaschinen ergänzen den visuellen Effekt. Wir beraten dich gerne zur optimalen Kombination."
+          }
+        ],
+        "advantages": ["Alles aus einer Hand: Technik, Zelte, Ausstattung", "Professioneller Auf- und Abbauservice", "Hochwertige Gastro-Qualität bei Geschirr", "Flexible Mietzeiten auch am Wochenende"],
+        "faq": [
+          {"q": "Wie groß muss mein Partyzelt sein?", "a": "Als Faustregel rechnet man 2-3 m² pro stehendem Gast und 3-4 m² pro sitzendem Gast (mit Tisch). Für 50 sitzende Gäste empfehlen wir ein 6x6m Zelt. Für 100 Gäste eignet sich ein 6x12m Zelt oder zwei verbundene Zelte."},
+          {"q": "Bietet ihr auch Auf- und Abbau an?", "a": "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Bühnen, Beschallung und Beleuchtung. Sprich uns bei der Buchung einfach darauf an – wir erstellen dir ein Komplettangebot."},
+          {"q": "Wie viel Geschirr brauche ich pro Person?", "a": "Wir empfehlen pro Gast: 2 Teller (flach + tief), 3 Gläser (Wasser, Wein, Sekt), 1 Besteckset. Bei mehrgängigen Menüs entsprechend mehr. Unsere Sets sind in 10er-Einheiten buchbar und kommen sauber und sortiert."},
+          {"q": "Welches PA-System reicht für 100 Gäste outdoor?", "a": "Für 100 Gäste im Freien empfehlen wir ein aktives PA-System mit mindestens 2x 500W Topspeakern und einem Subwoofer. Bei Partys mit Tanzfläche empfehlen wir ein stärkeres Setup. Wir beraten dich gerne zur passenden Konfiguration."},
+          {"q": "Kann ich Equipment auch kurzfristig buchen?", "a": "Grundsätzlich ja, sofern die gewünschten Artikel verfügbar sind. Wir empfehlen jedoch eine Vorlaufzeit von mindestens 2 Wochen, besonders in der Hochzeitssaison (Mai–September)."}
+        ]
       },
       "umzug-transport": {
         "title": "Umzug & Transport",
         "subtitle": "Privat- und Firmenumzüge",
         "description": "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per SMS-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
-        "highlights": ["Planenanhänger S bis XXL", "Kofferanhänger abschließbar", "24/7 Self-Service-Miete", "Wochenend-Tarif: 3 Tage zahlen, 1 Tag Preis"]
+        "highlights": ["Planenanhänger S bis XXL", "Kofferanhänger abschließbar", "24/7 Self-Service-Miete", "Wochenend-Tarif: 3 Tage zahlen, 1 Tag Preis"],
+        "contentSections": [
+          {
+            "heading": "Der richtige Anhänger für deinen Umzug",
+            "text": "Ein Umzug muss nicht teuer sein – mit dem richtigen Anhänger erledigst du den Transport selbst und sparst die Kosten für ein Umzugsunternehmen. Unsere Planenanhänger sind in verschiedenen Größen verfügbar: Von S (750 kg) für kleine Transporte bis XXL (3.500 kg) für komplette Wohnungsumzüge. Kofferanhänger bieten zusätzlichen Schutz vor Witterung und sind abschließbar – ideal für wertvolle Gegenstände. Alle Anhänger sind mit Führerschein Klasse B fahrbar (bis 750 kg ohne Anhängerführerschein)."
+          },
+          {
+            "heading": "24/7 Self-Service: So funktioniert's",
+            "text": "Unsere Anhängermiete funktioniert rund um die Uhr – auch nachts, am Wochenende und an Feiertagen. So geht's: 1. Online buchen und Wunschzeitraum wählen. 2. SMS-Code erhalten – der Code öffnet das Schloss am Anhänger. 3. Anhänger abholen – jederzeit, ganz ohne Wartezeit. 4. Anhänger zurückbringen – einfach am gleichen Platz abstellen. Das ist besonders praktisch für spontane Transporte oder Umzüge am Wochenende."
+          },
+          {
+            "heading": "Umzugs-Checkliste: Daran solltest du denken",
+            "text": "Vor dem Umzug: Anhängergröße anhand des Transportvolumens wählen, Kugelkupplung am Fahrzeug prüfen (Anhängelast beachten!), Spanngurte und Decken einpacken. Am Umzugstag: Schwere Gegenstände zuerst laden und nach vorne (zur Deichsel), Last gleichmäßig verteilen, Ladung mit Spanngurten sichern. Nach dem Umzug: Anhänger besenrein zurückgeben. Tipp: Nutze den Wochenend-Tarif – freitags ab 16 Uhr abholen, montags bis 9:30 Uhr zurückgeben, nur 1 Tagessatz zahlen."
+          }
+        ],
+        "advantages": ["24/7 Verfügbarkeit per SMS-Code", "Günstige Wochenend-Tarife", "Alle Größen von S bis XXL", "Kein Anhängerführerschein nötig bis 750 kg"],
+        "faq": [
+          {"q": "Brauche ich einen Anhängerführerschein?", "a": "Für Anhänger bis 750 kg Gesamtgewicht reicht der Führerschein Klasse B. Für schwerere Anhänger benötigst du Klasse BE oder B96 – je nach Gesamtgewicht der Kombination. Wir beraten dich gerne zur passenden Größe."},
+          {"q": "Wie funktioniert die 24/7-Miete genau?", "a": "Du buchst online und erhältst per SMS einen Code. Damit öffnest du das Schloss am Anhänger – jederzeit, auch nachts und am Wochenende. Kein Kontakt mit Personal nötig, volle Flexibilität."},
+          {"q": "Welche Anhängergröße brauche ich für einen Umzug?", "a": "Für eine 1-Zimmer-Wohnung reicht meist ein Planenanhänger M (1.300 kg). Für 2-3 Zimmer empfehlen wir Größe L oder XL (2.000-2.700 kg). Bei einer kompletten Haushaltsauflösung ist der XXL (3.500 kg) die richtige Wahl."},
+          {"q": "Was kostet ein Anhänger für ein Wochenende?", "a": "Unser Wochenend-Tarif ist besonders günstig: Du zahlst nur einen Tagessatz für das gesamte Wochenende (Freitag ab 16 Uhr bis Montag 9:30 Uhr). Die genauen Preise findest du bei den einzelnen Anhängern."},
+          {"q": "Sind Spanngurte und Zubehör im Preis enthalten?", "a": "Spanngurte sind in der Regel am Anhänger vorhanden. Zusätzliche Umzugsdecken und Transportzubehör kannst du bei Bedarf dazu mieten. Sprich uns einfach an."}
+        ]
       },
       "handwerk-gewerbe": {
         "title": "Handwerk & Gewerbe",
         "subtitle": "Elektriker, Maler, Installateure",
         "description": "Spezialwerkzeuge und Equipment für Handwerksbetriebe. Von der Mauerschlitzfräse bis zum Akku-Werkzeug – professionelle Geräte für professionelle Arbeit.",
-        "highlights": ["Mauerschlitzfräse & Diamantbohrer", "Bosch Profi-Akkugeräte", "Stromerzeuger 2,8 - 100 kVA", "Rollgerüste & Leitern"]
+        "highlights": ["Mauerschlitzfräse & Diamantbohrer", "Bosch Profi-Akkugeräte", "Stromerzeuger 2,8 - 100 kVA", "Rollgerüste & Leitern"],
+        "contentSections": [
+          {
+            "heading": "Profi-Werkzeuge für jeden Handwerksberuf",
+            "text": "Nicht jedes Spezialwerkzeug lohnt sich in der Anschaffung – besonders bei Geräten, die nur für einzelne Projekte benötigt werden. Unsere Mietlösung bietet dir Zugang zu hochwertigem Profi-Equipment von Bosch Professional, Hilti und Makita, ohne hohe Investitionskosten. Elektriker setzen auf unsere Mauerschlitzfräsen und Kabelverlegungswerkzeuge. Maler und Trockenbauer nutzen Rollgerüste und Schleifmaschinen. Installateure finden Rohrschneider, Pressmaschinen und Kernbohrgeräte."
+          },
+          {
+            "heading": "Stromversorgung auf der Baustelle",
+            "text": "Nicht überall gibt es Baustrom – unsere Stromerzeuger lösen das Problem. Von kompakten Invertern (2,8 kVA) für einzelne Elektrowerkzeuge bis zu leistungsstarken Aggregaten (100 kVA) für Großbaustellen und Events. Dazu bieten wir Stromverteiler, CEE-Kabel, Verlängerungsleitungen und Kabelbrücken. Für Innenräume empfehlen wir leisere Inverter-Stromerzeuger – sie produzieren sauberen Strom für empfindliche Elektronik und sind deutlich leiser als konventionelle Generatoren."
+          },
+          {
+            "heading": "Vorteile der Werkzeugmiete für Handwerksbetriebe",
+            "text": "Mieten statt kaufen rechnet sich besonders bei Spezialgeräten: Keine Kapitalbindung, keine Wartungskosten, immer aktuelle Technik. Bei uns findest du Geräte, die du vielleicht nur 2-3 Mal im Jahr brauchst – in top-gewarteter Profi-Qualität. Für Stammkunden und Gewerbetreibende bieten wir über unser B2B-Portal individuelle Konditionen, Rahmenverträge und Rechnungskauf. So wird die Werkzeugmiete zum planbaren Betriebskostenfaktor."
+          }
+        ],
+        "advantages": ["Markengeräte von Bosch, Hilti & Makita", "Keine Investitions- und Wartungskosten", "B2B-Konditionen für Gewerbetreibende", "Immer aktuelle und gewartete Technik"],
+        "faq": [
+          {"q": "Bietet ihr B2B-Konditionen für Handwerksbetriebe?", "a": "Ja, über unser B2B-Portal erhalten Gewerbetreibende individuelle Rabatte, Rechnungskauf und Rahmenverträge. Registriere dich kostenlos und profitiere von Sonderkonditionen."},
+          {"q": "Welche Mauerschlitzfräse eignet sich für Elektroinstallationen?", "a": "Für Standard-Elektroinstallationen empfehlen wir unsere Mauerschlitzfräse mit 2 Diamantscheiben. Sie schneidet präzise Schlitze in Mauerwerk und Beton – staubarm durch integrierte Absaugung."},
+          {"q": "Wie leistungsstark muss mein Stromerzeuger sein?", "a": "Für einzelne Elektrowerkzeuge reicht ein 2,8 kVA Inverter. Für eine komplette Baustelle mit mehreren Geräten empfehlen wir mindestens 6 kVA. Für Großbaustellen oder Events stehen Aggregate bis 100 kVA bereit."},
+          {"q": "Kann ich Werkzeuge auch tageweise mieten?", "a": "Ja, alle unsere Werkzeuge und Geräte sind ab einem Tag mietbar. Für längere Projekte bieten wir attraktive Wochen- und Monatspreise. Je länger du mietest, desto günstiger wird der Tagessatz."},
+          {"q": "Sind die Werkzeuge bei Abholung einsatzbereit?", "a": "Ja, alle Geräte werden vor jeder Vermietung geprüft, gereinigt und gewartet. Verbrauchsmaterialien wie Bohrkronen und Trennscheiben sind gegen Aufpreis verfügbar."}
+        ]
       },
       "private-projekte": {
         "title": "Private Projekte",
         "subtitle": "Heimwerken, Garten, Renovierung",
         "description": "Du hast ein Projekt? Wir haben das Equipment. Ob Terrassenbau, Gartenumgestaltung oder Renovierung – mit unseren Mietgeräten wird dein Projekt zum Erfolg.",
-        "highlights": ["Vertikutierer & Häcksler", "Rüttelplatten für Pflasterarbeiten", "Anhänger für Grünschnitt", "Elektrowerkzeuge für Renovierung"]
+        "highlights": ["Vertikutierer & Häcksler", "Rüttelplatten für Pflasterarbeiten", "Anhänger für Grünschnitt", "Elektrowerkzeuge für Renovierung"],
+        "contentSections": [
+          {
+            "heading": "Die beliebtesten Heimwerker-Projekte",
+            "text": "Terrasse pflastern, Garten umgestalten, Badezimmer renovieren oder den alten Schuppen abreißen – als Heimwerker stehst du vor Projekten, für die Profi-Equipment den Unterschied macht. Mit unseren Mietgeräten bekommst du Zugang zu Maschinen, die du sonst nur für ein einziges Projekt kaufen müsstest. So sparst du hunderte Euro und hast trotzdem die gleiche Qualität wie der Profi von nebenan."
+          },
+          {
+            "heading": "Equipment nach Projekt-Typ",
+            "text": "Terrasse & Pflaster: Rüttelplatte + Anhänger für Material. Garten: Häcksler + Vertikutierer + Baumstumpffräse. Renovierung: Bohrhammer + Schleifmaschine + Bautrockner. Abriss: Abbruchhammer + Kastenanhänger für den Abtransport. Umzug: Planenanhänger in der passenden Größe. Für jedes Projekt beraten wir dich gerne persönlich – auch als Anfänger bekommst du bei uns eine ausführliche Einweisung in die Geräte."
+          },
+          {
+            "heading": "Tipps für Heimwerker: So gelingt dein Projekt",
+            "text": "Plane genügend Zeit ein – Projekte dauern oft länger als gedacht. Nutze unsere Wochenend-Tarife für mehrtägige Vorhaben. Lass dich vor der Abholung in die Geräte einweisen – wir erklären dir Bedienung und Sicherheitshinweise. Trage immer passende Schutzausrüstung: Gehörschutz bei Maschinen, Schutzbrille bei Schneidarbeiten, Handschuhe bei Vibrationsgeräten. Bei Unsicherheiten ruf uns einfach an – wir helfen gerne weiter, auch nach der Abholung."
+          }
+        ],
+        "advantages": ["Profi-Qualität zum Mietpreis", "Kostenlose Einweisung bei Abholung", "Attraktive Wochenend-Tarife", "Persönliche Beratung für Heimwerker"],
+        "faq": [
+          {"q": "Ich bin Anfänger – bekomme ich eine Einweisung?", "a": "Selbstverständlich! Bei Abholung erklären wir dir jedes Gerät ausführlich – Bedienung, Sicherheitshinweise und praktische Tipps. Auch während der Mietzeit kannst du uns jederzeit anrufen."},
+          {"q": "Was brauche ich zum Terrasse pflastern?", "a": "Für eine Terrasse brauchst du eine Rüttelplatte zum Verdichten des Untergrunds, eventuell einen Minibagger für den Aushub und einen Anhänger für Materialanlieferung. Wir stellen dir gerne ein individuelles Paket zusammen."},
+          {"q": "Lohnt sich das Mieten für nur einen Tag?", "a": "Auf jeden Fall! Viele Geräte wie Rüttelplatten, Häcksler oder Bohrhämmer brauchst du nur wenige Stunden. Ein Miettag kostet einen Bruchteil des Kaufpreises – und du sparst dir Lagerung und Wartung."},
+          {"q": "Welchen Anhänger kann ich mit normalem Führerschein fahren?", "a": "Mit Führerschein Klasse B darfst du Anhänger bis 750 kg Gesamtgewicht ziehen. Für schwerere Anhänger benötigst du Klasse BE oder B96. Wir beraten dich gerne zur passenden Größe."},
+          {"q": "Kann ich Geräte auch liefern lassen?", "a": "Ja, wir liefern Minibagger, Rüttelplatten und schwere Geräte direkt zu dir. Die Lieferkosten richten sich nach der Entfernung. Für Anhänger brauchst du natürlich ein Zugfahrzeug mit Kupplung."}
+        ]
       },
       "kindergeburtstage": {
         "title": "Kindergeburtstage & Feste",
         "subtitle": "Hüpfburgen, Spiele, Unterhaltung",
         "description": "Mach den Kindergeburtstag zum unvergesslichen Erlebnis! Unsere Hüpfburgen, Spezialeffekte und Sound-Systeme bringen Kinderaugen zum Leuchten.",
-        "highlights": ["Hüpfburgen 2,8m bis 6m", "Hüpfburg mit Wasserrutsche", "Nebelmaschine & Seifenblasen", "Mobile Soundboks-Lautsprecher"]
+        "highlights": ["Hüpfburgen 2,8m bis 6m", "Hüpfburg mit Wasserrutsche", "Nebelmaschine & Seifenblasen", "Mobile Soundboks-Lautsprecher"],
+        "contentSections": [
+          {
+            "heading": "Die perfekte Hüpfburg für jeden Anlass",
+            "text": "Hüpfburgen sind der absolute Hit bei Kindergeburtstagen, Sommerfesten und Vereinsfeiern. Wir bieten verschiedene Modelle: Von der kompakten Hüpfburg (2,8 m) für kleine Gärten bis zur großen Eventburg (6 m) mit Rutsche für große Feste. Im Sommer ist unsere Hüpfburg mit integrierter Wasserrutsche besonders beliebt – eine Kombination aus Hüpfspaß und erfrischender Abkühlung. Alle unsere Hüpfburgen sind TÜV-geprüft und werden sauber und einsatzbereit geliefert."
+          },
+          {
+            "heading": "Spezialeffekte & Sound für die Party",
+            "text": "Eine Nebelmaschine verwandelt den Garten in eine mystische Landschaft, Seifenblasenmaschinen sorgen für magische Momente und eine Soundboks liefert den Soundtrack zur Feier – kabellos und outdoor-tauglich. Für größere Kinderfeste oder Schulfeiern bieten wir auch LED-Beleuchtung und PA-Systeme. Ergänze die Party mit unseren Partyzelten als Schutz vor Sonne oder Regen."
+          },
+          {
+            "heading": "Sicherheitshinweise für Hüpfburgen",
+            "text": "Sicherheit steht an erster Stelle: Hüpfburgen müssen auf ebenem Untergrund aufgestellt und mit den mitgelieferten Erdnägeln oder Sandsäcken gesichert werden. Eine erwachsene Aufsichtsperson muss immer anwesend sein. Die maximale Kinderzahl pro Hüpfburg sollte eingehalten werden (in der Regel 4-8 Kinder gleichzeitig, je nach Modell). Bei starkem Wind (ab Windstärke 5) muss die Hüpfburg abgebaut werden. Wir erklären dir bei der Abholung oder Lieferung alles Wichtige."
+          }
+        ],
+        "advantages": ["TÜV-geprüfte Hüpfburgen", "Lieferung und Abholung möglich", "Verschiedene Größen für jeden Garten", "Komplettes Party-Paket mit Sound & Effekten"],
+        "faq": [
+          {"q": "Wie viel Platz brauche ich für eine Hüpfburg?", "a": "Je nach Modell benötigst du eine ebene Fläche von 4x4m (kleine Hüpfburg) bis 8x8m (große Eventburg mit Rutsche). Dazu sollte rundherum 1,5 m Sicherheitsabstand eingehalten werden. Gras ist der ideale Untergrund."},
+          {"q": "Ab welchem Alter können Kinder hüpfen?", "a": "Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Für kleinere Kinder empfehlen wir die kompakten Modelle mit niedrigeren Seitenwänden. Eine erwachsene Aufsichtsperson muss immer dabei sein."},
+          {"q": "Was passiert bei schlechtem Wetter?", "a": "Leichter Regen ist kein Problem – die Hüpfburg kann weiter genutzt werden (wird etwas rutschiger). Bei starkem Wind oder Gewitter muss die Hüpfburg aus Sicherheitsgründen abgebaut werden. Bei Regen empfehlen wir zusätzlich ein Partyzelt."},
+          {"q": "Liefert ihr die Hüpfburg auch?", "a": "Ja, wir liefern Hüpfburgen direkt zu dir und bauen sie auf Wunsch auch auf. Die Lieferkosten richten sich nach der Entfernung. Alternativ kannst du kleinere Modelle auch selbst abholen – sie passen in einen Kombi."},
+          {"q": "Brauche ich einen Stromanschluss?", "a": "Ja, Hüpfburgen benötigen ein Dauergebläse (230V Schuko-Steckdose). Ein normaler Hausanschluss reicht aus. Alternativ bieten wir auch Stromerzeuger für Standorte ohne Steckdose."}
+        ]
       }
     }
   },
