@@ -10,7 +10,10 @@
     "b2bPortal": "B2B Portal",
     "rentNow": "Rent Now",
     "b2bLogin": "B2B Login",
-    "menu": "Menu"
+    "menu": "Menu",
+    "buy": "Buy",
+    "buyNow": "Buy Now",
+    "salePage": "Sales Page"
   },
   "marquee": {
     "weekendRates": "Weekend Rates",
