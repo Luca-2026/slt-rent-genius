@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { PublicChatAssistant } from "@/components/PublicChatAssistant";
-import { RentwarePositioner } from "@/components/RentwarePositioner";
+import { RentwareLoader } from "@/components/RentwareLoader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,7 +17,7 @@ export function Layout({ children }: LayoutProps) {
       {/* Spacer so floating buttons (chat + rentware) don't cover footer content on mobile */}
       <div className="h-0 md:hidden" aria-hidden="true" />
       <PublicChatAssistant />
-      <RentwarePositioner />
+      <RentwareLoader />
     </div>
   );
 }
