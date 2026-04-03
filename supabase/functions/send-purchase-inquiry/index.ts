@@ -79,10 +79,10 @@ auf www.slt-rental.de/verkauf gesendet.
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SLT-Rental Kaufanfrage <noreply@notify.slt-rental.de>",
+        from: "SLT-Rental Kaufanfrage <kaufanfrage@slt-rental.de>",
         to: ["kaufanfrage@slt-rental.de"],
         reply_to: email,
         subject,
