@@ -401,16 +401,6 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   return (
     <div className="bg-card rounded-xl border border-border p-5 space-y-6">
 
-      {/* H2 Structure from Excel */}
-      {h2s.length > 0 && (
-        <div>
-          {h2s.map((h2, i) => (
-            <h2 key={i} className="text-base font-semibold text-headline mb-2">
-              {loc(h2)}
-            </h2>
-          ))}
-        </div>
-      )}
 
       {/* Product-specific Use Cases (from Excel) */}
       {hasProductUseCases && (
