@@ -127,6 +127,7 @@ const brands = [
   {
     id: "temared",
     name: "TEMARED",
+    logo: temaredLogo,
     tagline: "Kastenanhänger · Planenanhänger · Autotransporter · Baumaschinenanhänger",
     h2: "Temared Anhänger kaufen – Autorisierter Händler in NRW",
     intro: "Temared ist Europas Marktführer für PKW-Anhänger bis 750 kg und einer der größten Anhängerhersteller mit zulässigen Gesamtgewichten bis 3.500 kg. Mit über 200 Modellen in 46 Ländern bietet Temared für jeden Transportbedarf die richtige Lösung. SLT Rental ist autorisierter Temared-Fachhändler für Nordrhein-Westfalen – mit Ausstellungsmodellen, Probefahrt und Zulassungsservice.",
