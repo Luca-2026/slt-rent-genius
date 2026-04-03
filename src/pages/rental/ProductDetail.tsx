@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
+import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
@@ -160,7 +162,21 @@ export default function ProductDetail() {
         scriptTag.setAttribute("data-product-jsonld", "true");
         document.head.appendChild(scriptTag);
       }
-      scriptTag.textContent = JSON.stringify(jsonLd);
+      // Combine Product + FAQ JSON-LD
+      const seoContent = categoryId ? seoCategoryContent[categoryId] : null;
+      const jsonLdArray: Record<string, unknown>[] = [jsonLd];
+      if (seoContent?.faqs?.length) {
+        jsonLdArray.push({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": seoContent.faqs.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a },
+          })),
+        });
+      }
+      scriptTag.textContent = JSON.stringify(jsonLdArray);
 
       return () => {
         document.title = "SLT Rental";
@@ -659,6 +675,14 @@ export default function ProductDetail() {
                 </div>
               )}
 
+
+              {/* SEO Content Block */}
+              <ProductSEOContent
+                product={product}
+                location={location}
+                categoryId={categoryId || ""}
+                categoryTitle={category.title}
+              />
 
               {/* Kaufanfrage-Banner */}
               <PurchaseInquiryBanner
