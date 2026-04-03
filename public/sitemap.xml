@@ -11,7 +11,9 @@
   <url><loc>https://www.slt-rental.de/karriere</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-03-14</lastmod></url>
   <url><loc>https://www.slt-rental.de/ueber-uns</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-03-14</lastmod></url>
   <url><loc>https://www.slt-rental.de/hilfe</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-14</lastmod></url>
-  
+  <url><loc>https://www.slt-rental.de/verkauf</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2026-04-03</lastmod></url>
+  <url><loc>https://www.slt-rental.de/tiefpreisgarantie</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-03-14</lastmod></url>
+
   <!-- Location Pages -->
   <url><loc>https://www.slt-rental.de/mieten/krefeld</loc><changefreq>weekly</changefreq><priority>0.9</priority><lastmod>2026-03-14</lastmod></url>
   <url><loc>https://www.slt-rental.de/mieten/bonn</loc><changefreq>weekly</changefreq><priority>0.9</priority><lastmod>2026-03-14</lastmod></url>
