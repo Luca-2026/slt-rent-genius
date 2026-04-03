@@ -336,15 +336,21 @@ export default function Verkauf() {
                 <Mail className="mr-2 h-5 w-5" /> Jetzt Kaufanfrage stellen
               </Button>
               <a href="#marken">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                  Unsere Marken entdecken
+                <Button size="lg" variant="secondary" className="gap-2">
+                  Unsere Marken entdecken <ChevronDown className="h-4 w-4" />
                 </Button>
               </a>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {["🏗️ Zoomlion", "🔨 BAUMAX", "🚛 Temared"].map((b) => (
-                <span key={b} className="bg-primary-foreground/10 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">{b}</span>
-              ))}
+            <div className="flex flex-wrap items-center gap-4">
+              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={zoomlionLogo} alt="Zoomlion" className="h-5 w-auto" />
+              </a>
+              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={baumaxLogo} alt="BAUMAX" className="h-5 w-auto" />
+              </a>
+              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={temaredLogo} alt="Temared" className="h-5 w-auto" />
+              </a>
             </div>
           </AnimatedSection>
         </div>
