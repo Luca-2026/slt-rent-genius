@@ -395,7 +395,9 @@ export default function Verkauf() {
               <div className="bg-background rounded-2xl border border-border overflow-hidden">
                 {/* Brand Header */}
                 <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
-                  <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain brightness-0 invert" />
+                  <div className="bg-white rounded-lg p-1.5">
+                    <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
+                  </div>
                   <p className="text-primary-foreground/70">{brand.tagline}</p>
                 </div>
 
