@@ -733,7 +733,7 @@ export default function Verkauf() {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 py-6 text-lg" disabled={isSubmitting}>
-                  {isSubmitting ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Wird gesendet…</> : <>📩 Kaufanfrage absenden</>}
+                  {isSubmitting ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Wird gesendet…</> : <>Kaufanfrage absenden</>}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
