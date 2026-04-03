@@ -429,8 +429,8 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
             )}
             {productSEO!.useCasePrivat && (
               <div className="flex items-start gap-3 text-sm">
-                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Home className="h-4 w-4 text-green-600" />
+                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Home className="h-4 w-4 text-secondary-foreground" />
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Privat & Heimwerken</span>
