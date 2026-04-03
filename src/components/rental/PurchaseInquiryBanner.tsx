@@ -29,11 +29,21 @@ export function PurchaseInquiryBanner({ productName, locationName, locationEmail
   const { toast } = useToast();
 
   useEffect(() => {
-    if (sessionStorage.getItem("purchasePopupShown")) return;
+    try {
+      if (sessionStorage.getItem("purchasePopupShown")) return;
+    } catch {
+      // Ignore storage restrictions in embedded previews
+    }
+
     const timer = setTimeout(() => {
       setPopupOpen(true);
-      sessionStorage.setItem("purchasePopupShown", "1");
+      try {
+        sessionStorage.setItem("purchasePopupShown", "1");
+      } catch {
+        // Ignore storage restrictions in embedded previews
+      }
     }, 2500);
+
     return () => clearTimeout(timer);
   }, []);
 
