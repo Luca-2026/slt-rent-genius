@@ -304,7 +304,11 @@ export default function Verkauf() {
   };
 
   const scrollToForm = () => {
-    document.getElementById("kaufanfrage")?.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById("kaufanfrage");
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const tomorrow = new Date();
