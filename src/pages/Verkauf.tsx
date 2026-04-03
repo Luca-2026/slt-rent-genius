@@ -84,7 +84,8 @@ const brands = [
   {
     id: "zoomlion",
     name: "ZOOMLION",
-    tagline: "Elektrobagger · Radlader · Teleskoplader · Arbeitsbühnen",
+    logo: zoomlionLogo,
+    tagline: "Minibagger · Radlader · Teleskoplader · Arbeitsbühnen",
     h2: "Zoomlion – Offizieller Händler & Servicestützpunkt in NRW",
     intro: "Zoomlion Heavy Industry Science & Technology Co., Ltd. ist einer der weltweit führenden Hersteller von Baumaschinen und Arbeitsbühnen mit über 715 Modellen in 15 Produktkategorien. SLT Rental ist autorisierter Zoomlion-Fachhändler und zertifizierter Servicestützpunkt für Nordrhein-Westfalen.",
     detail: "Wir bieten die Zoomlion-Produktlinie für Erdbewegung und Arbeitsbühnen – von kompakten Elektro-Minibaggern für beengte Innenstadtbaustellen bis hin zu leistungsstarken Radladern und Teleskopladern für Bau, Industrie und Logistik.",
@@ -104,6 +105,7 @@ const brands = [
   {
     id: "baumax",
     name: "BAUMAX",
+    logo: baumaxLogo,
     tagline: "Rüttelplatten · Dumper · Stampfer · Steinsägen · Betonrüttler",
     h2: "BAUMAX Baumaschinen – Fachhändler & Servicestützpunkt in NRW",
     intro: "BAUMAX Baumaschinen steht für deutsche Entwicklung, robuste Fertigung und nachhaltige Ersatzteilversorgung. Alle BAUMAX-Maschinen werden in Deutschland endgefertigt, getestet und eingestellt. Als autorisierter Fachhändler und Servicestützpunkt bieten wir das komplette BAUMAX-Sortiment mit persönlicher Beratung und schnellem Werksdienst.",
@@ -125,6 +127,7 @@ const brands = [
   {
     id: "temared",
     name: "TEMARED",
+    logo: temaredLogo,
     tagline: "Kastenanhänger · Planenanhänger · Autotransporter · Baumaschinenanhänger",
     h2: "Temared Anhänger kaufen – Autorisierter Händler in NRW",
     intro: "Temared ist Europas Marktführer für PKW-Anhänger bis 750 kg und einer der größten Anhängerhersteller mit zulässigen Gesamtgewichten bis 3.500 kg. Mit über 200 Modellen in 46 Ländern bietet Temared für jeden Transportbedarf die richtige Lösung. SLT Rental ist autorisierter Temared-Fachhändler für Nordrhein-Westfalen – mit Ausstellungsmodellen, Probefahrt und Zulassungsservice.",
@@ -391,9 +394,9 @@ export default function Verkauf() {
             <AnimatedSection key={brand.id} delay={i * 100}>
               <div className="bg-background rounded-2xl border border-border overflow-hidden">
                 {/* Brand Header */}
-                <div className="bg-primary p-6 lg:p-8">
-                  <span className="text-2xl lg:text-3xl font-bold text-primary-foreground">{brand.name}</span>
-                  <p className="text-primary-foreground/70 mt-1">{brand.tagline}</p>
+                <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
+                  <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain brightness-0 invert" />
+                  <p className="text-primary-foreground/70">{brand.tagline}</p>
                 </div>
 
                 <div className="p-6 lg:p-8 space-y-6">
