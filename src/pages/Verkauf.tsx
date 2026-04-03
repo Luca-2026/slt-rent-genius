@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import zoomlionLogo from "@/assets/logos/zoomlion.png";
+import temaredLogo from "@/assets/logos/temared.webp";
+import baumaxLogo from "@/assets/logos/baumax.png";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
