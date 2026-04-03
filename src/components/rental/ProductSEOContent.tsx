@@ -437,7 +437,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Events & Veranstaltungen</span>
-                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCaseEvent}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{loc(productSEO!.useCaseEvent!)}</p>
                 </div>
               </div>
             )}
