@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
