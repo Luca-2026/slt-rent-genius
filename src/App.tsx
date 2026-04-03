@@ -95,6 +95,9 @@ const App = () => (
               <Route path="/kategorien-krefeld/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
               <Route path="/kategorien-bonn/:categorySlug" element={<LegacyCategoryRedirect locationId="bonn" />} />
               <Route path="/kategorien-muelheim/:categorySlug" element={<LegacyCategoryRedirect locationId="muelheim" />} />
+              <Route path="/kategorien-duisburg/:categorySlug" element={<LegacyCategoryRedirect locationId="muelheim" />} />
+              <Route path="/kategroien-duisburg/:categorySlug" element={<LegacyCategoryRedirect locationId="muelheim" />} />
+              <Route path="/kategorien/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
               <Route path="/kategorie/:categorySlug" element={<LegacyCategoryRedirect locationId="krefeld" />} />
               
               {/* Legacy /standort/:id → /standorte (old GSC URLs) */}
