@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import zoomlionLogo from "@/assets/logos/zoomlion.png";
+import temaredLogo from "@/assets/logos/temared.webp";
+import baumaxLogo from "@/assets/logos/baumax.png";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -88,8 +91,8 @@ const brands = [
       "🦺 Scherenbühnen (Zoomlion Access): Elektrisch & Diesel, 8–32 m Arbeitshöhe",
       "📐 Gelenkteleskopsteiger: Bis 28 m Arbeitshöhe, für Außen- und Innenbereich",
     ],
-    website: "https://eu.zoomlion.com",
-    websiteLabel: "Zur offiziellen Zoomlion-Website (EU)",
+    website: "https://www.zoomlion-nrw.de",
+    websiteLabel: "Zur Zoomlion NRW Website",
     ctaText: "Kaufanfrage Zoomlion",
     ctaDesc: "Wünschen Sie eine persönliche Beratung oder ein Angebot für ein Zoomlion-Produkt?",
   },
@@ -173,7 +176,7 @@ const jsonLdAutoDealer = {
   url: "https://www.slt-rental.de/verkauf",
   description: "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
   brand: [
-    { "@type": "Brand", name: "Zoomlion", url: "https://eu.zoomlion.com" },
+    { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
   ],
@@ -333,15 +336,21 @@ export default function Verkauf() {
                 <Mail className="mr-2 h-5 w-5" /> Jetzt Kaufanfrage stellen
               </Button>
               <a href="#marken">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                  Unsere Marken entdecken
+                <Button size="lg" variant="secondary" className="gap-2">
+                  Unsere Marken entdecken <ChevronDown className="h-4 w-4" />
                 </Button>
               </a>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {["🏗️ Zoomlion", "🔨 BAUMAX", "🚛 Temared"].map((b) => (
-                <span key={b} className="bg-primary-foreground/10 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">{b}</span>
-              ))}
+            <div className="flex flex-wrap items-center gap-4">
+              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={zoomlionLogo} alt="Zoomlion" className="h-5 w-auto" />
+              </a>
+              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={baumaxLogo} alt="BAUMAX" className="h-5 w-auto" />
+              </a>
+              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
+                <img src={temaredLogo} alt="Temared" className="h-5 w-auto" />
+              </a>
             </div>
           </AnimatedSection>
         </div>
@@ -400,6 +409,11 @@ export default function Verkauf() {
                     </Button>
                     <a href={brand.website} target="_blank" rel="noopener noreferrer">
                       <Button variant="outline" className="gap-2">
+                        <img
+                          src={brand.id === "zoomlion" ? zoomlionLogo : brand.id === "baumax" ? baumaxLogo : temaredLogo}
+                          alt={brand.name}
+                          className="h-4 w-auto"
+                        />
                         {brand.websiteLabel} <ExternalLink className="h-4 w-4" />
                       </Button>
                     </a>
