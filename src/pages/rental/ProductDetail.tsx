@@ -422,7 +422,7 @@ export default function ProductDetail() {
               <div className="bg-card rounded-xl border border-border p-5 space-y-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
-                    {productSEO?.h1 || product.name}
+                    {productSEO?.h1 ? localizeText(productSEO.h1) : product.name}
                   </h1>
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
