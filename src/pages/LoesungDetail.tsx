@@ -5,13 +5,19 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Construction, ShieldCheck, Truck, ClipboardList, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Construction, ShieldCheck, Truck, ClipboardList, ExternalLink, Star, ChevronDown } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { solutionData } from "./Loesungen";
 import { productCategories } from "@/data/rentalData";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function LoesungDetail() {
   const { t } = useTranslation();
@@ -36,6 +42,9 @@ export default function LoesungDetail() {
   const subtitle = t(`solutions.items.${solution.id}.subtitle`);
   const description = t(`solutions.items.${solution.id}.description`);
   const highlights = t(`solutions.items.${solution.id}.highlights`, { returnObjects: true }) as string[];
+  const contentSections = t(`solutions.items.${solution.id}.contentSections`, { returnObjects: true }) as { heading: string; text: string }[];
+  const advantages = t(`solutions.items.${solution.id}.advantages`, { returnObjects: true }) as string[];
+  const faq = t(`solutions.items.${solution.id}.faq`, { returnObjects: true }) as { q: string; a: string }[];
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
@@ -48,13 +57,52 @@ export default function LoesungDetail() {
     setLocationDialogOpen(true);
   };
 
+  // Build JSON-LD structured data
+  const breadcrumbJsonLd = SLT_BREADCRUMB_JSONLD([
+    { name: "Home", url: "/" },
+    { name: "Lösungen", url: "/loesungen" },
+    { name: title, url: `/loesungen/${solution.id}` }
+  ]);
+
+  const faqJsonLd = Array.isArray(faq) && faq.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faq.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  } : null;
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `${title} – Mietlösungen`,
+    "description": description,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "SLT Rental",
+      "url": "https://www.slt-rental.de"
+    },
+    "areaServed": {
+      "@type": "State",
+      "name": "Nordrhein-Westfalen"
+    },
+    "serviceType": title
+  };
+
+  const allJsonLd = [breadcrumbJsonLd, serviceJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
+
   return (
     <Layout>
       <SEO
         title={`${title} – Mietlösungen | SLT Rental`}
         description={`${subtitle} – ${description.slice(0, 120)}...`}
         canonical={`/loesungen/${solution.id}`}
-        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lösungen", url: "/loesungen" }, { name: title, url: `/loesungen/${solution.id}` }])}
+        jsonLd={allJsonLd as any}
       />
       <LocationSelectDialog
         open={locationDialogOpen}
@@ -184,6 +232,49 @@ export default function LoesungDetail() {
         </div>
       </section>
 
+      {/* Deep Content Sections */}
+      {Array.isArray(contentSections) && contentSections.length > 0 && (
+        <section className="py-8 lg:py-16 bg-surface-light">
+          <div className="section-container">
+            <div className="max-w-4xl mx-auto space-y-12">
+              {contentSections.map((section, index) => (
+                <AnimatedSection key={index} animation="fade-in-up" delay={index * 0.05}>
+                  <h2 className="text-xl lg:text-2xl font-bold text-headline mb-4">
+                    {section.heading}
+                  </h2>
+                  <p className="text-body-text leading-relaxed text-base lg:text-lg">
+                    {section.text}
+                  </p>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Advantages Grid */}
+      {Array.isArray(advantages) && advantages.length > 0 && (
+        <section className="py-8 lg:py-12">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-2xl font-bold text-headline mb-8 text-center">
+                Deine Vorteile bei SLT Rental
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {advantages.map((advantage, index) => (
+                  <Card key={index} className="border-2 hover:border-primary/20 transition-all">
+                    <CardContent className="p-5 flex items-start gap-3">
+                      <Star className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="text-body-text font-medium text-sm">{advantage}</span>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Dienstleistungen Section */}
       {(solution.id === "events-veranstaltungen" || solution.id === "tiefbau-erdbewegung" || solution.id === "kindergeburtstage") && (
         <section className="py-8 lg:py-12 bg-surface-light">
@@ -281,6 +372,37 @@ export default function LoesungDetail() {
         </section>
       )}
 
+      {/* FAQ Accordion */}
+      {Array.isArray(faq) && faq.length > 0 && (
+        <section className="py-8 lg:py-16">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-2 text-center">
+                  Häufige Fragen zu {title}
+                </h2>
+                <p className="text-muted-foreground text-center mb-8">
+                  Die wichtigsten Antworten auf einen Blick
+                </p>
+                <Accordion type="multiple" className="space-y-3">
+                  {faq.map((item, index) => (
+                    <AccordionItem key={index} value={`faq-${index}`} className="border rounded-xl px-5 bg-background shadow-sm">
+                      <AccordionTrigger className="text-left font-semibold text-headline hover:no-underline py-4">
+                        {item.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-body-text pb-4 leading-relaxed">
+                        {item.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
       <section className="py-8 lg:py-12 bg-surface-light">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
