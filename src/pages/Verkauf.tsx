@@ -468,7 +468,7 @@ export default function Verkauf() {
           <AnimatedSection>
             <div className="text-center mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
-                📩 Kaufanfrage stellen – wir antworten innerhalb von 24 Stunden
+                Kaufanfrage stellen – wir antworten innerhalb von 24 Stunden
               </h2>
               <p className="text-muted-foreground">
                 Füllen Sie das Formular aus. Wir prüfen Ihre Anfrage und senden Ihnen ein unverbindliches Angebot zu – persönlich, transparent, ohne versteckte Kosten.
@@ -531,9 +531,9 @@ export default function Verkauf() {
 
                   <div className="space-y-2">
                     {[
-                      { val: "Lieferung gewünscht", label: "🚚 Lieferung an meine Adresse" },
-                      { val: "Selbstabholung Bonn", label: "📍 Selbstabholung – Standort Bonn" },
-                      { val: "Selbstabholung Krefeld", label: "📍 Selbstabholung – Standort Krefeld" },
+                      { val: "Lieferung gewünscht", label: "Lieferung an meine Adresse" },
+                      { val: "Selbstabholung Bonn", label: "Selbstabholung – Standort Bonn" },
+                      { val: "Selbstabholung Krefeld", label: "Selbstabholung – Standort Krefeld" },
                     ].map((opt) => (
                       <label key={opt.val} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${lieferOption === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
                         <input type="radio" name="lieferOption" value={opt.val} checked={lieferOption === opt.val} onChange={() => setLieferOption(opt.val)} className="accent-primary" />
@@ -574,8 +574,8 @@ export default function Verkauf() {
 
                   <div className="space-y-2">
                     {[
-                      { val: "Gewerblicher Kunde", label: "🏢 Gewerblicher Kunde / Unternehmen" },
-                      { val: "Privatkunde", label: "👤 Privatkunde" },
+                      { val: "Gewerblicher Kunde", label: "Gewerblicher Kunde / Unternehmen" },
+                      { val: "Privatkunde", label: "Privatkunde" },
                     ].map((opt) => (
                       <label key={opt.val} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${kundentyp === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
                         <input type="radio" name="kundentyp" value={opt.val} checked={kundentyp === opt.val} onChange={() => setKundentyp(opt.val)} className="accent-primary" />
@@ -733,7 +733,7 @@ export default function Verkauf() {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 py-6 text-lg" disabled={isSubmitting}>
-                  {isSubmitting ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Wird gesendet…</> : <>📩 Kaufanfrage absenden</>}
+                  {isSubmitting ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Wird gesendet…</> : <>Kaufanfrage absenden</>}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
