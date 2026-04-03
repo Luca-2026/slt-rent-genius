@@ -91,10 +91,23 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (product && location && category) {
+      // Helper: replace multi-location strings with current location only
+      const localizeText = (text: string): string => {
+        return text
+          .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, location.name)
+          .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, location.name)
+          .replace(/Bonn\s*[&,]\s*Krefeld/gi, location.name)
+          .replace(/Krefeld\s*[&,]\s*Bonn/gi, location.name)
+          .replace(/Bonn\s*[&,]\s*Mülheim/gi, location.name)
+          .replace(/Krefeld\s*[&,]\s*Mülheim/gi, location.name)
+          .replace(/Mülheim\s*[&,]\s*Krefeld/gi, location.name)
+          .replace(/Mülheim\s*[&,]\s*Bonn/gi, location.name);
+      };
+
       // SEO: Title - prefer Excel data, fallback to generated
       let seoTitle: string;
       if (productSEO?.seoTitle) {
-        seoTitle = productSEO.seoTitle;
+        seoTitle = localizeText(productSEO.seoTitle);
       } else {
         const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
         const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
