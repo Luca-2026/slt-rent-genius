@@ -164,11 +164,18 @@ export function Header() {
             </Link>
             <Link
               to="/mieten"
+              className="px-4 py-3 rounded-lg text-sm font-medium hover:bg-muted text-body"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("nav.rentNow")}
+            </Link>
+            <Link
+              to="/verkauf"
               className="mt-2"
               onClick={() => setIsMenuOpen(false)}
             >
               <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                {t("nav.rentNow")}
+                Jetzt kaufen
               </Button>
             </Link>
           </nav>
