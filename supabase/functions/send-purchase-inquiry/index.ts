@@ -75,15 +75,14 @@ Diese Anfrage wurde automatisch über das Kaufanfrageformular
 auf www.slt-rental.de/verkauf gesendet.
 ────────────────────────────────────────────────`;
 
-    const res = await fetch(`${GATEWAY_URL}/emails`, {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-        "X-Connection-Api-Key": RESEND_API_KEY!,
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SLT-Rental Kaufanfrage <noreply@notify.slt-rental.de>",
+        from: "SLT-Rental Kaufanfrage <kaufanfrage@slt-rental.de>",
         to: ["kaufanfrage@slt-rental.de"],
         reply_to: email,
         subject,
