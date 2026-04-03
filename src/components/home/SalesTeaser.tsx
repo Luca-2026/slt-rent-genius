@@ -19,7 +19,7 @@ const brandCards = [
   {
     name: "BAUMAX",
     h3: "BAUMAX Baumaschinen – Rüttelplatten, Dumper, Stampfer & mehr",
-    desc: "BAUMAX steht für „Baumaschinen für maximale Leistung" – deutsche Entwicklung, robuste Konstruktion, nachhaltige Ersatzteilversorgung.",
+    desc: "BAUMAX steht für Baumaschinen für maximale Leistung – deutsche Entwicklung, robuste Konstruktion, nachhaltige Ersatzteilversorgung.",
     highlights: [
       "🔨 Rüttelplatten VP, HVP & RVP-Serie",
       "🚛 Minidumper & Raddumper (elektrisch & benzin)",
