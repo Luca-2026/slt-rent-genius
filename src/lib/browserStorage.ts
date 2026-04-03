@@ -44,14 +44,22 @@ const installStorageFallback = (kind: StorageKind) => {
 
   const fallback = createMemoryStorage();
 
-  try {
-    Object.defineProperty(window, kind, {
+  const defineFallback = (target: Window & typeof globalThis) => {
+    Object.defineProperty(target, kind, {
       configurable: true,
       enumerable: true,
       get: () => fallback,
     });
-  } catch (error) {
-    console.warn(`[storage] ${kind} fallback could not be installed`, error);
+  };
+
+  try {
+    defineFallback(window);
+  } catch {
+    try {
+      defineFallback(globalThis as Window & typeof globalThis);
+    } catch (error) {
+      console.warn(`[storage] ${kind} fallback could not be installed`, error);
+    }
   }
 };
 
@@ -59,3 +67,5 @@ export const installBrowserStorageFallbacks = () => {
   installStorageFallback("localStorage");
   installStorageFallback("sessionStorage");
 };
+
+installBrowserStorageFallbacks();

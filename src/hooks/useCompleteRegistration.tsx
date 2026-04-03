@@ -19,8 +19,12 @@ export function useCompleteRegistration(user: User | null, onProfileCreated?: ()
     (async () => {
       try {
         // Clean up any legacy localStorage data
-        localStorage.removeItem("b2b_pending_registration");
-        localStorage.removeItem("b2b_pending_document");
+        try {
+          localStorage.removeItem("b2b_pending_registration");
+          localStorage.removeItem("b2b_pending_document");
+        } catch {
+          // Ignore storage restrictions in embedded previews
+        }
 
         // Check if profile exists but email_confirmed is false
         const { data: profile } = await supabase
