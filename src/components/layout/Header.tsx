@@ -116,8 +116,14 @@ export function Header() {
               </Link>
 
               <Link to="/mieten">
-                <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                <Button variant="outline" size="sm">
                   {t("nav.rentNow")}
+                </Button>
+              </Link>
+
+              <Link to="/verkauf">
+                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                  Jetzt kaufen
                 </Button>
               </Link>
             </div>
