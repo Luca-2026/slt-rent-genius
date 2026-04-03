@@ -406,7 +406,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
         <div>
           {h2s.map((h2, i) => (
             <h2 key={i} className="text-base font-semibold text-headline mb-2">
-              {h2}
+              {loc(h2)}
             </h2>
           ))}
         </div>
