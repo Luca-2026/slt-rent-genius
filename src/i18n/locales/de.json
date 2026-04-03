@@ -1833,5 +1833,162 @@
     "viewDetails": "Details ansehen",
     "selectLocation": "Standort wählen",
     "selectLocationDesc": "Wählen Sie Ihren Standort, um Verfügbarkeit und Preise zu sehen."
+  },
+  "verkauf": {
+    "seo": {
+      "title": "Baumaschinen kaufen NRW – Zoomlion, BAUMAX & Temared | SLT Rental",
+      "description": "Baumaschinen & Anhänger kaufen beim autorisierten Fachhändler in NRW ✓ Zoomlion Bagger & Radlader ✓ BAUMAX Rüttelplatten ✓ Temared Anhänger ✓ Service in Bonn & Krefeld"
+    },
+    "hero": {
+      "title": "Baumaschinen & Anhänger kaufen in NRW – SLT Rental",
+      "subtitle": "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen. Kaufen, beraten lassen, direkt abholen oder liefern lassen – alles aus einer Hand.",
+      "ctaInquiry": "Jetzt Kaufanfrage stellen",
+      "ctaBrands": "Unsere Marken entdecken"
+    },
+    "usps": {
+      "title": "Warum bei SLT Rental kaufen?",
+      "subtitle": "Sechs gute Gründe, Ihre nächste Maschine oder Ihren nächsten Anhänger bei uns zu kaufen.",
+      "dealer": { "title": "Autorisierter Fachhändler", "desc": "Direkt vom zertifizierten Händler kaufen – mit Herstellergarantie und offiziellem Servicenetz." },
+      "service": { "title": "Service & Wartung vor Ort", "desc": "Als Servicestützpunkt übernehmen wir Wartung, Reparatur und Ersatzteilversorgung für alle Marken." },
+      "delivery": { "title": "Lieferung in ganz NRW", "desc": "Wir liefern Ihre Neumaschine direkt zur Baustelle, zum Betrieb oder nach Hause – zuverlässig und termingerecht." },
+      "consulting": { "title": "Persönliche Beratung", "desc": "Kein Callcenter – Sie sprechen direkt mit unseren Maschinenexperten an den Standorten Bonn und Krefeld." },
+      "rentToBuy": { "title": "Erst mieten, dann kaufen", "desc": "Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten auf den Kaufpreis an – fragen Sie uns." },
+      "spareParts": { "title": "Ersatzteile ab Lager", "desc": "Wir führen Originalersatzteile aller Marken auf Lager und liefern bundesweit innerhalb von 1–2 Arbeitstagen." }
+    },
+    "brands": {
+      "zoomlion": {
+        "tagline": "Minibagger · Radlader · Teleskoplader · Arbeitsbühnen",
+        "h2": "Zoomlion – Offizieller Händler & Servicestützpunkt in NRW",
+        "intro": "Zoomlion Heavy Industry Science & Technology Co., Ltd. ist einer der weltweit führenden Hersteller von Baumaschinen und Arbeitsbühnen mit über 715 Modellen in 15 Produktkategorien. SLT Rental ist autorisierter Zoomlion-Fachhändler und zertifizierter Servicestützpunkt für Nordrhein-Westfalen.",
+        "detail": "Wir bieten die Zoomlion-Produktlinie für Erdbewegung und Arbeitsbühnen – von kompakten Elektro-Minibaggern für beengte Innenstadtbaustellen bis hin zu leistungsstarken Radladern und Teleskopladern für Bau, Industrie und Logistik.",
+        "h3": "Produktkategorien Zoomlion bei SLT Rental",
+        "websiteLabel": "Zur Zoomlion NRW Website",
+        "ctaText": "Kaufanfrage Zoomlion",
+        "ctaDesc": "Wünschen Sie eine persönliche Beratung oder ein Angebot für ein Zoomlion-Produkt?"
+      },
+      "baumax": {
+        "tagline": "Rüttelplatten · Dumper · Stampfer · Steinsägen · Betonrüttler",
+        "h2": "BAUMAX Baumaschinen – Fachhändler & Servicestützpunkt in NRW",
+        "intro": "BAUMAX Baumaschinen steht für deutsche Entwicklung, robuste Fertigung und nachhaltige Ersatzteilversorgung. Alle BAUMAX-Maschinen werden in Deutschland endgefertigt, getestet und eingestellt. Als autorisierter Fachhändler und Servicestützpunkt bieten wir das komplette BAUMAX-Sortiment mit persönlicher Beratung und schnellem Werksdienst.",
+        "h3": "BAUMAX Produktkategorien bei SLT Rental",
+        "websiteLabel": "Zur offiziellen BAUMAX-Website",
+        "ctaText": "Kaufanfrage BAUMAX",
+        "ctaDesc": "Benötigen Sie eine Rüttelplatte, einen Dumper oder Zubehör von BAUMAX?"
+      },
+      "temared": {
+        "tagline": "Kastenanhänger · Planenanhänger · Autotransporter · Baumaschinenanhänger",
+        "h2": "Temared Anhänger kaufen – Autorisierter Händler in NRW",
+        "intro": "Temared ist Europas Marktführer für PKW-Anhänger bis 750 kg und einer der größten Anhängerhersteller mit zulässigen Gesamtgewichten bis 3.500 kg. Mit über 200 Modellen in 46 Ländern bietet Temared für jeden Transportbedarf die richtige Lösung. SLT Rental ist autorisierter Temared-Fachhändler für Nordrhein-Westfalen – mit Ausstellungsmodellen, Probefahrt und Zulassungsservice.",
+        "h3": "Temared Anhänger-Kategorien bei SLT Rental",
+        "websiteLabel": "Zur offiziellen Temared-Website",
+        "ctaText": "Kaufanfrage Temared",
+        "ctaDesc": "Wünschen Sie ein Angebot für einen Temared-Anhänger? Wir konfigurieren mit Ihnen."
+      },
+      "inquiryBtn": "Kaufanfrage stellen",
+      "submitInquiry": "Jetzt Anfrage stellen"
+    },
+    "products": {
+      "zoomlion": [
+        "Minibagger & Bagger: 2 t bis 50 t, für Erdbewegung, Abbruch und Tiefbau",
+        "Radlader: Kompaktradlader 1,5 t bis 5 t für Bau, Recycling und Landwirtschaft",
+        "Teleskoplader: Reichweiten bis 18 m, für Bau, Industrie und Veranstaltungslogistik",
+        "Scherenbühnen (Zoomlion Access): Elektrisch & Diesel, 8–32 m Arbeitshöhe",
+        "Gelenkteleskopsteiger: Bis 28 m Arbeitshöhe, für Außen- und Innenbereich"
+      ],
+      "baumax": [
+        "Vorwärtslaufende Rüttelplatten (VP-Serie): 70–170 kg, für Pflaster & Wege",
+        "Reversierbare Rüttelplatten (HVP/RVP-Serie): Hydraulisch & mechanisch, für Profi-Verdichtung",
+        "Vibrationsstampfer (GS-Serie): Mit Honda-Motor, für Gräben & enge Flächen",
+        "Minidumper & Raddumper: Elektrisch (RDe550, KDe550) & Diesel, bis 650 kg Nutzlast",
+        "Steinsägen & Trennschleifer: SST-Serie, für Beton, Naturstein und Fliesen",
+        "Betonrüttler & Fugenschneider: Für Tiefbau und Betonarbeiten"
+      ],
+      "temared": [
+        "PKW-Kastenanhänger: 750 kg – 3.500 kg, mit & ohne Laubgitter",
+        "Planenanhänger: S, M, L, XL, XXL – für trockenen Transport",
+        "Kofferanhänger: 750 kg – 2.000 kg, abschließbar",
+        "Autotransportanhänger: 1.500 kg – 2.700 kg, mit Auffahrrampen",
+        "Baumaschinenanhänger: 1.800 kg – 3.500 kg, für Bagger & Kompaktmaschinen",
+        "Motorrad- & Quadanhänger: 750 kg, 2- und 3-fach-Belegung",
+        "Kippanhänger: 1.500 kg – 2.700 kg, rückwärtskippend"
+      ]
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen zum Kauf",
+      "items": [
+        { "q": "Wo finde ich einen Zoomlion Händler in NRW?", "a": "SLT Rental in Bonn und Krefeld ist autorisierter Zoomlion-Fachhändler und Servicestützpunkt für Nordrhein-Westfalen. Wir führen Bagger, Radlader, Teleskoplader und Arbeitsbühnen der Zoomlion-Linie und bieten persönliche Beratung, Vorführung und Werksdienst." },
+        { "q": "Wo kann ich BAUMAX Baumaschinen kaufen?", "a": "SLT Rental ist autorisierter BAUMAX-Fachhändler in NRW. Wir führen das komplette BAUMAX-Sortiment: Rüttelplatten (VP, HVP, RVP-Serie), Vibrationsstampfer, Minidumper, Steinsägen und Betonrüttler – mit Ersatzteilservice und Kundendienst vor Ort." },
+        { "q": "Kann ich Temared Anhänger in Bonn oder Krefeld kaufen?", "a": "Ja – SLT Rental ist autorisierter Temared-Fachhändler in NRW mit Ausstellungsmodellen in Bonn und Krefeld. Wir führen das komplette Temared-Sortiment von 750 kg bis 3.500 kg und übernehmen Zulassung, Lieferung und Service." },
+        { "q": "Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?", "a": "Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger." },
+        { "q": "Kann ich eine Baumaschine erst mieten und dann kaufen?", "a": "Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell." },
+        { "q": "Liefert SLT Rental Baumaschinen und Anhänger auch an?", "a": "Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit." },
+        { "q": "Welche Finanzierungsmöglichkeiten gibt es beim Kauf?", "a": "Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen." }
+      ]
+    },
+    "form": {
+      "title": "Kaufanfrage stellen – wir antworten innerhalb von 24 Stunden",
+      "subtitle": "Füllen Sie das Formular aus. Wir prüfen Ihre Anfrage und senden Ihnen ein unverbindliches Angebot zu – persönlich, transparent, ohne versteckte Kosten.",
+      "step1": "1. Produktauswahl",
+      "brand": "Marke",
+      "pleaseSelect": "Bitte wählen",
+      "category": "Produktkategorie",
+      "selectBrandFirst": "Bitte zuerst Marke wählen",
+      "model": "Gewünschtes Modell / Spezifikation",
+      "modelPlaceholder": "z. B. ZE25E Elektrobagger",
+      "quantity": "Anzahl",
+      "requirements": "Besondere Anforderungen / Zubehör",
+      "requirementsPlaceholder": "z. B. mit Schnellwechsler, Löffel 30 cm …",
+      "step2": "2. Lieferung oder Selbstabholung",
+      "deliveryToAddress": "Lieferung an meine Adresse",
+      "pickupBonn": "Selbstabholung – Standort Bonn",
+      "pickupKrefeld": "Selbstabholung – Standort Krefeld",
+      "streetAndNumber": "Straße & Hausnummer",
+      "postalCode": "PLZ",
+      "city": "Ort",
+      "deliveryNote": "Lieferhinweis",
+      "deliveryNotePlaceholder": "z. B. Zufahrt über Hoftor, Ansprechpartner Herr Müller",
+      "step3": "3. Ihre Kontaktdaten",
+      "businessCustomer": "Gewerblicher Kunde / Unternehmen",
+      "privateCustomer": "Privatkunde",
+      "companyName": "Firmenname",
+      "vatId": "USt-IdNr. / Steuernummer",
+      "salutation": "Anrede",
+      "mr": "Herr",
+      "mrs": "Frau",
+      "diverse": "Divers",
+      "titleOptional": "Titel (optional)",
+      "titlePlaceholder": "z. B. Dr., Prof.",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefon / Mobil",
+      "preferredDate": "Gewünschter Liefer-/Abholtermin",
+      "step4": "4. Rechnungsadresse",
+      "billingAddressSame": "Rechnungsadresse ist identisch mit der Lieferadresse",
+      "companyOrName": "Firma / Name",
+      "country": "Land",
+      "step5": "5. Nachricht & Einwilligung",
+      "message": "Ihre Nachricht / weitere Informationen",
+      "howFound": "Wie haben Sie uns gefunden?",
+      "howFoundOptional": "– optional –",
+      "howFoundOptions": ["Google-Suche", "Weiterempfehlung", "Ich bin bereits Stammkunde", "Messe / Veranstaltung", "Social Media", "Sonstiges"],
+      "privacyConsent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und bin damit einverstanden, dass meine Daten zur Bearbeitung dieser Kaufanfrage gespeichert und verwendet werden.",
+      "sslSecured": "SSL-gesichert",
+      "callbackPossible": "Rückruf möglich",
+      "responseTime": "Antwort in 24 h",
+      "nonBinding": "Unverbindlich",
+      "submitButton": "Kaufanfrage absenden",
+      "submitting": "Wird gesendet…",
+      "requiredNote": "* Pflichtfelder. Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben. Wir antworten innerhalb von 24 Stunden (Mo–Fr).",
+      "errorPrivacy": "Bitte stimmen Sie der Datenschutzerklärung zu.",
+      "errorRequired": "Bitte wählen Sie Marke und Produktkategorie.",
+      "errorSend": "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+    },
+    "thanks": {
+      "title": "Danke für Ihre Kaufanfrage!",
+      "message": "Wir haben Ihre Anfrage erhalten und melden uns innerhalb von 24 Stunden (Mo–Fr) persönlich bei Ihnen.",
+      "toRentals": "Zum Mietangebot",
+      "toHome": "Zur Startseite"
+    }
   }
 }
