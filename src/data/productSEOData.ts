@@ -4998,7 +4998,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
-      { q: "Welche Arbeitshöhe ist maximal erreichbar?", a: "Arbeitshöhe: 33 m. Bitte beachten: Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe." },
+      { q: "Welche Arbeitshöhe ist maximal erreichbar?", a: "Arbeitshöhe: 3,3 m. Bitte beachten: Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe." },
       { q: "Welche Normen gelten und ist das Gerät zertifiziert?", a: "Das Gerät entspricht verstellbare Fahrrollen Ø 150 mm (stufenloser Verstellbereich: 220 - 335 mm). Zusätzlich gelten die DGUV Vorschrift 38 (Leitern) und DGUV Information 201-011 (Rollgerüste). Eine Einweisung in den sicheren Aufbau ist Pflicht." },
       { q: "Wann sollte ich ein Gerüst statt einer Leiter verwenden?", a: "Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Grundsätzlich gilt: Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben." },
     ],
