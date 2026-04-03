@@ -687,7 +687,7 @@ export default function ProductDetail() {
               {/* Kaufanfrage-Banner */}
               <PurchaseInquiryBanner
                 productName={product.name}
-                locationName={location.shortName}
+                locationName={location.name}
                 locationEmail={location.email}
                 categoryId={categoryId}
               />

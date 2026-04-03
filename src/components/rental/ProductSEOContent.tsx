@@ -417,7 +417,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
           <div className="flex items-start gap-2 text-sm">
             <MapPin className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
             <div>
-              <span className="font-medium text-foreground">Standort {location.shortName}</span>
+              <span className="font-medium text-foreground">Standort {location.name}</span>
               <p className="text-muted-foreground text-xs mt-0.5">{location.address}</p>
             </div>
           </div>
