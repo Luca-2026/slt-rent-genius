@@ -176,7 +176,7 @@ const jsonLdAutoDealer = {
   url: "https://www.slt-rental.de/verkauf",
   description: "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
   brand: [
-    { "@type": "Brand", name: "Zoomlion", url: "https://eu.zoomlion.com" },
+    { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
   ],
