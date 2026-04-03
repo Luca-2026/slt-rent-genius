@@ -112,6 +112,27 @@ export function Footer() {
         {/* Divider */}
         <div className="border-t border-white/10 my-4" />
 
+        {/* Sales Links */}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+            Verkauf & Marken
+          </h4>
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            {salesLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="text-xs text-white/50 hover:text-accent transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/10 my-4" />
+
         {/* Local SEO Links by Region */}
         <div className="mb-4">
           <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">

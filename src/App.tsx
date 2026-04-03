@@ -131,6 +131,8 @@ const App = () => (
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/datenschutz" element={<Datenschutz />} />
               <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
+              <Route path="/verkauf" element={<Verkauf />} />
+              <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
