@@ -105,6 +105,7 @@ const brands = [
   {
     id: "baumax",
     name: "BAUMAX",
+    logo: baumaxLogo,
     tagline: "Rüttelplatten · Dumper · Stampfer · Steinsägen · Betonrüttler",
     h2: "BAUMAX Baumaschinen – Fachhändler & Servicestützpunkt in NRW",
     intro: "BAUMAX Baumaschinen steht für deutsche Entwicklung, robuste Fertigung und nachhaltige Ersatzteilversorgung. Alle BAUMAX-Maschinen werden in Deutschland endgefertigt, getestet und eingestellt. Als autorisierter Fachhändler und Servicestützpunkt bieten wir das komplette BAUMAX-Sortiment mit persönlicher Beratung und schnellem Werksdienst.",
