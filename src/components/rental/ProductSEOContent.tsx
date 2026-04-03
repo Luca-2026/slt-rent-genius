@@ -411,7 +411,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
       {/* Service Highlights */}
       <div className="border-t border-border pt-4">
         <h2 className="text-base font-semibold text-headline mb-3">
-          Ihr Vorteil bei SLT Rental {location.shortName}
+          Ihr Vorteil bei SLT Rental {location.name}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="flex items-start gap-2 text-sm">
