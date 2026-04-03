@@ -7,10 +7,13 @@
     "locations": "Standorte",
     "about": "Über uns",
     "contact": "Kontakt",
-    "b2bPortal": "zum B2B Portal",
+    "b2bPortal": "B2B Portal",
     "rentNow": "Jetzt mieten",
     "b2bLogin": "B2B Login",
-    "menu": "Menü"
+    "menu": "Menü",
+    "buy": "Kaufen",
+    "buyNow": "Jetzt kaufen",
+    "salePage": "Verkaufsseite"
   },
   "marquee": {
     "weekendRates": "Wochenendtarife",
