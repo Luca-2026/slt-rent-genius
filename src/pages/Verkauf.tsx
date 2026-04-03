@@ -574,8 +574,8 @@ export default function Verkauf() {
 
                   <div className="space-y-2">
                     {[
-                      { val: "Gewerblicher Kunde", label: "🏢 Gewerblicher Kunde / Unternehmen" },
-                      { val: "Privatkunde", label: "👤 Privatkunde" },
+                      { val: "Gewerblicher Kunde", label: "Gewerblicher Kunde / Unternehmen" },
+                      { val: "Privatkunde", label: "Privatkunde" },
                     ].map((opt) => (
                       <label key={opt.val} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${kundentyp === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
                         <input type="radio" name="kundentyp" value={opt.val} checked={kundentyp === opt.val} onChange={() => setKundentyp(opt.val)} className="accent-primary" />
