@@ -468,7 +468,7 @@ export default function Verkauf() {
           <AnimatedSection>
             <div className="text-center mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
-                📩 Kaufanfrage stellen – wir antworten innerhalb von 24 Stunden
+                Kaufanfrage stellen – wir antworten innerhalb von 24 Stunden
               </h2>
               <p className="text-muted-foreground">
                 Füllen Sie das Formular aus. Wir prüfen Ihre Anfrage und senden Ihnen ein unverbindliches Angebot zu – persönlich, transparent, ohne versteckte Kosten.
