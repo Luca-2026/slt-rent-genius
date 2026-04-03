@@ -409,6 +409,11 @@ export default function Verkauf() {
                     </Button>
                     <a href={brand.website} target="_blank" rel="noopener noreferrer">
                       <Button variant="outline" className="gap-2">
+                        <img
+                          src={brand.id === "zoomlion" ? zoomlionLogo : brand.id === "baumax" ? baumaxLogo : temaredLogo}
+                          alt={brand.name}
+                          className="h-4 w-auto"
+                        />
                         {brand.websiteLabel} <ExternalLink className="h-4 w-4" />
                       </Button>
                     </a>
