@@ -531,9 +531,9 @@ export default function Verkauf() {
 
                   <div className="space-y-2">
                     {[
-                      { val: "Lieferung gewünscht", label: "🚚 Lieferung an meine Adresse" },
-                      { val: "Selbstabholung Bonn", label: "📍 Selbstabholung – Standort Bonn" },
-                      { val: "Selbstabholung Krefeld", label: "📍 Selbstabholung – Standort Krefeld" },
+                      { val: "Lieferung gewünscht", label: "Lieferung an meine Adresse" },
+                      { val: "Selbstabholung Bonn", label: "Selbstabholung – Standort Bonn" },
+                      { val: "Selbstabholung Krefeld", label: "Selbstabholung – Standort Krefeld" },
                     ].map((opt) => (
                       <label key={opt.val} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${lieferOption === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
                         <input type="radio" name="lieferOption" value={opt.val} checked={lieferOption === opt.val} onChange={() => setLieferOption(opt.val)} className="accent-primary" />
