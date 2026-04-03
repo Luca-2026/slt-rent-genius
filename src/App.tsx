@@ -55,6 +55,8 @@ const AGB = lazy(() => import("./pages/AGB"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
 const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
+const Verkauf = lazy(() => import("./pages/Verkauf"));
+const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
