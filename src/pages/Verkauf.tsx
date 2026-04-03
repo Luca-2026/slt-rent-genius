@@ -402,9 +402,12 @@ export default function Verkauf() {
                   {brand.detail && <p className="text-muted-foreground leading-relaxed">{brand.detail}</p>}
 
                   <h3 className="text-lg font-bold text-foreground">{brand.h3}</h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {brand.products.map((p) => (
-                      <li key={p} className="text-sm text-muted-foreground">{p}</li>
+                      <li key={p.text} className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <img src={p.icon} alt="" className="h-6 w-6 object-contain shrink-0" />
+                        <span>{p.text}</span>
+                      </li>
                     ))}
                   </ul>
 
