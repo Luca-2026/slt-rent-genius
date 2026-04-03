@@ -372,6 +372,20 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const productName = productSEO?.excelName || product.name;
   const locationName = location.name;
 
+  // Helper: replace multi-location strings with current location only
+  const loc = (text: string): string => {
+    return text
+      .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Bonn\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Bonn/gi, locationName)
+      .replace(/Bonn\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Bonn/gi, locationName);
+  };
+
   // Use product-specific use cases if available, else category fallback
   const hasProductUseCases = productSEO && (productSEO.useCaseBau || productSEO.useCaseEvent || productSEO.useCasePrivat);
   const hasCategoryUseCases = categoryData?.useCases?.length;
