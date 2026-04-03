@@ -4988,7 +4988,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "rollgeruest-krause-3-3m": {
     excelName: "Krause Rollgerüst 3,3 m (2x1,2m)",
     seoTitle: "Krause Rollgerüst 3,3 m (2x1,2m) mieten Krefeld | SLT Rental",
-    metaDescription: "Krause Rollgerüst 3,3 m (2x1,2m) mieten in Krefeld. KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 x 1,20 m:  Arbeitshöhe: 33 m  Gerüsthöh. Tagesmiete,",
+    metaDescription: "Krause Rollgerüst 3,3 m (2x1,2m) mieten in Krefeld. KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 x 1,20 m:  Arbeitshöhe: 3,3 m  Gerüsthöh. Tagesmiete,",
     h1: "Krause Rollgerüst 3,3 m (2x1,2m) mieten Krefeld – Jetzt verfügbar bei SLT Rental",
     h2s: ["Technische Daten & Traglast", "Normen & Sicherheitsvorschriften", "Aufbauanleitung", "Wann Gerüst statt Leiter?"],
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
