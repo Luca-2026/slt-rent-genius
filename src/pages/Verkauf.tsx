@@ -350,14 +350,14 @@ export default function Verkauf() {
               </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={zoomlionLogo} alt="Zoomlion" className="h-5 w-auto" />
+              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={zoomlionLogo} alt="Zoomlion" className="h-7 w-auto" />
               </a>
-              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={baumaxLogo} alt="BAUMAX" className="h-5 w-auto" />
+              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={baumaxLogo} alt="BAUMAX" className="h-7 w-auto" />
               </a>
-              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={temaredLogo} alt="Temared" className="h-5 w-auto" />
+              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={temaredLogo} alt="Temared" className="h-7 w-auto" />
               </a>
             </div>
           </AnimatedSection>
@@ -395,7 +395,9 @@ export default function Verkauf() {
               <div className="bg-background rounded-2xl border border-border overflow-hidden">
                 {/* Brand Header */}
                 <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
-                  <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain brightness-0 invert" />
+                  <div className="bg-white rounded-lg p-1.5">
+                    <img src={brand.logo} alt={brand.name} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
+                  </div>
                   <p className="text-primary-foreground/70">{brand.tagline}</p>
                 </div>
 
@@ -408,7 +410,7 @@ export default function Verkauf() {
                   <ul className="space-y-3">
                     {brand.products.map((p) => (
                       <li key={p.text} className="flex items-center gap-3 text-sm text-muted-foreground">
-                        <img src={p.icon} alt="" className="h-6 w-6 object-contain shrink-0" />
+                        <img src={p.icon} alt="" className="h-8 w-8 object-contain shrink-0" />
                         <span>{p.text}</span>
                       </li>
                     ))}
