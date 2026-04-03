@@ -233,7 +233,7 @@ export default function ProductDetail() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to={`/mieten/${location.id}`}>{location.shortName}</Link>
+                  <Link to={`/mieten/${location.id}`}>{location.name}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
