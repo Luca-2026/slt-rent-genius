@@ -123,7 +123,7 @@ export default function ProductDetail() {
       // SEO: Meta description - prefer Excel data
       let descText: string;
       if (productSEO?.metaDescription) {
-        descText = productSEO.metaDescription;
+        descText = localizeText(productSEO.metaDescription);
       } else {
         const descParts = [
           `${product.name} mieten in ${location.name}`,
