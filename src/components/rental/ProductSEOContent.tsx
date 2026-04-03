@@ -372,6 +372,20 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const productName = productSEO?.excelName || product.name;
   const locationName = location.name;
 
+  // Helper: replace multi-location strings with current location only
+  const loc = (text: string): string => {
+    return text
+      .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Bonn\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Bonn/gi, locationName)
+      .replace(/Bonn\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Mülheim/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Mülheim\s*[&,]\s*Bonn/gi, locationName);
+  };
+
   // Use product-specific use cases if available, else category fallback
   const hasProductUseCases = productSEO && (productSEO.useCaseBau || productSEO.useCaseEvent || productSEO.useCasePrivat);
   const hasCategoryUseCases = categoryData?.useCases?.length;
@@ -392,7 +406,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
         <div>
           {h2s.map((h2, i) => (
             <h2 key={i} className="text-base font-semibold text-headline mb-2">
-              {h2}
+              {loc(h2)}
             </h2>
           ))}
         </div>
@@ -412,7 +426,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Bau & Handwerk</span>
-                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCaseBau}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{loc(productSEO!.useCaseBau!)}</p>
                 </div>
               </div>
             )}
@@ -423,7 +437,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Events & Veranstaltungen</span>
-                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCaseEvent}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{loc(productSEO!.useCaseEvent!)}</p>
                 </div>
               </div>
             )}
@@ -434,7 +448,7 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Privat & Heimwerken</span>
-                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCasePrivat}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{loc(productSEO!.useCasePrivat!)}</p>
                 </div>
               </div>
             )}
@@ -528,10 +542,10 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
               <details key={i} className="group">
                 <summary className="text-sm font-medium text-foreground cursor-pointer hover:text-primary transition-colors list-none flex items-start gap-2">
                   <span className="text-primary font-bold mt-0.5 flex-shrink-0">›</span>
-                  <span>{faq.q}</span>
+                  <span>{loc(faq.q)}</span>
                 </summary>
                 <p className="text-sm text-muted-foreground mt-1.5 ml-5 leading-relaxed">
-                  {faq.a}
+                  {loc(faq.a)}
                 </p>
               </details>
             ))}

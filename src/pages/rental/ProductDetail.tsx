@@ -89,12 +89,31 @@ export default function ProductDetail() {
   // Get product-specific SEO data from Excel
   const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
 
+  // Helper: replace multi-location strings in Excel SEO data with current location only
+  const localizeText = useMemo(() => {
+    if (!location) return (text: string) => text;
+    const name = location.name;
+    return (text: string): string => {
+      return text
+        .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Bonn\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Bonn/gi, name)
+        .replace(/Bonn\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Krefeld\s*[&,]\s*Mülheim/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Krefeld/gi, name)
+        .replace(/Mülheim\s*[&,]\s*Bonn/gi, name);
+    };
+  }, [location]);
+
   useEffect(() => {
     if (product && location && category) {
+
       // SEO: Title - prefer Excel data, fallback to generated
       let seoTitle: string;
       if (productSEO?.seoTitle) {
-        seoTitle = productSEO.seoTitle;
+        seoTitle = localizeText(productSEO.seoTitle);
       } else {
         const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
         const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
@@ -110,7 +129,7 @@ export default function ProductDetail() {
       // SEO: Meta description - prefer Excel data
       let descText: string;
       if (productSEO?.metaDescription) {
-        descText = productSEO.metaDescription;
+        descText = localizeText(productSEO.metaDescription);
       } else {
         const descParts = [
           `${product.name} mieten in ${location.name}`,
@@ -219,8 +238,8 @@ export default function ProductDetail() {
           "@type": "FAQPage",
           "mainEntity": faqItems.map(f => ({
             "@type": "Question",
-            "name": f.q,
-            "acceptedAnswer": { "@type": "Answer", "text": f.a },
+            "name": localizeText(f.q),
+            "acceptedAnswer": { "@type": "Answer", "text": localizeText(f.a) },
           })),
         });
       }
@@ -403,7 +422,7 @@ export default function ProductDetail() {
               <div className="bg-card rounded-xl border border-border p-5 space-y-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
-                    {productSEO?.h1 || product.name}
+                    {productSEO?.h1 ? localizeText(productSEO.h1) : product.name}
                   </h1>
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
