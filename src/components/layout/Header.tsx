@@ -76,12 +76,12 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-xs xl:text-sm font-medium transition-colors hover:text-primary whitespace-nowrap ${
                   isActive(link.to) ? "text-primary" : "text-body"
                 }`}
               >
@@ -106,24 +106,24 @@ export function Header() {
             </div>
 
             {/* Desktop-only controls */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-2">
               <LanguageSwitcher />
               
-              <Link to="/b2b/login">
-                <Button variant="outline" size="sm">
-                  {t("nav.b2bPortal")}
-                </Button>
-              </Link>
-
               <Link to="/mieten">
-                <Button variant="outline" size="sm">
+                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover whitespace-nowrap">
                   {t("nav.rentNow")}
                 </Button>
               </Link>
 
               <Link to="/verkauf">
-                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
                   Jetzt kaufen
+                </Button>
+              </Link>
+
+              <Link to="/b2b/login">
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
+                  {t("nav.b2bPortal")}
                 </Button>
               </Link>
             </div>
