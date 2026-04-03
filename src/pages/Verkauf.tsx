@@ -335,17 +335,17 @@ export default function Verkauf() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen kaufen NRW – Zoomlion, BAUMAX & Temared Händler | SLT Rental"
-        description="Autorisierter Fachhändler für Zoomlion, BAUMAX Baumaschinen & Temared in NRW. Bagger, Radlader, Rüttelplatten, Dumper & Anhänger kaufen. Servicestützpunkt in Bonn & Krefeld."
+        title="Baumaschinen kaufen NRW – Zoomlion, BAUMAX & Temared | SLT Rental"
+        description="Baumaschinen & Anhänger kaufen beim autorisierten Fachhändler in NRW ✓ Zoomlion Bagger & Radlader ✓ BAUMAX Rüttelplatten ✓ Temared Anhänger ✓ Service in Bonn & Krefeld"
         canonical="/verkauf"
-        keywords="Zoomlion Händler NRW, BAUMAX Baumaschinen Fachhändler, Temared Anhänger kaufen NRW, Bagger kaufen NRW, Rüttelplatte kaufen, Dumper kaufen, Anhänger kaufen Bonn, Baumaschinen kaufen Krefeld"
+        keywords="Baumaschinen kaufen NRW, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
         ogType="website"
         jsonLd={[
           jsonLdAutoDealer,
           jsonLdFaq,
           SLT_BREADCRUMB_JSONLD([
             { name: "Home", url: "/" },
-            { name: "Verkauf", url: "/verkauf" },
+            { name: "Baumaschinen & Anhänger kaufen", url: "/verkauf" },
           ]),
         ]}
       />
