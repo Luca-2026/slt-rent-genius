@@ -86,33 +86,44 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
+  // Get product-specific SEO data from Excel
+  const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
+
   useEffect(() => {
     if (product && location && category) {
-      // SEO: Title optimized for CTR (keyword-rich, <60 chars target)
-      const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
-      const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
-      const seoTitleShort = `${product.name} mieten ${location.name}`;
-      const seoTitle = seoTitleFull.length <= 55 
-        ? `${seoTitleFull} | SLT Rental`
-        : seoTitleShort.length <= 55 
-          ? `${seoTitleShort} | SLT Rental`
-          : `${product.name} mieten | SLT Rental`;
+      // SEO: Title - prefer Excel data, fallback to generated
+      let seoTitle: string;
+      if (productSEO?.seoTitle) {
+        seoTitle = productSEO.seoTitle;
+      } else {
+        const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
+        const seoTitleFull = `${product.name} mieten ${location.name}${priceInfo}`;
+        const seoTitleShort = `${product.name} mieten ${location.name}`;
+        seoTitle = seoTitleFull.length <= 55 
+          ? `${seoTitleFull} | SLT Rental`
+          : seoTitleShort.length <= 55 
+            ? `${seoTitleShort} | SLT Rental`
+            : `${product.name} mieten | SLT Rental`;
+      }
       document.title = seoTitle;
 
-      // SEO: Meta description with CTR triggers (<160 chars)
-      const productDesc = product.description ? ` ${product.description}` : "";
-      const descParts = [
-        `${product.name} mieten in ${location.name}`,
-        product.pricePerDay ? ` ✓ Ab ${product.pricePerDay}/Tag` : "",
-        ` ✓ Sofort verfügbar`,
-        ` ✓ Lieferung möglich`,
-        ` ✓ Tiefpreisgarantie`,
-        productDesc,
-      ];
-      let descText = descParts[0];
-      for (let i = 1; i < descParts.length; i++) {
-        if ((descText + descParts[i]).length <= 155) {
-          descText += descParts[i];
+      // SEO: Meta description - prefer Excel data
+      let descText: string;
+      if (productSEO?.metaDescription) {
+        descText = productSEO.metaDescription;
+      } else {
+        const descParts = [
+          `${product.name} mieten in ${location.name}`,
+          product.pricePerDay ? ` ✓ Ab ${product.pricePerDay}/Tag` : "",
+          ` ✓ Sofort verfügbar`,
+          ` ✓ Lieferung möglich`,
+          ` ✓ Tiefpreisgarantie`,
+        ];
+        descText = descParts[0];
+        for (let i = 1; i < descParts.length; i++) {
+          if ((descText + descParts[i]).length <= 155) {
+            descText += descParts[i];
+          }
         }
       }
       let metaDescription = document.querySelector('meta[name="description"]');
@@ -123,6 +134,17 @@ export default function ProductDetail() {
         metaDescription.setAttribute("name", "description");
         metaDescription.setAttribute("content", descText);
         document.head.appendChild(metaDescription);
+      }
+
+      // SEO: Keywords meta tag
+      if (productSEO?.primaryKeywords) {
+        let keywordsMeta = document.querySelector('meta[name="keywords"]');
+        if (!keywordsMeta) {
+          keywordsMeta = document.createElement("meta");
+          keywordsMeta.setAttribute("name", "keywords");
+          document.head.appendChild(keywordsMeta);
+        }
+        keywordsMeta.setAttribute("content", productSEO.primaryKeywords);
       }
 
       // SEO: Canonical URL
@@ -137,11 +159,34 @@ export default function ProductDetail() {
         document.head.appendChild(canonicalLink);
       }
 
-      // SEO: JSON-LD Product structured data
+      // SEO: Open Graph tags
+      const ogTags: Record<string, string> = {
+        "og:title": seoTitle,
+        "og:description": descText,
+        "og:type": "product",
+        "og:url": canonicalUrl,
+        "og:site_name": "SLT Rental",
+      };
+      if (images.length > 0) {
+        ogTags["og:image"] = images[0];
+      }
+      const createdOgTags: HTMLMetaElement[] = [];
+      for (const [prop, content] of Object.entries(ogTags)) {
+        let tag = document.querySelector(`meta[property="${prop}"]`) as HTMLMetaElement;
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("property", prop);
+          document.head.appendChild(tag);
+          createdOgTags.push(tag);
+        }
+        tag.setAttribute("content", content);
+      }
+
+      // SEO: JSON-LD structured data (Product + FAQ + Breadcrumb)
       const jsonLd = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": product.name,
+        "name": productSEO?.excelName || product.name,
         "description": product.description || "",
         "image": images.length > 0 ? images[0] : undefined,
         "brand": { "@type": "Brand", "name": "SLT Rental" },
@@ -152,10 +197,46 @@ export default function ProductDetail() {
           "price": product.pricePerDay?.replace(/[^\d,]/g, "").replace(",", ".") || undefined,
           "priceValidUntil": new Date(Date.now() + 90 * 86400000).toISOString().split("T")[0],
           "url": canonicalUrl,
+          "seller": {
+            "@type": "LocalBusiness",
+            "name": "SLT Rental",
+            "url": "https://www.slt-rental.de",
+          },
           "areaServed": { "@type": "City", "name": location.name },
         },
         "category": category.title,
       };
+
+      const jsonLdArray: Record<string, unknown>[] = [jsonLd];
+
+      // FAQ JSON-LD: prefer product-specific FAQs, fallback to category
+      const productFaqs = productSEO?.faqs;
+      const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
+      const faqItems = productFaqs?.length ? productFaqs : categoryFaqs;
+      if (faqItems?.length) {
+        jsonLdArray.push({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqItems.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a },
+          })),
+        });
+      }
+
+      // Breadcrumb JSON-LD
+      jsonLdArray.push({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.slt-rental.de" },
+          { "@type": "ListItem", "position": 2, "name": `Mieten ${location.name}`, "item": `https://www.slt-rental.de/mieten/${location.id}` },
+          { "@type": "ListItem", "position": 3, "name": category.title, "item": `https://www.slt-rental.de/mieten/${location.id}/${categoryId}` },
+          { "@type": "ListItem", "position": 4, "name": productSEO?.excelName || product.name, "item": canonicalUrl },
+        ],
+      });
+
       let scriptTag = document.querySelector('script[data-product-jsonld]') as HTMLScriptElement;
       if (!scriptTag) {
         scriptTag = document.createElement("script");
@@ -163,29 +244,17 @@ export default function ProductDetail() {
         scriptTag.setAttribute("data-product-jsonld", "true");
         document.head.appendChild(scriptTag);
       }
-      // Combine Product + FAQ JSON-LD
-      const seoContent = categoryId ? seoCategoryContent[categoryId] : null;
-      const jsonLdArray: Record<string, unknown>[] = [jsonLd];
-      if (seoContent?.faqs?.length) {
-        jsonLdArray.push({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": seoContent.faqs.map(f => ({
-            "@type": "Question",
-            "name": f.q,
-            "acceptedAnswer": { "@type": "Answer", "text": f.a },
-          })),
-        });
-      }
       scriptTag.textContent = JSON.stringify(jsonLdArray);
 
       return () => {
         document.title = "SLT Rental";
         scriptTag?.remove();
         canonicalLink?.remove();
+        document.querySelector('meta[name="keywords"]')?.remove();
+        createdOgTags.forEach(t => t.remove());
       };
     }
-  }, [product, location, category, categoryId, images]);
+  }, [product, location, category, categoryId, images, productSEO]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
