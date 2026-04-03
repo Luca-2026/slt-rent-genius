@@ -752,6 +752,7 @@ export default function ProductDetail() {
                 location={location}
                 categoryId={categoryId || ""}
                 categoryTitle={category.title}
+                productSEO={productSEO}
               />
 
               {/* Kaufanfrage-Banner */}
