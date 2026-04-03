@@ -277,6 +277,9 @@ export default function Index() {
         <ProductInspirationSlider />
       </Suspense>
 
+      {/* Sales Teaser - Herstellerlogos */}
+      <SalesTeaser />
+
       {/* Google Reviews Section */}
       <section className="py-16 lg:py-20 bg-muted/30">
         <div className="section-container">
