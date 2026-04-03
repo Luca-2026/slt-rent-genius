@@ -542,10 +542,10 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
               <details key={i} className="group">
                 <summary className="text-sm font-medium text-foreground cursor-pointer hover:text-primary transition-colors list-none flex items-start gap-2">
                   <span className="text-primary font-bold mt-0.5 flex-shrink-0">›</span>
-                  <span>{faq.q}</span>
+                  <span>{loc(faq.q)}</span>
                 </summary>
                 <p className="text-sm text-muted-foreground mt-1.5 ml-5 leading-relaxed">
-                  {faq.a}
+                  {loc(faq.a)}
                 </p>
               </details>
             ))}
