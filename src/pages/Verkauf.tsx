@@ -350,14 +350,14 @@ export default function Verkauf() {
               </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={zoomlionLogo} alt="Zoomlion" className="h-5 w-auto" />
+              <a href="https://www.zoomlion-nrw.de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={zoomlionLogo} alt="Zoomlion" className="h-7 w-auto" />
               </a>
-              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={baumaxLogo} alt="BAUMAX" className="h-5 w-auto" />
+              <a href="https://www.baumax-baumaschinen.de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={baumaxLogo} alt="BAUMAX" className="h-7 w-auto" />
               </a>
-              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors rounded-full px-4 py-2 flex items-center gap-2">
-                <img src={temaredLogo} alt="Temared" className="h-5 w-auto" />
+              <a href="https://temared.com/de" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
+                <img src={temaredLogo} alt="Temared" className="h-7 w-auto" />
               </a>
             </div>
           </AnimatedSection>
