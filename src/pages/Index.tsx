@@ -104,8 +104,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Sales Teaser - Buy instead of rent */}
-      <SalesTeaser />
+      {/* Trust Badges with CountUp */}
 
       {/* Trust Badges with CountUp */}
       <section className="relative z-10 py-8 lg:py-10 bg-background border-b border-border">
@@ -277,6 +276,9 @@ export default function Index() {
       <Suspense fallback={null}>
         <ProductInspirationSlider />
       </Suspense>
+
+      {/* Sales Teaser - Herstellerlogos */}
+      <SalesTeaser />
 
       {/* Google Reviews Section */}
       <section className="py-16 lg:py-20 bg-muted/30">
