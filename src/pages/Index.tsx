@@ -104,6 +104,9 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Sales Teaser - Buy instead of rent */}
+      <SalesTeaser />
+
       {/* Trust Badges with CountUp */}
       <section className="relative z-10 py-8 lg:py-10 bg-background border-b border-border">
         <div className="section-container">
