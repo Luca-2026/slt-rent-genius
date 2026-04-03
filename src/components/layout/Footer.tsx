@@ -33,6 +33,7 @@ export function Footer() {
 
   const quickLinks = [
     { to: "/produkte", label: t("footer.products") },
+    { to: "/verkauf", label: "Verkauf & Marken" },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
@@ -41,6 +42,14 @@ export function Footer() {
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },
     { to: "/faq", label: t("footer.faq") },
+  ];
+
+  const salesLinks = [
+    { to: "/verkauf", label: "Baumaschinen kaufen" },
+    { to: "/verkauf#marken", label: "Zoomlion Händler NRW" },
+    { to: "/verkauf#marken", label: "BAUMAX Fachhändler" },
+    { to: "/verkauf#marken", label: "Temared Anhänger kaufen" },
+    { to: "/verkauf#kaufanfrage", label: "Kaufanfrage stellen →" },
   ];
 
   const legalLinks = [
@@ -97,6 +106,27 @@ export function Footer() {
             >
               <Instagram className="h-4 w-4 text-white" />
             </a>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/10 my-4" />
+
+        {/* Sales Links */}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+            Verkauf & Marken
+          </h4>
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            {salesLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="text-xs text-white/50 hover:text-accent transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
 
