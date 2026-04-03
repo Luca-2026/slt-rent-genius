@@ -1,16 +1,18 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle, MapPin, Clock, Truck, ShieldCheck, HelpCircle } from "lucide-react";
+import { CheckCircle, MapPin, Clock, Truck, ShieldCheck, HelpCircle, HardHat, Sparkles, Home } from "lucide-react";
 import type { Product, LocationData } from "@/data/rentalData";
+import type { ProductSEOData } from "@/data/productSEOData";
 
 interface ProductSEOContentProps {
   product: Product;
   location: { id: string; name: string; shortName: string; address: string };
   categoryId: string;
   categoryTitle: string;
+  productSEO?: ProductSEOData;
 }
 
-// Category-specific rental tips and use cases
+// Category-specific rental tips and use cases (fallback when no product-specific SEO data)
 export const categoryContent: Record<string, {
   useCases: string[];
   tips: string[];
@@ -365,48 +367,117 @@ export const categoryContent: Record<string, {
   },
 };
 
-export function ProductSEOContent({ product, location, categoryId, categoryTitle }: ProductSEOContentProps) {
-  const content = useMemo(() => categoryContent[categoryId], [categoryId]);
-
-  if (!content) return null;
-
-  const productName = product.name;
+export function ProductSEOContent({ product, location, categoryId, categoryTitle, productSEO }: ProductSEOContentProps) {
+  const categoryData = useMemo(() => categoryContent[categoryId], [categoryId]);
+  const productName = productSEO?.excelName || product.name;
   const locationName = location.name;
+
+  // Use product-specific use cases if available, else category fallback
+  const hasProductUseCases = productSEO && (productSEO.useCaseBau || productSEO.useCaseEvent || productSEO.useCasePrivat);
+  const hasCategoryUseCases = categoryData?.useCases?.length;
+
+  // Use product-specific FAQs if available, else category fallback
+  const faqs = productSEO?.faqs?.length ? productSEO.faqs : categoryData?.faqs || [];
+
+  // H2 headings from Excel
+  const h2s = productSEO?.h2s || [];
+
+  if (!hasProductUseCases && !hasCategoryUseCases && !faqs.length) return null;
 
   return (
     <div className="bg-card rounded-xl border border-border p-5 space-y-6">
-      {/* Use Cases */}
-      <div>
-        <h2 className="text-base font-semibold text-headline mb-3">
-          Wofür {productName} mieten?
-        </h2>
-        <p className="text-sm text-muted-foreground mb-3">
-          {productName} aus der Kategorie {categoryTitle} eignet sich ideal für folgende Einsatzbereiche in {locationName} und Umgebung:
-        </p>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {content.useCases.map((uc, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm">
-              <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-              <span className="text-foreground">{uc}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
 
-      {/* Rental Tips */}
-      <div className="border-t border-border pt-4">
-        <h2 className="text-base font-semibold text-headline mb-3">
-          Tipps zur Miete
-        </h2>
-        <ul className="space-y-2">
-          {content.tips.map((tip, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-              <ShieldCheck className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
-              <span>{tip}</span>
-            </li>
+      {/* H2 Structure from Excel */}
+      {h2s.length > 0 && (
+        <div>
+          {h2s.map((h2, i) => (
+            <h2 key={i} className="text-base font-semibold text-headline mb-2">
+              {h2}
+            </h2>
           ))}
-        </ul>
-      </div>
+        </div>
+      )}
+
+      {/* Product-specific Use Cases (from Excel) */}
+      {hasProductUseCases && (
+        <div>
+          <h2 className="text-base font-semibold text-headline mb-3">
+            Einsatzbereiche für {productName}
+          </h2>
+          <div className="grid grid-cols-1 gap-3">
+            {productSEO!.useCaseBau && (
+              <div className="flex items-start gap-3 text-sm">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <HardHat className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <span className="font-medium text-foreground">Bau & Handwerk</span>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCaseBau}</p>
+                </div>
+              </div>
+            )}
+            {productSEO!.useCaseEvent && (
+              <div className="flex items-start gap-3 text-sm">
+                <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Sparkles className="h-4 w-4 text-accent" />
+                </div>
+                <div>
+                  <span className="font-medium text-foreground">Events & Veranstaltungen</span>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCaseEvent}</p>
+                </div>
+              </div>
+            )}
+            {productSEO!.useCasePrivat && (
+              <div className="flex items-start gap-3 text-sm">
+                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Home className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <span className="font-medium text-foreground">Privat & Heimwerken</span>
+                  <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{productSEO!.useCasePrivat}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Category fallback use cases (when no product-specific data) */}
+      {!hasProductUseCases && hasCategoryUseCases && (
+        <div>
+          <h2 className="text-base font-semibold text-headline mb-3">
+            Wofür {productName} mieten?
+          </h2>
+          <p className="text-sm text-muted-foreground mb-3">
+            {productName} aus der Kategorie {categoryTitle} eignet sich ideal für folgende Einsatzbereiche in {locationName} und Umgebung:
+          </p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {categoryData!.useCases.map((uc, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm">
+                <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <span className="text-foreground">{uc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Rental Tips (category-level, only when no product-specific content) */}
+      {!hasProductUseCases && categoryData?.tips?.length && (
+        <div className="border-t border-border pt-4">
+          <h2 className="text-base font-semibold text-headline mb-3">
+            Tipps zur Miete
+          </h2>
+          <ul className="space-y-2">
+            {categoryData.tips.map((tip, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <ShieldCheck className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Service Highlights */}
       <div className="border-t border-border pt-4">
@@ -445,15 +516,15 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
         </div>
       </div>
 
-      {/* FAQ */}
-      {content.faqs.length > 0 && (
+      {/* FAQ Accordion */}
+      {faqs.length > 0 && (
         <div className="border-t border-border pt-4">
           <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-primary" />
-            Häufige Fragen zu {categoryTitle}
+            Häufige Fragen zu {productName}
           </h2>
           <div className="space-y-3">
-            {content.faqs.map((faq, i) => (
+            {faqs.map((faq, i) => (
               <details key={i} className="group">
                 <summary className="text-sm font-medium text-foreground cursor-pointer hover:text-primary transition-colors list-none flex items-start gap-2">
                   <span className="text-primary font-bold mt-0.5 flex-shrink-0">›</span>
