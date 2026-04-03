@@ -84,7 +84,8 @@ const brands = [
   {
     id: "zoomlion",
     name: "ZOOMLION",
-    tagline: "Elektrobagger · Radlader · Teleskoplader · Arbeitsbühnen",
+    logo: zoomlionLogo,
+    tagline: "Minibagger · Radlader · Teleskoplader · Arbeitsbühnen",
     h2: "Zoomlion – Offizieller Händler & Servicestützpunkt in NRW",
     intro: "Zoomlion Heavy Industry Science & Technology Co., Ltd. ist einer der weltweit führenden Hersteller von Baumaschinen und Arbeitsbühnen mit über 715 Modellen in 15 Produktkategorien. SLT Rental ist autorisierter Zoomlion-Fachhändler und zertifizierter Servicestützpunkt für Nordrhein-Westfalen.",
     detail: "Wir bieten die Zoomlion-Produktlinie für Erdbewegung und Arbeitsbühnen – von kompakten Elektro-Minibaggern für beengte Innenstadtbaustellen bis hin zu leistungsstarken Radladern und Teleskopladern für Bau, Industrie und Logistik.",
