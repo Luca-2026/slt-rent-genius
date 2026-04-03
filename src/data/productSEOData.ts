@@ -26,7 +26,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Brandschutzübungen, Rauchmelder-Tests (Nebelmaschinen)",
     useCaseEvent: "Konzerte, Hochzeiten, Clubevents, Geburtstage, Stadtfeste",
     useCasePrivat: "Geburtstagsparty, Silvesterfeier, Familienfest, Kindergeburtstag",
-    primaryKeywords: "ADJ Fog Fury Jett PRO mieten in Krefeld, ADJ Fog Fury Jett PRO leihen Krefeld, ADJ Fog Fury Jett PRO mieten NRW",
+    primaryKeywords: "ADJ Fog Fury Jett PRO mieten in Krefeld, ADJ Fog Fury Jett PRO leihen in Krefeld, ADJ Fog Fury Jett PRO mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Genehmigungen für den Betrieb erforderlich?", a: "Nebelmaschinen können in Gebäuden mit Brandmeldeanlage Fehlalarme auslösen – vorher die Anlage abkoppeln oder das Ordnungsamt informieren. CO2-Jets benötigen in der Regel keine gesonderte Genehmigung, aber das Veranstaltungsgelände / die Location muss informiert werden." },
@@ -44,7 +44,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "100 kVA Stromaggregat mieten in Krefeld, 100 kVA Stromaggregat leihen Krefeld, 100 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "100 kVA Stromaggregat mieten in Krefeld, 100 kVA Stromaggregat leihen in Krefeld, 100 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 100 kVA/80 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 32A 5Pol, 1x CEE 63A 5Pol, 1x CEE 125A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -62,7 +62,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "20 kVA Stromaggregat mieten in Krefeld, 20 kVA Stromaggregat leihen Krefeld, 20 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "20 kVA Stromaggregat mieten in Krefeld, 20 kVA Stromaggregat leihen in Krefeld, 20 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 19 kVA/15,2 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 32A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -80,7 +80,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "50 kVA Stromaggregat mieten in Krefeld, 50 kVA Stromaggregat leihen Krefeld, 50 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "50 kVA Stromaggregat mieten in Krefeld, 50 kVA Stromaggregat leihen in Krefeld, 50 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 50 kVA/24 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 16A 5Pol, 1x CEE 32A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -98,7 +98,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "Doosan 80 kVA Stromaggregat mieten in Krefeld, Doosan 80 kVA Stromaggregat leihen Krefeld, Doosan 80 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "Doosan 80 kVA Stromaggregat mieten in Krefeld, Doosan 80 kVA Stromaggregat leihen in Krefeld, Doosan 80 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 80 kVA/64 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 32A 5Pol, 1x CEE 63A 5Pol, 1x CEE 125A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -116,7 +116,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Stromversorgung auf Baustellen ohne Netzanschluss, Laden von Akkuwerkzeugen",
     useCaseEvent: "Strom für Outdoor-Events, Beleuchtung, mobile Beschallung, Handyladestation",
     useCasePrivat: "Camping, Gartenfest, Notstrom bei Stromausfall, mobiles Büro",
-    primaryKeywords: "Bluetti Akkupack 1152 Wh mieten in Krefeld, Bluetti Akkupack 1152 Wh leihen Krefeld, Bluetti Akkupack 1152 Wh mieten NRW",
+    primaryKeywords: "Bluetti Akkupack 1152 Wh mieten in Krefeld, Bluetti Akkupack 1152 Wh leihen in Krefeld, Bluetti Akkupack 1152 Wh mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Geräte kann ich mit dem Akkupack betreiben?", a: "Der Akkupack verfügt über Schuko-Steckdosen und USB-Anschlüsse. Er eignet sich für Laptops, Handys, LED-Beleuchtung, kleine Kühlboxen und Akkuwerkzeuge. Die maximale Dauerleistung entnehmen Sie den technischen Daten." },
@@ -152,7 +152,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Stromverteilung auf Baustellen, Anschluss von Baumaschinen und Werkzeugen",
     useCaseEvent: "Zentrale Stromverteilung für Veranstaltungen, Messen, Zelte",
     useCasePrivat: "Temporäre Stromverteilung bei Renovierung, Gartenarbeit mit Elektrogeräten",
-    primaryKeywords: "Anschlussschrank 55 kVA mieten in Krefeld, Anschlussschrank 55 kVA leihen Krefeld, Anschlussschrank 55 kVA mieten NRW",
+    primaryKeywords: "Anschlussschrank 55 kVA mieten in Krefeld, Anschlussschrank 55 kVA leihen in Krefeld, Anschlussschrank 55 kVA mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteilerschrank?", a: "Die genauen Anschlüsse (CEE 16A, CEE 32A, CEE 63A, Schuko) finden Sie in den technischen Daten oben. Alle Abgänge sind einzeln abgesichert." },
@@ -170,7 +170,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Stromverteilung auf Baustellen, Anschluss von Baumaschinen und Werkzeugen",
     useCaseEvent: "Zentrale Stromverteilung für Veranstaltungen, Messen, Zelte",
     useCasePrivat: "Temporäre Stromverteilung bei Renovierung, Gartenarbeit mit Elektrogeräten",
-    primaryKeywords: "Anschlussverteilerschrank 24 kVA mieten in Krefeld, Anschlussverteilerschrank 24 kVA leihen Krefeld, Anschlussverteilerschrank 24 kVA mieten NRW",
+    primaryKeywords: "Anschlussverteilerschrank 24 kVA mieten in Krefeld, Anschlussverteilerschrank 24 kVA leihen in Krefeld, Anschlussverteilerschrank 24 kVA mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteilerschrank?", a: "Die genauen Anschlüsse (CEE 16A, CEE 32A, CEE 63A, Schuko) finden Sie in den technischen Daten oben. Alle Abgänge sind einzeln abgesichert." },
@@ -188,7 +188,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Stromverteilung auf Baustellen, Anschluss von Baumaschinen und Werkzeugen",
     useCaseEvent: "Zentrale Stromverteilung für Veranstaltungen, Messen, Zelte",
     useCasePrivat: "Temporäre Stromverteilung bei Renovierung, Gartenarbeit mit Elektrogeräten",
-    primaryKeywords: "Anschlussverteilerschrank 44kVA mieten in Krefeld, Anschlussverteilerschrank 44kVA leihen Krefeld, Anschlussverteilerschrank 44kVA mieten NRW",
+    primaryKeywords: "Anschlussverteilerschrank 44kVA mieten in Krefeld, Anschlussverteilerschrank 44kVA leihen in Krefeld, Anschlussverteilerschrank 44kVA mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteilerschrank?", a: "Die genauen Anschlüsse (CEE 16A, CEE 32A, CEE 63A, Schuko) finden Sie in den technischen Daten oben. Alle Abgänge sind einzeln abgesichert." },
@@ -206,7 +206,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Aschenbecher Glas mieten in Krefeld, Aschenbecher Glas leihen Krefeld, Aschenbecher Glas mieten NRW",
+    primaryKeywords: "Aschenbecher Glas mieten in Krefeld, Aschenbecher Glas leihen in Krefeld, Aschenbecher Glas mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -224,7 +224,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1500 kg Autotransportanhänger mieten in Krefeld, 1500 kg Autotransportanhänger leihen Krefeld, 1500 kg Autotransportanhänger mieten NRW",
+    primaryKeywords: "1500 kg Autotransportanhänger mieten in Krefeld, 1500 kg Autotransportanhänger leihen in Krefeld, 1500 kg Autotransportanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -242,7 +242,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "2700 kg Autotransportanhänger mieten in Bonn & Krefeld, 2700 kg Autotransportanhänger leihen Bonn & Krefeld, 2700 kg Autotransportanhänger mieten NRW",
+    primaryKeywords: "2700 kg Autotransportanhänger mieten in Bonn & Krefeld, 2700 kg Autotransportanhänger leihen in Bonn & Krefeld, 2700 kg Autotransportanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 2700 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -260,7 +260,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "2700 kg Autotransportkippanhänger mieten in Bonn, 2700 kg Autotransportkippanhänger leihen Bonn, 2700 kg Autotransportkippanhänger mieten NRW",
+    primaryKeywords: "2700 kg Autotransportkippanhänger mieten in Bonn, 2700 kg Autotransportkippanhänger leihen in Bonn, 2700 kg Autotransportkippanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 2700 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -278,7 +278,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Bonn & Krefeld, 1800 kg Baumaschinenanhänger leihen Bonn & Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
+    primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Bonn & Krefeld, 1800 kg Baumaschinenanhänger leihen in Bonn & Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1800 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -296,7 +296,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "3500 kg Baumaschinenanhänger mieten in Bonn & Krefeld & Mülheim, 3500 kg Baumaschinenanhänger leihen Bonn & Krefeld & Mülheim, 3500 kg Baumaschinenanhänger mieten NRW",
+    primaryKeywords: "3500 kg Baumaschinenanhänger mieten in Bonn & Krefeld & Mülheim, 3500 kg Baumaschinenanhänger leihen in Bonn & Krefeld & Mülheim, 3500 kg Baumaschinenanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 3500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -314,7 +314,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Baumstumpffräse F-360 mieten in Bonn & Krefeld, Baumstumpffräse F-360 leihen Bonn & Krefeld, Baumstumpffräse F-360 mieten NRW",
+    primaryKeywords: "Baumstumpffräse F-360 mieten in Bonn & Krefeld, Baumstumpffräse F-360 leihen in Bonn & Krefeld, Baumstumpffräse F-360 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -332,7 +332,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Allegra Bautrockner KT200 mieten in Krefeld, Allegra Bautrockner KT200 leihen Krefeld, Allegra Bautrockner KT200 mieten NRW",
+    primaryKeywords: "Allegra Bautrockner KT200 mieten in Krefeld, Allegra Bautrockner KT200 leihen in Krefeld, Allegra Bautrockner KT200 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: bis zu 20 l/24h. Für Räume bis ca. Entfeuchtungsleistung: bis zu 20 l/24h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -350,7 +350,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Allegra Bautrockner KT553/KT554 mieten in Krefeld, Allegra Bautrockner KT553/KT554 leihen Krefeld, Allegra Bautrockner KT553/KT554 mieten NRW",
+    primaryKeywords: "Allegra Bautrockner KT553/KT554 mieten in Krefeld, Allegra Bautrockner KT553/KT554 leihen in Krefeld, Allegra Bautrockner KT553/KT554 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: bis zu 50 l/24h. Für Räume bis ca. Entfeuchtungsleistung: bis zu 50 l/24h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -368,7 +368,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Bauzaun mieten in Krefeld, Bauzaun leihen Krefeld, Bauzaun mieten NRW",
+    primaryKeywords: "Bauzaun mieten in Krefeld, Bauzaun leihen in Krefeld, Bauzaun mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -386,7 +386,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Bauzaunfuß aus Kunststoffrecycling mieten in Krefeld, Bauzaunfuß aus Kunststoffrecycling leihen Krefeld, Bauzaunfuß aus Kunststoffrecycling mieten NRW",
+    primaryKeywords: "Bauzaunfuß aus Kunststoffrecycling mieten in Krefeld, Bauzaunfuß aus Kunststoffrecycling leihen in Krefeld, Bauzaunfuß aus Kunststoffrecycling mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -404,7 +404,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Beton Rüttler 2m mieten in Bonn & Krefeld, Beton Rüttler 2m leihen Bonn & Krefeld, Beton Rüttler 2m mieten NRW",
+    primaryKeywords: "Beton Rüttler 2m mieten in Bonn & Krefeld, Beton Rüttler 2m leihen in Bonn & Krefeld, Beton Rüttler 2m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: Schultertragegurt. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -422,7 +422,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Blanko-Zusatzschild, 42 x 23 cm mieten in Krefeld, Blanko-Zusatzschild, 42 x 23 cm leihen Krefeld, Blanko-Zusatzschild, 42 x 23 cm mieten NRW",
+    primaryKeywords: "Blanko-Zusatzschild, 42 x 23 cm mieten in Krefeld, Blanko-Zusatzschild, 42 x 23 cm leihen in Krefeld, Blanko-Zusatzschild, 42 x 23 cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -458,7 +458,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "1,8t Bobcat E19 mieten in Krefeld, 1,8t Bobcat E19 leihen Krefeld, 1,8t Bobcat E19 mieten NRW",
+    primaryKeywords: "1,8t Bobcat E19 mieten in Krefeld, 1,8t Bobcat E19 leihen in Krefeld, 1,8t Bobcat E19 mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 1885 kg. Für den Transport benötigen Sie einen Maschinenanhänger mit mind. 3.500 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -476,7 +476,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Benzin Bodenhacke / Gartenfräse 6 PS mieten in Bonn & Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS leihen Bonn & Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS mieten NRW",
+    primaryKeywords: "Benzin Bodenhacke / Gartenfräse 6 PS mieten in Bonn & Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS leihen in Bonn & Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -494,7 +494,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld, Bodenschutz- / Fahrmatten leihen Bonn & Krefeld, Bodenschutz- / Fahrmatten mieten NRW",
+    primaryKeywords: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld, Bodenschutz- / Fahrmatten leihen in Bonn & Krefeld, Bodenschutz- / Fahrmatten mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: Die Matten sind besenrein zurückzugeben. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -512,7 +512,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "2,8 kVA Stromaggregat mieten in Bonn & Krefeld, 2,8 kVA Stromaggregat leihen Bonn & Krefeld, 2,8 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "2,8 kVA Stromaggregat mieten in Bonn & Krefeld, 2,8 kVA Stromaggregat leihen in Bonn & Krefeld, 2,8 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 2500 Watt. Anschlüsse: 2x Schuko 16A. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -530,7 +530,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "20 kVA Atromaggregat mieten in Bonn, 20 kVA Atromaggregat leihen Bonn, 20 kVA Atromaggregat mieten NRW",
+    primaryKeywords: "20 kVA Atromaggregat mieten in Bonn, 20 kVA Atromaggregat leihen in Bonn, 20 kVA Atromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: 19 kVA/15,2 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 32A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -548,7 +548,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellen ohne Netzanschluss, Maschinenversorgung, Notstrom auf Großprojekten",
     useCaseEvent: "Open-Air-Events, Festivals, Märkte, Konzerte, Outdoor-Veranstaltungen",
     useCasePrivat: "Gartenfest, Camping, Notstrom bei Renovierung, mobile Werkstatt",
-    primaryKeywords: "7,5 kVA Stromaggregat mieten in Bonn & Krefeld, 7,5 kVA Stromaggregat leihen Bonn & Krefeld, 7,5 kVA Stromaggregat mieten NRW",
+    primaryKeywords: "7,5 kVA Stromaggregat mieten in Bonn & Krefeld, 7,5 kVA Stromaggregat leihen in Bonn & Krefeld, 7,5 kVA Stromaggregat mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Leistung und welche Anschlüsse hat das Aggregat?", a: "Dauerleistung: (Wechselstrom/Drehstrom): 2,5 kVA - 2 kW / 7,5 kVA - 7 kW. Anschlüsse: 2x Schuko 16A & 1x CEE 16A 5Pol. Das Aggregat liefert sowohl 230 V (Schuko) als auch 400 V (CEE) – Details entnehmen Sie bitte der Produktbeschreibung." },
@@ -566,7 +566,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1300 kg Aggregatanhänger mieten in Bonn & Krefeld, 1300 kg Aggregatanhänger leihen Bonn & Krefeld, 1300 kg Aggregatanhänger mieten NRW",
+    primaryKeywords: "1300 kg Aggregatanhänger mieten in Bonn & Krefeld, 1300 kg Aggregatanhänger leihen in Bonn & Krefeld, 1300 kg Aggregatanhänger mieten NRW",
     is247: false,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1300 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -584,7 +584,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Akku Heckenschere mieten in Bonn, Akku Heckenschere leihen Bonn, Akku Heckenschere mieten NRW",
+    primaryKeywords: "Akku Heckenschere mieten in Bonn, Akku Heckenschere leihen in Bonn, Akku Heckenschere mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -602,7 +602,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Akku Kettensäge mieten in Bonn & Krefeld, Akku Kettensäge leihen Bonn & Krefeld, Akku Kettensäge mieten NRW",
+    primaryKeywords: "Akku Kettensäge mieten in Bonn & Krefeld, Akku Kettensäge leihen in Bonn & Krefeld, Akku Kettensäge mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -620,7 +620,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Bautrockner KT200 mieten in Bonn, Bautrockner KT200 leihen Bonn, Bautrockner KT200 mieten NRW",
+    primaryKeywords: "Bautrockner KT200 mieten in Bonn, Bautrockner KT200 leihen in Bonn, Bautrockner KT200 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: bis zu 20 l/24h. Für Räume bis ca. Entfeuchtungsleistung: bis zu 20 l/24h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -638,7 +638,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Allegra Bautrockner KT554 mieten in Bonn, Allegra Bautrockner KT554 leihen Bonn, Allegra Bautrockner KT554 mieten NRW",
+    primaryKeywords: "Allegra Bautrockner KT554 mieten in Bonn, Allegra Bautrockner KT554 leihen in Bonn, Allegra Bautrockner KT554 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: bis zu 50 l/24h. Für Räume bis ca. Entfeuchtungsleistung: bis zu 50 l/24h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -656,7 +656,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Bierzeltgarnitur Hussen- Set weiß mieten in Bonn & Krefeld, Bierzeltgarnitur Hussen- Set weiß leihen Bonn & Krefeld, Bierzeltgarnitur Hussen- Set weiß mieten NRW",
+    primaryKeywords: "Bierzeltgarnitur Hussen- Set weiß mieten in Bonn & Krefeld, Bierzeltgarnitur Hussen- Set weiß leihen in Bonn & Krefeld, Bierzeltgarnitur Hussen- Set weiß mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -674,7 +674,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Bierzeltgarnitur- Set mieten in Bonn & Krefeld, Bierzeltgarnitur- Set leihen Bonn & Krefeld, Bierzeltgarnitur- Set mieten NRW",
+    primaryKeywords: "Bierzeltgarnitur- Set mieten in Bonn & Krefeld, Bierzeltgarnitur- Set leihen in Bonn & Krefeld, Bierzeltgarnitur- Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -692,7 +692,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "1t Bobcat E10Z mieten in Bonn & Krefeld, 1t Bobcat E10Z leihen Bonn & Krefeld, 1t Bobcat E10Z mieten NRW",
+    primaryKeywords: "1t Bobcat E10Z mieten in Bonn & Krefeld, 1t Bobcat E10Z leihen in Bonn & Krefeld, 1t Bobcat E10Z mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 1176 kg. Für den Transport reicht ein PKW-Anhänger mit 1.800–2.000 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -710,7 +710,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Bohrschrauber GSR 18V-55 mieten in Bonn, Bosch Akku Bohrschrauber GSR 18V-55 leihen Bonn, Bosch Akku Bohrschrauber GSR 18V-55 mieten NRW",
+    primaryKeywords: "Bosch Akku Bohrschrauber GSR 18V-55 mieten in Bonn, Bosch Akku Bohrschrauber GSR 18V-55 leihen in Bonn, Bosch Akku Bohrschrauber GSR 18V-55 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -728,7 +728,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 32A rot 20 m mieten in Bonn & Krefeld, CEE Kabel 32A rot 20 m leihen Bonn & Krefeld, CEE Kabel 32A rot 20 m mieten NRW",
+    primaryKeywords: "CEE Kabel 32A rot 20 m mieten in Bonn & Krefeld, CEE Kabel 32A rot 20 m leihen in Bonn & Krefeld, CEE Kabel 32A rot 20 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G6 - 32A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -746,7 +746,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko mieten in Bonn, CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko leihen Bonn, CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko mieten NRW",
+    primaryKeywords: "CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko mieten in Bonn, CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko leihen in Bonn, CEE 32A UV auf 2x 16a CEE, 6x 16A Schuko mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: , 32A, 5-polig. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -764,7 +764,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "D.A.S. Soundsystem mieten in Bonn & Krefeld, D.A.S. Soundsystem leihen Bonn & Krefeld, D.A.S. Soundsystem mieten NRW",
+    primaryKeywords: "D.A.S. Soundsystem mieten in Bonn & Krefeld, D.A.S. Soundsystem leihen in Bonn & Krefeld, D.A.S. Soundsystem mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Leistung: Für bis zu ca. 250 Personen geeignet. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -782,7 +782,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Dessertteller SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Dessertteller SIMPLY 19, 10er Set leihen Bonn & Krefeld, Dessertteller SIMPLY 19, 10er Set mieten NRW",
+    primaryKeywords: "Dessertteller SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Dessertteller SIMPLY 19, 10er Set leihen in Bonn & Krefeld, Dessertteller SIMPLY 19, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -800,7 +800,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Diamantbohrer 180mm mieten in Bonn, Diamantbohrer 180mm leihen Bonn, Diamantbohrer 180mm mieten NRW",
+    primaryKeywords: "Diamantbohrer 180mm mieten in Bonn, Diamantbohrer 180mm leihen in Bonn, Diamantbohrer 180mm mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -818,7 +818,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Benzin- Erdbohrer mieten in Bonn & Krefeld, Benzin- Erdbohrer leihen Bonn & Krefeld, Benzin- Erdbohrer mieten NRW",
+    primaryKeywords: "Benzin- Erdbohrer mieten in Bonn & Krefeld, Benzin- Erdbohrer leihen in Bonn & Krefeld, Benzin- Erdbohrer mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -836,7 +836,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Fliesenschneider 80cm mieten in Bonn, Fliesenschneider 80cm leihen Bonn, Fliesenschneider 80cm mieten NRW",
+    primaryKeywords: "Fliesenschneider 80cm mieten in Bonn, Fliesenschneider 80cm leihen in Bonn, Fliesenschneider 80cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -854,7 +854,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Benzin- Freischneider mieten in Bonn, Benzin- Freischneider leihen Bonn, Benzin- Freischneider mieten NRW",
+    primaryKeywords: "Benzin- Freischneider mieten in Bonn, Benzin- Freischneider leihen in Bonn, Benzin- Freischneider mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -872,7 +872,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Asphalt schneiden, Betonplatten trennen, Fugen schneiden, Pflasterarbeiten",
     useCaseEvent: "Vorbereitung von Veranstaltungsflächen, Pflasterarbeiten auf Eventgeländen",
     useCasePrivat: "Pflastersteine schneiden, Terrassenplatten zuschneiden, Bordsteine kürzen",
-    primaryKeywords: "Asphalt-/Betonsäge 500mm mieten in Bonn & Krefeld, Asphalt-/Betonsäge 500mm leihen Bonn & Krefeld, Asphalt-/Betonsäge 500mm mieten NRW",
+    primaryKeywords: "Asphalt-/Betonsäge 500mm mieten in Bonn & Krefeld, Asphalt-/Betonsäge 500mm leihen in Bonn & Krefeld, Asphalt-/Betonsäge 500mm mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Materialien kann ich mit der Säge schneiden?", a: "Die Säge eignet sich zum Schneiden von Asphalt, Beton, Pflastersteinen, Naturstein und ähnlichen Baumaterialien. Die maximale Schnitttiefe entnehmen Sie den technischen Daten." },
@@ -890,7 +890,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Fußplatte K1 TL mieten in Bonn & Krefeld, Fußplatte K1 TL leihen Bonn & Krefeld, Fußplatte K1 TL mieten NRW",
+    primaryKeywords: "Fußplatte K1 TL mieten in Bonn & Krefeld, Fußplatte K1 TL leihen in Bonn & Krefeld, Fußplatte K1 TL mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -908,7 +908,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Gabel SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Gabel SIMPLY 19, 10er Set leihen Bonn & Krefeld, Gabel SIMPLY 19, 10er Set mieten NRW",
+    primaryKeywords: "Gabel SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Gabel SIMPLY 19, 10er Set leihen in Bonn & Krefeld, Gabel SIMPLY 19, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -926,7 +926,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenversorgung, Kühlschrank für Mitarbeiter auf der Baustelle",
     useCaseEvent: "Catering, Open-Air-Events, Messestand, Bar-Ausstattung, Kühlwagen-Ergänzung",
     useCasePrivat: "Gartenparty, Geburtstag, Grillfeier, zusätzliche Kühlung für Familienfeiern",
-    primaryKeywords: "Getränkekühlschrank 236l mieten in Bonn & Krefeld, Getränkekühlschrank 236l leihen Bonn & Krefeld, Getränkekühlschrank 236l mieten NRW",
+    primaryKeywords: "Getränkekühlschrank 236l mieten in Bonn & Krefeld, Getränkekühlschrank 236l leihen in Bonn & Krefeld, Getränkekühlschrank 236l mieten NRW",
     is247: false,
     faqs: [
       { q: "Welchen Stromanschluss benötigt der Kühlschrank?", a: "Der Getränkekühlschrank benötigt eine handelsübliche 230V-Schuko-Steckdose. Der Stromverbrauch ist gering. Bitte stellen Sie sicher, dass am Einsatzort eine Steckdose erreichbar ist." },
@@ -944,7 +944,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Graben Abdeckung 150x100cm mieten in Bonn, Graben Abdeckung 150x100cm leihen Bonn, Graben Abdeckung 150x100cm mieten NRW",
+    primaryKeywords: "Graben Abdeckung 150x100cm mieten in Bonn, Graben Abdeckung 150x100cm leihen in Bonn, Graben Abdeckung 150x100cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -962,7 +962,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Hailo L60 - 6 Stufen mieten in Bonn & Krefeld, Hailo L60 - 6 Stufen leihen Bonn & Krefeld, Hailo L60 - 6 Stufen mieten NRW",
+    primaryKeywords: "Hailo L60 - 6 Stufen mieten in Bonn & Krefeld, Hailo L60 - 6 Stufen leihen in Bonn & Krefeld, Hailo L60 - 6 Stufen mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -980,7 +980,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Halteverbotsschilder- Set mieten in Bonn & Krefeld, Halteverbotsschilder- Set leihen Bonn & Krefeld, Halteverbotsschilder- Set mieten NRW",
+    primaryKeywords: "Halteverbotsschilder- Set mieten in Bonn & Krefeld, Halteverbotsschilder- Set leihen in Bonn & Krefeld, Halteverbotsschilder- Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -998,7 +998,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Hand- Kreissäge GKS 18V-57G mieten in Bonn & Krefeld, Bosch Akku Hand- Kreissäge GKS 18V-57G leihen Bonn & Krefeld, Bosch Akku Hand- Kreissäge GKS 18V-57G mieten NRW",
+    primaryKeywords: "Bosch Akku Hand- Kreissäge GKS 18V-57G mieten in Bonn & Krefeld, Bosch Akku Hand- Kreissäge GKS 18V-57G leihen in Bonn & Krefeld, Bosch Akku Hand- Kreissäge GKS 18V-57G mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -1016,7 +1016,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Allegra 9 kW Elektro Heizlüfter mieten in Bonn & Krefeld, Allegra 9 kW Elektro Heizlüfter leihen Bonn & Krefeld, Allegra 9 kW Elektro Heizlüfter mieten NRW",
+    primaryKeywords: "Allegra 9 kW Elektro Heizlüfter mieten in Bonn & Krefeld, Allegra 9 kW Elektro Heizlüfter leihen in Bonn & Krefeld, Allegra 9 kW Elektro Heizlüfter mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: 4,5 kW & 9 kW. Für Räume bis ca. /h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -1034,7 +1034,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Betriebsfeste, Richtfeste auf dem Firmengelände",
     useCaseEvent: "Kindergeburtstage, Stadtfeste, Sommerfeste, Vereinsfeiern, Firmenevents",
     useCasePrivat: "Gartenparty, Kindergeburtstag, Familienfest, Sommerfest im Garten",
-    primaryKeywords: "HappyHop Hüpfburg Lamar 2,8x2,1m mieten in Bonn & Krefeld, HappyHop Hüpfburg Lamar 2,8x2,1m leihen Bonn & Krefeld, HappyHop Hüpfburg Lamar 2,8x2,1m mieten NRW",
+    primaryKeywords: "HappyHop Hüpfburg Lamar 2,8x2,1m mieten in Bonn & Krefeld, HappyHop Hüpfburg Lamar 2,8x2,1m leihen in Bonn & Krefeld, HappyHop Hüpfburg Lamar 2,8x2,1m mieten NRW",
     is247: false,
     faqs: [
       { q: "Brauche ich eine Genehmigung für die Hüpfburg?", a: "Auf privatem Gelände ist keine Genehmigung nötig. Bei öffentlichen Veranstaltungen oder Straßenfesten kann eine Genehmigung des Ordnungsamts erforderlich sein. Wir empfehlen, sich vorab bei Ihrer Gemeinde zu erkundigen." },
@@ -1052,7 +1052,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Kaffeetasse, 12er Set mieten in Bonn & Krefeld, Kaffeetasse, 12er Set leihen Bonn & Krefeld, Kaffeetasse, 12er Set mieten NRW",
+    primaryKeywords: "Kaffeetasse, 12er Set mieten in Bonn & Krefeld, Kaffeetasse, 12er Set leihen in Bonn & Krefeld, Kaffeetasse, 12er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1070,7 +1070,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Kaiserthal L50 - 5 Stufen mieten in Bonn & Krefeld, Kaiserthal L50 - 5 Stufen leihen Bonn & Krefeld, Kaiserthal L50 - 5 Stufen mieten NRW",
+    primaryKeywords: "Kaiserthal L50 - 5 Stufen mieten in Bonn & Krefeld, Kaiserthal L50 - 5 Stufen leihen in Bonn & Krefeld, Kaiserthal L50 - 5 Stufen mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1088,7 +1088,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "Ketten- Dumper mieten in Bonn, Ketten- Dumper leihen Bonn, Ketten- Dumper mieten NRW",
+    primaryKeywords: "Ketten- Dumper mieten in Bonn, Ketten- Dumper leihen in Bonn, Ketten- Dumper mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 636 kg. Für den Transport reicht ein PKW-Anhänger mit 1.800–2.000 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -1106,7 +1106,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "Ketten Dumper mieten in Bonn & Krefeld, Ketten Dumper leihen Bonn & Krefeld, Ketten Dumper mieten NRW",
+    primaryKeywords: "Ketten Dumper mieten in Bonn & Krefeld, Ketten Dumper leihen in Bonn & Krefeld, Ketten Dumper mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 450 kg. Für den Transport reicht ein PKW-Anhänger mit 1.800–2.000 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -1124,7 +1124,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "Raddumper / Knickdumper KDe550 mieten in Bonn & Krefeld & Mülheim, Raddumper / Knickdumper KDe550 leihen Bonn & Krefeld & Mülheim, Raddumper / Knickdumper KDe550 mieten NRW",
+    primaryKeywords: "Raddumper / Knickdumper KDe550 mieten in Bonn & Krefeld & Mülheim, Raddumper / Knickdumper KDe550 leihen in Bonn & Krefeld & Mülheim, Raddumper / Knickdumper KDe550 mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 318 kg. Für den Transport reicht ein PKW-Anhänger mit 1.800–2.000 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -1142,7 +1142,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "BN Krause Auslegerstütze mieten in Bonn, BN Krause Auslegerstütze leihen Bonn, BN Krause Auslegerstütze mieten NRW",
+    primaryKeywords: "BN Krause Auslegerstütze mieten in Bonn, BN Krause Auslegerstütze leihen in Bonn, BN Krause Auslegerstütze mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1160,7 +1160,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Gerüstbau, Fassadenarbeiten, Malerarbeiten in der Höhe, Dacharbeiten",
     useCaseEvent: "Aufbau erhöhter Plattformen, temporäre Arbeitsbühnen bei Veranstaltungen",
     useCasePrivat: "Renovierung, Fassadenanstrich, Dachrinnenreinigung, Baumschnitt in der Höhe",
-    primaryKeywords: "BN Krause Belagbühne mit Durchstieg 2,00 m mieten in Bonn, BN Krause Belagbühne mit Durchstieg 2,00 m leihen Bonn, BN Krause Belagbühne mit Durchstieg 2,00 m mieten NRW",
+    primaryKeywords: "BN Krause Belagbühne mit Durchstieg 2,00 m mieten in Bonn, BN Krause Belagbühne mit Durchstieg 2,00 m leihen in Bonn, BN Krause Belagbühne mit Durchstieg 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Gerüsttypen ist die Belagbühne geeignet?", a: "Die Belagbühne passt in gängige Gerüstsysteme mit Standardbreite. Prüfen Sie die Kompatibilität mit Ihrem Gerüsttyp anhand der Maße in den technischen Daten." },
@@ -1178,7 +1178,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Bordbrettset 75cm Breite mieten in Bonn, Krause Bordbrettset 75cm Breite leihen Bonn, Krause Bordbrettset 75cm Breite mieten NRW",
+    primaryKeywords: "Krause Bordbrettset 75cm Breite mieten in Bonn, Krause Bordbrettset 75cm Breite leihen in Bonn, Krause Bordbrettset 75cm Breite mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1196,7 +1196,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "BN Krause Diagonale Feldlänge 2,00 m mieten in Bonn, BN Krause Diagonale Feldlänge 2,00 m leihen Bonn, BN Krause Diagonale Feldlänge 2,00 m mieten NRW",
+    primaryKeywords: "BN Krause Diagonale Feldlänge 2,00 m mieten in Bonn, BN Krause Diagonale Feldlänge 2,00 m leihen in Bonn, BN Krause Diagonale Feldlänge 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1214,7 +1214,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Fahrbase 75 mieten in Bonn, Krause Fahrbase 75 leihen Bonn, Krause Fahrbase 75 mieten NRW",
+    primaryKeywords: "Krause Fahrbase 75 mieten in Bonn, Krause Fahrbase 75 leihen in Bonn, Krause Fahrbase 75 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1232,7 +1232,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause GuardMatic-System | Feldlänge 2,00 m mieten in Bonn & Krefeld, Krause GuardMatic-System | Feldlänge 2,00 m leihen Bonn & Krefeld, Krause GuardMatic-System | Feldlänge 2,00 m mieten NRW",
+    primaryKeywords: "Krause GuardMatic-System | Feldlänge 2,00 m mieten in Bonn & Krefeld, Krause GuardMatic-System | Feldlänge 2,00 m leihen in Bonn & Krefeld, Krause GuardMatic-System | Feldlänge 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1250,7 +1250,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Vertikalrahmen 1,00 x 0,75 m mieten in Bonn, Krause Vertikalrahmen 1,00 x 0,75 m leihen Bonn, Krause Vertikalrahmen 1,00 x 0,75 m mieten NRW",
+    primaryKeywords: "Krause Vertikalrahmen 1,00 x 0,75 m mieten in Bonn, Krause Vertikalrahmen 1,00 x 0,75 m leihen in Bonn, Krause Vertikalrahmen 1,00 x 0,75 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1268,7 +1268,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Vertikalrahmen 2,00 x 0,75 m mieten in Bonn, Krause Vertikalrahmen 2,00 x 0,75 m leihen Bonn, Krause Vertikalrahmen 2,00 x 0,75 m mieten NRW",
+    primaryKeywords: "Krause Vertikalrahmen 2,00 x 0,75 m mieten in Bonn, Krause Vertikalrahmen 2,00 x 0,75 m leihen in Bonn, Krause Vertikalrahmen 2,00 x 0,75 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1286,7 +1286,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED Moving Head mieten in Bonn & Krefeld, LED Moving Head leihen Bonn & Krefeld, LED Moving Head mieten NRW",
+    primaryKeywords: "LED Moving Head mieten in Bonn & Krefeld, LED Moving Head leihen in Bonn & Krefeld, LED Moving Head mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -1304,7 +1304,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Löffel SIMPLY 13, 10er Set mieten in Bonn & Krefeld, Löffel SIMPLY 13, 10er Set leihen Bonn & Krefeld, Löffel SIMPLY 13, 10er Set mieten NRW",
+    primaryKeywords: "Löffel SIMPLY 13, 10er Set mieten in Bonn & Krefeld, Löffel SIMPLY 13, 10er Set leihen in Bonn & Krefeld, Löffel SIMPLY 13, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1322,7 +1322,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Löffel SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Löffel SIMPLY 19, 10er Set leihen Bonn & Krefeld, Löffel SIMPLY 19, 10er Set mieten NRW",
+    primaryKeywords: "Löffel SIMPLY 19, 10er Set mieten in Bonn & Krefeld, Löffel SIMPLY 19, 10er Set leihen in Bonn & Krefeld, Löffel SIMPLY 19, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1340,7 +1340,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Fassadenarbeiten, Dachreparatur, Maler- & Elektroinstallationsarbeiten in der Höhe",
     useCaseEvent: "Rigging von Traversensystemen, Eventbeleuchtung aufhängen, Bühnendekoration",
     useCasePrivat: "Baumschnitt in Höhen, Dachrinnenreinigung, Außenfassade streichen",
-    primaryKeywords: "11m Mastbühne mieten in Bonn & Krefeld, 11m Mastbühne leihen Bonn & Krefeld, 11m Mastbühne mieten NRW",
+    primaryKeywords: "11m Mastbühne mieten in Bonn & Krefeld, 11m Mastbühne leihen in Bonn & Krefeld, 11m Mastbühne mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Arbeitshöhe erreicht diese Maschine?", a: "Die maximale Arbeitshöhe beträgt 11,20 m. Die Plattformbodenhöhe liegt entsprechend darunter – Details finden Sie in den technischen Daten." },
@@ -1358,7 +1358,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Mauerschlitzfräse mieten in Bonn & Krefeld, Mauerschlitzfräse leihen Bonn & Krefeld, Mauerschlitzfräse mieten NRW",
+    primaryKeywords: "Mauerschlitzfräse mieten in Bonn & Krefeld, Mauerschlitzfräse leihen in Bonn & Krefeld, Mauerschlitzfräse mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -1376,7 +1376,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Mehrzweckleiter 3x12 mieten in Bonn & Krefeld, Mehrzweckleiter 3x12 leihen Bonn & Krefeld, Mehrzweckleiter 3x12 mieten NRW",
+    primaryKeywords: "Mehrzweckleiter 3x12 mieten in Bonn & Krefeld, Mehrzweckleiter 3x12 leihen in Bonn & Krefeld, Mehrzweckleiter 3x12 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1394,7 +1394,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Messer SIMPLY 20, 10er Set mieten in Bonn & Krefeld, Messer SIMPLY 20, 10er Set leihen Bonn & Krefeld, Messer SIMPLY 20, 10er Set mieten NRW",
+    primaryKeywords: "Messer SIMPLY 20, 10er Set mieten in Bonn & Krefeld, Messer SIMPLY 20, 10er Set leihen in Bonn & Krefeld, Messer SIMPLY 20, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1412,7 +1412,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Bonn & Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock leihen Bonn & Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten NRW",
+    primaryKeywords: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Bonn & Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock leihen in Bonn & Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1430,7 +1430,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Materialsortiereung, Abbrucharbeiten",
     useCaseEvent: "Spezielle Erdarbeiten für Eventgelände",
     useCasePrivat: "Gartenarbeiten mit Baggerunterstützung",
-    primaryKeywords: "MS01/MS03 Sortiergreifer SSG 150 mieten in Bonn, MS01/MS03 Sortiergreifer SSG 150 leihen Bonn, MS01/MS03 Sortiergreifer SSG 150 mieten NRW",
+    primaryKeywords: "MS01/MS03 Sortiergreifer SSG 150 mieten in Bonn, MS01/MS03 Sortiergreifer SSG 150 leihen in Bonn, MS01/MS03 Sortiergreifer SSG 150 mieten NRW",
     is247: false,
     faqs: [
       { q: "Mit welchen Baggermodellen ist dieses Anbaugerät kompatibel?", a: "Das Anbaugerät ist für bestimmte Baggerklassen ausgelegt. Bitte bei der Buchung das Baggermodell angeben, damit wir die Kompatibilität prüfen können. Wir haben Anbaugeräte für MS01- und MS03-Baggerklassen im Sortiment." },
@@ -1448,7 +1448,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Tieflöffel 20cm/14l mieten in Bonn & Krefeld, MS01 Tieflöffel 20cm/14l leihen Bonn & Krefeld, MS01 Tieflöffel 20cm/14l mieten NRW",
+    primaryKeywords: "MS01 Tieflöffel 20cm/14l mieten in Bonn & Krefeld, MS01 Tieflöffel 20cm/14l leihen in Bonn & Krefeld, MS01 Tieflöffel 20cm/14l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1466,7 +1466,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone mieten in Bonn, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone leihen Bonn, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone mieten NRW",
+    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone mieten in Bonn, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone leihen in Bonn, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock Clone mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1484,7 +1484,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS03 Kabellöffel 20cm Symlock mieten in Bonn, MS03 Kabellöffel 20cm Symlock leihen Bonn, MS03 Kabellöffel 20cm Symlock mieten NRW",
+    primaryKeywords: "MS03 Kabellöffel 20cm Symlock mieten in Bonn, MS03 Kabellöffel 20cm Symlock leihen in Bonn, MS03 Kabellöffel 20cm Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1502,7 +1502,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Nass-/Trockensauger mieten in Bonn, Nass-/Trockensauger leihen Bonn, Nass-/Trockensauger mieten NRW",
+    primaryKeywords: "Nass-/Trockensauger mieten in Bonn, Nass-/Trockensauger leihen in Bonn, Nass-/Trockensauger mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: Saugrohr, Fugendüse & Bodendüse. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -1520,7 +1520,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 4x6m mieten in Bonn & Krefeld, Partyzelt 4x6m leihen Bonn & Krefeld, Partyzelt 4x6m mieten NRW",
+    primaryKeywords: "Partyzelt 4x6m mieten in Bonn & Krefeld, Partyzelt 4x6m leihen in Bonn & Krefeld, Partyzelt 4x6m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -1538,7 +1538,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "Radlader 3t mieten in Bonn & Krefeld & Mülheim, Radlader 3t leihen Bonn & Krefeld & Mülheim, Radlader 3t mieten NRW",
+    primaryKeywords: "Radlader 3t mieten in Bonn & Krefeld & Mülheim, Radlader 3t leihen in Bonn & Krefeld & Mülheim, Radlader 3t mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 2950 kg. Für den Transport benötigen Sie einen Maschinenanhänger mit mind. 3.500 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -1556,7 +1556,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst, 4,4 m mieten in Bonn, Rollgerüst, 4,4 m leihen Bonn, Rollgerüst, 4,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst, 4,4 m mieten in Bonn, Rollgerüst, 4,4 m leihen in Bonn, Rollgerüst, 4,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1574,7 +1574,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst, 5,4 m mieten in Bonn, Rollgerüst, 5,4 m leihen Bonn, Rollgerüst, 5,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst, 5,4 m mieten in Bonn, Rollgerüst, 5,4 m leihen in Bonn, Rollgerüst, 5,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1592,7 +1592,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst, 6,4 m mieten in Bonn, Rollgerüst, 6,4 m leihen Bonn, Rollgerüst, 6,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst, 6,4 m mieten in Bonn, Rollgerüst, 6,4 m leihen in Bonn, Rollgerüst, 6,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1610,7 +1610,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst, 7,4 m mieten in Bonn, Rollgerüst, 7,4 m leihen Bonn, Rollgerüst, 7,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst, 7,4 m mieten in Bonn, Rollgerüst, 7,4 m leihen in Bonn, Rollgerüst, 7,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1628,7 +1628,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst 8,4 m mieten in Bonn, Rollgerüst 8,4 m leihen Bonn, Rollgerüst 8,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst 8,4 m mieten in Bonn, Rollgerüst 8,4 m leihen in Bonn, Rollgerüst 8,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1646,7 +1646,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst 9,4 m mieten in Bonn, Rollgerüst 9,4 m leihen Bonn, Rollgerüst 9,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst 9,4 m mieten in Bonn, Rollgerüst 9,4 m leihen in Bonn, Rollgerüst 9,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -1664,7 +1664,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Rotationslaser mieten in Bonn, Rotationslaser leihen Bonn, Rotationslaser mieten NRW",
+    primaryKeywords: "Rotationslaser mieten in Bonn, Rotationslaser leihen in Bonn, Rotationslaser mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -1682,7 +1682,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Rotwein Passionata, 25er Set mieten in Bonn & Krefeld, Rotwein Passionata, 25er Set leihen Bonn & Krefeld, Rotwein Passionata, 25er Set mieten NRW",
+    primaryKeywords: "Rotwein Passionata, 25er Set mieten in Bonn & Krefeld, Rotwein Passionata, 25er Set leihen in Bonn & Krefeld, Rotwein Passionata, 25er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -1700,7 +1700,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Pflasterarbeiten, Schotterdecken, Tiefbau, Auffüllung von Leitungsgräben",
     useCaseEvent: "Außengelände für Events verfestigen, temporäre Zufahrtswege anlegen",
     useCasePrivat: "Einfahrt pflastern, Gartenweg anlegen, Fundament für Gartenhaus",
-    primaryKeywords: "Rüttelplatte HVP 30/50 mieten in Bonn & Krefeld, Rüttelplatte HVP 30/50 leihen Bonn & Krefeld, Rüttelplatte HVP 30/50 mieten NRW",
+    primaryKeywords: "Rüttelplatte HVP 30/50 mieten in Bonn & Krefeld, Rüttelplatte HVP 30/50 leihen in Bonn & Krefeld, Rüttelplatte HVP 30/50 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist dieses Gerät geeignet?", a: "Betriebsgewicht: 175 kg, Fliehkraft: Motorleistung: 4,8 kW. Geeignet für Sand, Kies, Schotter und bituminöse Schichten. Für bindige Böden (Lehm, Ton) empfehlen wir einen Vibrationsstampfer. Max. Verdichtungstiefe je nach Boden ca. 20–35 cm pro Lage." },
@@ -1718,7 +1718,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Pflasterarbeiten, Schotterdecken, Tiefbau, Auffüllung von Leitungsgräben",
     useCaseEvent: "Außengelände für Events verfestigen, temporäre Zufahrtswege anlegen",
     useCasePrivat: "Einfahrt pflastern, Gartenweg anlegen, Fundament für Gartenhaus",
-    primaryKeywords: "Rüttelplatte HVP 38/60 mieten in Bonn & Krefeld, Rüttelplatte HVP 38/60 leihen Bonn & Krefeld, Rüttelplatte HVP 38/60 mieten NRW",
+    primaryKeywords: "Rüttelplatte HVP 38/60 mieten in Bonn & Krefeld, Rüttelplatte HVP 38/60 leihen in Bonn & Krefeld, Rüttelplatte HVP 38/60 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist dieses Gerät geeignet?", a: "Betriebsgewicht: 247 kg, Fliehkraft: Motorleistung: 4,8 kW. Geeignet für Sand, Kies, Schotter und bituminöse Schichten. Für bindige Böden (Lehm, Ton) empfehlen wir einen Vibrationsstampfer. Max. Verdichtungstiefe je nach Boden ca. 20–35 cm pro Lage." },
@@ -1736,7 +1736,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Pflasterarbeiten, Schotterdecken, Tiefbau, Auffüllung von Leitungsgräben",
     useCaseEvent: "Außengelände für Events verfestigen, temporäre Zufahrtswege anlegen",
     useCasePrivat: "Einfahrt pflastern, Gartenweg anlegen, Fundament für Gartenhaus",
-    primaryKeywords: "Rüttelplatte VP 16/44 mieten in Bonn & Krefeld, Rüttelplatte VP 16/44 leihen Bonn & Krefeld, Rüttelplatte VP 16/44 mieten NRW",
+    primaryKeywords: "Rüttelplatte VP 16/44 mieten in Bonn & Krefeld, Rüttelplatte VP 16/44 leihen in Bonn & Krefeld, Rüttelplatte VP 16/44 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist dieses Gerät geeignet?", a: "Betriebsgewicht: 105 kg, Fliehkraft: Motorleistung: 4,8 kW. Geeignet für Sand, Kies, Schotter und bituminöse Schichten. Für bindige Böden (Lehm, Ton) empfehlen wir einen Vibrationsstampfer. Max. Verdichtungstiefe je nach Boden ca. 20–35 cm pro Lage." },
@@ -1754,7 +1754,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Fassadenarbeiten, Dachreparatur, Maler- & Elektroinstallationsarbeiten in der Höhe",
     useCaseEvent: "Rigging von Traversensystemen, Eventbeleuchtung aufhängen, Bühnendekoration",
     useCasePrivat: "Baumschnitt in Höhen, Dachrinnenreinigung, Außenfassade streichen",
-    primaryKeywords: "12m Scherenbühne mieten in Bonn & Krefeld, 12m Scherenbühne leihen Bonn & Krefeld, 12m Scherenbühne mieten NRW",
+    primaryKeywords: "12m Scherenbühne mieten in Bonn & Krefeld, 12m Scherenbühne leihen in Bonn & Krefeld, 12m Scherenbühne mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Arbeitshöhe erreicht diese Maschine?", a: "Die maximale Arbeitshöhe beträgt 11,80 m. Die Plattformbodenhöhe liegt entsprechend darunter – Details finden Sie in den technischen Daten." },
@@ -1772,7 +1772,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Fassadenarbeiten, Dachreparatur, Maler- & Elektroinstallationsarbeiten in der Höhe",
     useCaseEvent: "Rigging von Traversensystemen, Eventbeleuchtung aufhängen, Bühnendekoration",
     useCasePrivat: "Baumschnitt in Höhen, Dachrinnenreinigung, Außenfassade streichen",
-    primaryKeywords: "8m Scherenbühne mieten in Bonn & Krefeld, 8m Scherenbühne leihen Bonn & Krefeld, 8m Scherenbühne mieten NRW",
+    primaryKeywords: "8m Scherenbühne mieten in Bonn & Krefeld, 8m Scherenbühne leihen in Bonn & Krefeld, 8m Scherenbühne mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Arbeitshöhe erreicht diese Maschine?", a: "Die maximale Arbeitshöhe beträgt 7,80 m. Die Plattformbodenhöhe liegt entsprechend darunter – Details finden Sie in den technischen Daten." },
@@ -1790,7 +1790,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Schüssel SIMPLY 15, 10er Set mieten in Bonn & Krefeld, Schüssel SIMPLY 15, 10er Set leihen Bonn & Krefeld, Schüssel SIMPLY 15, 10er Set mieten NRW",
+    primaryKeywords: "Schüssel SIMPLY 15, 10er Set mieten in Bonn & Krefeld, Schüssel SIMPLY 15, 10er Set leihen in Bonn & Krefeld, Schüssel SIMPLY 15, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1808,7 +1808,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Sonnenschirm mieten in Bonn, Sonnenschirm leihen Bonn, Sonnenschirm mieten NRW",
+    primaryKeywords: "Sonnenschirm mieten in Bonn, Sonnenschirm leihen in Bonn, Sonnenschirm mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -1826,7 +1826,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Soundboks Batteryboks mieten in Bonn & Krefeld, Soundboks Batteryboks leihen Bonn & Krefeld, Soundboks Batteryboks mieten NRW",
+    primaryKeywords: "Soundboks Batteryboks mieten in Bonn & Krefeld, Soundboks Batteryboks leihen in Bonn & Krefeld, Soundboks Batteryboks mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -1844,7 +1844,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Soundboks Gen.3 mieten in Bonn & Krefeld, Soundboks Gen.3 leihen Bonn & Krefeld, Soundboks Gen.3 mieten NRW",
+    primaryKeywords: "Soundboks Gen.3 mieten in Bonn & Krefeld, Soundboks Gen.3 leihen in Bonn & Krefeld, Soundboks Gen.3 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Leistung: 3 x 72 W. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -1862,7 +1862,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "2.1 Soundsystem mieten in Bonn & Krefeld, 2.1 Soundsystem leihen Bonn & Krefeld, 2.1 Soundsystem mieten NRW",
+    primaryKeywords: "2.1 Soundsystem mieten in Bonn & Krefeld, 2.1 Soundsystem leihen in Bonn & Krefeld, 2.1 Soundsystem mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Leistung: und integriertem 4-Kanal Mischpult. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -1880,7 +1880,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Gastro- Spülmaschinen Frontlader mieten in Bonn & Krefeld, Gastro- Spülmaschinen Frontlader leihen Bonn & Krefeld, Gastro- Spülmaschinen Frontlader mieten NRW",
+    primaryKeywords: "Gastro- Spülmaschinen Frontlader mieten in Bonn & Krefeld, Gastro- Spülmaschinen Frontlader leihen in Bonn & Krefeld, Gastro- Spülmaschinen Frontlader mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1898,7 +1898,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Stehtisch mieten in Bonn & Krefeld, Stehtisch leihen Bonn & Krefeld, Stehtisch mieten NRW",
+    primaryKeywords: "Stehtisch mieten in Bonn & Krefeld, Stehtisch leihen in Bonn & Krefeld, Stehtisch mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -1916,7 +1916,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Stehtisch Husse weiß mieten in Bonn & Krefeld, Stehtisch Husse weiß leihen Bonn & Krefeld, Stehtisch Husse weiß mieten NRW",
+    primaryKeywords: "Stehtisch Husse weiß mieten in Bonn & Krefeld, Stehtisch Husse weiß leihen in Bonn & Krefeld, Stehtisch Husse weiß mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -1934,7 +1934,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Asphalt schneiden, Betonplatten trennen, Fugen schneiden, Pflasterarbeiten",
     useCaseEvent: "Vorbereitung von Veranstaltungsflächen, Pflasterarbeiten auf Eventgeländen",
     useCasePrivat: "Pflastersteine schneiden, Terrassenplatten zuschneiden, Bordsteine kürzen",
-    primaryKeywords: "Steinsäge 80cm mieten in Bonn & Krefeld, Steinsäge 80cm leihen Bonn & Krefeld, Steinsäge 80cm mieten NRW",
+    primaryKeywords: "Steinsäge 80cm mieten in Bonn & Krefeld, Steinsäge 80cm leihen in Bonn & Krefeld, Steinsäge 80cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Materialien kann ich mit der Säge schneiden?", a: "Die Säge eignet sich zum Schneiden von Asphalt, Beton, Pflastersteinen, Naturstein und ähnlichen Baumaterialien. Die maximale Schnitttiefe entnehmen Sie den technischen Daten." },
@@ -1952,7 +1952,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Stuhl weiß mieten in Bonn & Krefeld, Stuhl weiß leihen Bonn & Krefeld, Stuhl weiß mieten NRW",
+    primaryKeywords: "Stuhl weiß mieten in Bonn & Krefeld, Stuhl weiß leihen in Bonn & Krefeld, Stuhl weiß mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -1970,7 +1970,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Teller SIMPLY 25, 10er Set mieten in Bonn & Krefeld, Teller SIMPLY 25, 10er Set leihen Bonn & Krefeld, Teller SIMPLY 25, 10er Set mieten NRW",
+    primaryKeywords: "Teller SIMPLY 25, 10er Set mieten in Bonn & Krefeld, Teller SIMPLY 25, 10er Set leihen in Bonn & Krefeld, Teller SIMPLY 25, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -1988,7 +1988,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Teller tief SIMPLY 20, 10er Set mieten in Bonn & Krefeld, Teller tief SIMPLY 20, 10er Set leihen Bonn & Krefeld, Teller tief SIMPLY 20, 10er Set mieten NRW",
+    primaryKeywords: "Teller tief SIMPLY 20, 10er Set mieten in Bonn & Krefeld, Teller tief SIMPLY 20, 10er Set leihen in Bonn & Krefeld, Teller tief SIMPLY 20, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -2006,7 +2006,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch mieten in Bonn, GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch leihen Bonn, GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch mieten NRW",
+    primaryKeywords: "GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch mieten in Bonn, GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch leihen in Bonn, GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -2024,7 +2024,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Benzin - Vertikutierer mieten in Bonn, Benzin - Vertikutierer leihen Bonn, Benzin - Vertikutierer mieten NRW",
+    primaryKeywords: "Benzin - Vertikutierer mieten in Bonn, Benzin - Vertikutierer leihen in Bonn, Benzin - Vertikutierer mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Arbeitsbreite: 38 cm. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -2042,7 +2042,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Warnbarke weiß/rot, RA 2 mieten in Bonn & Krefeld, Warnbarke weiß/rot, RA 2 leihen Bonn & Krefeld, Warnbarke weiß/rot, RA 2 mieten NRW",
+    primaryKeywords: "Warnbarke weiß/rot, RA 2 mieten in Bonn & Krefeld, Warnbarke weiß/rot, RA 2 leihen in Bonn & Krefeld, Warnbarke weiß/rot, RA 2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -2060,7 +2060,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld, TL-Warnleuchte, gelb leihen Bonn & Krefeld, TL-Warnleuchte, gelb mieten NRW",
+    primaryKeywords: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld, TL-Warnleuchte, gelb leihen in Bonn & Krefeld, TL-Warnleuchte, gelb mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -2078,7 +2078,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Wasserglas Passionata 460ml, 25er Set mieten in Bonn & Krefeld, Wasserglas Passionata 460ml, 25er Set leihen Bonn & Krefeld, Wasserglas Passionata 460ml, 25er Set mieten NRW",
+    primaryKeywords: "Wasserglas Passionata 460ml, 25er Set mieten in Bonn & Krefeld, Wasserglas Passionata 460ml, 25er Set leihen in Bonn & Krefeld, Wasserglas Passionata 460ml, 25er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -2096,7 +2096,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Wemas Klemmschelle K1 mieten in Bonn & Krefeld, Wemas Klemmschelle K1 leihen Bonn & Krefeld, Wemas Klemmschelle K1 mieten NRW",
+    primaryKeywords: "Wemas Klemmschelle K1 mieten in Bonn & Krefeld, Wemas Klemmschelle K1 leihen in Bonn & Krefeld, Wemas Klemmschelle K1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -2114,7 +2114,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Winkelschleifer GWS 18V-10 mieten in Bonn & Krefeld, Bosch Akku Winkelschleifer GWS 18V-10 leihen Bonn & Krefeld, Bosch Akku Winkelschleifer GWS 18V-10 mieten NRW",
+    primaryKeywords: "Bosch Akku Winkelschleifer GWS 18V-10 mieten in Bonn & Krefeld, Bosch Akku Winkelschleifer GWS 18V-10 leihen in Bonn & Krefeld, Bosch Akku Winkelschleifer GWS 18V-10 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2132,7 +2132,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "2t XCMG XE20E mieten in Bonn & Krefeld, 2t XCMG XE20E leihen Bonn & Krefeld, 2t XCMG XE20E mieten NRW",
+    primaryKeywords: "2t XCMG XE20E mieten in Bonn & Krefeld, 2t XCMG XE20E leihen in Bonn & Krefeld, 2t XCMG XE20E mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 2050kg. Für den Transport benötigen Sie einen Maschinenanhänger mit mind. 3.500 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -2150,7 +2150,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "2,7t XCMG XE27E mieten in Bonn & Krefeld, 2,7t XCMG XE27E leihen Bonn & Krefeld, 2,7t XCMG XE27E mieten NRW",
+    primaryKeywords: "2,7t XCMG XE27E mieten in Bonn & Krefeld, 2,7t XCMG XE27E leihen in Bonn & Krefeld, 2,7t XCMG XE27E mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 2780 kg. Für den Transport benötigen Sie einen Maschinenanhänger mit mind. 3.500 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
@@ -2168,7 +2168,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Zwangsmischer 140L mieten in Bonn, Zwangsmischer 140L leihen Bonn, Zwangsmischer 140L mieten NRW",
+    primaryKeywords: "Zwangsmischer 140L mieten in Bonn, Zwangsmischer 140L leihen in Bonn, Zwangsmischer 140L mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2186,7 +2186,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Abbruchhammer 41J / 18kg mieten in Bonn & Krefeld, Abbruchhammer 41J / 18kg leihen Bonn & Krefeld, Abbruchhammer 41J / 18kg mieten NRW",
+    primaryKeywords: "Abbruchhammer 41J / 18kg mieten in Bonn & Krefeld, Abbruchhammer 41J / 18kg leihen in Bonn & Krefeld, Abbruchhammer 41J / 18kg mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: 1x Spitzmeißel & 1x Flachmeißel. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2204,7 +2204,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "Akku Bauleuchte mieten in Krefeld, Akku Bauleuchte leihen Krefeld, Akku Bauleuchte mieten NRW",
+    primaryKeywords: "Akku Bauleuchte mieten in Krefeld, Akku Bauleuchte leihen in Krefeld, Akku Bauleuchte mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -2222,7 +2222,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Akku Bohrhammer mieten in Krefeld, Akku Bohrhammer leihen Krefeld, Akku Bohrhammer mieten NRW",
+    primaryKeywords: "Akku Bohrhammer mieten in Krefeld, Akku Bohrhammer leihen in Krefeld, Akku Bohrhammer mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2240,7 +2240,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Akku Bohrhammer 12,5J / 8 kg mieten in Krefeld, Akku Bohrhammer 12,5J / 8 kg leihen Krefeld, Akku Bohrhammer 12,5J / 8 kg mieten NRW",
+    primaryKeywords: "Akku Bohrhammer 12,5J / 8 kg mieten in Krefeld, Akku Bohrhammer 12,5J / 8 kg leihen in Krefeld, Akku Bohrhammer 12,5J / 8 kg mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2258,7 +2258,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 leihen Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 mieten NRW",
+    primaryKeywords: "Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 leihen in Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: Akku: 0,95 kg. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2276,7 +2276,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C leihen Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C mieten NRW",
+    primaryKeywords: "Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C leihen in Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2294,7 +2294,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H leihen Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten NRW",
+    primaryKeywords: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H leihen in Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ausgewählt werden. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2312,7 +2312,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Laden von Bosch Professional Akkus auf der Baustelle, schnelles Wechselladen",
     useCaseEvent: "Aufladen von Akku-Werkzeugen beim Auf- und Abbau von Veranstaltungen",
     useCasePrivat: "Laden mehrerer Akkus gleichzeitig für Heimwerkerprojekte",
-    primaryKeywords: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 leihen Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 mieten NRW",
+    primaryKeywords: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 leihen in Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Akkus sind kompatibel?", a: "Das Ladegerät ist kompatibel mit allen Bosch Professional 18V Akkus. Es können bis zu 6 Akkus gleichzeitig geladen werden." },
@@ -2330,7 +2330,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Linienlaser mieten in Krefeld, Linienlaser leihen Krefeld, Linienlaser mieten NRW",
+    primaryKeywords: "Linienlaser mieten in Krefeld, Linienlaser leihen in Krefeld, Linienlaser mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ausgewählt werden. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2348,7 +2348,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld, Bosch Akku- Multicutter GOP 18V-28 leihen Krefeld, Bosch Akku- Multicutter GOP 18V-28 mieten NRW",
+    primaryKeywords: "Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld, Bosch Akku- Multicutter GOP 18V-28 leihen in Krefeld, Bosch Akku- Multicutter GOP 18V-28 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2366,7 +2366,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld, Bosch Ortungsgerät D-TECT 200 C leihen Krefeld, Bosch Ortungsgerät D-TECT 200 C mieten NRW",
+    primaryKeywords: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld, Bosch Ortungsgerät D-TECT 200 C leihen in Krefeld, Bosch Ortungsgerät D-TECT 200 C mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ausgewählt werden. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2384,7 +2384,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Ortungsgerät GMS 120 mieten in Krefeld, Bosch Ortungsgerät GMS 120 leihen Krefeld, Bosch Ortungsgerät GMS 120 mieten NRW",
+    primaryKeywords: "Bosch Ortungsgerät GMS 120 mieten in Krefeld, Bosch Ortungsgerät GMS 120 leihen in Krefeld, Bosch Ortungsgerät GMS 120 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2402,7 +2402,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C leihen Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C mieten NRW",
+    primaryKeywords: "Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C leihen in Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ). Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2420,7 +2420,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld, Bosch Staubsauger GAS 18V-10 L leihen Krefeld, Bosch Staubsauger GAS 18V-10 L mieten NRW",
+    primaryKeywords: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld, Bosch Staubsauger GAS 18V-10 L leihen in Krefeld, Bosch Staubsauger GAS 18V-10 L mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2438,7 +2438,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 leihen Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 mieten NRW",
+    primaryKeywords: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 leihen in Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -2456,7 +2456,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "2-in-1-Buffet- und Tellerwärmer, elektrisch mieten in Bonn, 2-in-1-Buffet- und Tellerwärmer, elektrisch leihen Bonn, 2-in-1-Buffet- und Tellerwärmer, elektrisch mieten NRW",
+    primaryKeywords: "2-in-1-Buffet- und Tellerwärmer, elektrisch mieten in Bonn, 2-in-1-Buffet- und Tellerwärmer, elektrisch leihen in Bonn, 2-in-1-Buffet- und Tellerwärmer, elektrisch mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -2474,7 +2474,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Rotweinglas Brunelli, 9er Set mieten in Krefeld, Rotweinglas Brunelli, 9er Set leihen Krefeld, Rotweinglas Brunelli, 9er Set mieten NRW",
+    primaryKeywords: "Rotweinglas Brunelli, 9er Set mieten in Krefeld, Rotweinglas Brunelli, 9er Set leihen in Krefeld, Rotweinglas Brunelli, 9er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -2492,7 +2492,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 16A UV auf 3x 16A Schuko mieten in Krefeld, CEE 16A UV auf 3x 16A Schuko leihen Krefeld, CEE 16A UV auf 3x 16A Schuko mieten NRW",
+    primaryKeywords: "CEE 16A UV auf 3x 16A Schuko mieten in Krefeld, CEE 16A UV auf 3x 16A Schuko leihen in Krefeld, CEE 16A UV auf 3x 16A Schuko mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Eingang und 3 Schutzkontakt-Ausgängen. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2510,7 +2510,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten in Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko leihen Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten NRW",
+    primaryKeywords: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten in Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko leihen in Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: 16 A männlich 5 pol Anschluss. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2528,7 +2528,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 32A UV auf 6x 16A Schuko mieten in Krefeld, CEE 32A UV auf 6x 16A Schuko leihen Krefeld, CEE 32A UV auf 6x 16A Schuko mieten NRW",
+    primaryKeywords: "CEE 32A UV auf 6x 16A Schuko mieten in Krefeld, CEE 32A UV auf 6x 16A Schuko leihen in Krefeld, CEE 32A UV auf 6x 16A Schuko mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: , 32A, 5-polig. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2546,7 +2546,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko leihen Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten NRW",
+    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko leihen in Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: 32A 5-pol (W) Einbauversion abgesichert, 1 x CEE 16A 5-pol (W) Einbauversion abgesichert, 6x Schuko 16A. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2564,7 +2564,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen",
     useCaseEvent: "Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung",
     useCasePrivat: "Großes Gartenfest, provisorische Hausinstallation bei Umbau",
-    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A leihen Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten NRW",
+    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A leihen in Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: 63A 5-pol. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2582,7 +2582,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld, Mennekes CEE Adapter 16A < > 32A leihen Krefeld, Mennekes CEE Adapter 16A < > 32A mieten NRW",
+    primaryKeywords: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld, Mennekes CEE Adapter 16A < > 32A leihen in Krefeld, Mennekes CEE Adapter 16A < > 32A mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter 16A Stecker rot auf 32A Kupplung rot. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2600,7 +2600,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter 32A < > 63A mieten in Krefeld, Mennekes CEE Adapter 32A < > 63A leihen Krefeld, Mennekes CEE Adapter 32A < > 63A mieten NRW",
+    primaryKeywords: "Mennekes CEE Adapter 32A < > 63A mieten in Krefeld, Mennekes CEE Adapter 32A < > 63A leihen in Krefeld, Mennekes CEE Adapter 32A < > 63A mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter 32A Stecker rot auf 63A Kupplung rot. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2618,7 +2618,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten in Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung leihen Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten NRW",
+    primaryKeywords: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten in Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung leihen in Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter 63A Stecker rot auf 32A Kupplung rot. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2636,7 +2636,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter Schuko < > 16A (b) mieten in Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) leihen Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) mieten NRW",
+    primaryKeywords: "Mennekes CEE Adapter Schuko < > 16A (b) mieten in Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) leihen in Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter Schuko 16A Stecker auf 16A Kupplung blau. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
@@ -2654,7 +2654,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 16A rot 10 m mieten in Bonn & Krefeld, CEE Kabel 16A rot 10 m leihen Bonn & Krefeld, CEE Kabel 16A rot 10 m mieten NRW",
+    primaryKeywords: "CEE Kabel 16A rot 10 m mieten in Bonn & Krefeld, CEE Kabel 16A rot 10 m leihen in Bonn & Krefeld, CEE Kabel 16A rot 10 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: bel mit Stecker und Kupplung. Kabeltyp: H07RN-F5G2,5 - A16 rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2672,7 +2672,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 16A rot 3 m mieten in Krefeld, CEE Kabel 16A rot 3 m leihen Krefeld, CEE Kabel 16A rot 3 m mieten NRW",
+    primaryKeywords: "CEE Kabel 16A rot 3 m mieten in Krefeld, CEE Kabel 16A rot 3 m leihen in Krefeld, CEE Kabel 16A rot 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mannekes / Titanex. Kabeltyp: H07RN-F5G2,5 - 16A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2690,7 +2690,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 16A rot 5 m mieten in Krefeld, CEE Kabel 16A rot 5 m leihen Krefeld, CEE Kabel 16A rot 5 m mieten NRW",
+    primaryKeywords: "CEE Kabel 16A rot 5 m mieten in Krefeld, CEE Kabel 16A rot 5 m leihen in Krefeld, CEE Kabel 16A rot 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G2,5 - 16A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2708,7 +2708,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 32A rot 10 m mieten in Krefeld, CEE Kabel 32A rot 10 m leihen Krefeld, CEE Kabel 32A rot 10 m mieten NRW",
+    primaryKeywords: "CEE Kabel 32A rot 10 m mieten in Krefeld, CEE Kabel 32A rot 10 m leihen in Krefeld, CEE Kabel 32A rot 10 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G6 - 32A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2726,7 +2726,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 32A rot 3 m mieten in Krefeld, CEE Kabel 32A rot 3 m leihen Krefeld, CEE Kabel 32A rot 3 m mieten NRW",
+    primaryKeywords: "CEE Kabel 32A rot 3 m mieten in Krefeld, CEE Kabel 32A rot 3 m leihen in Krefeld, CEE Kabel 32A rot 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G6 - 32A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2744,7 +2744,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 32A rot 50 m mieten in Krefeld, CEE Kabel 32A rot 50 m leihen Krefeld, CEE Kabel 32A rot 50 m mieten NRW",
+    primaryKeywords: "CEE Kabel 32A rot 50 m mieten in Krefeld, CEE Kabel 32A rot 50 m leihen in Krefeld, CEE Kabel 32A rot 50 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G6 - 32A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2762,7 +2762,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 32A rot 5 m mieten in Krefeld, CEE Kabel 32A rot 5 m leihen Krefeld, CEE Kabel 32A rot 5 m mieten NRW",
+    primaryKeywords: "CEE Kabel 32A rot 5 m mieten in Krefeld, CEE Kabel 32A rot 5 m leihen in Krefeld, CEE Kabel 32A rot 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G6 - 32A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2780,7 +2780,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 63A rot 10 m mieten in Krefeld, CEE Kabel 63A rot 10 m leihen Krefeld, CEE Kabel 63A rot 10 m mieten NRW",
+    primaryKeywords: "CEE Kabel 63A rot 10 m mieten in Krefeld, CEE Kabel 63A rot 10 m leihen in Krefeld, CEE Kabel 63A rot 10 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G16 - 63A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2798,7 +2798,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 63A rot 20 m mieten in Krefeld, CEE Kabel 63A rot 20 m leihen Krefeld, CEE Kabel 63A rot 20 m mieten NRW",
+    primaryKeywords: "CEE Kabel 63A rot 20 m mieten in Krefeld, CEE Kabel 63A rot 20 m leihen in Krefeld, CEE Kabel 63A rot 20 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G16 - 63A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2816,7 +2816,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 63A rot 3 m mieten in Krefeld, CEE Kabel 63A rot 3 m leihen Krefeld, CEE Kabel 63A rot 3 m mieten NRW",
+    primaryKeywords: "CEE Kabel 63A rot 3 m mieten in Krefeld, CEE Kabel 63A rot 3 m leihen in Krefeld, CEE Kabel 63A rot 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G16 - 63A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2834,7 +2834,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "CEE Kabel 63A rot 5 m mieten in Krefeld, CEE Kabel 63A rot 5 m leihen Krefeld, CEE Kabel 63A rot 5 m mieten NRW",
+    primaryKeywords: "CEE Kabel 63A rot 5 m mieten in Krefeld, CEE Kabel 63A rot 5 m leihen in Krefeld, CEE Kabel 63A rot 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F5G16 - 63A rot. Bitte nicht über die Nennstromstärke belasten." },
@@ -2852,7 +2852,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Champagnerglas Brunelli, 36er Set mieten in Krefeld, Champagnerglas Brunelli, 36er Set leihen Krefeld, Champagnerglas Brunelli, 36er Set mieten NRW",
+    primaryKeywords: "Champagnerglas Brunelli, 36er Set mieten in Krefeld, Champagnerglas Brunelli, 36er Set leihen in Krefeld, Champagnerglas Brunelli, 36er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -2870,7 +2870,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "CW05 Kabellöffel 25cm/18l mieten in Krefeld, CW05 Kabellöffel 25cm/18l leihen Krefeld, CW05 Kabellöffel 25cm/18l mieten NRW",
+    primaryKeywords: "CW05 Kabellöffel 25cm/18l mieten in Krefeld, CW05 Kabellöffel 25cm/18l leihen in Krefeld, CW05 Kabellöffel 25cm/18l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -2888,7 +2888,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "CW05 Tieflöffel 40cm/30l mieten in Krefeld, CW05 Tieflöffel 40cm/30l leihen Krefeld, CW05 Tieflöffel 40cm/30l mieten NRW",
+    primaryKeywords: "CW05 Tieflöffel 40cm/30l mieten in Krefeld, CW05 Tieflöffel 40cm/30l leihen in Krefeld, CW05 Tieflöffel 40cm/30l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -2906,7 +2906,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "CW05 Tieflöffel 50cm/45l mieten in Krefeld, CW05 Tieflöffel 50cm/45l leihen Krefeld, CW05 Tieflöffel 50cm/45l mieten NRW",
+    primaryKeywords: "CW05 Tieflöffel 50cm/45l mieten in Krefeld, CW05 Tieflöffel 50cm/45l leihen in Krefeld, CW05 Tieflöffel 50cm/45l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -2924,7 +2924,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "D.A.S. Audio Action 508A mieten in Krefeld, D.A.S. Audio Action 508A leihen Krefeld, D.A.S. Audio Action 508A mieten NRW",
+    primaryKeywords: "D.A.S. Audio Action 508A mieten in Krefeld, D.A.S. Audio Action 508A leihen in Krefeld, D.A.S. Audio Action 508A mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -2942,7 +2942,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "D.A.S. Audio Vantec 12A mieten in Krefeld, D.A.S. Audio Vantec 12A leihen Krefeld, D.A.S. Audio Vantec 12A mieten NRW",
+    primaryKeywords: "D.A.S. Audio Vantec 12A mieten in Krefeld, D.A.S. Audio Vantec 12A leihen in Krefeld, D.A.S. Audio Vantec 12A mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -2960,7 +2960,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "D.A.S. Audio Vantec 18A mieten in Krefeld, D.A.S. Audio Vantec 18A leihen Krefeld, D.A.S. Audio Vantec 18A mieten NRW",
+    primaryKeywords: "D.A.S. Audio Vantec 18A mieten in Krefeld, D.A.S. Audio Vantec 18A leihen in Krefeld, D.A.S. Audio Vantec 18A mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -2978,7 +2978,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kommunikation auf Großbaustellen, Kabelschutz an Zufahrtswegen",
     useCaseEvent: "Koordination bei Events, Kabelschutz für Besuchersicherheit",
     useCasePrivat: "Kabelschutz bei Gartenevents, provisorische Kommunikation",
-    primaryKeywords: "Defender Micro 2 Kabelbrücke mieten in Krefeld, Defender Micro 2 Kabelbrücke leihen Krefeld, Defender Micro 2 Kabelbrücke mieten NRW",
+    primaryKeywords: "Defender Micro 2 Kabelbrücke mieten in Krefeld, Defender Micro 2 Kabelbrücke leihen in Krefeld, Defender Micro 2 Kabelbrücke mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: Breite: 28 cm. Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -2996,7 +2996,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kommunikation auf Großbaustellen, Kabelschutz an Zufahrtswegen",
     useCaseEvent: "Koordination bei Events, Kabelschutz für Besuchersicherheit",
     useCasePrivat: "Kabelschutz bei Gartenevents, provisorische Kommunikation",
-    primaryKeywords: "Defender Midi 5 Kabelbrücke mieten in Krefeld, Defender Midi 5 Kabelbrücke leihen Krefeld, Defender Midi 5 Kabelbrücke mieten NRW",
+    primaryKeywords: "Defender Midi 5 Kabelbrücke mieten in Krefeld, Defender Midi 5 Kabelbrücke leihen in Krefeld, Defender Midi 5 Kabelbrücke mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: Breite: 90 cm. Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -3014,7 +3014,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Dessertteller Deluxe 21, 10er Set mieten in Bonn, Dessertteller Deluxe 21, 10er Set leihen Bonn, Dessertteller Deluxe 21, 10er Set mieten NRW",
+    primaryKeywords: "Dessertteller Deluxe 21, 10er Set mieten in Bonn, Dessertteller Deluxe 21, 10er Set leihen in Bonn, Dessertteller Deluxe 21, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -3032,7 +3032,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kraftstoffversorgung auf Baustellen, Betankung von Baggern, Radladern, Dumpern",
     useCaseEvent: "Dieselversorgung für Stromaggregate bei Open-Air-Events und Festivals",
     useCasePrivat: "Betankung von landwirtschaftlichen Geräten, Eigenverbrauch auf dem Grundstück",
-    primaryKeywords: "Sirocco Mobile Dieseltankstelle 400L/50L mieten in Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L leihen Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L mieten NRW",
+    primaryKeywords: "Sirocco Mobile Dieseltankstelle 400L/50L mieten in Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L leihen in Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L mieten NRW",
     is247: false,
     faqs: [
       { q: "Ist Diesel im Mietpreis enthalten?", a: "Nein – der Diesel ist nicht im Mietpreis enthalten. Die Tankstelle wird leer geliefert. Sie können den Diesel selbst befüllen oder über uns beziehen." },
@@ -3050,7 +3050,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Dosensenker Diamantbohrer mieten in Krefeld, Dosensenker Diamantbohrer leihen Krefeld, Dosensenker Diamantbohrer mieten NRW",
+    primaryKeywords: "Dosensenker Diamantbohrer mieten in Krefeld, Dosensenker Diamantbohrer leihen in Krefeld, Dosensenker Diamantbohrer mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -3068,7 +3068,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Akku- Laubbläser mieten in Krefeld, Akku- Laubbläser leihen Krefeld, Akku- Laubbläser mieten NRW",
+    primaryKeywords: "Akku- Laubbläser mieten in Krefeld, Akku- Laubbläser leihen in Krefeld, Akku- Laubbläser mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -3086,7 +3086,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Akku- Nageler mieten in Krefeld, Akku- Nageler leihen Krefeld, Akku- Nageler mieten NRW",
+    primaryKeywords: "Akku- Nageler mieten in Krefeld, Akku- Nageler leihen in Krefeld, Akku- Nageler mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: auswählen. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -3104,7 +3104,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Erdungsspies 1,5m mit 3m Leitung mieten in Krefeld, Erdungsspies 1,5m mit 3m Leitung leihen Krefeld, Erdungsspies 1,5m mit 3m Leitung mieten NRW",
+    primaryKeywords: "Erdungsspies 1,5m mit 3m Leitung mieten in Krefeld, Erdungsspies 1,5m mit 3m Leitung leihen in Krefeld, Erdungsspies 1,5m mit 3m Leitung mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: nschlußleitung 16mm².  Bitte nicht über die Nennstromstärke belasten." },
@@ -3122,7 +3122,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major EtherCon Kabel Cat-5e 20m mieten in Krefeld, Major EtherCon Kabel Cat-5e 20m leihen Krefeld, Major EtherCon Kabel Cat-5e 20m mieten NRW",
+    primaryKeywords: "Major EtherCon Kabel Cat-5e 20m mieten in Krefeld, Major EtherCon Kabel Cat-5e 20m leihen in Krefeld, Major EtherCon Kabel Cat-5e 20m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -3140,7 +3140,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major EtherCon Kabel Cat-5e 25m mieten in Krefeld, Major EtherCon Kabel Cat-5e 25m leihen Krefeld, Major EtherCon Kabel Cat-5e 25m mieten NRW",
+    primaryKeywords: "Major EtherCon Kabel Cat-5e 25m mieten in Krefeld, Major EtherCon Kabel Cat-5e 25m leihen in Krefeld, Major EtherCon Kabel Cat-5e 25m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -3158,7 +3158,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major EtherCon Kabel 3 m, Cat 7 mieten in Krefeld, Major EtherCon Kabel 3 m, Cat 7 leihen Krefeld, Major EtherCon Kabel 3 m, Cat 7 mieten NRW",
+    primaryKeywords: "Major EtherCon Kabel 3 m, Cat 7 mieten in Krefeld, Major EtherCon Kabel 3 m, Cat 7 leihen in Krefeld, Major EtherCon Kabel 3 m, Cat 7 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -3176,7 +3176,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major EtherCon Kabel Cat-5e 50m mieten in Krefeld, Major EtherCon Kabel Cat-5e 50m leihen Krefeld, Major EtherCon Kabel Cat-5e 50m mieten NRW",
+    primaryKeywords: "Major EtherCon Kabel Cat-5e 50m mieten in Krefeld, Major EtherCon Kabel Cat-5e 50m leihen in Krefeld, Major EtherCon Kabel Cat-5e 50m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -3194,7 +3194,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Eventzelt 6x12m extra hoch mieten in Krefeld, Eventzelt 6x12m extra hoch leihen Krefeld, Eventzelt 6x12m extra hoch mieten NRW",
+    primaryKeywords: "Eventzelt 6x12m extra hoch mieten in Krefeld, Eventzelt 6x12m extra hoch leihen in Krefeld, Eventzelt 6x12m extra hoch mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -3212,7 +3212,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Eventzelt 6x8m extra hoch mieten in Krefeld, Eventzelt 6x8m extra hoch leihen Krefeld, Eventzelt 6x8m extra hoch mieten NRW",
+    primaryKeywords: "Eventzelt 6x8m extra hoch mieten in Krefeld, Eventzelt 6x8m extra hoch leihen in Krefeld, Eventzelt 6x8m extra hoch mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -3230,7 +3230,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Freischneider mieten in Krefeld, Freischneider leihen Krefeld, Freischneider mieten NRW",
+    primaryKeywords: "Freischneider mieten in Krefeld, Freischneider leihen in Krefeld, Freischneider mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -3248,7 +3248,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Funkmikrofon mieten in Bonn & Krefeld, Funkmikrofon leihen Bonn & Krefeld, Funkmikrofon mieten NRW",
+    primaryKeywords: "Funkmikrofon mieten in Bonn & Krefeld, Funkmikrofon leihen in Bonn & Krefeld, Funkmikrofon mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -3266,7 +3266,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Gabel groß Deluxe 19, 10er Set mieten in Krefeld, Gabel groß Deluxe 19, 10er Set leihen Krefeld, Gabel groß Deluxe 19, 10er Set mieten NRW",
+    primaryKeywords: "Gabel groß Deluxe 19, 10er Set mieten in Krefeld, Gabel groß Deluxe 19, 10er Set leihen in Krefeld, Gabel groß Deluxe 19, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -3284,7 +3284,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Gabel klein Deluxe 14, 10er Set mieten in Krefeld, Gabel klein Deluxe 14, 10er Set leihen Krefeld, Gabel klein Deluxe 14, 10er Set mieten NRW",
+    primaryKeywords: "Gabel klein Deluxe 14, 10er Set mieten in Krefeld, Gabel klein Deluxe 14, 10er Set leihen in Krefeld, Gabel klein Deluxe 14, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -3302,7 +3302,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Fassadenarbeiten, Dachreparatur, Maler- & Elektroinstallationsarbeiten in der Höhe",
     useCaseEvent: "Rigging von Traversensystemen, Eventbeleuchtung aufhängen, Bühnendekoration",
     useCasePrivat: "Baumschnitt in Höhen, Dachrinnenreinigung, Außenfassade streichen",
-    primaryKeywords: "12m Gelenkteleskobsteiger mieten in Krefeld, 12m Gelenkteleskobsteiger leihen Krefeld, 12m Gelenkteleskobsteiger mieten NRW",
+    primaryKeywords: "12m Gelenkteleskobsteiger mieten in Krefeld, 12m Gelenkteleskobsteiger leihen in Krefeld, 12m Gelenkteleskobsteiger mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Arbeitshöhe erreicht diese Maschine?", a: "Die maximale Arbeitshöhe beträgt 12,10 m. Die Plattformbodenhöhe liegt entsprechend darunter – Details finden Sie in den technischen Daten." },
@@ -3320,7 +3320,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Häcksler AXT25TC mieten in Bonn & Krefeld, Häcksler AXT25TC leihen Bonn & Krefeld, Häcksler AXT25TC mieten NRW",
+    primaryKeywords: "Häcksler AXT25TC mieten in Bonn & Krefeld, Häcksler AXT25TC leihen in Bonn & Krefeld, Häcksler AXT25TC mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -3338,7 +3338,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Häcksler LS-95 GX mieten in Bonn & Krefeld, Häcksler LS-95 GX leihen Bonn & Krefeld, Häcksler LS-95 GX mieten NRW",
+    primaryKeywords: "Häcksler LS-95 GX mieten in Bonn & Krefeld, Häcksler LS-95 GX leihen in Bonn & Krefeld, Häcksler LS-95 GX mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -3356,7 +3356,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "HDMI Glasfaser Kabel 35m mieten in Krefeld, HDMI Glasfaser Kabel 35m leihen Krefeld, HDMI Glasfaser Kabel 35m mieten NRW",
+    primaryKeywords: "HDMI Glasfaser Kabel 35m mieten in Krefeld, HDMI Glasfaser Kabel 35m leihen in Krefeld, HDMI Glasfaser Kabel 35m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Kramer.  Bitte nicht über die Nennstromstärke belasten." },
@@ -3374,7 +3374,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "2 kW Elektro Heizlüfter mieten in Krefeld, 2 kW Elektro Heizlüfter leihen Krefeld, 2 kW Elektro Heizlüfter mieten NRW",
+    primaryKeywords: "2 kW Elektro Heizlüfter mieten in Krefeld, 2 kW Elektro Heizlüfter leihen in Krefeld, 2 kW Elektro Heizlüfter mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: 1 kW & 2 kW. Für Räume bis ca. /h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -3392,7 +3392,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "Allegra 3 kW Elektro Heizlüfter mieten in Bonn & Krefeld, Allegra 3 kW Elektro Heizlüfter leihen Bonn & Krefeld, Allegra 3 kW Elektro Heizlüfter mieten NRW",
+    primaryKeywords: "Allegra 3 kW Elektro Heizlüfter mieten in Bonn & Krefeld, Allegra 3 kW Elektro Heizlüfter leihen in Bonn & Krefeld, Allegra 3 kW Elektro Heizlüfter mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: 1,5 kW & 3 kW. Für Räume bis ca. /h. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -3410,7 +3410,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung",
     useCaseEvent: "Zeltheizung, temporäre Hallenheizung für Outdoor-Events",
     useCasePrivat: "Keller nach Überschwemmung, Badezimmersanierung, provisorische Heizung",
-    primaryKeywords: "2 kW Elektro Heizpilz mieten in Bonn & Krefeld, 2 kW Elektro Heizpilz leihen Bonn & Krefeld, 2 kW Elektro Heizpilz mieten NRW",
+    primaryKeywords: "2 kW Elektro Heizpilz mieten in Bonn & Krefeld, 2 kW Elektro Heizpilz leihen in Bonn & Krefeld, 2 kW Elektro Heizpilz mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Raumgröße ist das Gerät ausgelegt?", a: "Heiz-/Entfeuchtungsleistung: 1 kW & 2 kW. Für Räume bis ca. Höhenverstellbar: 194 cm - 210 cm. Für größere Flächen empfehlen wir mehrere Geräte oder ein leistungsstärkeres Modell." },
@@ -3428,7 +3428,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Hochdruckreiniger mieten in Krefeld, Hochdruckreiniger leihen Krefeld, Hochdruckreiniger mieten NRW",
+    primaryKeywords: "Hochdruckreiniger mieten in Krefeld, Hochdruckreiniger leihen in Krefeld, Hochdruckreiniger mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -3446,7 +3446,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Betriebsfeste, Richtfeste auf dem Firmengelände",
     useCaseEvent: "Kindergeburtstage, Stadtfeste, Sommerfeste, Vereinsfeiern, Firmenevents",
     useCasePrivat: "Gartenparty, Kindergeburtstag, Familienfest, Sommerfest im Garten",
-    primaryKeywords: "Hüpfburg Clown 6,1x5,2m mieten in Krefeld, Hüpfburg Clown 6,1x5,2m leihen Krefeld, Hüpfburg Clown 6,1x5,2m mieten NRW",
+    primaryKeywords: "Hüpfburg Clown 6,1x5,2m mieten in Krefeld, Hüpfburg Clown 6,1x5,2m leihen in Krefeld, Hüpfburg Clown 6,1x5,2m mieten NRW",
     is247: false,
     faqs: [
       { q: "Brauche ich eine Genehmigung für die Hüpfburg?", a: "Auf privatem Gelände ist keine Genehmigung nötig. Bei öffentlichen Veranstaltungen oder Straßenfesten kann eine Genehmigung des Ordnungsamts erforderlich sein. Wir empfehlen, sich vorab bei Ihrer Gemeinde zu erkundigen." },
@@ -3464,7 +3464,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Betriebsfeste, Richtfeste auf dem Firmengelände",
     useCaseEvent: "Kindergeburtstage, Stadtfeste, Sommerfeste, Vereinsfeiern, Firmenevents",
     useCasePrivat: "Gartenparty, Kindergeburtstag, Familienfest, Sommerfest im Garten",
-    primaryKeywords: "Hüpfburg Rollercoaster 4,9x4m mieten in Krefeld, Hüpfburg Rollercoaster 4,9x4m leihen Krefeld, Hüpfburg Rollercoaster 4,9x4m mieten NRW",
+    primaryKeywords: "Hüpfburg Rollercoaster 4,9x4m mieten in Krefeld, Hüpfburg Rollercoaster 4,9x4m leihen in Krefeld, Hüpfburg Rollercoaster 4,9x4m mieten NRW",
     is247: false,
     faqs: [
       { q: "Brauche ich eine Genehmigung für die Hüpfburg?", a: "Auf privatem Gelände ist keine Genehmigung nötig. Bei öffentlichen Veranstaltungen oder Straßenfesten kann eine Genehmigung des Ordnungsamts erforderlich sein. Wir empfehlen, sich vorab bei Ihrer Gemeinde zu erkundigen." },
@@ -3482,7 +3482,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Betriebsfeste, Richtfeste auf dem Firmengelände",
     useCaseEvent: "Kindergeburtstage, Stadtfeste, Sommerfeste, Vereinsfeiern, Firmenevents",
     useCasePrivat: "Gartenparty, Kindergeburtstag, Familienfest, Sommerfest im Garten",
-    primaryKeywords: "Hüpfburg Wasserpark 3m x4m mieten in Bonn & Krefeld, Hüpfburg Wasserpark 3m x4m leihen Bonn & Krefeld, Hüpfburg Wasserpark 3m x4m mieten NRW",
+    primaryKeywords: "Hüpfburg Wasserpark 3m x4m mieten in Bonn & Krefeld, Hüpfburg Wasserpark 3m x4m leihen in Bonn & Krefeld, Hüpfburg Wasserpark 3m x4m mieten NRW",
     is247: false,
     faqs: [
       { q: "Brauche ich eine Genehmigung für die Hüpfburg?", a: "Auf privatem Gelände ist keine Genehmigung nötig. Bei öffentlichen Veranstaltungen oder Straßenfesten kann eine Genehmigung des Ordnungsamts erforderlich sein. Wir empfehlen, sich vorab bei Ihrer Gemeinde zu erkundigen." },
@@ -3500,7 +3500,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Brandschutzübungen, Rauchmelder-Tests (Nebelmaschinen)",
     useCaseEvent: "Konzerte, Hochzeiten, Clubevents, Geburtstage, Stadtfeste",
     useCasePrivat: "Geburtstagsparty, Silvesterfeier, Familienfest, Kindergeburtstag",
-    primaryKeywords: "DJ Power Spark V1 mieten in Bonn, DJ Power Spark V1 leihen Bonn, DJ Power Spark V1 mieten NRW",
+    primaryKeywords: "DJ Power Spark V1 mieten in Bonn, DJ Power Spark V1 leihen in Bonn, DJ Power Spark V1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Genehmigungen für den Betrieb erforderlich?", a: "Nebelmaschinen können in Gebäuden mit Brandmeldeanlage Fehlalarme auslösen – vorher die Anlage abkoppeln oder das Ordnungsamt informieren. CO2-Jets benötigen in der Regel keine gesonderte Genehmigung, aber das Veranstaltungsgelände / die Location muss informiert werden." },
@@ -3518,7 +3518,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Brandschutzübungen, Rauchmelder-Tests (Nebelmaschinen)",
     useCaseEvent: "Konzerte, Hochzeiten, Clubevents, Geburtstage, Stadtfeste",
     useCasePrivat: "Geburtstagsparty, Silvesterfeier, Familienfest, Kindergeburtstag",
-    primaryKeywords: "Kalt- Funkenfontäne 4er Set mieten in Krefeld, Kalt- Funkenfontäne 4er Set leihen Krefeld, Kalt- Funkenfontäne 4er Set mieten NRW",
+    primaryKeywords: "Kalt- Funkenfontäne 4er Set mieten in Krefeld, Kalt- Funkenfontäne 4er Set leihen in Krefeld, Kalt- Funkenfontäne 4er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Genehmigungen für den Betrieb erforderlich?", a: "Nebelmaschinen können in Gebäuden mit Brandmeldeanlage Fehlalarme auslösen – vorher die Anlage abkoppeln oder das Ordnungsamt informieren. CO2-Jets benötigen in der Regel keine gesonderte Genehmigung, aber das Veranstaltungsgelände / die Location muss informiert werden." },
@@ -3536,7 +3536,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Kastenanhänger mieten in Krefeld, 750 kg Kastenanhänger leihen Krefeld, 750 kg Kastenanhänger mieten NRW",
+    primaryKeywords: "750 kg Kastenanhänger mieten in Krefeld, 750 kg Kastenanhänger leihen in Krefeld, 750 kg Kastenanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -3554,7 +3554,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1300 kg Kastenanhänger & Laubgitter mieten in Bonn & Krefeld, 1300 kg Kastenanhänger & Laubgitter leihen Bonn & Krefeld, 1300 kg Kastenanhänger & Laubgitter mieten NRW",
+    primaryKeywords: "1300 kg Kastenanhänger & Laubgitter mieten in Bonn & Krefeld, 1300 kg Kastenanhänger & Laubgitter leihen in Bonn & Krefeld, 1300 kg Kastenanhänger & Laubgitter mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1300 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -3572,7 +3572,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Kastenanhänger & Laubgitter mieten in Bonn & Krefeld, 750 kg Kastenanhänger & Laubgitter leihen Bonn & Krefeld, 750 kg Kastenanhänger & Laubgitter mieten NRW",
+    primaryKeywords: "750 kg Kastenanhänger & Laubgitter mieten in Bonn & Krefeld, 750 kg Kastenanhänger & Laubgitter leihen in Bonn & Krefeld, 750 kg Kastenanhänger & Laubgitter mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -3590,7 +3590,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "K&M 21366 Distanzstange mieten in Krefeld, K&M 21366 Distanzstange leihen Krefeld, K&M 21366 Distanzstange mieten NRW",
+    primaryKeywords: "K&M 21366 Distanzstange mieten in Krefeld, K&M 21366 Distanzstange leihen in Krefeld, K&M 21366 Distanzstange mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -3608,7 +3608,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1500 kg Kofferanhänger mieten in Krefeld, 1500 kg Kofferanhänger leihen Krefeld, 1500 kg Kofferanhänger mieten NRW",
+    primaryKeywords: "1500 kg Kofferanhänger mieten in Krefeld, 1500 kg Kofferanhänger leihen in Krefeld, 1500 kg Kofferanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -3626,7 +3626,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "2000 kg Kofferanhänger mieten in Krefeld, 2000 kg Kofferanhänger leihen Krefeld, 2000 kg Kofferanhänger mieten NRW",
+    primaryKeywords: "2000 kg Kofferanhänger mieten in Krefeld, 2000 kg Kofferanhänger leihen in Krefeld, 2000 kg Kofferanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 2000 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -3644,7 +3644,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Kofferanhänger mieten in Bonn & Krefeld, 750 kg Kofferanhänger leihen Bonn & Krefeld, 750 kg Kofferanhänger mieten NRW",
+    primaryKeywords: "750 kg Kofferanhänger mieten in Bonn & Krefeld, 750 kg Kofferanhänger leihen in Bonn & Krefeld, 750 kg Kofferanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -3662,7 +3662,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Druckluftversorgung auf Baustellen, Betrieb von Presslufthämmern, Sandstrahlarbeiten",
     useCaseEvent: "Aufblasen großer Eventstrukturen, pneumatische Installationen",
     useCasePrivat: "Druckluft für Heimwerker, Reifenfüllen, Ausblasarbeiten",
-    primaryKeywords: "4m³ Kompressor mieten in Krefeld, 4m³ Kompressor leihen Krefeld, 4m³ Kompressor mieten NRW",
+    primaryKeywords: "4m³ Kompressor mieten in Krefeld, 4m³ Kompressor leihen in Krefeld, 4m³ Kompressor mieten NRW",
     is247: false,
     faqs: [
       { q: "Welchen Druck und welche Luftmenge liefert der Kompressor?", a: "Die genauen Leistungsdaten finden Sie in den technischen Daten oben. Der Kompressor liefert ausreichend Luftmenge für den gleichzeitigen Betrieb mehrerer Druckluftwerkzeuge." },
@@ -3680,7 +3680,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Auslegerstütze mieten in Krefeld, Krause Auslegerstütze leihen Krefeld, Krause Auslegerstütze mieten NRW",
+    primaryKeywords: "Krause Auslegerstütze mieten in Krefeld, Krause Auslegerstütze leihen in Krefeld, Krause Auslegerstütze mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3698,7 +3698,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Gerüstbau, Fassadenarbeiten, Malerarbeiten in der Höhe, Dacharbeiten",
     useCaseEvent: "Aufbau erhöhter Plattformen, temporäre Arbeitsbühnen bei Veranstaltungen",
     useCasePrivat: "Renovierung, Fassadenanstrich, Dachrinnenreinigung, Baumschnitt in der Höhe",
-    primaryKeywords: "Kause Belagbühne mit Durchstieg 2,00 m mieten in Krefeld, Kause Belagbühne mit Durchstieg 2,00 m leihen Krefeld, Kause Belagbühne mit Durchstieg 2,00 m mieten NRW",
+    primaryKeywords: "Kause Belagbühne mit Durchstieg 2,00 m mieten in Krefeld, Kause Belagbühne mit Durchstieg 2,00 m leihen in Krefeld, Kause Belagbühne mit Durchstieg 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Gerüsttypen ist die Belagbühne geeignet?", a: "Die Belagbühne passt in gängige Gerüstsysteme mit Standardbreite. Prüfen Sie die Kompatibilität mit Ihrem Gerüsttyp anhand der Maße in den technischen Daten." },
@@ -3716,7 +3716,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Gerüstbau, Fassadenarbeiten, Malerarbeiten in der Höhe, Dacharbeiten",
     useCaseEvent: "Aufbau erhöhter Plattformen, temporäre Arbeitsbühnen bei Veranstaltungen",
     useCasePrivat: "Renovierung, Fassadenanstrich, Dachrinnenreinigung, Baumschnitt in der Höhe",
-    primaryKeywords: "Krause Belagbühne 2,00 m mieten in Krefeld, Krause Belagbühne 2,00 m leihen Krefeld, Krause Belagbühne 2,00 m mieten NRW",
+    primaryKeywords: "Krause Belagbühne 2,00 m mieten in Krefeld, Krause Belagbühne 2,00 m leihen in Krefeld, Krause Belagbühne 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Gerüsttypen ist die Belagbühne geeignet?", a: "Die Belagbühne passt in gängige Gerüstsysteme mit Standardbreite. Prüfen Sie die Kompatibilität mit Ihrem Gerüsttyp anhand der Maße in den technischen Daten." },
@@ -3734,7 +3734,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Bordbrettset 150cm Breite mieten in Krefeld, Krause Bordbrettset 150cm Breite leihen Krefeld, Krause Bordbrettset 150cm Breite mieten NRW",
+    primaryKeywords: "Krause Bordbrettset 150cm Breite mieten in Krefeld, Krause Bordbrettset 150cm Breite leihen in Krefeld, Krause Bordbrettset 150cm Breite mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3752,7 +3752,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Diagonale Feldlänge 2,00 m mieten in Krefeld, Krause Diagonale Feldlänge 2,00 m leihen Krefeld, Krause Diagonale Feldlänge 2,00 m mieten NRW",
+    primaryKeywords: "Krause Diagonale Feldlänge 2,00 m mieten in Krefeld, Krause Diagonale Feldlänge 2,00 m leihen in Krefeld, Krause Diagonale Feldlänge 2,00 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3770,7 +3770,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Fahrbase 150 mieten in Krefeld, Krause Fahrbase 150 leihen Krefeld, Krause Fahrbase 150 mieten NRW",
+    primaryKeywords: "Krause Fahrbase 150 mieten in Krefeld, Krause Fahrbase 150 leihen in Krefeld, Krause Fahrbase 150 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3788,7 +3788,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Vertikalrahmen 1,00 x 1,50 m mieten in Krefeld, Krause Vertikalrahmen 1,00 x 1,50 m leihen Krefeld, Krause Vertikalrahmen 1,00 x 1,50 m mieten NRW",
+    primaryKeywords: "Krause Vertikalrahmen 1,00 x 1,50 m mieten in Krefeld, Krause Vertikalrahmen 1,00 x 1,50 m leihen in Krefeld, Krause Vertikalrahmen 1,00 x 1,50 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3806,7 +3806,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Vertikalrahmen 2,00 x 1,50 m mieten in Krefeld, Krause Vertikalrahmen 2,00 x 1,50 m leihen Krefeld, Krause Vertikalrahmen 2,00 x 1,50 m mieten NRW",
+    primaryKeywords: "Krause Vertikalrahmen 2,00 x 1,50 m mieten in Krefeld, Krause Vertikalrahmen 2,00 x 1,50 m leihen in Krefeld, Krause Vertikalrahmen 2,00 x 1,50 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -3824,7 +3824,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED 4er Bar mieten in Bonn & Krefeld, LED 4er Bar leihen Bonn & Krefeld, LED 4er Bar mieten NRW",
+    primaryKeywords: "LED 4er Bar mieten in Bonn & Krefeld, LED 4er Bar leihen in Bonn & Krefeld, LED 4er Bar mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -3842,7 +3842,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED Beleuchtungsset duo mieten in Krefeld, LED Beleuchtungsset duo leihen Krefeld, LED Beleuchtungsset duo mieten NRW",
+    primaryKeywords: "LED Beleuchtungsset duo mieten in Krefeld, LED Beleuchtungsset duo leihen in Krefeld, LED Beleuchtungsset duo mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -3860,7 +3860,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED Beleuchtungsset single mieten in Krefeld, LED Beleuchtungsset single leihen Krefeld, LED Beleuchtungsset single mieten NRW",
+    primaryKeywords: "LED Beleuchtungsset single mieten in Krefeld, LED Beleuchtungsset single leihen in Krefeld, LED Beleuchtungsset single mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -3878,7 +3878,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED Outdoorscheinwerfer mieten in Bonn & Krefeld, LED Outdoorscheinwerfer leihen Bonn & Krefeld, LED Outdoorscheinwerfer mieten NRW",
+    primaryKeywords: "LED Outdoorscheinwerfer mieten in Bonn & Krefeld, LED Outdoorscheinwerfer leihen in Bonn & Krefeld, LED Outdoorscheinwerfer mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -3896,7 +3896,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Löffel groß Deluxe 19, 10er Set mieten in Krefeld, Löffel groß Deluxe 19, 10er Set leihen Krefeld, Löffel groß Deluxe 19, 10er Set mieten NRW",
+    primaryKeywords: "Löffel groß Deluxe 19, 10er Set mieten in Krefeld, Löffel groß Deluxe 19, 10er Set leihen in Krefeld, Löffel groß Deluxe 19, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -3914,7 +3914,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Löffel klein Deluxe 14, 10er Set mieten in Krefeld, Löffel klein Deluxe 14, 10er Set leihen Krefeld, Löffel klein Deluxe 14, 10er Set mieten NRW",
+    primaryKeywords: "Löffel klein Deluxe 14, 10er Set mieten in Krefeld, Löffel klein Deluxe 14, 10er Set leihen in Krefeld, Löffel klein Deluxe 14, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -3932,7 +3932,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Longdrink Passionata 460ml, 25er Set mieten in Bonn & Krefeld, Longdrink Passionata 460ml, 25er Set leihen Bonn & Krefeld, Longdrink Passionata 460ml, 25er Set mieten NRW",
+    primaryKeywords: "Longdrink Passionata 460ml, 25er Set mieten in Bonn & Krefeld, Longdrink Passionata 460ml, 25er Set leihen in Bonn & Krefeld, Longdrink Passionata 460ml, 25er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -3950,7 +3950,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Abbruchhammer72,8J / 31kg mieten in Krefeld, Abbruchhammer72,8J / 31kg leihen Krefeld, Abbruchhammer72,8J / 31kg mieten NRW",
+    primaryKeywords: "Abbruchhammer72,8J / 31kg mieten in Krefeld, Abbruchhammer72,8J / 31kg leihen in Krefeld, Abbruchhammer72,8J / 31kg mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: 1x Spitzmeißel & 1x Flachmeißel. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -3968,7 +3968,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Manfrotto 032B Autopole schwarz mieten in Krefeld, Manfrotto 032B Autopole schwarz leihen Krefeld, Manfrotto 032B Autopole schwarz mieten NRW",
+    primaryKeywords: "Manfrotto 032B Autopole schwarz mieten in Krefeld, Manfrotto 032B Autopole schwarz leihen in Krefeld, Manfrotto 032B Autopole schwarz mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -3986,7 +3986,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Mannesmanngitter mieten in Krefeld, Mannesmanngitter leihen Krefeld, Mannesmanngitter mieten NRW",
+    primaryKeywords: "Mannesmanngitter mieten in Krefeld, Mannesmanngitter leihen in Krefeld, Mannesmanngitter mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -4004,7 +4004,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Mehrzweckleiter 3x 11 mieten in Krefeld, Mehrzweckleiter 3x 11 leihen Krefeld, Mehrzweckleiter 3x 11 mieten NRW",
+    primaryKeywords: "Mehrzweckleiter 3x 11 mieten in Krefeld, Mehrzweckleiter 3x 11 leihen in Krefeld, Mehrzweckleiter 3x 11 mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -4022,7 +4022,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Messer Deluxe 21, 10er Set mieten in Krefeld, Messer Deluxe 21, 10er Set leihen Krefeld, Messer Deluxe 21, 10er Set mieten NRW",
+    primaryKeywords: "Messer Deluxe 21, 10er Set mieten in Krefeld, Messer Deluxe 21, 10er Set leihen in Krefeld, Messer Deluxe 21, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4040,7 +4040,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Midas DL16 Digital Stagebox mieten in Krefeld, Midas DL16 Digital Stagebox leihen Krefeld, Midas DL16 Digital Stagebox mieten NRW",
+    primaryKeywords: "Midas DL16 Digital Stagebox mieten in Krefeld, Midas DL16 Digital Stagebox leihen in Krefeld, Midas DL16 Digital Stagebox mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -4058,7 +4058,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 Multicube black mieten in Krefeld, Milos M290 Multicube black leihen Krefeld, Milos M290 Multicube black mieten NRW",
+    primaryKeywords: "Milos M290 Multicube black mieten in Krefeld, Milos M290 Multicube black leihen in Krefeld, Milos M290 Multicube black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4076,7 +4076,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 QTU 1000 black mieten in Krefeld, Milos M290 P4 QTU 1000 black leihen Krefeld, Milos M290 P4 QTU 1000 black mieten NRW",
+    primaryKeywords: "Milos M290 P4 QTU 1000 black mieten in Krefeld, Milos M290 P4 QTU 1000 black leihen in Krefeld, Milos M290 P4 QTU 1000 black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4094,7 +4094,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 QTU 1500 black mieten in Krefeld, Milos M290 P4 QTU 1500 black leihen Krefeld, Milos M290 P4 QTU 1500 black mieten NRW",
+    primaryKeywords: "Milos M290 P4 QTU 1500 black mieten in Krefeld, Milos M290 P4 QTU 1500 black leihen in Krefeld, Milos M290 P4 QTU 1500 black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4112,7 +4112,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 QTU 2000 black mieten in Krefeld, Milos M290 P4 QTU 2000 black leihen Krefeld, Milos M290 P4 QTU 2000 black mieten NRW",
+    primaryKeywords: "Milos M290 P4 QTU 2000 black mieten in Krefeld, Milos M290 P4 QTU 2000 black leihen in Krefeld, Milos M290 P4 QTU 2000 black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4130,7 +4130,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 QTU 500 black mieten in Krefeld, Milos M290 P4 QTU 500 black leihen Krefeld, Milos M290 P4 QTU 500 black mieten NRW",
+    primaryKeywords: "Milos M290 P4 QTU 500 black mieten in Krefeld, Milos M290 P4 QTU 500 black leihen in Krefeld, Milos M290 P4 QTU 500 black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4148,7 +4148,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 UBPQC Base black mieten in Krefeld, Milos M290 P4 UBPQC Base black leihen Krefeld, Milos M290 P4 UBPQC Base black mieten NRW",
+    primaryKeywords: "Milos M290 P4 UBPQC Base black mieten in Krefeld, Milos M290 P4 UBPQC Base black leihen in Krefeld, Milos M290 P4 UBPQC Base black mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -4166,7 +4166,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1500 kg Motorradanhänger mieten in Krefeld, 1500 kg Motorradanhänger leihen Krefeld, 1500 kg Motorradanhänger mieten NRW",
+    primaryKeywords: "1500 kg Motorradanhänger mieten in Krefeld, 1500 kg Motorradanhänger leihen in Krefeld, 1500 kg Motorradanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -4184,7 +4184,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Motorradanhänger 2-fach mieten in Mülheim, 750 kg Motorradanhänger 2-fach leihen Mülheim, 750 kg Motorradanhänger 2-fach mieten NRW",
+    primaryKeywords: "750 kg Motorradanhänger 2-fach mieten in Mülheim, 750 kg Motorradanhänger 2-fach leihen in Mülheim, 750 kg Motorradanhänger 2-fach mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4202,7 +4202,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Grabenräumlöffel hydr. 80cm/52l mieten in Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l leihen Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l mieten NRW",
+    primaryKeywords: "MS01 Grabenräumlöffel hydr. 80cm/52l mieten in Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l leihen in Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4220,7 +4220,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Materialsortiereung, Abbrucharbeiten",
     useCaseEvent: "Spezielle Erdarbeiten für Eventgelände",
     useCasePrivat: "Gartenarbeiten mit Baggerunterstützung",
-    primaryKeywords: "MS01 Hydraulikhammer SHB40 mieten in Krefeld & Mülheim, MS01 Hydraulikhammer SHB40 leihen Krefeld & Mülheim, MS01 Hydraulikhammer SHB40 mieten NRW",
+    primaryKeywords: "MS01 Hydraulikhammer SHB40 mieten in Krefeld & Mülheim, MS01 Hydraulikhammer SHB40 leihen in Krefeld & Mülheim, MS01 Hydraulikhammer SHB40 mieten NRW",
     is247: false,
     faqs: [
       { q: "Mit welchen Baggermodellen ist dieses Anbaugerät kompatibel?", a: "Das Anbaugerät ist für bestimmte Baggerklassen ausgelegt. Bitte bei der Buchung das Baggermodell angeben, damit wir die Kompatibilität prüfen können. Wir haben Anbaugeräte für MS01- und MS03-Baggerklassen im Sortiment." },
@@ -4238,7 +4238,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Kabellöffel 15cm Symlock mieten in Bonn & Krefeld, MS01 Kabellöffel 15cm Symlock leihen Bonn & Krefeld, MS01 Kabellöffel 15cm Symlock mieten NRW",
+    primaryKeywords: "MS01 Kabellöffel 15cm Symlock mieten in Bonn & Krefeld, MS01 Kabellöffel 15cm Symlock leihen in Bonn & Krefeld, MS01 Kabellöffel 15cm Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4256,7 +4256,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Materialsortiereung, Abbrucharbeiten",
     useCaseEvent: "Spezielle Erdarbeiten für Eventgelände",
     useCasePrivat: "Gartenarbeiten mit Baggerunterstützung",
-    primaryKeywords: "MS01/MS03 Hydraulikhammer SHB45 mieten in Krefeld, MS01/MS03 Hydraulikhammer SHB45 leihen Krefeld, MS01/MS03 Hydraulikhammer SHB45 mieten NRW",
+    primaryKeywords: "MS01/MS03 Hydraulikhammer SHB45 mieten in Krefeld, MS01/MS03 Hydraulikhammer SHB45 leihen in Krefeld, MS01/MS03 Hydraulikhammer SHB45 mieten NRW",
     is247: false,
     faqs: [
       { q: "Mit welchen Baggermodellen ist dieses Anbaugerät kompatibel?", a: "Kompatibilität: ngröße Sie benötigen. Bitte bei der Buchung das Baggermodell angeben, damit wir die Kompatibilität prüfen können. Wir haben Anbaugeräte für MS01- und MS03-Baggerklassen im Sortiment." },
@@ -4274,7 +4274,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Materialsortiereung, Abbrucharbeiten",
     useCaseEvent: "Spezielle Erdarbeiten für Eventgelände",
     useCasePrivat: "Gartenarbeiten mit Baggerunterstützung",
-    primaryKeywords: "MS01 Roderechen Symlock mieten in Bonn & Krefeld, MS01 Roderechen Symlock leihen Bonn & Krefeld, MS01 Roderechen Symlock mieten NRW",
+    primaryKeywords: "MS01 Roderechen Symlock mieten in Bonn & Krefeld, MS01 Roderechen Symlock leihen in Bonn & Krefeld, MS01 Roderechen Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Mit welchen Baggermodellen ist dieses Anbaugerät kompatibel?", a: "Kompatibilität: MS01. Bitte bei der Buchung das Baggermodell angeben, damit wir die Kompatibilität prüfen können. Wir haben Anbaugeräte für MS01- und MS03-Baggerklassen im Sortiment." },
@@ -4292,7 +4292,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Tieflöffel 30cm/24l mieten in Krefeld, MS01 Tieflöffel 30cm/24l leihen Krefeld, MS01 Tieflöffel 30cm/24l mieten NRW",
+    primaryKeywords: "MS01 Tieflöffel 30cm/24l mieten in Krefeld, MS01 Tieflöffel 30cm/24l leihen in Krefeld, MS01 Tieflöffel 30cm/24l mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4310,7 +4310,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS01 Tieflöffel 50cm/45l Symlock mieten in Krefeld & Mülheim, MS01 Tieflöffel 50cm/45l Symlock leihen Krefeld & Mülheim, MS01 Tieflöffel 50cm/45l Symlock mieten NRW",
+    primaryKeywords: "MS01 Tieflöffel 50cm/45l Symlock mieten in Krefeld & Mülheim, MS01 Tieflöffel 50cm/45l Symlock leihen in Krefeld & Mülheim, MS01 Tieflöffel 50cm/45l Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4328,7 +4328,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock leihen Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten NRW",
+    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock leihen in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4346,7 +4346,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "MS03 Tieflöffel 30cm/41l Symlock mieten in Bonn & Krefeld, MS03 Tieflöffel 30cm/41l Symlock leihen Bonn & Krefeld, MS03 Tieflöffel 30cm/41l Symlock mieten NRW",
+    primaryKeywords: "MS03 Tieflöffel 30cm/41l Symlock mieten in Bonn & Krefeld, MS03 Tieflöffel 30cm/41l Symlock leihen in Bonn & Krefeld, MS03 Tieflöffel 30cm/41l Symlock mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -4364,7 +4364,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 20 m mieten in Krefeld, Major Netzwerkkabel Cat-5e 20 m leihen Krefeld, Major Netzwerkkabel Cat-5e 20 m mieten NRW",
+    primaryKeywords: "Major Netzwerkkabel Cat-5e 20 m mieten in Krefeld, Major Netzwerkkabel Cat-5e 20 m leihen in Krefeld, Major Netzwerkkabel Cat-5e 20 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -4382,7 +4382,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 2m mieten in Krefeld, Major Netzwerkkabel Cat-5e 2m leihen Krefeld, Major Netzwerkkabel Cat-5e 2m mieten NRW",
+    primaryKeywords: "Major Netzwerkkabel Cat-5e 2m mieten in Krefeld, Major Netzwerkkabel Cat-5e 2m leihen in Krefeld, Major Netzwerkkabel Cat-5e 2m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -4400,7 +4400,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major Netzwerkkabel Cat-7 30m mieten in Krefeld, Major Netzwerkkabel Cat-7 30m leihen Krefeld, Major Netzwerkkabel Cat-7 30m mieten NRW",
+    primaryKeywords: "Major Netzwerkkabel Cat-7 30m mieten in Krefeld, Major Netzwerkkabel Cat-7 30m leihen in Krefeld, Major Netzwerkkabel Cat-7 30m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -4418,7 +4418,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 5m mieten in Krefeld, Major Netzwerkkabel Cat-5e 5m leihen Krefeld, Major Netzwerkkabel Cat-5e 5m mieten NRW",
+    primaryKeywords: "Major Netzwerkkabel Cat-5e 5m mieten in Krefeld, Major Netzwerkkabel Cat-5e 5m leihen in Krefeld, Major Netzwerkkabel Cat-5e 5m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Major.  Bitte nicht über die Nennstromstärke belasten." },
@@ -4436,7 +4436,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec 2m x 0,5m Systempodest mieten in Krefeld, Nivtec 2m x 0,5m Systempodest leihen Krefeld, Nivtec 2m x 0,5m Systempodest mieten NRW",
+    primaryKeywords: "Nivtec 2m x 0,5m Systempodest mieten in Krefeld, Nivtec 2m x 0,5m Systempodest leihen in Krefeld, Nivtec 2m x 0,5m Systempodest mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4454,7 +4454,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec 2m x 0,75m Systempodest mieten in Krefeld, Nivtec 2m x 0,75m Systempodest leihen Krefeld, Nivtec 2m x 0,75m Systempodest mieten NRW",
+    primaryKeywords: "Nivtec 2m x 0,75m Systempodest mieten in Krefeld, Nivtec 2m x 0,75m Systempodest leihen in Krefeld, Nivtec 2m x 0,75m Systempodest mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4472,7 +4472,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec 2m x 1m Systempodest mieten in Krefeld, Nivtec 2m x 1m Systempodest leihen Krefeld, Nivtec 2m x 1m Systempodest mieten NRW",
+    primaryKeywords: "Nivtec 2m x 1m Systempodest mieten in Krefeld, Nivtec 2m x 1m Systempodest leihen in Krefeld, Nivtec 2m x 1m Systempodest mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4490,7 +4490,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec Teleskopfuß 40cm mieten in Krefeld, Nivtec Teleskopfuß 40cm leihen Krefeld, Nivtec Teleskopfuß 40cm mieten NRW",
+    primaryKeywords: "Nivtec Teleskopfuß 40cm mieten in Krefeld, Nivtec Teleskopfuß 40cm leihen in Krefeld, Nivtec Teleskopfuß 40cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4508,7 +4508,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec Teleskopfuß 80cm mieten in Krefeld, Nivtec Teleskopfuß 80cm leihen Krefeld, Nivtec Teleskopfuß 80cm mieten NRW",
+    primaryKeywords: "Nivtec Teleskopfuß 80cm mieten in Krefeld, Nivtec Teleskopfuß 80cm leihen in Krefeld, Nivtec Teleskopfuß 80cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4526,7 +4526,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Richtfest-Bühne, Präsentationsplattform, Podeste für Einweisungen",
     useCaseEvent: "Konzerte, Firmenpräsentationen, Stadtfeste, Theateraufführungen",
     useCasePrivat: "Hochzeitsfeier, Kinder-Show, Gartenkonzert, Vereinsveranstaltung",
-    primaryKeywords: "Nivtec Verstellspindelfuß 60cm mieten in Krefeld, Nivtec Verstellspindelfuß 60cm leihen Krefeld, Nivtec Verstellspindelfuß 60cm mieten NRW",
+    primaryKeywords: "Nivtec Verstellspindelfuß 60cm mieten in Krefeld, Nivtec Verstellspindelfuß 60cm leihen in Krefeld, Nivtec Verstellspindelfuß 60cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Bühnenfläche?", a: "Die Traglast entnehmen Sie den technischen Daten. Für Konzertbühnen sollten mindestens 500 kg/m² eingeplant werden. Schwere Geräte (z. B. Drumset, Verstärker) auf mehrere Podeste verteilen." },
@@ -4544,7 +4544,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kommunikation auf Großbaustellen, Kabelschutz an Zufahrtswegen",
     useCaseEvent: "Koordination bei Events, Kabelschutz für Besuchersicherheit",
     useCasePrivat: "Kabelschutz bei Gartenevents, provisorische Kommunikation",
-    primaryKeywords: "Office Kabelbrücke black 1m mieten in Krefeld, Office Kabelbrücke black 1m leihen Krefeld, Office Kabelbrücke black 1m mieten NRW",
+    primaryKeywords: "Office Kabelbrücke black 1m mieten in Krefeld, Office Kabelbrücke black 1m leihen in Krefeld, Office Kabelbrücke black 1m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: it 4 Kanälen für die Innenanwendung. Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -4562,7 +4562,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kommunikation auf Großbaustellen, Kabelschutz an Zufahrtswegen",
     useCaseEvent: "Koordination bei Events, Kabelschutz für Besuchersicherheit",
     useCasePrivat: "Kabelschutz bei Gartenevents, provisorische Kommunikation",
-    primaryKeywords: "Office Kabelbrücke black 2m mieten in Krefeld, Office Kabelbrücke black 2m leihen Krefeld, Office Kabelbrücke black 2m mieten NRW",
+    primaryKeywords: "Office Kabelbrücke black 2m mieten in Krefeld, Office Kabelbrücke black 2m leihen in Krefeld, Office Kabelbrücke black 2m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: it Kanälen für die Innenanwendung. Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -4580,7 +4580,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 3x3m mieten in Bonn & Krefeld, Partyzelt 3x3m leihen Bonn & Krefeld, Partyzelt 3x3m mieten NRW",
+    primaryKeywords: "Partyzelt 3x3m mieten in Bonn & Krefeld, Partyzelt 3x3m leihen in Bonn & Krefeld, Partyzelt 3x3m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -4598,7 +4598,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 4x10m mieten in Krefeld, Partyzelt 4x10m leihen Krefeld, Partyzelt 4x10m mieten NRW",
+    primaryKeywords: "Partyzelt 4x10m mieten in Krefeld, Partyzelt 4x10m leihen in Krefeld, Partyzelt 4x10m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -4616,7 +4616,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 4x14m mieten in Krefeld, Partyzelt 4x14m leihen Krefeld, Partyzelt 4x14m mieten NRW",
+    primaryKeywords: "Partyzelt 4x14m mieten in Krefeld, Partyzelt 4x14m leihen in Krefeld, Partyzelt 4x14m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -4634,7 +4634,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 4x4m mieten in Krefeld, Partyzelt 4x4m leihen Krefeld, Partyzelt 4x4m mieten NRW",
+    primaryKeywords: "Partyzelt 4x4m mieten in Krefeld, Partyzelt 4x4m leihen in Krefeld, Partyzelt 4x4m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -4652,7 +4652,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Partyzelt 4x8m mieten in Krefeld, Partyzelt 4x8m leihen Krefeld, Partyzelt 4x8m mieten NRW",
+    primaryKeywords: "Partyzelt 4x8m mieten in Krefeld, Partyzelt 4x8m leihen in Krefeld, Partyzelt 4x8m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
@@ -4670,7 +4670,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Pioneer CDJ 2000 NXS mieten in Krefeld, Pioneer CDJ 2000 NXS leihen Krefeld, Pioneer CDJ 2000 NXS mieten NRW",
+    primaryKeywords: "Pioneer CDJ 2000 NXS mieten in Krefeld, Pioneer CDJ 2000 NXS leihen in Krefeld, Pioneer CDJ 2000 NXS mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -4688,7 +4688,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Pioneer DJM 900 NXS2 mieten in Krefeld, Pioneer DJM 900 NXS2 leihen Krefeld, Pioneer DJM 900 NXS2 mieten NRW",
+    primaryKeywords: "Pioneer DJM 900 NXS2 mieten in Krefeld, Pioneer DJM 900 NXS2 leihen in Krefeld, Pioneer DJM 900 NXS2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -4706,7 +4706,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1300 kg Planenanhänger mieten in Bonn & Krefeld, 1300 kg Planenanhänger leihen Bonn & Krefeld, 1300 kg Planenanhänger mieten NRW",
+    primaryKeywords: "1300 kg Planenanhänger mieten in Bonn & Krefeld, 1300 kg Planenanhänger leihen in Bonn & Krefeld, 1300 kg Planenanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1300 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -4724,7 +4724,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "3500 kg Planenanhänger mieten in Bonn, 3500 kg Planenanhänger leihen Bonn, 3500 kg Planenanhänger mieten NRW",
+    primaryKeywords: "3500 kg Planenanhänger mieten in Bonn, 3500 kg Planenanhänger leihen in Bonn, 3500 kg Planenanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 3500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -4742,7 +4742,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Planenanhänger L mieten in Bonn & Krefeld, 750 kg Planenanhänger L leihen Bonn & Krefeld, 750 kg Planenanhänger L mieten NRW",
+    primaryKeywords: "750 kg Planenanhänger L mieten in Bonn & Krefeld, 750 kg Planenanhänger L leihen in Bonn & Krefeld, 750 kg Planenanhänger L mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4760,7 +4760,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Planenanhänger M mieten in Bonn & Krefeld, 750 kg Planenanhänger M leihen Bonn & Krefeld, 750 kg Planenanhänger M mieten NRW",
+    primaryKeywords: "750 kg Planenanhänger M mieten in Bonn & Krefeld, 750 kg Planenanhänger M leihen in Bonn & Krefeld, 750 kg Planenanhänger M mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4778,7 +4778,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Planenanhänger S mieten in Krefeld, 750 kg Planenanhänger S leihen Krefeld, 750 kg Planenanhänger S mieten NRW",
+    primaryKeywords: "750 kg Planenanhänger S mieten in Krefeld, 750 kg Planenanhänger S leihen in Krefeld, 750 kg Planenanhänger S mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4796,7 +4796,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Planenanhänger XL mieten in Bonn & Krefeld, 750 kg Planenanhänger XL leihen Bonn & Krefeld, 750 kg Planenanhänger XL mieten NRW",
+    primaryKeywords: "750 kg Planenanhänger XL mieten in Bonn & Krefeld, 750 kg Planenanhänger XL leihen in Bonn & Krefeld, 750 kg Planenanhänger XL mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4814,7 +4814,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "3500 kg Planenanhänger XXL mieten in Krefeld, 3500 kg Planenanhänger XXL leihen Krefeld, 3500 kg Planenanhänger XXL mieten NRW",
+    primaryKeywords: "3500 kg Planenanhänger XXL mieten in Krefeld, 3500 kg Planenanhänger XXL leihen in Krefeld, 3500 kg Planenanhänger XXL mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 3500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -4832,7 +4832,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Planenanhänger XXL mieten in Bonn & Krefeld, 750 kg Planenanhänger XXL leihen Bonn & Krefeld, 750 kg Planenanhänger XXL mieten NRW",
+    primaryKeywords: "750 kg Planenanhänger XXL mieten in Bonn & Krefeld, 750 kg Planenanhänger XXL leihen in Bonn & Krefeld, 750 kg Planenanhänger XXL mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -4850,7 +4850,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "3500 kg Plattformanhänger mieten in Krefeld & Mülheim, 3500 kg Plattformanhänger leihen Krefeld & Mülheim, 3500 kg Plattformanhänger mieten NRW",
+    primaryKeywords: "3500 kg Plattformanhänger mieten in Krefeld & Mülheim, 3500 kg Plattformanhänger leihen in Krefeld & Mülheim, 3500 kg Plattformanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 3500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -4868,7 +4868,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "PowerCon Hybrid Linkable 3 m mieten in Krefeld, PowerCon Hybrid Linkable 3 m leihen Krefeld, PowerCon Hybrid Linkable 3 m mieten NRW",
+    primaryKeywords: "PowerCon Hybrid Linkable 3 m mieten in Krefeld, PowerCon Hybrid Linkable 3 m leihen in Krefeld, PowerCon Hybrid Linkable 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex.  Bitte nicht über die Nennstromstärke belasten." },
@@ -4886,7 +4886,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "PowerCon Linkkable 1,5 m mieten in Krefeld, PowerCon Linkkable 1,5 m leihen Krefeld, PowerCon Linkkable 1,5 m mieten NRW",
+    primaryKeywords: "PowerCon Linkkable 1,5 m mieten in Krefeld, PowerCon Linkkable 1,5 m leihen in Krefeld, PowerCon Linkkable 1,5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: 3 m Linkkable H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -4904,7 +4904,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "PowerCon Linkable 5 m mieten in Krefeld, PowerCon Linkable 5 m leihen Krefeld, PowerCon Linkable 5 m mieten NRW",
+    primaryKeywords: "PowerCon Linkable 5 m mieten in Krefeld, PowerCon Linkable 5 m leihen in Krefeld, PowerCon Linkable 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: H07RN-F3G2,5 -16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -4922,7 +4922,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "PowerCon TRUE1 Top Linkkable 3 m mieten in Krefeld, PowerCon TRUE1 Top Linkkable 3 m leihen Krefeld, PowerCon TRUE1 Top Linkkable 3 m mieten NRW",
+    primaryKeywords: "PowerCon TRUE1 Top Linkkable 3 m mieten in Krefeld, PowerCon TRUE1 Top Linkkable 3 m leihen in Krefeld, PowerCon TRUE1 Top Linkkable 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: 3 m Linkkable H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -4940,7 +4940,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "PowerCon TRUE1 Top Linkkabel 5 m mieten in Krefeld, PowerCon TRUE1 Top Linkkabel 5 m leihen Krefeld, PowerCon TRUE1 Top Linkkabel 5 m mieten NRW",
+    primaryKeywords: "PowerCon TRUE1 Top Linkkabel 5 m mieten in Krefeld, PowerCon TRUE1 Top Linkkabel 5 m leihen in Krefeld, PowerCon TRUE1 Top Linkkabel 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: 3 m Linkkable H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -4958,7 +4958,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Rasenwalze mieten in Bonn & Krefeld, Rasenwalze leihen Bonn & Krefeld, Rasenwalze mieten NRW",
+    primaryKeywords: "Rasenwalze mieten in Bonn & Krefeld, Rasenwalze leihen in Bonn & Krefeld, Rasenwalze mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Arbeitsbreite: 57 cm. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -4976,7 +4976,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Weißweinglas Brunelli, 25er Set mieten in Krefeld, Weißweinglas Brunelli, 25er Set leihen Krefeld, Weißweinglas Brunelli, 25er Set mieten NRW",
+    primaryKeywords: "Weißweinglas Brunelli, 25er Set mieten in Krefeld, Weißweinglas Brunelli, 25er Set leihen in Krefeld, Weißweinglas Brunelli, 25er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -4994,7 +4994,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Krause Rollgerüst 3,3 m (2x1,2m) mieten in Krefeld, Krause Rollgerüst 3,3 m (2x1,2m) leihen Krefeld, Krause Rollgerüst 3,3 m (2x1,2m) mieten NRW",
+    primaryKeywords: "Krause Rollgerüst 3,3 m (2x1,2m) mieten in Krefeld, Krause Rollgerüst 3,3 m (2x1,2m) leihen in Krefeld, Krause Rollgerüst 3,3 m (2x1,2m) mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Die Traglast entnehmen Sie den technischen Daten. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5012,7 +5012,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst breitaufbaut, 10,4 m mieten in Krefeld, Rollgerüst breitaufbaut, 10,4 m leihen Krefeld, Rollgerüst breitaufbaut, 10,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst breitaufbaut, 10,4 m mieten in Krefeld, Rollgerüst breitaufbaut, 10,4 m leihen in Krefeld, Rollgerüst breitaufbaut, 10,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5030,7 +5030,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst breitaufbau, 11,4 m mieten in Krefeld, Rollgerüst breitaufbau, 11,4 m leihen Krefeld, Rollgerüst breitaufbau, 11,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst breitaufbau, 11,4 m mieten in Krefeld, Rollgerüst breitaufbau, 11,4 m leihen in Krefeld, Rollgerüst breitaufbau, 11,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5048,7 +5048,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst Breitaufbau, 4,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 4,4 m leihen Krefeld, Rollgerüst Breitaufbau, 4,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst Breitaufbau, 4,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 4,4 m leihen in Krefeld, Rollgerüst Breitaufbau, 4,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5066,7 +5066,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst Breitaufbau, 5,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 5,4 m leihen Krefeld, Rollgerüst Breitaufbau, 5,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst Breitaufbau, 5,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 5,4 m leihen in Krefeld, Rollgerüst Breitaufbau, 5,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5084,7 +5084,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst Breitaufbau, 6,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 6,4 m leihen Krefeld, Rollgerüst Breitaufbau, 6,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst Breitaufbau, 6,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 6,4 m leihen in Krefeld, Rollgerüst Breitaufbau, 6,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5102,7 +5102,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst Breitaufbau, 7,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 7,4 m leihen Krefeld, Rollgerüst Breitaufbau, 7,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst Breitaufbau, 7,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 7,4 m leihen in Krefeld, Rollgerüst Breitaufbau, 7,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5120,7 +5120,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst Breitaufbau, 8,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 8,4 m leihen Krefeld, Rollgerüst Breitaufbau, 8,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst Breitaufbau, 8,4 m mieten in Krefeld, Rollgerüst Breitaufbau, 8,4 m leihen in Krefeld, Rollgerüst Breitaufbau, 8,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5138,7 +5138,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Rollgerüst breitaufbau, 9,4 m mieten in Krefeld, Rollgerüst breitaufbau, 9,4 m leihen Krefeld, Rollgerüst breitaufbau, 9,4 m mieten NRW",
+    primaryKeywords: "Rollgerüst breitaufbau, 9,4 m mieten in Krefeld, Rollgerüst breitaufbau, 9,4 m leihen in Krefeld, Rollgerüst breitaufbau, 9,4 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: /m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
@@ -5156,7 +5156,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "1500 kg Rückwärtskippanhänger & Laubgitter mieten in Krefeld, 1500 kg Rückwärtskippanhänger & Laubgitter leihen Krefeld, 1500 kg Rückwärtskippanhänger & Laubgitter mieten NRW",
+    primaryKeywords: "1500 kg Rückwärtskippanhänger & Laubgitter mieten in Krefeld, 1500 kg Rückwärtskippanhänger & Laubgitter leihen in Krefeld, 1500 kg Rückwärtskippanhänger & Laubgitter mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 1500 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -5174,7 +5174,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "2700 kg Rückwärtskippanhänger mieten in Bonn & Krefeld, 2700 kg Rückwärtskippanhänger leihen Bonn & Krefeld, 2700 kg Rückwärtskippanhänger mieten NRW",
+    primaryKeywords: "2700 kg Rückwärtskippanhänger mieten in Bonn & Krefeld, 2700 kg Rückwärtskippanhänger leihen in Bonn & Krefeld, 2700 kg Rückwärtskippanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Sie benötigen Führerschein Klasse BE, da der Anhänger ein zulässiges Gesamtgewicht von ca. 2700 kg hat. Mit Klasse B ist das Fahren erlaubt, wenn Zugfahrzeug + Anhänger zusammen ≤ 3.500 kg bleiben." },
@@ -5192,7 +5192,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Pflasterarbeiten, Schotterdecken, Tiefbau, Auffüllung von Leitungsgräben",
     useCaseEvent: "Außengelände für Events verfestigen, temporäre Zufahrtswege anlegen",
     useCasePrivat: "Einfahrt pflastern, Gartenweg anlegen, Fundament für Gartenhaus",
-    primaryKeywords: "Rüttelplatte VP 25/50 mieten in Bonn & Krefeld, Rüttelplatte VP 25/50 leihen Bonn & Krefeld, Rüttelplatte VP 25/50 mieten NRW",
+    primaryKeywords: "Rüttelplatte VP 25/50 mieten in Bonn & Krefeld, Rüttelplatte VP 25/50 leihen in Bonn & Krefeld, Rüttelplatte VP 25/50 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist dieses Gerät geeignet?", a: "Betriebsgewicht: 130 kg, Fliehkraft: Motorleistung: 4,8 kW. Geeignet für Sand, Kies, Schotter und bituminöse Schichten. Für bindige Böden (Lehm, Ton) empfehlen wir einen Vibrationsstampfer. Max. Verdichtungstiefe je nach Boden ca. 20–35 cm pro Lage." },
@@ -5210,7 +5210,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Schrankenzaun inkl. Fuß mieten in Krefeld, Schrankenzaun inkl. Fuß leihen Krefeld, Schrankenzaun inkl. Fuß mieten NRW",
+    primaryKeywords: "Schrankenzaun inkl. Fuß mieten in Krefeld, Schrankenzaun inkl. Fuß leihen in Krefeld, Schrankenzaun inkl. Fuß mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5228,7 +5228,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Schrankenzaun RA2 weiß/rot mieten in Bonn & Krefeld, Schrankenzaun RA2 weiß/rot leihen Bonn & Krefeld, Schrankenzaun RA2 weiß/rot mieten NRW",
+    primaryKeywords: "Schrankenzaun RA2 weiß/rot mieten in Bonn & Krefeld, Schrankenzaun RA2 weiß/rot leihen in Bonn & Krefeld, Schrankenzaun RA2 weiß/rot mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5246,7 +5246,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Schüssel Deluxe 18, 10er Set mieten in Bonn, Schüssel Deluxe 18, 10er Set leihen Bonn, Schüssel Deluxe 18, 10er Set mieten NRW",
+    primaryKeywords: "Schüssel Deluxe 18, 10er Set mieten in Bonn, Schüssel Deluxe 18, 10er Set leihen in Bonn, Schüssel Deluxe 18, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -5264,7 +5264,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Schuko- Kabeltrommel 50m mieten in Krefeld, Schuko- Kabeltrommel 50m leihen Krefeld, Schuko- Kabeltrommel 50m mieten NRW",
+    primaryKeywords: "Schuko- Kabeltrommel 50m mieten in Krefeld, Schuko- Kabeltrommel 50m leihen in Krefeld, Schuko- Kabeltrommel 50m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5282,7 +5282,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Schukokabel 10 m mieten in Krefeld, Schukokabel 10 m leihen Krefeld, Schukokabel 10 m mieten NRW",
+    primaryKeywords: "Schukokabel 10 m mieten in Krefeld, Schukokabel 10 m leihen in Krefeld, Schukokabel 10 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5300,7 +5300,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Schukokabel 20 m mieten in Krefeld, Schukokabel 20 m leihen Krefeld, Schukokabel 20 m mieten NRW",
+    primaryKeywords: "Schukokabel 20 m mieten in Krefeld, Schukokabel 20 m leihen in Krefeld, Schukokabel 20 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5318,7 +5318,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Schukokabel 3 m mieten in Krefeld, Schukokabel 3 m leihen Krefeld, Schukokabel 3 m mieten NRW",
+    primaryKeywords: "Schukokabel 3 m mieten in Krefeld, Schukokabel 3 m leihen in Krefeld, Schukokabel 3 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5336,7 +5336,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Schukokabel 5 m mieten in Krefeld, Schukokabel 5 m leihen Krefeld, Schukokabel 5 m mieten NRW",
+    primaryKeywords: "Schukokabel 5 m mieten in Krefeld, Schukokabel 5 m leihen in Krefeld, Schukokabel 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Mennekes / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5354,7 +5354,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld, SDS-Plus Bohrer-/Meißel-Set leihen Krefeld, SDS-Plus Bohrer-/Meißel-Set mieten NRW",
+    primaryKeywords: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld, SDS-Plus Bohrer-/Meißel-Set leihen in Krefeld, SDS-Plus Bohrer-/Meißel-Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -5372,7 +5372,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Sektglas Passionata, 36er Set mieten in Krefeld, Sektglas Passionata, 36er Set leihen Krefeld, Sektglas Passionata, 36er Set mieten NRW",
+    primaryKeywords: "Sektglas Passionata, 36er Set mieten in Krefeld, Sektglas Passionata, 36er Set leihen in Krefeld, Sektglas Passionata, 36er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -5390,7 +5390,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "Showtec Sunstrip Active MKII mieten in Krefeld, Showtec Sunstrip Active MKII leihen Krefeld, Showtec Sunstrip Active MKII mieten NRW",
+    primaryKeywords: "Showtec Sunstrip Active MKII mieten in Krefeld, Showtec Sunstrip Active MKII leihen in Krefeld, Showtec Sunstrip Active MKII mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -5408,7 +5408,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Shure QLXD1 Taschensender mieten in Krefeld, Shure QLXD1 Taschensender leihen Krefeld, Shure QLXD1 Taschensender mieten NRW",
+    primaryKeywords: "Shure QLXD1 Taschensender mieten in Krefeld, Shure QLXD1 Taschensender leihen in Krefeld, Shure QLXD1 Taschensender mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -5426,7 +5426,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Shure QLXD2/Beta58 Handsender mieten in Krefeld, Shure QLXD2/Beta58 Handsender leihen Krefeld, Shure QLXD2/Beta58 Handsender mieten NRW",
+    primaryKeywords: "Shure QLXD2/Beta58 Handsender mieten in Krefeld, Shure QLXD2/Beta58 Handsender leihen in Krefeld, Shure QLXD2/Beta58 Handsender mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -5444,7 +5444,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Shure QLXD4E Empfänger mieten in Krefeld, Shure QLXD4E Empfänger leihen Krefeld, Shure QLXD4E Empfänger mieten NRW",
+    primaryKeywords: "Shure QLXD4E Empfänger mieten in Krefeld, Shure QLXD4E Empfänger leihen in Krefeld, Shure QLXD4E Empfänger mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -5462,7 +5462,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "SLT LED Fluter RGBWAUV mieten in Krefeld, SLT LED Fluter RGBWAUV leihen Krefeld, SLT LED Fluter RGBWAUV mieten NRW",
+    primaryKeywords: "SLT LED Fluter RGBWAUV mieten in Krefeld, SLT LED Fluter RGBWAUV leihen in Krefeld, SLT LED Fluter RGBWAUV mieten NRW",
     is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
@@ -5480,7 +5480,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Stahl-Vierkantrohr, 4x4cm, 2,5m mieten in Krefeld, Stahl-Vierkantrohr, 4x4cm, 2,5m leihen Krefeld, Stahl-Vierkantrohr, 4x4cm, 2,5m mieten NRW",
+    primaryKeywords: "Stahl-Vierkantrohr, 4x4cm, 2,5m mieten in Krefeld, Stahl-Vierkantrohr, 4x4cm, 2,5m leihen in Krefeld, Stahl-Vierkantrohr, 4x4cm, 2,5m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -5498,7 +5498,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Pflasterarbeiten, Schotterdecken, Tiefbau, Auffüllung von Leitungsgräben",
     useCaseEvent: "Außengelände für Events verfestigen, temporäre Zufahrtswege anlegen",
     useCasePrivat: "Einfahrt pflastern, Gartenweg anlegen, Fundament für Gartenhaus",
-    primaryKeywords: "Stampfer GS72-XH mieten in Bonn & Krefeld, Stampfer GS72-XH leihen Bonn & Krefeld, Stampfer GS72-XH mieten NRW",
+    primaryKeywords: "Stampfer GS72-XH mieten in Bonn & Krefeld, Stampfer GS72-XH leihen in Bonn & Krefeld, Stampfer GS72-XH mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist dieses Gerät geeignet?", a: "Betriebsgewicht: 72 kg, Fliehkraft: Motorleistung: 2,7 kW / 3,7 PS. Geeignet für Sand, Kies, Schotter und bituminöse Schichten. Für bindige Böden (Lehm, Ton) empfehlen wir einen Vibrationsstampfer. Max. Verdichtungstiefe je nach Boden ca. 20–35 cm pro Lage." },
@@ -5516,7 +5516,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baubesprechungen, Richtfest, Bürocontainer-Ausstattung",
     useCaseEvent: "Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen",
     useCasePrivat: "Geburtstag, Gartenparty, Sektempfang, Familienfeier",
-    primaryKeywords: "Stehtisch Husse schwarz mieten in Krefeld, Stehtisch Husse schwarz leihen Krefeld, Stehtisch Husse schwarz mieten NRW",
+    primaryKeywords: "Stehtisch Husse schwarz mieten in Krefeld, Stehtisch Husse schwarz leihen in Krefeld, Stehtisch Husse schwarz mieten NRW",
     is247: false,
     faqs: [
       { q: "Wie viele Stück sind verfügbar und gibt es Mengenrabatte?", a: "Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an." },
@@ -5534,7 +5534,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Stihl 4308 Erdbohrer mieten in Krefeld, Stihl 4308 Erdbohrer leihen Krefeld, Stihl 4308 Erdbohrer mieten NRW",
+    primaryKeywords: "Stihl 4308 Erdbohrer mieten in Krefeld, Stihl 4308 Erdbohrer leihen in Krefeld, Stihl 4308 Erdbohrer mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -5552,7 +5552,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste, Catering für Baustellenprojekte",
     useCaseEvent: "Hochzeiten, Galafeste, Firmenfeiern, Catering, Weinproben",
     useCasePrivat: "Große Familienfeiern, runde Geburtstage, Konfirmation, Jubiläen",
-    primaryKeywords: "Teller Deluxe 27, 10er Set mieten in Bonn, Teller Deluxe 27, 10er Set leihen Bonn, Teller Deluxe 27, 10er Set mieten NRW",
+    primaryKeywords: "Teller Deluxe 27, 10er Set mieten in Bonn, Teller Deluxe 27, 10er Set leihen in Bonn, Teller Deluxe 27, 10er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss das Geschirr / Besteck vor der Rückgabe gespült werden?", a: "Nein – das Geschirr wird von uns professionell gespült, bevor es vermietet wird. Bei der Rückgabe bitten wir Sie, grobe Speisereste zu entfernen, damit eine hygienische Aufbereitung möglich ist. Bitte kein Spülmittel auf lackierten Oberflächen verwenden." },
@@ -5570,7 +5570,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Titanex PowerCon TRUE1 Top Linkkable 10 m mieten in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 10 m leihen Krefeld, Titanex PowerCon TRUE1 Top Linkkable 10 m mieten NRW",
+    primaryKeywords: "Titanex PowerCon TRUE1 Top Linkkable 10 m mieten in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 10 m leihen in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 10 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5588,7 +5588,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Titanex PowerCon TRUE1 Top Linkkable 5 m mieten in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 5 m leihen Krefeld, Titanex PowerCon TRUE1 Top Linkkable 5 m mieten NRW",
+    primaryKeywords: "Titanex PowerCon TRUE1 Top Linkkable 5 m mieten in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 5 m leihen in Krefeld, Titanex PowerCon TRUE1 Top Linkkable 5 m mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Neutrik / Titanex. Kabeltyp: H07RN-F3G2,5 - 16A. Bitte nicht über die Nennstromstärke belasten." },
@@ -5606,7 +5606,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Titanex Speakon Y- Adapter mieten in Krefeld, Titanex Speakon Y- Adapter leihen Krefeld, Titanex Speakon Y- Adapter mieten NRW",
+    primaryKeywords: "Titanex Speakon Y- Adapter mieten in Krefeld, Titanex Speakon Y- Adapter leihen in Krefeld, Titanex Speakon Y- Adapter mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Stromstärke und Spannung ist das Kabel ausgelegt?", a: "Stromstärke/Spannung: rke / Hersteller: Titanex.  Bitte nicht über die Nennstromstärke belasten." },
@@ -5624,7 +5624,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Traversen Cover weiß 2m mieten in Krefeld, Traversen Cover weiß 2m leihen Krefeld, Traversen Cover weiß 2m mieten NRW",
+    primaryKeywords: "Traversen Cover weiß 2m mieten in Krefeld, Traversen Cover weiß 2m leihen in Krefeld, Traversen Cover weiß 2m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -5642,7 +5642,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Traversen Cover weiß 3m mieten in Krefeld, Traversen Cover weiß 3m leihen Krefeld, Traversen Cover weiß 3m mieten NRW",
+    primaryKeywords: "Traversen Cover weiß 3m mieten in Krefeld, Traversen Cover weiß 3m leihen in Krefeld, Traversen Cover weiß 3m mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
@@ -5660,7 +5660,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Benzin- Trennschleifer 350mm mieten in Krefeld, Benzin- Trennschleifer 350mm leihen Krefeld, Benzin- Trennschleifer 350mm mieten NRW",
+    primaryKeywords: "Benzin- Trennschleifer 350mm mieten in Krefeld, Benzin- Trennschleifer 350mm leihen in Krefeld, Benzin- Trennschleifer 350mm mieten NRW",
     is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
@@ -5678,7 +5678,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kommunikation auf Großbaustellen, Kabelschutz an Zufahrtswegen",
     useCaseEvent: "Koordination bei Events, Kabelschutz für Besuchersicherheit",
     useCasePrivat: "Kabelschutz bei Gartenevents, provisorische Kommunikation",
-    primaryKeywords: "UHF Funkgeräte 6er Set mieten in Krefeld, UHF Funkgeräte 6er Set leihen Krefeld, UHF Funkgeräte 6er Set mieten NRW",
+    primaryKeywords: "UHF Funkgeräte 6er Set mieten in Krefeld, UHF Funkgeräte 6er Set leihen in Krefeld, UHF Funkgeräte 6er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: Städt 3 bis 5 km / offenes Gelände bis 8 km. Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -5696,7 +5696,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "UHF Funkgerät Lautsprecher mieten in Krefeld, UHF Funkgerät Lautsprecher leihen Krefeld, UHF Funkgerät Lautsprecher mieten NRW",
+    primaryKeywords: "UHF Funkgerät Lautsprecher mieten in Krefeld, UHF Funkgerät Lautsprecher leihen in Krefeld, UHF Funkgerät Lautsprecher mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Reichweite hat das Gerät im Praxiseinsatz?", a: "Theoretische Reichweite: m Klinke). Im Freien ohne Hindernisse ist eine deutlich größere Reichweite erreichbar als in Gebäuden. In Betonkonstruktionen reduziert sich die Reichweite auf ca. 30–50 % der Freifeld-Reichweite." },
@@ -5714,7 +5714,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Baumaterial, Schutt, Werkzeug und Maschinen zur Baustelle",
     useCaseEvent: "Transport von Eventequipment, Möbeln, Zelten und Veranstaltungszubehör",
     useCasePrivat: "Umzug, Sperrmüll, Gartenabfall, IKEA-Abholung, Fahrzeugtransport",
-    primaryKeywords: "750 kg Urlaubanhänger mieten in Krefeld, 750 kg Urlaubanhänger leihen Krefeld, 750 kg Urlaubanhänger mieten NRW",
+    primaryKeywords: "750 kg Urlaubanhänger mieten in Krefeld, 750 kg Urlaubanhänger leihen in Krefeld, 750 kg Urlaubanhänger mieten NRW",
     is247: true,
     faqs: [
       { q: "Welchen Führerschein benötige ich für diesen Anhänger?", a: "Führerschein Klasse B reicht aus – der Anhänger hat ein zulässiges Gesamtgewicht von bis zu 750 kg und ist ungebremst." },
@@ -5732,7 +5732,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Stromverteilung auf Baustellen, Anschluss von Baumaschinen und Werkzeugen",
     useCaseEvent: "Zentrale Stromverteilung für Veranstaltungen, Messen, Zelte",
     useCasePrivat: "Temporäre Stromverteilung bei Renovierung, Gartenarbeit mit Elektrogeräten",
-    primaryKeywords: "Verteilerschrank 44 kVA mieten in Krefeld, Verteilerschrank 44 kVA leihen Krefeld, Verteilerschrank 44 kVA mieten NRW",
+    primaryKeywords: "Verteilerschrank 44 kVA mieten in Krefeld, Verteilerschrank 44 kVA leihen in Krefeld, Verteilerschrank 44 kVA mieten NRW",
     is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteilerschrank?", a: "Die genauen Anschlüsse (CEE 16A, CEE 32A, CEE 63A, Schuko) finden Sie in den technischen Daten oben. Alle Abgänge sind einzeln abgesichert." },
@@ -5750,7 +5750,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Vertikutierer SA35-V EL mieten in Bonn & Krefeld, Vertikutierer SA35-V EL leihen Bonn & Krefeld, Vertikutierer SA35-V EL mieten NRW",
+    primaryKeywords: "Vertikutierer SA35-V EL mieten in Bonn & Krefeld, Vertikutierer SA35-V EL leihen in Bonn & Krefeld, Vertikutierer SA35-V EL mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Arbeitsbreite: 35 cm. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -5768,7 +5768,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Vertikutierer SA38 BV mieten in Krefeld, Vertikutierer SA38 BV leihen Krefeld, Vertikutierer SA38 BV mieten NRW",
+    primaryKeywords: "Vertikutierer SA38 BV mieten in Krefeld, Vertikutierer SA38 BV leihen in Krefeld, Vertikutierer SA38 BV mieten NRW",
     is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Arbeitsbreite: 38 cm. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
@@ -5786,7 +5786,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 1000-12, RA1, Gr. 1 mieten in Krefeld, VZ 1000-12, RA1, Gr. 1 leihen Krefeld, VZ 1000-12, RA1, Gr. 1 mieten NRW",
+    primaryKeywords: "VZ 1000-12, RA1, Gr. 1 mieten in Krefeld, VZ 1000-12, RA1, Gr. 1 leihen in Krefeld, VZ 1000-12, RA1, Gr. 1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5804,7 +5804,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 1000-12, RA1, Gr. 2 mieten in Krefeld, VZ 1000-12, RA1, Gr. 2 leihen Krefeld, VZ 1000-12, RA1, Gr. 2 mieten NRW",
+    primaryKeywords: "VZ 1000-12, RA1, Gr. 2 mieten in Krefeld, VZ 1000-12, RA1, Gr. 2 leihen in Krefeld, VZ 1000-12, RA1, Gr. 2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5822,7 +5822,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 1000-22, RA1, Gr. 1 mieten in Krefeld, VZ 1000-22, RA1, Gr. 1 leihen Krefeld, VZ 1000-22, RA1, Gr. 1 mieten NRW",
+    primaryKeywords: "VZ 1000-22, RA1, Gr. 1 mieten in Krefeld, VZ 1000-22, RA1, Gr. 1 leihen in Krefeld, VZ 1000-22, RA1, Gr. 1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5840,7 +5840,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 1000-22, RA1, Gr. 2 mieten in Krefeld, VZ 1000-22, RA1, Gr. 2 leihen Krefeld, VZ 1000-22, RA1, Gr. 2 mieten NRW",
+    primaryKeywords: "VZ 1000-22, RA1, Gr. 2 mieten in Krefeld, VZ 1000-22, RA1, Gr. 2 leihen in Krefeld, VZ 1000-22, RA1, Gr. 2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5858,7 +5858,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 121-10, RA2 mieten in Krefeld, VZ 121-10, RA2 leihen Krefeld, VZ 121-10, RA2 mieten NRW",
+    primaryKeywords: "VZ 121-10, RA2 mieten in Krefeld, VZ 121-10, RA2 leihen in Krefeld, VZ 121-10, RA2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5876,7 +5876,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 121-20, RA2 mieten in Krefeld, VZ 121-20, RA2 leihen Krefeld, VZ 121-20, RA2 mieten NRW",
+    primaryKeywords: "VZ 121-20, RA2 mieten in Krefeld, VZ 121-20, RA2 leihen in Krefeld, VZ 121-20, RA2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5894,7 +5894,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 123, RA1 mieten in Krefeld, VZ 123, RA1 leihen Krefeld, VZ 123, RA1 mieten NRW",
+    primaryKeywords: "VZ 123, RA1 mieten in Krefeld, VZ 123, RA1 leihen in Krefeld, VZ 123, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5912,7 +5912,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 123, RA2 mieten in Krefeld, VZ 123, RA2 leihen Krefeld, VZ 123, RA2 mieten NRW",
+    primaryKeywords: "VZ 123, RA2 mieten in Krefeld, VZ 123, RA2 leihen in Krefeld, VZ 123, RA2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5930,7 +5930,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 240, RA1 mieten in Krefeld, VZ 240, RA1 leihen Krefeld, VZ 240, RA1 mieten NRW",
+    primaryKeywords: "VZ 240, RA1 mieten in Krefeld, VZ 240, RA1 leihen in Krefeld, VZ 240, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5948,7 +5948,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 267, RA1 mieten in Krefeld, VZ 267, RA1 leihen Krefeld, VZ 267, RA1 mieten NRW",
+    primaryKeywords: "VZ 267, RA1 mieten in Krefeld, VZ 267, RA1 leihen in Krefeld, VZ 267, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5966,7 +5966,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 283-10, RA1 mieten in Krefeld, VZ 283-10, RA1 leihen Krefeld, VZ 283-10, RA1 mieten NRW",
+    primaryKeywords: "VZ 283-10, RA1 mieten in Krefeld, VZ 283-10, RA1 leihen in Krefeld, VZ 283-10, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -5984,7 +5984,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 283-11, RA1 mieten in Krefeld, VZ 283-11, RA1 leihen Krefeld, VZ 283-11, RA1 mieten NRW",
+    primaryKeywords: "VZ 283-11, RA1 mieten in Krefeld, VZ 283-11, RA1 leihen in Krefeld, VZ 283-11, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6002,7 +6002,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 283-20, RA1 mieten in Krefeld, VZ 283-20, RA1 leihen Krefeld, VZ 283-20, RA1 mieten NRW",
+    primaryKeywords: "VZ 283-20, RA1 mieten in Krefeld, VZ 283-20, RA1 leihen in Krefeld, VZ 283-20, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6020,7 +6020,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 283-21, RA1 mieten in Krefeld, VZ 283-21, RA1 leihen Krefeld, VZ 283-21, RA1 mieten NRW",
+    primaryKeywords: "VZ 283-21, RA1 mieten in Krefeld, VZ 283-21, RA1 leihen in Krefeld, VZ 283-21, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6038,7 +6038,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Verkehrszeichen 283, Absolutes Haltverbot 42 cm mieten in Krefeld, Verkehrszeichen 283, Absolutes Haltverbot 42 cm leihen Krefeld, Verkehrszeichen 283, Absolutes Haltverbot 42 cm mieten NRW",
+    primaryKeywords: "Verkehrszeichen 283, Absolutes Haltverbot 42 cm mieten in Krefeld, Verkehrszeichen 283, Absolutes Haltverbot 42 cm leihen in Krefeld, Verkehrszeichen 283, Absolutes Haltverbot 42 cm mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6056,7 +6056,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 308, RA1 mieten in Krefeld, VZ 308, RA1 leihen Krefeld, VZ 308, RA1 mieten NRW",
+    primaryKeywords: "VZ 308, RA1 mieten in Krefeld, VZ 308, RA1 leihen in Krefeld, VZ 308, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6074,7 +6074,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ 357, RA1 mieten in Krefeld, VZ 357, RA1 leihen Krefeld, VZ 357, RA1 mieten NRW",
+    primaryKeywords: "VZ 357, RA1 mieten in Krefeld, VZ 357, RA1 leihen in Krefeld, VZ 357, RA1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6092,7 +6092,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "VZ Zusatz Neutral, RA1, Gr. 2 mieten in Krefeld, VZ Zusatz Neutral, RA1, Gr. 2 leihen Krefeld, VZ Zusatz Neutral, RA1, Gr. 2 mieten NRW",
+    primaryKeywords: "VZ Zusatz Neutral, RA1, Gr. 2 mieten in Krefeld, VZ Zusatz Neutral, RA1, Gr. 2 leihen in Krefeld, VZ Zusatz Neutral, RA1, Gr. 2 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6110,7 +6110,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Warnbarke weiß/rot, RA 1 mieten in Krefeld, Warnbarke weiß/rot, RA 1 leihen Krefeld, Warnbarke weiß/rot, RA 1 mieten NRW",
+    primaryKeywords: "Warnbarke weiß/rot, RA 1 mieten in Krefeld, Warnbarke weiß/rot, RA 1 leihen in Krefeld, Warnbarke weiß/rot, RA 1 mieten NRW",
     is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
@@ -6128,7 +6128,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Weißwein Passionata, 25er Set mieten in Bonn & Krefeld, Weißwein Passionata, 25er Set leihen Bonn & Krefeld, Weißwein Passionata, 25er Set mieten NRW",
+    primaryKeywords: "Weißwein Passionata, 25er Set mieten in Bonn & Krefeld, Weißwein Passionata, 25er Set leihen in Bonn & Krefeld, Weißwein Passionata, 25er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -6146,7 +6146,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Firmenfeiern, Richtfeste",
     useCaseEvent: "Hochzeiten, Weinproben, Stadtfeste, Konzerte, Firmenjubiläen",
     useCasePrivat: "Geburtstage, Gartenpartys, Familienfeiern, Jubiläen",
-    primaryKeywords: "Bierglas Willi 0,2, 40er Set mieten in Krefeld, Bierglas Willi 0,2, 40er Set leihen Krefeld, Bierglas Willi 0,2, 40er Set mieten NRW",
+    primaryKeywords: "Bierglas Willi 0,2, 40er Set mieten in Krefeld, Bierglas Willi 0,2, 40er Set leihen in Krefeld, Bierglas Willi 0,2, 40er Set mieten NRW",
     is247: false,
     faqs: [
       { q: "Muss ich die Gläser vor der Rückgabe spülen?", a: "Nein – die Gläser werden von uns professionell gereinigt und gespült. Bitte entfernen Sie nur grobe Verunreinigungen (z. B. Lippenrot, Rückstände) vor der Rückgabe. Geben Sie die Gläser bitte in den mitgelieferten Transportkästen zurück." },
@@ -6164,7 +6164,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherheitsansprachen auf Großbaustellen, Durchsagen",
     useCaseEvent: "Hochzeiten, Konzerte, Firmenfeiern, Stadtfeste, DJ-Sets, Konferenzen",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Vereinsfest, Schulabschlussfeier",
-    primaryKeywords: "Yamaha DM3 mieten in Krefeld, Yamaha DM3 leihen Krefeld, Yamaha DM3 mieten NRW",
+    primaryKeywords: "Yamaha DM3 mieten in Krefeld, Yamaha DM3 leihen in Krefeld, Yamaha DM3 mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen / welche Fläche reicht diese Anlage?", a: "Die Leistung entnehmen Sie den technischen Daten. Als Richtwert: 1 W RMS Ausgangsleistung reicht für ca. 1–2 Personen in Innenräumen. Für Außenveranstaltungen mindestens die doppelte Leistung einplanen. Wir beraten Sie gerne zur optimalen Anlagenauswahl." },
@@ -6182,7 +6182,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenunterstand, provisorische Lagerhalle, Materialdepot",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte",
     useCasePrivat: "Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier",
-    primaryKeywords: "Zeltboden Anthrazit 0,86m² mieten in Bonn & Krefeld, Zeltboden Anthrazit 0,86m² leihen Bonn & Krefeld, Zeltboden Anthrazit 0,86m² mieten NRW",
+    primaryKeywords: "Zeltboden Anthrazit 0,86m² mieten in Bonn & Krefeld, Zeltboden Anthrazit 0,86m² leihen in Bonn & Krefeld, Zeltboden Anthrazit 0,86m² mieten NRW",
     is247: false,
     faqs: [
       { q: "Für wie viele Personen ist das Zelt geeignet?", a: "Die Kapazität hängt vom gewünschten Setup ab: Reihenbestuhlung ca. 1 Person/m², Stehtisch-Setup ca. 0,8 Personen/m², Bankett-Setup ca. 0,6 Personen/m². Bitte fragen Sie uns nach der passenden Zeltgröße für Ihr Event." },
