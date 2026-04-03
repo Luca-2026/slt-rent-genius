@@ -1659,5 +1659,162 @@
     "viewDetails": "View details",
     "selectLocation": "Select Location",
     "selectLocationDesc": "Choose your location to see availability and prices."
+  },
+  "verkauf": {
+    "seo": {
+      "title": "Buy Construction Equipment NRW – Zoomlion, BAUMAX & Temared | SLT Rental",
+      "description": "Buy construction equipment & trailers from an authorized dealer in NRW ✓ Zoomlion excavators & loaders ✓ BAUMAX compactors ✓ Temared trailers ✓ Service in Bonn & Krefeld"
+    },
+    "hero": {
+      "title": "Buy Construction Equipment & Trailers in NRW – SLT Rental",
+      "subtitle": "Authorized dealer and service center for Zoomlion, BAUMAX construction equipment and Temared in North Rhine-Westphalia. Buy, get expert advice, pick up directly or have it delivered – all from one source.",
+      "ctaInquiry": "Submit Purchase Inquiry",
+      "ctaBrands": "Discover Our Brands"
+    },
+    "usps": {
+      "title": "Why Buy from SLT Rental?",
+      "subtitle": "Six good reasons to buy your next machine or trailer from us.",
+      "dealer": { "title": "Authorized Dealer", "desc": "Buy directly from a certified dealer – with manufacturer warranty and official service network." },
+      "service": { "title": "On-Site Service & Maintenance", "desc": "As a service center, we handle maintenance, repairs and spare parts supply for all brands." },
+      "delivery": { "title": "Delivery Across NRW", "desc": "We deliver your new machine directly to the construction site, your business or home – reliably and on time." },
+      "consulting": { "title": "Personal Consultation", "desc": "No call center – you speak directly with our machine experts at the Bonn and Krefeld locations." },
+      "rentToBuy": { "title": "Rent First, Buy Later", "desc": "Test the machine in rental operation and credit the rental costs towards the purchase price – just ask us." },
+      "spareParts": { "title": "Spare Parts in Stock", "desc": "We stock original spare parts for all brands and deliver nationwide within 1–2 business days." }
+    },
+    "brands": {
+      "zoomlion": {
+        "tagline": "Mini Excavators · Wheel Loaders · Telehandlers · Aerial Work Platforms",
+        "h2": "Zoomlion – Official Dealer & Service Center in NRW",
+        "intro": "Zoomlion Heavy Industry Science & Technology Co., Ltd. is one of the world's leading manufacturers of construction machinery and aerial work platforms with over 715 models in 15 product categories. SLT Rental is an authorized Zoomlion dealer and certified service center for North Rhine-Westphalia.",
+        "detail": "We offer the Zoomlion product line for earthmoving and aerial work platforms – from compact electric mini excavators for tight urban construction sites to powerful wheel loaders and telehandlers for construction, industry and logistics.",
+        "h3": "Zoomlion Product Categories at SLT Rental",
+        "websiteLabel": "Visit Zoomlion NRW Website",
+        "ctaText": "Zoomlion Purchase Inquiry",
+        "ctaDesc": "Would you like personal advice or a quote for a Zoomlion product?"
+      },
+      "baumax": {
+        "tagline": "Compactors · Dumpers · Rammers · Stone Saws · Concrete Vibrators",
+        "h2": "BAUMAX Construction Equipment – Dealer & Service Center in NRW",
+        "intro": "BAUMAX stands for German engineering, robust manufacturing and sustainable spare parts supply. All BAUMAX machines are assembled, tested and calibrated in Germany. As an authorized dealer and service center, we offer the complete BAUMAX range with personal consultation and fast factory service.",
+        "h3": "BAUMAX Product Categories at SLT Rental",
+        "websiteLabel": "Visit Official BAUMAX Website",
+        "ctaText": "BAUMAX Purchase Inquiry",
+        "ctaDesc": "Do you need a plate compactor, dumper or BAUMAX accessories?"
+      },
+      "temared": {
+        "tagline": "Box Trailers · Tarpaulin Trailers · Car Transporters · Machine Trailers",
+        "h2": "Buy Temared Trailers – Authorized Dealer in NRW",
+        "intro": "Temared is Europe's market leader for car trailers up to 750 kg and one of the largest trailer manufacturers with gross vehicle weights up to 3,500 kg. With over 200 models in 46 countries, Temared offers the right solution for every transport need. SLT Rental is an authorized Temared dealer for North Rhine-Westphalia – with display models, test drives and registration service.",
+        "h3": "Temared Trailer Categories at SLT Rental",
+        "websiteLabel": "Visit Official Temared Website",
+        "ctaText": "Temared Purchase Inquiry",
+        "ctaDesc": "Would you like a quote for a Temared trailer? We'll configure it with you."
+      },
+      "inquiryBtn": "Submit Purchase Inquiry",
+      "submitInquiry": "Submit Inquiry Now"
+    },
+    "products": {
+      "zoomlion": [
+        "Mini Excavators & Excavators: 2 t to 50 t, for earthmoving, demolition and civil engineering",
+        "Wheel Loaders: Compact wheel loaders 1.5 t to 5 t for construction, recycling and agriculture",
+        "Telehandlers: Reach up to 18 m, for construction, industry and event logistics",
+        "Scissor Lifts (Zoomlion Access): Electric & diesel, 8–32 m working height",
+        "Articulating Boom Lifts: Up to 28 m working height, for outdoor and indoor use"
+      ],
+      "baumax": [
+        "Forward Plate Compactors (VP Series): 70–170 kg, for paving & pathways",
+        "Reversible Plate Compactors (HVP/RVP Series): Hydraulic & mechanical, for professional compaction",
+        "Vibratory Rammers (GS Series): With Honda engine, for trenches & narrow areas",
+        "Mini Dumpers & Wheel Dumpers: Electric (RDe550, KDe550) & diesel, up to 650 kg payload",
+        "Stone Saws & Cut-Off Grinders: SST Series, for concrete, natural stone and tiles",
+        "Concrete Vibrators & Joint Cutters: For civil engineering and concrete work"
+      ],
+      "temared": [
+        "Box Trailers: 750 kg – 3,500 kg, with & without mesh sides",
+        "Tarpaulin Trailers: S, M, L, XL, XXL – for dry transport",
+        "Box Van Trailers: 750 kg – 2,000 kg, lockable",
+        "Car Transport Trailers: 1,500 kg – 2,700 kg, with loading ramps",
+        "Machine Trailers: 1,800 kg – 3,500 kg, for excavators & compact machines",
+        "Motorcycle & Quad Trailers: 750 kg, 2- and 3-position loading",
+        "Tipping Trailers: 1,500 kg – 2,700 kg, rear tipping"
+      ]
+    },
+    "faq": {
+      "title": "Frequently Asked Questions About Purchasing",
+      "items": [
+        { "q": "Where can I find a Zoomlion dealer in NRW?", "a": "SLT Rental in Bonn and Krefeld is an authorized Zoomlion dealer and service center for North Rhine-Westphalia. We carry excavators, wheel loaders, telehandlers and aerial work platforms from the Zoomlion line and offer personal consultation, demonstrations and factory service." },
+        { "q": "Where can I buy BAUMAX construction equipment?", "a": "SLT Rental is an authorized BAUMAX dealer in NRW. We carry the complete BAUMAX range: plate compactors (VP, HVP, RVP series), vibratory rammers, mini dumpers, stone saws and concrete vibrators – with spare parts service and on-site customer service." },
+        { "q": "Can I buy Temared trailers in Bonn or Krefeld?", "a": "Yes – SLT Rental is an authorized Temared dealer in NRW with display models in Bonn and Krefeld. We carry the complete Temared range from 750 kg to 3,500 kg and handle registration, delivery and service." },
+        { "q": "Does SLT Rental also offer service and repairs for purchased machines?", "a": "Yes – as a certified service center for Zoomlion, BAUMAX and Temared, we handle maintenance, inspection, repair and spare parts supply for all machines and trailers sold by us." },
+        { "q": "Can I rent a construction machine first and then buy it?", "a": "Yes, at SLT Rental we offer a rent-to-buy model: Test the machine in rental operation and credit the rental costs proportionally towards the purchase price. Just ask us – we provide individual consultation." },
+        { "q": "Does SLT Rental also deliver construction machines and trailers?", "a": "Yes, we deliver all machines and trailers purchased from us directly to the construction site, your business or home – throughout NRW and beyond. We transparently communicate delivery costs in the quote." },
+        { "q": "What financing options are available for purchasing?", "a": "We are happy to advise you on individual financing and leasing options for construction equipment and trailers. Contact us for a personal quote – as a business customer, you benefit from attractive terms." }
+      ]
+    },
+    "form": {
+      "title": "Submit Purchase Inquiry – We Respond Within 24 Hours",
+      "subtitle": "Fill out the form. We will review your inquiry and send you a non-binding quote – personal, transparent, no hidden costs.",
+      "step1": "1. Product Selection",
+      "brand": "Brand",
+      "pleaseSelect": "Please select",
+      "category": "Product Category",
+      "selectBrandFirst": "Please select a brand first",
+      "model": "Desired Model / Specification",
+      "modelPlaceholder": "e.g. ZE25E Electric Excavator",
+      "quantity": "Quantity",
+      "requirements": "Special Requirements / Accessories",
+      "requirementsPlaceholder": "e.g. with quick coupler, bucket 30 cm …",
+      "step2": "2. Delivery or Self-Pickup",
+      "deliveryToAddress": "Delivery to my address",
+      "pickupBonn": "Self-pickup – Bonn location",
+      "pickupKrefeld": "Self-pickup – Krefeld location",
+      "streetAndNumber": "Street & House Number",
+      "postalCode": "Postal Code",
+      "city": "City",
+      "deliveryNote": "Delivery Note",
+      "deliveryNotePlaceholder": "e.g. access via yard gate, contact person Mr. Miller",
+      "step3": "3. Your Contact Details",
+      "businessCustomer": "Business Customer / Company",
+      "privateCustomer": "Private Customer",
+      "companyName": "Company Name",
+      "vatId": "VAT ID / Tax Number",
+      "salutation": "Salutation",
+      "mr": "Mr.",
+      "mrs": "Mrs.",
+      "diverse": "Other",
+      "titleOptional": "Title (optional)",
+      "titlePlaceholder": "e.g. Dr., Prof.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone / Mobile",
+      "preferredDate": "Preferred Delivery/Pickup Date",
+      "step4": "4. Billing Address",
+      "billingAddressSame": "Billing address is the same as the delivery address",
+      "companyOrName": "Company / Name",
+      "country": "Country",
+      "step5": "5. Message & Consent",
+      "message": "Your Message / Additional Information",
+      "howFound": "How did you find us?",
+      "howFoundOptional": "– optional –",
+      "howFoundOptions": ["Google Search", "Recommendation", "I am already a regular customer", "Trade Fair / Event", "Social Media", "Other"],
+      "privacyConsent": "I have read the <link>Privacy Policy</link> and agree that my data will be stored and used for processing this purchase inquiry.",
+      "sslSecured": "SSL Secured",
+      "callbackPossible": "Callback Available",
+      "responseTime": "Response in 24h",
+      "nonBinding": "Non-binding",
+      "submitButton": "Submit Purchase Inquiry",
+      "submitting": "Sending…",
+      "requiredNote": "* Required fields. Your data is used exclusively for processing your inquiry and will not be shared with third parties. We respond within 24 hours (Mon–Fri).",
+      "errorPrivacy": "Please agree to the privacy policy.",
+      "errorRequired": "Please select a brand and product category.",
+      "errorSend": "The inquiry could not be sent. Please try again."
+    },
+    "thanks": {
+      "title": "Thank You for Your Purchase Inquiry!",
+      "message": "We have received your inquiry and will get back to you personally within 24 hours (Mon–Fri).",
+      "toRentals": "View Rental Offers",
+      "toHome": "Back to Home"
+    }
   }
 }
