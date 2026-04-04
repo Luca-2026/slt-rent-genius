@@ -2831,16 +2831,15 @@ export const bonnHuepfburgProducts = [
     rentwareCode: { bonn: "2NA195" },
   },
   {
-    id: "bonn-party-ton-licht-set",
-    name: "Party Ton & Licht-Set",
-    description: "Komplettpaket aus 2× LED Beleuchtungsset (4in1 Multieffekt) und 1× 2.1 Soundsystem mit 1.400 Watt – für bis zu 75 Personen.",
-    image: "/placeholder.svg",
+    id: "led-beleuchtungsset-duo",
+    rentwareCode: { bonn: "H5HKTK" },
   },
   {
-    id: "bonn-led-outdoorscheinwerfer-6er-set",
-    name: "LED Outdoorscheinwerfer 6er-Set",
-    description: "6× LED Outdoorscheinwerfer (14 × 5 W Osram RGBW-LED, IP65) inkl. Transportcase, PowerCon True One Kabel, Super Clamps und Safetys.",
-    image: "/placeholder.svg",
+    id: "party-ton-licht-set",
+    rentwareCode: { bonn: "7QEBFQ" },
+  },
+  {
+    id: "led-outdoorscheinwerfer-6er-set",
   },
 ];
 
