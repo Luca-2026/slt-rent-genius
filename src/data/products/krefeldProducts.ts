@@ -2965,6 +2965,27 @@ export const beleuchtungProducts: Product[] = [
     },
     rentwareCode: { krefeld: "1E8ME4" }
   },
+  {
+    id: "party-ton-licht-set",
+    name: "Party Ton & Licht-Set",
+    description: "Komplettpaket aus 2× LED Beleuchtungsset (4in1 Multieffekt) und 1× 2.1 Soundsystem mit 1.400 Watt – für bis zu 75 Personen.",
+    image: imgPartyTonLichtSet1,
+    images: [imgPartyTonLichtSet1],
+    category: "set",
+    rentwareCode: { krefeld: "8UGDZU" },
+    detailedDescription: "Das Party Ton & Licht-Set ist das Rundum-Sorglos-Paket für Veranstaltungen mit bis zu 75 Personen. Es besteht aus 2× LED Beleuchtungsset (4in1 Multieffekt Lichtanlage) und 1× aktiver 2.1 Anlage mit 1.400 W RMS Systemleistung.\n\nLED Beleuchtungsset (2×):\nJe 2× LED Moving Heads, 2× RGBW Derby-Effekte, 4× weißes Stroboskop und 2× RGBW-LED Scheinwerfer. Programmbetrieb oder Sound to Light möglich. Inkl. je 1× 5m Anschlusskabel, 1× Stativ und 2× Tasche.\n\n2.1 Soundsystem:\nAktive Anlage mit integriertem 4-Kanal Mischpult, Bluetooth-Empfänger und 126 dB max. Lautstärke. Anschlüsse: XLR, AUX, Klinke. Inkl. 1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke auf XLR Adapter.",
+    specifications: {
+      "Inhalt Licht": "2× LED Beleuchtungsset (4in1 Multieffekt)",
+      "Inhalt Ton": "1× 2.1 Soundsystem 1.400 W RMS",
+      "Max. Personenzahl": "bis 75 Personen",
+      "Max. Lautstärke": "126 dB",
+      "Verbindung": "Bluetooth, XLR, AUX, Klinke",
+      "Mischpult": "Integriertes 4-Kanal Mischpult",
+      "Gewicht Soundsystem": "55 kg",
+      "Lieferumfang Licht": "2× 5m Anschlusskabel, 2× Stativ, 4× Tasche",
+      "Lieferumfang Ton": "1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke-XLR Adapter, Bluetooth Empfänger",
+    },
+  },
 ];
 
 // ============= SPEZIALEFFEKTE =============
