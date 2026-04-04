@@ -1785,6 +1785,22 @@ export const bonnMoebelProducts = [
       "Farbe": "Schwarz",
     },
   },
+  {
+    id: "bonn-kleiderstaender-rollen-ohne-buegel",
+    name: "Kleiderständer mit Rollen, black",
+    description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – ohne Kleiderbügel. Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderstaenderRollen1,
+    images: [imgKleiderstaenderRollen1, imgKleiderstaenderRollen2, imgKleiderstaenderRollen3, imgKleiderstaenderRollen4],
+    specifications: {
+      "Farbe": "Schwarz",
+      "Material": "Eisenrohr, pulverbeschichtet",
+      "Größe (L × B × H)": "(92–132) × 45,4 × 160 cm",
+      "Kleiderstange": "ausziehbar von 92 cm auf 132 cm",
+      "Max. Belastbarkeit": "90 kg (statisch)",
+      "Gewicht": "5 kg",
+      "Rollen": "4 × Lenkrollen mit Bremse",
+    },
+  },
 ];
 
 // ==================== GESCHIRR ====================
