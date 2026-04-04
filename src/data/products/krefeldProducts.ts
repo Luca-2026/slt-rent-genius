@@ -3255,7 +3255,7 @@ export const moebelZelteProducts: Product[] = [
       "Rollen": "4 × Lenkrollen mit Bremse",
       "Inklusive": "20 Stk. Kleiderbügel Holz schwarz",
     },
-    rentwareCode: { krefeld: "" }
+    rentwareCode: { krefeld: "CQBBQC" }
   },
 ];
 
