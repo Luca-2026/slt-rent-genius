@@ -32,7 +32,7 @@ export function Footer() {
   const { t } = useTranslation();
 
   const quickLinks = [
-    { to: "/produkte", label: t("footer.products") },
+    { to: "/mietartikel", label: "Mietartikel" },
     { to: "/verkauf", label: "Verkauf & Marken" },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
