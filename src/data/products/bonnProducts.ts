@@ -2773,6 +2773,12 @@ export const bonnHuepfburgProducts = [
     ],
     rentwareCode: { bonn: "2NA195" },
   },
+  {
+    id: "bonn-party-ton-licht-set",
+    name: "Party Ton & Licht-Set",
+    description: "Komplettpaket aus 2× LED Beleuchtungsset (4in1 Multieffekt) und 1× 2.1 Soundsystem mit 1.400 Watt – für bis zu 75 Personen.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== ABSPERRTECHNIK ====================
