@@ -1599,21 +1599,6 @@ export const gartenpflegeProducts: Product[] = [
     rentwareCode: { krefeld: "ZC7HYZ" }
   },
   {
-    id: "stihl-erdbohrer-4308",
-    name: "Stihl 4308 Erdbohrer",
-    description: "Professioneller Erdbohrer von Stihl",
-    specifications: {
-      "Hersteller": "Stihl",
-      "Leistung": "1,4 kW",
-      "Kraftstoff": "40 cm",
-      "Gewicht": "12 kg",
-    },
-    image: imgErdbohrer1,
-    images: [imgErdbohrer1, imgErdbohrer2, imgErdbohrer3, imgErdbohrer4],
-    category: "erdbohrer",
-    rentwareCode: { krefeld: "XOS34H" }
-  },
-  {
     id: "hochdruckreiniger",
     name: "Hochdruckreiniger",
     description: "Professioneller Hochdruckreiniger",
