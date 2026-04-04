@@ -184,6 +184,7 @@ export function Header() {
   ];
 
   const serviceItems: DropdownItem[] = [
+    { to: "/dienstleistungen", label: t("nav.services") },
     { to: "/so-funktionierts", label: t("nav.howItWorks") },
     { to: "/hilfe", label: t("nav.help") },
     { to: "/lieferung", label: t("nav.delivery") },

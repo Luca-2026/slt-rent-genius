@@ -42,6 +42,7 @@ const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
 
 // Lazy-loaded: Other pages
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const Dienstleistungen = lazy(() => import("./pages/Dienstleistungen"));
 const Locations = lazy(() => import("./pages/Locations"));
 const Contact = lazy(() => import("./pages/Contact"));
 const FAQ = lazy(() => import("./pages/FAQ"));
@@ -110,6 +111,7 @@ const App = () => (
               <Route path="/standort/bonn" element={<Locations />} />
               <Route path="/standort/muelheim" element={<Locations />} />
               
+              <Route path="/dienstleistungen" element={<Dienstleistungen />} />
               <Route path="/so-funktionierts" element={<HowItWorks />} />
               <Route path="/standorte" element={<Locations />} />
               <Route path="/standorte/:id" element={<Locations />} />
