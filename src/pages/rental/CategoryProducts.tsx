@@ -789,8 +789,19 @@ export default function CategoryProducts() {
       });
     }
 
+    // Global stable sort: products with rentwareCode for current location first
+    if (locationId) {
+      const stableIndexMap = new Map(filtered.map((p, i) => [p, i]));
+      filtered.sort((a, b) => {
+        const hasCodeA = a.rentwareCode && a.rentwareCode[locationId] ? 0 : 1;
+        const hasCodeB = b.rentwareCode && b.rentwareCode[locationId] ? 0 : 1;
+        if (hasCodeA !== hasCodeB) return hasCodeA - hasCodeB;
+        return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
+      });
+    }
+
     return filtered;
-  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
