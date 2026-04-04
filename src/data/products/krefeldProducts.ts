@@ -2459,8 +2459,8 @@ export const absperrtechnikProducts: Product[] = [
   },
   {
     id: "stahl-vierkantrohr-4x4cm-2-5m",
-    name: "Stahl-Vierkantrohr, 4x4cm, 2,5m",
-    description: "Stahl-Vierkantrohr 4 × 4 cm, Länge 2,5 m, Materialstärke 1,5 mm. Geeignet als Pfosten für Verkehrszeichen.",
+    name: "Alu-Vierkantrohr, 4x4cm, 2,5m",
+    description: "Alu-Vierkantrohr 4 × 4 cm, Länge 2,5 m, Materialstärke 1,5 mm. Geeignet als Pfosten für Verkehrszeichen.",
     image: imgStahlVierkantrohr4x4,
     images: [imgStahlVierkantrohr4x4],
     category: "zubehoer",
