@@ -869,7 +869,7 @@ export default function CategoryProducts() {
     }
 
     return filtered;
-  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId, onlyAvailable]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
