@@ -1056,7 +1056,8 @@ function weightRangeTagFromKg(weightKg?: number): string | undefined {
   return "ab-2500";
 }
 
-function inferWerkzeugCategory(name: string): string | undefined {
+function inferWerkzeugCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("bohrhammer")) return "bohrhammer";
   if (n.includes("bohrschrauber")) return "bohrschrauber";
