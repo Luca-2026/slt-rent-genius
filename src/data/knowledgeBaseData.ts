@@ -1170,7 +1170,7 @@ export const kbArticles: KBArticle[] = [
     id: "partyzelt-3x3-aufbau",
     title: "Partyzelt ClassicPro 3x3m – Aufbauanleitung (PDF)",
     description: "Offizielle Aufbauanleitung für das Partyzelt ClassicPro 3x3m: Aufbau, Sicherung und Abbau.",
-    categoryId: "event-technik",
+    categoryId: "moebel-zelte",
     productIds: ["partyzelt-3x3m", "bonn-partyzelt-3x3"],
     type: "anleitung",
     tags: ["partyzelt", "3x3", "aufbau", "classicpro", "zelt", "pavillon"],
