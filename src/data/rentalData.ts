@@ -1110,7 +1110,8 @@ function inferAggregateCategory(name: string | undefined): string {
   return "aggregat";
 }
 
-function inferStromCategory(name: string): string {
+function inferStromCategory(name: string | undefined): string {
+  if (!name) return "kabel";
   const n = name.toLowerCase();
   if (n.includes("brücke") || n.includes("bruecke")) return "bruecke";
   if (n.includes("kabel")) return "kabel";
