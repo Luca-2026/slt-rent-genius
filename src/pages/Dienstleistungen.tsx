@@ -71,11 +71,11 @@ export default function Dienstleistungen() {
       <section className="bg-primary text-primary-foreground py-16 lg:py-24">
         <div className="section-container text-center">
           <AnimatedSection>
-            <h1 className="text-3xl lg:text-5xl font-bold mb-4 leading-tight">
+            <h1 className="text-3xl lg:text-5xl font-bold mb-4 leading-tight text-white">
               Unsere Dienstleistungen –<br className="hidden sm:block" />
               mehr als nur Vermietung
             </h1>
-            <p className="text-lg lg:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-8">
+            <p className="text-lg lg:text-xl text-white/90 max-w-2xl mx-auto mb-8">
               Von der Planung bis zum Abbau: Wir übernehmen den kompletten
               Service drumherum – damit Sie sich auf Ihr Projekt konzentrieren können.
             </p>
