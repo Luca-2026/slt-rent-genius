@@ -1451,6 +1451,12 @@ export const bonnWerkzeugProducts = [
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
     image: "/placeholder.svg",
   },
+  {
+    id: "bonn-steinknacker-43cm",
+    name: "Steinknacker 43 cm",
+    description: "Steinknacker mit 43 cm Schnittbreite – ideal zum Spalten von Pflastersteinen, Bordsteinen und Klinkern.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== TROCKNUNG ====================

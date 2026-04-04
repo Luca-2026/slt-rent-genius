@@ -290,6 +290,7 @@ import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
 import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
+import steinknacker43cm from "@/assets/products/steinknacker-43cm-1.png";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
@@ -1615,6 +1616,23 @@ export const werkzeugeProducts: Product[] = [
       "Abmessung (L × B)": "84 × 60 cm",
       "Werkzeugaufnahme": "25 × 108",
       "Lieferumfang": "1× Spitzmeißel, 1× Flachmeißel",
+    },
+  },
+  {
+    id: "steinknacker-43cm",
+    name: "Steinknacker 43 cm",
+    description: "Steinknacker mit 43 cm Schnittbreite – ideal zum Spalten von Pflastersteinen, Bordsteinen und Klinkern.",
+    image: steinknacker43cm,
+    images: [steinknacker43cm],
+    category: "steinbearbeitung",
+    rentwareCode: { krefeld: "8CUFWQ" },
+    detailedDescription: "Der Steinknacker mit 43 cm maximaler Schnittbreite eignet sich ideal zum sauberen Spalten von Pflastersteinen, Bordsteinen, Klinkern und Natursteinen. Mit gehärtetem 4-Schneiden-Messer für langlebige und präzise Ergebnisse.\n\nSchnitthöhe stufenlos einstellbar von 10 bis 350 mm.",
+    specifications: {
+      "Gewicht": "57 kg",
+      "Max. Schnittbreite": "430 mm",
+      "Min. Schnitthöhe": "10 mm",
+      "Max. Schnitthöhe": "350 mm",
+      "Messer": "Feststehend, gehärtet, 4 Schneiden",
     },
   },
 ];

@@ -6231,6 +6231,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Brauche ich spezielle Schutzausrüstung?", a: "Ja – Gehörschutz (Schallpegel > 85 dB), Schutzbrille, Sicherheitsschuhe und vibrationsdämpfende Handschuhe sind beim Arbeiten mit Presslufthämmern Pflicht." },
     ],
   },
+  "steinknacker-43cm": {
+    excelName: "Steinknacker 43 cm",
+    seoTitle: "Steinknacker 43 cm mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Steinknacker 43 cm mieten in Bonn & Krefeld. 57 kg, max. Schnittbreite 430 mm, Schnitthöhe 10–350 mm, gehärtetes 4-Schneiden-Messer. Tagesmiete, faire Preise.",
+    h1: "Steinknacker 43 cm mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Tipps zur Anwendung", "Sicherheitshinweise"],
+    useCaseBau: "Pflasterarbeiten, Bordsteine kürzen, Klinker spalten, Naturstein bearbeiten",
+    useCaseEvent: "",
+    useCasePrivat: "Terrasse pflastern, Gartenweg anlegen, Einfahrt gestalten",
+    primaryKeywords: "Steinknacker mieten in Bonn & Krefeld, Steinknacker 43 cm leihen, Steinspalter mieten NRW",
+    is247: false,
+    faqs: [
+      { q: "Welche Steine kann ich mit dem Steinknacker spalten?", a: "Der Steinknacker eignet sich für Pflastersteine, Bordsteine, Klinker, Betonsteine und Naturstein bis 43 cm Breite und 35 cm Höhe." },
+      { q: "Brauche ich Strom oder Kraftstoff für den Steinknacker?", a: "Nein – der Steinknacker arbeitet rein mechanisch per Hebelkraft. Kein Strom, kein Kraftstoff, kein Lärm." },
+      { q: "Wie genau ist der Schnitt?", a: "Der Steinknacker spaltet Steine entlang einer Bruchlinie. Für millimetergenaue Schnitte empfehlen wir einen Nassschneider. Für Pflasterarbeiten liefert der Steinknacker saubere und schnelle Ergebnisse." },
+      { q: "Wie schwer ist der Steinknacker und kann ich ihn transportieren?", a: "Der Steinknacker wiegt 57 kg und verfügt über Transporträder, sodass er von einer Person bewegt werden kann." },
+    ],
+  },
+  "bonn-steinknacker-43cm": {
+    excelName: "Steinknacker 43 cm",
+    seoTitle: "Steinknacker 43 cm mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Steinknacker 43 cm mieten in Bonn & Krefeld. 57 kg, max. Schnittbreite 430 mm, Schnitthöhe 10–350 mm, gehärtetes 4-Schneiden-Messer. Tagesmiete, faire Preise.",
+    h1: "Steinknacker 43 cm mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Tipps zur Anwendung", "Sicherheitshinweise"],
+    useCaseBau: "Pflasterarbeiten, Bordsteine kürzen, Klinker spalten, Naturstein bearbeiten",
+    useCaseEvent: "",
+    useCasePrivat: "Terrasse pflastern, Gartenweg anlegen, Einfahrt gestalten",
+    primaryKeywords: "Steinknacker mieten in Bonn & Krefeld, Steinknacker 43 cm leihen, Steinspalter mieten NRW",
+    is247: false,
+    faqs: [
+      { q: "Welche Steine kann ich mit dem Steinknacker spalten?", a: "Der Steinknacker eignet sich für Pflastersteine, Bordsteine, Klinker, Betonsteine und Naturstein bis 43 cm Breite und 35 cm Höhe." },
+      { q: "Brauche ich Strom oder Kraftstoff für den Steinknacker?", a: "Nein – der Steinknacker arbeitet rein mechanisch per Hebelkraft. Kein Strom, kein Kraftstoff, kein Lärm." },
+      { q: "Wie genau ist der Schnitt?", a: "Der Steinknacker spaltet Steine entlang einer Bruchlinie. Für millimetergenaue Schnitte empfehlen wir einen Nassschneider. Für Pflasterarbeiten liefert der Steinknacker saubere und schnelle Ergebnisse." },
+      { q: "Wie schwer ist der Steinknacker und kann ich ihn transportieren?", a: "Der Steinknacker wiegt 57 kg und verfügt über Transporträder, sodass er von einer Person bewegt werden kann." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
