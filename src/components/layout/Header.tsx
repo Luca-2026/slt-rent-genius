@@ -320,6 +320,11 @@ export function Header() {
               onClose={() => setIsMenuOpen(false)}
             />
             <MobileDropdown
+              label={t("nav.service")}
+              items={serviceItems}
+              onClose={() => setIsMenuOpen(false)}
+            />
+            <MobileDropdown
               label={t("nav.solutions")}
               items={loesungenItems}
               onClose={() => setIsMenuOpen(false)}
@@ -337,12 +342,6 @@ export function Header() {
 
             <div className="h-px bg-border/60 my-2 mx-4" />
 
-            <MobileDropdown
-              label={t("nav.howItWorks")}
-              items={serviceItems}
-              secondary
-              onClose={() => setIsMenuOpen(false)}
-            />
             <MobileDropdown
               label={t("nav.about")}
               items={aboutItems}
