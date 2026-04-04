@@ -32,8 +32,8 @@ export function Footer() {
   const { t } = useTranslation();
 
   const quickLinks = [
-    { to: "/mietartikel", label: "Mietartikel" },
-    { to: "/verkauf", label: "Verkauf & Marken" },
+    { to: "/mietartikel", label: t("footer.rentalItems") },
+    { to: "/verkauf", label: t("footer.salesAndBrands") },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
@@ -45,11 +45,11 @@ export function Footer() {
   ];
 
   const salesLinks = [
-    { to: "/verkauf", label: "Baumaschinen kaufen" },
-    { to: "/verkauf#marken", label: "Zoomlion Händler NRW" },
-    { to: "/verkauf#marken", label: "BAUMAX Fachhändler" },
-    { to: "/verkauf#marken", label: "Temared Anhänger kaufen" },
-    { to: "/verkauf#kaufanfrage", label: "Kaufanfrage stellen →" },
+    { to: "/verkauf", label: t("footer.buyMachines") },
+    { to: "/verkauf#marken", label: t("footer.zoomlionDealer") },
+    { to: "/verkauf#marken", label: t("footer.baumaxDealer") },
+    { to: "/verkauf#marken", label: t("footer.temaredBuy") },
+    { to: "/verkauf#kaufanfrage", label: t("footer.purchaseInquiry") },
   ];
 
   const legalLinks = [
