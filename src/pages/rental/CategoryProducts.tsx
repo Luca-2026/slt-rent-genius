@@ -48,6 +48,7 @@ export default function CategoryProducts() {
     filters: {},
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
 
   const productGridRef = useRef<HTMLDivElement>(null);
   const prevFiltersRef = useRef({ trailerFilters, earthMovingFilters, genericFilters, selectedCategoryFilter });
@@ -147,6 +148,17 @@ export default function CategoryProducts() {
   // Filter and sort products
   const products = useMemo(() => {
     let filtered = [...allProducts];
+
+    // Filter by availability at current location (rentwareCode exists for this location)
+    if (onlyAvailable && locationId) {
+      filtered = filtered.filter((p) => {
+        const code = p.rentwareCode;
+        if (!code) return false;
+        if (typeof code === "string") return true;
+        const loc = (code as Record<string, string | undefined>)[locationId];
+        return !!loc && loc.length > 0;
+      });
+    }
 
     // Apply "alle" category filters (search and category filter)
     if (category?.id === "alle") {
@@ -857,7 +869,7 @@ export default function CategoryProducts() {
     }
 
     return filtered;
-  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId]);
+  }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId, onlyAvailable]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -1457,6 +1469,21 @@ export default function CategoryProducts() {
                 <div className="sticky top-4 space-y-4">
                   {/* Scrollable filter area with delivery calculator included */}
                   <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
+                    {/* Availability filter */}
+                    <div className="bg-card border border-border rounded-xl p-4">
+                      <label className="flex items-center gap-3 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={onlyAvailable}
+                          onChange={(e) => setOnlyAvailable(e.target.checked)}
+                          className="h-4 w-4 rounded border-border text-primary focus:ring-primary accent-[hsl(var(--primary))]"
+                        />
+                        <div>
+                          <span className="font-semibold text-sm text-foreground">Am Standort verfügbar</span>
+                          <p className="text-xs text-muted-foreground mt-0.5">Nur direkt buchbare Artikel anzeigen</p>
+                        </div>
+                      </label>
+                    </div>
                     {/* "Alle" category: Search + Category Filter */}
                     {category.id === "alle" && (
                       <>
