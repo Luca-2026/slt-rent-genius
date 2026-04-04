@@ -21,7 +21,7 @@ function getAllUniqueProducts(): Product[] {
   for (const location of locations) {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
-      if (!productMap.has(product.name)) {
+      if (product.name && !productMap.has(product.name)) {
         productMap.set(product.name, product);
       }
     }
