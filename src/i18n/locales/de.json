@@ -1867,6 +1867,9 @@
     "delivery": "Anlieferung & Abholung",
     "deliveryDesc": "Flexible Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ganz NRW.",
     "deliveryLink": "Lieferkosten berechnen",
+    "workshop": "Werkstatt & Reparatur",
+    "workshopDesc": "Eigene Werkstatt für Wartung & Reparatur an Anhängern, Baumaschinen und Aggregaten – auch für Fremdgeräte.",
+    "workshopContact": "Jetzt Kontakt aufnehmen",
     "cta": "Dienstleistung anfragen"
   },
   "reviews": {
