@@ -74,9 +74,9 @@ export const kbCategories: KBCategory[] = [
   {
     id: "arbeitsbuehnen",
     title: "Arbeitsbühnen",
-    description: "Sicherheitsunterweisung und Bedienungsanleitung für Hebebühnen.",
+    description: "Sicherheitsunterweisung, Datenblätter und Bedienungsanleitungen für Hebebühnen.",
     icon: "ArrowUpFromLine",
-    articleCount: 0,
+    articleCount: 2,
   },
   {
     id: "verdichtung",
@@ -716,8 +716,19 @@ export const kbArticles: KBArticle[] = [
     tags: ["mastbühne", "zoomlion", "zmp09", "arbeitsbühne", "video", "11m", "elektro"],
     updatedAt: "2026-02-11",
   },
+  {
+    id: "anhaengerbuehne-tm18gti-datenblatt",
+    title: "18m Anhänger-Arbeitsbühne EuropeLIFT TM18GTi – Datenblatt",
+    description: "Technisches Datenblatt zur Gelenkteleskop-Anhängerbühne TM18GTi mit 18 m Arbeitshöhe, 10,50 m Reichweite und 220 kg Korblast.",
+    categoryId: "arbeitsbuehnen",
+    productIds: ["anhaengerbuehne-18m", "bonn-anhaenger-arbeitsbuehne-18m"],
+    type: "anleitung",
+    pdfUrl: "/documents/Datenblatt-Anhaengerbuehne-TM18GTi.pdf",
+    tags: ["anhängerbühne", "europelift", "tm18gti", "datenblatt", "arbeitsbühne", "18m", "gelenkteleskop"],
+    updatedAt: "2026-04-04",
+  },
 
-  // Verdichtung
+
   {
     id: "ruettelplatte-bedienung",
     title: "Rüttelplatte – Bedienung & Verdichtungstipps",
