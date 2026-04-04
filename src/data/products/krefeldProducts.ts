@@ -366,6 +366,7 @@ import imgLedBeleuchtungssetSingle1 from "@/assets/products/led-beleuchtungsset-
 // LED Beleuchtungsset duo images
 import imgLedBeleuchtungssetDuo1 from "@/assets/products/led-beleuchtungsset-duo-1.jpeg";
 import imgPartyTonLichtSet1 from "@/assets/products/party-ton-licht-set-1.jpg";
+import imgLedOutdoorscheinwerfer6er1 from "@/assets/products/led-outdoorscheinwerfer-6er-set-1.jpg";
 
 // Showtec Sunstrip Active MKII images
 import imgShowtecSunstripMkii1 from "@/assets/products/showtec-sunstrip-mkii-1.jpg";
