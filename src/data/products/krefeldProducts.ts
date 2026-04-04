@@ -2992,7 +2992,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x8m",
     description: "Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1],
+    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "32 m² (4 m × 8 m)",
