@@ -6375,6 +6375,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Was ist alles im Lieferumfang enthalten?", a: "2× LED Beleuchtungsset (je mit Stativ, 5m Kabel, 2 Taschen) und 1× 2.1 Soundsystem (mit Stativ, Distanzstange, 3m + 5m Speakonkabel, Miniklinke-XLR Adapter und Bluetooth-Empfänger)." },
     ],
   },
+  "led-outdoorscheinwerfer-6er-set": {
+    excelName: "LED Outdoorscheinwerfer 6er-Set",
+    seoTitle: "LED Outdoorscheinwerfer 6er-Set mieten | IP65 Outdoor LED | SLT Rental",
+    metaDescription: "LED Outdoorscheinwerfer 6er-Set mieten: 6× IP65 Scheinwerfer mit 14×5W Osram RGBW-LEDs inkl. Case, Kabel & Clamps. Jetzt bei SLT Rental buchen.",
+    h1: "LED Outdoorscheinwerfer 6er-Set mieten – IP65 Outdoor-Beleuchtung bei SLT Rental",
+    h2s: ["Technische Daten", "Lieferumfang", "Einsatzmöglichkeiten", "IP65 Schutzart"],
+    useCaseBau: "",
+    useCaseEvent: "Open-Air-Konzerte, Outdoor-Festivals, Firmenevents im Freien, Gartenpartys, Hochzeiten, Architekturbeleuchtung",
+    useCasePrivat: "Gartenbeleuchtung, Outdoor-Geburtstage, Terrassen-Illumination",
+    primaryKeywords: "LED Outdoorscheinwerfer mieten, IP65 Scheinwerfer leihen, Outdoor LED Set mieten NRW, RGBW Scheinwerfer Vermietung",
+    is247: false,
+    faqs: [
+      { q: "Sind die Scheinwerfer wetterfest?", a: "Ja – die Scheinwerfer verfügen über die Schutzart IP65 und sind damit gegen Strahlwasser aus allen Richtungen geschützt. Sie eignen sich perfekt für den Außeneinsatz bei jeder Witterung." },
+      { q: "Welche Farben können die Scheinwerfer erzeugen?", a: "Jeder Scheinwerfer ist mit 14 × 5 Watt Osram RGBW-LEDs ausgestattet und kann Rot, Grün, Blau und Weiß sowie beliebige Mischfarben erzeugen." },
+      { q: "Was ist alles im Set enthalten?", a: "Das Set umfasst 6 LED Outdoorscheinwerfer, 6 PowerCon True One Kabel, 6 Super Clamps, 6 Safetys (5 mm) sowie einen robusten Transportcase." },
+      { q: "Kann ich die Scheinwerfer auch an Traversen befestigen?", a: "Ja – die mitgelieferten Super Clamps ermöglichen die sichere Befestigung an Traversen und Rohren. Die Safetys bieten zusätzliche Sicherheit." },
+    ],
+  },
+  "bonn-led-outdoorscheinwerfer-6er-set": {
+    excelName: "LED Outdoorscheinwerfer 6er-Set",
+    seoTitle: "LED Outdoorscheinwerfer 6er-Set mieten in Bonn | IP65 Outdoor LED | SLT Rental",
+    metaDescription: "LED Outdoorscheinwerfer 6er-Set mieten in Bonn: 6× IP65 Scheinwerfer mit 14×5W Osram RGBW-LEDs inkl. Case, Kabel & Clamps. Jetzt bei SLT Rental buchen.",
+    h1: "LED Outdoorscheinwerfer 6er-Set mieten in Bonn – IP65 Outdoor-Beleuchtung bei SLT Rental",
+    h2s: ["Technische Daten", "Lieferumfang", "Einsatzmöglichkeiten", "IP65 Schutzart"],
+    useCaseBau: "",
+    useCaseEvent: "Open-Air-Konzerte, Outdoor-Festivals, Firmenevents im Freien, Gartenpartys, Hochzeiten, Architekturbeleuchtung",
+    useCasePrivat: "Gartenbeleuchtung, Outdoor-Geburtstage, Terrassen-Illumination",
+    primaryKeywords: "LED Outdoorscheinwerfer mieten Bonn, IP65 Scheinwerfer leihen, Outdoor LED Set mieten NRW",
+    is247: false,
+    faqs: [
+      { q: "Sind die Scheinwerfer wetterfest?", a: "Ja – die Scheinwerfer verfügen über die Schutzart IP65 und sind damit gegen Strahlwasser aus allen Richtungen geschützt. Sie eignen sich perfekt für den Außeneinsatz bei jeder Witterung." },
+      { q: "Welche Farben können die Scheinwerfer erzeugen?", a: "Jeder Scheinwerfer ist mit 14 × 5 Watt Osram RGBW-LEDs ausgestattet und kann Rot, Grün, Blau und Weiß sowie beliebige Mischfarben erzeugen." },
+      { q: "Was ist alles im Set enthalten?", a: "Das Set umfasst 6 LED Outdoorscheinwerfer, 6 PowerCon True One Kabel, 6 Super Clamps, 6 Safetys (5 mm) sowie einen robusten Transportcase." },
+      { q: "Kann ich die Scheinwerfer auch an Traversen befestigen?", a: "Ja – die mitgelieferten Super Clamps ermöglichen die sichere Befestigung an Traversen und Rohren. Die Safetys bieten zusätzliche Sicherheit." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {

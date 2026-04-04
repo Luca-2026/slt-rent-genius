@@ -2987,6 +2987,22 @@ export const beleuchtungProducts: Product[] = [
       "Lieferumfang Ton": "1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke-XLR Adapter, Bluetooth Empfänger",
     },
   },
+  {
+    id: "led-outdoorscheinwerfer-6er-set",
+    name: "LED Outdoorscheinwerfer 6er-Set",
+    description: "6× LED Outdoorscheinwerfer (14 × 5 W Osram RGBW-LED, IP65) inkl. Transportcase, PowerCon True One Kabel, Super Clamps und Safetys.",
+    image: imgLedOutdoorscheinwerfer6er1,
+    images: [imgLedOutdoorscheinwerfer6er1],
+    category: "scheinwerfer",
+    rentwareCode: { krefeld: "CCPT5S" },
+    detailedDescription: "Das LED Outdoorscheinwerfer 6er-Set besteht aus 6 robusten LED-Scheinwerfern mit je 14 × 5 Watt Osram RGBW-LEDs. Dank Schutzart IP65 sind die Scheinwerfer für den Außeneinsatz bei jeder Witterung geeignet.\n\nLieferumfang:\n• 6× LED Outdoorscheinwerfer (14 × 5 W Osram RGBW-LED, IP65)\n• 6× PowerCon True One Kabel\n• 6× Super Clamp\n• 6× Safety 5 mm\n• 1× Transportcase",
+    specifications: {
+      "Anzahl Scheinwerfer": "6 Stück",
+      "LEDs pro Scheinwerfer": "14 × 5 W Osram RGBW",
+      "Schutzart": "IP65 (Outdoor)",
+      "Lieferumfang": "6× PowerCon True One Kabel, 6× Super Clamp, 6× Safety 5 mm, 1× Transportcase",
+    },
+  },
 ];
 
 // ============= SPEZIALEFFEKTE =============
