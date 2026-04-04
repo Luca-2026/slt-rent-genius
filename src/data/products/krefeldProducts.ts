@@ -3257,6 +3257,20 @@ export const moebelZelteProducts: Product[] = [
     },
     rentwareCode: { krefeld: "CQBBQC" }
   },
+  {
+    id: "kleiderbuegel-20er-set",
+    name: "Kleiderbügel 20er Set, black",
+    description: "20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderbuegel,
+    images: [imgKleiderbuegel],
+    category: "garderobe",
+    specifications: {
+      "Anzahl": "20 Stück",
+      "Material": "Holz",
+      "Farbe": "Schwarz",
+    },
+    rentwareCode: { krefeld: "BLMZ6M" }
+  },
 ];
 
 // ============= GESCHIRR, GLÄSER & BESTECK =============
