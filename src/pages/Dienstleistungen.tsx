@@ -1,9 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
-import { SEO } from "@/components/SEO";
+import { SEO, SLT_FAQ_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   ClipboardList,
   ShieldCheck,
@@ -46,6 +52,37 @@ function useActiveSection(ids: string[]) {
   return active;
 }
 
+const dienstleistungenFaqs = [
+  {
+    question: "Was kostet Verkehrssicherung in Bonn, Krefeld oder Mülheim?",
+    answer: "Die Kosten für Verkehrssicherung hängen vom Umfang ab – z. B. Halteverbotszonen, Absperrtechnik oder Verkehrszeichenpläne. Wir erstellen Ihnen ein individuelles Angebot über unser Partnerunternehmen slt-infra.de. Kontaktieren Sie uns unter mieten@slt-rental.de oder 02151 417 99 04.",
+  },
+  {
+    question: "Kann SLT Rental den Auf- und Abbau von Zelten und Bühnen übernehmen?",
+    answer: "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Pagodenzelte, Bühnen, Möblierung und Absperrtechnik – ob für Events, Baustellen oder private Feiern in Krefeld, Bonn, Mülheim und Umgebung.",
+  },
+  {
+    question: "Liefert SLT Rental Baumaschinen direkt auf die Baustelle?",
+    answer: "Ja, wir liefern Baumaschinen, Anhänger und Event-Equipment direkt an Ihre Baustelle oder Ihren Veranstaltungsort in ganz NRW. Die Lieferkosten berechnen sich nach Entfernung und Gerätegröße.",
+  },
+  {
+    question: "Bietet SLT Rental auch Reparaturen an Fremdgeräten an?",
+    answer: "Ja, unsere eigene Werkstatt in Krefeld repariert auch Geräte, die nicht bei uns gemietet wurden – z. B. Anhänger, Baumaschinen und Aggregate. Termin nach Vereinbarung.",
+  },
+  {
+    question: "Wie beantrage ich eine Halteverbotszone in Bonn oder Krefeld?",
+    answer: "SLT Rental übernimmt über slt-infra.de die komplette Abwicklung: Antrag bei der Straßenverkehrsbehörde, Lieferung und Aufstellung der Schilder, Abnahme und Rückbau. Einfach anfragen – wir kümmern uns um alles.",
+  },
+  {
+    question: "Welche Dienstleistungen bietet SLT Rental neben der Vermietung?",
+    answer: "Neben der Vermietung von Baumaschinen und Equipment bieten wir: Projektplanung & Koordination, Verkehrssicherung (über slt-infra.de), Auf- & Abbauservice, Lieferung in ganz NRW sowie Werkstatt & Reparatur – alles aus einer Hand.",
+  },
+  {
+    question: "In welchen Städten bietet SLT Rental Dienstleistungen an?",
+    answer: "Unsere Dienstleistungen sind ab unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr verfügbar. Wir liefern und arbeiten in ganz NRW – auch in Düsseldorf, Duisburg, Essen, Moers, Oberhausen und weiteren Städten.",
+  },
+];
+
 export default function Dienstleistungen() {
   const { t } = useTranslation();
   const activeSection = useActiveSection(sections.map((s) => s.id));
@@ -64,7 +101,9 @@ export default function Dienstleistungen() {
       <SEO
         title="Dienstleistungen – Planung, Lieferung, Auf- & Abbau | SLT Rental"
         description="SLT Rental bietet mehr als Vermietung: Planung & Koordination, Verkehrssicherung, Auf- & Abbau, Lieferung in ganz NRW und Werkstatt & Reparatur. Alles aus einer Hand."
-        canonical="https://www.slt-rental.de/dienstleistungen"
+        canonical="/dienstleistungen"
+        keywords="Verkehrssicherung Bonn, Verkehrssicherung Krefeld, Baumaschinen Lieferung NRW, Auf- und Abbau Service Mülheim, Baumaschinen Werkstatt Krefeld, Halteverbotszonen Bonn, Absperrung mieten NRW, Baustellenplanung Krefeld Bonn Mülheim"
+        jsonLd={SLT_FAQ_JSONLD(dienstleistungenFaqs)}
       />
 
       {/* Hero */}
@@ -206,6 +245,58 @@ export default function Dienstleistungen() {
         cta={{ label: "Werkstatttermin anfragen", to: "/kontakt" }}
       />
 
+      {/* SEO Content — Beiträge */}
+      <section className="py-16 lg:py-20 bg-surface-light">
+        <div className="section-container">
+          <AnimatedSection>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-6">
+                Dienstleistungen rund um Baumaschinen & Equipment in NRW
+              </h2>
+              <div className="prose prose-lg text-muted-foreground max-w-none space-y-4">
+                <p>
+                  SLT Rental ist mehr als ein reiner Vermieter: An unseren drei Standorten in <strong>Krefeld</strong>, <strong>Bonn</strong> und <strong>Mülheim an der Ruhr</strong> bieten wir ein umfassendes Servicepaket, das weit über die Bereitstellung von Baumaschinen hinausgeht. Ob <strong>Verkehrssicherung in Bonn</strong>, <strong>Baustellenplanung in Krefeld</strong> oder <strong>Lieferung von Baumaschinen im Ruhrgebiet</strong> – wir kümmern uns um das Drumherum, damit Sie sich auf Ihr Projekt konzentrieren können.
+                </p>
+                <p>
+                  Für <strong>Halteverbotszonen, Absperrungen und Verkehrszeichenpläne</strong> arbeiten wir eng mit unserem Partnerunternehmen <a href="https://www.slt-infra.de" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">slt-infra.de</a> zusammen. So erhalten Sie <strong>Verkehrssicherung aus einer Hand</strong> – inklusive Antragstellung, Aufbau und Rückbau in Bonn, Krefeld, Düsseldorf und ganz NRW.
+                </p>
+                <p>
+                  Unser <strong>Auf- und Abbauservice</strong> ist besonders bei Event-Ausstattern und Bauunternehmen gefragt: Wir bauen Zelte, Bühnen, Möblierung und Absperrtechnik fachgerecht auf und wieder ab. Und mit unserem eigenen <strong>Werkstatt- und Reparaturservice</strong> in Krefeld können wir Anhänger, Baumaschinen und Aggregate auch dann warten, wenn sie nicht bei uns gemietet wurden.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 lg:py-20 bg-background">
+        <div className="section-container">
+          <AnimatedSection>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-2 text-center">
+                Häufig gestellte Fragen zu unseren Dienstleistungen
+              </h2>
+              <p className="text-muted-foreground text-center mb-8">
+                Alles Wichtige rund um Planung, Lieferung, Verkehrssicherung und Service.
+              </p>
+              <Accordion type="single" collapsible className="w-full">
+                {dienstleistungenFaqs.map((faq, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`}>
+                    <AccordionTrigger className="text-left text-base">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* Contact CTA */}
       <section className="py-16 lg:py-20 bg-primary">
         <div className="section-container text-center">
@@ -218,15 +309,15 @@ export default function Dienstleistungen() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <a
-                href="mailto:info@slt-rental.de"
+                href="mailto:mieten@slt-rental.de"
                 className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
               >
                 <Mail className="h-5 w-5" />
-                info@slt-rental.de
+                mieten@slt-rental.de
               </a>
               <span className="hidden sm:block text-white/40">|</span>
               <a
-                href="tel:+492151417990"
+                href="tel:+4921514179904"
                 className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
               >
                 <Phone className="h-5 w-5" />
