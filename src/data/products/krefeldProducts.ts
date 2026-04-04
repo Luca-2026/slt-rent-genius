@@ -3042,9 +3042,10 @@ export const moebelZelteProducts: Product[] = [
     id: "zeltboden-anthrazit",
     name: "Zeltboden Anthrazit 0,86 m²",
     description: "Robuste Kunststoff-Eventmatte mit Nut-und-Feder-System für lückenlosen, stabilen Zelt- und Eventboden. Anthrazit, rutschfeste Oberfläche. Besenrein zurückzugeben.",
-    image: imgZeltbodenAnthrazit1,
-    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2],
+    image: imgZeltbodenAnthrazit2,
+    images: [imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit1],
     category: "zelt",
+    pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
     specifications: {
       "Maße": "100 × 86 × 0,23 cm (0,86 m²/Stück)",
       "Material": "Kunststoff mit Nut-und-Feder-Verbindung",
