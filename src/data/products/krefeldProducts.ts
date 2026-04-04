@@ -288,6 +288,7 @@ import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
+import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
 import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
@@ -1038,7 +1039,8 @@ export const verdichtungProducts: Product[] = [
     id: "ruettelplatte-hvp50-60",
     name: "Rüttelplatte HVP 50/60 420kg reversierbar",
     description: "Hydraulisch reversierbare Rüttelplatte mit 420 kg Gewicht und 50 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
-    image: "/placeholder.svg",
+    image: ruettelplatteHvp5060,
+    images: [ruettelplatteHvp5060],
     weightKg: 420,
     category: "ruettelplatte-reversierbar",
     rentwareCode: { krefeld: "BYTF4N" },
