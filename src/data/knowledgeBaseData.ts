@@ -1187,7 +1187,7 @@ export const kbArticles: KBArticle[] = [
     id: "eventzelt-giant-6m-aufbau",
     title: "Eventzelt Giant 6m – Aufbauanleitung (PDF)",
     description: "Offizielle Aufbauanleitung für Eventzelte mit 6m Breite (Giant-Serie): Aufbau, Sicherung und Abbau.",
-    categoryId: "event-technik",
+    categoryId: "moebel-zelte",
     productIds: ["eventzelt-6x8m", "eventzelt-6x12m"],
     type: "anleitung",
     tags: ["eventzelt", "6x8", "6x12", "giant", "aufbau", "zelt", "6m"],
