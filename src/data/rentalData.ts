@@ -87,9 +87,6 @@ import imgPlattform3500_6 from "@/assets/products/anhaenger/plattform-3500-6.jpg
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgBobcatE19_1 from "@/assets/products/erdbewegung/bobcat-e19-1.jpg";
-import imgBobcatE19_2 from "@/assets/products/erdbewegung/bobcat-e19-2.jpg";
-import imgBobcatE19_3 from "@/assets/products/erdbewegung/bobcat-e19-3.jpg";
 import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
 import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
 import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
@@ -535,7 +532,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -738,31 +735,6 @@ const erdbewegungProductsUnsorted: Product[] = [
     category: "minibagger",
     tags: ["minibagger", "diesel", "bis-1500", "maschine"],
     rentwareCode: { krefeld: "WNE69F", muelheim: "G63XIE" },
-    rentalNotes: [
-      "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
-      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
-    ],
-  },
-  {
-    id: "bobcat-e19",
-    name: "1,8t Minibagger",
-    modelName: "Bobcat E19",
-    description: "Einsatzgewicht: 1.800 kg | Grabtiefe: 2.385 mm | Breite: 980 mm",
-    specifications: {
-      "Betriebsgewicht": "1885 kg",
-      "Gesamtbreite": "1360 mm einfahrbar auf 980 mm",
-      "Gesamthöhe": "2299 mm",
-      "Löffelklasse": "MS01",
-      "PS": "14",
-      "Kraftstoff": "Diesel (19 l)",
-      "Anbaugeräte & Schaufeln": "Tieflöffel 30cm inkl. weiteres können Sie im 2. Schritt auswählen",
-    },
-    image: imgBobcatE19_1,
-    images: [imgBobcatE19_1, imgBobcatE19_2, imgBobcatE19_3],
-    weightKg: 1800,
-    category: "minibagger",
-    tags: ["minibagger", "diesel", "1500-2500", "maschine"],
-    rentwareCode: { krefeld: "BG4ZS8", muelheim: "HHFYMQ" },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
