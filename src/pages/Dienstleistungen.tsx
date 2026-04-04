@@ -52,6 +52,37 @@ function useActiveSection(ids: string[]) {
   return active;
 }
 
+const dienstleistungenFaqs = [
+  {
+    question: "Was kostet Verkehrssicherung in Bonn, Krefeld oder Mülheim?",
+    answer: "Die Kosten für Verkehrssicherung hängen vom Umfang ab – z. B. Halteverbotszonen, Absperrtechnik oder Verkehrszeichenpläne. Wir erstellen Ihnen ein individuelles Angebot über unser Partnerunternehmen slt-infra.de. Kontaktieren Sie uns unter mieten@slt-rental.de oder 02151 417 99 04.",
+  },
+  {
+    question: "Kann SLT Rental den Auf- und Abbau von Zelten und Bühnen übernehmen?",
+    answer: "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Pagodenzelte, Bühnen, Möblierung und Absperrtechnik – ob für Events, Baustellen oder private Feiern in Krefeld, Bonn, Mülheim und Umgebung.",
+  },
+  {
+    question: "Liefert SLT Rental Baumaschinen direkt auf die Baustelle?",
+    answer: "Ja, wir liefern Baumaschinen, Anhänger und Event-Equipment direkt an Ihre Baustelle oder Ihren Veranstaltungsort in ganz NRW. Die Lieferkosten berechnen sich nach Entfernung und Gerätegröße.",
+  },
+  {
+    question: "Bietet SLT Rental auch Reparaturen an Fremdgeräten an?",
+    answer: "Ja, unsere eigene Werkstatt in Krefeld repariert auch Geräte, die nicht bei uns gemietet wurden – z. B. Anhänger, Baumaschinen und Aggregate. Termin nach Vereinbarung.",
+  },
+  {
+    question: "Wie beantrage ich eine Halteverbotszone in Bonn oder Krefeld?",
+    answer: "SLT Rental übernimmt über slt-infra.de die komplette Abwicklung: Antrag bei der Straßenverkehrsbehörde, Lieferung und Aufstellung der Schilder, Abnahme und Rückbau. Einfach anfragen – wir kümmern uns um alles.",
+  },
+  {
+    question: "Welche Dienstleistungen bietet SLT Rental neben der Vermietung?",
+    answer: "Neben der Vermietung von Baumaschinen und Equipment bieten wir: Projektplanung & Koordination, Verkehrssicherung (über slt-infra.de), Auf- & Abbauservice, Lieferung in ganz NRW sowie Werkstatt & Reparatur – alles aus einer Hand.",
+  },
+  {
+    question: "In welchen Städten bietet SLT Rental Dienstleistungen an?",
+    answer: "Unsere Dienstleistungen sind ab unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr verfügbar. Wir liefern und arbeiten in ganz NRW – auch in Düsseldorf, Duisburg, Essen, Moers, Oberhausen und weiteren Städten.",
+  },
+];
+
 export default function Dienstleistungen() {
   const { t } = useTranslation();
   const activeSection = useActiveSection(sections.map((s) => s.id));
