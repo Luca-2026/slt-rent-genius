@@ -783,6 +783,29 @@ export default function CategoryProducts() {
       });
     }
 
+    // Sort products for aggregate: by category group, then ascending kVA within aggregat
+    if (category?.id === "aggregate") {
+      const aggregateCatOrder: Record<string, number> = {
+        aggregat: 0,
+        akkupack: 1,
+        kompressor: 2,
+        druckluftwerkzeug: 3,
+        erdrakete: 4,
+      };
+      filtered.sort((a, b) => {
+        const orderA = aggregateCatOrder[a.category || ""] ?? 5;
+        const orderB = aggregateCatOrder[b.category || ""] ?? 5;
+        if (orderA !== orderB) return orderA - orderB;
+        // Within aggregat, sort by kVA ascending
+        if (a.category === "aggregat" && b.category === "aggregat") {
+          const kvaA = parseFloat((a.name.match(/(\d+(?:[.,]\d+)?)\s*kva/i)?.[1] || "0").replace(",", "."));
+          const kvaB = parseFloat((b.name.match(/(\d+(?:[.,]\d+)?)\s*kva/i)?.[1] || "0").replace(",", "."));
+          return kvaA - kvaB;
+        }
+        return 0;
+      });
+    }
+
     // Sort products for absperrtechnik: Verkehrsschilder last
     if (category?.id === "absperrtechnik") {
       filtered.sort((a, b) => {
