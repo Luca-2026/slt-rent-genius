@@ -87,9 +87,6 @@ import imgPlattform3500_6 from "@/assets/products/anhaenger/plattform-3500-6.jpg
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgBobcatE19_1 from "@/assets/products/erdbewegung/bobcat-e19-1.jpg";
-import imgBobcatE19_2 from "@/assets/products/erdbewegung/bobcat-e19-2.jpg";
-import imgBobcatE19_3 from "@/assets/products/erdbewegung/bobcat-e19-3.jpg";
 import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
 import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
 import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
