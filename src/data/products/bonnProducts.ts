@@ -332,7 +332,7 @@ export const bonnAggregateProducts = [
     id: "bonn-presslufthammer-tex21pe-aggregat",
     name: "Presslufthammer 21 kg",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
-    image: "/placeholder.svg",
+    image: presslufthammerTex21pe,
   },
 ];
 
