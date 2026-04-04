@@ -234,5 +234,59 @@ export const jobListings: JobListing[] = [
     askSalary: true,
     askEarliestStart: true,
     askExperience: true
+  },
+  {
+    id: "kundenberater-disponent",
+    title: "Kundenberater / Disponent im Bereich Miete und Verkauf (m/w/d)",
+    location: "Krefeld und Bonn",
+    type: "Vollzeit",
+    startDate: "ab sofort",
+    description: "Zur Verstärkung unseres Teams suchen wir ab sofort einen Kundenberater / Disponenten (m/w/d) für unsere Standorte in Krefeld und Bonn. Du berätst unsere Kunden im Tagesgeschäft rund um die Vermietung und den Verkauf von Baumaschinen, Baugeräten, Werkzeugen und Zubehör. Dabei übernimmst du die komplette Auftragsabwicklung – von der Kalkulation über die Angebotserstellung bis zur Koordination der Lieferungen.",
+    requirements: [
+      "Abgeschlossene kaufmännische oder technische Ausbildung",
+      "Einschlägige Berufserfahrung aus einer ähnlichen Tätigkeit sowie technisches Verständnis",
+      "Branchenkenntnisse aus dem Bereich Baumaschinen/-geräte oder Bau & Eventausstattung sind von Vorteil",
+      "Ausgeprägte Serviceorientierung sowie Kommunikationsstärke",
+      "EDV-Kenntnisse (MS-Office)"
+    ],
+    benefits: [
+      "Unbefristeter Arbeitsplatz mit Entwicklungsmöglichkeiten",
+      "Abwechslungsreiche Tätigkeit in einem wachsenden Unternehmen",
+      "Moderne Arbeitsplätze und angenehmes Teamumfeld",
+      "Leistungsgerechte Vergütung"
+    ],
+    specificFields: [
+      {
+        id: "preferredLocation",
+        label: "Bevorzugter Standort",
+        type: "select",
+        options: ["Krefeld", "Bonn", "Egal"],
+        required: true
+      },
+      {
+        id: "qualification",
+        label: "Art der Ausbildung",
+        type: "select",
+        options: ["Kaufmännische Ausbildung", "Technische Ausbildung", "Studium", "Andere"],
+        required: true
+      },
+      {
+        id: "industryExperience",
+        label: "Branchenerfahrung Baumaschinen / Bau / Event",
+        type: "select",
+        options: ["Keine", "Unter 2 Jahre", "2-5 Jahre", "Über 5 Jahre"],
+        required: true
+      },
+      {
+        id: "salesExperience",
+        label: "Erfahrung in Vermietung oder Verkauf",
+        type: "select",
+        options: ["Keine", "Unter 2 Jahre", "2-5 Jahre", "Über 5 Jahre"],
+        required: false
+      }
+    ],
+    askSalary: true,
+    askEarliestStart: true,
+    askExperience: true
   }
 ];
