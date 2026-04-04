@@ -1450,7 +1450,7 @@ export const bonnWerkzeugProducts = [
     id: "bonn-presslufthammer-tex21pe",
     name: "Presslufthammer 21 kg",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
-    image: "/placeholder.svg",
+    image: presslufthammerTex21pe,
   },
   {
     id: "bonn-steinknacker-43cm",
