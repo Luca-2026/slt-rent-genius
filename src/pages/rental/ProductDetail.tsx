@@ -583,7 +583,7 @@ export default function ProductDetail() {
                 <div className="bg-card rounded-xl border border-border p-5">
                   <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
                     <FileDown className="h-4 w-4 text-primary flex-shrink-0" />
-                    {t("rental.operatingManual")}
+                    {product.pdfUrl.toLowerCase().includes("datenblatt") ? t("rental.datasheet", "Datenblatt") : t("rental.operatingManual")}
                   </h2>
                   <a
                     href={product.pdfUrl}
@@ -591,7 +591,7 @@ export default function ProductDetail() {
                     className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg px-4 py-3 text-sm font-medium transition-colors border border-primary/20"
                   >
                     <FileDown className="h-4 w-4 flex-shrink-0" />
-                    {t("rental.downloadPdf")}
+                    {product.pdfUrl.toLowerCase().includes("datenblatt") ? t("rental.downloadDatasheet", "Datenblatt herunterladen") : t("rental.downloadPdf")}
                   </a>
                 </div>
               )}
