@@ -1505,13 +1505,13 @@ export const bonnWerkzeugProducts = [
     id: "bonn-erdrakete-45mm",
     name: "Erdrakete 45 mm",
     description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung.",
-    image: "/placeholder.svg",
+    image: imgErdrakete1,
   },
   {
     id: "bonn-erdrakete-65mm",
     name: "Erdrakete 65 mm",
     description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
-    image: "/placeholder.svg",
+    image: imgErdrakete1,
   },
 ];
 
