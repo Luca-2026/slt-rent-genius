@@ -789,10 +789,16 @@ export default function CategoryProducts() {
       });
     }
 
-    // Global stable sort: products with rentwareCode for current location first
+    // Within each sub-category group, sort products with rentwareCode for current location first
+    // This preserves the overall group order (e.g. Bagger before Radlader) but within each
+    // group pushes on-request products (no rentwareCode) to the end.
     if (locationId) {
       const stableIndexMap = new Map(filtered.map((p, i) => [p, i]));
       filtered.sort((a, b) => {
+        const catA = a.category || "";
+        const catB = b.category || "";
+        // Only re-sort within the same sub-category
+        if (catA !== catB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
         const hasCodeA = a.rentwareCode && a.rentwareCode[locationId] ? 0 : 1;
         const hasCodeB = b.rentwareCode && b.rentwareCode[locationId] ? 0 : 1;
         if (hasCodeA !== hasCodeB) return hasCodeA - hasCodeB;
