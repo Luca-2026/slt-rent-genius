@@ -1664,6 +1664,7 @@ export const bonnZelteProducts = [
     },
     image: imgMasse3x3,
     images: [imgMasse3x3, imgPartyzeltWeiss],
+    pdfUrl: "/manuals/aufbauanleitung-classicpro-3x3.pdf",
     rentwareCode: { bonn: "ZPBA4S" },
   },
   {

@@ -3090,6 +3090,7 @@ export const moebelZelteProducts: Product[] = [
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 130 € bei Nichtbeachtung)",
     },
     pdfUrl: "/manuals/eventzelt-6x12-aufbauanleitung.pdf",
+    pdfUrl: "/manuals/aufbauanleitung-giant-6m.pdf",
     rentwareCode: { krefeld: "O3E6TK" }
   },
   {
