@@ -543,7 +543,7 @@ export default function CategoryProducts() {
                   // Fallback: name-based matching for geschirr/glaeser/besteck products
                   if (category?.id === "geschirr-glaeser-besteck") {
                     const nameLower = p.name.toLowerCase();
-                    if (value === "glaeser") return nameLower.includes("glas") || nameLower.includes("gläser") || nameLower.includes("weißwein") || nameLower.includes("weisswein") || nameLower.includes("rotwein") || nameLower.includes("champagner") || nameLower.includes("longdrink") || nameLower.includes("wasser") || nameLower.includes("bier");
+                    if (value === "glaeser") return !nameLower.includes("aschenbecher") && (nameLower.includes("glas") || nameLower.includes("gläser") || nameLower.includes("weißwein") || nameLower.includes("weisswein") || nameLower.includes("rotwein") || nameLower.includes("champagner") || nameLower.includes("longdrink") || nameLower.includes("wasser") || nameLower.includes("bier"));
                     if (value === "geschirr") return nameLower.includes("teller") || nameLower.includes("schüssel") || nameLower.includes("schuessel") || nameLower.includes("tasse") || nameLower.includes("untertasse") || nameLower.includes("suppenteller");
                     if (value === "besteck") return nameLower.includes("messer") || nameLower.includes("gabel") || nameLower.includes("löffel") || nameLower.includes("loeffel") || nameLower.includes("besteck");
                     if (value === "zubehoer") return nameLower.includes("spülmaschine") || nameLower.includes("spuelmaschine") || nameLower.includes("warmhalte") || nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
