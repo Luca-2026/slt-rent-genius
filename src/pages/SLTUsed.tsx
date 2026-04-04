@@ -35,50 +35,7 @@ const usedCategories = [
   { id: "sonstiges", label: "Sonstiges", icon: null },
 ];
 
-const demoMachines = [
-  {
-    id: "demo-1", category: "minibagger", manufacturer: "Zoomlion", model: "ZE35E-10",
-    year: 2022, hours: 1250, price_net: 29500, price_on_request: false,
-    description: "Gepflegter Zoomlion Minibagger mit nur 1.250 Betriebsstunden.",
-    images: [], status: "available", reference_number: "SLT-U-001", location: "krefeld",
-    is_featured: true, specifications: { "Einsatzgewicht": "3,5 t", "Motorleistung": "18,5 kW", "Grabtiefe": "3.200 mm" },
-  },
-  {
-    id: "demo-2", category: "radlader", manufacturer: "Zoomlion", model: "ZL08F",
-    year: 2021, hours: 2100, price_net: 18900, price_on_request: false,
-    description: "Kompaktradlader in sehr gutem Zustand.",
-    images: [], status: "available", reference_number: "SLT-U-002", location: "krefeld",
-    is_featured: false, specifications: { "Einsatzgewicht": "3,2 t", "Nutzlast": "800 kg", "Schaufelinhalt": "0,4 m³" },
-  },
-  {
-    id: "demo-3", category: "arbeitsbuehnen", manufacturer: "Zoomlion", model: "ZS1012HD-LI",
-    year: 2023, hours: 380, price_net: null, price_on_request: true,
-    description: "Elektrische Scherenbühne, kaum benutzt.",
-    images: [], status: "available", reference_number: "SLT-U-003", location: "bonn",
-    is_featured: true, specifications: { "Arbeitshöhe": "12 m", "Tragfähigkeit": "320 kg", "Antrieb": "Elektrisch" },
-  },
-  {
-    id: "demo-4", category: "verdichtung", manufacturer: "BAUMAX", model: "RVP 30/50",
-    year: 2022, hours: 890, price_net: 3200, price_on_request: false,
-    description: "Reversierbare Vibrationsplatte in gutem Zustand.",
-    images: [], status: "available", reference_number: "SLT-U-004", location: "krefeld",
-    is_featured: false, specifications: { "Verdichtungskraft": "30 kN", "Plattenbreite": "500 mm", "Gewicht": "185 kg" },
-  },
-  {
-    id: "demo-5", category: "anhaenger", manufacturer: "Temared", model: "Autotransporter 2700",
-    year: 2021, hours: null, price_net: 4500, price_on_request: false,
-    description: "2700 kg Autotransportanhänger mit Seilwinde.",
-    images: [], status: "available", reference_number: "SLT-U-005", location: "muelheim",
-    is_featured: false, specifications: { "Nutzlast": "1.950 kg", "Ladefläche": "400 x 200 cm", "Auffahrschienen": "Ja" },
-  },
-  {
-    id: "demo-6", category: "minibagger", manufacturer: "Zoomlion", model: "ZE60E-10",
-    year: 2023, hours: 620, price_net: 52000, price_on_request: false,
-    description: "6-Tonnen Bagger, Elektroantrieb, mit Powertilt und 4 Löffeln.",
-    images: [], status: "reserved", reference_number: "SLT-U-006", location: "krefeld",
-    is_featured: true, specifications: { "Einsatzgewicht": "6 t", "Antrieb": "Elektrisch", "Grabtiefe": "4.100 mm" },
-  },
-];
+const demoMachines: any[] = [];
 
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim",
