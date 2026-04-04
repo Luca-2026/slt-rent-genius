@@ -114,7 +114,7 @@ export function ServicesSection() {
         </div>
 
         <AnimatedSection className="text-center mt-10" delay={400}>
-          <Link to="/kontakt">
+          <Link to="/dienstleistungen">
             <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg hover:shadow-xl transition-all group">
               <Wrench className="mr-2 h-4 w-4" />
               {t("services.cta")}
