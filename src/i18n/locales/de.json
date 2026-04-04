@@ -23,7 +23,11 @@
     "menu": "Menü",
     "buy": "Kaufen",
     "buyNow": "Jetzt kaufen",
-    "salePage": "Verkaufsseite"
+    "salePage": "Verkaufsseite",
+    "newMachines": "Neumaschinen",
+    "newMachinesDesc": "Zoomlion, BAUMAX & Temared",
+    "usedMachines": "Gebrauchtmaschinen",
+    "usedMachinesDesc": "Geprüfte Maschinen aus unserem Mietpark"
   },
   "mietartikel": {
     "seo": {
