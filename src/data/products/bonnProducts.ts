@@ -883,7 +883,6 @@ export const bonnErdbewegungZusatzProducts = [
       "Öldurchfluss": "20 - 30 l/min",
     },
   },
-  },
   // --- Fehlende Zubehör ---
   {
     id: "bonn-dieseltankstelle-400l",
