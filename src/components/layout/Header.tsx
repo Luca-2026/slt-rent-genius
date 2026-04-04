@@ -240,18 +240,9 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
             {/* Primary nav */}
-            <NavDropdown label={t("nav.products")} items={produkteItems} />
+            <NavDropdown label={t("nav.rentalItems")} items={produkteItems} />
             <NavDropdown label={t("nav.buy")} items={kaufenItems} />
-            <Link
-              to="/loesungen"
-              className={`text-xs xl:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                isActive("/loesungen")
-                  ? "text-primary"
-                  : "text-foreground/80 hover:text-primary"
-              }`}
-            >
-              {t("nav.solutions")}
-            </Link>
+            <NavDropdown label={t("nav.solutions")} items={loesungenItems} />
             <Link
               to="/standorte"
               className={`text-xs xl:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
