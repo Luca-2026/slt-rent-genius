@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#3B6D11" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <!-- Dose (grün = bereit) -->
+  <circle cx="33" cy="60" r="26" fill="#EAF3DE" stroke="#97C459" stroke-width="2"/>
+  <circle cx="33" cy="60" r="17" fill="#C0DD97" stroke="#97C459" stroke-width="1"/>
+  <rect x="28" y="30" width="10" height="9" rx="4" fill="#639922"/>
+  <!-- Stecker nähert sich -->
+  <circle cx="86" cy="60" r="24" fill="#D3D1C7" stroke="#888780" stroke-width="2"/>
+  <circle cx="86" cy="60" r="16" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+  <rect x="81" y="32" width="10" height="9" rx="4" fill="#888780"/>
+  <!-- Druckkraft-Pfeil -->
+  <path d="M112 60 L102 60" stroke="#3B6D11" stroke-width="3" stroke-linecap="round" marker-end="url(#arr)"/>
+  <path d="M112 52 L104 52" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arr)" opacity=".5"/>
+  <path d="M112 68 L104 68" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arr)" opacity=".5"/>
+  <text font-family="Arial, sans-serif" font-size="10" fill="#27500A" text-anchor="middle" x="60" y="110">Gerade eindrücken</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <!-- Verbundener Stecker (Draufsicht) -->
+  <circle cx="60" cy="58" r="34" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/>
+  <circle cx="60" cy="58" r="23" fill="#FAC775" stroke="#BA7517" stroke-width="1.5"/>
+  <circle cx="60" cy="58" r="12" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+  <!-- Dreh-Bogen im Uhrzeigersinn (oben-links → rechts → unten) -->
+  <path d="M 28 38 A 40 40 0 0 1 95 48" fill="none" stroke="#BA7517" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arr)"/>
+  <!-- Pfeile für Drehrichtung am Ring -->
+  <!-- Uhrzeigersinn-Symbol -->
+  <text font-family="Arial, sans-serif" font-size="24" fill="#BA7517" text-anchor="middle" x="60" y="68">↻</text>
+  <!-- Kerbe neue Position (rechts oben nach Drehung) -->
+  <rect x="86" y="26" width="9" height="8" rx="3.5" fill="#BA7517" opacity=".7"/>
+  <text font-family="Arial, sans-serif" font-size="10" fill="#633806" text-anchor="middle" x="60" y="110">Uhrzeigersinn bis Einrasten</text>
+</svg>

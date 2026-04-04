@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#A32D2D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <!-- Stecker verriegelt -->
+  <circle cx="65" cy="58" r="34" fill="#FCEBEB" stroke="#F09595" stroke-width="2"/>
+  <circle cx="65" cy="58" r="23" fill="#F7C1C1" stroke="#E24B4A" stroke-width="1.5"/>
+  <!-- Schloss-Symbol -->
+  <rect x="57" y="54" width="16" height="14" rx="3" fill="none" stroke="#A32D2D" stroke-width="2"/>
+  <path d="M60 54 Q60 46 65 46 Q70 46 70 54" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="65" cy="62" r="2.5" fill="#A32D2D"/>
+  <!-- Zug-Pfeil nach links -->
+  <path d="M20 58 L30 58" stroke="#A32D2D" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arr)"/>
+  <!-- Handgelenk-Andeutung links -->
+  <path d="M8 50 Q4 58 8 66" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round"/>
+  <text font-family="Arial, sans-serif" font-size="10" fill="#791F1F" text-anchor="middle" x="60" y="110">Leicht ziehen → hält fest</text>
+</svg>
