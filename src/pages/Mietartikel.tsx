@@ -9,6 +9,7 @@ import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
+import { MietartikelSearch } from "@/components/rental/MietartikelSearch";
 
 export default function Mietartikel() {
   const { t } = useTranslation();
@@ -74,9 +75,10 @@ export default function Mietartikel() {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-headline mb-4">
             {t("mietartikel.title")}
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             {t("mietartikel.subtitle")}
           </p>
+          <MietartikelSearch />
         </div>
       </section>
 

@@ -49,7 +49,8 @@
     "eventVeranstaltung": "Event & Veranstaltung",
     "eventVeranstaltungDesc": "Alles für Ihre Veranstaltung: Beschallung, Beleuchtung, Zelte, Geschirr und mehr.",
     "selectLocation": "Standort wählen",
-    "selectLocationDesc": "Wählen Sie Ihren Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen."
+    "selectLocationDesc": "Wählen Sie Ihren Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen.",
+    "searchPlaceholder": "Artikel suchen, z.B. Minibagger, Anhänger, Hüpfburg..."
   },
   "marquee": {
     "weekendRates": "Wochenendtarife",

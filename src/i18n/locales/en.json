@@ -49,7 +49,8 @@
     "eventVeranstaltung": "Events & Entertainment",
     "eventVeranstaltungDesc": "Everything for your event: sound systems, lighting, tents, tableware and more.",
     "selectLocation": "Choose Location",
-    "selectLocationDesc": "Choose your location to see the available products in this category."
+    "selectLocationDesc": "Choose your location to see the available products in this category.",
+    "searchPlaceholder": "Search items, e.g. mini excavator, trailer, bouncy castle..."
   },
   "marquee": {
     "weekendRates": "Weekend Rates",
