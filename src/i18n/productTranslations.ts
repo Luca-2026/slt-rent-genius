@@ -440,7 +440,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
 
   // ===== AERIAL WORK PLATFORMS =====
   "scherenbuehne-8m": {
-    name: "8m Scissor Lift XCMG XG0807AC",
+    name: "7.8 m Electric Scissor Lift (Type ZS0607)",
     description: "Compact electric scissor lift with 7.80 m working height – ideal for indoor and outdoor use.",
     detailedDescription: "The XCMG XG0807AC is a compact electric scissor lift with 7.80 m working height and 90 cm platform extension. With non-marking tires, it is suitable for indoor and outdoor use. The platform (1.67 × 0.78 m) accommodates up to 3 persons with a max. load of 230 kg. The transport height of only 1.66 m allows access through low clearances."
   },
