@@ -654,7 +654,7 @@ const trailerProducts: Product[] = [
   // === MOTORRAD ===
   { 
     id: "motorrad-3fach-750", 
-    name: "750 kg Motorradanhänger 2-fach", 
+    name: "750 kg Motorradanhänger 3-fach", 
     description: "Ladefläche: 220 x 131 cm",
     image: imgMotorrad750_1, 
     images: [imgMotorrad750_1, imgMotorrad750_2, imgMotorrad750_3], 
@@ -1592,7 +1592,9 @@ export const locations: LocationData[] = [
       "huepfburgen",
     ],
     products: {
-      "anhaenger": sortedTrailerProducts,
+      "anhaenger": sortedTrailerProducts.map(p => 
+        p.id === "motorrad-3fach-750" ? { ...p, name: "750 kg Motorradanhänger 2-fach" } : p
+      ),
       "erdbewegung": erdbewegungProducts,
       "werkzeuge": werkzeugeProducts,
       "gartenpflege": gartenpflegeProducts,
