@@ -149,6 +149,16 @@ export default function CategoryProducts() {
   const products = useMemo(() => {
     let filtered = [...allProducts];
 
+    // Filter by availability at current location (rentwareCode exists for this location)
+    if (onlyAvailable && locationId) {
+      filtered = filtered.filter((p) => {
+        const code = p.rentwareCode;
+        if (!code) return false;
+        if (typeof code === "string") return code.length > 0;
+        return !!(code as Record<string, string>)[locationId] && (code as Record<string, string>)[locationId].length > 0;
+      });
+    }
+
     // Apply "alle" category filters (search and category filter)
     if (category?.id === "alle") {
       // Search filter
