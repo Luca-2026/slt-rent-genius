@@ -1,7 +1,17 @@
 {
   "nav": {
-    "products": "Products",
+    "products": "Rental Items",
     "solutions": "Solutions",
+    "rentalItems": "Rental Items",
+    "allCategories": "All Categories",
+    "solutionGalabau": "Garden & Landscaping",
+    "solutionTiefbau": "Civil Engineering",
+    "solutionHochbau": "Construction & Renovation",
+    "solutionEvents": "Events & Parties",
+    "solutionTransport": "Moving & Transport",
+    "solutionHandwerk": "Trades & Business",
+    "solutionPrivate": "Private Projects",
+    "solutionKinder": "Kids' Parties",
     "howItWorks": "How It Works",
     "help": "Help & Guides",
     "locations": "Locations",

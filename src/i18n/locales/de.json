@@ -1,7 +1,17 @@
 {
   "nav": {
-    "products": "Produkte",
+    "products": "Mietartikel",
     "solutions": "Lösungen",
+    "rentalItems": "Mietartikel",
+    "allCategories": "Alle Kategorien",
+    "solutionGalabau": "Garten- & Landschaftsbau",
+    "solutionTiefbau": "Tiefbau & Erdbewegung",
+    "solutionHochbau": "Hochbau & Renovierung",
+    "solutionEvents": "Events & Veranstaltungen",
+    "solutionTransport": "Umzug & Transport",
+    "solutionHandwerk": "Handwerk & Gewerbe",
+    "solutionPrivate": "Private Projekte",
+    "solutionKinder": "Kindergeburtstage",
     "howItWorks": "So funktioniert's",
     "help": "Hilfe & Anleitungen",
     "locations": "Standorte",
