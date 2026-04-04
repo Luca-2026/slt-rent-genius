@@ -647,6 +647,18 @@
     "ctaProducts": "Produkte entdecken",
     "ctaContact": "Kontakt aufnehmen"
   },
+  "salesTeaser": {
+    "badge": "Autorisierter Fachhändler & Servicestützpunkt",
+    "title": "Baumaschinen & Anhänger auch zum Kauf verfügbar",
+    "subtitle": "Ob fabrikneue Maschinen von Zoomlion, BAUMAX und Temared oder gepflegte Gebrauchtmaschinen – wir beraten Sie persönlich und liefern in ganz NRW.",
+    "newMachines": "Neumaschinen",
+    "newMachinesDesc": "Zoomlion, BAUMAX & Temared – direkt vom autorisierten Fachhändler",
+    "newMachinesCta": "Neumaschinen entdecken",
+    "usedMachines": "Gebrauchtmaschinen",
+    "usedMachinesDesc": "Gepflegte Gebrauchtmaschinen – geprüft, sofort verfügbar",
+    "usedMachinesCta": "SLT Used ansehen",
+    "inquiryCta": "Kaufberatung anfragen"
+  },
   "howItWorks": {
     "badge": "Einfach & unkompliziert",
     "heroTitle": "So funktioniert's",
