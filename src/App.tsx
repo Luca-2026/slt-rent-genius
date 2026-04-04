@@ -58,6 +58,7 @@ const Datenschutz = lazy(() => import("./pages/Datenschutz"));
 const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 const Verkauf = lazy(() => import("./pages/Verkauf"));
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
+const SLTUsed = lazy(() => import("./pages/SLTUsed"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -135,6 +136,7 @@ const App = () => (
               <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
               <Route path="/verkauf" element={<Verkauf />} />
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
+              <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />

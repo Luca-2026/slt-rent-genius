@@ -1369,6 +1369,66 @@ export type Database = {
         }
         Relationships: []
       }
+      used_machines: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          hours: number | null
+          id: string
+          images: string[] | null
+          is_featured: boolean | null
+          location: string | null
+          manufacturer: string
+          model: string
+          price_net: number | null
+          price_on_request: boolean | null
+          reference_number: string | null
+          specifications: Json | null
+          status: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          hours?: number | null
+          id?: string
+          images?: string[] | null
+          is_featured?: boolean | null
+          location?: string | null
+          manufacturer: string
+          model: string
+          price_net?: number | null
+          price_on_request?: boolean | null
+          reference_number?: string | null
+          specifications?: Json | null
+          status?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          hours?: number | null
+          id?: string
+          images?: string[] | null
+          is_featured?: boolean | null
+          location?: string | null
+          manufacturer?: string
+          model?: string
+          price_net?: number | null
+          price_on_request?: boolean | null
+          reference_number?: string | null
+          specifications?: Json | null
+          status?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
