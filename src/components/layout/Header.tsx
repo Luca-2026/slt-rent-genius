@@ -193,6 +193,7 @@ export function Header() {
 
   const aboutItems: DropdownItem[] = [
     { to: "/ueber-uns", label: t("nav.about") },
+    { to: "/karriere", label: t("nav.careers") },
     { to: "/kontakt", label: t("nav.contact") },
   ];
 
