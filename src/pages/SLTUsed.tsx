@@ -175,6 +175,23 @@ export default function SLTUsed() {
         </AnimatedSection>
 
         {/* Machine Grid */}
+        {machines.length === 0 ? (
+          <div className="text-center py-20">
+            <Package className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-headline mb-2">
+              Aktuell keine Gebrauchtmaschinen vorhanden
+            </h3>
+            <p className="text-muted-foreground max-w-md mx-auto mb-6">
+              Schauen Sie gerne später nochmal vorbei – unser Bestand wechselt regelmäßig. Oder kontaktieren Sie uns direkt für eine individuelle Anfrage.
+            </p>
+            <Link to="/kontakt">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                Kontakt aufnehmen
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <TooltipProvider>
             {filteredMachines.map((machine: any) => {
