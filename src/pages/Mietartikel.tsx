@@ -75,10 +75,10 @@ export default function Mietartikel() {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-headline mb-4">
             {t("mietartikel.title")}
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             {t("mietartikel.subtitle")}
           </p>
-        </div>
+          <MietartikelSearch />
       </section>
 
       {/* Bau & Handwerk */}
