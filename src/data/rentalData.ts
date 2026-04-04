@@ -1030,7 +1030,8 @@ function parseKvaFromName(name: string): number | undefined {
   return Number(kvaMatch[1].replace(",", "."));
 }
 
-function inferArbeitsbuehneCategory(name: string): string | undefined {
+function inferArbeitsbuehneCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("scherenbühne") || n.includes("scherenbuehne")) return "scherenbuehne";
   if (n.includes("mastbühne") || n.includes("mastbuehne")) return "mastbuehne";
