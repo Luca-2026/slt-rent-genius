@@ -2291,7 +2291,8 @@ export const absperrtechnikProducts: Product[] = [
       "Genehmigung": "Min. 14 Werktage Vorlaufzeit bei Beantragung durch uns",
       "Hinweis": "Genehmigungs-Kopie an mieten@slt-rental.de",
     },
-    rentwareCode: { krefeld: "ONFC2E" }
+    sortOrder: 0,
+    rentwareCode: { krefeld: "ONFC2E", muelheim: "BX4E9Q" }
   },
   {
     id: "vz-308-ra1",
