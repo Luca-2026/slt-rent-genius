@@ -115,7 +115,7 @@ export function Footer() {
         {/* Sales Links */}
         <div className="mb-4">
           <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
-            Verkauf & Marken
+            {t("footer.salesAndBrands")}
           </h4>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
             {salesLinks.map((link) => (
