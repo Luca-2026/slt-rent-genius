@@ -3259,6 +3259,25 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "CQBBQC" }
   },
   {
+    id: "kleiderstaender-rollen-ohne-buegel",
+    name: "Kleiderständer mit Rollen, black",
+    description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – ohne Kleiderbügel. Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderstaenderRollen1,
+    images: [imgKleiderstaenderRollen1, imgKleiderstaenderRollen2, imgKleiderstaenderRollen3, imgKleiderstaenderRollen4],
+    category: "garderobe",
+    detailedDescription: "Robuster, ausziehbarer Garderobenständer auf Rollen – ohne Kleiderbügel.\n\nPerfekt für den Heimgebrauch geeignet – an der Kleiderstange aufgehängt, sehen Ihre Jacken immer so aus, als hätten Sie sie gerade erst gebügelt.\n\nAuch für den gewerblichen Gebrauch geeignet – stellen Sie diesen Kleiderständer in Ihr Bekleidungsgeschäft oder Fotostudio und hängen Sie verschiedene Kleidungsstücke hieran auf. Dank der 4 Rollen lässt er sich mühelos an jede beliebige Stelle schieben. Demontieren Sie einfach den oberen Teil und klappen Sie den unteren Teil zusammen, um den Transport zu erleichtern.\n\nDie max. Belastbarkeit bezieht sich auf das statische Maximalgewicht.",
+    specifications: {
+      "Farbe": "Schwarz",
+      "Material": "Eisenrohr, pulverbeschichtet",
+      "Größe (L × B × H)": "(92–132) × 45,4 × 160 cm",
+      "Kleiderstange": "ausziehbar von 92 cm auf 132 cm",
+      "Max. Belastbarkeit": "90 kg (statisch)",
+      "Gewicht": "5 kg",
+      "Rollen": "4 × Lenkrollen mit Bremse",
+    },
+    rentwareCode: { krefeld: "UL3K2S" }
+  },
+  {
     id: "kleiderbuegel-20er-set",
     name: "Kleiderbügel 20er Set, black",
     description: "20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
