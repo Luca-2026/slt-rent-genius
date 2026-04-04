@@ -1667,6 +1667,20 @@ export const bonnZelteProducts = [
     rentwareCode: { bonn: "ZPBA4S" },
   },
   {
+    id: "bonn-partyzelt-4x6",
+    name: "Partyzelt 4x6m",
+    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    specifications: {
+      "Grundfläche (BxL)": "4 m x 6 m",
+      "Farbe": "weiß",
+      "ohne Bestuhlung/Stehtische": "0,6m²/Person",
+      "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
+    },
+    image: imgMasse4x6,
+    images: [imgMasse4x6, imgPartyzeltWeiss],
+    rentwareCode: { bonn: "6GI1UN" },
+  },
+  {
     id: "bonn-sonnenschirm",
     name: "Sonnenschirm LEMVIG Ø 3 m",
     description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
@@ -1684,20 +1698,6 @@ export const bonnZelteProducts = [
     image: imgSonnenschirm1,
     images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
     rentwareCode: { bonn: "S8U5XL" },
-  },
-  {
-    id: "bonn-partyzelt-4x6",
-    name: "Partyzelt 4x6m",
-    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
-    specifications: {
-      "Grundfläche (BxL)": "4 m x 6 m",
-      "Farbe": "weiß",
-      "ohne Bestuhlung/Stehtische": "0,6m²/Person",
-      "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
-    },
-    image: imgMasse4x6,
-    images: [imgMasse4x6, imgPartyzeltWeiss],
-    rentwareCode: { bonn: "6GI1UN" },
   },
   {
     id: "bonn-zeltboden-anthrazit",
