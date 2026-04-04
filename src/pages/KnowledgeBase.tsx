@@ -358,6 +358,11 @@ export default function KnowledgeBase() {
                 </div>
               </div>
 
+              {/* Stecker-Anleitung (vollständig ausgeklappt) */}
+              <div className="mt-12">
+                <AnhaengersteckerAnleitung collapsed={false} showHeader={true} />
+              </div>
+
               <Card className="mt-12 bg-secondary border-0">
                 <CardContent className="py-8 text-center">
                   <HelpCircle className="h-8 w-8 text-primary mx-auto mb-3" />
