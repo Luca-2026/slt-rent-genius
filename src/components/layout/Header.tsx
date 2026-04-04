@@ -164,7 +164,6 @@ export function Header() {
 
   const produkteItems: DropdownItem[] = [
     { to: "/mietartikel", label: t("nav.allCategories"), description: "Alle Kategorien im Überblick" },
-    { to: "/mieten", label: t("nav.rentNow"), description: "Standort wählen & direkt mieten" },
   ];
 
   const kaufenItems: DropdownItem[] = [
@@ -241,7 +240,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
             {/* Primary nav */}
-            <NavDropdown label={t("nav.rentalItems")} items={produkteItems} />
+            <NavDropdown label={t("nav.rent")} items={produkteItems} />
             <NavDropdown label={t("nav.buy")} items={kaufenItems} />
             <NavDropdown label={t("nav.solutions")} items={loesungenItems} />
             <Link
@@ -308,7 +307,7 @@ export function Header() {
         <div className="lg:hidden border-t border-border bg-background animate-in slide-in-from-top-2 duration-200">
           <nav className="section-container py-4 flex flex-col gap-0.5">
             <MobileDropdown
-              label={t("nav.rentalItems")}
+              label={t("nav.rent")}
               items={produkteItems}
               onClose={() => setIsMenuOpen(false)}
             />
