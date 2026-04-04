@@ -1100,7 +1100,8 @@ function inferGartenpflegeCategory(name: string | undefined): string | undefined
   return undefined;
 }
 
-function inferAggregateCategory(name: string): string {
+function inferAggregateCategory(name: string | undefined): string {
+  if (!name) return "aggregat";
   const n = name.toLowerCase();
   if (n.includes("erdrakete")) return "erdrakete";
   if (n.includes("presslufthammer")) return "druckluftwerkzeug";
