@@ -945,7 +945,7 @@ export const bonnVerdichtungProducts = [
     id: "bonn-ruettelplatte-hvp50",
     name: "Rüttelplatte HVP 50/60 420kg reversierbar",
     description: "Hydraulisch reversierbare Rüttelplatte mit 420 kg Gewicht und 50 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
-    image: "/placeholder.svg",
+    image: ruettelplatteHvp5060,
   },
 ];
 
