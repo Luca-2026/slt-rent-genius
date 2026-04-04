@@ -281,20 +281,23 @@ export default function CategoryProducts() {
               return selectedValues.some((value) => p.tags?.includes(value) || p.category === value);
             });
           } else if (sectionId === "anbaugeraet") {
-            // Anbaugerätetyp: tiefloeffel, kabelloeffel, grabenraeumloeffel, hydraulikhammer
+            // Anbaugerätetyp: loeffel (groups tief+kabel+grabenraeumloeffel), hydraulikhammer, sortiergreifer
+            const loeffelCategories = ["tiefloeffel", "kabelloeffel", "grabenraeumloeffel"];
             filtered = filtered.filter((p) => {
-              return selectedValues.some((value) => p.category === value);
+              return selectedValues.some((value) => {
+                if (value === "loeffel") return loeffelCategories.includes(p.category || "");
+                if (value === "sortiergreifer") return p.category === "sortiergreifer";
+                return p.category === value;
+              });
             });
           } else if (sectionId === "aufnahme") {
-            // Aufnahme: ms01, ms03, cw05
+            // Aufnahme: ms01, ms03, ms08, ms10
             filtered = filtered.filter((p) => {
               const aufnahme = p.specifications?.["Aufnahme"] || p.specifications?.["Schnellwechsler"] || "";
               const nameLower = p.name.toLowerCase();
               return selectedValues.some((value) => {
-                if (value === "ms01") return aufnahme.toLowerCase().includes("ms01") || nameLower.includes("ms01");
-                if (value === "ms03") return aufnahme.toLowerCase().includes("ms03") || nameLower.includes("ms03");
-                if (value === "cw05") return aufnahme.toLowerCase().includes("cw05") || nameLower.includes("cw05");
-                return false;
+                const v = value.toLowerCase();
+                return aufnahme.toLowerCase().includes(v) || nameLower.includes(v);
               });
             });
           } else if (sectionId === "antrieb") {
