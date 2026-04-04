@@ -1083,7 +1083,8 @@ function inferWerkzeugCategory(name: string | undefined): string | undefined {
   return undefined;
 }
 
-function inferGartenpflegeCategory(name: string): string | undefined {
+function inferGartenpflegeCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("kettensäge") || n.includes("kettensaege")) return "kettensaege";
   if (n.includes("heckenschere")) return "heckenschere";
