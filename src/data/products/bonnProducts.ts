@@ -1445,6 +1445,13 @@ export const bonnWerkzeugProducts = [
     images: [imgWinkelschleifer],
     rentwareCode: { bonn: "UL9XG5" },
   },
+  },
+  {
+    id: "bonn-presslufthammer-tex21pe",
+    name: "Presslufthammer 21 kg",
+    description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== TROCKNUNG ====================
