@@ -99,7 +99,7 @@ export default function Dienstleistungen() {
   return (
     <Layout>
       <SEO
-        title="Dienstleistungen – Planung, Lieferung, Auf- & Abbau | SLT Rental"
+        title="Dienstleistungen – Planung, Lieferung & Service | SLT Rental"
         description="SLT Rental bietet mehr als Vermietung: Planung & Koordination, Verkehrssicherung, Auf- & Abbau, Lieferung in ganz NRW und Werkstatt & Reparatur. Alles aus einer Hand."
         canonical="/dienstleistungen"
         keywords="Verkehrssicherung Bonn, Verkehrssicherung Krefeld, Baumaschinen Lieferung NRW, Auf- und Abbau Service Mülheim, Baumaschinen Werkstatt Krefeld, Halteverbotszonen Bonn, Absperrung mieten NRW, Baustellenplanung Krefeld Bonn Mülheim"
