@@ -3011,7 +3011,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x10m",
     description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
+    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
     category: "zelt",
     specifications: {
       "Grundfläche": "40 m² (4 m × 10 m)",
