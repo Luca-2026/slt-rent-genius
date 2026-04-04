@@ -489,6 +489,13 @@ export default function CategoryProducts() {
                   "besteck": ["besteck"],
                   "zubehoer": ["spuelmaschine", "warmhaltegeraet", "zubehoer"],
                 };
+                const aggregateTypeGroups: Record<string, string[]> = {
+                  "aggregat": ["aggregat"],
+                  "akkupack": ["akkupack"],
+                  "kompressor": ["kompressor"],
+                  "druckluftwerkzeug": ["druckluftwerkzeug", "presslufthammer"],
+                  "erdrakete": ["erdrakete"],
+                };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
@@ -497,6 +504,7 @@ export default function CategoryProducts() {
                   category?.id === "moebel-zelte" ? moebelZelteTypeGroups[value] :
                   category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
                   category?.id === "geschirr-glaeser-besteck" ? geschirrTypeGroups[value] :
+                  category?.id === "aggregate" ? aggregateTypeGroups[value] :
                   undefined;
 
                 if (groupCategories) {
