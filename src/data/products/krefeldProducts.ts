@@ -1657,7 +1657,7 @@ export const werkzeugeProducts: Product[] = [
       "Drehzahl": "2.800 U/min",
       "Lieferumfang": "inkl. 15 m Storz C Schlauch",
     },
-    anleitungPdf: "/anleitungen/Datenblatt_Schmutzwasserpumpe.pdf",
+    
   },
 ];
 
