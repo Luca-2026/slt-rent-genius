@@ -6447,6 +6447,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Für welche Einsätze eignet sich die Grabenwalze?", a: "Die BMP 8500 ist ideal für die Verdichtung in Gräben, an Böschungen, bei der Hinterfüllung von Fundamenten und in engen Bereichen, in denen größere Walzen nicht eingesetzt werden können." },
     ],
   },
+  "ms03-ms08-hydraulikhammer-shb75": {
+    excelName: "MS03/MS08 Hydraulikhammer SHB75",
+    seoTitle: "MS03/MS08 Hydraulikhammer SHB75 mieten | 1.200 J | SLT Rental",
+    metaDescription: "Hydraulikhammer SHB75 mieten: 1.200 J Schlagkraft, 75 mm Meißel, für Bagger 6–9 t mit MS03/MS08. Jetzt bei SLT Rental anfragen.",
+    h1: "MS03/MS08 Hydraulikhammer SHB75 mieten – 1.200 J Schlagkraft bei SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Kompatible Schnellwechsler", "Leistungsdaten"],
+    useCaseBau: "Betonabbruch, Asphaltaufbruch, Felsbearbeitung, Abbrucharbeiten, Kanalbau, Fundamentrückbau",
+    useCaseEvent: "",
+    useCasePrivat: "",
+    primaryKeywords: "Hydraulikhammer mieten, SHB75 mieten, MS08 Hydraulikhammer leihen, Abbruchhammer Bagger NRW",
+    is247: false,
+    faqs: [
+      { q: "Für welche Bagger ist der SHB75 geeignet?", a: "Der SHB75 ist für Bagger der 6- bis 9-Tonnen-Klasse mit MS03 oder MS08 Schnellwechsler konzipiert." },
+      { q: "Welche Schlagkraft hat der SHB75?", a: "Der Hydraulikhammer liefert 1.200 Joule Schlagkraft bei 400–800 Schlägen pro Minute – ideal für Beton, Asphalt und Gestein." },
+      { q: "Welcher Meißeldurchmesser wird verwendet?", a: "Der SHB75 arbeitet mit einem 75-mm-Meißel, der für eine breite Palette von Abbruch- und Aufbrucharbeiten geeignet ist." },
+      { q: "Welche Hydraulikanforderungen hat der Hammer?", a: "Der SHB75 benötigt einen Öldurchfluss von 50–90 l/min bei einem Betriebsdruck von 12–17 MPa." },
+    ],
+  },
+  "bonn-ms03-ms08-hydraulikhammer-shb75": {
+    excelName: "MS03/MS08 Hydraulikhammer SHB75",
+    seoTitle: "MS03/MS08 Hydraulikhammer SHB75 mieten in Bonn | SLT Rental",
+    metaDescription: "Hydraulikhammer SHB75 mieten in Bonn: 1.200 J Schlagkraft, 75 mm Meißel, für Bagger 6–9 t. Bei SLT Rental anfragen.",
+    h1: "MS03/MS08 Hydraulikhammer SHB75 mieten in Bonn – SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Kompatible Schnellwechsler", "Leistungsdaten"],
+    useCaseBau: "Betonabbruch, Asphaltaufbruch, Felsbearbeitung, Abbrucharbeiten, Kanalbau, Fundamentrückbau",
+    useCaseEvent: "",
+    useCasePrivat: "",
+    primaryKeywords: "Hydraulikhammer mieten Bonn, SHB75 mieten, MS08 Hydraulikhammer leihen NRW",
+    is247: false,
+    faqs: [
+      { q: "Für welche Bagger ist der SHB75 geeignet?", a: "Der SHB75 ist für Bagger der 6- bis 9-Tonnen-Klasse mit MS03 oder MS08 Schnellwechsler konzipiert." },
+      { q: "Welche Schlagkraft hat der SHB75?", a: "Der Hydraulikhammer liefert 1.200 Joule Schlagkraft bei 400–800 Schlägen pro Minute – ideal für Beton, Asphalt und Gestein." },
+      { q: "Welcher Meißeldurchmesser wird verwendet?", a: "Der SHB75 arbeitet mit einem 75-mm-Meißel, der für eine breite Palette von Abbruch- und Aufbrucharbeiten geeignet ist." },
+      { q: "Welche Hydraulikanforderungen hat der Hammer?", a: "Der SHB75 benötigt einen Öldurchfluss von 50–90 l/min bei einem Betriebsdruck von 12–17 MPa." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
