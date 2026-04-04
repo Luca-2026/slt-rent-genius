@@ -5780,6 +5780,26 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Gewicht": "129 kg",
     },
   },
+  {
+    id: "ms08-grabenraeumloeffel-hydr-160cm-symlock",
+    name: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
+    description: "Hydraulischer Grabenräumlöffel 160cm für MS08 Symlock – 288 l Volumen, Gewichtsklasse 5–10 t",
+    detailedDescription: "Der MS08 Grabenräumlöffel hydr. 160cm/288l Symlock ist ein hydraulisch schwenkbarer Großlöffel für Bagger der 5- bis 10-Tonnen-Klasse. Mit 1600 mm Arbeitsbreite und 288 Liter Volumen eignet er sich hervorragend für großflächige Planierarbeiten, Böschungsprofilierung und das Räumen breiter Gräben. Die hydraulische Schwenkfunktion ermöglicht präzises Arbeiten auch in schwierigem Gelände.",
+    image: imgGrabenraeumloeffelMs08Hydr_160cm_1,
+    images: [imgGrabenraeumloeffelMs08Hydr_160cm_1],
+    category: "grabenraeumloeffel",
+    rentwareCode: { krefeld: "P5ENQ7" },
+    specifications: {
+      "Aufnahme": "SB08S (passend MS08 Symlock)",
+      "Gewichtsklasse Trägergerät": "5 – 10 t",
+      "Gewicht": "317 kg",
+      "Arbeitsbreite": "1600 mm",
+      "Höhe": "850 mm",
+      "Volumen (SAE)": "288 l",
+      "Grundkörper Material": "S355",
+      "Schneiden Material": "HB500",
+    },
+  },
   // Roderechen
   {
     id: "ms01-roderechen-symlock",
