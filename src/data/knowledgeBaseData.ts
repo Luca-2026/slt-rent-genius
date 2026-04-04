@@ -727,7 +727,17 @@ export const kbArticles: KBArticle[] = [
     tags: ["anhängerbühne", "europelift", "tm18gti", "datenblatt", "arbeitsbühne", "18m", "gelenkteleskop"],
     updatedAt: "2026-04-04",
   },
-
+  {
+    id: "schmutzwasserpumpe-datenblatt",
+    title: "Schmutzwasserpumpe 11m³/h – Datenblatt",
+    description: "Technisches Datenblatt zur Grindex Schmutzwasserpumpe mit 11.000 l/h Förderleistung und 10 m Förderhöhe.",
+    categoryId: "werkzeuge",
+    productIds: ["schmutzwasserpumpe-11m3h", "bonn-schmutzwasserpumpe-11m3h"],
+    type: "anleitung",
+    pdfUrl: "/anleitungen/Datenblatt_Schmutzwasserpumpe.pdf",
+    tags: ["schmutzwasserpumpe", "pumpe", "tauchpumpe", "grindex", "datenblatt", "baustelle"],
+    updatedAt: "2026-04-04",
+  },
 
   {
     id: "ruettelplatte-bedienung",

@@ -291,6 +291,7 @@ import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
 import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 import steinknacker43cm from "@/assets/products/steinknacker-43cm-1.png";
+import schmutzwasserpumpe11m3h from "@/assets/products/schmutzwasserpumpe-11m3h-1.png";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
@@ -1635,6 +1636,28 @@ export const werkzeugeProducts: Product[] = [
       "Max. Schnitthöhe": "350 mm",
       "Messer": "Feststehend, gehärtet, 4 Schneiden",
     },
+  },
+  {
+    id: "schmutzwasserpumpe-11m3h",
+    name: "Schmutzwasserpumpe 11m³/h",
+    modelName: "Grindex",
+    description: "Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.",
+    image: schmutzwasserpumpe11m3h,
+    images: [schmutzwasserpumpe11m3h],
+    category: "pumpe",
+    rentwareCode: { krefeld: "EGS8ZZ" },
+    detailedDescription: "Leistungsstarke Schmutzwasserpumpe mit max. 11.000 l/h Fördermenge und 10 m Förderhöhe. Ideal zum Auspumpen von Baugruben, überfluteten Kellern und Schächten. Inkl. 15 m Storz C Schlauch.\n\n900 Watt Motorleistung (max. 1.200 Watt Leistungsaufnahme), 230 V Stromanschluss.",
+    specifications: {
+      "Hersteller": "Grindex",
+      "Max. Förderhöhe": "10 m",
+      "Max. Fördermenge": "11.000 l/h",
+      "Druckanschluss": "C Schlauch (Storz)",
+      "Motorleistung": "900 Watt",
+      "Max. Leistungsaufnahme": "1.200 Watt",
+      "Drehzahl": "2.800 U/min",
+      "Lieferumfang": "inkl. 15 m Storz C Schlauch",
+    },
+    
   },
 ];
 

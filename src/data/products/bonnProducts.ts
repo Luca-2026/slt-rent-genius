@@ -1475,6 +1475,12 @@ export const bonnWerkzeugProducts = [
     description: "Steinknacker mit 43 cm Schnittbreite – ideal zum Spalten von Pflastersteinen, Bordsteinen und Klinkern.",
     image: "/placeholder.svg",
   },
+  {
+    id: "bonn-schmutzwasserpumpe-11m3h",
+    name: "Schmutzwasserpumpe 11m³/h",
+    description: "Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== TROCKNUNG ====================
