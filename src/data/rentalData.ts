@@ -1030,7 +1030,8 @@ function parseKvaFromName(name: string): number | undefined {
   return Number(kvaMatch[1].replace(",", "."));
 }
 
-function inferArbeitsbuehneCategory(name: string): string | undefined {
+function inferArbeitsbuehneCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("scherenbühne") || n.includes("scherenbuehne")) return "scherenbuehne";
   if (n.includes("mastbühne") || n.includes("mastbuehne")) return "mastbuehne";
@@ -1039,7 +1040,8 @@ function inferArbeitsbuehneCategory(name: string): string | undefined {
   return undefined;
 }
 
-function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
+function inferErdbewegungCategory(name: string | undefined): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("knicklader")) return "knicklader";
   if (n.includes("radlader")) return "radlader";
@@ -1056,7 +1058,8 @@ function weightRangeTagFromKg(weightKg?: number): string | undefined {
   return "ab-2500";
 }
 
-function inferWerkzeugCategory(name: string): string | undefined {
+function inferWerkzeugCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("bohrhammer")) return "bohrhammer";
   if (n.includes("bohrschrauber")) return "bohrschrauber";
@@ -1082,7 +1085,8 @@ function inferWerkzeugCategory(name: string): string | undefined {
   return undefined;
 }
 
-function inferGartenpflegeCategory(name: string): string | undefined {
+function inferGartenpflegeCategory(name: string | undefined): string | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("kettensäge") || n.includes("kettensaege")) return "kettensaege";
   if (n.includes("heckenschere")) return "heckenschere";
@@ -1098,7 +1102,8 @@ function inferGartenpflegeCategory(name: string): string | undefined {
   return undefined;
 }
 
-function inferAggregateCategory(name: string): string {
+function inferAggregateCategory(name: string | undefined): string {
+  if (!name) return "aggregat";
   const n = name.toLowerCase();
   if (n.includes("erdrakete")) return "erdrakete";
   if (n.includes("presslufthammer")) return "druckluftwerkzeug";
@@ -1107,7 +1112,8 @@ function inferAggregateCategory(name: string): string {
   return "aggregat";
 }
 
-function inferStromCategory(name: string): string {
+function inferStromCategory(name: string | undefined): string {
+  if (!name) return "kabel";
   const n = name.toLowerCase();
   if (n.includes("brücke") || n.includes("bruecke")) return "bruecke";
   if (n.includes("kabel")) return "kabel";
