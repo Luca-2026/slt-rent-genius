@@ -1592,7 +1592,9 @@ export const locations: LocationData[] = [
       "huepfburgen",
     ],
     products: {
-      "anhaenger": sortedTrailerProducts,
+      "anhaenger": sortedTrailerProducts.map(p => 
+        p.id === "motorrad-3fach-750" ? { ...p, name: "750 kg Motorradanhänger 2-fach" } : p
+      ),
       "erdbewegung": erdbewegungProducts,
       "werkzeuge": werkzeugeProducts,
       "gartenpflege": gartenpflegeProducts,
