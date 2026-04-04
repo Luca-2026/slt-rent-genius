@@ -334,6 +334,18 @@ export const bonnAggregateProducts = [
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
     image: presslufthammerTex21pe,
   },
+  {
+    id: "bonn-erdrakete-45mm-aggregat",
+    name: "Erdrakete 45 mm",
+    description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung.",
+    image: "/placeholder.svg",
+  },
+  {
+    id: "bonn-erdrakete-65mm-aggregat",
+    name: "Erdrakete 65 mm",
+    description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== ARBEITSBÜHNEN ====================
