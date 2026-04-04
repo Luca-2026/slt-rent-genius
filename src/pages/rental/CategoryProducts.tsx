@@ -154,8 +154,9 @@ export default function CategoryProducts() {
       filtered = filtered.filter((p) => {
         const code = p.rentwareCode;
         if (!code) return false;
-        if (typeof code === "string") return code.length > 0;
-        return !!(code as Record<string, string>)[locationId] && (code as Record<string, string>)[locationId].length > 0;
+        if (typeof code === "string") return true;
+        const loc = (code as Record<string, string | undefined>)[locationId];
+        return !!loc && loc.length > 0;
       });
     }
 
