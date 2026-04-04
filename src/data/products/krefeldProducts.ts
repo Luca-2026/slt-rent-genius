@@ -3240,7 +3240,7 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "kleiderstaender-rollen",
-    name: "Kleiderständer mit Rollen",
+    name: "Kleiderständer mit Rollen inkl. Bügel",
     description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – inkl. 20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
     image: imgKleiderstaenderRollen1,
     images: [imgKleiderstaenderRollen1, imgKleiderstaenderRollen2, imgKleiderstaenderRollen3, imgKleiderstaenderRollen4],
