@@ -1098,6 +1098,15 @@ function inferGartenpflegeCategory(name: string): string | undefined {
   return undefined;
 }
 
+function inferAggregateCategory(name: string): string {
+  const n = name.toLowerCase();
+  if (n.includes("erdrakete")) return "erdrakete";
+  if (n.includes("presslufthammer")) return "druckluftwerkzeug";
+  if (n.includes("kompressor")) return "kompressor";
+  if (n.includes("bluetti") || n.includes("akkupack") || n.includes("powerstation")) return "akkupack";
+  return "aggregat";
+}
+
 function inferStromCategory(name: string): string {
   const n = name.toLowerCase();
   if (n.includes("brücke") || n.includes("bruecke")) return "bruecke";
