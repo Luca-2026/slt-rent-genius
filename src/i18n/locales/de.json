@@ -25,6 +25,21 @@
     "buyNow": "Jetzt kaufen",
     "salePage": "Verkaufsseite"
   },
+  "mietartikel": {
+    "seo": {
+      "title": "Mietartikel – Alle Kategorien | SLT Rental",
+      "description": "Entdecken Sie unser gesamtes Sortiment: Anhänger, Bagger, Arbeitsbühnen, Werkzeuge, Event-Equipment und mehr. Jetzt Standort wählen und mieten!"
+    },
+    "badge": "Über 20 Kategorien",
+    "title": "Unsere Mietartikel",
+    "subtitle": "Von Baumaschinen über Event-Equipment bis hin zu Anhängern – entdecken Sie unser umfangreiches Sortiment und wählen Sie Ihren Standort.",
+    "bauHandwerk": "Bau & Handwerk",
+    "bauHandwerkDesc": "Baumaschinen, Werkzeuge und Equipment für Baustelle, Handwerk und Gartenpflege.",
+    "eventVeranstaltung": "Event & Veranstaltung",
+    "eventVeranstaltungDesc": "Alles für Ihre Veranstaltung: Beschallung, Beleuchtung, Zelte, Geschirr und mehr.",
+    "selectLocation": "Standort wählen",
+    "selectLocationDesc": "Wählen Sie Ihren Standort, um die verfügbaren Produkte in dieser Kategorie zu sehen."
+  },
   "marquee": {
     "weekendRates": "Wochenendtarife",
     "we": "WE",
