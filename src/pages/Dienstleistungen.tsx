@@ -87,7 +87,7 @@ export default function Dienstleistungen() {
                 </Button>
               </Link>
               <Link to="/kontakt">
-                <Button size="lg" variant="outline" className="border-white/60 text-white hover:bg-white/10">
+                <Button size="lg" className="bg-transparent border-2 border-white/60 !text-white hover:bg-white/10">
                   Kontakt aufnehmen
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
