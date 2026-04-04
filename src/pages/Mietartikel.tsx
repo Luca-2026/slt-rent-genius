@@ -79,6 +79,7 @@ export default function Mietartikel() {
             {t("mietartikel.subtitle")}
           </p>
           <MietartikelSearch />
+        </div>
       </section>
 
       {/* Bau & Handwerk */}
