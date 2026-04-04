@@ -3031,7 +3031,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x14m",
     description: "Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x14_1,
-    images: [imgPartyzelt4x14_1, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
+    images: [imgPartyzelt4x14_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "56 m² (4 m × 14 m)",
