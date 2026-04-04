@@ -164,7 +164,6 @@ export function Header() {
 
   const produkteItems: DropdownItem[] = [
     { to: "/mietartikel", label: t("nav.allCategories"), description: "Alle Kategorien im Überblick" },
-    { to: "/mieten", label: t("nav.rentNow"), description: "Standort wählen & direkt mieten" },
   ];
 
   const kaufenItems: DropdownItem[] = [
