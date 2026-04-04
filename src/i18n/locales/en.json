@@ -1693,6 +1693,9 @@
     "delivery": "Delivery & Collection",
     "deliveryDesc": "Flexible delivery directly to your construction site or event venue throughout NRW.",
     "deliveryLink": "Calculate delivery costs",
+    "workshop": "Workshop & Repair",
+    "workshopDesc": "In-house workshop for maintenance & repair of trailers, construction machinery and generators – including third-party equipment.",
+    "workshopContact": "Contact us now",
     "cta": "Request a service"
   },
   "reviews": {

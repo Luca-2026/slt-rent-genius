@@ -43,8 +43,8 @@ export function ServicesSection() {
     },
     {
       icon: Wrench,
-      title: "Werkstatt & Reparatur",
-      description: "Eigene Werkstatt für Wartung & Reparatur an Anhängern, Baumaschinen und Aggregaten – auch für Fremdgeräte.",
+      title: t("services.workshop"),
+      description: t("services.workshopDesc"),
       emailLink: "service@slt-rental.de",
     },
   ];
@@ -104,7 +104,7 @@ export function ServicesSection() {
                       className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-3 hover:underline"
                     >
                       <Mail className="h-3 w-3" />
-                      Jetzt Kontakt aufnehmen
+                      {t("services.workshopContact")}
                     </a>
                   )}
                 </CardContent>
