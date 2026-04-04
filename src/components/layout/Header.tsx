@@ -168,7 +168,8 @@ export function Header() {
   ];
 
   const kaufenItems: DropdownItem[] = [
-    { to: "/verkauf", label: t("nav.buyNow"), description: "Neumaschinen & Gebrauchtgeräte" },
+    { to: "/verkauf", label: t("nav.newMachines"), description: t("nav.newMachinesDesc") },
+    { to: "/verkauf/gebrauchtmaschinen", label: t("nav.usedMachines"), description: t("nav.usedMachinesDesc") },
   ];
 
   const loesungenItems: DropdownItem[] = [
