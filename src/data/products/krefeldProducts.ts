@@ -3130,7 +3130,7 @@ export const spezialeffekteProducts: Product[] = [
     name: "Kalt-Funkenfontäne, 2er Set",
     description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
     image: imgKaltFunkenfontaeneSet1,
-    images: [imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
+    images: [imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4],
     category: "funken",
     specifications: {
       "Set": "2 × Kalt-Funkenfontäne im Flightcase",
@@ -3148,7 +3148,7 @@ export const spezialeffekteProducts: Product[] = [
     name: "Kalt-Funkenfontäne, 4er Set",
     description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
     image: imgKaltFunkenfontaene4erSet,
-    images: [imgKaltFunkenfontaene4erSet, imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
+    images: [imgKaltFunkenfontaene4erSet, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
     category: "funken",
     specifications: {
       "Set": "4 × Kalt-Funkenfontäne im Flightcase",
