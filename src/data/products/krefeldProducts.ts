@@ -289,6 +289,8 @@ import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
+import grabenwalzeBmp8500_1 from "@/assets/products/verdichtung/grabenwalze-bmp8500-1.webp";
+import grabenwalzeBmp8500_2 from "@/assets/products/verdichtung/grabenwalze-bmp8500-2.webp";
 import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 import steinknacker43cm from "@/assets/products/steinknacker-43cm-1.png";
 import schmutzwasserpumpe11m3h from "@/assets/products/schmutzwasserpumpe-11m3h-1.png";
