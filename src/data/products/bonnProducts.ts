@@ -1416,6 +1416,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "NP1PGC" },
   },
   {
