@@ -140,20 +140,20 @@ export function HeroSearch() {
     return translatedProducts
       .filter((p, index) => {
         const original = allProducts[index];
-        if (!original) return false;
+        if (!original || !original.name) return false;
         
         // Include products from matched categories
         if (categoryProductIds.has(original.id)) return true;
         
         if (isGerman) {
-          if (original.name.toLowerCase().includes(query)) return true;
+          if (original.name?.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
-          if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+          if (original.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
         } else {
-          if (p.name.toLowerCase().includes(query)) return true;
-          if (p.description?.toLowerCase().includes(query)) return true;
-          if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-          if (original.name.toLowerCase().includes(query)) return true;
+          if (p?.name?.toLowerCase().includes(query)) return true;
+          if (p?.description?.toLowerCase().includes(query)) return true;
+          if (p?.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
+          if (original.name?.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
         }
 
