@@ -252,34 +252,27 @@ export default function SLTUsed() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-b from-foreground to-foreground/90 text-primary-foreground py-12 md:py-20">
+      <section className="bg-primary py-14 lg:py-20">
         <div className="section-container">
-          <div className="max-w-3xl">
-            <Badge className="bg-accent text-accent-foreground mb-4">SLT Used</Badge>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Geprüfte Gebrauchtmaschinen
-            </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/80 mb-6">
-              Hochwertige Baumaschinen und Equipment aus unserem eigenen Mietpark – professionell gewartet, sofort einsatzbereit.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
-                <Shield className="h-4 w-4 text-accent" />
-                Geprüft & gewartet
+          <Badge className="bg-accent text-accent-foreground mb-4">SLT Used</Badge>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
+            Geprüfte Gebrauchtmaschinen
+          </h1>
+          <p className="text-lg md:text-xl text-primary-foreground/80 mb-6 max-w-3xl">
+            Hochwertige Baumaschinen und Equipment aus unserem eigenen Mietpark – professionell gewartet, sofort einsatzbereit.
+          </p>
+          <div className="flex flex-wrap gap-6">
+            {[
+              { icon: Shield, text: "Geprüft & gewartet" },
+              { icon: Wrench, text: "Servicehistorie" },
+              { icon: Truck, text: "Lieferung möglich" },
+              { icon: Clock, text: "Sofort verfügbar" },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-sm text-primary-foreground/70">
+                <item.icon className="h-4 w-4 text-accent" />
+                {item.text}
               </div>
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
-                <Wrench className="h-4 w-4 text-accent" />
-                Servicehistorie
-              </div>
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
-                <Truck className="h-4 w-4 text-accent" />
-                Lieferung möglich
-              </div>
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
-                <Clock className="h-4 w-4 text-accent" />
-                Sofort verfügbar
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
