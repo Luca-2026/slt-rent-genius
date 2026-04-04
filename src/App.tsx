@@ -111,6 +111,7 @@ const App = () => (
               <Route path="/standort/bonn" element={<Locations />} />
               <Route path="/standort/muelheim" element={<Locations />} />
               
+              <Route path="/dienstleistungen" element={<Dienstleistungen />} />
               <Route path="/so-funktionierts" element={<HowItWorks />} />
               <Route path="/standorte" element={<Locations />} />
               <Route path="/standorte/:id" element={<Locations />} />
