@@ -532,7 +532,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
-    compatibleMachines: ["bobcat-e10z", "bobcat-e19", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
