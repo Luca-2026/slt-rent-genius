@@ -224,6 +224,7 @@ import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
 import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
+import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 
 export const bonnAggregateProducts = [
   {
