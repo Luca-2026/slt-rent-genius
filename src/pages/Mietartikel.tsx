@@ -9,6 +9,7 @@ import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
+import { MietartikelSearch } from "@/components/rental/MietartikelSearch";
 
 export default function Mietartikel() {
   const { t } = useTranslation();
