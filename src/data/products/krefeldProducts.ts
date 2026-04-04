@@ -1011,6 +1011,28 @@ export const verdichtungProducts: Product[] = [
       "Umschaltung": "Stufenlos hydraulisch",
     },
   },
+  {
+    id: "ruettelplatte-hvp50-60",
+    name: "Rüttelplatte HVP 50/60 420kg reversierbar",
+    description: "Hydraulisch reversierbare Rüttelplatte mit 420 kg Gewicht und 50 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
+    image: "/placeholder.svg",
+    weightKg: 420,
+    category: "ruettelplatte-reversierbar",
+    rentwareCode: { krefeld: "BYTF4N" },
+    detailedDescription: "Die HVP 50/60 ist eine leistungsstarke hydraulisch reversierbare Rüttelplatte mit 420 kg Gewicht und 50 kN Verdichtungsdruck. Dank stufenlos hydraulischer Umschaltung der Fahrtrichtung ist sie besonders effizient auf großen Flächen und bei schweren Verdichtungsarbeiten. Verdichtungstiefe ca. 45 cm.\n\nInkl. 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 8,50 € pro Stunde berechnet.\n\nBenzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
+    specifications: {
+      "Typ": "HVP 50/60",
+      "Gewicht": "420 kg",
+      "Plattengröße (L × B)": "ca. 90 × 60 cm",
+      "Verdichtungsdruck": "50 kN",
+      "Motorleistung": "4,8 kW",
+      "Kraftstoffinhalt": "6,5 l",
+      "Kraftstoffart": "Benzin (95)",
+      "Vorschub": "23 m/min",
+      "Verdichtungstiefe": "ca. 45 cm",
+      "Umschaltung": "Stufenlos hydraulisch",
+    },
+  },
 ];
 
 // ============= WERKZEUGE =============
