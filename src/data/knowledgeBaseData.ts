@@ -76,7 +76,7 @@ export const kbCategories: KBCategory[] = [
     title: "Arbeitsbühnen",
     description: "Sicherheitsunterweisung, Datenblätter und Bedienungsanleitungen für Hebebühnen.",
     icon: "ArrowUpFromLine",
-    articleCount: 1,
+    articleCount: 2,
   },
   {
     id: "verdichtung",
