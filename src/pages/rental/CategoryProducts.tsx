@@ -519,6 +519,15 @@ export default function CategoryProducts() {
                     if (value === "deko") return nameLower.includes("lichterkette") || nameLower.includes("deko");
                     if (value === "arbeitsleuchte") return nameLower.includes("arbeitsleuchte") || nameLower.includes("handlampe") || nameLower.includes("inspektionsleuchte");
                   }
+                  // Fallback: name-based matching for aggregate products
+                  if (category?.id === "aggregate") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "kompressor") return nameLower.includes("kompressor");
+                    if (value === "druckluftwerkzeug") return nameLower.includes("presslufthammer") || nameLower.includes("druckluft");
+                    if (value === "erdrakete") return nameLower.includes("erdrakete");
+                    if (value === "akkupack") return nameLower.includes("bluetti") || nameLower.includes("akkupack") || nameLower.includes("powerstation");
+                    if (value === "aggregat") return nameLower.includes("aggregat") || nameLower.includes("kva");
+                  }
                   return false;
                 }
                 // For moebel-zelte "moebel" group also match by name keywords
