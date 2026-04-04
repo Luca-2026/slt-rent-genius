@@ -3068,7 +3068,6 @@ export const moebelZelteProducts: Product[] = [
       "Kapazität (Bestuhlung)": "ca. 68 Personen (0,71 m²/Person)",
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
     },
-    pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
     pdfUrl: "/manuals/aufbauanleitung-giant-6m.pdf",
     rentwareCode: { krefeld: "7PGYQB" }
   },
