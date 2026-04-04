@@ -1618,6 +1618,23 @@ export const werkzeugeProducts: Product[] = [
       "Lieferumfang": "1× Spitzmeißel, 1× Flachmeißel",
     },
   },
+  {
+    id: "steinknacker-43cm",
+    name: "Steinknacker 43 cm",
+    description: "Steinknacker mit 43 cm Schnittbreite – ideal zum Spalten von Pflastersteinen, Bordsteinen und Klinkern.",
+    image: steinknacker43cm,
+    images: [steinknacker43cm],
+    category: "steinbearbeitung",
+    rentwareCode: { krefeld: "8CUFWQ" },
+    detailedDescription: "Der Steinknacker mit 43 cm maximaler Schnittbreite eignet sich ideal zum sauberen Spalten von Pflastersteinen, Bordsteinen, Klinkern und Natursteinen. Mit gehärtetem 4-Schneiden-Messer für langlebige und präzise Ergebnisse.\n\nSchnitthöhe stufenlos einstellbar von 10 bis 350 mm.",
+    specifications: {
+      "Gewicht": "57 kg",
+      "Max. Schnittbreite": "430 mm",
+      "Min. Schnitthöhe": "10 mm",
+      "Max. Schnitthöhe": "350 mm",
+      "Messer": "Feststehend, gehärtet, 4 Schneiden",
+    },
+  },
 ];
 
 // ============= GARTENPFLEGE =============
