@@ -4047,7 +4047,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest5_4m_1,
     images: [rollgeruest5_4m_1, rollgeruest5_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "5,4 m",
       "Gerüsthöhe": "4,5 m",
@@ -4069,7 +4069,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest6_4m_1,
     images: [rollgeruest6_4m_1, rollgeruest6_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "6,4 m",
       "Gerüsthöhe": "5,5 m",
@@ -4091,7 +4091,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest9_4m_1,
     images: [rollgeruest9_4m_1, rollgeruest9_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "9,4 m",
       "Gerüsthöhe": "8,5 m",
@@ -4259,7 +4259,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest8_4m_1,
     images: [rollgeruest8_4m_1, rollgeruest8_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "8,4 m",
       "Gerüsthöhe": "7,5 m",
@@ -4281,7 +4281,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest7_4m_1,
     images: [rollgeruest7_4m_1, rollgeruest7_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "7,4 m",
       "Gerüsthöhe": "6,5 m",
@@ -4303,7 +4303,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest10_4m_1,
     images: [rollgeruest10_4m_1, rollgeruest10_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "10,4 m",
       "Gerüsthöhe": "9,5 m",
@@ -4325,7 +4325,7 @@ export const leiternGeruesteProducts: Product[] = [
     image: rollgeruest11_4m_1,
     images: [rollgeruest11_4m_1, rollgeruest11_4m_2],
     category: "rollgeruest",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-50-anleitung.pdf",
     specifications: {
       "Arbeitshöhe": "11,4 m",
       "Gerüsthöhe": "10,5 m",
