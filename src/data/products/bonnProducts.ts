@@ -219,6 +219,10 @@ import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.j
 // Shared images - Mobiliar
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
+import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-rollen-1.webp";
+import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
+import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
+import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
 
 export const bonnAggregateProducts = [
   {
