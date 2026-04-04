@@ -426,6 +426,11 @@ import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
 import imgMasse6x8 from "@/assets/products/masse-6x8.avif";
 import imgMasse6x12 from "@/assets/products/masse-6x12.avif";
 import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
+import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
+import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
+import imgSonnenschirm4 from "@/assets/products/sonnenschirm-4.jpeg";
+import imgSonnenschirm5 from "@/assets/products/sonnenschirm-5.jpeg";
 
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
