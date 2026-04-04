@@ -20,6 +20,7 @@ import {
 } from "@/data/knowledgeBaseData";
 import { useTranslation } from "react-i18next";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
+import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,

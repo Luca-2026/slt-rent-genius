@@ -26,6 +26,7 @@ import {
   type Product,
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
+import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
