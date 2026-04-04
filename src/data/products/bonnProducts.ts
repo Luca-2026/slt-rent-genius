@@ -219,6 +219,10 @@ import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.j
 // Shared images - Mobiliar
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
+import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-rollen-1.webp";
+import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
+import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
+import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
 
 export const bonnAggregateProducts = [
   {
@@ -1783,6 +1787,22 @@ export const bonnMoebelProducts = [
       "Anzahl": "20 Stück",
       "Material": "Holz",
       "Farbe": "Schwarz",
+    },
+  },
+  {
+    id: "bonn-kleiderstaender-rollen-ohne-buegel",
+    name: "Kleiderständer mit Rollen, black",
+    description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – ohne Kleiderbügel. Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderstaenderRollen1,
+    images: [imgKleiderstaenderRollen1, imgKleiderstaenderRollen2, imgKleiderstaenderRollen3, imgKleiderstaenderRollen4],
+    specifications: {
+      "Farbe": "Schwarz",
+      "Material": "Eisenrohr, pulverbeschichtet",
+      "Größe (L × B × H)": "(92–132) × 45,4 × 160 cm",
+      "Kleiderstange": "ausziehbar von 92 cm auf 132 cm",
+      "Max. Belastbarkeit": "90 kg (statisch)",
+      "Gewicht": "5 kg",
+      "Rollen": "4 × Lenkrollen mit Bremse",
     },
   },
 ];
