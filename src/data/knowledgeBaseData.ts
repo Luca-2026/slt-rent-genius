@@ -740,6 +740,18 @@ export const kbArticles: KBArticle[] = [
   },
 
   {
+    id: "grabenwalze-bmp8500-datenblatt",
+    title: "1,5t Grabenwalze Bomag BMP 8500 – Datenblatt",
+    description: "Technisches Datenblatt der ferngesteuerten Grabenwalze Bomag BMP 8500 mit Doppelerregersystem und ECOMODE.",
+    categoryId: "verdichtung",
+    productIds: ["grabenwalze-bmp8500", "bonn-grabenwalze-bmp8500"],
+    type: "anleitung",
+    pdfUrl: "/anleitungen/Datenblatt_Bomag_BMP8500.pdf",
+    tags: ["grabenwalze", "bomag", "bmp8500", "verdichtung", "fernsteuerung", "walze"],
+    updatedAt: "2026-04-04",
+  },
+
+  {
     id: "ruettelplatte-bedienung",
     title: "Rüttelplatte – Bedienung & Verdichtungstipps",
     description: "Einsteiger-Anleitung: Rüttelplatte sicher starten, bewegen und richtig verdichten – Schritt für Schritt erklärt.",
