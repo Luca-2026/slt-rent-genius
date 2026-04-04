@@ -107,8 +107,8 @@ export function HeroSearch() {
         const catProducts = location.products[cat.id];
         if (catProducts) {
           for (const p of catProducts) {
-            if (allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
-            if (p.tags?.some((t) => allWordsMatch(t.toLowerCase(), queryWords))) return true;
+            if (p.name && allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
+            if (p.tags?.some((t) => t && allWordsMatch(t.toLowerCase(), queryWords))) return true;
           }
         }
       }
