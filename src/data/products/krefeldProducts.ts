@@ -3952,22 +3952,6 @@ export const leiternGeruesteProducts: Product[] = [
   },
   // --- Kombileiter ---
   {
-    id: "mehrzweckleiter-3x11",
-    name: "Mehrzweckleiter 3×11",
-    description: "Kombileiter 3×11 Sprossen – verwendbar als Stehleiter, Anlegeleiter und Schiebeleiter.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "kombileiter",
-    specifications: {
-      "Sprossen": "3 × 11",
-      "Arbeitshöhe (Stehleiter)": "ca. 4,4 m",
-      "Arbeitshöhe (Anlegeleiter)": "ca. 7,0 m",
-      "Material": "Aluminium",
-      "Max. Belastung": "150 kg",
-    },
-    rentwareCode: { krefeld: "IMR9B9" }
-  },
-  {
     id: "mehrzweckleiter-3x12",
     name: "Mehrzweckleiter 3×12 Sprossen",
     description: "Vielseitige Aluminium-Mehrzweckleiter mit 3×12 Sprossen – einsetzbar als Stehleiter, Anlegeleiter oder Schiebeleiter. Ideal für Arbeiten auf unterschiedlichen Höhen.",
