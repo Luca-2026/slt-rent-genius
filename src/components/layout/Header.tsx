@@ -183,9 +183,12 @@ export function Header() {
     { to: "/loesungen/kindergeburtstage", label: t("nav.solutionKinder") },
   ];
 
-  const howItWorksItems: DropdownItem[] = [
+  const serviceItems: DropdownItem[] = [
     { to: "/so-funktionierts", label: t("nav.howItWorks") },
     { to: "/hilfe", label: t("nav.help") },
+    { to: "/lieferung", label: t("nav.delivery") },
+    { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
+    { to: "/faq", label: t("nav.faq") },
   ];
 
   const aboutItems: DropdownItem[] = [
