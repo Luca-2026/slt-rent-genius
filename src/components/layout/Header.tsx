@@ -245,6 +245,7 @@ export function Header() {
             {/* Primary nav */}
             <NavDropdown label={t("nav.rent")} items={produkteItems} />
             <NavDropdown label={t("nav.buy")} items={kaufenItems} />
+            <NavDropdown label={t("nav.service")} items={serviceItems} />
             <NavDropdown label={t("nav.solutions")} items={loesungenItems} />
             <Link
               to="/standorte"
