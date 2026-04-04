@@ -426,6 +426,11 @@ import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
 import imgMasse6x8 from "@/assets/products/masse-6x8.avif";
 import imgMasse6x12 from "@/assets/products/masse-6x12.avif";
 import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
+import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
+import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
+import imgSonnenschirm4 from "@/assets/products/sonnenschirm-4.jpeg";
+import imgSonnenschirm5 from "@/assets/products/sonnenschirm-5.jpeg";
 
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
@@ -3044,28 +3049,26 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    pricePerDay: "auf Anfrage"
   },
   {
-    id: "zeltboden-anthrazit",
-    name: "Zeltboden Anthrazit 0,86 m²",
-    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
-    image: imgZeltbodenAnthrazit2,
-    images: [imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit1],
+    id: "eventzelt-6x8m",
+    name: "Eventzelt 6x8m extra hoch",
+    description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
+    image: imgMasse6x8,
+    images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
-    pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
     specifications: {
-      "Material": "Recycelter Kunststoff-Mix",
-      "Abmessung": "1.000 × 860 mm (0,86 m²)",
-      "Nutzfläche": "0,80 m²/Stück",
-      "Mattenstärke": "23 mm",
-      "Farbe": "Anthrazit",
-      "Belastbarkeit": "ca. 15 t/m² (fester Untergrund)",
-      "Verbindung": "Nut-und-Feder-System",
-      "Gewicht": "15 kg/Stück",
-      "Rückgabe": "besenrein",
+      "Grundfläche": "48 m² (6 m × 8 m)",
+      "Durchgangshöhe": "2,6 m (extra hoch)",
+      "Farbe": "weiß",
+      "Inklusive": "Seiten- und Stirnwände, Dachstangen",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 80 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 68 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
     },
-    rentwareCode: { krefeld: "2RKZVT" }
+    pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
+    rentwareCode: { krefeld: "7PGYQB" }
   },
   {
     id: "eventzelt-6x12m",
@@ -3088,24 +3091,44 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "O3E6TK" }
   },
   {
-    id: "eventzelt-6x8m",
-    name: "Eventzelt 6x8m extra hoch",
-    description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
-    image: imgMasse6x8,
-    images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
+    id: "sonnenschirm",
+    name: "Sonnenschirm LEMVIG Ø 3 m",
+    description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
+    image: imgSonnenschirm1,
+    images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
     category: "zelt",
     specifications: {
-      "Grundfläche": "48 m² (6 m × 8 m)",
-      "Durchgangshöhe": "2,6 m (extra hoch)",
-      "Farbe": "weiß",
-      "Inklusive": "Seiten- und Stirnwände, Dachstangen",
-      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
-      "Kapazität (Stehend)": "ca. 80 Personen (0,6 m²/Person)",
-      "Kapazität (Bestuhlung)": "ca. 68 Personen (0,71 m²/Person)",
-      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
+      "Durchmesser": "3 m",
+      "Höhe": "2,6 m",
+      "Farbe": "weiß/natur",
+      "Material Stange": "Lackiertes FSC® 100 % Hartholz",
+      "Material Bespannung": "UV-beständiges Polyester, wasserabweisend",
+      "Neigungsfunktion": "Ja – Schirmkopf kippbar",
+      "Öffnungsmechanismus": "Zugschnur",
+      "Belüftung": "Belüftungsöffnung oben (reduziert Winddruck)",
+      "Ständer": "Nicht enthalten – mind. 35 kg empfohlen",
     },
-    pdfUrl: "/manuals/eventzelt-6x8-aufbauanleitung.pdf",
-    rentwareCode: { krefeld: "7PGYQB" }
+  },
+  {
+    id: "zeltboden-anthrazit",
+    name: "Zeltboden Anthrazit 0,86 m²",
+    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
+    image: imgZeltbodenAnthrazit2,
+    images: [imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit1],
+    category: "zelt",
+    pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
+    specifications: {
+      "Material": "Recycelter Kunststoff-Mix",
+      "Abmessung": "1.000 × 860 mm (0,86 m²)",
+      "Nutzfläche": "0,80 m²/Stück",
+      "Mattenstärke": "23 mm",
+      "Farbe": "Anthrazit",
+      "Belastbarkeit": "ca. 15 t/m² (fester Untergrund)",
+      "Verbindung": "Nut-und-Feder-System",
+      "Gewicht": "15 kg/Stück",
+      "Rückgabe": "besenrein",
+    },
+    rentwareCode: { krefeld: "2RKZVT" }
   },
   {
     id: "bierzeltgarnitur-set",
