@@ -17,17 +17,97 @@ import {
 // Get all unique products across all locations (deduplicated by name)
 function getAllUniqueProducts(): Product[] {
   const productMap = new Map<string, Product>();
-  
+
   for (const location of locations) {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
-      if (product.name && !productMap.has(product.name)) {
-        productMap.set(product.name, product);
-      }
+      if (!product.name) continue;
+
+      const normalizedName = normalizeSearchText(product.name);
+      if (!normalizedName || productMap.has(normalizedName)) continue;
+
+      productMap.set(normalizedName, product);
     }
   }
-  
+
   return Array.from(productMap.values());
+}
+
+function normalizeSearchText(value?: string): string {
+  return (value ?? "")
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .replace(/&/g, " und ")
+    .replace(/,/g, ".")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9.\s/-]/g, " ")
+    .replace(/[/-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getSearchTokens(value: string): string[] {
+  return normalizeSearchText(value).split(" ").filter(Boolean);
+}
+
+function matchesAllTokens(target: string | undefined, queryTokens: string[]): boolean {
+  if (!target || queryTokens.length === 0) return false;
+
+  const normalizedTarget = normalizeSearchText(target);
+  const compactTarget = normalizedTarget.replace(/\s+/g, "");
+
+  return queryTokens.every((token) => {
+    const compactToken = token.replace(/\s+/g, "");
+    return normalizedTarget.includes(token) || compactTarget.includes(compactToken);
+  });
+}
+
+function countMatchingTokens(target: string | undefined, queryTokens: string[]): number {
+  if (!target || queryTokens.length === 0) return 0;
+
+  const normalizedTarget = normalizeSearchText(target);
+  const compactTarget = normalizedTarget.replace(/\s+/g, "");
+
+  return queryTokens.filter((token) => {
+    const compactToken = token.replace(/\s+/g, "");
+    return normalizedTarget.includes(token) || compactTarget.includes(compactToken);
+  }).length;
+}
+
+function getFieldSearchScore(
+  target: string | undefined,
+  normalizedQuery: string,
+  queryTokens: string[],
+  weights: {
+    exact: number;
+    startsWith: number;
+    includes: number;
+    allTokens: number;
+    perToken: number;
+  },
+): number {
+  if (!target || !normalizedQuery) return 0;
+
+  const normalizedTarget = normalizeSearchText(target);
+  if (!normalizedTarget) return 0;
+
+  const compactTarget = normalizedTarget.replace(/\s+/g, "");
+  const compactQuery = normalizedQuery.replace(/\s+/g, "");
+  const matchedTokenCount = countMatchingTokens(target, queryTokens);
+
+  let score = 0;
+
+  if (normalizedTarget === normalizedQuery || compactTarget === compactQuery) score += weights.exact;
+  if (normalizedTarget.startsWith(normalizedQuery) || compactTarget.startsWith(compactQuery)) score += weights.startsWith;
+  if (normalizedTarget.includes(normalizedQuery) || compactTarget.includes(compactQuery)) score += weights.includes;
+  if (matchesAllTokens(target, queryTokens)) score += weights.allTokens;
+  score += matchedTokenCount * weights.perToken;
+
+  return score;
 }
 
 // Get locations that have a specific product (by id match)
@@ -49,7 +129,7 @@ function getProductIdAtLocation(productId: string, locationId: string): string |
 function getCategoryForProductAtLocation(productId: string, locationId: string): string {
   const location = locations.find((l) => l.id === locationId);
   if (!location) return "alle";
-  
+
   for (const [categoryId, products] of Object.entries(location.products)) {
     if (products.some((p) => p.id === productId)) {
       return categoryId;
@@ -72,95 +152,124 @@ export function HeroSearch() {
   const allProducts = useMemo(() => getAllUniqueProducts(), []);
   const translatedProducts = useTranslatedProducts(allProducts);
 
-  // Filter matching categories (by title, description, OR products within)
-  // Prioritize direct category name matches over indirect product-based matches
-  // Check if all words in the query appear in the target string
-  const allWordsMatch = (target: string, queryWords: string[]) =>
-    queryWords.every((w) => target.includes(w));
-
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return [];
-    const query = searchQuery.toLowerCase();
-    const queryWords = query.split(/\s+/).filter(Boolean);
+    const normalizedQuery = normalizeSearchText(searchQuery);
+    const queryTokens = getSearchTokens(searchQuery);
+    if (!normalizedQuery || queryTokens.length === 0) return [];
+
     const searchable = productCategories.filter((c) => c.id !== "alle");
-    
-    // First: direct category title/description matches (word-based)
+
     const directMatches = searchable.filter((cat) => {
-      if (isGerman) {
-        if (allWordsMatch(cat.title.toLowerCase(), queryWords)) return true;
-        if (allWordsMatch(cat.description.toLowerCase(), queryWords)) return true;
-      } else {
-        const tr = categoryTranslations[cat.id];
-        if (tr?.title && allWordsMatch(tr.title.toLowerCase(), queryWords)) return true;
-        if (tr?.description && allWordsMatch(tr.description.toLowerCase(), queryWords)) return true;
-        if (allWordsMatch(cat.title.toLowerCase(), queryWords)) return true;
+      if (matchesAllTokens(cat.title, queryTokens)) return true;
+      if (matchesAllTokens(cat.description, queryTokens)) return true;
+
+      const translatedCategory = categoryTranslations[cat.id];
+      if (!isGerman) {
+        if (matchesAllTokens(translatedCategory?.title, queryTokens)) return true;
+        if (matchesAllTokens(translatedCategory?.description, queryTokens)) return true;
       }
+
       return false;
     });
-    
-    // If we have direct category matches, only show those
+
     if (directMatches.length > 0) return directMatches.slice(0, 3);
-    
-    // Otherwise: indirect matches via products within categories
+
     const indirectMatches = searchable.filter((cat) => {
       for (const location of locations) {
         const catProducts = location.products[cat.id];
-        if (catProducts) {
-          for (const p of catProducts) {
-            if (p.name && allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
-            if (p.tags?.some((t) => t && allWordsMatch(t.toLowerCase(), queryWords))) return true;
-          }
+        if (!catProducts) continue;
+
+        for (const product of catProducts) {
+          if (matchesAllTokens(product.name, queryTokens)) return true;
+          if (matchesAllTokens(product.modelName, queryTokens)) return true;
+          if (matchesAllTokens(product.description, queryTokens)) return true;
+          if (product.tags?.some((tag) => matchesAllTokens(tag, queryTokens))) return true;
         }
       }
       return false;
     });
-    
+
     return indirectMatches.slice(0, 3);
   }, [searchQuery, isGerman]);
 
   const filteredProducts = useMemo(() => {
-    if (!searchQuery.trim()) return [];
-    const query = searchQuery.toLowerCase();
-    
-    // Collect product IDs from matched categories to boost them
+    const normalizedQuery = normalizeSearchText(searchQuery);
+    const queryTokens = getSearchTokens(searchQuery);
+    if (!normalizedQuery || queryTokens.length === 0) return [];
+
     const categoryProductIds = new Set<string>();
     if (filteredCategories.length > 0) {
       for (const cat of filteredCategories) {
         for (const location of locations) {
           const catProducts = location.products[cat.id];
-          if (catProducts) {
-            for (const p of catProducts) {
-              categoryProductIds.add(p.id);
-            }
+          if (!catProducts) continue;
+
+          for (const product of catProducts) {
+            categoryProductIds.add(product.id);
           }
         }
       }
     }
-    
-    return translatedProducts
-      .filter((p, index) => {
-        const original = allProducts[index];
-        if (!original || !original.name) return false;
-        
-        // Include products from matched categories
-        if (categoryProductIds.has(original.id)) return true;
-        
-        if (isGerman) {
-          if (original.name?.toLowerCase().includes(query)) return true;
-          if (original.description?.toLowerCase().includes(query)) return true;
-          if (original.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
-        } else {
-          if (p?.name?.toLowerCase().includes(query)) return true;
-          if (p?.description?.toLowerCase().includes(query)) return true;
-          if (p?.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
-          if (original.name?.toLowerCase().includes(query)) return true;
-          if (original.description?.toLowerCase().includes(query)) return true;
-        }
 
-        return false;
+    return translatedProducts
+      .map((translatedProduct, index) => {
+        const original = allProducts[index];
+        if (!original?.name) return null;
+
+        const searchBlob = [
+          original.description,
+          original.detailedDescription,
+          original.modelName,
+          ...(original.tags ?? []),
+          ...Object.entries(original.specifications ?? {}).flatMap(([key, value]) => [key, value]),
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        let score = 0;
+        score += getFieldSearchScore(original.name, normalizedQuery, queryTokens, {
+          exact: 300,
+          startsWith: 200,
+          includes: 150,
+          allTokens: 220,
+          perToken: 60,
+        });
+        score += getFieldSearchScore(translatedProduct.name, normalizedQuery, queryTokens, {
+          exact: 260,
+          startsWith: 180,
+          includes: 140,
+          allTokens: 200,
+          perToken: 50,
+        });
+        score += getFieldSearchScore(original.modelName, normalizedQuery, queryTokens, {
+          exact: 160,
+          startsWith: 120,
+          includes: 100,
+          allTokens: 140,
+          perToken: 35,
+        });
+        score += getFieldSearchScore(searchBlob, normalizedQuery, queryTokens, {
+          exact: 80,
+          startsWith: 60,
+          includes: 40,
+          allTokens: 70,
+          perToken: 20,
+        });
+
+        if (score <= 0) return null;
+        if (categoryProductIds.has(original.id)) score += 15;
+
+        return {
+          product: translatedProduct,
+          score,
+          nameLength: original.name.length,
+        };
       })
-      .slice(0, 8);
-  }, [searchQuery, translatedProducts, allProducts, isGerman, filteredCategories]);
+      .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
+      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"))
+      .slice(0, 8)
+      .map(({ product }) => product);
+  }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
