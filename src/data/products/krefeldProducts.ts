@@ -1710,11 +1710,10 @@ export const gartenpflegeProducts: Product[] = [
   },
   {
     id: "vertikutierer-sa38-bv",
-    name: "Vertikutierer SA38 BV",
+    name: "Benzin Vertikutierer BV240",
     description: "Benzin-Vertikutierer für große Flächen",
     specifications: {
-      "Hersteller": "Sabo",
-      "Typ": "SA38 BV",
+      "Typ": "BV240",
       "Arbeitsbreite": "38 cm",
       "Messersystem": "15 Scheiben/ drei Zähne",
       "Motorleistung": "2.300 W / 3,1 PS",
