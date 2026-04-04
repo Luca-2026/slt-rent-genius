@@ -37,6 +37,9 @@ export function RentwareLoader() {
       const script = document.createElement("script");
       script.type = "module";
       script.src = RTR_WIDGET_SRC;
+      script.onerror = (e) => {
+        console.warn("[RentwareLoader] Failed to load widget script – continuing without it.", e);
+      };
       document.body.appendChild(script);
     }
   }, []);
