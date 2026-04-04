@@ -733,7 +733,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-aggregat-20kva": { description: "Powerful diesel generator (EU Stage V) for larger construction sites and events – incl. 8 operating hours/day." },
   "bonn-aggregat-7-5kva": { description: "Powerful generator with 7.5 kVA three-phase and 2.5 kVA single-phase – ideal for construction sites and events." },
   "bonn-mastbuehne-11m": { name: "11m Mast Boom ZMP09", description: "Compact mast boom for working up to 11m height." },
-  "bonn-anhaenger-arbeitsbuehne-18m": { name: "18m Trailer Telescopic Articulated Boom Lift", description: "Mobile trailer boom lift for flexible use up to 18m." },
+  "bonn-anhaenger-arbeitsbuehne-18m": { name: "18m Articulated Telescopic Trailer Boom Lift electric/petrol", description: "Mobile trailer boom lift for flexible use up to 18m." },
   "bonn-scherenbuehne-8m": { name: "7.8 m Electric Scissor Lift (Type ZS0607)", description: "Electric scissor lift for indoor and outdoor use." },
   "bonn-bobcat-e10": { name: "1t Bobcat E10", description: "Compact mini excavator for tight construction sites." },
   "bonn-xcmg-xe20e": { description: "Operating weight: 2,000 kg | Dig depth: 2,385 mm | Width: 980 mm" },
