@@ -498,6 +498,7 @@ import imgHydraulikhammer1 from "@/assets/products/erdbewegung/hydraulikhammer-s
 import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-2.jpg";
 import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
 import imgHydraulikhammerShb75_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb75-1.avif";
+import imgHydraulikhammerShb100_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb100-1.avif";
 // Hydraulikhammer SHB40 images
 import imgHydraulikhammerShb40_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-1.jpeg";
 import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-2.jpeg";
