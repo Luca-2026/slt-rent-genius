@@ -6411,6 +6411,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich die Scheinwerfer auch an Traversen befestigen?", a: "Ja – die mitgelieferten Super Clamps ermöglichen die sichere Befestigung an Traversen und Rohren. Die Safetys bieten zusätzliche Sicherheit." },
     ],
   },
+  "grabenwalze-bmp8500": {
+    excelName: "1,5t Grabenwalze Bomag BMP 8500",
+    seoTitle: "1,5t Grabenwalze Bomag BMP 8500 mieten | Ferngesteuert | SLT Rental",
+    metaDescription: "Bomag BMP 8500 Grabenwalze mieten: 1,5t ferngesteuerte Walze mit Doppelerregersystem, IVC und ECOMODE. Kombifernsteuerung Kabel/Funk. Bei SLT Rental buchen.",
+    h1: "1,5t Grabenwalze Bomag BMP 8500 mieten – Ferngesteuert bei SLT Rental",
+    h2s: ["Technische Daten", "Ausstattung & Sicherheit", "Einsatzbereiche", "ECOMODE & IVC"],
+    useCaseBau: "Grabenverdichtung, Kanalbau, Leitungsgräben, Böschungsverdichtung, Hinterfüllung von Fundamenten, Straßenbau, Tiefbau",
+    useCaseEvent: "",
+    useCasePrivat: "",
+    primaryKeywords: "Grabenwalze mieten, Bomag BMP 8500 mieten, ferngesteuerte Walze leihen, Grabenwalze NRW",
+    is247: false,
+    faqs: [
+      { q: "Wie wird die Bomag BMP 8500 gesteuert?", a: "Die Grabenwalze verfügt über eine Kombifernsteuerung, die sowohl per Kabel als auch per Funk bedient werden kann. Die Fernbedienung enthält 2 Akkus und LED-Anzeigen für optimale Kontrolle." },
+      { q: "Was bedeutet Intelligent Vibration Control (IVC)?", a: "IVC erkennt automatisch den aktuellen Verdichtungsgrad und passt die Vibrationsleistung an. So wird Überverdichtung vermieden und das Ergebnis optimiert." },
+      { q: "Welche Sicherheitsfunktionen hat die BMP 8500?", a: "Die Walze bietet das BOMAG Operator Safety System, automatische Motorabschaltung bei >40° seitlichem Kippwinkel, Abschaltautomatik bei Ölmangel und einen Batterietrennschalter." },
+      { q: "Für welche Einsätze eignet sich die Grabenwalze?", a: "Die BMP 8500 ist ideal für die Verdichtung in Gräben, an Böschungen, bei der Hinterfüllung von Fundamenten und in engen Bereichen, in denen größere Walzen nicht eingesetzt werden können." },
+    ],
+  },
+  "bonn-grabenwalze-bmp8500": {
+    excelName: "1,5t Grabenwalze Bomag BMP 8500",
+    seoTitle: "1,5t Grabenwalze Bomag BMP 8500 mieten in Bonn | SLT Rental",
+    metaDescription: "Bomag BMP 8500 Grabenwalze mieten in Bonn: 1,5t ferngesteuerte Walze mit Doppelerregersystem, IVC und ECOMODE. Bei SLT Rental anfragen.",
+    h1: "1,5t Grabenwalze Bomag BMP 8500 mieten in Bonn – SLT Rental",
+    h2s: ["Technische Daten", "Ausstattung & Sicherheit", "Einsatzbereiche", "ECOMODE & IVC"],
+    useCaseBau: "Grabenverdichtung, Kanalbau, Leitungsgräben, Böschungsverdichtung, Hinterfüllung von Fundamenten, Straßenbau, Tiefbau",
+    useCaseEvent: "",
+    useCasePrivat: "",
+    primaryKeywords: "Grabenwalze mieten Bonn, Bomag BMP 8500 mieten, ferngesteuerte Walze leihen NRW",
+    is247: false,
+    faqs: [
+      { q: "Wie wird die Bomag BMP 8500 gesteuert?", a: "Die Grabenwalze verfügt über eine Kombifernsteuerung, die sowohl per Kabel als auch per Funk bedient werden kann. Die Fernbedienung enthält 2 Akkus und LED-Anzeigen für optimale Kontrolle." },
+      { q: "Was bedeutet Intelligent Vibration Control (IVC)?", a: "IVC erkennt automatisch den aktuellen Verdichtungsgrad und passt die Vibrationsleistung an. So wird Überverdichtung vermieden und das Ergebnis optimiert." },
+      { q: "Welche Sicherheitsfunktionen hat die BMP 8500?", a: "Die Walze bietet das BOMAG Operator Safety System, automatische Motorabschaltung bei >40° seitlichem Kippwinkel, Abschaltautomatik bei Ölmangel und einen Batterietrennschalter." },
+      { q: "Für welche Einsätze eignet sich die Grabenwalze?", a: "Die BMP 8500 ist ideal für die Verdichtung in Gräben, an Böschungen, bei der Hinterfüllung von Fundamenten und in engen Bereichen, in denen größere Walzen nicht eingesetzt werden können." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {

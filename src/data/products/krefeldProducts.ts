@@ -1065,6 +1065,31 @@ export const verdichtungProducts: Product[] = [
       "Umschaltung": "Stufenlos hydraulisch",
     },
   },
+  {
+    id: "grabenwalze-bmp8500",
+    name: "1,5t Grabenwalze",
+    modelName: "Bomag BMP 8500",
+    description: "Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.",
+    image: grabenwalzeBmp8500_1,
+    images: [grabenwalzeBmp8500_1, grabenwalzeBmp8500_2],
+    category: "walze",
+    detailedDescription: "Die Bomag BMP 8500 ist eine leistungsstarke ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht. Dank Kombifernsteuerung (Kabel/Funk) und ECOMODE arbeitet sie effizient und sicher in Gräben, an Böschungen und in engen Bereichen.\n\nAusstattung:\n• Hydrostatische Knicklenkung, wartungsfrei\n• Kombifernsteuerung Kabel/Funk mit 2 Akkus\n• Doppelerregersystem mit Richtschwinger\n• Zwei Fahrgeschwindigkeitsstufen & 2 Amplituden\n• Intelligent Vibration Control (IVC)\n• BOMAG Operator Safety System\n• Automatische Motorabschaltung bei seitlichem Kippwinkel >40°\n• Easy Service Concept mit Diagnosemodul\n• Vollschutzhauben aus hochschlagfestem Verbundwerkstoff\n• Abschließbare Motorhaube und Armaturenabdeckung",
+    specifications: {
+      "Hersteller": "Bomag",
+      "Modell": "BMP 8500",
+      "Betriebsgewicht": "ca. 1.500 kg",
+      "Lenkung": "Hydrostatische Knicklenkung, wartungsfrei",
+      "Fernsteuerung": "Kombifernsteuerung Kabel/Funk",
+      "Erregersystem": "Doppelerregersystem mit Richtschwinger",
+      "Fahrgeschwindigkeit": "2 Stufen",
+      "Amplituden": "2",
+      "Vibrationskontrolle": "Intelligent Vibration Control (IVC)",
+      "Sicherheit": "BOMAG Operator Safety System, Abschaltautomatik bei Ölmangel, Motorabschaltung >40° Kippwinkel",
+      "Starter": "Elektrostarter",
+      "Service": "Easy Service Concept mit Diagnosemodul & Fehlercodeanzeige",
+    },
+    dataSheetUrl: "/anleitungen/Datenblatt_Bomag_BMP8500.pdf",
+  },
 ];
 
 // ============= WERKZEUGE =============
