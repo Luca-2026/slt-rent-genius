@@ -1040,7 +1040,8 @@ function inferArbeitsbuehneCategory(name: string | undefined): string | undefine
   return undefined;
 }
 
-function inferErdbewegungCategory(name: string): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
+function inferErdbewegungCategory(name: string | undefined): "minibagger" | "radlader" | "knicklader" | "dumper" | undefined {
+  if (!name) return undefined;
   const n = name.toLowerCase();
   if (n.includes("knicklader")) return "knicklader";
   if (n.includes("radlader")) return "radlader";
