@@ -519,6 +519,15 @@ export default function CategoryProducts() {
                     if (value === "deko") return nameLower.includes("lichterkette") || nameLower.includes("deko");
                     if (value === "arbeitsleuchte") return nameLower.includes("arbeitsleuchte") || nameLower.includes("handlampe") || nameLower.includes("inspektionsleuchte");
                   }
+                  // Fallback: name-based matching for aggregate products
+                  if (category?.id === "aggregate") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "kompressor") return nameLower.includes("kompressor");
+                    if (value === "druckluftwerkzeug") return nameLower.includes("presslufthammer") || nameLower.includes("druckluft");
+                    if (value === "erdrakete") return nameLower.includes("erdrakete");
+                    if (value === "akkupack") return nameLower.includes("bluetti") || nameLower.includes("akkupack") || nameLower.includes("powerstation");
+                    if (value === "aggregat") return nameLower.includes("aggregat") || nameLower.includes("kva");
+                  }
                   return false;
                 }
                 // For moebel-zelte "moebel" group also match by name keywords
@@ -771,6 +780,29 @@ export default function CategoryProducts() {
             );
           }
         }
+      });
+    }
+
+    // Sort products for aggregate: by category group, then ascending kVA within aggregat
+    if (category?.id === "aggregate") {
+      const aggregateCatOrder: Record<string, number> = {
+        aggregat: 0,
+        akkupack: 1,
+        kompressor: 2,
+        druckluftwerkzeug: 3,
+        erdrakete: 4,
+      };
+      filtered.sort((a, b) => {
+        const orderA = aggregateCatOrder[a.category || ""] ?? 5;
+        const orderB = aggregateCatOrder[b.category || ""] ?? 5;
+        if (orderA !== orderB) return orderA - orderB;
+        // Within aggregat, sort by kVA ascending
+        if (a.category === "aggregat" && b.category === "aggregat") {
+          const kvaA = parseFloat((a.name.match(/(\d+(?:[.,]\d+)?)\s*kva/i)?.[1] || "0").replace(",", "."));
+          const kvaB = parseFloat((b.name.match(/(\d+(?:[.,]\d+)?)\s*kva/i)?.[1] || "0").replace(",", "."));
+          return kvaA - kvaB;
+        }
+        return 0;
       });
     }
 
