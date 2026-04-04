@@ -482,10 +482,9 @@ export const erdbewegungFilterSections: FilterSection[] = [
     label: "catFilters.erdAnbaugeraetTyp",
     defaultExpanded: false,
     options: [
-      { id: "tiefloeffel", label: "catFilters.erdTiefloeffel", sublabel: "catFilters.erdTiefloeffel_sub" },
-      { id: "kabelloeffel", label: "catFilters.erdKabelloeffel", sublabel: "catFilters.erdKabelloeffel_sub" },
-      { id: "grabenraeumloeffel", label: "catFilters.erdGrabenraeumloeffel", sublabel: "catFilters.erdGrabenraeumloeffel_sub" },
+      { id: "loeffel", label: "catFilters.erdLoeffel", sublabel: "catFilters.erdLoeffel_sub" },
       { id: "hydraulikhammer", label: "catFilters.erdHydraulikhammer", sublabel: "catFilters.erdHydraulikhammer_sub" },
+      { id: "sortiergreifer", label: "catFilters.erdSortiergreifer", sublabel: "catFilters.erdSortiergreifer_sub" },
     ],
   },
   {
@@ -495,7 +494,8 @@ export const erdbewegungFilterSections: FilterSection[] = [
     options: [
       { id: "ms01", label: "catFilters.erdMs01", sublabel: "catFilters.erdMs01_sub" },
       { id: "ms03", label: "catFilters.erdMs03", sublabel: "catFilters.erdMs03_sub" },
-      { id: "cw05", label: "catFilters.erdCw05", sublabel: "catFilters.erdCw05_sub" },
+      { id: "ms08", label: "catFilters.erdMs08", sublabel: "catFilters.erdMs08_sub" },
+      { id: "ms10", label: "catFilters.erdMs10", sublabel: "catFilters.erdMs10_sub" },
     ],
   },
   {
