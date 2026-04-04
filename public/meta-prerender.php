@@ -65,7 +65,7 @@ if (!$isBot) {
 // ── Page Meta Data Map ──────────────────────────────────────
 $pages = [
     '/' => [
-        'title' => 'Baumaschinen & Equipment mieten in NRW | SLT Rental',
+        'title' => 'Baumaschinen, Anhänger & Eventausstattung mieten in NRW | SLT Rental',
         'description' => 'Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen & Event-Equipment ✓ 3 Standorte in NRW ✓ Tiefpreisgarantie ✓ Wochenend-Tarife',
     ],
     '/mieten' => [
