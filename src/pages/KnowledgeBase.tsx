@@ -20,6 +20,7 @@ import {
 } from "@/data/knowledgeBaseData";
 import { useTranslation } from "react-i18next";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
+import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
@@ -356,6 +357,11 @@ export default function KnowledgeBase() {
                     <ArticleCard key={article.id} article={article} onClick={() => setSelectedArticle(article)} typeLabel={typeLabel} t={t} />
                   ))}
                 </div>
+              </div>
+
+              {/* Stecker-Anleitung (vollständig ausgeklappt) */}
+              <div className="mt-12">
+                <AnhaengersteckerAnleitung collapsed={false} showHeader={true} />
               </div>
 
               <Card className="mt-12 bg-secondary border-0">

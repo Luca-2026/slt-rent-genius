@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <!-- Stecker -->
+  <circle cx="60" cy="58" r="34" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="2"/>
+  <circle cx="60" cy="58" r="23" fill="#D3D1C7" stroke="#888780" stroke-width="1.5"/>
+  <circle cx="60" cy="58" r="12" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+  <!-- Gegen-Uhrzeigersinn-Bogen -->
+  <path d="M 92 40 A 40 40 0 0 0 20 52" fill="none" stroke="#5F5E5A" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arr)"/>
+  <!-- Symbol -->
+  <text font-family="Arial, sans-serif" font-size="24" fill="#5F5E5A" text-anchor="middle" x="60" y="68">↺</text>
+  <text font-family="Arial, sans-serif" font-size="10" fill="#444441" text-anchor="middle" x="60" y="110">Gegen Uhrzeigersinn · Abziehen</text>
+</svg>

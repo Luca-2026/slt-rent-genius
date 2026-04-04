@@ -26,6 +26,7 @@ import {
   type Product,
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
+import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
@@ -592,6 +593,13 @@ export default function ProductDetail() {
                     <FileDown className="h-4 w-4 flex-shrink-0" />
                     {t("rental.downloadPdf")}
                   </a>
+                </div>
+              )}
+
+              {/* Stecker-Anleitung für Anhänger */}
+              {categoryId === "anhaenger" && (
+                <div className="mt-6">
+                  <AnhaengersteckerAnleitung collapsed={true} showHeader={false} />
                 </div>
               )}
 
