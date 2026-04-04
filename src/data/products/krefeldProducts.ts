@@ -1088,7 +1088,7 @@ export const verdichtungProducts: Product[] = [
       "Starter": "Elektrostarter",
       "Service": "Easy Service Concept mit Diagnosemodul & Fehlercodeanzeige",
     },
-    dataSheetUrl: "/anleitungen/Datenblatt_Bomag_BMP8500.pdf",
+    
   },
 ];
 
