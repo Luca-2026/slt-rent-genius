@@ -965,6 +965,13 @@ export const bonnVerdichtungProducts = [
     description: "Hydraulisch reversierbare Rüttelplatte mit 420 kg Gewicht und 50 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
     image: ruettelplatteHvp5060,
   },
+  {
+    id: "bonn-grabenwalze-bmp8500",
+    name: "1,5t Grabenwalze",
+    modelName: "Bomag BMP 8500",
+    description: "Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== ANHÄNGER ====================
