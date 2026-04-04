@@ -345,6 +345,7 @@ export const bonnArbeitsbuehnenProducts = [
     image: "/placeholder.svg",
     category: "anhaengerbuehne",
     rentwareCode: { bonn: "32EVXI" },
+    pdfUrl: "/documents/Datenblatt-Anhaengerbuehne-TM18GTi.pdf",
   },
   {
     id: "bonn-scherenbuehne-8m",
