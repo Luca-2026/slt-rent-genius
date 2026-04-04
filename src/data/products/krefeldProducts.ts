@@ -3091,8 +3091,8 @@ export const moebelZelteProducts: Product[] = [
     id: "eventzelt-6x8m",
     name: "Eventzelt 6x8m extra hoch",
     description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
-    image: imgEventzelt6x8_1,
-    images: [imgEventzelt6x8_1, imgEventzelt6x8_2, imgEventzelt6x8_3],
+    image: imgMasse6x8,
+    images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "48 m² (6 m × 8 m)",
