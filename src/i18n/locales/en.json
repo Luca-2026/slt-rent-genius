@@ -471,6 +471,18 @@
     "ctaProducts": "Discover Products",
     "ctaContact": "Get in Touch"
   },
+  "salesTeaser": {
+    "badge": "Authorized Dealer & Service Center",
+    "title": "Construction Equipment & Trailers Also Available for Purchase",
+    "subtitle": "Whether brand-new machines from Zoomlion, BAUMAX and Temared or well-maintained used machinery – we offer personal advice and deliver across NRW.",
+    "newMachines": "New Machines",
+    "newMachinesDesc": "Zoomlion, BAUMAX & Temared – directly from an authorized dealer",
+    "newMachinesCta": "Discover New Machines",
+    "usedMachines": "Used Machines",
+    "usedMachinesDesc": "Well-maintained used machinery – inspected, immediately available",
+    "usedMachinesCta": "View SLT Used",
+    "inquiryCta": "Request Purchase Advice"
+  },
   "howItWorks": {
     "badge": "Easy & hassle-free",
     "heroTitle": "How It Works",
