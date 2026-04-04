@@ -42,6 +42,7 @@ const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
 
 // Lazy-loaded: Other pages
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const Dienstleistungen = lazy(() => import("./pages/Dienstleistungen"));
 const Locations = lazy(() => import("./pages/Locations"));
 const Contact = lazy(() => import("./pages/Contact"));
 const FAQ = lazy(() => import("./pages/FAQ"));
