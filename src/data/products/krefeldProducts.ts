@@ -1726,6 +1726,39 @@ export const werkzeugeProducts: Product[] = [
     },
     
   },
+  {
+    id: "erdrakete-45mm",
+    name: "Erdrakete 45 mm",
+    description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung unter Wegen, Einfahrten und Fundamenten.",
+    image: imgErdrakete1,
+    images: [imgErdrakete1],
+    category: "erdrakete",
+    specifications: {
+      "Durchmesser": "45 mm",
+      "Länge": "979 mm",
+      "Gewicht": "9 kg",
+      "Luftbedarf": "0,35 m³/min",
+      "Lastschlagzahl": "530 1/min",
+    },
+  },
+  {
+    id: "erdrakete-65mm",
+    name: "Erdrakete 65 mm",
+    description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
+    image: imgErdrakete1,
+    images: [imgErdrakete1],
+    category: "erdrakete",
+    specifications: {
+      "Durchmesser": "65 mm",
+      "Länge": "1.366 mm",
+      "Gewicht": "22,5 kg",
+      "Luftbedarf": "ab 0,8 m³/min",
+      "Empfohlene Kompressorleistung": "1,20 m³/min",
+      "Schlagenergie": "100 J",
+      "Schlagfrequenz": "6 Hz",
+      "Arbeitsdruck": "7 bar",
+    },
+  },
 ];
 
 // ============= GARTENPFLEGE =============
