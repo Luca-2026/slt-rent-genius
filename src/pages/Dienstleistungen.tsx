@@ -207,27 +207,27 @@ export default function Dienstleistungen() {
       />
 
       {/* Contact CTA */}
-      <section className="py-16 lg:py-20 bg-primary text-primary-foreground">
+      <section className="py-16 lg:py-20 bg-primary">
         <div className="section-container text-center">
           <AnimatedSection>
-            <h2 className="text-2xl lg:text-3xl font-bold mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-white">
               Haben Sie Fragen zu unseren Dienstleistungen?
             </h2>
-            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-8 text-lg">
+            <p className="text-white/80 max-w-xl mx-auto mb-8 text-lg">
               Unser Team berät Sie gerne – persönlich, schnell und ohne Umwege.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <a
                 href="mailto:info@slt-rental.de"
-                className="inline-flex items-center gap-2 text-primary-foreground/90 hover:text-primary-foreground transition-colors"
+                className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
               >
                 <Mail className="h-5 w-5" />
                 info@slt-rental.de
               </a>
-              <span className="hidden sm:block text-primary-foreground/40">|</span>
+              <span className="hidden sm:block text-white/40">|</span>
               <a
                 href="tel:+492151417990"
-                className="inline-flex items-center gap-2 text-primary-foreground/90 hover:text-primary-foreground transition-colors"
+                className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
               >
                 <Phone className="h-5 w-5" />
                 02151 417 99 04
