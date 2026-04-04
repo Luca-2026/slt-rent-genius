@@ -419,6 +419,14 @@ import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 
+// Maß-Bilder für Zelte
+import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
+import imgMasse4x4 from "@/assets/products/masse-4x4.avif";
+import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
+import imgMasse6x8 from "@/assets/products/masse-6x8.avif";
+import imgMasse6x12 from "@/assets/products/masse-6x12.avif";
+import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
 import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
