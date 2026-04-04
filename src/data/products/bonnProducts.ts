@@ -520,7 +520,7 @@ export const bonnErdbewegungProducts = [
       "Ladegerät": "integriert mit 5 m Kabel (230 V)",
     },
     image: imgKnickdumper1,
-    images: [imgKnickdumper1, imgKnickdumper2],
+    images: [imgKnickdumper1],
     rentwareCode: { bonn: "CUDHTT" },
     driveType: "elektro",
   },
