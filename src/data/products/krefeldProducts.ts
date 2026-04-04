@@ -5553,42 +5553,7 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Gewicht": "79 kg",
     },
   },
-  {
-    id: "cw05-tiefloeffel-40cm",
-    name: "CW05 Tieflöffel 40cm/30l",
-    description: "Tieflöffel 40cm für CW05 Schnellwechsler",
-    specifications: {
-      "Aufnahme": "CW05",
-      "Gewichtsklasse": "2 - 3 t",
-      "Volumen": "30 l",
-      "Arbeitsbreite": "500 mm",
-      "Zahnsystem": "ohne Zähne",
-      "Anzahl Zähne": "0",
-      "Gewicht": "36 kg",
-    },
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "tiefloeffel",
-    rentwareCode: { krefeld: "48HA2A" }
-  },
-  {
-    id: "cw05-tiefloeffel-50cm",
-    name: "CW05 Tieflöffel 50cm/45l",
-    description: "Tieflöffel 50cm für CW05 Schnellwechsler",
-    specifications: {
-      "Aufnahme": "CW05",
-      "Gewichtsklasse": "1 - 2 t",
-      "Volumen": "45 l",
-      "Arbeitsbreite": "500 mm",
-      "Zahnsystem": "ohne Zähne",
-      "Anzahl Zähne": "0",
-      "Gewicht": "48 kg",
-    },
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "tiefloeffel",
-    rentwareCode: { krefeld: "SJMBMY" }
-  },
+  
   // Kabellöffel
   {
     id: "ms01-kabelloeffel-15cm-symlock",
