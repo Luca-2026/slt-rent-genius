@@ -206,6 +206,13 @@ export default function KnowledgeBase() {
                 </div>
               )}
 
+              {/* Custom Component (e.g. Stecker-Anleitung) */}
+              {(selectedArticle as any).customComponent === "AnhaengersteckerAnleitung" && (
+                <div className="mb-6">
+                  <AnhaengersteckerAnleitung collapsed={false} showHeader={false} />
+                </div>
+              )}
+
               {/* Rich Sections */}
               {selectedArticle.sections && selectedArticle.sections.length > 0 && (
                 <div className="space-y-5">
