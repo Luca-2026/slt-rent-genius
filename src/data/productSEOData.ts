@@ -6339,6 +6339,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann die Pumpe auch sandiges oder schlammiges Wasser fördern?", a: "Ja – als Schmutzwasserpumpe ist sie für die Förderung von verunreinigtem Wasser mit Feststoffanteilen ausgelegt. Für stark abrasive Medien bitte vorher anfragen." },
     ],
   },
+  "party-ton-licht-set": {
+    excelName: "Party Ton & Licht-Set",
+    seoTitle: "Party Ton & Licht-Set mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Party Ton & Licht-Set mieten: 2× LED Lichtanlage + 2.1 Soundsystem 1.400W für bis zu 75 Personen. Bluetooth, einfacher Aufbau. Tagesmiete bei SLT Rental.",
+    h1: "Party Ton & Licht-Set mieten in Bonn & Krefeld – Komplett-Paket bei SLT Rental",
+    h2s: ["Was ist enthalten?", "Technische Daten Soundsystem", "LED Beleuchtungsset Details", "Einfacher Aufbau"],
+    useCaseBau: "",
+    useCaseEvent: "Firmenfeiern, Sommerfeste, Hochzeiten, Geburtstage, Vereinsfeste, Gartenpartys, DJ-Sets",
+    useCasePrivat: "Gartenparty, Geburtstagsfeier, Grillabend mit Musik und Licht, Silvesterparty",
+    primaryKeywords: "Party Set mieten, Ton und Licht mieten, Partyequipment mieten NRW, Licht und Sound Set leihen",
+    is247: false,
+    faqs: [
+      { q: "Für wie viele Personen reicht das Party Ton & Licht-Set?", a: "Das Set ist für Veranstaltungen mit bis zu 75 Personen ausgelegt. Das 2.1 Soundsystem liefert bis zu 126 dB Lautstärke." },
+      { q: "Kann ich mein Handy per Bluetooth verbinden?", a: "Ja – das Soundsystem verfügt über einen Bluetooth-Empfänger. Zusätzlich stehen XLR-, AUX- und Klinke-Anschlüsse zur Verfügung." },
+      { q: "Brauche ich technisches Wissen für den Aufbau?", a: "Nein – das Set ist auf einfachen Aufbau ausgelegt. Stative aufstellen, Kabel anschließen, fertig. Die Lichtanlage kann im Programmbetrieb oder Sound-to-Light-Modus betrieben werden." },
+      { q: "Was ist alles im Lieferumfang enthalten?", a: "2× LED Beleuchtungsset (je mit Stativ, 5m Kabel, 2 Taschen) und 1× 2.1 Soundsystem (mit Stativ, Distanzstange, 3m + 5m Speakonkabel, Miniklinke-XLR Adapter und Bluetooth-Empfänger)." },
+    ],
+  },
+  "bonn-party-ton-licht-set": {
+    excelName: "Party Ton & Licht-Set",
+    seoTitle: "Party Ton & Licht-Set mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Party Ton & Licht-Set mieten: 2× LED Lichtanlage + 2.1 Soundsystem 1.400W für bis zu 75 Personen. Bluetooth, einfacher Aufbau. Tagesmiete bei SLT Rental.",
+    h1: "Party Ton & Licht-Set mieten in Bonn & Krefeld – Komplett-Paket bei SLT Rental",
+    h2s: ["Was ist enthalten?", "Technische Daten Soundsystem", "LED Beleuchtungsset Details", "Einfacher Aufbau"],
+    useCaseBau: "",
+    useCaseEvent: "Firmenfeiern, Sommerfeste, Hochzeiten, Geburtstage, Vereinsfeste, Gartenpartys, DJ-Sets",
+    useCasePrivat: "Gartenparty, Geburtstagsfeier, Grillabend mit Musik und Licht, Silvesterparty",
+    primaryKeywords: "Party Set mieten, Ton und Licht mieten, Partyequipment mieten NRW, Licht und Sound Set leihen",
+    is247: false,
+    faqs: [
+      { q: "Für wie viele Personen reicht das Party Ton & Licht-Set?", a: "Das Set ist für Veranstaltungen mit bis zu 75 Personen ausgelegt. Das 2.1 Soundsystem liefert bis zu 126 dB Lautstärke." },
+      { q: "Kann ich mein Handy per Bluetooth verbinden?", a: "Ja – das Soundsystem verfügt über einen Bluetooth-Empfänger. Zusätzlich stehen XLR-, AUX- und Klinke-Anschlüsse zur Verfügung." },
+      { q: "Brauche ich technisches Wissen für den Aufbau?", a: "Nein – das Set ist auf einfachen Aufbau ausgelegt. Stative aufstellen, Kabel anschließen, fertig. Die Lichtanlage kann im Programmbetrieb oder Sound-to-Light-Modus betrieben werden." },
+      { q: "Was ist alles im Lieferumfang enthalten?", a: "2× LED Beleuchtungsset (je mit Stativ, 5m Kabel, 2 Taschen) und 1× 2.1 Soundsystem (mit Stativ, Distanzstange, 3m + 5m Speakonkabel, Miniklinke-XLR Adapter und Bluetooth-Empfänger)." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
