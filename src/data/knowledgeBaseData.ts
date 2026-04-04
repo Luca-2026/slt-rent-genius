@@ -22,6 +22,7 @@ export interface KBArticle {
   videoUrl?: string; // YouTube/video embed URL
   pdfUrl?: string; // PDF download link
   tags: string[];
+  customComponent?: string; // Render a custom React component instead of sections
   updatedAt: string;
 }
 
@@ -473,6 +474,16 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     tags: ["kipper", "hydraulik", "entladen"],
     updatedAt: "2026-02-08",
+  },
+  {
+    id: "anhaenger-stecker",
+    title: "Anhängerstecker richtig anschließen",
+    description: "Schritt-für-Schritt-Anleitung: 7- und 13-poligen Stecker korrekt einstecken, verriegeln und Funktionsprüfung durchführen.",
+    categoryId: "anhaenger",
+    type: "anleitung",
+    tags: ["stecker", "13-polig", "7-polig", "beleuchtung", "blinker", "rücklicht", "bremslicht", "verriegeln", "dose", "adapter"],
+    updatedAt: "2026-04-04",
+    customComponent: "AnhaengersteckerAnleitung",
   },
 
   // Erdbewegung

@@ -206,6 +206,13 @@ export default function KnowledgeBase() {
                 </div>
               )}
 
+              {/* Custom Component (e.g. Stecker-Anleitung) */}
+              {(selectedArticle as any).customComponent === "AnhaengersteckerAnleitung" && (
+                <div className="mb-6">
+                  <AnhaengersteckerAnleitung collapsed={false} showHeader={false} />
+                </div>
+              )}
+
               {/* Rich Sections */}
               {selectedArticle.sections && selectedArticle.sections.length > 0 && (
                 <div className="space-y-5">
@@ -359,10 +366,8 @@ export default function KnowledgeBase() {
                 </div>
               </div>
 
-              {/* Stecker-Anleitung (vollständig ausgeklappt) */}
-              <div className="mt-12">
-                <AnhaengersteckerAnleitung collapsed={false} showHeader={true} />
-              </div>
+
+
 
               <Card className="mt-12 bg-secondary border-0">
                 <CardContent className="py-8 text-center">
