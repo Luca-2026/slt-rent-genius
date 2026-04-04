@@ -925,6 +925,41 @@ export const arbeitsbuehnenProducts: Product[] = [
       "Lieferumfang": "1× Spitzmeißel, 1× Flachmeißel",
     },
   },
+  {
+    id: "erdrakete-45mm-aggregat",
+    name: "Erdrakete 45 mm",
+    description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung unter Wegen, Einfahrten und Fundamenten.",
+    image: imgErdrakete1,
+    images: [imgErdrakete1],
+    category: "erdrakete",
+    detailedDescription: "Die Erdrakete 45 mm ist ein kompaktes, druckluftbetriebenes Bodenverdrängungsgerät für die grabenlose Verlegung von Leerrohren und Kabeln. Mit nur 9 kg Gewicht und 45 mm Durchmesser eignet sie sich ideal für kleine Durchführungen unter Gehwegen, Einfahrten und Fundamenten – ohne den Belag aufzureißen.",
+    specifications: {
+      "Durchmesser": "45 mm",
+      "Länge": "979 mm",
+      "Gewicht": "9 kg",
+      "Luftbedarf": "0,35 m³/min",
+      "Lastschlagzahl": "530 1/min",
+    },
+  },
+  {
+    id: "erdrakete-65mm-aggregat",
+    name: "Erdrakete 65 mm",
+    description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
+    image: imgErdrakete1,
+    images: [imgErdrakete1],
+    category: "erdrakete",
+    detailedDescription: "Die Erdrakete 65 mm ist ein leistungsstarkes Bodenverdrängungsgerät für die grabenlose Verlegung von Leerrohren, Kabeln und Wasserleitungen. Mit 100 Joule Schlagenergie und 65 mm Durchmesser durchdringt sie auch härtere Böden zuverlässig. Empfohlene Kompressorleistung: 1,20 m³/min.",
+    specifications: {
+      "Durchmesser": "65 mm",
+      "Länge": "1.366 mm",
+      "Gewicht": "22,5 kg",
+      "Luftbedarf": "ab 0,8 m³/min",
+      "Empfohlene Kompressorleistung": "1,20 m³/min",
+      "Schlagenergie": "100 J",
+      "Schlagfrequenz": "6 Hz",
+      "Arbeitsdruck": "7 bar",
+    },
+  },
 ];
 
 // ============= VERDICHTUNG =============
