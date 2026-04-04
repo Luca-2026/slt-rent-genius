@@ -595,6 +595,13 @@ export default function ProductDetail() {
                 </div>
               )}
 
+              {/* Stecker-Anleitung für Anhänger */}
+              {categoryId === "anhaenger" && (
+                <div className="mt-6">
+                  <AnhaengersteckerAnleitung collapsed={true} showHeader={false} />
+                </div>
+              )}
+
               {/* Hilfe-Artikel für Anhänger */}
               {categoryId === "anhaenger" && (
                 <div className="space-y-3">
