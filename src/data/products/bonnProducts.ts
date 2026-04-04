@@ -223,6 +223,7 @@ import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
 import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
+import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 
 export const bonnAggregateProducts = [
   {
@@ -678,6 +679,30 @@ export const bonnErdbewegungZusatzProducts = [
     },
     image: "/placeholder.svg",
     rentwareCode: { bonn: "4I75NO" },
+  },
+  {
+    id: "bonn-sortiergreifer-ssg390",
+    name: "MS03/MS08 Sortiergreifer SSG 390",
+    modelName: "Seifert SSG 390",
+    description: "Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.",
+    image: imgSortiergreiferSSG390,
+    images: [imgSortiergreiferSSG390],
+    detailedDescription: "Der Seifert SSG 390 ist ein leistungsstarker Sortiergreifer mit 360°-Endlosrotation für präzises Positionieren von Schüttgütern, Steinen, Baumstämmen und Abbruchmaterial. Die robuste Ausführung mit Schneide ermöglicht auch den Einsatz bei verdichteten Materialien. Kompatibel mit MS03/MS08 Aufnahme für Bagger der 5–8 t Klasse.",
+    specifications: {
+      "Aufnahme": "MS03 / MS08",
+      "Gewichtsklasse": "5 – 8 t",
+      "Gewicht": "390 kg",
+      "Öffnungsweite": "1.280 mm",
+      "Arbeitsbreite": "550 mm",
+      "Bauhöhe (geöffnet)": "1.060 mm",
+      "Max. Schließkraft": "24 kN",
+      "Rotation": "360° / endlos",
+      "Rotation Betriebsdruck": "25 MPa",
+      "Rotation Öldurchfluss": "40 l/min",
+      "Öldurchfluss": "60 l/min",
+      "Betriebsdruck": "30 MPa",
+      "Ausführung": "Mit Schneide",
+    },
   },
 ];
 

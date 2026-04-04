@@ -511,6 +511,7 @@ import imgTiefloeffelMs03_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel
 import imgSortiergreiferSsg150_1 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-1.avif";
 import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-2.avif";
 import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-3.avif";
+import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
@@ -5885,6 +5886,32 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Kraftstoff": "Diesel",
       "Übergabe": "leer",
     },
+  },
+  {
+    id: "sortiergreifer-ssg390",
+    name: "MS03/MS08 Sortiergreifer SSG 390",
+    modelName: "Seifert SSG 390",
+    description: "Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.",
+    image: imgSortiergreiferSSG390,
+    images: [imgSortiergreiferSSG390],
+    category: "sortiergreifer",
+    detailedDescription: "Der Seifert SSG 390 ist ein leistungsstarker Sortiergreifer mit 360°-Endlosrotation für präzises Positionieren von Schüttgütern, Steinen, Baumstämmen und Abbruchmaterial. Die robuste Ausführung mit Schneide ermöglicht auch den Einsatz bei verdichteten Materialien. Kompatibel mit MS03/MS08 Aufnahme für Bagger der 5–8 t Klasse.",
+    specifications: {
+      "Aufnahme": "MS03 / MS08",
+      "Gewichtsklasse": "5 – 8 t",
+      "Gewicht": "390 kg",
+      "Öffnungsweite": "1.280 mm",
+      "Arbeitsbreite": "550 mm",
+      "Bauhöhe (geöffnet)": "1.060 mm",
+      "Max. Schließkraft": "24 kN",
+      "Rotation": "360° / endlos",
+      "Rotation Betriebsdruck": "25 MPa",
+      "Rotation Öldurchfluss": "40 l/min",
+      "Öldurchfluss": "60 l/min",
+      "Betriebsdruck": "30 MPa",
+      "Ausführung": "Mit Schneide",
+    },
+    rentwareCode: { krefeld: "DCMDXV" }
   },
 ];
 
