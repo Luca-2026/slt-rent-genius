@@ -183,9 +183,12 @@ export function Header() {
     { to: "/loesungen/kindergeburtstage", label: t("nav.solutionKinder") },
   ];
 
-  const howItWorksItems: DropdownItem[] = [
+  const serviceItems: DropdownItem[] = [
     { to: "/so-funktionierts", label: t("nav.howItWorks") },
     { to: "/hilfe", label: t("nav.help") },
+    { to: "/lieferung", label: t("nav.delivery") },
+    { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
+    { to: "/faq", label: t("nav.faq") },
   ];
 
   const aboutItems: DropdownItem[] = [
@@ -242,6 +245,7 @@ export function Header() {
             {/* Primary nav */}
             <NavDropdown label={t("nav.rent")} items={produkteItems} />
             <NavDropdown label={t("nav.buy")} items={kaufenItems} />
+            <NavDropdown label={t("nav.service")} items={serviceItems} />
             <NavDropdown label={t("nav.solutions")} items={loesungenItems} />
             <Link
               to="/standorte"
@@ -258,7 +262,6 @@ export function Header() {
             <div className="h-4 w-px bg-border/60" />
 
             {/* Secondary nav */}
-            <NavDropdown label={t("nav.howItWorks")} items={howItWorksItems} secondary />
             <NavDropdown label={t("nav.about")} items={aboutItems} secondary />
           </nav>
 
@@ -317,6 +320,11 @@ export function Header() {
               onClose={() => setIsMenuOpen(false)}
             />
             <MobileDropdown
+              label={t("nav.service")}
+              items={serviceItems}
+              onClose={() => setIsMenuOpen(false)}
+            />
+            <MobileDropdown
               label={t("nav.solutions")}
               items={loesungenItems}
               onClose={() => setIsMenuOpen(false)}
@@ -334,12 +342,6 @@ export function Header() {
 
             <div className="h-px bg-border/60 my-2 mx-4" />
 
-            <MobileDropdown
-              label={t("nav.howItWorks")}
-              items={howItWorksItems}
-              secondary
-              onClose={() => setIsMenuOpen(false)}
-            />
             <MobileDropdown
               label={t("nav.about")}
               items={aboutItems}
