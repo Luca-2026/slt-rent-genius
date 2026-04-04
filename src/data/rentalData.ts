@@ -1098,6 +1098,15 @@ function inferGartenpflegeCategory(name: string): string | undefined {
   return undefined;
 }
 
+function inferAggregateCategory(name: string): string {
+  const n = name.toLowerCase();
+  if (n.includes("erdrakete")) return "erdrakete";
+  if (n.includes("presslufthammer")) return "druckluftwerkzeug";
+  if (n.includes("kompressor")) return "kompressor";
+  if (n.includes("bluetti") || n.includes("akkupack") || n.includes("powerstation")) return "akkupack";
+  return "aggregat";
+}
+
 function inferStromCategory(name: string): string {
   const n = name.toLowerCase();
   if (n.includes("brücke") || n.includes("bruecke")) return "bruecke";
@@ -1169,17 +1178,19 @@ function normalizeBonnGartenpflege(products: Product[]): Product[] {
 }
 
 function normalizeBonnAggregate(products: Product[]): Product[] {
-  return products.map((p) => ({
-    ...p,
-    category: p.category ?? "aggregat",
-    tags: mergeTags(p.tags, (() => {
-      const kva = parseKvaFromName(p.name);
-      if (!kva) return [];
-      if (kva <= 5) return ["bis-5kva"];
-      if (kva <= 20) return ["5-20kva"];
-      return ["ab-20kva"];
-    })()),
-  }));
+  return products.map((p) => {
+    const kva = parseKvaFromName(p.name);
+    return {
+      ...p,
+      category: p.category ?? inferAggregateCategory(p.name),
+      tags: mergeTags(p.tags, (() => {
+        if (!kva) return [];
+        if (kva <= 5) return ["bis-5kva"];
+        if (kva <= 20) return ["5-20kva"];
+        return ["ab-20kva"];
+      })()),
+    };
+  });
 }
 
 function normalizeBonnArbeitsbuehnen(products: Product[]): Product[] {
@@ -1593,34 +1604,38 @@ export const locations: LocationData[] = [
       "geschirr-glaeser-besteck": geschirrGlaeserBesteckProducts,
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
-      "aggregate": [
-        {
-          id: "mh-kompressor-5m3",
-          name: "4m³ Kompressor",
-          description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
-          image: kompressor5m3_1,
-          images: [kompressor5m3_1, kompressor5m3_2],
-          category: "kompressor",
-          rentwareCode: { muelheim: "" },
-          detailedDescription: "Kompressor inkl. Generator – auf Fahrgestell.\n\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät – Rückgabe des Mietgeräts mit vollgetanktem Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
-          specifications: {
-            "Marke": "Doosan",
-            "Typ": "7/45",
-            "Volumenstrom": "4m³/min",
-            "Max. Druck": "6,8 bar",
-            "Emissionsklasse": "EU Stage V",
-            "Batteriespannung": "12 V",
-            "Anschlüsse": "3x",
-            "Drehzahl": "1500 U/min",
-            "Gewicht": "ca. 680 kg",
-            "Tankinhalt": "58 l",
-            "Kraftstoff": "Diesel",
-            "Abgasnorm": "Stage V",
-            "Zusatzausstattung": "auf Fahrgestell",
-            "Generator": "6 kVA 400V/230V",
+      "aggregate": mergeWithFallback(
+        [
+          {
+            id: "mh-kompressor-5m3",
+            name: "4m³ Kompressor",
+            description: "Kompressor inkl. Generator – Doosan 7/45, 4m³/min Volumenstrom, 6 kVA Generator 400V/230V – inkl. 8 Betriebsstunden/Tag.",
+            image: kompressor5m3_1,
+            images: [kompressor5m3_1, kompressor5m3_2],
+            category: "kompressor",
+            rentwareCode: { muelheim: "" },
+            detailedDescription: "Kompressor inkl. Generator – auf Fahrgestell.\n\ninkl. 8 Betriebsstunden/Tag, Mehrstunden werden mit brutto 10,-€ pro Std. berechnet.\nzzgl. Verbrauch, Tankfüllung je Mietgerät – Rückgabe des Mietgeräts mit vollgetanktem Tank vereinbart. Diesel wird mit brutto 2,85€/l berechnet.",
+            specifications: {
+              "Marke": "Doosan",
+              "Typ": "7/45",
+              "Volumenstrom": "4m³/min",
+              "Max. Druck": "6,8 bar",
+              "Emissionsklasse": "EU Stage V",
+              "Batteriespannung": "12 V",
+              "Anschlüsse": "3x",
+              "Drehzahl": "1500 U/min",
+              "Gewicht": "ca. 680 kg",
+              "Tankinhalt": "58 l",
+              "Kraftstoff": "Diesel",
+              "Abgasnorm": "Stage V",
+              "Zusatzausstattung": "auf Fahrgestell",
+              "Generator": "6 kVA 400V/230V",
+            },
           },
-        },
-      ],
+        ],
+        aggregateProducts,
+        "muelheim"
+      ),
       "heizung-trocknung": mergeWithFallback(
         [
           {
