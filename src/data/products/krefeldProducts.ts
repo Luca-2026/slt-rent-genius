@@ -5953,6 +5953,25 @@ export const erdbewegungZusatzProducts: Product[] = [
     compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "CRLJPA" }
   },
+  {
+    id: "ms03-ms08-hydraulikhammer-shb75",
+    name: "MS03/MS08 Hydraulikhammer SHB75",
+    description: "Hydraulikhammer für MS03/MS08 Schnellwechsler – Gewichtsklasse 6–9 t",
+    detailedDescription: "Der SHB75 Hydraulikhammer ist ein leistungsstarkes Anbaugerät für Bagger der 6- bis 9-Tonnen-Klasse mit MS03 oder MS08 Schnellwechsler. Mit einer Schlagkraft von 1.200 Joule und 400–800 Schlägen pro Minute eignet er sich hervorragend zum Aufbrechen von Beton, Asphalt, Fels und Gestein. Der 75-mm-Meißel bietet optimale Durchschlagskraft bei kompaktem Eigengewicht von 375 kg.",
+    image: imgHydraulikhammerShb75_1,
+    images: [imgHydraulikhammerShb75_1],
+    category: "hydraulikhammer",
+    specifications: {
+      "Meißel Durchmesser": "75 mm",
+      "Schlaganzahl": "400 – 800 bpm",
+      "Schlagkraft": "1.200 J",
+      "Gewichtsklasse Trägergerät": "6 – 9 t",
+      "Gewicht": "375 kg",
+      "Höhe": "1.500 mm",
+      "Öldurchfluss": "50 – 90 l/min",
+      "Betriebsdruck": "12 – 17 MPa",
+    },
+  },
   // Sortiergreifer
   {
     id: "ms01-ms03-sortiergreifer-ssg150",
