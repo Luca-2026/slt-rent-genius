@@ -1391,6 +1391,7 @@ export const bonnLeiternProducts = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "GTQBCT" },
   },
   {
@@ -1415,6 +1416,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "NP1PGC" },
   },
   {
@@ -1439,6 +1441,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "ILQNCT" },
   },
   {
@@ -1463,6 +1466,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "XAC9I4" },
   },
   {
@@ -1487,6 +1491,7 @@ export const bonnLeiternProducts = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "LYF6UT" },
   },
   {
@@ -1512,6 +1517,7 @@ export const bonnLeiternProducts = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     rentwareCode: { bonn: "KZJ688" },
   },
   {

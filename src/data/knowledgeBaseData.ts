@@ -124,7 +124,7 @@ export const kbArticles: KBArticle[] = [
     categoryId: "anhaenger",
     type: "sicherheit",
     tags: ["ladungssicherung", "beladen", "zurrgurte", "stvo", "§22", "spanngurte", "antirutschmatte"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
     sections: [
       {
         type: "legal",
@@ -238,7 +238,7 @@ export const kbArticles: KBArticle[] = [
     categoryId: "anhaenger",
     type: "anleitung",
     tags: ["codesystem", "24/7", "sms", "schloss", "selbstbedienung", "kontaktlos", "code"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
     sections: [
       {
         type: "info",
@@ -661,7 +661,7 @@ export const kbArticles: KBArticle[] = [
     type: "video",
     videoUrl: "https://youtu.be/HEQiWWrrjM8",
     tags: ["soundboks", "gen3", "bluetooth", "lautsprecher", "outdoor", "video", "beschallung"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "soundboks-gen3-video-teamup",
@@ -672,7 +672,7 @@ export const kbArticles: KBArticle[] = [
     type: "video",
     videoUrl: "https://youtu.be/u6BDAf2W4x8",
     tags: ["soundboks", "gen3", "teamup", "skaa", "bluetooth", "verbinden", "video"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "soundboks-gen3-anleitung",
@@ -683,7 +683,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/soundboks-gen3-bedienungsanleitung.pdf",
     tags: ["soundboks", "gen3", "anleitung", "pdf", "bedienungsanleitung", "beschallung"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
 
   // Arbeitsbühnen
@@ -863,7 +863,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "10,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-11-4m",
@@ -872,9 +872,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-11-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-11-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "11,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-6-4m",
@@ -883,9 +883,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-6-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-6-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "6,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-8-4m",
@@ -894,9 +894,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-8-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-8-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "8,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-9-4m",
@@ -905,9 +905,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-9-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-9-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "9,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-5-4m",
@@ -916,9 +916,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-5-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-5-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "5,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-7-4m",
@@ -927,9 +927,9 @@ export const kbArticles: KBArticle[] = [
     categoryId: "leitern-gerueste",
     productIds: ["rollgeruest-krause-breitaufbau-7-4m"],
     type: "anleitung",
-    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung-7-4m.pdf",
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "7,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-4-4m-video",
@@ -940,7 +940,7 @@ export const kbArticles: KBArticle[] = [
     type: "video",
     videoUrl: "https://www.youtube.com/watch?v=5tqZPFwN02c",
     tags: ["krause", "rollgerüst", "4,4m", "breitaufbau", "aufbau", "video", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-3-3m-video",
@@ -951,7 +951,7 @@ export const kbArticles: KBArticle[] = [
     type: "video",
     videoUrl: "https://www.youtube.com/watch?v=5tqZPFwN02c",
     tags: ["krause", "rollgerüst", "3,3m", "aufbau", "video", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
 
 
@@ -965,7 +965,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/allegra-bautrockner-kt553-anleitung.pdf",
     tags: ["allegra", "bautrockner", "kt553", "kt554", "entfeuchtung", "trocknung", "anleitung", "pdf", "stromzähler", "mid"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "allegra-bautrockner-kt200-anleitung",
@@ -976,7 +976,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/allegra-bautrockner-kt200-anleitung.pdf",
     tags: ["allegra", "bautrockner", "kt200", "entfeuchtung", "trocknung", "anleitung", "pdf", "stromzähler", "mid"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
 
   {
@@ -1016,7 +1016,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/pioneer-cdj2000-nxs-bedienungsanleitung.pdf",
     tags: ["pioneer", "cdj", "2000", "nxs", "multiplayer", "dj", "anleitung"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   // Eventtechnik – D.A.S. Audio Vantec 18A
   {
@@ -1028,7 +1028,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/das-vantec-18a-bedienungsanleitung.pdf",
     tags: ["das", "das audio", "vantec", "18a", "subwoofer", "anleitung"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   // Eventtechnik – Sennheiser Funkmikrofon XSW 1
   {
@@ -1040,7 +1040,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/sennheiser-xsw1-bedienungsanleitung.pdf",
     tags: ["sennheiser", "xsw", "funkmikrofon", "mikrofon", "anleitung"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
 
   // Aggregate
@@ -1053,7 +1053,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/doosan-g20-g30-g40-betriebsanleitung.pdf",
     tags: ["doosan", "g20", "g50", "g80", "g100", "aggregat", "stromerzeuger", "betriebsanleitung", "anleitung", "pdf", "diesel", "stage-v"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
 
   // Hüpfburgen
