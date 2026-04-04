@@ -1,9 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
-import { SEO } from "@/components/SEO";
+import { SEO, SLT_FAQ_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   ClipboardList,
   ShieldCheck,
