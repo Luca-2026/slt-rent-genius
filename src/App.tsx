@@ -20,6 +20,7 @@ const LocationCategories = lazy(() => import("./pages/rental/LocationCategories"
 const CategoryProducts = lazy(() => import("./pages/rental/CategoryProducts"));
 const ProductDetail = lazy(() => import("./pages/rental/ProductDetail"));
 const Products = lazy(() => import("./pages/Products"));
+const Mietartikel = lazy(() => import("./pages/Mietartikel"));
 
 // Lazy-loaded: B2B pages
 const B2BLogin = lazy(() => import("./pages/b2b/Login"));
