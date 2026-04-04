@@ -163,12 +163,24 @@ export function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   const produkteItems: DropdownItem[] = [
-    { to: "/produkte", label: t("nav.products"), description: "Unser gesamtes Sortiment" },
-    { to: "/standorte", label: t("nav.locations"), description: "3 Standorte in NRW" },
+    { to: "/mietartikel", label: t("nav.allCategories"), description: "Alle Kategorien im Überblick" },
+    { to: "/mieten", label: t("nav.rentNow"), description: "Standort wählen & direkt mieten" },
   ];
 
   const kaufenItems: DropdownItem[] = [
     { to: "/verkauf", label: t("nav.buyNow"), description: "Neumaschinen & Gebrauchtgeräte" },
+  ];
+
+  const loesungenItems: DropdownItem[] = [
+    { to: "/loesungen", label: t("nav.solutions"), description: "Alle Lösungen" },
+    { to: "/loesungen/garten-landschaftsbau", label: t("nav.solutionGalabau") },
+    { to: "/loesungen/tiefbau-erdbewegung", label: t("nav.solutionTiefbau") },
+    { to: "/loesungen/hochbau-renovierung", label: t("nav.solutionHochbau") },
+    { to: "/loesungen/events-veranstaltungen", label: t("nav.solutionEvents") },
+    { to: "/loesungen/umzug-transport", label: t("nav.solutionTransport") },
+    { to: "/loesungen/handwerk-gewerbe", label: t("nav.solutionHandwerk") },
+    { to: "/loesungen/private-projekte", label: t("nav.solutionPrivate") },
+    { to: "/loesungen/kindergeburtstage", label: t("nav.solutionKinder") },
   ];
 
   const howItWorksItems: DropdownItem[] = [
