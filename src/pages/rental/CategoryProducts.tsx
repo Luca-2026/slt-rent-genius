@@ -540,6 +540,14 @@ export default function CategoryProducts() {
                     if (value === "akkupack") return nameLower.includes("bluetti") || nameLower.includes("akkupack") || nameLower.includes("powerstation");
                     if (value === "aggregat") return nameLower.includes("aggregat") || nameLower.includes("kva");
                   }
+                  // Fallback: name-based matching for geschirr/glaeser/besteck products
+                  if (category?.id === "geschirr-glaeser-besteck") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "glaeser") return nameLower.includes("glas") || nameLower.includes("gläser") || nameLower.includes("weißwein") || nameLower.includes("weisswein") || nameLower.includes("rotwein") || nameLower.includes("champagner") || nameLower.includes("longdrink") || nameLower.includes("wasser") || nameLower.includes("bier");
+                    if (value === "geschirr") return nameLower.includes("teller") || nameLower.includes("schüssel") || nameLower.includes("schuessel") || nameLower.includes("tasse") || nameLower.includes("untertasse") || nameLower.includes("suppenteller");
+                    if (value === "besteck") return nameLower.includes("messer") || nameLower.includes("gabel") || nameLower.includes("löffel") || nameLower.includes("loeffel") || nameLower.includes("besteck");
+                    if (value === "zubehoer") return nameLower.includes("spülmaschine") || nameLower.includes("spuelmaschine") || nameLower.includes("warmhalte") || nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
+                  }
                   return false;
                 }
                 // For moebel-zelte "moebel" group also match by name keywords
