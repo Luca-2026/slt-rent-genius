@@ -498,6 +498,7 @@ import imgHydraulikhammer1 from "@/assets/products/erdbewegung/hydraulikhammer-s
 import imgHydraulikhammer2 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-2.jpg";
 import imgHydraulikhammer3 from "@/assets/products/erdbewegung/hydraulikhammer-shb45-3.jpg";
 import imgHydraulikhammerShb75_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb75-1.avif";
+import imgHydraulikhammerShb100_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb100-1.avif";
 // Hydraulikhammer SHB40 images
 import imgHydraulikhammerShb40_1 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-1.jpeg";
 import imgHydraulikhammerShb40_2 from "@/assets/products/erdbewegung/hydraulikhammer-shb40-2.jpeg";
@@ -5970,6 +5971,25 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Höhe": "1.500 mm",
       "Öldurchfluss": "50 – 90 l/min",
       "Betriebsdruck": "12 – 17 MPa",
+    },
+  },
+  {
+    id: "ms10-hydraulikhammer-shb100",
+    name: "MS10 Hydraulikhammer SHB100",
+    description: "Hydraulikhammer für MS10 Schnellwechsler – Gewichtsklasse 10–15 t",
+    detailedDescription: "Der SHB100 Hydraulikhammer ist ein leistungsstarkes Anbaugerät für Bagger der 10- bis 15-Tonnen-Klasse mit MS10 Schnellwechsler. Mit einer Schlagkraft von 2.100 Joule und 400–650 Schlägen pro Minute eignet er sich für schwere Abbrucharbeiten an Beton, Fels und Mauerwerk. Der 100-mm-Meißel bietet maximale Durchschlagskraft bei einem Eigengewicht von 861 kg.",
+    image: imgHydraulikhammerShb100_1,
+    images: [imgHydraulikhammerShb100_1],
+    category: "hydraulikhammer",
+    specifications: {
+      "Meißel Durchmesser": "100 mm",
+      "Schlaganzahl": "400 – 650 bpm",
+      "Schlagkraft": "2.100 J",
+      "Gewichtsklasse Trägergerät": "10 – 15 t",
+      "Gewicht": "861 kg",
+      "Höhe": "1.900 mm",
+      "Öldurchfluss": "80 – 110 l/min",
+      "Betriebsdruck": "15 – 17 MPa",
     },
   },
   // Sortiergreifer

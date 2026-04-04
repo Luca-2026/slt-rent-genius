@@ -883,23 +883,6 @@ export const bonnErdbewegungZusatzProducts = [
       "Öldurchfluss": "20 - 30 l/min",
     },
   },
-  {
-    id: "bonn-ms03-ms08-hydraulikhammer-shb75",
-    name: "MS03/MS08 Hydraulikhammer SHB75",
-    description: "Hydraulikhammer für MS03/MS08 Schnellwechsler – Gewichtsklasse 6–9 t",
-    image: "/placeholder.svg",
-    category: "hydraulikhammer",
-    specifications: {
-      "Meißel Durchmesser": "75 mm",
-      "Schlaganzahl": "400 – 800 bpm",
-      "Schlagkraft": "1.200 J",
-      "Gewichtsklasse Trägergerät": "6 – 9 t",
-      "Gewicht": "375 kg",
-      "Höhe": "1.500 mm",
-      "Öldurchfluss": "50 – 90 l/min",
-      "Betriebsdruck": "12 – 17 MPa",
-    },
-  },
   // --- Fehlende Zubehör ---
   {
     id: "bonn-dieseltankstelle-400l",
