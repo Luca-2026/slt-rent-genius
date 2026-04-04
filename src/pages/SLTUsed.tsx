@@ -179,7 +179,7 @@ export default function SLTUsed() {
     },
   });
 
-  const machines = (dbMachines && dbMachines.length > 0) ? dbMachines : demoMachines;
+  const machines: any[] = (dbMachines && dbMachines.length > 0) ? dbMachines : demoMachines;
 
   const filteredMachines = useMemo(() => {
     let result = machines;
