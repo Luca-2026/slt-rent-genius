@@ -1157,6 +1157,42 @@ export const kbArticles: KBArticle[] = [
       },
     ],
   },
+
+  // Zelte
+  {
+    id: "partyzelt-3x3-aufbau",
+    title: "Partyzelt ClassicPro 3x3m – Aufbauanleitung (PDF)",
+    description: "Offizielle Aufbauanleitung für das Partyzelt ClassicPro 3x3m: Aufbau, Sicherung und Abbau.",
+    categoryId: "event-technik",
+    productIds: ["partyzelt-3x3m", "bonn-partyzelt-3x3"],
+    type: "anleitung",
+    tags: ["partyzelt", "3x3", "aufbau", "classicpro", "zelt", "pavillon"],
+    updatedAt: "2026-04-04",
+    pdfUrl: "/manuals/aufbauanleitung-classicpro-3x3.pdf",
+    sections: [
+      {
+        heading: "Aufbauanleitung",
+        text: "Die vollständige Aufbauanleitung für das Partyzelt ClassicPro 3x3m finden Sie als PDF-Download auf dieser Seite.",
+      },
+    ],
+  },
+  {
+    id: "eventzelt-giant-6m-aufbau",
+    title: "Eventzelt Giant 6m – Aufbauanleitung (PDF)",
+    description: "Offizielle Aufbauanleitung für Eventzelte mit 6m Breite (Giant-Serie): Aufbau, Sicherung und Abbau.",
+    categoryId: "event-technik",
+    productIds: ["eventzelt-6x8m", "eventzelt-6x12m"],
+    type: "anleitung",
+    tags: ["eventzelt", "6x8", "6x12", "giant", "aufbau", "zelt", "6m"],
+    updatedAt: "2026-04-04",
+    pdfUrl: "/manuals/aufbauanleitung-giant-6m.pdf",
+    sections: [
+      {
+        heading: "Aufbauanleitung",
+        text: "Die vollständige Aufbauanleitung für Eventzelte der Giant-Serie (6m Breite) finden Sie als PDF-Download auf dieser Seite.",
+      },
+    ],
+  },
 ];
 
 // Helper: Get articles for a category
