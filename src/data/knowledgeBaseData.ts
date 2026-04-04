@@ -22,6 +22,7 @@ export interface KBArticle {
   videoUrl?: string; // YouTube/video embed URL
   pdfUrl?: string; // PDF download link
   tags: string[];
+  customComponent?: string; // Render a custom React component instead of sections
   updatedAt: string;
 }
 
