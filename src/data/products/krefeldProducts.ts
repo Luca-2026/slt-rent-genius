@@ -3071,8 +3071,8 @@ export const moebelZelteProducts: Product[] = [
     id: "eventzelt-6x12m",
     name: "Eventzelt 6x12m extra hoch",
     description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
-    image: imgEventzelt6x12_1,
-    images: [imgEventzelt6x12_1, imgEventzelt6x12_2],
+    image: imgMasse6x12,
+    images: [imgMasse6x12, imgEventzelt6x12_1, imgPartyzeltWeiss, imgEventzelt6x12_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "72 m² (6 m × 12 m)",
