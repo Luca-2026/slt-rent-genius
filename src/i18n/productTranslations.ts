@@ -445,7 +445,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
     detailedDescription: "The XCMG XG0807AC is a compact electric scissor lift with 7.80 m working height and 90 cm platform extension. With non-marking tires, it is suitable for indoor and outdoor use. The platform (1.67 × 0.78 m) accommodates up to 3 persons with a max. load of 230 kg. The transport height of only 1.66 m allows access through low clearances."
   },
   "scherenbuehne-12m": {
-    name: "12m Scissor Lift Zoomlion ZS1012AC",
+    name: "11.8 m Electric Scissor Lift (Type ZS1012)",
     description: "Electric scissor lift with 11.80 m working height and 1 m platform extension – for up to 3 persons.",
     detailedDescription: "The Zoomlion ZS1012AC is a compact electric scissor lift with 11.80 m working height and 1 m platform extension. With non-marking tires, it is ideal for indoor use. The platform (2.30 × 1.12 m) accommodates up to 3 persons with a max. load of 350 kg. The transport height of only 2 m allows access through standard gates."
   },

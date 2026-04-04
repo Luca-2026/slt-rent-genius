@@ -376,7 +376,7 @@ export const bonnArbeitsbuehnenProducts = [
   },
   {
     id: "bonn-scherenbuehne-12m",
-    name: "12m Scherenbühne ZS1012AC",
+    name: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
     description: "Große elektrische Scherenbühne mit 12 m Arbeitshöhe für anspruchsvolle Einsätze.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "ADYTHS" },

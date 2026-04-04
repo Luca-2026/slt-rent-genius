@@ -849,7 +849,7 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "scherenbuehne-12m",
-    name: "12m Scherenbühne Zoomlion ZS1012AC",
+    name: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
     description: "Elektrische Scherenbühne mit 11,80 m Arbeitshöhe und 1 m Plattformausschub – für bis zu 3 Personen.",
     image: scherenbuehneZs1012ac1,
     images: [scherenbuehneZs1012ac1],
