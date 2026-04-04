@@ -863,7 +863,7 @@ export const kbArticles: KBArticle[] = [
     type: "anleitung",
     pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     tags: ["krause", "rollgerüst", "stabilo", "serie 10", "aufbau", "anleitung", "pdf", "10,4m", "fahrgerüst", "leitern-gerueste"],
-    updatedAt: "2026-02-20",
+    updatedAt: "2026-04-04",
   },
   {
     id: "krause-rollgeruest-stabilo-anleitung-11-4m",
