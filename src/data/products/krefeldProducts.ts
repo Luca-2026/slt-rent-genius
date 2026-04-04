@@ -273,8 +273,7 @@ import anhaengerbuehneTm18gti2 from "@/assets/products/anhaengerbuehne-tm18gti-2
 import anhaengerbuehneTm18gti3 from "@/assets/products/anhaengerbuehne-tm18gti-3.jpeg";
 import anhaengerbuehneTm18gti4 from "@/assets/products/anhaengerbuehne-tm18gti-4.jpeg";
 import anhaengerbuehneTm18gti5 from "@/assets/products/anhaengerbuehne-tm18gti-5.jpeg";
-import scherenbuehneXg0807ac1 from "@/assets/products/scherenbuehne-xg0807ac-1.jpeg";
-import scherenbuehneXg0807ac2 from "@/assets/products/scherenbuehne-xg0807ac-2.jpeg";
+import scherenbuehneZs0607_1 from "@/assets/products/scherenbuehne-zs0607-1.jpg";
 import gelenkteleskopHr12l1 from "@/assets/products/gelenkteleskop-hr12l-1.jpeg";
 import gelenkteleskopHr12l2 from "@/assets/products/gelenkteleskop-hr12l-2.jpeg";
 import gelenkteleskopHr12l3 from "@/assets/products/gelenkteleskop-hr12l-3.jpeg";
