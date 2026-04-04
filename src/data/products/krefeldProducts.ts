@@ -4153,6 +4153,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     onRequest: true,
   },
   {
