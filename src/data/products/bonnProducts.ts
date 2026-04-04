@@ -334,6 +334,18 @@ export const bonnAggregateProducts = [
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
     image: presslufthammerTex21pe,
   },
+  {
+    id: "bonn-erdrakete-45mm-aggregat",
+    name: "Erdrakete 45 mm",
+    description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung.",
+    image: "/placeholder.svg",
+  },
+  {
+    id: "bonn-erdrakete-65mm-aggregat",
+    name: "Erdrakete 65 mm",
+    description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== ARBEITSBÜHNEN ====================
@@ -1486,6 +1498,18 @@ export const bonnWerkzeugProducts = [
     id: "bonn-schmutzwasserpumpe-11m3h",
     name: "Schmutzwasserpumpe 11m³/h",
     description: "Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.",
+    image: "/placeholder.svg",
+  },
+  {
+    id: "bonn-erdrakete-45mm",
+    name: "Erdrakete 45 mm",
+    description: "Druckluftbetriebene Erdrakete mit 45 mm Durchmesser – für grabenlose Rohrverlegung.",
+    image: "/placeholder.svg",
+  },
+  {
+    id: "bonn-erdrakete-65mm",
+    name: "Erdrakete 65 mm",
+    description: "Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.",
     image: "/placeholder.svg",
   },
 ];
