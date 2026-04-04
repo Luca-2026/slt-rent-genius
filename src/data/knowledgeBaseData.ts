@@ -90,7 +90,7 @@ export const kbCategories: KBCategory[] = [
     title: "Eventtechnik",
     description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne, Zelte und Hüpfburgen.",
     icon: "PartyPopper",
-    articleCount: 7,
+    articleCount: 9,
   },
   {
     id: "leitern-gerueste",

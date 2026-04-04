@@ -2952,6 +2952,7 @@ export const moebelZelteProducts: Product[] = [
       "Kapazität (Bestuhlung)": "ca. 13 Personen (0,71 m²/Person)",
       "Hinweis": "Trocken zurückgeben (Trocknungspauschale 60 € bei Nichtbeachtung)",
     },
+    pdfUrl: "/manuals/aufbauanleitung-classicpro-3x3.pdf",
     rentwareCode: { krefeld: "U5FLRB" }
   },
   {
