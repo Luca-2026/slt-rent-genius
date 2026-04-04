@@ -117,7 +117,7 @@ $pages = [
         'description' => 'Anleitungen, Sicherheitshinweise und Tipps für Ihre Miete bei SLT Rental. Alles zu Anhängern, Baumaschinen, Event-Equipment und mehr.',
     ],
     '/tiefpreisgarantie' => [
-        'title' => 'Tiefpreisgarantie – 10 % Rabatt bei günstigerem Angebot | SLT Rental',
+        'title' => 'Tiefpreisgarantie – Günstigster Preis garantiert | SLT Rental',
         'description' => 'Günstigeren Preis gefunden? SLT Rental garantiert 10 % Rabatt auf den Nettomietpreis ✓ Identisches Produkt im Umkreis 10 km ✓ Für Gewerbekunden ✓ Einfach per E-Mail einreichen',
     ],
     '/loesungen' => [
