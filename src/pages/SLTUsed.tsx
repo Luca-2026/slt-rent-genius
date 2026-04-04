@@ -528,8 +528,8 @@ export default function SLTUsed() {
       {/* Contact */}
       <section className="bg-primary text-primary-foreground py-10">
         <div className="section-container text-center">
-          <h2 className="text-xl font-bold mb-2">Fragen zu unseren Gebrauchtmaschinen?</h2>
-          <p className="text-primary-foreground/80 mb-4">Unser Team berät Sie gerne persönlich.</p>
+          <h2 className="text-xl font-bold mb-2 text-primary-foreground">Fragen zu unseren Gebrauchtmaschinen?</h2>
+          <p className="text-primary-foreground mb-4">Unser Team berät Sie gerne persönlich.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="tel:0215141799 04" className="flex items-center gap-2 hover:text-accent transition-colors">
               <Phone className="h-4 w-4" /> 02151 417 99 04
