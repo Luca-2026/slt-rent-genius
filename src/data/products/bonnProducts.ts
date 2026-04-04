@@ -1659,6 +1659,7 @@ export const bonnZelteProducts = [
     },
     image: imgMasse3x3,
     images: [imgMasse3x3, imgPartyzeltWeiss],
+    rentwareCode: { bonn: "ZPBA4S" },
   },
   {
     id: "bonn-sonnenschirm",
