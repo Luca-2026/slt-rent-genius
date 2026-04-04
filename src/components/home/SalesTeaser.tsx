@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, ShoppingCart, PackageSearch } from "lucide-react";
 import zoomlionLogo from "@/assets/logos/zoomlion.png";
 import temaredLogo from "@/assets/logos/temared.webp";
 import baumaxLogo from "@/assets/logos/baumax.png";
@@ -13,18 +14,21 @@ const brands = [
 
 export function SalesTeaser() {
   return (
-    <section className="py-10 lg:py-12 bg-muted/20">
+    <section className="py-14 lg:py-20 bg-muted/20">
       <div className="section-container">
-        <AnimatedSection className="text-center mb-6">
-          <p className="text-sm text-muted-foreground mb-1">
+        <AnimatedSection className="text-center mb-8">
+          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-primary/20">
             Autorisierter Fachhändler & Servicestützpunkt
-          </p>
-          <h2 className="text-lg lg:text-xl font-semibold text-foreground">
+          </span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
             Baumaschinen & Anhänger auch zum Kauf verfügbar
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Ob fabrikneue Maschinen von Zoomlion, BAUMAX und Temared oder gepflegte Gebrauchtmaschinen – wir beraten Sie persönlich und liefern in ganz NRW.
+          </p>
         </AnimatedSection>
 
-        <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-14 mb-6">
+        <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-14 mb-10">
           {brands.map((brand) => (
             <Link
               key={brand.name}
@@ -34,21 +38,58 @@ export function SalesTeaser() {
               <img
                 src={brand.logo}
                 alt={brand.alt}
-                className="h-8 lg:h-10 w-auto max-w-[160px] lg:max-w-[200px] object-contain"
+                className="h-9 lg:h-11 w-auto max-w-[160px] lg:max-w-[200px] object-contain"
               />
             </Link>
           ))}
         </div>
 
-        <div className="text-center">
-          <Link
-            to="/verkauf"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-          >
-            Kaufangebote & Beratung
-            <ArrowRight className="h-3.5 w-3.5" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <Link to="/verkauf" className="group">
+            <div className="border-2 border-border rounded-xl p-6 text-center hover:border-primary/40 hover:shadow-md transition-all h-full flex flex-col items-center justify-center gap-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                <ShoppingCart className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="font-bold text-headline text-lg mb-1">Neumaschinen</p>
+                <p className="text-sm text-muted-foreground">
+                  Zoomlion, BAUMAX & Temared – direkt vom autorisierten Fachhändler
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-1">
+                Neumaschinen entdecken
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
+          </Link>
+
+          <Link to="/verkauf/gebrauchtmaschinen" className="group">
+            <div className="border-2 border-border rounded-xl p-6 text-center hover:border-primary/40 hover:shadow-md transition-all h-full flex flex-col items-center justify-center gap-3">
+              <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                <PackageSearch className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <p className="font-bold text-headline text-lg mb-1">Gebrauchtmaschinen</p>
+                <p className="text-sm text-muted-foreground">
+                  Gepflegte Gebrauchtmaschinen – geprüft, sofort verfügbar
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-1">
+                SLT Used ansehen
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
           </Link>
         </div>
+
+        <AnimatedSection className="text-center mt-8" delay={200}>
+          <Link to="/kontakt">
+            <Button variant="outline" size="lg" className="group">
+              Kaufberatung anfragen
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+        </AnimatedSection>
       </div>
     </section>
   );
