@@ -932,7 +932,7 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "anhaengerbuehne-18m",
-    name: "18m Anhänger-Arbeitsbühne EuropeLIFT TM18GTi",
+    name: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     description: "Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und 10,50 m Reichweite – inkl. 8 Betriebsstunden/Tag.",
     image: anhaengerbuehneTm18gti1,
     images: [anhaengerbuehneTm18gti1, anhaengerbuehneTm18gti2, anhaengerbuehneTm18gti3, anhaengerbuehneTm18gti4, anhaengerbuehneTm18gti5],

@@ -360,7 +360,7 @@ export const bonnArbeitsbuehnenProducts = [
   },
   {
     id: "bonn-anhaenger-arbeitsbuehne-18m",
-    name: "18m Anhänger-Arbeitsbühne EuropeLIFT TM18GTi",
+    name: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     description: "Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und 10,50 m Reichweite – inkl. 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     category: "anhaengerbuehne",
