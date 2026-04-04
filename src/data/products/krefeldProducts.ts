@@ -511,6 +511,7 @@ import imgTiefloeffelMs03_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel
 import imgSortiergreiferSsg150_1 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-1.avif";
 import imgSortiergreiferSsg150_2 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-2.avif";
 import imgSortiergreiferSsg150_3 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-3.avif";
+import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 // Werkzeuge images
 import imgWinkelschleifer from "@/assets/products/werkzeuge/winkelschleifer-gws18v-10.jpg";
 import imgBauleuchte from "@/assets/products/werkzeuge/bauleuchte-gli18v-2200c.jpg";
