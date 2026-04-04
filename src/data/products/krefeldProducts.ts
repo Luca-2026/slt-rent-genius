@@ -5646,6 +5646,7 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Anzahl Zähne": "3",
       "Gewicht": "36 kg",
     },
+    rentwareCode: { krefeld: "1JXMIQ" },
   },
   {
     id: "ms01-tiefloeffel-50cm-symlock",
