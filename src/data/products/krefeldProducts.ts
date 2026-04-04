@@ -721,7 +721,7 @@ export const aggregateProducts: Product[] = [
     description: "Tragbare Powerstation mit 1.800 W Maximalleistung – ideal für Baustellen ohne Stromanschluss, Events und Outdoor-Einsätze.",
     image: akkupackBluetti1,
     images: [akkupackBluetti1],
-    category: "aggregat",
+    category: "akkupack",
     rentwareCode: { krefeld: "7NPRPK" },
     detailedDescription: "Die Bluetti Powerstation bietet 1.152 Wh Kapazität und bis zu 1.800 W Ausgangsleistung. Vielseitige Anschlüsse (Schuko, USB-A, USB-C, 12V DC) ermöglichen die gleichzeitige Versorgung verschiedener Geräte. Perfekt als mobile Stromversorgung auf Baustellen, bei Veranstaltungen oder im Outdoor-Bereich.",
     specifications: {
