@@ -218,6 +218,7 @@ import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e
 import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.jpg";
 // Shared images - Mobiliar
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
+import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
 
 export const bonnAggregateProducts = [
   {
@@ -1771,6 +1772,18 @@ export const bonnMoebelProducts = [
     },
     image: "/placeholder.svg",
     rentwareCode: { bonn: "671OZJ" },
+  },
+  {
+    id: "bonn-kleiderbuegel-20er-set",
+    name: "Kleiderbügel 20er Set, black",
+    description: "20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderbuegel,
+    images: [imgKleiderbuegel],
+    specifications: {
+      "Anzahl": "20 Stück",
+      "Material": "Holz",
+      "Farbe": "Schwarz",
+    },
   },
 ];
 

@@ -469,6 +469,7 @@ import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
 import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
+import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
 
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
@@ -3256,6 +3257,20 @@ export const moebelZelteProducts: Product[] = [
       "Inklusive": "20 Stk. Kleiderbügel Holz schwarz",
     },
     rentwareCode: { krefeld: "CQBBQC" }
+  },
+  {
+    id: "kleiderbuegel-20er-set",
+    name: "Kleiderbügel 20er Set, black",
+    description: "20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
+    image: imgKleiderbuegel,
+    images: [imgKleiderbuegel],
+    category: "garderobe",
+    specifications: {
+      "Anzahl": "20 Stück",
+      "Material": "Holz",
+      "Farbe": "Schwarz",
+    },
+    rentwareCode: { krefeld: "BLMZ6M" }
   },
 ];
 
