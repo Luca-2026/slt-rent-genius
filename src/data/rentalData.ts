@@ -1178,17 +1178,19 @@ function normalizeBonnGartenpflege(products: Product[]): Product[] {
 }
 
 function normalizeBonnAggregate(products: Product[]): Product[] {
-  return products.map((p) => ({
-    ...p,
-    category: p.category ?? "aggregat",
-    tags: mergeTags(p.tags, (() => {
-      const kva = parseKvaFromName(p.name);
-      if (!kva) return [];
-      if (kva <= 5) return ["bis-5kva"];
-      if (kva <= 20) return ["5-20kva"];
-      return ["ab-20kva"];
-    })()),
-  }));
+  return products.map((p) => {
+    const kva = parseKvaFromName(p.name);
+    return {
+      ...p,
+      category: p.category ?? inferAggregateCategory(p.name),
+      tags: mergeTags(p.tags, (() => {
+        if (!kva) return [];
+        if (kva <= 5) return ["bis-5kva"];
+        if (kva <= 20) return ["5-20kva"];
+        return ["ab-20kva"];
+      })()),
+    };
+  });
 }
 
 function normalizeBonnArbeitsbuehnen(products: Product[]): Product[] {
