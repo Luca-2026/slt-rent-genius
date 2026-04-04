@@ -68,7 +68,7 @@ export default function Dienstleistungen() {
       />
 
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-16 lg:py-24">
+      <section className="bg-primary py-16 lg:py-24">
         <div className="section-container text-center">
           <AnimatedSection>
             <h1 className="text-3xl lg:text-5xl font-bold mb-4 leading-tight text-white">
