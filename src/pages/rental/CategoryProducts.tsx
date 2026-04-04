@@ -772,8 +772,7 @@ export default function CategoryProducts() {
       });
     }
 
-    // Sort products for leitern-gerueste: Rollgerüste first (Breitaufbau before Schmalaufbau),
-    // then Leitern, then Gerüstteile/Zubehör last
+    // Sort products for leitern-gerueste: Rollgerüste first, then Leitern, then Gerüstteile/Zubehör last
     if (category?.id === "leitern-gerueste") {
       const categorySortOrder: Record<string, number> = {
         rollgeruest: 0,
@@ -786,14 +785,7 @@ export default function CategoryProducts() {
       filtered.sort((a, b) => {
         const orderA = categorySortOrder[a.category || ""] ?? 4;
         const orderB = categorySortOrder[b.category || ""] ?? 4;
-        if (orderA !== orderB) return orderA - orderB;
-        // Within rollgeruest: sub-group by Breitaufbau vs Schmalaufbau
-        if ((a.category === "rollgeruest") && (b.category === "rollgeruest")) {
-          const isBreitA = a.name.toLowerCase().includes("breitaufbau") ? 0 : 1;
-          const isBreitB = b.name.toLowerCase().includes("breitaufbau") ? 0 : 1;
-          if (isBreitA !== isBreitB) return isBreitA - isBreitB;
-        }
-        return 0;
+        return orderA - orderB;
       });
     }
 
