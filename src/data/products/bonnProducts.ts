@@ -1,5 +1,8 @@
 // Bonn Location Products
 // Images imported from shared assets
+import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
+import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
+import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
@@ -1654,7 +1657,8 @@ export const bonnZelteProducts = [
       "ohne Bestuhlung/Stehtische": "0,6m²/Person",
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
-    image: "/placeholder.svg",
+    image: imgMasse3x3,
+    images: [imgMasse3x3, imgPartyzeltWeiss],
     rentwareCode: { bonn: "ZPBA4S" },
   },
   {
@@ -1679,7 +1683,8 @@ export const bonnZelteProducts = [
       "ohne Bestuhlung/Stehtische": "0,6m²/Person",
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
-    image: "/placeholder.svg",
+    image: imgMasse4x6,
+    images: [imgMasse4x6, imgPartyzeltWeiss],
     rentwareCode: { bonn: "6GI1UN" },
   },
   {

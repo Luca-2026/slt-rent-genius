@@ -419,6 +419,14 @@ import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 
+// Maß-Bilder für Zelte
+import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
+import imgMasse4x4 from "@/assets/products/masse-4x4.avif";
+import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
+import imgMasse6x8 from "@/assets/products/masse-6x8.avif";
+import imgMasse6x12 from "@/assets/products/masse-6x12.avif";
+import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+
 import imgVectorSpotZoom1 from "@/assets/products/vector-spot-zoom-20-1.png";
 import imgVectorSpotZoom2 from "@/assets/products/vector-spot-zoom-20-2.jpeg";
 import imgVectorSpotZoom3 from "@/assets/products/vector-spot-zoom-20-3.jpeg";
@@ -2928,8 +2936,8 @@ export const moebelZelteProducts: Product[] = [
     id: "partyzelt-3x3m",
     name: "Partyzelt 3x3m",
     description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
-    image: imgPartyzelt3x3_1,
-    images: [imgPartyzelt3x3_1, imgPartyzelt3x3_2],
+    image: imgMasse3x3,
+    images: [imgMasse3x3, imgPartyzelt3x3_1, imgPartyzeltWeiss, imgPartyzelt3x3_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "9 m² (3 m × 3 m)",
@@ -2945,8 +2953,8 @@ export const moebelZelteProducts: Product[] = [
     id: "partyzelt-4x4m",
     name: "Partyzelt 4x4m",
     description: "Partyzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
-    image: imgPartyzelt4x4_1,
-    images: [imgPartyzelt4x4_1],
+    image: imgMasse4x4,
+    images: [imgMasse4x4, imgPartyzelt4x4_1, imgPartyzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "16 m² (4 m × 4 m)",
@@ -2964,8 +2972,8 @@ export const moebelZelteProducts: Product[] = [
     id: "partyzelt-4x6m",
     name: "Partyzelt 4x6m",
     description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
-    image: imgPartyzelt4x6_1,
-    images: [imgPartyzelt4x6_1],
+    image: imgMasse4x6,
+    images: [imgMasse4x6, imgPartyzelt4x6_1, imgPartyzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "24 m² (4 m × 6 m)",
@@ -2984,7 +2992,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x8m",
     description: "Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1],
+    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "32 m² (4 m × 8 m)",
@@ -3003,7 +3011,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x10m",
     description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
+    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
     category: "zelt",
     specifications: {
       "Grundfläche": "40 m² (4 m × 10 m)",
@@ -3023,7 +3031,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Partyzelt 4x14m",
     description: "Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgPartyzelt4x14_1,
-    images: [imgPartyzelt4x14_1, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
+    images: [imgPartyzelt4x14_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "56 m² (4 m × 14 m)",
@@ -3036,7 +3044,7 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
-    rentwareCode: { krefeld: "JLHAH7" }
+    pricePerDay: "auf Anfrage"
   },
   {
     id: "zeltboden-anthrazit",
@@ -3063,8 +3071,8 @@ export const moebelZelteProducts: Product[] = [
     id: "eventzelt-6x12m",
     name: "Eventzelt 6x12m extra hoch",
     description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
-    image: imgEventzelt6x12_1,
-    images: [imgEventzelt6x12_1, imgEventzelt6x12_2],
+    image: imgMasse6x12,
+    images: [imgMasse6x12, imgEventzelt6x12_1, imgPartyzeltWeiss, imgEventzelt6x12_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "72 m² (6 m × 12 m)",
@@ -3083,8 +3091,8 @@ export const moebelZelteProducts: Product[] = [
     id: "eventzelt-6x8m",
     name: "Eventzelt 6x8m extra hoch",
     description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
-    image: imgEventzelt6x8_1,
-    images: [imgEventzelt6x8_1, imgEventzelt6x8_2, imgEventzelt6x8_3],
+    image: imgMasse6x8,
+    images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "48 m² (6 m × 8 m)",
