@@ -279,8 +279,8 @@ export const productCategories: ProductCategory[] = [
   },
   {
     id: "aggregate",
-    title: "Aggregate",
-    description: "Stromerzeuger und Notstromgeräte für Baustelle und Event.",
+    title: "Aggregate & Kompressoren",
+    description: "Stromerzeuger, Kompressoren und Druckluftwerkzeuge für Baustelle und Event.",
     icon: iconAggregat,
   },
   {

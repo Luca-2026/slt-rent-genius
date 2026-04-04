@@ -49,7 +49,7 @@ export const gartenpflegeFilterSections: FilterSection[] = [
   },
 ];
 
-// ============= AGGREGATE =============
+// ============= AGGREGATE & KOMPRESSOREN =============
 export const aggregateFilterSections: FilterSection[] = [
   {
     id: "type",
@@ -59,6 +59,8 @@ export const aggregateFilterSections: FilterSection[] = [
       { id: "aggregat", label: "catFilters.stromaggregate", sublabel: "catFilters.stromaggregate_sub" },
       { id: "akkupack", label: "catFilters.akkupacks", sublabel: "catFilters.akkupacks_sub" },
       { id: "kompressor", label: "catFilters.kompressoren", sublabel: "catFilters.kompressoren_sub" },
+      { id: "druckluftwerkzeug", label: "catFilters.druckluftwerkzeuge", sublabel: "catFilters.druckluftwerkzeuge_sub" },
+      { id: "erdrakete", label: "catFilters.erdraketen", sublabel: "catFilters.erdraketen_sub" },
     ],
   },
   {

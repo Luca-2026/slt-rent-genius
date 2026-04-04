@@ -1389,6 +1389,10 @@
     "akkupacks_sub": "Tragbare Speicher",
     "kompressoren": "Kompressoren",
     "kompressoren_sub": "Druckluft",
+    "druckluftwerkzeuge": "Druckluftwerkzeuge",
+    "druckluftwerkzeuge_sub": "Presslufthammer & Co.",
+    "erdraketen": "Erdraketen",
+    "erdraketen_sub": "Grabenlose Verlegung",
     "bis5kva": "Bis 5 kVA",
     "bis5kva_sub": "Kleine Verbraucher",
     "5bis20kva": "5–20 kVA",
@@ -1683,7 +1687,7 @@
     "default": "Artikel suchen...",
     "werkzeuge": "Werkzeug suchen...",
     "gartenpflege": "Gartengerät suchen...",
-    "aggregate": "Aggregat suchen...",
+    "aggregate": "Aggregat oder Kompressor suchen...",
     "arbeitsbuehnen": "Arbeitsbühne suchen...",
     "verdichtung": "Verdichtungsgerät suchen...",
     "heizungTrocknung": "Heiz-/Trocknungsgerät suchen...",
@@ -1704,7 +1708,7 @@
   "catDisplay": {
     "werkzeuge": "Werkzeuge",
     "gartenpflege": "Gartenpflege",
-    "aggregate": "Aggregate",
+    "aggregate": "Aggregate & Kompressoren",
     "arbeitsbuehnen": "Arbeitsbühnen",
     "verdichtung": "Verdichtung",
     "heizungTrocknung": "Heizung & Trocknung",
@@ -1737,7 +1741,7 @@
       "item3": "Akku & Benzin", "item3sub": "Verschiedene Antriebe"
     },
     "aggregate": {
-      "desc": "Zuverlässige Stromversorgung für Baustelle, Event oder Notfall. Von kleinen Akkupacks bis zu leistungsstarken Industrieaggregaten.",
+      "desc": "Zuverlässige Stromversorgung und Druckluft für Baustelle, Event oder Notfall. Von kleinen Akkupacks bis zu leistungsstarken Industrieaggregaten und Kompressoren.",
       "item1": "2,8 bis 100 kVA", "item1sub": "Für jeden Bedarf",
       "item2": "Akkupacks", "item2sub": "Tragbar & leise",
       "item3": "Kompressoren", "item3sub": "Druckluft vor Ort"
