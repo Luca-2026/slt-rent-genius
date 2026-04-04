@@ -870,7 +870,7 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "mastbuehne-11m",
-    name: "11m Mastbühne Zoomlion ZMP09",
+    name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
     description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
     image: mastbuehneZmp091,
     images: [mastbuehneZmp091, mastbuehneZmp092, mastbuehneZmp093],
