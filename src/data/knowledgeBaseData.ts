@@ -88,9 +88,16 @@ export const kbCategories: KBCategory[] = [
   {
     id: "event-technik",
     title: "Eventtechnik",
-    description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne, Zelte und Hüpfburgen.",
+    description: "Aufbauanleitungen für Beschallung, Beleuchtung, Bühne und Hüpfburgen.",
     icon: "PartyPopper",
-    articleCount: 9,
+    articleCount: 7,
+  },
+  {
+    id: "moebel-zelte",
+    title: "Möbel & Zelte",
+    description: "Aufbauanleitungen für Partyzelte, Eventzelte, Sonnenschirme und Eventmöbel.",
+    icon: "Tent",
+    articleCount: 2,
   },
   {
     id: "leitern-gerueste",
