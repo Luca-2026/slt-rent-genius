@@ -441,8 +441,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   // ===== AERIAL WORK PLATFORMS =====
   "scherenbuehne-8m": {
     name: "7.8 m Electric Scissor Lift (Type ZS0607)",
-    description: "Compact electric scissor lift with 7.80 m working height – ideal for indoor and outdoor use.",
-    detailedDescription: "The XCMG XG0807AC is a compact electric scissor lift with 7.80 m working height and 90 cm platform extension. With non-marking tires, it is suitable for indoor and outdoor use. The platform (1.67 × 0.78 m) accommodates up to 3 persons with a max. load of 230 kg. The transport height of only 1.66 m allows access through low clearances."
+    description: "Compact electric scissor lift by Zoomlion with 7.80 m working height – ideal for indoor and outdoor use.",
+    detailedDescription: "The Zoomlion ZS0607AC-Li is a compact electric scissor lift with 7.80 m working height and 0.91 m platform extension. With non-marking tires, it is suitable for indoor and outdoor use. The platform (1.65 × 0.74 m) accommodates up to 2 persons with a max. load of 230 kg. The drive-through height of only 1.79 m (railings folded) allows access through low clearances."
   },
   "scherenbuehne-12m": {
     name: "11.8 m Electric Scissor Lift (Type ZS1012)",
@@ -734,7 +734,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-aggregat-7-5kva": { description: "Powerful generator with 7.5 kVA three-phase and 2.5 kVA single-phase – ideal for construction sites and events." },
   "bonn-mastbuehne-11m": { name: "11m Mast Boom ZMP09", description: "Compact mast boom for working up to 11m height." },
   "bonn-anhaenger-arbeitsbuehne-18m": { name: "18m Articulated Telescopic Trailer Boom Lift electric/petrol", description: "Mobile trailer boom lift for flexible use up to 18m." },
-  "bonn-scherenbuehne-8m": { name: "7.8 m Electric Scissor Lift (Type ZS0607)", description: "Electric scissor lift for indoor and outdoor use." },
+  "bonn-scherenbuehne-8m": { name: "7.8 m Electric Scissor Lift (Type ZS0607)", description: "Compact electric scissor lift by Zoomlion for indoor and outdoor use." },
   "bonn-bobcat-e10": { name: "1t Bobcat E10", description: "Compact mini excavator for tight construction sites." },
   "bonn-xcmg-xe20e": { description: "Operating weight: 2,000 kg | Dig depth: 2,385 mm | Width: 980 mm" },
   "bonn-xcmg-xe27e": { description: "Operating weight: 2,700 kg | Dig depth: 2,800 mm | Width: 1,500 mm" },
