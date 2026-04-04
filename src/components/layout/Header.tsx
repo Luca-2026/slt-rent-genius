@@ -262,7 +262,6 @@ export function Header() {
             <div className="h-4 w-px bg-border/60" />
 
             {/* Secondary nav */}
-            <NavDropdown label={t("nav.howItWorks")} items={serviceItems} secondary />
             <NavDropdown label={t("nav.about")} items={aboutItems} secondary />
           </nav>
 
