@@ -460,7 +460,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
     detailedDescription: "The Nifty HR12L is a compact electric articulated boom lift with 12.10 m working height and 6.40 m lateral reach. The up-and-over height of 4.10 m enables working over obstacles. With non-marking tires, it is suitable for indoor and outdoor use. The platform (1.20 × 0.85 m) accommodates 2 persons with a 200 kg load capacity."
   },
   "anhaengerbuehne-18m": {
-    name: "18m Trailer Boom Lift EuropeLIFT TM18GTi",
+    name: "18m Articulated Telescopic Trailer Boom Lift electric/petrol",
     description: "Articulated telescopic trailer boom with 18 m working height and 10.50 m reach – incl. 8 operating hours/day.",
     detailedDescription: "The EuropeLIFT TM18GTi is a petrol-powered articulated telescopic trailer boom with 18 m working height and up to 10.50 m lateral reach. The basket accommodates 2 persons (max. 220 kg at 8 m or 100 kg at 11 m reach). Additional equipment: 230 V and compressed air connection in basket. Includes 8 operating hours per day; extra hours are charged at €22.00 gross per hour. Fuel is billed separately – return with full tank agreed, diesel is charged at €2.45/l gross."
   },
