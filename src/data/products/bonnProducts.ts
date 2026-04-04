@@ -218,6 +218,7 @@ import imgFugenschneider2 from "@/assets/products/werkzeuge/fugenschneider-bs50e
 import imgBetonruettler from "@/assets/products/werkzeuge/betonruettler-ir1000.jpg";
 // Shared images - Mobiliar
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
+import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
 
 export const bonnAggregateProducts = [
   {

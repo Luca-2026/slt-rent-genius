@@ -469,6 +469,7 @@ import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
 import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
+import imgKleiderbuegel from "@/assets/products/moebel/kleiderbuegel-schwarz.jpg";
 
 // SLT LED Fluter RGBWAUV images
 import imgSltLedFluterRgbwauv1 from "@/assets/products/slt-led-fluter-rgbwauv-1.jpeg";
