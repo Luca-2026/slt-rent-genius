@@ -2840,6 +2840,7 @@ export const bonnHuepfburgProducts = [
   },
   {
     id: "led-outdoorscheinwerfer-6er-set",
+    rentwareCode: { bonn: "IEAV6M" },
   },
 ];
 
