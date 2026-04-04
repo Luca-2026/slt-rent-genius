@@ -6303,6 +6303,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Aus welchem Material sind die Schneiden?", a: "Die Schneiden bestehen aus hochverschleißfestem HB500-Stahl, der Grundkörper aus S355-Baustahl – für maximale Haltbarkeit auch bei abrasiven Böden." },
     ],
   },
+  "schmutzwasserpumpe-11m3h": {
+    excelName: "Schmutzwasserpumpe 11m³/h",
+    seoTitle: "Schmutzwasserpumpe mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld. Max. 11.000 l/h, 10 m Förderhöhe, inkl. 15m Storz C Schlauch. Tagesmiete, faire Preise.",
+    h1: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld – Jetzt bei SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Lieferumfang", "Sicherheitshinweise"],
+    useCaseBau: "Baugrube auspumpen, Kanalbau, Wasserhaltung auf Baustellen, Grundwasserabsenkung",
+    useCaseEvent: "",
+    useCasePrivat: "Keller auspumpen nach Hochwasser, Teich entleeren, Regenwassersammler leeren",
+    primaryKeywords: "Schmutzwasserpumpe mieten in Bonn & Krefeld, Tauchpumpe mieten, Baupumpe leihen NRW",
+    is247: false,
+    faqs: [
+      { q: "Wie viel Wasser kann die Pumpe pro Stunde fördern?", a: "Die Schmutzwasserpumpe fördert maximal 11.000 Liter pro Stunde bei einer maximalen Förderhöhe von 10 Metern." },
+      { q: "Ist ein Schlauch im Lieferumfang enthalten?", a: "Ja – ein 15 m langer Storz C Schlauch ist im Lieferumfang enthalten. Weitere Schläuche können auf Anfrage dazu gemietet werden." },
+      { q: "Welchen Stromanschluss brauche ich?", a: "Die Pumpe benötigt einen 230 V Stromanschluss (Haushaltsstrom). Die maximale Leistungsaufnahme beträgt 1.200 Watt." },
+      { q: "Kann die Pumpe auch sandiges oder schlammiges Wasser fördern?", a: "Ja – als Schmutzwasserpumpe ist sie für die Förderung von verunreinigtem Wasser mit Feststoffanteilen ausgelegt. Für stark abrasive Medien bitte vorher anfragen." },
+    ],
+  },
+  "bonn-schmutzwasserpumpe-11m3h": {
+    excelName: "Schmutzwasserpumpe 11m³/h",
+    seoTitle: "Schmutzwasserpumpe mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld. Max. 11.000 l/h, 10 m Förderhöhe, inkl. 15m Storz C Schlauch. Tagesmiete, faire Preise.",
+    h1: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld – Jetzt bei SLT Rental",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Lieferumfang", "Sicherheitshinweise"],
+    useCaseBau: "Baugrube auspumpen, Kanalbau, Wasserhaltung auf Baustellen, Grundwasserabsenkung",
+    useCaseEvent: "",
+    useCasePrivat: "Keller auspumpen nach Hochwasser, Teich entleeren, Regenwassersammler leeren",
+    primaryKeywords: "Schmutzwasserpumpe mieten in Bonn & Krefeld, Tauchpumpe mieten, Baupumpe leihen NRW",
+    is247: false,
+    faqs: [
+      { q: "Wie viel Wasser kann die Pumpe pro Stunde fördern?", a: "Die Schmutzwasserpumpe fördert maximal 11.000 Liter pro Stunde bei einer maximalen Förderhöhe von 10 Metern." },
+      { q: "Ist ein Schlauch im Lieferumfang enthalten?", a: "Ja – ein 15 m langer Storz C Schlauch ist im Lieferumfang enthalten. Weitere Schläuche können auf Anfrage dazu gemietet werden." },
+      { q: "Welchen Stromanschluss brauche ich?", a: "Die Pumpe benötigt einen 230 V Stromanschluss (Haushaltsstrom). Die maximale Leistungsaufnahme beträgt 1.200 Watt." },
+      { q: "Kann die Pumpe auch sandiges oder schlammiges Wasser fördern?", a: "Ja – als Schmutzwasserpumpe ist sie für die Förderung von verunreinigtem Wasser mit Feststoffanteilen ausgelegt. Für stark abrasive Medien bitte vorher anfragen." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
