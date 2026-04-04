@@ -1657,8 +1657,8 @@ export const bonnZelteProducts = [
       "ohne Bestuhlung/Stehtische": "0,6m²/Person",
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
-    image: "/placeholder.svg",
-    rentwareCode: { bonn: "ZPBA4S" },
+    image: imgMasse3x3,
+    images: [imgMasse3x3, imgPartyzeltWeiss],
   },
   {
     id: "bonn-sonnenschirm",
