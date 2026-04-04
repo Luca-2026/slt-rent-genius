@@ -140,6 +140,7 @@ export function HeroSearch() {
     return translatedProducts
       .filter((p, index) => {
         const original = allProducts[index];
+        if (!original) return false;
         
         // Include products from matched categories
         if (categoryProductIds.has(original.id)) return true;
@@ -152,10 +153,8 @@ export function HeroSearch() {
           if (p.name.toLowerCase().includes(query)) return true;
           if (p.description?.toLowerCase().includes(query)) return true;
           if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-          if (original) {
-            if (original.name.toLowerCase().includes(query)) return true;
-            if (original.description?.toLowerCase().includes(query)) return true;
-          }
+          if (original.name.toLowerCase().includes(query)) return true;
+          if (original.description?.toLowerCase().includes(query)) return true;
         }
 
         return false;
