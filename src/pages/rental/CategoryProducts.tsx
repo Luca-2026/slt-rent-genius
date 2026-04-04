@@ -806,9 +806,16 @@ export default function CategoryProducts() {
       });
     }
 
-    // Sort products for absperrtechnik: Verkehrsschilder last
+    // Sort products for absperrtechnik: explicit sortOrder first, then Verkehrsschilder last
     if (category?.id === "absperrtechnik") {
       filtered.sort((a, b) => {
+        // Explicit sortOrder takes highest priority (lower = first)
+        const hasOrderA = typeof a.sortOrder === "number";
+        const hasOrderB = typeof b.sortOrder === "number";
+        if (hasOrderA && hasOrderB) return a.sortOrder! - b.sortOrder!;
+        if (hasOrderA) return -1;
+        if (hasOrderB) return 1;
+        // Then push Verkehrszeichen to the end
         const isVzA = a.category === "verkehrszeichen" ? 1 : 0;
         const isVzB = b.category === "verkehrszeichen" ? 1 : 0;
         return isVzA - isVzB;
