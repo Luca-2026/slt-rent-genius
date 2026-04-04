@@ -830,6 +830,23 @@ export const bonnErdbewegungZusatzProducts = [
       "Gewicht": "129 kg",
     },
   },
+  {
+    id: "bonn-ms08-grabenraeumloeffel-hydr-160cm-symlock",
+    name: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
+    description: "Hydraulischer Grabenräumlöffel 160cm für MS08 Symlock – 288 l Volumen, Gewichtsklasse 5–10 t",
+    image: "/placeholder.svg",
+    category: "grabenraeumloeffel",
+    specifications: {
+      "Aufnahme": "SB08S (passend MS08 Symlock)",
+      "Gewichtsklasse Trägergerät": "5 – 10 t",
+      "Gewicht": "317 kg",
+      "Arbeitsbreite": "1600 mm",
+      "Höhe": "850 mm",
+      "Volumen (SAE)": "288 l",
+      "Grundkörper Material": "S355",
+      "Schneiden Material": "HB500",
+    },
+  },
   // --- Fehlende Hydraulikhämmer ---
   {
     id: "bonn-ms01-hydraulikhammer-shb40",

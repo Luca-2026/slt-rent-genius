@@ -509,6 +509,7 @@ import imgDieselKanister20l_1 from "@/assets/products/erdbewegung/diesel-kaniste
 import imgRoderechenMs01_1 from "@/assets/products/erdbewegung/roderechen-ms01-1.jpeg";
 import imgTiefloeffelMs01_30cmSymlock_1 from "@/assets/products/erdbewegung/tiefloeffel-ms01-30cm-symlock-1.jpeg";
 import imgGrabenraeumloeffelMs03_140cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms03-140cm-1.jpeg";
+import imgGrabenraeumloeffelMs08Hydr_160cm_1 from "@/assets/products/erdbewegung/grabenraeumloeffel-ms08-hydr-160cm.avif";
 import imgKabelloeffelMs03_20cm_1 from "@/assets/products/erdbewegung/kabelloeffel-ms03-20cm-1.png";
 import imgTiefloeffelMs03_50cm_1 from "@/assets/products/erdbewegung/tiefloeffel-ms03-50cm-1.jpeg";
 import imgSortiergreiferSsg150_1 from "@/assets/products/erdbewegung/sortiergreifer-ssg150-1.avif";
@@ -5777,6 +5778,26 @@ export const erdbewegungZusatzProducts: Product[] = [
       "Volumen": "170 l",
       "Arbeitsbreite": "1400 mm",
       "Gewicht": "129 kg",
+    },
+  },
+  {
+    id: "ms08-grabenraeumloeffel-hydr-160cm-symlock",
+    name: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
+    description: "Hydraulischer Grabenräumlöffel 160cm für MS08 Symlock – 288 l Volumen, Gewichtsklasse 5–10 t",
+    detailedDescription: "Der MS08 Grabenräumlöffel hydr. 160cm/288l Symlock ist ein hydraulisch schwenkbarer Großlöffel für Bagger der 5- bis 10-Tonnen-Klasse. Mit 1600 mm Arbeitsbreite und 288 Liter Volumen eignet er sich hervorragend für großflächige Planierarbeiten, Böschungsprofilierung und das Räumen breiter Gräben. Die hydraulische Schwenkfunktion ermöglicht präzises Arbeiten auch in schwierigem Gelände.",
+    image: imgGrabenraeumloeffelMs08Hydr_160cm_1,
+    images: [imgGrabenraeumloeffelMs08Hydr_160cm_1],
+    category: "grabenraeumloeffel",
+    rentwareCode: { krefeld: "P5ENQ7" },
+    specifications: {
+      "Aufnahme": "SB08S (passend MS08 Symlock)",
+      "Gewichtsklasse Trägergerät": "5 – 10 t",
+      "Gewicht": "317 kg",
+      "Arbeitsbreite": "1600 mm",
+      "Höhe": "850 mm",
+      "Volumen (SAE)": "288 l",
+      "Grundkörper Material": "S355",
+      "Schneiden Material": "HB500",
     },
   },
   // Roderechen
