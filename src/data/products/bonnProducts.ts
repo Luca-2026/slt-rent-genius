@@ -1683,7 +1683,8 @@ export const bonnZelteProducts = [
       "ohne Bestuhlung/Stehtische": "0,6m²/Person",
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
-    image: "/placeholder.svg",
+    image: imgMasse4x6,
+    images: [imgMasse4x6, imgPartyzeltWeiss],
     rentwareCode: { bonn: "6GI1UN" },
   },
   {
