@@ -2714,8 +2714,28 @@ export const bonnBeschallungProducts = [
 // ==================== SPEZIALEFFEKTE ====================
 export const bonnSpezialeffekteProducts = [
   {
+    id: "kalt-funkenfontaene-einzeln",
+    name: "Kalt-Funkenfontäne, Einzelgerät",
+    description: "Auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen. Die bis zu 6 Meter hohen Fontänen sind vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
+    category: "funken",
+    specifications: {
+      "Set": "1 × Kalt-Funkenfontäne",
+      "Effekthöhe": "bis zu 6 Meter",
+      "Steuerung": "Fernbedienung oder DMX",
+      "Höhe": "einstellbar",
+      "Lieferumfang": "inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)",
+      "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
+      "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+    },
+    rentwareCode: { bonn: "XIUA3R" },
+  },
+  {
     id: "kalt-funkenfontaene-2er",
-    rentwareCode: { bonn: "EDWHU1" },
+    rentwareCode: { bonn: "AUL1QE" },
+  },
+  {
+    id: "kalt-funkenfontaene-4er",
+    rentwareCode: { bonn: "WS6SDB" },
   },
 ];
 
