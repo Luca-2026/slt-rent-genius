@@ -25,6 +25,7 @@ import tellerSimply25_3 from "@/assets/products/geschirr/teller-simply-25-3.jpeg
 import tellerSimply25_4 from "@/assets/products/geschirr/teller-simply-25-4.jpeg";
 import tellerSimply25_5 from "@/assets/products/geschirr/teller-simply-25-5.jpeg";
 import tellerSimply25_6 from "@/assets/products/geschirr/teller-simply-25-6.jpeg";
+import imgErdrakete1 from "@/assets/products/erdrakete-1.jpg";
 import gabelSimply19_1 from "@/assets/products/besteck/gabel-simply-19-1.jpeg";
 import gabelSimply19_2 from "@/assets/products/besteck/gabel-simply-19-2.jpeg";
 import dessertellerDeluxe21_1 from "@/assets/products/geschirr/dessertteller-deluxe-21-1.jpeg";
