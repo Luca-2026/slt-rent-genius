@@ -1496,10 +1496,8 @@ export const bonnWerkzeugProducts = [
     image: "/placeholder.svg",
   },
   {
-    id: "bonn-schmutzwasserpumpe-11m3h",
-    name: "Schmutzwasserpumpe 11m³/h",
-    description: "Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.",
-    image: "/placeholder.svg",
+    id: "schmutzwasserpumpe-11m3h",
+    rentwareCode: { bonn: "GU1CLE" },
   },
   {
     id: "bonn-erdrakete-45mm",
