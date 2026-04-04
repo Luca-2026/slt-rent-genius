@@ -224,6 +224,7 @@ import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
 import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
+import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 
 export const bonnAggregateProducts = [
   {
@@ -331,7 +332,7 @@ export const bonnAggregateProducts = [
     id: "bonn-presslufthammer-tex21pe-aggregat",
     name: "Presslufthammer 21 kg",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
-    image: "/placeholder.svg",
+    image: presslufthammerTex21pe,
   },
 ];
 
@@ -1449,7 +1450,7 @@ export const bonnWerkzeugProducts = [
     id: "bonn-presslufthammer-tex21pe",
     name: "Presslufthammer 21 kg",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
-    image: "/placeholder.svg",
+    image: presslufthammerTex21pe,
   },
   {
     id: "bonn-steinknacker-43cm",
