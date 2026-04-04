@@ -136,6 +136,7 @@ const App = () => (
               <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
               <Route path="/verkauf" element={<Verkauf />} />
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
+              <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
