@@ -3,6 +3,11 @@
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
 import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
 import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
+import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
+import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
+import imgSonnenschirm4 from "@/assets/products/sonnenschirm-4.jpeg";
+import imgSonnenschirm5 from "@/assets/products/sonnenschirm-5.jpeg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
@@ -1663,14 +1668,21 @@ export const bonnZelteProducts = [
   },
   {
     id: "bonn-sonnenschirm",
-    name: "Sonnenschirm",
-    description: "Großer Sonnenschirm für Terrasse und Garten.",
+    name: "Sonnenschirm LEMVIG Ø 3 m",
+    description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
     specifications: {
       "Durchmesser": "3 m",
-      "Höhe": "2,6m",
-      "Farbe": "weiß",
+      "Höhe": "2,6 m",
+      "Farbe": "weiß/natur",
+      "Material Stange": "Lackiertes FSC® 100 % Hartholz",
+      "Material Bespannung": "UV-beständiges Polyester, wasserabweisend",
+      "Neigungsfunktion": "Ja – Schirmkopf kippbar",
+      "Öffnungsmechanismus": "Zugschnur",
+      "Belüftung": "Belüftungsöffnung oben (reduziert Winddruck)",
+      "Ständer": "Nicht enthalten – mind. 35 kg empfohlen",
     },
-    image: "/placeholder.svg",
+    image: imgSonnenschirm1,
+    images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
     rentwareCode: { bonn: "S8U5XL" },
   },
   {
