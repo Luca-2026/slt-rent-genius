@@ -307,7 +307,7 @@ export function Header() {
         <div className="lg:hidden border-t border-border bg-background animate-in slide-in-from-top-2 duration-200">
           <nav className="section-container py-4 flex flex-col gap-0.5">
             <MobileDropdown
-              label={t("nav.products")}
+              label={t("nav.rentalItems")}
               items={produkteItems}
               onClose={() => setIsMenuOpen(false)}
             />
@@ -316,16 +316,12 @@ export function Header() {
               items={kaufenItems}
               onClose={() => setIsMenuOpen(false)}
             />
+            <MobileDropdown
+              label={t("nav.solutions")}
+              items={loesungenItems}
+              onClose={() => setIsMenuOpen(false)}
+            />
 
-            <Link
-              to="/loesungen"
-              className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive("/loesungen") ? "bg-primary/10 text-primary" : "hover:bg-muted text-foreground"
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav.solutions")}
-            </Link>
             <Link
               to="/standorte"
               className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
