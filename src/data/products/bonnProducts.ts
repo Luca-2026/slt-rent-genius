@@ -2712,11 +2712,18 @@ export const bonnBeschallungProducts = [
 ];
 
 // ==================== SPEZIALEFFEKTE ====================
+import imgKaltFunkenfontaeneEinzeln1 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-1.jpg";
+import imgKaltFunkenfontaeneEinzeln2 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-2.jpeg";
+import imgKaltFunkenfontaeneEinzeln3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-3.jpeg";
+import imgKaltFunkenfontaeneEinzeln4 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-4.jpeg";
+
 export const bonnSpezialeffekteProducts = [
   {
     id: "kalt-funkenfontaene-einzeln",
     name: "Kalt-Funkenfontäne, Einzelgerät",
     description: "Auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen. Die bis zu 6 Meter hohen Fontänen sind vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
+    image: imgKaltFunkenfontaeneEinzeln1,
+    images: [imgKaltFunkenfontaeneEinzeln1, imgKaltFunkenfontaeneEinzeln2, imgKaltFunkenfontaeneEinzeln3, imgKaltFunkenfontaeneEinzeln4],
     category: "funken",
     specifications: {
       "Set": "1 × Kalt-Funkenfontäne",
