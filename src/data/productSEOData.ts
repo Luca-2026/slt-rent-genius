@@ -6267,6 +6267,42 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie schwer ist der Steinknacker und kann ich ihn transportieren?", a: "Der Steinknacker wiegt 57 kg und verfügt über Transporträder, sodass er von einer Person bewegt werden kann." },
     ],
   },
+  "ms08-grabenraeumloeffel-hydr-160cm-symlock": {
+    excelName: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
+    seoTitle: "MS08 Grabenräumlöffel hydr. 160cm mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten. 317 kg, hydraulisch schwenkbar, für 5–10 t Bagger. Tagesmiete bei SLT Rental.",
+    h1: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten in Bonn & Krefeld",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Kompatible Bagger", "Symlock-Schnellwechselsystem"],
+    useCaseBau: "Großflächige Planierarbeiten, Böschungsprofilierung, Grabenräumung, Kanalbau",
+    useCaseEvent: "",
+    useCasePrivat: "Teichbau, große Grundstücksnivellierung",
+    primaryKeywords: "MS08 Grabenräumlöffel mieten, Grabenräumlöffel 160cm mieten, hydraulischer Planierlöffel MS08 Symlock",
+    is247: false,
+    faqs: [
+      { q: "Für welche Bagger passt der MS08 Grabenräumlöffel?", a: "Der Löffel passt auf Bagger der Gewichtsklasse 5–10 t mit SB08S (MS08 Symlock) Schnellwechsler." },
+      { q: "Was bedeutet hydraulisch schwenkbar?", a: "Die hydraulische Schwenkfunktion erlaubt es, den Löffel seitlich zu neigen – ideal für Böschungsarbeiten und Profilierung in unebenem Gelände ohne den Bagger umsetzen zu müssen." },
+      { q: "Wie schwer ist der Löffel?", a: "Der Grabenräumlöffel wiegt 317 kg und hat eine Arbeitsbreite von 1600 mm bei 288 Liter Volumen (SAE)." },
+      { q: "Aus welchem Material sind die Schneiden?", a: "Die Schneiden bestehen aus hochverschleißfestem HB500-Stahl, der Grundkörper aus S355-Baustahl – für maximale Haltbarkeit auch bei abrasiven Böden." },
+    ],
+  },
+  "bonn-ms08-grabenraeumloeffel-hydr-160cm-symlock": {
+    excelName: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
+    seoTitle: "MS08 Grabenräumlöffel hydr. 160cm mieten in Bonn & Krefeld | SLT Rental",
+    metaDescription: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten. 317 kg, hydraulisch schwenkbar, für 5–10 t Bagger. Tagesmiete bei SLT Rental.",
+    h1: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten in Bonn & Krefeld",
+    h2s: ["Technische Daten", "Einsatzbereiche", "Kompatible Bagger", "Symlock-Schnellwechselsystem"],
+    useCaseBau: "Großflächige Planierarbeiten, Böschungsprofilierung, Grabenräumung, Kanalbau",
+    useCaseEvent: "",
+    useCasePrivat: "Teichbau, große Grundstücksnivellierung",
+    primaryKeywords: "MS08 Grabenräumlöffel mieten, Grabenräumlöffel 160cm mieten, hydraulischer Planierlöffel MS08 Symlock",
+    is247: false,
+    faqs: [
+      { q: "Für welche Bagger passt der MS08 Grabenräumlöffel?", a: "Der Löffel passt auf Bagger der Gewichtsklasse 5–10 t mit SB08S (MS08 Symlock) Schnellwechsler." },
+      { q: "Was bedeutet hydraulisch schwenkbar?", a: "Die hydraulische Schwenkfunktion erlaubt es, den Löffel seitlich zu neigen – ideal für Böschungsarbeiten und Profilierung in unebenem Gelände ohne den Bagger umsetzen zu müssen." },
+      { q: "Wie schwer ist der Löffel?", a: "Der Grabenräumlöffel wiegt 317 kg und hat eine Arbeitsbreite von 1600 mm bei 288 Liter Volumen (SAE)." },
+      { q: "Aus welchem Material sind die Schneiden?", a: "Die Schneiden bestehen aus hochverschleißfestem HB500-Stahl, der Grundkörper aus S355-Baustahl – für maximale Haltbarkeit auch bei abrasiven Böden." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
