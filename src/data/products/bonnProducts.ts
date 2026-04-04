@@ -326,6 +326,12 @@ export const bonnAggregateProducts = [
       "Generator": "6 kVA 400V/230V",
     },
   },
+  {
+    id: "bonn-presslufthammer-tex21pe-aggregat",
+    name: "Presslufthammer 21 kg",
+    description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
+    image: "/placeholder.svg",
+  },
 ];
 
 // ==================== ARBEITSBÜHNEN ====================
@@ -1437,6 +1443,12 @@ export const bonnWerkzeugProducts = [
     image: imgWinkelschleifer,
     images: [imgWinkelschleifer],
     rentwareCode: { bonn: "UL9XG5" },
+  },
+  {
+    id: "bonn-presslufthammer-tex21pe",
+    name: "Presslufthammer 21 kg",
+    description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
+    image: "/placeholder.svg",
   },
 ];
 

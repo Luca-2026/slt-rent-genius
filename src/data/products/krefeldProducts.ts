@@ -288,6 +288,7 @@ import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
+import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
@@ -889,6 +890,28 @@ export const arbeitsbuehnenProducts: Product[] = [
       "Fahrzeugbreite": "1,65 m",
       "Fahrzeughöhe": "2,10 m",
       "Gesamtgewicht": "2.070 kg",
+    },
+  },
+  {
+    id: "presslufthammer-tex21pe-aggregat",
+    name: "Presslufthammer 21 kg",
+    modelName: "Atlas Copco TEX 21 PE",
+    description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
+    image: presslufthammerTex21pe,
+    images: [presslufthammerTex21pe],
+    category: "druckluftwerkzeug",
+    rentwareCode: { krefeld: "5M8U7T" },
+    detailedDescription: "Der Atlas Copco TEX 21 PE ist ein leistungsstarker Presslufthammer mit 21 kg Gewicht und ca. 56 J Schlagenergie. Ideal für Abbruch-, Beton- und Asphaltarbeiten. Inkl. 1× Spitzmeißel und 1× Flachmeißel.\n\nBenötigt einen Baukompressor mit mind. 25 l/s Luftleistung (z. B. unseren 2,5 m³ Baukompressor).",
+    specifications: {
+      "Hersteller": "Atlas Copco",
+      "Modell": "TEX 21 PE",
+      "Schlagenergie": "ca. 56 J",
+      "Schlagzahl bei Nenndrehzahl": "1.140 bpm",
+      "Luftverbrauch": "25 l/s",
+      "Gewicht": "21 kg",
+      "Abmessung (L × B)": "84 × 60 cm",
+      "Werkzeugaufnahme": "25 × 108",
+      "Lieferumfang": "1× Spitzmeißel, 1× Flachmeißel",
     },
   },
 ];
@@ -1569,6 +1592,28 @@ export const werkzeugeProducts: Product[] = [
     images: [imgSdsPlusSet],
     category: "zubehoer",
     rentwareCode: { krefeld: "JHFAVK" }
+  },
+  {
+    id: "presslufthammer-tex21pe",
+    name: "Presslufthammer 21 kg",
+    modelName: "Atlas Copco TEX 21 PE",
+    description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.",
+    image: presslufthammerTex21pe,
+    images: [presslufthammerTex21pe],
+    category: "abbruchhammer",
+    rentwareCode: { krefeld: "5M8U7T" },
+    detailedDescription: "Der Atlas Copco TEX 21 PE ist ein leistungsstarker Presslufthammer mit 21 kg Gewicht und ca. 56 J Schlagenergie. Ideal für Abbruch-, Beton- und Asphaltarbeiten. Inkl. 1× Spitzmeißel und 1× Flachmeißel.\n\nBenötigt einen Baukompressor mit mind. 25 l/s Luftleistung (z. B. unseren 2,5 m³ Baukompressor).",
+    specifications: {
+      "Hersteller": "Atlas Copco",
+      "Modell": "TEX 21 PE",
+      "Schlagenergie": "ca. 56 J",
+      "Schlagzahl bei Nenndrehzahl": "1.140 bpm",
+      "Luftverbrauch": "25 l/s",
+      "Gewicht": "21 kg",
+      "Abmessung (L × B)": "84 × 60 cm",
+      "Werkzeugaufnahme": "25 × 108",
+      "Lieferumfang": "1× Spitzmeißel, 1× Flachmeißel",
+    },
   },
 ];
 
