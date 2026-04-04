@@ -821,7 +821,7 @@ export const aggregateProducts: Product[] = [
 export const arbeitsbuehnenProducts: Product[] = [
   {
     id: "scherenbuehne-8m",
-    name: "8m Scherenbühne XCMG XG0807AC",
+    name: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
     description: "Kompakte elektrische Scherenbühne mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
     image: scherenbuehneXg0807ac1,
     images: [scherenbuehneXg0807ac1, scherenbuehneXg0807ac2],
