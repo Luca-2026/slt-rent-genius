@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart, PackageSearch } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import zoomlionLogo from "@/assets/logos/zoomlion.png";
 import temaredLogo from "@/assets/logos/temared.webp";
 import baumaxLogo from "@/assets/logos/baumax.png";
@@ -13,18 +14,20 @@ const brands = [
 ];
 
 export function SalesTeaser() {
+  const { t } = useTranslation();
+
   return (
     <section className="py-14 lg:py-20 bg-muted/20">
       <div className="section-container">
         <AnimatedSection className="text-center mb-8">
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-primary/20">
-            Autorisierter Fachhändler & Servicestützpunkt
+            {t("salesTeaser.badge")}
           </span>
           <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-            Baumaschinen & Anhänger auch zum Kauf verfügbar
+            {t("salesTeaser.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Ob fabrikneue Maschinen von Zoomlion, BAUMAX und Temared oder gepflegte Gebrauchtmaschinen – wir beraten Sie persönlich und liefern in ganz NRW.
+            {t("salesTeaser.subtitle")}
           </p>
         </AnimatedSection>
 
@@ -51,13 +54,13 @@ export function SalesTeaser() {
                 <ShoppingCart className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <p className="font-bold text-headline text-lg mb-1">Neumaschinen</p>
+                <p className="font-bold text-headline text-lg mb-1">{t("salesTeaser.newMachines")}</p>
                 <p className="text-sm text-muted-foreground">
-                  Zoomlion, BAUMAX & Temared – direkt vom autorisierten Fachhändler
+                  {t("salesTeaser.newMachinesDesc")}
                 </p>
               </div>
               <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-1">
-                Neumaschinen entdecken
+                {t("salesTeaser.newMachinesCta")}
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
               </span>
             </div>
@@ -69,13 +72,13 @@ export function SalesTeaser() {
                 <PackageSearch className="h-6 w-6 text-accent" />
               </div>
               <div>
-                <p className="font-bold text-headline text-lg mb-1">Gebrauchtmaschinen</p>
+                <p className="font-bold text-headline text-lg mb-1">{t("salesTeaser.usedMachines")}</p>
                 <p className="text-sm text-muted-foreground">
-                  Gepflegte Gebrauchtmaschinen – geprüft, sofort verfügbar
+                  {t("salesTeaser.usedMachinesDesc")}
                 </p>
               </div>
               <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:text-accent transition-colors mt-1">
-                SLT Used ansehen
+                {t("salesTeaser.usedMachinesCta")}
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
               </span>
             </div>
@@ -85,7 +88,7 @@ export function SalesTeaser() {
         <AnimatedSection className="text-center mt-8" delay={200}>
           <Link to="/kontakt">
             <Button variant="outline" size="lg" className="group">
-              Kaufberatung anfragen
+              {t("salesTeaser.inquiryCta")}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
