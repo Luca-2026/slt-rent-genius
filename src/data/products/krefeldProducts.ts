@@ -4255,6 +4255,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
+    pdfUrl: "/manuals/krause-fahrgeruest-stabilo-serie-10-anleitung.pdf",
     onRequest: true,
   },
   {
