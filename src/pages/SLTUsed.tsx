@@ -284,14 +284,14 @@ export default function SLTUsed() {
             })}
           </TooltipProvider>
         </div>
+        )}
 
-        {filteredMachines.length === 0 && machines.length > 0 && (
+        {machines.length > 0 && filteredMachines.length === 0 && (
           <div className="text-center py-16">
             <Package className="h-12 w-12 text-muted-foreground/40 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-headline mb-2">Keine Maschinen gefunden</h3>
             <p className="text-muted-foreground">Versuchen Sie eine andere Kategorie oder Suchbegriff.</p>
           </div>
-        )}
         )}
       </section>
 
