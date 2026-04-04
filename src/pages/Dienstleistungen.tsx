@@ -251,17 +251,20 @@ export default function Dienstleistungen() {
           <AnimatedSection>
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-6">
-                Dienstleistungen rund um Baumaschinen & Equipment in NRW
+                Dienstleistungen rund um Baumaschinen & Eventausstattung in NRW
               </h2>
               <div className="prose prose-lg text-muted-foreground max-w-none space-y-4">
                 <p>
-                  SLT Rental ist mehr als ein reiner Vermieter: An unseren drei Standorten in <strong>Krefeld</strong>, <strong>Bonn</strong> und <strong>Mülheim an der Ruhr</strong> bieten wir ein umfassendes Servicepaket, das weit über die Bereitstellung von Baumaschinen hinausgeht. Ob <strong>Verkehrssicherung in Bonn</strong>, <strong>Baustellenplanung in Krefeld</strong> oder <strong>Lieferung von Baumaschinen im Ruhrgebiet</strong> – wir kümmern uns um das Drumherum, damit Sie sich auf Ihr Projekt konzentrieren können.
+                  SLT Rental ist mehr als ein reiner Vermieter: An unseren drei Standorten in <strong>Krefeld</strong>, <strong>Bonn</strong> und <strong>Mülheim an der Ruhr</strong> bieten wir ein umfassendes Servicepaket, das weit über die Bereitstellung von Baumaschinen und Eventausstattung hinausgeht. Ob <strong>Verkehrssicherung in Bonn</strong>, <strong>Baustellenplanung in Krefeld</strong> oder <strong>Lieferung von Baumaschinen und Eventequipment im Ruhrgebiet</strong> – wir kümmern uns um das Drumherum, damit Sie sich auf Ihr Projekt oder Event konzentrieren können.
+                </p>
+                <p>
+                  Im Bereich <strong>Eventausstattung</strong> vermieten und liefern wir alles, was Sie für Firmenveranstaltungen, Stadtfeste, Sportevents oder private Feiern benötigen: <strong>Zelte, Pagodenzelte, Bühnen, Stehtische, Biertischgarnituren, Absperrgitter, Hüpfburgen</strong> und vieles mehr. Von der Planung über die Anlieferung bis hin zum kompletten Auf- und Abbau übernehmen wir den gesamten Service – inklusive Koordination mit Veranstaltungsorten und Behörden.
                 </p>
                 <p>
                   Für <strong>Halteverbotszonen, Absperrungen und Verkehrszeichenpläne</strong> arbeiten wir eng mit unserem Partnerunternehmen <a href="https://www.slt-infra.de" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">slt-infra.de</a> zusammen. So erhalten Sie <strong>Verkehrssicherung aus einer Hand</strong> – inklusive Antragstellung, Aufbau und Rückbau in Bonn, Krefeld, Düsseldorf und ganz NRW.
                 </p>
                 <p>
-                  Unser <strong>Auf- und Abbauservice</strong> ist besonders bei Event-Ausstattern und Bauunternehmen gefragt: Wir bauen Zelte, Bühnen, Möblierung und Absperrtechnik fachgerecht auf und wieder ab. Und mit unserem eigenen <strong>Werkstatt- und Reparaturservice</strong> in Krefeld können wir Anhänger, Baumaschinen und Aggregate auch dann warten, wenn sie nicht bei uns gemietet wurden.
+                  Unser <strong>Auf- und Abbauservice</strong> ist besonders bei Eventagenturen, Vereinen und Bauunternehmen gefragt: Wir bauen Zelte, Bühnen, Möblierung und Absperrtechnik fachgerecht auf und wieder ab – ob auf dem Firmengelände, im öffentlichen Raum oder auf der Baustelle. Und mit unserem eigenen <strong>Werkstatt- und Reparaturservice</strong> in Krefeld können wir Anhänger, Baumaschinen und Aggregate auch dann warten, wenn sie nicht bei uns gemietet wurden.
                 </p>
               </div>
             </div>
