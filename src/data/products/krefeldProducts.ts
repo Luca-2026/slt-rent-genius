@@ -2936,8 +2936,8 @@ export const moebelZelteProducts: Product[] = [
     id: "partyzelt-3x3m",
     name: "Partyzelt 3x3m",
     description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
-    image: imgPartyzelt3x3_1,
-    images: [imgPartyzelt3x3_1, imgPartyzelt3x3_2],
+    image: imgMasse3x3,
+    images: [imgMasse3x3, imgPartyzelt3x3_1, imgPartyzeltWeiss, imgPartyzelt3x3_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "9 m² (3 m × 3 m)",
