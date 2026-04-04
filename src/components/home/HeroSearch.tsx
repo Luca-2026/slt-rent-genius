@@ -21,7 +21,7 @@ function getAllUniqueProducts(): Product[] {
   for (const location of locations) {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
-      if (!productMap.has(product.name)) {
+      if (product.name && !productMap.has(product.name)) {
         productMap.set(product.name, product);
       }
     }
@@ -107,8 +107,8 @@ export function HeroSearch() {
         const catProducts = location.products[cat.id];
         if (catProducts) {
           for (const p of catProducts) {
-            if (allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
-            if (p.tags?.some((t) => allWordsMatch(t.toLowerCase(), queryWords))) return true;
+            if (p.name && allWordsMatch(p.name.toLowerCase(), queryWords)) return true;
+            if (p.tags?.some((t) => t && allWordsMatch(t.toLowerCase(), queryWords))) return true;
           }
         }
       }
@@ -140,20 +140,20 @@ export function HeroSearch() {
     return translatedProducts
       .filter((p, index) => {
         const original = allProducts[index];
-        if (!original) return false;
+        if (!original || !original.name) return false;
         
         // Include products from matched categories
         if (categoryProductIds.has(original.id)) return true;
         
         if (isGerman) {
-          if (original.name.toLowerCase().includes(query)) return true;
+          if (original.name?.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
-          if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+          if (original.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
         } else {
-          if (p.name.toLowerCase().includes(query)) return true;
-          if (p.description?.toLowerCase().includes(query)) return true;
-          if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-          if (original.name.toLowerCase().includes(query)) return true;
+          if (p?.name?.toLowerCase().includes(query)) return true;
+          if (p?.description?.toLowerCase().includes(query)) return true;
+          if (p?.tags?.some((t) => t?.toLowerCase().includes(query))) return true;
+          if (original.name?.toLowerCase().includes(query)) return true;
           if (original.description?.toLowerCase().includes(query)) return true;
         }
 
