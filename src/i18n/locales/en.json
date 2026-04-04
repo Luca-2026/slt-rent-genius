@@ -1,7 +1,17 @@
 {
   "nav": {
-    "products": "Products",
+    "products": "Rental Items",
     "solutions": "Solutions",
+    "rentalItems": "Rental Items",
+    "allCategories": "All Categories",
+    "solutionGalabau": "Garden & Landscaping",
+    "solutionTiefbau": "Civil Engineering",
+    "solutionHochbau": "Construction & Renovation",
+    "solutionEvents": "Events & Parties",
+    "solutionTransport": "Moving & Transport",
+    "solutionHandwerk": "Trades & Business",
+    "solutionPrivate": "Private Projects",
+    "solutionKinder": "Kids' Parties",
     "howItWorks": "How It Works",
     "help": "Help & Guides",
     "locations": "Locations",
@@ -14,6 +24,21 @@
     "buy": "Buy",
     "buyNow": "Buy Now",
     "salePage": "Sales Page"
+  },
+  "mietartikel": {
+    "seo": {
+      "title": "Rental Items – All Categories | SLT Rental",
+      "description": "Discover our full range: trailers, excavators, aerial platforms, tools, event equipment and more. Choose your location and rent now!"
+    },
+    "badge": "Over 20 Categories",
+    "title": "Our Rental Items",
+    "subtitle": "From construction machinery to event equipment to trailers – discover our extensive range and choose your location.",
+    "bauHandwerk": "Construction & Trades",
+    "bauHandwerkDesc": "Construction machinery, tools and equipment for construction sites, trades and garden care.",
+    "eventVeranstaltung": "Events & Entertainment",
+    "eventVeranstaltungDesc": "Everything for your event: sound systems, lighting, tents, tableware and more.",
+    "selectLocation": "Choose Location",
+    "selectLocationDesc": "Choose your location to see the available products in this category."
   },
   "marquee": {
     "weekendRates": "Weekend Rates",
