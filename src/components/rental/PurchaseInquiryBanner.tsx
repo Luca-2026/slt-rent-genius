@@ -104,7 +104,6 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
             </div>
           </DialogContent>
         </Dialog>
-      )}
     </>
   );
 }
