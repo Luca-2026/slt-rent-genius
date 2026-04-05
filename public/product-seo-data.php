@@ -5162,3 +5162,6 @@ $productSEOLookup = [
     ],
   ],
 ];
+
+$productDetails = [
+];
