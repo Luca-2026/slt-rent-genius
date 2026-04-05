@@ -282,7 +282,156 @@ $title = htmlspecialchars($meta['title'], ENT_QUOTES, 'UTF-8');
 $description = htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8');
 $canonicalUrl = $BASE_URL . $path;
 
-// Output minimal HTML with correct meta tags
+// ── Homepage rich body content ──
+$homepageBody = '';
+if ($path === '/') {
+    $homepageBody = <<<'HTML'
+  <nav aria-label="Hauptnavigation">
+    <ul>
+      <li><a href="https://www.slt-rental.de/mieten">Equipment mieten</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld">Krefeld</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/bonn">Bonn</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/muelheim">Mülheim an der Ruhr</a></li>
+      <li><a href="https://www.slt-rental.de/standorte">Standorte</a></li>
+      <li><a href="https://www.slt-rental.de/loesungen">Lösungen</a></li>
+      <li><a href="https://www.slt-rental.de/kontakt">Kontakt</a></li>
+      <li><a href="https://www.slt-rental.de/so-funktionierts">So funktioniert's</a></li>
+      <li><a href="https://www.slt-rental.de/lieferung">Lieferung &amp; Abholung</a></li>
+      <li><a href="https://www.slt-rental.de/faq">FAQ</a></li>
+      <li><a href="https://www.slt-rental.de/karriere">Karriere</a></li>
+      <li><a href="https://www.slt-rental.de/tiefpreisgarantie">Tiefpreisgarantie</a></li>
+      <li><a href="https://www.slt-rental.de/verkauf">Verkauf &amp; Marken</a></li>
+      <li><a href="https://www.slt-rental.de/dienstleistungen">Dienstleistungen</a></li>
+    </ul>
+  </nav>
+
+  <section>
+    <p>Das beste Equipment zum besten Preis.</p>
+    <h1>Baumaschinen, Anhänger &amp; Eventausstattung mieten – einfach, schnell, zuverlässig.</h1>
+    <p>Über 1.700 Mietartikel an 3 Standorten in NRW. Faire Tagespreise, Wochenend-Tarife und Lieferung direkt auf Ihre Baustelle oder zu Ihrem Event.</p>
+  </section>
+
+  <section>
+    <p>+3.500 zufriedene Kunden</p>
+    <p>+1.700 Mietartikel</p>
+    <p>3 Standorte in NRW</p>
+    <p>seit 2016 Ihr Partner</p>
+  </section>
+
+  <section>
+    <h2>Unsere Standorte in NRW</h2>
+    <p>Drei Standorte – ein Versprechen: Das beste Equipment zum besten Preis.</p>
+
+    <h3>Krefeld</h3>
+    <p>Anrather Straße 291, 47807 Krefeld-Fichtenhain</p>
+    <p>Telefon: 02151 417 99 04</p>
+    <p>E-Mail: krefeld@slt-rental.de</p>
+    <a href="https://www.slt-rental.de/mieten/krefeld">Kategorien ansehen</a>
+
+    <h3>Bonn</h3>
+    <p>Drachenburgstraße 8, 53179 Bonn</p>
+    <p>Telefon: 0228 504 660 61</p>
+    <p>E-Mail: bonn@slt-rental.de</p>
+    <a href="https://www.slt-rental.de/mieten/bonn">Kategorien ansehen</a>
+
+    <h3>Mülheim an der Ruhr</h3>
+    <p>Ruhrorter Str. 122, 45478 Mülheim an der Ruhr</p>
+    <p>Telefon: 02151 417 99 04</p>
+    <a href="https://www.slt-rental.de/mieten/muelheim">Kategorien ansehen</a>
+
+    <a href="https://www.slt-rental.de/standorte">Alle Standorte ansehen</a>
+  </section>
+
+  <section>
+    <h2>So funktioniert's – In 5 Schritten zum Equipment</h2>
+    <ol>
+      <li>Standort wählen – Krefeld, Bonn oder Mülheim</li>
+      <li>Equipment suchen – Über 1.700 Mietartikel durchstöbern</li>
+      <li>Anfrage senden – Unverbindlich und kostenlos</li>
+      <li>Angebot erhalten – Persönliches Angebot vom Team</li>
+      <li>Abholen oder liefern lassen – Flexibel und unkompliziert</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Unsere Dienstleistungen</h2>
+    <a href="https://www.slt-rental.de/dienstleistungen">Dienstleistungen ansehen</a>
+  </section>
+
+  <section>
+    <h2>Kategorien</h2>
+    <ul>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/anhaenger">Anhänger mieten</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/erdbewegung">Minibagger &amp; Erdbewegung</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/werkzeuge">Werkzeuge mieten</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/arbeitsbuehnen">Arbeitsbühnen mieten</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/verdichtung">Rüttelplatten &amp; Stampfer</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/gartenpflege">Gartengeräte mieten</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/aggregate">Stromaggregate</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/leitern-gerueste">Leitern &amp; Gerüste</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/heizung-trocknung">Bautrockner &amp; Heizgeräte</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/kabel-stromverteiler">Kabel &amp; Stromverteiler</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/absperrtechnik">Absperrtechnik</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/moebel-zelte">Möbel &amp; Zelte</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/geschirr-glaeser-besteck">Geschirr, Gläser &amp; Besteck</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/beleuchtung">Beleuchtung</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/beschallung">Beschallung</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/buehne">Bühne</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/traversen-rigging">Traversen &amp; Rigging</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/spezialeffekte">Spezialeffekte</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/huepfburgen">Hüpfburgen</a></li>
+      <li><a href="https://www.slt-rental.de/mieten/krefeld/kommunikation">Kommunikationstechnik</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Verkauf &amp; Marken</h2>
+    <p>Autorisierter Fachhändler &amp; Servicestützpunkt. Baumaschinen &amp; Anhänger auch zum Kauf verfügbar.</p>
+    <a href="https://www.slt-rental.de/verkauf">Neumaschinen entdecken</a>
+    <a href="https://www.slt-rental.de/verkauf/gebraucht">SLT Used ansehen</a>
+  </section>
+
+  <section>
+    <h2>Jetzt Equipment mieten</h2>
+    <p>Finden Sie das passende Equipment für Ihr Projekt – einfach, schnell und zum besten Preis.</p>
+    <a href="https://www.slt-rental.de/mieten">Equipment mieten</a>
+  </section>
+
+  <section>
+    <h2>Ihre Vorteile bei SLT Rental</h2>
+    <ul>
+      <li><strong>Faire Preise</strong> – Transparente Tagespreise ohne versteckte Kosten. Tiefpreisgarantie für Gewerbekunden.</li>
+      <li><strong>Lieferung &amp; Abholung</strong> – Wir liefern Ihr Equipment direkt auf die Baustelle oder zum Event.</li>
+      <li><strong>Flexible Mietzeiten</strong> – Tages-, Wochen- und Monatstarife. Auch am Wochenende.</li>
+      <li><strong>Persönliche Beratung</strong> – Unser Team berät Sie bei der Auswahl des richtigen Equipments.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Baumaschinen &amp; Equipment mieten in NRW – Ihr Partner für jedes Projekt</h2>
+    <p>SLT Rental ist Ihr Spezialist für die Vermietung von Baumaschinen, Anhängern und Event-Equipment in Nordrhein-Westfalen. Mit drei Standorten in <a href="https://www.slt-rental.de/mieten/krefeld">Krefeld</a>, <a href="https://www.slt-rental.de/mieten/bonn">Bonn</a> und <a href="https://www.slt-rental.de/mieten/muelheim">Mülheim an der Ruhr</a> sind wir immer in Ihrer Nähe – egal ob Sie einen Minibagger für den Garten, eine Arbeitsbühne für die Fassade oder eine Hüpfburg für den Kindergeburtstag suchen.</p>
+    <h3>Über 1.700 Mietartikel für Bau, Garten &amp; Events</h3>
+    <p>Unser Sortiment reicht von Baggern und Radladern über Rüttelplatten und Bautrockner bis hin zu Profi-Werkzeugen. Für Events bieten wir Zelte und Eventmöbel, Geschirr und Besteck, Beschallungsanlagen, Beleuchtung und professionelle Bühnensysteme. Am Standort Mülheim stehen außerdem leistungsstarke Bobcat-Maschinen zur Verfügung.</p>
+    <h3>Die größte Anhänger-Auswahl in NRW</h3>
+    <p>Mit über 200 Anhängern bieten wir die größte Auswahl in der Region – vom Kastenanhänger über den Autotransporter bis zum Schwerlast-Tieflader. Alle Anhänger sind regelmäßig geprüft und sofort einsatzbereit.</p>
+    <h3>Tiefpreisgarantie &amp; Wochenend-Tarife</h3>
+    <p>Wir bieten eine Tiefpreisgarantie für Gewerbekunden: Finden Sie ein identisches Produkt günstiger, erhalten Sie 10 % Rabatt auf den Nettomietpreis. Privatkunden profitieren von fairen Wochenend-Tarifen.</p>
+    <h3>Lieferung in ganz NRW</h3>
+    <p>Ihr Equipment können Sie an unseren <a href="https://www.slt-rental.de/standorte">Standorten</a> abholen oder wir liefern es direkt zu Ihnen. Unser Liefergebiet umfasst den gesamten Niederrhein, das Rheinland und das Ruhrgebiet. Die Lieferkosten berechnen Sie transparent mit unserem <a href="https://www.slt-rental.de/lieferung">Online-Kalkulator</a>.</p>
+    <p><strong>SLT Rental – Das beste Equipment zum besten Preis.</strong></p>
+  </section>
+
+  <footer>
+    <ul>
+      <li><a href="https://www.slt-rental.de/impressum">Impressum</a></li>
+      <li><a href="https://www.slt-rental.de/datenschutz">Datenschutz</a></li>
+      <li><a href="https://www.slt-rental.de/agb">AGB</a></li>
+    </ul>
+  </footer>
+HTML;
+}
+
+// Output HTML with correct meta tags
 header('Content-Type: text/html; charset=utf-8');
 ?><!DOCTYPE html>
 <html lang="de">
@@ -308,8 +457,12 @@ header('Content-Type: text/html; charset=utf-8');
   <meta name="twitter:image" content="<?= $OG_IMAGE ?>">
 </head>
 <body>
+<?php if ($homepageBody): ?>
+<?= $homepageBody ?>
+<?php else: ?>
   <h1><?= $title ?></h1>
   <p><?= $description ?></p>
   <p><a href="<?= $canonicalUrl ?>"><?= $canonicalUrl ?></a></p>
+<?php endif; ?>
 </body>
 </html>
