@@ -133,6 +133,24 @@ export function Footer() {
         {/* Divider */}
         <div className="border-t border-white/10 my-4" />
 
+        {/* Standort Detail Links */}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+            {t("footer.locations")}
+          </h4>
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            {locations.map((loc) => (
+              <Link
+                key={loc.id}
+                to={`/standorte/${loc.id}`}
+                className="text-xs text-white/50 hover:text-accent transition-colors"
+              >
+                {`Standort ${loc.name}`}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Local SEO Links by Region */}
         <div className="mb-4">
           <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">
@@ -140,7 +158,7 @@ export function Footer() {
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {locations.map((loc) => {
-              const areas = getAreasForLocation(loc.id).filter(a => a.distance > 0);
+              const areas = getAreasForLocation(loc.id);
               return (
                 <div key={loc.id}>
                   <span className="text-xs font-medium text-white/70 block mb-1">{t("footer.region", { name: loc.name })}</span>
