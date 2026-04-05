@@ -27,14 +27,13 @@ export function SEO({
   const fullTitle = title.includes("SLT Rental") ? title : `${title} | SLT Rental`;
   const currentPath = typeof window !== "undefined" ? window.location.pathname : "/";
   const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : `${BASE_URL}${currentPath}`;
-  const isLovableApp = typeof window !== "undefined" && window.location.hostname.includes("lovable.app") && !window.location.hostname.includes("id-preview--");
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-      {(noIndex || isLovableApp) && <meta name="robots" content="noindex, nofollow" />}
+      {noIndex && <meta name="robots" content="noindex, nofollow" />}
       <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph */}
