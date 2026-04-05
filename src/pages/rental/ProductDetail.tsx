@@ -196,7 +196,8 @@ export default function ProductDetail() {
         "og:site_name": "SLT Rental",
       };
       if (images.length > 0) {
-        ogTags["og:image"] = images[0];
+        const imgUrl = images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`;
+        ogTags["og:image"] = imgUrl;
       }
       const createdOgTags: HTMLMetaElement[] = [];
       for (const [prop, content] of Object.entries(ogTags)) {
@@ -216,7 +217,7 @@ export default function ProductDetail() {
         "@type": "Product",
         "name": productSEO?.excelName || product.name,
         "description": product.description || "",
-        "image": images.length > 0 ? images[0] : undefined,
+        "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
         "brand": { "@type": "Brand", "name": "SLT Rental" },
         "offers": {
           "@type": "Offer",
