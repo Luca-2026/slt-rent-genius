@@ -779,7 +779,7 @@ export default function ProductDetail() {
                   </Link>
                 </div>
               )}
-
+import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 
               {/* SEO Content Block */}
               <ProductSEOContent
