@@ -2751,10 +2751,6 @@ export const bonnBeleuchtungProducts = [
     rentwareCode: { bonn: "7NA19B" },
   },
   {
-    id: "led-4er-bar",
-    rentwareCode: { bonn: "ZKOF2K" },
-  },
-  {
     id: "bonn-led-moving-head",
     name: "LED Moving Head Vector Spot Zoom 2.0",
     description: "Professioneller Moving Head für Events.",
