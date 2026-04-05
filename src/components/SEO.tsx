@@ -27,7 +27,7 @@ export function SEO({
   const fullTitle = title.includes("SLT Rental") ? title : `${title} | SLT Rental`;
   const currentPath = typeof window !== "undefined" ? window.location.pathname : "/";
   const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : `${BASE_URL}${currentPath}`;
-  const isLovableApp = typeof window !== "undefined" && window.location.hostname.includes("lovable.app");
+  const isLovableApp = typeof window !== "undefined" && window.location.hostname.includes("lovable.app") && !window.location.hostname.includes("id-preview--");
 
   return (
     <Helmet>
