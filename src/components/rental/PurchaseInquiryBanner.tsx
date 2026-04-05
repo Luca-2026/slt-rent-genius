@@ -19,6 +19,7 @@ interface PurchaseInquiryBannerProps {
 
 export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInquiryBannerProps) {
   const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMounted, setPopupMounted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
     }
 
     const timer = setTimeout(() => {
+      setPopupMounted(true);
       setPopupOpen(true);
       try {
         sessionStorage.setItem("purchasePopupShown", "1");
