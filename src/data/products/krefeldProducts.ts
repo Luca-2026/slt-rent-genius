@@ -2970,7 +2970,7 @@ export const beleuchtungProducts: Product[] = [
     description: "Komplett-Lichtanlage mit 2× LED Moving Heads, 2× RGBW Derby-Effekten, 4× weißem Stroboskop und 2× RGBW-LED Scheinwerfern. Programmbetrieb oder Sound to Light möglich. Inkl. 5m Anschlusskabel, Stativ und 2 Tragetaschen.",
     image: imgLedBeleuchtungssetSingle1,
     images: [imgLedBeleuchtungssetSingle1],
-    category: "beleuchtungsset",
+    category: "beleuchtung",
     specifications: {
       "Inhalt": "2× LED Moving Head, 2× RGBW Derby-Effekt, 4× weißes Stroboskop, 2× RGBW-LED Scheinwerfer",
       "Betrieb": "Programmbetrieb oder Sound to Light",
@@ -2985,7 +2985,7 @@ export const beleuchtungProducts: Product[] = [
     description: "Doppeltes Komplettpaket: 2× LED Beleuchtungsset, jeweils mit 2× LED Moving Heads, 2× RGBW Derby-Effekten, 4× weißem Stroboskop und 2× RGBW-LED Scheinwerfern. Programmbetrieb oder Sound to Light möglich. Ideal für größere Veranstaltungen.",
     image: imgLedBeleuchtungssetDuo1,
     images: [imgLedBeleuchtungssetDuo1],
-    category: "beleuchtungsset",
+    category: "beleuchtung",
     specifications: {
       "Inhalt": "2× Komplettset: je 2× LED Moving Head, 2× RGBW Derby-Effekt, 4× weißes Stroboskop, 2× RGBW-LED Scheinwerfer",
       "Betrieb": "Programmbetrieb oder Sound to Light",
