@@ -69,43 +69,45 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
         </div>
       </div>
 
-      {/* Auto-popup after 2.5s — redirects to /verkauf */}
-      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5 text-accent" />
-              Lieber kaufen statt mieten?
-            </DialogTitle>
-            <DialogDescription>
-              Alle Artikel können Sie bei uns auch zu besten Konditionen erwerben!
-            </DialogDescription>
-          </DialogHeader>
-          <div className="text-center space-y-3 pt-2">
-            <p className="text-sm text-muted-foreground">
-              Stellen Sie jetzt eine unverbindliche Kaufanfrage für <span className="font-medium text-foreground">{productName}</span>.
-            </p>
-            <Button
-              className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-              onClick={goToKaufanfrage}
-            >
-              <Send className="h-4 w-4 mr-2" />
-              Jetzt Kaufanfrage stellen
-            </Button>
-            {(categoryId === "erdbewegung" || categoryId === "arbeitsbuehnen") && (
-              <a
-                href="https://www.zoomlion-nrw.de"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 text-sm text-primary hover:underline pt-1"
+      {/* Auto-popup after 2.5s — only mounts after timer fires */}
+      {popupMounted && (
+        <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+          <DialogContent className="sm:max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <ShoppingCart className="h-5 w-5 text-accent" />
+                Lieber kaufen statt mieten?
+              </DialogTitle>
+              <DialogDescription>
+                Alle Artikel können Sie bei uns auch zu besten Konditionen erwerben!
+              </DialogDescription>
+            </DialogHeader>
+            <div className="text-center space-y-3 pt-2">
+              <p className="text-sm text-muted-foreground">
+                Stellen Sie jetzt eine unverbindliche Kaufanfrage für <span className="font-medium text-foreground">{productName}</span>.
+              </p>
+              <Button
+                className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                onClick={goToKaufanfrage}
               >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Zoomlion Neumaschinen auf www.zoomlion-nrw.de
-              </a>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+                <Send className="h-4 w-4 mr-2" />
+                Jetzt Kaufanfrage stellen
+              </Button>
+              {(categoryId === "erdbewegung" || categoryId === "arbeitsbuehnen") && (
+                <a
+                  href="https://www.zoomlion-nrw.de"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 text-sm text-primary hover:underline pt-1"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  Zoomlion Neumaschinen auf www.zoomlion-nrw.de
+                </a>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
