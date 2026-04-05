@@ -2762,6 +2762,10 @@ export const bonnBeleuchtungProducts = [
     rentwareCode: { bonn: "EKOMK2" },
   },
   {
+    id: "led-beleuchtungsset-single",
+    rentwareCode: { bonn: "YPSGY4" },
+  },
+  {
     id: "led-beleuchtungsset-duo",
     rentwareCode: { bonn: "H5HKTK" },
   },
