@@ -24,4 +24,3 @@ Disallow: /manuals/
 
 # Sitemaps
 Sitemap: https://www.slt-rental.de/sitemap.xml
-Sitemap: https://ccmxitxgyznethanixlg.supabase.co/functions/v1/sitemap

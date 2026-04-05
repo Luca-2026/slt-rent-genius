@@ -25,15 +25,17 @@ export function SEO({
   keywords,
 }: SEOProps) {
   const fullTitle = title.includes("SLT Rental") ? title : `${title} | SLT Rental`;
-  const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : undefined;
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : "/";
+  const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : `${BASE_URL}${currentPath}`;
+  const isLovableApp = typeof window !== "undefined" && window.location.hostname.includes("lovable.app");
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-      {noIndex && <meta name="robots" content="noindex, nofollow" />}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      {(noIndex || isLovableApp) && <meta name="robots" content="noindex, nofollow" />}
+      <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
