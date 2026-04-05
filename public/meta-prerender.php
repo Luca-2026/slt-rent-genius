@@ -561,6 +561,8 @@ header('Content-Type: text/html; charset=utf-8');
 <body>
 <?php if ($homepageBody): ?>
 <?= $homepageBody ?>
+<?php elseif ($productBodyContent): ?>
+<?= $productBodyContent ?>
 <?php else: ?>
   <h1><?= $title ?></h1>
   <p><?= $description ?></p>
