@@ -28,7 +28,7 @@ import {
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
-
+import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { useTranslation } from "react-i18next";
@@ -780,6 +780,13 @@ export default function ProductDetail() {
                 </div>
               )}
 
+              {/* Kaufanfrage-Banner */}
+              <PurchaseInquiryBanner
+                productName={product.name}
+                locationName={location.name}
+                locationEmail={location.email}
+                categoryId={categoryId}
+              />
 
               {/* SEO Content Block */}
               <ProductSEOContent
