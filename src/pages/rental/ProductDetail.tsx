@@ -779,7 +779,14 @@ export default function ProductDetail() {
                   </Link>
                 </div>
               )}
-import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
+
+              {/* Kaufanfrage-Banner */}
+              <PurchaseInquiryBanner
+                productName={product.name}
+                locationName={location.name}
+                locationEmail={location.email}
+                categoryId={categoryId}
+              />
 
               {/* SEO Content Block */}
               <ProductSEOContent
