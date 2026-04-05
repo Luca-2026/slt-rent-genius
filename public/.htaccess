@@ -93,7 +93,7 @@ RewriteRule ^produkte/(.+)$ /mieten/krefeld/alle?legacy=$1 [R=301,L]
 
 # ===== Bot Meta-Tag Prerendering =====
 # Route social media crawlers through PHP for correct OG meta tags
-RewriteCond %{HTTP_USER_AGENT} facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Embedly|pinterest|vkShare|redditbot|Viber|Skype|kakaotalk [NC]
+RewriteCond %{HTTP_USER_AGENT} Googlebot|bingbot|facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Embedly|pinterest|vkShare|redditbot|Viber|Skype|kakaotalk|Applebot|DuckDuckBot|Yandex|Baiduspider [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ /meta-prerender.php [L]
 
