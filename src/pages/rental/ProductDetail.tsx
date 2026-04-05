@@ -790,13 +790,6 @@ export default function ProductDetail() {
                 productSEO={productSEO}
               />
 
-              {/* Kaufanfrage-Banner */}
-              <PurchaseInquiryBanner
-                productName={product.name}
-                locationName={location.name}
-                locationEmail={location.email}
-                categoryId={categoryId}
-              />
             </div>
 
             {/* ── RIGHT COLUMN (tablet + desktop sticky sidebar) ── */}
