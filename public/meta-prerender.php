@@ -9,9 +9,20 @@
  * Deploy this file to the root of your Serverprofis hosting.
  */
 
-$BASE_URL = 'https://www.slt-rental.de';
-$OG_IMAGE = $BASE_URL . '/og-image.jpg';
+$SITE_ORIGIN = 'https://www.slt-rental.de';
+$BASE_URL = $SITE_ORIGIN;
+$OG_IMAGE = $SITE_ORIGIN . '/og-image.jpg';
 $SITE_NAME = 'SLT Rental';
+
+function buildAbsoluteUrl(string $path = '/'): string
+{
+    global $SITE_ORIGIN;
+
+    $normalizedPath = parse_url($path, PHP_URL_PATH) ?: '/';
+    $normalizedPath = '/' . ltrim($normalizedPath, '/');
+
+    return $SITE_ORIGIN . $normalizedPath;
+}
 
 // Get the request path
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
@@ -382,7 +393,7 @@ if (!$meta) {
 
 $title = htmlspecialchars($meta['title'], ENT_QUOTES, 'UTF-8');
 $description = htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8');
-$canonicalUrl = $BASE_URL . $path;
+$canonicalUrl = buildAbsoluteUrl($path);
 
 // ── Homepage rich body content ──
 $homepageBody = '';
