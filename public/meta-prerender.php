@@ -241,14 +241,116 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)$#', $pa
 }
 
 // 3. Product detail page: /mieten/{location}/{category}/{product}
+$productBodyContent = '';
 if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-9-]+)$#', $path, $m)) {
-    $locName = $locationNames[$m[1]] ?? ucfirst($m[1]);
+    $locSlug = $m[1];
+    $catSlug = $m[2];
     $productSlug = $m[3];
-    $productName = ucwords(str_replace('-', ' ', $productSlug));
+    $locName = $locationNames[$locSlug] ?? ucfirst($locSlug);
+    $catName = isset($categoryTitles[$catSlug]) ? str_replace(' mieten in %s', '', $categoryTitles[$catSlug]) : ucwords(str_replace('-', ' ', $catSlug));
+
+    // Load product SEO data
+    @include __DIR__ . '/product-seo-data.php';
+
+    $seo = $productSEOLookup[$productSlug] ?? null;
+    $detail = $productDetails[$productSlug] ?? null;
+
+    $productName = $detail['name'] ?? ($seo['name'] ?? ucwords(str_replace('-', ' ', $productSlug)));
+    $h1 = $seo['h1'] ?? ($productName . ' mieten in ' . $locName . ' – Jetzt verfügbar bei SLT Rental');
+
     $meta = [
         'title' => $productName . ' mieten in ' . $locName . ' | SLT Rental',
         'description' => $productName . ' mieten in ' . $locName . ' ✓ Faire Tagespreise ✓ Sofort verfügbar ✓ Lieferung möglich ✓ Tiefpreisgarantie',
     ];
+
+    // Build rich product body for crawlers
+    $productBodyContent = '<nav aria-label="Breadcrumb"><ol>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/mieten">Equipment mieten</a></li>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/mieten/' . htmlspecialchars($locSlug) . '">' . htmlspecialchars($locName) . '</a></li>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/mieten/' . htmlspecialchars($locSlug) . '/' . htmlspecialchars($catSlug) . '">' . htmlspecialchars($catName) . '</a></li>';
+    $productBodyContent .= '<li>' . htmlspecialchars($productName) . '</li>';
+    $productBodyContent .= '</ol></nav>';
+
+    $productBodyContent .= '<article>';
+    $productBodyContent .= '<h1>' . htmlspecialchars($h1) . '</h1>';
+
+    // Description
+    $desc = $detail['description'] ?? '';
+    if ($desc) {
+        $productBodyContent .= '<p>' . htmlspecialchars($desc) . '</p>';
+    }
+
+    // Availability
+    $productBodyContent .= '<section><h2>Verfügbarkeit</h2>';
+    $productBodyContent .= '<p>Standort: ' . htmlspecialchars($locName) . '</p>';
+    $productBodyContent .= '<p>Status: Sofort verfügbar</p>';
+    $productBodyContent .= '<p><a href="' . $BASE_URL . '/kontakt">Jetzt anfragen</a></p>';
+    $productBodyContent .= '</section>';
+
+    // Technical specifications
+    if ($detail && !empty($detail['specs'])) {
+        $productBodyContent .= '<section><h2>Technische Daten</h2><table>';
+        foreach ($detail['specs'] as $key => $val) {
+            $productBodyContent .= '<tr><th>' . htmlspecialchars($key) . '</th><td>' . htmlspecialchars($val) . '</td></tr>';
+        }
+        if (!empty($detail['weightKg'])) {
+            $w = (int)$detail['weightKg'];
+            $productBodyContent .= '<tr><th>Gewichtsklasse</th><td>' . ($w >= 1000 ? number_format($w/1000, 1, ',', '.') . ' t' : $w . ' kg') . '</td></tr>';
+        }
+        $productBodyContent .= '</table></section>';
+    }
+
+    // SEO H2 sections
+    if ($seo && !empty($seo['h2s'])) {
+        foreach ($seo['h2s'] as $h2) {
+            $productBodyContent .= '<section><h2>' . htmlspecialchars($h2) . '</h2></section>';
+        }
+    }
+
+    // Use cases
+    if ($seo) {
+        $productBodyContent .= '<section><h2>Einsatzgebiete</h2><ul>';
+        if (!empty($seo['useCaseBau'])) {
+            $productBodyContent .= '<li><strong>Bau &amp; Handwerk:</strong> ' . htmlspecialchars($seo['useCaseBau']) . '</li>';
+        }
+        if (!empty($seo['useCaseEvent'])) {
+            $productBodyContent .= '<li><strong>Events &amp; Veranstaltungen:</strong> ' . htmlspecialchars($seo['useCaseEvent']) . '</li>';
+        }
+        if (!empty($seo['useCasePrivat'])) {
+            $productBodyContent .= '<li><strong>Privat:</strong> ' . htmlspecialchars($seo['useCasePrivat']) . '</li>';
+        }
+        $productBodyContent .= '</ul></section>';
+    }
+
+    // FAQs
+    if ($seo && !empty($seo['faqs'])) {
+        $productBodyContent .= '<section><h2>Häufig gestellte Fragen</h2><dl>';
+        foreach ($seo['faqs'] as $faq) {
+            $productBodyContent .= '<dt>' . htmlspecialchars($faq['q']) . '</dt>';
+            $productBodyContent .= '<dd>' . htmlspecialchars($faq['a']) . '</dd>';
+        }
+        $productBodyContent .= '</dl></section>';
+    }
+
+    // Purchase banner (visible but not the only content)
+    $productBodyContent .= '<section><h2>Lieber kaufen statt mieten?</h2>';
+    $productBodyContent .= '<p>Wir bieten auch Neumaschinen und Gebrauchtmaschinen zum Kauf an.</p>';
+    $productBodyContent .= '<a href="' . $BASE_URL . '/verkauf">Kaufangebote ansehen</a>';
+    $productBodyContent .= '</section>';
+
+    // Related links
+    $productBodyContent .= '<section><h2>Weitere Artikel in ' . htmlspecialchars($catName) . '</h2>';
+    $productBodyContent .= '<a href="' . $BASE_URL . '/mieten/' . htmlspecialchars($locSlug) . '/' . htmlspecialchars($catSlug) . '">Alle ' . htmlspecialchars($catName) . ' in ' . htmlspecialchars($locName) . ' ansehen</a>';
+    $productBodyContent .= '</section>';
+
+    $productBodyContent .= '</article>';
+
+    // Footer
+    $productBodyContent .= '<footer><ul>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/impressum">Impressum</a></li>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/datenschutz">Datenschutz</a></li>';
+    $productBodyContent .= '<li><a href="' . $BASE_URL . '/agb">AGB</a></li>';
+    $productBodyContent .= '</ul></footer>';
 }
 
 // 4. Local area page: /mieten-in/{area}
