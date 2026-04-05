@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart, ExternalLink } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 interface PurchaseInquiryBannerProps {
   productName: string;
@@ -8,17 +8,13 @@ interface PurchaseInquiryBannerProps {
   categoryId?: string;
 }
 
-export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInquiryBannerProps) {
+export function PurchaseInquiryBanner({ }: PurchaseInquiryBannerProps) {
   const navigate = useNavigate();
-
-  const goToKaufanfrage = () => {
-    navigate("/verkauf#kaufanfrage");
-  };
 
   return (
     <div
       className="bg-accent/10 border border-accent/30 rounded-xl p-4 cursor-pointer hover:bg-accent/15 transition-colors group"
-      onClick={goToKaufanfrage}
+      onClick={() => navigate("/verkauf#kaufanfrage")}
     >
       <div className="flex items-start gap-3">
         <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -31,18 +27,6 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
           <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
             Alle Artikel können Sie bei uns auch zu besten Konditionen erwerben! Klicken Sie hier für eine unverbindliche Kaufanfrage.
           </p>
-          {(categoryId === "erdbewegung" || categoryId === "arbeitsbuehnen") && (
-            <a
-              href="https://www.zoomlion-nrw.de"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline mt-1.5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ExternalLink className="h-3 w-3" />
-              Zoomlion Neumaschinen auf www.zoomlion-nrw.de
-            </a>
-          )}
         </div>
       </div>
     </div>
