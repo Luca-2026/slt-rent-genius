@@ -29,7 +29,6 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
     }
 
     const timer = setTimeout(() => {
-      setPopupMounted(true);
       setPopupOpen(true);
       try {
         sessionStorage.setItem("purchasePopupShown", "1");
@@ -68,9 +67,8 @@ export function PurchaseInquiryBanner({ productName, categoryId }: PurchaseInqui
         </div>
       </div>
 
-      {/* Auto-popup after 2.5s — only mounts after timer fires */}
-      {popupMounted && (
-        <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+      {/* Auto-popup after 2.5s */}
+      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
           <DialogContent className="sm:max-w-sm">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
