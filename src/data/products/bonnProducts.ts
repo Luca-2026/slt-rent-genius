@@ -2761,6 +2761,18 @@ export const bonnBeleuchtungProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "EKOMK2" },
   },
+  {
+    id: "led-beleuchtungsset-duo",
+    rentwareCode: { bonn: "H5HKTK" },
+  },
+  {
+    id: "party-ton-licht-set",
+    rentwareCode: { bonn: "7QEBFQ" },
+  },
+  {
+    id: "led-outdoorscheinwerfer-6er-set",
+    rentwareCode: { bonn: "IEAV6M" },
+  },
 ];
 
 // ==================== HÜPFBURGEN ====================
@@ -2829,18 +2841,6 @@ export const bonnHuepfburgProducts = [
       "Trocken zurückgeben",
     ],
     rentwareCode: { bonn: "2NA195" },
-  },
-  {
-    id: "led-beleuchtungsset-duo",
-    rentwareCode: { bonn: "H5HKTK" },
-  },
-  {
-    id: "party-ton-licht-set",
-    rentwareCode: { bonn: "7QEBFQ" },
-  },
-  {
-    id: "led-outdoorscheinwerfer-6er-set",
-    rentwareCode: { bonn: "IEAV6M" },
   },
 ];
 
