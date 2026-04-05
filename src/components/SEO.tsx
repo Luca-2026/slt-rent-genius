@@ -34,8 +34,8 @@ export function SEO({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-      {noIndex && <meta name="robots" content="noindex, nofollow" />}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      {(noIndex || isLovableApp) && <meta name="robots" content="noindex, nofollow" />}
+      <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
