@@ -19,6 +19,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const solutionMetaDescriptions: Record<string, string> = {
+  "tiefbau-erdbewegung": "Baumaschinen für Tiefbau & Erdbewegung mieten: Minibagger, Radlader, Dumper & Verdichtung. Für Kanalbau, Hausanschlüsse & Erdarbeiten in NRW.",
+  "hochbau-renovierung": "Equipment für Hochbau & Renovierung mieten in NRW: Arbeitsbühnen, Gerüste, Werkzeuge & Hebebühnen – für Neubau, Sanierung und Ausbau.",
+  "garten-landschaftsbau": "Gartenmaschinen mieten in NRW: Bagger, Häcksler, Vertikutierer & mehr. Für Privatgarten bis Parkanlage – faire Preise, 3 Standorte in NRW.",
+  "events-veranstaltungen": "Eventausstattung mieten in NRW: PA-Anlagen, Zelte, Beleuchtung, Möbel & Geschirr. Für Hochzeiten, Firmenfeiern & Festivals – inkl. Auf-/Abbauservice.",
+  "handwerk-gewerbe": "Profi-Werkzeug & Baumaschinen für Handwerk und Gewerbe mieten in NRW: Bohrmaschinen, Trockner, Kompressoren & mehr. Tiefpreisgarantie.",
+  "umzug-transport": "Anhänger für Ihren Umzug mieten: Kastenanhänger, Autotransporter, Planenanhänger – 24/7 per SMS-Code. 3 Standorte in NRW, faire Preise.",
+  "kindergeburtstage": "Kindergeburtstag mieten in NRW: Hüpfburgen, Partyzelte, Besteck, Spiele & Deko. Alles aus einer Hand – mit Lieferung nach Krefeld, Bonn & Mülheim.",
+};
+
 export default function LoesungDetail() {
   const { t } = useTranslation();
   const { solutionId } = useParams<{ solutionId: string }>();
