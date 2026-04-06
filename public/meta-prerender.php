@@ -77,11 +77,11 @@ if (!$isBot) {
 $pages = [
     '/' => [
         'title' => 'Baumaschinen & Equipment mieten in NRW | SLT Rental',
-        'description' => 'Über 1.700 Mietartikel ✓ Baumaschinen, Anhänger, Arbeitsbühnen & Event-Equipment ✓ 3 Standorte in NRW ✓ Tiefpreisgarantie ✓ Wochenend-Tarife',
+        'description' => 'Baumaschinen, Anhänger & Eventausstattung mieten in NRW. Über 1.700 Artikel, 3 Standorte in Krefeld, Bonn & Mülheim. Tiefpreisgarantie – 10 % günstiger!',
     ],
     '/mieten' => [
         'title' => 'Equipment mieten in NRW – Standort wählen | SLT Rental',
-        'description' => 'Baumaschinen, Anhänger & Event-Equipment mieten ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Über 1.700 Mietartikel ✓ Tiefpreisgarantie ✓ Wochenend-Tarife ✓ Lieferung auf die Baustelle',
+        'description' => 'Baumaschinen, Anhänger & Eventequipment mieten – einfach online buchen. Wähle deinen Standort in Krefeld, Bonn oder Mülheim und starte direkt.',
     ],
     '/mieten/krefeld' => [
         'title' => 'Equipment mieten in Krefeld – Baumaschinen, Anhänger & mehr | SLT Rental',
@@ -97,75 +97,103 @@ $pages = [
     ],
     '/standorte' => [
         'title' => 'Standorte – Krefeld, Bonn & Mülheim | SLT Rental',
-        'description' => '3 SLT Rental Standorte in NRW: Krefeld, Bonn und Mülheim an der Ruhr. Öffnungszeiten, Anfahrt und Kontakt. Equipment direkt vor Ort abholen.',
+        'description' => 'SLT Rental: 3 Standorte in NRW – Krefeld, Bonn & Mülheim an der Ruhr. Öffnungszeiten, Adressen und Ansprechpartner auf einen Blick.',
+    ],
+    '/standorte/krefeld' => [
+        'title' => 'SLT Rental Krefeld – Hauptsitz | SLT Rental',
+        'description' => 'SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.',
+    ],
+    '/standorte/bonn' => [
+        'title' => 'SLT Rental Bonn – Filiale | SLT Rental',
+        'description' => 'SLT Rental Bonn – Drachenburgstraße 5, 53179 Bonn. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.',
+    ],
+    '/standorte/muelheim' => [
+        'title' => 'SLT Rental Mülheim – Corporate Filiale | SLT Rental',
+        'description' => 'SLT Rental Mülheim – Bobcat Kompaktmaschinen & Bauequipment. Ruhrorter Str. 122, 45478 Mülheim. Online 24/7 buchbar, Abholung nach Vereinbarung.',
     ],
     '/kontakt' => [
         'title' => 'Kontakt – SLT Rental',
-        'description' => 'Kontaktieren Sie SLT Rental: Telefon, E-Mail oder WhatsApp. 3 Standorte in Krefeld, Bonn und Mülheim. Persönliche Beratung für Ihre Mietanfrage.',
+        'description' => 'SLT Rental kontaktieren: Telefon, E-Mail oder persönlich an 3 Standorten in NRW. Schnelle Beratung für Privat- & Geschäftskunden.',
     ],
     '/so-funktionierts' => [
         'title' => "So funktioniert's – Equipment mieten | SLT Rental",
-        'description' => "In 5 einfachen Schritten Baumaschinen, Anhänger und Event-Equipment mieten. Standort wählen, Artikel suchen, buchen und abholen – so einfach geht's bei SLT Rental.",
+        'description' => 'In 5 Schritten zur Mietmaschine: Online buchen, bezahlen, abholen oder liefern lassen. Schnell, transparent, ohne Stress – SLT Rental NRW.',
     ],
     '/lieferung' => [
         'title' => 'Lieferung & Abholung – Preise & Infos | SLT Rental',
-        'description' => 'Lieferung und Abholung von Baumaschinen und Equipment in NRW. Transparente Preise nach Entfernung. Lieferrechner für Ihren Standort.',
+        'description' => 'Lieferkosten transparent berechnen: SLT Rental liefert in ganz NRW – Niederrhein, Ruhrgebiet, Rheinland & Raum Bonn. Jetzt online kalkulieren.',
     ],
     '/faq' => [
         'title' => 'FAQ – Häufige Fragen | SLT Rental',
-        'description' => 'Antworten auf häufige Fragen zu Mietbedingungen, Buchung, Lieferung und Abholung bei SLT Rental. Alles Wichtige rund um Ihre Miete.',
+        'description' => 'Häufige Fragen zum Mieten bei SLT Rental: Buchung, Zahlung, Lieferung, Kaution & Schadensabwicklung. Alle Antworten auf einen Blick.',
     ],
     '/karriere' => [
         'title' => 'Karriere bei SLT Rental – Jobs in NRW',
-        'description' => 'Arbeiten bei SLT Rental: Offene Stellen in Krefeld, Bonn und Mülheim. Flexible Arbeitszeiten, faire Bezahlung und ein starkes Team. Jetzt bewerben!',
+        'description' => 'Jetzt beim SLT Rental Team einsteigen – Stellen in Krefeld, Bonn & Mülheim. Wir suchen Verstärkung im Verleih, Werkstatt und Vertrieb in NRW.',
     ],
     '/ueber-uns' => [
         'title' => 'Über uns – SLT Rental',
-        'description' => 'Seit 2016 Ihr Partner für Baumaschinen- und Equipment-Vermietung in NRW. 3 Standorte, +3.500 Kunden, +1.700 Produkte. Lernen Sie unser Team kennen.',
+        'description' => 'SLT Rental – seit 2016 Ihr Partner für Baumaschinen & Eventausstattung in NRW. Über 3.500 zufriedene Kunden an 3 Standorten. Lernen Sie uns kennen.',
     ],
     '/hilfe' => [
         'title' => 'Hilfe & Wissensbasis – Anleitungen & Tipps | SLT Rental',
-        'description' => 'Anleitungen, Sicherheitshinweise und Tipps für Ihre Miete bei SLT Rental. Alles zu Anhängern, Baumaschinen, Event-Equipment und mehr.',
+        'description' => 'Bedienanleitungen, Tipps & Hinweise zu allen Mietgeräten. Häufige Fragen zu Baumaschinen, Anhängern & Eventequipment – SLT Rental.',
     ],
     '/tiefpreisgarantie' => [
         'title' => 'Tiefpreisgarantie – Günstigster Preis garantiert | SLT Rental',
-        'description' => 'Günstigeren Preis gefunden? SLT Rental garantiert 10 % Rabatt auf den Nettomietpreis ✓ Identisches Produkt im Umkreis 10 km ✓ Für Gewerbekunden ✓ Einfach per E-Mail einreichen',
+        'description' => 'SLT Rental garantiert: mindestens 10 % günstiger als jeder Wettbewerber. So funktioniert unsere Tiefpreisgarantie beim Baumaschinen- & Geräteverleih.',
     ],
     '/loesungen' => [
         'title' => 'Lösungen – Equipment für jede Branche | SLT Rental',
-        'description' => 'Maßgeschneiderte Mietlösungen für Tiefbau, Hochbau, GaLaBau, Events, Handwerk, Transport und mehr. Equipment für Profis und Privat.',
+        'description' => 'Die passende Mietlösung für jedes Projekt: Tiefbau, Hochbau, Gartenbau, Events, Umzug & mehr. SLT Rental berät persönlich an 3 Standorten in NRW.',
     ],
     '/loesungen/tiefbau-erdbewegung' => [
         'title' => 'Tiefbau & Erdbewegung – Mietlösungen | SLT Rental',
-        'description' => 'Minibagger, Radlader, Dumper & Verdichtungsgeräte für Tiefbau und Erdbewegung mieten. Komplettlösungen für Ihr Bauprojekt.',
+        'description' => 'Baumaschinen für Tiefbau & Erdbewegung mieten: Minibagger, Radlader, Dumper & Verdichtung. Für Kanalbau, Hausanschlüsse & Erdarbeiten in NRW.',
     ],
     '/loesungen/hochbau-renovierung' => [
         'title' => 'Hochbau & Renovierung – Mietlösungen | SLT Rental',
-        'description' => 'Werkzeuge, Gerüste, Arbeitsbühnen & Bautrockner für Hochbau und Renovierung mieten. Alles aus einer Hand.',
+        'description' => 'Equipment für Hochbau & Renovierung mieten in NRW: Arbeitsbühnen, Gerüste, Werkzeuge & Hebebühnen – für Neubau, Sanierung und Ausbau.',
     ],
     '/loesungen/galabau' => [
         'title' => 'Garten- & Landschaftsbau – Mietlösungen | SLT Rental',
-        'description' => 'Minibagger, Häcksler, Erdbohrer & Gartengeräte für GaLaBau mieten. Professionelle Ausstattung für Ihre Projekte.',
+        'description' => 'Gartenmaschinen mieten in NRW: Bagger, Häcksler, Vertikutierer & mehr. Für Privatgarten bis Parkanlage – faire Preise, 3 Standorte in NRW.',
     ],
     '/loesungen/events' => [
         'title' => 'Events & Veranstaltungen – Mietlösungen | SLT Rental',
-        'description' => 'Bühne, Beschallung, Beleuchtung, Möbel & Zelte für Events mieten. Komplette Veranstaltungstechnik aus einer Hand.',
+        'description' => 'Eventausstattung mieten in NRW: PA-Anlagen, Zelte, Beleuchtung, Möbel & Geschirr. Für Hochzeiten, Firmenfeiern & Festivals – inkl. Auf-/Abbauservice.',
     ],
     '/loesungen/handwerk' => [
         'title' => 'Handwerk & Gewerbe – Mietlösungen | SLT Rental',
-        'description' => 'Profi-Werkzeuge, Aggregate & Spezialgeräte für Handwerk und Gewerbe mieten. Flexibel und günstig.',
+        'description' => 'Profi-Werkzeug & Baumaschinen für Handwerk und Gewerbe mieten in NRW: Bohrmaschinen, Trockner, Kompressoren & mehr. Tiefpreisgarantie.',
     ],
     '/loesungen/transport' => [
         'title' => 'Umzug & Transport – Mietlösungen | SLT Rental',
-        'description' => 'Anhänger, Transporter & Umzugshelfer für Ihren Umzug oder Transport mieten. Verschiedene Größen verfügbar.',
+        'description' => 'Anhänger für Ihren Umzug mieten: Kastenanhänger, Autotransporter, Planenanhänger – 24/7 per SMS-Code. 3 Standorte in NRW, faire Preise.',
     ],
     '/loesungen/kinder' => [
         'title' => 'Kindergeburtstage – Hüpfburgen & Spaß | SLT Rental',
-        'description' => 'Hüpfburgen und Spaßgeräte für Kindergeburtstage mieten. Lieferung, Aufbau und Abbau inklusive.',
+        'description' => 'Kindergeburtstag mieten in NRW: Hüpfburgen, Partyzelte, Besteck, Spiele & Deko. Alles aus einer Hand – mit Lieferung nach Krefeld, Bonn & Mülheim.',
+    ],
+    '/mietartikel' => [
+        'title' => 'Mietartikel – Über 1.700 Produkte | SLT Rental',
+        'description' => 'Über 1.700 Mietartikel in 20+ Kategorien: Baumaschinen, Anhänger, Eventausstattung & mehr. Online buchen, abholen oder liefern lassen – 3 Standorte NRW.',
     ],
     '/produkte' => [
         'title' => 'Equipment mieten in NRW – Standort wählen | SLT Rental',
-        'description' => 'Baumaschinen, Anhänger & Event-Equipment mieten ✓ 3 Standorte: Krefeld, Bonn, Mülheim ✓ Über 1.700 Mietartikel',
+        'description' => 'Baumaschinen, Anhänger & Eventequipment mieten – einfach online buchen. Wähle deinen Standort in Krefeld, Bonn oder Mülheim und starte direkt.',
+    ],
+    '/verkauf' => [
+        'title' => 'Baumaschinen kaufen – Zoomlion, BAUMAX, Temared | SLT Rental',
+        'description' => 'Baumaschinen kaufen in NRW: Zoomlion, BAUMAX & Temared – autorisierter Fachhändler. Neumaschinen & Gebrauchtmaschinen. Beratung & Lieferung NRW-weit.',
+    ],
+    '/verkauf/gebrauchtmaschinen' => [
+        'title' => 'SLT Used – Gebrauchte Baumaschinen kaufen | SLT Rental',
+        'description' => 'Geprüfte Gebrauchtmaschinen aus dem SLT-Mietpark: Baumaschinen & Anhänger sofort verfügbar. Persönliche Beratung, NRW-weit lieferbar.',
+    ],
+    '/dienstleistungen' => [
+        'title' => 'Dienstleistungen – Planung, Lieferung & Service | SLT Rental',
+        'description' => 'Mehr als nur Verleih: Planung, Auf-/Abbau, Lieferung & Verkehrssicherung für Events und Baustellen in NRW. Alles aus einer Hand – SLT Rental.',
     ],
     '/impressum' => [
         'title' => 'Impressum | SLT Rental',
