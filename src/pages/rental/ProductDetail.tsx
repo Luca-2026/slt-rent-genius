@@ -214,6 +214,7 @@ export default function ProductDetail() {
         "name": productSEO?.excelName || product.name,
         "description": product.description || "",
         "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
+        "url": canonicalUrl,
         "brand": { "@type": "Brand", "name": "SLT Rental" },
         "offers": {
           "@type": "Offer",
