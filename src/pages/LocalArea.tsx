@@ -114,7 +114,7 @@ export default function LocalAreaPage() {
     <Layout>
       <SEO
         title={`${heroTitle} | SLT Rental`}
-        description={area.description}
+        description={getLocalAreaMetaDesc(area)}
         canonical={`/mieten-in/${area.slug}`}
         keywords={area.keywords.join(", ")}
         jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
