@@ -436,10 +436,37 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
 // 4. Local area page: /mieten-in/{area}
 if (!$meta && preg_match('#^/mieten-in/([a-z0-9-]+)$#', $path, $m)) {
     $areaSlug = $m[1];
-    $areaName = $localAreas[$areaSlug] ?? ucwords(str_replace('-', ' ', $areaSlug));
+    $areaDisplayNames = [
+        'toenisvorst' => 'Tönisvorst', 'duisburg-west' => 'Duisburg', 'duesseldorf' => 'Düsseldorf',
+        'koenigswinter' => 'Königswinter', 'bad-honnef' => 'Bad Honnef', 'bad-godesberg' => 'Bad Godesberg',
+        'sankt-augustin' => 'Sankt Augustin', 'bad-neuenahr-ahrweiler' => 'Bad Neuenahr-Ahrweiler',
+        'muelheim-an-der-ruhr' => 'Mülheim an der Ruhr', 'duisburg-sued' => 'Duisburg', 'bochum-west' => 'Bochum',
+    ];
+    $areaName = $areaDisplayNames[$areaSlug] ?? ($localAreas[$areaSlug] ?? ucwords(str_replace('-', ' ', $areaSlug)));
+
+    // Region mapping: slug → nearest SLT location
+    $regionKrefeld = ['krefeld','meerbusch','willich','toenisvorst','kempen','moers','duisburg-west','neuss','viersen','kaarst','duesseldorf'];
+    $regionBonn = ['bonn','bad-godesberg','koenigswinter','bad-honnef','sankt-augustin','siegburg','troisdorf','alfter','bornheim','meckenheim','rheinbach','wachtberg','bad-neuenahr-ahrweiler','remagen','sinzig','grafschaft','swisttal'];
+    $regionMuelheim = ['muelheim-an-der-ruhr','essen','oberhausen','duisburg-sued','bottrop','gelsenkirchen','ratingen','bochum-west','dinslaken'];
+
+    // Sonderfälle
+    if ($areaSlug === 'krefeld') {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten in Krefeld. Direkt am Standort Anrather Str. 291. Online buchbar, Tiefpreisgarantie.';
+    } elseif ($areaSlug === 'bonn') {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten in Bonn. Direkt am Standort Drachenburgstraße 5. Online buchbar, Tiefpreisgarantie.';
+    } elseif ($areaSlug === 'muelheim-an-der-ruhr') {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten in Mülheim an der Ruhr. Bobcat-Spezialist. Online 24/7 buchbar – SLT Rental.';
+    } elseif (in_array($areaSlug, $regionBonn)) {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten für ' . $areaName . ' – Lieferung vom SLT Rental Standort Bonn. Online buchbar, Tiefpreisgarantie.';
+    } elseif (in_array($areaSlug, $regionMuelheim)) {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten für ' . $areaName . ' – Lieferung vom SLT Rental Standort Mülheim. Online buchbar, Tiefpreisgarantie.';
+    } else {
+        $metaDesc = 'Baumaschinen, Anhänger & Equipment mieten für ' . $areaName . ' – Lieferung vom SLT Rental Standort Krefeld. Online buchbar, Tiefpreisgarantie.';
+    }
+
     $meta = [
         'title' => 'Baumaschinen & Equipment mieten in ' . $areaName . ' | SLT Rental',
-        'description' => 'Baumaschinen, Anhänger & Event-Equipment mieten in ' . $areaName . ' ✓ Lieferung ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Persönliche Beratung',
+        'description' => $metaDesc,
     ];
 }
 
