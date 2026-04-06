@@ -270,11 +270,36 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)$#', $pa
     $locSlug = $m[1];
     $catSlug = $m[2];
     $locName = $locationNames[$locSlug] ?? ucfirst($locSlug);
+
+    $categoryMetaDescs = [
+        'anhaenger' => 'Anhänger mieten in %s – 24/7 per SMS-Code: Planenanhänger, Autotransporter, Kastenanhänger & mehr. Online buchbar, Tiefpreisgarantie.',
+        'erdbewegung' => 'Bagger & Erdbewegungsmaschinen mieten in %s: Bobcat, Minibagger, Radlader, Dumper + Anbaugeräte. Tiefpreisgarantie, sofort verfügbar.',
+        'werkzeuge' => 'Elektro- & Handwerkzeuge mieten in %s: Bohrmaschinen, Flex, Sägen, Rotationslaser & mehr. Kurzfristig verfügbar – SLT Rental Tiefpreisgarantie.',
+        'gartenpflege' => 'Gartengeräte mieten in %s: Kettensäge, Heckenschere, Häcksler, Vertikutierer & Hochdruckreiniger. Online buchbar bei SLT Rental.',
+        'aggregate' => 'Stromerzeuger & Kompressoren mieten in %s: 2,8 kVA bis 100 kVA, Akkupacks. Für Baustelle, Event & Outdoor – SLT Rental.',
+        'arbeitsbuehnen' => 'Arbeitsbühnen mieten in %s: Scherenbühnen 8–12 m, Mastbühne 11 m, Gelenksteiger, Anhängerbühne 18 m. Tiefpreisgarantie.',
+        'verdichtung' => 'Rüttelplatten & Stampfer mieten in %s: VP 16/44 bis HVP 50/60, Grabenwalze, Stampfer. SLT Rental Tiefpreisgarantie.',
+        'kabel-stromverteiler' => 'Kabel & Stromverteiler mieten in %s: CEE-Kabel, Schukokabel, Verteiler, Kabelbrücken – geprüft, sicher, für Event & Baustelle.',
+        'leitern-gerueste' => 'Leitern & Rollgerüste mieten in %s: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.',
+        'heizung-trocknung' => 'Bautrockner & Heizlüfter mieten in %s: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.',
+        'absperrtechnik' => 'Absperrtechnik & Verkehrszeichen mieten in %s: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.',
+        'beschallung' => 'PA-Anlage & Beschallung mieten in %s: Soundboks Gen.3, DAS PA-Systeme, Pioneer CDJ/DJM, Shure Funkmikrofone. SLT Rental.',
+        'kommunikation' => 'Funkgeräte mieten in %s: UHF-Funkgeräte für Events & Baustellen. Kurzfristig verfügbar – SLT Rental.',
+        'beleuchtung' => 'Eventbeleuchtung mieten in %s: LED-Scheinwerfer, Moving Head, 4er Bar, LED-Fluter RGBWAUV. SLT Rental.',
+        'buehne' => 'Bühnenelemente & Podeste mieten in %s: Nivtec Systempodeste, Teleskopfüße. Für Events in NRW – SLT Rental.',
+        'traversen-rigging' => 'Traversen & Rigging mieten in %s: Milos M290 Traversen, Multicube, Traversencover. Für Licht & Ton – SLT Rental.',
+        'moebel-zelte' => 'Partyzelte & Eventmöbel mieten in %s: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.',
+        'geschirr-glaeser-besteck' => 'Geschirr, Gläser & Besteck mieten in %s: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.',
+        'spezialeffekte' => 'Spezialeffekte mieten in %s: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.',
+        'huepfburgen' => 'Hüpfburgen mieten in %s: Lamar, Wasserpark, Rollercoaster, Clown. Für Kindergeburtstage & Familienfeste – SLT Rental.',
+    ];
+
     if (isset($categoryTitles[$catSlug])) {
         $catTitle = sprintf($categoryTitles[$catSlug], $locName);
+        $catDesc = isset($categoryMetaDescs[$catSlug]) ? sprintf($categoryMetaDescs[$catSlug], $locName) : $catTitle . ' – online buchbar bei SLT Rental. Tiefpreisgarantie, Lieferung möglich.';
         $meta = [
             'title' => $catTitle . ' | SLT Rental',
-            'description' => $catTitle . ' ✓ Tiefpreisgarantie ✓ Faire Tagespreise ✓ Lieferung möglich ✓ Persönliche Beratung',
+            'description' => $catDesc,
         ];
     }
 }

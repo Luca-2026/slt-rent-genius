@@ -944,32 +944,36 @@ export default function CategoryProducts() {
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
   
-  // CTR-optimized descriptions – enriched with GSC high-impression synonym keywords
+  // City name mapping for SEO
+  const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+  const cityName = cityNameMap[location.id] || location.name;
+
+  // Category-specific meta descriptions with dynamic city name
   const categorySeoDescriptions: Record<string, string> = {
-    anhaenger: `Anhänger mieten in ${location.name} ✓ ${products.length} Modelle ✓ 24/7 Abholung per SMS-Code ✓ Pkw-, Plattform- & Baumaschinenanhänger ✓ Wochenend-Tarife ✓ Tiefpreisgarantie`,
-    erdbewegung: `Minibagger, Dumper & Radlader mieten in ${location.name} ✓ ${products.length} Geräte von 1t–5t ✓ Anbaugeräte & Grabenräumlöffel inklusive ✓ Lieferung auf die Baustelle ✓ Faire Tagespreise`,
-    arbeitsbuehnen: `Arbeitsbühne mieten in ${location.name} ✓ ${products.length} Modelle ✓ Scherenbühne, Hebebühne, Hubsteiger & LKW-Arbeitsbühne bis 18m ✓ Steiger mieten ✓ Lieferung möglich`,
-    huepfburgen: `Hüpfburg mieten in ${location.name} ✓ ${products.length} Modelle für Kindergeburtstag & Events ✓ Lieferung & Aufbau ✓ Faire Wochenend-Tarife`,
-    werkzeuge: `Werkzeuge mieten in ${location.name} ✓ ${products.length} Profi-Geräte ✓ Fugenschneider, Abbruchhammer, Fliesenschneider, Kernbohrer, Zwangsmischer ✓ Tiefpreisgarantie`,
-    gartenpflege: `Gartengeräte mieten in ${location.name} ✓ ${products.length} Geräte ✓ Häcksler, Baumstumpffräse, Stubbenfräse, Rasenwalze, Hochdruckreiniger, Bodenhacke ✓ Ab 25 €/Tag`,
-    aggregate: `Stromaggregat & Baukompressor mieten in ${location.name} ✓ ${products.length} Modelle ✓ 2,8 bis 100 kVA ✓ Für Baustelle & Event ✓ Lieferung möglich`,
-    verdichtung: `Rüttelplatte & Stampfer mieten in ${location.name} ✓ ${products.length} Verdichtungsgeräte ✓ Ab 25 €/Tag ✓ Für Pflaster- & Erdarbeiten ✓ Tiefpreisgarantie`,
-    "leitern-gerueste": `Rollgerüst & Leiter mieten in ${location.name} ✓ ${products.length} Modelle ✓ Arbeitshöhe bis 8,4m ✓ 10- & 12-Meter Leitern ✓ Sofort verfügbar`,
-    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${location.name} ✓ ${products.length} Geräte ✓ Estrichtrocknung, Neubautrocknung & Wasserschaden ✓ Sofort lieferbar`,
-    "moebel-zelte": `Partyzelt & Mobiliar mieten in ${location.name} ✓ ${products.length} Artikel ✓ Zelte, Tische, Stühle, Bänke, Pavillon ✓ Für Hochzeit, Geburtstag & Firmenfeier`,
-    "geschirr-glaeser-besteck": `Geschirr & Gläser mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sets ab 5 € ✓ Hochwertiges Eventgeschirr ✓ Spülservice möglich`,
-    absperrtechnik: `Bauzaun & Absperrtechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ Halteverbotsschilder, Absperrgitter, Warnbarken ✓ StVO-konform`,
-    "kabel-stromverteiler": `Verteilerschrank & Kabel mieten in ${location.name} ✓ ${products.length} Artikel ✓ CEE 16A bis 63A ✓ Kabeltrommel, Kabelbrücke ✓ Für Event & Baustelle`,
-    beschallung: `PA-Anlage & Lautsprecher mieten in ${location.name} ✓ ${products.length} Artikel ✓ Bluetooth-Speaker bis Profi-PA ✓ Für 30 bis 250 Personen`,
-    beleuchtung: `Veranstaltungstechnik mieten in ${location.name} ✓ ${products.length} Artikel ✓ LED Spots, Moving Heads, Scheinwerfer ✓ Für Event & Bühne`,
-    buehne: `Bühne & Podeste mieten in ${location.name} ✓ ${products.length} Artikel ✓ Modulare Bühnenpodeste ✓ Für Konzert, Firmenevent & Rede`,
-    "traversen-rigging": `Traversen & Rigging mieten in ${location.name} ✓ ${products.length} Artikel ✓ Alu-Traversen, Motoren, Zubehör ✓ Professionelle Bühnentechnik`,
-    spezialeffekte: `Spezialeffekte mieten in ${location.name} ✓ ${products.length} Artikel ✓ Funkenfontänen, Nebelmaschine, Seifenblasen ✓ Für Events & Shows`,
-    kommunikation: `Funkmikrofon & Headset mieten in ${location.name} ✓ ${products.length} Artikel ✓ Sennheiser Profi-Equipment ✓ Für Event, Konferenz & Hochzeit`,
+    anhaenger: `Anhänger mieten in ${cityName} – 24/7 per SMS-Code: Planenanhänger, Autotransporter, Kastenanhänger & mehr. Online buchbar, Tiefpreisgarantie.`,
+    erdbewegung: `Bagger & Erdbewegungsmaschinen mieten in ${cityName}: Bobcat, Minibagger, Radlader, Dumper + Anbaugeräte. Tiefpreisgarantie, sofort verfügbar.`,
+    werkzeuge: `Elektro- & Handwerkzeuge mieten in ${cityName}: Bohrmaschinen, Flex, Sägen, Rotationslaser & mehr. Kurzfristig verfügbar – SLT Rental Tiefpreisgarantie.`,
+    gartenpflege: `Gartengeräte mieten in ${cityName}: Kettensäge, Heckenschere, Häcksler, Vertikutierer & Hochdruckreiniger. Online buchbar bei SLT Rental.`,
+    aggregate: `Stromerzeuger & Kompressoren mieten in ${cityName}: 2,8 kVA bis 100 kVA, Akkupacks. Für Baustelle, Event & Outdoor – SLT Rental.`,
+    arbeitsbuehnen: `Arbeitsbühnen mieten in ${cityName}: Scherenbühnen 8–12 m, Mastbühne 11 m, Gelenksteiger, Anhängerbühne 18 m. Tiefpreisgarantie.`,
+    verdichtung: `Rüttelplatten & Stampfer mieten in ${cityName}: VP 16/44 bis HVP 50/60, Grabenwalze, Stampfer. SLT Rental Tiefpreisgarantie.`,
+    "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${cityName}: CEE-Kabel, Schukokabel, Verteiler, Kabelbrücken – geprüft, sicher, für Event & Baustelle.`,
+    "leitern-gerueste": `Leitern & Rollgerüste mieten in ${cityName}: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.`,
+    "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${cityName}: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.`,
+    absperrtechnik: `Absperrtechnik & Verkehrszeichen mieten in ${cityName}: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.`,
+    beschallung: `PA-Anlage & Beschallung mieten in ${cityName}: Soundboks Gen.3, DAS PA-Systeme, Pioneer CDJ/DJM, Shure Funkmikrofone. SLT Rental.`,
+    kommunikation: `Funkgeräte mieten in ${cityName}: UHF-Funkgeräte für Events & Baustellen. Kurzfristig verfügbar – SLT Rental.`,
+    beleuchtung: `Eventbeleuchtung mieten in ${cityName}: LED-Scheinwerfer, Moving Head, 4er Bar, LED-Fluter RGBWAUV. SLT Rental.`,
+    buehne: `Bühnenelemente & Podeste mieten in ${cityName}: Nivtec Systempodeste, Teleskopfüße. Für Events in NRW – SLT Rental.`,
+    "traversen-rigging": `Traversen & Rigging mieten in ${cityName}: Milos M290 Traversen, Multicube, Traversencover. Für Licht & Ton – SLT Rental.`,
+    "moebel-zelte": `Partyzelte & Eventmöbel mieten in ${cityName}: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.`,
+    "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
+    spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
+    huepfburgen: `Hüpfburgen mieten in ${cityName}: Lamar, Wasserpark, Rollercoaster, Clown. Für Kindergeburtstage & Familienfeste – SLT Rental.`,
   };
   
   const seoDescription = categorySeoDescriptions[category.id] || 
-    `${categoryDisplayName} mieten in ${location.name} ✓ ${products.length} Mietartikel ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Persönliche Beratung ✓ Lieferung möglich`;
+    `${categoryDisplayName} mieten in ${cityName} – online buchbar bei SLT Rental. Tiefpreisgarantie, Lieferung möglich.`;
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
   
   // Expanded keywords based on GSC high-impression search queries
