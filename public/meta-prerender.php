@@ -269,9 +269,25 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
     $productName = $detail['name'] ?? ($seo['name'] ?? ucwords(str_replace('-', ' ', $productSlug)));
     $h1 = $seo['h1'] ?? ($productName . ' mieten in ' . $locName . ' – Jetzt verfügbar bei SLT Rental');
 
+    // Build meta description dynamically from product data
+    $descSnippet = '';
+    $rawDesc = $detail['description'] ?? '';
+    if ($rawDesc) {
+        $descSnippet = mb_substr($rawDesc, 0, 80);
+        if (mb_strlen($rawDesc) > 80) {
+            $descSnippet = preg_replace('/\s+\S*$/', '', $descSnippet);
+        }
+        $metaDesc = $productName . ' mieten in ' . $locName . ' – ' . $descSnippet . '. Tiefpreisgarantie – online buchbar.';
+    } else {
+        $metaDesc = $productName . ' mieten in ' . $locName . ' bei SLT Rental. Online buchbar, Abholung oder Lieferung. Tiefpreisgarantie.';
+    }
+    if (mb_strlen($metaDesc) > 155) {
+        $metaDesc = mb_substr($metaDesc, 0, 152) . '...';
+    }
+
     $meta = [
         'title' => $productName . ' mieten in ' . $locName . ' | SLT Rental',
-        'description' => $productName . ' mieten in ' . $locName . ' ✓ Faire Tagespreise ✓ Sofort verfügbar ✓ Lieferung möglich ✓ Tiefpreisgarantie',
+        'description' => $metaDesc,
     ];
 
     // Build rich product body for crawlers
