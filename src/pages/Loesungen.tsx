@@ -197,7 +197,7 @@ export default function Loesungen() {
     <Layout>
       <SEO
         title="Lösungen – Equipment für jede Branche | SLT Rental"
-        description="Maßgeschneiderte Mietlösungen für Tiefbau, Hochbau, GaLaBau, Events, Handwerk, Transport und mehr. Equipment für Profis und Privat."
+        description="Die passende Mietlösung für jedes Projekt: Tiefbau, Hochbau, Gartenbau, Events, Umzug & mehr. SLT Rental berät persönlich an 3 Standorten in NRW."
         canonical="/loesungen"
         keywords="Baumaschinen Lösungen, Tiefbau Equipment, Event-Technik mieten, GaLaBau Geräte"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lösungen", url: "/loesungen" }])}

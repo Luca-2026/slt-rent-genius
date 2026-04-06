@@ -71,7 +71,7 @@ export default function Contact() {
     <Layout>
       <SEO
         title="Kontakt – SLT Rental"
-        description="Kontaktieren Sie SLT Rental: Telefon, E-Mail oder WhatsApp. 3 Standorte in Krefeld, Bonn und Mülheim. Persönliche Beratung für Ihre Mietanfrage."
+        description="SLT Rental kontaktieren: Telefon, E-Mail oder persönlich an 3 Standorten in NRW. Schnelle Beratung für Privat- & Geschäftskunden."
         canonical="/kontakt"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Kontakt", url: "/kontakt" }])}
       />

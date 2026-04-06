@@ -175,7 +175,7 @@ export default function HowItWorks() {
     <Layout>
       <SEO
         title="So funktioniert's – Equipment mieten | SLT Rental"
-        description="In 5 einfachen Schritten Baumaschinen, Anhänger und Event-Equipment mieten. Standort wählen, Artikel suchen, buchen und abholen – so einfach geht's bei SLT Rental."
+        description="In 5 Schritten zur Mietmaschine: Online buchen, bezahlen, abholen oder liefern lassen. Schnell, transparent, ohne Stress – SLT Rental NRW."
         canonical="/so-funktionierts"
         keywords="Baumaschinen mieten Anleitung, Equipment mieten NRW, Mietprozess"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "So funktioniert's", url: "/so-funktionierts" }])}

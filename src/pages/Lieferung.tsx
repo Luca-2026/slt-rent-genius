@@ -137,7 +137,7 @@ export default function Lieferung() {
     <Layout>
       <SEO
         title="Lieferung & Abholung – Preise & Infos | SLT Rental"
-        description="Lieferung und Abholung von Baumaschinen und Equipment in NRW. Transparente Preise nach Entfernung. Lieferrechner für Ihren Standort."
+        description="Lieferkosten transparent berechnen: SLT Rental liefert in ganz NRW – Niederrhein, Ruhrgebiet, Rheinland & Raum Bonn. Jetzt online kalkulieren."
         canonical="/lieferung"
         keywords="Baumaschinen Lieferung, Minibagger Transport, Equipment Abholung NRW"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Lieferung", url: "/lieferung" }])}
