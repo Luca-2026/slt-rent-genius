@@ -122,7 +122,7 @@ export default function About() {
     <Layout>
       <SEO
         title="Über uns – SLT Rental"
-        description="Seit 2016 Ihr Partner für Baumaschinen- und Equipment-Vermietung in NRW. 3 Standorte, +3.500 Kunden, +1.700 Produkte. Lernen Sie unser Team kennen."
+        description="SLT Rental – seit 2016 Ihr Partner für Baumaschinen & Eventausstattung in NRW. Über 3.500 zufriedene Kunden an 3 Standorten. Lernen Sie uns kennen."
         canonical="/ueber-uns"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Über uns", url: "/ueber-uns" }])}
       />

@@ -25,7 +25,7 @@ export default function Tiefpreisgarantie() {
     <Layout>
       <SEO
         title="Tiefpreisgarantie – Günstigster Preis garantiert | SLT Rental"
-        description="Günstigeren Preis gefunden? SLT Rental garantiert 10 % Rabatt auf den Nettomietpreis ✓ Identisches Produkt im Umkreis 10 km ✓ Für Gewerbekunden ✓ Einfach per E-Mail einreichen"
+        description="SLT Rental garantiert: mindestens 10 % günstiger als jeder Wettbewerber. So funktioniert unsere Tiefpreisgarantie beim Baumaschinen- & Geräteverleih."
         canonical="/tiefpreisgarantie"
         keywords="Tiefpreisgarantie Baumaschinen mieten, günstig mieten NRW, Mietpreis Garantie, Bestpreisgarantie Equipment"
         jsonLd={jsonLd}

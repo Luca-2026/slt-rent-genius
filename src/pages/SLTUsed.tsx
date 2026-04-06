@@ -109,7 +109,7 @@ export default function SLTUsed() {
     <Layout>
       <SEO
         title="SLT Used – Gebrauchte Baumaschinen kaufen | SLT Rental"
-        description="Gepflegte Gebrauchtmaschinen von Zoomlion, BAUMAX und Temared. Minibagger, Radlader, Arbeitsbühnen und mehr. Geprüft, gewartet, sofort verfügbar."
+        description="Geprüfte Gebrauchtmaschinen aus dem SLT-Mietpark: Baumaschinen & Anhänger sofort verfügbar. Persönliche Beratung, NRW-weit lieferbar."
         canonical="/verkauf/gebrauchtmaschinen"
       />
 
