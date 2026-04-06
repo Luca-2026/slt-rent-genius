@@ -119,40 +119,36 @@ export default function ProductDetail() {
   useEffect(() => {
     if (product && location && category) {
 
-      // SEO: Title - prefer Excel data, fallback to generated
+      // City name mapping for SEO
+      const cityNameMap: Record<string, string> = {
+        krefeld: "Krefeld",
+        bonn: "Bonn",
+        muelheim: "Mülheim an der Ruhr",
+      };
+      const cityName = cityNameMap[location.id] || location.name;
+
+      // SEO: Title - "[Produktname] mieten in [Stadtname] | SLT Rental"
       let seoTitle: string;
       if (productSEO?.seoTitle) {
         seoTitle = localizeText(productSEO.seoTitle);
       } else {
-        const priceInfo = product.pricePerDay ? ` – ab ${product.pricePerDay}/Tag` : "";
-        const seoTitleFull = `${product.name} mieten in ${location.name}${priceInfo}`;
-        const seoTitleShort = `${product.name} mieten in ${location.name}`;
-        seoTitle = seoTitleFull.length <= 55 
-          ? `${seoTitleFull} | SLT Rental`
-          : seoTitleShort.length <= 55 
-            ? `${seoTitleShort} | SLT Rental`
-            : `${product.name} mieten | SLT Rental`;
+        seoTitle = `${product.name} mieten in ${cityName} | SLT Rental`;
       }
       document.title = seoTitle;
 
-      // SEO: Meta description - prefer Excel data
+      // SEO: Meta description - dynamic from product data, max 155 chars
       let descText: string;
       if (productSEO?.metaDescription) {
         descText = localizeText(productSEO.metaDescription);
+      } else if (product.description) {
+        const descSnippet = product.description.length > 80 
+          ? product.description.substring(0, 80).replace(/\s+\S*$/, '') 
+          : product.description;
+        const candidate = `${product.name} mieten in ${cityName} – ${descSnippet}. Tiefpreisgarantie – online buchbar.`;
+        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       } else {
-        const descParts = [
-          `${product.name} mieten in ${location.name}`,
-          product.pricePerDay ? ` ✓ Ab ${product.pricePerDay}/Tag` : "",
-          ` ✓ Sofort verfügbar`,
-          ` ✓ Lieferung möglich`,
-          ` ✓ Tiefpreisgarantie`,
-        ];
-        descText = descParts[0];
-        for (let i = 1; i < descParts.length; i++) {
-          if ((descText + descParts[i]).length <= 155) {
-            descText += descParts[i];
-          }
-        }
+        const candidate = `${product.name} mieten in ${cityName} bei SLT Rental. Online buchbar, Abholung oder Lieferung. Tiefpreisgarantie.`;
+        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
