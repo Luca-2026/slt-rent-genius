@@ -100,7 +100,7 @@ export default function LoesungDetail() {
     <Layout>
       <SEO
         title={`${title} – Mietlösungen | SLT Rental`}
-        description={`${subtitle} – ${description.slice(0, 120)}...`}
+        description={solutionMetaDescriptions[solution.id] || `${subtitle} – ${description.slice(0, 120)}...`}
         canonical={`/loesungen/${solution.id}`}
         jsonLd={allJsonLd as any}
       />
