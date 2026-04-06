@@ -973,7 +973,7 @@ export default function CategoryProducts() {
   };
   
   const seoDescription = categorySeoDescriptions[category.id] || 
-    `${categoryDisplayName} mieten in ${location.name} ✓ ${products.length} Mietartikel ✓ Tiefpreisgarantie ✓ Faire Preise ✓ Persönliche Beratung ✓ Lieferung möglich`;
+    `${categoryDisplayName} mieten in ${cityName} – online buchbar bei SLT Rental. Tiefpreisgarantie, Lieferung möglich.`;
   const seoCanonical = `/mieten/${location.id}/${category.id}`;
   
   // Expanded keywords based on GSC high-impression search queries
