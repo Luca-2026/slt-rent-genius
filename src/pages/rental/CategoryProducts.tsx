@@ -1161,6 +1161,28 @@ export default function CategoryProducts() {
     { question: `Bietet SLT Rental Lieferung für ${categoryDisplayName} an?`, answer: `Ja, wir liefern ${categoryDisplayName} direkt zu Ihrem Einsatzort in ${location.name} und Umgebung. Die Lieferkosten können Sie mit unserem Online-Rechner ermitteln.` },
   ];
 
+  // ItemList JSON-LD for category page
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `${categoryDisplayName} mieten in ${cityName} – SLT Rental`,
+    "url": `https://www.slt-rental.de${seoCanonical}`,
+    "itemListElement": products.slice(0, 50).map((p, i) => {
+      const imgSrc = p.images?.[0] || p.image || "";
+      const imgUrl = imgSrc.startsWith("http") ? imgSrc : imgSrc ? `https://www.slt-rental.de${imgSrc.startsWith("/") ? "" : "/"}${imgSrc}` : undefined;
+      return {
+        "@type": "ListItem",
+        "position": i + 1,
+        "item": {
+          "@type": "Product",
+          "name": p.name,
+          "image": imgUrl,
+          "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
+        },
+      };
+    }),
+  };
+
   const jsonLdArray = [
     SLT_LOCATION_JSONLD(location.id),
     SLT_BREADCRUMB_JSONLD([
@@ -1169,6 +1191,7 @@ export default function CategoryProducts() {
       { name: categoryDisplayName, url: seoCanonical },
     ]),
     SLT_FAQ_JSONLD(faqs),
+    itemListJsonLd,
   ];
 
   return (
