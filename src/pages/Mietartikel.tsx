@@ -64,7 +64,7 @@ export default function Mietartikel() {
     <Layout>
       <SEO
         title={t("mietartikel.seo.title")}
-        description={t("mietartikel.seo.description")}
+        description="Über 1.700 Mietartikel in 20+ Kategorien: Baumaschinen, Anhänger, Eventausstattung & mehr. Online buchen, abholen oder liefern lassen – 3 Standorte NRW."
         canonical="/mietartikel"
       />
 

@@ -262,7 +262,7 @@ export default function Verkauf() {
     <Layout>
       <SEO
         title={t("verkauf.seo.title")}
-        description={t("verkauf.seo.description")}
+        description="Baumaschinen kaufen in NRW: Zoomlion, BAUMAX & Temared – autorisierter Fachhändler. Neumaschinen & Gebrauchtmaschinen. Beratung & Lieferung NRW-weit."
         canonical="/verkauf"
         keywords="Baumaschinen kaufen NRW, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
         ogType="website"
