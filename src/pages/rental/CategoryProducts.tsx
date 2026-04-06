@@ -83,11 +83,16 @@ export default function CategoryProducts() {
     });
   }, [searchParams, locationId, categoryId, navigate]);
 
-  // Scroll to product grid when filters change
+  // Scroll to product grid when discrete filters change (not slider drags)
   useEffect(() => {
     const prev = prevFiltersRef.current;
+    // Only scroll for discrete filter changes, not continuous slider changes (nutzlastRange)
+    const discreteTrailerChanged = prev.trailerFilters.search !== trailerFilters.search ||
+      prev.trailerFilters.types !== trailerFilters.types ||
+      prev.trailerFilters.braking !== trailerFilters.braking ||
+      prev.trailerFilters.weight !== trailerFilters.weight;
     const filtersChanged =
-      prev.trailerFilters !== trailerFilters ||
+      discreteTrailerChanged ||
       prev.earthMovingFilters !== earthMovingFilters ||
       prev.genericFilters !== genericFilters ||
       prev.selectedCategoryFilter !== selectedCategoryFilter;
