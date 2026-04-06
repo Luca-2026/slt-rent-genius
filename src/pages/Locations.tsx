@@ -9,15 +9,32 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
 
+const locationSeoMeta: Record<string, { title: string; description: string }> = {
+  krefeld: {
+    title: "SLT Rental Krefeld – Hauptsitz | SLT Rental",
+    description: "SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.",
+  },
+  bonn: {
+    title: "SLT Rental Bonn – Filiale | SLT Rental",
+    description: "SLT Rental Bonn – Drachenburgstraße 5, 53179 Bonn. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.",
+  },
+  muelheim: {
+    title: "SLT Rental Mülheim – Corporate Filiale | SLT Rental",
+    description: "SLT Rental Mülheim – Bobcat Kompaktmaschinen & Bauequipment. Ruhrorter Str. 122, 45478 Mülheim. Online 24/7 buchbar, Abholung nach Vereinbarung.",
+  },
+};
+
 export default function Locations() {
   const { t } = useTranslation();
+  const { id } = useParams<{ id?: string }>();
+  const locMeta = id ? locationSeoMeta[id] : undefined;
 
   return (
     <Layout>
       <SEO
-        title="Standorte – Krefeld, Bonn & Mülheim | SLT Rental"
-        description="SLT Rental: 3 Standorte in NRW – Krefeld, Bonn & Mülheim an der Ruhr. Öffnungszeiten, Adressen und Ansprechpartner auf einen Blick."
-        canonical="/standorte"
+        title={locMeta?.title || "Standorte – Krefeld, Bonn & Mülheim | SLT Rental"}
+        description={locMeta?.description || "SLT Rental: 3 Standorte in NRW – Krefeld, Bonn & Mülheim an der Ruhr. Öffnungszeiten, Adressen und Ansprechpartner auf einen Blick."}
+        canonical={id ? `/standorte/${id}` : "/standorte"}
         keywords="SLT Rental Standorte, Krefeld, Bonn, Mülheim, Baumaschinen Vermietung NRW"
         jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Standorte", url: "/standorte" }])}
       />
