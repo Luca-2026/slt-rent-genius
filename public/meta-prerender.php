@@ -720,7 +720,7 @@ $blogBody = '';
 $blogArticles = [
     'minibagger-mieten-ohne-fuehrerschein' => [
         'title' => 'Minibagger mieten ohne Führerschein – was erlaubt ist und was nicht',
-        'date' => '2026-04-13',
+        'date' => '2026-01-15',
         'image' => '/images/ratgeber/blog_thumbnail_minibagger_ohne_fuehrerschein.svg',
         'facts' => [
             'Minibagger bis 3,5 t dürfen auf Privatgelände ohne Führerschein bedient werden',
@@ -732,7 +732,7 @@ $blogArticles = [
     ],
     'anhaenger-24-stunden-mieten-sms-code' => [
         'title' => 'Anhänger 24/7 abholen per SMS-Code – so funktioniert das System bei SLT Rental',
-        'date' => '2026-04-13',
+        'date' => '2026-02-08',
         'image' => '/images/ratgeber/blog_thumbnail_anhaenger_sms_code_24_7.svg',
         'facts' => [
             'Anhänger an allen SLT-Standorten 24/7 per SMS-Code abholbar',
@@ -743,7 +743,7 @@ $blogArticles = [
     ],
     'wochenendtarif-vs-tagesmiete' => [
         'title' => 'Wochenendtarif vs. Tagesmiete – was lohnt sich wirklich?',
-        'date' => '2026-04-13',
+        'date' => '2025-11-22',
         'image' => '/images/ratgeber/blog_thumbnail_wochenendtarif_vs_tagesmiete.svg',
         'facts' => [
             'Wochenendtarif: Freitag 16 Uhr abholen, Montag 8 Uhr zurückgeben – 1 Tag bezahlen',
@@ -753,7 +753,7 @@ $blogArticles = [
     ],
     'baustelle-innenstadt-baumaschine-beengte-verhaeltnisse' => [
         'title' => 'Baustelle in der Innenstadt – welche Baumaschine für beengte Verhältnisse?',
-        'date' => '2026-04-13',
+        'date' => '2026-03-05',
         'image' => '/images/ratgeber/blog_thumbnail_innenstadt_baumaschine_beengt.svg',
         'facts' => [
             'Minibagger unter 1 m Breite passen durch Standard-Gartentore',
@@ -764,7 +764,7 @@ $blogArticles = [
     ],
     'geschirr-mieten-hochzeit-mengen-checkliste' => [
         'title' => 'Geschirr mieten für die Hochzeit – Mengen-Checkliste für 50, 100 und 150 Gäste',
-        'date' => '2026-04-13',
+        'date' => '2025-12-10',
         'image' => '/images/ratgeber/blog_thumbnail_geschirr_hochzeit_mengen.svg',
         'facts' => [
             'Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch)',
