@@ -203,32 +203,35 @@ export function Header() {
       {/* Weekend Tariffs Bar */}
       <div className="bg-primary text-primary-foreground overflow-hidden">
         <div className="py-1.5 text-sm">
-          <div className="marquee-track whitespace-nowrap flex items-center" aria-hidden="true">
-            <div className="flex items-center gap-8 shrink-0 px-4 marquee-content">
-              <div className="flex items-center gap-1.5 font-semibold">
-                <Percent className="h-4 w-4" />
-                <span>{t("marquee.weekendRates")}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-medium">{t("marquee.we")}:</span>
-                <span>{t("marquee.weFri")}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-medium">{t("marquee.longWe")}:</span>
-                <span>{t("marquee.longWeFri")}</span>
-              </div>
-              <span className="text-primary-foreground/50">•</span>
-              <div className="flex items-center gap-1.5 font-semibold">
-                <Shield className="h-4 w-4 text-accent" />
-                <span>Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!</span>
-              </div>
-              <span className="text-primary-foreground/50">•</span>
-            </div>
-          </div>
-          {/* Screenreader-accessible version */}
-          <span className="sr-only">
+          {/* Screenreader-accessible version (single, visible to AT only) */}
+          <p className="sr-only">
             {t("marquee.weekendRates")} – {t("marquee.we")}: {t("marquee.weFri")} – {t("marquee.longWe")}: {t("marquee.longWeFri")} – Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!
-          </span>
+          </p>
+          {/* Visual marquee: two copies for seamless CSS loop, aria-hidden */}
+          <div className="marquee-track whitespace-nowrap flex items-center" aria-hidden="true">
+            {[0, 1].map((i) => (
+              <div key={i} className="flex items-center gap-8 shrink-0 px-4">
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Percent className="h-4 w-4" />
+                  <span>{t("marquee.weekendRates")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-medium">{t("marquee.we")}:</span>
+                  <span>{t("marquee.weFri")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-medium">{t("marquee.longWe")}:</span>
+                  <span>{t("marquee.longWeFri")}</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Shield className="h-4 w-4 text-accent" />
+                  <span>Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!</span>
+                </div>
+                <span className="text-primary-foreground/50">•</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
