@@ -390,7 +390,7 @@ Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elek
 
 Eine Hochzeitsfeier mit 100 Gästen erfordert leicht **300–500 Geschirrteile**. Einweggeschirr sieht billig aus und belastet die Umwelt. Hochwertiges Geschirr kaufen? Teuer und nach der Feier nutzlos. **Mieten ist die elegante Lösung**: Sie erhalten einheitliches, hochwertiges Porzellan und Kristallgläser – zu einem Bruchteil des Kaufpreises.
 
-Bei SLT Rental am Standort [Bonn](/mieten/bonn/geschirr-glaeser-besteck) vermieten wir komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
+Bei SLT Rental vermieten wir an unseren Standorten [Bonn](/mieten/bonn/geschirr-glaeser-besteck) und [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck) komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
 
 ## Die große Mengen-Checkliste
 
@@ -437,7 +437,7 @@ Unser Tipp aus über zehn Jahren Eventerfahrung: Bei gut organisierten Hochzeite
 
 ## Geschirrspülmaschine mieten
 
-Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine [gewerbliche Gastro-Spülmaschine Frontlader](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) dazu mieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
+Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine gewerbliche Gastro-Spülmaschine Frontlader dazu mieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
 
 Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader)
 
@@ -459,9 +459,9 @@ Hochzeiten finden meist am Wochenende statt – perfekt für den [SLT-Wochenendt
 
 ## Jetzt Geschirr für Ihre Hochzeit reservieren
 
-Stöbern Sie in unserem [Geschirr-Sortiment in Bonn](/mieten/bonn/geschirr-glaeser-besteck) und stellen Sie Ihr individuelles Set zusammen. Bei Fragen zur Mengenplanung beraten wir Sie gerne telefonisch oder per E-Mail.
+Stöbern Sie in unserem Geschirr-Sortiment und stellen Sie Ihr individuelles Set zusammen. Bei Fragen zur Mengenplanung beraten wir Sie gerne telefonisch oder per E-Mail.
 
-[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck)`
+[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck) · [→ Geschirr, Gläser & Besteck in Krefeld ansehen](/mieten/krefeld/geschirr-glaeser-besteck)`
   }
 ];
 
