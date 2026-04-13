@@ -830,7 +830,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $title ?>">
   <meta name="twitter:description" content="<?= $description ?>">
-  <meta name="twitter:image" content="<?= $OG_IMAGE ?>">
+  <meta name="twitter:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
 </head>
 <body>
 <?php if ($homepageBody): ?>
