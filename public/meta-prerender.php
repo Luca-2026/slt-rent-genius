@@ -207,6 +207,30 @@ $pages = [
         'title' => 'AGB | SLT Rental',
         'description' => 'Allgemeine Geschäftsbedingungen der SLT Technology Group GmbH & Co. KG für die Vermietung von Baumaschinen und Equipment.',
     ],
+    '/ratgeber' => [
+        'title' => 'Ratgeber & Magazin – Tipps rund ums Mieten | SLT Rental',
+        'description' => 'Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW.',
+    ],
+    '/ratgeber/minibagger-mieten-ohne-fuehrerschein' => [
+        'title' => 'Minibagger mieten ohne Führerschein – Rechtslage & Tipps | SLT Rental',
+        'description' => 'Darf man einen Minibagger ohne Führerschein fahren? Rechtslage, Einweisungspflicht, Schutzausrüstung & wann ein Baggerschein nötig ist – verständlich erklärt.',
+    ],
+    '/ratgeber/anhaenger-24-stunden-mieten-sms-code' => [
+        'title' => 'Anhänger 24 Stunden mieten per SMS-Code | SLT Rental',
+        'description' => 'Anhänger rund um die Uhr mieten – auch nachts und am Wochenende. So funktioniert das SMS-Code-System von SLT Rental: Buchung, Code, Abholung, Rückgabe.',
+    ],
+    '/ratgeber/wochenendtarif-vs-tagesmiete' => [
+        'title' => 'Wochenendtarif Baumaschine mieten – lohnt sich das? | SLT Rental',
+        'description' => 'Wochenendtarif oder Tagesmiete? Vergleich mit Rechenbeispiel am Minibagger. So sparen Sie bei SLT Rental bis zu 40 % am Wochenende.',
+    ],
+    '/ratgeber/baustelle-innenstadt-baumaschine-beengte-verhaeltnisse' => [
+        'title' => 'Baumaschinen für Innenstadt & beengte Baustellen | SLT Rental',
+        'description' => 'Innenstadt-Baustelle? Elektro-Minibagger, Gummiketten & lärmarme Maschinen für beengte Verhältnisse. Lärmschutz NRW, Halteverbotszonen & Tipps von SLT Rental.',
+    ],
+    '/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste' => [
+        'title' => 'Geschirr mieten Hochzeit – Mengen-Checkliste & Tipps | SLT Rental',
+        'description' => 'Wie viel Geschirr brauchen Sie für Ihre Hochzeit? Mengen-Checkliste für 50, 100 und 150 Gäste: Teller, Gläser, Besteck. Jetzt bei SLT Rental mieten.',
+    ],
 ];
 
 // ── Category pages pattern: /mieten/{location}/{category} ──
@@ -685,6 +709,91 @@ if ($path === '/verkauf') {
 HTML;
 }
 
+// ── Blog / Ratgeber body ──
+$blogBody = '';
+$blogArticles = [
+    'minibagger-mieten-ohne-fuehrerschein' => [
+        'title' => 'Minibagger mieten ohne Führerschein – was erlaubt ist und was nicht',
+        'date' => '2026-04-13',
+        'facts' => [
+            'Minibagger bis 3,5 t dürfen auf Privatgelände ohne Führerschein bedient werden',
+            'Im öffentlichen Straßenverkehr ist mindestens eine Fahrerlaubnis der Klasse L oder T erforderlich',
+            'Eine Einweisung durch den Vermieter ist gesetzlich vorgeschrieben (DGUV Vorschrift 1)',
+            'Schutzausrüstung (Helm, Sicherheitsschuhe, Warnweste) ist Pflicht auf Baustellen',
+            'SLT Rental bietet eine kostenlose Einweisung bei jeder Anmietung',
+        ],
+    ],
+    'anhaenger-24-stunden-mieten-sms-code' => [
+        'title' => 'Anhänger 24/7 abholen per SMS-Code – so funktioniert das System bei SLT Rental',
+        'date' => '2026-04-13',
+        'facts' => [
+            'Anhänger an allen SLT-Standorten 24/7 per SMS-Code abholbar',
+            'Online buchen, bezahlen, Code per SMS erhalten – fertig',
+            'Rückgabe jederzeit ohne Wartezeit',
+            'Führerschein Klasse B (bis 750 kg Anhänger) oder BE erforderlich',
+        ],
+    ],
+    'wochenendtarif-vs-tagesmiete' => [
+        'title' => 'Wochenendtarif vs. Tagesmiete – was lohnt sich wirklich?',
+        'date' => '2026-04-13',
+        'facts' => [
+            'Wochenendtarif: Freitag 16 Uhr abholen, Montag 8 Uhr zurückgeben – 1 Tag bezahlen',
+            'Bis zu 40 % günstiger als 3 Einzeltage',
+            'Gilt für Baumaschinen, Anhänger und Event-Equipment',
+        ],
+    ],
+    'baustelle-innenstadt-baumaschine-beengte-verhaeltnisse' => [
+        'title' => 'Baustelle in der Innenstadt – welche Baumaschine für beengte Verhältnisse?',
+        'date' => '2026-04-13',
+        'facts' => [
+            'Minibagger unter 1 m Breite passen durch Standard-Gartentore',
+            'Elektro-Minibagger arbeiten emissionsfrei und leiser als Dieselmodelle',
+            'Gummiketten schonen Pflaster, Asphalt und Gehwege',
+            'Lärmschutzverordnung NRW: Bauarbeiten Mo–Sa 7–20 Uhr',
+        ],
+    ],
+    'geschirr-mieten-hochzeit-mengen-checkliste' => [
+        'title' => 'Geschirr mieten für die Hochzeit – Mengen-Checkliste für 50, 100 und 150 Gäste',
+        'date' => '2026-04-13',
+        'facts' => [
+            'Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch)',
+            'Pro Gast mindestens 3 Gläser einplanen (Wasser, Wein, Sekt)',
+            'Glasbruch bis 5 % ist in der Regel im Mietpreis enthalten',
+            'Geschirrspülmaschine ebenfalls mietbar',
+        ],
+    ],
+];
+
+if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[$bm[1]])) {
+    $ba = $blogArticles[$bm[1]];
+    $slug = $bm[1];
+    $articleJsonLd = json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $ba['title'],
+        'datePublished' => $ba['date'],
+        'dateModified' => $ba['date'],
+        'author' => ['@type' => 'Organization', 'name' => 'SLT Rental', 'url' => $SITE_ORIGIN],
+        'publisher' => ['@type' => 'Organization', 'name' => 'SLT Rental', 'logo' => ['@type' => 'ImageObject', 'url' => $OG_IMAGE]],
+        'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $SITE_ORIGIN . '/ratgeber/' . $slug],
+        'image' => $OG_IMAGE,
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    $factsHtml = '';
+    foreach ($ba['facts'] as $f) {
+        $factsHtml .= '<li>' . htmlspecialchars($f, ENT_QUOTES, 'UTF-8') . '</li>';
+    }
+
+    $blogBody = <<<HTML
+  <script type="application/ld+json">{$articleJsonLd}</script>
+  <article>
+    <h1>{$ba['title']}</h1>
+    <p>Von SLT Rental, aktualisiert am {$ba['date']}</p>
+    <section><h2>Auf einen Blick</h2><ul>{$factsHtml}</ul></section>
+  </article>
+HTML;
+}
+
 // Output HTML with correct meta tags
 header('Content-Type: text/html; charset=utf-8');
 ?><!DOCTYPE html>
@@ -698,7 +807,7 @@ header('Content-Type: text/html; charset=utf-8');
   <!-- Open Graph -->
   <meta property="og:title" content="<?= $title ?>">
   <meta property="og:description" content="<?= $description ?>">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
   <meta property="og:image" content="<?= $OG_IMAGE ?>">
   <meta property="og:url" content="<?= $canonicalUrl ?>">
   <meta property="og:site_name" content="<?= $SITE_NAME ?>">
@@ -715,6 +824,8 @@ header('Content-Type: text/html; charset=utf-8');
 <?= $homepageBody ?>
 <?php elseif ($verkaufBody): ?>
 <?= $verkaufBody ?>
+<?php elseif ($blogBody): ?>
+<?= $blogBody ?>
 <?php elseif ($productBodyContent): ?>
 <?= $productBodyContent ?>
 <?php else: ?>

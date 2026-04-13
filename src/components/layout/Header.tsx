@@ -187,6 +187,7 @@ export function Header() {
     { to: "/dienstleistungen", label: t("nav.services") },
     { to: "/so-funktionierts", label: t("nav.howItWorks") },
     { to: "/hilfe", label: t("nav.help") },
+    { to: "/ratgeber", label: "Ratgeber" },
     { to: "/lieferung", label: t("nav.delivery") },
     { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
     { to: "/faq", label: t("nav.faq") },
