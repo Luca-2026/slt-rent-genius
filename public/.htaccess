@@ -90,6 +90,22 @@ RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/burgunderglas-brunelli-10er
 RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/weissweinglas-passionata-10er$ /mieten/$1/geschirr-glaeser-besteck/weissweinglas-passionata-25er [R=301,L]
 RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/rotweinglas-passionata-10er$ /mieten/$1/geschirr-glaeser-besteck/rotweinglas-passionata-25er [R=301,L]
 
+# Bonn Geschirr/Besteck: old slugs without "-10er" suffix
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-teller-simply-25$ /mieten/bonn/geschirr-glaeser-besteck/bonn-teller-simply-25-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-teller-tief-simply-20$ /mieten/bonn/geschirr-glaeser-besteck/bonn-teller-tief-simply-20-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-dessertteller-simply-19$ /mieten/bonn/geschirr-glaeser-besteck/bonn-dessertteller-simply-19-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-schuessel-simply-15$ /mieten/bonn/geschirr-glaeser-besteck/bonn-schuessel-simply-15-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-teller-deluxe-27$ /mieten/bonn/geschirr-glaeser-besteck/bonn-teller-deluxe-27-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-schuessel-deluxe-18$ /mieten/bonn/geschirr-glaeser-besteck/bonn-schuessel-deluxe-18-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-simply-19$ /mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-simply-19-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-gross-deluxe-19$ /mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-gross-deluxe-19-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-klein-deluxe-14$ /mieten/bonn/geschirr-glaeser-besteck/bonn-gabel-klein-deluxe-14-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-klein-deluxe-14$ /mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-klein-deluxe-14-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-simply-13$ /mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-simply-13-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-simply-19$ /mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-simply-19-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-gross-deluxe-19$ /mieten/bonn/geschirr-glaeser-besteck/bonn-loeffel-gross-deluxe-19-10er [R=301,L]
+RewriteRule ^mieten/bonn/geschirr-glaeser-besteck/bonn-messer-simply-20$ /mieten/bonn/geschirr-glaeser-besteck/bonn-messer-simply-20-10er [R=301,L]
+
 # ===== End Legacy Redirects =====
 
 # ===== Manuals: block indexing of PDF manuals =====

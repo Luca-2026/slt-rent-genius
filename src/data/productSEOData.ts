@@ -755,7 +755,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Ist ein Mischpult oder Verstärker separat notwendig?", a: "Bei aktiven Systemen (mit eingebautem Verstärker) ist kein separater Verstärker nötig. Ein Mischpult ist optional – empfehlenswert bei mehreren Quellen (Mikrofon, Laptop, DJ). Passende Mischpulte sind bei uns separat erhältlich." },
     ],
   },
-  "bonn-dessertteller-simply-19": {
+  "bonn-dessertteller-simply-19-10er": {
     excelName: "Dessertteller SIMPLY 19, 10er Set",
     seoTitle: "Dessertteller SIMPLY 19, 10er Set mieten | SLT Rental",
     metaDescription: "Dessertteller SIMPLY 19, 10er Set mieten in Bonn & Krefeld. Desserteller weiß in Porzellanoptik, 19cm  Das Geschirr muss gereinigt zurück gegeben werd. Tag",
@@ -881,7 +881,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich Warn-/Blinkleuchten für die Absperrung dazu mieten?", a: "Ja – TL-Warnleuchten (gelb, blinkend) sind separat erhältlich und können an Bauzäunen oder Warnbarken befestigt werden. Für Baustellen im öffentlichen Straßenraum sind Warnleuchten vorgeschrieben." },
     ],
   },
-  "bonn-gabel-simply-19": {
+  "bonn-gabel-simply-19-10er": {
     excelName: "Gabel SIMPLY 19, 10er Set",
     seoTitle: "Gabel SIMPLY 19, 10er Set mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Gabel SIMPLY 19, 10er Set mieten in Bonn & Krefeld. Gabel Edelstahl, 19cm  Das Besteck muss gereinigt zurück gegeben werden.   Reinigungspausc. Tagesmiete,",
@@ -1277,7 +1277,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie viele Geräte brauche ich für meine Veranstaltung?", a: "Leistung: att LED Moving Head. Als Richtwert für Bühnenbeleuchtung: 4–6 PAR-Scheinwerfer für eine Bühne bis 6 × 4 m. Für Ambiente-/Uplighting: 1 Scheinwerfer alle 2–3 m Wandlänge. Wir erstellen Ihnen gerne einen individuellen Beleuchtungsplan." },
     ],
   },
-  "bonn-loeffel-simply-13": {
+  "bonn-loeffel-simply-13-10er": {
     excelName: "Löffel SIMPLY 13, 10er Set",
     seoTitle: "Löffel SIMPLY 13, 10er Set mieten | SLT Rental",
     metaDescription: "Löffel SIMPLY 13, 10er Set mieten in Bonn & Krefeld. Löffel klein Edelstahl, 13cm  Das Besteck muss gereinigt zurück gegeben werden.   Reinigun. Tagesmiete",
@@ -1295,7 +1295,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie wird das Geschirr transportiert und geliefert?", a: "Das Geschirr wird in stabilen Transportboxen geliefert – diese schützen vor Beschädigungen. Bitte geben Sie das Geschirr in denselben Boxen zurück. Lieferung und Abholung sind gegen Aufpreis möglich." },
     ],
   },
-  "bonn-loeffel-simply-19": {
+  "bonn-loeffel-simply-19-10er": {
     excelName: "Löffel SIMPLY 19, 10er Set",
     seoTitle: "Löffel SIMPLY 19, 10er Set mieten | SLT Rental",
     metaDescription: "Löffel SIMPLY 19, 10er Set mieten in Bonn & Krefeld. Löffel klein Edelstahl, 19cm  Das Besteck muss gereinigt zurück gegeben werden.   Reinigun. Tagesmiete",
@@ -1367,7 +1367,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wann sollte ich ein Gerüst statt einer Leiter verwenden?", a: "Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Grundsätzlich gilt: Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben." },
     ],
   },
-  "bonn-messer-simply-20": {
+  "bonn-messer-simply-20-10er": {
     excelName: "Messer SIMPLY 20, 10er Set",
     seoTitle: "Messer SIMPLY 20, 10er Set mieten | SLT Rental",
     metaDescription: "Messer SIMPLY 20, 10er Set mieten in Bonn & Krefeld. Messer Edelstahl, 20 cm  Das Besteck muss gereinigt zurück gegeben werden.   Reinigungspau. Tagesmiete",
@@ -1837,7 +1837,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Ist die Maschine für den Innen- und Außenbereich geeignet?", a: "Die Maschine ist mit Non-Marking Reifen ausgestattet und für den Innenbereich geeignet (keine Reifenspuren). Mit Allradantrieb kann sie auch im Außenbereich eingesetzt werden. Antrieb: Batterie." },
     ],
   },
-  "bonn-schuessel-simply-15": {
+  "bonn-schuessel-simply-15-10er": {
     excelName: "Schüssel SIMPLY 15, 10er Set",
     seoTitle: "Schüssel SIMPLY 15, 10er Set mieten | SLT Rental",
     metaDescription: "Schüssel SIMPLY 15, 10er Set mieten in Bonn & Krefeld. Schüssel/Schale weiß in Porzellanoptik, 15cm  Das Geschirr muss gereinigt zurück gegeben w. Tagesmie",
@@ -2017,7 +2017,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie erfolgt die Lieferung und Abholung?", a: "Wir liefern das Mobiliar direkt zu Ihrem Veranstaltungsort und holen es anschließend wieder ab. Der Lieferservice wird separat berechnet und ist abhängig von Menge und Entfernung. Alternativ ist eine Abholung bei uns möglich." },
     ],
   },
-  "bonn-teller-simply-25": {
+  "bonn-teller-simply-25-10er": {
     excelName: "Teller SIMPLY 25, 10er Set",
     seoTitle: "Teller SIMPLY 25, 10er Set mieten | SLT Rental",
     metaDescription: "Teller SIMPLY 25, 10er Set mieten in Bonn & Krefeld. Teller weiß in Porzellanoptik, 25 cm  Das Geschirr muss gereinigt zurück gegeben werden. Tagesmiete, f",
@@ -2035,7 +2035,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie wird das Geschirr transportiert und geliefert?", a: "Das Geschirr wird in stabilen Transportboxen geliefert – diese schützen vor Beschädigungen. Bitte geben Sie das Geschirr in denselben Boxen zurück. Lieferung und Abholung sind gegen Aufpreis möglich." },
     ],
   },
-  "bonn-teller-tief-simply-20": {
+  "bonn-teller-tief-simply-20-10er": {
     excelName: "Teller tief SIMPLY 20, 10er Set",
     seoTitle: "Teller tief SIMPLY 20, 10er Set mieten | SLT Rental",
     metaDescription: "Teller tief SIMPLY 20, 10er Set mieten in Bonn & Krefeld. Suppenteller weiß in Porzellanoptik, 20cm  Das Geschirr muss gereinigt zurück gegeben werd. Tages",

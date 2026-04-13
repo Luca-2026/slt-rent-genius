@@ -3,6 +3,7 @@ import { categoryContent as seoCategoryContent } from "@/components/rental/Produ
 import { getProductSEO } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -89,6 +90,15 @@ export default function ProductDetail() {
 
   // Get product-specific SEO data from Excel
   const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
+
+  // Suggested products for 404 fallback (must be at top level for hooks rules)
+  const notFoundSuggestions = useMemo(() => {
+    if (product) return []; // only needed when product not found
+    if (!locationId || !categoryId) return [];
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    return getProductsForLocationCategory(loc.id, categoryId).slice(0, 6);
+  }, [locationId, categoryId, product]);
 
   // Helper: replace multi-location strings in Excel SEO data with current location only
   const localizeText = useMemo(() => {
@@ -303,15 +313,70 @@ export default function ProductDetail() {
   }, [images.length]);
 
   if (!location || !category || !product) {
+    // Derive category/location info from URL params for navigation links
+    const categoryBackLink = locationId && categoryId ? `/mieten/${locationId}/${categoryId}` : locationId ? `/mieten/${locationId}` : "/mieten";
+    const locationBackLink = locationId ? `/mieten/${locationId}` : "/mieten";
+    const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+    const cityName = locationId ? (cityNameMap[locationId] || locationId) : "";
+
+    const suggestedProducts = notFoundSuggestions;
+
     return (
       <Layout>
-        <div className="section-container py-20 text-center">
-          <h1 className="text-2xl font-bold text-headline mb-4">{t("rental.productNotFound")}</h1>
-          <p className="text-muted-foreground mb-6">{t("rental.productNotFoundDesc")}</p>
-          <Button onClick={() => navigate(-1)}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {t("rental.back")}
-          </Button>
+        <SEO
+          title="Produkt nicht gefunden | SLT Rental"
+          description="Dieses Produkt ist aktuell nicht verfügbar. Schauen Sie sich unsere aktuellen Mietartikel in Ihrer Region an."
+          noIndex={true}
+        />
+        <div className="section-container py-20">
+          <div className="text-center mb-10">
+            <h1 className="text-2xl font-bold text-headline mb-4">Produkt nicht gefunden</h1>
+            <p className="text-muted-foreground mb-6">
+              Dieses Produkt ist aktuell nicht verfügbar oder wurde umbenannt. 
+              Schauen Sie sich unsere aktuellen Mietartikel{cityName ? ` in ${cityName}` : ""} an.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categoryId && locationId && (
+                <Button asChild>
+                  <Link to={categoryBackLink}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Zurück zur Kategorie
+                  </Link>
+                </Button>
+              )}
+              <Button variant="outline" asChild>
+                <Link to={locationBackLink}>
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Standort-Übersicht
+                </Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/mieten">Alle Standorte</Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* Suggested products from same category */}
+          {suggestedProducts.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-headline mb-4">Vielleicht interessant für Sie:</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {suggestedProducts.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/mieten/${locationId}/${categoryId}/${p.id}`}
+                    className="border rounded-lg p-3 hover:shadow-md transition-shadow"
+                  >
+                    {p.image && (
+                      <img src={p.image} alt={p.name} className="w-full h-32 object-contain mb-2" loading="lazy" />
+                    )}
+                    <p className="text-sm font-medium text-headline line-clamp-2">{p.name}</p>
+                    {p.pricePerDay && <p className="text-xs text-primary mt-1">{p.pricePerDay}</p>}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </Layout>
     );
