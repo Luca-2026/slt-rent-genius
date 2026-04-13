@@ -721,6 +721,7 @@ $blogArticles = [
     'minibagger-mieten-ohne-fuehrerschein' => [
         'title' => 'Minibagger mieten ohne Führerschein – was erlaubt ist und was nicht',
         'date' => '2026-04-13',
+        'image' => '/images/ratgeber/blog_thumbnail_minibagger_ohne_fuehrerschein.svg',
         'facts' => [
             'Minibagger bis 3,5 t dürfen auf Privatgelände ohne Führerschein bedient werden',
             'Im öffentlichen Straßenverkehr ist mindestens eine Fahrerlaubnis der Klasse L oder T erforderlich',
@@ -732,6 +733,7 @@ $blogArticles = [
     'anhaenger-24-stunden-mieten-sms-code' => [
         'title' => 'Anhänger 24/7 abholen per SMS-Code – so funktioniert das System bei SLT Rental',
         'date' => '2026-04-13',
+        'image' => '/images/ratgeber/blog_thumbnail_anhaenger_sms_code_24_7.svg',
         'facts' => [
             'Anhänger an allen SLT-Standorten 24/7 per SMS-Code abholbar',
             'Online buchen, bezahlen, Code per SMS erhalten – fertig',
@@ -742,6 +744,7 @@ $blogArticles = [
     'wochenendtarif-vs-tagesmiete' => [
         'title' => 'Wochenendtarif vs. Tagesmiete – was lohnt sich wirklich?',
         'date' => '2026-04-13',
+        'image' => '/images/ratgeber/blog_thumbnail_wochenendtarif_vs_tagesmiete.svg',
         'facts' => [
             'Wochenendtarif: Freitag 16 Uhr abholen, Montag 8 Uhr zurückgeben – 1 Tag bezahlen',
             'Bis zu 40 % günstiger als 3 Einzeltage',
@@ -751,6 +754,7 @@ $blogArticles = [
     'baustelle-innenstadt-baumaschine-beengte-verhaeltnisse' => [
         'title' => 'Baustelle in der Innenstadt – welche Baumaschine für beengte Verhältnisse?',
         'date' => '2026-04-13',
+        'image' => '/images/ratgeber/blog_thumbnail_innenstadt_baumaschine_beengt.svg',
         'facts' => [
             'Minibagger unter 1 m Breite passen durch Standard-Gartentore',
             'Elektro-Minibagger arbeiten emissionsfrei und leiser als Dieselmodelle',
@@ -761,6 +765,7 @@ $blogArticles = [
     'geschirr-mieten-hochzeit-mengen-checkliste' => [
         'title' => 'Geschirr mieten für die Hochzeit – Mengen-Checkliste für 50, 100 und 150 Gäste',
         'date' => '2026-04-13',
+        'image' => '/images/ratgeber/blog_thumbnail_geschirr_hochzeit_mengen.svg',
         'facts' => [
             'Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch)',
             'Pro Gast mindestens 3 Gläser einplanen (Wasser, Wein, Sekt)',
@@ -770,7 +775,9 @@ $blogArticles = [
     ],
 ];
 
+$articleOgImage = null;
 if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[$bm[1]])) {
+    $articleOgImage = $SITE_ORIGIN . $blogArticles[$bm[1]]['image'];
     $ba = $blogArticles[$bm[1]];
     $slug = $bm[1];
     $articleJsonLd = json_encode([
@@ -782,7 +789,7 @@ if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[
         'author' => ['@type' => 'Organization', 'name' => 'SLT Rental', 'url' => $SITE_ORIGIN],
         'publisher' => ['@type' => 'Organization', 'name' => 'SLT Rental', 'logo' => ['@type' => 'ImageObject', 'url' => $OG_IMAGE]],
         'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $SITE_ORIGIN . '/ratgeber/' . $slug],
-        'image' => $OG_IMAGE,
+        'image' => $SITE_ORIGIN . $ba['image'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
     $factsHtml = '';
@@ -814,7 +821,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta property="og:title" content="<?= $title ?>">
   <meta property="og:description" content="<?= $description ?>">
   <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
-  <meta property="og:image" content="<?= $OG_IMAGE ?>">
+  <meta property="og:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
   <meta property="og:url" content="<?= $canonicalUrl ?>">
   <meta property="og:site_name" content="<?= $SITE_NAME ?>">
   <meta property="og:locale" content="de_DE">
@@ -823,7 +830,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $title ?>">
   <meta name="twitter:description" content="<?= $description ?>">
-  <meta name="twitter:image" content="<?= $OG_IMAGE ?>">
+  <meta name="twitter:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
 </head>
 <body>
 <?php if ($homepageBody): ?>

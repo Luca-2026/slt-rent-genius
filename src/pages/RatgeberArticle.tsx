@@ -182,6 +182,7 @@ const RatgeberArticle = () => {
         description={article.metaDescription}
         canonical={`/ratgeber/${article.slug}`}
         ogType="article"
+        ogImage={`https://www.slt-rental.de${article.image}`}
         keywords={article.keyword}
         jsonLd={[breadcrumbJsonLd, articleJsonLd]}
       />
