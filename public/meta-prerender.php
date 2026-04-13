@@ -640,6 +640,51 @@ if ($path === '/') {
 HTML;
 }
 
+// ── /verkauf rich body content with FAQ ──
+$verkaufBody = '';
+if ($path === '/verkauf') {
+    $verkaufFaqs = [
+        ['q' => 'Wo finde ich einen Zoomlion Händler in NRW?', 'a' => 'SLT Rental in Bonn und Krefeld ist autorisierter Zoomlion-Fachhändler und Servicestützpunkt für Nordrhein-Westfalen. Wir führen Bagger, Radlader, Teleskoplader und Arbeitsbühnen der Zoomlion-Linie und bieten persönliche Beratung, Vorführung und Werksdienst.'],
+        ['q' => 'Wo kann ich BAUMAX Baumaschinen kaufen?', 'a' => 'SLT Rental ist autorisierter BAUMAX-Fachhändler in NRW. Wir führen das komplette BAUMAX-Sortiment: Rüttelplatten (VP, HVP, RVP-Serie), Vibrationsstampfer, Minidumper, Steinsägen und Betonrüttler – mit Ersatzteilservice und Kundendienst vor Ort.'],
+        ['q' => 'Kann ich Temared Anhänger in Bonn oder Krefeld kaufen?', 'a' => 'Ja – SLT Rental ist autorisierter Temared-Fachhändler in NRW mit Ausstellungsmodellen in Bonn und Krefeld. Wir führen das komplette Temared-Sortiment von 750 kg bis 3.500 kg und übernehmen Zulassung, Lieferung und Service.'],
+        ['q' => 'Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?', 'a' => 'Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger.'],
+        ['q' => 'Kann ich eine Baumaschine erst mieten und dann kaufen?', 'a' => 'Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell.'],
+        ['q' => 'Liefert SLT Rental Baumaschinen und Anhänger auch an?', 'a' => 'Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit.'],
+        ['q' => 'Welche Finanzierungsmöglichkeiten gibt es beim Kauf?', 'a' => 'Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen.'],
+    ];
+
+    $faqJsonLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => array_map(function($f) {
+            return [
+                '@type' => 'Question',
+                'name' => $f['q'],
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['a']],
+            ];
+        }, $verkaufFaqs),
+    ];
+
+    $faqJsonLdScript = '<script type="application/ld+json">' . json_encode($faqJsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+
+    $faqHtml = '';
+    foreach ($verkaufFaqs as $f) {
+        $q = htmlspecialchars($f['q'], ENT_QUOTES, 'UTF-8');
+        $a = htmlspecialchars($f['a'], ENT_QUOTES, 'UTF-8');
+        $faqHtml .= "<div><h3>{$q}</h3><p>{$a}</p></div>\n";
+    }
+
+    $verkaufBody = <<<HTML
+  {$faqJsonLdScript}
+  <h1>Baumaschinen kaufen – Zoomlion, BAUMAX, Temared | SLT Rental</h1>
+  <p>Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.</p>
+  <section>
+    <h2>Häufig gestellte Fragen zum Kauf</h2>
+    {$faqHtml}
+  </section>
+HTML;
+}
+
 // Output HTML with correct meta tags
 header('Content-Type: text/html; charset=utf-8');
 ?><!DOCTYPE html>
@@ -668,6 +713,8 @@ header('Content-Type: text/html; charset=utf-8');
 <body>
 <?php if ($homepageBody): ?>
 <?= $homepageBody ?>
+<?php elseif ($verkaufBody): ?>
+<?= $verkaufBody ?>
 <?php elseif ($productBodyContent): ?>
 <?= $productBodyContent ?>
 <?php else: ?>
