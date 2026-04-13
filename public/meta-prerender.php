@@ -210,6 +210,7 @@ $pages = [
     '/ratgeber' => [
         'title' => 'Ratgeber & Magazin – Tipps rund ums Mieten | SLT Rental',
         'description' => 'Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW.',
+        'og_image' => '/images/ratgeber/og/ratgeber-uebersicht.png',
     ],
     '/ratgeber/minibagger-mieten-ohne-fuehrerschein' => [
         'title' => 'Minibagger mieten ohne Führerschein – Rechtslage & Tipps | SLT Rental',
@@ -783,6 +784,7 @@ $blogArticles = [
     ],
 ];
 
+$pageOgImage = isset($meta['og_image']) ? $SITE_ORIGIN . $meta['og_image'] : null;
 $articleOgImage = null;
 if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[$bm[1]])) {
     $articleOgImage = $SITE_ORIGIN . str_replace('/images/ratgeber/', '/images/ratgeber/og/', str_replace('.svg', '.png', $blogArticles[$bm[1]]['image']));
@@ -829,8 +831,8 @@ header('Content-Type: text/html; charset=utf-8');
   <meta property="og:title" content="<?= $title ?>">
   <meta property="og:description" content="<?= $description ?>">
   <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
-  <meta property="og:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
-<?php if ($articleOgImage): ?>
+  <meta property="og:image" content="<?= $articleOgImage ?? $pageOgImage ?? $OG_IMAGE ?>">
+<?php if ($articleOgImage || $pageOgImage): ?>
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -843,7 +845,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $title ?>">
   <meta name="twitter:description" content="<?= $description ?>">
-  <meta name="twitter:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
+  <meta name="twitter:image" content="<?= $articleOgImage ?? $pageOgImage ?? $OG_IMAGE ?>">
 </head>
 <body>
 <?php if ($homepageBody): ?>
