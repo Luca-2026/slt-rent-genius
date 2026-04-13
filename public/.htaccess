@@ -87,6 +87,8 @@ RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/longdrinkglas-passionata-10
 RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/champagnerglas-brunelli-14er$ /mieten/$1/geschirr-glaeser-besteck/champagnerglas-brunelli-36er [R=301,L]
 RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/rieslingglas-brunelli-12er$ /mieten/$1/geschirr-glaeser-besteck/weissweinglas-brunelli-25er [R=301,L]
 RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/burgunderglas-brunelli-10er$ /mieten/$1/geschirr-glaeser-besteck/rotweinglas-brunelli-9er [R=301,L]
+RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/weissweinglas-passionata-10er$ /mieten/$1/geschirr-glaeser-besteck/weissweinglas-passionata-25er [R=301,L]
+RewriteRule ^mieten/([^/]+)/geschirr-glaeser-besteck/rotweinglas-passionata-10er$ /mieten/$1/geschirr-glaeser-besteck/rotweinglas-passionata-25er [R=301,L]
 
 # ===== End Legacy Redirects =====
 
