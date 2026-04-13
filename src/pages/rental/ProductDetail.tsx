@@ -269,7 +269,7 @@ export default function ProductDetail() {
           { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.slt-rental.de" },
           { "@type": "ListItem", "position": 2, "name": `Mieten ${location.name}`, "item": `https://www.slt-rental.de/mieten/${location.id}` },
           { "@type": "ListItem", "position": 3, "name": category.title, "item": `https://www.slt-rental.de/mieten/${location.id}/${categoryId}` },
-          { "@type": "ListItem", "position": 4, "name": productSEO?.excelName || product.name, "item": canonicalUrl },
+          { "@type": "ListItem", "position": 4, "name": product.name, "item": canonicalUrl },
         ],
       });
 
@@ -439,10 +439,10 @@ export default function ProductDetail() {
               <div className="bg-card rounded-xl border border-border p-5 space-y-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
-                    {productSEO?.h1 ? localizeText(productSEO.h1) : product.name}
+                    {product.name} mieten in {location.name}
                   </h1>
                   {product.modelName && (
-                    <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
+                    <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
                   {product.description && (
                     <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
