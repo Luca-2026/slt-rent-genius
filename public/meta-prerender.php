@@ -821,7 +821,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta property="og:title" content="<?= $title ?>">
   <meta property="og:description" content="<?= $description ?>">
   <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
-  <meta property="og:image" content="<?= $OG_IMAGE ?>">
+  <meta property="og:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
   <meta property="og:url" content="<?= $canonicalUrl ?>">
   <meta property="og:site_name" content="<?= $SITE_NAME ?>">
   <meta property="og:locale" content="de_DE">
