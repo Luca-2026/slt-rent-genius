@@ -1030,7 +1030,8 @@ export const bonnAnhaengerProducts = [
 export const bonnGartenpflegeProducts = [
   {
     id: "bonn-unkrautbrenner-gloria",
-    name: "GLORIA Thermoflamm bio Professional PLUS",
+    name: "Unkrautbrenner",
+    modelName: "GLORIA Thermoflamm bio Professional PLUS",
     description: "Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.",
     image: "/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg",
     images: ["/products/gartenpflege/gloria-thermoflamm-bio-freisteller.jpg", "/products/gartenpflege/gloria-thermoflamm-bio-anwendung.webp"],
@@ -1071,7 +1072,8 @@ export const bonnGartenpflegeProducts = [
   },
   {
     id: "bonn-freischneider-ps162",
-    name: "Benzin-Freischneider PS162",
+    name: "Benzin-Freischneider",
+    modelName: "PS162",
     description: "Leistungsstarker Freischneider für Gras und Gestrüpp.",
     image: freischneider1,
     images: [freischneider1],
@@ -1126,7 +1128,8 @@ export const bonnGartenpflegeProducts = [
   },
   {
     id: "bonn-haecksler-axt25tc",
-    name: "Häcksler AXT25TC",
+    name: "Elektro-Häcksler",
+    modelName: "Bosch AXT 25 TC",
     description: "Elektro-Häcksler für Gartenabfälle",
     specifications: {
       "Hersteller": "Bosch",
@@ -1143,7 +1146,8 @@ export const bonnGartenpflegeProducts = [
   },
   {
     id: "bonn-haecksler-ls95gx",
-    name: "Häcksler LS-95 GX",
+    name: "Benzin-Häcksler",
+    modelName: "Eliet LS-95 GX",
     description: "Benzin-Häcksler für größere Mengen",
     detailedDescription: "Der Buschholzhäcksler LS 95/CH zeichnet sich durch hohe Arbeitsleistung und einfache Bauart aus. Angetrieben von einem leistungsstarken Kohler Motor, zerkleinert er Äste bis 7,5 cm Durchmesser zuverlässig. Zwei Zerkleinerungsmesser und eine ortsfeste Gegenschneide sorgen für effizientes Häckseln. Der Messerwechsel ist denkbar einfach – nur Rutsche abkippen. Der Einzug erfolgt automatisch durch das Eigengewicht des Materials. Große Laufräder machen das Manövrieren auch in schwierigem Gelände problemlos.",
     image: haeckslerLs95_1,
@@ -1177,7 +1181,8 @@ export const bonnGartenpflegeProducts = [
   },
   {
     id: "bonn-vertikutierer-sa38bv",
-    name: "Benzin Vertikutierer BV240",
+    name: "Benzin-Vertikutierer",
+    modelName: "Grizzly BV240",
     description: "Benzin-Vertikutierer für große Flächen",
     specifications: {
       "Typ": "BV240",
