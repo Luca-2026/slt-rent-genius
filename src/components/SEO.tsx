@@ -12,7 +12,7 @@ interface SEOProps {
 }
 
 const BASE_URL = "https://www.slt-rental.de";
-const DEFAULT_OG_IMAGE = "https://www.slt-rental.de/og-image.jpg";
+const DEFAULT_OG_IMAGE = "https://www.slt-rental.de/images/og/default-slt-rental.png";
 
 export function SEO({
   title,
@@ -41,6 +41,9 @@ export function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       <meta property="og:site_name" content="SLT Rental" />
       <meta property="og:locale" content="de_DE" />
