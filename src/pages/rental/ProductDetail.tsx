@@ -127,27 +127,28 @@ export default function ProductDetail() {
       };
       const cityName = cityNameMap[location.id] || location.name;
 
-      // SEO: Title - "[Produktname] mieten in [Stadtname] | SLT Rental"
+      // SEO: Title - "{name} mieten in {Stadtname} | SLT Rental"
+      const genericName = product.name;
+      const titleBase = `${genericName} mieten in ${cityName}`;
       let seoTitle: string;
-      if (productSEO?.seoTitle) {
-        seoTitle = localizeText(productSEO.seoTitle);
+      if (titleBase.length + ' | SLT Rental'.length <= 60) {
+        seoTitle = `${titleBase} | SLT Rental`;
       } else {
-        seoTitle = `${product.name} mieten in ${cityName} | SLT Rental`;
+        seoTitle = titleBase;
       }
       document.title = seoTitle;
 
-      // SEO: Meta description - dynamic from product data, max 155 chars
+      // SEO: Meta description - generic name + model for CTR
+      const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (productSEO?.metaDescription) {
-        descText = localizeText(productSEO.metaDescription);
-      } else if (product.description) {
+      if (product.description) {
         const descSnippet = product.description.length > 80 
           ? product.description.substring(0, 80).replace(/\s+\S*$/, '') 
           : product.description;
-        const candidate = `${product.name} mieten in ${cityName} – ${descSnippet}. Tiefpreisgarantie – online buchbar.`;
+        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       } else {
-        const candidate = `${product.name} mieten in ${cityName} bei SLT Rental. Online buchbar, Abholung oder Lieferung. Tiefpreisgarantie.`;
+        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
       let metaDescription = document.querySelector('meta[name="description"]');
@@ -207,15 +208,15 @@ export default function ProductDetail() {
         tag.setAttribute("content", content);
       }
 
-      // SEO: JSON-LD structured data (Product + FAQ + Breadcrumb)
-      const jsonLd = {
+      const jsonLd: Record<string, unknown> = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": productSEO?.excelName || product.name,
+        "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
         "description": product.description || "",
         "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
         "url": canonicalUrl,
-        "brand": { "@type": "Brand", "name": "SLT Rental" },
+        "category": category.title,
+        "sku": product.id,
         "offers": {
           "@type": "Offer",
           "availability": "https://schema.org/InStock",
@@ -230,8 +231,17 @@ export default function ProductDetail() {
           },
           "areaServed": { "@type": "City", "name": location.name },
         },
-        "category": category.title,
       };
+      // Add brand + model if modelName exists
+      if (product.modelName) {
+        // Extract brand from modelName (first word) or from specs
+        const specs = product.specifications || {};
+        const brand = specs["Hersteller"] || product.modelName.split(" ")[0];
+        jsonLd["brand"] = { "@type": "Brand", "name": brand };
+        jsonLd["model"] = product.modelName;
+      } else {
+        jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
+      }
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
@@ -259,7 +269,7 @@ export default function ProductDetail() {
           { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.slt-rental.de" },
           { "@type": "ListItem", "position": 2, "name": `Mieten ${location.name}`, "item": `https://www.slt-rental.de/mieten/${location.id}` },
           { "@type": "ListItem", "position": 3, "name": category.title, "item": `https://www.slt-rental.de/mieten/${location.id}/${categoryId}` },
-          { "@type": "ListItem", "position": 4, "name": productSEO?.excelName || product.name, "item": canonicalUrl },
+          { "@type": "ListItem", "position": 4, "name": product.name, "item": canonicalUrl },
         ],
       });
 
@@ -429,10 +439,10 @@ export default function ProductDetail() {
               <div className="bg-card rounded-xl border border-border p-5 space-y-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-headline leading-tight">
-                    {productSEO?.h1 ? localizeText(productSEO.h1) : product.name}
+                    {product.name} mieten in {location.name}
                   </h1>
                   {product.modelName && (
-                    <p className="text-sm text-muted-foreground font-medium mt-1">{product.modelName}</p>
+                    <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
                   {product.description && (
                     <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">

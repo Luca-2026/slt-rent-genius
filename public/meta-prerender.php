@@ -344,9 +344,10 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
     $detail = $productDetails[$productSlug] ?? null;
 
     $productName = $detail['name'] ?? ($seo['name'] ?? ucwords(str_replace('-', ' ', $productSlug)));
-    $h1 = $seo['h1'] ?? ($productName . ' mieten in ' . $locName . ' – Jetzt verfügbar bei SLT Rental');
+    $modelName = $detail['modelName'] ?? '';
+    $h1 = $productName . ' mieten in ' . $locName;
 
-    // Build meta description dynamically from product data
+    // Build meta description: generic name + model mention for CTR
     $descSnippet = '';
     $rawDesc = $detail['description'] ?? '';
     if ($rawDesc) {
@@ -354,16 +355,20 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
         if (mb_strlen($rawDesc) > 80) {
             $descSnippet = preg_replace('/\s+\S*$/', '', $descSnippet);
         }
-        $metaDesc = $productName . ' mieten in ' . $locName . ' – ' . $descSnippet . '. Tiefpreisgarantie – online buchbar.';
+        $metaDesc = $productName . ' mieten in ' . $locName . ' bei SLT Rental. ' . $descSnippet . '. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.';
     } else {
-        $metaDesc = $productName . ' mieten in ' . $locName . ' bei SLT Rental. Online buchbar, Abholung oder Lieferung. Tiefpreisgarantie.';
+        $metaDesc = $productName . ' mieten in ' . $locName . ' bei SLT Rental.' . ($modelName ? ' ' . $modelName . '.' : '') . ' Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.';
     }
     if (mb_strlen($metaDesc) > 155) {
         $metaDesc = mb_substr($metaDesc, 0, 152) . '...';
     }
 
+    // Title: max 60 chars
+    $titleBase = $productName . ' mieten in ' . $locName;
+    $seoTitle = mb_strlen($titleBase . ' | SLT Rental') <= 60 ? $titleBase . ' | SLT Rental' : $titleBase;
+
     $meta = [
-        'title' => $productName . ' mieten in ' . $locName . ' | SLT Rental',
+        'title' => $seoTitle,
         'description' => $metaDesc,
     ];
 
@@ -377,14 +382,15 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
 
     $productBodyContent .= '<article>';
     $productBodyContent .= '<h1>' . htmlspecialchars($h1) . '</h1>';
+    if ($modelName) {
+        $productBodyContent .= '<p><strong>Modell:</strong> ' . htmlspecialchars($modelName) . '</p>';
+    }
 
     // Description
     $desc = $detail['description'] ?? '';
     if ($desc) {
         $productBodyContent .= '<p>' . htmlspecialchars($desc) . '</p>';
     }
-
-    // Availability
     $productBodyContent .= '<section><h2>Verfügbarkeit</h2>';
     $productBodyContent .= '<p>Standort: ' . htmlspecialchars($locName) . '</p>';
     $productBodyContent .= '<p>Status: Sofort verfügbar</p>';
