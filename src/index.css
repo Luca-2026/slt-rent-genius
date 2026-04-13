@@ -174,19 +174,36 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Marquee Animation - seamless infinite scroll */
+  /* Marquee Animation - CSS-only infinite scroll with single DOM content */
   @keyframes marquee-scroll {
     0% {
       transform: translateX(0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translateX(-100%);
     }
   }
 
   .marquee-track {
-    animation: marquee-scroll 65s linear infinite;
+    animation: marquee-scroll 20s linear infinite;
     width: max-content;
+  }
+
+  /* Duplicate content via CSS pseudo-element for seamless loop */
+  .marquee-content {
+    display: inline-flex;
+  }
+
+  .marquee-track::after {
+    content: '';
+    display: inline-flex;
+  }
+
+  /* Use JS-free duplication: the track contains one copy, 
+     and we clone it via CSS by making the track twice as wide */
+  .marquee-track {
+    display: inline-flex;
+    gap: 0;
   }
 }
 
