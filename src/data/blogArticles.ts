@@ -390,7 +390,7 @@ Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elek
 
 Eine Hochzeitsfeier mit 100 Gästen erfordert leicht **300–500 Geschirrteile**. Einweggeschirr sieht billig aus und belastet die Umwelt. Hochwertiges Geschirr kaufen? Teuer und nach der Feier nutzlos. **Mieten ist die elegante Lösung**: Sie erhalten einheitliches, hochwertiges Porzellan und Kristallgläser – zu einem Bruchteil des Kaufpreises.
 
-Bei SLT Rental am Standort [Bonn](/mieten/bonn/geschirr-glaeser-besteck) vermieten wir komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
+Bei SLT Rental vermieten wir an unseren Standorten [Bonn](/mieten/bonn/geschirr-glaeser-besteck) und [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck) komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
 
 ## Die große Mengen-Checkliste
 
