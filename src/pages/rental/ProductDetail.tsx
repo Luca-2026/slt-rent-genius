@@ -208,15 +208,15 @@ export default function ProductDetail() {
         tag.setAttribute("content", content);
       }
 
-      // SEO: JSON-LD structured data (Product + FAQ + Breadcrumb)
-      const jsonLd = {
+      const jsonLd: Record<string, unknown> = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": productSEO?.excelName || product.name,
+        "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
         "description": product.description || "",
         "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
         "url": canonicalUrl,
-        "brand": { "@type": "Brand", "name": "SLT Rental" },
+        "category": category.title,
+        "sku": product.id,
         "offers": {
           "@type": "Offer",
           "availability": "https://schema.org/InStock",
@@ -231,8 +231,17 @@ export default function ProductDetail() {
           },
           "areaServed": { "@type": "City", "name": location.name },
         },
-        "category": category.title,
       };
+      // Add brand + model if modelName exists
+      if (product.modelName) {
+        // Extract brand from modelName (first word) or from specs
+        const specs = product.specifications || {};
+        const brand = specs["Hersteller"] || product.modelName.split(" ")[0];
+        jsonLd["brand"] = { "@type": "Brand", "name": brand };
+        jsonLd["model"] = product.modelName;
+      } else {
+        jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
+      }
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
