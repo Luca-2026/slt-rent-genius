@@ -70,7 +70,7 @@ export default function Index() {
     <Layout>
       <SEO
         title="Baumaschinen & Equipment mieten in NRW | SLT Rental"
-        description="Baumaschinen, Anhänger & Eventausstattung mieten in NRW. Über 1.700 Artikel, 3 Standorte in Krefeld, Bonn & Mülheim. Tiefpreisgarantie – 10 % günstiger!"
+        description="SLT Rental vermietet Baumaschinen, Anhänger & Event-Equipment in NRW. 3 Standorte (Krefeld, Bonn, Mülheim), über 1.700 Mietprodukte, Tiefpreisgarantie & Wochenendtarife. Jetzt online mieten."
         canonical="/"
         keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Arbeitsbühne mieten, Hüpfburg mieten, Event-Equipment mieten, Werkzeuge mieten, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}
