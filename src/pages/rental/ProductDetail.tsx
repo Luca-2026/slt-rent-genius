@@ -127,27 +127,28 @@ export default function ProductDetail() {
       };
       const cityName = cityNameMap[location.id] || location.name;
 
-      // SEO: Title - "[Produktname] mieten in [Stadtname] | SLT Rental"
+      // SEO: Title - "{name} mieten in {Stadtname} | SLT Rental"
+      const genericName = product.name;
+      const titleBase = `${genericName} mieten in ${cityName}`;
       let seoTitle: string;
-      if (productSEO?.seoTitle) {
-        seoTitle = localizeText(productSEO.seoTitle);
+      if (titleBase.length + ' | SLT Rental'.length <= 60) {
+        seoTitle = `${titleBase} | SLT Rental`;
       } else {
-        seoTitle = `${product.name} mieten in ${cityName} | SLT Rental`;
+        seoTitle = titleBase;
       }
       document.title = seoTitle;
 
-      // SEO: Meta description - dynamic from product data, max 155 chars
+      // SEO: Meta description - generic name + model for CTR
+      const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (productSEO?.metaDescription) {
-        descText = localizeText(productSEO.metaDescription);
-      } else if (product.description) {
+      if (product.description) {
         const descSnippet = product.description.length > 80 
           ? product.description.substring(0, 80).replace(/\s+\S*$/, '') 
           : product.description;
-        const candidate = `${product.name} mieten in ${cityName} – ${descSnippet}. Tiefpreisgarantie – online buchbar.`;
+        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       } else {
-        const candidate = `${product.name} mieten in ${cityName} bei SLT Rental. Online buchbar, Abholung oder Lieferung. Tiefpreisgarantie.`;
+        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
       let metaDescription = document.querySelector('meta[name="description"]');
