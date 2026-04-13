@@ -14,8 +14,9 @@ const Ratgeber = () => {
     <Layout>
       <SEO
         title="Ratgeber & Magazin – Tipps rund ums Mieten | SLT Rental"
-        description="Alle Mietkategorien von SLT Rental auf einen Blick: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr & mehr. Über 1.700 Mietprodukte an 3 Standorten in NRW."
+        description="Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW."
         canonical="/ratgeber"
+        ogImage="https://www.slt-rental.de/images/ratgeber/og/ratgeber-uebersicht.png"
         jsonLd={breadcrumbJsonLd}
       />
 
