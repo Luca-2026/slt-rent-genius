@@ -189,7 +189,7 @@ export function Footer() {
       <div className="bg-primary/90 border-t border-white/5">
         <div className="section-container py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
           <span>© {new Date().getFullYear()} SLT Technology Group GmbH & Co. KG</span>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             {legalLinks.map((link) => (
               <Link 
                 key={link.to} 
@@ -199,6 +199,12 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={handleCookieSettings}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Cookie-Einstellungen
+            </button>
           </div>
         </div>
       </div>
