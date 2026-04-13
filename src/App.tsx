@@ -1,3 +1,4 @@
+// Build sync fix
 import { lazy, Suspense } from "react";
 import { LegacyProductRedirect, LegacyLocationProductRedirect, LegacyCategoryRedirect, LegacyAlleRedirect } from "@/components/LegacyRedirects";
 import { Toaster } from "@/components/ui/toaster";
