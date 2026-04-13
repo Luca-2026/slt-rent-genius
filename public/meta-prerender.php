@@ -448,6 +448,14 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
     $productBodyContent .= '<a href="' . $BASE_URL . '/verkauf">Kaufangebote ansehen</a>';
     $productBodyContent .= '</section>';
 
+    // Ratgeber hint for Geschirr category
+    if ($catSlug === 'geschirr-glaeser-besteck') {
+        $productBodyContent .= '<section><h2>Tipp aus unserem Ratgeber</h2>';
+        $productBodyContent .= '<p>Mengen-Checkliste für 50, 100 und 150 Gäste – inkl. Glasbruch, Reinigung und Spülmaschine.</p>';
+        $productBodyContent .= '<a href="' . $BASE_URL . '/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste">→ Zum Ratgeber: Geschirr mieten für die Hochzeit</a>';
+        $productBodyContent .= '</section>';
+    }
+
     // Related links
     $productBodyContent .= '<section><h2>Weitere Artikel in ' . htmlspecialchars($catName) . '</h2>';
     $productBodyContent .= '<a href="' . $BASE_URL . '/mieten/' . htmlspecialchars($locSlug) . '/' . htmlspecialchars($catSlug) . '">Alle ' . htmlspecialchars($catName) . ' in ' . htmlspecialchars($locName) . ' ansehen</a>';
@@ -769,7 +777,7 @@ $blogArticles = [
         'facts' => [
             'Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch)',
             'Pro Gast mindestens 3 Gläser einplanen (Wasser, Wein, Sekt)',
-            'Glasbruch bis 5 % ist in der Regel im Mietpreis enthalten',
+            'Glasbruch wird fair berechnet – nur der tatsächliche Bruch zum transparenten Einzelpreis',
             'Geschirrspülmaschine ebenfalls mietbar',
         ],
     ],
