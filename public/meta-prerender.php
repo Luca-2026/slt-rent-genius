@@ -713,6 +713,8 @@ header('Content-Type: text/html; charset=utf-8');
 <body>
 <?php if ($homepageBody): ?>
 <?= $homepageBody ?>
+<?php elseif ($verkaufBody): ?>
+<?= $verkaufBody ?>
 <?php elseif ($productBodyContent): ?>
 <?= $productBodyContent ?>
 <?php else: ?>
