@@ -91,6 +91,15 @@ export default function ProductDetail() {
   // Get product-specific SEO data from Excel
   const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
 
+  // Suggested products for 404 fallback (must be at top level for hooks rules)
+  const notFoundSuggestions = useMemo(() => {
+    if (product) return []; // only needed when product not found
+    if (!locationId || !categoryId) return [];
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    return getProductsForLocationCategory(loc.id, categoryId).slice(0, 6);
+  }, [locationId, categoryId, product]);
+
   // Helper: replace multi-location strings in Excel SEO data with current location only
   const localizeText = useMemo(() => {
     if (!location) return (text: string) => text;
