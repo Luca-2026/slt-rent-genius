@@ -243,6 +243,7 @@ $productSEOLookup = [
   ],
   'bautrockner-kt200' => [
     'name' => 'Allegra Bautrockner KT200',
+    'modelName' => 'Allegra KT200',
     'h1' => 'Allegra Bautrockner KT200 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatz auf Baustellen & Events', 'Betrieb & Sicherheit', 'Kombination Heizen & Trocknen'],
     'useCaseBau' => 'Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung',
@@ -257,6 +258,7 @@ $productSEOLookup = [
   ],
   'bautrockner-kt553' => [
     'name' => 'Allegra Bautrockner KT553/KT554',
+    'modelName' => 'Allegra KT553/KT554',
     'h1' => 'Allegra Bautrockner KT553/KT554 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatz auf Baustellen & Events', 'Betrieb & Sicherheit', 'Kombination Heizen & Trocknen'],
     'useCaseBau' => 'Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung',
@@ -299,6 +301,7 @@ $productSEOLookup = [
   ],
   'betonruettler-ir1000' => [
     'name' => 'Beton Rüttler 2m',
+    'modelName' => 'IR 1000',
     'h1' => 'Beton Rüttler 2m mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -327,6 +330,7 @@ $productSEOLookup = [
   ],
   'bobcat-e10z' => [
     'name' => 'Bobcat E10Z',
+    'modelName' => 'Bobcat E10Z',
     'h1' => 'Bobcat E10Z Minibagger mieten in Mülheim – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -453,6 +457,7 @@ $productSEOLookup = [
   ],
   'bonn-bautrockner-kt200' => [
     'name' => 'Bautrockner KT200',
+    'modelName' => 'Allegra KT200',
     'h1' => 'Bautrockner KT200 mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatz auf Baustellen & Events', 'Betrieb & Sicherheit', 'Kombination Heizen & Trocknen'],
     'useCaseBau' => 'Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung',
@@ -467,6 +472,7 @@ $productSEOLookup = [
   ],
   'bonn-bautrockner-kt554' => [
     'name' => 'Allegra Bautrockner KT554',
+    'modelName' => 'Allegra KT553/KT554',
     'h1' => 'Allegra Bautrockner KT554 mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatz auf Baustellen & Events', 'Betrieb & Sicherheit', 'Kombination Heizen & Trocknen'],
     'useCaseBau' => 'Estrichtrocknung, Winterbau, Wasserschadensanierung, Putztrocknung',
@@ -509,6 +515,7 @@ $productSEOLookup = [
   ],
   'bonn-bobcat-e10' => [
     'name' => '1t Bobcat E10Z',
+    'modelName' => 'Bobcat E10',
     'h1' => '1t Bobcat E10Z mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -523,6 +530,7 @@ $productSEOLookup = [
   ],
   'bonn-bohrschrauber-gsr18v55' => [
     'name' => 'Bosch Akku Bohrschrauber GSR 18V-55',
+    'modelName' => 'Bosch GSR 18V-55',
     'h1' => 'Bosch Akku Bohrschrauber GSR 18V-55 mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -593,6 +601,7 @@ $productSEOLookup = [
   ],
   'bonn-diamantbohrer-gdb180' => [
     'name' => 'Diamantbohrer 180mm',
+    'modelName' => 'Bosch GDB 180 WE',
     'h1' => 'Diamantbohrer 180mm mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -635,6 +644,7 @@ $productSEOLookup = [
   ],
   'bonn-freischneider-ps162' => [
     'name' => 'Benzin- Freischneider',
+    'modelName' => 'PS162',
     'h1' => 'Benzin- Freischneider mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -649,6 +659,7 @@ $productSEOLookup = [
   ],
   'bonn-fugenschneider-bs50e' => [
     'name' => 'Asphalt-/Betonsäge 500mm',
+    'modelName' => 'BS50E',
     'h1' => 'Asphalt-/Betonsäge 500mm mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Für welche Materialien geeignet?', 'Sicherheitshinweise', 'Zubehör & Trennscheiben'],
     'useCaseBau' => 'Asphalt schneiden, Betonplatten trennen, Fugen schneiden, Pflasterarbeiten',
@@ -747,6 +758,7 @@ $productSEOLookup = [
   ],
   'bonn-handkreissaege-gks18v' => [
     'name' => 'Bosch Akku Hand- Kreissäge GKS 18V-57G',
+    'modelName' => 'Bosch GKS 18V-57G',
     'h1' => 'Bosch Akku Hand- Kreissäge GKS 18V-57G mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -817,6 +829,7 @@ $productSEOLookup = [
   ],
   'bonn-kettendumper-rmd650' => [
     'name' => 'Ketten- Dumper',
+    'modelName' => 'RMD-650',
     'h1' => 'Ketten- Dumper mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -831,6 +844,7 @@ $productSEOLookup = [
   ],
   'bonn-kettendumper-rmd800' => [
     'name' => 'Ketten Dumper',
+    'modelName' => 'RMD-800',
     'h1' => 'Ketten Dumper mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -845,6 +859,7 @@ $productSEOLookup = [
   ],
   'bonn-knickdumper-kde550' => [
     'name' => 'Raddumper / Knickdumper KDe550',
+    'modelName' => 'KDe550',
     'h1' => 'Raddumper / Knickdumper KDe550 mieten in Bonn & Krefeld & Mülheim – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -1097,6 +1112,7 @@ $productSEOLookup = [
   ],
   'sortiergreifer-ssg390' => [
     'name' => 'MS03/MS08 Sortiergreifer SSG 390',
+    'modelName' => 'Seifert SSG 390',
     'h1' => 'MS03/MS08 Sortiergreifer SSG 390 mieten – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Spezifikationen', 'Einsatzgebiete', 'Kompatibilität & Montage', 'Mietkonditionen'],
     'useCaseBau' => 'Materialsortiereung, Abbrucharbeiten, Recycling, Kanalbau',
@@ -1112,6 +1128,7 @@ $productSEOLookup = [
   ],
   'bonn-sortiergreifer-ssg390' => [
     'name' => 'MS03/MS08 Sortiergreifer SSG 390',
+    'modelName' => 'Seifert SSG 390',
     'h1' => 'MS03/MS08 Sortiergreifer SSG 390 mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Spezifikationen', 'Einsatzgebiete', 'Kompatibilität & Montage', 'Mietkonditionen'],
     'useCaseBau' => 'Materialsortiereung, Abbrucharbeiten, Recycling, Kanalbau',
@@ -1169,6 +1186,7 @@ $productSEOLookup = [
   ],
   'bonn-nasstrockensauger-gas35' => [
     'name' => 'Nass-/Trockensauger',
+    'modelName' => 'Bosch GAS 35 M AFC',
     'h1' => 'Nass-/Trockensauger mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1197,6 +1215,7 @@ $productSEOLookup = [
   ],
   'bonn-radlader-kramer-5050' => [
     'name' => 'Radlader 3t',
+    'modelName' => 'Kramer 5050',
     'h1' => 'Radlader 3t mieten in Bonn & Krefeld & Mülheim – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -1295,6 +1314,7 @@ $productSEOLookup = [
   ],
   'bonn-rotationslaser-grl400h' => [
     'name' => 'Rotationslaser',
+    'modelName' => 'Bosch GRL 400H',
     'h1' => 'Rotationslaser mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1589,6 +1609,7 @@ $productSEOLookup = [
   ],
   'bonn-unkrautbrenner-gloria' => [
     'name' => 'GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch',
+    'modelName' => 'GLORIA Thermoflamm bio Professional PLUS',
     'h1' => 'GLORIA Thermoflamm bio Professional PLUS – Gas Unkrautbrenner & Abflammgerät mit 5 m Schlauch mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -1603,6 +1624,7 @@ $productSEOLookup = [
   ],
   'bonn-vertikutierer-sa38bv' => [
     'name' => 'Benzin - Vertikutierer',
+    'modelName' => 'Grizzly BV240',
     'h1' => 'Benzin - Vertikutierer mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -1673,6 +1695,7 @@ $productSEOLookup = [
   ],
   'bonn-winkelschleifer-gws18v' => [
     'name' => 'Bosch Akku Winkelschleifer GWS 18V-10',
+    'modelName' => 'Bosch GWS 18V-10',
     'h1' => 'Bosch Akku Winkelschleifer GWS 18V-10 mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1687,6 +1710,7 @@ $productSEOLookup = [
   ],
   'bonn-xcmg-xe20e' => [
     'name' => '2t XCMG XE20E',
+    'modelName' => 'XCMG XE20E',
     'h1' => '2t XCMG XE20E mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -1701,6 +1725,7 @@ $productSEOLookup = [
   ],
   'bonn-xcmg-xe27e' => [
     'name' => '2,7t XCMG XE27E',
+    'modelName' => 'XCMG XE27E',
     'h1' => '2,7t XCMG XE27E mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzgebiete', 'Einweisung & Betrieb', 'Transport & Lieferung'],
     'useCaseBau' => 'Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung',
@@ -1729,6 +1754,7 @@ $productSEOLookup = [
   ],
   'bosch-abbruchhammer-gsh16-28' => [
     'name' => 'Abbruchhammer 41J / 18kg',
+    'modelName' => 'Bosch GSH 16-28',
     'h1' => 'Abbruchhammer 41J / 18kg mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1743,6 +1769,7 @@ $productSEOLookup = [
   ],
   'bosch-bauleuchte-gli18v-2200c' => [
     'name' => 'Akku Bauleuchte',
+    'modelName' => 'Bosch GLI 18V-2200 C',
     'h1' => 'Akku Bauleuchte mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Lichtleistung', 'DMX-Steuerung & Bedienung', 'Innen- vs. Außeneinsatz', 'Kombination mit Beschallung & Effekten'],
     'useCaseBau' => 'Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche',
@@ -1757,6 +1784,7 @@ $productSEOLookup = [
   ],
   'bosch-bohrhammer-gbh18v-26f' => [
     'name' => 'Akku Bohrhammer',
+    'modelName' => 'Bosch GBH 18V-26 F',
     'h1' => 'Akku Bohrhammer mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1771,6 +1799,7 @@ $productSEOLookup = [
   ],
   'bosch-bohrhammer-gbh18v-45c' => [
     'name' => 'Akku Bohrhammer 12,5J / 8 kg',
+    'modelName' => 'Bosch GBH 18V-45C',
     'h1' => 'Akku Bohrhammer 12,5J / 8 kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1785,6 +1814,7 @@ $productSEOLookup = [
   ],
   'bosch-bohrschrauber-gsr12v-15' => [
     'name' => 'Bosch Akku Bohrschrauber GSR 12V-15',
+    'modelName' => 'Bosch GSR 12V-15',
     'h1' => 'Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1799,6 +1829,7 @@ $productSEOLookup = [
   ],
   'bosch-bohrschrauber-gsr18v-60c' => [
     'name' => 'Bosch Akku Bohrschrauber GSR 18V-60C',
+    'modelName' => 'Bosch GSR 18V-60C',
     'h1' => 'Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1813,6 +1844,7 @@ $productSEOLookup = [
   ],
   'bosch-drehschlagschrauber-gds18v-1050h' => [
     'name' => 'Bosch Akku Drehschlagschrauber GDS 18V-1050 H',
+    'modelName' => 'Bosch GDS 18V-1050 H',
     'h1' => 'Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1827,6 +1859,7 @@ $productSEOLookup = [
   ],
   'bosch-ladegeraet-gal18v6-80' => [
     'name' => 'Bosch 6-fach Ladegerät GAL 18V6-80',
+    'modelName' => 'Bosch GAL 18V6-80',
     'h1' => 'Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Kompatibilität', 'Einsatzgebiete', 'Ladezeiten & Betrieb', 'Kompatible Akkus'],
     'useCaseBau' => 'Laden von Bosch Professional Akkus auf der Baustelle, schnelles Wechselladen',
@@ -1841,6 +1874,7 @@ $productSEOLookup = [
   ],
   'bosch-linienlaser-gll3-80' => [
     'name' => 'Linienlaser',
+    'modelName' => 'Bosch GLL 3-80',
     'h1' => 'Linienlaser mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1855,6 +1889,7 @@ $productSEOLookup = [
   ],
   'bosch-multicutter-gop18v-28' => [
     'name' => 'Bosch Akku- Multicutter GOP 18V-28',
+    'modelName' => 'Bosch GOP 18V-28',
     'h1' => 'Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1869,6 +1904,7 @@ $productSEOLookup = [
   ],
   'bosch-ortungsgeraet-dtect200c' => [
     'name' => 'Bosch Ortungsgerät D-TECT 200 C',
+    'modelName' => 'Bosch D-TECT 200 C',
     'h1' => 'Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1883,6 +1919,7 @@ $productSEOLookup = [
   ],
   'bosch-ortungsgeraet-gms120' => [
     'name' => 'Bosch Ortungsgerät GMS 120',
+    'modelName' => 'Bosch GMS 120',
     'h1' => 'Bosch Ortungsgerät GMS 120 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1897,6 +1934,7 @@ $productSEOLookup = [
   ],
   'bosch-saebelsaege-gsa18v-li-c' => [
     'name' => 'Bosch Akku Säbelsäge GSA 18V-LI C',
+    'modelName' => 'Bosch GSA 18V-LI C',
     'h1' => 'Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1911,6 +1949,7 @@ $productSEOLookup = [
   ],
   'bosch-staubsauger-gas18v-10l' => [
     'name' => 'Bosch Staubsauger GAS 18V-10 L',
+    'modelName' => 'Bosch GAS 18V-10 L',
     'h1' => 'Bosch Staubsauger GAS 18V-10 L mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -1925,6 +1964,7 @@ $productSEOLookup = [
   ],
   'bosch-staubsaugeraufsatz-gde18v-16' => [
     'name' => 'Bosch Staubsaugeraufsatz GDE 18V-16',
+    'modelName' => 'Bosch GDE 18V-16',
     'h1' => 'Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -2359,6 +2399,7 @@ $productSEOLookup = [
   ],
   'eibenstock-diamantbohrer-ehd1500' => [
     'name' => 'Dosensenker Diamantbohrer',
+    'modelName' => 'Eibenstock EHD 1500',
     'h1' => 'Dosensenker Diamantbohrer mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -2373,6 +2414,7 @@ $productSEOLookup = [
   ],
   'einhell-laubbläser-gp-lb' => [
     'name' => 'Akku- Laubbläser',
+    'modelName' => 'Einhell GP-LB 36/210 Li',
     'h1' => 'Akku- Laubbläser mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -2387,6 +2429,7 @@ $productSEOLookup = [
   ],
   'einhell-nageler-te-cn' => [
     'name' => 'Akku- Nageler',
+    'modelName' => 'Einhell TE-CN',
     'h1' => 'Akku- Nageler mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -2499,6 +2542,7 @@ $productSEOLookup = [
   ],
   'freischneider-ps162' => [
     'name' => 'Freischneider',
+    'modelName' => 'PS162',
     'h1' => 'Freischneider mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -2569,6 +2613,7 @@ $productSEOLookup = [
   ],
   'haecksler-axt25tc' => [
     'name' => 'Häcksler AXT25TC',
+    'modelName' => 'Bosch AXT 25 TC',
     'h1' => 'Häcksler AXT25TC mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -2583,6 +2628,7 @@ $productSEOLookup = [
   ],
   'haecksler-ls95-gx' => [
     'name' => 'Häcksler LS-95 GX',
+    'modelName' => 'Eliet LS-95 GX',
     'h1' => 'Häcksler LS-95 GX mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -3076,6 +3122,7 @@ $productSEOLookup = [
   ],
   'makita-abbruchhammer-hm1812' => [
     'name' => 'Abbruchhammer72,8J / 31kg',
+    'modelName' => 'Makita HM1812',
     'h1' => 'Abbruchhammer72,8J / 31kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -4378,6 +4425,7 @@ $productSEOLookup = [
   ],
   'trennschleifer-ts420' => [
     'name' => 'Benzin- Trennschleifer 350mm',
+    'modelName' => 'TS420',
     'h1' => 'Benzin- Trennschleifer 350mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise & PSA', 'Zubehör & Meißelauswahl'],
     'useCaseBau' => 'Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen',
@@ -4462,6 +4510,7 @@ $productSEOLookup = [
   ],
   'vertikutierer-sa38-bv' => [
     'name' => 'Vertikutierer SA38 BV',
+    'modelName' => 'Grizzly BV240',
     'h1' => 'Vertikutierer SA38 BV mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten', 'Saisonaler Einsatz', 'Anwendungstipps', 'Kombination mit anderen Geräten'],
     'useCaseBau' => 'Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd',
@@ -4799,6 +4848,7 @@ $productSEOLookup = [
   ],
   'presslufthammer-tex21pe' => [
     'name' => 'Presslufthammer 21 kg',
+    'modelName' => 'Atlas Copco TEX 21 PE',
     'h1' => 'Presslufthammer 21 kg mieten in Bonn & Krefeld – Atlas Copco TEX 21 PE bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise', 'Passender Kompressor'],
     'useCaseBau' => 'Betonabbruch, Asphaltarbeiten, Fundamentrückbau, Straßensanierung, Mauerwerksabbruch',
@@ -4813,6 +4863,7 @@ $productSEOLookup = [
   ],
   'presslufthammer-tex21pe-aggregat' => [
     'name' => 'Presslufthammer 21 kg',
+    'modelName' => 'Atlas Copco TEX 21 PE',
     'h1' => 'Presslufthammer 21 kg mieten in Bonn & Krefeld – Atlas Copco TEX 21 PE bei SLT Rental',
     'h2s' => ['Technische Daten & Leistung', 'Einsatzbereiche', 'Sicherheitshinweise', 'Passender Kompressor'],
     'useCaseBau' => 'Betonabbruch, Asphaltarbeiten, Fundamentrückbau, Straßensanierung',
@@ -4911,6 +4962,7 @@ $productSEOLookup = [
   ],
   'schmutzwasserpumpe-11m3h' => [
     'name' => 'Schmutzwasserpumpe 11m³/h',
+    'modelName' => 'Grindex',
     'h1' => 'Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld – Jetzt bei SLT Rental',
     'h2s' => ['Technische Daten', 'Einsatzbereiche', 'Lieferumfang', 'Sicherheitshinweise'],
     'useCaseBau' => 'Baugrube auspumpen, Kanalbau, Wasserhaltung auf Baustellen, Grundwasserabsenkung',
@@ -4995,6 +5047,7 @@ $productSEOLookup = [
   ],
   'grabenwalze-bmp8500' => [
     'name' => '1,5t Grabenwalze Bomag BMP 8500',
+    'modelName' => 'Bomag BMP 8500',
     'h1' => '1,5t Grabenwalze Bomag BMP 8500 mieten – Ferngesteuert bei SLT Rental',
     'h2s' => ['Technische Daten', 'Ausstattung & Sicherheit', 'Einsatzbereiche', 'ECOMODE & IVC'],
     'useCaseBau' => 'Grabenverdichtung, Kanalbau, Leitungsgräben, Böschungsverdichtung, Hinterfüllung von Fundamenten, Straßenbau, Tiefbau',
@@ -5009,6 +5062,7 @@ $productSEOLookup = [
   ],
   'bonn-grabenwalze-bmp8500' => [
     'name' => '1,5t Grabenwalze Bomag BMP 8500',
+    'modelName' => 'Bomag BMP 8500',
     'h1' => '1,5t Grabenwalze Bomag BMP 8500 mieten in Bonn – SLT Rental',
     'h2s' => ['Technische Daten', 'Ausstattung & Sicherheit', 'Einsatzbereiche', 'ECOMODE & IVC'],
     'useCaseBau' => 'Grabenverdichtung, Kanalbau, Leitungsgräben, Böschungsverdichtung, Hinterfüllung von Fundamenten, Straßenbau, Tiefbau',
@@ -5405,6 +5459,7 @@ $productDetails = [
   ],
   'xcmg-xe20e' => [
     'name' => '2t Minibagger',
+    'modelName' => 'XCMG XE20E',
     'description' => 'Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm',
     'weightKg' => '2000',
     'specs' => [
@@ -5419,6 +5474,7 @@ $productDetails = [
   ],
   'xcmg-xe27e' => [
     'name' => '2,7t Minibagger',
+    'modelName' => 'XCMG XE27E',
     'description' => 'Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm',
     'weightKg' => '2700',
     'specs' => [
@@ -5433,6 +5489,7 @@ $productDetails = [
   ],
   'bobcat-e35z' => [
     'name' => '3,5t Minibagger',
+    'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
     'specs' => [
@@ -5448,6 +5505,7 @@ $productDetails = [
   ],
   'bobcat-e50z' => [
     'name' => '5t Minibagger',
+    'modelName' => 'Bobcat E50z',
     'description' => 'Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V',
     'weightKg' => '4800',
     'specs' => [
@@ -5465,16 +5523,19 @@ $productDetails = [
   ],
   'kramer-5045' => [
     'name' => '3t Radlader',
+    'modelName' => 'Kramer 5045',
     'description' => 'Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig',
     'weightKg' => '3000',
   ],
   'kramer-5050' => [
     'name' => '3t Radlader',
+    'modelName' => 'Kramer 5050',
     'description' => 'Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig',
     'weightKg' => '3000',
   ],
   'bobcat-l28-knicklader' => [
     'name' => 'Knicklader',
+    'modelName' => 'Bobcat L28',
     'description' => 'Kompakter Knicklader für vielseitige Einsätze auf engen Baustellen',
     'weightKg' => '2800',
     'specs' => [
@@ -5488,6 +5549,7 @@ $productDetails = [
   ],
   'kettendumper-rmd800' => [
     'name' => 'Ketten-Dumper',
+    'modelName' => 'RMD-800',
     'description' => 'Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport',
     'weightKg' => '450',
     'specs' => [
@@ -5508,11 +5570,13 @@ $productDetails = [
   ],
   'cormidi-c60-hitip' => [
     'name' => 'Dumper mit Hochauskippfunktion',
+    'modelName' => 'Cormidi C60 HI TIP',
     'description' => 'Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig',
     'weightKg' => '600',
   ],
   'knickdumper-kde550' => [
     'name' => 'Raddumper / Knickdumper 4x4 elektrisch',
+    'modelName' => 'KDe550',
     'description' => 'Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb',
     'weightKg' => '500',
     'specs' => [
@@ -5607,6 +5671,7 @@ $productDetails = [
   ],
   'mh-bautrockner-kt200' => [
     'name' => 'Allegra Bautrockner KT200',
+    'modelName' => 'Allegra KT200',
     'description' => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) – ideal für Räume bis 20 m².',
     'specs' => [
       'Hersteller' => 'Allegra',
@@ -5626,6 +5691,7 @@ $productDetails = [
   ],
   'mh-bautrockner-kt553' => [
     'name' => 'Allegra Bautrockner KT553/KT554',
+    'modelName' => 'Allegra KT553/KT554',
     'description' => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler – ideal für 50–60 m² Trocknungsfläche.',
     'specs' => [
       'Hersteller' => 'Allegra',
@@ -5788,11 +5854,13 @@ $productDetails = [
   ],
   'bonn-bobcat-e35z' => [
     'name' => '3,5t Minibagger',
+    'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
   ],
   'bonn-bobcat-e50z' => [
     'name' => '5t Minibagger',
+    'modelName' => 'Bobcat E50z',
     'description' => 'Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V',
     'weightKg' => '4800',
   ],
@@ -5808,6 +5876,7 @@ $productDetails = [
   ],
   'bonn-cormidi-c60' => [
     'name' => 'Dumper mit Hochauskippfunktion',
+    'modelName' => 'Cormidi C60 HI TIP',
     'description' => 'Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig',
   ],
   'bonn-knickdumper-kde550' => [
@@ -6233,6 +6302,7 @@ $productDetails = [
   ],
   'bonn-haecksler-axt25tc' => [
     'name' => 'Häcksler AXT25TC',
+    'modelName' => 'Bosch AXT 25 TC',
     'description' => 'Elektro-Häcksler für Gartenabfälle',
     'specs' => [
       'Hersteller' => 'Bosch',
@@ -6246,6 +6316,7 @@ $productDetails = [
   ],
   'bonn-haecksler-ls95gx' => [
     'name' => 'Häcksler LS-95 GX',
+    'modelName' => 'Eliet LS-95 GX',
     'description' => 'Benzin-Häcksler für größere Mengen',
     'specs' => [
       'Motor' => 'Kohler Benzinmotor',
@@ -6307,10 +6378,12 @@ $productDetails = [
   ],
   'bonn-abbruchhammer-gsh16' => [
     'name' => 'Abbruchhammer',
+    'modelName' => 'Bosch GSH 16-28',
     'description' => 'Schwerer Abbruchhammer für anspruchsvolle Arbeiten',
   ],
   'bonn-abbruchhammer-hm1812' => [
     'name' => 'Abbruchhammer',
+    'modelName' => 'Makita HM1812',
     'description' => 'Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.',
     'specs' => [
       'Hersteller' => 'Makita',
@@ -6364,6 +6437,7 @@ $productDetails = [
   ],
   'bonn-betonruettler-ir1000' => [
     'name' => 'Beton Rüttler 2m',
+    'modelName' => 'IR 1000',
     'description' => 'Innenrüttler für Betonverdichtung',
     'specs' => [
       'Vibrationsflaschen Durchmesser' => '35 mm',
@@ -7853,6 +7927,7 @@ $productDetails = [
   ],
   'bohrschrauber-gsr18v55' => [
     'name' => 'Akku Bohrschrauber',
+    'modelName' => 'Bosch GSR 18V-55',
     'description' => 'Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.',
     'specs' => [
       'Hersteller' => 'Bosch',
@@ -7870,10 +7945,12 @@ $productDetails = [
   ],
   'bosch-winkelschleifer-gws18v-10' => [
     'name' => 'Akku Winkelschleifer',
+    'modelName' => 'Bosch GWS 18V-10',
     'description' => 'Akku-Winkelschleifer mit 125mm Scheibe',
   ],
   'bosch-handkreissaege-gks18v-57g' => [
     'name' => 'Akku Hand-Kreissäge',
+    'modelName' => 'Bosch GKS 18V-57G',
     'description' => 'Akku-Handkreissäge mit Führungsschiene – führungsschienenkompatibel.',
     'specs' => [
       'Hersteller' => 'Bosch',
@@ -7955,6 +8032,7 @@ $productDetails = [
   ],
   'rotationslaser-grl400h' => [
     'name' => 'Rotationslaser',
+    'modelName' => 'Bosch GRL 400H',
     'description' => 'Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.',
     'specs' => [
       'Arbeitsbereich mit Empfänger' => 'bis zu 400 m (Durchmesser)',
@@ -7996,6 +8074,7 @@ $productDetails = [
   ],
   'einhell-bauleuchte-te-cl18-2000' => [
     'name' => 'Akku Bauleuchte',
+    'modelName' => 'Einhell TE-CL 18/2000',
     'description' => 'LED-Bauleuchte mit 2000 Lumen',
     'specs' => [
       'Hersteller' => 'Bosch',
@@ -8018,6 +8097,7 @@ $productDetails = [
   ],
   'bosch-diamantbohrer-gdb180we' => [
     'name' => 'Diamantbohrer',
+    'modelName' => 'Bosch GDB 180 WE',
     'description' => 'Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.',
     'specs' => [
       'Hersteller' => 'Bosch',
@@ -8057,6 +8137,7 @@ $productDetails = [
   ],
   'einhell-heissluftfoehn-te-ha18li' => [
     'name' => 'Akku Heißluftföhn',
+    'modelName' => 'Einhell TE-HA 18li',
     'description' => 'Akku-Heißluftgebläse',
   ],
   'trennschleifer-ts420' => [
@@ -8065,6 +8146,7 @@ $productDetails = [
   ],
   'fugenschneider-bs50e' => [
     'name' => 'Fugenschneider 13PS',
+    'modelName' => 'BS50E',
     'description' => 'Motor: 1-Zylinder-4-Takt-Benzin | 13 PS | E-Start | Max. Trennscheibe: 500 mm | Gewicht: 280 kg',
     'specs' => [
       'Motor' => '1-Zylinder-4-Takt-Benzinmotor',
@@ -8174,6 +8256,7 @@ $productDetails = [
   ],
   'unkrautbrenner-gloria-thermoflamm' => [
     'name' => 'GLORIA Thermoflamm bio Professional PLUS',
+    'modelName' => 'GLORIA Thermoflamm bio Professional PLUS',
     'description' => 'Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.',
     'specs' => [
       'Hersteller' => 'GLORIA',
