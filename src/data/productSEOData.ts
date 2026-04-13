@@ -1693,7 +1693,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie lange gilt die Tagesmiete?", a: "Die Tagesmiete gilt für einen Kalendertag (Abholung und Rückgabe am selben Tag innerhalb der Öffnungszeiten). Mehrtagesmieten sind zu günstigeren Konditionen verfügbar – fragen Sie uns nach dem aktuellen Wochenpreis." },
     ],
   },
-  "bonn-rotweinglas-passionata-10er": {
+  "bonn-rotweinglas-passionata-25er": {
     excelName: "Rotwein Passionata, 25er Set",
     seoTitle: "Rotwein Passionata, 25er Set mieten | SLT Rental",
     metaDescription: "Rotwein Passionata, 25er Set mieten in Bonn & Krefeld. Hersteller: Schott Zwiesel  Typ: Rotweinglas  Höhe: 23,8 cm  Durchmesser: 9,4 cm  Spülmasc. Tagesmie",
