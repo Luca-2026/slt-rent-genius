@@ -230,9 +230,6 @@ export default function ProductDetail() {
         "offers": {
           "@type": "Offer",
           "availability": "https://schema.org/InStock",
-          "priceCurrency": "EUR",
-          "price": product.pricePerDay ? parseFloat(product.pricePerDay.replace(/[^\d,]/g, "").replace(",", ".")) || 0 : 0,
-          "priceValidUntil": new Date(Date.now() + 90 * 86400000).toISOString().split("T")[0],
           "url": canonicalUrl,
           "seller": {
             "@type": "LocalBusiness",
