@@ -210,6 +210,7 @@ $pages = [
     '/ratgeber' => [
         'title' => 'Ratgeber & Magazin – Tipps rund ums Mieten | SLT Rental',
         'description' => 'Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW.',
+        'og_image' => '/images/ratgeber/og/ratgeber-uebersicht.png',
     ],
     '/ratgeber/minibagger-mieten-ohne-fuehrerschein' => [
         'title' => 'Minibagger mieten ohne Führerschein – Rechtslage & Tipps | SLT Rental',
