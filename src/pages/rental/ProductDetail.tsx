@@ -559,6 +559,27 @@ export default function ProductDetail() {
                 );
               })()}
 
+              {/* Ratgeber-Hinweis für Geschirr-Kategorie */}
+              {categoryId === "geschirr-glaeser-besteck" && (
+                <Link to="/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste" className="block">
+                  <div className="flex items-start gap-3 bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Info className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm">Tipp aus unserem Ratgeber</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Mengen-Checkliste für 50, 100 und 150 Gäste – inkl. Glasbruch, Reinigung und Spülmaschine.
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 group-hover:underline">
+                        → Zum Ratgeber: Geschirr mieten für die Hochzeit
+                        <ExternalLink className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )}
+
               {/* Videos */}
               {videoUrls.length > 0 && (
                 <div className="bg-card rounded-xl border border-border p-5 space-y-4">

@@ -172,6 +172,19 @@ Deno.serve(async (req) => {
       urls.push(urlEntry(`/mieten-in/${area}`, '0.7', 'monthly', TODAY));
     }
 
+    // 6. Ratgeber / Blog articles
+    const ratgeberArticles = [
+      { path: '/ratgeber', priority: '0.7', changefreq: 'weekly' as const },
+      { path: '/ratgeber/minibagger-mieten-ohne-fuehrerschein', priority: '0.6', changefreq: 'monthly' as const },
+      { path: '/ratgeber/anhaenger-24-stunden-mieten-sms-code', priority: '0.6', changefreq: 'monthly' as const },
+      { path: '/ratgeber/wochenendtarif-vs-tagesmiete', priority: '0.6', changefreq: 'monthly' as const },
+      { path: '/ratgeber/baustelle-innenstadt-baumaschine-beengte-verhaeltnisse', priority: '0.6', changefreq: 'monthly' as const },
+      { path: '/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste', priority: '0.6', changefreq: 'monthly' as const },
+    ];
+    for (const article of ratgeberArticles) {
+      urls.push(urlEntry(article.path, article.priority, article.changefreq, TODAY));
+    }
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}

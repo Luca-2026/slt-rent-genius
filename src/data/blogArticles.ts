@@ -382,7 +382,7 @@ Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elek
       "Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch & Sektempfang)",
       "Pro Gast mindestens 3 Gläser einplanen (Wasser, Wein, Sekt)",
       "SLT Rental vermietet komplette Sets ab 25 Stück – ideal für Hochzeiten",
-      "Glasbruch bis 5 % ist in der Regel im Mietpreis enthalten",
+      "Glasbruch wird fair berechnet – nur der tatsächliche Bruch zum transparenten Einzelpreis",
       "Geschirrspülmaschine ebenfalls mietbar für die Rückgabe"
     ],
     relatedSlugs: ["wochenendtarif-vs-tagesmiete", "anhaenger-24-stunden-mieten-sms-code"],
@@ -429,15 +429,19 @@ Bei SLT Rental am Standort [Bonn](/mieten/bonn/geschirr-glaeser-besteck) vermiet
 
 ## Glasbruch: Was passiert, wenn etwas kaputt geht?
 
-Bei Veranstaltungen ist Glasbruch unvermeidlich. SLT Rental kalkuliert einen **Glasbruch von bis zu 5 %** bereits in den Mietpreis ein. Das bedeutet: Wenn Sie 100 Weißweingläser mieten und 3 davon zu Bruch gehen, entstehen keine Zusatzkosten.
+Bei Veranstaltungen lässt sich Glasbruch nicht immer ganz vermeiden – das wissen wir aus Erfahrung. Wir berechnen Glasbruch deshalb fair und transparent: Sie zahlen nur für die Gläser, die tatsächlich zu Bruch gehen, und auch nur den fairen Wiederbeschaffungspreis – keine pauschalen Aufschläge, keine versteckten Kosten.
 
-Bei höherem Bruch berechnen wir den **Einzelersatzpreis** – dieser ist im Mietvertrag transparent aufgeführt. Unsere Erfahrung: Bei gut organisierten Hochzeiten liegt der Bruch meist unter 2 %.
+Der genaue Bruchpreis pro Glas hängt vom Glastyp ab und ist auf jeder Produktseite direkt unter den technischen Daten ausgewiesen. Sie sehen also schon vor der Buchung, was Sie im Schadensfall pro Glas erwartet – egal ob Sektglas, Longdrinkglas oder Rotweinkelch.
+
+Unser Tipp aus über zehn Jahren Eventerfahrung: Bei gut organisierten Hochzeiten bleibt der Bruch meist überschaubar. Ein paar Vorsichtsmaßnahmen helfen zusätzlich – stabile Transportkisten verwenden, Gläser nur durch Servicekräfte einsammeln lassen und nach Mitternacht auf Plastikbecher für die Tanzfläche umstellen.
 
 ## Geschirrspülmaschine mieten
 
-Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine **gewerbliche Geschirrspülmaschine** dazumieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
+Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine [gewerbliche Gastro-Spülmaschine Frontlader](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) dazumieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
 
-Alternativ können Sie das Geschirr auch **ungespült zurückgeben** – gegen einen Aufpreis für die professionelle Reinigung. Fragen Sie bei der Buchung nach den Konditionen.
+Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader) · [Mülheim](/mieten/muelheim/geschirr-glaeser-besteck/spuelmaschine-frontlader)
+
+Alternativ können Sie das Geschirr und die Gläser auch **ungespült zurückgeben** – gegen einen Aufpreis für die professionelle Reinigung. Die genauen Konditionen finden Sie auf den jeweiligen Produktseiten oder fragen Sie uns einfach bei der Buchung.
 
 ## Zeitplan für die Geschirr-Logistik
 
