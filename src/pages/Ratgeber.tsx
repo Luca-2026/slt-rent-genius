@@ -40,10 +40,14 @@ const Ratgeber = () => {
                 to={`/ratgeber/${article.slug}`}
                 className="group block rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <div className="aspect-[16/9] bg-muted flex items-center justify-center">
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-                    {article.category}
-                  </span>
+                <div className="aspect-[16/9] bg-muted overflow-hidden">
+                  <img
+                    src={article.image}
+                    alt={article.imageAlt}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="p-5">
                   <h2 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
