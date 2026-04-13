@@ -403,6 +403,15 @@ export default function Verkauf() {
               </AccordionItem>
             ))}
           </Accordion>
+          {/* Hidden but crawlable FAQ content for prerendering / SEO */}
+          <div className="sr-only" aria-hidden="true">
+            {(Array.isArray(faqItems) ? faqItems : []).map((faq, i) => (
+              <div key={`seo-faq-${i}`}>
+                <h3>{faq.q}</h3>
+                <p>{faq.a}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
