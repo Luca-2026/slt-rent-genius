@@ -3542,7 +3542,7 @@ export const moebelZelteProducts: Product[] = [
 export const geschirrGlaeserBesteckProducts: Product[] = [
   // Gläser
   {
-    id: "longdrinkglas-passionata-10er",
+    id: "longdrinkglas-passionata-25er",
     name: "Longdrink Passionata 460ml, 25er Set",
     description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: longdrinkPassionata2,
@@ -3654,7 +3654,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "F66UKS" }
   },
   {
-    id: "burgunderglas-brunelli-10er",
+    id: "rotweinglas-brunelli-9er",
     name: "Rotweinglas Brunelli, 9er Set",
     description: "Rotweinglas von Leonardo, Höhe 23,8 cm, Ø 11,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: rotweinBrunelli1,
@@ -3675,7 +3675,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "C2Z5S4" }
   },
   {
-    id: "rieslingglas-brunelli-12er",
+    id: "weissweinglas-brunelli-25er",
     name: "Weißweinglas Brunelli, 25er Set",
     description: "Weißweinglas von Leonardo, Höhe 23,7 cm, Ø 8,5 cm. Klar, stoßfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: weissweinglasBrunelli1,
@@ -3695,7 +3695,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     rentwareCode: { krefeld: "CFDC7J" }
   },
   {
-    id: "champagnerglas-brunelli-14er",
+    id: "champagnerglas-brunelli-36er",
     name: "Champagnerglas Brunelli, 36er Set",
     description: "Sekt-/Champagnerglas von Leonardo. Höhe 25,4 cm, Durchmesser 7,8 cm. Spülmaschinenfest, klar & stoßfest. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: champagnerBrunelli1,

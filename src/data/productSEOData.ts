@@ -2521,7 +2521,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie wird das Geschirr transportiert und geliefert?", a: "Das Geschirr wird in stabilen Transportboxen geliefert – diese schützen vor Beschädigungen. Bitte geben Sie das Geschirr in denselben Boxen zurück. Lieferung und Abholung sind gegen Aufpreis möglich." },
     ],
   },
-  "burgunderglas-brunelli-10er": {
+  "rotweinglas-brunelli-9er": {
     excelName: "Rotweinglas Brunelli, 9er Set",
     seoTitle: "Rotweinglas Brunelli, 9er Set mieten in Krefeld | SLT Rental",
     metaDescription: "Rotweinglas Brunelli, 9er Set mieten in Krefeld. Hersteller: Leonardo  Typ: Rotweinglas  Höhe: 23,8 cm  Durchmesser: 11,5 cm  Spülmaschinen. Tagesmiete, fa",
@@ -2899,7 +2899,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich mehrere Kabel für längere Strecken zusammenstecken?", a: "Dieses Kabel hat eine Länge von 5 m. Das Zusammenstecken mehrerer Kabel ist möglich, jedoch sind bei langen Strecken Spannungsabfälle zu berücksichtigen. Bei Strecken über 50 m empfehlen wir einen dickeren Kabelquerschnitt oder eine Einspeisepunkt-Verlagerung." },
     ],
   },
-  "champagnerglas-brunelli-14er": {
+  "champagnerglas-brunelli-36er": {
     excelName: "Champagnerglas Brunelli, 36er Set",
     seoTitle: "Champagnerglas Brunelli, 36er Set mieten | SLT Rental",
     metaDescription: "Champagnerglas Brunelli, 36er Set mieten in Krefeld. Hersteller: Leonardo  Typ: Sekt/Champagnerglas  Höhe: 25,4 cm  Durchmesser: 7,8 cm  Spülma. Tagesmiete",
@@ -3947,7 +3947,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie wird das Geschirr transportiert und geliefert?", a: "Das Geschirr wird in stabilen Transportboxen geliefert – diese schützen vor Beschädigungen. Bitte geben Sie das Geschirr in denselben Boxen zurück. Lieferung und Abholung sind gegen Aufpreis möglich." },
     ],
   },
-  "longdrinkglas-passionata-10er": {
+  "longdrinkglas-passionata-25er": {
     excelName: "Longdrink Passionata 460ml, 25er Set",
     seoTitle: "Longdrink Passionata 460ml, 25er Set mieten | SLT Rental",
     metaDescription: "Longdrink Passionata 460ml, 25er Set mieten in Bonn & Krefeld. Hersteller: Schott Zwiesel  Typ: Longdrinkglas  Größe: 460ml  Höhe: 11,6 cm  Durchmesser:. T",
@@ -4973,7 +4973,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Gibt es eine Einweisung in die Bedienung?", a: "Ja – bei Abholung erhalten Sie eine kurze Einweisung in die sichere Bedienung. Für gewerbliche Anwender (z. B. Baumpflege, Forstarbeiten) empfehlen wir eine zertifizierte Schulung gemäß DGUV Vorschrift 1." },
     ],
   },
-  "rieslingglas-brunelli-12er": {
+  "weissweinglas-brunelli-25er": {
     excelName: "Weißweinglas Brunelli, 25er Set",
     seoTitle: "Weißweinglas Brunelli, 25er Set mieten in Krefeld | SLT Rental",
     metaDescription: "Weißweinglas Brunelli, 25er Set mieten in Krefeld. Hersteller: Leonardo  Typ: Weißweinglas  Höhe: 23,7 cm  Durchmesser: 8,5 cm  Spülmaschinen. Tagesmiete,",
