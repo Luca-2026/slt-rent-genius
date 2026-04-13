@@ -10,6 +10,7 @@ export interface BlogArticle {
   category: string;
   keyword: string;
   image: string;
+  imageAlt: string;
   quickFacts: string[];
   content: string;
   relatedSlugs: string[];
