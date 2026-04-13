@@ -163,7 +163,7 @@ const RatgeberArticle = () => {
     "@type": "Article",
     headline: article.title,
     description: article.metaDescription,
-    image: `https://www.slt-rental.de${article.image}`,
+    image: `https://www.slt-rental.de${article.ogImage}`,
     datePublished: article.date,
     dateModified: article.updatedAt,
     author: { "@type": "Organization", name: "SLT Rental", url: "https://www.slt-rental.de" },
@@ -182,7 +182,7 @@ const RatgeberArticle = () => {
         description={article.metaDescription}
         canonical={`/ratgeber/${article.slug}`}
         ogType="article"
-        ogImage={`https://www.slt-rental.de${article.image}`}
+        ogImage={`https://www.slt-rental.de${article.ogImage}`}
         keywords={article.keyword}
         jsonLd={[breadcrumbJsonLd, articleJsonLd]}
       />
