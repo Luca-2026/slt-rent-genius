@@ -176,8 +176,8 @@ $pages = [
         'description' => 'Kindergeburtstag mieten in NRW: Hüpfburgen, Partyzelte, Besteck, Spiele & Deko. Alles aus einer Hand – mit Lieferung nach Krefeld, Bonn & Mülheim.',
     ],
     '/mietartikel' => [
-        'title' => 'Mietartikel – Über 1.700 Produkte | SLT Rental',
-        'description' => 'Über 1.700 Mietartikel in 20+ Kategorien: Baumaschinen, Anhänger, Eventausstattung & mehr. Online buchen, abholen oder liefern lassen – 3 Standorte NRW.',
+        'title' => 'Baumaschinen, Event-Equipment & Anhänger mieten in NRW – alle Kategorien | SLT Rental',
+        'description' => 'Alle Mietkategorien von SLT Rental auf einen Blick: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr & mehr. Über 1.700 Mietprodukte an 3 Standorten in NRW.',
     ],
     '/produkte' => [
         'title' => 'Equipment mieten in NRW – Standort wählen | SLT Rental',
