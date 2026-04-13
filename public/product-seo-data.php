@@ -5445,7 +5445,8 @@ $productDetails = [
   ],
   'bobcat-e10z' => [
     'name' => '1t Minibagger',
-    'description' => 'Einsatzgewicht: 1.000 kg | Grabtiefe: 1.820 mm | Breite: 710 mm',
+    'description'
+    'modelName' => 'Bobcat E10Z', => 'Einsatzgewicht: 1.000 kg | Grabtiefe: 1.820 mm | Breite: 710 mm',
     'weightKg' => '1000',
     'specs' => [
       'Betriebsgewicht' => '1176 kg',
@@ -5820,12 +5821,14 @@ $productDetails = [
   ],
   'bonn-bobcat-e10' => [
     'name' => '1t Minibagger',
-    'description' => 'Kompakter Minibagger für enge Baustellen.',
+    'description'
+    'modelName' => 'Bobcat E10', => 'Kompakter Minibagger für enge Baustellen.',
     'weightKg' => '1000',
   ],
   'bonn-xcmg-xe20e' => [
     'name' => '2t Minibagger',
-    'description' => 'Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm',
+    'description'
+    'modelName' => 'XCMG XE20E', => 'Einsatzgewicht: 2.000 kg | Grabtiefe: 2.385 mm | Breite: 980 mm',
     'weightKg' => '2000',
     'specs' => [
       'Betriebsgewicht' => '2050 kg',
@@ -5840,7 +5843,8 @@ $productDetails = [
   ],
   'bonn-xcmg-xe27e' => [
     'name' => '2,7t Minibagger',
-    'description' => 'Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm',
+    'description'
+    'modelName' => 'XCMG XE27E', => 'Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm',
     'weightKg' => '2700',
     'specs' => [
       'Betriebsgewicht' => '2780 kg',
@@ -5866,12 +5870,14 @@ $productDetails = [
   ],
   'bonn-radlader-kramer-5050' => [
     'name' => '3t Radlader',
-    'description' => 'Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig',
+    'description'
+    'modelName' => 'Kramer 5050', => 'Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig',
     'weightKg' => '3000',
   ],
   'bonn-kettendumper-rmd800' => [
     'name' => 'Ketten-Dumper',
-    'description' => 'Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport',
+    'description'
+    'modelName' => 'RMD-800', => 'Nutzlast: 800 kg | Benzinmotor 6,2 PS | Raupenlaufwerk | Rungen für Holz-/Steinplattentransport',
     'weightKg' => '450',
   ],
   'bonn-cormidi-c60' => [
@@ -5881,7 +5887,8 @@ $productDetails = [
   ],
   'bonn-knickdumper-kde550' => [
     'name' => 'Raddumper / Knickdumper',
-    'description' => 'Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb',
+    'description'
+    'modelName' => 'KDe550', => 'Nutzlast: 550 kg | Elektroantrieb | Laufzeit: 8-10h | 4x4 Allradantrieb',
     'specs' => [
       'Maschinengewicht' => '318 kg',
       'Max. Tragfähigkeit' => '550 kg',
@@ -5896,7 +5903,8 @@ $productDetails = [
   ],
   'bonn-kettendumper-rmd650' => [
     'name' => 'Ketten-Dumper',
-    'description' => 'Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.',
+    'description'
+    'modelName' => 'RMD-650', => 'Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.',
   ],
   'bonn-bodenschutz-fahrmatten' => [
     'name' => 'Bodenschutz-/Fahrmatten 0,86m²',
@@ -6003,7 +6011,8 @@ $productDetails = [
   ],
   'bonn-sortiergreifer-ssg390' => [
     'name' => 'MS03/MS08 Sortiergreifer SSG 390',
-    'description' => 'Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.',
+    'description'
+    'modelName' => 'Seifert SSG 390', => 'Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.',
     'specs' => [
       'Aufnahme' => 'MS03 / MS08',
       'Gewichtsklasse' => '5 – 8 t',
@@ -6208,7 +6217,8 @@ $productDetails = [
   ],
   'bonn-grabenwalze-bmp8500' => [
     'name' => '1,5t Grabenwalze',
-    'description' => 'Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.',
+    'description'
+    'modelName' => 'Bomag BMP 8500', => 'Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.',
   ],
   'bonn-baumaschinenanhanger-1800' => [
     'name' => '1800 kg Baumaschinenanhänger',
@@ -6238,8 +6248,9 @@ $productDetails = [
     ],
   ],
   'bonn-unkrautbrenner-gloria' => [
-    'name' => 'GLORIA Thermoflamm bio Professional PLUS',
-    'description' => 'Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.',
+    'name' => 'Unkrautbrenner',
+    'description'
+    'modelName' => 'GLORIA Thermoflamm bio Professional PLUS', => 'Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.',
     'specs' => [
       'Hersteller' => 'GLORIA',
       'Modell' => 'Thermoflamm bio Professional PLUS',
@@ -6266,8 +6277,9 @@ $productDetails = [
     ],
   ],
   'bonn-freischneider-ps162' => [
-    'name' => 'Benzin-Freischneider PS162',
-    'description' => 'Leistungsstarker Freischneider für Gras und Gestrüpp.',
+    'name' => 'Benzin-Freischneider',
+    'description'
+    'modelName' => 'PS162', => 'Leistungsstarker Freischneider für Gras und Gestrüpp.',
   ],
   'bonn-erdbohrer-benzin' => [
     'name' => 'Benzin-Erdbohrer',
@@ -6340,8 +6352,9 @@ $productDetails = [
     ],
   ],
   'bonn-vertikutierer-sa38bv' => [
-    'name' => 'Benzin Vertikutierer BV240',
-    'description' => 'Benzin-Vertikutierer für große Flächen',
+    'name' => 'Benzin-Vertikutierer',
+    'description'
+    'modelName' => 'Grizzly BV240', => 'Benzin-Vertikutierer für große Flächen',
     'specs' => [
       'Typ' => 'BV240',
       'Arbeitsbreite' => '38 cm',
@@ -6363,7 +6376,8 @@ $productDetails = [
   ],
   'bonn-fugenschneider-bs50e' => [
     'name' => 'Fugenschneider 13PS',
-    'description' => 'Motor: 1-Zylinder-4-Takt-Benzin | 13 PS | E-Start | Max. Trennscheibe: 500 mm | Gewicht: 280 kg',
+    'description'
+    'modelName' => 'BS50E', => 'Motor: 1-Zylinder-4-Takt-Benzin | 13 PS | E-Start | Max. Trennscheibe: 500 mm | Gewicht: 280 kg',
     'specs' => [
       'Motor' => '1-Zylinder-4-Takt-Benzinmotor',
       'Leistung' => '13 PS',
@@ -6420,7 +6434,8 @@ $productDetails = [
   ],
   'bonn-bohrschrauber-gsr18v55' => [
     'name' => 'Akku Bohrschrauber',
-    'description' => 'Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.',
+    'description'
+    'modelName' => 'Bosch GSR 18V-55', => 'Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Drehmoment (weich/hart)' => '28 / 55 Nm',
@@ -6446,7 +6461,8 @@ $productDetails = [
   ],
   'bonn-handkreissaege-gks18v' => [
     'name' => 'Akku Hand-Kreissäge',
-    'description' => 'Akku-Handkreissäge mit Führungsschiene – führungsschienenkompatibel.',
+    'description'
+    'modelName' => 'Bosch GKS 18V-57G', => 'Akku-Handkreissäge mit Führungsschiene – führungsschienenkompatibel.',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Leerlaufdrehzahl' => '3.400 min⁻¹',
@@ -6472,7 +6488,8 @@ $productDetails = [
   ],
   'bonn-diamantbohrer-gdb180' => [
     'name' => 'Diamantbohrer',
-    'description' => 'Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.',
+    'description'
+    'modelName' => 'Bosch GDB 180 WE', => 'Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Nenneingangsleistung' => '2.000 W',
@@ -6488,7 +6505,8 @@ $productDetails = [
   ],
   'bonn-nasstrockensauger-gas35' => [
     'name' => 'Nass-/Trockensauger',
-    'description' => 'Professioneller Industriesauger mit Filterreinigung.',
+    'description'
+    'modelName' => 'Bosch GAS 35 M AFC', => 'Professioneller Industriesauger mit Filterreinigung.',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Nenneingangsleistung' => '1.200 W',
@@ -6506,7 +6524,8 @@ $productDetails = [
   ],
   'bonn-rotationslaser-grl400h' => [
     'name' => 'Rotationslaser',
-    'description' => 'Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.',
+    'description'
+    'modelName' => 'Bosch GRL 400H', => 'Rotationslaser bis 400 m Arbeitsbereich für horizontale Nivellierungen.',
     'specs' => [
       'Arbeitsbereich mit Empfänger' => 'bis zu 400 m (Durchmesser)',
       'Arbeitsbereich ohne Empfänger' => 'bis zu 20 m (Durchmesser)',
@@ -6531,7 +6550,8 @@ $productDetails = [
   ],
   'bonn-winkelschleifer-gws18v' => [
     'name' => 'Akku Winkelschleifer',
-    'description' => 'Akku-Winkelschleifer mit 125mm Scheibe',
+    'description'
+    'modelName' => 'Bosch GWS 18V-10', => 'Akku-Winkelschleifer mit 125mm Scheibe',
   ],
   'bonn-presslufthammer-tex21pe' => [
     'name' => 'Presslufthammer 21 kg',
@@ -6550,8 +6570,9 @@ $productDetails = [
     'description' => 'Druckluftbetriebene Erdrakete mit 65 mm Durchmesser – für grabenlose Rohrverlegung mit höherer Schlagkraft.',
   ],
   'bonn-bautrockner-kt200' => [
-    'name' => 'Allegra Bautrockner KT200',
-    'description' => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
+    'name' => 'Bautrockner 20L/Tag',
+    'description'
+    'modelName' => 'Allegra KT200', => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
     'specs' => [
       'Hersteller' => 'Allegra',
       'Modell' => 'KT200',
@@ -6569,8 +6590,9 @@ $productDetails = [
     ],
   ],
   'bonn-bautrockner-kt554' => [
-    'name' => 'Allegra Bautrockner KT553/KT554',
-    'description' => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
+    'name' => 'Bautrockner 50L/Tag',
+    'description'
+    'modelName' => 'Allegra KT553/KT554', => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
     'specs' => [
       'Hersteller' => 'Allegra',
       'Modell' => 'KT553 / KT554',
@@ -7598,7 +7620,8 @@ $productDetails = [
   ],
   'presslufthammer-tex21pe-aggregat' => [
     'name' => 'Presslufthammer 21 kg',
-    'description' => 'Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.',
+    'description'
+    'modelName' => 'Atlas Copco TEX 21 PE', => 'Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.',
     'specs' => [
       'Hersteller' => 'Atlas Copco',
       'Modell' => 'TEX 21 PE',
@@ -7845,7 +7868,8 @@ $productDetails = [
   ],
   'grabenwalze-bmp8500' => [
     'name' => '1,5t Grabenwalze',
-    'description' => 'Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.',
+    'description'
+    'modelName' => 'Bomag BMP 8500', => 'Ferngesteuerte Grabenwalze mit 1,5 t Betriebsgewicht und Doppelerregersystem – ECOMODE, Kombifernsteuerung Kabel/Funk.',
     'specs' => [
       'Hersteller' => 'Bomag',
       'Modell' => 'BMP 8500',
@@ -7863,7 +7887,8 @@ $productDetails = [
   ],
   'bosch-bohrhammer-gbh18v-26f' => [
     'name' => 'Akku Bohrhammer',
-    'description' => 'Akku-Bohrhammer mit SDS-Plus Aufnahme',
+    'description'
+    'modelName' => 'Bosch GBH 18V-26 F', => 'Akku-Bohrhammer mit SDS-Plus Aufnahme',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Schlagenergie (gemäß EPTA 05/2016)' => '2,6 J',
@@ -7882,7 +7907,8 @@ $productDetails = [
   ],
   'bosch-bohrhammer-gbh18v-45c' => [
     'name' => 'Akku Bohrhammer',
-    'description' => 'Schwerer Akku-Bohrhammer mit Bluetooth',
+    'description'
+    'modelName' => 'Bosch GBH 18V-45C', => 'Schwerer Akku-Bohrhammer mit Bluetooth',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Schlagenergie (gemäß EPTA 05/2016)' => '2,6 J',
@@ -7901,11 +7927,13 @@ $productDetails = [
   ],
   'bosch-abbruchhammer-gsh16-28' => [
     'name' => 'Abbruchhammer',
-    'description' => 'Schwerer Abbruchhammer für anspruchsvolle Arbeiten',
+    'description'
+    'modelName' => 'Bosch GSH 16-28', => 'Schwerer Abbruchhammer für anspruchsvolle Arbeiten',
   ],
   'makita-abbruchhammer-hm1812' => [
     'name' => 'Abbruchhammer',
-    'description' => 'Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.',
+    'description'
+    'modelName' => 'Makita HM1812', => 'Schwerer Abbruchhammer mit 72,8 J Schlagenergie und Anti-Vibrations-Technologie.',
     'specs' => [
       'Hersteller' => 'Makita',
       'Schlagenergie' => '72,8 J',
@@ -7919,11 +7947,13 @@ $productDetails = [
   ],
   'bosch-bohrschrauber-gsr12v-15' => [
     'name' => 'Akku Bohrschrauber',
-    'description' => 'Kompakter Akku-Bohrschrauber',
+    'description'
+    'modelName' => 'Bosch GSR 12V-15', => 'Kompakter Akku-Bohrschrauber',
   ],
   'bosch-bohrschrauber-gsr18v-60c' => [
     'name' => 'Akku Bohrschrauber',
-    'description' => 'Leistungsstarker Akku-Bohrschrauber mit Bluetooth',
+    'description'
+    'modelName' => 'Bosch GSR 18V-60C', => 'Leistungsstarker Akku-Bohrschrauber mit Bluetooth',
   ],
   'bohrschrauber-gsr18v55' => [
     'name' => 'Akku Bohrschrauber',
@@ -7990,27 +8020,33 @@ $productDetails = [
   ],
   'bosch-saebelsaege-gsa18v-li-c' => [
     'name' => 'Akku Säbelsäge',
-    'description' => 'Akku-Säbelsäge mit variabler Geschwindigkeit',
+    'description'
+    'modelName' => 'Bosch GSA 18V-LI C', => 'Akku-Säbelsäge mit variabler Geschwindigkeit',
   ],
   'bosch-multicutter-gop18v-28' => [
     'name' => 'Akku Multicutter',
-    'description' => 'Multifunktionswerkzeug für verschiedene Anwendungen',
+    'description'
+    'modelName' => 'Bosch GOP 18V-28', => 'Multifunktionswerkzeug für verschiedene Anwendungen',
   ],
   'bosch-drehschlagschrauber-gds18v-1050h' => [
     'name' => 'Akku Drehschlagschrauber',
-    'description' => 'Hochleistungs-Schlagschrauber',
+    'description'
+    'modelName' => 'Bosch GDS 18V-1050 H', => 'Hochleistungs-Schlagschrauber',
   ],
   'bosch-staubsauger-gas18v-10l' => [
     'name' => 'Akku Staubsauger',
-    'description' => 'Akku-Staubsauger für Baustellen',
+    'description'
+    'modelName' => 'Bosch GAS 18V-10 L', => 'Akku-Staubsauger für Baustellen',
   ],
   'bosch-staubsaugeraufsatz-gde18v-16' => [
     'name' => 'Staubsaugeraufsatz',
-    'description' => 'Staubabsaugung für Bohrhämmer',
+    'description'
+    'modelName' => 'Bosch GDE 18V-16', => 'Staubabsaugung für Bohrhämmer',
   ],
   'bosch-linienlaser-gll3-80' => [
     'name' => 'Linienlaser',
-    'description' => '360° Linienlaser für präzise Ausrichtung',
+    'description'
+    'modelName' => 'Bosch GLL 3-80', => '360° Linienlaser für präzise Ausrichtung',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Laserdiode Linie' => '630 - 650 nm, < 10mW',
@@ -8052,15 +8088,18 @@ $productDetails = [
   ],
   'bosch-ortungsgeraet-dtect200c' => [
     'name' => 'Ortungsgerät',
-    'description' => 'Universalortungsgerät für Metall, Holz und Leitungen',
+    'description'
+    'modelName' => 'Bosch D-TECT 200 C', => 'Universalortungsgerät für Metall, Holz und Leitungen',
   ],
   'bosch-ortungsgeraet-gms120' => [
     'name' => 'Ortungsgerät',
-    'description' => 'Multidetektor für Metall und Leitungen',
+    'description'
+    'modelName' => 'Bosch GMS 120', => 'Multidetektor für Metall und Leitungen',
   ],
   'bosch-bauleuchte-gli18v-2200c' => [
     'name' => 'Akku Bauleuchte',
-    'description' => 'Akku-Bauleuchte mit 2200 Lumen',
+    'description'
+    'modelName' => 'Bosch GLI 18V-2200 C', => 'Akku-Bauleuchte mit 2200 Lumen',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Gewicht exkl. Akku' => '1,9 kg',
@@ -8089,11 +8128,13 @@ $productDetails = [
   ],
   'bosch-ladegeraet-gal18v6-80' => [
     'name' => '6-fach Ladegerät',
-    'description' => 'Schnellladegerät für 6 Akkus gleichzeitig',
+    'description'
+    'modelName' => 'Bosch GAL 18V6-80', => 'Schnellladegerät für 6 Akkus gleichzeitig',
   ],
   'eibenstock-diamantbohrer-ehd1500' => [
     'name' => 'Diamantbohrer',
-    'description' => 'Kernbohrgerät für Beton und Mauerwerk',
+    'description'
+    'modelName' => 'Eibenstock EHD 1500', => 'Kernbohrgerät für Beton und Mauerwerk',
   ],
   'bosch-diamantbohrer-gdb180we' => [
     'name' => 'Diamantbohrer',
@@ -8129,11 +8170,13 @@ $productDetails = [
   ],
   'einhell-laubbläser-gp-lb' => [
     'name' => 'Akku Laubbläser',
-    'description' => 'Akku-Laubbläser mit hoher Blasleistung',
+    'description'
+    'modelName' => 'Einhell GP-LB 36/210 Li', => 'Akku-Laubbläser mit hoher Blasleistung',
   ],
   'einhell-nageler-te-cn' => [
     'name' => 'Akku Nageler',
-    'description' => 'Akku-Nagelpistole für Dachdecker',
+    'description'
+    'modelName' => 'Einhell TE-CN', => 'Akku-Nagelpistole für Dachdecker',
   ],
   'einhell-heissluftfoehn-te-ha18li' => [
     'name' => 'Akku Heißluftföhn',
@@ -8142,7 +8185,8 @@ $productDetails = [
   ],
   'trennschleifer-ts420' => [
     'name' => 'Benzin-Trennschleifer',
-    'description' => 'Benzin-Trennschleifer für Stein und Beton',
+    'description'
+    'modelName' => 'TS420', => 'Benzin-Trennschleifer für Stein und Beton',
   ],
   'fugenschneider-bs50e' => [
     'name' => 'Fugenschneider 13PS',
@@ -8162,7 +8206,8 @@ $productDetails = [
   ],
   'betonruettler-ir1000' => [
     'name' => 'Beton Rüttler 2m',
-    'description' => 'Innenrüttler für Betonverdichtung',
+    'description'
+    'modelName' => 'IR 1000', => 'Innenrüttler für Betonverdichtung',
     'specs' => [
       'Vibrationsflaschen Durchmesser' => '35 mm',
       'Leistung' => '230V / 1000 W',
@@ -8174,7 +8219,8 @@ $productDetails = [
   ],
   'presslufthammer-tex21pe' => [
     'name' => 'Presslufthammer 21 kg',
-    'description' => 'Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.',
+    'description'
+    'modelName' => 'Atlas Copco TEX 21 PE', => 'Presslufthammer 21 kg mit Spitz- und Flachmeißel – ideal für Abbrucharbeiten und Straßenbau.',
     'specs' => [
       'Hersteller' => 'Atlas Copco',
       'Modell' => 'TEX 21 PE',
@@ -8200,7 +8246,8 @@ $productDetails = [
   ],
   'schmutzwasserpumpe-11m3h' => [
     'name' => 'Schmutzwasserpumpe 11m³/h',
-    'description' => 'Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.',
+    'description'
+    'modelName' => 'Grindex', => 'Tauchpumpe für Schmutzwasser mit bis zu 11.000 l/h Förderleistung – inkl. 15m Storz C Schlauch.',
     'specs' => [
       'Hersteller' => 'Grindex',
       'Max. Förderhöhe' => '10 m',
@@ -8267,8 +8314,9 @@ $productDetails = [
     ],
   ],
   'freischneider-ps162' => [
-    'name' => 'Freischneider PS162',
-    'description' => 'Benzin-Freischneider für Dickicht',
+    'name' => 'Benzin-Freischneider',
+    'description'
+    'modelName' => 'PS162', => 'Benzin-Freischneider für Dickicht',
   ],
   'erdbohrer-benzin' => [
     'name' => 'Benzin-Erdbohrer',
@@ -8312,8 +8360,9 @@ $productDetails = [
     ],
   ],
   'haecksler-axt25tc' => [
-    'name' => 'Häcksler AXT25TC',
-    'description' => 'Elektro-Häcksler für Gartenabfälle',
+    'name' => 'Elektro-Häcksler',
+    'description'
+    'modelName' => 'Bosch AXT 25 TC', => 'Elektro-Häcksler für Gartenabfälle',
     'specs' => [
       'Hersteller' => 'Bosch',
       'Typ' => 'AXT25TC',
@@ -8325,8 +8374,9 @@ $productDetails = [
     ],
   ],
   'haecksler-ls95-gx' => [
-    'name' => 'Häcksler LS-95 GX',
-    'description' => 'Benzin-Häcksler für größere Mengen',
+    'name' => 'Benzin-Häcksler',
+    'description'
+    'modelName' => 'Eliet LS-95 GX', => 'Benzin-Häcksler für größere Mengen',
     'specs' => [
       'Motor' => 'Kohler Benzinmotor',
       'Max. Astdurchmesser' => '7,5 cm',
@@ -8349,8 +8399,9 @@ $productDetails = [
     ],
   ],
   'vertikutierer-sa38-bv' => [
-    'name' => 'Benzin Vertikutierer BV240',
-    'description' => 'Benzin-Vertikutierer für große Flächen',
+    'name' => 'Benzin-Vertikutierer',
+    'description'
+    'modelName' => 'Grizzly BV240', => 'Benzin-Vertikutierer für große Flächen',
     'specs' => [
       'Typ' => 'BV240',
       'Arbeitsbreite' => '38 cm',
@@ -8417,8 +8468,9 @@ $productDetails = [
     ],
   ],
   'bautrockner-kt200' => [
-    'name' => 'Allegra Bautrockner KT200',
-    'description' => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
+    'name' => 'Bautrockner 20L/Tag',
+    'description'
+    'modelName' => 'Allegra KT200', => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
     'specs' => [
       'Hersteller' => 'Allegra',
       'Modell' => 'KT200',
@@ -8436,8 +8488,9 @@ $productDetails = [
     ],
   ],
   'bautrockner-kt553' => [
-    'name' => 'Allegra Bautrockner KT553/KT554',
-    'description' => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
+    'name' => 'Bautrockner 50L/Tag',
+    'description'
+    'modelName' => 'Allegra KT553/KT554', => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.',
     'specs' => [
       'Hersteller' => 'Allegra',
       'Modell' => 'KT553 / KT554',
@@ -11104,7 +11157,8 @@ $productDetails = [
   ],
   'sortiergreifer-ssg390' => [
     'name' => 'MS03/MS08 Sortiergreifer SSG 390',
-    'description' => 'Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.',
+    'description'
+    'modelName' => 'Seifert SSG 390', => 'Hydraulischer Sortiergreifer mit 360°-Endlosrotation und 24 kN Schließkraft – für Bagger der 5–8 t Klasse. Mit Schneide, ideal zum Sortieren, Greifen und Verladen.',
     'specs' => [
       'Aufnahme' => 'MS03 / MS08',
       'Gewichtsklasse' => '5 – 8 t',
