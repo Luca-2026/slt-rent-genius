@@ -2114,7 +2114,7 @@ export const bonnGeschirrProducts = [
   // === GLÄSER - Passionata Serie ===
   {
     id: "bonn-longdrinkglas-passionata-25er",
-    name: "Longdrink Passionata 460ml, 25er Set",
+    name: "Longdrinkglas Passionata 460ml, 25er Set",
     description: "Schott Zwiesel Passionata Longdrinkglas, 460 ml, Tritan®-Kristallglas. Spülmaschinenfest, kratzfest & bruchsicher. Reinigungspauschale: 3,90 €/Set. Glasbruch: 5,00€/Glas.",
     image: longdrinkPassionata2,
     images: [longdrinkPassionata2, longdrinkPassionata1, longdrinkPassionata3],
@@ -2158,7 +2158,7 @@ export const bonnGeschirrProducts = [
   },
   {
     id: "bonn-weissweinglas-passionata-25er",
-    name: "Weißwein Passionata, 25er Set",
+    name: "Weißweinglas Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Weißweinglas, 450 ml, Tritan®-Kristallglas. Aromaverstärkend, spülmaschinenfest & nachhaltig. Reinigungspauschale: 3,90 €/Set.",
     image: weissweinPassionata1,
     images: [weissweinPassionata1, weissweinPassionata2, weissweinPassionata3, weissweinPassionata4],
@@ -2178,7 +2178,7 @@ export const bonnGeschirrProducts = [
   },
   {
     id: "bonn-rotweinglas-passionata-25er",
-    name: "Rotwein Passionata, 25er Set",
+    name: "Rotweinglas Passionata, 25er Set",
     description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
