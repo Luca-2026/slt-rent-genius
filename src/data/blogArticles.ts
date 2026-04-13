@@ -28,7 +28,8 @@ export const blogArticles: BlogArticle[] = [
     author: "SLT Rental",
     category: "Baumaschinen",
     keyword: "minibagger mieten ohne führerschein",
-    image: "/og-image.jpg",
+    image: "/images/ratgeber/blog_thumbnail_minibagger_ohne_fuehrerschein.svg",
+    imageAlt: "Illustration: Minibagger und Führerschein-Dokument mit Fragezeichen – Ratgeber von SLT Rental",
     quickFacts: [
       "Minibagger bis 3,5 t dürfen auf Privatgelände ohne Führerschein bedient werden",
       "Im öffentlichen Straßenverkehr ist mindestens eine Fahrerlaubnis der Klasse L oder T erforderlich",
@@ -113,7 +114,8 @@ Für die meisten privaten Projekte gilt: **Sie brauchen keinen Führerschein und
     author: "SLT Rental",
     category: "Anhänger",
     keyword: "anhänger 24 stunden mieten",
-    image: "/og-image.jpg",
+    image: "/images/ratgeber/blog_thumbnail_anhaenger_sms_code_24_7.svg",
+    imageAlt: "Illustration: Anhänger mit Smartphone und SMS-PIN-Code für 24/7-Abholung – Ratgeber von SLT Rental",
     quickFacts: [
       "Anhänger an allen SLT-Standorten 24/7 per SMS-Code abholbar",
       "Online buchen, bezahlen, Code per SMS erhalten – fertig",
@@ -196,7 +198,8 @@ Das SMS-Code-System ist an allen drei SLT-Standorten aktiv:
     author: "SLT Rental",
     category: "Tipps & Sparen",
     keyword: "wochenendtarif baumaschine mieten",
-    image: "/og-image.jpg",
+    image: "/images/ratgeber/blog_thumbnail_wochenendtarif_vs_tagesmiete.svg",
+    imageAlt: "Illustration: Wochenkalender mit Wochenendmarkierung und Preisvergleich – Ratgeber von SLT Rental",
     quickFacts: [
       "Wochenendtarif: Freitag 16 Uhr abholen, Montag 8 Uhr zurückgeben – 1 Tag bezahlen",
       "Bis zu 40 % günstiger als 3 Einzeltage",
@@ -274,7 +277,8 @@ Ausgenommen sind lediglich einige Spezialgeräte mit hoher Wochenend-Nachfrage. 
     author: "SLT Rental",
     category: "Baumaschinen",
     keyword: "baumaschinen innenstadt beengt",
-    image: "/og-image.jpg",
+    image: "/images/ratgeber/blog_thumbnail_innenstadt_baumaschine_beengt.svg",
+    imageAlt: "Illustration: Kompakter Minibagger zwischen zwei Stadthäusern mit Maßangabe – Ratgeber von SLT Rental",
     quickFacts: [
       "Minibagger unter 1 m Breite passen durch Standard-Gartentore und schmale Einfahrten",
       "Elektro-Minibagger arbeiten emissionsfrei und deutlich leiser als Dieselmodelle",
@@ -366,7 +370,8 @@ Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elek
     author: "SLT Rental",
     category: "Event & Veranstaltung",
     keyword: "geschirr mieten hochzeit mengen",
-    image: "/og-image.jpg",
+    image: "/images/ratgeber/blog_thumbnail_geschirr_hochzeit_mengen.svg",
+    imageAlt: "Illustration: Drei Tellerstapel mit Gästezahlen 50, 100 und 150 – Ratgeber von SLT Rental",
     quickFacts: [
       "Faustformel: 1,3× die Gästezahl bei Gläsern (Reserve für Glasbruch & Sektempfang)",
       "Pro Gast mindestens 3 Gläser einplanen (Wasser, Wein, Sekt)",
