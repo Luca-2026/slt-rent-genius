@@ -3,6 +3,7 @@ import { categoryContent as seoCategoryContent } from "@/components/rental/Produ
 import { getProductSEO } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
+import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
