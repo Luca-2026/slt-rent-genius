@@ -1522,7 +1522,8 @@ export const bonnWerkzeugProducts = [
 export const bonnTrocknungProducts = [
   {
     id: "bonn-bautrockner-kt200",
-    name: "Allegra Bautrockner KT200",
+    name: "Bautrockner 20L/Tag",
+    modelName: "Allegra KT200",
     description: "Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal für kleinere Räume bis 20 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt200_1,
     images: [allegraBautrocknerKt200_1, allegraBautrocknerKt200_2],
@@ -1547,7 +1548,8 @@ export const bonnTrocknungProducts = [
   },
   {
     id: "bonn-bautrockner-kt554",
-    name: "Allegra Bautrockner KT553/KT554",
+    name: "Bautrockner 50L/Tag",
+    modelName: "Allegra KT553/KT554",
     description: "Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) und Betriebsstundenzähler – ideal zur Bauaustrocknung auf 50–60 m². Automatische Abschaltung bei vollem 4-Liter-Wassertank, Schlauchanschluss möglich.",
     image: allegraBautrocknerKt553_1,
     images: [allegraBautrocknerKt553_1, allegraBautrocknerKt553_2],
