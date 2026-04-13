@@ -1186,8 +1186,6 @@ export default function CategoryProducts() {
           "offers": {
             "@type": "Offer",
             "availability": "https://schema.org/InStock",
-            "priceCurrency": "EUR",
-            "price": p.pricePerDay ? parseFloat(p.pricePerDay.replace(/[^\d,]/g, "").replace(",", ".")) || 0 : 0,
             "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
           },
         },
