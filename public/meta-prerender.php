@@ -11,7 +11,7 @@
 
 $SITE_ORIGIN = 'https://www.slt-rental.de';
 $BASE_URL = $SITE_ORIGIN;
-$OG_IMAGE = $SITE_ORIGIN . '/og-image.jpg';
+$OG_IMAGE = $SITE_ORIGIN . '/images/og/default-slt-rental.png';
 $SITE_NAME = 'SLT Rental';
 
 function buildAbsoluteUrl(string $path = '/'): string
@@ -832,11 +832,9 @@ header('Content-Type: text/html; charset=utf-8');
   <meta property="og:description" content="<?= $description ?>">
   <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
   <meta property="og:image" content="<?= $articleOgImage ?? $pageOgImage ?? $OG_IMAGE ?>">
-<?php if ($articleOgImage || $pageOgImage): ?>
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-<?php endif; ?>
   <meta property="og:url" content="<?= $canonicalUrl ?>">
   <meta property="og:site_name" content="<?= $SITE_NAME ?>">
   <meta property="og:locale" content="de_DE">
