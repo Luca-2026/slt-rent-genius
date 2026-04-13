@@ -459,9 +459,9 @@ Hochzeiten finden meist am Wochenende statt – perfekt für den [SLT-Wochenendt
 
 ## Jetzt Geschirr für Ihre Hochzeit reservieren
 
-Stöbern Sie in unserem [Geschirr-Sortiment in Bonn](/mieten/bonn/geschirr-glaeser-besteck) und stellen Sie Ihr individuelles Set zusammen. Bei Fragen zur Mengenplanung beraten wir Sie gerne telefonisch oder per E-Mail.
+Stöbern Sie in unserem Geschirr-Sortiment und stellen Sie Ihr individuelles Set zusammen. Bei Fragen zur Mengenplanung beraten wir Sie gerne telefonisch oder per E-Mail.
 
-[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck)`
+[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck) · [→ Geschirr, Gläser & Besteck in Krefeld ansehen](/mieten/krefeld/geschirr-glaeser-besteck)`
   }
 ];
 
