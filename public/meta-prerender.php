@@ -382,14 +382,15 @@ if (!$meta && preg_match('#^/mieten/(krefeld|bonn|muelheim)/([a-z0-9-]+)/([a-z0-
 
     $productBodyContent .= '<article>';
     $productBodyContent .= '<h1>' . htmlspecialchars($h1) . '</h1>';
+    if ($modelName) {
+        $productBodyContent .= '<p><strong>Modell:</strong> ' . htmlspecialchars($modelName) . '</p>';
+    }
 
     // Description
     $desc = $detail['description'] ?? '';
     if ($desc) {
         $productBodyContent .= '<p>' . htmlspecialchars($desc) . '</p>';
     }
-
-    // Availability
     $productBodyContent .= '<section><h2>Verfügbarkeit</h2>';
     $productBodyContent .= '<p>Standort: ' . htmlspecialchars($locName) . '</p>';
     $productBodyContent .= '<p>Status: Sofort verfügbar</p>';
