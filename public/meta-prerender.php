@@ -784,6 +784,7 @@ $blogArticles = [
     ],
 ];
 
+$pageOgImage = isset($meta['og_image']) ? $SITE_ORIGIN . $meta['og_image'] : null;
 $articleOgImage = null;
 if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[$bm[1]])) {
     $articleOgImage = $SITE_ORIGIN . str_replace('/images/ratgeber/', '/images/ratgeber/og/', str_replace('.svg', '.png', $blogArticles[$bm[1]]['image']));
