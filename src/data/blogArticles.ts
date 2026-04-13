@@ -437,9 +437,9 @@ Unser Tipp aus über zehn Jahren Eventerfahrung: Bei gut organisierten Hochzeite
 
 ## Geschirrspülmaschine mieten
 
-Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine [gewerbliche Gastro-Spülmaschine Frontlader](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) dazumieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
+Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine [gewerbliche Gastro-Spülmaschine Frontlader](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) dazu mieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
 
-Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader) · [Mülheim](/mieten/muelheim/geschirr-glaeser-besteck/spuelmaschine-frontlader)
+Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader)
 
 Alternativ können Sie das Geschirr und die Gläser auch **ungespült zurückgeben** – gegen einen Aufpreis für die professionelle Reinigung. Die genauen Konditionen finden Sie auf den jeweiligen Produktseiten oder fragen Sie uns einfach bei der Buchung.
 
