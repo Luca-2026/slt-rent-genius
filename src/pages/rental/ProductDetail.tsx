@@ -797,11 +797,11 @@ export default function ProductDetail() {
 
             </div>
 
-            {/* ── RIGHT COLUMN (tablet + desktop sticky sidebar) ── */}
-            <div className="hidden md:block">
+            {/* ── RIGHT COLUMN (sidebar: booking on md+, delivery on all) ── */}
+            <div className="md:block">
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
-                {/* Booking Card */}
-                <div className="bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
+                {/* Booking Card – desktop/tablet only */}
+                <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
                   {product.pricePerDay && (
                     <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
@@ -848,7 +848,7 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                {/* Delivery / Trailer Info */}
+                {/* Delivery / Trailer Info – single instance */}
                 {categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
                 ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
@@ -871,30 +871,6 @@ export default function ProductDetail() {
                 )}
               </div>
             </div>
-          </div>
-
-          {/* ── MOBILE: Delivery / Trailer Info below ── */}
-          <div className="md:hidden mt-5">
-            {categoryId === "anhaenger" ? (
-              <TrailerInfoCard t={t} />
-            ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
-              <Card className="border-accent/30 bg-accent/5">
-                <CardContent className="pt-5 pb-4 flex items-start gap-3">
-                  <Truck className="h-5 w-5 text-accent mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-sm text-headline">{t("rental.heavyTransportTitle", "Tiefladertransport")}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{t("rental.heavyTransportDesc", "Diese Maschine wird per Tieflader transportiert. Transportkosten auf Anfrage.")}</p>
-                    <Link to="/kontakt" className="inline-block mt-2">
-                      <Button size="sm" variant="outline" className="text-xs h-7">
-                        {t("rental.heavyTransportCta", "Transport anfragen")}
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
-            )}
           </div>
 
           {/* Optional Accessories for Excavators */}

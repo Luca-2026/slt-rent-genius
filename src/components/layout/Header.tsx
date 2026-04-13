@@ -203,8 +203,13 @@ export function Header() {
       {/* Weekend Tariffs Bar */}
       <div className="bg-primary text-primary-foreground overflow-hidden">
         <div className="py-1.5 text-sm">
-          <div className="marquee-track whitespace-nowrap flex items-center">
-            {[0, 1, 2, 3].map((i) => (
+          {/* Screenreader-accessible version (single, visible to AT only) */}
+          <p className="sr-only">
+            {t("marquee.weekendRates")} – {t("marquee.we")}: {t("marquee.weFri")} – {t("marquee.longWe")}: {t("marquee.longWeFri")} – Tiefpreisgarantie – 10 % günstiger als jeder Wettbewerber!
+          </p>
+          {/* Visual marquee: two copies for seamless CSS loop, aria-hidden */}
+          <div className="marquee-track whitespace-nowrap flex items-center" aria-hidden="true">
+            {[0, 1].map((i) => (
               <div key={i} className="flex items-center gap-8 shrink-0 px-4">
                 <div className="flex items-center gap-1.5 font-semibold">
                   <Percent className="h-4 w-4" />
