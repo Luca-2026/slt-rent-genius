@@ -3,6 +3,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { PublicChatAssistant } from "@/components/PublicChatAssistant";
 import { RentwareLoader } from "@/components/RentwareLoader";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ export function Layout({ children }: LayoutProps) {
       <div className="h-0 md:hidden" aria-hidden="true" />
       <PublicChatAssistant />
       <RentwareLoader />
+      <CookieConsentBanner />
     </div>
   );
 }
