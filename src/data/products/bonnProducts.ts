@@ -2301,7 +2301,7 @@ export const bonnGeschirrProducts = [
   },
   // === GESCHIRR - Teller & Schüsseln ===
   {
-    id: "bonn-teller-simply-25",
+    id: "bonn-teller-simply-25-10er",
     name: "Teller SIMPLY 25, 10er Set",
     description: "Teller weiß in Porzellanoptik, 25 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: tellerSimply25_1,
@@ -2316,7 +2316,7 @@ export const bonnGeschirrProducts = [
     rentwareCode: { bonn: "UGNDNW" },
   },
   {
-    id: "bonn-teller-tief-simply-20",
+    id: "bonn-teller-tief-simply-20-10er",
     name: "Teller tief SIMPLY 20, 10er Set",
     description: "Suppenteller weiß in Porzellanoptik, 20 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: tellerTiefSimply20_1,
@@ -2332,7 +2332,7 @@ export const bonnGeschirrProducts = [
     rentwareCode: { bonn: "HAZLZ4" },
   },
   {
-    id: "bonn-dessertteller-simply-19",
+    id: "bonn-dessertteller-simply-19-10er",
     name: "Dessertteller SIMPLY 19, 10er Set",
     description: "Desserteller weiß in Porzellanoptik, 19cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: dessertellerSimply19_1,
@@ -2347,7 +2347,7 @@ export const bonnGeschirrProducts = [
     },
   },
   {
-    id: "bonn-schuessel-simply-15",
+    id: "bonn-schuessel-simply-15-10er",
     name: "Schüssel SIMPLY 15, 10er Set",
     description: "Schüssel/Schale weiß in Porzellanoptik, 15 cm. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: schuessSimply15_1,
@@ -2362,7 +2362,7 @@ export const bonnGeschirrProducts = [
     rentwareCode: { bonn: "BD226L" },
   },
   {
-    id: "bonn-teller-deluxe-27",
+    id: "bonn-teller-deluxe-27-10er",
     name: "Teller Deluxe 27, 10er Set",
     description: "Speiseteller 27 cm, Hersteller Sänger, Serie Darwin. Spülmaschinenfest. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: speisetDarwin27_1,
@@ -2400,7 +2400,7 @@ export const bonnGeschirrProducts = [
     rentwareCode: { bonn: "" },
   },
   {
-    id: "bonn-schuessel-deluxe-18",
+    id: "bonn-schuessel-deluxe-18-10er",
     name: "Schüssel Deluxe 18, 10er Set",
     description: "Suppenteller 18 cm, Füllmenge 700 ml. Hersteller Sänger, Serie Darwin. Das Geschirr muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,50 €.",
     image: schuessDeluxeDarwin18_1,
@@ -2513,7 +2513,7 @@ export const bonnGeschirrProducts = [
 // ==================== BESTECK ====================
 export const bonnBesteckProducts = [
   {
-    id: "bonn-gabel-simply-19",
+    id: "bonn-gabel-simply-19-10er",
     name: "Gabel SIMPLY 19, 10er Set",
     description: "Gabel Edelstahl, 19 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: gabelSimply19_1,
@@ -2528,7 +2528,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "GT8B4N" },
   },
   {
-    id: "bonn-gabel-gross-deluxe-19",
+    id: "bonn-gabel-gross-deluxe-19-10er",
     name: "Gabel groß Deluxe 19, 10er Set",
     description: "Gabel 19 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: gabelGrossDeluxe19_1,
@@ -2546,7 +2546,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "" },
   },
   {
-    id: "bonn-gabel-klein-deluxe-14",
+    id: "bonn-gabel-klein-deluxe-14-10er",
     name: "Gabel klein Deluxe 14, 10er Set",
     description: "Gabel 14 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: gabelKleinDeluxe14_1,
@@ -2564,7 +2564,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "" },
   },
   {
-    id: "bonn-loeffel-klein-deluxe-14",
+    id: "bonn-loeffel-klein-deluxe-14-10er",
     name: "Löffel klein Deluxe 14, 10er Set",
     description: "Löffel 14 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: loeffelKleinDeluxe14_1,
@@ -2599,7 +2599,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "" },
   },
   {
-    id: "bonn-loeffel-simply-13",
+    id: "bonn-loeffel-simply-13-10er",
     name: "Löffel SIMPLY 13, 10er Set",
     description: "Löffel klein Edelstahl, 13 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: loeffelSimply13_1,
@@ -2615,7 +2615,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "E941H1" },
   },
   {
-    id: "bonn-loeffel-simply-19",
+    id: "bonn-loeffel-simply-19-10er",
     name: "Löffel SIMPLY 19, 10er Set",
     description: "Löffel klein Edelstahl, 19 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: loeffelSimply19_1,
@@ -2631,7 +2631,7 @@ export const bonnBesteckProducts = [
     rentwareCode: { bonn: "ML5SL8" },
   },
   {
-    id: "bonn-loeffel-gross-deluxe-19",
+    id: "bonn-loeffel-gross-deluxe-19-10er",
     name: "Löffel groß Deluxe 19, 10er Set",
     description: "Löffel 19,5 cm, Edelstahl, Athene Poliert. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: loeffelGrossDeluxe19_1,
@@ -2647,7 +2647,7 @@ export const bonnBesteckProducts = [
     onRequest: true,
   },
   {
-    id: "bonn-messer-simply-20",
+    id: "bonn-messer-simply-20-10er",
     name: "Messer SIMPLY 20, 10er Set",
     description: "Messer Edelstahl, 20 cm. Das Besteck muss gereinigt zurückgegeben werden. Reinigungspauschale: 2,00 €.",
     image: messerSimply20_1,
