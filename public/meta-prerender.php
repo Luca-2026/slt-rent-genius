@@ -775,7 +775,9 @@ $blogArticles = [
     ],
 ];
 
+$articleOgImage = null;
 if (preg_match('#^/ratgeber/([a-z0-9-]+)$#', $path, $bm) && isset($blogArticles[$bm[1]])) {
+    $articleOgImage = $SITE_ORIGIN . $blogArticles[$bm[1]]['image'];
     $ba = $blogArticles[$bm[1]];
     $slug = $bm[1];
     $articleJsonLd = json_encode([
