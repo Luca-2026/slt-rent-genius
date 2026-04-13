@@ -58,6 +58,11 @@ export function Footer() {
     { to: "/agb", label: t("footer.terms") },
   ];
 
+  const handleCookieSettings = (e: React.MouseEvent) => {
+    e.preventDefault();
+    import("@/components/CookieConsentBanner").then(m => m.openCookieSettings());
+  };
+
   return (
     <footer className="bg-primary">
       {/* Main Footer */}
