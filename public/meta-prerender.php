@@ -207,6 +207,30 @@ $pages = [
         'title' => 'AGB | SLT Rental',
         'description' => 'Allgemeine Geschäftsbedingungen der SLT Technology Group GmbH & Co. KG für die Vermietung von Baumaschinen und Equipment.',
     ],
+    '/ratgeber' => [
+        'title' => 'Ratgeber & Magazin – Tipps rund ums Mieten | SLT Rental',
+        'description' => 'Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW.',
+    ],
+    '/ratgeber/minibagger-mieten-ohne-fuehrerschein' => [
+        'title' => 'Minibagger mieten ohne Führerschein – Rechtslage & Tipps | SLT Rental',
+        'description' => 'Darf man einen Minibagger ohne Führerschein fahren? Rechtslage, Einweisungspflicht, Schutzausrüstung & wann ein Baggerschein nötig ist – verständlich erklärt.',
+    ],
+    '/ratgeber/anhaenger-24-stunden-mieten-sms-code' => [
+        'title' => 'Anhänger 24 Stunden mieten per SMS-Code | SLT Rental',
+        'description' => 'Anhänger rund um die Uhr mieten – auch nachts und am Wochenende. So funktioniert das SMS-Code-System von SLT Rental: Buchung, Code, Abholung, Rückgabe.',
+    ],
+    '/ratgeber/wochenendtarif-vs-tagesmiete' => [
+        'title' => 'Wochenendtarif Baumaschine mieten – lohnt sich das? | SLT Rental',
+        'description' => 'Wochenendtarif oder Tagesmiete? Vergleich mit Rechenbeispiel am Minibagger. So sparen Sie bei SLT Rental bis zu 40 % am Wochenende.',
+    ],
+    '/ratgeber/baustelle-innenstadt-baumaschine-beengte-verhaeltnisse' => [
+        'title' => 'Baumaschinen für Innenstadt & beengte Baustellen | SLT Rental',
+        'description' => 'Innenstadt-Baustelle? Elektro-Minibagger, Gummiketten & lärmarme Maschinen für beengte Verhältnisse. Lärmschutz NRW, Halteverbotszonen & Tipps von SLT Rental.',
+    ],
+    '/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste' => [
+        'title' => 'Geschirr mieten Hochzeit – Mengen-Checkliste & Tipps | SLT Rental',
+        'description' => 'Wie viel Geschirr brauchen Sie für Ihre Hochzeit? Mengen-Checkliste für 50, 100 und 150 Gäste: Teller, Gläser, Besteck. Jetzt bei SLT Rental mieten.',
+    ],
 ];
 
 // ── Category pages pattern: /mieten/{location}/{category} ──
