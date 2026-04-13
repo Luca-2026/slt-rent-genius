@@ -831,8 +831,8 @@ header('Content-Type: text/html; charset=utf-8');
   <meta property="og:title" content="<?= $title ?>">
   <meta property="og:description" content="<?= $description ?>">
   <meta property="og:type" content="<?= $blogBody ? 'article' : 'website' ?>">
-  <meta property="og:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
-<?php if ($articleOgImage): ?>
+  <meta property="og:image" content="<?= $articleOgImage ?? $pageOgImage ?? $OG_IMAGE ?>">
+<?php if ($articleOgImage || $pageOgImage): ?>
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -845,7 +845,7 @@ header('Content-Type: text/html; charset=utf-8');
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $title ?>">
   <meta name="twitter:description" content="<?= $description ?>">
-  <meta name="twitter:image" content="<?= $articleOgImage ?? $OG_IMAGE ?>">
+  <meta name="twitter:image" content="<?= $articleOgImage ?? $pageOgImage ?? $OG_IMAGE ?>">
 </head>
 <body>
 <?php if ($homepageBody): ?>
