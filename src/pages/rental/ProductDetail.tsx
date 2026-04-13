@@ -319,13 +319,7 @@ export default function ProductDetail() {
     const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
     const cityName = locationId ? (cityNameMap[locationId] || locationId) : "";
 
-    // Get related products from category for suggestions
-    const suggestedProducts = useMemo(() => {
-      if (!locationId || !categoryId) return [];
-      const loc = getLocationById(locationId);
-      if (!loc) return [];
-      return getProductsForLocationCategory(loc.id, categoryId).slice(0, 6);
-    }, [locationId, categoryId]);
+    const suggestedProducts = notFoundSuggestions;
 
     return (
       <Layout>
