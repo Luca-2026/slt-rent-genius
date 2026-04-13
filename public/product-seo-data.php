@@ -5671,7 +5671,7 @@ $productDetails = [
     ],
   ],
   'mh-bautrockner-kt200' => [
-    'name' => 'Allegra Bautrockner KT200',
+    'name' => 'Bautrockner 20L/Tag',
     'modelName' => 'Allegra KT200',
     'description' => 'Kompakter Kondensations-Bautrockner mit geeichtem MID-Stromzähler (PH10) – ideal für Räume bis 20 m².',
     'specs' => [
@@ -5691,7 +5691,7 @@ $productDetails = [
     ],
   ],
   'mh-bautrockner-kt553' => [
-    'name' => 'Allegra Bautrockner KT553/KT554',
+    'name' => 'Bautrockner 50L/Tag',
     'modelName' => 'Allegra KT553/KT554',
     'description' => 'Professioneller Kondensations-Bautrockner mit geeichtem MID-Stromzähler – ideal für 50–60 m² Trocknungsfläche.',
     'specs' => [
@@ -6313,7 +6313,7 @@ $productDetails = [
     ],
   ],
   'bonn-haecksler-axt25tc' => [
-    'name' => 'Häcksler AXT25TC',
+    'name' => 'Elektro-Häcksler',
     'modelName' => 'Bosch AXT 25 TC',
     'description' => 'Elektro-Häcksler für Gartenabfälle',
     'specs' => [
@@ -6327,7 +6327,7 @@ $productDetails = [
     ],
   ],
   'bonn-haecksler-ls95gx' => [
-    'name' => 'Häcksler LS-95 GX',
+    'name' => 'Benzin-Häcksler',
     'modelName' => 'Eliet LS-95 GX',
     'description' => 'Benzin-Häcksler für größere Mengen',
     'specs' => [
@@ -8302,7 +8302,7 @@ $productDetails = [
     ],
   ],
   'unkrautbrenner-gloria-thermoflamm' => [
-    'name' => 'GLORIA Thermoflamm bio Professional PLUS',
+    'name' => 'Unkrautbrenner',
     'modelName' => 'GLORIA Thermoflamm bio Professional PLUS',
     'description' => 'Gas-Unkrautbrenner & Abflammgerät mit 5m Schlauch. Umweltfreundliche Unkrautbeseitigung ohne Chemie durch gezielte Hitzeeinwirkung.',
     'specs' => [
