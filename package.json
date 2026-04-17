@@ -2,6 +2,7 @@
   "name": "minibagger-krefeld",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -51,7 +52,7 @@
     "next": "^16.2.4",
     "pdf-lib": "1.17.1",
     "react": "^19.2.5",
-    "react-day-picker": "^8.10.1",
+    "react-day-picker": "^9.6.5",
     "react-dom": "^19.2.5",
     "react-helmet-async": "^3.0.0",
     "react-hook-form": "^7.61.1",

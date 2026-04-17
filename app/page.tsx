@@ -11,7 +11,7 @@ import { JsonLd, generateFaqSchema } from '@/components/seo/json-ld'
 
 export default function HomePage() {
   return (
-    <>
+    <main>
       <JsonLd type="localBusiness" />
       <JsonLd type="faq" data={generateFaqSchema(faqData)} />
       
@@ -24,6 +24,6 @@ export default function HomePage() {
       <ReviewsSection />
       <FaqSection />
       <FinalCtaSection />
-    </>
+    </main>
   )
 }
