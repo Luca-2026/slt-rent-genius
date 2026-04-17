@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        'montserrat': ['Montserrat', 'system-ui', 'sans-serif'],
-        'sans': ['Montserrat', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-bricolage)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -64,13 +64,14 @@ export default {
         // SLT Custom Colors
         headline: "hsl(var(--headline))",
         body: "hsl(var(--body-text))",
-        "cta-orange": {
-          DEFAULT: "hsl(var(--cta-orange))",
-          hover: "hsl(var(--cta-orange-hover))",
-        },
         "slt-blue": {
           DEFAULT: "hsl(var(--slt-blue))",
-          hover: "hsl(var(--slt-blue-hover))",
+          dark: "hsl(var(--slt-blue-dark))",
+          light: "hsl(var(--slt-blue-light))",
+        },
+        "slt-yellow": {
+          DEFAULT: "hsl(var(--slt-yellow))",
+          hover: "hsl(var(--slt-yellow-hover))",
         },
         surface: {
           light: "hsl(var(--surface-light))",
