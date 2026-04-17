@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SLT Rental Design System for minibagger-krefeld.de
+   Corporate Colors:
+   - Primary Blue: #00507d (201° 100% 25%)
+   - Accent Yellow: #FFD100 (Construction industry accent)
+   - Headlines: #393d46 (218° 10% 25%)
+   - Body Text: #595959 (0° 0% 35%)
+*/
+
+@layer base {
+  :root {
+    /* SLT Corporate Colors */
+    --background: 0 0% 100%;
+    --foreground: 218 10% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 218 10% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 10% 25%;
+
+    /* Primary Blue - Brand Color */
+    --primary: 201 100% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Lighter Blue */
+    --secondary: 201 30% 95%;
+    --secondary-foreground: 201 100% 25%;
+
+    /* Muted - Light Gray */
+    --muted: 220 14% 96%;
+    --muted-foreground: 0 0% 35%;
+
+    /* Accent - Yellow for CTAs */
+    --accent: 49 100% 50%;
+    --accent-foreground: 218 10% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 201 100% 25%;
+
+    --radius: 0.5rem;
+
+    /* Custom SLT tokens */
+    --headline: 218 10% 25%;
+    --body-text: 0 0% 35%;
+    --slt-blue: 201 100% 25%;
+    --slt-blue-dark: 201 100% 18%;
+    --slt-blue-light: 210 35% 52%;
+    --slt-yellow: 49 100% 50%;
+    --slt-yellow-hover: 49 100% 45%;
+    
+    /* Surface colors */
+    --surface-light: 210 20% 98%;
+    --surface-medium: 210 20% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-headline font-bold tracking-tight text-balance;
+  }
+}
+
+@layer components {
+  /* Primary CTA Button - Yellow */
+  .btn-cta {
+    @apply bg-slt-yellow text-foreground font-semibold px-6 py-3 rounded-lg 
+           hover:bg-slt-yellow-hover transition-all duration-200 
+           shadow-md hover:shadow-lg hover:-translate-y-0.5
+           focus:outline-none focus:ring-2 focus:ring-slt-yellow focus:ring-offset-2;
+  }
+
+  /* Primary Button - Blue */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg 
+           hover:bg-slt-blue-dark transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply bg-transparent border-2 border-primary text-primary font-semibold px-6 py-3 rounded-lg 
+           hover:bg-primary hover:text-primary-foreground transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  /* Section Container */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card styles */
+  .content-card {
+    @apply bg-card rounded-xl border border-border overflow-hidden 
+           hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
