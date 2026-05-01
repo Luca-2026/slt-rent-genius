@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
-import { diversifyByFamily } from "@/lib/searchDiversify";
+import { diversifyByFamily, isAccessoryProduct } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
