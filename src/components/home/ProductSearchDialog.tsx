@@ -20,6 +20,7 @@ function getAllUniqueProducts(): Product[] {
   for (const location of locations) {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
+      if (isAccessoryProduct(product)) continue;
       if (!productMap.has(product.name)) {
         productMap.set(product.name, product);
       }
