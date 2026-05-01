@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
 import { productTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
+import { diversifyByFamily } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
