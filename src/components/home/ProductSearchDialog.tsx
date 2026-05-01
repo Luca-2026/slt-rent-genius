@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
 import { productTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
+import { diversifyByFamily } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
@@ -69,23 +70,23 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return translatedProducts.slice(0, 8);
     const query = searchQuery.toLowerCase();
-    return translatedProducts
-      .filter((p, index) => {
-        if (p.name.toLowerCase().includes(query)) return true;
-        if (p.description?.toLowerCase().includes(query)) return true;
-        if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-        const original = allProducts[index];
-        if (original) {
-          if (original.name.toLowerCase().includes(query)) return true;
-          if (original.description?.toLowerCase().includes(query)) return true;
-          if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-        }
-        const tr = productTranslations[p.id];
-        if (tr?.name?.toLowerCase().includes(query)) return true;
-        if (tr?.description?.toLowerCase().includes(query)) return true;
-        return false;
-      })
-      .slice(0, 8);
+    const matches = translatedProducts.filter((p, index) => {
+      if (p.name.toLowerCase().includes(query)) return true;
+      if (p.description?.toLowerCase().includes(query)) return true;
+      if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+      const original = allProducts[index];
+      if (original) {
+        if (original.name.toLowerCase().includes(query)) return true;
+        if (original.description?.toLowerCase().includes(query)) return true;
+        if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
+      }
+      const tr = productTranslations[p.id];
+      if (tr?.name?.toLowerCase().includes(query)) return true;
+      if (tr?.description?.toLowerCase().includes(query)) return true;
+      return false;
+    });
+    // Round-robin durch Modellfamilien, damit Varianten gemischt erscheinen
+    return diversifyByFamily(matches, (p) => p.name, 8);
   }, [searchQuery, translatedProducts, allProducts]);
 
   const availableLocations = selectedProduct

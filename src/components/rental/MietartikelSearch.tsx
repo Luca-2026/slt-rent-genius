@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
+import { diversifyByFamily } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
@@ -122,7 +123,7 @@ export function MietartikelSearch() {
     const queryTokens = getSearchTokens(searchQuery);
     if (!normalizedQuery || queryTokens.length === 0) return [];
 
-    return translatedProducts
+    const scored = translatedProducts
       .map((translatedProduct, index) => {
         const original = allProducts[index];
         if (!original?.name) return null;
@@ -145,9 +146,10 @@ export function MietartikelSearch() {
         return { product: translatedProduct, score, nameLength: original.name.length };
       })
       .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
-      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"))
-      .slice(0, 10)
-      .map(({ product }) => product);
+      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"));
+
+    // Round-robin durch Modellfamilien (z.B. Breitaufbau / Schmalaufbau / Standard)
+    return diversifyByFamily(scored, (item) => item.product.name, 10).map(({ product }) => product);
   }, [searchQuery, translatedProducts, allProducts, isGerman]);
 
   useEffect(() => {

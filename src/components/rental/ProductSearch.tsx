@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { productCategories, getProductsForLocationCategory, type Product, type ProductCategory } from "@/data/rentalData";
 import { productTranslations, categoryTranslations, tagTranslations } from "@/i18n/productTranslations";
+import { diversifyByFamily } from "@/lib/searchDiversify";
 
 interface ProductSearchProps {
   locationId: string;
@@ -52,9 +53,10 @@ export function ProductSearch({
     }
     
     // Then add matching products
+    const productResults: Extract<SearchResult, { type: "product" }>[] = [];
     for (const category of categories) {
       const products = getProductsForLocationCategory(locationId, category.id);
-      
+
       for (const product of products) {
         const tr = productTranslations[product.id];
         if (
@@ -63,11 +65,15 @@ export function ProductSearch({
           tr?.name?.toLowerCase().includes(searchTerm) ||
           tr?.description?.toLowerCase().includes(searchTerm)
         ) {
-          results.push({ type: "product", product, categoryId: category.id });
+          productResults.push({ type: "product", product, categoryId: category.id });
         }
       }
     }
-    
+
+    // Round-robin durch Modellfamilien, damit Varianten gemischt erscheinen
+    const diversified = diversifyByFamily(productResults, (r) => r.product.name, 8);
+    results.push(...diversified);
+
     return results.slice(0, 8);
   }, [query, locationId]);
 

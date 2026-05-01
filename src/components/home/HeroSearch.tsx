@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product, productCategories, type ProductCategory } from "@/data/rentalData";
 import { categoryTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
+import { diversifyByFamily } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
@@ -211,7 +212,7 @@ export function HeroSearch() {
       }
     }
 
-    return translatedProducts
+    const scored = translatedProducts
       .map((translatedProduct, index) => {
         const original = allProducts[index];
         if (!original?.name) return null;
@@ -266,9 +267,10 @@ export function HeroSearch() {
         };
       })
       .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
-      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"))
-      .slice(0, 8)
-      .map(({ product }) => product);
+      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"));
+
+    // Round-robin durch Modellfamilien, damit nicht 8x dasselbe Modell (z.B. "Breitaufbau") oben steht
+    return diversifyByFamily(scored, (item) => item.product.name, 8).map(({ product }) => product);
   }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
