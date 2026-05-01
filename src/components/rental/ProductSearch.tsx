@@ -58,6 +58,7 @@ export function ProductSearch({
       const products = getProductsForLocationCategory(locationId, category.id);
 
       for (const product of products) {
+        if (isAccessoryProduct(product)) continue;
         const tr = productTranslations[product.id];
         if (
           product.name.toLowerCase().includes(searchTerm) ||
