@@ -81,6 +81,7 @@ function getAllUniqueProducts(): Product[] {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
       if (!product.name) continue;
+      if (isAccessoryProduct(product)) continue;
       const normalizedName = normalizeSearchText(product.name);
       if (!normalizedName || productMap.has(normalizedName)) continue;
       productMap.set(normalizedName, product);
