@@ -8,6 +8,26 @@
  */
 
 /**
+ * Kategorien, die reines Zubehör/Ersatzteile zu einem Hauptmietartikel sind
+ * (z.B. Belagbühnen, Diagonalen für Gerüste, Traversen-Zubehör).
+ * Diese Produkte sollen NICHT in der allgemeinen Suche auftauchen,
+ * weil Kunden sonst denken, wir hätten nur Zubehörteile.
+ */
+export const ACCESSORY_CATEGORIES = new Set<string>([
+  "geruestteil",
+  "buehnen-zubehoer",
+  "traversen-zubehoer",
+]);
+
+/**
+ * Returns true if the product belongs to an accessory-only category and should be hidden from search.
+ */
+export function isAccessoryProduct(product: { category?: string } | undefined | null): boolean {
+  if (!product?.category) return false;
+  return ACCESSORY_CATEGORIES.has(product.category);
+}
+
+/**
  * Extract a coarse "family" key from a product name.
  * Strips everything from the first digit / dash-with-number / measurement onward,
  * collapsing all height/size variants of the same model to one bucket.

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { locations, getAllProductsForLocation, type Product, productCategories, type ProductCategory } from "@/data/rentalData";
 import { categoryTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
-import { diversifyByFamily } from "@/lib/searchDiversify";
+import { diversifyByFamily, isAccessoryProduct } from "@/lib/searchDiversify";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ function getAllUniqueProducts(): Product[] {
     const products = getAllProductsForLocation(location.id);
     for (const product of products) {
       if (!product.name) continue;
+      if (isAccessoryProduct(product)) continue;
 
       const normalizedName = normalizeSearchText(product.name);
       if (!normalizedName || productMap.has(normalizedName)) continue;
