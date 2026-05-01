@@ -266,9 +266,10 @@ export function HeroSearch() {
         };
       })
       .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
-      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"))
-      .slice(0, 8)
-      .map(({ product }) => product);
+      .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"));
+
+    // Round-robin durch Modellfamilien, damit nicht 8x dasselbe Modell (z.B. "Breitaufbau") oben steht
+    return diversifyByFamily(scored, (item) => item.product.name, 8).map(({ product }) => product);
   }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
