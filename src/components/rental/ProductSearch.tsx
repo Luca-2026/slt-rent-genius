@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { productCategories, getProductsForLocationCategory, type Product, type ProductCategory } from "@/data/rentalData";
 import { productTranslations, categoryTranslations, tagTranslations } from "@/i18n/productTranslations";
-import { diversifyByFamily } from "@/lib/searchDiversify";
+import { diversifyByFamily, isAccessoryProduct } from "@/lib/searchDiversify";
 
 interface ProductSearchProps {
   locationId: string;
