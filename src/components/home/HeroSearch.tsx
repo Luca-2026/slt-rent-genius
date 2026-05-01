@@ -211,7 +211,7 @@ export function HeroSearch() {
       }
     }
 
-    return translatedProducts
+    const scored = translatedProducts
       .map((translatedProduct, index) => {
         const original = allProducts[index];
         if (!original?.name) return null;
