@@ -185,7 +185,10 @@ const BANNED=[/\bzertifizier(t|ung)\b/i,/\bDIN[\s-]?\d+/i,/\bISO[\s-]?\d+/i,/\bT
 function validate(g, p, profile) {
   const issues = [];
   const fullText = [g.metaTitle, g.metaDescription, ...(g.h2s||[]), g.useCaseBau, g.useCasePrivat, g.useCaseEvent, ...(g.faq||[]).map(f=>`${f.question} ${f.answer}`)].filter(Boolean).join(" ");
-  const inputText = [p.name, p.modelName, p.description, p.detailedDescription, ...Object.entries(p.specifications||{}).map(([k,v])=>`${k} ${v}`)].filter(Boolean).join(" ");
+  // Profil-Inputs (size_class + Use-Case-Hinweise) gelten als gültige Faktenbasis,
+  // weil sie von uns kuratiert in den Prompt eingespeist werden.
+  const profileText = [profile.size_class, profile.bau, profile.privat, profile.event].filter(x=>x&&x!=="—").join(" ");
+  const inputText = [p.name, p.modelName, p.description, p.detailedDescription, ...Object.entries(p.specifications||{}).map(([k,v])=>`${k} ${v}`), profileText].filter(Boolean).join(" ");
   const inputM = extractMeasurements(inputText);
   const allowedTokens = tokenizeText(inputText);
 
