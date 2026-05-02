@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Prerender artifacts
+dist/.prerender-routes.json
