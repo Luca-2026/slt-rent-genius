@@ -157,6 +157,30 @@ export const locationData: LocationInfo[] = [
     ],
     features: ["Bagger & Anhänger", "Ruhrgebiet-Nähe", "24/7 Anhänger-Buchung", "Schnelle Abwicklung"],
     mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+122+45478+Mülheim",
+    serviceCharacter: "service-handover",
+    storyHeadline: "Beratung und Übergabe für das Ruhrgebiet",
+    storyIntro:
+      "Mülheim an der Ruhr ist unser Service-Standort für das gesamte Ruhrgebiet. Beratung, Übergabe und Rücknahme finden vor Ort statt – die Geräte kommen direkt aus unserem Zentrallager in Krefeld, mit kurzen Wegen über die A40.",
+    storyParagraphs: [
+      "Mülheim an der Ruhr ist strategisch im Herzen des Ruhrgebiets gelegen. Von hier aus erreichen wir Essen, Duisburg, Oberhausen und Bochum innerhalb von 30 Minuten. Was uns von reinen Online-Anbietern unterscheidet: Sie haben einen festen Ansprechpartner vor Ort, können Geräte persönlich abholen und übergeben, und werden vor Mietbeginn praktisch eingewiesen.",
+      "Das vollständige Mietsortiment unseres Hauptlagers in Krefeld ist auch über den Standort Mülheim verfügbar. Bei Anfragen disponieren wir die benötigten Geräte aus Krefeld nach Mülheim – meist innerhalb von 24 Stunden, bei kurzfristigem Bedarf häufig auch am selben Werktag. Für planbare Mietzeiträume übernehmen wir die komplette Logistik.",
+      "Unser Standort Mülheim entwickelt sich. Mittelfristig werden wir vor Ort ein eigenes Stamm-Sortiment führen – die Geräte, die im Ruhrgebiet am häufigsten gefragt sind: Minibagger, Aggregate, Anhänger und Eventtechnik. Bis dahin sorgen wir mit kurzen Lieferwegen aus Krefeld für die gleiche Verfügbarkeit wie an einem klassischen Mietpark-Standort.",
+      "Branchen, die wir im Ruhrgebiet besonders bedienen: Bauunternehmen, Industrie-Dienstleister, Logistik-Firmen, Veranstalter und Privatkunden für größere Heim- und Gartenprojekte. Beratung kostenfrei, persönlich, vor Ort.",
+    ],
+    cataloguePromise:
+      "Komplettes Mietsortiment verfügbar – Disposition und Lieferung aus dem Zentrallager Krefeld.",
+    deliveryRadius: [
+      "Mülheim an der Ruhr",
+      "Essen",
+      "Duisburg",
+      "Oberhausen",
+      "Bochum",
+      "Gelsenkirchen",
+      "Hattingen",
+    ],
+    industryFocus: ["Bauwirtschaft Ruhrgebiet", "Industrie", "Logistik", "Eventbranche"],
+    futurePromise:
+      "Eigenes Stamm-Sortiment vor Ort in Planung – bis dahin profitieren Sie von der Verbindung zur Vollausstattung in Krefeld.",
   },
 ];
 
