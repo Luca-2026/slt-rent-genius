@@ -117,6 +117,27 @@ export const locationData: LocationInfo[] = [
     hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
+    serviceCharacter: "full-warehouse",
+    storyHeadline: "Ihr Mietpark für die Rheinschiene",
+    storyIntro:
+      "Bonn ist unser zweiter Standort mit eigenem Sortiment und vor-Ort-Übergabe. Damit erreichen wir Kunden in Bonn, Köln-Süd, dem Ahrtal und im Rhein-Sieg-Kreis ohne lange Lieferwege.",
+    storyParagraphs: [
+      "An unserem Standort Bonn (Drachenburgstraße 8) finden Sie ein eigenes, abgestimmtes Sortiment: die häufig gefragten Geräte für Tiefbau, Sanierung, Garten- und Landschaftsbau sowie für Veranstaltungen direkt vor Ort. Spezialteile aus dem erweiterten Sortiment liefern wir auf Anfrage aus unserem Hauptstandort Krefeld.",
+      "Unser Bonn-Einzugsgebiet umfasst die Bundesstadt Bonn selbst sowie die Region zwischen Köln-Süd, dem Ahrtal und dem Rhein-Sieg-Kreis. Typische Lieferorte sind Wachtberg, Bad Honnef, Königswinter, Sankt Augustin und das südliche Köln-Stadtgebiet.",
+      "Für Bauträger, Sanierungsbetriebe und Garten-/Landschaftsbauer in der Region sind wir die Mietalternative mit kurzen Wegen. Anfragen und Beratung vor Ort – das Bonn-Team berät persönlich, organisiert die Bereitstellung und kümmert sich um die Übergabe.",
+    ],
+    cataloguePromise: "Lokales Kernsortiment plus Lieferung aus Krefeld bei Bedarf.",
+    deliveryRadius: [
+      "Bonn",
+      "Köln-Süd",
+      "Wachtberg",
+      "Bad Honnef",
+      "Königswinter",
+      "Sankt Augustin",
+      "Bad Neuenahr-Ahrweiler",
+      "Rhein-Sieg-Kreis",
+    ],
+    industryFocus: ["Tiefbau", "GaLaBau", "Sanierung", "Eventbranche Rheinland"],
   },
   {
     id: "muelheim",
