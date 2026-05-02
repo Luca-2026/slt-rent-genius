@@ -10,6 +10,7 @@ export interface LocalArea {
   postalCodes?: string[];
   description: string;
   keywords: string[];
+  longDescription?: string; // 150-180 Wörter, unique Local-SEO-Content (Sprint 4)
 }
 
 export const localAreas: LocalArea[] = [
