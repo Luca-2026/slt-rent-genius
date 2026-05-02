@@ -234,7 +234,7 @@ export default function CategoryProducts() {
             p.tags?.includes(type) ||
             (type === "geschlossen" && (nameLower.includes("planen") || nameLower.includes("koffer"))) ||
             (type === "baumaschine" && nameLower.includes("baumaschinen")) ||
-            (type === "autotransport" && nameLower.includes("autotransport")) ||
+            (type === "autotransport" && (nameLower.includes("autotransport") || nameLower.includes("fahrzeugtransport") || nameLower.includes("motorrad"))) ||
             (type === "laubgitter" && (nameLower.includes("laubgitter") || nameLower.includes("kipp"))) ||
             (type === "urlaub" && nameLower.includes("urlaub"))
           );
