@@ -515,6 +515,19 @@ function mapStandort(loc) {
 // Run audit
 // ---------------------------------------------------------------
 
+// Manuelle Overrides nach Sprint-6-Review (Luca, 2026-05-02).
+// Setzt das errechnete Mapping außer Kraft. confidence: 1.0 → wird wie
+// Direct-Match in der .htaccess gerendert.
+const MANUAL_OVERRIDES = {
+  // Gruppe B: gezielte Korrekturen
+  "/produkte/akku-lautsprecher": { to: "/mieten/krefeld/beschallung", note: "Manueller Override – Kategorie-Fallback (kein passendes Produkt)" },
+  "/produkte/ms01-grabenraumloffel-hydr-100cm-80l": { to: "/mieten/krefeld/erdbewegung", note: "Manueller Override – Kategorie-Fallback (Größe weicht ab)" },
+  "/produkte/1500-kg-autotransportanhanger": { to: "/mieten/krefeld/anhaenger", note: "Manueller Override – Kategorie-Fallback (Autotransport, nicht Koffer)" },
+  "/produkte/ruttelplatte-100-kg": { to: "/mieten/krefeld/verdichtung", note: "Manueller Override – Kategorie-Fallback (Gewicht weicht ab)" },
+  "/produkte/zelt-4x12m": { to: "/mieten/krefeld/moebel-zelte", note: "Manueller Override – Kategorie-Fallback (Maß weicht ab)" },
+  // led-scheinwerfer + bautrockner-bis-20-m2 → Auto-Mapping bleibt (übernehmen wie vorgeschlagen)
+};
+
 const seen = new Set();
 const mappings = [];
 for (const url of LEGACY_404_URLS) {
@@ -522,16 +535,21 @@ for (const url of LEGACY_404_URLS) {
   if (seen.has(key)) continue;
   seen.add(key);
 
-  const cls = classify(url);
   let result;
-  if (cls.type === "product") {
-    result = mapProduct(cls.loc, cls.slug);
-  } else if (cls.type === "category") {
-    result = mapCategory(cls.loc, cls.slug);
-  } else if (cls.type === "standort") {
-    result = mapStandort(cls.loc);
+  if (MANUAL_OVERRIDES[url]) {
+    const ov = MANUAL_OVERRIDES[url];
+    result = { to: ov.to, confidence: 1.0, method: "manual", tokens_matched: [], note: ov.note };
   } else {
-    result = { to: "/", confidence: 0.0, method: "fallback", tokens_matched: [], note: "Unklassifiziert" };
+    const cls = classify(url);
+    if (cls.type === "product") {
+      result = mapProduct(cls.loc, cls.slug);
+    } else if (cls.type === "category") {
+      result = mapCategory(cls.loc, cls.slug);
+    } else if (cls.type === "standort") {
+      result = mapStandort(cls.loc);
+    } else {
+      result = { to: "/", confidence: 0.0, method: "fallback", tokens_matched: [], note: "Unklassifiziert" };
+    }
   }
 
   mappings.push({

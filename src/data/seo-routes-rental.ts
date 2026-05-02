@@ -432,6 +432,21 @@ function categoryTitleDe(catId: string): string {
 const CATEGORY_ROUTES: SeoRoute[] = [];
 const PRODUCT_ROUTES: SeoRoute[] = [];
 
+// Sprint 6 – Aufgabe 4: Canonical-Strategie "Krefeld-First".
+// Indexiere alle Krefeld-Produkte je (categoryId/productId). Bonn- und
+// Mülheim-Routen, deren Produkt auch in Krefeld existiert, zeigen via
+// canonical auf die Krefeld-Variante. Eigene Sortimente
+// (Bonn-only, Mülheim-only) bleiben self-canonical (= kein canonical-Feld).
+const KREFELD_PRODUCT_INDEX: Set<string> = (() => {
+  const idx = new Set<string>();
+  const krefeld = (locations as LocationData[]).find((l) => l.id === "krefeld");
+  if (!krefeld) return idx;
+  for (const [catId, products] of Object.entries(krefeld.products)) {
+    for (const p of products ?? []) idx.add(`${catId}/${p.id}`);
+  }
+  return idx;
+})();
+
 for (const loc of locations as LocationData[]) {
   const locName = LOCATION_DISPLAY[loc.id] || loc.name;
   for (const [catId, products] of Object.entries(loc.products)) {
@@ -490,6 +505,14 @@ for (const loc of locations as LocationData[]) {
       ];
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
+      // Krefeld-First Canonical: Bonn/Mülheim → Krefeld, sofern dort vorhanden.
+      // Krefeld-Produkte und Standort-eigene Produkte bleiben self-canonical.
+      const krefeldHasIt = KREFELD_PRODUCT_INDEX.has(`${catId}/${p.id}`);
+      const canonical =
+        loc.id !== "krefeld" && krefeldHasIt
+          ? `/mieten/krefeld/${catId}/${p.id}`
+          : undefined;
+
       PRODUCT_ROUTES.push({
         path: `/mieten/${loc.id}/${catId}/${p.id}`,
         routeType: "product",
@@ -511,6 +534,7 @@ for (const loc of locations as LocationData[]) {
         description,
         h1,
         intro,
+        canonical,
         ogType: "product",
         // Products without SEO content → noindex (still rendered for SPA)
         noindex: !hasSEO,
