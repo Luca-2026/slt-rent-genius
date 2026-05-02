@@ -6961,3 +6961,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
 };
+
+export function getProductSEO(productId: string): ProductSEOData | undefined {
+  return productSEOData[productId];
+}
