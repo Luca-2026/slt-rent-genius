@@ -195,6 +195,17 @@ export default function LocalAreaPage() {
         </div>
       </section>
 
+      {/* Local SEO Long Description (Sprint 4) */}
+      {area.longDescription && (
+        <section className="py-12 lg:py-16 bg-background border-b border-border">
+          <div className="section-container max-w-4xl">
+            <div className="prose prose-lg max-w-none text-foreground/90 leading-relaxed whitespace-pre-line">
+              {area.longDescription}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Trust Badges */}
       <section className="py-10 bg-surface-light border-b border-border">
         <div className="section-container">
