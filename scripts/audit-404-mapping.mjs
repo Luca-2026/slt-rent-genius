@@ -206,9 +206,44 @@ function normalizeSlug(s) {
     .replace(/^-|-$/g, "");
 }
 
-// Tokenize → entferne sehr kurze + reine Zahlen-Wörter werden behalten (oft Maße/kg)
+// Compound-Splits, die GSC-Slugs vs. neue Produkt-IDs angleichen.
+// Linke Seite = altes Wort; rechte Seite = ersetzt durch (Whitespace-getrennte
+// Sub-Tokens). Bewusst nur Anhänger/Strom/Bagger-Domäne, keine Erfindungen.
+const COMPOUND_SPLITS = {
+  planenanhanger: "planen anhanger",
+  planenanhaenger: "planen anhanger",
+  kofferanhanger: "koffer anhanger",
+  kofferanhaenger: "koffer anhanger",
+  motorradanhanger: "motorrad anhanger",
+  motorradanhaenger: "motorrad anhanger",
+  autotransportanhanger: "autotransport anhanger",
+  autotransportanhaenger: "autotransport anhanger",
+  autotransportkippanhanger: "autotransport kipp anhanger",
+  plattformanhanger: "plattform anhanger",
+  plattformanhaenger: "plattform anhanger",
+  baumaschinenanhanger: "baumaschinen anhanger",
+  stromaggregat: "stromaggregat aggregat",
+  scherenbuhne: "scheren buehne",
+  scherenbuehne: "scheren buehne",
+  warmhalteplatte: "warmhalte platte",
+  heizlufter: "heizluefter heizung",
+  heizpilz: "heiz pilz",
+  baumstumpffrase: "baumstumpf fraese",
+  baumstumpffraese: "baumstumpf fraese",
+  treppenturm: "treppen turm",
+  rollgerust: "roll geruest",
+  rollgeruest: "roll geruest",
+};
+
+// Tokenize → entferne sehr kurze, splitte bekannte Compounds, behalte Zahlen
 function tokenize(slug) {
-  return normalizeSlug(slug).split("-").filter((t) => t.length >= 2);
+  const norm = normalizeSlug(slug);
+  const expanded = norm
+    .split("-")
+    .map((t) => COMPOUND_SPLITS[t] ?? t)
+    .join(" ")
+    .split(/\s+/);
+  return expanded.filter((t) => t.length >= 2);
 }
 
 function levenshtein(a, b) {
