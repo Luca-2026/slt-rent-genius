@@ -510,7 +510,7 @@ for (const loc of locations as LocationData[]) {
       const krefeldHasIt = KREFELD_PRODUCT_INDEX.has(`${catId}/${p.id}`);
       const canonical =
         loc.id !== "krefeld" && krefeldHasIt
-          ? `${BASE_URL}/mieten/krefeld/${catId}/${p.id}`
+          ? `/mieten/krefeld/${catId}/${p.id}`
           : undefined;
 
       PRODUCT_ROUTES.push({
