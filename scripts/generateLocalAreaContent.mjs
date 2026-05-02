@@ -143,7 +143,9 @@ function validate(area, bucket, text) {
   const wc = countWords(text);
   if (wc < 130 || wc > 200) errors.push(`word_count=${wc} (need 130-200)`);
 
-  const nameHits = countOccurrences(text, area.name);
+  // Use the bare city name (strip parenthetical like "Duisburg (West)" -> "Duisburg")
+  const bareName = area.name.replace(/\s*\(.*?\)\s*/g, "").trim();
+  const nameHits = countOccurrences(text, bareName);
   if (nameHits < 2) errors.push(`name_count=${nameHits} (<2)`);
   if (nameHits > 5) errors.push(`name_count=${nameHits} (>5)`);
 
