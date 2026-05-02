@@ -13,7 +13,8 @@ const productMap = new Map(products.map(p => [p.id, p]));
 const cachedFiles = fs.readdirSync(RESULTS_DIR).filter(f => f.endsWith(".json"));
 const cached = cachedFiles.map(f => {
   const data = JSON.parse(fs.readFileSync(path.join(RESULTS_DIR, f), "utf8"));
-  return { id: f.replace(/\.json$/, ""), ...data };
+  const g = data.generated || data;
+  return { id: data.id || f.replace(/\.json$/, ""), ...g };
 });
 
 const skips = fs.existsSync(SKIP_LOG) ? JSON.parse(fs.readFileSync(SKIP_LOG, "utf8")) : [];
