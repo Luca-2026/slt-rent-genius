@@ -102,8 +102,8 @@ for (const c of anhCached) {
   console.log("─".repeat(70));
   console.log(`◆ ${p?.name}  (${c.id})`);
   console.log(`  Kat: ${p?.category}`);
-  console.log(`  BAU:    ${c.useCaseBauProfi || c.useCases?.bauProfi || "—"}`);
-  console.log(`  PRIVAT: ${c.useCasePrivatGarten || c.useCases?.privatGarten || "—"}`);
-  console.log(`  EVENT:  ${c.useCaseEventGastronomie || c.useCases?.eventGastronomie || "—"}`);
+  console.log(`  BAU:    ${c.useCaseBau || "—"}`);
+  console.log(`  PRIVAT: ${c.useCasePrivat || "—"}`);
+  console.log(`  EVENT:  ${c.useCaseEvent || "—"}`);
   console.log("");
 }
