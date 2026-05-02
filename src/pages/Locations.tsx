@@ -55,6 +55,86 @@ export default function Locations() {
         </div>
       </section>
 
+      {/* Standort-Story – only when a specific location is requested and has story data */}
+      {hasStory && storyLocation && (
+        <section className="py-8 md:py-12 lg:py-16 bg-background border-b border-border">
+          <div className="section-container max-w-4xl">
+            <AnimatedSection animation="fade-in-up">
+              {storyLocation.storyHeadline && (
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-headline mb-4">
+                  {storyLocation.storyHeadline}
+                </h2>
+              )}
+              {storyLocation.storyIntro && (
+                <p className="text-base md:text-lg text-body leading-relaxed mb-6">
+                  {storyLocation.storyIntro}
+                </p>
+              )}
+              {storyLocation.storyParagraphs?.map((p, i) => (
+                <p key={i} className="text-sm md:text-base text-body leading-relaxed mb-4">
+                  {p}
+                </p>
+              ))}
+
+              {storyLocation.cataloguePromise && (
+                <div className="mt-6 p-4 md:p-5 bg-surface-light border-l-4 border-accent rounded-r-md">
+                  <p className="text-sm md:text-base font-semibold text-headline">
+                    {storyLocation.cataloguePromise}
+                  </p>
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+                {storyLocation.deliveryRadius && storyLocation.deliveryRadius.length > 0 && (
+                  <div>
+                    <h3 className="text-sm md:text-base font-semibold text-headline mb-3">
+                      Liefergebiet
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {storyLocation.deliveryRadius.map((city) => (
+                        <span
+                          key={city}
+                          className="inline-flex items-center bg-surface-light text-body text-xs md:text-sm px-3 py-1 rounded-full border border-border"
+                        >
+                          {city}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {storyLocation.industryFocus && storyLocation.industryFocus.length > 0 && (
+                  <div>
+                    <h3 className="text-sm md:text-base font-semibold text-headline mb-3">
+                      Branchen-Fokus
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {storyLocation.industryFocus.map((ind) => (
+                        <span
+                          key={ind}
+                          className="inline-flex items-center bg-primary/10 text-primary text-xs md:text-sm px-3 py-1 rounded-full"
+                        >
+                          {ind}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {storyLocation.futurePromise && (
+                <div className="mt-6 p-4 md:p-5 bg-accent/10 border border-accent/30 rounded-md">
+                  <p className="text-sm md:text-base text-body">
+                    <span className="font-semibold text-headline">Ausblick: </span>
+                    {storyLocation.futurePromise}
+                  </p>
+                </div>
+              )}
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Locations Grid – always 3 side by side */}
       <section className="py-6 md:py-10 lg:py-20">
         <div className="section-container">
