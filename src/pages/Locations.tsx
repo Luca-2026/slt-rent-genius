@@ -28,6 +28,8 @@ export default function Locations() {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const locMeta = id ? locationSeoMeta[id] : undefined;
+  const storyLocation = id ? locationData.find((l) => l.id === id) : undefined;
+  const hasStory = !!(storyLocation && (storyLocation.storyHeadline || storyLocation.storyIntro || storyLocation.storyParagraphs?.length));
 
   return (
     <Layout>
