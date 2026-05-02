@@ -21,6 +21,11 @@ export interface LocationHours {
   time: string;
 }
 
+export type LocationServiceCharacter =
+  | "full-warehouse"
+  | "service-handover"
+  | "delivery-only";
+
 export interface LocationInfo {
   id: string;
   name: string;
@@ -37,6 +42,16 @@ export interface LocationInfo {
   hoursNote?: string;
   features: string[];
   mapUrl: string;
+
+  // Optional standort-story fields (Sprint 1)
+  storyHeadline?: string;
+  storyIntro?: string;
+  storyParagraphs?: string[];
+  serviceCharacter?: LocationServiceCharacter;
+  cataloguePromise?: string;
+  deliveryRadius?: string[];
+  industryFocus?: string[];
+  futurePromise?: string;
 }
 
 export const locationData: LocationInfo[] = [
