@@ -31,6 +31,7 @@ import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerA
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
+import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { useTranslation } from "react-i18next";
 
