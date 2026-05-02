@@ -69,12 +69,11 @@ function dumpFull(label, c) {
   console.log("─".repeat(70));
   console.log(`metaTitle:       ${c.metaTitle}`);
   console.log(`metaDescription: ${c.metaDescription}`);
-  console.log(`h2s:             ${JSON.stringify(c.h2s, null, 2)}`);
-  console.log(`useCaseBauProfi:        ${c.useCaseBauProfi || c.useCases?.bauProfi || "—"}`);
-  console.log(`useCasePrivatGarten:    ${c.useCasePrivatGarten || c.useCases?.privatGarten || "—"}`);
-  console.log(`useCaseEventGastronomie:${c.useCaseEventGastronomie || c.useCases?.eventGastronomie || "—"}`);
-  if (c.faq) console.log(`FAQ:`); 
-  if (c.faq) console.log(JSON.stringify(c.faq, null, 2));
+  console.log(`h2s:             ${JSON.stringify(c.h2s)}`);
+  console.log(`useCaseBau:      ${c.useCaseBau || "—"}`);
+  console.log(`useCasePrivat:   ${c.useCasePrivat || "—"}`);
+  console.log(`useCaseEvent:    ${c.useCaseEvent || "—"}`);
+  if (c.faq) console.log(`FAQ: ${JSON.stringify(c.faq, null, 2)}`);
 }
 
 const sampleAnh = findCachedByPredicate((p) => /anh[äa]nger|trailer/i.test(p.category || "") || /anh[äa]nger/i.test(p.name || ""));
