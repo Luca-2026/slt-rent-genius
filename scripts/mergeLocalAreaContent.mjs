@@ -23,8 +23,12 @@ const before = src;
 let added = 0, updated = 0;
 
 for (const [slug, text] of Object.entries(cache)) {
-  // Escape for embedding in TS string literal (double-quoted)
-  const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  // Escape for embedding in TS string literal (double-quoted, single-line)
+  const escaped = text
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\r\n/g, "\n")
+    .replace(/\n/g, "\\n");
 
   // Find the area block by slug
   const slugRe = new RegExp(`(\\{\\s*\\n\\s*slug:\\s*"${slug}",[\\s\\S]*?keywords:\\s*\\[[^\\]]*\\],?)([\\s\\S]*?\\n\\s*\\},)`);
