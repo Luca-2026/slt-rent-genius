@@ -75,6 +75,27 @@ export const locationData: LocationInfo[] = [
     hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
     features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
+    serviceCharacter: "full-warehouse",
+    storyHeadline: "Ihr zentraler Mietpark am Niederrhein",
+    storyIntro:
+      "Krefeld ist unser Hauptstandort. Hier liegt unser Zentrallager mit dem kompletten Sortiment, dem Service-Team und der Werkstatt. Direkt an der A44, mit kurzen Wegen ins gesamte westliche NRW.",
+    storyParagraphs: [
+      "Vom Standort Krefeld-Fichtenhain (Anrather Straße 291) aus betreuen wir Kunden in ganz Nordrhein-Westfalen. Hier finden Sie unser komplettes Mietsortiment vor Ort: über 350 Geräte und Maschinen, vom Minibagger bis zum kompletten Eventaufbau, von der Anhängerflotte bis zum Stromaggregat.",
+      "Unser Niederrhein-Einzugsgebiet umfasst Krefeld selbst, die Nachbarstädte Meerbusch, Willich und Kaarst sowie die Großstädte Düsseldorf, Mönchengladbach und Duisburg-West. Lieferung und Abholung im Stadtgebiet sind in der Regel taggleich möglich.",
+      "Krefeld ist gleichzeitig unser logistischer Hub: Geräte, die an unseren weiteren Standorten Bonn und Mülheim an der Ruhr benötigt werden, kommen aus Krefeld – meist innerhalb von 24 Stunden. Unsere Werkstatt sorgt für lückenlose Wartung und schnelle Reparatur, damit das Equipment immer einsatzbereit ist.",
+    ],
+    cataloguePromise: "Komplettes Mietsortiment vor Ort verfügbar.",
+    deliveryRadius: [
+      "Krefeld",
+      "Meerbusch",
+      "Willich",
+      "Kaarst",
+      "Mönchengladbach",
+      "Düsseldorf",
+      "Neuss",
+      "Duisburg-West",
+    ],
+    industryFocus: ["Bauwirtschaft", "GaLaBau", "Eventbranche", "Industrie Niederrhein"],
   },
   {
     id: "bonn",
