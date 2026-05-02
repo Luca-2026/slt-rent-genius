@@ -879,6 +879,9 @@ export default function ProductDetail() {
                 categoryId={categoryId}
               />
 
+              {/* Standort-Verfügbarkeitshinweis (Sprint 2) */}
+              {locationId && <StandortVerfuegbarkeit locationId={locationId} />}
+
               {/* SEO Content Block */}
               <ProductSEOContent
                 product={product}
