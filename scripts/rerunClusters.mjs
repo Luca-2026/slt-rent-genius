@@ -114,7 +114,7 @@ const PROFILES = {
     event: "—",
   },
   "kasten-laubgitter-1300": {
-    size_class: "Kastenanhänger 1300 kg zGG mit Laubgitter-Aufsatz. Mehr Nutzlast als das 750er Modell, dadurch auch für schwereres Sperrmaterial geeignet.",
+    size_class: "Kastenanhänger 1300 kg zulässiges Gesamtgewicht mit Laubgitter-Aufsatz. Größere Variante mit höherer Nutzlast und mehr Volumen für schwereres Sperrmaterial. WICHTIG: Erwähne KEINE anderen Gewichtsklassen oder Vergleichszahlen wie 750 kg – nur 1300 kg ist relevant.",
     differentiator: ["Laubgitter", "1300"],
     bau: "Transport größerer Mengen an Verschnitt, leichten Abbruchmaterialien oder Dämmstoffen in einer Fuhre.",
     privat: "Großzügige Garten-Entrümpelung, Transport großer Mengen Grünschnitt oder kompletter Heckenrückschnitte.",
