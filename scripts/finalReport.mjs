@@ -31,7 +31,7 @@ const redCount = skips.filter(s => s.reason === "RED-grade").length;
 const valCount = skips.length - redCount;
 console.log(`  davon ROT:          ${redCount}`);
 console.log(`  davon Validator:    ${valCount}`);
-const expected = PLAN.bucketA.length + PLAN.bucketB.length;
+const expected = planTotal;
 const accountedFor = cached.length + skips.length;
 console.log(`Plan-Abdeckung:       ${cached.length}/${expected} = ${(cached.length/expected*100).toFixed(1)}%`);
 console.log(`Sum check:            ${accountedFor} (cached+skips) vs ${expected} expected`);
