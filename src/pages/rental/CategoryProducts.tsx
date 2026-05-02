@@ -195,12 +195,8 @@ export default function CategoryProducts() {
         );
       }
 
-      // Type filters
-      if (trailerFilters.types.length > 0) {
-        filtered = filtered.filter((p) =>
-          trailerFilters.types.some((type) => p.tags?.includes(type))
-        );
-      }
+      // Type filters are applied below with name-based fallback (see "Type filters (fallback to name…)").
+
 
       // Braking filters
       if (trailerFilters.braking.length > 0) {
