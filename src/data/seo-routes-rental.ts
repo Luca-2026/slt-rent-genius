@@ -505,6 +505,14 @@ for (const loc of locations as LocationData[]) {
       ];
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
+      // Krefeld-First Canonical: Bonn/Mülheim → Krefeld, sofern dort vorhanden.
+      // Krefeld-Produkte und Standort-eigene Produkte bleiben self-canonical.
+      const krefeldHasIt = KREFELD_PRODUCT_INDEX.has(`${catId}/${p.id}`);
+      const canonical =
+        loc.id !== "krefeld" && krefeldHasIt
+          ? `${BASE_URL}/mieten/krefeld/${catId}/${p.id}`
+          : undefined;
+
       PRODUCT_ROUTES.push({
         path: `/mieten/${loc.id}/${catId}/${p.id}`,
         routeType: "product",
@@ -526,6 +534,7 @@ for (const loc of locations as LocationData[]) {
         description,
         h1,
         intro,
+        canonical,
         ogType: "product",
         // Products without SEO content → noindex (still rendered for SPA)
         noindex: !hasSEO,
