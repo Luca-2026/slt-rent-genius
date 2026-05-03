@@ -549,6 +549,13 @@ export default function ProductDetail() {
                     </p>
                   </div>
                 )}
+
+                {/* Bundle-Hinweis: Baumaschinenanhänger für Selbstabholer (Arbeitsbühnen/Erdbewegung) */}
+                {(categoryId === "arbeitsbuehnen" || categoryId === "erdbewegung") && location && (
+                  <div className="border-t border-border pt-4">
+                    <BaumaschinenanhaengerBundleHint locationId={location.id} variant="compact" />
+                  </div>
+                )}
               </div>
 
               {/* Technical Specifications */}
