@@ -340,6 +340,14 @@ export const bonnAggregateProducts = [
     images: [kompressor1_2m3_1, kompressor1_2m3_2],
   },
   {
+    id: "bonn-kompressor-2m3-bobcat-pa72",
+    name: "2 m³ Kompressor",
+    modelName: "Bobcat PA7.2",
+    description: "Mobiler Bau-Kompressor (Diesel) mit 2,0 m³/min bei 7 bar – ideal für Druckluftwerkzeuge und Erdraketen. Auf Anfrage.",
+    image: kompressor2m3_1,
+    images: [kompressor2m3_1],
+  },
+  {
     id: "bonn-presslufthammer-tex21pe-aggregat",
     name: "Presslufthammer 21 kg",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
