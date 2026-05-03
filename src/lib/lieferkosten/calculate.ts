@@ -107,12 +107,13 @@ export function calculatePrice(params: CalculatePriceParams): PriceResult {
     });
   }
 
-  // 5. Möbel-Stück (linear über Schwelle)
+  // 5. Möbel-Stück (Aufschlag nur für Stücke ab/über der Schwelle)
   if (kategorie === "moebel-zelte" && moebelStueck >= ZUSATZKOSTEN.moebel.schwelle_stueck) {
-    const aufpreis = moebelStueck * ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck;
+    const zaehlbar = moebelStueck - (ZUSATZKOSTEN.moebel.schwelle_stueck - 1); // ab dem 5. Stück
+    const aufpreis = zaehlbar * ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck;
     summe += aufpreis;
     breakdown.push({
-      label: `+ Möbel-Aufschlag (${moebelStueck} × ${ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck} €)`,
+      label: `+ Möbel-Aufschlag (${zaehlbar} × ${ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck} €)`,
       betrag: aufpreis,
       laufendeSumme: summe,
     });
