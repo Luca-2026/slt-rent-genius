@@ -35,6 +35,9 @@ export default function Lieferung() {
   const [aufbauService, setAufbauService] = useState(false);
   // Möbel
   const [moebelAnzahl, setMoebelAnzahl] = useState(0);
+  const [moebelAufbauService, setMoebelAufbauService] = useState(false);
+  const [moebelAufbauStueck, setMoebelAufbauStueck] = useState(0);
+  const [moebelAufbauZelte, setMoebelAufbauZelte] = useState(0);
 
   const config = categoryConfigs[categoryKey];
   const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
