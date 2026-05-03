@@ -3,48 +3,133 @@ import { useLocation } from "react-router-dom";
 
 const RTR_ACCESS_TOKEN = "W74e1e543828256d3b730a73f09c72c2d";
 const RTR_WIDGET_SRC = "https://cdn.rtr-io.com/widgets.js";
+const IDLE_FALLBACK_MS = 3000;
 
 /**
  * RentwareLoader
  *
- * Dynamically injects the Rentware widget script + <rtr-checkout> element
- * AFTER React has mounted. This prevents the external script from blocking
- * the initial React render in embedded previews (e.g. Lovable chat iframe).
+ * Lazily injects the Rentware widget script + <rtr-checkout> element to keep
+ * it off the critical path. The widget bundle (~1 MB across multiple chunks)
+ * was previously blocking LCP for ~17s on mobile.
  *
- * Also positions the cart widget and hides it on B2B routes.
+ * Loading triggers (whichever comes first):
+ *   1) First user interaction hint (pointerdown / touchstart / keydown / scroll)
+ *   2) requestIdleCallback (fallback: setTimeout 3s)
+ *   3) A custom "rtr:load" event – fired by components that need the cart now
+ *      (e.g. <LazyRentwareWidget> on focus, Booking dialog on open).
+ *
+ * Hides the cart on B2B routes.
  */
 export function RentwareLoader() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
-  const injectedRef = useRef(false);
+  const loadedRef = useRef(false);
 
-  // 1) Inject Rentware script + element once after mount
+  // Lazy script injection
   useEffect(() => {
-    if (injectedRef.current) return;
-    injectedRef.current = true;
-
-    // Set global access token
     (window as any).RTR_ACCESS_TOKEN = RTR_ACCESS_TOKEN;
 
-    // Create <rtr-checkout> element
-    if (!document.querySelector("rtr-checkout")) {
-      const el = document.createElement("rtr-checkout");
-      document.body.appendChild(el);
+    const inject = () => {
+      if (loadedRef.current) return;
+      loadedRef.current = true;
+
+      if (!document.querySelector("rtr-checkout")) {
+        const el = document.createElement("rtr-checkout");
+        document.body.appendChild(el);
+      }
+
+      if (!document.querySelector(`script[src="${RTR_WIDGET_SRC}"]`)) {
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = RTR_WIDGET_SRC;
+        script.onerror = (e) => {
+          console.warn("[RentwareLoader] Failed to load widget script.", e);
+        };
+        document.body.appendChild(script);
+      }
+    };
+
+    const events: (keyof DocumentEventMap)[] = [
+      "pointerdown",
+      "touchstart",
+      "keydown",
+      "scroll",
+    ];
+    const onInteract = () => {
+      cleanup();
+      inject();
+    };
+    const onCustom = () => {
+      cleanup();
+      inject();
+    };
+    const cleanup = () => {
+      events.forEach((ev) =>
+        document.removeEventListener(ev, onInteract, { capture: true } as any),
+      );
+      window.removeEventListener("rtr:load", onCustom);
+    };
+
+    events.forEach((ev) =>
+      document.addEventListener(ev, onInteract, {
+        once: true,
+        passive: true,
+        capture: true,
+      } as AddEventListenerOptions),
+    );
+    window.addEventListener("rtr:load", onCustom, { once: true });
+
+    // If the current page mounts a Rentware element (category / product /
+    // booking pages), load immediately so availability shows up without
+    // requiring user interaction. Poll briefly because React may still be
+    // mounting the route.
+    const checkForRtrEl = () => {
+      if (loadedRef.current) return true;
+      const found = !!document.querySelector(
+        "rtr-search, rtr-article-booking, rtr-availability, rtr-product",
+      );
+      if (found) {
+        cleanup();
+        inject();
+        return true;
+      }
+      return false;
+    };
+    if (!checkForRtrEl()) {
+      let tries = 0;
+      const poll = window.setInterval(() => {
+        if (checkForRtrEl() || ++tries > 10) window.clearInterval(poll);
+      }, 200);
     }
 
-    // Load script
-    if (!document.querySelector(`script[src="${RTR_WIDGET_SRC}"]`)) {
-      const script = document.createElement("script");
-      script.type = "module";
-      script.src = RTR_WIDGET_SRC;
-      script.onerror = (e) => {
-        console.warn("[RentwareLoader] Failed to load widget script – continuing without it.", e);
-      };
-      document.body.appendChild(script);
+    // Idle fallback so the cart is ready even without interaction
+    const ric = (window as any).requestIdleCallback as
+      | ((cb: () => void, opts?: { timeout: number }) => number)
+      | undefined;
+    let idleHandle: number | undefined;
+    let timeoutHandle: number | undefined;
+    if (ric) {
+      idleHandle = ric(() => {
+        cleanup();
+        inject();
+      }, { timeout: IDLE_FALLBACK_MS });
+    } else {
+      timeoutHandle = window.setTimeout(() => {
+        cleanup();
+        inject();
+      }, IDLE_FALLBACK_MS);
     }
+
+    return () => {
+      cleanup();
+      if (idleHandle && (window as any).cancelIdleCallback) {
+        (window as any).cancelIdleCallback(idleHandle);
+      }
+      if (timeoutHandle) window.clearTimeout(timeoutHandle);
+    };
   }, []);
 
-  // 2) Position / hide the cart widget
+  // Position / hide the cart widget
   useEffect(() => {
     let observer: MutationObserver | null = null;
 
@@ -67,7 +152,6 @@ export function RentwareLoader() {
       el.style.width = "56px";
       el.style.height = "56px";
 
-      // Shadow DOM style injection
       if (el.shadowRoot) {
         let styleTag = el.shadowRoot.querySelector("#slt-pos-override") as HTMLStyleElement;
         if (!styleTag) {
