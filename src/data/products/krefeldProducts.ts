@@ -1771,9 +1771,23 @@ export const werkzeugeProducts: Product[] = [
       "Arbeitsdruck": "7 bar",
     },
   },
+  {
+    id: "erdrakete-75mm",
+    name: "Erdrakete 75 mm",
+    description: "Druckluftbetriebene Grundomat Erdrakete mit 75 mm Durchmesser – für grabenlose Rohrverlegung mit hoher Schlagkraft. Auf Anfrage.",
+    image: imgErdrakete75mm,
+    images: [imgErdrakete75mm],
+    category: "erdrakete",
+    detailedDescription: "Die Grundomat Erdrakete 75 mm ist ein leistungsstarkes Bodenverdrängungsgerät für die grabenlose Verlegung von Leerrohren, Kabeln und Hausanschlüssen. Dank hoher Durchschlagskraft und zuverlässiger Vortriebsleistung ist sie flexibel im Rohrleitungsbau einsetzbar – z. B. für die Unterquerung von Straßen, Gebäuden oder Gleisanlagen, für Hausanschlüsse von Gas, Wasser und Glasfaser (FTTH) sowie vertikal für Pfahlgründungen zum Setzen von Schildern und Pfosten.",
+    specifications: {
+      "Hersteller": "Tracto-Technik (Grundomat)",
+      "Durchmesser": "75 mm",
+      "Länge": "1.465 mm",
+      "Gewicht": "34 kg",
+      "Luftverbrauch": "1 m³/min",
+    },
+  },
 ];
-
-// ============= GARTENPFLEGE =============
 export const gartenpflegeProducts: Product[] = [
   {
     id: "akku-kettensaege-gke18v-40",
