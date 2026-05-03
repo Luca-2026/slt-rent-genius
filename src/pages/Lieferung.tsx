@@ -288,10 +288,12 @@ export default function Lieferung() {
                     </div>
 
                     <div className="border-t pt-4 space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Tarif:</span>
-                        <span className="font-medium text-right">{activeTarif} – {tariff.vehicle}</span>
-                      </div>
+                      {(activeSubtype || config.label) && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Auswahl:</span>
+                          <span className="font-medium text-right">{activeSubtype?.label ?? config.label}</span>
+                        </div>
+                      )}
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Entfernung:</span>
                         <span className="font-medium">bis {result.distanceUsed} km</span>
