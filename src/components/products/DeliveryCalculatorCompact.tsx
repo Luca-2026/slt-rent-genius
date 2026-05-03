@@ -5,8 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Truck, MapPin, Calculator, ArrowRight, Info } from "lucide-react";
+import { Truck, MapPin, Calculator, ArrowRight, Info, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   tariffs,
@@ -137,36 +136,40 @@ export function DeliveryCalculatorCompact({
         {showCategoryDropdown && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">{t("rental.deviceCategory")}</Label>
-            <Select value={categoryKey} onValueChange={handleCategoryChange}>
-              <SelectTrigger className="w-full bg-background">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-background z-50 max-h-[400px]">
+            <div className="relative">
+              <select
+                value={categoryKey}
+                onChange={(event) => handleCategoryChange(event.target.value)}
+                className="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 {allCategoryEntries.map(([key, cfg]) => (
-                  <SelectItem key={key} value={key}>
+                  <option key={key} value={key}>
                     {cfg.label}
-                  </SelectItem>
+                  </option>
                 ))}
-              </SelectContent>
-            </Select>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            </div>
           </div>
         )}
 
         {showSubtypeSwitch && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">Gerätetyp</Label>
-            <Select value={subtypeKey ?? ""} onValueChange={(v) => setSubtypeKey(v)}>
-              <SelectTrigger className="w-full bg-background">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-background z-50">
+            <div className="relative">
+              <select
+                value={subtypeKey ?? ""}
+                onChange={(event) => setSubtypeKey(event.target.value)}
+                className="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 {config.subtypes!.map((s) => (
-                  <SelectItem key={s.key} value={s.key}>
+                  <option key={s.key} value={s.key}>
                     {s.label}
-                  </SelectItem>
+                  </option>
                 ))}
-              </SelectContent>
-            </Select>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            </div>
           </div>
         )}
 
