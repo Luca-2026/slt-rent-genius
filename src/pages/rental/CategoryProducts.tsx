@@ -23,6 +23,7 @@ import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
+import { moebelZelteContent } from "@/data/moebelZelteContent";
 
 export default function CategoryProducts() {
   const { t } = useTranslation();
@@ -1015,8 +1016,14 @@ export default function CategoryProducts() {
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
   };
   
-  const seoKeywords = categoryKeywordMap[category.id] || 
+  const seoKeywordsBase = categoryKeywordMap[category.id] || 
     `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
+
+  // Per-location overrides for moebel-zelte (richer SEO content)
+  const moebelOverride = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
+  const finalSeoTitle = moebelOverride?.metaTitle || seoTitle;
+  const finalSeoDescription = moebelOverride?.metaDescription || seoDescription;
+  const seoKeywords = moebelOverride?.keywords || seoKeywordsBase;
 
   // SEO text content for each category page (array of paragraphs)
   const categorySeoTexts: Record<string, string[]> = {
@@ -1199,7 +1206,9 @@ export default function CategoryProducts() {
     ],
   };
 
-  const faqs = categoryFaqs[category.id] || [
+  const moebelZelteCustom = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
+
+  const faqs = moebelZelteCustom?.faqs || categoryFaqs[category.id] || [
     { question: `Kann ich ${categoryDisplayName} in ${location.name} mieten?`, answer: `Ja! SLT Rental bietet ${categoryDisplayName} zur Miete in ${location.name} an. Wählen Sie aus ${products.length} verfügbaren Artikeln.` },
     { question: `Wie kann ich bei SLT Rental ${categoryDisplayName} reservieren?`, answer: `Sie können direkt über unsere Website buchen oder uns telefonisch bzw. per E-Mail kontaktieren. Auf-Anfrage-Artikel werden innerhalb eines Werktages bestätigt.` },
     { question: `Bietet SLT Rental Lieferung für ${categoryDisplayName} an?`, answer: `Ja, wir liefern ${categoryDisplayName} direkt zu Ihrem Einsatzort in ${location.name} und Umgebung. Die Lieferkosten können Sie mit unserem Online-Rechner ermitteln.` },
@@ -1246,8 +1255,8 @@ export default function CategoryProducts() {
   return (
     <Layout>
       <SEO
-        title={seoTitle}
-        description={seoDescription}
+        title={finalSeoTitle}
+        description={finalSeoDescription}
         canonical={seoCanonical}
         keywords={seoKeywords}
         jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
@@ -1290,7 +1299,7 @@ export default function CategoryProducts() {
                 {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
-                {category.description}
+                {moebelOverride?.heroLead || category.description}
               </p>
             </div>
           </div>
@@ -1749,19 +1758,55 @@ export default function CategoryProducts() {
           <div className="section-container">
             <div className="max-w-3xl mx-auto prose prose-sm">
               <h2 className="text-xl font-bold text-headline mb-4">
-                {categoryDisplayName} mieten in {location.name} – günstig & unkompliziert
+                {moebelOverride?.bottomHeadline || `${categoryDisplayName} mieten in ${location.name} – günstig & unkompliziert`}
               </h2>
-              <p className="text-muted-foreground mb-4">
-                {categorySeoTexts[category.id]?.[0] || `Bei SLT Rental in ${location.name} finden Sie ${categoryDisplayName} zur Miete – schnell, fair und unkompliziert. Ob für Ihr Bauprojekt, Ihren Garten oder Ihr Event: Wir haben das passende Equipment für Sie.`}
-              </p>
-              {/* Erdbewegung: hide extra paragraphs on mobile, collapsible */}
-              <p className="text-muted-foreground mb-4">
-                {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
-              </p>
-              {categorySeoTexts[category.id]?.[2] && (
-                <p className="text-muted-foreground">
-                  {categorySeoTexts[category.id][2]}
-                </p>
+              {moebelOverride ? (
+                <>
+                  {moebelOverride.sections.map((sec, sIdx) => (
+                    <div key={sIdx} className="mb-6">
+                      <h3 className="text-lg font-semibold text-headline mt-6 mb-3">{sec.h2}</h3>
+                      {sec.paragraphs.map((p, pIdx) => (
+                        <p key={pIdx} className="text-muted-foreground mb-3">{p}</p>
+                      ))}
+                      {sec.table && (
+                        <div className="overflow-x-auto mt-3">
+                          <table className="w-full text-sm border border-border">
+                            <thead className="bg-muted">
+                              <tr>
+                                {sec.table.headers.map((h, i) => (
+                                  <th key={i} className="px-3 py-2 text-left font-semibold text-foreground border-b border-border">{h}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {sec.table.rows.map((row, ri) => (
+                                <tr key={ri} className="border-b border-border last:border-0">
+                                  {row.map((cell, ci) => (
+                                    <td key={ci} className="px-3 py-2 text-muted-foreground">{cell}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <p className="text-muted-foreground mb-4">
+                    {categorySeoTexts[category.id]?.[0] || `Bei SLT Rental in ${location.name} finden Sie ${categoryDisplayName} zur Miete – schnell, fair und unkompliziert. Ob für Ihr Bauprojekt, Ihren Garten oder Ihr Event: Wir haben das passende Equipment für Sie.`}
+                  </p>
+                  <p className="text-muted-foreground mb-4">
+                    {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
+                  </p>
+                  {categorySeoTexts[category.id]?.[2] && (
+                    <p className="text-muted-foreground">
+                      {categorySeoTexts[category.id][2]}
+                    </p>
+                  )}
+                </>
               )}
 
               {/* FAQ Section */}
