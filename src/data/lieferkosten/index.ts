@@ -109,8 +109,8 @@ export interface CategoryConfig {
 
 export const categoryConfigs: Record<string, CategoryConfig> = {
   werkzeuge: { defaultTarif: "A", label: "Werkzeuge (Zwangsmischer, Häcksler, Steinsäge, Fugenschneider)" },
-  verdichtung: { defaultTarif: "A", label: "Verdichtung (Rüttelplatten etc.)", hinweis: "Bei großen Walzgeräten ggf. Tarif C/D" },
-  gartenpflege: { defaultTarif: "A", label: "Gartenpflege", hinweis: "Bei Großhäcksler ggf. Tarif C/D" },
+  verdichtung: { defaultTarif: "A", label: "Verdichtung (Rüttelplatten etc.)", hinweis: "Bei großen Walzgeräten individuelles Angebot" },
+  gartenpflege: { defaultTarif: "A", label: "Gartenpflege", hinweis: "Bei Großhäcksler individuelles Angebot" },
   aggregate: { defaultTarif: "A", label: "Aggregate / Stromerzeuger" },
   "kabel-stromverteiler": { defaultTarif: "A", label: "Kabel & Stromverteiler" },
   "heizung-trocknung": { defaultTarif: "A", label: "Heizung & Trocknung" },
