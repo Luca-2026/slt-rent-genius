@@ -2682,9 +2682,9 @@ import imgKaltFunkenfontaeneEinzeln4 from "@/assets/products/spezialeffekte/kalt
 export const bonnSpezialeffekteProducts = [
   {
     id: "kalt-funkenfontaene-einzeln",
-    name: "Kalt-Funkenfontäne, Einzelgerät",
-    description: "Mit diesem Gerät erzeugen Sie auf Knopfdruck spektakuläre Fontäneneffekte für jede Veranstaltung. Die bis zu 6 Meter hohen Funkenfontänen sind vollkommen ungefährlich und entwickeln weder Geruch noch Rauch.",
-    detailedDescription: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.\n\n✅ bis zu 6 Meter hohe Funkenfontänen\n✅ kinderleichte Bedienung über Fernbedienung oder DMX\n✅ Höhe stufenlos einstellbar\n✅ inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)\n\nJede weitere Minute Effektzeit wird mit 3,00 € berechnet.\n\nWichtiger Hinweis: Nach jeder Benutzung unbedingt „Clear Powder“ auf der Fernbedienung drücken – sonst verklumpt das Granulat im Gerät!",
+    name: "Kalt-Funkenfontäne (Spark / Sparkular), Einzelgerät",
+    description: "Kalt-Funkenfontäne (Spark / Sparkular) als Einzelgerät – auf Knopfdruck spektakuläre Funkeneffekte bis 6 m Höhe für jede Veranstaltung. Vollkommen ungefährlich, kein Geruch, kein Rauch – ideal für Indoor-Einsatz.",
+    detailedDescription: "Mit diesem Spark- bzw. Sparkular-Gerät erzeugen Sie auf Knopfdruck fantastische Kalt-Funkenfontänen für jegliche Veranstaltungen. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.\n\n✅ bis zu 6 Meter hohe Funkenfontänen\n✅ kinderleichte Bedienung über Fernbedienung oder DMX\n✅ Höhe stufenlos einstellbar\n✅ inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)\n\nJede weitere Minute Effektzeit wird mit 3,00 € berechnet.\n\nWichtiger Hinweis: Nach jeder Benutzung unbedingt „Clear Powder“ auf der Fernbedienung drücken – sonst verklumpt das Granulat im Gerät!",
     image: imgKaltFunkenfontaeneEinzeln1,
     images: [imgKaltFunkenfontaeneEinzeln1, imgKaltFunkenfontaeneEinzeln2, imgKaltFunkenfontaeneEinzeln3, imgKaltFunkenfontaeneEinzeln4],
     category: "funken",
