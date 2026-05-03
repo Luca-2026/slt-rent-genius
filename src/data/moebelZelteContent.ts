@@ -228,7 +228,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Partyzelte, Eventzelte und Bierzeltgarnituren mieten in Mülheim an der Ruhr. Tiefpreisgarantie, optionaler Aufbauservice, Lieferung im Ruhrgebiet. Online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Mülheim an der Ruhr, Partyzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Stehtisch mieten Mülheim, Zeltverleih Mülheim",
+      "Möbel und Zelte mieten Mülheim an der Ruhr, Partyzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Bierzeltgarnitur Set mieten Mülheim, Bierzeltgarnitur mit Hussen Mülheim, Festzeltgarnitur mieten Mülheim, Bierbankgarnitur mieten Mülheim, Biertische und Bänke mieten Mülheim, Stehtisch mieten Mülheim, Stehtisch mit Husse mieten Mülheim, Bistrotisch mieten Mülheim, Cocktailtisch mieten Mülheim, Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Zeltverleih Mülheim, Tische und Stühle mieten Mülheim",
     heroLead:
       "Ob Hochzeit im Garten an der Ruhr in Saarn, Familienfeier in Speldorf oder Vereinsjubiläum in Broich: Über die Filiale in Mülheim an der Ruhr stellt SLT Rental Zelte, Tische und Stühle für das westliche Ruhrgebiet bereit. Modulare Partyzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen sowie Stehtische und Stapelstühle – an der Ruhrtalstadt aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Mülheim an der Ruhr – Eventausstattung für das westliche Ruhrgebiet",
