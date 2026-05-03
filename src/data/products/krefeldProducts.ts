@@ -460,6 +460,10 @@ import imgKaltFunkenfontaene1 from "@/assets/products/kalt-funkenfontaene-1.jpeg
 import imgKaltFunkenfontaene2 from "@/assets/products/kalt-funkenfontaene-2.jpeg";
 import imgKaltFunkenfontaene3 from "@/assets/products/kalt-funkenfontaene-3.jpeg";
 import imgKaltFunkenfontaene4 from "@/assets/products/kalt-funkenfontaene-4.jpeg";
+import imgKaltFunkenfontaeneEinzeln1 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-1.jpg";
+import imgKaltFunkenfontaeneEinzeln2 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-2.jpeg";
+import imgKaltFunkenfontaeneEinzeln3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-3.jpeg";
+import imgKaltFunkenfontaeneEinzeln4 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-4.jpeg";
 import imgKaltFunkenfontaeneSet1 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-1.jpeg";
 import imgKaltFunkenfontaeneSet2 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-2.jpeg";
 import imgKaltFunkenfontaeneSet3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-3.jpeg";
