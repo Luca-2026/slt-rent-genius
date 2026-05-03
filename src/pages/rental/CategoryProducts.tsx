@@ -991,7 +991,11 @@ export default function CategoryProducts() {
     "moebel-zelte": `Partyzelte & Eventmöbel mieten in ${cityName}: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.`,
     "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
     spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
-    huepfburgen: `Hüpfburgen mieten in ${cityName}: Lamar, Wasserpark, Rollercoaster, Clown. Für Kindergeburtstage & Familienfeste – SLT Rental.`,
+    huepfburgen: location.id === "krefeld"
+      ? `Hüpfburg mieten in Krefeld ab 25 €/Tag: Lamar 2,8×2,1 m, Wasserpark 3×4 m mit Rutsche & Pool, Rollercoaster 4,9×4 m und Clown 6,1×5,2 m – inkl. Gebläse, Heringe & Plane.`
+      : location.id === "bonn"
+      ? `Hüpfburg mieten in Bonn ab 25 €/Tag: kompakte Lamar (2,8×2,1 m), Wasserpark mit Rutsche & Pool, Rollercoaster und XXL-Clown 6,1×5,2 m – doppelt vernäht, mit Gebläse.`
+      : `Hüpfburgen mieten in ${cityName} ab 25 €/Tag: Lamar, Wasserpark, Rollercoaster, Clown. Für Kindergeburtstage & Familienfeste – SLT Rental.`,
   };
   
   const seoDescription = categorySeoDescriptions[category.id] || 
@@ -1007,7 +1011,11 @@ export default function CategoryProducts() {
     werkzeuge: `Werkzeuge mieten ${location.name}, Fugenschneider mieten ${location.name}, Fliesenschneider mieten ${location.name}, Abbruchhammer mieten, Kernbohrer mieten, Zwangsmischer mieten, Winkelschleifer mieten, Mauerschlitzfräse mieten`,
     aggregate: `Stromaggregat mieten ${location.name}, Kompressor mieten ${location.name}, Baukompressor mieten, Generator mieten ${location.name}`,
     verdichtung: `Rüttelplatte mieten ${location.name}, Stampfer mieten ${location.name}, Verdichtungsgerät mieten, Betonrüttler mieten`,
-    huepfburgen: `Hüpfburg mieten ${location.name}, Hüpfburgen leihen, Kindergeburtstag Equipment ${location.name}`,
+    huepfburgen: location.id === "krefeld"
+      ? `Hüpfburg mieten Krefeld, Hüpfburg mieten Niederrhein, Hüpfburg Kindergeburtstag Krefeld, Hüpfburg mit Rutsche mieten Krefeld, Hüpfburg Wasserrutsche mieten Krefeld, große Hüpfburg mieten Krefeld, Hüpfburg Clown mieten Krefeld, Hüpfburg leihen Bockum Uerdingen Fischeln, HappyHop Lamar mieten`
+      : location.id === "bonn"
+      ? `Hüpfburg mieten Bonn, Hüpfburg mieten Bad Godesberg, Hüpfburg mieten Beuel, Hüpfburg Kindergeburtstag Bonn, Hüpfburg mit Wasserrutsche mieten Bonn, große Hüpfburg mieten Bonn, Hüpfburg Clown 6 m mieten Bonn, Hüpfburg leihen Rhein-Sieg-Kreis, Hüpfburg Sommerfest Bonn`
+      : `Hüpfburg mieten ${location.name}, Hüpfburgen leihen, Kindergeburtstag Equipment ${location.name}`,
     "leitern-gerueste": `Rollgerüst mieten ${location.name}, Leiter mieten ${location.name}, 12 Meter Leiter mieten, 10 Meter Leiter mieten, Gerüst leihen ${location.name}`,
     "heizung-trocknung": `Bautrockner mieten ${location.name}, Heizlüfter mieten, Trocknung mieten, Baustellen Heizlüfter mieten`,
     absperrtechnik: `Bauzaun mieten ${location.name}, Halteverbotsschilder mieten ${location.name}, Absperrgitter mieten, Warnbarke mieten`,
@@ -1066,9 +1074,17 @@ export default function CategoryProducts() {
       `Rüttelplatte mieten in ${location.name} – Vibrationsplatten und Vibrationsstampfer für Pflasterarbeiten, Erdverdichtung und Straßenbau. Bei SLT Rental finden Sie Verdichtungsgeräte für jeden Untergrund.`,
       `Ob Vorwärts-Rüttelplatte für leichte Pflasterarbeiten oder reversierbare Rüttelplatte für schwere Erdarbeiten – wir beraten Sie gerne zur richtigen Gerätewahl.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt bieten wir Wartung und Reparatur von Verdichtungstechnik aller Hersteller an – auch für Fremdgeräte." : ""}`,
     ],
-    huepfburgen: [
-      `Hüpfburg mieten in ${location.name} – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen und Designs für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Lieferung und Aufbau in ${location.name} und Umgebung möglich.`,
-      `Unsere Hüpfburgen sind TÜV-geprüft und werden sauber und einsatzbereit geliefert. Inkl. Gebläse. Attraktive Wochenend-Tarife für Samstag/Sonntag-Events.`,
+    huepfburgen: location.id === "krefeld" ? [
+      `Hüpfburg mieten in Krefeld ab 25 €/Tag – bei SLT Rental am Niederrhein wählen Sie aus vier Modellen: die kompakte HappyHop Lamar (2,80 × 2,10 × 1,85 m) mit Sicherheitsnetz und integriertem Basketballkorb für kleine Gärten, die Wasserpark-Hüpfburg (3,00 × 4,00 × 2,25 m) mit Kletterturm, Rutsche und Planschbecken für heiße Sommertage in Bockum oder Forstwald, die Rollercoaster-Burg (4,90 × 4,00 × 3,50 m, 1.100 W Gebläse) im Kirmes-Design für bis zu 6 Kinder und das XXL-Modell Hüpfburg Clown (6,10 × 5,20 × 5,90 m, 1.500 W Gebläse) als Highlight bei Schul- und Vereinsfesten in Fischeln, Uerdingen oder Linn.`,
+      `Alle Hüpfburgen werden mit Tragesack/Tragekiste, dem passenden Gebläse (300 W bis 1.500 W), Gewebeplane und 8 Heringen zur Bodenfixierung übergeben. Doppelt vernähte Nähte, max. 450 kg Belastung beim Clown- und Rollercoaster-Modell, Altersempfehlung in der Regel 3–16 Jahre. Vor der Buchung Stellfläche prüfen (z. B. 7 × 6 m beim Clown), ebener Untergrund (Rasen oder Asphalt) und ein Stromanschluss in Reichweite. Aufbau in ca. 5–10 Minuten möglich.`,
+      `Selbstabholung an unserer Filiale in Krefeld; Lieferung in Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg wird im Buchungsprozess transparent über den Lieferkostenrechner kalkuliert. Für mehrtägige Wochenend-Events am Niederrhein gelten attraktive Wochenendtarife – Endpreis und Verfügbarkeit sehen Sie tagesaktuell im Buchungsschritt. Tipp: Die Wasserpark-Hüpfburg muss trocken zurückgegeben werden.`,
+    ] : location.id === "bonn" ? [
+      `Hüpfburg mieten in Bonn ab 25 €/Tag – bei SLT Rental wählen Sie aus vier Modellen für jede Veranstaltungsgröße: die HappyHop Lamar (2,80 × 2,10 × 1,85 m) mit Sicherheitsnetz und Basketballkorb für Geburtstage in Bonner Stadtgärten, die Wasserpark-Burg (3,00 × 4,00 × 2,25 m) mit Kletterturm, Rutsche und Planschbecken für Sommertage am Rhein, die Rollercoaster-Burg (4,90 × 4,00 × 3,50 m) im Kirmes-Design für Schulfeste in Bad Godesberg oder Beuel und die XXL-Hüpfburg Clown (6,10 × 5,20 × 5,90 m, bis 6 Kinder) als Highlight bei Pfarr-, Kita- und Vereinsfesten im Rhein-Sieg-Kreis.`,
+      `Im Lieferumfang jeder Burg: Tragesack/Tragekiste, Gebläse (300 W bei der Lamar/Wasserpark, 1.100 W beim Rollercoaster, 1.500 W beim Clown), Gewebeplane und 8 Heringe für die Bodenfixierung. Alle Nähte doppelt vernäht, Belastbarkeit bis 450 kg bei den Großmodellen, Altersempfehlung 3–16 Jahre. Bitte vor der Buchung Stellfläche prüfen (kleine Modelle ca. 4 × 3 m, Clown 7 × 6 m), ebenen Untergrund sicherstellen und Stromanschluss in Reichweite einplanen.`,
+      `Abholung an unserer Filiale in Bonn; Lieferung in den Großraum Bonn – inklusive Bad Godesberg, Beuel, Endenich, Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim, Rheinbach und Bornheim – wird im Buchungsprozess transparent berechnet. Wochenendtarife für Samstag/Sonntag-Events sind vergünstigt. Hinweis: Die Wasserpark-Hüpfburg ist nur für Kinder bis ca. 60 kg und muss trocken zurückgegeben werden.`,
+    ] : [
+      `Hüpfburg mieten in ${location.name} ab 25 €/Tag – bei SLT Rental finden Sie Hüpfburgen in verschiedenen Größen für Kindergeburtstage, Schulfeste, Vereinsfeiern und Firmenfamilientage. Inkl. Gebläse, Gewebeplane und Bodenheringen. Lieferung und Aufbau auf Anfrage möglich.`,
+      `Unsere Hüpfburgen sind sauber, doppelt vernäht und werden einsatzbereit übergeben. Attraktive Wochenend-Tarife für Samstag/Sonntag-Events. Bitte vor der Buchung ebene Stellfläche und Stromanschluss prüfen.`,
     ],
     "leitern-gerueste": [
       `Rollgerüst und Leiter mieten in ${location.name} – Arbeitshöhen bis 8,4m für Maler-, Fassaden- und Montagearbeiten. Bei SLT Rental leihen Sie Steh- und Kombileitern sowie mobile Rollgerüste zum fairen Tagesmietpreis.`,
@@ -1165,8 +1181,21 @@ export default function CategoryProducts() {
       { question: `Welche Gartengeräte kann ich in ${location.name} mieten?`, answer: `Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Rasenmäher, Laubbläser und Stubbenfräsen – alles bei SLT Rental.` },
       { question: `Was kostet ein Häcksler mieten?`, answer: `Gartenhäcksler gibt es ab ca. 35 €/Tag. Professionelle Walzenhäcksler sind ab ca. 75 €/Tag verfügbar. Wochenend-Tarife sind besonders günstig.` },
     ],
-    huepfburgen: [
-      { question: `Was kostet eine Hüpfburg mieten in ${location.name}?`, answer: `Hüpfburgen gibt es bei SLT Rental ab ca. 69 €/Tag. Größere Modelle und Wochenend-Pakete sind ebenfalls verfügbar.` },
+    huepfburgen: location.id === "krefeld" ? [
+      { question: `Welche Hüpfburgen kann ich in Krefeld mieten?`, answer: `In Krefeld stehen vier Modelle bereit: HappyHop Lamar (2,80 × 2,10 × 1,85 m, mit Basketballkorb), Wasserpark 3 × 4 m (mit Kletterturm, Rutsche und Pool), Rollercoaster 4,90 × 4,00 m (Kirmes-Design, bis 6 Kinder, max. 450 kg) sowie die XXL-Hüpfburg Clown 6,10 × 5,20 × 5,90 m mit aufblasbarer Clown-Figur auf dem Dach.` },
+      { question: `Was kostet eine Hüpfburg mieten in Krefeld?`, answer: `Hüpfburgen gibt es bei SLT Rental in Krefeld bereits ab 25 €/Tag. Wochenend-Tarife für Samstag/Sonntag-Events sind vergünstigt. Den genauen Tagespreis pro Modell sehen Sie tagesaktuell im Buchungsprozess.` },
+      { question: `Was ist im Mietpreis enthalten?`, answer: `Im Lieferumfang jeder Hüpfburg sind Tragesack bzw. Tragekiste, das passende Gebläse (300 W beim Lamar- und Wasserpark-Modell, 1.100 W beim Rollercoaster, 1.500 W beim Clown), Gewebeplane sowie 8 Heringe zur Bodenfixierung enthalten.` },
+      { question: `Welche Stellfläche brauche ich?`, answer: `Für die kleine Lamar reichen ca. 3,5 × 3 m, für die Wasserpark-Burg ca. 4 × 5 m, für den Rollercoaster ca. 6 × 5 m und für den XXL-Clown rund 7 × 6 m – jeweils auf ebenem Untergrund (Rasen oder Asphalt) mit Stromanschluss in Reichweite.` },
+      { question: `Liefert SLT Rental die Hüpfburg in Krefeld und Umgebung?`, answer: `Ja, wir liefern Hüpfburgen ab Krefeld – unter anderem nach Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg. Die Lieferkosten kalkulieren Sie transparent im Buchungsprozess.` },
+      { question: `Für welches Alter sind die Hüpfburgen geeignet?`, answer: `Lamar, Rollercoaster und Clown sind für Kinder von ca. 3 bis 16 Jahren geeignet. Die Wasserpark-Hüpfburg ist für Kinder von 3–5 Jahren mit max. 60 kg gedacht und muss trocken zurückgegeben werden.` },
+    ] : location.id === "bonn" ? [
+      { question: `Welche Hüpfburgen kann ich in Bonn mieten?`, answer: `In Bonn vermieten wir die kompakte HappyHop Lamar (2,80 × 2,10 m, mit Basketballkorb), die Wasserpark-Burg 3 × 4 m mit Kletterturm, Rutsche und Pool, den Rollercoaster 4,90 × 4,00 m für bis zu 6 Kinder und die XXL-Hüpfburg Clown 6,10 × 5,20 × 5,90 m mit Clown-Figur auf dem Dach.` },
+      { question: `Was kostet eine Hüpfburg mieten in Bonn?`, answer: `Hüpfburgen starten bei SLT Rental in Bonn ab 25 €/Tag. Wochenend-Pakete für Samstag/Sonntag sind vergünstigt – den finalen Tagespreis pro Modell sehen Sie tagesaktuell im Buchungsprozess.` },
+      { question: `Liefert SLT Rental Hüpfburgen ab Bonn?`, answer: `Ja, wir liefern in den Großraum Bonn – inklusive Bad Godesberg, Beuel, Endenich, Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim, Rheinbach und Bornheim. Die Lieferkosten werden transparent im Buchungsprozess berechnet.` },
+      { question: `Was brauche ich für den Aufbau?`, answer: `Eine ebene, hindernisfreie Stellfläche (je nach Modell 4 × 3 m bis 7 × 6 m) sowie einen Stromanschluss in Reichweite des mitgelieferten Gebläses. Aufbauzeit ca. 5–10 Minuten – Tragesack, Gebläse, Gewebeplane und 8 Heringe sind im Lieferumfang.` },
+      { question: `Für welches Alter sind die Hüpfburgen geeignet?`, answer: `Lamar, Rollercoaster und Clown sind für Kinder von ca. 3 bis 16 Jahren ausgelegt; Belastung bis 450 kg bei den Großmodellen. Die Wasserpark-Burg richtet sich an Kinder von 3–5 Jahren (max. 60 kg) und muss trocken zurückgegeben werden.` },
+    ] : [
+      { question: `Was kostet eine Hüpfburg mieten in ${location.name}?`, answer: `Hüpfburgen gibt es bei SLT Rental ab 25 €/Tag. Wochenend-Pakete für Samstag/Sonntag-Events sind vergünstigt.` },
       { question: `Liefert SLT Rental die Hüpfburg?`, answer: `Ja, wir liefern Hüpfburgen direkt zu Ihrem Event in ${location.name} und Umgebung. Auf Wunsch inklusive Aufbau.` },
       { question: `Für welches Alter sind die Hüpfburgen geeignet?`, answer: `Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Wir haben verschiedene Größen für Kindergeburtstage, Schulfeste und Firmenfeiern.` },
     ],
