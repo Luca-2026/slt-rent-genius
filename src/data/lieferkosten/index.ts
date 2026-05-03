@@ -58,7 +58,7 @@ export const tariffs: Record<TariffKey, Tariff> = {
     key: "D",
     name: "Sprinter + 3,5t-Baumaschinenanhänger",
     vehicle: "Sprinter mit Baumaschinenanhänger",
-    multiplier2Maschinen: 2.0,
+    multiplier2Maschinen: 1.8,
     distances: [
       { km: 5, brutto: 75 },
       { km: 10, brutto: 95 },
