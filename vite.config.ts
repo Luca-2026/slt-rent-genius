@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => ({
             {
               name: "preset-default",
               params: { overrides: { removeViewBox: false } },
-            },
+            } as never,
           ],
         },
         includePublic: true,
