@@ -41,9 +41,8 @@ import imgPlanen3500_3 from "@/assets/products/anhaenger/planen-3500-3.jpg";
 import imgPlanen3500_4 from "@/assets/products/anhaenger/planen-3500-4.jpg";
 import imgKastenLaubgitter750 from "@/assets/products/anhaenger/kasten-laubgitter-750.jpg";
 import imgKastenLaubgitter1300 from "@/assets/products/anhaenger/kasten-laubgitter-1300.jpg";
-import imgMotorrad750_1 from "@/assets/products/anhaenger/motorrad-3fach-750-1.jpg";
-import imgMotorrad750_2 from "@/assets/products/anhaenger/motorrad-3fach-750-2.jpg";
-import imgMotorrad750_3 from "@/assets/products/anhaenger/motorrad-3fach-750-3.jpg";
+import imgMotorrad750_1 from "@/assets/products/anhaenger/motorrad-2fach-750-1.jpeg";
+import imgMotorrad750_2 from "@/assets/products/anhaenger/motorrad-2fach-750-2.jpeg";
 import imgKoffer750_1 from "@/assets/products/anhaenger/koffer-750-1.jpg";
 import imgKoffer750_2 from "@/assets/products/anhaenger/koffer-750-2.jpg";
 import imgKoffer750_3 from "@/assets/products/anhaenger/koffer-750-3.jpg";
@@ -658,7 +657,7 @@ const trailerProducts: Product[] = [
     name: "750 kg Motorradanhänger 3-fach", 
     description: "Ladefläche: 220 x 131 cm",
     image: imgMotorrad750_1, 
-    images: [imgMotorrad750_1, imgMotorrad750_2, imgMotorrad750_3], 
+    images: [imgMotorrad750_1, imgMotorrad750_2], 
     weightKg: 750, 
     category: "motorrad",
     tags: ["motorrad", "ungebremst", "einachser"], 
