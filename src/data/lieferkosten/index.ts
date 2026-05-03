@@ -164,6 +164,9 @@ export interface CalculatePriceInput {
   aufbauService?: boolean;
   // Möbel-Optionen
   moebelAnzahl?: number; // ab 5 Stück: Aufschlag pro Stück
+  moebelAufbauService?: boolean;
+  moebelAufbauStueck?: number; // Bierzeltgarnituren / Stehtische
+  moebelAufbauZelte?: number;
 }
 
 export interface CalculatePriceResult {
@@ -174,10 +177,12 @@ export interface CalculatePriceResult {
   geruestHoehenAufschlag: number;
   geruestAufbau: number;
   moebelAufschlag: number;
+  moebelAufbau: number;
   expressAufschlag: number;
   wochenendeFaktor: number;
   total: number;
 }
+
 
 // Findet nächsthöhere Distanzstufe
 function findDistanceEntry(tariff: Tariff, km: number): TariffDistance {
