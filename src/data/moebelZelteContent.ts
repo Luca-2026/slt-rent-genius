@@ -68,6 +68,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
           "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit zählen sie zur Kategorie der klassischen Bistrotische bzw. Cocktailtische und sind das Standard-Möbel für Sektempfang, Stehkaffee oder Mingle-Bereiche. Pro Stehtisch planen Sie vier bis sechs stehende Personen ein.",
           "Die passende Stretch-Husse ist in Weiß oder Schwarz verfügbar – Weiß für Hochzeiten, Trauerfeiern und repräsentative Empfänge, Schwarz für Firmenevents, Produktpräsentationen und After-Work-Anlässe. Die Hussen sitzen faltenfrei, müssen nicht extra gebügelt werden und werden gewaschen zurückgegeben.",
           "Klassische Krefelder Einsätze: Sektempfang vor der Schützenhalle in Fischeln, Empfangsbereich beim Vereinsjubiläum in Bockum, Cocktail-Insel beim Firmenfest im Europark Fichtenhain oder Stehkaffee bei der Trauung im Standesamt Uerdingen. Wer mehr als zehn Stehtische plant, sollte über Lieferung statt Selbstabholung nachdenken – wir kalkulieren die Kosten transparent im Buchungsschritt.",
+          "Preise Stehtisch Krefeld: Ein klappbarer Stehtisch (Ø 80 cm, Höhe 110 cm) startet bei 5 € pro Tag, ein ganzes Wochenende ab 10 € pro Tisch. Die passenden Stretch-Hussen in Weiß oder Schwarz buchen Sie optional dazu. Endgültige Mietpreise und Hussen-Aufpreise erscheinen transparent im Buchungsprozess – inklusive Tiefpreisgarantie.",
         ],
       },
       {
