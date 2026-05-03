@@ -54,6 +54,32 @@ export function TrailerFilter({ onFilterChange, initialState }: TrailerFilterPro
     nutzlastRange: initialState?.nutzlastRange ?? [NUTZLAST_MIN, NUTZLAST_MAX],
   });
 
+  // Sync when parent updates initialState (e.g. URL ?type=baumaschine applied after mount)
+  useEffect(() => {
+    if (!initialState) return;
+    setFilters((prev) => {
+      const next = {
+        search: initialState.search ?? prev.search,
+        types: initialState.types ?? prev.types,
+        braking: initialState.braking ?? prev.braking,
+        weight: initialState.weight ?? prev.weight,
+        nutzlastRange: initialState.nutzlastRange ?? prev.nutzlastRange,
+      };
+      const same =
+        next.search === prev.search &&
+        next.types.length === prev.types.length &&
+        next.types.every((v, i) => v === prev.types[i]) &&
+        next.braking.length === prev.braking.length &&
+        next.braking.every((v, i) => v === prev.braking[i]) &&
+        next.weight.length === prev.weight.length &&
+        next.weight.every((v, i) => v === prev.weight[i]) &&
+        next.nutzlastRange[0] === prev.nutzlastRange[0] &&
+        next.nutzlastRange[1] === prev.nutzlastRange[1];
+      return same ? prev : next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialState?.search, initialState?.types?.join(","), initialState?.braking?.join(","), initialState?.weight?.join(","), initialState?.nutzlastRange?.[0], initialState?.nutzlastRange?.[1]]);
+
   const [expandedSections, setExpandedSections] = useState({
     type: true,
     braking: false,
