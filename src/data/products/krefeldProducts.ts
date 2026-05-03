@@ -3192,8 +3192,8 @@ export const spezialeffekteProducts: Product[] = [
     name: "XL Profi Popcornmaschine",
     description: "Nostalgische XL Profi Popcornmaschine auf Nostalgiewagen – inkl. Maiseinsatz. Maschine vom Wagen abnehmbar. Verbrauchsmaterial (Mais-Fett-Zucker-Tüten) im nächsten Schritt im Warenkorb dazubuchbar.",
     detailedDescription: "Maschine kann zum Transport vom Wagen getrennt werden\n\nAbmessungen Maschine ohne Wagen (B×H×T): ca. 75 × 59 × 45 cm\n\nGewicht: ca. 25 kg\n\nAnschlussleistung: 850 Watt mit 230 V\n\nEmpfohlene Zubereitungsmenge pro Durchgang: Mais 150 g, Zucker 50 g, Öl 40 ml\n\nLieferumfang:\n- Popcorn Maschine\n- Nostalgiewagen\n- Maiseinsatz\n\nDas benötigte Material (Mais-Fett-Zucker-Tüten) kannst du im nächsten Schritt im Warenkorb buchen (ca. 20 Standard-Portionen, die du für 1 € verkaufen kannst). Du bekommst ausreichend Material zur Verfügung – berechnet wird nur das tatsächlich verbrauchte Material.",
-    image: "/src/assets/products/spezialeffekte/popcornmaschine-xl-profi.jpg",
-    images: ["/src/assets/products/spezialeffekte/popcornmaschine-xl-profi.jpg"],
+    image: imgPopcornXlProfi,
+    images: [imgPopcornXlProfi],
     category: "popcorn",
     specifications: {
       "Abmessungen Maschine (B×H×T)": "ca. 75 × 59 × 45 cm",
