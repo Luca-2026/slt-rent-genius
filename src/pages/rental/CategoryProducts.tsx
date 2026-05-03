@@ -1574,7 +1574,7 @@ export default function CategoryProducts() {
                       </>
                     )}
                     {category.id === "anhaenger" && (
-                      <TrailerFilter onFilterChange={setTrailerFilters} />
+                      <TrailerFilter onFilterChange={setTrailerFilters} initialState={trailerFilters} />
                     )}
                     {category.id === "erdbewegung" && (
                       <CategoryFilter
