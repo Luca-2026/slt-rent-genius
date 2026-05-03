@@ -59,6 +59,9 @@ export default defineConfig(({ mode }) => ({
             } as never,
           ],
         },
+        includePublic: true,
+        logStats: true,
+      }),
     mode !== "development" && heroImagePreloadPlugin(),
   ].filter(Boolean),
   resolve: {
