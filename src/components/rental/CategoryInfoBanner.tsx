@@ -72,6 +72,8 @@ const categoryInfoConfig: Record<string, {
       icon: <Zap className="h-6 w-6 text-primary" />,
       titleKey: "infoBanner.arbeitsbuehnen.highlightTitle",
       textKey: "infoBanner.arbeitsbuehnen.highlightText",
+      link: "https://www.zoomlion-nrw.de",
+      linkLabelKey: "infoBanner.arbeitsbuehnen.highlightLink",
     },
   },
   "verdichtung": {
