@@ -34,7 +34,7 @@ export default function Lieferung() {
   // URL-Parameter
   const initialKategorie = (searchParams.get("kategorie") as ProduktKategorie) || "werkzeuge";
   const initialKm = Number(searchParams.get("km")) || 20;
-  const initialModus = (searchParams.get("modus") as LiefermodusType) || "hin-rueck";
+  const initialModus = (searchParams.get("modus") as LiefermodusType) || "einzel";
   const initialTarifFromUrl = searchParams.get("tarif") as TarifKey | null;
 
   const [kategorie, setKategorie] = useState<ProduktKategorie>(
@@ -205,12 +205,12 @@ export default function Lieferung() {
                       <Label className="text-sm font-medium">Liefermodus</Label>
                       <RadioGroup value={liefermodus} onValueChange={(v) => setLiefermodus(v as LiefermodusType)} className="space-y-2">
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="hin-rueck" id="m-hr" />
-                          <Label htmlFor="m-hr" className="text-sm cursor-pointer">Hin- und Rückweg (Anlieferung + Abholung)</Label>
+                          <RadioGroupItem value="einzel" id="m-e" />
+                          <Label htmlFor="m-e" className="text-sm cursor-pointer">Nur Anlieferung (Einzelstrecke)</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="einzel" id="m-e" />
-                          <Label htmlFor="m-e" className="text-sm cursor-pointer">Einzelstrecke</Label>
+                          <RadioGroupItem value="hin-rueck" id="m-hr" />
+                          <Label htmlFor="m-hr" className="text-sm cursor-pointer">Anlieferung &amp; Abholung</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="selbstabholung" id="m-s" />
