@@ -1016,8 +1016,14 @@ export default function CategoryProducts() {
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
   };
   
-  const seoKeywords = categoryKeywordMap[category.id] || 
+  const seoKeywordsBase = categoryKeywordMap[category.id] || 
     `${categoryDisplayName} mieten ${location.name}, ${categoryDisplayName} leihen ${location.name}, ${categoryDisplayName} Vermietung ${location.name}, Mietgeräte ${location.name}`;
+
+  // Per-location overrides for moebel-zelte (richer SEO content)
+  const moebelOverride = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
+  const finalSeoTitle = moebelOverride?.metaTitle || seoTitle;
+  const finalSeoDescription = moebelOverride?.metaDescription || seoDescription;
+  const seoKeywords = moebelOverride?.keywords || seoKeywordsBase;
 
   // SEO text content for each category page (array of paragraphs)
   const categorySeoTexts: Record<string, string[]> = {
