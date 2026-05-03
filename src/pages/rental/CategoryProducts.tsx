@@ -84,6 +84,16 @@ export default function CategoryProducts() {
     });
   }, [searchParams, locationId, categoryId, navigate]);
 
+  // Apply ?type= URL param to trailer filter (also when navigating between categories without unmount)
+  useEffect(() => {
+    if (categoryId !== "anhaenger") return;
+    const typeParam = searchParams.get("type");
+    if (!typeParam) return;
+    setTrailerFilters((prev) =>
+      prev.types.includes(typeParam) ? prev : { ...prev, types: [typeParam] }
+    );
+  }, [searchParams, categoryId]);
+
   // Scroll to product grid when discrete filters change (not slider drags)
   useEffect(() => {
     const prev = prevFiltersRef.current;
