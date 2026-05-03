@@ -688,6 +688,25 @@ export default function ProductDetail() {
                 </div>
               )}
 
+              {/* External Manual Link */}
+              {product.externalManualUrl && (
+                <div className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3 flex items-center gap-2">
+                    <FileDown className="h-4 w-4 text-primary flex-shrink-0" />
+                    Bedienungsanleitung des Herstellers
+                  </h2>
+                  <a
+                    href={product.externalManualUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg px-4 py-3 text-sm font-medium transition-colors border border-primary/20"
+                  >
+                    <ExternalLink className="h-4 w-4 flex-shrink-0" />
+                    Zur Kurzanleitung des Herstellers
+                  </a>
+                </div>
+              )}
+
               {/* Stecker-Anleitung für Anhänger */}
               {categoryId === "anhaenger" && (
                 <div className="mt-6">

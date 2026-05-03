@@ -266,6 +266,8 @@ import aggregat100kva1 from "@/assets/products/aggregat-100kva-1.jpeg";
 import akkupackBluetti1 from "@/assets/products/akkupack-bluetti-1.png";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
+import kompressor1_2m3_1 from "@/assets/products/kompressor-1-2m3-1.jpeg";
+import kompressor1_2m3_2 from "@/assets/products/kompressor-1-2m3-2.webp";
 import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
 import scherenbuehneZs1012ac1 from "@/assets/products/scherenbuehne-zs1012ac-1.png";
 import anhaengerbuehneTm18gti1 from "@/assets/products/anhaengerbuehne-tm18gti-1.jpeg";
@@ -757,6 +759,27 @@ export const aggregateProducts: Product[] = [
       "Abgasnorm": "Stage V",
       "Zusatzausstattung": "auf Fahrgestell",
       "Generator": "6 kVA 400V/230V",
+    },
+  },
+  {
+    id: "kompressor-1-2m3-stationaer",
+    name: "1,2 m³ Kompressor (stationär)",
+    description: "Stationärer Elektro-Kompressor mit Siemens-Motor (7,5 kW / 400 V) – kompakt, robust und vielseitig einsetzbar.",
+    image: kompressor1_2m3_1,
+    images: [kompressor1_2m3_1, kompressor1_2m3_2],
+    category: "kompressor",
+    onRequest: true,
+    externalManualUrl: "https://www.kaeser.com/de-de/shortinstructions/mobilair-m13",
+    detailedDescription: "Vielseitig, zuverlässig und leicht mitzunehmen: Unser stationärer Kleinkompressor passt auf die kleinste Ladefläche und meistert mit seinem Siemens-Qualitätsmotor und dem äußerst schlagfesten PE-Gehäuse klaglos jeden Einsatz. Ideal für Druckluftwerkzeuge, Erdraketen und mobile Baustellenanwendungen mit 400 V Stromanschluss (32 A Absicherung erforderlich).",
+    specifications: {
+      "Motor": "Siemens Elektromotor (400 V / 7,5 kW)",
+      "Absicherung": "32 A erforderlich",
+      "Volumenstrom bei 7 bar": "1,2 m³/min",
+      "Volumenstrom bei 10 bar": "1,0 m³/min",
+      "Volumenstrom bei 13 bar": "0,85 m³/min",
+      "Anschluss Druckluft": "1× G 1/2\"",
+      "Gewicht": "187 kg",
+      "Bauart": "stationär, PE-Gehäuse",
     },
   },
   {

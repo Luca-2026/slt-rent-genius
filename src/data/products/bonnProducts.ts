@@ -161,6 +161,8 @@ import bonnAggregat2_8kva1 from "@/assets/products/aggregat-2-8kva-1.jpeg";
 import bonnAggregat2_8kva2 from "@/assets/products/aggregat-2-8kva-2.jpeg";
 import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
+import kompressor1_2m3_1 from "@/assets/products/kompressor-1-2m3-1.jpeg";
+import kompressor1_2m3_2 from "@/assets/products/kompressor-1-2m3-2.webp";
 
 // Rollgerüst images
 import imgRollgeruestKrause94m1 from "@/assets/products/rollgeruest-krause-94m-1.jpeg";
@@ -328,6 +330,13 @@ export const bonnAggregateProducts = [
       "Zusatzausstattung": "auf Fahrgestell",
       "Generator": "6 kVA 400V/230V",
     },
+  },
+  {
+    id: "bonn-kompressor-1-2m3-stationaer",
+    name: "1,2 m³ Kompressor (stationär)",
+    description: "Stationärer Elektro-Kompressor mit Siemens-Motor (7,5 kW / 400 V) – kompakt, robust und vielseitig einsetzbar. Auf Anfrage.",
+    image: kompressor1_2m3_1,
+    images: [kompressor1_2m3_1, kompressor1_2m3_2],
   },
   {
     id: "bonn-presslufthammer-tex21pe-aggregat",
