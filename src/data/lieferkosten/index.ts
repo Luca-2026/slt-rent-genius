@@ -136,7 +136,7 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
       { key: "1t-bagger", label: "1t Bagger", tarif: "C" },
       { key: "2t-bagger", label: "2t Bagger", tarif: "C" },
       { key: "3t-bagger", label: "3t Bagger", tarif: "D" },
-      { key: "dumper", label: "Dumper", tarif: "D" },
+      { key: "dumper", label: "Dumper", tarif: "C" },
       { key: "radlader", label: "Radlader / Knicklader", tarif: "D" },
     ],
   },
