@@ -567,6 +567,15 @@ export default function CategoryProducts() {
                   const nameLower = p.name.toLowerCase();
                   return nameLower.includes("stuhl") || nameLower.includes("tisch") || nameLower.includes("bank") || nameLower.includes("bierzelt");
                 }
+                // Arbeitsbühnen: name-based fallback (covers products without category field)
+                if (category?.id === "arbeitsbuehnen") {
+                  const nameLower = p.name.toLowerCase();
+                  if (value === "mastbuehne") return nameLower.includes("mast");
+                  if (value === "scherenbuehne") return nameLower.includes("scheren");
+                  if (value === "gelenkbuehne") return nameLower.includes("gelenk") && !nameLower.includes("anhänger") && !nameLower.includes("anhaenger");
+                  if (value === "teleskopbuehne") return nameLower.includes("teleskop") && !nameLower.includes("mast") && !nameLower.includes("anhänger") && !nameLower.includes("anhaenger");
+                  if (value === "anhaengerbuehne") return nameLower.includes("anhänger") || nameLower.includes("anhaenger");
+                }
                 return false;
               });
             });
@@ -1025,9 +1034,18 @@ export default function CategoryProducts() {
       `Professionelle Werkzeuge mieten in ${location.name} – bei SLT Rental leihen Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Betonrüttler, Fliesenschneider, Baulaser und vieles mehr. Alle Geräte sind von Markenherstellern und werden regelmäßig gewartet.`,
       `Ob für Renovierung, Umbau oder Neubau: Profi-Werkzeuge zum kleinen Preis ab 10 €/Tag. Wochenend-Tarife und Tiefpreisgarantie sorgen für faire Konditionen. Persönliche Beratung inklusive – wir helfen Ihnen bei der Wahl des richtigen Geräts.`,
     ],
-    arbeitsbuehnen: [
-      `Arbeitsbühne mieten in ${location.name} – bei SLT Rental finden Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m. Ideal für Fassadenarbeiten, Baumschnitt, Dacharbeiten oder Montagen in der Höhe.`,
-      `Unsere Hubarbeitsbühnen sind regelmäßig geprüft und sofort einsatzbereit. Lieferung und Abholung in ${location.name} und Umgebung möglich. Für motorisierte Arbeitsbühnen ist ein Bedienerausweis erforderlich – sprechen Sie uns an, wir beraten Sie gerne.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer eigenen Werkstatt übernehmen wir auch Wartung und Reparatur von Arbeitsbühnen aller Hersteller – auch Fremdgeräte." : ""}`,
+    arbeitsbuehnen: location.id === "krefeld" ? [
+      `Arbeitsbühne mieten in Krefeld – bei SLT Rental in Krefeld leihst du Hubarbeitsbühnen mit Arbeitshöhen von 7,80 m bis 18 m. Im Verleihpark stehen die elektrischen Zoomlion-Scherenbühnen ZS0607 (7,80 m) und ZS1012 (11,80 m), die Zoomlion ZMP09 Mastbühne (11,20 m, 3,23 m seitliche Reichweite, 230 V im Korb) sowie der Nifty HR12L Gelenkteleskopsteiger (12 m Arbeitshöhe, 6,10 m Reichweite). Für höhere Einsätze bis 18 m steht die mitnehmbare Anhänger-Arbeitsbühne TM18GTi bereit – PKW-tauglich und ohne Fahrerlaubnis CE.`,
+      `Typische Einsätze in Krefeld: Fassadenarbeiten an Stadthäusern in Bockum und Uerdingen, Werbe- und Lichttechnik-Montage in Hallen am Hafen, Baumpflege in Verberg sowie Industriewartung in den Gewerbegebieten Europark Fichtenhain und Krefeld-Süd. Die kompakten Zoomlion-Scherenbühnen mit non-marking Reifen sind speziell für Innenräume und empfindliche Bodenbeläge geeignet, die Mastbühne ZMP09 mit nur 1,79 m Durchfahrtshöhe passt durch Standardtore.`,
+      `Als autorisierter Zoomlion-Fachhändler in NRW liefern wir die Hubsteiger direkt zu deiner Baustelle in Krefeld und Umgebung – Lieferradius unter anderem nach Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg. Für motorisierte Hubarbeitsbühnen ist eine Bedienerunterweisung (IPAF/PSAgA) erforderlich; sprich uns an, wir beraten zur passenden Bühne. Bei Bedarf kann ein Baumaschinenanhänger (1.800 oder 3.500 kg) im Buchungsprozess vergünstigt dazugebucht werden. In unserer Werkstatt in Krefeld übernehmen wir zudem Wartung und UVV-Prüfung von Arbeitsbühnen aller Hersteller.`,
+    ] : location.id === "bonn" ? [
+      `Arbeitsbühne mieten in Bonn – bei SLT Rental am Standort Bonn stehen elektrische Hubarbeitsbühnen von 7,80 m bis 18 m Arbeitshöhe bereit: die Zoomlion ZS0607 Scherenbühne (7,80 m, drive-through 1,79 m), die Zoomlion ZS1012 (11,80 m, 350 kg Korblast für bis zu 3 Personen), die Zoomlion ZMP09 Mastbühne (11,20 m, 7,75 m up-and-over) und die mitnehmbare Anhänger-Arbeitsbühne TM18GTi mit 18 m Arbeitshöhe.`,
+      `Beliebte Einsätze rund um Bonn: Fassaden- und Dachreparaturen in der Südstadt und Bad Godesberg, Indoor-Montagen im WCCB und in Eventlocations, Baum- und Lichtmastpflege im Rheinauen-Park sowie Wartungsarbeiten in den Gewerbegebieten Pützchen, Bonn-Beuel und Bornheim. Die elektrischen Zoomlion-Scherenbühnen arbeiten emissionsfrei und leise und sind damit auch für Schulen, Hotels und Krankenhäuser zugelassen.`,
+      `Wir liefern die Arbeitsbühnen in den Großraum Bonn – inklusive Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim, Rheinbach und Bornheim. Für motorisierte Hubsteiger ist eine PSAgA-Einweisung erforderlich; die Anhängerbühne TM18GTi darf mit Führerschein BE gefahren werden. Im Buchungsprozess kannst du günstig einen Baumaschinenanhänger (1.800 kg / 3.500 kg) zur Selbstabholung dazubuchen. Unsere Bonner Werkstatt übernimmt UVV, Wartung und Reparatur von Hubarbeitsbühnen aller Hersteller – auch für Fremdgeräte.`,
+    ] : [
+      `Arbeitsbühne mieten in Mülheim an der Ruhr – am Standort Mülheim an der Ruhr stehen elektrische Hubarbeitsbühnen mit Arbeitshöhen von 7,80 m bis 18 m bereit. Verfügbar sind die kompakten Zoomlion-Scherenbühnen ZS0607 und ZS1012 sowie die Zoomlion ZMP09 Mastbühne (3,23 m seitliche Reichweite) und die mitnehmbare Anhänger-Arbeitsbühne TM18GTi für Einsätze bis 18 m Arbeitshöhe.`,
+      `Typische Einsätze im Ruhrgebiet: Fassadenarbeiten in Mülheim-Stadtmitte und Speldorf, Hallen- und Lagermontage in den Gewerbegebieten Heißen und Dümpten, Industriewartung im Hafen Mülheim sowie Eventaufbauten in der MüGa und Stadthalle. Die elektrischen Zoomlion-Scherenbühnen mit non-marking Reifen sind sowohl für Indoor- als auch Outdoor-Einsätze geeignet und arbeiten emissionsfrei.`,
+      `Lieferung möglich nach Mülheim an der Ruhr und in das gesamte westliche Ruhrgebiet – inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Für motorisierte Hubarbeitsbühnen ist eine Bedienerunterweisung (PSAgA) erforderlich. Tipp für Selbstabholer: Im Buchungsprozess kannst du einen passenden Baumaschinenanhänger (1.800 kg oder 3.500 kg) zum Bundle-Preis dazubuchen. Als autorisierter Zoomlion-Fachhändler in NRW beraten wir dich gerne persönlich zur richtigen Bühne für dein Projekt in Mülheim an der Ruhr.`,
     ],
     gartenpflege: [
       `Gartengeräte mieten in ${location.name} – Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Stubbenfräsen und mehr bei SLT Rental. Professionelle Gartengeräte für Privatpersonen und Landschaftsgärtner zum fairen Tagesmietpreis.`,
@@ -1117,10 +1135,24 @@ export default function CategoryProducts() {
       { question: `Welche Werkzeuge kann ich in ${location.name} mieten?`, answer: `Bei SLT Rental mieten Sie Kernbohrer, Stemmhammer, Abbruchhammer, Trennschleifer, Kreissägen, Rüttler, Fliesenschneider, Laser und vieles mehr.` },
       { question: `Was kostet Werkzeuge mieten in ${location.name}?`, answer: `Profi-Werkzeuge gibt es ab ca. 10 €/Tag. Stemmhammer, Kernbohrer und Spezialwerkzeuge kosten je nach Gerät zwischen 15 und 50 €/Tag.` },
     ],
-    arbeitsbuehnen: [
-      { question: `Brauche ich einen Schein für eine Arbeitsbühne?`, answer: `Ja, für motorisierte Hubarbeitsbühnen ist ein Bedienerausweis (IPAF-Schulung) erforderlich. Für Anhängerbühnen reicht oft eine Einweisung.` },
-      { question: `Welche Arbeitsbühnen gibt es in ${location.name}?`, answer: `Bei SLT Rental in ${location.name} mieten Sie Scherenbühnen, Gelenkteleskopbühnen und Anhänger-Arbeitsbühnen mit Arbeitshöhen von 6m bis 18m.` },
-      { question: `Was kostet eine Arbeitsbühne mieten?`, answer: `Arbeitsbühnen gibt es ab ca. 50 €/Tag. Der Preis variiert je nach Arbeitshöhe und Typ. Wochenpreise bieten bis zu 30% Ersparnis.` },
+    arbeitsbuehnen: location.id === "krefeld" ? [
+      { question: `Welche Arbeitsbühnen kann ich in Krefeld mieten?`, answer: `In Krefeld stehen die Zoomlion ZS0607 (7,80 m) und ZS1012 (11,80 m) Scherenbühnen, die Zoomlion ZMP09 Mastbühne (11,20 m, 3,23 m seitliche Reichweite), der Nifty HR12L Gelenkteleskopsteiger (12 m) sowie die TM18GTi Anhänger-Arbeitsbühne mit 18 m Arbeitshöhe bereit.` },
+      { question: `Welche Mastbühne hat SLT Rental in Krefeld?`, answer: `Die Zoomlion ZMP09 mit 11,20 m Arbeitshöhe, 3,23 m seitlicher Reichweite und 7,75 m up-and-over-Höhe. Sie hat 2 Personen Korbtragkraft (200 kg), 230 V Anschluss im Korb und passt mit 1,79 m Durchfahrtshöhe durch Standardtore.` },
+      { question: `Brauche ich für die Hubarbeitsbühne einen Schein?`, answer: `Für motorisierte Hubarbeitsbühnen wird in der Regel eine PSAgA-Einweisung bzw. ein IPAF-Bedienerausweis erwartet. Für die Anhänger-Arbeitsbühne TM18GTi reicht der Führerschein BE und eine Geräteeinweisung.` },
+      { question: `Was kostet eine Arbeitsbühne mieten in Krefeld?`, answer: `Die Tagespreise starten bei rund 90 €/Tag für die kleine 7,80 m Scherenbühne. Wochen- und Monatstarife reduzieren den Tagespreis deutlich. Die genauen Konditionen siehst du im Buchungsprozess.` },
+      { question: `Kann ich die Arbeitsbühne in Krefeld liefern lassen?`, answer: `Ja, wir liefern Hubarbeitsbühnen direkt nach Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg. Die Lieferkosten kannst du im Buchungsprozess transparent berechnen.` },
+    ] : location.id === "bonn" ? [
+      { question: `Welche Arbeitsbühnen kann ich in Bonn mieten?`, answer: `Am Standort Bonn stehen die elektrischen Zoomlion-Scherenbühnen ZS0607 (7,80 m) und ZS1012 (11,80 m), die Zoomlion ZMP09 Mastbühne (11,20 m) sowie die TM18GTi Anhänger-Arbeitsbühne mit 18 m Arbeitshöhe zur Verfügung.` },
+      { question: `Welche Hubarbeitsbühne eignet sich für Indoor-Einsätze in Bonn?`, answer: `Für Hallen, Hotels und Eventlocations empfehlen wir die elektrischen Zoomlion-Scherenbühnen ZS0607 und ZS1012 sowie die ZMP09 Mastbühne. Alle drei arbeiten emissionsfrei, leise und haben non-marking Reifen.` },
+      { question: `Wie hoch komme ich mit der Anhängerbühne in Bonn?`, answer: `Die TM18GTi Anhänger-Arbeitsbühne erreicht 18 m Arbeitshöhe und 10,50 m seitliche Reichweite. Sie ist mit Führerschein BE fahrbar und eignet sich ideal für Baumschnitt, Fassaden und Dacharbeiten in Bonn und Umgebung.` },
+      { question: `Was kostet eine Arbeitsbühne mieten in Bonn?`, answer: `Die Tagespreise starten bei rund 90 €/Tag. Wochenpreise sparen bis zu 30 %. Den genauen Preis siehst du tagesaktuell im Buchungsprozess.` },
+      { question: `Wohin liefert SLT Rental Hubarbeitsbühnen ab Bonn?`, answer: `Wir liefern in den Großraum Bonn – inklusive Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim, Rheinbach und Bornheim.` },
+    ] : [
+      { question: `Welche Arbeitsbühnen kann ich in Mülheim an der Ruhr mieten?`, answer: `In Mülheim an der Ruhr stehen die elektrischen Zoomlion-Scherenbühnen ZS0607 (7,80 m) und ZS1012 (11,80 m), die Zoomlion ZMP09 Mastbühne (11,20 m) sowie die mitnehmbare Anhänger-Arbeitsbühne TM18GTi mit 18 m Arbeitshöhe bereit.` },
+      { question: `Welche Bühne eignet sich für Industrie- und Hallenarbeiten im Ruhrgebiet?`, answer: `Für Hallen und Indoor-Einsätze sind die Zoomlion-Scherenbühnen ZS0607 und ZS1012 sowie die ZMP09 Mastbühne ideal – elektrisch, leise und mit non-marking Reifen.` },
+      { question: `Brauche ich einen Schein für die Hubarbeitsbühne?`, answer: `Für motorisierte Hubarbeitsbühnen wird eine PSAgA-Einweisung bzw. ein IPAF-Ausweis erwartet. Für die TM18GTi Anhängerbühne reicht der Führerschein BE plus eine Geräteeinweisung.` },
+      { question: `Liefert SLT Rental Arbeitsbühnen im Ruhrgebiet?`, answer: `Ja, wir liefern Hubarbeitsbühnen ab Mülheim an der Ruhr in das gesamte westliche Ruhrgebiet – inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen.` },
+      { question: `Was kostet eine Arbeitsbühne mieten in Mülheim an der Ruhr?`, answer: `Die Tagespreise starten bei rund 90 €/Tag. Wochen- und Monatstarife reduzieren den Tagespreis deutlich. Die genauen Konditionen siehst du im Buchungsprozess.` },
     ],
     gartenpflege: [
       { question: `Welche Gartengeräte kann ich in ${location.name} mieten?`, answer: `Häcksler, Erdbohrer, Vertikutierer, Kettensägen, Heckenscheren, Hochdruckreiniger, Rasenmäher, Laubbläser und Stubbenfräsen – alles bei SLT Rental.` },
