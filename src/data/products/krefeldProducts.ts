@@ -294,6 +294,7 @@ import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.
 import steinknacker43cm from "@/assets/products/steinknacker-43cm-1.png";
 import schmutzwasserpumpe11m3h from "@/assets/products/schmutzwasserpumpe-11m3h-1.png";
 import imgErdrakete1 from "@/assets/products/erdrakete-1.jpg";
+import imgErdrakete75mm from "@/assets/products/erdrakete-75mm-1.jpg";
 import ceeAdapterSchuko16a1 from "@/assets/products/cee-adapter-schuko-16a-1.jpeg";
 import netzwerkkabelCat7_30m1 from "@/assets/products/netzwerkkabel-cat7-30m-1.jpeg";
 import powerconTrue1Linkkabel5m1 from "@/assets/products/powercon-true1-linkkabel-5m-1.jpeg";
