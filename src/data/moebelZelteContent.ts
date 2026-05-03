@@ -164,6 +164,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
           "Klappbar, Metallbeine, Kunststoffplatte – Höhe 110 cm, Plattendurchmesser 80 cm. Das ist die Standard-Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen können. Pro 25 Empfangsgäste planen Sie etwa fünf Stehtische ein, damit Gläser und Häppchen gut Platz finden.",
           "Die passende Stretch-Husse gibt es in Weiß und Schwarz. Weiß empfehlen wir für Hochzeiten in Bad Godesberg oder Endenich, für Trauerfeiern und für Sommerempfänge mit Bezug zum Wasser; Schwarz für Tagungen, Pressekonferenzen und Produktpräsentationen in Bonner Tagungs- und Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
           "Typische Bonner Einsätze: Sektempfang vor dem Standesamt in Bad Godesberg, Open-Air-Reception am Rand der Rheinaue, Foyer-Mingle-Bereich beim Firmensommerfest in Beuel oder Stehkaffee bei der Vereinsversammlung in Hardtberg. Bei größerer Stückzahl lohnt sich Lieferung statt Selbstabholung – die Kosten kalkuliert der Lieferkostenrechner transparent.",
+          "Preise Stehtisch Bonn: Klappbare Stehtische sind ab 5 € pro Tag mietbar, ein ganzes Wochenende ab 10 € pro Tisch. Stretch-Hussen in Weiß für Hochzeiten oder Schwarz für Tagungen sind optional zubuchbar. Die endgültigen Mietpreise inklusive Hussen-Aufpreis erscheinen transparent im Buchungsprozess – mit Tiefpreisgarantie auf alle Sätze.",
         ],
       },
       {
