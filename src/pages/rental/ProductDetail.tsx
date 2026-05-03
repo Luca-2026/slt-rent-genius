@@ -28,6 +28,7 @@ import {
 } from "@/data/rentalData";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
+import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
@@ -546,6 +547,13 @@ export default function ProductDetail() {
                     <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
                       {product.detailedDescription}
                     </p>
+                  </div>
+                )}
+
+                {/* Bundle-Hinweis: Baumaschinenanhänger für Selbstabholer (Arbeitsbühnen/Erdbewegung) */}
+                {(categoryId === "arbeitsbuehnen" || categoryId === "erdbewegung") && location && (
+                  <div className="border-t border-border pt-4">
+                    <BaumaschinenanhaengerBundleHint locationId={location.id} variant="compact" />
                   </div>
                 )}
               </div>

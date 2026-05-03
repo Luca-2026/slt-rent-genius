@@ -20,6 +20,7 @@ import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalcula
 import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
 import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
 import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
+import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
 
@@ -1444,6 +1445,11 @@ export default function CategoryProducts() {
       {/* Info Banner for other categories */}
       {category.id !== "anhaenger" && category.id !== "erdbewegung" && category.id !== "heizung-trocknung" && category.id !== "alle" && (
         <CategoryInfoBanner categoryId={category.id} />
+      )}
+
+      {/* Bundle-Hinweis: Baumaschinenanhänger für Selbstabholer */}
+      {(category.id === "arbeitsbuehnen" || category.id === "erdbewegung") && (
+        <BaumaschinenanhaengerBundleHint locationId={location.id} />
       )}
 
       {/* Dienstleistungs-Banner (nicht bei absperrtechnik, da dort bereits im InfoBanner enthalten) */}
