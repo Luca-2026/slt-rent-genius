@@ -134,12 +134,13 @@ export function RentwareLoader() {
 
     return () => {
       cleanup();
+      if (pollHandle) window.clearInterval(pollHandle);
       if (idleHandle && (window as any).cancelIdleCallback) {
         (window as any).cancelIdleCallback(idleHandle);
       }
       if (timeoutHandle) window.clearTimeout(timeoutHandle);
     };
-  }, []);
+  }, [isHomepage]);
 
   // Position / hide the cart widget
   useEffect(() => {
