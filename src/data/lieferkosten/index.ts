@@ -91,9 +91,17 @@ export const ZUSATZKOSTEN = {
 } as const;
 
 // Produkt-Kategorie → Tarif Mapping
+export interface SubtypeOption {
+  key: string;
+  label: string; // Kunden-sichtbar (z.B. "1t Bagger")
+  tarif: TariffKey; // intern
+}
+
 export interface CategoryConfig {
   defaultTarif: TariffKey | null; // null = keine Lieferung (Anhänger)
-  switchTarife?: TariffKey[]; // optional: User kann zwischen Tarifen wechseln
+  // Kunden-sichtbare Geräte-Subtypen, die intern auf Tarife mappen
+  subtypes?: SubtypeOption[];
+  defaultSubtype?: string;
   hinweis?: string;
   label: string;
   scope?: "geruest" | "moebel"; // für Sonder-Aufschläge
