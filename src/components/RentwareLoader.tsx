@@ -23,6 +23,10 @@ const IDLE_FALLBACK_MS = 3000;
 export function RentwareLoader() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
+  // Homepage hat kein echtes rtr-Element im initialen Render. Wir sparen
+  // dort 3s Hauptthread-Blockade, indem wir Rentware NUR bei expliziter
+  // Interaktion (Click/Scroll/Touch/Tastatur) oder via rtr:load-Event laden.
+  const isHomepage = location.pathname === "/";
   const loadedRef = useRef(false);
 
   // Lazy script injection
