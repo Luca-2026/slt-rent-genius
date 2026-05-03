@@ -84,6 +84,9 @@ export const ZUSATZKOSTEN = {
   moebel: {
     aufschlagJeStueck: 2, // ab 5 Stück
     schwellwert: 5,
+    aufbauBasis: 75,
+    aufbauProMoebel: 10, // pro Bierzeltgarnitur/Stehtisch
+    aufbauProZelt: 75,
   },
   rueckwegFaktor: 2,
   expressPauschale: 50,
