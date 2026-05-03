@@ -668,6 +668,7 @@ const LEGAL_ROUTES: SeoRoute[] = [
 export const ALL_ROUTES: SeoRoute[] = [
   ...STATIC_ROUTES,
   ...STANDORT_ROUTES,
+  ...MIETEN_LOCATION_ROUTES,
   ...LOCALAREA_ROUTES,
   ...SOLUTION_ROUTES,
   ...CATEGORY_ROUTES,
@@ -679,6 +680,7 @@ export const ALL_ROUTES: SeoRoute[] = [
 export const ROUTE_STATS = {
   static: STATIC_ROUTES.length,
   standort: STANDORT_ROUTES.length,
+  mietenLocation: MIETEN_LOCATION_ROUTES.length,
   localarea: LOCALAREA_ROUTES.length,
   solution: SOLUTION_ROUTES.length,
   category: CATEGORY_ROUTES.length,
