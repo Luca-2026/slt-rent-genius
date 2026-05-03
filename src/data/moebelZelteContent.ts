@@ -141,10 +141,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         ],
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier im Rheinland",
+        h2: "Bierzeltgarnitur mieten in Bonn – das Rückgrat jeder Feier im Rheinland",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set besteht aus einem Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Mit dem weißen Hussen-Set (zwei Bankhussen plus eine Tischhusse) wird aus dem Werkstattmobiliar eine ruhige, repräsentative Tischlandschaft – passend zu Sommerfesten von NGOs, UN-Organisationen und Bundesbehörden ebenso wie zu Schützenfesten im Bonner Norden.",
-          "Hussen geben Sie bitte gewaschen zurück. Das spart Aufbereitungspauschalen und sorgt dafür, dass das nächste Hochzeitspaar wieder ein einwandfrei vorbereitetes Set bekommt.",
+          "Ein Bierzeltgarnitur-Set – auch als Festzeltgarnitur, Bierbankgarnitur oder einfach Biertisch mit Bänken bekannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Pro Garnitur rechnen Sie mit acht bis zehn Sitzplätzen. Das ergibt für eine klassische Hochzeit mit 60 Gästen rund sieben bis acht Bierzeltgarnituren – aufgebaut in U-Form unter dem Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik.",
+          "Mit dem Hussen-Set in Weiß (zwei Bankhussen plus eine Tischhusse) wird aus dem nüchternen Werkstatt-Mobiliar eine ruhige, repräsentative Tischlandschaft. Damit ist die Bierzeltgarnitur mit Hussen in Bonn die naheliegende Wahl für Sommerfeste von NGOs, UN-Organisationen und Bundesbehörden in der Rheinaue ebenso wie für Schützen- und Vereinsfeste im Bonner Norden, in Beuel oder in Pützchen.",
+          "Hussen geben Sie bitte gewaschen zurück; das hält die Aufbereitungskosten transparent und sorgt dafür, dass das nächste Hochzeitspaar wieder ein einwandfrei vorbereitetes Set bekommt. Wer nur Biertische und Bänke mieten möchte, ohne Hussen, fährt mit der Standard-Garnitur am günstigsten – etwa für Vereinsabende, Stammtische oder als Zusatztische beim Pützchens-Markt-Vorglühen im Garten.",
         ],
       },
       {
@@ -155,9 +156,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Stehtische für Empfänge, Sektrunden und Mingle-Bereiche",
+        h2: "Stehtisch mieten in Bonn – mit Stretch-Husse für Empfang und Tagung",
         paragraphs: [
-          "Klappbar, Metallbeine, Kunststoffplatte – plus Stretch-Husse Ø 80 cm in Weiß oder Schwarz (Höhe 110 cm). Das ist die Kombination, die wir für Sektempfänge vor Tagungsräumen, für Open-Air-Receptions in der Rheinaue oder für Foyer-Mingle-Bereiche bei Firmensommerfesten am häufigsten ausliefern.",
+          "Klappbar, Metallbeine, Kunststoffplatte – Höhe 110 cm, Plattendurchmesser 80 cm. Das ist die Standard-Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen können. Pro 25 Empfangsgäste planen Sie etwa fünf Stehtische ein, damit Gläser und Häppchen gut Platz finden.",
+          "Die passende Stretch-Husse gibt es in Weiß und Schwarz. Weiß empfehlen wir für Hochzeiten in Bad Godesberg oder Endenich, für Trauerfeiern und für Sommerempfänge mit Bezug zum Wasser; Schwarz für Tagungen, Pressekonferenzen und Produktpräsentationen in Bonner Tagungs- und Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
+          "Typische Bonner Einsätze: Sektempfang vor dem Standesamt in Bad Godesberg, Open-Air-Reception am Rand der Rheinaue, Foyer-Mingle-Bereich beim Firmensommerfest in Beuel oder Stehkaffee bei der Vereinsversammlung in Hardtberg. Bei größerer Stückzahl lohnt sich Lieferung statt Selbstabholung – die Kosten kalkuliert der Lieferkostenrechner transparent.",
         ],
       },
       {
