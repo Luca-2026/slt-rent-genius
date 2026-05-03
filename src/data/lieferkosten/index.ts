@@ -2,7 +2,7 @@
 // Quelle: lieferpreise-slt-tarife-NEU-v4-2.csv, lieferpreise-slt-mapping-NEU-v2-2.csv,
 // lieferpreise-slt-zusatzkosten-NEU-v5-2.csv
 
-export type TariffKey = "A" | "C" | "D";
+export type TariffKey = "A" | "B" | "C";
 
 export interface TariffDistance {
   km: number;
@@ -36,9 +36,9 @@ export const tariffs: Record<TariffKey, Tariff> = {
       { km: 50, brutto: 220 },
     ],
   },
-  C: {
-    key: "C",
-    name: "Sprinter + 2,5t-Anhänger",
+  B: {
+    key: "B",
+    name: "Sprinter + 2,5t-Anhänger (Baumaschinen < 2 t)",
     vehicle: "Sprinter mit Pkw-Anhänger",
     multiplier2Maschinen: 1.3,
     distances: [
@@ -54,22 +54,22 @@ export const tariffs: Record<TariffKey, Tariff> = {
       { km: 50, brutto: 245 },
     ],
   },
-  D: {
-    key: "D",
-    name: "Sprinter + 3,5t-Baumaschinenanhänger",
+  C: {
+    key: "C",
+    name: "Sprinter + 3,5t-Baumaschinenanhänger (Baumaschinen < 3,5 t)",
     vehicle: "Sprinter mit Baumaschinenanhänger",
     multiplier2Maschinen: 1.8,
     distances: [
-      { km: 5, brutto: 75 },
-      { km: 10, brutto: 95 },
-      { km: 15, brutto: 120 },
-      { km: 20, brutto: 150 },
-      { km: 25, brutto: 160 },
-      { km: 30, brutto: 185 },
-      { km: 35, brutto: 210 },
-      { km: 40, brutto: 215 },
-      { km: 45, brutto: 235 },
-      { km: 50, brutto: 260 },
+      { km: 5, brutto: 95 },
+      { km: 10, brutto: 105 },
+      { km: 15, brutto: 130 },
+      { km: 20, brutto: 160 },
+      { km: 25, brutto: 170 },
+      { km: 30, brutto: 195 },
+      { km: 35, brutto: 220 },
+      { km: 40, brutto: 225 },
+      { km: 45, brutto: 250 },
+      { km: 50, brutto: 275 },
     ],
   },
 };
@@ -129,25 +129,25 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
   huepfburgen: { defaultTarif: "A", label: "Hüpfburgen", hinweis: "Bei XL-Hüpfburgen individuelles Angebot" },
   "leitern-gerueste": { defaultTarif: "A", label: "Leitern & Gerüste", scope: "geruest", hinweis: "Inkl. optional Aufbau-Service" },
   erdbewegung: {
-    defaultTarif: "C",
+    defaultTarif: "B",
     label: "Erdbewegung (Bagger, Dumper, Radlader)",
     defaultSubtype: "1t-bagger",
     subtypes: [
-      { key: "1t-bagger", label: "1t Bagger", tarif: "C" },
-      { key: "2t-bagger", label: "2t Bagger", tarif: "C" },
-      { key: "3t-bagger", label: "3t Bagger", tarif: "D" },
-      { key: "dumper", label: "Dumper", tarif: "C" },
-      { key: "radlader", label: "Radlader / Knicklader", tarif: "D" },
+      { key: "1t-bagger", label: "1t Bagger", tarif: "B" },
+      { key: "2t-bagger", label: "2t Bagger", tarif: "B" },
+      { key: "3t-bagger", label: "2,7t Bagger", tarif: "C" },
+      { key: "dumper", label: "Dumper", tarif: "B" },
+      { key: "radlader", label: "Radlader / Knicklader", tarif: "C" },
     ],
   },
   arbeitsbuehnen: {
-    defaultTarif: "C",
+    defaultTarif: "B",
     label: "Arbeitsbühnen",
     defaultSubtype: "8m",
     subtypes: [
-      { key: "8m", label: "8m Anhängerarbeitsbühne", tarif: "C" },
-      { key: "12m", label: "12m Scherenbühne", tarif: "D" },
-      { key: "14m+", label: "14m+ Arbeitsbühne", tarif: "D" },
+      { key: "8m", label: "8m Anhängerarbeitsbühne", tarif: "B" },
+      { key: "12m", label: "12m Scherenbühne", tarif: "C" },
+      { key: "14m+", label: "14m+ Arbeitsbühne", tarif: "C" },
     ],
   },
 };

@@ -23,12 +23,12 @@ interface DeliveryCalculatorCompactProps {
   productName?: string;
 }
 
-// Override tariff based on product name (Erdbewegung XE27/3t etc → Tarif D)
+// Override tariff based on product name (Erdbewegung XE27/2,7t etc → Tarif C)
 function getProductTariffOverride(productName?: string): TariffKey | null {
   if (!productName) return null;
   const lower = productName.toLowerCase();
   if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000|radlader|knicklader|kramer|12m|14m/i.test(lower)) {
-    return "D";
+    return "C";
   }
   return null;
 }
