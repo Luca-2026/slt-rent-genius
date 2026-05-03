@@ -34,6 +34,7 @@ import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
+import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
