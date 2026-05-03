@@ -268,6 +268,7 @@ import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import kompressor1_2m3_1 from "@/assets/products/kompressor-1-2m3-1.jpeg";
 import kompressor1_2m3_2 from "@/assets/products/kompressor-1-2m3-2.webp";
+import kompressor2m3_1 from "@/assets/products/kompressor-2m3-1.png";
 import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
 import scherenbuehneZs1012ac1 from "@/assets/products/scherenbuehne-zs1012ac-1.png";
 import anhaengerbuehneTm18gti1 from "@/assets/products/anhaengerbuehne-tm18gti-1.jpeg";
@@ -780,6 +781,35 @@ export const aggregateProducts: Product[] = [
       "Anschluss Druckluft": "1× G 1/2\"",
       "Gewicht": "187 kg",
       "Bauart": "stationär, PE-Gehäuse",
+    },
+  },
+  {
+    id: "kompressor-2m3-bobcat-pa72",
+    name: "2 m³ Kompressor",
+    modelName: "Bobcat PA7.2",
+    description: "Mobiler Bau-Kompressor (Diesel) mit 2,0 m³/min bei 7 bar – ideal für Druckluftwerkzeuge und Erdraketen auf der Baustelle.",
+    image: kompressor2m3_1,
+    images: [kompressor2m3_1],
+    category: "kompressor",
+    onRequest: true,
+    pdfUrl: "/manuals/datenblatt-bobcat-kompressor-pa7-2.pdf",
+    detailedDescription: "Der Bobcat PA7.2 ist ein robuster, mobiler Bau-Kompressor mit 2,0 m³/min Liefermenge bei 7 bar Betriebsdruck. Angetrieben von einem 3-Zylinder Kubota D1005 Dieselmotor (17,5 kW, Stage V) eignet er sich ideal für den Antrieb von Presslufthämmern, Aufbruchhämmern, Stampfern, Sandstrahlgeräten und Erdraketen. Auf einem straßenzulassungsfähigen Einachs-Fahrgestell mit zentralem Hebepunkt, Kraftstoff-/Wasserabscheider und Stützrad – einfach zu transportieren und schnell einsatzbereit.",
+    specifications: {
+      "Hersteller": "Bobcat",
+      "Modell": "PA7.2",
+      "Liefermenge (FAD)": "2,0 m³/min",
+      "Betriebsdruck": "7,0 bar",
+      "Motor": "Kubota D1005 (3 Zylinder, Diesel)",
+      "Motorleistung": "17,5 kW",
+      "Drehzahl": "3.000 U/min",
+      "Kühlung": "Wasser",
+      "Tankinhalt": "26 l",
+      "Emissionsklasse": "EU Stage V",
+      "Leergewicht": "ca. 430 kg",
+      "Betriebsgewicht": "ca. 445 kg",
+      "Max. zul. Gewicht": "750 kg",
+      "Abmessungen (L × B × H)": "2.611 × 1.272 × 1.130 mm",
+      "Fahrgestell": "Einachs-Anhänger mit Stützrad",
     },
   },
   {
