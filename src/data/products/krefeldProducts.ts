@@ -4306,6 +4306,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Fahrrollen": "Ø 150 mm, höhenverstellbar (220–335 mm)",
       "Material": "Aluminium",
     },
+    pdfUrl: "/manuals/krause-rollgeruest-stabilo-serie-10-50-aufbauanleitung.pdf",
     rentwareCode: { krefeld: "FSQFEL" }
   },
   {
