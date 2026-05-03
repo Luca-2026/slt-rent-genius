@@ -380,6 +380,7 @@ export const bonnArbeitsbuehnenProducts = [
     name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
     description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
     image: "/placeholder.svg",
+    category: "mastbuehne",
     rentwareCode: { bonn: "AN9D7X" },
   },
   {
@@ -396,6 +397,7 @@ export const bonnArbeitsbuehnenProducts = [
     name: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
     description: "Kompakte elektrische Scherenarbeitsbühne von Zoomlion mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
     image: "/placeholder.svg",
+    category: "scherenbuehne",
     rentwareCode: { bonn: "M4H2CP" },
   },
   {
@@ -403,6 +405,7 @@ export const bonnArbeitsbuehnenProducts = [
     name: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
     description: "Große elektrische Scherenbühne mit 12 m Arbeitshöhe für anspruchsvolle Einsätze.",
     image: "/placeholder.svg",
+    category: "scherenbuehne",
     rentwareCode: { bonn: "ADYTHS" },
   },
 ];
