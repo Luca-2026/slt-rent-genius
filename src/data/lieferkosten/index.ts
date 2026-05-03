@@ -84,6 +84,9 @@ export const ZUSATZKOSTEN = {
   moebel: {
     aufschlagJeStueck: 2, // ab 5 Stück
     schwellwert: 5,
+    aufbauBasis: 75,
+    aufbauProMoebel: 10, // pro Bierzeltgarnitur/Stehtisch
+    aufbauProZelt: 75,
   },
   rueckwegFaktor: 2,
   expressPauschale: 50,
@@ -161,6 +164,9 @@ export interface CalculatePriceInput {
   aufbauService?: boolean;
   // Möbel-Optionen
   moebelAnzahl?: number; // ab 5 Stück: Aufschlag pro Stück
+  moebelAufbauService?: boolean;
+  moebelAufbauStueck?: number; // Bierzeltgarnituren / Stehtische
+  moebelAufbauZelte?: number;
 }
 
 export interface CalculatePriceResult {
@@ -171,10 +177,12 @@ export interface CalculatePriceResult {
   geruestHoehenAufschlag: number;
   geruestAufbau: number;
   moebelAufschlag: number;
+  moebelAufbau: number;
   expressAufschlag: number;
   wochenendeFaktor: number;
   total: number;
 }
+
 
 // Findet nächsthöhere Distanzstufe
 function findDistanceEntry(tariff: Tariff, km: number): TariffDistance {
@@ -225,7 +233,21 @@ export function calculatePrice(input: CalculatePriceInput): CalculatePriceResult
     if (input.rueckweg) moebelAufschlag *= 2;
   }
 
-  zwischensumme += geruestHoehenAufschlag + geruestAufbau + moebelAufschlag;
+  // Möbel-Aufbauservice
+  let moebelAufbau = 0;
+  if (input.moebelAufbauService) {
+    const stueck = input.moebelAufbauStueck ?? 0;
+    const zelte = input.moebelAufbauZelte ?? 0;
+    if (stueck > 0 || zelte > 0) {
+      moebelAufbau =
+        ZUSATZKOSTEN.moebel.aufbauBasis +
+        stueck * ZUSATZKOSTEN.moebel.aufbauProMoebel +
+        zelte * ZUSATZKOSTEN.moebel.aufbauProZelt;
+    }
+  }
+
+  zwischensumme += geruestHoehenAufschlag + geruestAufbau + moebelAufschlag + moebelAufbau;
+
 
   // Express-Pauschale
   const expressAufschlag = input.express ? ZUSATZKOSTEN.expressPauschale : 0;
@@ -243,6 +265,7 @@ export function calculatePrice(input: CalculatePriceInput): CalculatePriceResult
     geruestHoehenAufschlag,
     geruestAufbau,
     moebelAufschlag,
+    moebelAufbau,
     expressAufschlag,
     wochenendeFaktor,
     total: zwischensumme,
