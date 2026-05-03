@@ -34,6 +34,7 @@ import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
+import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
@@ -508,11 +509,42 @@ export default function ProductDetail() {
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
+                  {(() => {
+                    const moebelKey = getMoebelInfoKey(product.id);
+                    const locKey = location.id as "krefeld" | "bonn" | "muelheim";
+                    const info = moebelKey ? moebelProductInfo[moebelKey]?.[locKey] : null;
+                    if (!info) return null;
+                    return (
+                      <div className="mt-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+                        <p className="text-sm font-semibold text-headline">
+                          Mietpreis: <span className="text-primary">{info.priceHint.perDay}</span>
+                          <span className="text-muted-foreground font-normal"> · </span>
+                          <span className="text-primary">{info.priceHint.perWeekend}</span>
+                        </p>
+                        {info.priceHint.note && (
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{info.priceHint.note}</p>
+                        )}
+                      </div>
+                    );
+                  })()}
                   {product.description && (
                     <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
                       {product.description}
                     </p>
                   )}
+                  {(() => {
+                    const moebelKey = getMoebelInfoKey(product.id);
+                    const locKey = location.id as "krefeld" | "bonn" | "muelheim";
+                    const info = moebelKey ? moebelProductInfo[moebelKey]?.[locKey] : null;
+                    if (!info) return null;
+                    return (
+                      <div className="mt-3 space-y-2">
+                        {info.seoParagraphs.map((p, i) => (
+                          <p key={i} className="text-sm text-muted-foreground leading-relaxed">{p}</p>
+                        ))}
+                      </div>
+                    );
+                  })()}
                   {product.tags && product.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {product.tags.map((tag) => (
