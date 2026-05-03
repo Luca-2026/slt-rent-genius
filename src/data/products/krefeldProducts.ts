@@ -460,6 +460,10 @@ import imgKaltFunkenfontaene1 from "@/assets/products/kalt-funkenfontaene-1.jpeg
 import imgKaltFunkenfontaene2 from "@/assets/products/kalt-funkenfontaene-2.jpeg";
 import imgKaltFunkenfontaene3 from "@/assets/products/kalt-funkenfontaene-3.jpeg";
 import imgKaltFunkenfontaene4 from "@/assets/products/kalt-funkenfontaene-4.jpeg";
+import imgKaltFunkenfontaeneEinzeln1 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-1.jpg";
+import imgKaltFunkenfontaeneEinzeln2 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-2.jpeg";
+import imgKaltFunkenfontaeneEinzeln3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-3.jpeg";
+import imgKaltFunkenfontaeneEinzeln4 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-einzeln-4.jpeg";
 import imgKaltFunkenfontaeneSet1 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-1.jpeg";
 import imgKaltFunkenfontaeneSet2 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-2.jpeg";
 import imgKaltFunkenfontaeneSet3 from "@/assets/products/spezialeffekte/kalt-funkenfontaene-set-3.jpeg";
@@ -3223,9 +3227,30 @@ export const spezialeffekteProducts: Product[] = [
     rentwareCode: { krefeld: "H77LBM" }
   },
   {
+    id: "kalt-funkenfontaene-einzeln",
+    name: "Kalt-Funkenfontäne, Einzelgerät",
+    description: "Mit diesem Gerät erzeugen Sie auf Knopfdruck spektakuläre Fontäneneffekte für jede Veranstaltung. Die bis zu 6 Meter hohen Funkenfontänen sind vollkommen ungefährlich und entwickeln weder Geruch noch Rauch.",
+    detailedDescription: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.\n\n✅ bis zu 6 Meter hohe Funkenfontänen\n✅ kinderleichte Bedienung über Fernbedienung oder DMX\n✅ Höhe stufenlos einstellbar\n✅ inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)\n\nJede weitere Minute Effektzeit wird mit 3,00 € berechnet.\n\nWichtiger Hinweis: Nach jeder Benutzung unbedingt „Clear Powder“ auf der Fernbedienung drücken – sonst verklumpt das Granulat im Gerät!",
+    image: imgKaltFunkenfontaeneEinzeln1,
+    images: [imgKaltFunkenfontaeneEinzeln1, imgKaltFunkenfontaeneEinzeln2, imgKaltFunkenfontaeneEinzeln3, imgKaltFunkenfontaeneEinzeln4],
+    category: "funken",
+    specifications: {
+      "Set": "1 × Kalt-Funkenfontäne",
+      "Effekthöhe": "bis zu 6 Meter",
+      "Steuerung": "Fernbedienung oder DMX",
+      "Höhe": "stufenlos einstellbar",
+      "Lieferumfang": "inkl. einer Granulat-Füllung (bis zu 10 min. Effektzeit)",
+      "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
+      "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+      "Hinweis": "Nach jeder Benutzung „Clear Powder“ drücken – sonst verklumpt das Granulat",
+    },
+    rentwareCode: { krefeld: "IHAKJD" }
+  },
+  {
     id: "kalt-funkenfontaene-2er",
     name: "Kalt-Funkenfontäne, 2er Set",
     description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
+    detailedDescription: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.\n\n✅ bis zu 6 Meter hohe Funkenfontänen\n✅ kinderleichte Bedienung über Fernbedienung oder DMX\n✅ Höhe stufenlos einstellbar\n✅ inkl. einer Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)\n\nJede weitere Minute Effektzeit wird mit 3,00 € berechnet.\n\nWichtiger Hinweis: Nach jeder Benutzung unbedingt „Clear Powder“ auf der Fernbedienung drücken – sonst verklumpt das Granulat im Gerät!",
     image: imgKaltFunkenfontaeneSet1,
     images: [imgKaltFunkenfontaeneSet1, imgKaltFunkenfontaeneSet2, imgKaltFunkenfontaeneSet3, imgKaltFunkenfontaeneSet4],
     category: "funken",
@@ -3233,10 +3258,11 @@ export const spezialeffekteProducts: Product[] = [
       "Set": "2 × Kalt-Funkenfontäne im Flightcase",
       "Effekthöhe": "bis zu 6 Meter",
       "Steuerung": "Fernbedienung oder DMX",
-      "Höhe": "einstellbar",
+      "Höhe": "stufenlos einstellbar",
       "Lieferumfang": "inkl. einer Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)",
       "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
       "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+      "Hinweis": "Nach jeder Benutzung „Clear Powder“ drücken – sonst verklumpt das Granulat",
     },
     rentwareCode: { krefeld: "IHAKJD" }
   },
@@ -3244,6 +3270,7 @@ export const spezialeffekteProducts: Product[] = [
     id: "kalt-funkenfontaene-4er",
     name: "Kalt-Funkenfontäne, 4er Set",
     description: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.",
+    detailedDescription: "Mit diesen Geräten können Sie auf Knopfdruck fantastische Fontäneneffekte für jegliche Veranstaltungen generieren. Die bis zu 6 Meter hohen Fontänen sind dabei vollkommen ungefährlich und erzeugen weder Geruch noch Rauch.\n\n✅ bis zu 6 Meter hohe Funkenfontänen\n✅ kinderleichte Bedienung über Fernbedienung oder DMX\n✅ Höhe stufenlos einstellbar\n✅ inkl. einer Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)\n\nJede weitere Minute Effektzeit wird mit 3,00 € berechnet.\n\nWichtiger Hinweis: Nach jeder Benutzung unbedingt „Clear Powder“ auf der Fernbedienung drücken – sonst verklumpt das Granulat im Gerät!",
     image: imgKaltFunkenfontaene4erSet,
     images: [imgKaltFunkenfontaene4erSet, imgKaltFunkenfontaene1, imgKaltFunkenfontaene2, imgKaltFunkenfontaene3, imgKaltFunkenfontaene4],
     category: "funken",
@@ -3251,10 +3278,11 @@ export const spezialeffekteProducts: Product[] = [
       "Set": "4 × Kalt-Funkenfontäne im Flightcase",
       "Effekthöhe": "bis zu 6 Meter",
       "Steuerung": "Fernbedienung oder DMX",
-      "Höhe": "einstellbar",
+      "Höhe": "stufenlos einstellbar",
       "Lieferumfang": "inkl. einer Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)",
       "Verbrauchsmaterial": "jede weitere Minute: 3,00 €",
       "Besonderheiten": "kein Geruch, kein Rauch, vollkommen ungefährlich",
+      "Hinweis": "Nach jeder Benutzung „Clear Powder“ drücken – sonst verklumpt das Granulat",
     },
     rentwareCode: { krefeld: "9OU48Z" }
   },
