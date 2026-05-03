@@ -364,8 +364,6 @@ import speakonYAdapter1 from "@/assets/products/speakon-y-adapter-1.jpeg";
 import ceeKabel16aRot20m1 from "@/assets/products/cee-kabel-16a-rot-20m-1.jpeg";
 import cee63aUv2x32a1x16a6xSchuko1 from "@/assets/products/cee-63a-uv-2x32a-1x16a-6xschuko-1.webp";
 
-// LED 4er Bar images
-import imgLed4erBar1 from "@/assets/products/led-4er-bar-1.jpeg";
 
 // LED Beleuchtungsset single images
 import imgLedBeleuchtungssetSingle1 from "@/assets/products/led-beleuchtungsset-single-1.jpeg";
@@ -3071,21 +3069,6 @@ export const beleuchtungProducts: Product[] = [
     },
     pdfUrl: "/manuals/tourled-50-xcr-manual.pdf",
     rentwareCode: { krefeld: "QKTPFF" }
-  },
-  {
-    id: "led-4er-bar",
-    name: "LED 4er Bar – 4er LED Bar",
-    description: "Kompakte 4-fach LED-Leiste – perfekt für Partys, Hochzeiten und kleine Events. Sound-to-Light und automatische Farbprogramme möglich, inkl. Stativ-Adapter und Case-Tasche.",
-    image: imgLed4erBar1,
-    images: [imgLed4erBar1],
-    category: "led-bar",
-    specifications: {
-      "LEDs": "4× LED PAR",
-      "Betrieb": "Sound to Light oder automatische Farbprogramme",
-      "Lieferumfang": "1× Kaltgeräte Kabel, 1× Stativ Adapter, 1× Case-Tasche",
-    },
-    pdfUrl: "/manuals/led-4er-bar-manual.pdf",
-    rentwareCode: { krefeld: "7MTT9O" }
   },
   {
     id: "led-beleuchtungsset-single",

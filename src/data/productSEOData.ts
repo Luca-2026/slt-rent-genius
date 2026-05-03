@@ -3723,23 +3723,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Aus welchem Material besteht der Rahmen?", a: "Der Vertikalrahmen ist aus Aluminium gefertigt." },
     ],
   },
-  "led-4er-bar": {
-    excelName: "LED 4er Bar – 4er LED Bar",
-    seoTitle: "LED 4er Bar mieten – Kompakte 4er LED Bar",
-    metaDescription: "Kompakte LED 4er Bar mit Stativ-Adapter und Tasche für Events. Sound-to-Light und automatische Farbprogramme inklusive.",
-    h1: "LED 4er Bar – 4er LED Bar mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Funktionsweise und Steuerung", "Ausstattung und Transport", "Technische Merkmale der LED-Leiste"],
-    useCaseBau: "",
-    useCaseEvent: "Diese LED-Leiste eignet sich für die Bühnen- und Effektbeleuchtung sowie als lineare Akzentbeleuchtung bei Veranstaltungen.",
-    useCasePrivat: "",
-    primaryKeywords: "LED 4er Bar – 4er LED Bar mieten in Krefeld, LED 4er Bar – 4er LED Bar leihen in Krefeld, LED 4er Bar – 4er LED Bar mieten NRW",
-    is247: false,
-    faqs: [
-      { q: "Wie wird die LED 4er Bar gesteuert?", a: "Die Steuerung erfolgt wahlweise über einen Sound-to-Light-Modus oder über integrierte automatische Farbprogramme." },
-      { q: "Was gehört zum Lieferumfang der LED Bar?", a: "Der Lieferumfang umfasst die 4er LED Bar, ein Kaltgerätekabel, einen Stativ-Adapter sowie eine Case-Tasche für den Transport." },
-      { q: "Wie viele Leuchtmittel sind auf der Bar verbaut?", a: "Die Bar ist mit insgesamt vier einzelnen LED PAR Scheinwerfern ausgestattet." },
-    ],
-  },
   "led-beleuchtungsset-duo": {
     excelName: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage",
     seoTitle: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Anlage",
