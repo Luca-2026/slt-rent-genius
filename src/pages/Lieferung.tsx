@@ -262,16 +262,49 @@ export default function Lieferung() {
                     )}
 
                     {isMoebel && (
-                      <div className="pt-3 border-t space-y-2">
-                        <Label htmlFor="moebel" className="text-sm font-medium">Anzahl Möbelstücke</Label>
-                        <Input
-                          id="moebel"
-                          type="number"
-                          min={0}
-                          value={moebelAnzahl}
-                          onChange={(e) => setMoebelAnzahl(Math.max(0, parseInt(e.target.value) || 0))}
-                        />
-                        <p className="text-xs text-muted-foreground">Ab 5 Stück: +2,00 € je Stück</p>
+                      <div className="pt-3 border-t space-y-3">
+                        <div className="space-y-2">
+                          <Label htmlFor="moebel" className="text-sm font-medium">Anzahl Möbelstücke</Label>
+                          <Input
+                            id="moebel"
+                            type="number"
+                            min={0}
+                            value={moebelAnzahl}
+                            onChange={(e) => setMoebelAnzahl(Math.max(0, parseInt(e.target.value) || 0))}
+                          />
+                          <p className="text-xs text-muted-foreground">Ab 5 Stück: +2,00 € je Stück</p>
+                        </div>
+                        <div className="flex items-center justify-between pt-2 border-t">
+                          <div>
+                            <Label htmlFor="moebel-aufbau" className="text-sm font-medium">Aufbau-Service vor Ort</Label>
+                            <p className="text-xs text-muted-foreground">75,00 € Basis + 10,00 €/Garnitur, 75,00 €/Zelt</p>
+                          </div>
+                          <Switch id="moebel-aufbau" checked={moebelAufbauService} onCheckedChange={setMoebelAufbauService} />
+                        </div>
+                        {moebelAufbauService && (
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1">
+                              <Label htmlFor="moebel-aufbau-stueck" className="text-xs">Bierzeltgarnituren / Stehtische</Label>
+                              <Input
+                                id="moebel-aufbau-stueck"
+                                type="number"
+                                min={0}
+                                value={moebelAufbauStueck}
+                                onChange={(e) => setMoebelAufbauStueck(Math.max(0, parseInt(e.target.value) || 0))}
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label htmlFor="moebel-aufbau-zelte" className="text-xs">Zelte</Label>
+                              <Input
+                                id="moebel-aufbau-zelte"
+                                type="number"
+                                min={0}
+                                value={moebelAufbauZelte}
+                                onChange={(e) => setMoebelAufbauZelte(Math.max(0, parseInt(e.target.value) || 0))}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </CardContent>
