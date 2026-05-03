@@ -1,8 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import heroKrefeld from "@/assets/hero-krefeld.jpg";
 import heroBonn from "@/assets/hero-bonn.jpg";
 
-const images = [heroKrefeld, heroBonn];
+const images = [
+  { src: heroKrefeld, alt: "Krefeld – SLT Rental Hauptsitz" },
+  { src: heroBonn, alt: "Bonn – SLT Rental Filiale" },
+];
 const INTERVAL = 6000;
 
 export function HeroBackgroundSlider() {
@@ -19,14 +23,28 @@ export function HeroBackgroundSlider() {
 
   return (
     <>
-      {images.map((src, i) => (
-        <div
+      {/* Preload LCP hero image so the browser fetches it as early as possible */}
+      <Helmet>
+        <link
+          rel="preload"
+          as="image"
+          href={images[0].src}
+          // @ts-expect-error – non-standard attribute supported by Chrome/Edge/Safari
+          fetchpriority="high"
+        />
+      </Helmet>
+      {images.map((img, i) => (
+        <img
           key={i}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out"
-          style={{
-            backgroundImage: `url(${src})`,
-            opacity: i === current ? 1 : 0,
-          }}
+          src={img.src}
+          alt={img.alt}
+          width={1920}
+          height={1080}
+          fetchPriority={i === 0 ? "high" : "low"}
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding={i === 0 ? "sync" : "async"}
+          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: i === current ? 1 : 0 }}
         />
       ))}
     </>
