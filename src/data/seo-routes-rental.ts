@@ -340,6 +340,35 @@ const STANDORT_ROUTES: SeoRoute[] = locationData.map((loc) => {
 });
 
 // ---------------------------------------------------------------
+// Mieten-Standort-Übersichten (/mieten/:locationId) – Kategorie-Hub
+// Verhindert 403, weil sonst dist/mieten/<loc>/ ohne index.html bleibt.
+// ---------------------------------------------------------------
+
+const MIETEN_LOCATION_ROUTES: SeoRoute[] = (locations as LocationData[]).map((loc) => {
+  const locName = LOCATION_DISPLAY[loc.id] || loc.id;
+  const categoryCount = Object.keys(loc.products || {}).length;
+  return {
+    path: `/mieten/${loc.id}`,
+    routeType: "standort" as const,
+    title: clamp(`Mieten in ${locName} – Baumaschinen, Anhänger & Event | SLT Rental`, 60),
+    description: clampDesc(
+      `Mietpark in ${locName}: Baumaschinen, Anhänger, Werkzeuge und Event-Equipment. ${categoryCount} Kategorien direkt vor Ort buchbar.`,
+    ),
+    h1: `Mieten in ${locName}`,
+    intro: [
+      `Wähle eine Kategorie und buche dein Mietgerät direkt am Standort ${locName}.`,
+    ],
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: locName, path: `/mieten/${loc.id}` },
+    ],
+    changefreq: "weekly",
+    priority: 0.85,
+    lastmod: TODAY,
+  };
+});
+
+// ---------------------------------------------------------------
 // LocalArea-Routen (37)
 // ---------------------------------------------------------------
 
