@@ -471,6 +471,7 @@ import imgTurboCo2Jet1 from "@/assets/products/spezialeffekte/turbo-jet-co2-1.jp
 import imgTurboCo2Jet2 from "@/assets/products/spezialeffekte/turbo-jet-co2-2.jpg";
 import imgTurboCo2Jet3 from "@/assets/products/spezialeffekte/turbo-jet-co2-3.jpg";
 import imgKaltFunkenfontaene4erSet from "@/assets/products/spezialeffekte/kalt-funkenfontaene-4er-set.jpeg";
+import imgPopcornXlProfi from "@/assets/products/spezialeffekte/popcornmaschine-xl-profi.jpg";
 
 // Kleiderständer images
 import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-rollen-1.webp";
@@ -3185,6 +3186,25 @@ export const spezialeffekteProducts: Product[] = [
       "Herstellung": "Made in Europe",
     },
     rentwareCode: { krefeld: "" }
+  },
+  {
+    id: "popcornmaschine-xl-profi",
+    name: "XL Profi Popcornmaschine",
+    description: "Nostalgische XL Profi Popcornmaschine auf Nostalgiewagen – inkl. Maiseinsatz. Maschine vom Wagen abnehmbar. Verbrauchsmaterial (Mais-Fett-Zucker-Tüten) im nächsten Schritt im Warenkorb dazubuchbar.",
+    detailedDescription: "Maschine kann zum Transport vom Wagen getrennt werden\n\nAbmessungen Maschine ohne Wagen (B×H×T): ca. 75 × 59 × 45 cm\n\nGewicht: ca. 25 kg\n\nAnschlussleistung: 850 Watt mit 230 V\n\nEmpfohlene Zubereitungsmenge pro Durchgang: Mais 150 g, Zucker 50 g, Öl 40 ml\n\nLieferumfang:\n- Popcorn Maschine\n- Nostalgiewagen\n- Maiseinsatz\n\nDas benötigte Material (Mais-Fett-Zucker-Tüten) kannst du im nächsten Schritt im Warenkorb buchen (ca. 20 Standard-Portionen, die du für 1 € verkaufen kannst). Du bekommst ausreichend Material zur Verfügung – berechnet wird nur das tatsächlich verbrauchte Material.",
+    image: imgPopcornXlProfi,
+    images: [imgPopcornXlProfi],
+    category: "popcorn",
+    specifications: {
+      "Abmessungen Maschine (B×H×T)": "ca. 75 × 59 × 45 cm",
+      "Gewicht": "ca. 25 kg",
+      "Anschlussleistung": "850 W",
+      "Stromanschluss": "230 V",
+      "Empfohlene Menge pro Durchgang": "150 g Mais, 50 g Zucker, 40 ml Öl",
+      "Lieferumfang": "Popcornmaschine, Nostalgiewagen, Maiseinsatz",
+      "Besonderheit": "Maschine vom Wagen abnehmbar",
+    },
+    rentwareCode: { krefeld: "SPA843" }
   },
 ];
 
