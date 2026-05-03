@@ -371,6 +371,12 @@ export default function Lieferung() {
                           <span className="font-medium">+{result.moebelAufschlag.toFixed(2).replace(".", ",")} €</span>
                         </div>
                       )}
+                      {result.moebelAufbau > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Aufbau-Service Möbel:</span>
+                          <span className="font-medium">+{result.moebelAufbau.toFixed(2).replace(".", ",")} €</span>
+                        </div>
+                      )}
                       {express && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Express:</span>
