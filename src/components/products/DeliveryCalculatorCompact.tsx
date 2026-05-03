@@ -39,7 +39,8 @@ function detectTariffFromProductName(productName: string | undefined, kategorie:
 
 function isTieflader(productName?: string): boolean {
   if (!productName) return false;
-  return /tieflader|ab\s*3[.,]5\s*t|5\s*t|7\s*t/.test(productName.toLowerCase());
+  // Wortgrenze davor: "5t"/"7t" nur als eigenständige Größe, nicht als Teil von "2,7t" o.ä.
+  return /tieflader|ab\s*3[.,]5\s*t|(?:^|[^\d.,])(?:5|7)\s*t\b/.test(productName.toLowerCase());
 }
 
 export function DeliveryCalculatorCompact({
