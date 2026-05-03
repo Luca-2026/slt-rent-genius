@@ -12,7 +12,7 @@ export interface MoebelProductLocationInfo {
   seoParagraphs: string[];
 }
 
-type ProductKey = "bierzeltgarnitur-set" | "stehtisch";
+type ProductKey = "bierzeltgarnitur-set" | "stehtisch" | "huepfburg-clown";
 type LocationKey = "krefeld" | "bonn" | "muelheim";
 
 export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelProductLocationInfo>> = {
@@ -86,11 +86,47 @@ export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelPro
       ],
     },
   },
+  "huepfburg-clown": {
+    krefeld: {
+      priceHint: {
+        perDay: "ab 25 € / Tag",
+        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
+      },
+      seoParagraphs: [
+        "Die Hüpfburg Clown in Krefeld zu mieten ist die XXL-Lösung für Kindergeburtstage in Bockum, Verberg oder Forstwald, für Schul- und Kita-Sommerfeste in Fischeln und Oppum sowie für Stadtteilfeste am Niederrhein. Mit 6,10 m × 5,20 m × 5,90 m und einer aufblasbaren Clown-Figur auf dem Dach ist sie unsere größte Hüpfburg – bis zu 6 Kinder springen gleichzeitig (max. 450 kg, Altersempfehlung 3–16 Jahre).",
+        "Vor der Buchung wichtig: Stellfläche von mindestens 7 × 6 m auf ebenem, hindernisfreiem Untergrund (Rasen oder Asphalt) und ein Stromanschluss in Reichweite für das mitgelieferte 1.500-Watt-Gebläse. Im Lieferumfang enthalten sind Tragesack, Gebläse, Gewebeplane und 8 Heringe zur Bodenfixierung. Selbstabholung an der Filiale Krefeld; Lieferung ins Krefelder Umland wird über den Lieferkostenrechner transparent kalkuliert.",
+      ],
+    },
+    bonn: {
+      priceHint: {
+        perDay: "ab 25 € / Tag",
+        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
+      },
+      seoParagraphs: [
+        "Die Hüpfburg Clown in Bonn zu mieten passt zu Kindergeburtstagen in Bad Godesberg, Endenich oder Beuel, zu Pfarr- und Kita-Sommerfesten im Rhein-Sieg-Kreis und zu Familienfesten an der Rheinaue. Mit 6,10 m × 5,20 m × 5,90 m Außenmaß und einer aufblasbaren Clown-Figur auf dem Dach ist sie die XXL-Variante – bis zu 6 Kinder zwischen 3 und 16 Jahren springen gleichzeitig (max. 450 kg).",
+        "Planen Sie eine Stellfläche von mindestens 7 × 6 m auf ebenem Untergrund und einen Stromanschluss für das mitgelieferte 1.500-Watt-Gebläse ein. Tragesack, Gebläse, Gewebeplane und 8 Heringe sind im Lieferumfang enthalten. Selbstabholung erfolgt an der Filiale Bonn; Lieferung ins Bonner Umland und in den Rhein-Sieg-Kreis wird im Buchungsprozess transparent berechnet.",
+      ],
+    },
+    muelheim: {
+      priceHint: {
+        perDay: "ab 25 € / Tag",
+        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
+      },
+      seoParagraphs: [
+        "Die Hüpfburg Clown in Mülheim an der Ruhr zu mieten ist die naheliegende Wahl für Kindergeburtstage in Saarn, Heißen oder Speldorf, für Schul- und Kita-Sommerfeste im westlichen Ruhrgebiet und für Familienanlässe rund um Schloss Broich. Mit 6,10 m × 5,20 m × 5,90 m Außenmaß und Clown-Figur auf dem Dach bietet sie Platz für bis zu 6 Kinder gleichzeitig (Altersempfehlung 3–16 Jahre, max. 450 kg).",
+        "Vor der Buchung beachten: Stellfläche mindestens 7 × 6 m auf ebenem Untergrund und ein Stromanschluss in Reichweite für das mitgelieferte 1.500-Watt-Gebläse. Tragesack, Gebläse, Gewebeplane und 8 Heringe gehören zum Lieferumfang. Abholung an der Filiale Ruhrorter Straße in Mülheim an der Ruhr; Lieferung in Saarn, Speldorf, Mintard, Styrum und das westliche Ruhrgebiet wird transparent über den Lieferkostenrechner kalkuliert.",
+      ],
+    },
+  },
 };
 
 /** Resolve product key from product.id (handles location-prefixed Bonn IDs like "bonn-stehtisch") */
 export function getMoebelInfoKey(productId: string): ProductKey | null {
   if (productId === "bierzeltgarnitur-set" || productId === "bonn-bierzeltgarnitur-set") return "bierzeltgarnitur-set";
   if (productId === "stehtisch" || productId === "bonn-stehtisch") return "stehtisch";
+  if (productId === "huepfburg-clown" || productId === "bonn-huepfburg-clown" || productId === "muelheim-huepfburg-clown") return "huepfburg-clown";
   return null;
 }

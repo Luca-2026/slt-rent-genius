@@ -4267,6 +4267,7 @@ import imgHuepfburgRollercoaster4 from "@/assets/products/huepfburg-rollercoaste
 import imgHuepfburgWasserpark1 from "@/assets/products/huepfburg-wasserpark-1.jpeg";
 import imgHuepfburgWasserpark2 from "@/assets/products/huepfburg-wasserpark-2.jpeg";
 import imgHuepfburgClown1 from "@/assets/products/huepfburg-clown-1.webp";
+import imgHuepfburgClown2 from "@/assets/products/huepfburg-clown-2.jpeg";
 
 
 export const huepfburgenProducts: Product[] = [
@@ -4369,7 +4370,7 @@ export const huepfburgenProducts: Product[] = [
     description: "Extra große Hüpfburg im Clown-Design mit riesiger Springfläche – inkl. 1500W Gebläse. Für bis zu 6 Kinder.",
     detailedDescription: "Die Hüpfburg Clown ist mit 6,10 m × 5,20 m × 5,90 m unsere größte Hüpfburg und bietet eine riesige Springfläche für bis zu 6 Kinder gleichzeitig. Das farbenfrohe Clown-Motiv mit aufblasbarer Figur auf dem Dach begeistert auf jeder Veranstaltung. Die gesamte Burg ist vollständig von einer Wand umgeben und hält bis zu 450 kg stand. Alle Nähte sind doppelt vernäht für maximale Haltbarkeit. Im Lieferumfang: Tragesack, 1500W Gebläse, Gewebeplane und 8 Heringe.",
     image: imgHuepfburgClown1,
-    images: [imgHuepfburgClown1],
+    images: [imgHuepfburgClown1, imgHuepfburgClown2],
     category: "huepfburg",
     tags: ["huepfburg", "spiel", "gross"],
     specifications: {
