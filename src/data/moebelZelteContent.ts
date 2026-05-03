@@ -254,16 +254,19 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier an der Ruhr",
+        h2: "Bierzeltgarnitur mieten in Mülheim an der Ruhr – das Rückgrat jeder Feier",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set: ein Tisch 50 × 220 cm plus zwei Bänke 25 × 220 cm. Robust, schnell aufgebaut, leicht zu reinigen – und damit das Standard-Mobiliar für Vereinsfeste, runde Geburtstage und Open-Air-Anlässe entlang der Ruhr. Optional ergänzbar um das weiße Hussen-Set (zwei Bankhussen + eine Tischhusse, gewaschen zurückzugeben), wenn es etwas eleganter wirken soll.",
+          "Ein Bierzeltgarnitur-Set – auch Festzeltgarnitur, Bierbankgarnitur oder Biertisch mit zwei Bänken genannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei dazu passenden Bänken (25 × 220 cm). Pro Garnitur planen Sie acht bis zehn Sitzplätze ein. Damit ist die Bierzeltgarnitur in Mülheim an der Ruhr das Standard-Mobiliar für Vereinsfeste in Saarn, runde Geburtstage in Heißen und Open-Air-Anlässe entlang der Ruhraue.",
+          "Wer Biertische und Bänke mieten möchte, ohne dass das Ganze nach Schützenheim wirkt, ergänzt das weiße Hussen-Set: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben. Damit wird aus dem Werkstatt-Mobiliar eine ruhige Tischlandschaft – passend für Hochzeiten in der Nachbarschaft von Schloss Broich oder für Firmensommerfeste am Wasserbahnhof.",
+          "Praktischer Tipp für Veranstaltungen mit Buffet: Zwei Bierzeltgarnituren parallel ergeben eine 4,4 m lange Buffetzeile. Mit Tischhussen weiß ergibt das eine sofort einsatzbereite Catering-Insel – ideal für Familienfeiern Richtung MüGa-Park oder für Industrie-Events in den Gewerbegebieten Speldorf und Styrum.",
         ],
       },
       {
-        h2: "Stehtische, Sonnenschirme und Zeltboden",
+        h2: "Stehtisch mieten in Mülheim an der Ruhr – Bistro- und Cocktailtische mit Husse",
         paragraphs: [
-          "Stehtische klappbar mit Metallbeinen und Kunststoffplatte, dazu die Stretch-Husse Ø 80 cm in Weiß oder Schwarz (Höhe 110 cm) – die übliche Empfangs-Konfiguration für Sektrunden vor Trauungen, für Empfänge bei Industrie-Events und für Mingle-Bereiche bei Sommerpartys.",
-          "Für sonnige Stunden im Garten gibt es den Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion); ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
+          "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit entsprechen sie der klassischen Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen. Faustregel: Pro 25 Empfangsgäste rund fünf Stehtische.",
+          "Die Stretch-Husse ist in Weiß und Schwarz verfügbar. Weiß empfehlen wir für Hochzeiten am Schloss Broich, Trauungen im Standesamt und Sommerempfänge in Saarn; Schwarz für Industrie-Events, Tagungen und Produktpräsentationen in Mülheimer Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
+          "Sonnige Stunden im Garten deckt der Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion) ab; ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
         ],
       },
       {
