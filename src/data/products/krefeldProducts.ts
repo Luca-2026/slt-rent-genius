@@ -471,6 +471,7 @@ import imgTurboCo2Jet1 from "@/assets/products/spezialeffekte/turbo-jet-co2-1.jp
 import imgTurboCo2Jet2 from "@/assets/products/spezialeffekte/turbo-jet-co2-2.jpg";
 import imgTurboCo2Jet3 from "@/assets/products/spezialeffekte/turbo-jet-co2-3.jpg";
 import imgKaltFunkenfontaene4erSet from "@/assets/products/spezialeffekte/kalt-funkenfontaene-4er-set.jpeg";
+import imgPopcornXlProfi from "@/assets/products/spezialeffekte/popcornmaschine-xl-profi.jpg";
 
 // Kleiderständer images
 import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-rollen-1.webp";
