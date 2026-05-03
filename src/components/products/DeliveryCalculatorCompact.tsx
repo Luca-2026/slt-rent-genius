@@ -54,9 +54,37 @@ export function DeliveryCalculatorCompact({
   const [categoryKey, setCategoryKey] = useState<string>(initialCategoryKey);
   const config = categoryConfigs[categoryKey];
 
-  // Initial subtype: try product-name override (Tarif D = größere Geräte), sonst default
+  // Initial subtype: spezifisches Subtype-Matching anhand Produktname, sonst Tarif-Override, sonst default
   const initialSubtype: string | null = (() => {
     if (!config.subtypes || config.subtypes.length === 0) return null;
+    const lower = (productName ?? "").toLowerCase();
+    // Spezifisches Matching pro Subtype-Key
+    if (lower) {
+      if (/xe27|2[.,]7\s*t|3\s*t|e35/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "3t-bagger");
+        if (m) return m.key;
+      }
+      if (/2\s*t|e20/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "2t-bagger");
+        if (m) return m.key;
+      }
+      if (/radlader|knicklader|kramer/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "radlader");
+        if (m) return m.key;
+      }
+      if (/dumper/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "dumper");
+        if (m) return m.key;
+      }
+      if (/12\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "12m");
+        if (m) return m.key;
+      }
+      if (/14\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "14m+");
+        if (m) return m.key;
+      }
+    }
     const override = getProductTariffOverride(productName);
     if (override) {
       const match = config.subtypes.find((s) => s.tarif === override);
