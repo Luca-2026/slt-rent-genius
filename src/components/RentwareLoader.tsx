@@ -79,6 +79,17 @@ export function RentwareLoader() {
     );
     window.addEventListener("rtr:load", onCustom, { once: true });
 
+    // If the current page already mounts a Rentware element (category /
+    // product / booking pages), load immediately so availability shows up
+    // without requiring user interaction.
+    const hasRtrEl = !!document.querySelector(
+      "rtr-search, rtr-article-booking, rtr-availability, rtr-product",
+    );
+    if (hasRtrEl) {
+      cleanup();
+      inject();
+    }
+
     // Idle fallback so the cart is ready even without interaction
     const ric = (window as any).requestIdleCallback as
       | ((cb: () => void, opts?: { timeout: number }) => number)
