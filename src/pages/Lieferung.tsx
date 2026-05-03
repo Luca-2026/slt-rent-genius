@@ -66,7 +66,7 @@ const deliveryPrices = {
     name: "Gerüst bis 4,4m Arbeitshöhe",
     multiplier: 1,
     aufschlagProMeter: 5,
-    aufbauBasis: 40,
+    aufbauBasis: 45,
     aufbauProMeter: 15,
     distances: [
       { km: 10, brutto: 50 },
