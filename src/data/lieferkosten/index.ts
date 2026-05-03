@@ -265,6 +265,7 @@ export function calculatePrice(input: CalculatePriceInput): CalculatePriceResult
     geruestHoehenAufschlag,
     geruestAufbau,
     moebelAufschlag,
+    moebelAufbau,
     expressAufschlag,
     wochenendeFaktor,
     total: zwischensumme,
