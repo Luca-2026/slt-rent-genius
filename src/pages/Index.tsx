@@ -93,6 +93,8 @@ export default function Index() {
             </h1>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl">
               {t("hero.subtitle")}
+              <br />
+              {t("hero.subtitleLine2")}
             </p>
 
             {/* Interactive Search with Article Search - lazy loaded */}
