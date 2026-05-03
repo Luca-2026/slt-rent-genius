@@ -47,10 +47,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier am Niederrhein",
+        h2: "Bierzeltgarnitur mieten in Krefeld – das Rückgrat jeder Feier am Niederrhein",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set besteht bei uns aus einem Tisch (50 × 220 cm) und zwei passenden Bänken (25 × 220 cm). Robust, schnell aufgebaut, leicht zu reinigen – und damit das Standard-Mobiliar für Schützenfeste, Bauernschützentreffen und Vereinsjubiläen in Krefeld. Wer es etwas festlicher möchte, ergänzt das Hussen-Set in Weiß: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben.",
-          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke. So entsteht innerhalb weniger Stunden eine vollständige Festinfrastruktur – inklusive Aufbauservice, wenn der Vereinsvorstand das vorab dazubucht.",
+          "Ein Bierzeltgarnitur-Set – im Sprachgebrauch oft auch Festzeltgarnitur, Bierbankgarnitur oder schlicht „Biertisch mit Bänken" genannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei dazu passenden Bänken (25 × 220 cm). Pro Garnitur planen Sie acht bis zehn Sitzplätze ein, je nachdem wie eng zusammengerückt wird. Das Holz ist abwischbar, die Beine klappen ohne Werkzeug ein, und das Set lässt sich von zwei Personen in unter einer Minute aufstellen. Damit sind Bierzeltgarnituren in Krefeld die Standardlösung für Schützenfeste, Karnevals­sitzungen, runde Geburtstage und Vereinsabende.",
+          "Wer Biertische und Bänke mieten möchte, ohne dass es nach Vereinsheim aussieht, kombiniert das Set mit unserem Hussen-Set in Weiß: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben. Das macht aus der Standard-Bierzeltgarnitur in wenigen Minuten eine Tischlandschaft, die auch bei Hochzeiten in Bockum, Verberg oder Forstwald oder bei Firmen-Sommerfesten in Fichtenhain gut aussieht.",
+          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke und ein paar Stehtische am Eingang. Praktisch ist die Bierzeltgarnitur auch als Buffettisch: zwei Garnituren parallel gestellt ergeben eine 4,4 m lange Buffetzeile, die mit weißer Tischhusse sofort nach Catering aussieht.",
         ],
       },
       {
@@ -61,9 +62,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         ],
       },
       {
-        h2: "Stehtische für Empfänge, Sektrunden und Mingle-Bereiche",
+        h2: "Stehtisch mieten in Krefeld – mit Husse in Weiß oder Schwarz",
         paragraphs: [
-          "Unsere Stehtische sind klappbar, haben Metallbeine und eine pflegeleichte Kunststoffplatte. Mit der Stretch-Husse in Weiß oder Schwarz (Ø 80 cm, Höhe 110 cm) wird aus dem Arbeitstisch in Sekunden ein vorzeigbares Empfangs-Möbel. Praktisch für Sektempfänge vor Schützenhallen, für Cocktail-Bereiche bei Firmenevents oder als Buffetinsel bei Geburtstagen.",
+          "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit zählen sie zur Kategorie der klassischen Bistrotische bzw. Cocktailtische und sind das Standard-Möbel für Sektempfang, Stehkaffee oder Mingle-Bereiche. Pro Stehtisch planen Sie vier bis sechs stehende Personen ein.",
+          "Die passende Stretch-Husse ist in Weiß oder Schwarz verfügbar – Weiß für Hochzeiten, Trauerfeiern und repräsentative Empfänge, Schwarz für Firmenevents, Produktpräsentationen und After-Work-Anlässe. Die Hussen sitzen faltenfrei, müssen nicht extra gebügelt werden und werden gewaschen zurückgegeben.",
+          "Klassische Krefelder Einsätze: Sektempfang vor der Schützenhalle in Fischeln, Empfangsbereich beim Vereinsjubiläum in Bockum, Cocktail-Insel beim Firmenfest im Europark Fichtenhain oder Stehkaffee bei der Trauung im Standesamt Uerdingen. Wer mehr als zehn Stehtische plant, sollte über Lieferung statt Selbstabholung nachdenken – wir kalkulieren die Kosten transparent im Buchungsschritt.",
         ],
       },
       {
