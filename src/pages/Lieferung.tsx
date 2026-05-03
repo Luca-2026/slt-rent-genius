@@ -115,7 +115,7 @@ export default function Lieferung() {
                       <SelectTrigger className="w-full bg-background">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-background z-50 max-h-[400px]">
+                      <SelectContent side="bottom" align="start" avoidCollisions={false} className="bg-background z-50 max-h-[400px]">
                         {categoryEntries.map(([key, cfg]) => (
                           <SelectItem key={key} value={key}>
                             {cfg.label}
@@ -134,7 +134,7 @@ export default function Lieferung() {
                           <SelectTrigger className="w-full bg-background">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-background z-50">
+                          <SelectContent side="bottom" align="start" avoidCollisions={false} className="bg-background z-50">
                             {config.subtypes.map((s) => (
                               <SelectItem key={s.key} value={s.key}>
                                 {s.label}
