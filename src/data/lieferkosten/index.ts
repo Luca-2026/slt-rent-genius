@@ -233,7 +233,21 @@ export function calculatePrice(input: CalculatePriceInput): CalculatePriceResult
     if (input.rueckweg) moebelAufschlag *= 2;
   }
 
-  zwischensumme += geruestHoehenAufschlag + geruestAufbau + moebelAufschlag;
+  // Möbel-Aufbauservice
+  let moebelAufbau = 0;
+  if (input.moebelAufbauService) {
+    const stueck = input.moebelAufbauStueck ?? 0;
+    const zelte = input.moebelAufbauZelte ?? 0;
+    if (stueck > 0 || zelte > 0) {
+      moebelAufbau =
+        ZUSATZKOSTEN.moebel.aufbauBasis +
+        stueck * ZUSATZKOSTEN.moebel.aufbauProMoebel +
+        zelte * ZUSATZKOSTEN.moebel.aufbauProZelt;
+    }
+  }
+
+  zwischensumme += geruestHoehenAufschlag + geruestAufbau + moebelAufschlag + moebelAufbau;
+
 
   // Express-Pauschale
   const expressAufschlag = input.express ? ZUSATZKOSTEN.expressPauschale : 0;
