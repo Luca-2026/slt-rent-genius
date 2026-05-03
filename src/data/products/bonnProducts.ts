@@ -163,6 +163,7 @@ import kompressor5m3_1 from "@/assets/products/kompressor-5m3-1.jpeg";
 import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import kompressor1_2m3_1 from "@/assets/products/kompressor-1-2m3-1.jpeg";
 import kompressor1_2m3_2 from "@/assets/products/kompressor-1-2m3-2.webp";
+import kompressor2m3_1 from "@/assets/products/kompressor-2m3-1.png";
 
 // Rollgerüst images
 import imgRollgeruestKrause94m1 from "@/assets/products/rollgeruest-krause-94m-1.jpeg";
