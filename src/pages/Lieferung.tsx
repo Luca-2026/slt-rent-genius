@@ -58,8 +58,11 @@ export default function Lieferung() {
         arbeitshoeheMeter: isGeruest ? arbeitshoehe : undefined,
         aufbauService: isGeruest ? aufbauService : false,
         moebelAnzahl: isMoebel ? moebelAnzahl : 0,
+        moebelAufbauService: isMoebel ? moebelAufbauService : false,
+        moebelAufbauStueck: isMoebel ? moebelAufbauStueck : 0,
+        moebelAufbauZelte: isMoebel ? moebelAufbauZelte : 0,
       }),
-    [activeTarif, distance, twoMachines, includeReturn, express, wochenende, isGeruest, arbeitshoehe, aufbauService, isMoebel, moebelAnzahl]
+    [activeTarif, distance, twoMachines, includeReturn, express, wochenende, isGeruest, arbeitshoehe, aufbauService, isMoebel, moebelAnzahl, moebelAufbauService, moebelAufbauStueck, moebelAufbauZelte]
   );
 
   const handleCategoryChange = (value: string) => {
