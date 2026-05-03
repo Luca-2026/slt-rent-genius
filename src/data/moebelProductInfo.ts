@@ -90,7 +90,7 @@ export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelPro
     krefeld: {
       priceHint: {
         perDay: "ab 25 € / Tag",
-        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        perWeekend: "Wochenend- & Mehrtagespreise im Buchungsschritt",
         note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
       },
       seoParagraphs: [
@@ -101,7 +101,7 @@ export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelPro
     bonn: {
       priceHint: {
         perDay: "ab 25 € / Tag",
-        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        perWeekend: "Wochenend- & Mehrtagespreise im Buchungsschritt",
         note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
       },
       seoParagraphs: [
@@ -112,7 +112,7 @@ export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelPro
     muelheim: {
       priceHint: {
         perDay: "ab 25 € / Tag",
-        perWeekend: "ab 25 € / Tag · Wochenend- & Mehrtagespreise im Buchungsschritt",
+        perWeekend: "Wochenend- & Mehrtagespreise im Buchungsschritt",
         note: "Hüpfburgen bei SLT Rental bereits ab 25 € / Tag. Endpreis und Verfügbarkeit werden im Buchungsschritt transparent ausgewiesen.",
       },
       seoParagraphs: [
