@@ -269,6 +269,7 @@ import kompressor5m3_2 from "@/assets/products/kompressor-5m3-2.jpeg";
 import kompressor1_2m3_1 from "@/assets/products/kompressor-1-2m3-1.jpeg";
 import kompressor1_2m3_2 from "@/assets/products/kompressor-1-2m3-2.webp";
 import kompressor2m3_1 from "@/assets/products/kompressor-2m3-1.png";
+import kompressor5m3Bobcat_1 from "@/assets/products/kompressor-5m3-bobcat-1.png";
 import aggregat80kva1 from "@/assets/products/aggregat-80kva-1.jpeg";
 import scherenbuehneZs1012ac1 from "@/assets/products/scherenbuehne-zs1012ac-1.png";
 import anhaengerbuehneTm18gti1 from "@/assets/products/anhaengerbuehne-tm18gti-1.jpeg";
@@ -810,6 +811,36 @@ export const aggregateProducts: Product[] = [
       "Max. zul. Gewicht": "750 kg",
       "Abmessungen (L × B × H)": "2.611 × 1.272 × 1.130 mm",
       "Fahrgestell": "Einachs-Anhänger mit Stützrad",
+    },
+  },
+  {
+    id: "kompressor-5m3-bobcat-pa75",
+    name: "5 m³ Kompressor",
+    modelName: "Bobcat PA7.5",
+    description: "Mobiler Bau-Kompressor (Diesel) mit 5,0 m³/min bei 6,8 bar – Stage V, leistungsstark für mehrere Druckluftwerkzeuge gleichzeitig.",
+    image: kompressor5m3Bobcat_1,
+    images: [kompressor5m3Bobcat_1],
+    category: "kompressor",
+    onRequest: true,
+    pdfUrl: "/manuals/datenblatt-bobcat-kompressor-pa7-5.pdf",
+    detailedDescription: "Der Bobcat PA7.5 ist ein leistungsstarker mobiler Bau-Kompressor mit 5,0 m³/min Liefermenge bei 6,8 bar Betriebsdruck. Angetrieben von einem 4-Zylinder Yanmar 4TNV88C Dieselmotor (35,5 kW, Stage V, wassergekühlt) eignet er sich ideal für den parallelen Betrieb mehrerer Presslufthämmer, Aufbruchhämmer, Sandstrahlgeräte und größerer Erdraketen. Auf einem straßenzulassungsfähigen Einachs-Fahrgestell mit zentralem Hebepunkt, Kraftstoff-/Wasserabscheider, Auffangwanne (110 % Fluid Containment) und Stützrad – einfach zu transportieren und schnell einsatzbereit.",
+    specifications: {
+      "Hersteller": "Bobcat",
+      "Modell": "PA7.5",
+      "Liefermenge (FAD)": "5,0 m³/min",
+      "Betriebsdruck": "6,8 bar",
+      "Motor": "Yanmar 4TNV88C (4 Zylinder, Diesel)",
+      "Motorleistung": "35,5 kW",
+      "Drehzahl": "3.000 U/min",
+      "Kühlung": "Wasser",
+      "Tankinhalt": "58 l",
+      "Emissionsklasse": "EU Stage V",
+      "Schallleistungspegel": "98 dB(A)",
+      "Leergewicht": "ca. 660 kg",
+      "Betriebsgewicht": "ca. 705 kg",
+      "Max. zul. Gewicht": "750 kg",
+      "Abmessungen (L × B × H)": "3.475 × 1.410 × 1.350 mm",
+      "Fahrgestell": "Einachs-Anhänger mit Stützrad, LED-Beleuchtung (13-pol.)",
     },
   },
   {
