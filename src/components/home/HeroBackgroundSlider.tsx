@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { Helmet } from "react-helmet-async";
 import heroKrefeld from "@/assets/hero-krefeld.jpg";
 import heroBonn from "@/assets/hero-bonn.jpg";
 
@@ -23,16 +22,9 @@ export function HeroBackgroundSlider() {
 
   return (
     <>
-      {/* Preload LCP hero image so the browser fetches it as early as possible */}
-      <Helmet>
-        <link
-          rel="preload"
-          as="image"
-          href={images[0].src}
-          // @ts-expect-error – non-standard attribute supported by Chrome/Edge/Safari
-          fetchpriority="high"
-        />
-      </Helmet>
+      {/* LCP-Preload für hero-krefeld wird statisch via Vite-Plugin
+          (heroImagePreloadPlugin in vite.config.ts) in <head> injiziert,
+          damit der Browser-Preload-Scanner es vor JS-Hydration findet. */}
       {images.map((img, i) => (
         <img
           key={i}
