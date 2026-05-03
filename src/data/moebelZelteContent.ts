@@ -34,7 +34,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Partyzelt mieten Krefeld: Bierzeltgarnituren, Stehtische, Eventzelte 6×8 & 6×12. Mit Tiefpreisgarantie und optionalem Aufbauservice. Jetzt online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Krefeld, Partyzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Stehtisch mieten Krefeld, Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld",
+      "Möbel und Zelte mieten Krefeld, Partyzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Bierzeltgarnitur Set mieten Krefeld, Bierzeltgarnitur mit Hussen Krefeld, Bierbankgarnitur mieten Krefeld, Festzeltgarnitur mieten Krefeld, Biertische und Bänke mieten Krefeld, Stehtisch mieten Krefeld, Stehtisch mit Husse mieten Krefeld, Bistrotisch mieten Krefeld, Cocktailtisch mieten Krefeld, Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld, Tische und Stühle mieten Krefeld",
     heroLead:
       "Vom Schützenfest in Fischeln über die Vereinsfeier in Bockum bis zur Hochzeit im eigenen Garten in Uerdingen: Bei SLT Rental am Niederrhein finden Sie das passende Mobiliar und die richtigen Zelte aus einer Hand. Partyzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen, Stehtische, Stapelstühle und Sonnenschirme – sauber, geprüft und auf Wunsch inklusive Aufbauservice vor Ort.",
     bottomHeadline: "Möbel und Zelte mieten in Krefeld – Komplettausstattung für Feste am Niederrhein",
@@ -47,10 +47,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier am Niederrhein",
+        h2: "Bierzeltgarnitur mieten in Krefeld – das Rückgrat jeder Feier am Niederrhein",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set besteht bei uns aus einem Tisch (50 × 220 cm) und zwei passenden Bänken (25 × 220 cm). Robust, schnell aufgebaut, leicht zu reinigen – und damit das Standard-Mobiliar für Schützenfeste, Bauernschützentreffen und Vereinsjubiläen in Krefeld. Wer es etwas festlicher möchte, ergänzt das Hussen-Set in Weiß: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben.",
-          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke. So entsteht innerhalb weniger Stunden eine vollständige Festinfrastruktur – inklusive Aufbauservice, wenn der Vereinsvorstand das vorab dazubucht.",
+          "Ein Bierzeltgarnitur-Set – im Sprachgebrauch oft auch Festzeltgarnitur, Bierbankgarnitur oder schlicht Biertisch mit Bänken genannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei dazu passenden Bänken (25 × 220 cm). Pro Garnitur planen Sie acht bis zehn Sitzplätze ein, je nachdem wie eng zusammengerückt wird. Das Holz ist abwischbar, die Beine klappen ohne Werkzeug ein, und das Set lässt sich von zwei Personen in unter einer Minute aufstellen. Damit sind Bierzeltgarnituren in Krefeld die Standardlösung für Schützenfeste, Karnevalssitzungen, runde Geburtstage und Vereinsabende.",
+          "Wer Biertische und Bänke mieten möchte, ohne dass es nach Vereinsheim aussieht, kombiniert das Set mit unserem Hussen-Set in Weiß: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben. Das macht aus der Standard-Bierzeltgarnitur in wenigen Minuten eine Tischlandschaft, die auch bei Hochzeiten in Bockum, Verberg oder Forstwald oder bei Firmen-Sommerfesten in Fichtenhain gut aussieht.",
+          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke und ein paar Stehtische am Eingang. Praktisch ist die Bierzeltgarnitur auch als Buffettisch: zwei Garnituren parallel gestellt ergeben eine 4,4 m lange Buffetzeile, die mit weißer Tischhusse sofort nach Catering aussieht.",
         ],
       },
       {
@@ -61,9 +62,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         ],
       },
       {
-        h2: "Stehtische für Empfänge, Sektrunden und Mingle-Bereiche",
+        h2: "Stehtisch mieten in Krefeld – mit Husse in Weiß oder Schwarz",
         paragraphs: [
-          "Unsere Stehtische sind klappbar, haben Metallbeine und eine pflegeleichte Kunststoffplatte. Mit der Stretch-Husse in Weiß oder Schwarz (Ø 80 cm, Höhe 110 cm) wird aus dem Arbeitstisch in Sekunden ein vorzeigbares Empfangs-Möbel. Praktisch für Sektempfänge vor Schützenhallen, für Cocktail-Bereiche bei Firmenevents oder als Buffetinsel bei Geburtstagen.",
+          "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit zählen sie zur Kategorie der klassischen Bistrotische bzw. Cocktailtische und sind das Standard-Möbel für Sektempfang, Stehkaffee oder Mingle-Bereiche. Pro Stehtisch planen Sie vier bis sechs stehende Personen ein.",
+          "Die passende Stretch-Husse ist in Weiß oder Schwarz verfügbar – Weiß für Hochzeiten, Trauerfeiern und repräsentative Empfänge, Schwarz für Firmenevents, Produktpräsentationen und After-Work-Anlässe. Die Hussen sitzen faltenfrei, müssen nicht extra gebügelt werden und werden gewaschen zurückgegeben.",
+          "Klassische Krefelder Einsätze: Sektempfang vor der Schützenhalle in Fischeln, Empfangsbereich beim Vereinsjubiläum in Bockum, Cocktail-Insel beim Firmenfest im Europark Fichtenhain oder Stehkaffee bei der Trauung im Standesamt Uerdingen. Wer mehr als zehn Stehtische plant, sollte über Lieferung statt Selbstabholung nachdenken – wir kalkulieren die Kosten transparent im Buchungsschritt.",
         ],
       },
       {
@@ -125,7 +128,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Eventzelte, Bierzeltgarnituren mit Hussen und Stehtische mieten in Bonn. Für Gartenhochzeit, Sommerfest und Empfang – B2B-Konditionen verfügbar. Jetzt anfragen.",
     keywords:
-      "Möbel und Zelte mieten Bonn, Partyzelt mieten Bonn, Hochzeitszelt mieten Bonn, Eventzelt mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Stehtisch mit Husse Bonn, Mietmöbel Bonn, Zeltverleih Bonn",
+      "Möbel und Zelte mieten Bonn, Partyzelt mieten Bonn, Hochzeitszelt mieten Bonn, Eventzelt mieten Bonn, Bierzeltgarnitur mieten Bonn, Bierzeltgarnitur Set mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Festzeltgarnitur mieten Bonn, Bierbankgarnitur mieten Bonn, Biertische und Bänke mieten Bonn, Stehtisch mieten Bonn, Stehtisch mit Husse mieten Bonn, Bistrotisch mieten Bonn, Cocktailtisch mieten Bonn, Mietmöbel Bonn, Zeltverleih Bonn, Tische und Stühle mieten Bonn",
     heroLead:
       "Ob Gartenhochzeit in Bad Godesberg, Sommerfest einer Bundesbehörde am Rhein oder Sektempfang in Endenich: Über die Filiale in Bonn bekommen Sie bei SLT Rental das passende Equipment für repräsentative wie private Anlässe. Vom 6×8 m Eventzelt mit 2,6 m Durchgangshöhe über Bierzeltgarnituren mit weißen Hussen bis hin zu Stehtischen, Stapelstühlen und Sonnenschirmen – im Rheinland aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Bonn – Eventausstattung für Rhein und Vorgebirge",
@@ -138,10 +141,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         ],
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier im Rheinland",
+        h2: "Bierzeltgarnitur mieten in Bonn – das Rückgrat jeder Feier im Rheinland",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set besteht aus einem Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Mit dem weißen Hussen-Set (zwei Bankhussen plus eine Tischhusse) wird aus dem Werkstattmobiliar eine ruhige, repräsentative Tischlandschaft – passend zu Sommerfesten von NGOs, UN-Organisationen und Bundesbehörden ebenso wie zu Schützenfesten im Bonner Norden.",
-          "Hussen geben Sie bitte gewaschen zurück. Das spart Aufbereitungspauschalen und sorgt dafür, dass das nächste Hochzeitspaar wieder ein einwandfrei vorbereitetes Set bekommt.",
+          "Ein Bierzeltgarnitur-Set – auch als Festzeltgarnitur, Bierbankgarnitur oder einfach Biertisch mit Bänken bekannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Pro Garnitur rechnen Sie mit acht bis zehn Sitzplätzen. Das ergibt für eine klassische Hochzeit mit 60 Gästen rund sieben bis acht Bierzeltgarnituren – aufgebaut in U-Form unter dem Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik.",
+          "Mit dem Hussen-Set in Weiß (zwei Bankhussen plus eine Tischhusse) wird aus dem nüchternen Werkstatt-Mobiliar eine ruhige, repräsentative Tischlandschaft. Damit ist die Bierzeltgarnitur mit Hussen in Bonn die naheliegende Wahl für Sommerfeste von NGOs, UN-Organisationen und Bundesbehörden in der Rheinaue ebenso wie für Schützen- und Vereinsfeste im Bonner Norden, in Beuel oder in Pützchen.",
+          "Hussen geben Sie bitte gewaschen zurück; das hält die Aufbereitungskosten transparent und sorgt dafür, dass das nächste Hochzeitspaar wieder ein einwandfrei vorbereitetes Set bekommt. Wer nur Biertische und Bänke mieten möchte, ohne Hussen, fährt mit der Standard-Garnitur am günstigsten – etwa für Vereinsabende, Stammtische oder als Zusatztische beim Pützchens-Markt-Vorglühen im Garten.",
         ],
       },
       {
@@ -152,9 +156,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Stehtische für Empfänge, Sektrunden und Mingle-Bereiche",
+        h2: "Stehtisch mieten in Bonn – mit Stretch-Husse für Empfang und Tagung",
         paragraphs: [
-          "Klappbar, Metallbeine, Kunststoffplatte – plus Stretch-Husse Ø 80 cm in Weiß oder Schwarz (Höhe 110 cm). Das ist die Kombination, die wir für Sektempfänge vor Tagungsräumen, für Open-Air-Receptions in der Rheinaue oder für Foyer-Mingle-Bereiche bei Firmensommerfesten am häufigsten ausliefern.",
+          "Klappbar, Metallbeine, Kunststoffplatte – Höhe 110 cm, Plattendurchmesser 80 cm. Das ist die Standard-Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen können. Pro 25 Empfangsgäste planen Sie etwa fünf Stehtische ein, damit Gläser und Häppchen gut Platz finden.",
+          "Die passende Stretch-Husse gibt es in Weiß und Schwarz. Weiß empfehlen wir für Hochzeiten in Bad Godesberg oder Endenich, für Trauerfeiern und für Sommerempfänge mit Bezug zum Wasser; Schwarz für Tagungen, Pressekonferenzen und Produktpräsentationen in Bonner Tagungs- und Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
+          "Typische Bonner Einsätze: Sektempfang vor dem Standesamt in Bad Godesberg, Open-Air-Reception am Rand der Rheinaue, Foyer-Mingle-Bereich beim Firmensommerfest in Beuel oder Stehkaffee bei der Vereinsversammlung in Hardtberg. Bei größerer Stückzahl lohnt sich Lieferung statt Selbstabholung – die Kosten kalkuliert der Lieferkostenrechner transparent.",
         ],
       },
       {
@@ -222,7 +228,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Partyzelte, Eventzelte und Bierzeltgarnituren mieten in Mülheim an der Ruhr. Tiefpreisgarantie, optionaler Aufbauservice, Lieferung im Ruhrgebiet. Online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Mülheim an der Ruhr, Partyzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Stehtisch mieten Mülheim, Zeltverleih Mülheim",
+      "Möbel und Zelte mieten Mülheim an der Ruhr, Partyzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Bierzeltgarnitur Set mieten Mülheim, Bierzeltgarnitur mit Hussen Mülheim, Festzeltgarnitur mieten Mülheim, Bierbankgarnitur mieten Mülheim, Biertische und Bänke mieten Mülheim, Stehtisch mieten Mülheim, Stehtisch mit Husse mieten Mülheim, Bistrotisch mieten Mülheim, Cocktailtisch mieten Mülheim, Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Zeltverleih Mülheim, Tische und Stühle mieten Mülheim",
     heroLead:
       "Ob Hochzeit im Garten an der Ruhr in Saarn, Familienfeier in Speldorf oder Vereinsjubiläum in Broich: Über die Filiale in Mülheim an der Ruhr stellt SLT Rental Zelte, Tische und Stühle für das westliche Ruhrgebiet bereit. Modulare Partyzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen sowie Stehtische und Stapelstühle – an der Ruhrtalstadt aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Mülheim an der Ruhr – Eventausstattung für das westliche Ruhrgebiet",
@@ -248,16 +254,19 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         table: sizeTable,
       },
       {
-        h2: "Bierzeltgarnituren – das Rückgrat jeder Feier an der Ruhr",
+        h2: "Bierzeltgarnitur mieten in Mülheim an der Ruhr – das Rückgrat jeder Feier",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set: ein Tisch 50 × 220 cm plus zwei Bänke 25 × 220 cm. Robust, schnell aufgebaut, leicht zu reinigen – und damit das Standard-Mobiliar für Vereinsfeste, runde Geburtstage und Open-Air-Anlässe entlang der Ruhr. Optional ergänzbar um das weiße Hussen-Set (zwei Bankhussen + eine Tischhusse, gewaschen zurückzugeben), wenn es etwas eleganter wirken soll.",
+          "Ein Bierzeltgarnitur-Set – auch Festzeltgarnitur, Bierbankgarnitur oder Biertisch mit zwei Bänken genannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei dazu passenden Bänken (25 × 220 cm). Pro Garnitur planen Sie acht bis zehn Sitzplätze ein. Damit ist die Bierzeltgarnitur in Mülheim an der Ruhr das Standard-Mobiliar für Vereinsfeste in Saarn, runde Geburtstage in Heißen und Open-Air-Anlässe entlang der Ruhraue.",
+          "Wer Biertische und Bänke mieten möchte, ohne dass das Ganze nach Schützenheim wirkt, ergänzt das weiße Hussen-Set: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben. Damit wird aus dem Werkstatt-Mobiliar eine ruhige Tischlandschaft – passend für Hochzeiten in der Nachbarschaft von Schloss Broich oder für Firmensommerfeste am Wasserbahnhof.",
+          "Praktischer Tipp für Veranstaltungen mit Buffet: Zwei Bierzeltgarnituren parallel ergeben eine 4,4 m lange Buffetzeile. Mit Tischhussen weiß ergibt das eine sofort einsatzbereite Catering-Insel – ideal für Familienfeiern Richtung MüGa-Park oder für Industrie-Events in den Gewerbegebieten Speldorf und Styrum.",
         ],
       },
       {
-        h2: "Stehtische, Sonnenschirme und Zeltboden",
+        h2: "Stehtisch mieten in Mülheim an der Ruhr – Bistro- und Cocktailtische mit Husse",
         paragraphs: [
-          "Stehtische klappbar mit Metallbeinen und Kunststoffplatte, dazu die Stretch-Husse Ø 80 cm in Weiß oder Schwarz (Höhe 110 cm) – die übliche Empfangs-Konfiguration für Sektrunden vor Trauungen, für Empfänge bei Industrie-Events und für Mingle-Bereiche bei Sommerpartys.",
-          "Für sonnige Stunden im Garten gibt es den Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion); ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
+          "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit entsprechen sie der klassischen Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen. Faustregel: Pro 25 Empfangsgäste rund fünf Stehtische.",
+          "Die Stretch-Husse ist in Weiß und Schwarz verfügbar. Weiß empfehlen wir für Hochzeiten am Schloss Broich, Trauungen im Standesamt und Sommerempfänge in Saarn; Schwarz für Industrie-Events, Tagungen und Produktpräsentationen in Mülheimer Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
+          "Sonnige Stunden im Garten deckt der Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion) ab; ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
         ],
       },
       {
