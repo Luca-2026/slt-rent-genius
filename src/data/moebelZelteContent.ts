@@ -34,7 +34,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Partyzelt mieten Krefeld: Bierzeltgarnituren, Stehtische, Eventzelte 6×8 & 6×12. Mit Tiefpreisgarantie und optionalem Aufbauservice. Jetzt online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Krefeld, Partyzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Stehtisch mieten Krefeld, Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld",
+      "Möbel und Zelte mieten Krefeld, Partyzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Bierzeltgarnitur Set mieten Krefeld, Bierzeltgarnitur mit Hussen Krefeld, Bierbankgarnitur mieten Krefeld, Festzeltgarnitur mieten Krefeld, Biertische und Bänke mieten Krefeld, Stehtisch mieten Krefeld, Stehtisch mit Husse mieten Krefeld, Bistrotisch mieten Krefeld, Cocktailtisch mieten Krefeld, Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld, Tische und Stühle mieten Krefeld",
     heroLead:
       "Vom Schützenfest in Fischeln über die Vereinsfeier in Bockum bis zur Hochzeit im eigenen Garten in Uerdingen: Bei SLT Rental am Niederrhein finden Sie das passende Mobiliar und die richtigen Zelte aus einer Hand. Partyzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen, Stehtische, Stapelstühle und Sonnenschirme – sauber, geprüft und auf Wunsch inklusive Aufbauservice vor Ort.",
     bottomHeadline: "Möbel und Zelte mieten in Krefeld – Komplettausstattung für Feste am Niederrhein",
