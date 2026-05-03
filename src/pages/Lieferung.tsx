@@ -22,7 +22,9 @@ const categoryEntries = Object.entries(categoryConfigs);
 
 export default function Lieferung() {
   const [categoryKey, setCategoryKey] = useState<string>("erdbewegung");
-  const [tarifOverride, setTarifOverride] = useState<TariffKey | null>(null);
+  const [subtypeKey, setSubtypeKey] = useState<string | null>(
+    categoryConfigs["erdbewegung"].defaultSubtype ?? null
+  );
   const [distance, setDistance] = useState(20);
   const [twoMachines, setTwoMachines] = useState(false);
   const [includeReturn, setIncludeReturn] = useState(false);
@@ -35,7 +37,8 @@ export default function Lieferung() {
   const [moebelAnzahl, setMoebelAnzahl] = useState(0);
 
   const config = categoryConfigs[categoryKey];
-  const activeTarif: TariffKey = tarifOverride ?? (config.defaultTarif as TariffKey);
+  const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
+  const activeTarif: TariffKey = activeSubtype?.tarif ?? (config.defaultTarif as TariffKey);
   const tariff = tariffs[activeTarif];
   const isGeruest = config.scope === "geruest";
   const isMoebel = config.scope === "moebel";
@@ -58,7 +61,8 @@ export default function Lieferung() {
 
   const handleCategoryChange = (value: string) => {
     setCategoryKey(value);
-    setTarifOverride(null);
+    const cfg = categoryConfigs[value];
+    setSubtypeKey(cfg.defaultSubtype ?? null);
     setTwoMachines(false);
   };
 
