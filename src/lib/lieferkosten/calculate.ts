@@ -107,16 +107,18 @@ export function calculatePrice(params: CalculatePriceParams): PriceResult {
     });
   }
 
-  // 5. Möbel-Stück (Aufschlag nur für Stücke ab/über der Schwelle)
+  // 5. Möbel-Stück (Aufschlag pro Stück über der Schwelle, ab 5 Stück → ab dem 6. zählt)
   if (kategorie === "moebel-zelte" && moebelStueck >= ZUSATZKOSTEN.moebel.schwelle_stueck) {
-    const zaehlbar = moebelStueck - (ZUSATZKOSTEN.moebel.schwelle_stueck - 1); // ab dem 5. Stück
-    const aufpreis = zaehlbar * ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck;
-    summe += aufpreis;
-    breakdown.push({
-      label: `+ Möbel-Aufschlag (${zaehlbar} × ${ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck} €)`,
-      betrag: aufpreis,
-      laufendeSumme: summe,
-    });
+    const zaehlbar = moebelStueck - ZUSATZKOSTEN.moebel.schwelle_stueck;
+    if (zaehlbar > 0) {
+      const aufpreis = zaehlbar * ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck;
+      summe += aufpreis;
+      breakdown.push({
+        label: `+ Möbel-Aufschlag (${zaehlbar} × ${ZUSATZKOSTEN.moebel.moebel_aufschlag_je_stueck} €)`,
+        betrag: aufpreis,
+        laufendeSumme: summe,
+      });
+    }
   }
 
   // 6. Aufbau-Service (Gerüst)
