@@ -169,7 +169,7 @@ export const leiternGeruesteFilterSections: FilterSection[] = [
       { id: "rollgeruest", label: "catFilters.rollgeruest", sublabel: "catFilters.rollgeruest_sub" },
       { id: "stehleiter", label: "catFilters.stehleiter", sublabel: "catFilters.stehleiter_sub" },
       { id: "kombileiter", label: "catFilters.kombileiter", sublabel: "catFilters.kombileiter_sub" },
-      { id: "geruestteil", label: "catFilters.geruestteil", sublabel: "catFilters.geruestteil_sub" },
+      
     ],
   },
   {
