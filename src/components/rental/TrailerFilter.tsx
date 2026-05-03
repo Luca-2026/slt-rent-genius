@@ -20,9 +20,10 @@ const NUTZLAST_STEP = 50;
 
 interface TrailerFilterProps {
   onFilterChange: (filters: TrailerFilterState) => void;
+  initialState?: Partial<TrailerFilterState>;
 }
 
-export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
+export function TrailerFilter({ onFilterChange, initialState }: TrailerFilterProps) {
   const { t } = useTranslation();
 
   const typeFilters = [
@@ -46,11 +47,11 @@ export function TrailerFilter({ onFilterChange }: TrailerFilterProps) {
   ];
 
   const [filters, setFilters] = useState<TrailerFilterState>({
-    search: "",
-    types: [],
-    braking: [],
-    weight: [],
-    nutzlastRange: [NUTZLAST_MIN, NUTZLAST_MAX],
+    search: initialState?.search ?? "",
+    types: initialState?.types ?? [],
+    braking: initialState?.braking ?? [],
+    weight: initialState?.weight ?? [],
+    nutzlastRange: initialState?.nutzlastRange ?? [NUTZLAST_MIN, NUTZLAST_MAX],
   });
 
   const [expandedSections, setExpandedSections] = useState({

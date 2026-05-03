@@ -33,13 +33,13 @@ export default function CategoryProducts() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [allSearchQuery, setAllSearchQuery] = useState("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
-  const [trailerFilters, setTrailerFilters] = useState<TrailerFilterState>({
+  const [trailerFilters, setTrailerFilters] = useState<TrailerFilterState>(() => ({
     search: "",
-    types: [],
+    types: searchParams.get("type") ? [searchParams.get("type") as string] : [],
     braking: [],
     weight: [],
     nutzlastRange: [0, 3000],
-  });
+  }));
   const [earthMovingFilters, setEarthMovingFilters] = useState<CategoryFilterState>({
     search: "",
     filters: {},
@@ -1574,7 +1574,7 @@ export default function CategoryProducts() {
                       </>
                     )}
                     {category.id === "anhaenger" && (
-                      <TrailerFilter onFilterChange={setTrailerFilters} />
+                      <TrailerFilter onFilterChange={setTrailerFilters} initialState={trailerFilters} />
                     )}
                     {category.id === "erdbewegung" && (
                       <CategoryFilter
