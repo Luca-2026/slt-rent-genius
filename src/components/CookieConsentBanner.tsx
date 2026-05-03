@@ -169,8 +169,8 @@ export function CookieConsentBanner() {
         <div className="flex flex-col sm:flex-row gap-2">
           {!showDetails ? (
             <>
-              <Button variant="outline" onClick={reject} className="flex-1 text-sm">
-                Ablehnen
+              <Button onClick={accept} className="flex-1 text-sm">
+                Akzeptieren
               </Button>
               <Button
                 variant="ghost"
@@ -180,20 +180,20 @@ export function CookieConsentBanner() {
                 <Settings className="h-4 w-4" />
                 Einstellungen
               </Button>
-              <Button onClick={accept} className="flex-1 text-sm">
-                Akzeptieren
+              <Button variant="outline" onClick={reject} className="flex-1 text-sm">
+                Ablehnen
               </Button>
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={reject} className="flex-1 text-sm">
-                Alle ablehnen
+              <Button onClick={accept} className="flex-1 text-sm">
+                Alle akzeptieren
               </Button>
               <Button variant="outline" onClick={saveSelection} className="flex-1 text-sm">
                 Auswahl speichern
               </Button>
-              <Button onClick={accept} className="flex-1 text-sm">
-                Alle akzeptieren
+              <Button variant="outline" onClick={reject} className="flex-1 text-sm">
+                Alle ablehnen
               </Button>
             </>
           )}
