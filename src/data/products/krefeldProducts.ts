@@ -812,6 +812,8 @@ export const aggregateProducts: Product[] = [
       "Fahrgestell": "Einachs-Anhänger mit Stützrad",
     },
   },
+  {
+    id: "presslufthammer-tex21pe-aggregat",
     name: "Presslufthammer 21 kg",
     modelName: "Atlas Copco TEX 21 PE",
     description: "Presslufthammer 21 kg mit Spitz- und Flachmeißel – benötigt Baukompressor.",
