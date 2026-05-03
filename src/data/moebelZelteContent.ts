@@ -272,6 +272,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
           "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit entsprechen sie der klassischen Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen. Faustregel: Pro 25 Empfangsgäste rund fünf Stehtische.",
           "Die Stretch-Husse ist in Weiß und Schwarz verfügbar. Weiß empfehlen wir für Hochzeiten am Schloss Broich, Trauungen im Standesamt und Sommerempfänge in Saarn; Schwarz für Industrie-Events, Tagungen und Produktpräsentationen in Mülheimer Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
           "Sonnige Stunden im Garten deckt der Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion) ab; ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
+          "Preise Stehtisch Mülheim an der Ruhr: Klappbare Stehtische sind ab 5 € pro Tag verfügbar, ein ganzes Wochenende ab 10 € pro Tisch. Stretch-Hussen in Weiß für Hochzeiten am Schloss Broich oder Schwarz für Industrie- und Tagungsanlässe sind optional zubuchbar. Endgültige Mietpreise inklusive Hussen-Aufpreis erscheinen transparent im Buchungsprozess – mit Tiefpreisgarantie.",
         ],
       },
       {
