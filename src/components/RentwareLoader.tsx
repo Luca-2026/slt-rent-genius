@@ -83,45 +83,53 @@ export function RentwareLoader() {
     );
     window.addEventListener("rtr:load", onCustom, { once: true });
 
-    // If the current page mounts a Rentware element (category / product /
-    // booking pages), load immediately so availability shows up without
-    // requiring user interaction. Poll briefly because React may still be
-    // mounting the route.
-    const checkForRtrEl = () => {
-      if (loadedRef.current) return true;
-      const found = !!document.querySelector(
-        "rtr-search, rtr-article-booking, rtr-availability, rtr-product",
-      );
-      if (found) {
-        cleanup();
-        inject();
-        return true;
+    // Auf Nicht-Homepage-Routen: prüfen, ob die Seite ein echtes Rentware-
+    // Element rendert (Kategorie, Produkt, Buchung). Wenn ja, sofort laden,
+    // damit Verfügbarkeit ohne User-Interaktion erscheint. Auf der Homepage
+    // wird dieses Polling übersprungen — dort gibt es kein rtr-Element und
+    // Rentware soll erst nach Interaktion laden, um TBT zu schonen.
+    let pollHandle: number | undefined;
+    if (!isHomepage) {
+      const checkForRtrEl = () => {
+        if (loadedRef.current) return true;
+        const found = !!document.querySelector(
+          "rtr-search, rtr-article-booking, rtr-availability, rtr-product",
+        );
+        if (found) {
+          cleanup();
+          inject();
+          return true;
+        }
+        return false;
+      };
+      if (!checkForRtrEl()) {
+        let tries = 0;
+        pollHandle = window.setInterval(() => {
+          if (checkForRtrEl() || ++tries > 10) window.clearInterval(pollHandle);
+        }, 200);
       }
-      return false;
-    };
-    if (!checkForRtrEl()) {
-      let tries = 0;
-      const poll = window.setInterval(() => {
-        if (checkForRtrEl() || ++tries > 10) window.clearInterval(poll);
-      }, 200);
     }
 
-    // Idle fallback so the cart is ready even without interaction
+    // Idle fallback nur auf Nicht-Homepage-Routen, damit Cart auch ohne
+    // Interaktion bereitsteht. Auf der Homepage warten wir bewusst auf
+    // Interaktion oder rtr:load.
     const ric = (window as any).requestIdleCallback as
       | ((cb: () => void, opts?: { timeout: number }) => number)
       | undefined;
     let idleHandle: number | undefined;
     let timeoutHandle: number | undefined;
-    if (ric) {
-      idleHandle = ric(() => {
-        cleanup();
-        inject();
-      }, { timeout: IDLE_FALLBACK_MS });
-    } else {
-      timeoutHandle = window.setTimeout(() => {
-        cleanup();
-        inject();
-      }, IDLE_FALLBACK_MS);
+    if (!isHomepage) {
+      if (ric) {
+        idleHandle = ric(() => {
+          cleanup();
+          inject();
+        }, { timeout: IDLE_FALLBACK_MS });
+      } else {
+        timeoutHandle = window.setTimeout(() => {
+          cleanup();
+          inject();
+        }, IDLE_FALLBACK_MS);
+      }
     }
 
     return () => {
