@@ -1,3 +1,4 @@
+# === Standard Search Engines ===
 User-agent: Googlebot
 Allow: /
 Disallow: /b2b/
@@ -10,17 +11,120 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+# === Social Crawlers (für Link-Previews) ===
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+# === KI- / LLM-Crawler ===
+# Explizit erlaubt — SLT Rental Inhalte dürfen für AI Search & Antworten verwendet werden.
+User-agent: GPTBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /b2b/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /b2b/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /b2b/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /b2b/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Applebot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /b2b/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: CCBot
+Allow: /
+Disallow: /b2b/
+Disallow: /b2b-register
+Disallow: /manuals/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /b2b/
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /b2b/
+
+User-agent: YouBot
+Allow: /
+Disallow: /b2b/
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /b2b/
+
+# === Default ===
 User-agent: *
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 
-# Sitemaps
+# === Sitemaps & LLM Index ===
 Sitemap: https://www.slt-rental.de/sitemap.xml

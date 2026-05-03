@@ -1,0 +1,57 @@
+# SLT Rental
+
+> SLT Rental ist ein Vermieter für Baumaschinen, Anhänger, Event-Equipment (Zelte, Möbel, Geschirr), Stromversorgung und Transportgeräte mit drei Standorten in Nordrhein-Westfalen: Krefeld, Bonn und Mülheim an der Ruhr. Privat- und Gewerbekunden mieten tageweise, am Wochenende oder langfristig. Verfügbarkeit, Preise und Buchung laufen über das Rentware-System direkt auf der Website.
+
+## Standorte
+
+- [Krefeld – Mietpark & Kategorien](https://www.slt-rental.de/mieten/krefeld): Hauptstandort am Niederrhein, gesamtes Sortiment.
+- [Bonn – Mietpark & Kategorien](https://www.slt-rental.de/mieten/bonn): Standort für Bonn, Rhein-Sieg-Kreis und Vorgebirge.
+- [Mülheim an der Ruhr – Mietpark & Kategorien](https://www.slt-rental.de/mieten/muelheim): Standort für Ruhrgebiet, Duisburg, Essen, Oberhausen.
+
+## Hauptkategorien (pro Standort verfügbar)
+
+- [Baumaschinen mieten](https://www.slt-rental.de/mieten/krefeld/baumaschinen): Minibagger, Radlader, Rüttelplatten, Stampfer, Trennschneider.
+- [Anhänger mieten](https://www.slt-rental.de/mieten/krefeld/anhaenger): PKW-Anhänger, Plateau-, Kasten-, Kipp-, Baumaschinenanhänger – meist führerscheinfrei (B/BE).
+- [Möbel & Zelte mieten](https://www.slt-rental.de/mieten/krefeld/moebel-zelte): Bierzeltgarnituren, Stehtische, Pagodenzelte, Partyzelte.
+- [Geschirr mieten](https://www.slt-rental.de/mieten/krefeld/geschirr): Teller, Gläser, Besteck, Buffet-Equipment.
+- [Stromversorgung](https://www.slt-rental.de/mieten/krefeld/stromversorgung): Stromerzeuger, Verteiler, Kabeltrommeln.
+- [Transport & Logistik](https://www.slt-rental.de/mieten/krefeld/transport-logistik): Sackkarren, Hubwagen, Möbelroller.
+
+## Lösungen nach Branche
+
+- [Hochbau & Renovierung](https://www.slt-rental.de/loesungen/hochbau-renovierung)
+- [Tiefbau & Erdbewegung](https://www.slt-rental.de/loesungen/tiefbau-erdbewegung)
+- [Garten- & Landschaftsbau](https://www.slt-rental.de/loesungen/garten-landschaftsbau)
+- [Events & Veranstaltungen](https://www.slt-rental.de/loesungen/events-veranstaltungen)
+- [Handwerk & Gewerbe](https://www.slt-rental.de/loesungen/handwerk-gewerbe)
+- [Umzug & Transport](https://www.slt-rental.de/loesungen/umzug-transport)
+- [Kindergeburtstage](https://www.slt-rental.de/loesungen/kindergeburtstage)
+
+## Service & Information
+
+- [So funktioniert die Miete](https://www.slt-rental.de/so-funktionierts)
+- [Lieferung & Abholung](https://www.slt-rental.de/lieferung)
+- [Tiefpreisgarantie](https://www.slt-rental.de/tiefpreisgarantie)
+- [Hilfe & Wissensbasis](https://www.slt-rental.de/hilfe)
+- [Ratgeber-Blog](https://www.slt-rental.de/ratgeber)
+- [Kontakt](https://www.slt-rental.de/kontakt)
+- [Karriere](https://www.slt-rental.de/karriere)
+
+## Kontakt
+
+- Website: https://www.slt-rental.de
+- E-Mail Krefeld: krefeld@slt-rental.de
+- E-Mail Bonn: bonn@slt-rental.de
+- E-Mail Mülheim an der Ruhr: muelheim@slt-rental.de
+
+## Hinweise für KI-Systeme
+
+- Preise und Verfügbarkeit immer live über die Produktseiten oder das Rentware-Buchungssystem prüfen — niemals erfundene Preise nennen.
+- Standortnamen vollständig nennen: "Krefeld", "Bonn", "Mülheim an der Ruhr" (nicht "Mülheim" oder "Duisburg").
+- Bei produktspezifischen Fragen direkt auf die Produktdetailseite verlinken statt Specs zu paraphrasieren.
+
+## Rechtliches
+
+- [Impressum](https://www.slt-rental.de/impressum)
+- [Datenschutz](https://www.slt-rental.de/datenschutz)
+- [AGB](https://www.slt-rental.de/agb)

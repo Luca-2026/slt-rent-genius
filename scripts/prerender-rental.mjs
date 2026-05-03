@@ -129,9 +129,11 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
 
   // Insert hero AFTER #root so React hydration keeps #root pristine.
   const heroInsert = `\n    <!-- prerender:hero:start -->${heroBlock}<!-- prerender:hero:end -->\n`;
+  // Insert hero INSIDE #root so React's createRoot() replaces it on hydration.
+  const heroInsert = `<!-- prerender:hero:start -->${heroBlock}<!-- prerender:hero:end -->`;
   out = out.replace(
-    /(<div id="root">\s*<\/div>)/i,
-    `$1${heroInsert}`,
+    /<div id="root">\s*<\/div>/i,
+    `<div id="root">${heroInsert}</div>`,
   );
 
   return out;
