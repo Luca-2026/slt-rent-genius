@@ -6,147 +6,14 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Truck, MapPin, Calculator, ArrowRight } from "lucide-react";
+import { Truck, MapPin, Calculator, ArrowRight, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-// Lieferpreise inkl. +10 % Spritpreis-Anpassung (Mai 2026), gerundet auf 5er-Werte
-const deliveryPrices = {
-  "1t-bagger": {
-    name: "1t Bagger, Dumper & 8m Scherenbühne",
-    multiplier: 1.5,
-    distances: [
-      { km: 15, brutto: 85 },
-      { km: 20, brutto: 100 },
-      { km: 25, brutto: 110 },
-      { km: 30, brutto: 125 },
-      { km: 35, brutto: 145 },
-      { km: 40, brutto: 155 },
-      { km: 45, brutto: 160 },
-      { km: 50, brutto: 170 },
-    ],
-  },
-  "zwangsmischer": {
-    name: "Zwangsmischer / Häcksler / Steinsäge / Fugenschneider",
-    multiplier: 1,
-    distances: [
-      { km: 15, brutto: 85 },
-      { km: 20, brutto: 100 },
-      { km: 25, brutto: 110 },
-      { km: 30, brutto: 125 },
-      { km: 35, brutto: 145 },
-      { km: 40, brutto: 155 },
-      { km: 45, brutto: 160 },
-      { km: 50, brutto: 170 },
-    ],
-  },
-  "2t-bagger": {
-    name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
-    multiplier: 1.5,
-    distances: [
-      { km: 15, brutto: 100 },
-      { km: 20, brutto: 120 },
-      { km: 25, brutto: 140 },
-      { km: 30, brutto: 155 },
-      { km: 35, brutto: 165 },
-      { km: 40, brutto: 170 },
-      { km: 45, brutto: 175 },
-      { km: 50, brutto: 180 },
-    ],
-  },
-  "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
-    multiplier: 1.7,
-    distances: [
-      { km: 15, brutto: 90 },
-      { km: 20, brutto: 110 },
-      { km: 25, brutto: 125 },
-      { km: 30, brutto: 145 },
-      { km: 35, brutto: 170 },
-      { km: 40, brutto: 180 },
-      { km: 45, brutto: 190 },
-      { km: 50, brutto: 200 },
-    ],
-  },
-  "geruest": {
-    name: "Gerüst bis 4,4m Arbeitshöhe",
-    multiplier: 1,
-    distances: [
-      { km: 10, brutto: 50 },
-      { km: 15, brutto: 60 },
-      { km: 20, brutto: 70 },
-      { km: 25, brutto: 85 },
-      { km: 30, brutto: 100 },
-      { km: 35, brutto: 125 },
-      { km: 40, brutto: 140 },
-      { km: 45, brutto: 150 },
-      { km: 50, brutto: 165 },
-    ],
-  },
-  "event": {
-    name: "Heizung, Trocknung, Möbel, Zelte, Event-Equipment",
-    multiplier: 1,
-    distances: [
-      { km: 10, brutto: 30 },
-      { km: 15, brutto: 35 },
-      { km: 20, brutto: 45 },
-      { km: 25, brutto: 75 },
-      { km: 30, brutto: 95 },
-      { km: 35, brutto: 120 },
-      { km: 40, brutto: 130 },
-      { km: 45, brutto: 145 },
-      { km: 50, brutto: 155 },
-    ],
-  },
-};
-
-type CategoryKey = keyof typeof deliveryPrices;
-
-// All category options for the dropdown (use i18n keys)
-const allCategoryKeys: { value: CategoryKey; labelKey: string }[] = [
-  { value: "1t-bagger", labelKey: "rental.cat1tBagger" },
-  { value: "zwangsmischer", labelKey: "rental.catZwangsmischer" },
-  { value: "2t-bagger", labelKey: "rental.cat2tBagger" },
-  { value: "3t-bagger", labelKey: "rental.cat3tBagger" },
-  { value: "geruest", labelKey: "rental.catScaffolding" },
-  { value: "event", labelKey: "rental.catEvent" },
-];
-
-// Machine type options for erdbewegung category
-const machineTypeKeys: { value: CategoryKey; labelKey: string }[] = [
-  { value: "1t-bagger", labelKey: "rental.machine1t" },
-  { value: "2t-bagger", labelKey: "rental.machine2t" },
-  { value: "3t-bagger", labelKey: "rental.machine3t" },
-];
-
-// Map product categories to delivery price categories
-const categoryMapping: Record<string, CategoryKey> = {
-  // Erdbewegung (default 1t, user can switch)
-  "erdbewegung": "1t-bagger",
-  // Verdichtung (Rüttelplatten etc.)
-  "verdichtung": "1t-bagger",
-  // Werkzeuge (Zwangsmischer, Häcksler, Steinsäge, Fugenschneider)
-  "werkzeuge": "zwangsmischer",
-  // Arbeitsbühnen
-  "arbeitsbuehnen": "2t-bagger",
-  // Gerüste & Leitern
-  "leitern-gerueste": "geruest",
-  // Event-Tarif: Heizung, Trocknung, Möbel, Zelte, Geschirr, Gläser, Besteck, Beleuchtung, Beschallung
-  "heizung-trocknung": "event",
-  "moebel-zelte": "event",
-  "geschirr-glaeser-besteck": "event",
-  "beleuchtung": "event",
-  "beschallung": "event",
-  "buehne": "event",
-  "traversen-rigging": "event",
-  "spezialeffekte": "event",
-  "huepfburgen": "event",
-  "kommunikation": "event",
-  "gartenpflege": "event",
-  
-  "aggregate": "2t-bagger",
-  "kabel-stromverteiler": "event",
-  "absperrtechnik": "event",
-};
+import {
+  tariffs,
+  categoryConfigs,
+  calculatePrice,
+  type TariffKey,
+} from "@/data/lieferkosten";
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
@@ -156,85 +23,76 @@ interface DeliveryCalculatorCompactProps {
   productName?: string;
 }
 
-// Determine the right delivery category for erdbewegung products based on name
-function getErdbewegungCategory(productName?: string): CategoryKey {
-  if (!productName) return "1t-bagger";
-  const lower = productName.toLowerCase();
-  if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000/i.test(lower)) return "3t-bagger";
-  if (/radlader|knicklader|xe20|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
-  return "1t-bagger";
-}
-
-// Override category based on specific product name (e.g. Häcksler in gartenpflege → zwangsmischer tariff)
-function getProductOverrideCategory(productName?: string): CategoryKey | null {
+// Override tariff based on product name (Erdbewegung XE27/3t etc → Tarif D)
+function getProductTariffOverride(productName?: string): TariffKey | null {
   if (!productName) return null;
   const lower = productName.toLowerCase();
-  if (/häcksler|haecksler|baumstumpf|fugenschneider|zwangsmischer|steinsäge|steinsaege/i.test(lower)) return "zwangsmischer";
+  if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000|radlader|knicklader|kramer|12m|14m/i.test(lower)) {
+    return "D";
+  }
   return null;
 }
 
-export function DeliveryCalculatorCompact({ 
+// Fallback mapping for unknown product category IDs
+const FALLBACK_CATEGORY = "werkzeuge";
+
+export function DeliveryCalculatorCompact({
   productCategoryId,
   showAllCategories = false,
   className = "",
   categoryDisplayName,
-  productName
+  productName,
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
-  // Determine if this is erdbewegung category (show machine type selector)
-  const isErdbewegung = productCategoryId === "erdbewegung";
-  
-  // Show all categories when showAllCategories is true (for "alle" page)
-  const showCategoryDropdown = showAllCategories || isErdbewegung;
-  
-  // Determine initial category based on product (with product-name override)
-  const initialCategory = (() => {
-    const override = getProductOverrideCategory(productName);
-    if (override) return override;
-    if (isErdbewegung) return getErdbewegungCategory(productName);
-    return productCategoryId ? categoryMapping[productCategoryId] || "2t-bagger" : "2t-bagger";
+
+  // Determine initial category key
+  const initialCategoryKey = (() => {
+    if (productCategoryId && categoryConfigs[productCategoryId]) return productCategoryId;
+    return FALLBACK_CATEGORY;
   })();
-    
-  const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
+
+  const [categoryKey, setCategoryKey] = useState<string>(initialCategoryKey);
+  const config = categoryConfigs[categoryKey];
+
+  // Determine initial tariff (with product-name override for erdbewegung/arbeitsbuehnen)
+  const initialTarif: TariffKey = (() => {
+    if (!config.defaultTarif) return "A";
+    const override = getProductTariffOverride(productName);
+    if (override && config.switchTarife?.includes(override)) return override;
+    return config.defaultTarif;
+  })();
+
+  const [tarifOverride, setTarifOverride] = useState<TariffKey>(initialTarif);
   const [distance, setDistance] = useState(20);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [twoMachines, setTwoMachines] = useState(false);
 
-  const selectedCategory = deliveryPrices[selectedMachineType];
-  
-  // Check if multiplier option should be shown
-  const showMultiplierOption = isErdbewegung || 
-    (showAllCategories && (selectedMachineType === "1t-bagger" || selectedMachineType === "2t-bagger" || selectedMachineType === "3t-bagger"));
+  const activeTarif = tarifOverride;
+  const tariff = tariffs[activeTarif];
 
-  const calculatedPrice = useMemo(() => {
-    const distances = selectedCategory.distances;
-    
-    let priceEntry = distances[distances.length - 1];
-    for (const entry of distances) {
-      if (distance <= entry.km) {
-        priceEntry = entry;
-        break;
-      }
-    }
+  const result = useMemo(
+    () =>
+      calculatePrice({
+        tarif: activeTarif,
+        km: distance,
+        twoMachines,
+        rueckweg: includeReturn,
+      }),
+    [activeTarif, distance, twoMachines, includeReturn]
+  );
 
-    let basePrice = priceEntry.brutto;
-    
-    // Aufschlag für 2 Baumaschinen
-    if (twoMachines && selectedCategory.multiplier > 1) {
-      basePrice = basePrice * selectedCategory.multiplier;
-    }
+  const handleCategoryChange = (value: string) => {
+    setCategoryKey(value);
+    const cfg = categoryConfigs[value];
+    if (cfg.defaultTarif) setTarifOverride(cfg.defaultTarif);
+    setTwoMachines(false);
+  };
 
-    const totalPrice = includeReturn ? basePrice * 2 : basePrice;
+  // Show category dropdown if "showAllCategories" or category has tariff switches
+  const showCategoryDropdown = showAllCategories;
+  const showTarifSwitch = (config.switchTarife?.length ?? 0) > 1;
 
-    return {
-      oneWay: basePrice,
-      total: totalPrice,
-      distanceUsed: priceEntry.km,
-    };
-  }, [distance, includeReturn, twoMachines, selectedCategory]);
-
-  // Determine which options to show in dropdown
-  const categoryOptions = showAllCategories ? allCategoryKeys : machineTypeKeys;
+  const allCategoryEntries = Object.entries(categoryConfigs);
 
   return (
     <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
@@ -245,21 +103,17 @@ export function DeliveryCalculatorCompact({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Category Selector */}
         {showCategoryDropdown && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">{t("rental.deviceCategory")}</Label>
-            <Select
-              value={selectedMachineType}
-              onValueChange={(value) => setSelectedMachineType(value as CategoryKey)}
-            >
+            <Select value={categoryKey} onValueChange={handleCategoryChange}>
               <SelectTrigger className="w-full bg-background">
-                <SelectValue placeholder={t("rental.selectCategory")} />
+                <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-background z-50">
-                {categoryOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {t(option.labelKey)}
+              <SelectContent className="bg-background z-50 max-h-[400px]">
+                {allCategoryEntries.map(([key, cfg]) => (
+                  <SelectItem key={key} value={key}>
+                    {cfg.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -267,13 +121,29 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
-        {/* Info text */}
-        <p className="text-xs text-muted-foreground">
-          {t("rental.deliveryHint")}
+        {showTarifSwitch && (
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Fahrzeug-Tarif</Label>
+            <Select value={activeTarif} onValueChange={(v) => setTarifOverride(v as TariffKey)}>
+              <SelectTrigger className="w-full bg-background">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background z-50">
+                {config.switchTarife!.map((tk) => (
+                  <SelectItem key={tk} value={tk}>
+                    Tarif {tk} – {tariffs[tk].vehicle}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        <p className="text-xs text-muted-foreground flex items-start gap-1">
+          <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+          <span>Tarif {activeTarif} – {tariff.vehicle}. {t("rental.deliveryHint")}</span>
         </p>
 
-
-        {/* Distance Slider */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="flex items-center gap-2 text-sm">
@@ -284,7 +154,7 @@ export function DeliveryCalculatorCompact({
           </div>
           <Slider
             value={[distance]}
-            onValueChange={(value) => setDistance(value[0])}
+            onValueChange={(v) => setDistance(v[0])}
             min={5}
             max={50}
             step={5}
@@ -292,7 +162,6 @@ export function DeliveryCalculatorCompact({
           />
         </div>
 
-        {/* Return Trip Toggle */}
         <div className="flex items-center justify-between py-2 border-t border-border">
           <Label htmlFor="return-trip-compact" className="text-sm cursor-pointer">
             {t("rental.roundTrip")}
@@ -304,15 +173,14 @@ export function DeliveryCalculatorCompact({
           />
         </div>
 
-        {/* Two Machines Toggle - for erdbewegung or all categories with multiplier */}
-        {showMultiplierOption && selectedCategory.multiplier > 1 && (
+        {tariff.multiplier2Maschinen > 1 && (
           <div className="flex items-center justify-between py-2 border-t border-border">
             <div>
               <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
                 {t("rental.twoMachines")}
               </Label>
               <p className="text-xs text-muted-foreground">
-                {t("rental.surcharge")}: ×{selectedCategory.multiplier}
+                {t("rental.surcharge")}: ×{tariff.multiplier2Maschinen}
               </p>
             </div>
             <Switch
@@ -323,7 +191,6 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
-        {/* Price Display */}
         <div className="bg-background rounded-lg p-4 border border-border">
           <div className="flex items-center justify-between">
             <div>
@@ -331,25 +198,19 @@ export function DeliveryCalculatorCompact({
                 {includeReturn ? t("rental.roundTripLabel") : t("rental.oneWayLabel")}
               </p>
               <p className="text-2xl font-bold text-headline">
-                {calculatedPrice.total.toFixed(0)} €
+                {result.total.toFixed(0)} €
                 <span className="text-sm font-normal text-muted-foreground ml-1">{t("rental.gross")}</span>
               </p>
             </div>
             <Calculator className="h-8 w-8 text-accent" />
           </div>
-          {includeReturn && (
-            <p className="text-xs text-muted-foreground mt-1">
-              ({t("rental.perTrip")} {calculatedPrice.oneWay.toFixed(0)} €)
-            </p>
-          )}
-          {twoMachines && (
+          {twoMachines && tariff.multiplier2Maschinen > 1 && (
             <p className="text-xs text-accent mt-1">
               {t("rental.inclSurchargeTwoMachines")}
             </p>
           )}
         </div>
 
-        {/* Link to full calculator */}
         <div className="pt-3 mt-3 border-t border-border">
           <Link to="/lieferung">
             <Button variant="outline" className="w-full text-sm">
