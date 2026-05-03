@@ -1299,7 +1299,7 @@ export default function CategoryProducts() {
                 {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
-                {category.description}
+                {moebelOverride?.heroLead || category.description}
               </p>
             </div>
           </div>
