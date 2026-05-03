@@ -6,147 +6,10 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Truck, MapPin, Calculator, ArrowRight } from "lucide-react";
-import { useTranslation } from "react-i18next";
-
-// Lieferpreise inkl. +10 % Spritpreis-Anpassung (Mai 2026), gerundet auf 5er-Werte
-const deliveryPrices = {
-  "1t-bagger": {
-    name: "1t Bagger, Dumper & 8m Scherenbühne",
-    multiplier: 1.5,
-    distances: [
-      { km: 15, brutto: 85 },
-      { km: 20, brutto: 100 },
-      { km: 25, brutto: 110 },
-      { km: 30, brutto: 125 },
-      { km: 35, brutto: 145 },
-      { km: 40, brutto: 155 },
-      { km: 45, brutto: 160 },
-      { km: 50, brutto: 170 },
-    ],
-  },
-  "zwangsmischer": {
-    name: "Zwangsmischer / Häcksler / Steinsäge / Fugenschneider",
-    multiplier: 1,
-    distances: [
-      { km: 15, brutto: 85 },
-      { km: 20, brutto: 100 },
-      { km: 25, brutto: 110 },
-      { km: 30, brutto: 125 },
-      { km: 35, brutto: 145 },
-      { km: 40, brutto: 155 },
-      { km: 45, brutto: 160 },
-      { km: 50, brutto: 170 },
-    ],
-  },
-  "2t-bagger": {
-    name: "2t Bagger, Radlader & Anhängerarbeitsbühne",
-    multiplier: 1.5,
-    distances: [
-      { km: 15, brutto: 100 },
-      { km: 20, brutto: 120 },
-      { km: 25, brutto: 140 },
-      { km: 30, brutto: 155 },
-      { km: 35, brutto: 165 },
-      { km: 40, brutto: 170 },
-      { km: 45, brutto: 175 },
-      { km: 50, brutto: 180 },
-    ],
-  },
-  "3t-bagger": {
-    name: "3t Bagger & 12m Scherenbühne",
-    multiplier: 1.7,
-    distances: [
-      { km: 15, brutto: 90 },
-      { km: 20, brutto: 110 },
-      { km: 25, brutto: 125 },
-      { km: 30, brutto: 145 },
-      { km: 35, brutto: 170 },
-      { km: 40, brutto: 180 },
-      { km: 45, brutto: 190 },
-      { km: 50, brutto: 200 },
-    ],
-  },
-  "geruest": {
-    name: "Gerüst bis 4,4m Arbeitshöhe",
-    multiplier: 1,
-    distances: [
-      { km: 10, brutto: 50 },
-      { km: 15, brutto: 60 },
-      { km: 20, brutto: 70 },
-      { km: 25, brutto: 85 },
-      { km: 30, brutto: 100 },
-      { km: 35, brutto: 125 },
-      { km: 40, brutto: 140 },
-      { km: 45, brutto: 150 },
-      { km: 50, brutto: 165 },
-    ],
-  },
-  "event": {
-    name: "Heizung, Trocknung, Möbel, Zelte, Event-Equipment",
-    multiplier: 1,
-    distances: [
-      { km: 10, brutto: 30 },
-      { km: 15, brutto: 35 },
-      { km: 20, brutto: 45 },
-      { km: 25, brutto: 75 },
-      { km: 30, brutto: 95 },
-      { km: 35, brutto: 120 },
-      { km: 40, brutto: 130 },
-      { km: 45, brutto: 145 },
-      { km: 50, brutto: 155 },
-    ],
-  },
-};
-
-type CategoryKey = keyof typeof deliveryPrices;
-
-// All category options for the dropdown (use i18n keys)
-const allCategoryKeys: { value: CategoryKey; labelKey: string }[] = [
-  { value: "1t-bagger", labelKey: "rental.cat1tBagger" },
-  { value: "zwangsmischer", labelKey: "rental.catZwangsmischer" },
-  { value: "2t-bagger", labelKey: "rental.cat2tBagger" },
-  { value: "3t-bagger", labelKey: "rental.cat3tBagger" },
-  { value: "geruest", labelKey: "rental.catScaffolding" },
-  { value: "event", labelKey: "rental.catEvent" },
-];
-
-// Machine type options for erdbewegung category
-const machineTypeKeys: { value: CategoryKey; labelKey: string }[] = [
-  { value: "1t-bagger", labelKey: "rental.machine1t" },
-  { value: "2t-bagger", labelKey: "rental.machine2t" },
-  { value: "3t-bagger", labelKey: "rental.machine3t" },
-];
-
-// Map product categories to delivery price categories
-const categoryMapping: Record<string, CategoryKey> = {
-  // Erdbewegung (default 1t, user can switch)
-  "erdbewegung": "1t-bagger",
-  // Verdichtung (Rüttelplatten etc.)
-  "verdichtung": "1t-bagger",
-  // Werkzeuge (Zwangsmischer, Häcksler, Steinsäge, Fugenschneider)
-  "werkzeuge": "zwangsmischer",
-  // Arbeitsbühnen
-  "arbeitsbuehnen": "2t-bagger",
-  // Gerüste & Leitern
-  "leitern-gerueste": "geruest",
-  // Event-Tarif: Heizung, Trocknung, Möbel, Zelte, Geschirr, Gläser, Besteck, Beleuchtung, Beschallung
-  "heizung-trocknung": "event",
-  "moebel-zelte": "event",
-  "geschirr-glaeser-besteck": "event",
-  "beleuchtung": "event",
-  "beschallung": "event",
-  "buehne": "event",
-  "traversen-rigging": "event",
-  "spezialeffekte": "event",
-  "huepfburgen": "event",
-  "kommunikation": "event",
-  "gartenpflege": "event",
-  
-  "aggregate": "2t-bagger",
-  "kabel-stromverteiler": "event",
-  "absperrtechnik": "event",
-};
+import { Truck, MapPin, ArrowRight, Info, AlertTriangle } from "lucide-react";
+import { calculatePrice, formatEuro } from "@/lib/lieferkosten/calculate";
+import { KATEGORIE_MAPPING, type ProduktKategorie } from "@/data/lieferkosten/mapping";
+import type { TarifKey } from "@/data/lieferkosten/tarife";
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
@@ -156,110 +19,147 @@ interface DeliveryCalculatorCompactProps {
   productName?: string;
 }
 
-// Determine the right delivery category for erdbewegung products based on name
-function getErdbewegungCategory(productName?: string): CategoryKey {
-  if (!productName) return "1t-bagger";
-  const lower = productName.toLowerCase();
-  if (/xe27|2[.,]7\s*t|3[.,]?\s*t|e35|e50|e55|3500|5000/i.test(lower)) return "3t-bagger";
-  if (/radlader|knicklader|xe20|2[.,]?[0-9]*\s*t|kramer/i.test(lower)) return "2t-bagger";
-  return "1t-bagger";
-}
+const KATEGORIEN = Object.keys(KATEGORIE_MAPPING) as ProduktKategorie[];
 
-// Override category based on specific product name (e.g. Häcksler in gartenpflege → zwangsmischer tariff)
-function getProductOverrideCategory(productName?: string): CategoryKey | null {
+// Erkennen, ob Erdbewegungs-Produkt eher 2t/3t (Tarif D) ist
+function detectTariffFromProductName(productName: string | undefined, kategorie: ProduktKategorie): TarifKey | null {
   if (!productName) return null;
   const lower = productName.toLowerCase();
-  if (/häcksler|haecksler|baumstumpf|fugenschneider|zwangsmischer|steinsäge|steinsaege/i.test(lower)) return "zwangsmischer";
+  if (kategorie === "erdbewegung") {
+    if (/3[.,]?\s*t|3500|e35|e50|e55|xe35|xe50/.test(lower)) return "D";
+    if (/2[.,]?\s*t|xe20|xe27|2[.,]7|radlader|knicklader|kramer/.test(lower)) return "D";
+    return "C";
+  }
+  if (kategorie === "arbeitsbuehnen") {
+    if (/12\s*m|14\s*m|16\s*m|hubsteiger/.test(lower)) return "D";
+    return "C";
+  }
   return null;
 }
 
-export function DeliveryCalculatorCompact({ 
+function isTieflader(productName?: string): boolean {
+  if (!productName) return false;
+  return /tieflader|ab\s*3[.,]5\s*t|5\s*t|7\s*t/.test(productName.toLowerCase());
+}
+
+export function DeliveryCalculatorCompact({
   productCategoryId,
   showAllCategories = false,
   className = "",
   categoryDisplayName,
-  productName
+  productName,
 }: DeliveryCalculatorCompactProps) {
-  const { t } = useTranslation();
-  // Determine if this is erdbewegung category (show machine type selector)
-  const isErdbewegung = productCategoryId === "erdbewegung";
-  
-  // Show all categories when showAllCategories is true (for "alle" page)
-  const showCategoryDropdown = showAllCategories || isErdbewegung;
-  
-  // Determine initial category based on product (with product-name override)
-  const initialCategory = (() => {
-    const override = getProductOverrideCategory(productName);
-    if (override) return override;
-    if (isErdbewegung) return getErdbewegungCategory(productName);
-    return productCategoryId ? categoryMapping[productCategoryId] || "2t-bagger" : "2t-bagger";
-  })();
-    
-  const [selectedMachineType, setSelectedMachineType] = useState<CategoryKey>(initialCategory);
-  const [distance, setDistance] = useState(20);
-  const [includeReturn, setIncludeReturn] = useState(false);
-  const [twoMachines, setTwoMachines] = useState(false);
+  // Initiale Kategorie + Tarif bestimmen
+  const initialKategorie: ProduktKategorie =
+    (productCategoryId && (KATEGORIE_MAPPING as any)[productCategoryId]
+      ? (productCategoryId as ProduktKategorie)
+      : "werkzeuge");
 
-  const selectedCategory = deliveryPrices[selectedMachineType];
-  
-  // Check if multiplier option should be shown
-  const showMultiplierOption = isErdbewegung || 
-    (showAllCategories && (selectedMachineType === "1t-bagger" || selectedMachineType === "2t-bagger" || selectedMachineType === "3t-bagger"));
+  const [kategorie, setKategorie] = useState<ProduktKategorie>(initialKategorie);
+  const mapping = KATEGORIE_MAPPING[kategorie];
 
-  const calculatedPrice = useMemo(() => {
-    const distances = selectedCategory.distances;
-    
-    let priceEntry = distances[distances.length - 1];
-    for (const entry of distances) {
-      if (distance <= entry.km) {
-        priceEntry = entry;
-        break;
-      }
-    }
+  const initialTarif: TarifKey =
+    mapping.default_tarif === "NONE"
+      ? "A"
+      : (detectTariffFromProductName(productName, kategorie) ??
+          (mapping.default_tarif as TarifKey));
 
-    let basePrice = priceEntry.brutto;
-    
-    // Aufschlag für 2 Baumaschinen
-    if (twoMachines && selectedCategory.multiplier > 1) {
-      basePrice = basePrice * selectedCategory.multiplier;
-    }
+  const [tarif, setTarif] = useState<TarifKey>(initialTarif);
+  const [km, setKm] = useState(20);
+  const [liefermodus, setLiefermodus] = useState<"hin-rueck" | "einzel">("hin-rueck");
 
-    const totalPrice = includeReturn ? basePrice * 2 : basePrice;
+  // Kategorie-spezifische Spezialfälle
+  const isAnhaenger = kategorie === "anhaenger";
+  const tieflader = isTieflader(productName);
+  const showTarifSwitch = !!mapping.ui_switch_tarife && mapping.ui_switch_tarife.length > 0;
 
-    return {
-      oneWay: basePrice,
-      total: totalPrice,
-      distanceUsed: priceEntry.km,
-    };
-  }, [distance, includeReturn, twoMachines, selectedCategory]);
+  const result = useMemo(
+    () =>
+      calculatePrice({
+        kategorie,
+        tarif,
+        km,
+        liefermodus,
+      }),
+    [kategorie, tarif, km, liefermodus]
+  );
 
-  // Determine which options to show in dropdown
-  const categoryOptions = showAllCategories ? allCategoryKeys : machineTypeKeys;
+  // Sonderfall: Anhänger – Selbstabholung
+  if (isAnhaenger) {
+    return (
+      <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Truck className="h-5 w-5 text-primary" />
+            Lieferkosten
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-start gap-2 text-sm">
+            <Info className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+            <p>
+              <strong>Selbstabholung Lager Krefeld.</strong> Anhänger werden zur Abholung bereitgestellt – keine Lieferung.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Sonderfall: Tieflader-Maschine
+  if (tieflader) {
+    return (
+      <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Truck className="h-5 w-5 text-primary" />
+            Lieferkosten
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex items-start gap-2 text-sm">
+            <AlertTriangle className="h-4 w-4 text-accent mt-0.5 shrink-0" />
+            <p>Tieflader-Anlieferung – <strong>Preis auf Anfrage</strong>.</p>
+          </div>
+          <Link to="/kontakt">
+            <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+              Anfrage stellen
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className={`bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 ${className}`}>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
+        <CardTitle className="flex items-center gap-2 text-base">
           <Truck className="h-5 w-5 text-primary" />
-          {categoryDisplayName ? t("rental.deliveryTitle", { category: categoryDisplayName }) : t("rental.deliveryCosts")}
+          {categoryDisplayName ? `Lieferung – ${categoryDisplayName}` : "Lieferkosten berechnen"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Category Selector */}
-        {showCategoryDropdown && (
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">{t("rental.deviceCategory")}</Label>
+      <CardContent className="space-y-3">
+        {/* Kategorie-Dropdown nur auf "alle"-Seite */}
+        {showAllCategories && (
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium">Kategorie</Label>
             <Select
-              value={selectedMachineType}
-              onValueChange={(value) => setSelectedMachineType(value as CategoryKey)}
+              value={kategorie}
+              onValueChange={(v) => {
+                const k = v as ProduktKategorie;
+                setKategorie(k);
+                const m = KATEGORIE_MAPPING[k];
+                setTarif(m.default_tarif === "NONE" ? "A" : (m.default_tarif as TarifKey));
+              }}
             >
-              <SelectTrigger className="w-full bg-background">
-                <SelectValue placeholder={t("rental.selectCategory")} />
+              <SelectTrigger className="w-full bg-background h-9">
+                <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-background z-50">
-                {categoryOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {t(option.labelKey)}
+              <SelectContent className="bg-background z-50 max-h-72">
+                {KATEGORIEN.filter((k) => KATEGORIE_MAPPING[k].default_tarif !== "NONE").map((k) => (
+                  <SelectItem key={k} value={k}>
+                    {KATEGORIE_MAPPING[k].label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -267,97 +167,75 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
-        {/* Info text */}
-        <p className="text-xs text-muted-foreground">
-          {t("rental.deliveryHint")}
-        </p>
-
-
-        {/* Distance Slider */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label className="flex items-center gap-2 text-sm">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              {t("rental.distance")}
+        {/* Tarif-Switch (Erdbewegung / Arbeitsbühnen) */}
+        {showTarifSwitch && (
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium">
+              {kategorie === "erdbewegung" ? "Maschinengröße" : "Bühnentyp"}
             </Label>
-            <span className="font-semibold text-primary">{distance} km</span>
-          </div>
-          <Slider
-            value={[distance]}
-            onValueChange={(value) => setDistance(value[0])}
-            min={5}
-            max={50}
-            step={5}
-            className="w-full"
-          />
-        </div>
-
-        {/* Return Trip Toggle */}
-        <div className="flex items-center justify-between py-2 border-t border-border">
-          <Label htmlFor="return-trip-compact" className="text-sm cursor-pointer">
-            {t("rental.roundTrip")}
-          </Label>
-          <Switch
-            id="return-trip-compact"
-            checked={includeReturn}
-            onCheckedChange={setIncludeReturn}
-          />
-        </div>
-
-        {/* Two Machines Toggle - for erdbewegung or all categories with multiplier */}
-        {showMultiplierOption && selectedCategory.multiplier > 1 && (
-          <div className="flex items-center justify-between py-2 border-t border-border">
-            <div>
-              <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
-                {t("rental.twoMachines")}
-              </Label>
-              <p className="text-xs text-muted-foreground">
-                {t("rental.surcharge")}: ×{selectedCategory.multiplier}
-              </p>
-            </div>
-            <Switch
-              id="two-machines-compact"
-              checked={twoMachines}
-              onCheckedChange={setTwoMachines}
-            />
+            <Select value={tarif} onValueChange={(v) => setTarif(v as TarifKey)}>
+              <SelectTrigger className="w-full bg-background h-9">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background z-50">
+                {mapping.ui_switch_tarife!.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {kategorie === "erdbewegung"
+                      ? t === "C" ? "1t Bagger / Dumper" : "2–3t Bagger / Radlader"
+                      : t === "C" ? "8m Anhängerarbeitsbühne" : "12m+ Scherenbühne"}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
 
-        {/* Price Display */}
-        <div className="bg-background rounded-lg p-4 border border-border">
+        {/* Distanz */}
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                {includeReturn ? t("rental.roundTripLabel") : t("rental.oneWayLabel")}
-              </p>
-              <p className="text-2xl font-bold text-headline">
-                {calculatedPrice.total.toFixed(0)} €
-                <span className="text-sm font-normal text-muted-foreground ml-1">{t("rental.gross")}</span>
-              </p>
-            </div>
-            <Calculator className="h-8 w-8 text-accent" />
+            <Label className="flex items-center gap-1.5 text-sm">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              Entfernung
+            </Label>
+            <span className="font-semibold text-primary">{km} km</span>
           </div>
-          {includeReturn && (
-            <p className="text-xs text-muted-foreground mt-1">
-              ({t("rental.perTrip")} {calculatedPrice.oneWay.toFixed(0)} €)
-            </p>
-          )}
-          {twoMachines && (
-            <p className="text-xs text-accent mt-1">
-              {t("rental.inclSurchargeTwoMachines")}
-            </p>
-          )}
+          <Slider value={[km]} onValueChange={(v) => setKm(v[0])} min={5} max={50} step={5} />
         </div>
 
-        {/* Link to full calculator */}
-        <div className="pt-3 mt-3 border-t border-border">
-          <Link to="/lieferung">
-            <Button variant="outline" className="w-full text-sm">
-              {t("rental.detailedCalculator")}
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </Link>
+        {/* Liefermodus */}
+        <div className="flex items-center justify-between py-1.5 border-t border-border">
+          <Label htmlFor="rt-compact" className="text-sm cursor-pointer">
+            Hin- &amp; Rückweg
+          </Label>
+          <Switch
+            id="rt-compact"
+            checked={liefermodus === "hin-rueck"}
+            onCheckedChange={(c) => setLiefermodus(c ? "hin-rueck" : "einzel")}
+          />
         </div>
+
+        {/* Preis */}
+        <div className="bg-background rounded-lg p-3 border border-border">
+          <p className="text-xs text-muted-foreground uppercase tracking-wide">Richtpreis</p>
+          <p className="text-2xl font-bold text-headline">
+            {formatEuro(result.total)}
+            <span className="text-xs font-normal text-muted-foreground ml-1">brutto</span>
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Be-/Entladen inkl. · Wartezeit extra · Richtwert
+          </p>
+        </div>
+
+        {/* CTA zur Vollseite */}
+        <Link
+          to={`/lieferung?kategorie=${kategorie}&tarif=${tarif}&km=${km}&modus=${liefermodus}`}
+          className="block"
+        >
+          <Button variant="outline" className="w-full text-sm h-9">
+            Detaillierte Berechnung
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
