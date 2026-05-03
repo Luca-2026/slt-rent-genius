@@ -67,7 +67,7 @@ export function DeliveryCalculatorCompact({
 
   const [tarif, setTarif] = useState<TarifKey>(initialTarif);
   const [km, setKm] = useState(20);
-  const [liefermodus, setLiefermodus] = useState<"hin-rueck" | "einzel">("hin-rueck");
+  const [liefermodus, setLiefermodus] = useState<"hin-rueck" | "einzel">("einzel");
 
   // Kategorie-spezifische Spezialfälle
   const isAnhaenger = kategorie === "anhaenger";
@@ -206,7 +206,7 @@ export function DeliveryCalculatorCompact({
         {/* Liefermodus */}
         <div className="flex items-center justify-between py-1.5 border-t border-border">
           <Label htmlFor="rt-compact" className="text-sm cursor-pointer">
-            Hin- &amp; Rückweg
+            Anlieferung &amp; Abholung
           </Label>
           <Switch
             id="rt-compact"
