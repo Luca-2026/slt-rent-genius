@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Truck, Calculator, Info, MapPin, Package, Clock, Zap, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -111,37 +110,34 @@ export default function Lieferung() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Select value={categoryKey} onValueChange={handleCategoryChange}>
-                      <SelectTrigger className="w-full bg-background">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50 max-h-[400px]">
-                        {categoryEntries.map(([key, cfg]) => (
-                          <SelectItem key={key} value={key}>
-                            {cfg.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <select
+                      value={categoryKey}
+                      onChange={(event) => handleCategoryChange(event.target.value)}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      aria-label="Produktkategorie wählen"
+                    >
+                      {categoryEntries.map(([key, cfg]) => (
+                        <option key={key} value={key}>
+                          {cfg.label}
+                        </option>
+                      ))}
+                    </select>
 
                     {config.subtypes && config.subtypes.length > 0 && (
                       <div className="space-y-2 pt-2 border-t">
                         <Label className="text-sm font-medium">Gerätetyp</Label>
-                        <Select
+                        <select
                           value={subtypeKey ?? ""}
-                          onValueChange={(v) => setSubtypeKey(v)}
+                          onChange={(event) => setSubtypeKey(event.target.value)}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                          aria-label="Gerätetyp wählen"
                         >
-                          <SelectTrigger className="w-full bg-background">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background z-50">
-                            {config.subtypes.map((s) => (
-                              <SelectItem key={s.key} value={s.key}>
-                                {s.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          {config.subtypes.map((s) => (
+                            <option key={s.key} value={s.key}>
+                              {s.label}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     )}
 
