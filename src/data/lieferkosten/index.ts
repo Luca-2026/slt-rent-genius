@@ -91,9 +91,17 @@ export const ZUSATZKOSTEN = {
 } as const;
 
 // Produkt-Kategorie → Tarif Mapping
+export interface SubtypeOption {
+  key: string;
+  label: string; // Kunden-sichtbar (z.B. "1t Bagger")
+  tarif: TariffKey; // intern
+}
+
 export interface CategoryConfig {
   defaultTarif: TariffKey | null; // null = keine Lieferung (Anhänger)
-  switchTarife?: TariffKey[]; // optional: User kann zwischen Tarifen wechseln
+  // Kunden-sichtbare Geräte-Subtypen, die intern auf Tarife mappen
+  subtypes?: SubtypeOption[];
+  defaultSubtype?: string;
   hinweis?: string;
   label: string;
   scope?: "geruest" | "moebel"; // für Sonder-Aufschläge
@@ -119,15 +127,25 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
   "leitern-gerueste": { defaultTarif: "A", label: "Leitern & Gerüste", scope: "geruest", hinweis: "Inkl. optional Aufbau-Service" },
   erdbewegung: {
     defaultTarif: "C",
-    switchTarife: ["C", "D"],
-    label: "Erdbewegung (Bagger, Dumper)",
-    hinweis: "Default 1t (Tarif C); umschaltbar auf 2t/3t (Tarif D)",
+    label: "Erdbewegung (Bagger, Dumper, Radlader)",
+    defaultSubtype: "1t-bagger",
+    subtypes: [
+      { key: "1t-bagger", label: "1t Bagger", tarif: "C" },
+      { key: "dumper", label: "Dumper", tarif: "C" },
+      { key: "2t-bagger", label: "2t Bagger", tarif: "D" },
+      { key: "3t-bagger", label: "3t Bagger", tarif: "D" },
+      { key: "radlader", label: "Radlader / Knicklader", tarif: "D" },
+    ],
   },
   arbeitsbuehnen: {
     defaultTarif: "C",
-    switchTarife: ["C", "D"],
     label: "Arbeitsbühnen",
-    hinweis: "Default 8m Anhängerarbeitsbühne (C); umschaltbar auf 12m+ (D)",
+    defaultSubtype: "8m",
+    subtypes: [
+      { key: "8m", label: "8m Anhängerarbeitsbühne", tarif: "C" },
+      { key: "12m", label: "12m Scherenbühne", tarif: "D" },
+      { key: "14m+", label: "14m+ Arbeitsbühne", tarif: "D" },
+    ],
   },
 };
 

@@ -54,20 +54,24 @@ export function DeliveryCalculatorCompact({
   const [categoryKey, setCategoryKey] = useState<string>(initialCategoryKey);
   const config = categoryConfigs[categoryKey];
 
-  // Determine initial tariff (with product-name override for erdbewegung/arbeitsbuehnen)
-  const initialTarif: TariffKey = (() => {
-    if (!config.defaultTarif) return "A";
+  // Initial subtype: try product-name override (Tarif D = größere Geräte), sonst default
+  const initialSubtype: string | null = (() => {
+    if (!config.subtypes || config.subtypes.length === 0) return null;
     const override = getProductTariffOverride(productName);
-    if (override && config.switchTarife?.includes(override)) return override;
-    return config.defaultTarif;
+    if (override) {
+      const match = config.subtypes.find((s) => s.tarif === override);
+      if (match) return match.key;
+    }
+    return config.defaultSubtype ?? config.subtypes[0].key;
   })();
 
-  const [tarifOverride, setTarifOverride] = useState<TariffKey>(initialTarif);
+  const [subtypeKey, setSubtypeKey] = useState<string | null>(initialSubtype);
   const [distance, setDistance] = useState(20);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [twoMachines, setTwoMachines] = useState(false);
 
-  const activeTarif = tarifOverride;
+  const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
+  const activeTarif: TariffKey = activeSubtype?.tarif ?? (config.defaultTarif as TariffKey ?? "A");
   const tariff = tariffs[activeTarif];
 
   const result = useMemo(
@@ -84,13 +88,12 @@ export function DeliveryCalculatorCompact({
   const handleCategoryChange = (value: string) => {
     setCategoryKey(value);
     const cfg = categoryConfigs[value];
-    if (cfg.defaultTarif) setTarifOverride(cfg.defaultTarif);
+    setSubtypeKey(cfg.defaultSubtype ?? cfg.subtypes?.[0]?.key ?? null);
     setTwoMachines(false);
   };
 
-  // Show category dropdown if "showAllCategories" or category has tariff switches
   const showCategoryDropdown = showAllCategories;
-  const showTarifSwitch = (config.switchTarife?.length ?? 0) > 1;
+  const showSubtypeSwitch = (config.subtypes?.length ?? 0) > 1;
 
   const allCategoryEntries = Object.entries(categoryConfigs);
 
@@ -121,17 +124,17 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
-        {showTarifSwitch && (
+        {showSubtypeSwitch && (
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Fahrzeug-Tarif</Label>
-            <Select value={activeTarif} onValueChange={(v) => setTarifOverride(v as TariffKey)}>
+            <Label className="text-sm font-medium">Gerätetyp</Label>
+            <Select value={subtypeKey ?? ""} onValueChange={(v) => setSubtypeKey(v)}>
               <SelectTrigger className="w-full bg-background">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-background z-50">
-                {config.switchTarife!.map((tk) => (
-                  <SelectItem key={tk} value={tk}>
-                    Tarif {tk} – {tariffs[tk].vehicle}
+                {config.subtypes!.map((s) => (
+                  <SelectItem key={s.key} value={s.key}>
+                    {s.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -141,7 +144,7 @@ export function DeliveryCalculatorCompact({
 
         <p className="text-xs text-muted-foreground flex items-start gap-1">
           <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-          <span>Tarif {activeTarif} – {tariff.vehicle}. {t("rental.deliveryHint")}</span>
+          <span>{t("rental.deliveryHint")}</span>
         </p>
 
         <div className="space-y-2">
