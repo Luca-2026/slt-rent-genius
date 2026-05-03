@@ -567,6 +567,15 @@ export default function CategoryProducts() {
                   const nameLower = p.name.toLowerCase();
                   return nameLower.includes("stuhl") || nameLower.includes("tisch") || nameLower.includes("bank") || nameLower.includes("bierzelt");
                 }
+                // Arbeitsbühnen: name-based fallback (covers products without category field)
+                if (category?.id === "arbeitsbuehnen") {
+                  const nameLower = p.name.toLowerCase();
+                  if (value === "mastbuehne") return nameLower.includes("mast");
+                  if (value === "scherenbuehne") return nameLower.includes("scheren");
+                  if (value === "gelenkbuehne") return nameLower.includes("gelenk") && !nameLower.includes("anhänger") && !nameLower.includes("anhaenger");
+                  if (value === "teleskopbuehne") return nameLower.includes("teleskop") && !nameLower.includes("mast") && !nameLower.includes("anhänger") && !nameLower.includes("anhaenger");
+                  if (value === "anhaengerbuehne") return nameLower.includes("anhänger") || nameLower.includes("anhaenger");
+                }
                 return false;
               });
             });
