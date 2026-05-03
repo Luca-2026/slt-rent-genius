@@ -125,10 +125,6 @@ import mehrzweckleiter3x12_1 from "@/assets/products/mehrzweckleiter-3x12-1.jpeg
 import leiterKaiserthalL50_1 from "@/assets/products/leiter-kaiserthal-l50-5-stufen-1.jpeg";
 import rollgeruest5_4m_1 from "@/assets/products/rollgeruest-breitaufbau-5-4m-1.jpeg";
 import rollgeruest5_4m_2 from "@/assets/products/rollgeruest-breitaufbau-5-4m-2.jpeg";
-import krauseBelagbuehne1 from "@/assets/products/krause-belagbuehne-1.jpg";
-import krauseDiagonale1 from "@/assets/products/krause-diagonale-1.webp";
-import krauseAuslegerstuetze1 from "@/assets/products/krause-auslegerstuetze-1.webp";
-import krauseVertikalrahmen1 from "@/assets/products/krause-vertikalrahmen-1.webp";
 import allegraBautrocknerKt553_1 from "@/assets/products/allegra-bautrockner-kt553-1.jpeg";
 import allegraBautrocknerKt553_2 from "@/assets/products/allegra-bautrockner-kt553-2.jpeg";
 import heizluefter2kw1 from "@/assets/products/heizluefter-2kw-1.jpeg";
@@ -4755,102 +4751,6 @@ export const leiternGeruesteProducts: Product[] = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
     rentwareCode: { krefeld: "J5A49M" }
-  },
-  // --- Gerüstteile ---
-  {
-    id: "krause-belagbuehne",
-    name: "Krause Belagbühne",
-    description: "Original KRAUSE Belagbühne für Rollgerüste der STABILO Serie 10 – mit aufklappbarer Durchstiegsluke für sicheres Durchsteigen. Rutschfeste Holzwerkstoffplatte im Aluminiumrahmen mit Einhängehaken.",
-    image: krauseBelagbuehne1,
-    images: [krauseBelagbuehne1],
-    category: "geruestteil",
-    specifications: {
-      "Passend für": "Krause Rollgerüste STABILO Serie 10",
-      "Ausstattung": "Aufklappbare Durchstiegsluke",
-      "Oberfläche": "Rutschfeste Holzwerkstoffplatte",
-      "Rahmen": "Aluminium",
-    },
-    rentwareCode: { krefeld: "TJLWHT" }
-  },
-  {
-    id: "krause-auslegerstuetze",
-    name: "Krause Auslegerstütze",
-    description: "Auslegerstütze für Krause Rollgerüste der STABILO Serie 10 – erhöht die Standsicherheit bei einseitiger Nutzung und schützt vor Umkippen.",
-    image: krauseAuslegerstuetze1,
-    images: [krauseAuslegerstuetze1],
-    category: "geruestteil",
-    specifications: { "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
-    rentwareCode: { krefeld: "5AEGBH" }
-  },
-  {
-    id: "krause-diagonale-2m",
-    name: "Krause Diagonale – Feldlänge 2,00 m",
-    description: "Diagonalstrebe für Krause Rollgerüste der STABILO Serie 10, Feldlänge 2,00 m. Sorgt für maximale Seitensteifigkeit und Standsicherheit des Gerüsts.",
-    image: krauseDiagonale1,
-    images: [krauseDiagonale1],
-    category: "geruestteil",
-    specifications: { "Feldlänge": "2,00 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
-    rentwareCode: { krefeld: "YE4GIK" }
-  },
-  {
-    id: "krause-belagbuehne-2m",
-    name: "Krause Belagbühne – 2,00 m",
-    description: "Arbeitsfläche für Krause Rollgerüste, 2,00 m breit.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "geruestteil",
-    specifications: { "Breite": "2,00 m" },
-    rentwareCode: { krefeld: "N2KGOX" }
-  },
-  {
-    id: "krause-bordbrettset-150cm",
-    name: "Krause Bordbrettset – 150 cm Breite",
-    description: "Seitenschutz für Krause Rollgerüste, Breite 150 cm.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "geruestteil",
-    specifications: { "Breite": "150 cm" },
-    rentwareCode: { krefeld: "VA7FF8" }
-  },
-  {
-    id: "krause-fahrbase-150",
-    name: "Krause Fahrbase 150",
-    description: "Fahrwerk-Set für Krause Rollgerüste, Breite 150 cm.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "geruestteil",
-    specifications: { "Breite": "150 cm" },
-    rentwareCode: { krefeld: "65KU3H" }
-  },
-  {
-    id: "krause-guardmatic-system-2m",
-    name: "Krause GuardMatic-System – Feldlänge 2,00 m",
-    description: "Geländerschutzsystem für Krause Rollgerüste. Vorab-Montage vor dem Aufstieg möglich.",
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "geruestteil",
-    specifications: { "Feldlänge": "2,00 m" },
-    rentwareCode: { krefeld: "URLSCG" }
-  },
-  {
-    id: "krause-vertikalrahmen-1x1-5m",
-    name: "Krause Vertikalrahmen – 1,00 × 1,50 m",
-    description: "Vertikalrahmen für Krause Rollgerüste der STABILO Serie 10, 1,00 m breit × 1,50 m hoch. Dient als Aufstockelement zum Erhöhen der Gerüsthöhe.",
-    image: krauseVertikalrahmen1,
-    images: [krauseVertikalrahmen1],
-    category: "geruestteil",
-    specifications: { "Breite": "1,00 m", "Höhe": "1,50 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
-    rentwareCode: { krefeld: "2EPETD" }
-  },
-  {
-    id: "krause-vertikalrahmen-2x1-5m",
-    name: "Krause Vertikalrahmen – 2,00 × 1,50 m",
-    description: "Vertikalrahmen für Krause Rollgerüste der STABILO Serie 10, 2,00 m breit × 1,50 m hoch. Dient als Aufstockelement zum Erhöhen der Gerüsthöhe.",
-    image: krauseVertikalrahmen1,
-    images: [krauseVertikalrahmen1],
-    category: "geruestteil",
-    specifications: { "Breite": "2,00 m", "Höhe": "1,50 m", "Passend für": "Krause STABILO Serie 10", "Material": "Aluminium" },
-    rentwareCode: { krefeld: "E9ZNCN" }
   },
 ];
 
