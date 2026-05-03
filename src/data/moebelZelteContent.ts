@@ -128,7 +128,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
     metaDescription:
       "Eventzelte, Bierzeltgarnituren mit Hussen und Stehtische mieten in Bonn. Für Gartenhochzeit, Sommerfest und Empfang – B2B-Konditionen verfügbar. Jetzt anfragen.",
     keywords:
-      "Möbel und Zelte mieten Bonn, Partyzelt mieten Bonn, Hochzeitszelt mieten Bonn, Eventzelt mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Stehtisch mit Husse Bonn, Mietmöbel Bonn, Zeltverleih Bonn",
+      "Möbel und Zelte mieten Bonn, Partyzelt mieten Bonn, Hochzeitszelt mieten Bonn, Eventzelt mieten Bonn, Bierzeltgarnitur mieten Bonn, Bierzeltgarnitur Set mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Festzeltgarnitur mieten Bonn, Bierbankgarnitur mieten Bonn, Biertische und Bänke mieten Bonn, Stehtisch mieten Bonn, Stehtisch mit Husse mieten Bonn, Bistrotisch mieten Bonn, Cocktailtisch mieten Bonn, Mietmöbel Bonn, Zeltverleih Bonn, Tische und Stühle mieten Bonn",
     heroLead:
       "Ob Gartenhochzeit in Bad Godesberg, Sommerfest einer Bundesbehörde am Rhein oder Sektempfang in Endenich: Über die Filiale in Bonn bekommen Sie bei SLT Rental das passende Equipment für repräsentative wie private Anlässe. Vom 6×8 m Eventzelt mit 2,6 m Durchgangshöhe über Bierzeltgarnituren mit weißen Hussen bis hin zu Stehtischen, Stapelstühlen und Sonnenschirmen – im Rheinland aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Bonn – Eventausstattung für Rhein und Vorgebirge",
