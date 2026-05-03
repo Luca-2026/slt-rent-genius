@@ -56,18 +56,25 @@ function jsonLdScript(obj) {
 }
 
 function buildHeroBlock(route) {
-  const parts = [`<div data-prerender-hero style="position:absolute;left:-9999px;top:-9999px;visibility:hidden;">`];
-  parts.push(`<h1>${escapeHtml(route.h1)}</h1>`);
-  for (const p of route.intro || []) {
-    if (p) parts.push(`<p>${escapeHtml(p)}</p>`);
-  }
+  // Visible SSR-fallback content. Lives INSIDE #root so React's createRoot()
+  // replaces it on hydration. Bots (Googlebot, GPTBot, ClaudeBot, PerplexityBot)
+  // see real, visible HTML — users without JS see a usable page too.
+  const parts = [
+    `<div data-prerender-hero style="max-width:1200px;margin:0 auto;padding:24px 16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a;line-height:1.6;">`,
+  ];
   if (route.breadcrumbs && route.breadcrumbs.length > 1) {
-    parts.push(`<nav aria-label="Breadcrumb"><ol>`);
-    for (const b of route.breadcrumbs) {
-      parts.push(`<li><a href="${escapeAttr(b.path)}">${escapeHtml(b.name)}</a></li>`);
-    }
+    parts.push(`<nav aria-label="Breadcrumb" style="font-size:14px;color:#555;margin-bottom:12px;"><ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px;">`);
+    route.breadcrumbs.forEach((b, i) => {
+      const sep = i > 0 ? `<span aria-hidden="true" style="margin:0 4px;">›</span>` : "";
+      parts.push(`<li>${sep}<a href="${escapeAttr(b.path)}" style="color:#00507d;text-decoration:none;">${escapeHtml(b.name)}</a></li>`);
+    });
     parts.push(`</ol></nav>`);
   }
+  parts.push(`<h1 style="font-size:clamp(28px,4vw,42px);color:#00507d;margin:0 0 16px;font-weight:700;">${escapeHtml(route.h1)}</h1>`);
+  for (const p of route.intro || []) {
+    if (p) parts.push(`<p style="margin:0 0 12px;font-size:17px;">${escapeHtml(p)}</p>`);
+  }
+  parts.push(`<p style="margin-top:24px;color:#888;font-size:14px;">Inhalt wird geladen…</p>`);
   parts.push(`</div>`);
   return parts.join("");
 }
@@ -120,11 +127,11 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
   const headInsert = `<!-- prerender:head:start -->\n    ${headBlock}\n    ${PRERENDER_MARKER}\n    <!-- prerender:head:end -->`;
   out = out.replace(/<\/head>/i, `${headInsert}\n  </head>`);
 
-  // Insert hero AFTER #root so React hydration keeps #root pristine.
-  const heroInsert = `\n    <!-- prerender:hero:start -->${heroBlock}<!-- prerender:hero:end -->\n`;
+  // Insert hero INSIDE #root so React's createRoot() replaces it on hydration.
+  const heroInsert = `<!-- prerender:hero:start -->${heroBlock}<!-- prerender:hero:end -->`;
   out = out.replace(
-    /(<div id="root">\s*<\/div>)/i,
-    `$1${heroInsert}`,
+    /<div id="root">\s*<\/div>/i,
+    `<div id="root">${heroInsert}</div>`,
   );
 
   return out;
