@@ -3516,6 +3516,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Ist der Kompressor für den Innenstadt-Einsatz geeignet?", a: "Ja, durch die Stage V Emissionsklasse und die schallgedämmte Kapselung ist er für innerstädtische Baustellen freigegeben." },
     ],
   },
+  "kramer-5045": {
     excelName: "3t Radlader",
     seoTitle: "3t Radlader mieten | Kramer 5045 zum Materialhandling",
     metaDescription: "Mieten Sie den Kramer 5045 Radlader mit 3.000 kg Einsatzgewicht und Dieselmotor. Kompakter Radlader inklusive Schaufel für Bau und Hofumgestaltung.",
