@@ -118,20 +118,20 @@ export default function Lieferung() {
                       </SelectContent>
                     </Select>
 
-                    {config.switchTarife && config.switchTarife.length > 1 && (
+                    {config.subtypes && config.subtypes.length > 0 && (
                       <div className="space-y-2 pt-2 border-t">
-                        <Label className="text-sm font-medium">Fahrzeug-Tarif</Label>
+                        <Label className="text-sm font-medium">Gerätetyp</Label>
                         <Select
-                          value={activeTarif}
-                          onValueChange={(v) => setTarifOverride(v as TariffKey)}
+                          value={subtypeKey ?? ""}
+                          onValueChange={(v) => setSubtypeKey(v)}
                         >
                           <SelectTrigger className="w-full bg-background">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-background z-50">
-                            {config.switchTarife.map((t) => (
-                              <SelectItem key={t} value={t}>
-                                Tarif {t} – {tariffs[t].vehicle}
+                            {config.subtypes.map((s) => (
+                              <SelectItem key={s.key} value={s.key}>
+                                {s.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -139,11 +139,12 @@ export default function Lieferung() {
                       </div>
                     )}
 
-                    <p className="text-xs text-muted-foreground bg-muted p-3 rounded-lg">
-                      <Info className="h-3.5 w-3.5 inline mr-1" />
-                      Aktuell: <strong>Tarif {activeTarif}</strong> – {tariff.name} ({tariff.vehicle})
-                      {config.hinweis && <><br />{config.hinweis}</>}
-                    </p>
+                    {config.hinweis && (
+                      <p className="text-xs text-muted-foreground bg-muted p-3 rounded-lg">
+                        <Info className="h-3.5 w-3.5 inline mr-1" />
+                        {config.hinweis}
+                      </p>
+                    )}
                   </CardContent>
                 </Card>
               </AnimatedSection>
