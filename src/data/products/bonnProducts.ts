@@ -350,7 +350,7 @@ export const bonnAggregateProducts = [
   {
     id: "bonn-erdrakete-75mm-aggregat",
     name: "Erdrakete 75 mm",
-    description: "Druckluftbetriebene Grundomat Erdrakete mit 75 mm Durchmesser – für grabenlose Rohrverlegung mit hoher Schlagkraft. Auf Anfrage.",
+    description: "Druckluftbetriebene Erdrakete mit 75 mm Durchmesser – für grabenlose Rohrverlegung mit hoher Schlagkraft. Auf Anfrage.",
     image: imgErdrakete1,
   },
 ];
@@ -1525,7 +1525,7 @@ export const bonnWerkzeugProducts = [
   {
     id: "bonn-erdrakete-75mm",
     name: "Erdrakete 75 mm",
-    description: "Druckluftbetriebene Grundomat Erdrakete mit 75 mm Durchmesser – für grabenlose Rohrverlegung mit hoher Schlagkraft. Auf Anfrage.",
+    description: "Druckluftbetriebene Erdrakete mit 75 mm Durchmesser – für grabenlose Rohrverlegung mit hoher Schlagkraft. Auf Anfrage.",
     image: imgErdrakete1,
   },
 ];
