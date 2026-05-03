@@ -1255,8 +1255,8 @@ export default function CategoryProducts() {
   return (
     <Layout>
       <SEO
-        title={seoTitle}
-        description={seoDescription}
+        title={finalSeoTitle}
+        description={finalSeoDescription}
         canonical={seoCanonical}
         keywords={seoKeywords}
         jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
