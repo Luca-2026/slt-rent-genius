@@ -196,6 +196,7 @@ export interface Product {
   features?: string[];
   specifications?: Record<string, string>; // Technical specs key-value pairs
   pdfUrl?: string; // PDF download link (e.g. manual)
+  externalManualUrl?: string; // External URL to manufacturer's short instructions / manual
   tags?: string[]; // Filter tags
   category?: string; // Product sub-category for sorting
   weightKg?: number;
@@ -1341,6 +1342,7 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
       detailedDescription: p.detailedDescription ?? ref.detailedDescription,
       specifications: p.specifications ?? ref.specifications,
       pdfUrl:         p.pdfUrl ?? ref.pdfUrl,
+      externalManualUrl: p.externalManualUrl ?? ref.externalManualUrl,
       videoUrl:       p.videoUrl ?? ref.videoUrl,
       videoUrls:      p.videoUrls ?? ref.videoUrls,
       category:       p.category ?? ref.category,
