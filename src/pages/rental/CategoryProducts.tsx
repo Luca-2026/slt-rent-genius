@@ -23,6 +23,7 @@ import { CategoryInfoBanner } from "@/components/rental/CategoryInfoBanner";
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
+import { moebelZelteContent } from "@/data/moebelZelteContent";
 
 export default function CategoryProducts() {
   const { t } = useTranslation();
