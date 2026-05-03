@@ -1200,7 +1200,9 @@ export default function CategoryProducts() {
     ],
   };
 
-  const faqs = categoryFaqs[category.id] || [
+  const moebelZelteCustom = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
+
+  const faqs = moebelZelteCustom?.faqs || categoryFaqs[category.id] || [
     { question: `Kann ich ${categoryDisplayName} in ${location.name} mieten?`, answer: `Ja! SLT Rental bietet ${categoryDisplayName} zur Miete in ${location.name} an. Wählen Sie aus ${products.length} verfügbaren Artikeln.` },
     { question: `Wie kann ich bei SLT Rental ${categoryDisplayName} reservieren?`, answer: `Sie können direkt über unsere Website buchen oder uns telefonisch bzw. per E-Mail kontaktieren. Auf-Anfrage-Artikel werden innerhalb eines Werktages bestätigt.` },
     { question: `Bietet SLT Rental Lieferung für ${categoryDisplayName} an?`, answer: `Ja, wir liefern ${categoryDisplayName} direkt zu Ihrem Einsatzort in ${location.name} und Umgebung. Die Lieferkosten können Sie mit unserem Online-Rechner ermitteln.` },
