@@ -61,6 +61,7 @@ const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 const Verkauf = lazy(() => import("./pages/Verkauf"));
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 const SLTUsed = lazy(() => import("./pages/SLTUsed"));
+const SLTUsedDetail = lazy(() => import("./pages/SLTUsedDetail"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
 const PageLoader = () => (
