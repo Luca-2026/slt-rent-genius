@@ -3802,6 +3802,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenbeleuchtung, Outdoor-Geburtstage, Terrassen-Illumination",
     primaryKeywords: "LED Outdoorscheinwerfer mieten, IP65 Scheinwerfer leihen, Outdoor LED Set mieten NRW, RGBW Scheinwerfer Vermietung",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Sind die Scheinwerfer wetterfest?", a: "Ja – die Scheinwerfer verfügen über die Schutzart IP65 und sind damit gegen Strahlwasser aus allen Richtungen geschützt. Sie eignen sich perfekt für den Außeneinsatz bei jeder Witterung." },
       { q: "Welche Farben können die Scheinwerfer erzeugen?", a: "Jeder Scheinwerfer ist mit 14 × 5 Watt Osram RGBW-LEDs ausgestattet und kann Rot, Grün, Blau und Weiß sowie beliebige Mischfarben erzeugen." },
