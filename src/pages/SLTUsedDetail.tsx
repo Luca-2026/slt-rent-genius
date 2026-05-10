@@ -107,12 +107,12 @@ export default function SLTUsedDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Images */}
           <div>
-            <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3">
+            <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3 flex items-center justify-center">
               {images.length > 0 ? (
                 <img
                   src={images[activeImage]}
                   alt={`${machine.manufacturer} ${machine.model}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
@@ -343,7 +343,7 @@ export default function SLTUsedDetail() {
               {content.videoCaption || "360°-Ansicht"}
             </h2>
           </div>
-          <div className="max-w-md rounded-lg overflow-hidden bg-black">
+          <div className="max-w-xs rounded-lg overflow-hidden bg-black">
             <video
               src={content.videoUrl}
               autoPlay
