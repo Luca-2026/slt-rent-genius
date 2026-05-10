@@ -89,7 +89,7 @@ serve(async (req) => {
     </p>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
       <strong style="color: #ea580c;">Nächste Schritte:</strong><br>
-      Unser Team wird Ihre Unterlagen sorgfältig prüfen. Wir melden uns in der Regel innerhalb von 5–10 Werktagen bei Ihnen.
+      Unser Team wird Ihre Unterlagen sorgfältig prüfen. Wir melden uns innerhalb von 14 Tagen bei Ihnen.
     </div>
     <p style="color: #374151; line-height: 1.6;">
       Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${HQ_PHONE.replace(/\s/g, '')}" style="color: #f97316;">${HQ_PHONE}</a> oder per E-Mail an <a href="mailto:karriere@slt-rental.de" style="color: #f97316;">karriere@slt-rental.de</a>.
