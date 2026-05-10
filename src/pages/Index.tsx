@@ -10,6 +10,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
 
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
+const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlider").then(m => ({ default: m.UsedMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
 import { Loader2 } from "lucide-react";
 
