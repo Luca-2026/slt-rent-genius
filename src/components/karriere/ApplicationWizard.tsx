@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -75,6 +75,10 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
   const [jobSpecificAnswers, setJobSpecificAnswers] = useState<Record<string, string>>({});
+  // Spam-Schutz: Honeypot + Zeitfalle
+  const [honeypot, setHoneypot] = useState("");
+  const formLoadedAt = useRef<number>(Date.now());
+  const honeypotId = useId();
   const { toast } = useToast();
 
   const totalSteps = 4;
@@ -193,6 +197,12 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
   const onSubmit = async (data: FormData) => {
+    // Spam-Schutz: Honeypot ausgefüllt oder Formular zu schnell abgeschickt
+    const elapsed = Date.now() - formLoadedAt.current;
+    if (honeypot.trim() !== "" || elapsed < 2000) {
+      setIsSuccess(true);
+      return;
+    }
     if (!resumeFile) {
       setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
       toast({
@@ -323,6 +333,18 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Honeypot-Feld – für echte Nutzer unsichtbar, Bots füllen es aus */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+            <label htmlFor={honeypotId}>Website (bitte leer lassen)</label>
+            <input
+              id={honeypotId}
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
           {/* Step 1: Personal Data */}
           {step === 1 && (
             <div className="space-y-4">

@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -39,6 +39,9 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  // Honeypot + Zeitfalle gegen Spam-Bots
+  const [honeypot, setHoneypot] = useState("");
+  const formLoadedAt = useRef<number>(Date.now());
 
   const sanitize = (s: string) =>
     s
@@ -81,6 +84,13 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   };
 
   const onSubmit = async (values: FormValues) => {
+    // Spam-Schutz: Honeypot ausgefüllt oder Formular zu schnell abgeschickt
+    const elapsed = Date.now() - formLoadedAt.current;
+    if (honeypot.trim() !== "" || elapsed < 2000) {
+      // Stillschweigend "Erfolg" vortäuschen, damit Bots keine Hinweise bekommen
+      setDone(true);
+      return;
+    }
     if (!resume) {
       setResumeError("Bitte Lebenslauf hochladen");
       return;
@@ -156,6 +166,18 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Honeypot-Feld – für echte Nutzer unsichtbar, Bots füllen es aus */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor={`${formId}-website`}>Website (bitte leer lassen)</label>
+        <input
+          id={`${formId}-website`}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <Label htmlFor="qa-first">Vorname *</Label>
