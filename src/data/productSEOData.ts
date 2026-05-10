@@ -989,7 +989,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Ketten-Dumper mieten in Krefeld, Ketten-Dumper leihen in Krefeld, Ketten-Dumper mieten NRW",
     is247: false,
-    dailyPriceFrom: 35,
     faqs: [
       { q: "Welche Nutzlast bietet der Ketten-Dumper RMD-650?", a: "Das Modell RMD-650 ist für eine Nutzlast von bis wir 650 kg ausgelegt." },
       { q: "Für welche Arbeitsumgebungen eignet sich das Gerät?", a: "Aufgrund seiner kompakten Bauweise ist dieser Kettendumper für den Einsatz auf beengten Baustellen vorgesehen." },
