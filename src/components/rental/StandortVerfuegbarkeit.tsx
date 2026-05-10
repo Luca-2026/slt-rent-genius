@@ -39,7 +39,7 @@ export function StandortVerfuegbarkeit({
     Icon = MapPin;
   } else if (serviceCharacter === "service-handover") {
     headline = `Verfügbar in ${name}`;
-    body = `Übergabe und Beratung erfolgen an unserem Standort ${name}. Das Gerät kommt aus unserem Zentrallager in ${warehouseLocationName}, in der Regel innerhalb von 24 Stunden – bei dringendem Bedarf häufig taggleich.`;
+    body = `Übergabe und Beratung erfolgen an unserem Standort ${name}. Das ${deviceLabel} kommt aus unserem Zentrallager in ${warehouseLocationName}, in der Regel innerhalb von 24 Stunden – bei dringendem Bedarf häufig taggleich.`;
     Icon = Truck;
   } else if (serviceCharacter === "delivery-only") {
     headline = `Lieferung in die Region ${name}`;
