@@ -101,7 +101,7 @@ export const jobListings: JobListing[] = [
     faqs: [
       { question: "Welche Verantwortung übernehme ich konkret?", answer: "Du leitest den Standort Bonn eigenverantwortlich – operativ, kaufmännisch und organisatorisch. Du bist die zentrale Anlaufstelle für Kunden in der Region und berichtest direkt an die Geschäftsleitung." },
       { question: "Brauche ich Führungserfahrung?", answer: "Erste Standort-, Team- oder Führungsverantwortung ist ideal, aber kein Muss. Wichtiger ist unternehmerisches Denken, Branchenerfahrung in der Vermietung und Lust auf echte Verantwortung." },
-      { question: "Wie modern arbeitet ihr wirklich?", answer: "Sehr modern. Wir nutzen Rentware als Mietpark-Management-System und setzen aktiv KI-Tools in Disposition, Angebotserstellung und Kundenkommunikation ein. Digitalisierung ist bei uns gelebter Alltag, kein Buzzword." },
+      { question: "Wie modern arbeitet ihr wirklich?", answer: "Sehr modern. Wir setzen auf cloudbasierte Mietpark-Management-Systeme und aktiv KI-Tools in Disposition, Angebotserstellung und Kundenkommunikation. Digitalisierung ist bei uns gelebter Alltag, kein Buzzword." },
       { question: "Ist der Einstieg sofort möglich?", answer: "Ja, ein Direkteinstieg ist möglich. Startdatum nach Absprache." },
     ],
     title: "Standortleiter / Niederlassungsleiter (m/w/d) – Vermietung Baumaschinen & Eventausstattung",
@@ -116,12 +116,13 @@ export const jobListings: JobListing[] = [
       "Praxiserfahrung in der Disposition von Mietequipment, Logistik oder vergleichbaren Prozessen",
       "Eigenverantwortliche, lösungsorientierte und unternehmerisch denkende Arbeitsweise mit ausgeprägter Service- und Kundenorientierung",
       "Souveränes Auftreten, Verhandlungs- und Kommunikationsstärke gegenüber B2B- und B2C-Kunden",
-      "Offenheit für moderne Tools – wir arbeiten mit Cloud-Software, Mietpark-Management-Systemen (Rentware) und aktiv mit KI/AI-Tools im Arbeitsalltag",
+      "Offenheit für moderne Tools – wir arbeiten mit Cloud-Software, modernen Mietpark-Management-Systemen und aktiv mit KI/AI-Tools im Arbeitsalltag",
       "Sicherer Umgang mit MS-Office; Erfahrung mit ERP- oder Mietverwaltungssoftware von Vorteil",
       "Führerschein Klasse B (BE und/oder C1E von Vorteil)",
     ],
     benefits: [
       "Attraktives Gehalt: 45.000 € – 60.000 € p. a. (je nach Erfahrung), faires Festgehalt mit leistungsbezogenen Komponenten",
+      "Attraktive Bonusregelung: Du partizipierst direkt am Erfolg des Standorts – überdurchschnittlicher Einsatz wird überdurchschnittlich vergütet",
       "Echte Standortverantwortung mit unternehmerischem Gestaltungsspielraum – keine Sachbearbeitungsrolle mit Titel",
       "Gezielte Weiterentwicklung durch externe Schulungen und Herstellerzertifizierungen (Zoomlion, Niftylift u. a.)",
       "Arbeit mit modernsten KI-Tools der Branche – von KI-gestützter Disposition über automatisierte Angebotserstellung bis zur KI-Kundenkommunikation",
