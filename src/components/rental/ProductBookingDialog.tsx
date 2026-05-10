@@ -57,6 +57,7 @@ const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number 
     { id: "fahrradtraeger-2er", label: "2er Fahrradträger (Deichsel)", price: 30 },
     { id: "campingmoebel", label: "Campingmöbel", price: 30 },
     { id: "diebstahlsicherung", label: "Diebstahlsicherung", price: 15 },
+    { id: "endreinigung-ww", label: "Endreinigung Wohnwagen", price: 99 },
     { id: "gas-eu-adapter", label: "Gas EU-Adapter", price: 10 },
     { id: "gasflasche-11kg", label: "Gasflasche (11 kg) extra", price: 39 },
     { id: "gasflasche-5kg", label: "Gasflasche (5 kg) extra", price: 20 },

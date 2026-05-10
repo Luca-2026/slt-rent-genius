@@ -1382,7 +1382,7 @@ const weinsbergCaraOne480QDK: Product = {
   modelName: "Weinsberg CaraOne 480 QDK",
   description: "Familientauglicher Wohnwagen für bis zu 5 Personen – mit Dusche, WC, Truma-Heizung und Mover. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   detailedDescription:
-    "Du suchst einen familientauglichen Wohnwagen zum Mieten in NRW? Der Weinsberg CaraOne 480 QDK ist unser Allround-Caravan für bis zu 5 Personen – kompakt genug für jedes Zugfahrzeug ab 1.500 kg Anhängelast, komfortabel ausgestattet mit Dusche, WC und Heizung. Verfügbar an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Ideal für Familienurlaube, Festival-Trips, Campingplätze an der Mosel, in den Niederlanden oder am Gardasee.\n\nVollwertige Nasszelle mit Dusche & WC, Truma-Heizung, Mover für einfaches Rangieren und Antischlingerkupplung sind Serie. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung sowie Vollkaskoversicherung.\n\nMindestmietdauer 5 Tage. Servicepauschale 99 € einmalig (Einweisung, 11 kg Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Erstausstattung Sanitärchemie, 2 Rollen Toilettenpapier). Kaution 800 €. Tagesmiete ab 50 € / Tag.",
+    "Du suchst einen familientauglichen Wohnwagen zum Mieten in NRW? Der Weinsberg CaraOne 480 QDK ist unser Allround-Caravan für bis zu 5 Personen – kompakt genug für jedes Zugfahrzeug ab 1.500 kg Anhängelast, komfortabel ausgestattet mit Dusche, WC und Heizung. Verfügbar an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Ideal für Familienurlaube, Festival-Trips, Campingplätze an der Mosel, in den Niederlanden oder am Gardasee.\n\nVollwertige Nasszelle mit Dusche & WC, Truma-Heizung, Mover für einfaches Rangieren und Antischlingerkupplung sind Serie. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung sowie Vollkaskoversicherung.\n\nMindestmietdauer 5 Tage. Servicepauschale 99 € einmalig (Einweisung, 11 kg Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Erstausstattung Sanitärchemie, 2 Rollen Toilettenpapier). Endreinigung optional 99 € einmalig. Kaution 1.000 €. Tagesmiete ab 50 € / Tag.\n\nVersicherung: Unsere Wohnwagen sind Teil- und Vollkasko versichert. Die Selbstbeteiligung unsererseits gegenüber unserer Versicherung beträgt 2.500 €. Als Kaution ist von dir jedoch nur 1.000 € zu hinterlegen.",
   image: "/product-images/wohnwagen-camping/weinsberg-caraone-480-qdk-1.png",
   images: [
     "/product-images/wohnwagen-camping/weinsberg-caraone-480-qdk-1.png",
@@ -1411,8 +1411,9 @@ const weinsbergCaraOne480QDK: Product = {
   rentalNotes: [
     "Mindestmietdauer 5 Tage",
     "Servicepauschale 99 € einmalig (Einweisung, 11 kg Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Sanitärchemie, 2 Rollen Toilettenpapier)",
-    "Kaution 800 €",
-    "Vollkaskoversicherung enthalten",
+    "Endreinigung optional 99 € einmalig",
+    "Kaution 1.000 €",
+    "Teil- & Vollkasko enthalten – Selbstbeteiligung gegenüber Versicherung 2.500 € (deine Kaution beträgt nur 1.000 €)",
   ],
 };
 
