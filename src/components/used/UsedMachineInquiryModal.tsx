@@ -76,6 +76,11 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const [billingPlz, setBillingPlz] = useState("");
   const [billingCity, setBillingCity] = useState("");
 
+  // Block 4b — Financing
+  const [financingDesired, setFinancingDesired] = useState(false);
+  const [financingTerm, setFinancingTerm] = useState("");
+  const [financingDownPayment, setFinancingDownPayment] = useState("");
+
   // Block 5
   const [message, setMessage] = useState("");
   const [privacy, setPrivacy] = useState(false);
