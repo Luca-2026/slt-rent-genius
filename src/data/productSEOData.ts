@@ -3166,6 +3166,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "Hüpfburg Rollercoaster 4,9 x 4m mieten in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m leihen in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m mieten NRW",
     is247: false,
+    dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder dürfen die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 6 Kinder gleichzeitig ausgelegt, bei einer maximalen Belastbarkeit von insgesamt 450 kg." },
       { q: "Wie lange dauert der Aufbau der Hüpfburg?", a: "Die Aufbauzeit beträgt etwa 10 Minuten. Das benötigte 1.100 Watt Gebläse ist im Lieferumfang enthalten." },
