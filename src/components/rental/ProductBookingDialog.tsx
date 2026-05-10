@@ -508,6 +508,19 @@ export function ProductBookingDialog({
                       </div>
                     )}
 
+                    {/* Servicepauschale info box (Weinsberg only) */}
+                    {productExtras && productExtras.length > 0 && (
+                      <div className="space-y-2 border border-primary/20 rounded-lg p-4 bg-primary/5">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-primary" />
+                          <Label className="font-medium text-foreground">Servicepauschale 99 € (einmalig)</Label>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Zum Mietpreis hinzu kommt eine einmalige Servicepauschale. Diese beinhaltet eine ausführliche Einweisung in den Wohnwagen sowie die Bereitstellung einer 11 kg Gasflasche, Spiegelverlängerungen für den Zugwagen, Strom-Adapterkabel, Erstausstattung Sanitärchemie und 2 Rollen Toilettenpapier.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Product-specific extras (Service & Zubehör) */}
                     {productExtras && productExtras.length > 0 && (
                       <div className="space-y-3 border border-border rounded-lg p-4 bg-muted/30">
