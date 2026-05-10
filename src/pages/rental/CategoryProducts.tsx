@@ -1012,6 +1012,7 @@ export default function CategoryProducts() {
     spezialeffekte: `Spezialeffekte mieten ${location.name} – Funkenfontänen & Co.`,
     kommunikation: `Funkmikrofon & Kommunikation mieten ${location.name}`,
     "wohnwagen-camping": `Wohnwagen & Campingartikel mieten in ${location.name} – ab 30 €/Tag`,
+    nutzfahrzeuge: `Nutzfahrzeuge mieten ${location.name} – 3,5t & 7,5t Dreiseitenkipper`,
   };
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
