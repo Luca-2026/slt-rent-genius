@@ -310,16 +310,12 @@ export default function SLTUsedDetail() {
         </section>
       )}
 
-      {/* Einsatzbereiche – Niftylift specific */}
-      {slug === "niftylift-hr12le-2019" && (
+      {/* Einsatzbereiche */}
+      {content.usageAreas && (
         <section className="section-container py-8 md:py-12 border-t border-border">
           <h2 className="text-2xl font-bold text-headline mb-4">Einsatzbereiche</h2>
-          <p className="text-foreground/90 leading-relaxed max-w-4xl">
-            Die Niftylift HR12LE ist die ideale Lösung für anspruchsvolle Innen- und Außenarbeiten:
-            Industrie- und Hallenwartung, Fassadeninstandhaltung, Elektro- und Klimainstallation,
-            Beleuchtungs- und Lüftungstechnik in Hallen und Showrooms, Veranstaltungs- und Messebau,
-            Reinigungsarbeiten in Industriebauten – und überall dort, wo emissionsfreie und
-            bodenschonende Arbeit gefragt ist.
+          <p className="text-foreground/90 leading-relaxed max-w-4xl whitespace-pre-line">
+            {content.usageAreas}
           </p>
         </section>
       )}
@@ -328,18 +324,19 @@ export default function SLTUsedDetail() {
       <section className="bg-primary text-primary-foreground py-12">
         <div className="section-container text-center">
           <h2 className="text-2xl font-bold mb-3 text-primary-foreground">
-            Besichtigung am Standort {locationLabels[machine.location || ""] || "Krefeld"}
+            Besichtigung {showroomLocs.length > 1 ? "an unseren Standorten" : "am Standort"}{" "}
+            {showroomNames || locationLabels[machine.location || ""] || "Krefeld"}
           </h2>
           <p className="text-primary-foreground/90 mb-6 max-w-2xl mx-auto">
-            Maschine geprüft, professionell gewartet und übergabefertig. Besichtigung jederzeit nach Terminvereinbarung möglich.
+            {content.warrantyNote || "Maschine geprüft, professionell gewartet und übergabefertig. Besichtigung jederzeit nach Terminvereinbarung möglich."}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button size="lg" variant="secondary" onClick={() => setModalOpen(true)} disabled={isSold}>
               Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-              <a href="mailto:kaufanfrage@slt-rental.de" className="inline-flex items-center gap-2">
-                <Mail className="h-4 w-4" /> kaufanfrage@slt-rental.de
+              <a href="tel:021514179904" className="inline-flex items-center gap-2">
+                <Phone className="h-4 w-4" /> 02151 417 99 04
               </a>
             </Button>
           </div>
