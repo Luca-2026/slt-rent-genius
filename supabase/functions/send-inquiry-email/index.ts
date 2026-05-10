@@ -62,25 +62,43 @@ serve(async (req) => {
       ? `${street || ""}${street ? ", " : ""}${postalCode || ""} ${city || ""}`.trim()
       : null;
 
+    const e = {
+      productName: escapeHtml(productName),
+      locationName: escapeHtml(locationName),
+      name: escapeHtml(name),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone || "nicht angegeben"),
+      message: escapeHtml(message),
+      customerAddress: escapeHtml(customerAddress),
+      dateRange: escapeHtml(dateRange),
+      timeRange: escapeHtml(timeRange),
+      deliveryStreet: escapeHtml(deliveryStreet),
+      deliveryPostalCode: escapeHtml(deliveryPostalCode),
+      deliveryCity: escapeHtml(deliveryCity),
+      locEmail: escapeHtml(locationEmail || "mieten@slt-rental.de"),
+      locPhone: escapeHtml(locationPhone || "02151 417 99 04"),
+      locAddress: escapeHtml(locationAddress || "Anrather Straße 291, 47807 Krefeld"),
+    };
+
     const deliveryHtml = deliveryRequested
       ? `
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${deliveryStreet}<br>${deliveryPostalCode} ${deliveryCity}</td></tr>`
+      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${e.deliveryStreet}<br>${e.deliveryPostalCode} ${e.deliveryCity}</td></tr>`
       : `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0;">Selbstabholung</td></tr>`;
 
     const setupServiceHtml = setupServiceRequested
       ? `<tr><td style="padding: 4px 0; color: #6b7280;">Betreuung / Auf- & Abbau:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>`
       : '';
 
+    // Raw values still needed for non-HTML contexts (mail headers, telephone link)
     const locEmail = locationEmail || "mieten@slt-rental.de";
     const locPhone = locationPhone || "02151 417 99 04";
-    const locAddress = locationAddress || "Anrather Straße 291, 47807 Krefeld";
 
     const footerHtml = `
     <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px; line-height: 1.6;">
       ${COMPANY_NAME}<br>
-      Standort ${locationName}: ${locAddress}<br>
-      Tel: ${locPhone} · E-Mail: <a href="mailto:${locEmail}" style="color: #f97316;">${locEmail}</a><br>
+      Standort ${e.locationName}: ${e.locAddress}<br>
+      Tel: ${e.locPhone} · E-Mail: <a href="mailto:${e.locEmail}" style="color: #f97316;">${e.locEmail}</a><br>
       <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
     </p>`;
 
