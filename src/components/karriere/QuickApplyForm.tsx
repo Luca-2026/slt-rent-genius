@@ -166,6 +166,18 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Honeypot-Feld – für echte Nutzer unsichtbar, Bots füllen es aus */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor={`${formId}-website`}>Website (bitte leer lassen)</label>
+        <input
+          id={`${formId}-website`}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <Label htmlFor="qa-first">Vorname *</Label>
