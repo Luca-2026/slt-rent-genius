@@ -1485,6 +1485,9 @@ const manKipperMeillerD205: Product = {
     "Seitenwand rechts": "klappbar",
     "Material Seitenwände": "Stahl",
     "Material Boden": "Stahl",
+    // Versicherung & Kaution
+    "Vollkasko Selbstbeteiligung": "2.500 €",
+    "Kaution": "1.000 €",
   },
 };
 
