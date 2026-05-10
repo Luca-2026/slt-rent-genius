@@ -50,11 +50,11 @@ export default function Karriere() {
   return (
     <Layout>
       <SEO
-        title="Karriere bei SLT Rental – Jobs in NRW"
-        description="Jetzt beim SLT Rental Team einsteigen – Stellen in Krefeld, Bonn & Mülheim. Wir suchen Verstärkung im Verleih, Werkstatt und Vertrieb in NRW."
+        title="Karriere bei SLT Rental – Jobs in Krefeld, Bonn & Mülheim"
+        description="Aktuelle Stellenangebote bei SLT Rental in NRW: Lieferfahrer, Servicetechniker, Vertrieb, Disposition und Ausbildung. In 30 Sekunden bewerben – Antwort in 5 Werktagen."
         canonical="/karriere"
-        keywords="Jobs SLT Rental, Karriere Baumaschinen, Stellenangebote NRW, Krefeld Jobs"
-        jsonLd={SLT_BREADCRUMB_JSONLD([{ name: "Home", url: "/" }, { name: "Karriere", url: "/karriere" }])}
+        keywords="Jobs SLT Rental, Karriere Baumaschinen, Stellenangebote NRW, Krefeld Jobs, Bonn Jobs, Ausbildung Büromanagement"
+        jsonLd={[itemListJsonLd, breadcrumb]}
       />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 lg:py-24">
@@ -63,7 +63,18 @@ export default function Karriere() {
             <div className="text-center max-w-3xl mx-auto">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">{t("karriere.badge")}</Badge>
               <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">{t("karriere.heroTitle")}</h1>
-              <p className="text-lg text-muted-foreground">{t("karriere.heroDesc")}</p>
+              <p className="text-lg text-muted-foreground mb-6">{t("karriere.heroDesc")}</p>
+              <div className="flex flex-wrap justify-center gap-3 text-sm">
+                <span className="inline-flex items-center gap-1.5 bg-background/80 border border-border rounded-full px-3 py-1.5">
+                  <Zap className="h-4 w-4 text-accent" /> In 30 Sek. bewerben
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-background/80 border border-border rounded-full px-3 py-1.5">
+                  <Clock className="h-4 w-4 text-primary" /> Antwort in 5 Werktagen
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-background/80 border border-border rounded-full px-3 py-1.5">
+                  <Users className="h-4 w-4 text-primary" /> Familiäres Team in NRW
+                </span>
+              </div>
             </div>
           </AnimatedSection>
         </div>
@@ -73,7 +84,10 @@ export default function Karriere() {
       <section className="py-16 bg-background">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t("karriere.jobsTitle")}</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-2 text-center">{t("karriere.jobsTitle")}</h2>
+            <p className="text-center text-muted-foreground mb-8">
+              {jobListings.length} offene Stellen – wähle deine Position und bewirb dich direkt.
+            </p>
           </AnimatedSection>
           <div className="grid gap-6 max-w-4xl mx-auto">
             {jobListings.map((job, index) => (
@@ -81,6 +95,18 @@ export default function Karriere() {
                 <JobCard job={job} index={index} />
               </AnimatedSection>
             ))}
+          </div>
+          <div className="max-w-4xl mx-auto mt-8 p-6 rounded-lg bg-muted/40 border border-border text-center">
+            <h3 className="font-semibold text-foreground mb-2">Keine passende Stelle dabei?</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Wir wachsen kontinuierlich. Schick uns deine Initiativbewerbung – wir melden uns,
+              sobald eine passende Position frei wird.
+            </p>
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
+              <a href="mailto:karriere@slt-rental.de?subject=Initiativbewerbung">
+                Initiativbewerbung senden
+              </a>
+            </Button>
           </div>
         </div>
       </section>
