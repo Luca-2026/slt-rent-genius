@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { sanitizeJsonLd } from "@/lib/sanitizeJsonLd";
 
 interface SEOProps {
   title: string;
@@ -57,7 +58,7 @@ export function SEO({
       {/* JSON-LD */}
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(Array.isArray(jsonLd) ? jsonLd : jsonLd)}
+          {JSON.stringify(sanitizeJsonLd(jsonLd as never))}
         </script>
       )}
     </Helmet>

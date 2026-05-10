@@ -49,9 +49,69 @@ function escapeAttr(str) {
   return escapeHtml(str);
 }
 
+// ---------------------------------------------------------------
+// Schema.org Offer sanitizer (mirrors src/lib/sanitizeJsonLd.ts).
+// Removes Offer / AggregateOffer nodes lacking price or
+// priceSpecification.price so Google Search Console doesn't flag
+// "price required" warnings.
+// ---------------------------------------------------------------
+const OFFER_TYPES = new Set(["Offer", "AggregateOffer"]);
+
+function _isObj(v) {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+function _typeOf(node) {
+  const t = node["@type"];
+  if (typeof t === "string") return t;
+  if (Array.isArray(t) && typeof t[0] === "string") return t[0];
+  return null;
+}
+function _hasPrice(node) {
+  const d = node.price;
+  if (typeof d === "number" && Number.isFinite(d)) return true;
+  if (typeof d === "string" && d.trim() !== "") return true;
+  const spec = node.priceSpecification;
+  const specs = Array.isArray(spec) ? spec : spec ? [spec] : [];
+  for (const s of specs) {
+    if (_isObj(s)) {
+      const p = s.price;
+      if (typeof p === "number" && Number.isFinite(p)) return true;
+      if (typeof p === "string" && p.trim() !== "") return true;
+    }
+  }
+  if (_typeOf(node) === "AggregateOffer") {
+    if (node.lowPrice != null && String(node.lowPrice).trim() !== "") return true;
+  }
+  return false;
+}
+function _clean(node) {
+  if (Array.isArray(node)) return node.map(_clean).filter((n) => n !== undefined);
+  if (!_isObj(node)) return node;
+  const t = _typeOf(node);
+  if (t && OFFER_TYPES.has(t) && !_hasPrice(node)) return undefined;
+  const out = {};
+  for (const [k, v] of Object.entries(node)) {
+    const c = _clean(v);
+    if (k === "offers" || k === "makesOffer") {
+      if (c === undefined) continue;
+      if (Array.isArray(c) && c.length === 0) continue;
+      out[k] = c;
+      continue;
+    }
+    if (c !== undefined) out[k] = c;
+  }
+  return out;
+}
+function sanitizeJsonLd(input) {
+  const r = _clean(input);
+  if (r === undefined) return Array.isArray(input) ? [] : {};
+  return r;
+}
+
 function jsonLdScript(obj) {
+  const sanitized = sanitizeJsonLd(obj);
   // Avoid </script> injection by escaping forward slash in closing tags.
-  const json = JSON.stringify(obj).replace(/<\/script/gi, "<\\/script");
+  const json = JSON.stringify(sanitized).replace(/<\/script/gi, "<\\/script");
   return `<script type="application/ld+json">${json}</script>`;
 }
 
