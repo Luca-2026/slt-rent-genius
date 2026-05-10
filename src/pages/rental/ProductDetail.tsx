@@ -1001,10 +1001,12 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {product.pricePerDay && (
+                  {(product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
                     <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
-                        {product.pricePerDay}
+                        {product.pricePerDay
+                          ? product.pricePerDay
+                          : `ab ${productSEO!.dailyPriceFrom} €`}
                         <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
                       </div>
                       {product.priceWeekend && (
