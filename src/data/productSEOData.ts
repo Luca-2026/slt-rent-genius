@@ -6991,6 +6991,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Privatpersonen nutzen das Gerät für das Anlegen eines Gartenteichs oder den Aushub für Terrassen- und Pflasterarbeiten. Auch die Wurzelentfernung beim Baumfällen ist möglich.",
     primaryKeywords: "2t Minibagger mieten in Krefeld, 2t Minibagger leihen in Krefeld, 2t Minibagger mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Wie breit ist der 2t Minibagger XCMG XE20E?", a: "Die Gesamtbreite beträgt 1300 mm und kann für Durchfahrten in engen Bereichen auf 990 mm eingefahren werden." },
       { q: "Welche Grabtiefe erreicht die Maschine?", a: "Der Minibagger erreicht eine maximale Grabtiefe von 2.385 mm." },
