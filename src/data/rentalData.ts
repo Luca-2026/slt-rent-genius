@@ -1485,6 +1485,10 @@ const manKipperMeillerD205: Product = {
     "Seitenwand rechts": "klappbar",
     "Material Seitenwände": "Stahl",
     "Material Boden": "Stahl",
+    // Mietkonditionen
+    "Frei-Kilometer": "100 km/Tag inklusive",
+    "Mehrkilometer": "0,23 € netto/km",
+    "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l brutto)",
     // Versicherung & Kaution
     "Vollkasko Selbstbeteiligung": "2.500 €",
     "Kaution": "1.000 €",
