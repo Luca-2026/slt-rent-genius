@@ -18,6 +18,7 @@ import iconKabel from "@/assets/icons/category-kabel.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconLedSpots from "@/assets/icons/category-ledspots.png";
 import iconBesteck from "@/assets/icons/category-besteck.png";
+import iconCamping from "@/assets/icons/category-camping.png";
 import iconTraverse from "@/assets/icons/traverse.png";
 import iconLeiterGeruest from "@/assets/icons/leiter-geruest.png";
 import iconGeschirrGlaeserBesteck from "@/assets/icons/geschirr-glaeser-besteck.png";
@@ -355,6 +356,13 @@ export const productCategories: ProductCategory[] = [
     title: "Hüpfburgen",
     description: "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen.",
     icon: iconHuepfburg,
+  },
+  // === FREIZEIT & CAMPING ===
+  {
+    id: "wohnwagen-camping",
+    title: "Wohnwagen & Camping",
+    description: "Familientaugliche Wohnwagen mit Dusche, WC und Heizung – auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    icon: iconCamping,
   },
 ];
 
