@@ -365,6 +365,12 @@ export const productCategories: ProductCategory[] = [
     description: "Familientaugliche Wohnwagen mit Dusche, WC und Heizung – auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
     icon: iconCamping,
   },
+  {
+    id: "nutzfahrzeuge",
+    title: "Nutzfahrzeuge",
+    description: "Transporter, Pritschen- und Kofferfahrzeuge für Umzug, Transport und Baustelle – auf Anfrage an allen drei Standorten.",
+    icon: iconNutzfahrzeuge,
+  },
 ];
 
 // Category sort order for trailers (user-specified order)
