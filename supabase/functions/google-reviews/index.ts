@@ -65,7 +65,7 @@ serve(async (req) => {
       headers: {
         'X-Goog-Api-Key': apiKey,
         'X-Goog-FieldMask': 'rating,userRatingCount,reviews',
-        'X-Goog-Reviews-Sort': 'newest',
+        'X-Goog-Reviews-Sort': 'NEWEST',
       },
     });
 
