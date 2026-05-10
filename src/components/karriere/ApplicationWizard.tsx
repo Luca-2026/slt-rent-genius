@@ -126,6 +126,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
       return;
     }
 
+    setResumeError(null);
     setFile(file);
   };
 
