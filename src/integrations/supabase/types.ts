@@ -1384,6 +1384,7 @@ export type Database = {
           price_net: number | null
           price_on_request: boolean | null
           reference_number: string | null
+          slug: string | null
           specifications: Json | null
           status: string
           updated_at: string
@@ -1403,6 +1404,7 @@ export type Database = {
           price_net?: number | null
           price_on_request?: boolean | null
           reference_number?: string | null
+          slug?: string | null
           specifications?: Json | null
           status?: string
           updated_at?: string
@@ -1422,6 +1424,7 @@ export type Database = {
           price_net?: number | null
           price_on_request?: boolean | null
           reference_number?: string | null
+          slug?: string | null
           specifications?: Json | null
           status?: string
           updated_at?: string
