@@ -532,6 +532,12 @@ export default function ProductDetail() {
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
+                  {typeof productSEO?.dailyPriceFrom === "number" && (
+                    <div className="mt-2 inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
+                      <span className="text-xl font-bold text-accent">ab {productSEO.dailyPriceFrom} €</span>
+                      <span className="text-sm font-medium text-accent/90">/ Tag</span>
+                    </div>
+                  )}
                   {(() => {
                     const moebelKey = getMoebelInfoKey(product.id);
                     const locKey = location.id as "krefeld" | "bonn" | "muelheim";
