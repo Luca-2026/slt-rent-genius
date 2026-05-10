@@ -527,11 +527,22 @@ export default function ProductDetail() {
                       </div>
                     );
                   })()}
-                  {product.description && (
-                    <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
-                      {product.description}
-                    </p>
-                  )}
+                  {product.description && (() => {
+                    const isWeinsberg = product.id === "weinsberg-caraone-480-qdk";
+                    const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+                    const cityName = cityNameMap[location.id] || location.name;
+                    const desc = isWeinsberg
+                      ? product.description.replace(
+                          /Auf Anfrage in Krefeld,\s*Bonn und Mülheim an der Ruhr\./,
+                          `Jetzt zum besten Preis in ${cityName} mieten – einfach auf „Jetzt mieten" klicken und die Anfrage ausfüllen.`
+                        )
+                      : product.description;
+                    return (
+                      <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
+                        {desc}
+                      </p>
+                    );
+                  })()}
                   {(() => {
                     const moebelKey = getMoebelInfoKey(product.id);
                     const locKey = location.id as "krefeld" | "bonn" | "muelheim";
