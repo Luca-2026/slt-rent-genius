@@ -509,6 +509,52 @@ export function ProductBookingDialog({
                       </div>
                     )}
 
+                    {/* Product-specific extras (Service & Zubehör) */}
+                    {productExtras && productExtras.length > 0 && (
+                      <div className="space-y-3 border border-border rounded-lg p-4 bg-muted/30">
+                        <div className="flex items-center gap-2">
+                          <Wrench className="h-4 w-4 text-primary" />
+                          <Label className="font-medium">Service & Zubehör (optional)</Label>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Wähle deine gewünschten Zusatzleistungen – jeweils einmalig pro Mietzeitraum.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {productExtras.map((extra) => {
+                            const checked = form.selectedExtras.includes(extra.id);
+                            return (
+                              <label
+                                key={extra.id}
+                                htmlFor={`inq-extra-${extra.id}`}
+                                className="flex items-start gap-3 p-2 rounded-md hover:bg-background cursor-pointer"
+                              >
+                                <Checkbox
+                                  id={`inq-extra-${extra.id}`}
+                                  checked={checked}
+                                  onCheckedChange={(c) => {
+                                    const isChecked = c === true;
+                                    setForm({
+                                      ...form,
+                                      selectedExtras: isChecked
+                                        ? [...form.selectedExtras, extra.id]
+                                        : form.selectedExtras.filter((id) => id !== extra.id),
+                                    });
+                                  }}
+                                  className="mt-0.5"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-medium leading-tight">{extra.label}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {extra.price.toFixed(2).replace(".", ",")} € einmalig
+                                  </div>
+                                </div>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
                     <Button
                       type="submit"
                       className="w-full"
