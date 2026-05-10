@@ -343,6 +343,16 @@ export function buildLegalSchemas(route: SeoRoute): JsonLd[] {
 }
 
 export function buildPageSchemas(route: SeoRoute): JsonLd[] {
+  // Custom JSON-LD for flat /camping URLs
+  if (route.path === "/camping" || route.path === "/camping/weinsberg-caraone-480-qdk") {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const m = require("./camping-content");
+    const extra: JsonLd[] =
+      route.path === "/camping"
+        ? m.buildCampingCategorySchemas()
+        : m.buildCaraOneProductSchemas();
+    return route.breadcrumbs ? [breadcrumbList(route.breadcrumbs), ...extra] : extra;
+  }
   return route.breadcrumbs ? [breadcrumbList(route.breadcrumbs)] : [];
 }
 
