@@ -42,6 +42,7 @@ interface InquiryForm {
   deliveryPostalCode: string;
   deliveryCity: string;
   setupServiceRequested: boolean;
+  selectedExtras: string[];
 }
 
 // Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
@@ -49,6 +50,21 @@ const SETUP_SERVICE_CATEGORIES = [
   'beleuchtung', 'beschallung', 'moebel-zelte', 'buehne', 'traversen-rigging',
   'spezialeffekte', 'huepfburgen', 'kommunikation',
 ];
+
+// Product-specific optional extras (Service & Zubehör)
+const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number }[]> = {
+  "weinsberg-caraone-480-qdk": [
+    { id: "fahrradtraeger-2er", label: "2er Fahrradträger (Deichsel)", price: 30 },
+    { id: "campingmoebel", label: "Campingmöbel", price: 30 },
+    { id: "diebstahlsicherung", label: "Diebstahlsicherung", price: 15 },
+    { id: "endreinigung-ww", label: "Endreinigung Wohnwagen", price: 99 },
+    { id: "gas-eu-adapter", label: "Gas EU-Adapter", price: 10 },
+    { id: "gasflasche-11kg", label: "Gasflasche (11 kg) extra", price: 39 },
+    { id: "gasflasche-5kg", label: "Gasflasche (5 kg) extra", price: 20 },
+    { id: "hundepauschale", label: "Hundepauschale WW (max. 1 Hund)", price: 79 },
+    { id: "sonnensegel", label: "Sonnensegel", price: 20 },
+  ],
+};
 
 export function ProductBookingDialog({ 
   product, 
