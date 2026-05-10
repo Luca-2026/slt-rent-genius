@@ -1012,6 +1012,7 @@ export default function CategoryProducts() {
     spezialeffekte: `Spezialeffekte mieten ${location.name} – Funkenfontänen & Co.`,
     kommunikation: `Funkmikrofon & Kommunikation mieten ${location.name}`,
     "wohnwagen-camping": `Wohnwagen & Campingartikel mieten in ${location.name} – ab 30 €/Tag`,
+    nutzfahrzeuge: `Nutzfahrzeuge mieten ${location.name} – 3,5t & 7,5t Dreiseitenkipper`,
   };
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
@@ -1042,6 +1043,11 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
     spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
     "wohnwagen-camping": `Wohnwagen mieten in ${cityName} ab 30 €/Tag: Weinsberg CaraOne 480 QDK für bis zu 5 Personen mit Dusche, WC, Truma-Heizung & Mover. Servicepauschale 99 €.`,
+    nutzfahrzeuge: location.id === "krefeld"
+      ? `Nutzfahrzeuge mieten in Krefeld: 3,5t Pritschenwagen Doppelkabine (Führerschein B, 7 Sitze) ab 55 €/Tag und 7,5t MAN TGL Dreiseitenkipper (C1) ab 75 €/Tag. Selbstfahrend.`
+      : location.id === "bonn"
+      ? `Nutzfahrzeuge mieten in Bonn: 3,5t Pritschenwagen Doppelkabine (Klasse B) ab 55 €/Tag und 7,5t MAN TGL Dreiseitenkipper (C1) ab 75 €/Tag – Abholung am Standort Bonn.`
+      : `Nutzfahrzeuge mieten in Mülheim an der Ruhr: 3,5t Dreiseitenkipper Doppelkabine (Klasse B) ab 55 €/Tag und 7,5t MAN TGL (C1) ab 75 €/Tag – auf Anfrage.`,
     huepfburgen: location.id === "krefeld"
       ? `Hüpfburg mieten in Krefeld ab 25 €/Tag: Lamar 2,8×2,1 m, Wasserpark 3×4 m mit Rutsche & Pool, Rollercoaster 4,9×4 m und Clown 6,1×5,2 m – inkl. Gebläse, Heringe & Plane.`
       : location.id === "bonn"
@@ -1074,6 +1080,7 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
     "wohnwagen-camping": `Wohnwagen mieten ${location.name}, Caravan mieten ${location.name}, Camping Wohnwagen leihen ${location.name}, Weinsberg CaraOne mieten, Familien-Wohnwagen mieten ${location.name}, Anhänger-Caravan mieten NRW`,
+    nutzfahrzeuge: `Nutzfahrzeug mieten ${location.name}, Pritschenwagen mieten ${location.name}, Dreiseitenkipper mieten ${location.name}, 3,5 Tonner Kipper mieten ${location.name}, 7,5 Tonner mieten ${location.name}, MAN TGL mieten, Opel Movano Pritsche mieten, LKW Kipper mieten ${location.name}, Transporter mit Kippvorrichtung mieten`,
   };
   
   const seoKeywordsBase = categoryKeywordMap[category.id] || 
@@ -1199,6 +1206,19 @@ export default function CategoryProducts() {
       `Von Mülheim an der Ruhr aus sind das Sauerland, die Niederlande, das Münsterland und die Eifel ideal erreichbar. Egal ob Familienurlaub, Festival-Trip oder Camping am Rursee – der CaraOne 480 QDK bietet alles, was du für unbeschwerte Tage brauchst. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom-/Wasseranschlusskabel, Spiegelverlängerung, Antischlingerkupplung sowie Voll- und Teilkasko.`,
       `Mietkonditionen Mülheim an der Ruhr: Tagesmiete ab 30 €, Mindestmietdauer 5 Tage, einmalige Servicepauschale 99 € (Einweisung, Gas, Adapter, Sanitärchemie, Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 € (Selbstbeteiligung der Versicherung 2.500 € – deine Kaution beträgt nur 1.000 €). Klick auf „Jetzt mieten" und sichere dir deinen Wunschzeitraum am Standort Mülheim an der Ruhr.`,
     ],
+    nutzfahrzeuge: location.id === "krefeld" ? [
+      `Nutzfahrzeuge mieten in Krefeld – bei SLT Rental am Standort Krefeld bekommst du zwei selbstfahrende Kipper für Bau, Garten- und Landschaftsbau sowie Schüttguttransport: den 3,5t Pritschenwagen mit Doppelkabine als Dreiseitenkipper (Opel Movano oder vergleichbar, Klasse B, 7 Sitzplätze, 1.135 kg Nutzlast, AHK 2,5 t) und den 7,5t MAN TGL 8.220 Dreiseitenkipper mit Meiller D205 Aufbau (220 PS, Automatik, Euro 6e, 4,5 m³).`,
+      `Beide Fahrzeuge kippen nach hinten, links und rechts – ideal für Pflasterarbeiten, Erdaushub, Grünschnitt und Bauschutt-Transport am Niederrhein. Der 3,5-Tonner ist mit dem normalen PKW-Führerschein (Klasse B) fahrbar, der 7,5-Tonner benötigt die Klasse C1 (oder den alten Führerschein der Klasse 3 vor dem 01.01.1999). Beim MAN ist zusätzlich ein Hydraulikanschluss für Kippanhänger an Bord.`,
+      `Mietkonditionen Krefeld: 3,5t Pritschenwagen ab 55 €/Tag netto, MAN TGL 7,5-Tonner ab 75 €/Tag netto. Inklusive 100 Frei-Kilometer pro Tag, Vollkasko mit 2.500 € SB und Kaution 1.000 €. Diesel und (beim MAN) AdBlue werden bei nicht vollgetankter Rückgabe nachberechnet, Maut beim 7,5-Tonner per Einzelfahrtnachweis. Beide Fahrzeuge sind selbstfahrend – Abholung und Rückgabe an unserem Standort in Krefeld, eine Anlieferung per Tieflader ist nicht erforderlich.`,
+    ] : location.id === "bonn" ? [
+      `Nutzfahrzeuge mieten in Bonn – am Standort Bonn vermietet SLT Rental zwei selbstfahrende Dreiseitenkipper auf Anfrage: den 3,5t Pritschenwagen mit Doppelkabine (Opel Movano oder vergleichbar, 7 Sitze, 1.135 kg Nutzlast, AHK 2,5 t, Klimaanlage, DAB-Radio) und den 7,5t MAN TGL 8.220 Dreiseitenkipper mit Meiller D205 Aufbau (220 PS, Automatik, Euro 6e, 4,5 m³ Volumen, Hydraulikanschluss für Kippanhänger).`,
+      `Typische Einsätze rund um Bonn, Bad Godesberg, Beuel und im Rhein-Sieg-Kreis: Material- und Pflastertransport für Bauunternehmer, Garten- und Landschaftsbauer, Containerdienste sowie Privatkunden mit größerem Renovierungsprojekt. Der 3,5-Tonner ist mit Führerschein Klasse B fahrbar, der MAN TGL benötigt die Klasse C1 (oder Klasse 3 alt). Beide Fahrzeuge kippen nach hinten, links und rechts.`,
+      `Mietkonditionen Bonn: 3,5t Pritschenwagen ab 55 €/Tag netto, MAN TGL 7,5t ab 75 €/Tag netto. Inklusive 100 Frei-Kilometer pro Tag (Mehrkilometer 0,23 € bzw. 0,40 € netto), Vollkasko mit 2.500 € Selbstbeteiligung und 1.000 € Kaution. Kraftstoff (Diesel, beim MAN zusätzlich AdBlue) wird bei nicht vollgetankter Rückgabe nachberechnet, Maut beim 7,5-Tonner per Einzelfahrtnachweis. Die Fahrzeuge sind selbstfahrend und werden direkt am Standort Bonn übergeben – keine Tieflader-Anlieferung nötig.`,
+    ] : [
+      `Nutzfahrzeuge mieten in Mülheim an der Ruhr – am Standort Mülheim an der Ruhr stehen zwei selbstfahrende Dreiseitenkipper auf Anfrage zur Verfügung: der 3,5t Pritschenwagen mit Doppelkabine (Opel Movano oder vergleichbar, Führerschein B, 7 Sitzplätze, 1.135 kg Nutzlast, AHK 2,5 t) und der 7,5t MAN TGL 8.220 Dreiseitenkipper mit Meiller D205 Aufbau (220 PS, Automatik, Euro 6e, 4,5 m³).`,
+      `Ideal für Bau, Garten- und Landschaftsbau, Containerdienste und Schüttguttransport im westlichen Ruhrgebiet – zwischen Mülheim an der Ruhr, Duisburg, Oberhausen, Essen und Ratingen. Beide Fahrzeuge kippen nach hinten, links und rechts; der 3,5-Tonner ist mit Klasse B fahrbar, der MAN benötigt C1 (bzw. Klasse 3 alt). Der MAN bietet zusätzlich einen Hydraulikanschluss für Kippanhänger.`,
+      `Mietkonditionen Mülheim an der Ruhr: 3,5t Pritschenwagen ab 55 €/Tag netto, MAN TGL 7,5t ab 75 €/Tag netto. Inklusive 100 Frei-Kilometer pro Tag, Vollkasko mit 2.500 € SB, Kaution 1.000 €. Diesel und AdBlue (beim MAN) werden bei nicht vollgetankter Rückgabe abgerechnet, Maut beim 7,5-Tonner per Einzelfahrtnachweis. Beide Fahrzeuge sind selbstfahrend – Abholung und Rückgabe direkt am Standort Mülheim an der Ruhr, keine Tieflader-Anlieferung nötig.`,
+    ],
   };
 
   // Category-specific FAQs for FAQ schema
@@ -1303,6 +1323,15 @@ export default function CategoryProducts() {
       { question: `Welchen Führerschein brauche ich für den Wohnwagen?`, answer: `Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg. Je nach Zugfahrzeug reicht der Führerschein Klasse B mit Schlüssel 96 (B96) oder die Klasse BE. Reine B-Führerscheine genügen nur, wenn das Zugfahrzeug entsprechend leicht ist – wir prüfen das vor der Buchung gemeinsam mit dir.` },
       { question: `Wie viele Personen passen in den Wohnwagen?`, answer: `Der CaraOne 480 QDK bietet Schlaf- und Sitzplätze für 2 Erwachsene und 3 Kinder (5 Personen insgesamt) mit 4 festen Betten.` },
       { question: `Wie hoch ist die Kaution?`, answer: `Die Kaution beträgt 1.000 €. Unsere Wohnwagen sind Teil- und Vollkasko versichert; die Selbstbeteiligung gegenüber unserer Versicherung von 2.500 € liegt nicht bei dir – deine Kaution beträgt lediglich 1.000 €.` },
+    ],
+    nutzfahrzeuge: [
+      { question: `Welche Nutzfahrzeuge kann ich bei SLT Rental in ${location.name} mieten?`, answer: `Am Standort ${location.name} stehen zwei selbstfahrende Dreiseitenkipper auf Anfrage zur Verfügung: der 3,5t Pritschenwagen mit Doppelkabine (Opel Movano oder vergleichbar, 7 Sitze, 1.135 kg Nutzlast, AHK 2,5 t) ab 55 €/Tag netto und der 7,5t MAN TGL 8.220 Dreiseitenkipper mit Meiller D205 Aufbau (220 PS, Automatik, Euro 6e) ab 75 €/Tag netto.` },
+      { question: `Welchen Führerschein brauche ich?`, answer: `Den 3,5t Pritschenwagen darfst du mit dem normalen PKW-Führerschein (Klasse B) fahren. Für den 7,5t MAN TGL benötigst du die Klasse C1 (Fahrzeuge über 3,5 t bis 7,5 t zGG). Wer den alten Führerschein der Klasse 3 vor dem 01.01.1999 erworben hat, darf den 7,5-Tonner ebenfalls fahren.` },
+      { question: `In welche Richtungen kippt der Aufbau?`, answer: `Beide Fahrzeuge sind als Dreiseitenkipper ausgeführt und kippen nach hinten, links und rechts – ideal zum gezielten Entladen von Sand, Kies, Mutterboden, Pflaster oder Bauschutt direkt an der gewünschten Stelle.` },
+      { question: `Werden die Fahrzeuge angeliefert?`, answer: `Nein. Beide Nutzfahrzeuge sind selbstfahrend und werden am Standort ${location.name} abgeholt und nach Mietende wieder zurückgebracht. Eine Anlieferung per Tieflader ist nicht erforderlich und nicht vorgesehen.` },
+      { question: `Welche Kaution und Selbstbeteiligung gelten?`, answer: `Vor Übergabe wird eine Kaution von 1.000 € hinterlegt. Im Schadenfall greift die Vollkasko-Versicherung mit einer Selbstbeteiligung von 2.500 € pro Schaden – das gilt für beide Fahrzeuge gleichermaßen.` },
+      { question: `Wie sind Kraftstoff, Frei-Kilometer und Maut geregelt?`, answer: `Im Mietpreis sind 100 Frei-Kilometer pro Tag enthalten. Beim 3,5-Tonner werden Mehrkilometer mit 0,23 € netto berechnet, beim MAN TGL mit 0,40 € netto. Die Rückgabe erfolgt vollgetankt; nicht aufgefüllter Diesel wird mit 2,85 €/l (brutto bzw. netto je Fahrzeug) und beim MAN AdBlue mit 1,85 €/l zzgl. MwSt. nachberechnet. Für den 7,5t MAN TGL gilt seit dem 01.07.2024 die LKW-Maut – wir berechnen sie per Einzelfahrtnachweis weiter.` },
+      { question: `Wie reserviere ich ein Nutzfahrzeug in ${location.name}?`, answer: `Klick einfach auf „Jetzt mieten" oder schick uns eine kurze Anfrage – wir bestätigen Verfügbarkeit, Wunschzeitraum und Preis am Standort ${location.name} in der Regel innerhalb eines Werktages.` },
     ],
   };
 
