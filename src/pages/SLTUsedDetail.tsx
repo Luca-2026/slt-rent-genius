@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft, ArrowRight, Phone, Mail, MapPin, Shield, Wrench, Clock, Truck,
-  CheckCircle2, Package,
+  CheckCircle2, Package, Download, PlayCircle,
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
 
