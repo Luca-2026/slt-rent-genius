@@ -19,6 +19,16 @@ const locationNames: Record<string, string> = {
   muelheim: "Mülheim an der Ruhr",
 };
 
+function escapeHtml(input: unknown): string {
+  if (input === null || input === undefined) return "";
+  return String(input)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -44,6 +54,16 @@ serve(async (req) => {
       ? locationNames[location]
       : "Nicht angegeben";
 
+    const e = {
+      firstName: escapeHtml(firstName),
+      lastName: escapeHtml(lastName),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone),
+      subject: escapeHtml(subject),
+      message: escapeHtml(message),
+      locationLabel: escapeHtml(locationLabel),
+    };
+
     const htmlBody = `
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
   <div style="background: #ffffff; padding: 20px; text-align: center; border-bottom: 3px solid #f97316;">
@@ -54,19 +74,19 @@ serve(async (req) => {
     <h2 style="color: #1a1a1a; margin-top: 0;">Neue Kontaktanfrage</h2>
     
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-      <strong style="color: #ea580c;">Betreff:</strong> ${subject}
+      <strong style="color: #ea580c;">Betreff:</strong> ${e.subject}
     </div>
 
     <h3 style="color: #374151;">Kontaktdaten</h3>
     <table style="width: 100%; border-collapse: collapse;">
-      <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${firstName} ${lastName}</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone}</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Standort:</td><td style="padding: 4px 0; font-weight: 500;">${locationLabel}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${e.firstName} ${e.lastName}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${e.email}" style="color: #f97316;">${e.email}</a></td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${e.phone}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Standort:</td><td style="padding: 4px 0; font-weight: 500;">${e.locationLabel}</td></tr>
     </table>
 
     <h3 style="color: #374151;">Nachricht</h3>
-    <p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${message}</p>
+    <p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${e.message}</p>
 
     <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
       Diese Anfrage wurde über das Kontaktformular auf slt-rental.de gesendet.
