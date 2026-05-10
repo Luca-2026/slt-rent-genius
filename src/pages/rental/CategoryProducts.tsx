@@ -1249,6 +1249,12 @@ export default function CategoryProducts() {
     kommunikation: [
       { question: `Was kostet ein Funkmikrofon mieten?`, answer: `Professionelle Funkmikrofone (Sennheiser) gibt es ab ca. 25 €/Tag. Headsets und Ansteckmikrofone sind ebenfalls verfügbar.` },
     ],
+    "wohnwagen-camping": [
+      { question: `Was kostet ein Wohnwagen mieten in ${location.name}?`, answer: `Die Tagesmiete für den Weinsberg CaraOne 480 QDK beginnt in ${location.name} bei 30 € pro Tag. Hinzu kommt eine einmalige Servicepauschale von 99 € (Einweisung, 11-kg-Gasflasche, Spiegelverlängerungen, Adapterkabel, Sanitärchemie, Toilettenpapier). Die Endreinigung ist optional für 99 € buchbar. Die Mindestmietdauer beträgt 5 Tage.` },
+      { question: `Welchen Führerschein brauche ich für den Wohnwagen?`, answer: `Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg. Je nach Zugfahrzeug reicht der Führerschein Klasse B mit Schlüssel 96 (B96) oder die Klasse BE. Reine B-Führerscheine genügen nur, wenn das Zugfahrzeug entsprechend leicht ist – wir prüfen das vor der Buchung gemeinsam mit dir.` },
+      { question: `Wie viele Personen passen in den Wohnwagen?`, answer: `Der CaraOne 480 QDK bietet Schlaf- und Sitzplätze für 2 Erwachsene und 3 Kinder (5 Personen insgesamt) mit 4 festen Betten.` },
+      { question: `Wie hoch ist die Kaution?`, answer: `Die Kaution beträgt 1.000 €. Unsere Wohnwagen sind Teil- und Vollkasko versichert; die Selbstbeteiligung gegenüber unserer Versicherung von 2.500 € liegt nicht bei dir – deine Kaution beträgt lediglich 1.000 €.` },
+    ],
   };
 
   const moebelZelteCustom = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
