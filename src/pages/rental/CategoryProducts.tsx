@@ -1360,13 +1360,9 @@ export default function CategoryProducts() {
           "name": p.name,
           "image": imgUrl,
           "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
-          "offers": {
-            "@type": "Offer",
-            "availability": "https://schema.org/InStock",
-            "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
-          },
         },
       };
+
     }),
   };
 
