@@ -512,7 +512,35 @@ export const erdbewegungFilterSections: FilterSection[] = [
   },
 ];
 
-// Map category IDs to their filter configurations
+// ============= WOHNWAGEN & CAMPINGARTIKEL =============
+export const wohnwagenCampingFilterSections: FilterSection[] = [
+  {
+    id: "type",
+    label: "Fahrzeugtyp",
+    defaultExpanded: true,
+    options: [
+      { id: "wohnwagen", label: "Wohnwagen", sublabel: "Anhänger-Caravans" },
+    ],
+  },
+  {
+    id: "personenanzahl",
+    label: "Personenanzahl",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-4", label: "Bis 4 Personen" },
+      { id: "5-personen", label: "5 Personen" },
+    ],
+  },
+  {
+    id: "gesamtgewicht",
+    label: "Zulässiges Gesamtgewicht",
+    defaultExpanded: true,
+    options: [
+      { id: "bis-1500", label: "Bis 1.500 kg", sublabel: "Klasse B96 möglich" },
+      { id: "ab-1500", label: "Ab 1.500 kg", sublabel: "BE empfohlen" },
+    ],
+  },
+];
 export const categoryFilterMap: Record<string, FilterSection[]> = {
   "werkzeuge": werkzeugeFilterSections,
   "gartenpflege": gartenpflegeFilterSections,
@@ -533,6 +561,7 @@ export const categoryFilterMap: Record<string, FilterSection[]> = {
   "traversen-rigging": traversenFilterSections,
   "kommunikation": kommunikationFilterSections,
   "erdbewegung": erdbewegungFilterSections,
+  "wohnwagen-camping": wohnwagenCampingFilterSections,
 };
 
 // Get search placeholder i18n keys for each category
@@ -556,6 +585,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "traversen-rigging": "catSearch.traversenRigging",
   "kommunikation": "catSearch.kommunikation",
   "erdbewegung": "catSearch.erdbewegung",
+  "wohnwagen-camping": "Wohnwagen suchen…",
 };
 
 // Category display name i18n keys for delivery calculator
@@ -580,4 +610,5 @@ export const categoryDisplayNames: Record<string, string> = {
   "kommunikation": "catDisplay.kommunikation",
   "erdbewegung": "catDisplay.erdbewegung",
   "anhaenger": "catDisplay.anhaenger",
+  "wohnwagen-camping": "Wohnwagen & Campingartikel",
 };

@@ -360,7 +360,7 @@ export const productCategories: ProductCategory[] = [
   // === FREIZEIT & CAMPING ===
   {
     id: "wohnwagen-camping",
-    title: "Wohnwagen & Camping",
+    title: "Wohnwagen & Campingartikel",
     description: "Familientaugliche Wohnwagen mit Dusche, WC und Heizung – auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
     icon: iconCamping,
   },

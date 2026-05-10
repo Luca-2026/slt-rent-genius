@@ -815,6 +815,32 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Wohnwagen-Camping: Personenanzahl filter
+          else if (sectionId === "personenanzahl") {
+            filtered = filtered.filter((p) => {
+              const sitz = String(p.specifications?.["Sitzplätze"] || p.specifications?.["Schlafplätze"] || "");
+              const nums = Array.from(sitz.matchAll(/(\d+)/g)).map((m) => parseInt(m[1], 10));
+              const total = nums.reduce((a, b) => a + b, 0);
+              return selectedValues.some((v) => {
+                if (v === "bis-4") return total > 0 && total <= 4;
+                if (v === "5-personen") return total === 5;
+                return false;
+              });
+            });
+          }
+          // Wohnwagen-Camping: Zulässiges Gesamtgewicht filter
+          else if (sectionId === "gesamtgewicht") {
+            filtered = filtered.filter((p) => {
+              const gew = String(p.specifications?.["Zulässiges Gesamtgewicht"] || "");
+              const m = gew.replace(/\./g, "").match(/(\d+)/);
+              const kg = m ? parseInt(m[1], 10) : 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-1500") return kg > 0 && kg <= 1500;
+                if (v === "ab-1500") return kg > 1500;
+                return false;
+              });
+            });
+          }
           // Standard tag/category matching
           else {
             filtered = filtered.filter((p) =>
@@ -962,6 +988,7 @@ export default function CategoryProducts() {
     "traversen-rigging": `Traversen mieten ${location.name} – Rigging & Bühnentechnik`,
     spezialeffekte: `Spezialeffekte mieten ${location.name} – Funkenfontänen & Co.`,
     kommunikation: `Funkmikrofon & Kommunikation mieten ${location.name}`,
+    "wohnwagen-camping": `Wohnwagen & Campingartikel mieten in ${location.name} – ab 30 €/Tag`,
   };
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
@@ -991,6 +1018,7 @@ export default function CategoryProducts() {
     "moebel-zelte": `Partyzelte & Eventmöbel mieten in ${cityName}: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.`,
     "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
     spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
+    "wohnwagen-camping": `Wohnwagen mieten in ${cityName} ab 30 €/Tag: Weinsberg CaraOne 480 QDK für bis zu 5 Personen mit Dusche, WC, Truma-Heizung & Mover. Servicepauschale 99 €.`,
     huepfburgen: location.id === "krefeld"
       ? `Hüpfburg mieten in Krefeld ab 25 €/Tag: Lamar 2,8×2,1 m, Wasserpark 3×4 m mit Rutsche & Pool, Rollercoaster 4,9×4 m und Clown 6,1×5,2 m – inkl. Gebläse, Heringe & Plane.`
       : location.id === "bonn"
@@ -1022,6 +1050,7 @@ export default function CategoryProducts() {
     "moebel-zelte": `Partyzelt mieten ${location.name}, Zelt mieten ${location.name}, Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
     "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
+    "wohnwagen-camping": `Wohnwagen mieten ${location.name}, Caravan mieten ${location.name}, Camping Wohnwagen leihen ${location.name}, Weinsberg CaraOne mieten, Familien-Wohnwagen mieten ${location.name}, Anhänger-Caravan mieten NRW`,
   };
   
   const seoKeywordsBase = categoryKeywordMap[category.id] || 
@@ -1134,6 +1163,19 @@ export default function CategoryProducts() {
       `Funkmikrofon und Headset mieten in ${location.name} – professionelle Sennheiser-Funkstrecken für Konferenzen, Hochzeiten, Reden und Events. Handmikrofone, Headsets und Ansteckmikrofone verfügbar.`,
       `Hochwertige drahtlose Mikrofonsysteme für klare Sprachübertragung bei jeder Veranstaltung. Einfache Bedienung, zuverlässiger Empfang.`,
     ],
+    "wohnwagen-camping": location.id === "krefeld" ? [
+      `Wohnwagen mieten in Krefeld – bei SLT Rental am Standort Krefeld findest du den Weinsberg CaraOne 480 QDK, einen familientauglichen Caravan für bis zu 5 Personen mit Dusche, WC, Truma-Heizung und Mover. Mit nur 1.500 kg zulässigem Gesamtgewicht ist er kompakt genug für viele Zugfahrzeuge ab 1.500 kg Anhängelast und passt damit zu PKW-Führerscheinen mit Schlüssel B96 oder BE.`,
+      `Beliebte Reiseziele ab Krefeld sind die Niederlande (Renesse, Maasholm, Veluwe), die Mosel, das Sauerland sowie Festivals und Camping-Events in NRW. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung, Antischlingerkupplung sowie Vollkaskoversicherung.`,
+      `Mietkonditionen kompakt: Tagesmiete ab 30 €, Mindestmietdauer 5 Tage, einmalige Servicepauschale 99 € (Einweisung, Gas, Adapter, Sanitär), optional 99 € Endreinigung, Kaution 1.000 €. Für die aktuelle Verfügbarkeit deines Wunsch-Reisezeitraums in Krefeld klicke einfach auf „Jetzt mieten" – wir melden uns innerhalb von 24 Stunden mit deinem persönlichen Angebot.`,
+    ] : location.id === "bonn" ? [
+      `Wohnwagen mieten in Bonn – am Standort Bonn vermietet SLT Rental den Weinsberg CaraOne 480 QDK, einen familienfreundlichen Caravan für bis zu 5 Personen mit vollwertiger Nasszelle (Dusche, WC), Truma-Heizung und Mover für einfaches Rangieren auf engen Stellplätzen. Mit zulässigem Gesamtgewicht von 1.500 kg ist der CaraOne 480 mit den gängigen Zugfahrzeugen kompatibel und mit B96 oder BE-Führerschein fahrbar.`,
+      `Aus Bonn schnell erreichbar: Eifel, Mosel, Ahrtal, Belgien, Luxemburg sowie die Niederlande. Auch für Festival- und Konzert-Trips, Familienurlaube und Camping an Rhein und Sieg ein idealer Begleiter. Im Mietpreis enthalten: Küchenausstattung, 11-kg-Gasflasche, Strom-/Wasserkabel, Spiegelverlängerung, Antischlingerkupplung sowie Voll- und Teilkasko.`,
+      `Mietkonditionen Bonn: Tagesmiete ab 30 €, Mindestmietdauer 5 Tage, Servicepauschale 99 € einmalig (Einweisung, Gas, Adapter, Sanitärchemie), Endreinigung optional 99 €, Kaution 1.000 €. Klick auf „Jetzt mieten", fülle die kurze Anfrage aus – wir bestätigen Verfügbarkeit und Preis am Standort Bonn innerhalb von 24 Stunden.`,
+    ] : [
+      `Wohnwagen mieten in Mülheim an der Ruhr – am Standort Mülheim an der Ruhr steht der Weinsberg CaraOne 480 QDK bereit: ein familientauglicher Caravan für bis zu 5 Personen mit Dusche, WC, Truma-Heizung und Mover. Das zulässige Gesamtgewicht von 1.500 kg macht ihn kompatibel mit vielen Zugfahrzeugen ab 1.500 kg Anhängelast – fahrbar mit B96 oder BE-Führerschein.`,
+      `Von Mülheim an der Ruhr aus sind das Sauerland, die Niederlande, das Münsterland und die Eifel ideal erreichbar. Egal ob Familienurlaub, Festival-Trip oder Camping am Rursee – der CaraOne 480 QDK bietet alles, was du für unbeschwerte Tage brauchst. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom-/Wasseranschlusskabel, Spiegelverlängerung, Antischlingerkupplung sowie Voll- und Teilkasko.`,
+      `Mietkonditionen Mülheim an der Ruhr: Tagesmiete ab 30 €, Mindestmietdauer 5 Tage, einmalige Servicepauschale 99 € (Einweisung, Gas, Adapter, Sanitärchemie, Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 € (Selbstbeteiligung der Versicherung 2.500 € – deine Kaution beträgt nur 1.000 €). Klick auf „Jetzt mieten" und sichere dir deinen Wunschzeitraum am Standort Mülheim an der Ruhr.`,
+    ],
   };
 
   // Category-specific FAQs for FAQ schema
@@ -1232,6 +1274,12 @@ export default function CategoryProducts() {
     ],
     kommunikation: [
       { question: `Was kostet ein Funkmikrofon mieten?`, answer: `Professionelle Funkmikrofone (Sennheiser) gibt es ab ca. 25 €/Tag. Headsets und Ansteckmikrofone sind ebenfalls verfügbar.` },
+    ],
+    "wohnwagen-camping": [
+      { question: `Was kostet ein Wohnwagen mieten in ${location.name}?`, answer: `Die Tagesmiete für den Weinsberg CaraOne 480 QDK beginnt in ${location.name} bei 30 € pro Tag. Hinzu kommt eine einmalige Servicepauschale von 99 € (Einweisung, 11-kg-Gasflasche, Spiegelverlängerungen, Adapterkabel, Sanitärchemie, Toilettenpapier). Die Endreinigung ist optional für 99 € buchbar. Die Mindestmietdauer beträgt 5 Tage.` },
+      { question: `Welchen Führerschein brauche ich für den Wohnwagen?`, answer: `Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg. Je nach Zugfahrzeug reicht der Führerschein Klasse B mit Schlüssel 96 (B96) oder die Klasse BE. Reine B-Führerscheine genügen nur, wenn das Zugfahrzeug entsprechend leicht ist – wir prüfen das vor der Buchung gemeinsam mit dir.` },
+      { question: `Wie viele Personen passen in den Wohnwagen?`, answer: `Der CaraOne 480 QDK bietet Schlaf- und Sitzplätze für 2 Erwachsene und 3 Kinder (5 Personen insgesamt) mit 4 festen Betten.` },
+      { question: `Wie hoch ist die Kaution?`, answer: `Die Kaution beträgt 1.000 €. Unsere Wohnwagen sind Teil- und Vollkasko versichert; die Selbstbeteiligung gegenüber unserer Versicherung von 2.500 € liegt nicht bei dir – deine Kaution beträgt lediglich 1.000 €.` },
     ],
   };
 
