@@ -100,6 +100,7 @@ export default defineConfig(({ mode }) => ({
         logStats: true,
       }),
     mode !== "development" && heroImagePreloadPlugin(),
+    mode !== "development" && inlineSmallCssPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
