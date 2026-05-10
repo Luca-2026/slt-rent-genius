@@ -230,17 +230,40 @@ export default function ProductDetail() {
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/InStock",
-          "url": canonicalUrl,
-          "seller": {
-            "@type": "LocalBusiness",
-            "name": "SLT Rental",
-            "url": "https://www.slt-rental.de",
-          },
-          "areaServed": { "@type": "City", "name": location.name },
-        },
+        "offers": (() => {
+          const priceFrom = productSEO?.dailyPriceFrom;
+          const offer: Record<string, unknown> = {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "url": canonicalUrl,
+            "priceCurrency": "EUR",
+            "seller": {
+              "@type": "LocalBusiness",
+              "name": "SLT Rental",
+              "url": "https://www.slt-rental.de",
+            },
+            "areaServed": { "@type": "City", "name": location.name },
+          };
+          if (typeof priceFrom === "number") {
+            offer["price"] = priceFrom.toFixed(2);
+            offer["priceSpecification"] = {
+              "@type": "UnitPriceSpecification",
+              "price": priceFrom.toFixed(2),
+              "priceCurrency": "EUR",
+              "unitCode": "DAY",
+              "referenceQuantity": {
+                "@type": "QuantitativeValue",
+                "value": 1,
+                "unitCode": "DAY",
+              },
+            };
+            // Gültig bis Ende des Folgejahres – Google verlangt priceValidUntil ≤ 1 Jahr in der Zukunft
+            const validUntil = new Date();
+            validUntil.setFullYear(validUntil.getFullYear() + 1);
+            offer["priceValidUntil"] = validUntil.toISOString().slice(0, 10);
+          }
+          return offer;
+        })(),
       };
       // Add brand + model if modelName exists
       if (product.modelName) {
