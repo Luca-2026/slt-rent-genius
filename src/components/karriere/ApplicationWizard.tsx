@@ -516,8 +516,17 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
               {/* Resume */}
               <div className="space-y-2">
-                <Label>Lebenslauf (PDF oder Word) *</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                <Label className="flex items-center gap-1">
+                  Lebenslauf (PDF oder Word) <span className="text-destructive">*</span>
+                  <span className="text-xs text-muted-foreground ml-2">– Pflichtfeld</span>
+                </Label>
+                <div
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                    resumeError && !resumeFile
+                      ? "border-destructive bg-destructive/5"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
                   {resumeFile ? (
                     <div className="flex items-center justify-center gap-3">
                       <FileText className="h-8 w-8 text-primary" />
@@ -531,7 +540,10 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => setResumeFile(null)}
+                        onClick={() => {
+                          setResumeFile(null);
+                          setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
+                        }}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -539,15 +551,15 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                   ) : (
                     <label className="cursor-pointer block">
                       <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-muted-foreground">
+                      <p className="text-foreground font-medium">
                         Klicken zum Hochladen oder Datei hierher ziehen
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        PDF oder Word, max. 10 MB
+                        PDF, DOC oder DOCX – max. 10 MB
                       </p>
                       <input
                         type="file"
-                        accept=".pdf,.doc,.docx"
+                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         onChange={(e) => handleFileChange(e, setResumeFile)}
                         className="hidden"
                       />
