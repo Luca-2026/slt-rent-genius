@@ -33,8 +33,17 @@ interface QuickApplyFormProps {
 export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const { toast } = useToast();
   const [resume, setResume] = useState<File | null>(null);
+  const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+
+  const sanitize = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 60);
 
   const {
     register,
@@ -48,25 +57,36 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_FILE_SIZE) {
+      setResumeError("Datei zu groß (max. 10 MB)");
       toast({ title: "Datei zu groß", description: "Max. 10 MB", variant: "destructive" });
       return;
     }
-    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+    const nameLower = file.name.toLowerCase();
+    const extOk = /\.(pdf|doc|docx)$/.test(nameLower);
+    if (!ACCEPTED_FILE_TYPES.includes(file.type) && !extOk) {
+      setResumeError("Nur PDF, DOC oder DOCX erlaubt");
       toast({ title: "Ungültiges Format", description: "Nur PDF, DOC oder DOCX", variant: "destructive" });
       return;
     }
+    setResumeError(null);
     setResume(file);
   };
 
   const onSubmit = async (values: FormValues) => {
+    if (!resume) {
+      setResumeError("Bitte Lebenslauf hochladen");
+      return;
+    }
     setSubmitting(true);
     try {
       let resumeUrl: string | null = null;
       let resumeFilename: string | null = null;
 
       if (resume) {
-        const ext = resume.name.split(".").pop();
-        const path = `${Date.now()}-${values.lastName}-${values.firstName}.${ext}`;
+        const ext = (resume.name.split(".").pop() || "pdf").toLowerCase();
+        const safeLast = sanitize(values.lastName) || "bewerber";
+        const safeFirst = sanitize(values.firstName) || "anonym";
+        const path = `${Date.now()}-${safeLast}-${safeFirst}.${ext}`;
         const { error: upErr } = await supabase.storage
           .from("bewerbungen")
           .upload(path, resume, { contentType: resume.type, upsert: false });
@@ -153,10 +173,12 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         </div>
       </div>
       <div>
-        <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC, optional)</Label>
+        <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
         <label
           htmlFor="qa-cv"
-          className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground"
+          className={`flex items-center justify-center gap-2 border-2 border-dashed rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground ${
+            resumeError ? "border-destructive" : "border-border"
+          }`}
         >
           <Upload className="h-4 w-4" />
           {resume ? resume.name : "Datei wählen (max. 10 MB)"}
@@ -164,10 +186,11 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         <input
           id="qa-cv"
           type="file"
-          accept=".pdf,.doc,.docx"
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           className="hidden"
           onChange={onResumeChange}
         />
+        {resumeError && <p className="text-xs text-destructive mt-1">{resumeError}</p>}
       </div>
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
         <input
