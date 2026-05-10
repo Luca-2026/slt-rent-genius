@@ -185,8 +185,10 @@ Deno.serve(async (req) => {
       urls.push(urlEntry(article.path, article.priority, article.changefreq, TODAY));
     }
 
-    // 7. Job postings (each open position has its own dedicated landing page)
+    // 7. Job postings (each open position has its own dedicated landing page).
+    // Keep in sync with jobListings in src/components/karriere/jobData.ts
     const jobSlugs = [
+      'standortleiter-niederlassungsleiter-vermietung-bonn',
       'lieferfahrer-baumaschinen-krefeld',
       'ausbildung-kaufmann-bueromanagement-krefeld-bonn',
       'baumaschinentechniker-servicetechniker-krefeld',
