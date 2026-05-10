@@ -327,7 +327,7 @@ export default function SLTUsedDetail() {
       {content.alternativesNote && (
         <section className="section-container py-8 md:py-12 border-t border-border">
           <h2 className="text-2xl font-bold text-headline mb-4">
-            Alternative zu Haulotte Star 10, JLG Tucan & Genie GR-20
+            {content.alternativesTitle || "Vergleichbare Modelle anderer Hersteller"}
           </h2>
           <p className="text-foreground/90 leading-relaxed max-w-4xl">
             {content.alternativesNote}
