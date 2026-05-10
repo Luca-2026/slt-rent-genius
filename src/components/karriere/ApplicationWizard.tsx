@@ -167,9 +167,10 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
       }
     } else if (step === 3) {
       if (!resumeFile) {
+        setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
         toast({
           title: "Lebenslauf erforderlich",
-          description: "Bitte lade deinen Lebenslauf hoch.",
+          description: "Ohne Lebenslauf können wir deine Bewerbung leider nicht annehmen.",
           variant: "destructive"
         });
         return;
