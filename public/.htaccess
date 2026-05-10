@@ -1,0 +1,111 @@
+# =====================================================
+# SLT Rental – Apache .htaccess (Serverprofis Hosting)
+# =====================================================
+
+# ---- Default Charset ----
+AddDefaultCharset UTF-8
+
+# ---- Enable Rewrite Engine ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Force www (Canonical: https://www.slt-rental.de)
+  RewriteCond %{HTTP_HOST} ^slt-rental\.de [NC]
+  RewriteRule ^ https://www.slt-rental.de%{REQUEST_URI} [L,R=301]
+
+  # Remove trailing slash (außer für Root und echte Verzeichnisse)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} ^(.+)/$
+  RewriteRule ^ %1 [L,R=301]
+
+  # SPA Fallback – alle nicht existierenden Routen auf index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ---- MIME Types ----
+<IfModule mod_mime.c>
+  AddType application/javascript            .js .mjs
+  AddType text/css                          .css
+  AddType image/svg+xml                     .svg .svgz
+  AddType image/webp                        .webp
+  AddType image/avif                        .avif
+  AddType application/json                  .json
+  AddType application/manifest+json         .webmanifest
+  AddType application/xml                   .xml
+  AddType font/woff                         .woff
+  AddType font/woff2                        .woff2
+  AddType application/pdf                   .pdf
+</IfModule>
+
+# ---- Compression (Gzip / Deflate) ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE application/rss+xml application/atom+xml
+  AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2
+</IfModule>
+
+# ---- Browser Caching ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # HTML – nie cachen, damit Updates sofort sichtbar
+  ExpiresByType text/html                  "access plus 0 seconds"
+
+  # Assets mit Hash – 1 Jahr
+  ExpiresByType text/css                   "access plus 1 year"
+  ExpiresByType application/javascript     "access plus 1 year"
+  ExpiresByType image/jpeg                 "access plus 6 months"
+  ExpiresByType image/png                  "access plus 6 months"
+  ExpiresByType image/webp                 "access plus 6 months"
+  ExpiresByType image/avif                 "access plus 6 months"
+  ExpiresByType image/svg+xml              "access plus 6 months"
+  ExpiresByType font/woff                  "access plus 1 year"
+  ExpiresByType font/woff2                 "access plus 1 year"
+  ExpiresByType application/pdf            "access plus 1 month"
+
+  # SEO-Dateien – täglich neu prüfen
+  ExpiresByType application/xml            "access plus 1 day"
+  ExpiresByType text/xml                   "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Hashed Assets immutable
+  <FilesMatch "\.(js|css|woff2?|jpg|jpeg|png|webp|avif|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML / SEO-Dateien nie cachen
+  <FilesMatch "\.(html|xml|txt|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Security Headers
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
+
+# ---- Custom Error Page (SPA übernimmt 404 selbst) ----
+ErrorDocument 404 /index.html
+
+# ---- Schutz: Versteckte Dateien ----
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+<Files ".htaccess">
+  Require all denied
+</Files>
+
+# ---- Disable Directory Listing ----
+Options -Indexes
