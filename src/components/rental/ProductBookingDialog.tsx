@@ -84,6 +84,7 @@ export function ProductBookingDialog({
     message: "",
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
+    selectedExtras: [],
   };
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
