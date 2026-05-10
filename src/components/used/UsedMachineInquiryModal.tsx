@@ -102,6 +102,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
     setEmail(""); setPhone("");
     setBillingIdentical(true); setBillingCompany(""); setBillingStreet("");
     setBillingPlz(""); setBillingCity("");
+    setFinancingDesired(false); setFinancingTerm(""); setFinancingDownPayment("");
     setMessage(""); setPrivacy(false);
     setErrors({});
   };
