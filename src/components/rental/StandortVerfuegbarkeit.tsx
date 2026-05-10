@@ -21,6 +21,7 @@ interface StandortVerfuegbarkeitProps {
 export function StandortVerfuegbarkeit({
   locationId,
   warehouseLocationName = "Krefeld",
+  deviceLabel = "Gerät",
 }: StandortVerfuegbarkeitProps) {
   const location = getLocationInfoById(locationId);
   if (!location || !location.serviceCharacter) return null;
