@@ -26,6 +26,7 @@ import iconBeschallung from "@/assets/icons/beschallung.png";
 import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
 import iconKommunikation from "@/assets/icons/kommunikation.png";
 import iconGartenpflege from "@/assets/icons/SLT_Rental_Icons_Gartenpflege.png";
+import iconNutzfahrzeuge from "@/assets/icons/category-nutzfahrzeuge.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -363,6 +364,12 @@ export const productCategories: ProductCategory[] = [
     title: "Wohnwagen & Campingartikel",
     description: "Familientaugliche Wohnwagen mit Dusche, WC und Heizung – auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
     icon: iconCamping,
+  },
+  {
+    id: "nutzfahrzeuge",
+    title: "Nutzfahrzeuge",
+    description: "Transporter, Pritschen- und Kofferfahrzeuge für Umzug, Transport und Baustelle – auf Anfrage an allen drei Standorten.",
+    icon: iconNutzfahrzeuge,
   },
 ];
 
@@ -1451,6 +1458,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       "anhaenger": sortedTrailerProducts,
@@ -1474,6 +1482,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
     },
   },
   {
@@ -1506,6 +1515,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       // Merge: Bonn-specific items first (with Rentware codes), then fill with Krefeld items not already covered
@@ -1616,6 +1626,7 @@ export const locations: LocationData[] = [
         "bonn"
       ),
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
     },
   },
   {
@@ -1648,6 +1659,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       "anhaenger": sortedTrailerProducts.map(p => 
@@ -1671,6 +1683,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
       "aggregate": mergeWithFallback(
         [
           {
