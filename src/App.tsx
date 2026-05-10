@@ -148,6 +148,10 @@ const App = () => (
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
               <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />
+
+              {/* Camping (flat URLs, on-request rentals) */}
+              <Route path="/camping" element={<CampingCategory />} />
+              <Route path="/camping/weinsberg-caraone-480-qdk" element={<WeinsbergCaraOne480QDK />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
