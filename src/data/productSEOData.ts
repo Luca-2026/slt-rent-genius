@@ -7232,7 +7232,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie viel Nutzlast und Volumen hat der Kipper?", a: "Bei 7.490 kg zulässigem Gesamtgewicht und einem Leergewicht von 5.176 kg verbleiben 2.314 kg Nutzlast. Der Aufbau bietet 4,5 m³ Volumen bei 3.800 mm Innenlänge, 2.350 mm Innenbreite und 500 mm Bordwandhöhe." },
       { q: "Welche Kaution und Selbstbeteiligung sind zu hinterlegen?", a: "Vor Übergabe wird eine Kaution von 1.000 € hinterlegt. Im Schadenfall greift die Vollkasko-Versicherung mit einer Selbstbeteiligung von 2.500 € pro Schaden." },
       { q: "Ist eine Anhängerkupplung mit Hydraulik vorhanden?", a: "Ja, das Fahrzeug verfügt über einen Hydraulikanschluss für Kippanhänger. So lässt sich zusätzlich ein Tandem-Kippanhänger ankoppeln und über die Bordhydraulik betätigen." },
-      { q: "Fällt für den 7,5-Tonner LKW-Maut an?", a: "Nein. Die LKW-Maut auf Bundesfernstraßen gilt erst ab 7.500 kg technisch zulässigem Gesamtgewicht. Der MAN TGL 8.220 mit 7.490 kg zGG ist mautbefreit." },
+      { q: "Fällt für den MAN TGL 8.220 LKW-Maut an?", a: "Ja. Seit dem 1. Juli 2024 gilt die LKW-Maut in Deutschland bereits ab einer technisch zulässigen Gesamtmasse von mehr als 3,5 t für Fahrzeuge, die für den Güterkraftverkehr bestimmt oder genutzt werden. Der MAN TGL 8.220 mit 7.490 kg zGG ist damit mautpflichtig. Wir berechnen die angefallene Maut per Einzelfahrtnachweis an Sie weiter." },
       { q: "Wird das Fahrzeug angeliefert oder muss es abgeholt werden?", a: "Das Nutzfahrzeug ist selbstfahrend und wird in der Regel am Standort Krefeld abgeholt und nach Mietende wieder zurückgebracht. Eine Anlieferung per Tieflader ist nicht erforderlich." },
     ],
   },
