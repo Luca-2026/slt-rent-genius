@@ -48,6 +48,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Modell kommt zur Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe zum Einsatz.",
     primaryKeywords: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger leihen in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Welche Anschlüsse stehen am Doosan G100 zur Verfügung?", a: "Das Aggregat verfügt über 2x Schuko 16A, 1x CEE 32A 5-Pol, 1x CEE 63A 5-Pol und 1x CEE 125A 5-Pol." },
       { q: "Wie lange kann das Aggregat ohne Nachbetanken betrieben werden?", a: "Der 176-Liter-Tank ermöglicht bei einer Last von 75 % eine Autonomie von ca. 11 Stunden." },
