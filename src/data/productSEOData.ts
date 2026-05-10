@@ -1280,6 +1280,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Partyzelt bietet eine überdachte Fläche von 9 m² für private Veranstaltungen im Außenbereich.",
     primaryKeywords: "Partyzelt 3x3m mieten in Krefeld, Partyzelt 3x3m leihen in Krefeld, Partyzelt 3x3m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie wird die Bildung von Wassersäcken auf dem Dach verhindert?", a: "Das Partyzelt ist mit Dachspannern ausgestattet, die der Bildung von Wassersäcken entgegenwirken." },
       { q: "Wie viele Personen finden im Partyzelt 3x3m Platz?", a: "Ohne Bestuhlung bietet das Zelt Platz für ca. 0,6 m²/Person, bei Reihenbestuhlung oder Bierzeltgarnituren wird mit 0,71 m²/Person gerechnet." },
