@@ -201,6 +201,15 @@ export function ProductBookingDialog({
     setSending(true);
 
     try {
+      const selectedExtraItems = (productExtras || []).filter((x) => form.selectedExtras.includes(x.id));
+      const extrasSummary = selectedExtraItems.length
+        ? selectedExtraItems.map((x) => `- ${x.label}: ${x.price.toFixed(2)} € einmalig`).join("\n")
+        : "";
+      const extrasTotal = selectedExtraItems.reduce((sum, x) => sum + x.price, 0);
+      const messageWithExtras = extrasSummary
+        ? `${form.message ? form.message + "\n\n" : ""}Gewünschte Zusatzleistungen (Service & Zubehör):\n${extrasSummary}\n\nSumme Zusatzleistungen: ${extrasTotal.toFixed(2)} € einmalig`
+        : form.message;
+
       const { error } = await supabase.functions.invoke("send-inquiry-email", {
         body: {
           productName: product.name,
@@ -209,6 +218,7 @@ export function ProductBookingDialog({
           locationPhone: location.phone,
           locationAddress: location.address,
           ...form,
+          message: messageWithExtras,
         },
       });
 
