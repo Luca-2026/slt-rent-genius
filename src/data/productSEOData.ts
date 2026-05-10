@@ -7236,6 +7236,32 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wird das Fahrzeug angeliefert oder muss es abgeholt werden?", a: "Das Nutzfahrzeug ist selbstfahrend und wird in der Regel am Standort Krefeld abgeholt und nach Mietende wieder zurückgebracht. Eine Anlieferung per Tieflader ist nicht erforderlich." },
     ],
   },
+  "pritschenkipper-3-5t-dreiseitenkipper": {
+    excelName: "Opel Movano 3,5t Pritschenwagen – Dreiseitenkipper",
+    seoTitle: "Opel Movano 3,5t Dreiseitenkipper mieten Krefeld",
+    metaDescription: "Opel Movano 3,5-Tonner Pritschenwagen mit Dreiseiten-Kippvorrichtung mieten in Krefeld. Führerschein B, 1.135 kg Nutzlast, AHK 2,5 t, Klima & DAB. Auf Anfrage.",
+    h1: "Opel Movano 3,5t Pritschenwagen Dreiseitenkipper mieten in Krefeld",
+    h2s: [
+      "Technische Daten & Ladefläche",
+      "Führerschein B & Nutzlast",
+      "Einsatzgebiete: Bau, GaLaBau & Umzug",
+      "Versicherung, Kaution & Mietkonditionen",
+    ],
+    useCaseBau: "Transport von Sand, Kies, Mutterboden, Pflaster, Bauschutt und Werkzeug zur Baustelle. Die Dreiseiten-Kippvorrichtung erlaubt präzises Entladen nach hinten, links und rechts – ideal für Pflasterarbeiten, Garten- und Tiefbau, ohne dass aufwändig mit Schaufel oder Radlader nachgearbeitet werden muss.",
+    useCaseEvent: "Auf- und Abbau von Bühnen, Messeständen und Festaufbauten: Transport von Bodenplatten, Stellwänden, Dekomaterial oder Catering-Equipment. Die offene Pritsche mit klappbaren Bordwänden erleichtert das Be- und Entladen sperriger Güter.",
+    useCasePrivat: "Gartenumgestaltung, Hausbau in Eigenregie, Möbeltransporte oder Entrümpelungen: Mit Führerscheinklasse B fahrbar, daher auch ohne LKW-Schein nutzbar. Ideal zum Abfahren von Aushub oder Grünschnitt zur Deponie.",
+    primaryKeywords: "Opel Movano mieten Krefeld, 3,5t Pritschenwagen mieten Krefeld, Dreiseitenkipper Transporter mieten Krefeld, Kipper Führerschein B Krefeld, Pritschenkipper mieten NRW",
+    is247: false,
+    faqs: [
+      { q: "Welcher Führerschein ist für den 3,5-Tonner Pritschenwagen erforderlich?", a: "Mit 3.500 kg zulässigem Gesamtgewicht darf das Fahrzeug mit der Führerscheinklasse B (PKW-Führerschein) gefahren werden. Ein zusätzlicher LKW-Führerschein ist nicht nötig." },
+      { q: "Wie viel kann ich auf der Pritsche zuladen?", a: "Bei einem Leergewicht von 2.365 kg und 3.500 kg zulässigem Gesamtgewicht beträgt die Nutzlast 1.135 kg. Die Ladefläche misst 3,60 × 2,05 m bei 35 cm Bordwandhöhe." },
+      { q: "In welche Richtungen kann der Aufbau kippen?", a: "Der Aufbau ist als Dreiseitenkipper ausgeführt: Er kippt nach hinten, links und rechts. Damit lässt sich Material zielgerichtet neben oder hinter dem Fahrzeug entladen." },
+      { q: "Darf ich einen Anhänger ziehen?", a: "Ja, das Fahrzeug verfügt über eine Anhängerkupplung mit einer zulässigen Anhängelast von bis zu 2.500 kg. Beachte: Mit Klasse B sind Gespanne bis 3,5 t kombiniertes Gesamtgewicht erlaubt – darüber wird die Klasse BE benötigt." },
+      { q: "Welche Kaution und Selbstbeteiligung gelten?", a: "Vor Übergabe wird eine Kaution von 1.000 € hinterlegt. Im Schadenfall greift die Vollkasko-Versicherung mit einer Selbstbeteiligung von 2.500 € pro Schaden – analog zum MAN TGL." },
+      { q: "Sind Frei-Kilometer enthalten?", a: "Im Mietpreis sind 100 Frei-Kilometer pro Tag inklusive. Jeder weitere Kilometer wird mit 0,23 € netto berechnet. Diesel ist nicht enthalten – die Rückgabe erfolgt vollgetankt, sonst werden 2,85 €/l brutto in Rechnung gestellt." },
+      { q: "Wird das Fahrzeug angeliefert?", a: "Nein, das Nutzfahrzeug ist selbstfahrend und wird am Standort Krefeld abgeholt und nach Mietende dort wieder zurückgegeben. Eine Anlieferung per Tieflader ist nicht erforderlich." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
