@@ -71,6 +71,13 @@ export default function SLTUsedDetail() {
 
   const images: string[] = (machine.images && machine.images.length > 0) ? machine.images : [];
   const specs: Record<string, string> = (machine.specifications as any) || {};
+  const content: any = (machine as any).content || {};
+  const highlights: string[] = Array.isArray(content.highlights) ? content.highlights : [];
+  const whyItems: { title: string; desc: string }[] = Array.isArray(content.whyItems) ? content.whyItems : [];
+  const showroomLocs: string[] = Array.isArray(content.showroomLocations) && content.showroomLocations.length > 0
+    ? content.showroomLocations
+    : (machine.location ? [machine.location] : []);
+  const showroomNames = showroomLocs.map((l: string) => locationLabels[l] || l).join(" oder ");
 
   const title = `${machine.manufacturer} ${machine.model} gebraucht kaufen | SLT Used`;
   const description = `${machine.manufacturer} ${machine.model}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
