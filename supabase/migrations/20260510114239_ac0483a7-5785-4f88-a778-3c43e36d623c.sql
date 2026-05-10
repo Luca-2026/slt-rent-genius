@@ -1,0 +1,1 @@
+DELETE FROM public.google_reviews_cache WHERE place_id IN ('ChIJRyajcmSxuEcRAHvlWgXfF5c','ChIJf2ituEblvkcRUGua8HYhHCA');
