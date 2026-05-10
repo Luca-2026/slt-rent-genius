@@ -7156,6 +7156,30 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich das Zusatzschild mit kompletten Halteverbotssets mieten?", a: "Ja, das Blanko-Zusatzschild lässt sich mit unseren Halteverbots-Sets, Schrankenzäunen und Warnbarken kombinieren." },
     ],
   },
+  "weinsberg-caraone-480-qdk": {
+    excelName: "Weinsberg CaraOne 480 QDK",
+    seoTitle: "Weinsberg CaraOne 480 QDK Wohnwagen mieten in NRW | SLT Rental",
+    metaDescription: "Weinsberg CaraOne 480 QDK mieten in Krefeld, Bonn & Mülheim. Familien-Wohnwagen für bis zu 5 Personen mit Dusche, WC, Heizung & Mover. Ab 50 €/Tag.",
+    h1: "Weinsberg CaraOne 480 QDK mieten in NRW – Familien-Wohnwagen bei SLT Rental",
+    h2s: ["Platzangebot & Schlafplätze", "Technische Daten", "Ausstattung & Mietumfang", "Standorte & Verfügbarkeit"],
+    useCaseBau: "",
+    useCaseEvent: "Mobile Übernachtung für Crew oder Gäste bei mehrtägigen Veranstaltungen, Festivals und Outdoor-Events.",
+    useCasePrivat: "Familienurlaub, Wochenendtrips, Campingreisen an Nord- und Ostsee, in die Eifel, an den Bodensee oder in die Alpen.",
+    primaryKeywords: "Wohnwagen mieten NRW, Weinsberg CaraOne 480 QDK mieten, Wohnwagen mieten Krefeld, Wohnwagen mieten Bonn, Wohnwagen mieten Mülheim an der Ruhr",
+    is247: false,
+    faqs: [
+      { q: "Was kostet es, den Weinsberg CaraOne 480 QDK bei SLT Rental zu mieten?", a: "Die Tagesmiete beginnt bei 50 € pro Tag. Hinzu kommen 149 € Endreinigungsgebühr und eine Kaution von 800 €. Die Mindestmietdauer beträgt 5 Tage. Längere Mietzeiträume und Saisonpreise sind auf Anfrage möglich." },
+      { q: "Wo kann ich in NRW einen Wohnwagen mieten?", a: "SLT Rental bietet die Anmietung des Weinsberg CaraOne 480 QDK an drei Standorten in Nordrhein-Westfalen: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr. Damit decken wir den gesamten Großraum Düsseldorf, Köln, Bonn, Duisburg, Essen und die linksrheinischen Niederrhein-Regionen ab." },
+      { q: "Welchen Führerschein brauche ich, um den Wohnwagen zu ziehen?", a: "Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg. Je nach Zugfahrzeug-Gewicht reicht die Führerscheinklasse B mit Schlüssel 96 (B96) oder die Klasse BE. Reine B-Führerscheine genügen nur, wenn das Zugfahrzeug entsprechend leicht ist – wir prüfen das vor der Buchung gemeinsam mit dir." },
+      { q: "Für wie viele Personen ist der Wohnwagen geeignet?", a: "Der CaraOne 480 QDK bietet bis zu 5 Schlafplätze: ein Querbett im Bug, ein Etagenbett im Heck und die Mittelsitzgruppe lässt sich zum Doppelbett umbauen. Ideal für Familien mit zwei oder drei Kindern oder für eine Gruppe von bis zu vier Erwachsenen." },
+      { q: "Hat der Wohnwagen eine Dusche und Toilette?", a: "Ja. Der Weinsberg CaraOne 480 QDK verfügt über eine vollwertige Nasszelle mit Warmwasser-Dusche, Waschbecken und einem Thetford-Cassetten-WC. Damit bist du auch auf einfachen Stell- oder Naturplätzen ohne Sanitäranlagen unabhängig." },
+      { q: "Wie lange muss ich den Wohnwagen mindestens mieten?", a: "Die Mindestmietdauer beträgt 5 Tage. Damit decken wir typische Wochenend- plus Brückentag-Zeiträume ebenso ab wie eine kurze Familienreise. Längere Mietdauern (Wochen- oder Monatspreise) sind auf Anfrage verfügbar." },
+      { q: "Sind Haustiere im Wohnwagen erlaubt?", a: "Hunde sind nach Absprache und mit Aufpreis für die Endreinigung erlaubt. Bitte gib in der Mietanfrage Größe und Anzahl deiner Tiere an, damit wir die Buchung entsprechend bestätigen können." },
+      { q: "Was ist im Mietpreis enthalten und was kostet extra?", a: "Im Tagespreis enthalten sind die voll ausgestattete Küche, eine 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung, eine ausführliche Einweisung sowie die Vollkaskoversicherung. Optional buchbar sind Vorzelt, Campingtisch und -stühle, Fahrradträger und Sat-Anlage." },
+      { q: "Kann ich auch in Düsseldorf, Köln oder Duisburg einen Wohnwagen mieten?", a: "Wir bedienen den gesamten Ballungsraum Rhein-Ruhr von unseren drei Standorten Krefeld, Bonn und Mülheim aus. Düsseldorf und Duisburg liegen in direkter Nachbarschaft zu Krefeld bzw. Mülheim, Köln und Leverkusen sind schnell von Bonn aus zu erreichen. Die Übergabe erfolgt am nächstgelegenen SLT-Standort." },
+      { q: "Wann ist der Wohnwagen verfügbar und wie buche ich?", a: "Die aktuelle Verfügbarkeit erfragst du bequem über unser Anfrageformular. Wir melden uns innerhalb von 24 Stunden mit einem konkreten Angebot. Hauptsaison (Juli–August, Schulferien NRW) ist erfahrungsgemäß früh ausgebucht – wir empfehlen eine Anfrage 8–12 Wochen vor Reisestart." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
