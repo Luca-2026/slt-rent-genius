@@ -1795,7 +1795,7 @@ export default function CategoryProducts() {
               <div className="lg:hidden order-3 col-span-1">
                 {category.id === "alle" ? (
                   <DeliveryCalculatorCompact showAllCategories />
-                ) : category.id !== "anhaenger" ? (
+                ) : category.id !== "anhaenger" && category.id !== "wohnwagen-camping" ? (
                   <DeliveryCalculatorCompact 
                     productCategoryId={category.id}
                     categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
