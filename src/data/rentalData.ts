@@ -1429,13 +1429,14 @@ const wohnwagenCampingProducts: Product[] = [weinsbergCaraOne480QDK];
 // === Nutzfahrzeuge (on-request, alle Standorte) ==============================
 const manKipperMeillerD205: Product = {
   id: "man-kipper-meiller-d205",
-  name: "MAN Kipper mit Meiller D205 Aufbau",
-  modelName: "MAN · Meiller D205",
+  name: "MAN 7,5t Dreiseitenkipper mieten – Meiller D205",
+  modelName: "MAN 7,5t · Meiller D205 Dreiseitenkipper",
   description:
-    "MAN Pritschen-Kipper mit Meiller D205 Aufbau, 220 PS, Automatikgetriebe, Euro 6e. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    "MAN 7,5-Tonner Dreiseitenkipper mit Meiller D205 Aufbau zum Mieten: kippbar nach hinten, links und rechts, 4,5 m³ Volumen, 220 PS, Automatikgetriebe, Euro 6e, Hydraulikanschluss für Kippanhänger. Ideal für Bau, Garten- und Landschaftsbau sowie Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
+  pricePerDay: "ab 75 €",
   onRequest: true,
-  tags: ["kipper", "auf anfrage"],
+  tags: ["dreiseitenkipper", "7,5 tonner", "kipper-lkw", "meiller d205", "auf anfrage"],
   specifications: {
     // Technische Daten
     "Hersteller": "MAN",
