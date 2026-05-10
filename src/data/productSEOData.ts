@@ -5533,6 +5533,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Einsatz als Weingläser bei privaten Feiern.",
     primaryKeywords: "Rotweinglas Passionata, 25er Set mieten in Krefeld, Rotweinglas Passionata, 25er Set leihen in Krefeld, Rotweinglas Passionata, 25er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 9,
     faqs: [
       { q: "Aus welchem Material bestehen die Passionata Rotweingläser?", a: "Die Gläser sind aus patentiertem Tritan®-Kristallglas gefertigt, welches als besonders bruchfest, kratzfest und spülmaschinenfest gilt." },
       { q: "Wie groß sind die einzelnen Gläser des Sets?", a: "Ein Rotweinglas hat die Abmessungen von ca. 94 × 94 × 238 mm (B × T × H)." },
@@ -6270,6 +6271,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Set eignet sich für private Anlässe wie Familienfeiern und Geburtstage.",
     primaryKeywords: "Teller Deluxe 27, 10er Set mieten in Krefeld, Teller Deluxe 27, 10er Set leihen in Krefeld, Teller Deluxe 27, 10er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 12,
     faqs: [
       { q: "Welche Maße haben die Teller?", a: "Die Teller der Serie Darwin haben einen Durchmesser von 27 cm." },
       { q: "Ist das Geschirr spülmaschinenfest?", a: "Ja, die Reinigung kann unkompliziert in der Spülmaschine oder per Hand erfolgen." },
@@ -6952,6 +6954,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Diese Weißweingläser eignen sich für die Bewirtung der Gäste bei privaten Feiern.",
     primaryKeywords: "Weißweinglas Passionata, 25er Set mieten in Krefeld, Weißweinglas Passionata, 25er Set leihen in Krefeld, Weißweinglas Passionata, 25er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 9,
     faqs: [
       { q: "Wie hoch ist das Fassungsvermögen der Passionata Weißweingläser?", a: "Jedes Glas verfügt über ein Fassungsvermögen von 450 ml." },
       { q: "Aus welchem Material bestehen die Gläser?", a: "Die Gläser sind aus Tritan®-Kristallglas gefertigt, welches als klar, kratzfest und bruchsicher gilt." },
