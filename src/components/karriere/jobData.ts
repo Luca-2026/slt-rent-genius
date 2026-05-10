@@ -122,6 +122,7 @@ export const jobListings: JobListing[] = [
     ],
     benefits: [
       "Attraktives Gehalt: 45.000 € – 60.000 € p. a. (je nach Erfahrung), faires Festgehalt mit leistungsbezogenen Komponenten",
+      "Attraktive Bonusregelung: Du partizipierst direkt am Erfolg des Standorts – überdurchschnittlicher Einsatz wird überdurchschnittlich vergütet",
       "Echte Standortverantwortung mit unternehmerischem Gestaltungsspielraum – keine Sachbearbeitungsrolle mit Titel",
       "Gezielte Weiterentwicklung durch externe Schulungen und Herstellerzertifizierungen (Zoomlion, Niftylift u. a.)",
       "Arbeit mit modernsten KI-Tools der Branche – von KI-gestützter Disposition über automatisierte Angebotserstellung bis zur KI-Kundenkommunikation",
