@@ -647,9 +647,20 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                   <span>E-Mail:</span>
                   <span className="text-foreground">{getValues("email")}</span>
                   <span>Lebenslauf:</span>
-                  <span className="text-foreground">{resumeFile?.name || "-"}</span>
+                  <span className={resumeFile ? "text-foreground" : "text-destructive font-medium"}>
+                    {resumeFile?.name || "fehlt – bitte zurück zu Schritt 3"}
+                  </span>
                 </div>
               </div>
+              {!resumeFile && (
+                <button
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="text-sm text-destructive underline"
+                >
+                  Lebenslauf fehlt – jetzt hochladen
+                </button>
+              )}
 
               <p className="text-xs text-muted-foreground">
                 Mit dem Absenden der Bewerbung erklärst du dich mit der Verarbeitung deiner 
