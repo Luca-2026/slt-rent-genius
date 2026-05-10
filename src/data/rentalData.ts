@@ -1513,7 +1513,7 @@ const pritschenkipper35t: Product = {
   ],
   pricePerDay: "ab 55 €",
   onRequest: true,
-  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "doppelkabine", "opel movano", "führerschein b", "auf anfrage"],
+  tags: ["dreiseitenkipper", "kipper", "3,5-tonner", "pritschenwagen", "doppelkabine", "opel movano", "fuehrerschein-b", "auf anfrage"],
   specifications: {
     // Fahrzeugdaten
     "Fahrzeugtyp": "PKW-Pritschenwagen mit Doppelkabine",
