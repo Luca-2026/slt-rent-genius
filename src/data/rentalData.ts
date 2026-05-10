@@ -1429,8 +1429,8 @@ const wohnwagenCampingProducts: Product[] = [weinsbergCaraOne480QDK];
 // === Nutzfahrzeuge (on-request, alle Standorte) ==============================
 const manKipperMeillerD205: Product = {
   id: "man-kipper-meiller-d205",
-  name: "MAN TGL 8.220 4x2 – 7,5t Dreiseitenkipper",
-  modelName: "MAN TGL 8.220 4x2 · Dreiseitenkipper",
+  name: "7,5t Dreiseitenkipper",
+  modelName: "MAN TGL 8.220 4x2 · Meiller D205",
   description:
     "MAN 7,5-Tonner Dreiseitenkipper mit Meiller D205 Aufbau zum Mieten: kippbar nach hinten, links und rechts, 4,5 m³ Volumen, 220 PS, Automatikgetriebe, Euro 6e, Hydraulikanschluss für Kippanhänger. Ideal für Bau, Garten- und Landschaftsbau sowie Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
@@ -1499,8 +1499,8 @@ const manKipperMeillerD205: Product = {
 
 const pritschenkipper35t: Product = {
   id: "pritschenkipper-3-5t-dreiseitenkipper",
-  name: "Opel Movano 3,5t Pritschenwagen – Dreiseitenkipper Doppelkabine",
-  modelName: "Opel Movano (oder vergleichbar) · 3,5t Dreiseitenkipper · Doppelkabine",
+  name: "3,5t Pritschenwagen Dreiseitenkipper",
+  modelName: "Opel Movano (oder vergleichbar) · Doppelkabine",
   description:
     "Opel Movano 3,5-Tonner Pritschenwagen mit Doppelkabine und Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio, bis zu 7 Sitzplätze. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
