@@ -20,6 +20,7 @@ Deno.serve(async (req) => {
       customerType, companyName, vatId,
       salutation, firstName, lastName, email, phone,
       billingIdentical, billingCompany, billingStreet, billingPlz, billingCity,
+      financingDesired, financingTerm, financingDownPayment,
       message,
     } = body;
 
