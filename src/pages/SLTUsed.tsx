@@ -205,41 +205,47 @@ export default function SLTUsed() {
                 ? "Diese Maschine wurde bereits verkauft"
                 : "";
 
+              const detailHref = machine.slug ? `/verkauf/gebrauchtmaschinen/${machine.slug}` : null;
+              const Wrapper: any = detailHref ? Link : "div";
+              const wrapperProps: any = detailHref ? { to: detailHref } : {};
+
               return (
                 <Card key={machine.id} className="group overflow-hidden hover:shadow-lg transition-all border-2 hover:border-primary/30">
-                  <div className="aspect-[4/3] bg-muted relative overflow-hidden">
-                    {machine.images && machine.images.length > 0 ? (
-                      <img
-                        src={machine.images[0]}
-                        alt={`${machine.manufacturer} ${machine.model}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
-                        <Package className="h-16 w-16 text-muted-foreground/30" />
-                      </div>
-                    )}
-                    <div className="absolute top-3 left-3 flex gap-2">
-                      {machine.is_featured && (
-                        <Badge className="bg-accent text-accent-foreground text-xs">Top-Angebot</Badge>
+                  <Wrapper {...wrapperProps} className="block">
+                    <div className="aspect-[4/3] bg-muted relative overflow-hidden">
+                      {machine.images && machine.images.length > 0 ? (
+                        <img
+                          src={machine.images[0]}
+                          alt={`${machine.manufacturer} ${machine.model}`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
+                          <Package className="h-16 w-16 text-muted-foreground/30" />
+                        </div>
                       )}
-                      {isReserved && <Badge variant="secondary" className="text-xs">Reserviert</Badge>}
-                      {isSold && <Badge variant="destructive" className="text-xs">Verkauft</Badge>}
-                    </div>
-                    {machine.reference_number && (
-                      <div className="absolute bottom-3 right-3">
-                        <Badge variant="outline" className="bg-background/80 backdrop-blur-sm text-xs">
-                          {machine.reference_number}
-                        </Badge>
+                      <div className="absolute top-3 left-3 flex gap-2">
+                        {machine.is_featured && (
+                          <Badge className="bg-accent text-accent-foreground text-xs">Top-Angebot</Badge>
+                        )}
+                        {isReserved && <Badge variant="secondary" className="text-xs">Reserviert</Badge>}
+                        {isSold && <Badge variant="destructive" className="text-xs">Verkauft</Badge>}
                       </div>
-                    )}
-                  </div>
+                      {machine.reference_number && (
+                        <div className="absolute bottom-3 right-3">
+                          <Badge variant="outline" className="bg-background/80 backdrop-blur-sm text-xs">
+                            {machine.reference_number}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </Wrapper>
 
                   <CardContent className="p-4">
-                    <div className="mb-2">
+                    <Wrapper {...wrapperProps} className="block mb-2">
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{machine.manufacturer}</p>
                       <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{machine.model}</h3>
-                    </div>
+                    </Wrapper>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3">
                       {machine.year && <span>Bj. {machine.year}</span>}
                       {machine.hours != null && <span>{machine.hours.toLocaleString("de-DE")} Bh</span>}
@@ -274,6 +280,12 @@ export default function SLTUsed() {
                         </TooltipTrigger>
                         <TooltipContent><p>{tooltipText}</p></TooltipContent>
                       </Tooltip>
+                    ) : detailHref ? (
+                      <Button asChild className="w-full">
+                        <Link to={detailHref}>
+                          Details ansehen <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
                     ) : (
                       <Button className="w-full" onClick={() => openInquiry(machine)}>
                         Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
