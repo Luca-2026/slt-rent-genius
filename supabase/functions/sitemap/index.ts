@@ -185,6 +185,18 @@ Deno.serve(async (req) => {
       urls.push(urlEntry(article.path, article.priority, article.changefreq, TODAY));
     }
 
+    // 7. Job postings (each open position has its own dedicated landing page)
+    const jobSlugs = [
+      'lieferfahrer-baumaschinen-krefeld',
+      'ausbildung-kaufmann-bueromanagement-krefeld-bonn',
+      'baumaschinentechniker-servicetechniker-krefeld',
+      'vertriebsmitarbeiter-baumaschinen-zoomlion-nrw',
+      'kundenberater-disponent-miete-verkauf-krefeld-bonn',
+    ];
+    for (const slug of jobSlugs) {
+      urls.push(urlEntry(`/karriere/${slug}`, '0.8', 'weekly', TODAY));
+    }
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}

@@ -7,15 +7,49 @@ export interface JobSpecificField {
   placeholder?: string;
 }
 
+export interface JobLocationDetail {
+  city: string;
+  postalCode: string;
+  street: string;
+  region?: string;
+}
+
 export interface JobListing {
   id: string;
+  /** URL slug, defaults to id */
+  slug: string;
   title: string;
+  /** Short headline shown under H1 on detail page */
+  shortPitch?: string;
   location: string;
+  /** Structured locations for JSON-LD (one or many) */
+  locations: JobLocationDetail[];
   type: string;
+  /** Schema.org employmentType: FULL_TIME | PART_TIME | CONTRACTOR | TEMPORARY | INTERN | VOLUNTEER | PER_DIEM | OTHER */
+  employmentType: ("FULL_TIME" | "PART_TIME" | "CONTRACTOR" | "TEMPORARY" | "INTERN" | "OTHER")[];
   startDate: string;
+  /** ISO date when posted (defaults to today at runtime if missing) */
+  datePosted?: string;
+  /** ISO date until which the posting is valid */
+  validThrough?: string;
   description: string;
+  /** Optional concrete day-to-day tasks list */
+  tasks?: string[];
   requirements: string[];
   benefits: string[];
+  /** Optional salary range in EUR per year */
+  salaryMin?: number;
+  salaryMax?: number;
+  salaryUnit?: "YEAR" | "MONTH" | "HOUR";
+  /** Allow remote work */
+  remote?: boolean;
+  /** SEO meta override */
+  seoTitle?: string;
+  seoDescription?: string;
+  /** Industry / department */
+  industry?: string;
+  /** FAQ specifically for this role */
+  faqs?: { question: string; answer: string }[];
   specificFields: JobSpecificField[];
   // Wizard customization
   askSalary: boolean;
@@ -25,9 +59,44 @@ export interface JobListing {
   askExperience?: boolean;
 }
 
+const DEFAULT_LOC_KREFELD: JobLocationDetail = {
+  city: "Krefeld",
+  postalCode: "47807",
+  street: "Anrather Straße 291",
+  region: "NRW",
+};
+const DEFAULT_LOC_BONN: JobLocationDetail = {
+  city: "Bonn",
+  postalCode: "53179",
+  street: "Drachenburgstraße 8",
+  region: "NRW",
+};
+
 export const jobListings: JobListing[] = [
   {
     id: "lieferfahrer",
+    slug: "lieferfahrer-baumaschinen-krefeld",
+    shortPitch: "Werde Teil unseres Logistik-Teams und liefere Baumaschinen, Anhänger & Equipment direkt zu unseren Kunden in NRW.",
+    locations: [DEFAULT_LOC_KREFELD],
+    employmentType: ["FULL_TIME", "PART_TIME"],
+    datePosted: "2026-04-01",
+    validThrough: "2026-09-30",
+    industry: "Vermietung & Logistik",
+    salaryMin: 14,
+    salaryMax: 18,
+    salaryUnit: "HOUR",
+    tasks: [
+      "Auslieferung und Abholung von Baumaschinen, Anhängern und Eventtechnik im Großraum NRW",
+      "Sicheres Verladen und Sichern der Mietgegenstände",
+      "Kurze Einweisung der Kunden vor Ort",
+      "Pflege und Sichtprüfung von Fahrzeug und Anhänger",
+    ],
+    seoTitle: "Lieferfahrer (m/w/d) Baumaschinen Krefeld – Job bei SLT Rental",
+    seoDescription: "Aushilfe / Lieferfahrer in Krefeld gesucht. Baumaschinen & Anhänger ausliefern, BE-Führerschein erforderlich. Jetzt bei SLT Rental bewerben.",
+    faqs: [
+      { question: "Brauche ich Vorerfahrung mit Baumaschinen?", answer: "Nein. Wichtig sind Führerschein BE und technisches Interesse – wir arbeiten dich ein." },
+      { question: "Ist eine Anstellung in Teilzeit möglich?", answer: "Ja, Vollzeit und Teilzeit sind möglich. Auch Aushilfen / Minijob auf Anfrage." },
+    ],
     title: "Aushilfe / Lieferfahrer (m/w/d) für Vermietgegenstände",
     location: "Krefeld",
     type: "Vollzeit / Aushilfe",
@@ -73,6 +142,28 @@ export const jobListings: JobListing[] = [
   },
   {
     id: "ausbildung-buero",
+    slug: "ausbildung-kaufmann-bueromanagement-krefeld-bonn",
+    shortPitch: "Starte deine Ausbildung mit modernsten KI-Tools, einem familiären Team und besten Übernahmechancen.",
+    locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
+    employmentType: ["FULL_TIME"],
+    datePosted: "2026-03-01",
+    validThrough: "2026-07-31",
+    industry: "Kaufmännische Ausbildung",
+    salaryMin: 950,
+    salaryMax: 1300,
+    salaryUnit: "MONTH",
+    tasks: [
+      "Mitarbeit in Auftragsabwicklung, Angebotserstellung und Buchhaltung",
+      "Kundenkommunikation per Telefon und E-Mail",
+      "Arbeit mit modernen ERP-, CRM- und KI-Tools",
+      "Wechsel zwischen den Abteilungen Vermietung, Verkauf und Verwaltung",
+    ],
+    seoTitle: "Ausbildung Büromanagement (m/w/d) 2026 in Krefeld oder Bonn – SLT Rental",
+    seoDescription: "Ausbildung zur Kauffrau/zum Kaufmann für Büromanagement bei SLT Rental in Krefeld oder Bonn. Start 01.08.2026, KI-Tools, beste Übernahmechancen.",
+    faqs: [
+      { question: "Wann startet die Ausbildung?", answer: "Der reguläre Ausbildungsstart ist der 01.08.2026. Ein späterer Einstieg ist nach Absprache möglich." },
+      { question: "Welche Schulnoten erwartet ihr?", answer: "Wichtiger als Noten sind Motivation und Lernbereitschaft. Mittlere Reife oder höher sollte vorhanden sein." },
+    ],
     title: "Ausbildung Kaufmann / Kauffrau für Büromanagement (m/w/d)",
     location: "Krefeld oder Bonn",
     type: "Ausbildung",
@@ -127,6 +218,28 @@ export const jobListings: JobListing[] = [
   },
   {
     id: "servicetechniker",
+    slug: "baumaschinentechniker-servicetechniker-krefeld",
+    shortPitch: "Halte unsere Flotte von Mini- und Kompaktbaggern, Anhängern und Eventtechnik in Topform – moderne Werkstatt, faires Gehalt.",
+    locations: [DEFAULT_LOC_KREFELD],
+    employmentType: ["FULL_TIME"],
+    datePosted: "2026-03-15",
+    validThrough: "2026-12-31",
+    industry: "Baumaschinentechnik / Werkstatt",
+    salaryMin: 38000,
+    salaryMax: 52000,
+    salaryUnit: "YEAR",
+    tasks: [
+      "Wartung, Reparatur und Instandsetzung von Bau- und Mietmaschinen",
+      "Fehlerdiagnose an Hydraulik-, Elektrik- und Motorsystemen",
+      "Vorbereitung und Endkontrolle der Geräte vor Vermietung",
+      "Dokumentation der Servicearbeiten",
+    ],
+    seoTitle: "Baumaschinentechniker / Servicetechniker (m/w/d) Krefeld – SLT Rental",
+    seoDescription: "Baumaschinentechniker (m/w/d) in Krefeld gesucht. Wartung & Reparatur in moderner Werkstatt, faire Vergütung. Jetzt bei SLT Rental bewerben.",
+    faqs: [
+      { question: "Welche Hersteller bedient ihr?", answer: "Schwerpunkt Zoomlion, Bobcat, Yanmar sowie diverse Anhänger- und Eventtechnik-Hersteller." },
+      { question: "Gibt es Bereitschaftsdienste?", answer: "Nein. Wir arbeiten in geregelten Werkstattzeiten – planbar und familienfreundlich." },
+    ],
     title: "Baumaschinentechniker / Servicetechniker (m/w/d)",
     location: "Krefeld",
     type: "Vollzeit",
@@ -177,6 +290,29 @@ export const jobListings: JobListing[] = [
   },
   {
     id: "vertrieb",
+    slug: "vertriebsmitarbeiter-baumaschinen-zoomlion-nrw",
+    shortPitch: "Verkaufe als offizieller Zoomlion-Vertragshändler in NRW – mit Firmenwagen, Homeoffice-Option und KI-gestützten Vertriebstools.",
+    locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
+    employmentType: ["FULL_TIME"],
+    datePosted: "2026-03-01",
+    validThrough: "2026-12-31",
+    industry: "Vertrieb / Sales",
+    salaryMin: 55000,
+    salaryMax: 85000,
+    salaryUnit: "YEAR",
+    remote: true,
+    tasks: [
+      "Beratung und Verkauf von Baumaschinen und Zubehör (Schwerpunkt Zoomlion)",
+      "Eigenständige Bearbeitung des gesamten Verkaufsprozesses inkl. Angebot, Abschluss & Übergabe",
+      "Aufbau und Pflege von Kundenbeziehungen in NRW",
+      "Nutzung von CRM und KI-gestützten Vertriebstools",
+    ],
+    seoTitle: "Vertriebsmitarbeiter Baumaschinen (m/w/d) NRW – SLT Rental",
+    seoDescription: "Vertriebsmitarbeiter (m/w/d) für Zoomlion-Baumaschinen in NRW gesucht. Firmenwagen, Homeoffice, KI-gestützte Tools. Jetzt bei SLT Rental bewerben.",
+    faqs: [
+      { question: "Wo ist mein Einsatzgebiet?", answer: "Schwerpunkt Nordrhein-Westfalen mit den Standorten Krefeld und Bonn als Basis." },
+      { question: "Gibt es einen Firmenwagen?", answer: "Ja, inklusive privater Nutzung." },
+    ],
     title: "Vertriebsmitarbeiter (m/w/d) im Verkauf von Baumaschinen & Zubehör",
     location: "Homeoffice oder Büro in Bonn / Krefeld",
     type: "Vollzeit",
@@ -237,6 +373,28 @@ export const jobListings: JobListing[] = [
   },
   {
     id: "kundenberater-disponent",
+    slug: "kundenberater-disponent-miete-verkauf-krefeld-bonn",
+    shortPitch: "Sei erste Anlaufstelle für unsere Kunden – berate, kalkuliere und disponiere Baumaschinen, Anhänger & Equipment.",
+    locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
+    employmentType: ["FULL_TIME"],
+    datePosted: "2026-04-01",
+    validThrough: "2026-12-31",
+    industry: "Kundenberatung / Disposition",
+    salaryMin: 36000,
+    salaryMax: 48000,
+    salaryUnit: "YEAR",
+    tasks: [
+      "Beratung von Kunden vor Ort, am Telefon und per E-Mail",
+      "Erstellung von Angeboten und Mietverträgen",
+      "Disposition der Maschinen und Lieferungen zwischen den Standorten",
+      "Schnittstelle zwischen Werkstatt, Vertrieb und Logistik",
+    ],
+    seoTitle: "Kundenberater / Disponent Vermietung (m/w/d) Krefeld & Bonn – SLT Rental",
+    seoDescription: "Kundenberater / Disponent (m/w/d) für Miete & Verkauf in Krefeld oder Bonn gesucht. Faire Vergütung, modernes Team. Jetzt bei SLT Rental bewerben.",
+    faqs: [
+      { question: "An welchem Standort werde ich eingesetzt?", answer: "Du kannst dich für Krefeld oder Bonn entscheiden. Standortübergreifende Vertretung kann nach Absprache vorkommen." },
+      { question: "Gibt es Wochenenddienste?", answer: "Samstag rotierend (8:00–14:30 Uhr) im Team. Sonntag bleibt frei." },
+    ],
     title: "Kundenberater / Disponent im Bereich Miete und Verkauf (m/w/d)",
     location: "Krefeld und Bonn",
     type: "Vollzeit",

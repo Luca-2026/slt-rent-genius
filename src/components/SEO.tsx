@@ -232,3 +232,76 @@ export const SLT_BREADCRUMB_JSONLD = (items: { name: string; url: string }[]) =>
     item: `https://www.slt-rental.de${item.url}`,
   })),
 });
+
+// JobPosting JSON-LD for Google Jobs / Stepstone / Indeed aggregators
+interface JobPostingInput {
+  title: string;
+  description: string; // HTML allowed
+  datePosted: string; // ISO
+  validThrough?: string; // ISO
+  employmentType: string[];
+  identifier: string;
+  url: string; // absolute URL incl. https://www.slt-rental.de
+  industry?: string;
+  educationRequirements?: string;
+  experienceRequirements?: string;
+  locations: { city: string; postalCode: string; street: string; region?: string }[];
+  remote?: boolean;
+  baseSalary?: { min: number; max: number; unitText: "YEAR" | "MONTH" | "HOUR" };
+}
+
+export const SLT_JOBPOSTING_JSONLD = (job: JobPostingInput) => {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: job.title,
+    description: job.description,
+    datePosted: job.datePosted,
+    employmentType: job.employmentType,
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "SLT Rental",
+      sameAs: "https://www.slt-rental.de",
+      logo: DEFAULT_OG_IMAGE,
+    },
+    identifier: {
+      "@type": "PropertyValue",
+      name: "SLT Rental",
+      value: job.identifier,
+    },
+    directApply: true,
+    url: job.url,
+    jobLocation: job.locations.map((loc) => ({
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: loc.street,
+        addressLocality: loc.city,
+        postalCode: loc.postalCode,
+        addressRegion: loc.region ?? "NRW",
+        addressCountry: "DE",
+      },
+    })),
+  };
+  if (job.validThrough) data.validThrough = job.validThrough;
+  if (job.industry) data.industry = job.industry;
+  if (job.educationRequirements) data.educationRequirements = job.educationRequirements;
+  if (job.experienceRequirements) data.experienceRequirements = job.experienceRequirements;
+  if (job.remote) {
+    data.jobLocationType = "TELECOMMUTE";
+    data.applicantLocationRequirements = { "@type": "Country", name: "DE" };
+  }
+  if (job.baseSalary) {
+    data.baseSalary = {
+      "@type": "MonetaryAmount",
+      currency: "EUR",
+      value: {
+        "@type": "QuantitativeValue",
+        minValue: job.baseSalary.min,
+        maxValue: job.baseSalary.max,
+        unitText: job.baseSalary.unitText,
+      },
+    };
+  }
+  return data;
+};
