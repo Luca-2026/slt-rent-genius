@@ -6271,6 +6271,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Set eignet sich für private Anlässe wie Familienfeiern und Geburtstage.",
     primaryKeywords: "Teller Deluxe 27, 10er Set mieten in Krefeld, Teller Deluxe 27, 10er Set leihen in Krefeld, Teller Deluxe 27, 10er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 12,
     faqs: [
       { q: "Welche Maße haben die Teller?", a: "Die Teller der Serie Darwin haben einen Durchmesser von 27 cm." },
       { q: "Ist das Geschirr spülmaschinenfest?", a: "Ja, die Reinigung kann unkompliziert in der Spülmaschine oder per Hand erfolgen." },
