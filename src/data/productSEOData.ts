@@ -7200,5 +7200,14 @@ export const productSEOData: Record<string, ProductSEOData> = {
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
-  return productSEOData[productId];
+  if (productSEOData[productId]) return productSEOData[productId];
+  // Fallback: standortspezifische Varianten (z. B. "bonn-kettendumper-rmd800")
+  // greifen auf den Haupt-SEO-Eintrag zurück, falls vorhanden.
+  for (const prefix of ["bonn-", "muelheim-", "krefeld-"]) {
+    if (productId.startsWith(prefix)) {
+      const stripped = productId.slice(prefix.length);
+      if (productSEOData[stripped]) return productSEOData[stripped];
+    }
+  }
+  return undefined;
 }
