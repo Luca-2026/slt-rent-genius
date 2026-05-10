@@ -145,7 +145,9 @@ Gesendet über slt-rental.de/verkauf/gebrauchtmaschinen`;
     <p style="margin:4px 0;">Interesse: ${interestLabels[interest] || interest}</p>
     ${wishDate ? `<p style="margin:4px 0;">Wunschtermin: ${wishDate}</p>` : ""}
     ${deliveryOption ? `<p style="margin:4px 0;">Lieferung/Abholung: ${deliveryOption}</p>` : ""}
+    ${financingDesired ? `<p style="margin:4px 0;">Finanzierung: gewünscht${financingTerm ? `, Laufzeit ${financingTerm} Monate` : ""}${financingDownPayment ? `, Anzahlung ${financingDownPayment} €` : ""}</p>` : ""}
   </div>
+  ${financingDesired ? `<p>Wir leiten Deine Finanzierungsanfrage parallel an unseren Finanzierungspartner weiter und schicken Dir das passende Angebot mit unserer Rückmeldung mit.</p>` : ""}
   <p>Bei dringenden Rückfragen erreichst Du uns telefonisch unter <a href="tel:+4921514179904" style="color:#00507d;">02151 417 99 04</a> oder per E-Mail an <a href="mailto:kaufanfrage@slt-rental.de" style="color:#00507d;">kaufanfrage@slt-rental.de</a>.</p>
   <p style="margin-top:24px;">Beste Grüße<br/>Dein SLT-Rental Team</p>
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
