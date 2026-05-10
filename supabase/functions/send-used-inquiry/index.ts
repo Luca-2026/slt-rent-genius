@@ -89,6 +89,11 @@ Telefon:            ${phone}
 RECHNUNGSADRESSE
 ${billingBlock}
 
+FINANZIERUNG
+${financingDesired
+  ? `Gewünscht:          Ja\nLaufzeit:           ${financingTerm ? `${financingTerm} Monate` : "-"}\nAnzahlung:          ${financingDownPayment ? `${financingDownPayment} €` : "-"}`
+  : "Gewünscht:          Nein"}
+
 NACHRICHT
 ${message || "-"}
 ─────────────────────────────────────
