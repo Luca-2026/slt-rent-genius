@@ -1426,6 +1426,62 @@ const weinsbergCaraOne480QDK: Product = {
 
 const wohnwagenCampingProducts: Product[] = [weinsbergCaraOne480QDK];
 
+// === Nutzfahrzeuge (on-request, alle Standorte) ==============================
+const manKipperMeillerD205: Product = {
+  id: "man-kipper-meiller-d205",
+  name: "MAN Kipper mit Meiller D205 Aufbau",
+  modelName: "MAN · Meiller D205",
+  description:
+    "MAN Pritschen-Kipper mit Meiller D205 Aufbau, 220 PS, Automatikgetriebe, Euro 6e. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+  category: "kipper",
+  onRequest: true,
+  tags: ["kipper", "auf anfrage"],
+  specifications: {
+    // Technische Daten
+    "Hersteller": "MAN",
+    "Antrieb": "4x2",
+    "Anzahl Achsen": "2",
+    "Radstand": "3.050 mm",
+    "Fahrzeuglänge": "5.713 mm",
+    "Fahrzeughöhe": "2.628 mm",
+    "Fahrzeugbreite": "2.981 mm",
+    "Zul. Gesamtgewicht": "7.490 kg",
+    "Leergewicht": "5.176 kg",
+    "Nutzlast": "2.314 kg",
+    "Schadstoffklasse": "Euro 6e",
+    "Erstzulassung": "09.10.2024",
+    "Getriebe": "Automatik",
+    "PS / kW": "220 / 162",
+    // Achsen
+    "Bereifung Achse 1": "235/75 R17.5",
+    "Federung Achse 1": "Blattfederung",
+    "Bereifung Achse 2": "235/75 R17.5",
+    "Federung Achse 2": "Blattfederung",
+    // Aufbau Meiller D205
+    "Aufbau": "Meiller D205",
+    "Volumen": "4,5 m³",
+    "Bodenstärke": "2,5 mm",
+    "Stärke Seitenwände": "1,5 mm",
+    "Länge innen": "3.800 mm",
+    "Höhe innen": "500 mm",
+    "Breite innen": "2.350 mm",
+    "Hydraulikanschluss": "für Kippanhänger",
+    "Stirnwand": "700 mm – Stahl",
+    "Kippsteuerung im Fahrerhaus": "ja",
+    "Hintere Stoßstange": "starr",
+    "Verzurrmöglichkeit": "ja",
+    "Stirnwandgitter": "ja",
+    "Hecktür": "Pendelklappe",
+    "Seitenwand links": "klappbar",
+    "Seitenwand rechts": "klappbar",
+    "Material Seitenwände": "Stahl",
+    "Material Boden": "Stahl",
+  },
+};
+
+const nutzfahrzeugeProducts: Product[] = [manKipperMeillerD205];
+
+
 // Locations with their available categories and products
 export const locations: LocationData[] = [
   {
@@ -1482,7 +1538,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
     },
   },
   {
@@ -1626,7 +1682,7 @@ export const locations: LocationData[] = [
         "bonn"
       ),
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
     },
   },
   {
@@ -1683,7 +1739,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
       "aggregate": mergeWithFallback(
         [
           {
