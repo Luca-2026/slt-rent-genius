@@ -182,6 +182,10 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
           // billing
           billingIdentical,
           billingCompany, billingStreet, billingPlz, billingCity,
+          // financing
+          financingDesired,
+          financingTerm,
+          financingDownPayment,
           // message
           message,
         },
