@@ -1280,6 +1280,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Partyzelt bietet eine überdachte Fläche von 9 m² für private Veranstaltungen im Außenbereich.",
     primaryKeywords: "Partyzelt 3x3m mieten in Krefeld, Partyzelt 3x3m leihen in Krefeld, Partyzelt 3x3m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie wird die Bildung von Wassersäcken auf dem Dach verhindert?", a: "Das Partyzelt ist mit Dachspannern ausgestattet, die der Bildung von Wassersäcken entgegenwirken." },
       { q: "Wie viele Personen finden im Partyzelt 3x3m Platz?", a: "Ohne Bestuhlung bietet das Zelt Platz für ca. 0,6 m²/Person, bei Reihenbestuhlung oder Bierzeltgarnituren wird mit 0,71 m²/Person gerechnet." },
@@ -1297,6 +1298,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Partyzelt 4x6m mieten in Krefeld, Partyzelt 4x6m leihen in Krefeld, Partyzelt 4x6m mieten NRW",
     is247: false,
+    dailyPriceFrom: 45,
     faqs: [
       { q: "Wie viele Personen finden im Partyzelt 4x6m Platz?", a: "Bei einer Fläche von 24 m² können ohne Bestuhlung ca. 0,6 m² pro Person (insgesamt ca. 40 Personen) und bei Reihenbestuhlung oder Bierzeltgarnituren ca. 0,71 m² pro Person (insgesamt ca. 33 Personen) kalkuliert werden." },
       { q: "Welches Material wird für die Plane verwendet?", a: "Das Zelt verfügt über eine UV-beständige, rasterfaserverstärkte PVC-Plane mit einem Gewicht von 500 g/m² sowie integrierte Dachspanner zur Vermeidung von Wassersäcken." },
@@ -4792,6 +4794,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 3x3m mieten in Krefeld, Partyzelt 3x3m leihen in Krefeld, Partyzelt 3x3m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 3x3m Zelts?", a: "Das Zelt bietet Platz für ca. 15 stehende Personen oder ca. 13 Personen bei Bestuhlung." },
       { q: "Welche Materialeigenschaften weist die Plane auf?", a: "Es handelt sich um eine UV-beständige, rasterfaserverstärkte PVC-Plane mit einem Flächengewicht von 500 g/m²." },
@@ -4843,6 +4846,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Partyzelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 4x4m mieten in Krefeld, Partyzelt 4x4m leihen in Krefeld, Partyzelt 4x4m mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 4x4m Zelts?", a: "Das Zelt bietet stehend Platz für ca. 27 Personen (0,6 m²/Person) oder bei Bestuhlung für ca. 23 Personen (0,71 m²/Person)." },
       { q: "Aus welchem Material besteht die Bespannung?", a: "Die Plane besteht aus UV-beständiger, rasterfaserverstärkter 500 g/m² PVC-Folie." },
@@ -4860,6 +4864,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal geeignet für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 4x6m mieten in Krefeld, Partyzelt 4x6m leihen in Krefeld, Partyzelt 4x6m mieten NRW",
     is247: false,
+    dailyPriceFrom: 45,
     faqs: [
       { q: "Wie viele Personen finden im Partyzelt 4x6m Platz?", a: "Die Kapazität liegt stehend bei ca. 40 Personen (0,6 m²/Person) und bei Bestuhlung bei ca. 34 Personen (0,71 m²/Person)." },
       { q: "Welche Materialeigenschaften weist die Plane auf?", a: "Das Zelt verfügt über eine weiße, UV-beständige und rasterfaserverstärkte PVC-Plane mit einem Gewicht von 500 g/m²." },
@@ -5081,6 +5086,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenpartys, Geburtstage, Filmabende und Familienfeste – einfach in der Bedienung und sofort einsatzbereit.",
     primaryKeywords: "Popcornmaschine mieten in Krefeld, Popcornmaschine leihen Krefeld, Popcornmaschine mit Wagen mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Welche Stromversorgung benötigt die Popcornmaschine?", a: "Die Maschine läuft an einer normalen Haushaltssteckdose mit 230 V und hat eine Anschlussleistung von 850 W. Es ist kein Starkstrom erforderlich." },
       { q: "Wie viel Popcorn produziert die Maschine pro Durchgang?", a: "Pro Durchgang werden ca. 20 Standard-Portionen erzeugt. Empfohlene Befüllung: 150 g Mais, 50 g Zucker und 40 ml Öl." },
