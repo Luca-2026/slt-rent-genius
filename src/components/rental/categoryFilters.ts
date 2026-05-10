@@ -610,4 +610,5 @@ export const categoryDisplayNames: Record<string, string> = {
   "kommunikation": "catDisplay.kommunikation",
   "erdbewegung": "catDisplay.erdbewegung",
   "anhaenger": "catDisplay.anhaenger",
+  "wohnwagen-camping": "Wohnwagen & Campingartikel",
 };
