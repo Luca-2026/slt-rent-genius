@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -32,6 +32,9 @@ interface QuickApplyFormProps {
 
 export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const { toast } = useToast();
+  const formId = useId();
+  const resumeInputId = `${formId}-cv`;
+  const consentInputId = `${formId}-consent`;
   const [resume, setResume] = useState<File | null>(null);
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -178,7 +181,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         </div>
       </div>
       <div>
-        <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
+        <Label htmlFor={resumeInputId} className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
         {resume ? (
           <div className="flex items-center gap-3 rounded-md border-2 border-accent bg-accent/5 p-3">
             <CheckCircle2 className="h-6 w-6 text-accent shrink-0" />
@@ -196,7 +199,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => document.getElementById("qa-cv")?.click()}
+                onClick={() => document.getElementById(resumeInputId)?.click()}
               >
                 Ändern
               </Button>
@@ -216,7 +219,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
           </div>
         ) : (
           <label
-            htmlFor="qa-cv"
+            htmlFor={resumeInputId}
             className={`flex items-center justify-center gap-2 border-2 border-dashed rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground ${
               resumeError ? "border-destructive" : "border-border"
             }`}
@@ -226,7 +229,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
           </label>
         )}
         <input
-          id="qa-cv"
+          id={resumeInputId}
           type="file"
           accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           className="hidden"
@@ -236,12 +239,12 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
       </div>
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
         <input
-          id="qa-consent"
+          id={consentInputId}
           type="checkbox"
           {...register("consent")}
           className="mt-0.5"
         />
-        <label htmlFor="qa-consent">
+        <label htmlFor={consentInputId}>
           Ich willige in die Verarbeitung meiner Daten zur Bearbeitung meiner Bewerbung ein
           (siehe <a href="/datenschutz" className="underline">Datenschutz</a>). *
         </label>
