@@ -561,6 +561,7 @@ export const categoryFilterMap: Record<string, FilterSection[]> = {
   "traversen-rigging": traversenFilterSections,
   "kommunikation": kommunikationFilterSections,
   "erdbewegung": erdbewegungFilterSections,
+  "wohnwagen-camping": wohnwagenCampingFilterSections,
 };
 
 // Get search placeholder i18n keys for each category
