@@ -519,6 +519,7 @@ export default function ProductDetail() {
                   location={location}
                   categoryId={categoryId}
                   onBook={() => setShowBookingDialog(true)}
+                  dailyPriceFrom={productSEO?.dailyPriceFrom}
                   t={t}
                 />
               </div>
