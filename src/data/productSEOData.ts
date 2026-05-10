@@ -4864,6 +4864,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal geeignet für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 4x6m mieten in Krefeld, Partyzelt 4x6m leihen in Krefeld, Partyzelt 4x6m mieten NRW",
     is247: false,
+    dailyPriceFrom: 45,
     faqs: [
       { q: "Wie viele Personen finden im Partyzelt 4x6m Platz?", a: "Die Kapazität liegt stehend bei ca. 40 Personen (0,6 m²/Person) und bei Bestuhlung bei ca. 34 Personen (0,71 m²/Person)." },
       { q: "Welche Materialeigenschaften weist die Plane auf?", a: "Das Zelt verfügt über eine weiße, UV-beständige und rasterfaserverstärkte PVC-Plane mit einem Gewicht von 500 g/m²." },
