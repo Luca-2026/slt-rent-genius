@@ -270,7 +270,9 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
             salaryExpectation: data.salaryExpectation || null,
             motivation: data.motivation || null,
             resumeFilename: resumeData?.filename || null,
+            resumePath: resumeData?.url || null,
             coverLetterFilename: coverLetterData?.filename || null,
+            coverLetterPath: coverLetterData?.url || null,
           },
         });
       } catch (emailErr) {
