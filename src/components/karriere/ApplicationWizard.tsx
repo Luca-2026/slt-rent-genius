@@ -75,6 +75,10 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
   const [jobSpecificAnswers, setJobSpecificAnswers] = useState<Record<string, string>>({});
+  // Spam-Schutz: Honeypot + Zeitfalle
+  const [honeypot, setHoneypot] = useState("");
+  const formLoadedAt = useRef<number>(Date.now());
+  const honeypotId = useId();
   const { toast } = useToast();
 
   const totalSteps = 4;
