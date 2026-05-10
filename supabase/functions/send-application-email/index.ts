@@ -12,6 +12,16 @@ const HQ_ADDRESS = "Anrather Straße 291, 47807 Krefeld";
 const HQ_PHONE = "02151 417 99 04";
 const MAX_ATTACHMENT_BYTES = 18 * 1024 * 1024; // ~18 MB Resend limit per request
 
+function escapeHtml(input: unknown): string {
+  if (input === null || input === undefined) return "";
+  return String(input)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function fetchAttachment(
   supabase: ReturnType<typeof createClient>,
   path: string | null | undefined,
