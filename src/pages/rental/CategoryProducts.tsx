@@ -1743,7 +1743,7 @@ export default function CategoryProducts() {
                     )}
 
                     {/* Delivery Calculator - inside scrollable area */}
-                    {category.id !== "anhaenger" && (
+                    {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && (
                       <div className="hidden lg:block">
                         {category.id === "alle" ? (
                           <DeliveryCalculatorCompact showAllCategories />
