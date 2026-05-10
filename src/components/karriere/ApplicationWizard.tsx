@@ -197,6 +197,12 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
   const onSubmit = async (data: FormData) => {
+    // Spam-Schutz: Honeypot ausgefüllt oder Formular zu schnell abgeschickt
+    const elapsed = Date.now() - formLoadedAt.current;
+    if (honeypot.trim() !== "" || elapsed < 2000) {
+      setIsSuccess(true);
+      return;
+    }
     if (!resumeFile) {
       setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
       toast({
