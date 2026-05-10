@@ -57,25 +57,36 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_FILE_SIZE) {
+      setResumeError("Datei zu groß (max. 10 MB)");
       toast({ title: "Datei zu groß", description: "Max. 10 MB", variant: "destructive" });
       return;
     }
-    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+    const nameLower = file.name.toLowerCase();
+    const extOk = /\.(pdf|doc|docx)$/.test(nameLower);
+    if (!ACCEPTED_FILE_TYPES.includes(file.type) && !extOk) {
+      setResumeError("Nur PDF, DOC oder DOCX erlaubt");
       toast({ title: "Ungültiges Format", description: "Nur PDF, DOC oder DOCX", variant: "destructive" });
       return;
     }
+    setResumeError(null);
     setResume(file);
   };
 
   const onSubmit = async (values: FormValues) => {
+    if (!resume) {
+      setResumeError("Bitte Lebenslauf hochladen");
+      return;
+    }
     setSubmitting(true);
     try {
       let resumeUrl: string | null = null;
       let resumeFilename: string | null = null;
 
       if (resume) {
-        const ext = resume.name.split(".").pop();
-        const path = `${Date.now()}-${values.lastName}-${values.firstName}.${ext}`;
+        const ext = (resume.name.split(".").pop() || "pdf").toLowerCase();
+        const safeLast = sanitize(values.lastName) || "bewerber";
+        const safeFirst = sanitize(values.firstName) || "anonym";
+        const path = `${Date.now()}-${safeLast}-${safeFirst}.${ext}`;
         const { error: upErr } = await supabase.storage
           .from("bewerbungen")
           .upload(path, resume, { contentType: resume.type, upsert: false });
