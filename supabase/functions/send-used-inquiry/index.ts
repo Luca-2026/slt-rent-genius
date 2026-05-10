@@ -101,7 +101,7 @@ Gesendet über slt-rental.de/verkauf/gebrauchtmaschinen`;
       },
       body: JSON.stringify({
         from: "SLT-Rental Kaufanfrage <kaufanfrage@slt-rental.de>",
-        to: ["kaufanfrage@slt-rental.de"],
+        to: ["krefeld@slt-rental.de"],
         reply_to: email,
         subject,
         text: textBody,
