@@ -70,6 +70,11 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
     }
     setResumeError(null);
     setResume(file);
+    toast({
+      title: "Lebenslauf hochgeladen",
+      description: `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`,
+    });
+    e.target.value = "";
   };
 
   const onSubmit = async (values: FormValues) => {
