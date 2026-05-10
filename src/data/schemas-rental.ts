@@ -338,27 +338,40 @@ export function buildPageSchemas(route: SeoRoute): JsonLd[] {
 // ---------------------------------------------------------------
 
 export function resolveRouteSchemas(route: SeoRoute): JsonLd[] {
+  let base: JsonLd[];
   switch (route.routeType) {
     case "home":
-      return buildHomeSchemas();
+      base = buildHomeSchemas();
+      break;
     case "standort":
-      return buildStandortSchemas(route.standortData);
+      base = buildStandortSchemas(route.standortData);
+      break;
     case "localarea":
-      return buildLocalAreaSchemas(route.localareaData);
+      base = buildLocalAreaSchemas(route.localareaData);
+      break;
     case "solution":
-      return buildSolutionSchemas(route.solutionData);
+      base = buildSolutionSchemas(route.solutionData);
+      break;
     case "category":
-      return buildCategorySchemas(route.categoryData);
+      base = buildCategorySchemas(route.categoryData);
+      break;
     case "product":
-      return buildProductSchemas(route.productData);
+      base = buildProductSchemas(route.productData);
+      break;
     case "ratgeber":
-      return buildRatgeberSchemas(route.ratgeberData);
+      base = buildRatgeberSchemas(route.ratgeberData);
+      break;
     case "legal":
-      return buildLegalSchemas(route);
+      base = buildLegalSchemas(route);
+      break;
     case "page":
     default:
-      return buildPageSchemas(route);
+      base = buildPageSchemas(route);
   }
+  if (route.inlineSchemas?.length) {
+    base = [...base, ...route.inlineSchemas];
+  }
+  return base;
 }
 
 // Global schemas (rendered once on every page from index.html template,
