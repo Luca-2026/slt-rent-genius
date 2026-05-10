@@ -1056,8 +1056,8 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                {/* Delivery / Trailer Info – single instance (Wohnwagen werden nicht geliefert) */}
-                {categoryId === "wohnwagen-camping" ? null : categoryId === "anhaenger" ? (
+                {/* Delivery / Trailer Info – single instance (Wohnwagen & Nutzfahrzeuge sind selbstfahrend / werden nicht geliefert) */}
+                {categoryId === "wohnwagen-camping" || categoryId === "nutzfahrzeuge" ? null : categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
                 ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
                   <Card className="border-accent/30 bg-accent/5">

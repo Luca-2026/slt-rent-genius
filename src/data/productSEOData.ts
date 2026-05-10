@@ -7209,6 +7209,33 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wann ist der Wohnwagen verfügbar und wie buche ich?", a: "Die aktuelle Verfügbarkeit erfragst du bequem über unser Anfrageformular. Wir melden uns innerhalb von 24 Stunden mit einem konkreten Angebot. Hauptsaison (Juli–August, Schulferien NRW) ist erfahrungsgemäß früh ausgebucht – wir empfehlen eine Anfrage 8–12 Wochen vor Reisestart." },
     ],
   },
+  "man-kipper-meiller-d205": {
+    excelName: "MAN TGL 8.220 4x2 – 7,5t Dreiseitenkipper",
+    seoTitle: "MAN TGL 8.220 7,5t Dreiseitenkipper mieten Krefeld",
+    metaDescription: "MAN TGL 8.220 4x2 mit Meiller D205 Dreiseitenkipper mieten in Krefeld. 7,5t zGG, 220 PS, Automatik, Euro 6e, 4,5 m³. Auf Anfrage – ab 75 €/Tag netto.",
+    h1: "MAN TGL 8.220 4x2 – 7,5t Dreiseitenkipper mieten in Krefeld",
+    h2s: [
+      "Technische Daten & Aufbau Meiller D205",
+      "Führerschein, Fahrer & Maut",
+      "Einsatzgebiete: Bau, GaLaBau & Schüttgut",
+      "Versicherung, Kaution & Mietkonditionen",
+    ],
+    useCaseBau: "Transport von Schüttgütern wie Sand, Kies, Schotter, Erdaushub und Bauschutt auf der Baustelle. Durch die Dreiseitenkipper-Funktion (hinten, links, rechts) lässt sich Material präzise in Gräben, an Mauern oder direkt neben dem Einbauort entladen – ohne Rangieren.",
+    useCaseEvent: "Materialtransport für Bühnen-, Messe- und Festaufbauten: Stellwände, Bodenplatten, Absperrungen oder Dekomaterial. Der offene Aufbau mit klappbaren Seitenwänden vereinfacht das Be- und Entladen von Großvolumen.",
+    useCasePrivat: "Gartenumgestaltung, Hausbau in Eigenregie oder größere Entrümpelungen: ideal zum Abfahren von Aushub, Grünschnitt, Pflastersteinen oder Bauschutt zur Deponie. Wendig genug für Wohngebiete und gleichzeitig Nutzlast für mehrere Kubikmeter.",
+    primaryKeywords: "MAN TGL 8.220 mieten Krefeld, 7,5 Tonner Kipper mieten Krefeld, Dreiseitenkipper mieten Krefeld, LKW Kipper mieten NRW, Meiller Kipper mieten",
+    is247: false,
+    dailyPriceFrom: 75,
+    faqs: [
+      { q: "Welcher Führerschein wird für den MAN TGL 8.220 benötigt?", a: "Mit 7.490 kg zulässigem Gesamtgewicht fällt das Fahrzeug unter die Führerscheinklasse C1 (Fahrzeuge über 3,5 t bis 7,5 t zGG). Wer den Führerschein der alten Klasse 3 vor dem 01.01.1999 erworben hat, darf den 7,5-Tonner ebenfalls fahren." },
+      { q: "In welche Richtungen kann der Meiller D205 Aufbau kippen?", a: "Der Meiller D205 ist ein klassischer Dreiseitenkipper: Er kippt nach hinten sowie nach links und rechts. Die Kippsteuerung erfolgt aus dem Fahrerhaus. Beide Seitenwände sind klappbar, hinten ist eine Pendelklappe verbaut." },
+      { q: "Wie viel Nutzlast und Volumen hat der Kipper?", a: "Bei 7.490 kg zulässigem Gesamtgewicht und einem Leergewicht von 5.176 kg verbleiben 2.314 kg Nutzlast. Der Aufbau bietet 4,5 m³ Volumen bei 3.800 mm Innenlänge, 2.350 mm Innenbreite und 500 mm Bordwandhöhe." },
+      { q: "Welche Kaution und Selbstbeteiligung sind zu hinterlegen?", a: "Vor Übergabe wird eine Kaution von 1.000 € hinterlegt. Im Schadenfall greift die Vollkasko-Versicherung mit einer Selbstbeteiligung von 2.500 € pro Schaden." },
+      { q: "Ist eine Anhängerkupplung mit Hydraulik vorhanden?", a: "Ja, das Fahrzeug verfügt über einen Hydraulikanschluss für Kippanhänger. So lässt sich zusätzlich ein Tandem-Kippanhänger ankoppeln und über die Bordhydraulik betätigen." },
+      { q: "Fällt für den 7,5-Tonner LKW-Maut an?", a: "Nein. Die LKW-Maut auf Bundesfernstraßen gilt erst ab 7.500 kg technisch zulässigem Gesamtgewicht. Der MAN TGL 8.220 mit 7.490 kg zGG ist mautbefreit." },
+      { q: "Wird das Fahrzeug angeliefert oder muss es abgeholt werden?", a: "Das Nutzfahrzeug ist selbstfahrend und wird in der Regel am Standort Krefeld abgeholt und nach Mietende wieder zurückgebracht. Eine Anlieferung per Tieflader ist nicht erforderlich." },
+    ],
+  },
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
