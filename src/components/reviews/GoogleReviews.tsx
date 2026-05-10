@@ -70,11 +70,42 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
   const [data, setData] = useState<ReviewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const locationId = Object.entries(PLACE_IDS).find(([, id]) => id === placeId)?.[0] || "";
   const reviewUrl = GOOGLE_REVIEW_URLS[locationId];
 
+  // Defer the supabase fetch until the component is near the viewport.
+  // Reviews are below the fold and were stealing bandwidth from the LCP path
+  // (1162 ms in the critical request tree per PSI). Compact variant fetches
+  // immediately because it's typically rendered above the fold (e.g. header).
   useEffect(() => {
+    if (variant === "compact") {
+      setShouldFetch(true);
+      return;
+    }
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldFetch(true);
+      return;
+    }
+    const el = sentinelRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setShouldFetch(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [variant]);
+
+  useEffect(() => {
+    if (!shouldFetch) return;
     let cancelled = false;
 
     async function fetchReviews() {
@@ -96,7 +127,7 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
 
     fetchReviews();
     return () => { cancelled = true; };
-  }, [placeId]);
+  }, [placeId, shouldFetch]);
 
   if (error) return null;
 
