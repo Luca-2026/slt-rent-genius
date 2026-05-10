@@ -13,11 +13,6 @@ import type { LocalArea } from "./localSeoData";
 import type { LocationInfo } from "./locationData";
 import type { Solution } from "@/pages/Loesungen";
 import type { BlogArticle } from "./blogArticles";
-import {
-  buildCampingCategorySchemas,
-  buildCaraOneProductSchemas,
-} from "./camping-content";
-
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_IMG = `${BASE_URL}/images/og/default-slt-rental.png`;
 
@@ -347,16 +342,6 @@ export function buildLegalSchemas(route: SeoRoute): JsonLd[] {
 }
 
 export function buildPageSchemas(route: SeoRoute): JsonLd[] {
-  if (route.path === "/camping") {
-    return route.breadcrumbs
-      ? [breadcrumbList(route.breadcrumbs), ...buildCampingCategorySchemas()]
-      : buildCampingCategorySchemas();
-  }
-  if (route.path === "/camping/weinsberg-caraone-480-qdk") {
-    return route.breadcrumbs
-      ? [breadcrumbList(route.breadcrumbs), ...buildCaraOneProductSchemas()]
-      : buildCaraOneProductSchemas();
-  }
   return route.breadcrumbs ? [breadcrumbList(route.breadcrumbs)] : [];
 }
 

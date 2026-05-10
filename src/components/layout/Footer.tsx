@@ -33,7 +33,6 @@ export function Footer() {
 
   const quickLinks = [
     { to: "/mietartikel", label: t("footer.rentalItems") },
-    { to: "/camping", label: "Camping" },
     { to: "/verkauf", label: t("footer.salesAndBrands") },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
