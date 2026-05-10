@@ -525,35 +525,52 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                   Lebenslauf (PDF oder Word) <span className="text-destructive">*</span>
                   <span className="text-xs text-muted-foreground ml-2">– Pflichtfeld</span>
                 </Label>
-                <div
-                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                    resumeError && !resumeFile
-                      ? "border-destructive bg-destructive/5"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  {resumeFile ? (
-                    <div className="flex items-center justify-center gap-3">
-                      <FileText className="h-8 w-8 text-primary" />
-                      <div className="text-left">
-                        <p className="font-medium text-foreground">{resumeFile.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {(resumeFile.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
+                {resumeFile ? (
+                  <div className="flex items-center gap-3 rounded-lg border-2 border-accent bg-accent/5 p-4">
+                    <CheckCircle className="h-7 w-7 text-accent shrink-0" />
+                    <div className="flex-1 min-w-0 text-left">
+                      <p className="font-medium text-foreground truncate flex items-center gap-1.5">
+                        <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                        {resumeFile.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {(resumeFile.size / 1024 / 1024).toFixed(2)} MB · erfolgreich ausgewählt
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      <label className="cursor-pointer">
+                        <span className="text-sm font-medium text-primary hover:underline px-2">
+                          Ändern
+                        </span>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                          onChange={(e) => handleFileChange(e, setResumeFile)}
+                          className="hidden"
+                        />
+                      </label>
                       <Button
                         type="button"
                         variant="ghost"
-                        size="sm"
+                        size="icon"
                         onClick={() => {
                           setResumeFile(null);
                           setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
                         }}
+                        aria-label="Datei entfernen"
                       >
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
-                  ) : (
+                  </div>
+                ) : (
+                  <div
+                    className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                      resumeError
+                        ? "border-destructive bg-destructive/5"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
                     <label className="cursor-pointer block">
                       <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
                       <p className="text-foreground font-medium">
@@ -569,8 +586,8 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                         className="hidden"
                       />
                     </label>
-                  )}
-                </div>
+                  </div>
+                )}
                 {resumeError && !resumeFile && (
                   <p className="text-sm text-destructive font-medium">{resumeError}</p>
                 )}
