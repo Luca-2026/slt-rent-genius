@@ -962,6 +962,7 @@ export default function CategoryProducts() {
     "traversen-rigging": `Traversen mieten ${location.name} – Rigging & Bühnentechnik`,
     spezialeffekte: `Spezialeffekte mieten ${location.name} – Funkenfontänen & Co.`,
     kommunikation: `Funkmikrofon & Kommunikation mieten ${location.name}`,
+    "wohnwagen-camping": `Wohnwagen & Campingartikel mieten in ${location.name} – ab 30 €/Tag`,
   };
   
   const seoTitle = categorySeoTitles[category.id] || `${categoryDisplayName} mieten in ${location.name} – Tiefpreisgarantie`;
