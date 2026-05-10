@@ -1389,6 +1389,18 @@ const weinsbergCaraOne480QDK: Product = {
   category: "wohnwagen",
   onRequest: true,
   tags: ["familie", "auf anfrage"],
+  specifications: {
+    "Sitzplätze": "2 Erwachsene + 3 Kinder",
+    "Schlafplätze": "2 Erwachsene + 3 Kinder",
+    "Anzahl feste Betten": "4",
+    "Gesamtlänge mit Deichsel": "7,07 m",
+    "Aufbaulänge": "5,84 m",
+    "Breite": "2,32 m",
+    "Höhe": "2,57 m",
+    "Innenhöhe": "1,96 m",
+    "Innenbreite": "2,16 m",
+    "Zulässiges Gesamtgewicht": "1.500 kg",
+  },
   rentalNotes: [
     "Mindestmietdauer 5 Tage",
     "Endreinigung 149 € pauschal",
