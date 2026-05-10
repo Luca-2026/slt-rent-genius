@@ -257,18 +257,6 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       : `${BASE_URL}${p.image}`
     : DEFAULT_IMG;
 
-  const offer: JsonLd = {
-    "@type": "Offer",
-    availability: "https://schema.org/InStock",
-    priceCurrency: "EUR",
-    url: productUrl,
-    availableAtOrFrom: { "@id": LOCATION_BUSINESS_ID(p.locationId) },
-  };
-  if (loc?.isMuelheim) {
-    offer.description =
-      "Verfügbar am Service-Standort Mülheim. Disposition aus dem Zentrallager Krefeld.";
-  }
-
   const product: JsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -278,8 +266,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     url: productUrl,
     brand: p.modelName ? { "@type": "Brand", name: p.modelName.split(" ")[0] } : undefined,
     model: p.modelName,
-    offers: offer,
   };
+
   // strip undefineds to keep JSON tidy
   Object.keys(product).forEach((k) => product[k] === undefined && delete product[k]);
 
