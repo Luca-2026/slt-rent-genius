@@ -128,6 +128,11 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
     setResumeError(null);
     setFile(file);
+    toast({
+      title: "Datei hochgeladen",
+      description: `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`,
+    });
+    e.target.value = "";
   };
 
   const uploadFile = async (file: File, folder: string): Promise<{ url: string; filename: string } | null> => {
