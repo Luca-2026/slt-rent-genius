@@ -419,7 +419,7 @@ export const jobListings: JobListing[] = [
       "Gute MS-Office- und CRM-Kenntnisse (z. B. HubSpot, Salesforce)"
     ],
     benefits: [
-      "Attraktives Fixgehalt mit leistungsbezogener Vergütung",
+      "Attraktives Fixgehalt von 40.000 € – 55.000 € p. a. zzgl. attraktiver Boni und leistungsbezogener Vergütung",
       "Firmenwagen zur privaten Nutzung",
       "Schulungen in KI-gestützten Vertriebstools und modernen Technologien",
       "Betriebliche Altersvorsorge",
