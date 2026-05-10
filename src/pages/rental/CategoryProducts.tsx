@@ -105,6 +105,18 @@ export default function CategoryProducts() {
     );
   }, [searchParams, categoryId]);
 
+  // Apply ?type= URL param to generic type filter (e.g. moebel-zelte, beleuchtung)
+  useEffect(() => {
+    if (!categoryId || categoryId === "anhaenger") return;
+    const typeParam = searchParams.get("type");
+    if (!typeParam) return;
+    setGenericFilters((prev) => {
+      const current = prev.filters["type"] || [];
+      if (current.includes(typeParam)) return prev;
+      return { ...prev, filters: { ...prev.filters, type: [typeParam] } };
+    });
+  }, [searchParams, categoryId]);
+
 
   // Scroll to product grid when discrete filters change (not slider drags)
   useEffect(() => {

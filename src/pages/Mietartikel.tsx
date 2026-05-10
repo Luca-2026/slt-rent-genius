@@ -27,7 +27,7 @@ const bauTeaserProducts: TeaserProduct[] = [
 
 const eventTeaserProducts: TeaserProduct[] = [
   { name: "PA-Anlage 500W", price: "ab 65 €/Tag", categoryId: "beschallung", slug: "pa-anlage-500w" },
-  { name: "Partyzelt 3×6 m", price: "ab 50 €/Tag", categoryId: "moebel-zelte", slug: "partyzelt-3x6" },
+  { name: "Partyzelte", price: "ab 25 €/Tag", categoryId: "moebel-zelte", query: "type=zelt" },
   { name: "Hüpfburg", price: "ab 25 €/Tag", categoryId: "huepfburgen", slug: "huepfburg-multiplay" },
 ];
 
