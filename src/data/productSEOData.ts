@@ -5086,6 +5086,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenpartys, Geburtstage, Filmabende und Familienfeste – einfach in der Bedienung und sofort einsatzbereit.",
     primaryKeywords: "Popcornmaschine mieten in Krefeld, Popcornmaschine leihen Krefeld, Popcornmaschine mit Wagen mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Welche Stromversorgung benötigt die Popcornmaschine?", a: "Die Maschine läuft an einer normalen Haushaltssteckdose mit 230 V und hat eine Anschlussleistung von 850 W. Es ist kein Starkstrom erforderlich." },
       { q: "Wie viel Popcorn produziert die Maschine pro Durchgang?", a: "Pro Durchgang werden ca. 20 Standard-Portionen erzeugt. Empfohlene Befüllung: 150 g Mais, 50 g Zucker und 40 ml Öl." },
