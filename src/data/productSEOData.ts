@@ -989,6 +989,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Ketten-Dumper mieten in Krefeld, Ketten-Dumper leihen in Krefeld, Ketten-Dumper mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Welche Nutzlast bietet der Ketten-Dumper RMD-650?", a: "Das Modell RMD-650 ist für eine Nutzlast von bis wir 650 kg ausgelegt." },
       { q: "Für welche Arbeitsumgebungen eignet sich das Gerät?", a: "Aufgrund seiner kompakten Bauweise ist dieser Kettendumper für den Einsatz auf beengten Baustellen vorgesehen." },
@@ -1313,6 +1314,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "3t Radlader mieten in Krefeld, 3t Radlader leihen in Krefeld, 3t Radlader mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Wie hoch ist das Einsatzgewicht des Radladers?", a: "Das Einsatzgewicht des Kramer 5050 beträgt 3.000 kg." },
       { q: "Welches Zubehör ist beim Kramer 5050 enthalten?", a: "Eine Schaufel ist im Lieferumfang des Radladers enthalten." },
@@ -3129,6 +3131,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Modell eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "Hüpfburg Clown 6,1 x 5,2m mieten in Krefeld, Hüpfburg Clown 6,1 x 5,2m leihen in Krefeld, Hüpfburg Clown 6,1 x 5,2m mieten NRW",
     is247: false,
+    dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder können die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für bis zu 6 Kinder im Alter zwischen 3 und 16 Jahren ausgelegt, wobei die maximale Belastbarkeit 450 kg beträgt." },
       { q: "Welches Zubehör ist im Lieferumfang enthalten?", a: "Im Lieferumfang sind ein 1500W Gebläse, ein Tragesack, eine Gewebeplane sowie 8 Heringe zur Befestigung enthalten." },
@@ -3163,6 +3166,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "Hüpfburg Rollercoaster 4,9 x 4m mieten in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m leihen in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m mieten NRW",
     is247: false,
+    dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder dürfen die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 6 Kinder gleichzeitig ausgelegt, bei einer maximalen Belastbarkeit von insgesamt 450 kg." },
       { q: "Wie lange dauert der Aufbau der Hüpfburg?", a: "Die Aufbauzeit beträgt etwa 10 Minuten. Das benötigte 1.100 Watt Gebläse ist im Lieferumfang enthalten." },
@@ -3252,6 +3256,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Hochzeitsfeier, Geburtstagsparty, Silvesterfeier, Jubiläum",
     primaryKeywords: "Kalt-Funkenfontäne mieten, Sparkular mieten, Funkeneffekt mieten",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Sind Kalt-Funkenfontänen gefährlich?", a: "Nein – Kalt-Funkenfontänen arbeiten mit Granulat und erzeugen kalte Funken, die weder Hitze noch Rauch oder Geruch entwickeln. Sie sind vollkommen ungefährlich und können bedenkenlos in Innenräumen eingesetzt werden." },
       { q: "Wie lange hält eine Granulat-Füllung?", a: "Eine Granulat-Füllung reicht für bis zu 10 Minuten Effektzeit. Zusätzliches Granulat kann bei der Buchung hinzugebucht werden (3,00 € pro weitere Minute)." },
@@ -3568,6 +3573,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Gerät unterstützt bei der großflächigen Materialbewegung im Rahmen einer Hofumgestaltung.",
     primaryKeywords: "3t Radlader mieten in Krefeld, 3t Radlader leihen in Krefeld, 3t Radlader mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Welches Einsatzgewicht hat der Radlader?", a: "Das Einsatzgewicht des Kramer 5050 beträgt 3.000 kg." },
       { q: "Ist ein Anbauteil im Mietumfang enthalten?", a: "Ja, eine Schaufel ist im Lieferumfang des Radladers enthalten." },
