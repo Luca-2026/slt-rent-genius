@@ -59,6 +59,11 @@ export default function SLTUsedDetail() {
   const isReserved = machine.status === "reserved";
   const isSold = machine.status === "sold";
 
+  const content: any = (machine as any).content || {};
+  const showroomLocsForData: string[] = Array.isArray(content.showroomLocations) && content.showroomLocations.length > 0
+    ? content.showroomLocations
+    : (machine.location ? [machine.location] : []);
+
   const machineData: MachineData = {
     id: machine.id,
     manufacturer: machine.manufacturer,
@@ -66,6 +71,7 @@ export default function SLTUsedDetail() {
     year: machine.year,
     price: formatPrice(priceNet, machine.price_on_request),
     location: machine.location || "",
+    pickupLocations: showroomLocsForData,
     referenceNumber: machine.reference_number || "",
     status: machine.status,
   };
