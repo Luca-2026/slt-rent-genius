@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, CheckCircle2, Upload } from "lucide-react";
+import { Loader2, CheckCircle2, Upload, FileText, X } from "lucide-react";
 import type { JobListing } from "./jobData";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -70,6 +70,11 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
     }
     setResumeError(null);
     setResume(file);
+    toast({
+      title: "Lebenslauf hochgeladen",
+      description: `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`,
+    });
+    e.target.value = "";
   };
 
   const onSubmit = async (values: FormValues) => {
@@ -174,15 +179,52 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
       </div>
       <div>
         <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
-        <label
-          htmlFor="qa-cv"
-          className={`flex items-center justify-center gap-2 border-2 border-dashed rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground ${
-            resumeError ? "border-destructive" : "border-border"
-          }`}
-        >
-          <Upload className="h-4 w-4" />
-          {resume ? resume.name : "Datei wählen (max. 10 MB)"}
-        </label>
+        {resume ? (
+          <div className="flex items-center gap-3 rounded-md border-2 border-accent bg-accent/5 p-3">
+            <CheckCircle2 className="h-6 w-6 text-accent shrink-0" />
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-sm font-medium text-foreground truncate flex items-center gap-1.5">
+                <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                {resume.name}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {(resume.size / 1024 / 1024).toFixed(2)} MB · erfolgreich ausgewählt
+              </p>
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => document.getElementById("qa-cv")?.click()}
+              >
+                Ändern
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setResume(null);
+                  setResumeError(null);
+                }}
+                aria-label="Datei entfernen"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <label
+            htmlFor="qa-cv"
+            className={`flex items-center justify-center gap-2 border-2 border-dashed rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground ${
+              resumeError ? "border-destructive" : "border-border"
+            }`}
+          >
+            <Upload className="h-4 w-4" />
+            Datei wählen (max. 10 MB)
+          </label>
+        )}
         <input
           id="qa-cv"
           type="file"
