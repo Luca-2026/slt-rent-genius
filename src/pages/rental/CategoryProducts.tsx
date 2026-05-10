@@ -1324,9 +1324,16 @@ export default function CategoryProducts() {
       { question: `Wie viele Personen passen in den Wohnwagen?`, answer: `Der CaraOne 480 QDK bietet Schlaf- und Sitzplätze für 2 Erwachsene und 3 Kinder (5 Personen insgesamt) mit 4 festen Betten.` },
       { question: `Wie hoch ist die Kaution?`, answer: `Die Kaution beträgt 1.000 €. Unsere Wohnwagen sind Teil- und Vollkasko versichert; die Selbstbeteiligung gegenüber unserer Versicherung von 2.500 € liegt nicht bei dir – deine Kaution beträgt lediglich 1.000 €.` },
     ],
+    nutzfahrzeuge: [
+      { question: `Welche Nutzfahrzeuge kann ich bei SLT Rental in ${location.name} mieten?`, answer: `Am Standort ${location.name} stehen zwei selbstfahrende Dreiseitenkipper auf Anfrage zur Verfügung: der 3,5t Pritschenwagen mit Doppelkabine (Opel Movano oder vergleichbar, 7 Sitze, 1.135 kg Nutzlast, AHK 2,5 t) ab 55 €/Tag netto und der 7,5t MAN TGL 8.220 Dreiseitenkipper mit Meiller D205 Aufbau (220 PS, Automatik, Euro 6e) ab 75 €/Tag netto.` },
+      { question: `Welchen Führerschein brauche ich?`, answer: `Den 3,5t Pritschenwagen darfst du mit dem normalen PKW-Führerschein (Klasse B) fahren. Für den 7,5t MAN TGL benötigst du die Klasse C1 (Fahrzeuge über 3,5 t bis 7,5 t zGG). Wer den alten Führerschein der Klasse 3 vor dem 01.01.1999 erworben hat, darf den 7,5-Tonner ebenfalls fahren.` },
+      { question: `In welche Richtungen kippt der Aufbau?`, answer: `Beide Fahrzeuge sind als Dreiseitenkipper ausgeführt und kippen nach hinten, links und rechts – ideal zum gezielten Entladen von Sand, Kies, Mutterboden, Pflaster oder Bauschutt direkt an der gewünschten Stelle.` },
+      { question: `Werden die Fahrzeuge angeliefert?`, answer: `Nein. Beide Nutzfahrzeuge sind selbstfahrend und werden am Standort ${location.name} abgeholt und nach Mietende wieder zurückgebracht. Eine Anlieferung per Tieflader ist nicht erforderlich und nicht vorgesehen.` },
+      { question: `Welche Kaution und Selbstbeteiligung gelten?`, answer: `Vor Übergabe wird eine Kaution von 1.000 € hinterlegt. Im Schadenfall greift die Vollkasko-Versicherung mit einer Selbstbeteiligung von 2.500 € pro Schaden – das gilt für beide Fahrzeuge gleichermaßen.` },
+      { question: `Wie sind Kraftstoff, Frei-Kilometer und Maut geregelt?`, answer: `Im Mietpreis sind 100 Frei-Kilometer pro Tag enthalten. Beim 3,5-Tonner werden Mehrkilometer mit 0,23 € netto berechnet, beim MAN TGL mit 0,40 € netto. Die Rückgabe erfolgt vollgetankt; nicht aufgefüllter Diesel wird mit 2,85 €/l (brutto bzw. netto je Fahrzeug) und beim MAN AdBlue mit 1,85 €/l zzgl. MwSt. nachberechnet. Für den 7,5t MAN TGL gilt seit dem 01.07.2024 die LKW-Maut – wir berechnen sie per Einzelfahrtnachweis weiter.` },
+      { question: `Wie reserviere ich ein Nutzfahrzeug in ${location.name}?`, answer: `Klick einfach auf „Jetzt mieten" oder schick uns eine kurze Anfrage – wir bestätigen Verfügbarkeit, Wunschzeitraum und Preis am Standort ${location.name} in der Regel innerhalb eines Werktages.` },
+    ],
   };
-
-  const moebelZelteCustom = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
 
   const faqs = moebelZelteCustom?.faqs || categoryFaqs[category.id] || [
     { question: `Kann ich ${categoryDisplayName} in ${location.name} mieten?`, answer: `Ja! SLT Rental bietet ${categoryDisplayName} zur Miete in ${location.name} an. Wählen Sie aus ${products.length} verfügbaren Artikeln.` },
