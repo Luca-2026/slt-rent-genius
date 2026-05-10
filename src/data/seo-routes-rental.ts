@@ -10,6 +10,7 @@ import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import { blogArticles, type BlogArticle } from "./blogArticles";
 import { solutionData, type Solution } from "@/pages/Loesungen";
+import { jobListings } from "@/components/karriere/jobData";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
@@ -607,6 +608,38 @@ const RATGEBER_ROUTES: SeoRoute[] = (blogArticles as BlogArticle[]).map((a) => (
 }));
 
 // ---------------------------------------------------------------
+// Karriere-Stellen (Job-Detailseiten)
+// ---------------------------------------------------------------
+
+const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
+  const path = `/karriere/${job.slug}`;
+  const title = clamp(job.seoTitle ?? `${job.title} – Job in ${job.location} | SLT Rental`, 65);
+  const description = clampDesc(
+    job.seoDescription ??
+      `${job.title} bei SLT Rental in ${job.location}. ${job.shortPitch ?? "Jetzt direkt online bewerben."}`,
+  );
+  return {
+    path,
+    routeType: "page",
+    title,
+    description,
+    h1: job.title,
+    intro: [job.shortPitch ?? job.description].filter(Boolean) as string[],
+    canonical: path,
+    ogType: "article",
+    ogImage: `${BASE_URL}/images/og/karriere-slt-rental.png`,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Karriere", path: "/karriere" },
+      { name: job.title, path },
+    ],
+    changefreq: "weekly",
+    priority: 0.6,
+    lastmod: TODAY,
+  };
+});
+
+// ---------------------------------------------------------------
 // Legal-Routen (noindex)
 // ---------------------------------------------------------------
 
@@ -662,6 +695,69 @@ const LEGAL_ROUTES: SeoRoute[] = [
 ];
 
 // ---------------------------------------------------------------
+// Used-Machine builder (data fetched at build-time in exportRoutes.ts)
+// ---------------------------------------------------------------
+
+export interface UsedMachineSeoInput {
+  slug: string;
+  manufacturer: string;
+  model: string;
+  year?: number | null;
+  hours?: number | null;
+  location?: string | null;
+  price_net?: number | null;
+  price_on_request?: boolean;
+  images?: string[] | null;
+  updated_at?: string | null;
+}
+
+export function buildUsedMachineRoute(m: UsedMachineSeoInput): SeoRoute {
+  const path = `/verkauf/gebrauchtmaschinen/${m.slug}`;
+  const locLabel = m.location ? LOCATION_DISPLAY[m.location] || m.location : "";
+  const priceStr =
+    !m.price_on_request && m.price_net
+      ? `${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(Number(m.price_net))} netto`
+      : "Preis auf Anfrage";
+  const title = clamp(`${m.manufacturer} ${m.model} gebraucht kaufen | SLT Used`, 65);
+  const description = clampDesc(
+    `${m.manufacturer} ${m.model}${m.year ? `, Bj. ${m.year}` : ""}${
+      m.hours != null ? `, ${m.hours} Bh` : ""
+    } – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${
+      locLabel ? `, Standort ${locLabel}` : ""
+    }. ${priceStr}.`,
+  );
+  const ogImage =
+    Array.isArray(m.images) && m.images.length > 0
+      ? m.images[0]
+      : `${BASE_URL}/images/og/default-slt-rental.png`;
+  return {
+    path,
+    routeType: "page",
+    title,
+    description,
+    h1: `${m.manufacturer} ${m.model}`,
+    intro: [
+      `${m.manufacturer} ${m.model}${m.year ? `, Baujahr ${m.year}` : ""}${
+        m.hours != null ? `, ${m.hours.toLocaleString("de-DE")} Betriebsstunden` : ""
+      }.`,
+      `Geprüfte Gebrauchtmaschine aus dem SLT-Mietpark mit dokumentierter Wartungshistorie. ${priceStr}.`,
+    ],
+    canonical: path,
+    ogType: "product",
+    ogImage,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Verkauf", path: "/verkauf" },
+      { name: "Gebrauchtmaschinen", path: "/verkauf/gebrauchtmaschinen" },
+      { name: `${m.manufacturer} ${m.model}`, path },
+    ],
+    changefreq: "weekly",
+    priority: 0.6,
+    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : TODAY,
+  };
+}
+
+// ---------------------------------------------------------------
 // Final aggregate
 // ---------------------------------------------------------------
 
@@ -674,6 +770,7 @@ export const ALL_ROUTES: SeoRoute[] = [
   ...CATEGORY_ROUTES,
   ...PRODUCT_ROUTES,
   ...RATGEBER_ROUTES,
+  ...KARRIERE_ROUTES,
   ...LEGAL_ROUTES,
 ];
 
@@ -687,6 +784,7 @@ export const ROUTE_STATS = {
   product: PRODUCT_ROUTES.length,
   productWithSEO: PRODUCT_ROUTES.filter((r) => !r.noindex).length,
   ratgeber: RATGEBER_ROUTES.length,
+  karriere: KARRIERE_ROUTES.length,
   legal: LEGAL_ROUTES.length,
   total: 0,
 };
