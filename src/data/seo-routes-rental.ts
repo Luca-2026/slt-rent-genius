@@ -307,46 +307,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     priority: 0.7,
     lastmod: TODAY,
   },
-  {
-    path: "/camping",
-    routeType: "page",
-    title: "Wohnwagen & Camper mieten in NRW – Krefeld, Bonn, Mülheim | SLT Rental",
-    description:
-      "Wohnwagen mieten in Krefeld, Bonn und Mülheim an der Ruhr. Familientaugliche Caravans mit Dusche und WC ab 50 €/Tag. Jetzt unverbindlich anfragen bei SLT Rental.",
-    h1: "Camping & Wohnwagen mieten in NRW",
-    intro: [
-      "Du planst einen Familienurlaub, ein verlängertes Festival-Wochenende oder einen spontanen Trip ins Grüne? Bei SLT Rental mietest du moderne Wohnwagen aus dem Rhein-Ruhr-Gebiet – an drei Standorten in NRW: Krefeld, Bonn und Mülheim an der Ruhr.",
-      "Aktueller Flotten-Star: der Weinsberg CaraOne 480 QDK – familientauglich mit bis zu 5 Schlafplätzen, Dusche, WC und Heizung. Mindestmietdauer 5 Tage, ab 50 € / Tag.",
-    ],
-    breadcrumbs: [
-      { name: "Start", path: "/" },
-      { name: "Camping", path: "/camping" },
-    ],
-    changefreq: "weekly",
-    priority: 0.8,
-    lastmod: TODAY,
-  },
-  {
-    path: "/camping/weinsberg-caraone-480-qdk",
-    routeType: "page",
-    title: "Weinsberg CaraOne 480 QDK mieten ab 50 €/Tag – SLT Rental NRW",
-    description:
-      "Weinsberg CaraOne 480 QDK Wohnwagen mieten in Krefeld, Bonn und Mülheim. 5 Schlafplätze, Dusche, WC, Heizung. Ab 50 €/Tag. Mindestmietdauer 5 Tage. Jetzt anfragen.",
-    h1: "Weinsberg CaraOne 480 QDK – Wohnwagen mieten in Krefeld, Bonn & Mülheim",
-    intro: [
-      "Familientauglicher Wohnwagen für bis zu 5 Personen. Vollwertige Nasszelle mit Dusche & WC, Truma-Heizung, Mover, Antischlingerkupplung. Verfügbar an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.",
-      "Tagesmiete ab 50 € · Endreinigung 149 € · Mindestmietdauer 5 Tage · Kaution 800 €.",
-    ],
-    ogType: "product",
-    breadcrumbs: [
-      { name: "Start", path: "/" },
-      { name: "Camping", path: "/camping" },
-      { name: "Weinsberg CaraOne 480 QDK", path: "/camping/weinsberg-caraone-480-qdk" },
-    ],
-    changefreq: "weekly",
-    priority: 0.8,
-    lastmod: TODAY,
-  },
 ];
 
 // ---------------------------------------------------------------

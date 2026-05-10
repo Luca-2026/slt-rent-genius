@@ -164,7 +164,6 @@ export function Header() {
 
   const produkteItems: DropdownItem[] = [
     { to: "/mietartikel", label: t("nav.allCategories"), description: "Alle Kategorien im Überblick" },
-    { to: "/camping", label: "Camping", description: "Wohnwagen mieten in NRW" },
   ];
 
   const kaufenItems: DropdownItem[] = [

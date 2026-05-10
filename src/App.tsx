@@ -63,9 +63,6 @@ const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 const SLTUsed = lazy(() => import("./pages/SLTUsed"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
-const CampingCategory = lazy(() => import("./pages/camping/CampingCategory"));
-const WeinsbergCaraOne480QDK = lazy(() => import("./pages/camping/WeinsbergCaraOne480QDK"));
-
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -149,9 +146,6 @@ const App = () => (
               <Route path="/ratgeber" element={<Ratgeber />} />
               <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />
 
-              {/* Camping (flat URLs, on-request rentals) */}
-              <Route path="/camping" element={<CampingCategory />} />
-              <Route path="/camping/weinsberg-caraone-480-qdk" element={<WeinsbergCaraOne480QDK />} />
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
