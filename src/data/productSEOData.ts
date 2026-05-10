@@ -83,6 +83,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Gerät ermöglicht die Stromversorgung bei Garten- und Außenarbeiten und fungiert als Notstromlösung für temporäre Anlässe.",
     primaryKeywords: "20 kVA Aggregat Doosan G20 mieten in Krefeld, 20 kVA Aggregat Doosan G20 leihen in Krefeld, 20 kVA Aggregat Doosan G20 mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie lange kann das Doosan G20 ohne Nachanken betrieben werden?", a: "Das Aggregat verfügt über einen 181 Liter fassenden Tank und erreicht damit eine Autonomie von circa 47 Stunden bei Nennleistung." },
       { q: "Welche Anschlüsse stehen am Stromaggregat zur Verfügung?", a: "Das Gerät ist mit zwei Schuko-Anschlüssen (16A) und einem CEE 32A 5-Pol Anschluss ausgestattet." },
