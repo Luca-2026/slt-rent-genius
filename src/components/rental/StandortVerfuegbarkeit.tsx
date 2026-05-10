@@ -43,7 +43,7 @@ export function StandortVerfuegbarkeit({
     Icon = Truck;
   } else if (serviceCharacter === "delivery-only") {
     headline = `Lieferung in die Region ${name}`;
-    body = `Wir liefern dieses Gerät an Ihre Adresse im ${name}-Einzugsgebiet. Abholung ist an unserem nächstgelegenen Mietpark möglich.`;
+    body = `Wir liefern dieses ${deviceLabel} an Ihre Adresse im ${name}-Einzugsgebiet. Abholung ist an unserem nächstgelegenen Mietpark möglich.`;
     Icon = Truck;
   }
 
