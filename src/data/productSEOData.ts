@@ -2845,6 +2845,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Sennheiser Funkmikrofon XSW 1-835 mieten in Krefeld, Sennheiser Funkmikrofon XSW 1-835 leihen in Krefeld, Sennheiser Funkmikrofon XSW 1-835 mieten NRW",
     is247: false,
+    dailyPriceFrom: 15,
     faqs: [
       { q: "Welche Reichweite hat das Sennheiser Funkmikrofon?", a: "Die Reichweite beträgt ca. 25 Meter, wobei der exakte Wert von der jeweiligen Umgebung abhängig ist." },
       { q: "Welche Komponenten gehören zum Set?", a: "Das Set besteht aus dem stationären Empfänger EM-XSW 1, dem Handsender SKM 835-XSW, einem Netzteil, einem 1,5m langen XLR-Kabel, einer Mikrofonklemme sowie zwei AA-Batterien." },
