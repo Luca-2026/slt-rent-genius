@@ -7009,6 +7009,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Privatpersonen nutzen die Maschine für den Aushub bei Terrassen- und Pflasterarbeiten sowie zur Geländemodellierung im eigenen Garten. Auch die Wurzelentfernung beim Baumfällen ist mit dem Gerät möglich.",
     primaryKeywords: "2,7t Minibagger mieten in Krefeld, 2,7t Minibagger leihen in Krefeld, 2,7t Minibagger mieten NRW",
     is247: false,
+    dailyPriceFrom: 85,
     faqs: [
       { q: "Welche Grabtiefe erreicht der Minibagger?", a: "Der XCMG XE27E erreicht eine maximale Grabtiefe von 2.800 mm." },
       { q: "Ist ein Anbaugerät im Mietumfang enthalten?", a: "Ein Tieflöffel mit einer Breite von 300 mm ist inklusive." },
