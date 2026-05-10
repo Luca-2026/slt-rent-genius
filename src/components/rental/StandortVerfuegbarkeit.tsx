@@ -35,7 +35,7 @@ export function StandortVerfuegbarkeit({
 
   if (serviceCharacter === "full-warehouse") {
     headline = `Verfügbar am Standort ${name}`;
-    body = `Dieses Gerät steht in unserem ${name} Mietpark vor Ort zur Abholung bereit. Lieferung im Liefergebiet möglich – typischerweise innerhalb eines Werktags.`;
+    body = `Dieses ${deviceLabel} steht in unserem ${name} Mietpark vor Ort zur Abholung bereit. Lieferung im Liefergebiet möglich – typischerweise innerhalb eines Werktags.`;
     Icon = MapPin;
   } else if (serviceCharacter === "service-handover") {
     headline = `Verfügbar in ${name}`;
