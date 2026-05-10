@@ -72,6 +72,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeError, setResumeError] = useState<string | null>(null);
   const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
   const [jobSpecificAnswers, setJobSpecificAnswers] = useState<Record<string, string>>({});
   const { toast } = useToast();
