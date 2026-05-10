@@ -60,9 +60,17 @@ export default function Mietartikel() {
   const categories = useTranslatedCategories(rawCategories);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
+  const [selectedProductSlug, setSelectedProductSlug] = useState<string | undefined>();
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
+    setSelectedProductSlug(undefined);
+    setDialogOpen(true);
+  };
+
+  const handleProductClick = (categoryId: string, slug: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedProductSlug(slug);
     setDialogOpen(true);
   };
 
