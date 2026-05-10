@@ -90,6 +90,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const resetForm = () => {
     setSearchedMachine(""); setPreferredManufacturer("");
     setInterest(""); setWishDate(undefined); setDeliveryOption("");
+    setPickupLocation("");
     setDeliveryStreet(""); setDeliveryPlz(""); setDeliveryCity("");
     setCustomerType(""); setCompanyName(""); setVatId("");
     setSalutation(""); setFirstName(""); setLastName("");
