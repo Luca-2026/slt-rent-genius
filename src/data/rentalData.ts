@@ -1538,7 +1538,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
     },
   },
   {
@@ -1682,7 +1682,7 @@ export const locations: LocationData[] = [
         "bonn"
       ),
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
     },
   },
   {
@@ -1739,7 +1739,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
-      "nutzfahrzeuge": [],
+      "nutzfahrzeuge": nutzfahrzeugeProducts,
       "aggregate": mergeWithFallback(
         [
           {
