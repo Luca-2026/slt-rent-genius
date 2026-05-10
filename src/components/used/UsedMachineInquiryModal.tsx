@@ -511,6 +511,52 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
               )}
             </div>
 
+            {/* Block 4b — Financing */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Finanzierung</h3>
+              <p className="text-xs text-muted-foreground">
+                Über unseren Finanzierungspartner bieten wir Dir die besten Finanzierungsoptionen direkt mit an –
+                flexible Laufzeiten und individuelle Anzahlung.
+              </p>
+              <div className="flex items-start gap-2">
+                <Checkbox
+                  id="financing-desired"
+                  checked={financingDesired}
+                  onCheckedChange={(c) => setFinancingDesired(c === true)}
+                />
+                <Label htmlFor="financing-desired" className="font-normal cursor-pointer text-sm">
+                  Finanzierung gewünscht – bitte unverbindliches Finanzierungsangebot mitschicken
+                </Label>
+              </div>
+              {financingDesired && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-4 border-l-2 border-primary/20">
+                  <div>
+                    <Label>Gewünschte Laufzeit *</Label>
+                    <Select value={financingTerm} onValueChange={setFinancingTerm}>
+                      <SelectTrigger className="mt-1"><SelectValue placeholder="Laufzeit wählen" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="24">24 Monate</SelectItem>
+                        <SelectItem value="36">36 Monate</SelectItem>
+                        <SelectItem value="48">48 Monate</SelectItem>
+                        <SelectItem value="60">60 Monate</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FieldError field="financingTerm" />
+                  </div>
+                  <div>
+                    <Label>Anzahlung (€, optional)</Label>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="z. B. 5.000"
+                      value={financingDownPayment}
+                      onChange={(e) => setFinancingDownPayment(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Block 5 — Message & Privacy */}
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Nachricht</h3>
