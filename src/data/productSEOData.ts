@@ -3153,6 +3153,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Diese Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m leihen in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie lange dauert der Aufbau der Hüpfburg?", a: "Dank des mitgelieferten 300-Watt-Gebläses ist die Hüpfburg in ca. 5 Minuten aufgebaut." },
       { q: "Wie viele Kinder können die Burg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 2 Kinder im Alter von 3 bis 10 Jahren und eine Gesamtbelastung von 90 kg ausgelegt." },
