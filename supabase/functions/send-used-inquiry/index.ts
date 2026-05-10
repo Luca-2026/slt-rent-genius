@@ -124,15 +124,26 @@ Gesendet über slt-rental.de/verkauf/gebrauchtmaschinen`;
     }
 
     // Confirmation email to customer
-    const greeting = salutation === "Herr"
-      ? `Sehr geehrter Herr ${lastName}`
-      : salutation === "Frau"
-        ? `Sehr geehrte Frau ${lastName}`
-        : `Hallo ${firstName} ${lastName}`;
+    const escapeHtml = (s: unknown): string =>
+      s === null || s === undefined ? "" : String(s)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
-    const machineLine = isSpecific
+    const greeting = salutation === "Herr"
+      ? `Sehr geehrter Herr ${escapeHtml(lastName)}`
+      : salutation === "Frau"
+        ? `Sehr geehrte Frau ${escapeHtml(lastName)}`
+        : `Hallo ${escapeHtml(firstName)} ${escapeHtml(lastName)}`;
+
+    const machineLineRaw = isSpecific
       ? `${manufacturerModel}${articleNumber ? ` (Art.-Nr. ${articleNumber})` : ""}${year ? `, Bj. ${year}` : ""}${price ? ` – ${price}` : ""}`
       : `${searchedMachine || "Allgemeine Suchanfrage"}${preferredManufacturer ? ` (Wunschhersteller: ${preferredManufacturer})` : ""}`;
+    const machineLine = escapeHtml(machineLineRaw);
+    const interestSafe = escapeHtml(interestLabels[interest] || interest);
+    const wishDateSafe = escapeHtml(wishDate);
+    const deliveryOptionSafe = escapeHtml(deliveryOption);
+    const financingTermSafe = escapeHtml(financingTerm);
+    const financingDownPaymentSafe = escapeHtml(financingDownPayment);
 
     const confirmHtml = `<!doctype html><html><body style="font-family:Arial,sans-serif;color:#1a1a1a;background:#ffffff;margin:0;padding:24px;">
 <div style="max-width:600px;margin:0 auto;">
@@ -142,10 +153,10 @@ Gesendet über slt-rental.de/verkauf/gebrauchtmaschinen`;
   <div style="background:#f5f7fa;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <p style="margin:0 0 6px;"><strong>Deine Anfrage im Überblick:</strong></p>
     <p style="margin:4px 0;">Maschine: ${machineLine}</p>
-    <p style="margin:4px 0;">Interesse: ${interestLabels[interest] || interest}</p>
-    ${wishDate ? `<p style="margin:4px 0;">Wunschtermin: ${wishDate}</p>` : ""}
-    ${deliveryOption ? `<p style="margin:4px 0;">Lieferung/Abholung: ${deliveryOption}</p>` : ""}
-    ${financingDesired ? `<p style="margin:4px 0;">Finanzierung: gewünscht${financingTerm ? `, Laufzeit ${financingTerm} Monate` : ""}${financingDownPayment ? `, Anzahlung ${financingDownPayment} €` : ""}</p>` : ""}
+    <p style="margin:4px 0;">Interesse: ${interestSafe}</p>
+    ${wishDate ? `<p style="margin:4px 0;">Wunschtermin: ${wishDateSafe}</p>` : ""}
+    ${deliveryOption ? `<p style="margin:4px 0;">Lieferung/Abholung: ${deliveryOptionSafe}</p>` : ""}
+    ${financingDesired ? `<p style="margin:4px 0;">Finanzierung: gewünscht${financingTerm ? `, Laufzeit ${financingTermSafe} Monate` : ""}${financingDownPayment ? `, Anzahlung ${financingDownPaymentSafe} €` : ""}</p>` : ""}
   </div>
   ${financingDesired ? `<p>Wir leiten Deine Finanzierungsanfrage parallel an unseren Finanzierungspartner weiter und schicken Dir das passende Angebot mit unserer Rückmeldung mit.</p>` : ""}
   <p>Bei dringenden Rückfragen erreichst Du uns telefonisch unter <a href="tel:+4921514179904" style="color:#00507d;">02151 417 99 04</a> oder per E-Mail an <a href="mailto:kaufanfrage@slt-rental.de" style="color:#00507d;">kaufanfrage@slt-rental.de</a>.</p>
