@@ -1314,6 +1314,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "3t Radlader mieten in Krefeld, 3t Radlader leihen in Krefeld, 3t Radlader mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Wie hoch ist das Einsatzgewicht des Radladers?", a: "Das Einsatzgewicht des Kramer 5050 beträgt 3.000 kg." },
       { q: "Welches Zubehör ist beim Kramer 5050 enthalten?", a: "Eine Schaufel ist im Lieferumfang des Radladers enthalten." },
