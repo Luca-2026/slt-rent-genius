@@ -26,9 +26,9 @@ const bauTeaserProducts: TeaserProduct[] = [
 ];
 
 const eventTeaserProducts: TeaserProduct[] = [
-  { name: "PA-Anlage 500W", price: "ab 65 €/Tag", categoryId: "beschallung", slug: "pa-anlage-500w" },
+  { name: "Lautsprecher für Veranstaltungen", price: "ab 25 €/Tag", categoryId: "beschallung" },
   { name: "Partyzelte", price: "ab 25 €/Tag", categoryId: "moebel-zelte", query: "type=zelt" },
-  { name: "Hüpfburg", price: "ab 25 €/Tag", categoryId: "huepfburgen", slug: "huepfburg-multiplay" },
+  { name: "Hüpfburgen", price: "ab 25 €/Tag", categoryId: "huepfburgen" },
 ];
 
 
