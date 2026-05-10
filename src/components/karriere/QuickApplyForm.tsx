@@ -173,10 +173,12 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         </div>
       </div>
       <div>
-        <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC, optional)</Label>
+        <Label htmlFor="qa-cv" className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
         <label
           htmlFor="qa-cv"
-          className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground"
+          className={`flex items-center justify-center gap-2 border-2 border-dashed rounded-md p-3 cursor-pointer hover:bg-muted/50 transition text-sm text-muted-foreground ${
+            resumeError ? "border-destructive" : "border-border"
+          }`}
         >
           <Upload className="h-4 w-4" />
           {resume ? resume.name : "Datei wählen (max. 10 MB)"}
@@ -184,10 +186,11 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         <input
           id="qa-cv"
           type="file"
-          accept=".pdf,.doc,.docx"
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           className="hidden"
           onChange={onResumeChange}
         />
+        {resumeError && <p className="text-xs text-destructive mt-1">{resumeError}</p>}
       </div>
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
         <input
