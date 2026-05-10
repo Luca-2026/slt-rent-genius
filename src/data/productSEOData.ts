@@ -3131,6 +3131,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Modell eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "Hüpfburg Clown 6,1 x 5,2m mieten in Krefeld, Hüpfburg Clown 6,1 x 5,2m leihen in Krefeld, Hüpfburg Clown 6,1 x 5,2m mieten NRW",
     is247: false,
+    dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder können die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für bis zu 6 Kinder im Alter zwischen 3 und 16 Jahren ausgelegt, wobei die maximale Belastbarkeit 450 kg beträgt." },
       { q: "Welches Zubehör ist im Lieferumfang enthalten?", a: "Im Lieferumfang sind ein 1500W Gebläse, ein Tragesack, eine Gewebeplane sowie 8 Heringe zur Befestigung enthalten." },
