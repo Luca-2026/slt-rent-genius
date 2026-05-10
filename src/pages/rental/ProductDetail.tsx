@@ -931,14 +931,15 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Kaufanfrage-Banner */}
-              <PurchaseInquiryBanner
-                productName={product.name}
-                locationName={location.name}
-                locationEmail={location.email}
-                categoryId={categoryId}
-              />
-
+              {/* Kaufanfrage-Banner (nicht für Wohnwagen & Camping – wir verkaufen keine Wohnwagen) */}
+              {categoryId !== "wohnwagen-camping" && (
+                <PurchaseInquiryBanner
+                  productName={product.name}
+                  locationName={location.name}
+                  locationEmail={location.email}
+                  categoryId={categoryId}
+                />
+              )}
               {/* Standort-Verfügbarkeitshinweis (Sprint 2) */}
               {locationId && <StandortVerfuegbarkeit locationId={locationId} />}
 
@@ -1004,8 +1005,8 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                {/* Delivery / Trailer Info – single instance */}
-                {categoryId === "anhaenger" ? (
+                {/* Delivery / Trailer Info – single instance (Wohnwagen werden nicht geliefert) */}
+                {categoryId === "wohnwagen-camping" ? null : categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
                 ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
                   <Card className="border-accent/30 bg-accent/5">
