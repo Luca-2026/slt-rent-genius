@@ -12,6 +12,7 @@ import {
   CheckCircle2, Package, Download, PlayCircle,
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
+import { LazyVideo } from "@/components/used/LazyVideo";
 
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
@@ -344,18 +345,10 @@ export default function SLTUsedDetail() {
             </h2>
           </div>
           <div className="max-w-xs rounded-lg overflow-hidden bg-black">
-            <video
+            <LazyVideo
               src={content.videoUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-              preload="metadata"
               className="w-full h-auto"
-            >
-              Ihr Browser unterstützt das Video-Format nicht.
-            </video>
+            />
           </div>
         </section>
       )}
