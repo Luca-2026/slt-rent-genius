@@ -1043,6 +1043,11 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
     spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
     "wohnwagen-camping": `Wohnwagen mieten in ${cityName} ab 30 €/Tag: Weinsberg CaraOne 480 QDK für bis zu 5 Personen mit Dusche, WC, Truma-Heizung & Mover. Servicepauschale 99 €.`,
+    nutzfahrzeuge: location.id === "krefeld"
+      ? `Nutzfahrzeuge mieten in Krefeld: 3,5t Pritschenwagen Doppelkabine (Führerschein B, 7 Sitze) ab 55 €/Tag und 7,5t MAN TGL Dreiseitenkipper (C1) ab 75 €/Tag. Selbstfahrend.`
+      : location.id === "bonn"
+      ? `Nutzfahrzeuge mieten in Bonn: 3,5t Pritschenwagen Doppelkabine (Klasse B) ab 55 €/Tag und 7,5t MAN TGL Dreiseitenkipper (C1) ab 75 €/Tag – Abholung am Standort Bonn.`
+      : `Nutzfahrzeuge mieten in Mülheim an der Ruhr: 3,5t Dreiseitenkipper Doppelkabine (Klasse B) ab 55 €/Tag und 7,5t MAN TGL (C1) ab 75 €/Tag – auf Anfrage.`,
     huepfburgen: location.id === "krefeld"
       ? `Hüpfburg mieten in Krefeld ab 25 €/Tag: Lamar 2,8×2,1 m, Wasserpark 3×4 m mit Rutsche & Pool, Rollercoaster 4,9×4 m und Clown 6,1×5,2 m – inkl. Gebläse, Heringe & Plane.`
       : location.id === "bonn"
