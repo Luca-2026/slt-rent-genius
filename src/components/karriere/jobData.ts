@@ -75,6 +75,28 @@ const DEFAULT_LOC_BONN: JobLocationDetail = {
 export const jobListings: JobListing[] = [
   {
     id: "lieferfahrer",
+    slug: "lieferfahrer-baumaschinen-krefeld",
+    shortPitch: "Werde Teil unseres Logistik-Teams und liefere Baumaschinen, Anhänger & Equipment direkt zu unseren Kunden in NRW.",
+    locations: [DEFAULT_LOC_KREFELD],
+    employmentType: ["FULL_TIME", "PART_TIME"],
+    datePosted: "2026-04-01",
+    validThrough: "2026-09-30",
+    industry: "Vermietung & Logistik",
+    salaryMin: 14,
+    salaryMax: 18,
+    salaryUnit: "HOUR",
+    tasks: [
+      "Auslieferung und Abholung von Baumaschinen, Anhängern und Eventtechnik im Großraum NRW",
+      "Sicheres Verladen und Sichern der Mietgegenstände",
+      "Kurze Einweisung der Kunden vor Ort",
+      "Pflege und Sichtprüfung von Fahrzeug und Anhänger",
+    ],
+    seoTitle: "Lieferfahrer (m/w/d) Baumaschinen Krefeld – Job bei SLT Rental",
+    seoDescription: "Aushilfe / Lieferfahrer in Krefeld gesucht. Baumaschinen & Anhänger ausliefern, BE-Führerschein erforderlich. Jetzt bei SLT Rental bewerben.",
+    faqs: [
+      { question: "Brauche ich Vorerfahrung mit Baumaschinen?", answer: "Nein. Wichtig sind Führerschein BE und technisches Interesse – wir arbeiten dich ein." },
+      { question: "Ist eine Anstellung in Teilzeit möglich?", answer: "Ja, Vollzeit und Teilzeit sind möglich. Auch Aushilfen / Minijob auf Anfrage." },
+    ],
     title: "Aushilfe / Lieferfahrer (m/w/d) für Vermietgegenstände",
     location: "Krefeld",
     type: "Vollzeit / Aushilfe",
