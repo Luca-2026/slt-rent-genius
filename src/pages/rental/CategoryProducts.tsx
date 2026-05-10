@@ -1080,6 +1080,7 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
     "wohnwagen-camping": `Wohnwagen mieten ${location.name}, Caravan mieten ${location.name}, Camping Wohnwagen leihen ${location.name}, Weinsberg CaraOne mieten, Familien-Wohnwagen mieten ${location.name}, Anhänger-Caravan mieten NRW`,
+    nutzfahrzeuge: `Nutzfahrzeug mieten ${location.name}, Pritschenwagen mieten ${location.name}, Dreiseitenkipper mieten ${location.name}, 3,5 Tonner Kipper mieten ${location.name}, 7,5 Tonner mieten ${location.name}, MAN TGL mieten, Opel Movano Pritsche mieten, LKW Kipper mieten ${location.name}, Transporter mit Kippvorrichtung mieten`,
   };
   
   const seoKeywordsBase = categoryKeywordMap[category.id] || 
