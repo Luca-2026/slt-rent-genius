@@ -1375,6 +1375,30 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
   return result;
 }
 
+// === Wohnwagen & Camping (on-request, alle Standorte) =========================
+const weinsbergCaraOne480QDK: Product = {
+  id: "weinsberg-caraone-480-qdk",
+  name: "Weinsberg CaraOne 480 QDK",
+  modelName: "Weinsberg CaraOne 480 QDK",
+  description: "Familientauglicher Wohnwagen für bis zu 5 Personen – mit Dusche, WC, Truma-Heizung und Mover. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+  detailedDescription:
+    "Der Weinsberg CaraOne 480 QDK ist unser Allround-Caravan für Familien und kleine Gruppen. Vollwertige Nasszelle mit Dusche & WC, Truma-Heizung, Mover für einfaches Rangieren und Antischlingerkupplung sind Serie. Im Mietpreis enthalten: voll ausgestattete Küche, 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung sowie Vollkaskoversicherung.\n\nMindestmietdauer 5 Tage. Endreinigung 149 € pauschal. Kaution 800 €. Tagesmiete ab 50 € / Tag.",
+  image: iconCamping,
+  images: [iconCamping],
+  pricePerDay: "ab 50 €",
+  category: "wohnwagen",
+  onRequest: true,
+  tags: ["familie", "auf anfrage"],
+  rentalNotes: [
+    "Mindestmietdauer 5 Tage",
+    "Endreinigung 149 € pauschal",
+    "Kaution 800 €",
+    "Vollkaskoversicherung enthalten",
+  ],
+};
+
+const wohnwagenCampingProducts: Product[] = [weinsbergCaraOne480QDK];
+
 // Locations with their available categories and products
 export const locations: LocationData[] = [
   {
