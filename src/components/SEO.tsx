@@ -58,7 +58,7 @@ export function SEO({
       {/* JSON-LD */}
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(Array.isArray(jsonLd) ? jsonLd : jsonLd)}
+          {JSON.stringify(sanitizeJsonLd(Array.isArray(jsonLd) ? jsonLd : jsonLd))}
         </script>
       )}
     </Helmet>
