@@ -26,6 +26,7 @@ import iconBeschallung from "@/assets/icons/beschallung.png";
 import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
 import iconKommunikation from "@/assets/icons/kommunikation.png";
 import iconGartenpflege from "@/assets/icons/SLT_Rental_Icons_Gartenpflege.png";
+import iconNutzfahrzeuge from "@/assets/icons/category-nutzfahrzeuge.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
