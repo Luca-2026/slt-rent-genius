@@ -333,6 +333,18 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Honeypot-Feld – für echte Nutzer unsichtbar, Bots füllen es aus */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+            <label htmlFor={honeypotId}>Website (bitte leer lassen)</label>
+            <input
+              id={honeypotId}
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
           {/* Step 1: Personal Data */}
           {step === 1 && (
             <div className="space-y-4">
