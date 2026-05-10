@@ -4846,6 +4846,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Partyzelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 4x4m mieten in Krefeld, Partyzelt 4x4m leihen in Krefeld, Partyzelt 4x4m mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 4x4m Zelts?", a: "Das Zelt bietet stehend Platz für ca. 27 Personen (0,6 m²/Person) oder bei Bestuhlung für ca. 23 Personen (0,71 m²/Person)." },
       { q: "Aus welchem Material besteht die Bespannung?", a: "Die Plane besteht aus UV-beständiger, rasterfaserverstärkter 500 g/m² PVC-Folie." },
