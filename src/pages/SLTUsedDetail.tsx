@@ -12,6 +12,7 @@ import {
   CheckCircle2, Package, Download, PlayCircle,
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
+import { LazyVideo } from "@/components/used/LazyVideo";
 
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
