@@ -566,6 +566,9 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
                     </label>
                   )}
                 </div>
+                {resumeError && !resumeFile && (
+                  <p className="text-sm text-destructive font-medium">{resumeError}</p>
+                )}
               </div>
 
               {/* Cover Letter */}
