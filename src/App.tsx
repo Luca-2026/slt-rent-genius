@@ -50,6 +50,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const About = lazy(() => import("./pages/About"));
 const Lieferung = lazy(() => import("./pages/Lieferung"));
 const Karriere = lazy(() => import("./pages/Karriere"));
+const KarriereJobDetail = lazy(() => import("./pages/KarriereJobDetail"));
 const Loesungen = lazy(() => import("./pages/Loesungen"));
 const LoesungDetail = lazy(() => import("./pages/LoesungDetail"));
 const LocalArea = lazy(() => import("./pages/LocalArea"));
@@ -123,6 +124,7 @@ const App = () => (
               <Route path="/faq" element={<FAQ />} />
               <Route path="/ueber-uns" element={<About />} />
               <Route path="/karriere" element={<Karriere />} />
+              <Route path="/karriere/:slug" element={<KarriereJobDetail />} />
               
               {/* Solutions pages */}
               <Route path="/loesungen" element={<Loesungen />} />
