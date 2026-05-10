@@ -343,11 +343,14 @@ export default function SLTUsedDetail() {
               {content.videoCaption || "360°-Ansicht"}
             </h2>
           </div>
-          <div className="max-w-4xl rounded-lg overflow-hidden bg-black">
+          <div className="max-w-md rounded-lg overflow-hidden bg-black">
             <video
               src={content.videoUrl}
-              controls
+              autoPlay
+              loop
+              muted
               playsInline
+              controls
               preload="metadata"
               className="w-full h-auto"
             >
