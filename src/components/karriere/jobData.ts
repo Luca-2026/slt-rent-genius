@@ -390,8 +390,8 @@ export const jobListings: JobListing[] = [
     datePosted: "2026-03-01",
     validThrough: "2026-12-31",
     industry: "Vertrieb / Sales",
-    salaryMin: 55000,
-    salaryMax: 85000,
+    salaryMin: 40000,
+    salaryMax: 55000,
     salaryUnit: "YEAR",
     remote: true,
     tasks: [
