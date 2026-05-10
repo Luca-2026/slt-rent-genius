@@ -77,6 +77,7 @@ export function ProductBookingDialog({
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
+  const productExtras = product?.id ? PRODUCT_EXTRAS[product.id] : undefined;
   const defaultForm: InquiryForm = {
     name: "", email: "", phone: "",
     street: "", postalCode: "", city: "",
