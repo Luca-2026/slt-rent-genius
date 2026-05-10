@@ -129,8 +129,8 @@ export default function Mietartikel() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {products.map((p) => (
           <button
-            key={p.slug}
-            onClick={() => handleProductClick(p.categoryId, p.slug)}
+            key={p.slug ?? `${p.categoryId}-${p.query ?? p.name}`}
+            onClick={() => handleProductClick(p.categoryId, p.slug, p.query)}
             className="flex items-center gap-3 p-3 bg-background rounded-lg border hover:border-primary/50 hover:shadow-sm transition-all text-left"
           >
             <div>
