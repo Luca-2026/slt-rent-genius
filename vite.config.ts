@@ -29,6 +29,43 @@ function heroImagePreloadPlugin(): Plugin {
   };
 }
 
+// Inlines the main CSS bundle into <head> when small (< 50 KB) and removes
+// the original <link rel="stylesheet"> tag. Eliminates the 340 ms render-
+// blocking CSS request reported by PageSpeed (CSS is ~18 KB).
+// The original CSS file is kept in dist/ so the prerendered SSR snippet
+// can still link to it if needed (we only edit index.html).
+function inlineSmallCssPlugin(maxBytes = 50 * 1024): Plugin {
+  return {
+    name: "inline-small-css",
+    apply: "build",
+    enforce: "post",
+    transformIndexHtml: {
+      order: "post",
+      handler(html, ctx) {
+        const bundle = ctx.bundle;
+        if (!bundle) return html;
+        // Find <link rel="stylesheet" href="/assets/...css"> and inline if small
+        const linkRe = /<link\s+rel="stylesheet"[^>]*href="\/?([^"]+\.css)"[^>]*>/g;
+        let match: RegExpExecArray | null;
+        let out = html;
+        while ((match = linkRe.exec(html)) !== null) {
+          const href = match[1];
+          const asset: any = bundle[href] || bundle[href.replace(/^assets\//, "assets/")];
+          if (!asset || asset.type !== "asset") continue;
+          const source: string =
+            typeof asset.source === "string"
+              ? asset.source
+              : Buffer.from(asset.source).toString("utf-8");
+          if (source.length > maxBytes) continue;
+          const inlineTag = `<style data-inlined-from="/${href}">${source}</style>`;
+          out = out.replace(match[0], inlineTag);
+        }
+        return out;
+      },
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
