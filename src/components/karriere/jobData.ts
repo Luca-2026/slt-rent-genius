@@ -116,7 +116,7 @@ export const jobListings: JobListing[] = [
       "Praxiserfahrung in der Disposition von Mietequipment, Logistik oder vergleichbaren Prozessen",
       "Eigenverantwortliche, lösungsorientierte und unternehmerisch denkende Arbeitsweise mit ausgeprägter Service- und Kundenorientierung",
       "Souveränes Auftreten, Verhandlungs- und Kommunikationsstärke gegenüber B2B- und B2C-Kunden",
-      "Offenheit für moderne Tools – wir arbeiten mit Cloud-Software, Mietpark-Management-Systemen (Rentware) und aktiv mit KI/AI-Tools im Arbeitsalltag",
+      "Offenheit für moderne Tools – wir arbeiten mit Cloud-Software, modernen Mietpark-Management-Systemen und aktiv mit KI/AI-Tools im Arbeitsalltag",
       "Sicherer Umgang mit MS-Office; Erfahrung mit ERP- oder Mietverwaltungssoftware von Vorteil",
       "Führerschein Klasse B (BE und/oder C1E von Vorteil)",
     ],
