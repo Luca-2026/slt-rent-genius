@@ -6055,6 +6055,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Soundboks Gen.3 dient der mobilen Musikbeschallung im Garten.",
     primaryKeywords: "Soundboks Gen.3 mieten in Krefeld, Soundboks Gen.3 leihen in Krefeld, Soundboks Gen.3 mieten NRW",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wie lange hält der Akku der Soundboks Gen.3?", a: "Die Akkulaufzeit beträgt bei 50 % Lautstärke bis zu 40 Stunden und bei voller Lautstärke etwa 5 Stunden." },
       { q: "Wie viele Lautsprecher lassen sich drahtlos verbinden?", a: "Über den TeamUP-Modus mit SKAA-Technologie können bis zu 5 Soundboks-Geräte kabellos miteinander gekoppelt werden." },
