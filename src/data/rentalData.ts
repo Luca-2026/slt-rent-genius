@@ -1458,6 +1458,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       "anhaenger": sortedTrailerProducts,
@@ -1481,6 +1482,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
     },
   },
   {
@@ -1513,6 +1515,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       // Merge: Bonn-specific items first (with Rentware codes), then fill with Krefeld items not already covered
@@ -1623,6 +1626,7 @@ export const locations: LocationData[] = [
         "bonn"
       ),
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
     },
   },
   {
@@ -1655,6 +1659,7 @@ export const locations: LocationData[] = [
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
+      "nutzfahrzeuge",
     ],
     products: {
       "anhaenger": sortedTrailerProducts.map(p => 
@@ -1678,6 +1683,7 @@ export const locations: LocationData[] = [
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
+      "nutzfahrzeuge": [],
       "aggregate": mergeWithFallback(
         [
           {
