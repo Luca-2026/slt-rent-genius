@@ -13,6 +13,8 @@ export interface ProductSEOData {
   primaryKeywords: string;
   is247: boolean;
   faqs: { q: string; a: string }[];
+  /** Tagespreis ab (EUR netto) für JSON-LD Offer.priceSpecification */
+  dailyPriceFrom?: number;
 }
 
 // Lookup by product ID (from rentalData.ts)
@@ -523,6 +525,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Im privaten Bereich unterstützt die Maschine beim Aushub für Terrassen- und Pflasterarbeiten sowie bei der Wurzelentfernung nach Baumfällungen.",
     primaryKeywords: "1t Minibagger mieten in Krefeld, 1t Minibagger leihen in Krefeld, 1t Minibagger mieten NRW",
     is247: false,
+    dailyPriceFrom: 65,
     faqs: [
       { q: "Wie breit ist der 1t Minibagger?", a: "Der Bobcat E10Z hat eine Gesamtbreite von 1.100 mm, die auf 710 mm eingefahren werden kann." },
       { q: "Welche Grabtiefe erreicht die Maschine?", a: "Die maximale Grabtiefe des Baggers liegt bei 1.820 mm." },
