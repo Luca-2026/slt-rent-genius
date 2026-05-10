@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { sanitizeJsonLd } from "@/lib/sanitizeJsonLd";
 
 interface SEOProps {
   title: string;
