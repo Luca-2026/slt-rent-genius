@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
 
   try {
     const {
-      userId,
+      password,
       companyName,
       legalForm,
       taxId,
@@ -171,17 +171,38 @@ Deno.serve(async (req) => {
       documentFilename,
     } = await req.json();
 
-    if (!userId || !companyName || !firstName || !lastName || !phone || !email || !street || !postalCode || !city) {
+    if (!password || !companyName || !firstName || !lastName || !phone || !email || !street || !postalCode || !city) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const serviceClient = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    // --- AuthN: verify caller controls the email by signing in with the
+    // provided password. This proves the caller just registered with these
+    // credentials, so we never trust a userId from the request body.
+    const authClient = createClient(supabaseUrl, anonKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { data: signIn, error: signInError } = await authClient.auth.signInWithPassword({
+      email: String(email).trim().toLowerCase(),
+      password: String(password),
+    });
+    if (signInError || !signIn?.user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const userId = signIn.user.id;
+    // Sign out the temporary session immediately
+    await authClient.auth.signOut().catch(() => {});
+
+    const serviceClient = createClient(supabaseUrl, serviceRoleKey);
 
     // Check if profile already exists
     const { data: existing } = await serviceClient
@@ -195,6 +216,7 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
 
     // Validate + upload document if provided
     let documentUrl: string | null = null;
