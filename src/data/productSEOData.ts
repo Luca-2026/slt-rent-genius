@@ -7252,6 +7252,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenumgestaltung, Hausbau in Eigenregie, Möbeltransporte oder Entrümpelungen: Mit Führerscheinklasse B fahrbar, daher auch ohne LKW-Schein nutzbar. Ideal zum Abfahren von Aushub oder Grünschnitt zur Deponie.",
     primaryKeywords: "Opel Movano mieten Krefeld, 3,5t Pritschenwagen mieten Krefeld, Dreiseitenkipper Transporter mieten Krefeld, Kipper Führerschein B Krefeld, Pritschenkipper mieten NRW",
     is247: false,
+    dailyPriceFrom: 55,
     faqs: [
       { q: "Welcher Führerschein ist für den 3,5-Tonner Pritschenwagen erforderlich?", a: "Mit 3.500 kg zulässigem Gesamtgewicht darf das Fahrzeug mit der Führerscheinklasse B (PKW-Führerschein) gefahren werden. Ein zusätzlicher LKW-Führerschein ist nicht nötig." },
       { q: "Wie viel kann ich auf der Pritsche zuladen?", a: "Bei einem Leergewicht von 2.365 kg und 3.500 kg zulässigem Gesamtgewicht beträgt die Nutzlast 1.135 kg. Die Ladefläche misst 3,60 × 2,05 m bei 35 cm Bordwandhöhe." },
