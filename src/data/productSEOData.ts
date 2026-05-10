@@ -13,6 +13,8 @@ export interface ProductSEOData {
   primaryKeywords: string;
   is247: boolean;
   faqs: { q: string; a: string }[];
+  /** Tagespreis ab (EUR netto) für JSON-LD Offer.priceSpecification */
+  dailyPriceFrom?: number;
 }
 
 // Lookup by product ID (from rentalData.ts)
