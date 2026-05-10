@@ -81,12 +81,14 @@ export default function SLTUsedDetail() {
 
   const title = `${machine.manufacturer} ${machine.model} gebraucht kaufen | SLT Used`;
   const description = `${machine.manufacturer} ${machine.model}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
+  const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
 
   return (
     <Layout>
       <SEO
         title={title}
         description={description}
+        keywords={seoKeywords.length > 0 ? seoKeywords.join(", ") : undefined}
         canonical={`/verkauf/gebrauchtmaschinen/${slug}`}
         ogImage={images[0]}
       />
