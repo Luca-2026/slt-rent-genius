@@ -1459,7 +1459,8 @@ const manKipperMeillerD205: Product = {
     "Bereifung Achse 2": "235/75 R17.5",
     "Federung Achse 2": "Blattfederung",
     // Aufbau Meiller D205
-    "Aufbau": "Meiller D205",
+    "Aufbau": "Meiller D205 Dreiseitenkipper",
+    "Kippfunktion": "3-Seiten-Kipper (hinten, links, rechts)",
     "Volumen": "4,5 m³",
     "Bodenstärke": "2,5 mm",
     "Stärke Seitenwände": "1,5 mm",
