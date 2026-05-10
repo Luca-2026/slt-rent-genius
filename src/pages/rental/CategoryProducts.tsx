@@ -95,6 +95,17 @@ export default function CategoryProducts() {
     );
   }, [searchParams, categoryId]);
 
+  // Apply ?weight= URL param to trailer weight filter
+  useEffect(() => {
+    if (categoryId !== "anhaenger") return;
+    const weightParam = searchParams.get("weight");
+    if (!weightParam) return;
+    setTrailerFilters((prev) =>
+      prev.weight.includes(weightParam) ? prev : { ...prev, weight: [weightParam] }
+    );
+  }, [searchParams, categoryId]);
+
+
   // Scroll to product grid when discrete filters change (not slider drags)
   useEffect(() => {
     const prev = prevFiltersRef.current;
