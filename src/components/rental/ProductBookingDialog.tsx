@@ -42,6 +42,7 @@ interface InquiryForm {
   deliveryPostalCode: string;
   deliveryCity: string;
   setupServiceRequested: boolean;
+  selectedExtras: string[];
 }
 
 // Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
@@ -49,6 +50,21 @@ const SETUP_SERVICE_CATEGORIES = [
   'beleuchtung', 'beschallung', 'moebel-zelte', 'buehne', 'traversen-rigging',
   'spezialeffekte', 'huepfburgen', 'kommunikation',
 ];
+
+// Product-specific optional extras (Service & Zubehör)
+const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number }[]> = {
+  "weinsberg-caraone-480-qdk": [
+    { id: "fahrradtraeger-2er", label: "2er Fahrradträger (Deichsel)", price: 30 },
+    { id: "campingmoebel", label: "Campingmöbel", price: 30 },
+    { id: "diebstahlsicherung", label: "Diebstahlsicherung", price: 15 },
+    { id: "endreinigung-ww", label: "Endreinigung Wohnwagen", price: 99 },
+    { id: "gas-eu-adapter", label: "Gas EU-Adapter", price: 10 },
+    { id: "gasflasche-11kg", label: "Gasflasche (11 kg) extra", price: 39 },
+    { id: "gasflasche-5kg", label: "Gasflasche (5 kg) extra", price: 20 },
+    { id: "hundepauschale", label: "Hundepauschale WW (max. 1 Hund)", price: 79 },
+    { id: "sonnensegel", label: "Sonnensegel", price: 20 },
+  ],
+};
 
 export function ProductBookingDialog({ 
   product, 
@@ -61,6 +77,7 @@ export function ProductBookingDialog({
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
+  const productExtras = product?.id ? PRODUCT_EXTRAS[product.id] : undefined;
   const defaultForm: InquiryForm = {
     name: "", email: "", phone: "",
     street: "", postalCode: "", city: "",
@@ -68,6 +85,7 @@ export function ProductBookingDialog({
     message: "",
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
+    selectedExtras: [],
   };
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
@@ -183,6 +201,15 @@ export function ProductBookingDialog({
     setSending(true);
 
     try {
+      const selectedExtraItems = (productExtras || []).filter((x) => form.selectedExtras.includes(x.id));
+      const extrasSummary = selectedExtraItems.length
+        ? selectedExtraItems.map((x) => `- ${x.label}: ${x.price.toFixed(2)} € einmalig`).join("\n")
+        : "";
+      const extrasTotal = selectedExtraItems.reduce((sum, x) => sum + x.price, 0);
+      const messageWithExtras = extrasSummary
+        ? `${form.message ? form.message + "\n\n" : ""}Gewünschte Zusatzleistungen (Service & Zubehör):\n${extrasSummary}\n\nSumme Zusatzleistungen: ${extrasTotal.toFixed(2)} € einmalig`
+        : form.message;
+
       const { error } = await supabase.functions.invoke("send-inquiry-email", {
         body: {
           productName: product.name,
@@ -191,6 +218,7 @@ export function ProductBookingDialog({
           locationPhone: location.phone,
           locationAddress: location.address,
           ...form,
+          message: messageWithExtras,
         },
       });
 
@@ -478,6 +506,52 @@ export function ProductBookingDialog({
                           <Wrench className="h-4 w-4 text-primary" />
                           Betreuung / Auf- & Abbau gewünscht
                         </Label>
+                      </div>
+                    )}
+
+                    {/* Product-specific extras (Service & Zubehör) */}
+                    {productExtras && productExtras.length > 0 && (
+                      <div className="space-y-3 border border-border rounded-lg p-4 bg-muted/30">
+                        <div className="flex items-center gap-2">
+                          <Wrench className="h-4 w-4 text-primary" />
+                          <Label className="font-medium">Service & Zubehör (optional)</Label>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Wähle deine gewünschten Zusatzleistungen – jeweils einmalig pro Mietzeitraum.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {productExtras.map((extra) => {
+                            const checked = form.selectedExtras.includes(extra.id);
+                            return (
+                              <label
+                                key={extra.id}
+                                htmlFor={`inq-extra-${extra.id}`}
+                                className="flex items-start gap-3 p-2 rounded-md hover:bg-background cursor-pointer"
+                              >
+                                <Checkbox
+                                  id={`inq-extra-${extra.id}`}
+                                  checked={checked}
+                                  onCheckedChange={(c) => {
+                                    const isChecked = c === true;
+                                    setForm({
+                                      ...form,
+                                      selectedExtras: isChecked
+                                        ? [...form.selectedExtras, extra.id]
+                                        : form.selectedExtras.filter((id) => id !== extra.id),
+                                    });
+                                  }}
+                                  className="mt-0.5"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-medium leading-tight">{extra.label}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {extra.price.toFixed(2).replace(".", ",")} € einmalig
+                                  </div>
+                                </div>
+                              </label>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
 
