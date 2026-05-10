@@ -13,7 +13,8 @@ SLT Rental (SLT Technology Group GmbH & Co. KG) ist seit 2016 ein zuverlässiger
 Wir haben 3 Standorte:
 • Krefeld – Anrather Straße 291, 47807 Krefeld-Fichtenhain | Tel: 02151 417 990 4 | krefeld@slt-rental.de
 • Bonn – Drachenburgstraße 8, 53179 Bonn | Tel: 0228 50466061 | bonn@slt-rental.de
-• Mülheim an der Ruhr – Ruhrorter Str. 100, 45478 Mülheim | Tel: 02151 417 990 4 | muelheim@slt-rental.de
+• Mülheim an der Ruhr – Ruhrorter Str. 122, 45478 Mülheim an der Ruhr | Tel: 02151 417 990 4 | muelheim@slt-rental.de
+  (Service-Standort für das Ruhrgebiet, Geräte werden i.d.R. aus dem Zentrallager Krefeld disponiert)
 
 Öffnungszeiten: Mo.–Fr. 07:30–18:00 Uhr, Sa. 07:30–13:00 Uhr
 
