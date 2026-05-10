@@ -3015,6 +3015,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Halteverbotsschilder-Set mieten in Krefeld, Halteverbotsschilder-Set leihen in Krefeld, Halteverbotsschilder-Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wann müssen die Halteverbotsschilder spätestens aufgestellt werden?", a: "Die Aufstellung muss mindestens 4 Tage vor dem geplanten Nutzungsbeginn erfolgen." },
       { q: "Was ist bei einer Beantragung der Genehmigung zu beachten?", a: "Bei einer Beantragung durch uns ist eine Vorlaufzeit von mindestens 14 Werktagen erforderlich; zudem muss eine Kopie der Genehmigung an mieten@slt-rental.de gesendet werden." },
