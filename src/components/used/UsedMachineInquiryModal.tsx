@@ -22,6 +22,7 @@ export interface MachineData {
   year: number | null;
   price: string;
   location: string;
+  pickupLocations?: string[];
   referenceNumber: string;
   status: string;
 }
@@ -53,6 +54,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const [interest, setInterest] = useState("");
   const [wishDate, setWishDate] = useState<Date | undefined>();
   const [deliveryOption, setDeliveryOption] = useState("");
+  const [pickupLocation, setPickupLocation] = useState("");
   const [deliveryStreet, setDeliveryStreet] = useState("");
   const [deliveryPlz, setDeliveryPlz] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
