@@ -188,6 +188,16 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
   const onSubmit = async (data: FormData) => {
+    if (!resumeFile) {
+      setResumeError("Bitte lade deinen Lebenslauf hoch (PDF, DOC oder DOCX).");
+      toast({
+        title: "Lebenslauf fehlt",
+        description: "Bitte gehe zurück zu Schritt 3 und lade deinen Lebenslauf hoch.",
+        variant: "destructive"
+      });
+      setStep(3);
+      return;
+    }
     setIsSubmitting(true);
 
     try {
