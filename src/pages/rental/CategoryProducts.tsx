@@ -1668,7 +1668,7 @@ export default function CategoryProducts() {
                   {/* Scrollable filter area with delivery calculator included */}
                   <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
                     {/* Availability filter */}
-                    {category.id !== "wohnwagen-camping" && (
+                    {category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" && (
                       <div className="bg-card border border-border rounded-xl p-4">
                         <label className="flex items-center gap-3 cursor-pointer select-none">
                           <input
