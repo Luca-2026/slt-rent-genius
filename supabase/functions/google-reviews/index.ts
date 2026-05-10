@@ -8,6 +8,13 @@ const corsHeaders = {
 
 const CACHE_TTL_MINUTES = 7 * 24 * 60; // Cache for 7 days
 
+// Allowlist of SLT location Place IDs — prevents abuse of our Google Places
+// API quota for arbitrary lookups.
+const ALLOWED_PLACE_IDS = new Set<string>([
+  "ChIJRyajcmSxuEcRAHvlWgXfF5c", // Krefeld
+  "ChIJf2ituEblvkcRUGua8HYhHCA", // Bonn
+]);
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -15,10 +22,17 @@ serve(async (req) => {
 
   try {
     const { placeId } = await req.json();
-    
-    if (!placeId) {
+
+    if (!placeId || typeof placeId !== "string") {
       return new Response(JSON.stringify({ error: 'placeId is required' }), {
         status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!ALLOWED_PLACE_IDS.has(placeId)) {
+      return new Response(JSON.stringify({ error: 'Place ID not allowed' }), {
+        status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }

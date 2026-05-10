@@ -12,6 +12,16 @@ const HQ_ADDRESS = "Anrather Straße 291, 47807 Krefeld";
 const HQ_PHONE = "02151 417 99 04";
 const MAX_ATTACHMENT_BYTES = 18 * 1024 * 1024; // ~18 MB Resend limit per request
 
+function escapeHtml(input: unknown): string {
+  if (input === null || input === undefined) return "";
+  return String(input)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function fetchAttachment(
   supabase: ReturnType<typeof createClient>,
   path: string | null | undefined,
@@ -79,6 +89,20 @@ serve(async (req) => {
 
     const address = [street, postalCode, city].filter(Boolean).join(", ") || "nicht angegeben";
 
+    const e = {
+      jobTitle: escapeHtml(jobTitle),
+      firstName: escapeHtml(firstName),
+      lastName: escapeHtml(lastName),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone || "nicht angegeben"),
+      address: escapeHtml(address),
+      earliestStartDate: escapeHtml(earliestStartDate),
+      salaryExpectation: escapeHtml(salaryExpectation),
+      motivation: escapeHtml(motivation),
+      resumeFilename: escapeHtml(resumeFilename || "nicht hochgeladen"),
+      coverLetterFilename: escapeHtml(coverLetterFilename),
+    };
+
     const footerHtml = `
     <p style="color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px; line-height: 1.6;">
       ${COMPANY_NAME}<br>
@@ -99,22 +123,22 @@ serve(async (req) => {
   <div style="padding: 24px;">
     <h2 style="color: #1a1a1a; margin-top: 0;">Neue Bewerbung eingegangen</h2>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-      <strong style="color: #ea580c;">Stelle:</strong> ${jobTitle}
+      <strong style="color: #ea580c;">Stelle:</strong> ${e.jobTitle}
     </div>
     <h3 style="color: #374151;">Persönliche Daten</h3>
     <table style="width: 100%; border-collapse: collapse;">
-      <tr><td style="padding: 4px 0; color: #6b7280; width: 140px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${firstName} ${lastName}</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${email}" style="color: #f97316;">${email}</a></td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${phone || "nicht angegeben"}</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Adresse:</td><td style="padding: 4px 0;">${address}</td></tr>
-      ${earliestStartDate ? `<tr><td style="padding: 4px 0; color: #6b7280;">Frühester Eintritt:</td><td style="padding: 4px 0;">${earliestStartDate}</td></tr>` : ""}
-      ${salaryExpectation ? `<tr><td style="padding: 4px 0; color: #6b7280;">Gehaltsvorstellung:</td><td style="padding: 4px 0;">${salaryExpectation}</td></tr>` : ""}
+      <tr><td style="padding: 4px 0; color: #6b7280; width: 140px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${e.firstName} ${e.lastName}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${e.email}" style="color: #f97316;">${e.email}</a></td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${e.phone}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Adresse:</td><td style="padding: 4px 0;">${e.address}</td></tr>
+      ${earliestStartDate ? `<tr><td style="padding: 4px 0; color: #6b7280;">Frühester Eintritt:</td><td style="padding: 4px 0;">${e.earliestStartDate}</td></tr>` : ""}
+      ${salaryExpectation ? `<tr><td style="padding: 4px 0; color: #6b7280;">Gehaltsvorstellung:</td><td style="padding: 4px 0;">${e.salaryExpectation}</td></tr>` : ""}
     </table>
-    ${motivation ? `<h3 style="color: #374151;">Motivation</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${motivation}</p>` : ""}
+    ${motivation ? `<h3 style="color: #374151;">Motivation</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${e.motivation}</p>` : ""}
     <h3 style="color: #374151;">Unterlagen</h3>
     <ul style="color: #374151;">
-      <li>Lebenslauf: ${resumeFilename || "nicht hochgeladen"}</li>
-      ${coverLetterFilename ? `<li>Anschreiben: ${coverLetterFilename}</li>` : ""}
+      <li>Lebenslauf: ${e.resumeFilename}</li>
+      ${coverLetterFilename ? `<li>Anschreiben: ${e.coverLetterFilename}</li>` : ""}
     </ul>
     ${attachmentsNote}
     ${footerHtml}
@@ -129,8 +153,8 @@ serve(async (req) => {
   <div style="padding: 24px;">
     <h2 style="color: #1a1a1a; margin-top: 0;">Vielen Dank für Ihre Bewerbung!</h2>
     <p style="color: #374151; line-height: 1.6;">
-      Hallo ${firstName},<br><br>
-      wir haben Ihre Bewerbung als <strong>${jobTitle}</strong> erhalten und freuen uns über Ihr Interesse an SLT Rental.
+      Hallo ${e.firstName},<br><br>
+      wir haben Ihre Bewerbung als <strong>${e.jobTitle}</strong> erhalten und freuen uns über Ihr Interesse an SLT Rental.
     </p>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
       <strong style="color: #ea580c;">Nächste Schritte:</strong><br>
