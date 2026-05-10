@@ -142,6 +142,7 @@ const App = () => (
               <Route path="/verkauf" element={<Verkauf />} />
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
+              <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
               
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
