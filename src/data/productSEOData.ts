@@ -3767,6 +3767,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Stimmungsbeleuchtung bei Gartenpartys",
     primaryKeywords: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage leihen in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Welche Lichteffekte sind in dem Set enthalten?", a: "Das Set umfasst zwei LED Moving Heads, zwei RGBW Derby-Effekte, vier weiße Stroboskope und zwei RGBW-LED Scheinwerfer." },
       { q: "Wie wird die Lichtanlage gesteuert?", a: "Die Anlage verfügt über einen automatischen Programmbetrieb sowie eine Sound-to-Light-Steuerung." },
