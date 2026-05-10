@@ -1392,7 +1392,7 @@ const weinsbergCaraOne480QDK: Product = {
     "/product-images/wohnwagen-camping/weinsberg-caraone-480-qdk-5.png",
     "/product-images/wohnwagen-camping/weinsberg-caraone-480-qdk-6.jpg",
   ],
-  pricePerDay: "ab 50 €",
+  pricePerDay: "ab 30 €",
   category: "wohnwagen",
   onRequest: true,
   tags: ["familie", "auf anfrage"],

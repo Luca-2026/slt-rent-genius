@@ -7159,7 +7159,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "weinsberg-caraone-480-qdk": {
     excelName: "Weinsberg CaraOne 480 QDK",
     seoTitle: "Weinsberg CaraOne 480 QDK Wohnwagen mieten in NRW | SLT Rental",
-    metaDescription: "Weinsberg CaraOne 480 QDK mieten in Krefeld, Bonn & Mülheim. Familien-Wohnwagen für bis zu 5 Personen mit Dusche, WC, Heizung & Mover. Ab 50 €/Tag.",
+    metaDescription: "Weinsberg CaraOne 480 QDK mieten in Krefeld, Bonn & Mülheim. Familien-Wohnwagen für bis zu 5 Personen mit Dusche, WC, Heizung & Mover. Ab 30 €/Tag.",
     h1: "Weinsberg CaraOne 480 QDK mieten in NRW – Familien-Wohnwagen bei SLT Rental",
     h2s: ["Platzangebot & Schlafplätze", "Technische Daten", "Ausstattung & Mietumfang", "Standorte & Verfügbarkeit"],
     useCaseBau: "",
@@ -7168,7 +7168,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     primaryKeywords: "Wohnwagen mieten NRW, Weinsberg CaraOne 480 QDK mieten, Wohnwagen mieten Krefeld, Wohnwagen mieten Bonn, Wohnwagen mieten Mülheim an der Ruhr",
     is247: false,
     faqs: [
-      { q: "Was kostet es, den Weinsberg CaraOne 480 QDK bei SLT Rental zu mieten?", a: "Die Tagesmiete beginnt bei 50 € pro Tag. Hinzu kommt eine einmalige Servicepauschale von 99 € (Einweisung, 11 kg Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Erstausstattung Sanitärchemie, 2 Rollen Toilettenpapier). Die Endreinigung ist optional für 99 € einmalig buchbar. Eine Kaution von 1.000 € wird ebenfalls fällig. Die Mindestmietdauer beträgt 5 Tage. Längere Mietzeiträume und Saisonpreise sind auf Anfrage möglich." },
+      { q: "Was kostet es, den Weinsberg CaraOne 480 QDK bei SLT Rental zu mieten?", a: "Die Tagesmiete beginnt bei 30 € pro Tag. Hinzu kommt eine einmalige Servicepauschale von 99 € (Einweisung, 11 kg Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Erstausstattung Sanitärchemie, 2 Rollen Toilettenpapier). Die Endreinigung ist optional für 99 € einmalig buchbar. Eine Kaution von 1.000 € wird ebenfalls fällig. Die Mindestmietdauer beträgt 5 Tage. Längere Mietzeiträume und Saisonpreise sind auf Anfrage möglich." },
       { q: "Wo kann ich in NRW einen Wohnwagen mieten?", a: "SLT Rental bietet die Anmietung des Weinsberg CaraOne 480 QDK an drei Standorten in Nordrhein-Westfalen: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr. Damit decken wir den gesamten Großraum Düsseldorf, Köln, Bonn, Duisburg, Essen und die linksrheinischen Niederrhein-Regionen ab." },
       { q: "Welchen Führerschein brauche ich, um den Wohnwagen zu ziehen?", a: "Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg. Je nach Zugfahrzeug-Gewicht reicht die Führerscheinklasse B mit Schlüssel 96 (B96) oder die Klasse BE. Reine B-Führerscheine genügen nur, wenn das Zugfahrzeug entsprechend leicht ist – wir prüfen das vor der Buchung gemeinsam mit dir." },
       { q: "Für wie viele Personen ist der Wohnwagen geeignet?", a: "Der CaraOne 480 QDK bietet bis zu 5 Schlafplätze: ein Querbett im Bug, ein Etagenbett im Heck und die Mittelsitzgruppe lässt sich zum Doppelbett umbauen. Ideal für Familien mit zwei oder drei Kindern oder für eine Gruppe von bis zu vier Erwachsenen." },
