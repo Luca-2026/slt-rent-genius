@@ -815,6 +815,32 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Wohnwagen-Camping: Personenanzahl filter
+          else if (sectionId === "personenanzahl") {
+            filtered = filtered.filter((p) => {
+              const sitz = String(p.specifications?.["Sitzplätze"] || p.specifications?.["Schlafplätze"] || "");
+              const nums = Array.from(sitz.matchAll(/(\d+)/g)).map((m) => parseInt(m[1], 10));
+              const total = nums.reduce((a, b) => a + b, 0);
+              return selectedValues.some((v) => {
+                if (v === "bis-4") return total > 0 && total <= 4;
+                if (v === "5-personen") return total === 5;
+                return false;
+              });
+            });
+          }
+          // Wohnwagen-Camping: Zulässiges Gesamtgewicht filter
+          else if (sectionId === "gesamtgewicht") {
+            filtered = filtered.filter((p) => {
+              const gew = String(p.specifications?.["Zulässiges Gesamtgewicht"] || "");
+              const m = gew.replace(/\./g, "").match(/(\d+)/);
+              const kg = m ? parseInt(m[1], 10) : 0;
+              return selectedValues.some((v) => {
+                if (v === "bis-1500") return kg > 0 && kg <= 1500;
+                if (v === "ab-1500") return kg > 1500;
+                return false;
+              });
+            });
+          }
           // Standard tag/category matching
           else {
             filtered = filtered.filter((p) =>
