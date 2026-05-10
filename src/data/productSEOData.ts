@@ -6954,6 +6954,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Diese Weißweingläser eignen sich für die Bewirtung der Gäste bei privaten Feiern.",
     primaryKeywords: "Weißweinglas Passionata, 25er Set mieten in Krefeld, Weißweinglas Passionata, 25er Set leihen in Krefeld, Weißweinglas Passionata, 25er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 9,
     faqs: [
       { q: "Wie hoch ist das Fassungsvermögen der Passionata Weißweingläser?", a: "Jedes Glas verfügt über ein Fassungsvermögen von 450 ml." },
       { q: "Aus welchem Material bestehen die Gläser?", a: "Die Gläser sind aus Tritan®-Kristallglas gefertigt, welches als klar, kratzfest und bruchsicher gilt." },
