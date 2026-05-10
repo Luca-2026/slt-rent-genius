@@ -585,6 +585,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "traversen-rigging": "catSearch.traversenRigging",
   "kommunikation": "catSearch.kommunikation",
   "erdbewegung": "catSearch.erdbewegung",
+  "wohnwagen-camping": "Wohnwagen suchen…",
 };
 
 // Category display name i18n keys for delivery calculator
