@@ -5533,6 +5533,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Einsatz als Weingläser bei privaten Feiern.",
     primaryKeywords: "Rotweinglas Passionata, 25er Set mieten in Krefeld, Rotweinglas Passionata, 25er Set leihen in Krefeld, Rotweinglas Passionata, 25er Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 9,
     faqs: [
       { q: "Aus welchem Material bestehen die Passionata Rotweingläser?", a: "Die Gläser sind aus patentiertem Tritan®-Kristallglas gefertigt, welches als besonders bruchfest, kratzfest und spülmaschinenfest gilt." },
       { q: "Wie groß sind die einzelnen Gläser des Sets?", a: "Ein Rotweinglas hat die Abmessungen von ca. 94 × 94 × 238 mm (B × T × H)." },
