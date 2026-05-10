@@ -134,6 +134,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
           email: values.email,
           phone: values.phone,
           resumeFilename,
+          resumePath: resumeUrl,
         },
       });
 
