@@ -989,7 +989,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Ketten-Dumper mieten in Krefeld, Ketten-Dumper leihen in Krefeld, Ketten-Dumper mieten NRW",
     is247: false,
-    dailyPriceFrom: 35,
     faqs: [
       { q: "Welche Nutzlast bietet der Ketten-Dumper RMD-650?", a: "Das Modell RMD-650 ist für eine Nutzlast von bis wir 650 kg ausgelegt." },
       { q: "Für welche Arbeitsumgebungen eignet sich das Gerät?", a: "Aufgrund seiner kompakten Bauweise ist dieser Kettendumper für den Einsatz auf beengten Baustellen vorgesehen." },
@@ -3329,6 +3328,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für den Transport von Mutterboden, Kies oder Schotter im Garten sowie für die Materialbewegung bei größeren Privatprojekten.",
     primaryKeywords: "Ketten-Dumper mieten in Krefeld, Ketten-Dumper leihen in Krefeld, Ketten-Dumper mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie breit ist der Ketten-Dumper RMD-800?", a: "Die Gesamtbreite der Maschine beträgt 80 cm, während die Breite ohne seitliche Bordwände bei 75 cm liegt." },
       { q: "Welche Kapazität bietet die Kippmulde?", a: "Die Muldengröße beträgt 305 Liter in der gestrichenen und 400 Liter in der gehäuften Ausführung." },
@@ -7200,5 +7200,14 @@ export const productSEOData: Record<string, ProductSEOData> = {
 };
 
 export function getProductSEO(productId: string): ProductSEOData | undefined {
-  return productSEOData[productId];
+  if (productSEOData[productId]) return productSEOData[productId];
+  // Fallback: standortspezifische Varianten (z. B. "bonn-kettendumper-rmd800")
+  // greifen auf den Haupt-SEO-Eintrag zurück, falls vorhanden.
+  for (const prefix of ["bonn-", "muelheim-", "krefeld-"]) {
+    if (productId.startsWith(prefix)) {
+      const stripped = productId.slice(prefix.length);
+      if (productSEOData[stripped]) return productSEOData[stripped];
+    }
+  }
+  return undefined;
 }
