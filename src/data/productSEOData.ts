@@ -48,6 +48,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieses Modell kommt zur Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe zum Einsatz.",
     primaryKeywords: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger leihen in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 75,
     faqs: [
       { q: "Welche Anschlüsse stehen am Doosan G100 zur Verfügung?", a: "Das Aggregat verfügt über 2x Schuko 16A, 1x CEE 32A 5-Pol, 1x CEE 63A 5-Pol und 1x CEE 125A 5-Pol." },
       { q: "Wie lange kann das Aggregat ohne Nachbetanken betrieben werden?", a: "Der 176-Liter-Tank ermöglicht bei einer Last von 75 % eine Autonomie von ca. 11 Stunden." },
@@ -82,6 +83,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Gerät ermöglicht die Stromversorgung bei Garten- und Außenarbeiten und fungiert als Notstromlösung für temporäre Anlässe.",
     primaryKeywords: "20 kVA Aggregat Doosan G20 mieten in Krefeld, 20 kVA Aggregat Doosan G20 leihen in Krefeld, 20 kVA Aggregat Doosan G20 mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie lange kann das Doosan G20 ohne Nachanken betrieben werden?", a: "Das Aggregat verfügt über einen 181 Liter fassenden Tank und erreicht damit eine Autonomie von circa 47 Stunden bei Nennleistung." },
       { q: "Welche Anschlüsse stehen am Stromaggregat zur Verfügung?", a: "Das Gerät ist mit zwei Schuko-Anschlüssen (16A) und einem CEE 32A 5-Pol Anschluss ausgestattet." },
@@ -3013,6 +3015,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Halteverbotsschilder-Set mieten in Krefeld, Halteverbotsschilder-Set leihen in Krefeld, Halteverbotsschilder-Set mieten NRW",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wann müssen die Halteverbotsschilder spätestens aufgestellt werden?", a: "Die Aufstellung muss mindestens 4 Tage vor dem geplanten Nutzungsbeginn erfolgen." },
       { q: "Was ist bei einer Beantragung der Genehmigung zu beachten?", a: "Bei einer Beantragung durch uns ist eine Vorlaufzeit von mindestens 14 Werktagen erforderlich; zudem muss eine Kopie der Genehmigung an mieten@slt-rental.de gesendet werden." },
@@ -3150,6 +3153,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Diese Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
     primaryKeywords: "HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m leihen in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie lange dauert der Aufbau der Hüpfburg?", a: "Dank des mitgelieferten 300-Watt-Gebläses ist die Hüpfburg in ca. 5 Minuten aufgebaut." },
       { q: "Wie viele Kinder können die Burg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 2 Kinder im Alter von 3 bis 10 Jahren und eine Gesamtbelastung von 90 kg ausgelegt." },
@@ -3763,6 +3767,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Stimmungsbeleuchtung bei Gartenpartys",
     primaryKeywords: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage leihen in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Welche Lichteffekte sind in dem Set enthalten?", a: "Das Set umfasst zwei LED Moving Heads, zwei RGBW Derby-Effekte, vier weiße Stroboskope und zwei RGBW-LED Scheinwerfer." },
       { q: "Wie wird die Lichtanlage gesteuert?", a: "Die Anlage verfügt über einen automatischen Programmbetrieb sowie eine Sound-to-Light-Steuerung." },
@@ -3797,6 +3802,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenbeleuchtung, Outdoor-Geburtstage, Terrassen-Illumination",
     primaryKeywords: "LED Outdoorscheinwerfer mieten, IP65 Scheinwerfer leihen, Outdoor LED Set mieten NRW, RGBW Scheinwerfer Vermietung",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Sind die Scheinwerfer wetterfest?", a: "Ja – die Scheinwerfer verfügen über die Schutzart IP65 und sind damit gegen Strahlwasser aus allen Richtungen geschützt. Sie eignen sich perfekt für den Außeneinsatz bei jeder Witterung." },
       { q: "Welche Farben können die Scheinwerfer erzeugen?", a: "Jeder Scheinwerfer ist mit 14 × 5 Watt Osram RGBW-LEDs ausgestattet und kann Rot, Grün, Blau und Weiß sowie beliebige Mischfarben erzeugen." },
