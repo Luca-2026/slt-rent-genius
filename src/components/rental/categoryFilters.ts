@@ -541,6 +541,38 @@ export const wohnwagenCampingFilterSections: FilterSection[] = [
     ],
   },
 ];
+
+// ============= NUTZFAHRZEUGE =============
+export const nutzfahrzeugeFilterSections: FilterSection[] = [
+  {
+    id: "type",
+    label: "Fahrzeugtyp",
+    defaultExpanded: true,
+    options: [
+      { id: "kipper", label: "Kipper / Dreiseitenkipper" },
+      { id: "pritschenwagen", label: "Pritschenwagen" },
+    ],
+  },
+  {
+    id: "gewichtsklasse",
+    label: "Zulässiges Gesamtgewicht",
+    defaultExpanded: true,
+    options: [
+      { id: "3,5-tonner", label: "Bis 3,5 t", sublabel: "Führerschein B" },
+      { id: "7,5-tonner", label: "Bis 7,5 t", sublabel: "Führerschein C1" },
+    ],
+  },
+  {
+    id: "fuehrerschein",
+    label: "Führerscheinklasse",
+    defaultExpanded: true,
+    options: [
+      { id: "fuehrerschein-b", label: "Klasse B", sublabel: "PKW-Führerschein" },
+      { id: "fuehrerschein-c1", label: "Klasse C1", sublabel: "über 3,5 t bis 7,5 t" },
+    ],
+  },
+];
+
 export const categoryFilterMap: Record<string, FilterSection[]> = {
   "werkzeuge": werkzeugeFilterSections,
   "gartenpflege": gartenpflegeFilterSections,
@@ -562,6 +594,7 @@ export const categoryFilterMap: Record<string, FilterSection[]> = {
   "kommunikation": kommunikationFilterSections,
   "erdbewegung": erdbewegungFilterSections,
   "wohnwagen-camping": wohnwagenCampingFilterSections,
+  "nutzfahrzeuge": nutzfahrzeugeFilterSections,
 };
 
 // Get search placeholder i18n keys for each category
@@ -586,6 +619,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "kommunikation": "catSearch.kommunikation",
   "erdbewegung": "catSearch.erdbewegung",
   "wohnwagen-camping": "Wohnwagen suchen…",
+  "nutzfahrzeuge": "Nutzfahrzeug suchen…",
 };
 
 // Category display name i18n keys for delivery calculator

@@ -1668,7 +1668,7 @@ export default function CategoryProducts() {
                   {/* Scrollable filter area with delivery calculator included */}
                   <div className="space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-2">
                     {/* Availability filter */}
-                    {category.id !== "wohnwagen-camping" && (
+                    {category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" && (
                       <div className="bg-card border border-border rounded-xl p-4">
                         <label className="flex items-center gap-3 cursor-pointer select-none">
                           <input
@@ -1766,7 +1766,7 @@ export default function CategoryProducts() {
                     )}
 
                     {/* Delivery Calculator - inside scrollable area */}
-                    {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && (
+                    {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" && (
                       <div className="hidden lg:block">
                         {category.id === "alle" ? (
                           <DeliveryCalculatorCompact showAllCategories />
@@ -1818,7 +1818,7 @@ export default function CategoryProducts() {
               <div className="lg:hidden order-3 col-span-1">
                 {category.id === "alle" ? (
                   <DeliveryCalculatorCompact showAllCategories />
-                ) : category.id !== "anhaenger" && category.id !== "wohnwagen-camping" ? (
+                ) : category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" ? (
                   <DeliveryCalculatorCompact 
                     productCategoryId={category.id}
                     categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}

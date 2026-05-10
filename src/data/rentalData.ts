@@ -1443,7 +1443,7 @@ const manKipperMeillerD205: Product = {
   ],
   pricePerDay: "ab 75 €",
   onRequest: true,
-  tags: ["dreiseitenkipper", "7,5 tonner", "kipper-lkw", "meiller d205", "auf anfrage"],
+  tags: ["dreiseitenkipper", "kipper", "7,5-tonner", "kipper-lkw", "fuehrerschein-c1", "meiller d205", "auf anfrage"],
   specifications: {
     // Technische Daten
     "Hersteller": "MAN",
@@ -1513,7 +1513,7 @@ const pritschenkipper35t: Product = {
   ],
   pricePerDay: "ab 55 €",
   onRequest: true,
-  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "doppelkabine", "opel movano", "führerschein b", "auf anfrage"],
+  tags: ["dreiseitenkipper", "kipper", "3,5-tonner", "pritschenwagen", "doppelkabine", "opel movano", "fuehrerschein-b", "auf anfrage"],
   specifications: {
     // Fahrzeugdaten
     "Fahrzeugtyp": "PKW-Pritschenwagen mit Doppelkabine",
