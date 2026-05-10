@@ -33,8 +33,17 @@ interface QuickApplyFormProps {
 export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const { toast } = useToast();
   const [resume, setResume] = useState<File | null>(null);
+  const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+
+  const sanitize = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 60);
 
   const {
     register,
