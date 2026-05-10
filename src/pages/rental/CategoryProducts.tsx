@@ -1766,7 +1766,7 @@ export default function CategoryProducts() {
                     )}
 
                     {/* Delivery Calculator - inside scrollable area */}
-                    {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && (
+                    {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" && (
                       <div className="hidden lg:block">
                         {category.id === "alle" ? (
                           <DeliveryCalculatorCompact showAllCategories />
