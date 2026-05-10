@@ -39,6 +39,9 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  // Honeypot + Zeitfalle gegen Spam-Bots
+  const [honeypot, setHoneypot] = useState("");
+  const formLoadedAt = useRef<number>(Date.now());
 
   const sanitize = (s: string) =>
     s
