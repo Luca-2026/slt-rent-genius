@@ -190,21 +190,31 @@ export default function SLTUsedDetail() {
               </CardContent>
             </Card>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <Button
                 size="lg"
-                className="flex-1"
+                className="w-full sm:flex-1"
                 onClick={() => setModalOpen(true)}
                 disabled={isSold}
               >
                 {isSold ? "Verkauft" : "Anfrage senden"}
                 {!isSold && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="tel:021514179904" className="inline-flex items-center gap-2">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
+                <a href="tel:021514179904" className="inline-flex items-center justify-center gap-2">
                   <Phone className="h-4 w-4" /> 02151 417 99 04
                 </a>
               </Button>
+            </div>
+
+            {/* Financing note */}
+            <div className="mb-6 rounded-lg border border-accent/30 bg-accent/5 p-4">
+              <p className="text-sm font-semibold text-headline mb-1">Finanzierung gewünscht?</p>
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                Über unseren Finanzierungspartner bieten wir Dir die besten Finanzierungsoptionen direkt mit an –
+                flexible Laufzeiten von 24 bis 60 Monaten und individuelle Anzahlung. Einfach im Anfrageformular
+                "Finanzierung gewünscht" auswählen, wir erstellen Dir ein passendes Angebot.
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-sm">
