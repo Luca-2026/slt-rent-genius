@@ -16,6 +16,7 @@ interface LocationSelectDialogProps {
   onOpenChange: (open: boolean) => void;
   targetCategoryId?: string;
   targetProductSlug?: string;
+  targetCategoryQuery?: string;
   title?: string;
   description?: string;
 }
@@ -25,6 +26,7 @@ export function LocationSelectDialog({
   onOpenChange,
   targetCategoryId,
   targetProductSlug,
+  targetCategoryQuery,
   title = "Standort wählen",
   description = "Wähle deinen Standort, um die verfügbaren Produkte zu sehen.",
 }: LocationSelectDialogProps) {
@@ -32,14 +34,16 @@ export function LocationSelectDialog({
 
   const handleLocationSelect = (locationId: string) => {
     onOpenChange(false);
+    const qs = targetCategoryQuery ? `?${targetCategoryQuery}` : "";
     if (targetCategoryId && targetProductSlug) {
-      navigate(`/mieten/${locationId}/${targetCategoryId}/${targetProductSlug}`);
+      navigate(`/mieten/${locationId}/${targetCategoryId}/${targetProductSlug}${qs}`);
     } else if (targetCategoryId) {
-      navigate(`/mieten/${locationId}/${targetCategoryId}`);
+      navigate(`/mieten/${locationId}/${targetCategoryId}${qs}`);
     } else {
       navigate(`/mieten/${locationId}`);
     }
   };
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
