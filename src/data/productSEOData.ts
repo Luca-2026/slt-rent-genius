@@ -2320,6 +2320,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen mieten in Krefeld, D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen leihen in Krefeld, D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen mieten NRW",
     is247: false,
+    dailyPriceFrom: 90,
     faqs: [
       { q: "Welche Komponenten umfasst das D.A.S. Soundsystem?", a: "Das Set besteht aus zwei aktiven Subwoofern DAS Audio VANTEC-18A, zwei Aktivlautsprechern DAS Audio VANTEC-12A, zwei Distanzstangen sowie einem Kabelsatz aus XLR- und Hybrid-Kabeln." },
       { q: "Wie hoch ist die Systemleistung und für welche Personenzahl ist sie geeignet?", a: "Die Systemleistung beträgt 3500W RMS und ist für Veranstaltungen mit bis zu ca. 250 Personen ausgelegt." },
@@ -2844,6 +2845,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "Sennheiser Funkmikrofon XSW 1-835 mieten in Krefeld, Sennheiser Funkmikrofon XSW 1-835 leihen in Krefeld, Sennheiser Funkmikrofon XSW 1-835 mieten NRW",
     is247: false,
+    dailyPriceFrom: 15,
     faqs: [
       { q: "Welche Reichweite hat das Sennheiser Funkmikrofon?", a: "Die Reichweite beträgt ca. 25 Meter, wobei der exakte Wert von der jeweiligen Umgebung abhängig ist." },
       { q: "Welche Komponenten gehören zum Set?", a: "Das Set besteht aus dem stationären Empfänger EM-XSW 1, dem Handsender SKM 835-XSW, einem Netzteil, einem 1,5m langen XLR-Kabel, einer Mikrofonklemme sowie zwei AA-Batterien." },
