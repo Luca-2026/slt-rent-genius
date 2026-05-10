@@ -1487,8 +1487,10 @@ const manKipperMeillerD205: Product = {
     "Material Boden": "Stahl",
     // Mietkonditionen
     "Frei-Kilometer": "100 km/Tag inklusive",
-    "Mehrkilometer": "0,23 € netto/km",
-    "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l brutto)",
+    "Mehrkilometer": "0,40 € netto/km",
+    "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l zzgl. MwSt.)",
+    "AdBlue": "Rückgabe vollgetankt (sonst 1,85 €/l zzgl. MwSt.)",
+    "Maut": "Weiterberechnung per Einzelfahrtnachweis",
     // Versicherung & Kaution
     "Vollkasko Selbstbeteiligung": "2.500 €",
     "Kaution": "1.000 €",
