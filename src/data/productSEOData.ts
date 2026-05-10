@@ -3256,6 +3256,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Hochzeitsfeier, Geburtstagsparty, Silvesterfeier, Jubiläum",
     primaryKeywords: "Kalt-Funkenfontäne mieten, Sparkular mieten, Funkeneffekt mieten",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Sind Kalt-Funkenfontänen gefährlich?", a: "Nein – Kalt-Funkenfontänen arbeiten mit Granulat und erzeugen kalte Funken, die weder Hitze noch Rauch oder Geruch entwickeln. Sie sind vollkommen ungefährlich und können bedenkenlos in Innenräumen eingesetzt werden." },
       { q: "Wie lange hält eine Granulat-Füllung?", a: "Eine Granulat-Füllung reicht für bis zu 10 Minuten Effektzeit. Zusätzliches Granulat kann bei der Buchung hinzugebucht werden (3,00 € pro weitere Minute)." },
