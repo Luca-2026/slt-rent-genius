@@ -117,6 +117,12 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
       if (!deliveryPlz.trim()) errs.deliveryPlz = "Pflichtfeld";
       if (!deliveryCity.trim()) errs.deliveryCity = "Pflichtfeld";
     }
+    const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+      ? machine.pickupLocations
+      : (machine?.location ? [machine.location] : []);
+    if (deliveryOption === "abholung" && pickupLocs.length > 1 && !pickupLocation) {
+      errs.pickupLocation = "Bitte wählen Sie einen Abholstandort.";
+    }
     if (!customerType) errs.customerType = "Bitte wählen Sie einen Kundentyp.";
     if (customerType === "business" && !companyName.trim()) errs.companyName = "Pflichtfeld";
     if (!salutation) errs.salutation = "Pflichtfeld";
@@ -141,6 +147,11 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
     setIsSubmitting(true);
     try {
       const loc = machine ? (locationLabels[machine.location] || machine.location) : "";
+      const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+        ? machine.pickupLocations
+        : (machine?.location ? [machine.location] : []);
+      const chosenPickup = pickupLocs.length > 1 ? pickupLocation : pickupLocs[0] || machine?.location || "";
+      const pickupLabel = chosenPickup ? (locationLabels[chosenPickup] || chosenPickup) : loc;
       const { error } = await supabase.functions.invoke("send-used-inquiry", {
         body: {
           // machine data
@@ -155,7 +166,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
           // purchase intent
           interest,
           wishDate: wishDate ? format(wishDate, "dd.MM.yyyy") : "",
-          deliveryOption: deliveryOption === "lieferung" ? "Lieferung an meine Adresse" : `Selbstabholung – Standort ${loc}`,
+          deliveryOption: deliveryOption === "lieferung" ? "Lieferung an meine Adresse" : `Selbstabholung – Standort ${pickupLabel}`,
           deliveryStreet, deliveryPlz, deliveryCity,
           // contact
           customerType: customerType === "business" ? "Gewerblicher Kunde" : "Privatkunde",
