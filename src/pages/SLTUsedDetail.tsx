@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft, ArrowRight, Phone, Mail, MapPin, Shield, Wrench, Clock, Truck,
-  CheckCircle2, Package,
+  CheckCircle2, Package, Download, PlayCircle,
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
 
@@ -317,6 +317,46 @@ export default function SLTUsedDetail() {
           <p className="text-foreground/90 leading-relaxed max-w-4xl whitespace-pre-line">
             {content.usageAreas}
           </p>
+        </section>
+      )}
+
+      {/* 360° Video */}
+      {content.videoUrl && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <div className="flex items-center gap-2 mb-4">
+            <PlayCircle className="h-6 w-6 text-primary" />
+            <h2 className="text-2xl font-bold text-headline">
+              {content.videoCaption || "360°-Ansicht"}
+            </h2>
+          </div>
+          <div className="max-w-4xl rounded-lg overflow-hidden bg-black">
+            <video
+              src={content.videoUrl}
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full h-auto"
+            >
+              Ihr Browser unterstützt das Video-Format nicht.
+            </video>
+          </div>
+        </section>
+      )}
+
+      {/* Downloads */}
+      {Array.isArray(content.downloads) && content.downloads.length > 0 && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <h2 className="text-2xl font-bold text-headline mb-4">Downloads</h2>
+          <div className="flex flex-wrap gap-3 max-w-4xl">
+            {content.downloads.map((dl: { label: string; url: string }, idx: number) => (
+              <Button key={idx} variant="outline" size="lg" asChild>
+                <a href={dl.url} target="_blank" rel="noopener noreferrer" download>
+                  <Download className="mr-2 h-4 w-4" />
+                  {dl.label}
+                </a>
+              </Button>
+            ))}
+          </div>
         </section>
       )}
 
