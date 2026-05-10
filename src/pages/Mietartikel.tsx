@@ -88,7 +88,7 @@ export default function Mietartikel() {
   };
 
   const bauCategories = categories.filter(c =>
-    ["anhaenger", "erdbewegung", "verdichtung", "arbeitsbuehnen", "werkzeuge", "gartenpflege", "leitern-gerueste", "aggregate", "kabel-stromverteiler", "heizung-trocknung", "absperrtechnik"].includes(c.id)
+    ["anhaenger", "nutzfahrzeuge", "erdbewegung", "verdichtung", "arbeitsbuehnen", "werkzeuge", "gartenpflege", "leitern-gerueste", "aggregate", "kabel-stromverteiler", "heizung-trocknung", "absperrtechnik"].includes(c.id)
   );
   const eventCategories = categories.filter(c =>
     ["beleuchtung", "beschallung", "buehne", "traversen-rigging", "kommunikation", "moebel-zelte", "geschirr-glaeser-besteck", "spezialeffekte", "huepfburgen", "wohnwagen-camping"].includes(c.id)
