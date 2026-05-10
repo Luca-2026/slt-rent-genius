@@ -70,7 +70,7 @@ export default function Mietartikel() {
     ["anhaenger", "erdbewegung", "verdichtung", "arbeitsbuehnen", "werkzeuge", "gartenpflege", "leitern-gerueste", "aggregate", "kabel-stromverteiler", "heizung-trocknung", "absperrtechnik"].includes(c.id)
   );
   const eventCategories = categories.filter(c =>
-    ["beleuchtung", "beschallung", "buehne", "traversen-rigging", "kommunikation", "moebel-zelte", "geschirr-glaeser-besteck", "spezialeffekte", "huepfburgen"].includes(c.id)
+    ["beleuchtung", "beschallung", "buehne", "traversen-rigging", "kommunikation", "moebel-zelte", "geschirr-glaeser-besteck", "spezialeffekte", "huepfburgen", "wohnwagen-camping"].includes(c.id)
   );
 
   const CategoryCard = ({ category }: { category: typeof categories[0] }) => (
@@ -127,8 +127,8 @@ export default function Mietartikel() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen, Event-Equipment & Anhänger mieten in NRW – alle Kategorien | SLT Rental"
-        description="Alle Mietkategorien von SLT Rental auf einen Blick: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr & mehr. Über 1.700 Mietprodukte an 3 Standorten in NRW."
+        title="Baumaschinen, Event-Equipment, Wohnwagen & Anhänger mieten in NRW | SLT Rental"
+        description="Alle Mietkategorien von SLT Rental: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr, Hüpfburgen und Wohnwagen für Camping & Urlaub. Über 1.700 Mietprodukte an 3 Standorten in NRW."
         canonical="/mietartikel"
         jsonLd={faqJsonLd}
       />
@@ -155,10 +155,10 @@ export default function Mietartikel() {
               <strong className="text-foreground">SLT Rental</strong> ist Ihr Mietpartner in Nordrhein-Westfalen – seit 2016 vermieten wir professionelle Technik für Bau, Handwerk und Events. An unseren drei Standorten in <strong className="text-foreground">Krefeld</strong>, <strong className="text-foreground">Bonn</strong> und <strong className="text-foreground">Mülheim an der Ruhr</strong> stehen Ihnen über 1.700 Mietprodukte in mehr als 20 Kategorien zur Verfügung.
             </p>
             <p>
-              Ob Sie einen <strong className="text-foreground">Bagger</strong> für den Aushub, eine <strong className="text-foreground">Rüttelplatte</strong> für den Wegebau, einen <strong className="text-foreground">Anhänger</strong> für den Transport oder <strong className="text-foreground">Arbeitsbühnen</strong> für Arbeiten in der Höhe benötigen – bei SLT Rental finden Sie das passende Equipment. Für Events und Veranstaltungen bieten wir <strong className="text-foreground">Geschirr & Gläser</strong>, <strong className="text-foreground">PA-Anlagen</strong>, Beleuchtung, Bühnen und sogar Hüpfburgen.
+              Ob Sie einen <strong className="text-foreground">Bagger</strong> für den Aushub, eine <strong className="text-foreground">Rüttelplatte</strong> für den Wegebau, einen <strong className="text-foreground">Anhänger</strong> für den Transport oder <strong className="text-foreground">Arbeitsbühnen</strong> für Arbeiten in der Höhe benötigen – bei SLT Rental finden Sie das passende Equipment. Für Events und Veranstaltungen bieten wir <strong className="text-foreground">Geschirr & Gläser</strong>, <strong className="text-foreground">PA-Anlagen</strong>, Beleuchtung, Bühnen und sogar Hüpfburgen. Neu im Sortiment: <strong className="text-foreground">Wohnwagen & Camping</strong> – unser familientauglicher Weinsberg CaraOne 480 QDK ist auf Anfrage an allen drei Standorten verfügbar.
             </p>
             <p>
-              Profitieren Sie von unserer <strong className="text-foreground">Tiefpreisgarantie</strong>, attraktiven <strong className="text-foreground">Wochenendtarifen</strong> und der bequemen Online-Buchung. Anhänger sind in Mülheim per SMS-Code sogar <strong className="text-foreground">24/7</strong> verfügbar. Für Geschäftskunden bieten wir individuelle <strong className="text-foreground">B2B-Konditionen</strong> mit Rahmenverträgen und Mengenrabatten. Lieferung ins gesamte Rhein-Ruhr-Gebiet auf Anfrage.
+              Profitieren Sie von unserer <strong className="text-foreground">Tiefpreisgarantie</strong>, attraktiven <strong className="text-foreground">Wochenendtarifen</strong> und der bequemen Online-Buchung. Anhänger sind in Mülheim an der Ruhr per SMS-Code sogar <strong className="text-foreground">24/7</strong> verfügbar. Für Geschäftskunden bieten wir individuelle <strong className="text-foreground">B2B-Konditionen</strong> mit Rahmenverträgen und Mengenrabatten. Lieferung ins gesamte Rhein-Ruhr-Gebiet auf Anfrage.
             </p>
           </div>
         </AnimatedSection>
