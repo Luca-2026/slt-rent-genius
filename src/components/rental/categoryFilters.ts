@@ -554,7 +554,7 @@ export const nutzfahrzeugeFilterSections: FilterSection[] = [
     ],
   },
   {
-    id: "gesamtgewicht",
+    id: "gewichtsklasse",
     label: "Zulässiges Gesamtgewicht",
     defaultExpanded: true,
     options: [
