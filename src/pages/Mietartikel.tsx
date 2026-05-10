@@ -71,15 +71,19 @@ export default function Mietartikel() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | undefined>();
 
+  const [selectedCategoryQuery, setSelectedCategoryQuery] = useState<string | undefined>();
+
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
     setSelectedProductSlug(undefined);
+    setSelectedCategoryQuery(undefined);
     setDialogOpen(true);
   };
 
-  const handleProductClick = (categoryId: string, slug: string) => {
+  const handleProductClick = (categoryId: string, slug?: string, query?: string) => {
     setSelectedCategoryId(categoryId);
     setSelectedProductSlug(slug);
+    setSelectedCategoryQuery(query);
     setDialogOpen(true);
   };
 
