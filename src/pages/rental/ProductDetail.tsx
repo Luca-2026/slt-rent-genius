@@ -519,6 +519,7 @@ export default function ProductDetail() {
                   location={location}
                   categoryId={categoryId}
                   onBook={() => setShowBookingDialog(true)}
+                  dailyPriceFrom={productSEO?.dailyPriceFrom}
                   t={t}
                 />
               </div>
@@ -1180,21 +1181,24 @@ function MobileBookingCard({
   location,
   categoryId,
   onBook,
+  dailyPriceFrom,
   t,
 }: {
   product: Product;
   location: ReturnType<typeof getLocationById>;
   categoryId?: string;
   onBook: () => void;
+  dailyPriceFrom?: number;
   t: (key: string) => string;
 }) {
   if (!location) return null;
+  const showPrice = product.pricePerDay || typeof dailyPriceFrom === "number";
   return (
     <div className="bg-card rounded-xl border border-border p-4">
-      {product.pricePerDay && (
+      {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
           <div className="text-2xl font-bold text-primary">
-            {product.pricePerDay}
+            {product.pricePerDay ? product.pricePerDay : `ab ${dailyPriceFrom} €`}
             <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
           </div>
           {product.priceWeekend && (
@@ -1204,15 +1208,15 @@ function MobileBookingCard({
           )}
         </div>
       )}
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <Button
           size="default"
-          className="flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          className="w-full sm:flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           onClick={onBook}
         >
           {t("rental.rentNow")}
         </Button>
-        <Link to="/b2b/login" className="flex-1">
+        <Link to="/b2b/login" className="w-full sm:flex-1">
           <Button size="default" variant="default" className="w-full">
             {t("rental.b2bConditions")}
           </Button>
