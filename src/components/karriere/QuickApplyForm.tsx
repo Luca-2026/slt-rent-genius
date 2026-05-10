@@ -84,6 +84,13 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   };
 
   const onSubmit = async (values: FormValues) => {
+    // Spam-Schutz: Honeypot ausgefüllt oder Formular zu schnell abgeschickt
+    const elapsed = Date.now() - formLoadedAt.current;
+    if (honeypot.trim() !== "" || elapsed < 2000) {
+      // Stillschweigend "Erfolg" vortäuschen, damit Bots keine Hinweise bekommen
+      setDone(true);
+      return;
+    }
     if (!resume) {
       setResumeError("Bitte Lebenslauf hochladen");
       return;
