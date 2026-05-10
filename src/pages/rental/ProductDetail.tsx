@@ -527,11 +527,22 @@ export default function ProductDetail() {
                       </div>
                     );
                   })()}
-                  {product.description && (
-                    <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
-                      {product.description}
-                    </p>
-                  )}
+                  {product.description && (() => {
+                    const isWeinsberg = product.id === "weinsberg-caraone-480-qdk";
+                    const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+                    const cityName = cityNameMap[location.id] || location.name;
+                    const desc = isWeinsberg
+                      ? product.description.replace(
+                          /Auf Anfrage in Krefeld,\s*Bonn und Mülheim an der Ruhr\./,
+                          `Jetzt zum besten Preis in ${cityName} mieten – einfach auf „Jetzt mieten" klicken und die Anfrage ausfüllen.`
+                        )
+                      : product.description;
+                    return (
+                      <p className="text-base text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
+                        {desc}
+                      </p>
+                    );
+                  })()}
                   {(() => {
                     const moebelKey = getMoebelInfoKey(product.id);
                     const locKey = location.id as "krefeld" | "bonn" | "muelheim";
@@ -570,17 +581,25 @@ export default function ProductDetail() {
                 )}
 
                 {/* Detailed Description */}
-                {product.detailedDescription && (
-                  <div className="border-t border-border pt-4">
-                    <h2 className="text-base font-semibold text-headline mb-2 flex items-center gap-2">
-                      <Info className="h-4 w-4 text-primary flex-shrink-0" />
-                      {t("rental.descriptionTitle")}
-                    </h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                      {product.detailedDescription}
-                    </p>
-                  </div>
-                )}
+                {product.detailedDescription && (() => {
+                  const isWeinsberg = product.id === "weinsberg-caraone-480-qdk";
+                  const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+                  const cityName = cityNameMap[location.id] || location.name;
+                  const detailed = isWeinsberg
+                    ? product.detailedDescription.replace(/zum Mieten in NRW\?/, `zum Mieten in ${cityName}?`)
+                    : product.detailedDescription;
+                  return (
+                    <div className="border-t border-border pt-4">
+                      <h2 className="text-base font-semibold text-headline mb-2 flex items-center gap-2">
+                        <Info className="h-4 w-4 text-primary flex-shrink-0" />
+                        {t("rental.descriptionTitle")}
+                      </h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                        {detailed}
+                      </p>
+                    </div>
+                  );
+                })()}
 
                 {/* Bundle-Hinweis: Baumaschinenanhänger für Selbstabholer (Arbeitsbühnen/Erdbewegung) */}
                 {(categoryId === "arbeitsbuehnen" || categoryId === "erdbewegung") && location && (
