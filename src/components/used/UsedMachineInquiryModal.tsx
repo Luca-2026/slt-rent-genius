@@ -142,6 +142,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
       if (!billingPlz.trim()) errs.billingPlz = "Pflichtfeld";
       if (!billingCity.trim()) errs.billingCity = "Pflichtfeld";
     }
+    if (financingDesired && !financingTerm) errs.financingTerm = "Bitte wählen Sie eine Laufzeit.";
     if (!privacy) errs.privacy = "Bitte stimmen Sie der Datenschutzerklärung zu.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
