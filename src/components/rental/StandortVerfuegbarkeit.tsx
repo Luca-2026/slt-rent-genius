@@ -5,6 +5,8 @@ interface StandortVerfuegbarkeitProps {
   locationId: string;
   /** Name des Zentrallagers für service-handover-Standorte */
   warehouseLocationName?: string;
+  /** Bezeichnung für das Produkt, z.B. "Gerät" oder "Wohnwagen" */
+  deviceLabel?: string;
 }
 
 /**
