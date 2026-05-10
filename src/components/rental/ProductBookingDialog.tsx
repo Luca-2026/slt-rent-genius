@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench } from "lucide-react";
+import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Product, LocationData } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,7 +57,6 @@ const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number 
     { id: "fahrradtraeger-2er", label: "2er Fahrradträger (Deichsel)", price: 30 },
     { id: "campingmoebel", label: "Campingmöbel", price: 30 },
     { id: "diebstahlsicherung", label: "Diebstahlsicherung", price: 15 },
-    { id: "endreinigung-ww", label: "Endreinigung Wohnwagen", price: 99 },
     { id: "gas-eu-adapter", label: "Gas EU-Adapter", price: 10 },
     { id: "gasflasche-11kg", label: "Gasflasche (11 kg) extra", price: 39 },
     { id: "gasflasche-5kg", label: "Gasflasche (5 kg) extra", price: 20 },
@@ -506,6 +505,19 @@ export function ProductBookingDialog({
                           <Wrench className="h-4 w-4 text-primary" />
                           Betreuung / Auf- & Abbau gewünscht
                         </Label>
+                      </div>
+                    )}
+
+                    {/* Servicepauschale info box (Weinsberg only) */}
+                    {productExtras && productExtras.length > 0 && (
+                      <div className="space-y-2 border border-primary/20 rounded-lg p-4 bg-primary/5">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-primary" />
+                          <Label className="font-medium text-foreground">Servicepauschale 99 € (einmalig)</Label>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Zum Mietpreis hinzu kommt eine einmalige Servicepauschale. Diese beinhaltet eine ausführliche Einweisung in den Wohnwagen sowie die Bereitstellung einer 11 kg Gasflasche, Spiegelverlängerungen für den Zugwagen, Strom-Adapterkabel, Erstausstattung Sanitärchemie und 2 Rollen Toilettenpapier.
+                        </p>
                       </div>
                     )}
 
