@@ -210,7 +210,7 @@ export default function SLTUsed() {
               const wrapperProps: any = detailHref ? { to: detailHref } : {};
 
               return (
-                <Card key={machine.id} className="group overflow-hidden hover:shadow-lg transition-all border-2 hover:border-primary/30">
+                <Card key={machine.id} className="group overflow-hidden hover:shadow-lg transition-all border-2 hover:border-primary/30 flex flex-col h-full">
                   <Wrapper {...wrapperProps} className="block">
                     <div className="aspect-[4/3] bg-muted relative overflow-hidden">
                       {machine.images && machine.images.length > 0 ? (
@@ -241,7 +241,7 @@ export default function SLTUsed() {
                     </div>
                   </Wrapper>
 
-                  <CardContent className="p-4">
+                  <CardContent className="p-4 flex flex-col flex-1">
                     <Wrapper {...wrapperProps} className="block mb-2">
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{machine.manufacturer}</p>
                       <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{machine.model}</h3>
@@ -261,14 +261,15 @@ export default function SLTUsed() {
                     {machine.specifications && (
                       <div className="text-xs text-muted-foreground space-y-0.5 mb-4 border-t border-border pt-3">
                         {Object.entries(machine.specifications as Record<string, string>).slice(0, 3).map(([key, val]) => (
-                          <div key={key} className="flex justify-between">
-                            <span>{key}:</span>
-                            <span className="font-medium text-foreground">{val}</span>
+                          <div key={key} className="flex justify-between gap-2">
+                            <span className="shrink-0">{key}:</span>
+                            <span className="font-medium text-foreground text-right">{val}</span>
                           </div>
                         ))}
                       </div>
                     )}
 
+                    <div className="mt-auto">
                     {isDisabled ? (
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -291,6 +292,7 @@ export default function SLTUsed() {
                         Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     )}
+                    </div>
                   </CardContent>
                 </Card>
               );
