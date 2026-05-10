@@ -230,40 +230,41 @@ export default function ProductDetail() {
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        "offers": (() => {
-          const priceFrom = productSEO?.dailyPriceFrom;
-          const offer: Record<string, unknown> = {
-            "@type": "Offer",
-            "availability": "https://schema.org/InStock",
-            "url": canonicalUrl,
-            "priceCurrency": "EUR",
-            "seller": {
-              "@type": "LocalBusiness",
-              "name": "SLT Rental",
-              "url": "https://www.slt-rental.de",
-            },
-            "areaServed": { "@type": "City", "name": location.name },
-          };
-          if (typeof priceFrom === "number") {
-            offer["price"] = priceFrom.toFixed(2);
-            offer["priceSpecification"] = {
-              "@type": "UnitPriceSpecification",
-              "price": priceFrom.toFixed(2),
-              "priceCurrency": "EUR",
-              "unitCode": "DAY",
-              "referenceQuantity": {
-                "@type": "QuantitativeValue",
-                "value": 1,
-                "unitCode": "DAY",
-              },
-            };
-            // Gültig bis Ende des Folgejahres – Google verlangt priceValidUntil ≤ 1 Jahr in der Zukunft
-            const validUntil = new Date();
-            validUntil.setFullYear(validUntil.getFullYear() + 1);
-            offer["priceValidUntil"] = validUntil.toISOString().slice(0, 10);
-          }
-          return offer;
-        })(),
+        ...(typeof productSEO?.dailyPriceFrom === "number"
+          ? {
+              "offers": (() => {
+                const priceFrom = productSEO.dailyPriceFrom as number;
+                const validUntil = new Date();
+                validUntil.setFullYear(validUntil.getFullYear() + 1);
+                return {
+                  "@type": "Offer",
+                  "availability": "https://schema.org/InStock",
+                  "url": canonicalUrl,
+                  "priceCurrency": "EUR",
+                  "price": priceFrom.toFixed(2),
+                  "priceValidUntil": validUntil.toISOString().slice(0, 10),
+                  "seller": {
+                    "@type": "LocalBusiness",
+                    "name": "SLT Rental",
+                    "url": "https://www.slt-rental.de",
+                  },
+                  "areaServed": { "@type": "City", "name": location.name },
+                  "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "price": priceFrom.toFixed(2),
+                    "priceCurrency": "EUR",
+                    "unitCode": "DAY",
+                    "referenceQuantity": {
+                      "@type": "QuantitativeValue",
+                      "value": 1,
+                      "unitCode": "DAY",
+                    },
+                  },
+                };
+              })(),
+            }
+          : {}),
+
       };
       // Add brand + model if modelName exists
       if (product.modelName) {
