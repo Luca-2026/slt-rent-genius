@@ -347,15 +347,15 @@ export function buildLegalSchemas(route: SeoRoute): JsonLd[] {
 }
 
 export function buildPageSchemas(route: SeoRoute): JsonLd[] {
-  // Custom JSON-LD for flat /camping URLs
-  if (route.path === "/camping" || route.path === "/camping/weinsberg-caraone-480-qdk") {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const m = require("./camping-content");
-    const extra: JsonLd[] =
-      route.path === "/camping"
-        ? m.buildCampingCategorySchemas()
-        : m.buildCaraOneProductSchemas();
-    return route.breadcrumbs ? [breadcrumbList(route.breadcrumbs), ...extra] : extra;
+  if (route.path === "/camping") {
+    return route.breadcrumbs
+      ? [breadcrumbList(route.breadcrumbs), ...buildCampingCategorySchemas()]
+      : buildCampingCategorySchemas();
+  }
+  if (route.path === "/camping/weinsberg-caraone-480-qdk") {
+    return route.breadcrumbs
+      ? [breadcrumbList(route.breadcrumbs), ...buildCaraOneProductSchemas()]
+      : buildCaraOneProductSchemas();
   }
   return route.breadcrumbs ? [breadcrumbList(route.breadcrumbs)] : [];
 }
