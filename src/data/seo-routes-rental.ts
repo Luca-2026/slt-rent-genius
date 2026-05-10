@@ -613,13 +613,112 @@ const RATGEBER_ROUTES: SeoRoute[] = (blogArticles as BlogArticle[]).map((a) => (
 // Karriere-Stellen (Job-Detailseiten)
 // ---------------------------------------------------------------
 
+const KARRIERE_VALID_DAYS = 90;
+const KARRIERE_OG_IMAGE = `${BASE_URL}/images/og/karriere-slt-rental.png`;
+
+function buildJobPostingJsonLd(job: typeof jobListings[number], absUrl: string) {
+  const datePosted = job.datePosted ?? TODAY;
+  const validThrough =
+    job.validThrough ??
+    new Date(Date.now() + 1000 * 60 * 60 * 24 * KARRIERE_VALID_DAYS)
+      .toISOString()
+      .slice(0, 10);
+
+  // Build a short HTML description from the structured fields so Google Jobs
+  // gets the same content the user sees, even before React hydrates.
+  const descParts: string[] = [`<p>${job.description}</p>`];
+  if (job.tasks?.length) {
+    descParts.push(
+      `<h3>Deine Aufgaben</h3><ul>${job.tasks.map((t) => `<li>${t}</li>`).join("")}</ul>`,
+    );
+  }
+  descParts.push(
+    `<h3>Was du mitbringst</h3><ul>${job.requirements
+      .map((r) => `<li>${r}</li>`)
+      .join("")}</ul>`,
+  );
+  descParts.push(
+    `<h3>Was wir bieten</h3><ul>${job.benefits.map((b) => `<li>${b}</li>`).join("")}</ul>`,
+  );
+  const descriptionHtml = descParts.join("");
+
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: job.title,
+    description: descriptionHtml,
+    datePosted,
+    validThrough,
+    employmentType: job.employmentType,
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "SLT Rental",
+      sameAs: BASE_URL,
+      logo: `${BASE_URL}/images/og/default-slt-rental.png`,
+    },
+    identifier: {
+      "@type": "PropertyValue",
+      name: "SLT Rental",
+      value: job.id,
+    },
+    directApply: true,
+    url: absUrl,
+    jobLocation: job.locations.map((loc) => ({
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: loc.street,
+        addressLocality: loc.city,
+        postalCode: loc.postalCode,
+        addressRegion: loc.region ?? "NRW",
+        addressCountry: "DE",
+      },
+    })),
+  };
+  if (job.industry) data.industry = job.industry;
+  if (job.remote) {
+    data.jobLocationType = "TELECOMMUTE";
+    data.applicantLocationRequirements = { "@type": "Country", name: "DE" };
+  }
+  if (job.salaryMin && job.salaryMax) {
+    data.baseSalary = {
+      "@type": "MonetaryAmount",
+      currency: "EUR",
+      value: {
+        "@type": "QuantitativeValue",
+        minValue: job.salaryMin,
+        maxValue: job.salaryMax,
+        unitText: job.salaryUnit ?? "YEAR",
+      },
+    };
+  }
+  return data;
+}
+
 const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
   const path = `/karriere/${job.slug}`;
+  const absUrl = `${BASE_URL}${path}`;
   const title = clamp(job.seoTitle ?? `${job.title} – Job in ${job.location} | SLT Rental`, 65);
   const description = clampDesc(
     job.seoDescription ??
       `${job.title} bei SLT Rental in ${job.location}. ${job.shortPitch ?? "Jetzt direkt online bewerben."}`,
   );
+
+  const inlineSchemas: Record<string, unknown>[] = [
+    buildJobPostingJsonLd(job, absUrl),
+  ];
+  if (job.faqs?.length) {
+    inlineSchemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: job.faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    });
+  }
+
   return {
     path,
     routeType: "page",
@@ -629,7 +728,7 @@ const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
     intro: [job.shortPitch ?? job.description].filter(Boolean) as string[],
     canonical: path,
     ogType: "article",
-    ogImage: `${BASE_URL}/images/og/karriere-slt-rental.png`,
+    ogImage: KARRIERE_OG_IMAGE,
     breadcrumbs: [
       { name: "Start", path: "/" },
       { name: "Karriere", path: "/karriere" },
@@ -638,6 +737,7 @@ const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
     changefreq: "weekly",
     priority: 0.6,
     lastmod: TODAY,
+    inlineSchemas,
   };
 });
 
