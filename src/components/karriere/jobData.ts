@@ -7,15 +7,49 @@ export interface JobSpecificField {
   placeholder?: string;
 }
 
+export interface JobLocationDetail {
+  city: string;
+  postalCode: string;
+  street: string;
+  region?: string;
+}
+
 export interface JobListing {
   id: string;
+  /** URL slug, defaults to id */
+  slug: string;
   title: string;
+  /** Short headline shown under H1 on detail page */
+  shortPitch?: string;
   location: string;
+  /** Structured locations for JSON-LD (one or many) */
+  locations: JobLocationDetail[];
   type: string;
+  /** Schema.org employmentType: FULL_TIME | PART_TIME | CONTRACTOR | TEMPORARY | INTERN | VOLUNTEER | PER_DIEM | OTHER */
+  employmentType: ("FULL_TIME" | "PART_TIME" | "CONTRACTOR" | "TEMPORARY" | "INTERN" | "OTHER")[];
   startDate: string;
+  /** ISO date when posted (defaults to today at runtime if missing) */
+  datePosted?: string;
+  /** ISO date until which the posting is valid */
+  validThrough?: string;
   description: string;
+  /** Optional concrete day-to-day tasks list */
+  tasks?: string[];
   requirements: string[];
   benefits: string[];
+  /** Optional salary range in EUR per year */
+  salaryMin?: number;
+  salaryMax?: number;
+  salaryUnit?: "YEAR" | "MONTH" | "HOUR";
+  /** Allow remote work */
+  remote?: boolean;
+  /** SEO meta override */
+  seoTitle?: string;
+  seoDescription?: string;
+  /** Industry / department */
+  industry?: string;
+  /** FAQ specifically for this role */
+  faqs?: { question: string; answer: string }[];
   specificFields: JobSpecificField[];
   // Wizard customization
   askSalary: boolean;
@@ -24,6 +58,19 @@ export interface JobListing {
   askEducation?: boolean;
   askExperience?: boolean;
 }
+
+const DEFAULT_LOC_KREFELD: JobLocationDetail = {
+  city: "Krefeld",
+  postalCode: "47807",
+  street: "Anrather Straße 291",
+  region: "NRW",
+};
+const DEFAULT_LOC_BONN: JobLocationDetail = {
+  city: "Bonn",
+  postalCode: "53179",
+  street: "Drachenburgstraße 8",
+  region: "NRW",
+};
 
 export const jobListings: JobListing[] = [
   {
