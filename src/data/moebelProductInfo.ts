@@ -12,7 +12,7 @@ export interface MoebelProductLocationInfo {
   seoParagraphs: string[];
 }
 
-type ProductKey = "bierzeltgarnitur-set" | "stehtisch" | "huepfburg-clown";
+type ProductKey = "bierzeltgarnitur-set" | "stehtisch" | "huepfburg-clown" | "huepfburg-rollercoaster";
 type LocationKey = "krefeld" | "bonn" | "muelheim";
 
 export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelProductLocationInfo>> = {
