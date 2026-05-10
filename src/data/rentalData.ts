@@ -1499,10 +1499,10 @@ const manKipperMeillerD205: Product = {
 
 const pritschenkipper35t: Product = {
   id: "pritschenkipper-3-5t-dreiseitenkipper",
-  name: "Opel Movano 3,5t Pritschenwagen – Dreiseitenkipper",
-  modelName: "Opel Movano (oder vergleichbar) · 3,5t Dreiseitenkipper",
+  name: "Opel Movano 3,5t Pritschenwagen – Dreiseitenkipper Doppelkabine",
+  modelName: "Opel Movano (oder vergleichbar) · 3,5t Dreiseitenkipper · Doppelkabine",
   description:
-    "Opel Movano 3,5-Tonner Pritschenwagen mit Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    "Opel Movano 3,5-Tonner Pritschenwagen mit Doppelkabine und Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio, bis zu 7 Sitzplätze. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
   image: "/product-images/opel-movano-pritschenkipper-1.jpg",
   images: [
@@ -1512,16 +1512,16 @@ const pritschenkipper35t: Product = {
     "/product-images/opel-movano-pritschenkipper-4.jpg",
   ],
   onRequest: true,
-  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "opel movano", "führerschein b", "auf anfrage"],
+  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "doppelkabine", "opel movano", "führerschein b", "auf anfrage"],
   specifications: {
     // Fahrzeugdaten
-    "Fahrzeugtyp": "PKW-Pritschenwagen mit Einzelkabine",
+    "Fahrzeugtyp": "PKW-Pritschenwagen mit Doppelkabine",
     "Leergewicht": "2.365 kg",
     "Zul. Gesamtgewicht": "3.500 kg",
     "Nutzlast": "1.135 kg",
     "Fahrzeughöhe": "2.500 mm",
     "Fahrzeuglänge": "6.225 mm",
-    "Sitzplätze": "3",
+    "Sitzplätze": "7",
     "Zul. Anhängelast": "2.500 kg",
     // Ladefläche
     "Ladefläche Länge": "3.600 mm",
