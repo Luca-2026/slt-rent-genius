@@ -82,6 +82,8 @@ export interface SeoRoute {
   standortData?: LocationInfo;
   solutionData?: Solution;
   ratgeberData?: BlogArticle;
+  /** Extra JSON-LD blocks rendered verbatim (in addition to type-derived ones). */
+  inlineSchemas?: Record<string, unknown>[];
 }
 
 export interface PrerenderProduct {
