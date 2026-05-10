@@ -10,6 +10,7 @@ import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import { blogArticles, type BlogArticle } from "./blogArticles";
 import { solutionData, type Solution } from "@/pages/Loesungen";
+import { jobListings } from "@/components/karriere/jobData";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
