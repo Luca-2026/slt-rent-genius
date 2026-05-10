@@ -980,8 +980,8 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Kaufanfrage-Banner (nicht für Wohnwagen & Camping – wir verkaufen keine Wohnwagen) */}
-              {categoryId !== "wohnwagen-camping" && (
+              {/* Kaufanfrage-Banner (nicht für Wohnwagen, Camping & Nutzfahrzeuge) */}
+              {categoryId !== "wohnwagen-camping" && categoryId !== "nutzfahrzeuge" && (
                 <PurchaseInquiryBanner
                   productName={product.name}
                   locationName={location.name}
