@@ -11,17 +11,26 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 import { MietartikelSearch } from "@/components/rental/MietartikelSearch";
 
-const bauTeaserProducts = [
+type TeaserProduct = {
+  name: string;
+  price: string;
+  categoryId: string;
+  slug?: string;
+  query?: string;
+};
+
+const bauTeaserProducts: TeaserProduct[] = [
   { name: "Minibagger Bobcat E10z (1t)", price: "ab 65 €/Tag", categoryId: "erdbewegung", slug: "bobcat-e10z" },
   { name: "Rüttelplatte VP 16/44 (105 kg)", price: "ab 25 €/Tag", categoryId: "verdichtung", slug: "ruettelplatte-vp16-44" },
-  { name: "Kastenanhänger 750 kg", price: "ab 20 €/Tag", categoryId: "anhaenger", slug: "kastenanhanger-750kg" },
+  { name: "Kastenanhänger 750 kg", price: "ab 20 €/Tag", categoryId: "anhaenger", query: "weight=bis-750" },
 ];
 
-const eventTeaserProducts = [
+const eventTeaserProducts: TeaserProduct[] = [
   { name: "PA-Anlage 500W", price: "ab 65 €/Tag", categoryId: "beschallung", slug: "pa-anlage-500w" },
   { name: "Partyzelt 3×6 m", price: "ab 50 €/Tag", categoryId: "moebel-zelte", slug: "partyzelt-3x6" },
   { name: "Hüpfburg", price: "ab 25 €/Tag", categoryId: "huepfburgen", slug: "huepfburg-multiplay" },
 ];
+
 
 const faqData = [
   {
