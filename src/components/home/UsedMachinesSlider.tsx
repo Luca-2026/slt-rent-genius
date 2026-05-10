@@ -74,82 +74,102 @@ export function UsedMachinesSlider() {
         </AnimatedSection>
       </div>
 
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4 pl-4 md:pl-8">
-          {machines.map((m: any) => {
-            const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
-            const price = m.price_net ? Number(m.price_net) : null;
-            return (
-              <div
-                key={m.id}
-                className="flex-[0_0_260px] sm:flex-[0_0_280px] lg:flex-[0_0_300px] min-w-0"
-              >
-                <Link
-                  to={`/verkauf/gebrauchtmaschinen/${m.slug}`}
-                  className="block w-full text-left group"
-                >
-                  <Card className="h-[340px] flex flex-col overflow-hidden border-2 hover:border-accent/40 hover:shadow-lg transition-all duration-300">
-                    <div className="relative h-[200px] overflow-hidden bg-muted flex-shrink-0">
-                      {img ? (
-                        <img
-                          src={img}
-                          alt={`${m.manufacturer} ${m.model}`}
-                          className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Package className="h-12 w-12 text-muted-foreground/30" />
-                        </div>
-                      )}
-                      <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-                        {m.is_featured && (
-                          <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0">
-                            Top
-                          </Badge>
-                        )}
-                        {m.status === "reserved" && (
-                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                            Reserviert
-                          </Badge>
-                        )}
-                      </div>
+      {(() => {
+        const renderCard = (m: any) => {
+          const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
+          const price = m.price_net ? Number(m.price_net) : null;
+          return (
+            <Link
+              to={`/verkauf/gebrauchtmaschinen/${m.slug}`}
+              className="block w-full text-left group h-full"
+            >
+              <Card className="h-[360px] flex flex-col overflow-hidden border-2 hover:border-accent/40 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-[200px] overflow-hidden bg-muted flex-shrink-0">
+                  {img ? (
+                    <img
+                      src={img}
+                      alt={`${m.manufacturer} ${m.model}`}
+                      className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Package className="h-12 w-12 text-muted-foreground/30" />
                     </div>
-                    <CardContent className="p-4 flex-1 flex flex-col">
-                      <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium mb-0.5">
-                        {m.manufacturer}
-                      </p>
-                      <p className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-accent transition-colors">
-                        {m.model}
-                      </p>
-                      <p className="text-xs text-muted-foreground flex-1">
-                        {[
-                          m.year ? `Bj. ${m.year}` : null,
-                          m.hours != null ? `${Number(m.hours).toLocaleString("de-DE")} Bh` : null,
-                        ]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                      <p className="text-sm font-bold text-primary mt-2">
-                        {formatPrice(price, m.price_on_request)}
-                        {price && (
-                          <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                            netto
-                          </span>
-                        )}
-                      </p>
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-accent mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        Details ansehen
-                        <ArrowRight className="h-3 w-3" />
+                  )}
+                  <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+                    {m.is_featured && (
+                      <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0">
+                        Top
+                      </Badge>
+                    )}
+                    {m.status === "reserved" && (
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                        Reserviert
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <CardContent className="p-4 flex-1 flex flex-col">
+                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium mb-0.5">
+                    {m.manufacturer}
+                  </p>
+                  <p className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-accent transition-colors">
+                    {m.model}
+                  </p>
+                  <p className="text-xs text-muted-foreground flex-1">
+                    {[
+                      m.year ? `Bj. ${m.year}` : null,
+                      m.hours != null ? `${Number(m.hours).toLocaleString("de-DE")} Bh` : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                  <p className="text-sm font-bold text-primary mt-2">
+                    {formatPrice(price, m.price_on_request)}
+                    {price && (
+                      <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                        netto
                       </span>
-                    </CardContent>
-                  </Card>
-                </Link>
+                    )}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-accent mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Details ansehen
+                    <ArrowRight className="h-3 w-3" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          );
+        };
+
+        return (
+          <>
+            {/* Desktop: 4er Grid zentriert, kein Slider */}
+            <div className="hidden lg:block section-container">
+              <div className="grid grid-cols-4 gap-6">
+                {machines.slice(0, 4).map((m: any) => (
+                  <div key={m.id}>{renderCard(m)}</div>
+                ))}
               </div>
-            );
-          })}
-        </div>
-      </div>
+            </div>
+
+            {/* Mobil & Tablet: Slider */}
+            <div className="lg:hidden overflow-hidden" ref={emblaRef}>
+              <div className="flex gap-4 pl-4 md:pl-8">
+                {machines.map((m: any) => (
+                  <div
+                    key={m.id}
+                    className="flex-[0_0_260px] sm:flex-[0_0_280px] min-w-0"
+                  >
+                    {renderCard(m)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        );
+      })()}
 
       <div className="section-container text-center mt-10">
         <Link to="/verkauf/gebrauchtmaschinen">
