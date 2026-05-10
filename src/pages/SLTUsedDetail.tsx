@@ -345,18 +345,10 @@ export default function SLTUsedDetail() {
             </h2>
           </div>
           <div className="max-w-xs rounded-lg overflow-hidden bg-black">
-            <video
+            <LazyVideo
               src={content.videoUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-              preload="metadata"
               className="w-full h-auto"
-            >
-              Ihr Browser unterstützt das Video-Format nicht.
-            </video>
+            />
           </div>
         </section>
       )}
