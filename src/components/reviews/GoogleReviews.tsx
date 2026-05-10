@@ -161,6 +161,8 @@ export function GoogleReviews({ placeId, locationName, variant = "full", maxRevi
   if (loading) {
     return (
       <div className="space-y-4">
+        {/* Sentinel: triggers fetch when component nears viewport */}
+        <div ref={sentinelRef} aria-hidden="true" style={{ height: 1 }} />
         <Skeleton className="h-8 w-48" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
