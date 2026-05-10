@@ -1499,13 +1499,20 @@ const manKipperMeillerD205: Product = {
 
 const pritschenkipper35t: Product = {
   id: "pritschenkipper-3-5t-dreiseitenkipper",
-  name: "3,5t Pritschenwagen – Dreiseitenkipper mit Einzelkabine",
-  modelName: "PKW-Pritschenkipper 3,5t · Dreiseiten-Kippvorrichtung",
+  name: "Opel Movano 3,5t Pritschenwagen – Dreiseitenkipper",
+  modelName: "Opel Movano (oder vergleichbar) · 3,5t Dreiseitenkipper",
   description:
-    "3,5-Tonner Pritschenwagen mit Einzelkabine und Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    "Opel Movano 3,5-Tonner Pritschenwagen mit Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
+  image: "/product-images/opel-movano-pritschenkipper-1.jpg",
+  images: [
+    "/product-images/opel-movano-pritschenkipper-1.jpg",
+    "/product-images/opel-movano-pritschenkipper-2.jpg",
+    "/product-images/opel-movano-pritschenkipper-3.jpg",
+    "/product-images/opel-movano-pritschenkipper-4.jpg",
+  ],
   onRequest: true,
-  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "führerschein b", "auf anfrage"],
+  tags: ["dreiseitenkipper", "3,5 tonner", "pritschenwagen", "opel movano", "führerschein b", "auf anfrage"],
   specifications: {
     // Fahrzeugdaten
     "Fahrzeugtyp": "PKW-Pritschenwagen mit Einzelkabine",
