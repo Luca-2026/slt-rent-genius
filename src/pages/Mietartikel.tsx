@@ -237,6 +237,7 @@ export default function Mietartikel() {
         onOpenChange={setDialogOpen}
         targetCategoryId={selectedCategoryId}
         targetProductSlug={selectedProductSlug}
+        targetCategoryQuery={selectedCategoryQuery}
         title={t("mietartikel.selectLocation")}
         description={t("mietartikel.selectLocationDesc")}
       />
