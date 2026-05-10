@@ -941,7 +941,7 @@ export default function ProductDetail() {
                 />
               )}
               {/* Standort-Verfügbarkeitshinweis (Sprint 2) */}
-              {locationId && <StandortVerfuegbarkeit locationId={locationId} />}
+              {locationId && <StandortVerfuegbarkeit locationId={locationId} deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"} />}
 
               {/* SEO Content Block */}
               <ProductSEOContent
