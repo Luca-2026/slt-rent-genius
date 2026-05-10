@@ -4794,6 +4794,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
     primaryKeywords: "Partyzelt 3x3m mieten in Krefeld, Partyzelt 3x3m leihen in Krefeld, Partyzelt 3x3m mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 3x3m Zelts?", a: "Das Zelt bietet Platz für ca. 15 stehende Personen oder ca. 13 Personen bei Bestuhlung." },
       { q: "Welche Materialeigenschaften weist die Plane auf?", a: "Es handelt sich um eine UV-beständige, rasterfaserverstärkte PVC-Plane mit einem Flächengewicht von 500 g/m²." },
