@@ -91,6 +91,14 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     mode: "onChange"
   });
 
+  const sanitize = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 60);
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFile: (file: File | null) => void
@@ -101,16 +109,17 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     if (file.size > MAX_FILE_SIZE) {
       toast({
         title: "Datei zu groß",
-        description: "Die Datei darf maximal 10MB groß sein.",
+        description: "Die Datei darf maximal 10 MB groß sein.",
         variant: "destructive"
       });
       return;
     }
 
-    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+    const extOk = /\.(pdf|doc|docx)$/i.test(file.name);
+    if (!ACCEPTED_FILE_TYPES.includes(file.type) && !extOk) {
       toast({
         title: "Ungültiges Format",
-        description: "Bitte lade eine PDF- oder Word-Datei hoch.",
+        description: "Bitte lade eine PDF-, DOC- oder DOCX-Datei hoch.",
         variant: "destructive"
       });
       return;
@@ -120,12 +129,13 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
   };
 
   const uploadFile = async (file: File, folder: string): Promise<{ url: string; filename: string } | null> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const fileExt = (file.name.split('.').pop() || 'pdf').toLowerCase();
+    const safeFolder = sanitize(folder) || "bewerbung";
+    const fileName = `${safeFolder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
     const { error } = await supabase.storage
       .from('bewerbungen')
-      .upload(fileName, file);
+      .upload(fileName, file, { contentType: file.type || undefined, upsert: false });
 
     if (error) {
       console.error('Upload error:', error);
@@ -134,6 +144,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
 
     return { url: fileName, filename: file.name };
   };
+
 
   const nextStep = async () => {
     let fieldsToValidate: (keyof FormData)[] = [];
