@@ -689,7 +689,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
             ) : (
               <Button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || !resumeFile}
                 className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
               >
                 {isSubmitting ? (
