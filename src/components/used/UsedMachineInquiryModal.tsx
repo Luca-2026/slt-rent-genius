@@ -22,6 +22,7 @@ export interface MachineData {
   year: number | null;
   price: string;
   location: string;
+  pickupLocations?: string[];
   referenceNumber: string;
   status: string;
 }
@@ -53,6 +54,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const [interest, setInterest] = useState("");
   const [wishDate, setWishDate] = useState<Date | undefined>();
   const [deliveryOption, setDeliveryOption] = useState("");
+  const [pickupLocation, setPickupLocation] = useState("");
   const [deliveryStreet, setDeliveryStreet] = useState("");
   const [deliveryPlz, setDeliveryPlz] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
@@ -88,6 +90,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const resetForm = () => {
     setSearchedMachine(""); setPreferredManufacturer("");
     setInterest(""); setWishDate(undefined); setDeliveryOption("");
+    setPickupLocation("");
     setDeliveryStreet(""); setDeliveryPlz(""); setDeliveryCity("");
     setCustomerType(""); setCompanyName(""); setVatId("");
     setSalutation(""); setFirstName(""); setLastName("");
@@ -114,6 +117,12 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
       if (!deliveryPlz.trim()) errs.deliveryPlz = "Pflichtfeld";
       if (!deliveryCity.trim()) errs.deliveryCity = "Pflichtfeld";
     }
+    const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+      ? machine.pickupLocations
+      : (machine?.location ? [machine.location] : []);
+    if (deliveryOption === "abholung" && pickupLocs.length > 1 && !pickupLocation) {
+      errs.pickupLocation = "Bitte wählen Sie einen Abholstandort.";
+    }
     if (!customerType) errs.customerType = "Bitte wählen Sie einen Kundentyp.";
     if (customerType === "business" && !companyName.trim()) errs.companyName = "Pflichtfeld";
     if (!salutation) errs.salutation = "Pflichtfeld";
@@ -138,6 +147,11 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
     setIsSubmitting(true);
     try {
       const loc = machine ? (locationLabels[machine.location] || machine.location) : "";
+      const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+        ? machine.pickupLocations
+        : (machine?.location ? [machine.location] : []);
+      const chosenPickup = pickupLocs.length > 1 ? pickupLocation : pickupLocs[0] || machine?.location || "";
+      const pickupLabel = chosenPickup ? (locationLabels[chosenPickup] || chosenPickup) : loc;
       const { error } = await supabase.functions.invoke("send-used-inquiry", {
         body: {
           // machine data
@@ -152,7 +166,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
           // purchase intent
           interest,
           wishDate: wishDate ? format(wishDate, "dd.MM.yyyy") : "",
-          deliveryOption: deliveryOption === "lieferung" ? "Lieferung an meine Adresse" : `Selbstabholung – Standort ${loc}`,
+          deliveryOption: deliveryOption === "lieferung" ? "Lieferung an meine Adresse" : `Selbstabholung – Standort ${pickupLabel}`,
           deliveryStreet, deliveryPlz, deliveryCity,
           // contact
           customerType: customerType === "business" ? "Gewerblicher Kunde" : "Privatkunde",
@@ -305,22 +319,53 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
                 </Popover>
               </div>
 
-              <div>
-                <Label>Lieferung oder Abholung? *</Label>
-                <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption} className="mt-1.5 space-y-1.5">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="lieferung" id="delivery-lieferung" />
-                    <Label htmlFor="delivery-lieferung" className="font-normal cursor-pointer">Lieferung an meine Adresse</Label>
+              {(() => {
+                const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+                  ? machine.pickupLocations
+                  : (machine?.location ? [machine.location] : []);
+                const singlePickupLabel = pickupLocs.length === 1
+                  ? (locationLabels[pickupLocs[0]] || pickupLocs[0])
+                  : "";
+                return (
+                  <div>
+                    <Label>Lieferung oder Abholung? *</Label>
+                    <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption} className="mt-1.5 space-y-1.5">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="lieferung" id="delivery-lieferung" />
+                        <Label htmlFor="delivery-lieferung" className="font-normal cursor-pointer">Lieferung an meine Adresse</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="abholung" id="delivery-abholung" />
+                        <Label htmlFor="delivery-abholung" className="font-normal cursor-pointer">
+                          {!machine
+                            ? "Selbstabholung"
+                            : pickupLocs.length > 1
+                              ? "Selbstabholung (Standort wählen)"
+                              : `Selbstabholung – Standort ${singlePickupLabel}`}
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                    <FieldError field="deliveryOption" />
+
+                    {deliveryOption === "abholung" && pickupLocs.length > 1 && (
+                      <div className="mt-3 pl-6 border-l-2 border-primary/20 py-2">
+                        <Label className="text-sm">Abholstandort *</Label>
+                        <RadioGroup value={pickupLocation} onValueChange={setPickupLocation} className="mt-1.5 space-y-1.5">
+                          {pickupLocs.map((l) => (
+                            <div key={l} className="flex items-center space-x-2">
+                              <RadioGroupItem value={l} id={`pickup-${l}`} />
+                              <Label htmlFor={`pickup-${l}`} className="font-normal cursor-pointer">
+                                {locationLabels[l] || l}
+                              </Label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                        <FieldError field="pickupLocation" />
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="abholung" id="delivery-abholung" />
-                    <Label htmlFor="delivery-abholung" className="font-normal cursor-pointer">
-                      {machine ? `Selbstabholung – Standort ${loc}` : "Selbstabholung"}
-                    </Label>
-                  </div>
-                </RadioGroup>
-                <FieldError field="deliveryOption" />
-              </div>
+                );
+              })()}
 
               {deliveryOption === "lieferung" && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-4 border-l-2 border-primary/20">
