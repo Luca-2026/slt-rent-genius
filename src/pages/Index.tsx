@@ -10,6 +10,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
 
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
+const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlider").then(m => ({ default: m.UsedMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
 import { Loader2 } from "lucide-react";
 
@@ -270,16 +271,21 @@ export default function Index() {
         onSearchClick={() => setSearchDialogOpen(true)}
       />
 
-      {/* Services Section */}
-      <ServicesSection />
-
       {/* Product Inspiration Slider */}
       <Suspense fallback={null}>
         <ProductInspirationSlider />
       </Suspense>
 
+      {/* Services Section */}
+      <ServicesSection />
+
       {/* Sales Teaser - Herstellerlogos */}
       <SalesTeaser />
+
+      {/* Used Machines Slider */}
+      <Suspense fallback={null}>
+        <UsedMachinesSlider />
+      </Suspense>
 
       {/* Google Reviews Section */}
       <section className="py-16 lg:py-20 bg-muted/30">
