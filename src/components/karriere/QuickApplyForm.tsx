@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, CheckCircle2, Upload } from "lucide-react";
+import { Loader2, CheckCircle2, Upload, FileText, X } from "lucide-react";
 import type { JobListing } from "./jobData";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
