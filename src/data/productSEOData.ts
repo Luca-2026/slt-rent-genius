@@ -2320,6 +2320,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen mieten in Krefeld, D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen leihen in Krefeld, D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen mieten NRW",
     is247: false,
+    dailyPriceFrom: 90,
     faqs: [
       { q: "Welche Komponenten umfasst das D.A.S. Soundsystem?", a: "Das Set besteht aus zwei aktiven Subwoofern DAS Audio VANTEC-18A, zwei Aktivlautsprechern DAS Audio VANTEC-12A, zwei Distanzstangen sowie einem Kabelsatz aus XLR- und Hybrid-Kabeln." },
       { q: "Wie hoch ist die Systemleistung und für welche Personenzahl ist sie geeignet?", a: "Die Systemleistung beträgt 3500W RMS und ist für Veranstaltungen mit bis zu ca. 250 Personen ausgelegt." },
