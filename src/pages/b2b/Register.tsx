@@ -234,14 +234,9 @@ export default function B2BRegister() {
           console.error("Profile creation failed (non-blocking):", profileErr);
         }
 
-        // Send notification email with document attachment to admin
-        try {
-          await supabase.functions.invoke("notify-b2b-registration", {
-            body: notificationPayload,
-          });
-        } catch (notifyErr) {
-          console.error("Notification failed (non-blocking):", notifyErr);
-        }
+        // Admin notification is sent server-side from create-b2b-profile
+        // (the user has no session yet, so a client-side call to
+        // notify-b2b-registration would fail with 401).
 
         toast({
           title: "Bestätigungs-E-Mail gesendet!",
