@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,6 +10,39 @@ const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/pub
 const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
 const HQ_ADDRESS = "Anrather Straße 291, 47807 Krefeld";
 const HQ_PHONE = "02151 417 99 04";
+const MAX_ATTACHMENT_BYTES = 18 * 1024 * 1024; // ~18 MB Resend limit per request
+
+async function fetchAttachment(
+  supabase: ReturnType<typeof createClient>,
+  path: string | null | undefined,
+  filename: string | null | undefined,
+): Promise<{ filename: string; content: string } | null> {
+  if (!path) return null;
+  try {
+    const { data, error } = await supabase.storage.from("bewerbungen").download(path);
+    if (error || !data) {
+      console.error("Attachment download failed:", path, error);
+      return null;
+    }
+    const buf = new Uint8Array(await data.arrayBuffer());
+    if (buf.byteLength > MAX_ATTACHMENT_BYTES) {
+      console.warn("Attachment too large, skipping:", path, buf.byteLength);
+      return null;
+    }
+    // base64 encode
+    let binary = "";
+    const chunk = 0x8000;
+    for (let i = 0; i < buf.length; i += chunk) {
+      binary += String.fromCharCode(...buf.subarray(i, i + chunk));
+    }
+    const content = btoa(binary);
+    const safeName = filename || path.split("/").pop() || "lebenslauf.pdf";
+    return { filename: safeName, content };
+  } catch (e) {
+    console.error("Attachment error:", e);
+    return null;
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -21,6 +55,7 @@ serve(async (req) => {
       street, postalCode, city,
       earliestStartDate, salaryExpectation, motivation,
       resumeFilename, coverLetterFilename,
+      resumePath, coverLetterPath,
     } = await req.json();
 
     if (!jobTitle || !firstName || !lastName || !email) {
@@ -31,6 +66,16 @@ serve(async (req) => {
     }
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+    const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+
+    // Download attachments (server-side, via service role)
+    const attachments: Array<{ filename: string; content: string }> = [];
+    const resumeAtt = await fetchAttachment(supabase, resumePath, resumeFilename);
+    if (resumeAtt) attachments.push(resumeAtt);
+    const coverAtt = await fetchAttachment(supabase, coverLetterPath, coverLetterFilename);
+    if (coverAtt) attachments.push(coverAtt);
 
     const address = [street, postalCode, city].filter(Boolean).join(", ") || "nicht angegeben";
 
@@ -42,7 +87,10 @@ serve(async (req) => {
       <a href="https://www.slt-rental.de" style="color: #f97316;">www.slt-rental.de</a>
     </p>`;
 
-    // ── Internal notification email ──
+    const attachmentsNote = attachments.length > 0
+      ? `<p style="color: #059669; font-size: 13px; margin-top: 8px;">📎 Bewerbungsunterlagen sind dieser E-Mail als Anhang beigefügt.</p>`
+      : `<p style="color: #6b7280; font-size: 13px; margin-top: 16px;">📌 Die vollständigen Bewerbungsunterlagen können im Admin-Bereich unter <strong>Karriere → Bewerbungen</strong> eingesehen und heruntergeladen werden.</p>`;
+
     const internalHtml = `
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
   <div style="background: #ffffff; padding: 20px; text-align: center; border-bottom: 3px solid #f97316;">
@@ -68,14 +116,11 @@ serve(async (req) => {
       <li>Lebenslauf: ${resumeFilename || "nicht hochgeladen"}</li>
       ${coverLetterFilename ? `<li>Anschreiben: ${coverLetterFilename}</li>` : ""}
     </ul>
-    <p style="color: #6b7280; font-size: 13px; margin-top: 16px;">
-      📌 Die vollständigen Bewerbungsunterlagen können im Admin-Bereich unter <strong>Karriere → Bewerbungen</strong> eingesehen und heruntergeladen werden.
-    </p>
+    ${attachmentsNote}
     ${footerHtml}
   </div>
 </div>`.trim();
 
-    // ── Applicant confirmation email ──
     const confirmationHtml = `
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
   <div style="background: #ffffff; padding: 20px; text-align: center; border-bottom: 3px solid #f97316;">
@@ -103,24 +148,25 @@ serve(async (req) => {
 </div>`.trim();
 
     if (RESEND_API_KEY) {
-      // Send internal notification
+      const internalPayload: Record<string, unknown> = {
+        from: "Karriere <karriere@slt-rental.de>",
+        to: ["karriere@slt-rental.de"],
+        reply_to: email,
+        subject: `Neue Bewerbung: ${jobTitle} – ${firstName} ${lastName}`,
+        html: internalHtml,
+      };
+      if (attachments.length > 0) internalPayload.attachments = attachments;
+
       const res1 = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${RESEND_API_KEY}`,
         },
-        body: JSON.stringify({
-          from: "Karriere <karriere@slt-rental.de>",
-          to: ["karriere@slt-rental.de"],
-          reply_to: email,
-          subject: `Neue Bewerbung: ${jobTitle} – ${firstName} ${lastName}`,
-          html: internalHtml,
-        }),
+        body: JSON.stringify(internalPayload),
       });
       if (!res1.ok) console.error("Resend internal error:", await res1.text());
 
-      // Send applicant confirmation
       const res2 = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -137,11 +183,11 @@ serve(async (req) => {
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== APPLICATION (no RESEND_API_KEY) ===");
-      console.log({ jobTitle, firstName, lastName, email });
+      console.log({ jobTitle, firstName, lastName, email, attachments: attachments.length });
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, attached: attachments.length }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (err) {
