@@ -4,16 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { 
-  Clock, Laptop, Coffee, GraduationCap, PartyPopper, 
-  Shirt, Award, MessageSquare, PiggyBank, Flame
+import {
+  Clock, Laptop, Coffee, GraduationCap, PartyPopper,
+  Shirt, Award, MessageSquare, PiggyBank, Flame, Zap, Users
 } from "lucide-react";
 import { JobCard } from "@/components/karriere/JobCard";
 import { jobListings } from "@/components/karriere/jobData";
 import { useTranslation } from "react-i18next";
 
+const BASE_URL = "https://www.slt-rental.de";
+
 export default function Karriere() {
   const { t } = useTranslation();
+
+  // ItemList JSON-LD so Google understands the list of open positions
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: jobListings.map((j, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${BASE_URL}/karriere/${j.slug}`,
+      name: j.title,
+    })),
+  };
+
+  const breadcrumb = SLT_BREADCRUMB_JSONLD([
+    { name: "Home", url: "/" },
+    { name: "Karriere", url: "/karriere" },
+  ]);
 
   const benefits = [
     { icon: Clock, label: t("karriere.benefitFlexTime") },
