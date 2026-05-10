@@ -1372,6 +1372,7 @@ export type Database = {
       used_machines: {
         Row: {
           category: string
+          content: Json | null
           created_at: string
           description: string | null
           hours: number | null
@@ -1392,6 +1393,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          content?: Json | null
           created_at?: string
           description?: string | null
           hours?: number | null
@@ -1412,6 +1414,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          content?: Json | null
           created_at?: string
           description?: string | null
           hours?: number | null

@@ -1,0 +1,1 @@
+ALTER TABLE public.used_machines ADD COLUMN IF NOT EXISTS content JSONB;

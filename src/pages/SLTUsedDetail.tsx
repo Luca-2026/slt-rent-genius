@@ -71,6 +71,13 @@ export default function SLTUsedDetail() {
 
   const images: string[] = (machine.images && machine.images.length > 0) ? machine.images : [];
   const specs: Record<string, string> = (machine.specifications as any) || {};
+  const content: any = (machine as any).content || {};
+  const highlights: string[] = Array.isArray(content.highlights) ? content.highlights : [];
+  const whyItems: { title: string; desc: string }[] = Array.isArray(content.whyItems) ? content.whyItems : [];
+  const showroomLocs: string[] = Array.isArray(content.showroomLocations) && content.showroomLocations.length > 0
+    ? content.showroomLocations
+    : (machine.location ? [machine.location] : []);
+  const showroomNames = showroomLocs.map((l: string) => locationLabels[l] || l).join(" oder ");
 
   const title = `${machine.manufacturer} ${machine.model} gebraucht kaufen | SLT Used`;
   const description = `${machine.manufacturer} ${machine.model}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
@@ -223,58 +230,67 @@ export default function SLTUsedDetail() {
         </section>
       )}
 
-      {/* Highlights – Niftylift specific */}
-      {slug === "niftylift-hr12le-2019" && (
-        <>
-          <section className="section-container py-8 md:py-12 border-t border-border">
-            <h2 className="text-2xl font-bold text-headline mb-6">Highlights</h2>
+      {/* Highlights */}
+      {highlights.length > 0 && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <h2 className="text-2xl font-bold text-headline mb-6">Highlights</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {highlights.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-foreground/90">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Why section */}
+      {whyItems.length > 0 && (
+        <section className="bg-muted/30 py-10 md:py-14">
+          <div className="section-container">
+            {content.whyTitle && (
+              <h2 className="text-2xl font-bold text-headline mb-3">{content.whyTitle}</h2>
+            )}
+            {content.whyIntro && (
+              <p className="text-muted-foreground mb-6 max-w-3xl">{content.whyIntro}</p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {[
-                "Reiner Elektroantrieb mit Lithium-Ionen-Akku – emissions- und geräuschfrei, ideal für Hallen, Showrooms, Krankenhäuser, Lebensmittelbetriebe und sensible Innenbereiche",
-                "Außenzulassung – auch im Außeneinsatz auf befestigtem Untergrund freigegeben",
-                "Weiße, nicht-spurende Reifen – hinterlassen keine schwarzen Streifen auf empfindlichen Bodenbelägen (Industrieböden, Parkett, Epoxidharz)",
-                "Nur 130 Betriebsstunden – durchgehend professionell gewartet, faktisch neuwertig",
-                "Gelenkteleskop-Konstruktion mit 6,30 m horizontaler Reichweite – arbeitet zuverlässig über Hindernisse hinweg",
-                "12,10 m Arbeitshöhe / 10,10 m Plattformhöhe",
-                "355° Schwenkbereich – nahezu vollständig drehbar",
-                "Ladegerät 230 V im Lieferumfang (Standard-Steckdose)",
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg">
-                  <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-foreground/90">{item}</p>
-                </div>
+              {whyItems.map((it, idx) => (
+                <Card key={idx} className="p-4">
+                  <p className="font-semibold text-headline text-sm mb-1">{it.title}</p>
+                  <p className="text-sm text-muted-foreground">{it.desc}</p>
+                </Card>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
+      )}
 
-          <section className="bg-muted/30 py-10 md:py-14">
-            <div className="section-container">
-              <h2 className="text-2xl font-bold text-headline mb-3">Warum Lithium-Ionen-Akkus?</h2>
-              <p className="text-muted-foreground mb-6 max-w-3xl">
-                Die Lithium-Ionen-Akkutechnologie dieser Niftylift ist gegenüber klassischen Bleisäure-Akkus in nahezu jeder Hinsicht überlegen:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {[
-                  ["Bis zu 4× längere Lebensdauer", "Typisch 2.000–3.000 Ladezyklen statt 500–700 bei Bleisäure"],
-                  ["Kein Memory-Effekt", "Kann jederzeit zwischengeladen werden, auch bei hohem Restladestand"],
-                  ["Konstante Leistung bis zur vollständigen Entladung", "Keine Spannungsabfälle, volle Hubgeschwindigkeit bis zum Schluss"],
-                  ["Deutlich schnellere Ladezeiten", "Kürzere Standzeiten, höhere Maschinenverfügbarkeit"],
-                  ["Höhere Energiedichte", "Mehr Arbeitsstunden pro Ladung bei geringerem Eigengewicht"],
-                  ["Wartungsfrei", "Kein Wassernachfüllen, keine Säurewartung"],
-                  ["Keine Säuredämpfe oder Knallgasbildung", "Sicher und unbedenklich im Innenbereich, keine besonderen Lüftungsanforderungen"],
-                  ["Bessere Kälteresistenz", "Nutzbare Kapazität auch bei niedrigen Temperaturen"],
-                  ["Tiefentladungsfest", "Kein dauerhafter Kapazitätsverlust durch versehentliche Entladung"],
-                  ["Bessere Ökobilanz", "Längere Nutzungsdauer und höhere Energieeffizienz"],
-                ].map(([title, desc], idx) => (
-                  <Card key={idx} className="p-4">
-                    <p className="font-semibold text-headline text-sm mb-1">{title}</p>
-                    <p className="text-sm text-muted-foreground">{desc}</p>
-                  </Card>
-                ))}
+      {/* Dealer / Service info */}
+      {content.dealerInfo && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <Card className="p-6 border-primary/30 bg-primary/5">
+            <div className="flex items-start gap-3">
+              <Wrench className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="text-lg font-bold text-headline mb-2">Autorisierter Vertriebs- & Servicepartner</h3>
+                <p className="text-foreground/90 leading-relaxed mb-3">{content.dealerInfo.text}</p>
+                {content.dealerInfo.linkUrl && (
+                  <a
+                    href={content.dealerInfo.linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium underline underline-offset-2"
+                  >
+                    {content.dealerInfo.linkText || content.dealerInfo.linkUrl}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                )}
               </div>
             </div>
-          </section>
-        </>
+          </Card>
+        </section>
       )}
 
       {/* Specifications */}
@@ -294,16 +310,12 @@ export default function SLTUsedDetail() {
         </section>
       )}
 
-      {/* Einsatzbereiche – Niftylift specific */}
-      {slug === "niftylift-hr12le-2019" && (
+      {/* Einsatzbereiche */}
+      {content.usageAreas && (
         <section className="section-container py-8 md:py-12 border-t border-border">
           <h2 className="text-2xl font-bold text-headline mb-4">Einsatzbereiche</h2>
-          <p className="text-foreground/90 leading-relaxed max-w-4xl">
-            Die Niftylift HR12LE ist die ideale Lösung für anspruchsvolle Innen- und Außenarbeiten:
-            Industrie- und Hallenwartung, Fassadeninstandhaltung, Elektro- und Klimainstallation,
-            Beleuchtungs- und Lüftungstechnik in Hallen und Showrooms, Veranstaltungs- und Messebau,
-            Reinigungsarbeiten in Industriebauten – und überall dort, wo emissionsfreie und
-            bodenschonende Arbeit gefragt ist.
+          <p className="text-foreground/90 leading-relaxed max-w-4xl whitespace-pre-line">
+            {content.usageAreas}
           </p>
         </section>
       )}
@@ -312,18 +324,19 @@ export default function SLTUsedDetail() {
       <section className="bg-primary text-primary-foreground py-12">
         <div className="section-container text-center">
           <h2 className="text-2xl font-bold mb-3 text-primary-foreground">
-            Besichtigung am Standort {locationLabels[machine.location || ""] || "Krefeld"}
+            Besichtigung {showroomLocs.length > 1 ? "an unseren Standorten" : "am Standort"}{" "}
+            {showroomNames || locationLabels[machine.location || ""] || "Krefeld"}
           </h2>
           <p className="text-primary-foreground/90 mb-6 max-w-2xl mx-auto">
-            Maschine geprüft, professionell gewartet und übergabefertig. Besichtigung jederzeit nach Terminvereinbarung möglich.
+            {content.warrantyNote || "Maschine geprüft, professionell gewartet und übergabefertig. Besichtigung jederzeit nach Terminvereinbarung möglich."}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button size="lg" variant="secondary" onClick={() => setModalOpen(true)} disabled={isSold}>
               Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-              <a href="mailto:kaufanfrage@slt-rental.de" className="inline-flex items-center gap-2">
-                <Mail className="h-4 w-4" /> kaufanfrage@slt-rental.de
+              <a href="tel:021514179904" className="inline-flex items-center gap-2">
+                <Phone className="h-4 w-4" /> 02151 417 99 04
               </a>
             </Button>
           </div>
