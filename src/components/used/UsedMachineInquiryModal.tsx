@@ -319,22 +319,53 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
                 </Popover>
               </div>
 
-              <div>
-                <Label>Lieferung oder Abholung? *</Label>
-                <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption} className="mt-1.5 space-y-1.5">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="lieferung" id="delivery-lieferung" />
-                    <Label htmlFor="delivery-lieferung" className="font-normal cursor-pointer">Lieferung an meine Adresse</Label>
+              {(() => {
+                const pickupLocs = machine?.pickupLocations && machine.pickupLocations.length > 0
+                  ? machine.pickupLocations
+                  : (machine?.location ? [machine.location] : []);
+                const singlePickupLabel = pickupLocs.length === 1
+                  ? (locationLabels[pickupLocs[0]] || pickupLocs[0])
+                  : "";
+                return (
+                  <div>
+                    <Label>Lieferung oder Abholung? *</Label>
+                    <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption} className="mt-1.5 space-y-1.5">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="lieferung" id="delivery-lieferung" />
+                        <Label htmlFor="delivery-lieferung" className="font-normal cursor-pointer">Lieferung an meine Adresse</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="abholung" id="delivery-abholung" />
+                        <Label htmlFor="delivery-abholung" className="font-normal cursor-pointer">
+                          {!machine
+                            ? "Selbstabholung"
+                            : pickupLocs.length > 1
+                              ? "Selbstabholung (Standort wählen)"
+                              : `Selbstabholung – Standort ${singlePickupLabel}`}
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                    <FieldError field="deliveryOption" />
+
+                    {deliveryOption === "abholung" && pickupLocs.length > 1 && (
+                      <div className="mt-3 pl-6 border-l-2 border-primary/20 py-2">
+                        <Label className="text-sm">Abholstandort *</Label>
+                        <RadioGroup value={pickupLocation} onValueChange={setPickupLocation} className="mt-1.5 space-y-1.5">
+                          {pickupLocs.map((l) => (
+                            <div key={l} className="flex items-center space-x-2">
+                              <RadioGroupItem value={l} id={`pickup-${l}`} />
+                              <Label htmlFor={`pickup-${l}`} className="font-normal cursor-pointer">
+                                {locationLabels[l] || l}
+                              </Label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                        <FieldError field="pickupLocation" />
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="abholung" id="delivery-abholung" />
-                    <Label htmlFor="delivery-abholung" className="font-normal cursor-pointer">
-                      {machine ? `Selbstabholung – Standort ${loc}` : "Selbstabholung"}
-                    </Label>
-                  </div>
-                </RadioGroup>
-                <FieldError field="deliveryOption" />
-              </div>
+                );
+              })()}
 
               {deliveryOption === "lieferung" && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-4 border-l-2 border-primary/20">
