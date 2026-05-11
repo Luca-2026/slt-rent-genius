@@ -81,8 +81,8 @@ export function DeliveryCalculatorCompact({
         const m = config.subtypes.find((s) => s.key === "18m-anhaenger");
         if (m) return m.key;
       }
-      // 2) Niftylift HR12LE Gelenkteleskop (eigenständig, NICHT auf Anhänger) → Tarif C
-      if (/niftylift|hr\s*12\s*le/i.test(lower)) {
+      // 2) Niftylift HR12L/HR12LE Gelenkteleskop (eigenständig, NICHT auf Anhänger) → Tarif C
+      if (/nifty|hr\s*12|gelenkteleskop/i.test(lower)) {
         const m = config.subtypes.find((s) => s.key === "12m-gelenk");
         if (m) return m.key;
       }
