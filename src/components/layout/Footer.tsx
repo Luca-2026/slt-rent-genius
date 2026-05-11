@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import sltLogo from "@/assets/slt-logo.png";
+import sltLogo from "@/assets/slt-logo-sm.webp";
 import { getAreasForLocation } from "@/data/localSeoData";
 
 const locations = [

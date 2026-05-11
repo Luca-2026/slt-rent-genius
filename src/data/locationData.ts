@@ -1,9 +1,9 @@
 // Shared location data for the entire application
 
 // Location images
-import imgKrefeld from "@/assets/locations/krefeld.jpg";
+import imgKrefeld from "@/assets/locations/krefeld.webp";
 import imgBonn from "@/assets/locations/bonn.webp";
-import imgMuelheim from "@/assets/locations/muelheim.jpg";
+import imgMuelheim from "@/assets/locations/muelheim.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";

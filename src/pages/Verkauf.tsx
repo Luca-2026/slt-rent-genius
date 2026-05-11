@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import zoomlionLogo from "@/assets/logos/zoomlion.png";
-import temaredLogo from "@/assets/logos/temared.webp";
-import baumaxLogo from "@/assets/logos/baumax.png";
+import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
+import temaredLogo from "@/assets/logos/temared-sm.webp";
+import baumaxLogo from "@/assets/logos/baumax-sm.webp";
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
