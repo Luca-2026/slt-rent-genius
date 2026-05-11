@@ -87,6 +87,16 @@ const LOCATION_DETAILS: Record<string, {
 const LOCATION_BUSINESS_ID = (locId: string) =>
   `${BASE_URL}/standorte/${locId}#localbusiness`;
 
+// Real Google Reviews data from google_reviews_cache (fetched 2026-05-10)
+// Krefeld Place ID: ChIJRyajcmSxuEcRAHvlWgXfF5c → 5.0 / 207
+// Bonn   Place ID: ChIJf2ituEblvkcRUGua8HYhHCA → 4.9 / 105
+// Mülheim has no own Place ID → uses Krefeld values (same company, same phone)
+const LOCATION_RATINGS: Record<string, { ratingValue: string; reviewCount: string }> = {
+  krefeld:  { ratingValue: "5.0", reviewCount: "207" },
+  bonn:     { ratingValue: "4.9", reviewCount: "105" },
+  muelheim: { ratingValue: "5.0", reviewCount: "207" },
+};
+
 function localBusiness(locId: string): JsonLd {
   const loc = LOCATION_DETAILS[locId];
   if (!loc) return {};
