@@ -985,7 +985,7 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Beleuchtung": "1x LED Frontscheinwerfer, 1x LED Topscheinwerfer",
     },
     image: imgKnickdumperKde550_1,
-    images: [imgKnickdumperKde550_1, imgKnickdumperKde550_2],
+    images: [imgKnickdumperKde550_1],
     weightKg: 318,
     category: "dumper",
     tags: ["dumper", "elektro", "bis-1500", "maschine"],
