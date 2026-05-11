@@ -20,6 +20,7 @@ const locationLabels: Record<string, string> = {
 
 const modelDisplayNames: Record<string, string> = {
   "ZS0607AC-Li": "ZS0607AC-Li Scherenarbeitsbühne (8m Arbeitshöhe)",
+  "ZMP09J": "ZMP09J Mastbühne (11,2m Arbeitshöhe)",
 };
 
 function formatPrice(price: number | null, onRequest: boolean) {
