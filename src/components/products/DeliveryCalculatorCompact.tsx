@@ -84,12 +84,14 @@ export function DeliveryCalculatorCompact({
         const m = config.subtypes.find((s) => s.key === "11m-teleskop");
         if (m) return m.key;
       }
-      if (/12\s*m.*scher|scher.*12\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "12m-scheren");
+      // 8m Scherenbühne (leicht, Tarif B) — nur exakt "8 m … scheren"
+      if (/(^|[^0-9])8[.,]?\d?\s*m[^a-z0-9]*scher|scher[^0-9]*8[.,]?\d?\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "8m-scheren");
         if (m) return m.key;
       }
-      if (/8\s*m.*scher|scher.*8\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "8m-scheren");
+      // Alle anderen Scherenbühnen (z.B. 10m, 11,8m, 12m) → 12m-Scheren-Tarif (C)
+      if (/scher/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "12m-scheren");
         if (m) return m.key;
       }
       if (/anh[aä]nger.*(arbeits)?b[uü]hne|18\s*m/i.test(lower)) {
