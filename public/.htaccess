@@ -18,10 +18,11 @@ AddDefaultCharset UTF-8
   RewriteCond %{HTTP_HOST} ^slt-rental\.de [NC]
   RewriteRule ^ https://www.slt-rental.de%{REQUEST_URI} [L,R=301]
 
-  # Remove trailing slash (außer für Root und echte Verzeichnisse)
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} ^(.+)/$
-  RewriteRule ^ %1 [L,R=301]
+  # Add trailing slash (Canonical-Form, außer für Dateien mit Endung)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !(.+)/$
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]+$
+  RewriteRule ^(.*)$ /$1/ [L,R=301]
 
   # SPA Fallback – alle nicht existierenden Routen auf index.html
   RewriteCond %{REQUEST_FILENAME} !-f
