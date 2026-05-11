@@ -72,7 +72,36 @@ export default function ProductDetail() {
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
-    return allProducts.filter((p) => p.id !== rawProduct.id && !p.compatibleMachines).slice(0, 4);
+    const candidates = allProducts.filter((p) => p.id !== rawProduct.id && !p.compatibleMachines);
+
+    // Detect equipment subtype from category field or name keywords so a Dumper page shows other Dumpers,
+    // a Bagger page shows other Bagger, etc.
+    const TYPE_KEYWORDS: Array<{ key: string; re: RegExp }> = [
+      { key: "dumper", re: /dumper/i },
+      { key: "bagger", re: /bagger|minibagger/i },
+      { key: "radlader", re: /radlader/i },
+      { key: "scherenbuehne", re: /scherenarbeitsb|scherenb/i },
+      { key: "gelenkteleskop", re: /gelenkteleskop/i },
+      { key: "mastbuehne", re: /mastb|mastarbeitsb/i },
+      { key: "anhaengerbuehne", re: /anh(ä|ae)ngerb|anh(ä|ae)nger.?arbeitsb/i },
+      { key: "ruettelplatte", re: /r(ü|ue)ttelplatte|vibrationsplatte/i },
+      { key: "stampfer", re: /stampfer/i },
+      { key: "walze", re: /walze/i },
+      { key: "kompressor", re: /kompressor/i },
+      { key: "erdrakete", re: /erdrakete/i },
+      { key: "fahrmatten", re: /fahrmatte|bodenschutz/i },
+      { key: "loeffel", re: /l(ö|oe)ffel|schaufel/i },
+    ];
+    const detect = (p: { category?: string; name?: string; modelName?: string }): string | undefined => {
+      if (p.category) return p.category;
+      const hay = `${p.name ?? ""} ${p.modelName ?? ""}`;
+      return TYPE_KEYWORDS.find((t) => t.re.test(hay))?.key;
+    };
+    const ownType = detect(rawProduct);
+    if (!ownType) return candidates.slice(0, 4);
+    const sameType = candidates.filter((p) => detect(p) === ownType);
+    const others = candidates.filter((p) => detect(p) !== ownType);
+    return [...sameType, ...others].slice(0, 4);
   }, [location, categoryId, rawProduct]);
   const relatedProducts = useTranslatedProducts(rawRelatedProducts);
 
