@@ -22,6 +22,7 @@ import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
 import iconAggregat from "@/assets/icons/category-aggregat.png";
 import iconWerkzeug from "@/assets/icons/werkzeug.png";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
+import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
 
 const usedCategories = [
   { id: "all", label: "Alle Kategorien", icon: null },
@@ -244,7 +245,7 @@ export default function SLTUsed() {
                   <CardContent className="p-4 flex flex-col flex-1">
                     <Wrapper {...wrapperProps} className="block mb-2">
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{machine.manufacturer}</p>
-                      <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{machine.model}</h3>
+                      <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{getUsedMachineDisplayModel(machine.model)}</h3>
                     </Wrapper>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3">
                       {machine.year && <span>Bj. {machine.year}</span>}
