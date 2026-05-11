@@ -194,6 +194,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "anhaengerbuehne-18m": {
+    dailyPriceFrom: 130,
     excelName: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     seoTitle: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     metaDescription: "Mieten Sie die EuropeLIFT TM18GTi Anhängerbühne mit 18 m Arbeitshöhe, 10,50 m Reichweite und Benzinantrieb für Höhenarbeiten an Fassaden oder Bäumen.",
@@ -2921,6 +2922,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "gelenkteleskopsteiger-12m": {
+    dailyPriceFrom: 90,
     excelName: "12m Gelenkteleskopsteiger Nifty HR12L",
     seoTitle: "12m Gelenkteleskopsteiger Nifty HR12L mieten",
     metaDescription: "Elektrischer Gelenkteleskopsteiger HR12L mit 12,10 m Arbeitshöhe, 6,40 m Reichweite und Non-Marking-Reifen für den Innen- und Außeneinsatz.",
@@ -3987,6 +3989,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "mastbuehne-11m": {
+    dailyPriceFrom: 75,
     excelName: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
     seoTitle: "11,2 m Teleskop-Mastarbeitsbühne elektro ZMP09",
     metaDescription: "Elektrische Mastbühne ZMP09 mit 11,20 m Arbeitshöhe, 3,23 m Reichweite und 200 kg Traglast. Kompakte Bauweise mit Non-Marking-Reifen für Innen und Außen.",
@@ -5669,6 +5672,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "scherenbuehne-12m": {
+    dailyPriceFrom: 55,
     excelName: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
     seoTitle: "11,8 m Scherenarbeitsbühne elektro ZS1012 mieten",
     metaDescription: "Elektrische Scherenbühne Zoomlion ZS1012AC mit 11,80 m Arbeitshöhe, 350 kg Traglast und Non-Marking-Reifen für den Inneneinsatz.",
@@ -5686,6 +5690,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "scherenbuehne-8m": {
+    dailyPriceFrom: 40,
     excelName: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
     seoTitle: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) mieten",
     metaDescription: "Elektrische Scherenarbeitsbühne Zoomlion ZS0607AC-Li mit 7,80 m Arbeitshöhe, 230 kg Traglast und Non-Marking-Reifen für den Innen- und Außeneinsatz.",
