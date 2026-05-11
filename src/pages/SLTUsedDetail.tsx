@@ -90,14 +90,104 @@ export default function SLTUsedDetail() {
   const description = `${machine.manufacturer} ${displayModel}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
   const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
 
+  // ---- JSON-LD: Product + Offer + BreadcrumbList ----
+  const BASE_URL = "https://www.slt-rental.de";
+  const canonicalPath = `/verkauf/gebrauchtmaschinen/${slug}`;
+  const absoluteImages = images
+    .map((img) => (img?.startsWith("http") ? img : img ? `${BASE_URL}${img.startsWith("/") ? "" : "/"}${img}` : null))
+    .filter(Boolean) as string[];
+
+  const availability = isSold
+    ? "https://schema.org/SoldOut"
+    : isReserved
+    ? "https://schema.org/LimitedAvailability"
+    : "https://schema.org/InStock";
+
+  const sellerNode = {
+    "@type": "Organization",
+    name: "SLT Rental",
+    legalName: "SLT Technology Group GmbH & Co. KG",
+    url: BASE_URL,
+    telephone: "+49 2151 4179904",
+    email: "kaufanfrage@slt-rental.de",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Anrather Straße 291",
+      addressLocality: "Krefeld",
+      postalCode: "47807",
+      addressRegion: "NRW",
+      addressCountry: "DE",
+    },
+  };
+
+  const offerNode: Record<string, unknown> = priceNet
+    ? {
+        "@type": "Offer",
+        url: `${BASE_URL}${canonicalPath}`,
+        priceCurrency: "EUR",
+        price: priceNet.toFixed(2),
+        priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
+        itemCondition: "https://schema.org/UsedCondition",
+        availability,
+        seller: sellerNode,
+        businessFunction: "https://schema.org/Sell",
+        eligibleRegion: { "@type": "Country", name: "DE" },
+      }
+    : {
+        "@type": "Offer",
+        url: `${BASE_URL}${canonicalPath}`,
+        priceCurrency: "EUR",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          price: "0",
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: false,
+        },
+        itemCondition: "https://schema.org/UsedCondition",
+        availability,
+        seller: sellerNode,
+      };
+
+  const productJsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${machine.manufacturer} ${displayModel}`,
+    description: machine.description || description,
+    sku: machine.reference_number || machine.id,
+    ...(machine.reference_number ? { mpn: machine.reference_number } : {}),
+    brand: { "@type": "Brand", name: machine.manufacturer },
+    category: "Gebrauchte Baumaschine",
+    ...(absoluteImages.length > 0 ? { image: absoluteImages } : {}),
+    ...(machine.year ? { productionDate: String(machine.year) } : {}),
+    itemCondition: "https://schema.org/UsedCondition",
+    offers: priceNet ? offerNode : undefined,
+  };
+  // Drop offers if no priceNet (sanitizer would otherwise drop the whole node)
+  if (!priceNet) delete productJsonLd.offers;
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Start", item: `${BASE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Verkauf", item: `${BASE_URL}/verkauf` },
+      { "@type": "ListItem", position: 3, name: "Gebrauchtmaschinen", item: `${BASE_URL}/verkauf/gebrauchtmaschinen` },
+      { "@type": "ListItem", position: 4, name: `${machine.manufacturer} ${displayModel}`, item: `${BASE_URL}${canonicalPath}` },
+    ],
+  };
+
+  const jsonLd: Record<string, unknown>[] = [productJsonLd, breadcrumbJsonLd];
+
   return (
     <Layout>
       <SEO
         title={title}
         description={description}
         keywords={seoKeywords.length > 0 ? seoKeywords.join(", ") : undefined}
-        canonical={`/verkauf/gebrauchtmaschinen/${slug}`}
-        ogImage={images[0]}
+        canonical={canonicalPath}
+        ogImage={absoluteImages[0]}
+        ogType="product"
+        jsonLd={jsonLd}
       />
 
       {/* Breadcrumb */}
