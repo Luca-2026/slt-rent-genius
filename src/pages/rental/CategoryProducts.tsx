@@ -1349,21 +1349,16 @@ export default function CategoryProducts() {
     "@type": "ItemList",
     "name": `${categoryDisplayName} mieten in ${cityName} – SLT Rental`,
     "url": `https://www.slt-rental.de${seoCanonical}`,
-    "itemListElement": products.slice(0, 50).map((p, i) => {
-      const imgSrc = p.images?.[0] || p.image || "";
-      const imgUrl = imgSrc.startsWith("http") ? imgSrc : imgSrc ? `https://www.slt-rental.de${imgSrc.startsWith("/") ? "" : "/"}${imgSrc}` : undefined;
-      return {
-        "@type": "ListItem",
-        "position": i + 1,
-        "item": {
-          "@type": "Product",
-          "name": p.name,
-          "image": imgUrl,
-          "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
-        },
-      };
-
-    }),
+    // NOTE: ListItems use plain name/url (no nested Product) to avoid Google
+    // "offers/review/aggregateRating required" warnings on Product items that
+    // have no price data. Per-product full Product schema lives on the
+    // dedicated product detail page (buildProductSchemas).
+    "itemListElement": products.slice(0, 50).map((p, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": p.name,
+      "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
+    })),
   };
 
   const jsonLdArray = [
