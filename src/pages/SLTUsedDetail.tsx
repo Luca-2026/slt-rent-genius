@@ -13,15 +13,10 @@ import {
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
 import { LazyVideo } from "@/components/used/LazyVideo";
+import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
 
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
-};
-
-const modelDisplayNames: Record<string, string> = {
-  "ZS0607AC-Li Scherenarbeitsbühne": "ZS0607AC-Li Scherenarbeitsbühne (8m Arbeitshöhe)",
-  "ZMP09J Mastbühne": "ZMP09J Mastbühne (11,2m Arbeitshöhe)",
-  "HR12LE Lithium-Akku-Gelenkteleskoparbeitsbühne": "HR12LE Lithium-Akku-Gelenkteleskoparbeitsbühne (12m Arbeitshöhe)",
 };
 
 function formatPrice(price: number | null, onRequest: boolean) {
