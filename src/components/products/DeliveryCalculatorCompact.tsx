@@ -75,27 +75,32 @@ export function DeliveryCalculatorCompact({
         const m = config.subtypes.find((s) => s.key === "dumper");
         if (m) return m.key;
       }
-      // Arbeitsbühnen — Reihenfolge wichtig (spezifischer zuerst)
-      if (/niftylift|hr\s*12|gelenk(teleskop)?/i.test(lower)) {
+      // Arbeitsbühnen — Reihenfolge: spezifischste Identifier zuerst.
+      // 1) Anhängerarbeitsbühne (z.B. "18m Gelenk-Teleskop-Anhängerarbeitsbühne") → Tarif B
+      if (/anh[aä]nger\s*-?\s*(arbeits)?b[uü]hne|anh[aä]ngerarbeitsb[uü]hne/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "18m-anhaenger");
+        if (m) return m.key;
+      }
+      // 2) Niftylift HR12LE Gelenkteleskop (eigenständig, NICHT auf Anhänger) → Tarif C
+      if (/niftylift|hr\s*12\s*le/i.test(lower)) {
         const m = config.subtypes.find((s) => s.key === "12m-gelenk");
         if (m) return m.key;
       }
-      if (/teleskop(mast)?|11[.,]?2\s*m/i.test(lower)) {
+      // 3) Teleskopmastarbeitsbühne (z.B. "11,2 m Teleskop-Mastarbeitsbühne") → Tarif C
+      if (/teleskop[\s-]*mast/i.test(lower)) {
         const m = config.subtypes.find((s) => s.key === "11m-teleskop");
         if (m) return m.key;
       }
-      // 8m Scherenbühne (leicht, Tarif B) — nur exakt "8 m … scheren"
-      if (/(^|[^0-9])8[.,]?\d?\s*m[^a-z0-9]*scher|scher[^0-9]*8[.,]?\d?\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "8m-scheren");
-        if (m) return m.key;
-      }
-      // Alle anderen Scherenbühnen (z.B. 10m, 11,8m, 12m) → 12m-Scheren-Tarif (C)
+      // 4) Scherenarbeitsbühnen — anhand führender Meter-Angabe unterscheiden
       if (/scher/i.test(lower)) {
+        // Führende Meter-Angabe extrahieren ("7,8 m ...", "11,8 m ...", "8 m ...")
+        const meterMatch = lower.match(/^\s*(\d{1,2})(?:[.,](\d))?\s*m\b/);
+        const meters = meterMatch ? parseFloat(`${meterMatch[1]}.${meterMatch[2] ?? "0"}`) : NaN;
+        if (!isNaN(meters) && meters <= 9) {
+          const m = config.subtypes.find((s) => s.key === "8m-scheren");
+          if (m) return m.key;
+        }
         const m = config.subtypes.find((s) => s.key === "12m-scheren");
-        if (m) return m.key;
-      }
-      if (/anh[aä]nger.*(arbeits)?b[uü]hne|18\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "18m-anhaenger");
         if (m) return m.key;
       }
     }
