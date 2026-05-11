@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { ChunkLoadErrorBoundary } from "@/components/ChunkLoadErrorBoundary";
 import { Loader2 } from "lucide-react";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -82,8 +83,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
+          <ChunkLoadErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
               <Route path="/" element={<Index />} />
               
               {/* New rental flow: Location → Category → Products → Product Detail */}
@@ -174,8 +176,9 @@ const App = () => (
               
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+              </Routes>
+            </Suspense>
+          </ChunkLoadErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
