@@ -972,7 +972,7 @@ export const arbeitsbuehnenProducts: Product[] = [
   },
   {
     id: "mastbuehne-11m",
-    name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
+    name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09J)",
     description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
     image: mastbuehneZmp091,
     images: [mastbuehneZmp091, mastbuehneZmp092, mastbuehneZmp093],
@@ -980,9 +980,10 @@ export const arbeitsbuehnenProducts: Product[] = [
     pricePerDay: "ab 75 €",
     rentwareCode: { krefeld: "JQJ2PS" },
     videoUrl: "https://www.youtube.com/watch?v=9n7ZX-l6Nhg",
-    detailedDescription: "Die Zoomlion ZMP09 ist eine kompakte, elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m seitlicher Reichweite. Die hohe Überbrückungshöhe von 7,75 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (0,99 × 0,76 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg. Zusatzausstattung: 230 V Anschluss im Korb.",
+    pdfUrl: "/documents/Datenblatt-Mastbuehne-ZMP09J.pdf",
+    detailedDescription: "Die Zoomlion ZMP09J ist eine kompakte, elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m seitlicher Reichweite. Die hohe Überbrückungshöhe von 7,75 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (0,99 × 0,76 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg. Zusatzausstattung: 230 V Anschluss im Korb.",
     specifications: {
-      "Typ": "ZMP09",
+      "Typ": "ZMP09J",
       "Arbeitshöhe": "11,20 m",
       "Plattformbodenhöhe": "9,20 m",
       "Max. Reichweite": "3,23 m",
