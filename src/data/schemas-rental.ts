@@ -271,6 +271,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       : `${BASE_URL}${p.image}`
     : DEFAULT_IMG;
 
+  const locRating = LOCATION_RATINGS[p.locationId];
+
   const product: JsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -280,13 +282,15 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     url: productUrl,
     brand: p.modelName ? { "@type": "Brand", name: p.modelName.split(" ")[0] } : undefined,
     model: p.modelName,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "127",
-      bestRating: "5",
-      worstRating: "1",
-    },
+    aggregateRating: locRating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: locRating.ratingValue,
+          reviewCount: locRating.reviewCount,
+          bestRating: "5",
+          worstRating: "1",
+        }
+      : undefined,
   };
 
   // strip undefineds to keep JSON tidy
