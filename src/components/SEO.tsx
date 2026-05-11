@@ -27,7 +27,19 @@ export function SEO({
 }: SEOProps) {
   const fullTitle = title.includes("SLT Rental") ? title : `${title} | SLT Rental`;
   const currentPath = typeof window !== "undefined" ? window.location.pathname : "/";
-  const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : `${BASE_URL}${currentPath}`;
+  const rawPath = canonical ?? currentPath;
+  // Server (Serverprofis) erzwingt Trailing-Slash via 301. Canonical MUSS deshalb
+  // ebenfalls mit "/" enden, sonst entsteht ein Canonical/Redirect-Widerspruch
+  // → Google deindexiert die Seite als "Alternative Seite mit richtigem kanonischen Tag".
+  // Ausnahmen: Root ("/") und Pfade mit Dateiendung (z.B. .xml, .pdf) sowie Querystrings.
+  const normalizeTrailingSlash = (path: string): string => {
+    if (!path || path === "/") return "/";
+    const [pathOnly, query] = path.split("?");
+    if (/\.[a-zA-Z0-9]{2,5}$/.test(pathOnly)) return path;
+    const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+    return query ? `${normalized}?${query}` : normalized;
+  };
+  const canonicalUrl = `${BASE_URL}${normalizeTrailingSlash(rawPath)}`;
 
   return (
     <Helmet>
