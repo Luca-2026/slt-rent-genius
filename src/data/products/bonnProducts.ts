@@ -546,6 +546,8 @@ export const bonnErdbewegungProducts = [
     image: imgKettendumperRmd800_1,
     images: [imgKettendumperRmd800_1],
     weightKg: 450,
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "benzin",
     rentwareCode: { bonn: "R1FU1X" },
     rentalNotes: [
