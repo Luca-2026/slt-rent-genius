@@ -83,8 +83,15 @@ const locationCategories: Record<string, string[]> = {
 };
 
 function urlEntry(path: string, priority: string, changefreq: string, lastmod: string): string {
+  // Server (Serverprofis) erzwingt Trailing-Slash via 301. Sitemap-URLs müssen
+  // deshalb mit "/" enden, sonst trigger jeder GoogleBot-Hit ein Redirect und
+  // die Seite landet als "Alternative Seite mit richtigem kanonischen Tag" im Index.
+  let normalizedPath = path;
+  if (normalizedPath !== "/" && !normalizedPath.endsWith("/") && !/\.[a-zA-Z0-9]{2,5}$/.test(normalizedPath)) {
+    normalizedPath = `${normalizedPath}/`;
+  }
   return `  <url>
-    <loc>${BASE_URL}${path}</loc>
+    <loc>${BASE_URL}${normalizedPath}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
