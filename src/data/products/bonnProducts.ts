@@ -426,6 +426,8 @@ export const bonnErdbewegungProducts = [
     images: [imgBobcatE10z1, imgBobcatE10z2, imgBobcatE10z3, imgBobcatE10z4],
     rentwareCode: { bonn: "FQZBM1" },
     weightKg: 1000,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
