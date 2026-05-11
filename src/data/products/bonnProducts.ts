@@ -494,6 +494,8 @@ export const bonnErdbewegungProducts = [
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 3500,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     onRequest: true,
     rentalNotes: [
