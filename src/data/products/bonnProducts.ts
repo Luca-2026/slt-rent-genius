@@ -529,6 +529,8 @@ export const bonnErdbewegungProducts = [
     images: [imgKramer1, imgKramer2],
     rentwareCode: { bonn: "EEJXMU" },
     weightKg: 3000,
+    category: "radlader",
+    tags: ["maschine"],
     driveType: "diesel",
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
