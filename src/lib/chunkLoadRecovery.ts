@@ -8,6 +8,11 @@ const STALE_CHUNK_PATTERNS = [
   /ChunkLoadError/i,
   /Loading chunk [\w-]+ failed/i,
   /Unable to preload CSS/i,
+  // React.lazy resolver fails when the dynamic import resolves but the
+  // module's `default` is missing — happens when the cached HTML preloads a
+  // stale chunk hash after a re-deploy. Auto-reload to pick up fresh chunks.
+  /_result\.default/i,
+  /undefined is not an object \(evaluating ['"]?\w+\._result\.default/i,
 ];
 
 const getMessage = (value: unknown): string => {
