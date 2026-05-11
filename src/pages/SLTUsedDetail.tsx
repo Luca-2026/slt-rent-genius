@@ -18,6 +18,10 @@ const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
 };
 
+const modelDisplayNames: Record<string, string> = {
+  "ZS0607AC-Li": "ZS0607AC-Li Scherenarbeitsbühne (8m Arbeitshöhe)",
+};
+
 function formatPrice(price: number | null, onRequest: boolean) {
   if (onRequest || !price) return "Preis auf Anfrage";
   return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(price);
@@ -83,8 +87,10 @@ export default function SLTUsedDetail() {
   const showroomLocs: string[] = showroomLocsForData;
   const showroomNames = showroomLocs.map((l: string) => locationLabels[l] || l).join(" oder ");
 
-  const title = `${machine.manufacturer} ${machine.model} gebraucht kaufen | SLT Used`;
-  const description = `${machine.manufacturer} ${machine.model}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
+  const displayModel = modelDisplayNames[machine.model] || machine.model;
+
+  const title = `${machine.manufacturer} ${displayModel} gebraucht kaufen | SLT Used`;
+  const description = `${machine.manufacturer} ${displayModel}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
   const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
 
   return (
@@ -156,7 +162,7 @@ export default function SLTUsedDetail() {
               {machine.manufacturer}
             </p>
             <h1 className="text-3xl md:text-4xl font-bold text-headline mb-3">
-              {machine.model}
+              {displayModel}
             </h1>
 
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground mb-6">
