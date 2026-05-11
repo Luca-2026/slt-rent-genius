@@ -605,6 +605,8 @@ export const bonnErdbewegungProducts = [
     modelName: "RMD-650",
     description: "Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.",
     image: "/placeholder.svg",
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "benzin",
     rentwareCode: { bonn: "7Y1UTP" },
     rentalNotes: [
