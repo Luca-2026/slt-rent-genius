@@ -594,6 +594,7 @@ export const bonnErdbewegungProducts = [
     image: imgKnickdumper1,
     images: [imgKnickdumper1],
     weightKg: 318,
+    tags: ["maschine"],
     category: "dumper",
     driveType: "elektro",
     onRequest: true,
