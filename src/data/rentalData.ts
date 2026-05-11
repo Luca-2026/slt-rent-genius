@@ -958,7 +958,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     weightKg: 600,
     category: "dumper",
     tags: ["dumper", "diesel", "bis-1500", "maschine"],
-    rentwareCode: { krefeld: "EZHV9G" },
+    onRequest: true,
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
