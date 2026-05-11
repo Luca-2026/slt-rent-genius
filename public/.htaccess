@@ -18,6 +18,56 @@ AddDefaultCharset UTF-8
   RewriteCond %{HTTP_HOST} ^slt-rental\.de [NC]
   RewriteRule ^ https://www.slt-rental.de%{REQUEST_URI} [L,R=301]
 
+  # =====================================================
+  # Legacy URL Redirects (alte Webflow-Pfade -> neue Struktur)
+  # =====================================================
+
+  # --- Alte Standort "duisburg" gibt es nicht mehr -> Krefeld ist nächstgelegen ---
+  RewriteRule ^produkte-duisburg/?$ /mieten/krefeld/ [L,R=301]
+  RewriteRule ^produkte-duisburg/(.*)$ /mieten/krefeld/ [L,R=301]
+
+  # --- Kategorie-Slug-Normalisierung (alt -> neu) für /kategorien-{loc}/{cat} und /produkte/{cat} ---
+  # anhanger -> anhaenger
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/anhanger/?$ /mieten/$1/anhaenger/ [L,R=301]
+  RewriteRule ^produkte/anhanger/?$ /mietartikel/ [L,R=301]
+  # bagger-radlader / bagger-dumper / ketten-dumper -> erdbewegung
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/(bagger-radlader|bagger-dumper|ketten-dumper)/?$ /mieten/$1/erdbewegung/ [L,R=301]
+  RewriteRule ^produkte/(bagger-radlader|bagger-dumper|ketten-dumper)/?$ /mietartikel/ [L,R=301]
+  # buehnen-podeste -> buehne
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/buehnen-podeste/?$ /mieten/$1/buehne/ [L,R=301]
+  RewriteRule ^produkte/buehnen-podeste/?$ /mietartikel/ [L,R=301]
+  # absperrung-sicherheit -> absperrtechnik
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/absperrung-sicherheit/?$ /mieten/$1/absperrtechnik/ [L,R=301]
+  RewriteRule ^produkte/absperrung-sicherheit/?$ /mietartikel/ [L,R=301]
+  # rigging -> traversen-rigging
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/rigging/?$ /mieten/$1/traversen-rigging/ [L,R=301]
+  # led-spots -> beleuchtung
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/led-spots/?$ /mieten/$1/beleuchtung/ [L,R=301]
+  RewriteRule ^produkte/led-spots/?$ /mietartikel/ [L,R=301]
+  # heizung-klima -> heizung-trocknung
+  RewriteRule ^produkte/heizung-klima/?$ /mietartikel/ [L,R=301]
+  # geschirr -> geschirr-glaeser-besteck
+  RewriteRule ^produkte/geschirr/?$ /mietartikel/ [L,R=301]
+  # gutscheine: keine Kategorie mehr -> Standortseite
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/gutscheine/?$ /mieten/$1/ [L,R=301]
+
+  # --- Generische Kategorie-Pfade (Slug stimmt 1:1 mit neuer Kategorie überein) ---
+  # /kategorien-{loc}/{cat} -> /mieten/{loc}/{cat}/
+  RewriteRule ^kategorien-(bonn|krefeld|muelheim)/([a-z0-9-]+)/?$ /mieten/$1/$2/ [L,R=301]
+  # /produkte/{cat-known} -> /mietartikel/  (Kategorie ohne Standort -> Katalog)
+  RewriteRule ^produkte/(anhaenger|arbeitsbuehnen|beleuchtung|beschallung|erdbewegung|gartenpflege|geschirr-glaeser-besteck|heizung-trocknung|huepfburgen|kabel-stromverteiler|kommunikation|leitern-gerueste|moebel-zelte|spezialeffekte|traversen-rigging|verdichtung|werkzeuge|aggregate|absperrtechnik|buehne)/?$ /mietartikel/ [L,R=301]
+
+  # --- Standort-Pfade ohne Kategorie ---
+  # /produkte-{loc}            -> /mieten/{loc}/
+  # /produkte-{loc}/{slug}     -> /mieten/{loc}/  (Slug-Mapping nicht möglich, Standort ist beste Annäherung)
+  RewriteRule ^produkte-(bonn|krefeld|muelheim)/?$ /mieten/$1/ [L,R=301]
+  RewriteRule ^produkte-(bonn|krefeld|muelheim)/(.+)$ /mieten/$1/ [L,R=301]
+
+  # --- Catch-all für alle übrigen alten /produkte/{slug} -> Hauptkatalog ---
+  RewriteRule ^produkte/?$ /mietartikel/ [L,R=301]
+  RewriteRule ^produkte/(.+)$ /mietartikel/ [L,R=301]
+
+
   # Add trailing slash (Canonical-Form, außer für Dateien mit Endung)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !(.+)/$
