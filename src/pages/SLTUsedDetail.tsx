@@ -84,7 +84,7 @@ export default function SLTUsedDetail() {
   const showroomLocs: string[] = showroomLocsForData;
   const showroomNames = showroomLocs.map((l: string) => locationLabels[l] || l).join(" oder ");
 
-  const displayModel = modelDisplayNames[machine.model] || machine.model;
+  const displayModel = getUsedMachineDisplayModel(machine.model);
 
   const title = `${machine.manufacturer} ${displayModel} gebraucht kaufen | SLT Used`;
   const description = `${machine.manufacturer} ${displayModel}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
