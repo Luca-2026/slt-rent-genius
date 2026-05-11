@@ -36,6 +36,7 @@ import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarke
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
+import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 
 export default function ProductDetail() {
   const { t } = useTranslation();
@@ -277,14 +278,8 @@ export default function ProductDetail() {
         jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
       }
 
-      // AggregateRating from real Google Reviews cache per location
-      // Krefeld: 5.0 / 207 | Bonn: 4.9 / 105 | Mülheim: same as Krefeld
-      const locationRatings: Record<string, { ratingValue: string; reviewCount: string }> = {
-        krefeld:  { ratingValue: "5.0", reviewCount: "207" },
-        bonn:     { ratingValue: "4.9", reviewCount: "105" },
-        muelheim: { ratingValue: "5.0", reviewCount: "207" },
-      };
-      const locRating = locationRatings[locationId];
+      // AggregateRating + Review from real Google Reviews snapshot per location
+      const locRating = REAL_LOCATION_REVIEWS[locationId];
       if (locRating) {
         jsonLd["aggregateRating"] = {
           "@type": "AggregateRating",
@@ -293,6 +288,20 @@ export default function ProductDetail() {
           "bestRating": "5",
           "worstRating": "1",
         };
+        if (locRating.reviews?.length) {
+          jsonLd["review"] = locRating.reviews.map((r) => ({
+            "@type": "Review",
+            "author": { "@type": "Person", "name": r.author },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": String(r.rating),
+              "bestRating": "5",
+              "worstRating": "1",
+            },
+            "reviewBody": r.text,
+            "datePublished": r.datePublished,
+          }));
+        }
       }
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];

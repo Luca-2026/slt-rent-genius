@@ -87,15 +87,10 @@ const LOCATION_DETAILS: Record<string, {
 const LOCATION_BUSINESS_ID = (locId: string) =>
   `${BASE_URL}/standorte/${locId}#localbusiness`;
 
-// Real Google Reviews data from google_reviews_cache (fetched 2026-05-10)
-// Krefeld Place ID: ChIJRyajcmSxuEcRAHvlWgXfF5c → 5.0 / 207
-// Bonn   Place ID: ChIJf2ituEblvkcRUGua8HYhHCA → 4.9 / 105
-// Mülheim has no own Place ID → uses Krefeld values (same company, same phone)
-const LOCATION_RATINGS: Record<string, { ratingValue: string; reviewCount: string }> = {
-  krefeld:  { ratingValue: "5.0", reviewCount: "207" },
-  bonn:     { ratingValue: "4.9", reviewCount: "105" },
-  muelheim: { ratingValue: "5.0", reviewCount: "207" },
-};
+// Real Google Reviews data – sourced from realGoogleReviews.ts (snapshot of
+// google_reviews_cache table). Never invent values.
+import { REAL_LOCATION_REVIEWS } from "./realGoogleReviews";
+const LOCATION_RATINGS = REAL_LOCATION_REVIEWS;
 
 function localBusiness(locId: string): JsonLd {
   const loc = LOCATION_DETAILS[locId];
@@ -290,6 +285,20 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
           bestRating: "5",
           worstRating: "1",
         }
+      : undefined,
+    review: locRating?.reviews?.length
+      ? locRating.reviews.map((r) => ({
+          "@type": "Review",
+          author: { "@type": "Person", name: r.author },
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: String(r.rating),
+            bestRating: "5",
+            worstRating: "1",
+          },
+          reviewBody: r.text,
+          datePublished: r.datePublished,
+        }))
       : undefined,
   };
 
