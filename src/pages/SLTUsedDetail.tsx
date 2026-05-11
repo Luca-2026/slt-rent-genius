@@ -18,6 +18,10 @@ const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
 };
 
+const modelDisplayNames: Record<string, string> = {
+  "ZS0607AC-Li": "ZS0607AC-Li Scherenarbeitsbühne (8m Arbeitshöhe)",
+};
+
 function formatPrice(price: number | null, onRequest: boolean) {
   if (onRequest || !price) return "Preis auf Anfrage";
   return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(price);
