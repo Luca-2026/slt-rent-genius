@@ -426,6 +426,8 @@ export const bonnErdbewegungProducts = [
     images: [imgBobcatE10z1, imgBobcatE10z2, imgBobcatE10z3, imgBobcatE10z4],
     rentwareCode: { bonn: "FQZBM1" },
     weightKg: 1000,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
@@ -441,6 +443,8 @@ export const bonnErdbewegungProducts = [
     images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
     rentwareCode: { bonn: "PV2RQZ" },
     weightKg: 2000,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     specifications: {
       "Betriebsgewicht": "2050 kg",
@@ -466,6 +470,8 @@ export const bonnErdbewegungProducts = [
     images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
     rentwareCode: { bonn: "QU4BYW" },
     weightKg: 2700,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     specifications: {
       "Betriebsgewicht": "2780 kg",
@@ -488,6 +494,8 @@ export const bonnErdbewegungProducts = [
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 3500,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     onRequest: true,
     rentalNotes: [
@@ -502,6 +510,8 @@ export const bonnErdbewegungProducts = [
     description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
     image: "/placeholder.svg",
     weightKg: 4800,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     onRequest: true,
     rentalNotes: [
@@ -519,6 +529,8 @@ export const bonnErdbewegungProducts = [
     images: [imgKramer1, imgKramer2],
     rentwareCode: { bonn: "EEJXMU" },
     weightKg: 3000,
+    category: "radlader",
+    tags: ["maschine"],
     driveType: "diesel",
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",
@@ -534,6 +546,8 @@ export const bonnErdbewegungProducts = [
     image: imgKettendumperRmd800_1,
     images: [imgKettendumperRmd800_1],
     weightKg: 450,
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "benzin",
     rentwareCode: { bonn: "R1FU1X" },
     rentalNotes: [
@@ -548,6 +562,8 @@ export const bonnErdbewegungProducts = [
     description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "diesel",
     onRequest: true,
     rentalNotes: [
@@ -578,6 +594,7 @@ export const bonnErdbewegungProducts = [
     image: imgKnickdumper1,
     images: [imgKnickdumper1],
     weightKg: 318,
+    tags: ["maschine"],
     category: "dumper",
     driveType: "elektro",
     onRequest: true,
@@ -588,6 +605,8 @@ export const bonnErdbewegungProducts = [
     modelName: "RMD-650",
     description: "Kompakter Kettendumper mit 650 kg Nutzlast – ideal für beengte Baustellen.",
     image: "/placeholder.svg",
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "benzin",
     rentwareCode: { bonn: "7Y1UTP" },
     rentalNotes: [
