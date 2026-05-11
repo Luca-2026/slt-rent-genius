@@ -286,6 +286,20 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
           worstRating: "1",
         }
       : undefined,
+    review: locRating?.reviews?.length
+      ? locRating.reviews.map((r) => ({
+          "@type": "Review",
+          author: { "@type": "Person", name: r.author },
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: String(r.rating),
+            bestRating: "5",
+            worstRating: "1",
+          },
+          reviewBody: r.text,
+          datePublished: r.datePublished,
+        }))
+      : undefined,
   };
 
   // strip undefineds to keep JSON tidy
