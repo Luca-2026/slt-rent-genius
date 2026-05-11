@@ -36,6 +36,7 @@ import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarke
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
+import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 
 export default function ProductDetail() {
   const { t } = useTranslation();
