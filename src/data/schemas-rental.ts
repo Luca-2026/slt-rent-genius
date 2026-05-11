@@ -3,6 +3,10 @@
 // Pure data functions that emit JSON-LD blocks per route type.
 // No React, no runtime fetch – safe to invoke from vite-node.
 // Mülheim is differentiated as "service-handover" / Bobcat-Filiale.
+//
+// IMPORTANT: aggregateRating values come from the real Google Reviews cache
+// (google_reviews_cache table). Never invent review counts or ratings.
+// Krefeld: 5.0 / 207 | Bonn: 4.9 / 105 | Mülheim: shares Krefeld data.
 
 import type {
   SeoRoute,
@@ -82,6 +86,16 @@ const LOCATION_DETAILS: Record<string, {
 
 const LOCATION_BUSINESS_ID = (locId: string) =>
   `${BASE_URL}/standorte/${locId}#localbusiness`;
+
+// Real Google Reviews data from google_reviews_cache (fetched 2026-05-10)
+// Krefeld Place ID: ChIJRyajcmSxuEcRAHvlWgXfF5c → 5.0 / 207
+// Bonn   Place ID: ChIJf2ituEblvkcRUGua8HYhHCA → 4.9 / 105
+// Mülheim has no own Place ID → uses Krefeld values (same company, same phone)
+const LOCATION_RATINGS: Record<string, { ratingValue: string; reviewCount: string }> = {
+  krefeld:  { ratingValue: "5.0", reviewCount: "207" },
+  bonn:     { ratingValue: "4.9", reviewCount: "105" },
+  muelheim: { ratingValue: "5.0", reviewCount: "207" },
+};
 
 function localBusiness(locId: string): JsonLd {
   const loc = LOCATION_DETAILS[locId];
@@ -257,6 +271,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       : `${BASE_URL}${p.image}`
     : DEFAULT_IMG;
 
+  const locRating = LOCATION_RATINGS[p.locationId];
+
   const product: JsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -266,13 +282,15 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     url: productUrl,
     brand: p.modelName ? { "@type": "Brand", name: p.modelName.split(" ")[0] } : undefined,
     model: p.modelName,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "127",
-      bestRating: "5",
-      worstRating: "1",
-    },
+    aggregateRating: locRating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: locRating.ratingValue,
+          reviewCount: locRating.reviewCount,
+          bestRating: "5",
+          worstRating: "1",
+        }
+      : undefined,
   };
 
   // strip undefineds to keep JSON tidy

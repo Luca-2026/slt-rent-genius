@@ -277,14 +277,23 @@ export default function ProductDetail() {
         jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
       }
 
-      // AggregateRating from real company-wide Google Reviews (Rich Results enhancement)
-      jsonLd["aggregateRating"] = {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "127",
-        "bestRating": "5",
-        "worstRating": "1",
+      // AggregateRating from real Google Reviews cache per location
+      // Krefeld: 5.0 / 207 | Bonn: 4.9 / 105 | Mülheim: same as Krefeld
+      const locationRatings: Record<string, { ratingValue: string; reviewCount: string }> = {
+        krefeld:  { ratingValue: "5.0", reviewCount: "207" },
+        bonn:     { ratingValue: "4.9", reviewCount: "105" },
+        muelheim: { ratingValue: "5.0", reviewCount: "207" },
       };
+      const locRating = locationRatings[locationId];
+      if (locRating) {
+        jsonLd["aggregateRating"] = {
+          "@type": "AggregateRating",
+          "ratingValue": locRating.ratingValue,
+          "reviewCount": locRating.reviewCount,
+          "bestRating": "5",
+          "worstRating": "1",
+        };
+      }
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
