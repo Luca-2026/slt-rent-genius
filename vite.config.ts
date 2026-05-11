@@ -34,7 +34,7 @@ function heroImagePreloadPlugin(): Plugin {
 // blocking CSS request reported by PageSpeed (CSS is ~18 KB).
 // The original CSS file is kept in dist/ so the prerendered SSR snippet
 // can still link to it if needed (we only edit index.html).
-function inlineSmallCssPlugin(maxBytes = 50 * 1024): Plugin {
+function inlineSmallCssPlugin(maxBytes = 120 * 1024): Plugin {
   return {
     name: "inline-small-css",
     apply: "build",
