@@ -1097,7 +1097,7 @@ export default function ProductDetail() {
                 {/* Delivery / Trailer Info – single instance (Wohnwagen & Nutzfahrzeuge sind selbstfahrend / werden nicht geliefert) */}
                 {categoryId === "wohnwagen-camping" || categoryId === "nutzfahrzeuge" ? null : categoryId === "anhaenger" ? (
                   <TrailerInfoCard t={t} />
-                ) : product && /3[.,]5\s*t|5\s*t|e35|e50|e55/i.test(product.name + " " + (product.modelName || "")) ? (
+                ) : product && /\b(3[.,]5\s*t|5\s*t|E35|E50|E55)\b/.test(product.name + " " + (product.modelName || "")) ? (
                   <Card className="border-accent/30 bg-accent/5">
                     <CardContent className="pt-5 pb-4 flex items-start gap-3">
                       <Truck className="h-5 w-5 text-accent mt-0.5 shrink-0" />
