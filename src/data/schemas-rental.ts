@@ -3,6 +3,10 @@
 // Pure data functions that emit JSON-LD blocks per route type.
 // No React, no runtime fetch – safe to invoke from vite-node.
 // Mülheim is differentiated as "service-handover" / Bobcat-Filiale.
+//
+// IMPORTANT: aggregateRating values come from the real Google Reviews cache
+// (google_reviews_cache table). Never invent review counts or ratings.
+// Krefeld: 5.0 / 207 | Bonn: 4.9 / 105 | Mülheim: shares Krefeld data.
 
 import type {
   SeoRoute,
