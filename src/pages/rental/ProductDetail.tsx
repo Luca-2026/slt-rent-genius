@@ -277,6 +277,15 @@ export default function ProductDetail() {
         jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
       }
 
+      // AggregateRating from real company-wide Google Reviews (Rich Results enhancement)
+      jsonLd["aggregateRating"] = {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1",
+      };
+
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
       // FAQ JSON-LD: prefer product-specific FAQs, fallback to category
