@@ -377,12 +377,13 @@ export const bonnAggregateProducts = [
 export const bonnArbeitsbuehnenProducts = [
   {
     id: "bonn-mastbuehne-11m",
-    name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
+    name: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09J)",
     description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
     image: "/placeholder.svg",
     category: "mastbuehne",
     pricePerDay: "ab 75 €",
     rentwareCode: { bonn: "AN9D7X" },
+    pdfUrl: "/documents/Datenblatt-Mastbuehne-ZMP09J.pdf",
   },
   {
     id: "bonn-anhaenger-arbeitsbuehne-18m",
