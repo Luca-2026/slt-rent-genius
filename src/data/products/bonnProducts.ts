@@ -443,6 +443,8 @@ export const bonnErdbewegungProducts = [
     images: [imgXcmgXe20e1, imgXcmgXe20e2, imgXcmgXe20e3],
     rentwareCode: { bonn: "PV2RQZ" },
     weightKg: 2000,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     specifications: {
       "Betriebsgewicht": "2050 kg",
