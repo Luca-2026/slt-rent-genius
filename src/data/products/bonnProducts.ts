@@ -470,6 +470,8 @@ export const bonnErdbewegungProducts = [
     images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
     rentwareCode: { bonn: "QU4BYW" },
     weightKg: 2700,
+    category: "minibagger",
+    tags: ["maschine"],
     driveType: "diesel",
     specifications: {
       "Betriebsgewicht": "2780 kg",
