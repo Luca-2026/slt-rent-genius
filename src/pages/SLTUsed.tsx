@@ -106,12 +106,38 @@ export default function SLTUsed() {
     setModalOpen(true);
   };
 
+  const BASE_URL = "https://www.slt-rental.de";
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Gebrauchte Baumaschinen – SLT Used",
+    itemListElement: (dbMachines || [])
+      .filter((m: any) => m.slug && m.status !== "sold")
+      .slice(0, 50)
+      .map((m: any, idx: number) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: `${BASE_URL}/verkauf/gebrauchtmaschinen/${m.slug}`,
+        name: `${m.manufacturer} ${getUsedMachineDisplayModel(m.model)}`,
+      })),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Start", item: `${BASE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Verkauf", item: `${BASE_URL}/verkauf` },
+      { "@type": "ListItem", position: 3, name: "Gebrauchtmaschinen", item: `${BASE_URL}/verkauf/gebrauchtmaschinen` },
+    ],
+  };
+
   return (
     <Layout>
       <SEO
         title="SLT Used – Gebrauchte Baumaschinen kaufen | SLT Rental"
         description="Geprüfte Gebrauchtmaschinen aus dem SLT-Mietpark: Baumaschinen & Anhänger sofort verfügbar. Persönliche Beratung, NRW-weit lieferbar."
         canonical="/verkauf/gebrauchtmaschinen"
+        jsonLd={[itemListJsonLd, breadcrumbJsonLd]}
       />
 
       {/* Hero */}
