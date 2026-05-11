@@ -562,6 +562,8 @@ export const bonnErdbewegungProducts = [
     description: "Nutzlast: 600 kg | Dieselmotor | Hochauskippfunktion | Raupenlaufwerk | Kompakt & wendig",
     image: imgCormidi1,
     images: [imgCormidi1, imgCormidi2, imgCormidi3],
+    category: "dumper",
+    tags: ["maschine"],
     driveType: "diesel",
     onRequest: true,
     rentalNotes: [
