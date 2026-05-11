@@ -307,6 +307,16 @@ export default function ProductDetail() {
         ],
       });
 
+      // Remove any prerendered duplicates of the same JSON-LD types so Google
+      // doesn't see two FAQPage / Product / BreadcrumbList entries on the page.
+      const dupTypes = ['"FAQPage"', '"Product"', '"BreadcrumbList"'];
+      document.head
+        .querySelectorAll('script[type="application/ld+json"]:not([data-product-jsonld])')
+        .forEach((el) => {
+          const txt = el.textContent || "";
+          if (dupTypes.some((t) => txt.includes(t))) el.remove();
+        });
+
       let scriptTag = document.querySelector('script[data-product-jsonld]') as HTMLScriptElement;
       if (!scriptTag) {
         scriptTag = document.createElement("script");
