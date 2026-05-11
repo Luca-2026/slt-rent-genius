@@ -75,12 +75,25 @@ export function DeliveryCalculatorCompact({
         const m = config.subtypes.find((s) => s.key === "dumper");
         if (m) return m.key;
       }
-      if (/12\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "12m");
+      // Arbeitsbühnen — Reihenfolge wichtig (spezifischer zuerst)
+      if (/niftylift|hr\s*12|gelenk(teleskop)?/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "12m-gelenk");
         if (m) return m.key;
       }
-      if (/14\s*m/i.test(lower)) {
-        const m = config.subtypes.find((s) => s.key === "14m+");
+      if (/teleskop(mast)?|11[.,]?2\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "11m-teleskop");
+        if (m) return m.key;
+      }
+      if (/12\s*m.*scher|scher.*12\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "12m-scheren");
+        if (m) return m.key;
+      }
+      if (/8\s*m.*scher|scher.*8\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "8m-scheren");
+        if (m) return m.key;
+      }
+      if (/anh[aä]nger.*(arbeits)?b[uü]hne|18\s*m/i.test(lower)) {
+        const m = config.subtypes.find((s) => s.key === "18m-anhaenger");
         if (m) return m.key;
       }
     }

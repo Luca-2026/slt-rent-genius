@@ -143,11 +143,15 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
   arbeitsbuehnen: {
     defaultTarif: "B",
     label: "Arbeitsbühnen",
-    defaultSubtype: "8m",
+    defaultSubtype: "18m-anhaenger",
     subtypes: [
-      { key: "8m", label: "8m Anhängerarbeitsbühne", tarif: "B" },
-      { key: "12m", label: "12m Scherenbühne", tarif: "C" },
-      { key: "14m+", label: "14m+ Arbeitsbühne", tarif: "C" },
+      // Tarif B: gleiches Gewicht wie 1t Minibagger
+      { key: "18m-anhaenger", label: "18m Anhängerarbeitsbühne", tarif: "B" },
+      { key: "8m-scheren", label: "8m Scherenbühne", tarif: "B" },
+      // Tarif C: gleiches Gewicht wie 2,7t Bagger
+      { key: "12m-scheren", label: "12m Scherenbühne", tarif: "C" },
+      { key: "11m-teleskop", label: "11,2m Teleskopmastarbeitsbühne", tarif: "C" },
+      { key: "12m-gelenk", label: "12m Gelenkteleskoparbeitsbühne (Niftylift HR12LE)", tarif: "C" },
     ],
   },
 };
