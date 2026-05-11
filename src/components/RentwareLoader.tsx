@@ -199,13 +199,46 @@ export function RentwareLoader() {
 
     applyStyles();
 
-    observer = new MutationObserver(() => applyStyles());
-    observer.observe(document.body, { childList: true, subtree: true });
-    window.addEventListener("resize", applyStyles);
+    // Watch ONLY for rtr-checkout being added/removed at the body level
+    // (not the entire subtree). The previous subtree:true observer fired on
+    // every DOM mutation and read layout properties → forced reflows
+    // (~288 ms in Lighthouse profile). Once the cart node exists, we stop
+    // observing entirely; styles persist on the element.
+    let stopped = false;
+    observer = new MutationObserver((mutations) => {
+      if (stopped) return;
+      for (const m of mutations) {
+        for (const n of m.addedNodes) {
+          if (
+            (n as Element).nodeType === 1 &&
+            ((n as Element).tagName === "RTR-CHECKOUT" ||
+              (n as Element).querySelector?.("rtr-checkout"))
+          ) {
+            applyStyles();
+            stopped = true;
+            observer?.disconnect();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: false });
+
+    // Debounced resize handler – avoids layout thrash on continuous resize.
+    let resizeRaf = 0;
+    const onResize = () => {
+      if (resizeRaf) return;
+      resizeRaf = window.requestAnimationFrame(() => {
+        resizeRaf = 0;
+        applyStyles();
+      });
+    };
+    window.addEventListener("resize", onResize);
 
     return () => {
       observer?.disconnect();
-      window.removeEventListener("resize", applyStyles);
+      window.removeEventListener("resize", onResize);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
     };
   }, [isB2B]);
 
