@@ -925,6 +925,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: scherenbuehneZs0607_1,
     images: [scherenbuehneZs0607_1],
     category: "scherenbuehne",
+    pricePerDay: "ab 40 €",
     rentwareCode: { krefeld: "TQ7BOF" },
     detailedDescription: "Die Zoomlion ZS0607AC-Li ist eine kompakte, elektrische Scherenarbeitsbühne mit 7,80 m Arbeitshöhe und 0,91 m Plattformausschub. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (1,65 × 0,74 m) bietet Platz für bis zu 2 Personen bei einer maximalen Traglast von 230 kg. Die Durchfahrtshöhe von nur 1,79 m (Geländer eingeklappt) ermöglicht den Zugang durch niedrige Durchfahrten.",
     specifications: {
@@ -948,6 +949,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: scherenbuehneZs1012ac1,
     images: [scherenbuehneZs1012ac1],
     category: "scherenbuehne",
+    pricePerDay: "ab 55 €",
     rentwareCode: { krefeld: "G98ORG" },
     detailedDescription: "Die Zoomlion ZS1012AC ist eine kompakte, elektrische Scherenarbeitsbühne mit 11,80 m Arbeitshöhe und 1 m Plattformausschub. Mit Non-Marking-Reifen ist sie ideal für den Inneneinsatz geeignet. Die Plattform (2,30 × 1,12 m) bietet Platz für bis zu 3 Personen bei einer maximalen Traglast von 350 kg. Die Transporthöhe von nur 2 m ermöglicht den Zugang durch Standardtore.",
     specifications: {
@@ -975,6 +977,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: mastbuehneZmp091,
     images: [mastbuehneZmp091, mastbuehneZmp092, mastbuehneZmp093],
     category: "mastbuehne",
+    pricePerDay: "ab 75 €",
     rentwareCode: { krefeld: "JQJ2PS" },
     videoUrl: "https://www.youtube.com/watch?v=9n7ZX-l6Nhg",
     detailedDescription: "Die Zoomlion ZMP09 ist eine kompakte, elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m seitlicher Reichweite. Die hohe Überbrückungshöhe von 7,75 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (0,99 × 0,76 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg. Zusatzausstattung: 230 V Anschluss im Korb.",
@@ -1004,6 +1007,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: gelenkteleskopHr12l1,
     images: [gelenkteleskopHr12l1, gelenkteleskopHr12l2, gelenkteleskopHr12l3],
     category: "gelenkbuehne",
+    pricePerDay: "ab 90 €",
     rentwareCode: { krefeld: "XL1WVX" },
     detailedDescription: "Der Nifty HR12L ist ein kompakter, elektrisch angetriebener Gelenkteleskopsteiger mit 12,10 m Arbeitshöhe und 6,40 m seitlicher Reichweite. Die Überbrückungshöhe von 4,10 m ermöglicht das Arbeiten über Hindernisse hinweg. Mit Non-Marking-Reifen ist er für den Innen- und Außeneinsatz geeignet. Die Plattform (1,20 × 0,85 m) bietet Platz für 2 Personen bei einer Traglast von 200 kg.",
     specifications: {
@@ -1031,6 +1035,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     image: anhaengerbuehneTm18gti1,
     images: [anhaengerbuehneTm18gti1, anhaengerbuehneTm18gti2, anhaengerbuehneTm18gti3, anhaengerbuehneTm18gti4, anhaengerbuehneTm18gti5],
     category: "anhaengerbuehne",
+    pricePerDay: "ab 130 €",
     rentwareCode: { krefeld: "32EVXI" },
     pdfUrl: "/documents/Datenblatt-Anhaengerbuehne-TM18GTi.pdf",
     detailedDescription: "Die EuropeLIFT TM18GTi ist eine benzinbetriebene Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und bis zu 10,50 m seitlicher Reichweite. Der Korb bietet Platz für 2 Personen (max. 220 kg bei 8 m bzw. 100 kg bei 11 m Reichweite). Zusatzausstattung: 230 V und Druckluft-Anschluss im Korb. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 22,- € pro Stunde berechnet. Verbrauch wird separat abgerechnet – Rückgabe mit vollem Tank vereinbart, Diesel wird mit brutto 2,85 €/l berechnet.",

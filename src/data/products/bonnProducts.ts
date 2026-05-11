@@ -381,6 +381,7 @@ export const bonnArbeitsbuehnenProducts = [
     description: "Kompakte elektrische Mastbühne mit 11,20 m Arbeitshöhe und 3,23 m Reichweite – 230 V Anschluss im Korb.",
     image: "/placeholder.svg",
     category: "mastbuehne",
+    pricePerDay: "ab 75 €",
     rentwareCode: { bonn: "AN9D7X" },
   },
   {
@@ -389,6 +390,7 @@ export const bonnArbeitsbuehnenProducts = [
     description: "Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und 10,50 m Reichweite – inkl. 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     category: "anhaengerbuehne",
+    pricePerDay: "ab 130 €",
     rentwareCode: { bonn: "32EVXI" },
     pdfUrl: "/documents/Datenblatt-Anhaengerbuehne-TM18GTi.pdf",
   },
@@ -398,6 +400,7 @@ export const bonnArbeitsbuehnenProducts = [
     description: "Kompakte elektrische Scherenarbeitsbühne von Zoomlion mit 7,80 m Arbeitshöhe – ideal für Indoor- und Outdoor-Einsätze.",
     image: "/placeholder.svg",
     category: "scherenbuehne",
+    pricePerDay: "ab 40 €",
     rentwareCode: { bonn: "M4H2CP" },
   },
   {
@@ -406,6 +409,7 @@ export const bonnArbeitsbuehnenProducts = [
     description: "Große elektrische Scherenbühne mit 12 m Arbeitshöhe für anspruchsvolle Einsätze.",
     image: "/placeholder.svg",
     category: "scherenbuehne",
+    pricePerDay: "ab 55 €",
     rentwareCode: { bonn: "ADYTHS" },
   },
 ];
