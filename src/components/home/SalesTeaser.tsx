@@ -3,9 +3,9 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart, PackageSearch } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import zoomlionLogo from "@/assets/logos/zoomlion.png";
-import temaredLogo from "@/assets/logos/temared.webp";
-import baumaxLogo from "@/assets/logos/baumax.png";
+import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
+import temaredLogo from "@/assets/logos/temared-sm.webp";
+import baumaxLogo from "@/assets/logos/baumax-sm.webp";
 
 const brands = [
   { name: "Zoomlion", logo: zoomlionLogo, alt: "Zoomlion – Offizieller Händler NRW" },

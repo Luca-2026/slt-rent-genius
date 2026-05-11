@@ -12,7 +12,7 @@ import { ArrowLeft, MapPin, Phone, Navigation, User } from "lucide-react";
 import { getLocationById, type Product } from "@/data/rentalData";
 import { GoogleReviews, getPlaceId, getReviewUrl } from "@/components/reviews/GoogleReviews";
 import { useTranslation } from "react-i18next";
-import krefeldImage from "@/assets/locations/krefeld.jpg";
+import krefeldImage from "@/assets/locations/krefeld.webp";
 import bonnImage from "@/assets/locations/bonn.webp";
 
 // Team images

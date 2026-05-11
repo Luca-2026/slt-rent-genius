@@ -4,7 +4,7 @@ import { Menu, X, Percent, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
-import sltLogo from "@/assets/slt-logo.png";
+import sltLogo from "@/assets/slt-logo-sm.webp";
 
 const locations = [
   { id: "krefeld", name: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain", phone: "02151 417 99 04", email: "krefeld@slt-rental.de" },

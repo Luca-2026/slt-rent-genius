@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import heroKrefeld from "@/assets/hero-krefeld.jpg";
-import heroBonn from "@/assets/hero-bonn.jpg";
+import heroKrefeld from "@/assets/hero-krefeld.webp";
+import heroBonn from "@/assets/hero-bonn.webp";
 
 const images = [
   { src: heroKrefeld, alt: "Krefeld – SLT Rental Hauptsitz" },
