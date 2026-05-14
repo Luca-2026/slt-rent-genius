@@ -104,6 +104,16 @@ function localBusiness(locId: string): JsonLd {
           closes: "23:59",
         },
       ]
+    : loc.id === "krefeld"
+    ? [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "08:00",
+          closes: "17:00",
+        },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "14:30" },
+      ]
     : [
         {
           "@type": "OpeningHoursSpecification",

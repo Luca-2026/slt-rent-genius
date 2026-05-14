@@ -16,7 +16,9 @@ Wir haben 3 Standorte:
 • Mülheim an der Ruhr – Ruhrorter Str. 122, 45478 Mülheim an der Ruhr | Tel: 02151 417 990 4 | muelheim@slt-rental.de
   (Service-Standort für das Ruhrgebiet, Geräte werden i.d.R. aus dem Zentrallager Krefeld disponiert)
 
-Öffnungszeiten: Mo.–Fr. 07:30–18:00 Uhr, Sa. 07:30–13:00 Uhr
+Öffnungszeiten Krefeld: Mo.–Fr. 08:00–17:00 Uhr, Sa. 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich)
+Öffnungszeiten Bonn: Mo.–Fr. 07:30–18:00 Uhr, Sa. 08:00–14:30 Uhr (nur mit vorheriger Buchung)
+Öffnungszeiten Mülheim: nach Vereinbarung, Online-Buchung 24/7
 
 Allgemeiner Kontakt: Tel. 02151 417 990 4, E-Mail: mieten@slt-rental.de, Website: www.slt-rental.de
 
