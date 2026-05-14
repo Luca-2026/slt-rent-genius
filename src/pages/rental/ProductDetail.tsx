@@ -787,11 +787,11 @@ export default function ProductDetail() {
               </div>
 
               {/* Technical Specifications */}
-              {product.specifications && Object.keys(product.specifications).length > 0 && (
+              {displaySpecifications && Object.keys(displaySpecifications).length > 0 && (
                 <div className="bg-card rounded-xl border border-border p-5">
                   <h2 className="text-base font-semibold text-headline mb-4">{t("rental.technicalData")}</h2>
                   <div className="divide-y divide-border rounded-lg overflow-hidden border border-border">
-                    {Object.entries(product.specifications).map(([key, value], i) => (
+                    {Object.entries(displaySpecifications).map(([key, value], i) => (
                       <div
                         key={key}
                         className={`flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 gap-1 ${
