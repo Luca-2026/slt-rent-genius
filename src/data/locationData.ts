@@ -110,8 +110,8 @@ export const locationData: LocationInfo[] = [
     image: imgBonn,
     manager: { name: "Ersel Uzun", role: "locations.locationManager", image: imgErsel, email: "e.uzun@slt-rental.de" },
     hours: [
-      { day: "Mo. - Fr.", time: "07:30 - 18:00 Uhr" },
-      { day: "Sa.", time: "08:00 - 14:30 Uhr*" },
+      { day: "Mo. - Fr.", time: "07:00 - 17:00 Uhr" },
+      { day: "Sa.", time: "08:00 - 14:30 Uhr" },
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
