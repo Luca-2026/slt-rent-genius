@@ -962,6 +962,27 @@ export const kbArticles: KBArticle[] = [
     updatedAt: "2026-04-04",
   },
 
+  // Absperrtechnik & Halteverbot
+  {
+    id: "halteverbot-aufstellanleitung",
+    title: "Halteverbotszone selbst aufstellen – Anleitung",
+    description: "Schritt-für-Schritt-Anleitung zum eigenständigen Aufstellen einer mobilen Halteverbotszone nach StVO – inkl. Fristen, Beschilderung und Dokumentation.",
+    categoryId: "absperrtechnik",
+    type: "anleitung",
+    pdfUrl: "/downloads/halteverbot/SLT-Rental_Halteverbotszone-selbst-aufstellen.pdf",
+    tags: ["halteverbot", "halteverbotszone", "vz-283", "stvo", "absperrtechnik", "umzug", "anleitung"],
+    updatedAt: "2026-05-14",
+  },
+  {
+    id: "halteverbot-aufstellprotokoll",
+    title: "Aufstellprotokoll Halteverbotszone (PDF)",
+    description: "Druckfertiges Protokoll zur rechtssicheren Dokumentation der Aufstellung einer mobilen Halteverbotszone (Standort, Zeitpunkt, Foto, Unterschrift).",
+    categoryId: "absperrtechnik",
+    type: "anleitung",
+    pdfUrl: "/downloads/halteverbot/SLT-Rental_Aufstellprotokoll_Halteverbotszone.pdf",
+    tags: ["halteverbot", "aufstellprotokoll", "dokumentation", "stvo", "absperrtechnik", "protokoll"],
+    updatedAt: "2026-05-14",
+  },
 
   // Heizung & Trocknung
   {
