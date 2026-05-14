@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 const locationSeoMeta: Record<string, { title: string; description: string }> = {
   krefeld: {
     title: "SLT Rental Krefeld – Hauptsitz | SLT Rental",
-    description: "SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.",
+    description: "SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 08–17 Uhr, Sa 10–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.",
   },
   bonn: {
     title: "SLT Rental Bonn – Filiale | SLT Rental",
