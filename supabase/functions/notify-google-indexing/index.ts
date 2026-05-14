@@ -1,8 +1,9 @@
 // Google Indexing API notifier for JobPosting URLs
-// Generates a Google OAuth2 access token via service account JWT, then
-// POSTs URL_UPDATED notifications to https://indexing.googleapis.com/v3/urlNotifications:publish
+// Requires authenticated admin user. Generates a Google OAuth2 access token
+// via service account JWT, then POSTs URL_UPDATED notifications.
 
 import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,19 +17,14 @@ const TOKEN_URI = "https://oauth2.googleapis.com/token";
 const PUBLISH_URL = "https://indexing.googleapis.com/v3/urlNotifications:publish";
 
 function pemToArrayBuffer(pem: string): ArrayBuffer {
-  // Remove escape sequences and PEM headers, then collapse to base64.
   let s = pem
     .replace(/\\n/g, "")
     .replace(/\\r/g, "")
     .replace(/-----BEGIN[^-]+-----/g, "")
     .replace(/-----END[^-]+-----/g, "")
     .replace(/\s+/g, "");
-  // The PKCS#8 base64 always begins with "MII". Strip any leading garbage
-  // that may be left over from a malformed paste (e.g. a stray "n" because
-  // the leading backslash of "\n" was eaten by the secret form).
   const idx = s.indexOf("MII");
   if (idx > 0) s = s.slice(idx);
-  // Drop any trailing non-base64 chars
   s = s.replace(/[^A-Za-z0-9+/=]/g, "");
   const binary = atob(s);
   const bytes = new Uint8Array(binary.length);
@@ -93,12 +89,45 @@ async function notifyUrl(token: string, url: string, type: "URL_UPDATED" | "URL_
   return { url, status: res.status, ok: res.ok, body: text };
 }
 
+async function requireAdmin(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    throw new Error("Unauthorized: missing Bearer token");
+  }
+
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } },
+  );
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+  if (claimsError || !claimsData?.claims) {
+    throw new Error("Unauthorized: invalid token");
+  }
+
+  const userId = claimsData.claims.sub;
+  const { data: hasRole, error: roleError } = await supabase.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin",
+  });
+
+  if (roleError || !hasRole) {
+    throw new Error("Forbidden: admin role required");
+  }
+
+  return userId;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
+    await requireAdmin(req);
+
     const body = await req.json().catch(() => ({}));
     const urls: string[] = Array.isArray(body?.urls) ? body.urls : [];
     const type: "URL_UPDATED" | "URL_DELETED" = body?.type === "URL_DELETED" ? "URL_DELETED" : "URL_UPDATED";
@@ -132,10 +161,12 @@ Deno.serve(async (req) => {
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
+    const errMsg = (e as Error).message;
+    const status = errMsg.startsWith("Unauthorized") ? 401 : errMsg.startsWith("Forbidden") ? 403 : 500;
     console.error("notify-google-indexing error", e);
     return new Response(
-      JSON.stringify({ error: (e as Error).message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      JSON.stringify({ error: errMsg }),
+      { status, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });
