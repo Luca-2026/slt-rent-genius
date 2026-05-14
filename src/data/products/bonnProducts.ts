@@ -2886,7 +2886,7 @@ export const bonnAbsperrtechnikProducts = [
   {
     id: "bonn-halteverbotsschilder-set",
     name: "Halteverbotsschilder-Set",
-    description: "18-teiliges Komplett-Set für mobile Halteverbotszonen-Kennzeichnung. Besonders standfest durch 2 Fußplatten. Zusatzschilder individuell beschriftbar (StVO Größe 1). Aufstellung mind. 4 Tage vor Nutzungsbeginn erforderlich.",
+    description: "18-teiliges Komplett-Set für mobile Halteverbotszonen-Kennzeichnung. Besonders standfest durch 2 Fußplatten. Zusatzschilder individuell beschriftbar (StVO Größe 1). Aufstellung mind. 72 Stunden vor Nutzungsbeginn erforderlich.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "BDX3N5" },
   },
