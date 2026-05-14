@@ -3597,7 +3597,8 @@ export const moebelZelteProducts: Product[] = [
       "Abmessungen": "Ø 80 cm × H 110 cm",
       "Bauweise": "klappbar",
     },
-    rentwareCode: { krefeld: "J1MZJQ" }
+    rentwareCode: { krefeld: "J1MZJQ" },
+    pricePerDay: "ab 5 €",
   },
   {
     id: "stehtisch-husse-weiss",
