@@ -1023,6 +1023,7 @@ export const bonnVerdichtungProducts = [
     description: "Hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "DKAF58" },
+    pricePerDay: "ab 29 €",
   },
   {
     id: "bonn-ruettelplatte-hvp38",
