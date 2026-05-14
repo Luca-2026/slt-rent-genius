@@ -1119,6 +1119,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 130,
     category: "ruettelplatte",
     rentwareCode: { krefeld: "MWQG3Q" },
+    pricePerDay: "ab 19 €",
     detailedDescription: "Die VP 25/50 ist eine Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck. Inkl. Rollgestell zum praktikablen Transport. Verdichtungstiefe ca. 25 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "VP 25/50",
