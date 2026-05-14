@@ -83,32 +83,13 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
           <li>• Anlass (Umzug, Baustelle, Veranstaltung …)</li>
           <li>• Auftraggeber/Verantwortlicher mit Kontaktdaten</li>
         </ul>
-        {antrag && (
-          <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
-            <p className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" />
-              Online-Beantragung in {city}
-            </p>
-            <a
-              href={antrag.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline break-all"
-            >
-              <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
-              {antrag.label}
-            </a>
-            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-              Tipp: Lass Dir die Genehmigung als PDF zuschicken und drucke sie für die
-              Aufstellung sowie für Polizei und Abschleppdienst aus. Eine Kopie schickst Du
-              bitte zusätzlich an{" "}
-              <a href="mailto:mieten@slt-rental.de" className="underline">
-                mieten@slt-rental.de
-              </a>
-              , falls wir aufstellen sollen.
-            </p>
-          </div>
-        )}
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Den Link zum Online-Antrag der Stadt {city} findest Du oben im Preis- und
+          Buchungsbereich. Tipp: Lass Dir die Genehmigung als PDF zuschicken und drucke
+          sie für die Aufstellung sowie für Polizei und Abschleppdienst aus. Falls wir
+          aufstellen sollen, schicke uns bitte eine Kopie an{" "}
+          <a href={`mailto:${email}`} className="underline">{email}</a>.
+        </p>
       </section>
 
       {/* Schilder abholen */}
