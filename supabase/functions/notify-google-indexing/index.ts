@@ -28,10 +28,6 @@ function pemToArrayBuffer(pem: string): ArrayBuffer {
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
   return bytes.buffer;
 }
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return bytes.buffer;
-}
 
 async function getAccessToken(): Promise<string> {
   const clientEmail = Deno.env.get("GOOGLE_INDEXING_CLIENT_EMAIL");
