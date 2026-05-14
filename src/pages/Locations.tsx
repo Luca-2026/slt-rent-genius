@@ -12,11 +12,11 @@ import { useTranslation } from "react-i18next";
 const locationSeoMeta: Record<string, { title: string; description: string }> = {
   krefeld: {
     title: "SLT Rental Krefeld – Hauptsitz | SLT Rental",
-    description: "SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 08–17 Uhr, Sa 10–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.",
+    description: "SLT Rental Krefeld – Hauptsitz Anrather Str. 291, 47807 Krefeld. Mo–Fr 08–18 Uhr, Sa 10–14:30 Uhr. Baumaschinen, Anhänger & Eventequipment.",
   },
   bonn: {
     title: "SLT Rental Bonn – Filiale | SLT Rental",
-    description: "SLT Rental Bonn – Drachenburgstraße 8, 53179 Bonn. Mo–Fr 07:00–17 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.",
+    description: "SLT Rental Bonn – Drachenburgstraße 8, 53179 Bonn. Mo–Fr 07–18 Uhr, Sa 08–17:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.",
   },
   muelheim: {
     title: "SLT Rental Mülheim – Corporate Filiale | SLT Rental",
