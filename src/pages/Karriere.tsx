@@ -134,6 +134,19 @@ export default function Karriere() {
               </a>
             </Button>
           </div>
+          {isAdmin && (
+            <div className="max-w-4xl mx-auto mt-6 p-4 rounded-lg border border-dashed border-primary/40 bg-primary/5 flex items-center justify-between gap-4">
+              <div className="text-sm">
+                <p className="font-semibold text-foreground">Admin: Google Indexing API</p>
+                <p className="text-muted-foreground">
+                  Sendet alle {jobListings.length} Stellen-URLs an Google zur sofortigen (Re-)Indexierung.
+                </p>
+              </div>
+              <Button onClick={pingGoogleIndexing} disabled={pinging} className="shrink-0">
+                {pinging ? "Sende…" : "Bei Google indexieren"}
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
