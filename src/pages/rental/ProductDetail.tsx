@@ -1138,7 +1138,7 @@ export default function ProductDetail() {
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
                         {product.pricePerDay
                           ? product.pricePerDay
-                          : `ab ${productSEO!.dailyPriceFrom} €`}
+                          : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
                         <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
                       </div>
                       {product.priceWeekend && (
@@ -1323,7 +1323,7 @@ function MobileBookingCard({
       {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
           <div className="text-2xl font-bold text-primary">
-            {product.pricePerDay ? product.pricePerDay : `ab ${dailyPriceFrom} €`}
+            {product.pricePerDay ? product.pricePerDay : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
             <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
           </div>
           {product.priceWeekend && (
