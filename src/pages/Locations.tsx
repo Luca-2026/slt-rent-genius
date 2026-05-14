@@ -16,7 +16,7 @@ const locationSeoMeta: Record<string, { title: string; description: string }> = 
   },
   bonn: {
     title: "SLT Rental Bonn – Filiale | SLT Rental",
-    description: "SLT Rental Bonn – Drachenburgstraße 5, 53179 Bonn. Mo–Fr 07:30–18 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.",
+    description: "SLT Rental Bonn – Drachenburgstraße 8, 53179 Bonn. Mo–Fr 07:00–17 Uhr, Sa 08–14:30 Uhr. Baumaschinen, Anhänger & Eventausstattung mieten.",
   },
   muelheim: {
     title: "SLT Rental Mülheim – Corporate Filiale | SLT Rental",
