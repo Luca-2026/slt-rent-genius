@@ -7,6 +7,7 @@ import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/rentalData";
 import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
+import { getProductSEO } from "@/data/productSEOData";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,13 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
   const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasMultipleImages = images.length > 1;
+
+  // Fallback: hole "ab"-Preis aus productSEOData (dailyPriceFrom), falls kein pricePerDay gepflegt ist
+  const seo = getProductSEO(product.id);
+  const seoPriceFrom = typeof seo?.dailyPriceFrom === "number"
+    ? `ab ${Number.isInteger(seo.dailyPriceFrom) ? seo.dailyPriceFrom : seo.dailyPriceFrom.toFixed(2).replace(".", ",")} €`
+    : undefined;
+  const displayPrice = product.pricePerDay || seoPriceFrom;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -137,9 +145,9 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
         {/* Pricing */}
         <div className="space-y-2 mt-auto">
           <div>
-            {product.pricePerDay && (
+            {displayPrice && (
               <p className="text-lg font-bold text-primary mb-1">
-                {product.pricePerDay}
+                {displayPrice}
                 <span className="text-sm font-normal text-muted-foreground">/Tag</span>
               </p>
             )}
