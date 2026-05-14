@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { getProductSEO } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
@@ -38,6 +38,16 @@ import { HalteverbotsSeoSection } from "@/components/rental/HalteverbotsSeoSecti
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
+
+const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
+  "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
+  "bonn-ruettelplatte-vp16": "/mieten/bonn/verdichtung/ruettelplatte-vp16-44/",
+  "bonn-ruettelplatte-vp25": "/mieten/bonn/verdichtung/ruettelplatte-vp25-50/",
+  "bonn-ruettelplatte-hvp30": "/mieten/bonn/verdichtung/ruettelplatte-hvp30-50/",
+  "bonn-ruettelplatte-hvp38": "/mieten/bonn/verdichtung/ruettelplatte-hvp38-60/",
+  "bonn-ruettelplatte-hvp50": "/mieten/bonn/verdichtung/ruettelplatte-hvp50-60/",
+  "bonn-grabenwalze-bmp8500": "/mieten/bonn/verdichtung/grabenwalze-bmp8500/",
+};
 
 export default function ProductDetail() {
   const { t } = useTranslation();
@@ -420,6 +430,10 @@ export default function ProductDetail() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [images.length]);
+
+  if (!product && productId && LEGACY_PRODUCT_ID_REDIRECTS[productId]) {
+    return <Navigate to={LEGACY_PRODUCT_ID_REDIRECTS[productId]} replace />;
+  }
 
   if (!location || !category || !product) {
     // Derive category/location info from URL params for navigation links
