@@ -11,11 +11,37 @@ import {
 import { JobCard } from "@/components/karriere/JobCard";
 import { jobListings } from "@/components/karriere/jobData";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const BASE_URL = "https://www.slt-rental.de";
 
 export default function Karriere() {
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
+  const [pinging, setPinging] = useState(false);
+
+  const pingGoogleIndexing = async () => {
+    setPinging(true);
+    try {
+      const urls = jobListings.map((j) => `${BASE_URL}/karriere/${j.slug}`);
+      const { data, error } = await supabase.functions.invoke(
+        "notify-google-indexing",
+        { body: { urls, type: "URL_UPDATED" } },
+      );
+      if (error) throw error;
+      toast.success(
+        `Google Indexing API: ${data?.successCount ?? 0}/${data?.total ?? urls.length} URLs erfolgreich gemeldet`,
+      );
+      console.log("Indexing API response", data);
+    } catch (e: any) {
+      toast.error(`Fehler beim Pingen: ${e.message ?? e}`);
+    } finally {
+      setPinging(false);
+    }
+  };
 
   // ItemList JSON-LD so Google understands the list of open positions
   const itemListJsonLd = {
