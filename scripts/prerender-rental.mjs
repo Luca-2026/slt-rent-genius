@@ -139,8 +139,19 @@ function buildHeroBlock(route) {
   return parts.join("");
 }
 
+// Server (LiteSpeed) erzwingt Trailing-Slash via 301. Canonical & Sitemap-URLs
+// MÜSSEN deshalb mit "/" enden, sonst markiert Google die Seiten als
+// "Seite mit Weiterleitung" und indexiert sie nicht.
+function withTrailingSlash(path) {
+  if (!path || path === "/") return "/";
+  const [pathOnly, query] = path.split("?");
+  if (/\.[a-zA-Z0-9]{2,5}$/.test(pathOnly)) return path;
+  const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+  return query ? `${normalized}?${query}` : normalized;
+}
+
 function buildHeadBlock(route, globalSchemas) {
-  const canonical = `${BASE_URL}${route.canonical || route.path}`;
+  const canonical = `${BASE_URL}${withTrailingSlash(route.canonical || route.path)}`;
   const ogImage = route.ogImage || `${BASE_URL}/images/og/default-slt-rental.png`;
   const ogType = route.ogType || "website";
   const titleFull = route.title.includes("SLT Rental") ? route.title : `${route.title} | SLT Rental`;
@@ -267,7 +278,7 @@ for (let i = 0; i < routes.length; i++) {
 const sitemapEntries = routes
   .filter((r) => !r.noindex)
   .map((r) => {
-    const loc = `${BASE_URL}${r.path}`;
+    const loc = `${BASE_URL}${withTrailingSlash(r.path)}`;
     const parts = [`  <url>`, `    <loc>${escapeHtml(loc)}</loc>`];
     if (r.lastmod) parts.push(`    <lastmod>${escapeHtml(r.lastmod)}</lastmod>`);
     if (r.changefreq) parts.push(`    <changefreq>${escapeHtml(r.changefreq)}</changefreq>`);
