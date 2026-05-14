@@ -144,13 +144,13 @@ export function SignaturePad({ onSignatureChange, height = 150, label = "Untersc
         />
         {!hasSignature && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="text-muted-foreground/40 text-sm text-center px-4">
+            <p className="text-muted-foreground text-sm text-center px-4">
               Hier unterschreiben (Finger oder Stift)
             </p>
           </div>
         )}
         <div className="absolute bottom-8 left-4 right-4 sm:left-8 sm:right-8 border-b border-muted-foreground/20 pointer-events-none" />
-        <p className="absolute bottom-2 left-4 sm:left-8 text-[10px] text-muted-foreground/40 pointer-events-none">
+        <p className="absolute bottom-2 left-4 sm:left-8 text-[10px] text-muted-foreground pointer-events-none">
           Datum & Unterschrift
         </p>
       </div>

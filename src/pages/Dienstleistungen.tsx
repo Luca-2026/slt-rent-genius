@@ -318,7 +318,7 @@ export default function Dienstleistungen() {
                 <Mail className="h-5 w-5" />
                 mieten@slt-rental.de
               </a>
-              <span className="hidden sm:block text-white/40">|</span>
+              <span className="hidden sm:block text-white/70">|</span>
               <a
                 href="tel:+4921514179904"
                 className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
