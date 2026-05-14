@@ -1015,6 +1015,7 @@ export const bonnVerdichtungProducts = [
     description: "Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck – inkl. Rollgestell und 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "8I2GX3" },
+    pricePerDay: "ab 19 €",
   },
   {
     id: "bonn-ruettelplatte-hvp30",
