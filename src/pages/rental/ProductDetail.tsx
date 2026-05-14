@@ -663,6 +663,7 @@ export default function ProductDetail() {
                         <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
                           <div>
                             <p className="text-sm font-semibold text-foreground mb-1">Preis: ab 39 € für 1–10 Tage Mietzeit</p>
+                            <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
                               Selbstabholer ab Standort Bonn, Krefeld oder Mülheim an der Ruhr.
                             </p>
