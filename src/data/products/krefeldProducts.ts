@@ -3566,7 +3566,8 @@ export const moebelZelteProducts: Product[] = [
       "Bankmaß": "25 × 220 cm",
       "Zubehör (optional)": "Hussen in weiß (Tisch & Bank) – im Bestellprozess hinzufügbar",
     },
-    rentwareCode: { krefeld: "5S2ECT" }
+    rentwareCode: { krefeld: "5S2ECT" },
+    pricePerDay: "ab 8 €",
   },
   {
     id: "bierzeltgarnitur-hussen-set-weiss",
@@ -3596,7 +3597,8 @@ export const moebelZelteProducts: Product[] = [
       "Abmessungen": "Ø 80 cm × H 110 cm",
       "Bauweise": "klappbar",
     },
-    rentwareCode: { krefeld: "J1MZJQ" }
+    rentwareCode: { krefeld: "J1MZJQ" },
+    pricePerDay: "ab 5 €",
   },
   {
     id: "stehtisch-husse-weiss",

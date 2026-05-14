@@ -2039,6 +2039,7 @@ export const bonnMoebelProducts = [
     description: "Klassische Bierzeltgarnitur als Set: 1× Tisch (50×220 cm) + 2× Bank (25×220 cm). Optional sind weiße Hussen für Tisch und Bänke erhältlich – im nächsten Schritt der Bestellung hinzufügbar.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "PTPDTD" },
+    pricePerDay: "ab 8 €",
   },
   {
     id: "bonn-stehtisch",
@@ -2051,6 +2052,7 @@ export const bonnMoebelProducts = [
       "Bauweise": "klappbar",
     },
     rentwareCode: { bonn: "DYAJ56" },
+    pricePerDay: "ab 5 €",
   },
   {
     id: "bonn-stehtisch-husse-weiss",
