@@ -602,9 +602,12 @@ export default function ProductDetail() {
                     <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
                   {typeof productSEO?.dailyPriceFrom === "number" && !getMoebelInfoKey(product.id) && (
-                    <div className="mt-2 inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
-                      <span className="text-xl font-bold text-accent">ab {Number.isInteger(productSEO.dailyPriceFrom) ? productSEO.dailyPriceFrom : productSEO.dailyPriceFrom.toFixed(2).replace(".", ",")} €</span>
-                      <span className="text-sm font-medium text-accent/90">/ Tag</span>
+                    <div className="mt-2">
+                      <div className="inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
+                        <span className="text-xl font-bold text-accent">ab {Number.isInteger(productSEO.dailyPriceFrom) ? productSEO.dailyPriceFrom : productSEO.dailyPriceFrom.toFixed(2).replace(".", ",")} €</span>
+                        <span className="text-sm font-medium text-accent/90">/ Tag</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 ml-1">Brutto inkl. 19% USt.</p>
                     </div>
                   )}
                   {(() => {
@@ -660,6 +663,7 @@ export default function ProductDetail() {
                         <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
                           <div>
                             <p className="text-sm font-semibold text-foreground mb-1">Preis: ab 39 € für 1–10 Tage Mietzeit</p>
+                            <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
                               Selbstabholer ab Standort Bonn, Krefeld oder Mülheim an der Ruhr.
                             </p>
@@ -1153,6 +1157,7 @@ export default function ProductDetail() {
                           Weekend-Tarif: {product.priceWeekend}
                         </p>
                       )}
+                      <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
                     </div>
                   )}
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
@@ -1338,6 +1343,7 @@ function MobileBookingCard({
               Weekend-Tarif: {product.priceWeekend}
             </p>
           )}
+          <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
         </div>
       )}
       <div className="flex flex-col sm:flex-row gap-2">
