@@ -602,7 +602,7 @@ export default function ProductDetail() {
                   )}
                   {typeof productSEO?.dailyPriceFrom === "number" && !getMoebelInfoKey(product.id) && (
                     <div className="mt-2 inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
-                      <span className="text-xl font-bold text-accent">ab {productSEO.dailyPriceFrom} €</span>
+                      <span className="text-xl font-bold text-accent">ab {Number.isInteger(productSEO.dailyPriceFrom) ? productSEO.dailyPriceFrom : productSEO.dailyPriceFrom.toFixed(2).replace(".", ",")} €</span>
                       <span className="text-sm font-medium text-accent/90">/ Tag</span>
                     </div>
                   )}
@@ -1138,7 +1138,7 @@ export default function ProductDetail() {
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
                         {product.pricePerDay
                           ? product.pricePerDay
-                          : `ab ${productSEO!.dailyPriceFrom} €`}
+                          : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
                         <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
                       </div>
                       {product.priceWeekend && (
@@ -1323,7 +1323,7 @@ function MobileBookingCard({
       {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
           <div className="text-2xl font-bold text-primary">
-            {product.pricePerDay ? product.pricePerDay : `ab ${dailyPriceFrom} €`}
+            {product.pricePerDay ? product.pricePerDay : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
             <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
           </div>
           {product.priceWeekend && (
