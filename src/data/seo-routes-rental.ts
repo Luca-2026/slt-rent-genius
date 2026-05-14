@@ -464,23 +464,69 @@ function categoryTitleDe(catId: string): string {
 const CATEGORY_ROUTES: SeoRoute[] = [];
 const PRODUCT_ROUTES: SeoRoute[] = [];
 
-// Sprint 6 – Aufgabe 4: Canonical-Strategie "Krefeld-First".
-// Indexiere alle Krefeld-Produkte je (categoryId/productId). Bonn- und
-// Mülheim-Routen, deren Produkt auch in Krefeld existiert, zeigen via
-// canonical auf die Krefeld-Variante. Eigene Sortimente
-// (Bonn-only, Mülheim-only) bleiben self-canonical (= kein canonical-Feld).
-const KREFELD_PRODUCT_INDEX: Set<string> = (() => {
-  const idx = new Set<string>();
-  const krefeld = (locations as LocationData[]).find((l) => l.id === "krefeld");
-  if (!krefeld) return idx;
-  for (const [catId, products] of Object.entries(krefeld.products)) {
-    for (const p of products ?? []) idx.add(`${catId}/${p.id}`);
+// Standortinfo-Lookup für lokal eindeutige Inhalte (Plan A: Self-Canonical
+// pro Standort statt „Krefeld-First". Damit jede Standort-URL eindeutige,
+// indexierbare Substanz bekommt – ohne Daten zu erfinden, nur reale Felder
+// aus locationData.ts.)
+const LOCATION_INFO_INDEX: Record<string, LocationInfo> = Object.fromEntries(
+  (locationData as LocationInfo[]).map((l) => [l.id, l]),
+);
+
+function joinCities(cities: string[] | undefined, max = 5): string {
+  if (!cities || cities.length === 0) return "";
+  const list = cities.slice(0, max);
+  if (list.length === 1) return list[0];
+  return list.slice(0, -1).join(", ") + " und " + list[list.length - 1];
+}
+
+/**
+ * Standortspezifische Intro-Absätze für Produkt- und Kategorieseiten.
+ * Verwendet ausschließlich reale Daten aus `locationData.ts` (Adresse,
+ * Lieferradius, Service-Charakter). Erzeugt pro Standort einen klar
+ * unterscheidbaren Text – Voraussetzung für Self-Canonical ohne DC-Risiko.
+ */
+function buildLocationIntro(
+  loc: LocationInfo,
+  subject: string, // z.B. „Minibagger 2,5t mieten" oder „Aggregate"
+): string[] {
+  const radius = joinCities(loc.deliveryRadius, 6);
+  const out: string[] = [];
+
+  if (loc.serviceCharacter === "full-warehouse") {
+    out.push(
+      `Standort ${loc.name}: ${subject} ist an unserem Mietpark in der ${loc.address}, ${loc.city} verfügbar – mit Übergabe vor Ort, persönlicher Einweisung und eigener Werkstatt für schnelle Service-Reaktion.`,
+    );
+    if (radius) {
+      out.push(
+        `Lieferung im Einzugsgebiet ${loc.name}: ${radius}. Auch kurzfristige Termine sind möglich – sprechen Sie uns an, wir disponieren tagesgenau aus dem ${loc.name}er Lager.`,
+      );
+    }
+  } else if (loc.serviceCharacter === "service-handover") {
+    out.push(
+      `Standort ${loc.name}: ${subject} bekommen Sie über unseren Service-Standort in der ${loc.address}, ${loc.city}. Beratung, Übergabe und Rücknahme finden persönlich vor Ort statt; das Gerät disponieren wir aus unserem Zentrallager Krefeld – meist innerhalb von 24 Stunden.`,
+    );
+    if (radius) {
+      out.push(
+        `Lieferung im Einzugsgebiet ${loc.name}: ${radius}. Über die A40 erreichen wir das gesamte Ruhrgebiet schnell – ideal für Bauunternehmen, Industrie und Veranstalter, die einen festen Ansprechpartner statt anonymer Online-Abwicklung suchen.`,
+      );
+    }
+  } else {
+    // krefeld / fallback
+    out.push(
+      `Standort ${loc.name} (Hauptlager): ${subject} liegt vor Ort in der ${loc.address}, ${loc.city} bereit – inklusive Werkstatt, Service-Team und Direkt-Übergabe.`,
+    );
+    if (radius) {
+      out.push(
+        `Lieferung am Niederrhein: ${radius}. Im Stadtgebiet ${loc.name} ist Lieferung und Abholung in der Regel taggleich möglich.`,
+      );
+    }
   }
-  return idx;
-})();
+  return out;
+}
 
 for (const loc of locations as LocationData[]) {
   const locName = LOCATION_DISPLAY[loc.id] || loc.name;
+  const locInfo = LOCATION_INFO_INDEX[loc.id];
   for (const [catId, products] of Object.entries(loc.products)) {
     if (!products || products.length === 0) continue;
     const catTitle = categoryTitleDe(catId);
@@ -490,6 +536,13 @@ for (const loc of locations as LocationData[]) {
       name: p.name,
       path: `/mieten/${loc.id}/${catId}/${p.id}`,
     }));
+
+    const categoryIntroBase = [
+      `Mietpark für ${catTitle} am SLT-Standort ${locName}. ${products.length} Geräte sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
+    ];
+    const categoryLocalIntro = locInfo
+      ? buildLocationIntro(locInfo, `${catTitle.toLowerCase()} mieten`)
+      : [];
 
     CATEGORY_ROUTES.push({
       path: `/mieten/${loc.id}/${catId}`,
@@ -505,9 +558,7 @@ for (const loc of locations as LocationData[]) {
         `${catTitle} mieten in ${locName} bei SLT Rental. ${products.length} Geräte verfügbar – Beratung, Lieferung und Werkstattservice vor Ort.`,
       ),
       h1: `${catTitle} mieten in ${locName}`,
-      intro: [
-        `Mietpark für ${catTitle} am SLT-Standort ${locName}. ${products.length} Geräte sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
-      ],
+      intro: [...categoryIntroBase, ...categoryLocalIntro],
       breadcrumbs: [
         { name: "Start", path: "/" },
         { name: "Mieten", path: "/mieten" },
@@ -537,13 +588,14 @@ for (const loc of locations as LocationData[]) {
       ];
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
-      // Krefeld-First Canonical: Bonn/Mülheim → Krefeld, sofern dort vorhanden.
-      // Krefeld-Produkte und Standort-eigene Produkte bleiben self-canonical.
-      const krefeldHasIt = KREFELD_PRODUCT_INDEX.has(`${catId}/${p.id}`);
-      const canonical =
-        loc.id !== "krefeld" && krefeldHasIt
-          ? `/mieten/krefeld/${catId}/${p.id}`
-          : undefined;
+      // Plan A: Self-Canonical pro Standort. Jede Standort-Variante ist
+      // durch eindeutige H1, Title und lokal-spezifische Intro-Absätze
+      // (siehe buildLocationIntro) ausreichend differenziert. Damit
+      // entfällt das frühere Krefeld-First-Mapping; Bonn/Mülheim werden
+      // jetzt eigenständig indexiert für lokale Suchanfragen.
+      if (locInfo) {
+        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`));
+      }
 
       PRODUCT_ROUTES.push({
         path: `/mieten/${loc.id}/${catId}/${p.id}`,
@@ -566,7 +618,7 @@ for (const loc of locations as LocationData[]) {
         description,
         h1,
         intro,
-        canonical,
+        // canonical bewusst undefined → self-canonical via route.path
         ogType: "product",
         // Products without SEO content → noindex (still rendered for SPA)
         noindex: !hasSEO,
