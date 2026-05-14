@@ -186,7 +186,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
       },
       geo: { "@type": "GeoCoordinates", latitude: 50.6879, longitude: 7.1534 },
       openingHoursSpecification: [
-        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:30", closes: "18:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:00", closes: "17:00" },
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "14:30" },
       ],
       priceRange: "€€",
