@@ -125,6 +125,18 @@ export default function ProductDetail() {
   // Get product-specific SEO data from Excel
   const productSEO = useMemo(() => product ? getProductSEO(product.id, location?.id) : undefined, [product, location]);
 
+  const displaySpecifications = useMemo(() => {
+    if (!product?.specifications || !location) return product?.specifications;
+
+    const isHalteverbot = product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set";
+    if (!isHalteverbot) return product.specifications;
+
+    return {
+      ...product.specifications,
+      Hinweis: `Genehmigungs-Kopie an ${location.email} senden`,
+    };
+  }, [product, location]);
+
   // Suggested products for 404 fallback (must be at top level for hooks rules)
   const notFoundSuggestions = useMemo(() => {
     if (product) return []; // only needed when product not found
@@ -138,8 +150,12 @@ export default function ProductDetail() {
   const localizeText = useMemo(() => {
     if (!location) return (text: string) => text;
     const name = location.name;
+    const locationEmail = location.email;
     return (text: string): string => {
       let result = text
+        .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
+        .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+        .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
         // First replace multi-location combinations
         .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
         .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
