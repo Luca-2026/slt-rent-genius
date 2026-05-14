@@ -1168,6 +1168,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 247,
     category: "ruettelplatte-reversierbar",
     rentwareCode: { krefeld: "5B9HL3" },
+    pricePerDay: "ab 39 €",
     detailedDescription: "Die HVP 38/60 ist eine hydraulisch reversierbare Rüttelplatte mit 247 kg Gewicht und 38 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung besonders effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 6,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "HVP 38/60",
