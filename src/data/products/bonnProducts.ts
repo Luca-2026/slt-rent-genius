@@ -1770,6 +1770,7 @@ export const bonnLeiternProducts = [
     },
     pdfUrl: "/manuals/krause-rollgeruest-stabilo-serie-10-50-aufbauanleitung.pdf",
     rentwareCode: { bonn: "GTQBCT" },
+    pricePerDay: "ab 59 €",
   },
   {
     id: "bonn-rollgeruest-krause-4-4m",
