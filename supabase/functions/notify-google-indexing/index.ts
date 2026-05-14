@@ -16,15 +16,20 @@ const TOKEN_URI = "https://oauth2.googleapis.com/token";
 const PUBLISH_URL = "https://indexing.googleapis.com/v3/urlNotifications:publish";
 
 function pemToArrayBuffer(pem: string): ArrayBuffer {
-  const raw = pem;
-  console.log("RAW debug", { len: raw.length, first30: raw.slice(0, 30), last30: raw.slice(-30), hasEscapedN: raw.includes("\\n"), hasRealN: raw.includes("\n") });
-  let s = raw
-    .replace(/\\n/g, "\n")
+  // Remove escape sequences and PEM headers, then collapse to base64.
+  let s = pem
+    .replace(/\\n/g, "")
     .replace(/\\r/g, "")
     .replace(/-----BEGIN[^-]+-----/g, "")
     .replace(/-----END[^-]+-----/g, "")
-    .replace(/[^A-Za-z0-9+/=]/g, "");
-  console.log("CLEAN debug", { len: s.length, first30: s.slice(0, 30), last30: s.slice(-30) });
+    .replace(/\s+/g, "");
+  // The PKCS#8 base64 always begins with "MII". Strip any leading garbage
+  // that may be left over from a malformed paste (e.g. a stray "n" because
+  // the leading backslash of "\n" was eaten by the secret form).
+  const idx = s.indexOf("MII");
+  if (idx > 0) s = s.slice(idx);
+  // Drop any trailing non-base64 chars
+  s = s.replace(/[^A-Za-z0-9+/=]/g, "");
   const binary = atob(s);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
