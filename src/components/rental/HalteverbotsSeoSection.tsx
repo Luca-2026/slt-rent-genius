@@ -116,13 +116,6 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
             </li>
           ))}
         </ul>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Mietpreis: <strong className="text-foreground">ab 39 € für 1–10 Tage</strong>{" "}
-          Mietzeit (Selbstabholer). Auf Wunsch buchst Du unser{" "}
-          <strong className="text-foreground">Premium-Festpreis-Paket „Sorglos" (199 €)</strong>{" "}
-          inkl. Antrag bei der Stadt sowie Auf- und Abbau (zzgl. Verwaltungsgebühren der
-          Stadt {city} je nach Aufstellzeit).
-        </p>
       </section>
 
       {/* Aufstellung */}
