@@ -10,6 +10,7 @@ import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialo
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 import { MietartikelSearch } from "@/components/rental/MietartikelSearch";
+import { HardHat, PartyPopper, Truck } from "lucide-react";
 
 type TeaserProduct = {
   name: string;
