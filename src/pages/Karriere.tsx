@@ -186,6 +186,30 @@ export default function Karriere() {
               </Button>
             </div>
           )}
+          {isAdmin && (
+            <div className="max-w-4xl mx-auto mt-4 p-4 rounded-lg border border-dashed border-accent/40 bg-accent/5 space-y-3">
+              <div>
+                <p className="font-semibold text-foreground text-sm">Admin: GSC Site Verification (Service-Account)</p>
+                <p className="text-muted-foreground text-xs">
+                  1) Token holen → 2) Meta-Tag in <code>index.html</code> ersetzen → 3) Deployen → 4) Verify klicken.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={fetchGscToken} disabled={gscBusy} size="sm">
+                  {gscBusy ? "…" : "1. Token holen"}
+                </Button>
+                <Button onClick={verifyGscSite} disabled={gscBusy} size="sm" variant="secondary">
+                  {gscBusy ? "…" : "4. Verify auslösen"}
+                </Button>
+              </div>
+              {gscToken && (
+                <div className="text-xs">
+                  <p className="font-medium text-foreground mb-1">Token (content-Wert für Meta-Tag):</p>
+                  <code className="block p-2 bg-background border border-border rounded break-all">{gscToken}</code>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
