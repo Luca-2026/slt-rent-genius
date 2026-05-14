@@ -132,7 +132,7 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
           {[
             "2 × Halteverbotsschild (VZ 283, RA1)",
             "2 × besonders standfeste Fußplatten",
-            "Zusatzschilder „Anfang/Ende" mit Pfeil",
+            'Zusatzschilder „Anfang/Ende" mit Pfeil',
             "Zusatzschilder Datum & Uhrzeit (StVO Größe 1, beschriftbar)",
             "Diebstahlsicherung",
             "Werkzeug- & Zubehörtasche",
