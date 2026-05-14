@@ -641,6 +641,64 @@ export default function ProductDetail() {
                     );
                   })()}
                   {(() => {
+                    // Halteverbotsschilder: Preisinfo, Sorglos-Paket & Self-Service-Antragslinks
+                    const isHalteverbot =
+                      product.id === "halteverbotsschilder-set" ||
+                      product.id === "bonn-halteverbotsschilder-set";
+                    if (!isHalteverbot) return null;
+                    const antragsLinks: Record<string, string> = {
+                      bonn: "https://formulare.bonn.de/metaform/Form-Solutions/?2&releaseUserId=05314000-0001-0014&releaseID=586b68b7c2dceeaee3717387&releaseOrganizationID=05314000-0001&assistant=KFAS_33_006&storable=false&fileUrl=https%253A%252F%252Fformulare.bonn.de%252Fmetaform%252FForm-Solutions%252Fsid%252Fassistant%252F586b68b7c2dceeaee3717387%253Fconsent_type%253DNONE&oID=05314000-0001&consent_type=NONE&kdnr=05314000-0001",
+                      krefeld: "https://formulare.krzn.de/metaform/Form-Solutions/?2&releaseUserId=05114000-0001-0024&releaseID=6214193c4d06d113b46c0f45&releaseOrganizationID=05114000-0001&assistant=KFAS_122814KR&storable=true&consentComplete=true&fileUrl=https%253A%252F%252Fformulare.krzn.de%252Fmetaform%252FForm-Solutions%252Fsid%252Fassistant%252F6214193c4d06d113b46c0f45%253FconsentComplete%253Dtrue&oID=05114000-0001&kdnr=05114000-0001",
+                    };
+                    const link = antragsLinks[location.id];
+                    const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+                    const cityName = cityNameMap[location.id] || location.name;
+                    return (
+                      <div className="mt-4 space-y-3">
+                        <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+                          <div>
+                            <p className="text-sm font-semibold text-foreground mb-1">Preis: ab 39 € für 1–10 Tage Mietzeit</p>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              Selbstabholer ab Standort Bonn, Krefeld oder Mülheim an der Ruhr.
+                            </p>
+                          </div>
+                          <div className="border-t border-border pt-3">
+                            <div className="flex items-start gap-2">
+                              <Sparkles className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-sm font-semibold text-foreground mb-1">
+                                  Premium-Festpreis 199 € – Sorglos-Paket
+                                </p>
+                                <p className="text-xs text-muted-foreground leading-relaxed">
+                                  Inkl. Aufstellung & Antrag bei der Stadt.* Exkl. Gebühren der Stadt je nach Aufstellzeit.
+                                </p>
+                                <p className="text-[11px] text-muted-foreground/80 mt-1">
+                                  *Sorglos-Paket: Wir kümmern uns um Genehmigung, Aufstellung und Abbau.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          {link && (
+                            <div className="border-t border-border pt-3">
+                              <p className="text-xs text-muted-foreground mb-2">
+                                Du möchtest die Genehmigung selbst beantragen? Direkt zum Online-Antrag der Stadt {cityName}:
+                              </p>
+                              <a
+                                href={link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5" />
+                                Halteverbot in {cityName} beantragen (Self-Service)
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                  {(() => {
                     const moebelKey = getMoebelInfoKey(product.id);
                     const locKey = location.id as "krefeld" | "bonn" | "muelheim";
                     const info = moebelKey ? moebelProductInfo[moebelKey]?.[locKey] : null;
