@@ -649,6 +649,7 @@ export default function ProductDetail() {
                     const antragsLinks: Record<string, string> = {
                       bonn: "https://formulare.bonn.de/metaform/Form-Solutions/?2&releaseUserId=05314000-0001-0014&releaseID=586b68b7c2dceeaee3717387&releaseOrganizationID=05314000-0001&assistant=KFAS_33_006&storable=false&fileUrl=https%253A%252F%252Fformulare.bonn.de%252Fmetaform%252FForm-Solutions%252Fsid%252Fassistant%252F586b68b7c2dceeaee3717387%253Fconsent_type%253DNONE&oID=05314000-0001&consent_type=NONE&kdnr=05314000-0001",
                       krefeld: "https://formulare.krzn.de/metaform/Form-Solutions/?2&releaseUserId=05114000-0001-0024&releaseID=6214193c4d06d113b46c0f45&releaseOrganizationID=05114000-0001&assistant=KFAS_122814KR&storable=true&consentComplete=true&fileUrl=https%253A%252F%252Fformulare.krzn.de%252Fmetaform%252FForm-Solutions%252Fsid%252Fassistant%252F6214193c4d06d113b46c0f45%253FconsentComplete%253Dtrue&oID=05114000-0001&kdnr=05114000-0001",
+                      muelheim: "https://service.wirtschaft.nrw/antrag/sondernutzungstr/",
                     };
                     const link = antragsLinks[location.id];
                     const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
