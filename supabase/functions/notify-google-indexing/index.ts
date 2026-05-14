@@ -16,8 +16,15 @@ const TOKEN_URI = "https://oauth2.googleapis.com/token";
 const PUBLISH_URL = "https://indexing.googleapis.com/v3/urlNotifications:publish";
 
 function pemToArrayBuffer(pem: string): ArrayBuffer {
-  const cleaned = pem
+  let cleaned = pem.trim();
+  // strip wrapping quotes if user pasted the JSON-quoted value
+  if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+      (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    cleaned = cleaned.slice(1, -1);
+  }
+  cleaned = cleaned
     .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "")
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
     .replace(/\s+/g, "");
