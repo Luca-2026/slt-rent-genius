@@ -3566,7 +3566,8 @@ export const moebelZelteProducts: Product[] = [
       "Bankmaß": "25 × 220 cm",
       "Zubehör (optional)": "Hussen in weiß (Tisch & Bank) – im Bestellprozess hinzufügbar",
     },
-    rentwareCode: { krefeld: "5S2ECT" }
+    rentwareCode: { krefeld: "5S2ECT" },
+    pricePerDay: "ab 8 €",
   },
   {
     id: "bierzeltgarnitur-hussen-set-weiss",
