@@ -2928,6 +2928,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie hoch ist die Schleifgeschwindigkeit des Geräts?", a: "Die Schleifgeschwindigkeit beträgt 450 U/min bei einer regulierbaren Schleiflast von 80 bis 200 kg." },
       { q: "Was kostet die Miete in Mülheim?", a: "Die Tagesmiete startet bei 39 € (brutto inkl. 19 % USt.). Den exakten Preis für Deine Mietdauer findest Du im Buchungsbereich oben." },
     ],
+  },
   "funkmikrofon": {
     excelName: "Sennheiser Funkmikrofon XSW 1-835",
     seoTitle: "Sennheiser Funkmikrofon XSW 1-835 mieten",
