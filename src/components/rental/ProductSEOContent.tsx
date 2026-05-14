@@ -378,7 +378,9 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
     return text
       .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
       .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+      .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
       .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
+      .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
       .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, locationName)
       .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, locationName)
       .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
