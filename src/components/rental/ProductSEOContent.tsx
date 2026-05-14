@@ -6,7 +6,7 @@ import type { ProductSEOData } from "@/data/productSEOData";
 
 interface ProductSEOContentProps {
   product: Product;
-  location: { id: string; name: string; shortName: string; address: string };
+  location: Pick<LocationData, "id" | "name" | "shortName" | "address" | "email">;
   categoryId: string;
   categoryTitle: string;
   productSEO?: ProductSEOData;
@@ -371,10 +371,14 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const categoryData = useMemo(() => categoryContent[categoryId], [categoryId]);
   const productName = productSEO?.excelName || product.name;
   const locationName = location.name;
+  const locationEmail = location.email;
 
   // Helper: replace multi-location strings with current location only
   const loc = (text: string): string => {
     return text
+      .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
+      .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+      .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
       .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, locationName)
       .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, locationName)
       .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
