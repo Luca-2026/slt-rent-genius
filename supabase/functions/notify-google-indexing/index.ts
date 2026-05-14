@@ -16,20 +16,18 @@ const TOKEN_URI = "https://oauth2.googleapis.com/token";
 const PUBLISH_URL = "https://indexing.googleapis.com/v3/urlNotifications:publish";
 
 function pemToArrayBuffer(pem: string): ArrayBuffer {
-  let cleaned = pem.trim();
-  // strip wrapping quotes if user pasted the JSON-quoted value
-  if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
-      (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
-    cleaned = cleaned.slice(1, -1);
-  }
-  cleaned = cleaned
+  // Normalize escaped newlines and strip everything that isn't base64
+  let s = pem
     .replace(/\\n/g, "\n")
     .replace(/\\r/g, "")
-    .replace("-----BEGIN PRIVATE KEY-----", "")
-    .replace("-----END PRIVATE KEY-----", "")
-    .replace(/\s+/g, "");
-  console.log("PEM debug", { len: cleaned.length, first20: cleaned.slice(0, 20), last20: cleaned.slice(-20) });
-  const binary = atob(cleaned);
+    .replace(/-----BEGIN[^-]+-----/g, "")
+    .replace(/-----END[^-]+-----/g, "")
+    .replace(/[^A-Za-z0-9+/=]/g, "");
+  const binary = atob(s);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes.buffer;
+}
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
   return bytes.buffer;
