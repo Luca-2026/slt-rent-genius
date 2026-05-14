@@ -24,7 +24,7 @@ import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerA
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
-  Layers, PartyPopper, Info,
+  Layers, PartyPopper, Info, ShieldAlert,
 };
 
 const sectionIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
