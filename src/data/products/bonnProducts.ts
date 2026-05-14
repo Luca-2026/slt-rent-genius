@@ -529,6 +529,7 @@ export const bonnErdbewegungProducts = [
     image: imgKramer1,
     images: [imgKramer1, imgKramer2],
     rentwareCode: { bonn: "EEJXMU" },
+    pricePerDay: "ab 69 €",
     weightKg: 3000,
     category: "radlader",
     tags: ["maschine"],
