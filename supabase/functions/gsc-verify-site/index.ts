@@ -1,7 +1,9 @@
 // Google Site Verification helper using a service account.
+// Requires authenticated admin user.
 // POST { action: "getToken" | "verify", identifier: "https://www.slt-rental.de/" }
 
 import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -54,9 +56,42 @@ async function getAccessToken(): Promise<string> {
   return (await res.json()).access_token as string;
 }
 
+async function requireAdmin(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    throw new Error("Unauthorized: missing Bearer token");
+  }
+
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } },
+  );
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+  if (claimsError || !claimsData?.claims) {
+    throw new Error("Unauthorized: invalid token");
+  }
+
+  const userId = claimsData.claims.sub;
+  const { data: hasRole, error: roleError } = await supabase.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin",
+  });
+
+  if (roleError || !hasRole) {
+    throw new Error("Forbidden: admin role required");
+  }
+
+  return userId;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
+    await requireAdmin(req);
+
     const body = await req.json().catch(() => ({}));
     const action = body?.action ?? "getToken";
     const identifier: string = body?.identifier ?? "https://www.slt-rental.de/";
@@ -89,8 +124,10 @@ Deno.serve(async (req) => {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ error: (e as Error).message }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    const errMsg = (e as Error).message;
+    const status = errMsg.startsWith("Unauthorized") ? 401 : errMsg.startsWith("Forbidden") ? 403 : 500;
+    return new Response(JSON.stringify({ error: errMsg }), {
+      status, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
