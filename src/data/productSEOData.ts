@@ -7272,10 +7272,15 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
 };
 
-export function getProductSEO(productId: string): ProductSEOData | undefined {
+export function getProductSEO(productId: string, locationId?: string): ProductSEOData | undefined {
+  // 1) Standortspezifische Variante hat Vorrang (z. B. "bonn-zwangsmischer-140l")
+  if (locationId) {
+    const prefixed = `${locationId}-${productId}`;
+    if (productSEOData[prefixed]) return productSEOData[prefixed];
+  }
+  // 2) Direkter Treffer auf die Produkt-ID
   if (productSEOData[productId]) return productSEOData[productId];
-  // Fallback: standortspezifische Varianten (z. B. "bonn-kettendumper-rmd800")
-  // greifen auf den Haupt-SEO-Eintrag zurück, falls vorhanden.
+  // 3) Fallback: ID enthält bereits Standort-Präfix → Basiseintrag versuchen
   for (const prefix of ["bonn-", "muelheim-", "krefeld-"]) {
     if (productId.startsWith(prefix)) {
       const stripped = productId.slice(prefix.length);
