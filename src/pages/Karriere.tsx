@@ -22,6 +22,45 @@ export default function Karriere() {
   const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const [pinging, setPinging] = useState(false);
+  const [gscBusy, setGscBusy] = useState(false);
+  const [gscToken, setGscToken] = useState<string | null>(null);
+
+  const fetchGscToken = async () => {
+    setGscBusy(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("gsc-verify-site", {
+        body: { action: "getToken", identifier: "https://www.slt-rental.de/" },
+      });
+      if (error) throw error;
+      // Google returns { token: "google-site-verification=XXXX", method: "META" }
+      const raw: string = data?.token ?? "";
+      const content = raw.replace(/^google-site-verification=/, "");
+      setGscToken(content);
+      await navigator.clipboard.writeText(content).catch(() => {});
+      toast.success("GSC-Token geholt & in Zwischenablage kopiert");
+      console.log("GSC token response", data);
+    } catch (e: any) {
+      toast.error(`Fehler: ${e.message ?? e}`);
+    } finally {
+      setGscBusy(false);
+    }
+  };
+
+  const verifyGscSite = async () => {
+    setGscBusy(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("gsc-verify-site", {
+        body: { action: "verify", identifier: "https://www.slt-rental.de/" },
+      });
+      if (error) throw error;
+      toast.success("Verifikation ausgelöst – siehe Konsole");
+      console.log("GSC verify response", data);
+    } catch (e: any) {
+      toast.error(`Verify-Fehler: ${e.message ?? e}`);
+    } finally {
+      setGscBusy(false);
+    }
+  };
 
   const pingGoogleIndexing = async () => {
     setPinging(true);
@@ -145,6 +184,30 @@ export default function Karriere() {
               <Button onClick={pingGoogleIndexing} disabled={pinging} className="shrink-0">
                 {pinging ? "Sende…" : "Bei Google indexieren"}
               </Button>
+            </div>
+          )}
+          {isAdmin && (
+            <div className="max-w-4xl mx-auto mt-4 p-4 rounded-lg border border-dashed border-accent/40 bg-accent/5 space-y-3">
+              <div>
+                <p className="font-semibold text-foreground text-sm">Admin: GSC Site Verification (Service-Account)</p>
+                <p className="text-muted-foreground text-xs">
+                  1) Token holen → 2) Meta-Tag in <code>index.html</code> ersetzen → 3) Deployen → 4) Verify klicken.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={fetchGscToken} disabled={gscBusy} size="sm">
+                  {gscBusy ? "…" : "1. Token holen"}
+                </Button>
+                <Button onClick={verifyGscSite} disabled={gscBusy} size="sm" variant="secondary">
+                  {gscBusy ? "…" : "4. Verify auslösen"}
+                </Button>
+              </div>
+              {gscToken && (
+                <div className="text-xs">
+                  <p className="font-medium text-foreground mb-1">Token (content-Wert für Meta-Tag):</p>
+                  <code className="block p-2 bg-background border border-border rounded break-all">{gscToken}</code>
+                </div>
+              )}
             </div>
           )}
         </div>
