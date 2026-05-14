@@ -16,13 +16,15 @@ const TOKEN_URI = "https://oauth2.googleapis.com/token";
 const PUBLISH_URL = "https://indexing.googleapis.com/v3/urlNotifications:publish";
 
 function pemToArrayBuffer(pem: string): ArrayBuffer {
-  // Normalize escaped newlines and strip everything that isn't base64
-  let s = pem
+  const raw = pem;
+  console.log("RAW debug", { len: raw.length, first30: raw.slice(0, 30), last30: raw.slice(-30), hasEscapedN: raw.includes("\\n"), hasRealN: raw.includes("\n") });
+  let s = raw
     .replace(/\\n/g, "\n")
     .replace(/\\r/g, "")
     .replace(/-----BEGIN[^-]+-----/g, "")
     .replace(/-----END[^-]+-----/g, "")
     .replace(/[^A-Za-z0-9+/=]/g, "");
+  console.log("CLEAN debug", { len: s.length, first30: s.slice(0, 30), last30: s.slice(-30) });
   const binary = atob(s);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
