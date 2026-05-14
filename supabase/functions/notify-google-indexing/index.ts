@@ -135,17 +135,6 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
 
-    // Diagnostic: return service account email so user can add it as Owner in GSC
-    if (body?.action === "whoami") {
-      return new Response(
-        JSON.stringify({
-          clientEmail: Deno.env.get("GOOGLE_INDEXING_CLIENT_EMAIL") ?? null,
-          hint: "Diese E-Mail muss in der Google Search Console Property als 'Inhaber' (Owner) hinzugefügt werden – nicht nur als Nutzer.",
-        }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-
     const urls: string[] = Array.isArray(body?.urls) ? body.urls : [];
     const type: "URL_UPDATED" | "URL_DELETED" = body?.type === "URL_DELETED" ? "URL_DELETED" : "URL_UPDATED";
 
