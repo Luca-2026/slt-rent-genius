@@ -114,7 +114,7 @@ export const locationData: LocationInfo[] = [
       { day: "Sa.", time: "08:00 - 14:30 Uhr" },
       { day: "So.", time: "Geschlossen" },
     ],
-    hoursNote: "*Öffnungszeiten nur mit vorheriger Buchung.",
+    
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
     serviceCharacter: "full-warehouse",
