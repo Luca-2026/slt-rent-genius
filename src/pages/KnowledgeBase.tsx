@@ -11,7 +11,7 @@ import {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
   Layers, PartyPopper, Info, ChevronRight, X, ArrowLeft,
   Scale, AlertTriangle, ClipboardCheck, Package, Link2, Eye, Car, Lightbulb, AlertCircle,
-  Smartphone, MessageSquare, Unlock, Lock,
+  Smartphone, MessageSquare, Unlock, Lock, ShieldAlert,
 } from "lucide-react";
 import {
   kbCategories, kbArticles, searchArticles, getArticlesForCategory,
@@ -24,7 +24,7 @@ import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerA
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Truck, HardHat, Wrench, TreePine, Zap, ArrowUpFromLine,
-  Layers, PartyPopper, Info,
+  Layers, PartyPopper, Info, ShieldAlert,
 };
 
 const sectionIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
