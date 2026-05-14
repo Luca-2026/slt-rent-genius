@@ -278,7 +278,7 @@ for (let i = 0; i < routes.length; i++) {
 const sitemapEntries = routes
   .filter((r) => !r.noindex)
   .map((r) => {
-    const loc = `${BASE_URL}${r.path}`;
+    const loc = `${BASE_URL}${withTrailingSlash(r.path)}`;
     const parts = [`  <url>`, `    <loc>${escapeHtml(loc)}</loc>`];
     if (r.lastmod) parts.push(`    <lastmod>${escapeHtml(r.lastmod)}</lastmod>`);
     if (r.changefreq) parts.push(`    <changefreq>${escapeHtml(r.changefreq)}</changefreq>`);
