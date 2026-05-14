@@ -86,6 +86,11 @@ async function notifyUrl(token: string, url: string, type: "URL_UPDATED" | "URL_
     body: JSON.stringify({ url, type }),
   });
   const text = await res.text();
+  if (!res.ok) {
+    console.error(`Indexing API error for ${url}: ${res.status} ${text}`);
+  } else {
+    console.log(`Indexing API ok for ${url}`);
+  }
   return { url, status: res.status, ok: res.ok, body: text };
 }
 
