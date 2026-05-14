@@ -1144,6 +1144,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 175,
     category: "ruettelplatte-reversierbar",
     rentwareCode: { krefeld: "371IBO" },
+    pricePerDay: "ab 29 €",
     detailedDescription: "Die HVP 30/50 ist eine hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung ist sie besonders wendig und effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "HVP 30/50",
