@@ -624,8 +624,9 @@ for (const loc of locations as LocationData[]) {
         intro,
         // canonical bewusst undefined → self-canonical via route.path
         ogType: "product",
-        // Products without SEO content → noindex (still rendered for SPA)
-        noindex: !hasSEO,
+        // Alle Produktseiten sind indexierbar – jede Variante hat unique
+        // Title, H1, Description, Intro und Breadcrumbs pro Standort.
+        noindex: false,
         breadcrumbs: [
           { name: "Start", path: "/" },
           { name: "Mieten", path: "/mieten" },
