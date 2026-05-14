@@ -439,6 +439,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Was passiert, wenn der Wassertank voll ist?", a: "Der 4-Liter-Wassertank ist mit einer automatischen Abschaltfunktion ausgestattet. Alternativ ist ein direkter Schlauchanschluss möglich." },
       { q: "In welchem Temperaturbereich arbeitet der Allegra KT200?", a: "Der Arbeitsbereich des Kondensationstrockners liegt zwischen 5 °C und 35 °C." },
     ],
+  },
   "bautrockner-kt553": {
     excelName: "Bautrockner 50L/Tag",
     seoTitle: "Bautrockner 50L/Tag Allegra KT553/KT554 mieten",
