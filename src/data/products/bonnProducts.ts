@@ -529,6 +529,7 @@ export const bonnErdbewegungProducts = [
     image: imgKramer1,
     images: [imgKramer1, imgKramer2],
     rentwareCode: { bonn: "EEJXMU" },
+    pricePerDay: "ab 69 €",
     weightKg: 3000,
     category: "radlader",
     tags: ["maschine"],
@@ -1014,6 +1015,7 @@ export const bonnVerdichtungProducts = [
     description: "Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck – inkl. Rollgestell und 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "8I2GX3" },
+    pricePerDay: "ab 19 €",
   },
   {
     id: "bonn-ruettelplatte-hvp30",
@@ -1021,6 +1023,7 @@ export const bonnVerdichtungProducts = [
     description: "Hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "DKAF58" },
+    pricePerDay: "ab 29 €",
   },
   {
     id: "bonn-ruettelplatte-hvp38",
@@ -1028,6 +1031,7 @@ export const bonnVerdichtungProducts = [
     description: "Hydraulisch reversierbare Rüttelplatte mit 247 kg Gewicht und 38 kN Verdichtungsdruck – inkl. 8 Betriebsstunden/Tag.",
     image: "/placeholder.svg",
     rentwareCode: { bonn: "OYOWC6" },
+    pricePerDay: "ab 39 €",
   },
   {
     id: "bonn-ruettelplatte-hvp50",

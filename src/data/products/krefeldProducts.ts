@@ -1119,6 +1119,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 130,
     category: "ruettelplatte",
     rentwareCode: { krefeld: "MWQG3Q" },
+    pricePerDay: "ab 19 €",
     detailedDescription: "Die VP 25/50 ist eine Vorwärts-Rüttelplatte mit 130 kg Gewicht und 25 kN Verdichtungsdruck. Inkl. Rollgestell zum praktikablen Transport. Verdichtungstiefe ca. 25 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "VP 25/50",
@@ -1143,6 +1144,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 175,
     category: "ruettelplatte-reversierbar",
     rentwareCode: { krefeld: "371IBO" },
+    pricePerDay: "ab 29 €",
     detailedDescription: "Die HVP 30/50 ist eine hydraulisch reversierbare Rüttelplatte mit 175 kg Gewicht und 30 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung ist sie besonders wendig und effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 4,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "HVP 30/50",
@@ -1166,6 +1168,7 @@ export const verdichtungProducts: Product[] = [
     weightKg: 247,
     category: "ruettelplatte-reversierbar",
     rentwareCode: { krefeld: "5B9HL3" },
+    pricePerDay: "ab 39 €",
     detailedDescription: "Die HVP 38/60 ist eine hydraulisch reversierbare Rüttelplatte mit 247 kg Gewicht und 38 kN Verdichtungsdruck. Mit stufenloser hydraulischer Umschaltung der Fahrtrichtung besonders effizient. Verdichtungstiefe ca. 30 cm. Inklusive 8 Betriebsstunden pro Tag, Mehrstunden werden mit brutto 6,50 € pro Stunde berechnet. Benzin (95) wird mit brutto 2,85 €/l berechnet – Rückgabe mit vollem Tank.",
     specifications: {
       "Typ": "HVP 38/60",
