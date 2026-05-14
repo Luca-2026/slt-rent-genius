@@ -30,10 +30,9 @@ const staticPages = [
   { path: '/loesungen/handwerk-gewerbe', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/umzug-transport', priority: '0.6', changefreq: 'monthly' },
   { path: '/loesungen/kindergeburtstage', priority: '0.6', changefreq: 'monthly' },
-  // Legal
-  { path: '/impressum', priority: '0.3', changefreq: 'yearly' },
-  { path: '/datenschutz', priority: '0.3', changefreq: 'yearly' },
-  { path: '/agb', priority: '0.3', changefreq: 'yearly' },
+  // Legal-Seiten (Impressum/Datenschutz/AGB) sind absichtlich noindex
+  // und werden daher NICHT in die Sitemap aufgenommen, sonst meldet
+  // GSC "Eingereichte URL als noindex markiert".
 ];
 
 // Location pages
