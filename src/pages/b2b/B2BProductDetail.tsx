@@ -66,6 +66,18 @@ export default function B2BProductDetail() {
       : [];
   }, [product]);
 
+  const displaySpecifications = useMemo(() => {
+    if (!product?.specifications || !location) return product?.specifications;
+
+    const isHalteverbot = product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set";
+    if (!isHalteverbot) return product.specifications;
+
+    return {
+      ...product.specifications,
+      Hinweis: `Genehmigungs-Kopie an ${location.email} senden`,
+    };
+  }, [product, location]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (images.length <= 1) return;
@@ -244,11 +256,11 @@ export default function B2BProductDetail() {
           </div>
 
           {/* Technical Specifications */}
-          {product.specifications && Object.keys(product.specifications).length > 0 && (
+          {displaySpecifications && Object.keys(displaySpecifications).length > 0 && (
             <div className="bg-card rounded-xl border border-border p-4 md:p-5">
               <h2 className="text-base font-semibold text-headline mb-4">Technische Daten</h2>
               <div className="divide-y divide-border rounded-lg overflow-hidden border border-border">
-                {Object.entries(product.specifications).map(([key, value], i) => (
+                {Object.entries(displaySpecifications).map(([key, value], i) => (
                   <div
                     key={key}
                     className={`flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 gap-1 ${
