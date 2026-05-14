@@ -107,7 +107,6 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
             "2 × besonders standfeste Fußplatten",
             'Zusatzschilder „Anfang/Ende" mit Pfeil',
             "Zusatzschilder Datum & Uhrzeit (StVO Größe 1, beschriftbar)",
-            "Diebstahlsicherung",
             "Werkzeug- & Zubehörtasche",
           ].map((u) => (
             <li key={u} className="flex items-start gap-2">
@@ -116,6 +115,11 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
             </li>
           ))}
         </ul>
+        <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-sm text-foreground">
+          <strong>24/7 Abholung möglich:</strong> Halteverbotsschilder kannst Du an allen
+          SLT-Standorten (Krefeld, Bonn, Mülheim an der Ruhr) rund um die Uhr abholen –
+          auch außerhalb der Öffnungszeiten und am Wochenende.
+        </div>
       </section>
 
       {/* Aufstellung */}
