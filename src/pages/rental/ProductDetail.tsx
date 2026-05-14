@@ -155,7 +155,9 @@ export default function ProductDetail() {
       let result = text
         .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
         .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+        .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
         .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
+        .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
         // First replace multi-location combinations
         .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
         .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
