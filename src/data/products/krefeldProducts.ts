@@ -1434,7 +1434,7 @@ export const werkzeugeProducts: Product[] = [
     id: "zwangsmischer-140l",
     name: "Zwangsmischer 140L",
     description: "Zwangsmischer Compakt 140L – für gleichmäßige Beton- und Mörtelmischungen.",
-    detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle. Der Zwangsmischer ist gereinigt zurückzugeben, andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €.",
+    detailedDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen auf der Baustelle.",
     image: zwangsmischer140l1,
     images: [zwangsmischer140l1, zwangsmischer140l2, zwangsmischer140l3],
     category: "zwangsmischer",
