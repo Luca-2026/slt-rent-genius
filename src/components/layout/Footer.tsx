@@ -119,7 +119,7 @@ export function Footer() {
 
         {/* Sales Links */}
         <div className="mb-4">
-          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+          <h4 className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">
             {t("footer.salesAndBrands")}
           </h4>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
@@ -127,7 +127,7 @@ export function Footer() {
               <Link
                 key={link.label}
                 to={link.to}
-                className="text-xs text-white/50 hover:text-accent transition-colors"
+                className="text-xs text-white/80 hover:text-accent transition-colors"
               >
                 {link.label}
               </Link>
@@ -140,7 +140,7 @@ export function Footer() {
 
         {/* Standort Detail Links */}
         <div className="mb-4">
-          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+          <h4 className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">
             {t("footer.locations")}
           </h4>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
@@ -148,7 +148,7 @@ export function Footer() {
               <Link
                 key={loc.id}
                 to={`/standorte/${loc.id}`}
-                className="text-xs text-white/50 hover:text-accent transition-colors"
+                className="text-xs text-white/80 hover:text-accent transition-colors"
               >
                 {`Standort ${loc.name}`}
               </Link>
@@ -158,7 +158,7 @@ export function Footer() {
 
         {/* Local SEO Links by Region */}
         <div className="mb-4">
-          <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">
+          <h4 className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-3">
             {t("footer.nearYou")}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -172,7 +172,7 @@ export function Footer() {
                       <Link
                         key={area.slug}
                         to={`/mieten-in/${area.slug}`}
-                        className="text-xs text-white/50 hover:text-accent transition-colors"
+                        className="text-xs text-white/80 hover:text-accent transition-colors"
                       >
                         {area.name}
                       </Link>
@@ -187,7 +187,7 @@ export function Footer() {
 
       {/* Copyright Bar */}
       <div className="bg-primary/90 border-t border-white/5">
-        <div className="section-container py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
+        <div className="section-container py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/80">
           <span>© {new Date().getFullYear()} SLT Technology Group GmbH & Co. KG</span>
           <div className="flex gap-4 flex-wrap">
             {legalLinks.map((link) => (
