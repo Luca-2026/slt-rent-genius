@@ -2052,6 +2052,7 @@ export const bonnMoebelProducts = [
       "Bauweise": "klappbar",
     },
     rentwareCode: { bonn: "DYAJ56" },
+    pricePerDay: "ab 5 €",
   },
   {
     id: "bonn-stehtisch-husse-weiss",
