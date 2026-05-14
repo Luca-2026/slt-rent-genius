@@ -123,7 +123,7 @@ export default function ProductDetail() {
   }, [product]);
 
   // Get product-specific SEO data from Excel
-  const productSEO = useMemo(() => product ? getProductSEO(product.id) : undefined, [product]);
+  const productSEO = useMemo(() => product ? getProductSEO(product.id, location?.id) : undefined, [product, location]);
 
   // Suggested products for 404 fallback (must be at top level for hooks rules)
   const notFoundSuggestions = useMemo(() => {

@@ -7084,20 +7084,74 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "zwangsmischer-140l": {
     excelName: "Zwangsmischer 140L",
-    seoTitle: "Zwangsmischer 140L mieten | Compakt Mischer NRW",
-    metaDescription: "Leistungsstarker Zwangsmischer Compakt 140L für gleichmäßige Beton-, Mörtel- und Estrichmischungen. 2.200 W Motorleistung und 140 Liter Trommelvolumen.",
+    seoTitle: "Zwangsmischer 140L mieten in Krefeld | Compakt 140 ab 39 €",
+    metaDescription: "Zwangsmischer Compakt 140L mieten in Krefeld – 2.200 W, 230 V, 140 L Trommelvolumen. Ideal für Estrich, Mörtel und Beton. Ab 39 €/Tag (brutto inkl. 19 % USt.).",
     h1: "Zwangsmischer 140L mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Technische Merkmale des Zwangsmischers", "Einsatzmöglichkeiten auf der Baustelle", "Wichtige Informationen zur Rückgabe"],
-    useCaseBau: "Dieses Gerät dient der Mischung größerer Mengen Mörtel oder Beton auf der Baustelle.",
+    h2s: [
+      "Zwangsmischer 140L in Krefeld – Compakt 140 für Mörtel, Estrich und Beton",
+      "Technische Daten des Compakt 140L",
+      "Selbstabholung am Standort Krefeld",
+    ],
+    useCaseBau: "Auf Baustellen am Niederrhein mischt der Compakt 140L erdfeuchten Estrich, Klebemörtel, Putz und Beton in gleichmäßiger Qualität – auch bei zähen Mischungen, bei denen ein Freifallmischer an seine Grenzen kommt.",
     useCaseEvent: "",
-    useCasePrivat: "Der Mischer kann für die Mörtel- oder Beton-Mischung bei Eigenheim-Projekten genutzt werden.",
-    primaryKeywords: "Zwangsmischer 140L mieten in Krefeld, Zwangsmischer 140L leihen in Krefeld, Zwangsmischer 140L mieten NRW",
+    useCasePrivat: "Für private Bauvorhaben in Krefeld und Umgebung – z. B. Garagenboden, Terrassenfundament, Pflaster-Bettung oder Mauer­arbeiten – mischst Du mit 140 Litern Trommelvolumen pro Charge bequem auch größere Mengen.",
+    primaryKeywords: "Zwangsmischer 140L mieten Krefeld, Zwangsmischer mieten Krefeld, Zwangsmischer leihen Krefeld, Mörtelmischer mieten Krefeld, Estrichmischer mieten Krefeld, Compakt 140 mieten Niederrhein",
     is247: false,
     dailyPriceFrom: 39,
     faqs: [
+      { q: "Wo kann ich den Zwangsmischer 140L in Krefeld abholen?", a: "Du holst den Compakt 140L direkt am SLT Rental Standort Krefeld ab. Mit klappbaren Standfüßen und 130 kg Eigengewicht passt der Mischer in einen Pkw-Anhänger oder lässt sich zu zweit in einen Transporter laden." },
       { q: "Wie hoch ist das Trommelvolumen des Zwangsmischers?", a: "Das maximale Trommelvolumen des Typs Compakt 140L beträgt 140 Liter." },
-      { q: "Welche Anforderungen bestehen an die Stromversorgung?", a: "Der Zwangsmischer wird über einen 230V-Anschluss betrieben und hat eine Motorleistung von 2.200 W." },
+      { q: "Welche Anforderungen bestehen an die Stromversorgung?", a: "Der Zwangsmischer wird über einen 230 V-Anschluss betrieben und hat eine Motorleistung von 2.200 W." },
+      { q: "Was kostet die Miete des Zwangsmischers in Krefeld?", a: "Die Miete startet bei 39 € pro Tag (brutto inkl. 19 % USt.). Den tagesaktuellen Preis und die Verfügbarkeit siehst Du im Buchungsbereich oben auf dieser Seite." },
       { q: "Was muss bei der Rückgabe des Mischers beachtet werden?", a: "Der Zwangsmischer ist gereinigt zurückzugeben. Andernfalls wird eine Reinigungspauschale in Höhe von 100 € berechnet." },
+    ],
+  },
+  "bonn-zwangsmischer-140l": {
+    excelName: "Zwangsmischer 140L",
+    seoTitle: "Zwangsmischer 140L mieten in Bonn | Compakt 140 ab 39 €",
+    metaDescription: "Zwangsmischer Compakt 140L mieten in Bonn: 2.200 W, 140 L Trommel, 230 V. Perfekt für Estrich, Mörtel und Kleber. Ab 39 €/Tag brutto inkl. 19 % USt.",
+    h1: "Zwangsmischer 140L mieten in Bonn – Compakt 140 bei SLT Rental",
+    h2s: [
+      "Zwangsmischer 140L in Bonn – gleichmäßige Mischungen für Bau und Renovierung",
+      "Technische Daten des Compakt 140L",
+      "Selbstabholung am Standort Bonn",
+    ],
+    useCaseBau: "Im Großraum Bonn und im Rhein-Sieg-Kreis mischt der Compakt 140L Estrich, Klebemörtel, Putz, Stahlfaserbeton und erdfeuchte Mörtel in gleichbleibender Qualität – ideal für Bodenleger, Maurer und Garten- und Landschaftsbauer.",
+    useCaseEvent: "",
+    useCasePrivat: "Für Heimwerker in Bonn, Bad Godesberg, Beuel oder Hardtberg eignet sich der Mischer für Pflasterbettung, Hofbefestigung, Gartenmauer oder die Sanierung von Kellerböden – mit 140 Litern pro Charge auch bei größeren Flächen wirtschaftlich.",
+    primaryKeywords: "Zwangsmischer 140L mieten Bonn, Zwangsmischer mieten Bonn, Estrichmischer mieten Bonn, Mörtelmischer mieten Bonn, Compakt 140 mieten Rhein-Sieg",
+    is247: false,
+    dailyPriceFrom: 39,
+    faqs: [
+      { q: "Wo hole ich den Zwangsmischer 140L in Bonn ab?", a: "Die Abholung erfolgt am SLT Rental Standort Bonn. Mit klappbaren Standfüßen lässt sich der Compakt 140L gut transportieren – ein Pkw-Anhänger oder Transporter ist ausreichend." },
+      { q: "Wofür eignet sich ein Zwangsmischer besser als ein Freifallmischer?", a: "Zwangsmischer mischen das Material zwangsweise um die Achse und liefern auch bei erdfeuchten oder zähen Mischungen wie Estrich, Klebemörtel oder Stahlfaserbeton ein gleichmäßiges Ergebnis – das schaffen klassische Freifallmischer in dieser Form nicht." },
+      { q: "Welche Stromversorgung benötigt der Compakt 140L?", a: "Eine haushaltsübliche 230 V-Steckdose reicht aus. Der Motor leistet 2.200 W bei einer Rührwerksdrehzahl von 27,5 min⁻¹." },
+      { q: "Was kostet die Miete in Bonn?", a: "Die Tagesmiete startet bei 39 € (brutto inkl. 19 % USt.). Aktuelle Verfügbarkeit und den Endpreis siehst Du im Buchungsbereich oben." },
+      { q: "Wie muss der Mischer zurückgegeben werden?", a: "Bitte gereinigt zurückgeben. Bei ungereinigter Rückgabe berechnen wir eine Reinigungspauschale in Höhe von 100 €." },
+    ],
+  },
+  "muelheim-zwangsmischer-140l": {
+    excelName: "Zwangsmischer 140L",
+    seoTitle: "Zwangsmischer 140L mieten in Mülheim a. d. Ruhr | ab 39 €",
+    metaDescription: "Zwangsmischer Compakt 140L mieten in Mülheim an der Ruhr – 140 L Trommel, 2.200 W, 230 V. Ideal für Estrich, Mörtel und Beton. Ab 39 €/Tag inkl. 19 % USt.",
+    h1: "Zwangsmischer 140L mieten in Mülheim an der Ruhr – Compakt 140 bei SLT Rental",
+    h2s: [
+      "Zwangsmischer 140L in Mülheim an der Ruhr – stark im gesamten Ruhrgebiet",
+      "Technische Daten des Compakt 140L",
+      "Selbstabholung am Standort Mülheim",
+    ],
+    useCaseBau: "Im Ruhrgebiet rund um Mülheim, Essen, Duisburg und Oberhausen mischt der Compakt 140L Estrich, Klebemörtel, Putz und Beton zuverlässig auch in zähen Konsistenzen – passend für Bodenleger, Stuckateure, Tiefbau- und GaLaBau-Unternehmen.",
+    useCaseEvent: "",
+    useCasePrivat: "Für private Projekte in Mülheim an der Ruhr – etwa Pflasterarbeiten in der Auffahrt, Estrich im Hobbyraum oder Beton für Fundamente im Garten – liefert der 140-Liter-Zwangsmischer auch bei kleinen Mengen ein gleichmäßiges Mischergebnis.",
+    primaryKeywords: "Zwangsmischer 140L mieten Mülheim, Zwangsmischer mieten Mülheim an der Ruhr, Zwangsmischer mieten Ruhrgebiet, Estrichmischer mieten Mülheim, Mörtelmischer mieten Mülheim, Compakt 140 mieten Essen Duisburg",
+    is247: false,
+    dailyPriceFrom: 39,
+    faqs: [
+      { q: "Wo kann ich den Zwangsmischer 140L in Mülheim an der Ruhr abholen?", a: "Die Abholung erfolgt am SLT Rental Standort Mülheim. Von dort erreichst Du das gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen und Bottrop sind in wenigen Minuten angebunden." },
+      { q: "Was unterscheidet den Compakt 140L von einer normalen Mischmaschine?", a: "Als Zwangsmischer mischt er das Material aktiv um die senkrechte Achse statt es nur fallen zu lassen. Dadurch wird Estrich, Klebemörtel oder Stahlfaserbeton gleichmäßig homogen – das ist mit einem Freifallmischer kaum möglich." },
+      { q: "Welche technischen Daten hat der Mischer?", a: "Compakt 140L: 2.200 W Motorleistung, 230 V Anschluss, 27,5 min⁻¹ Rührwerksdrehzahl, 140 L Trommelvolumen, 130 kg Gewicht, Abmessungen 82 × 77 × 121 cm." },
+      { q: "Was kostet die Miete in Mülheim?", a: "Ab 39 € pro Tag (brutto inkl. 19 % USt.). Den exakten Preis für Deine Mietdauer und die Verfügbarkeit siehst Du im Buchungsbereich oben." },
+      { q: "Wie wird der Mischer zurückgegeben?", a: "Gereinigt – andernfalls berechnen wir eine Reinigungspauschale in Höhe von 100 €." },
     ],
   },
   "einhell-heissluftfoehn-te-ha18li": {
@@ -7272,10 +7326,15 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
 };
 
-export function getProductSEO(productId: string): ProductSEOData | undefined {
+export function getProductSEO(productId: string, locationId?: string): ProductSEOData | undefined {
+  // 1) Standortspezifische Variante hat Vorrang (z. B. "bonn-zwangsmischer-140l")
+  if (locationId) {
+    const prefixed = `${locationId}-${productId}`;
+    if (productSEOData[prefixed]) return productSEOData[prefixed];
+  }
+  // 2) Direkter Treffer auf die Produkt-ID
   if (productSEOData[productId]) return productSEOData[productId];
-  // Fallback: standortspezifische Varianten (z. B. "bonn-kettendumper-rmd800")
-  // greifen auf den Haupt-SEO-Eintrag zurück, falls vorhanden.
+  // 3) Fallback: ID enthält bereits Standort-Präfix → Basiseintrag versuchen
   for (const prefix of ["bonn-", "muelheim-", "krefeld-"]) {
     if (productId.startsWith(prefix)) {
       const stripped = productId.slice(prefix.length);
