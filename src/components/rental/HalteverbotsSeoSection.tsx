@@ -149,7 +149,8 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
             anbringen.
           </li>
           <li>
-            <strong>Diebstahlsicherung</strong> anlegen, Stand prüfen (windsicher!).
+            <strong>Stand prüfen</strong> – beide Schilder windsicher und standfest
+            ausrichten.
           </li>
           <li>
             <strong>Aufstellprotokoll</strong> ausfüllen und alle Zonen-Fotos sowie
