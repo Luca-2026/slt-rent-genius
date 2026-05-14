@@ -34,6 +34,7 @@ import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
+import { HalteverbotsSeoSection } from "@/components/rental/HalteverbotsSeoSection";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
@@ -1126,6 +1127,11 @@ export default function ProductDetail() {
                 categoryTitle={category.title}
                 productSEO={productSEO}
               />
+
+              {/* Halteverbotsschilder: ausführlicher Ratgeber im SEO-Bereich */}
+              {(product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set") && (
+                <HalteverbotsSeoSection locationId={location.id} />
+              )}
 
             </div>
 
