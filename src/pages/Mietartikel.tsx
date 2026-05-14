@@ -220,7 +220,38 @@ export default function Mietartikel() {
         </div>
       </section>
 
-      {/* Intro Block */}
+      {/* Kategoriegruppen: BAU / EVENT / TRANSPORT & OUTDOOR */}
+      <section className="section-container py-10 md:py-14 space-y-10 md:space-y-12">
+        {groupedSections.map((group) => {
+          const Icon = group.icon;
+          const teaser =
+            group.id === "bau" ? bauTeaserProducts : group.id === "event" ? eventTeaserProducts : null;
+          const teaserLabel = group.id === "bau" ? "Bau" : "Event";
+          return (
+            <AnimatedSection key={group.id}>
+              <div className="flex items-baseline gap-2 md:gap-3 mb-4 md:mb-6 border-b border-border pb-2">
+                <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary self-center" aria-hidden />
+                <h2 className="text-xl md:text-2xl font-bold uppercase tracking-wide text-headline">
+                  {group.title}
+                </h2>
+                {group.subtitle && (
+                  <span className="text-sm md:text-base text-muted-foreground">
+                    — {group.subtitle}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
+                {group.cats.map((cat) => (
+                  <CategoryCard key={cat.id} category={cat} />
+                ))}
+              </div>
+              {teaser && <TeaserBlock products={teaser} groupLabel={teaserLabel} />}
+            </AnimatedSection>
+          );
+        })}
+      </section>
+
+      {/* Intro Block (unter den Kategorien) */}
       <section className="section-container py-8 md:py-12">
         <AnimatedSection>
           <div className="prose prose-sm md:prose-base max-w-4xl mx-auto text-muted-foreground">
@@ -234,34 +265,6 @@ export default function Mietartikel() {
               Profitieren Sie von unserer <strong className="text-foreground">Tiefpreisgarantie</strong>, attraktiven <strong className="text-foreground">Wochenendtarifen</strong> und der bequemen Online-Buchung. Anhänger sind in Mülheim an der Ruhr per SMS-Code sogar <strong className="text-foreground">24/7</strong> verfügbar. Für Geschäftskunden bieten wir individuelle <strong className="text-foreground">B2B-Konditionen</strong> mit Rahmenverträgen und Mengenrabatten. Lieferung ins gesamte Rhein-Ruhr-Gebiet auf Anfrage.
             </p>
           </div>
-        </AnimatedSection>
-      </section>
-
-      {/* Bau & Handwerk */}
-      <section className="section-container py-10 md:py-14">
-        <AnimatedSection>
-          <h2 className="text-2xl md:text-3xl font-bold text-headline mb-2">{t("mietartikel.bauHandwerk")}</h2>
-          <p className="text-muted-foreground mb-6">{t("mietartikel.bauHandwerkDesc")}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-            {bauCategories.map(cat => (
-              <CategoryCard key={cat.id} category={cat} />
-            ))}
-          </div>
-          <TeaserBlock products={bauTeaserProducts} groupLabel="Bau" />
-        </AnimatedSection>
-      </section>
-
-      {/* Event & Veranstaltung */}
-      <section className="section-container py-10 md:py-14">
-        <AnimatedSection>
-          <h2 className="text-2xl md:text-3xl font-bold text-headline mb-2">{t("mietartikel.eventVeranstaltung")}</h2>
-          <p className="text-muted-foreground mb-6">{t("mietartikel.eventVeranstaltungDesc")}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-            {eventCategories.map(cat => (
-              <CategoryCard key={cat.id} category={cat} />
-            ))}
-          </div>
-          <TeaserBlock products={eventTeaserProducts} groupLabel="Event" />
         </AnimatedSection>
       </section>
 
