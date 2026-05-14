@@ -28,6 +28,7 @@ function pemToArrayBuffer(pem: string): ArrayBuffer {
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
     .replace(/\s+/g, "");
+  console.log("PEM debug", { len: cleaned.length, first20: cleaned.slice(0, 20), last20: cleaned.slice(-20) });
   const binary = atob(cleaned);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
