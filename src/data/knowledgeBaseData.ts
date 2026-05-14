@@ -114,6 +114,13 @@ export const kbCategories: KBCategory[] = [
     articleCount: 2,
   },
   {
+    id: "absperrtechnik",
+    title: "Absperrtechnik & Halteverbot",
+    description: "Anleitung und Aufstellprotokoll für mobile Halteverbotszonen nach StVO.",
+    icon: "ShieldAlert",
+    articleCount: 2,
+  },
+  {
     id: "allgemein",
     title: "Allgemeine Hinweise",
     description: "Mietablauf, Rückgabe, Transport und häufige Fragen.",
