@@ -116,13 +116,6 @@ export function CategoryGrid({ location }: CategoryGridProps) {
 
   return (
     <div className="space-y-8 md:space-y-10">
-      {/* "Alle Artikel" als eigenständige Karte oben */}
-      {alleCategory && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
-          <CategoryCard category={alleCategory} locationId={location.id} />
-        </div>
-      )}
-
       {groupedSections.map((group) => {
         const Icon = group.icon;
         return (
@@ -157,6 +150,13 @@ export function CategoryGrid({ location }: CategoryGridProps) {
               <CategoryCard key={cat.id} category={cat} locationId={location.id} />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* "Alle Artikel" als eigenständige Karte unten */}
+      {alleCategory && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+          <CategoryCard category={alleCategory} locationId={location.id} />
         </div>
       )}
     </div>
