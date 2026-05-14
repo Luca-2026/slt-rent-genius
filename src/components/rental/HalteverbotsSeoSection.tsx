@@ -126,14 +126,18 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
       <section className="border-t border-border pt-6">
         <h3 className="text-lg font-semibold text-headline mb-3 flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
-          4. Aufstellung – mindestens 72 Stunden vor Geltungsbeginn
+          4. Aufstellung – frühzeitig genug, damit die Zone rechtsgültig ist
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-3">
           Damit Du bei einem Verstoß <strong>kostenpflichtig abschleppen lassen</strong>{" "}
-          darfst, muss die Halteverbotszone laut Rechtsprechung mindestens{" "}
-          <strong>72 Stunden vor Geltungsbeginn</strong> sichtbar aufgestellt sein.
-          Fahrzeuge, die zum Zeitpunkt der Aufstellung bereits geparkt waren, dürfen nicht
-          umgesetzt werden – diese Kennzeichen werden im Aufstellprotokoll notiert.
+          darfst, muss die Halteverbotszone laut Rechtsprechung rechtzeitig vor
+          Geltungsbeginn sichtbar aufgestellt sein. <strong>Wichtig:</strong> Die genaue
+          Frist variiert von Stadt zu Stadt – in Bonn und Krefeld sind es mindestens{" "}
+          <strong>72 Stunden</strong>, in Köln z. B. nur <strong>48 Stunden</strong>. Im
+          sichersten Fall richtest Du die Zone bereits{" "}
+          <strong>4 Tage vorher</strong> ein. Fahrzeuge, die zum Zeitpunkt der Aufstellung
+          bereits geparkt waren, dürfen nicht umgesetzt werden – diese Kennzeichen werden
+          im Aufstellprotokoll notiert.
         </p>
         <ol className="space-y-2 text-sm text-muted-foreground list-decimal pl-5">
           <li>
