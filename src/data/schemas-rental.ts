@@ -279,6 +279,16 @@ export function buildCategorySchemas(cat: PrerenderCategory | undefined): JsonLd
 export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
   if (!p) return [];
   const loc = LOCATION_DETAILS[p.locationId];
+  const localizeFaqText = (text: string): string => {
+    const locationEmail = loc?.email;
+    if (!locationEmail) return text;
+    return text
+      .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
+      .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+      .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
+      .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
+      .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`);
+  };
   const productUrl = `${BASE_URL}/mieten/${p.locationId}/${p.category}/${p.id}`;
   const image = p.image
     ? p.image.startsWith("http")
@@ -336,8 +346,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       "@type": "FAQPage",
       mainEntity: p.faqs.map((f) => ({
         "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
+        name: localizeFaqText(f.q),
+        acceptedAnswer: { "@type": "Answer", text: localizeFaqText(f.a) },
       })),
     });
   }
