@@ -20,7 +20,7 @@ const CATEGORY_GROUPS: Array<{
   {
     id: "bau",
     title: "BAU",
-    subtitle: "alles für Baustelle, Handwerk, GaLaBau",
+    subtitle: "alles für Baustelle & Handwerk",
     icon: HardHat,
     categoryIds: [
       "erdbewegung",
