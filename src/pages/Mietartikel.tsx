@@ -88,12 +88,63 @@ export default function Mietartikel() {
     setDialogOpen(true);
   };
 
-  const bauCategories = categories.filter(c =>
-    ["anhaenger", "nutzfahrzeuge", "erdbewegung", "verdichtung", "arbeitsbuehnen", "werkzeuge", "gartenpflege", "leitern-gerueste", "aggregate", "kabel-stromverteiler", "heizung-trocknung", "absperrtechnik"].includes(c.id)
-  );
-  const eventCategories = categories.filter(c =>
-    ["beleuchtung", "beschallung", "buehne", "traversen-rigging", "kommunikation", "moebel-zelte", "geschirr-glaeser-besteck", "spezialeffekte", "huepfburgen", "wohnwagen-camping"].includes(c.id)
-  );
+  const CATEGORY_GROUPS: Array<{
+    id: "bau" | "event" | "transport";
+    title: string;
+    subtitle?: string;
+    icon: React.ComponentType<{ className?: string }>;
+    categoryIds: string[];
+  }> = [
+    {
+      id: "bau",
+      title: "BAU",
+      subtitle: "alles für Baustelle & Handwerk",
+      icon: HardHat,
+      categoryIds: [
+        "erdbewegung",
+        "verdichtung",
+        "arbeitsbuehnen",
+        "werkzeuge",
+        "leitern-gerueste",
+        "gartenpflege",
+        "aggregate",
+        "kabel-stromverteiler",
+        "heizung-trocknung",
+        "absperrtechnik",
+      ],
+    },
+    {
+      id: "event",
+      title: "EVENT",
+      subtitle: "alles für Veranstaltungen",
+      icon: PartyPopper,
+      categoryIds: [
+        "beleuchtung",
+        "beschallung",
+        "buehne",
+        "traversen-rigging",
+        "kommunikation",
+        "spezialeffekte",
+        "moebel-zelte",
+        "geschirr-glaeser-besteck",
+        "huepfburgen",
+      ],
+    },
+    {
+      id: "transport",
+      title: "TRANSPORT & OUTDOOR",
+      icon: Truck,
+      categoryIds: ["anhaenger", "nutzfahrzeuge", "wohnwagen-camping"],
+    },
+  ];
+
+  const byId = new Map(categories.map((c) => [c.id, c]));
+  const groupedSections = CATEGORY_GROUPS
+    .map((g) => ({
+      ...g,
+      cats: g.categoryIds.map((id) => byId.get(id)).filter((c): c is typeof categories[0] => Boolean(c)),
+    }))
+    .filter((g) => g.cats.length > 0);
 
   const CategoryCard = ({ category }: { category: typeof categories[0] }) => (
     <button
