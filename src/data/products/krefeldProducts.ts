@@ -2427,7 +2427,7 @@ export const absperrtechnikProducts: Product[] = [
       "Zusatzschilder": "StVO Größe 1, individuell beschriftbar",
       "Aufstellfrist": "Min. 72 Stunden vor Nutzungstag",
       "Genehmigung": "Min. 14 Werktage Vorlaufzeit bei Beantragung durch uns",
-      "Hinweis": "Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden (krefeld@/bonn@/muelheim@slt-rental.de)",
+      "Hinweis": "Genehmigungs-Kopie an krefeld@slt-rental.de senden",
       "Abholung": "24/7 an allen Standorten möglich",
     },
     sortOrder: 0,
