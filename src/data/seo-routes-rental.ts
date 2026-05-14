@@ -580,7 +580,11 @@ for (const loc of locations as LocationData[]) {
           p.description ||
           `${p.name} mieten in ${locName} bei SLT Rental. Faire Mietpreise, Beratung und Lieferung in der Region.`,
       );
-      const h1 = seo?.h1 || `${p.name} mieten in ${locName}`;
+      // seo.h1 ist Krefeld-zentriert (z.B. „... mieten in Krefeld – Jetzt verfügbar bei SLT Rental").
+      // Für Bonn/Mülheim Standortnamen ersetzen, damit jede URL eine eindeutige H1 hat.
+      const h1 = seo?.h1
+        ? seo.h1.replace(/in Krefeld\b/g, `in ${locName}`)
+        : `${p.name} mieten in ${locName}`;
       const intro = [
         seo?.metaDescription ||
           p.description ||
