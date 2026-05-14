@@ -635,7 +635,7 @@ for (const loc of locations as LocationData[]) {
           { name: p.name, path: `/mieten/${loc.id}/${catId}/${p.id}` },
         ],
         changefreq: "weekly",
-        priority: hasSEO ? 0.7 : 0.3,
+        priority: hasSEO ? 0.7 : 0.5,
         lastmod: TODAY,
       });
     }
