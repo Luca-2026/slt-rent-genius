@@ -7093,6 +7093,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Der Mischer kann für die Mörtel- oder Beton-Mischung bei Eigenheim-Projekten genutzt werden.",
     primaryKeywords: "Zwangsmischer 140L mieten in Krefeld, Zwangsmischer 140L leihen in Krefeld, Zwangsmischer 140L mieten NRW",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Wie hoch ist das Trommelvolumen des Zwangsmischers?", a: "Das maximale Trommelvolumen des Typs Compakt 140L beträgt 140 Liter." },
       { q: "Welche Anforderungen bestehen an die Stromversorgung?", a: "Der Zwangsmischer wird über einen 230V-Anschluss betrieben und hat eine Motorleistung von 2.200 W." },
