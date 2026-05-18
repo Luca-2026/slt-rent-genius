@@ -609,11 +609,11 @@ for (const loc of locations as LocationData[]) {
       const availability = getProductAvailability(p, loc.id);
       intro.push(`${availability.headline}. ${availability.body}`);
 
-      // Sprint 2+ – Standort × Kategorie spezifischer Content
+      // Standort × Kategorie spezifischer Content (echt lokal,
+      // nur Aussagen die in Krefeld so nicht stimmen würden).
       const localContent = getLocalCategoryContent(loc.id, catId);
       if (localContent) {
-        intro.push(`Einsatz in ${locName}: ${localContent.hookline} ${localContent.useCase}`);
-        intro.push(`Lieferung ab ${locName}: ${localContent.deliveryNote}`);
+        intro.push(`Lieferung ab ${locName}: ${localContent.hookline} ${localContent.standortFakten}`);
       }
 
       PRODUCT_ROUTES.push({
