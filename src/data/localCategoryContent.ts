@@ -444,6 +444,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    gartenpflege: {
+      hookline:
+        "Vertikutierer, Häcksler, Erdbohrer, Akku-Kettensägen, Freischneider, Baumstumpffräse und Hochdruckreiniger für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Vertikutierer (elektrisch und benzinbetrieben), Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer, Erdbohrer 4308, Häcksler Axt und LS95 sowie Hochdruckreiniger passen in der Regel in jeden Pkw, Kombi oder kleinen Anhänger und werden nach Terminvereinbarung übergeben. Größere Geräte wie die Baumstumpffräse F360 liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Grundstückspflege, Heckenrückschnitt, Rasen-Sanierung und Aufräumarbeiten nach Sturmschäden. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Gartengeräte nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Größere Geräte wie die Baumstumpffräse F360 oder Gartengeräte-Pakete liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Vertikutierer, Akku-Kettensägen, Freischneider und Erdbohrer holst du in der Regel selbst mit Pkw oder Kombi ab.",
+        },
+        {
+          q: "Stehen die Gartengeräte direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Gartenpflege-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind – insbesondere die Baumstumpffräse F360 – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich Vertikutierer und Häcksler in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. Vertikutierer (elektrisch und Benzin), Häcksler Axt und LS95, Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer und Erdbohrer 4308 passen in der Regel in jeden Pkw, Kombi oder kleinen Anhänger und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für die Baumstumpffräse F360 empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
   },
 };
 
