@@ -298,9 +298,19 @@ export default function ProductDetail() {
                 const priceFrom = productSEO.dailyPriceFrom as number;
                 const validUntil = new Date();
                 validUntil.setFullYear(validUntil.getFullYear() + 1);
+                const availability = getProductAvailability(product, location.id);
                 return {
                   "@type": "Offer",
-                  "availability": "https://schema.org/InStock",
+                  "availability": availability.schemaAvailability,
+                  ...(availability.deliveryLeadTime
+                    ? {
+                        "deliveryLeadTime": {
+                          "@type": "QuantitativeValue",
+                          "value": 24,
+                          "unitCode": "HUR",
+                        },
+                      }
+                    : {}),
                   "url": canonicalUrl,
                   "priceCurrency": "EUR",
                   "price": priceFrom.toFixed(2),
