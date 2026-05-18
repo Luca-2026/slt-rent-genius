@@ -151,6 +151,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "leitern-gerueste": {
+      hookline:
+        "Mehrzweckleitern, Stehleitern und Rollgerüste mietest du an unserer Filiale Bonn – kompakte Leitern auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, Rollgerüste mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Klapp- und Mehrzweckleitern lassen sich in der Regel im eigenen Pkw oder Kombi transportieren – Rollgerüste, große Steh- und Schiebeleitern liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+      faqs: [
+        {
+          q: "Kann ich Leitern an der Filiale Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Mehrzweck-, Steh- und Klappleitern kannst du also auch für Wochenend-Projekte direkt vor Ort mitnehmen, in der Regel passen sie in jeden Kombi oder Pkw mit Dachträger.",
+        },
+        {
+          q: "Liefert ihr Rollgerüste ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Rollgerüste, große Steh- und Schiebeleitern liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Welche Leitern und Gerüste habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment an Leitern und Rollgerüsten direkt vor Ort – passend für Sanierung, Malerarbeiten, GaLaBau und Innenausbau. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezialmodelle oder größere Gerüst-Konfigurationen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
@@ -243,6 +264,27 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Stehen die Bautrockner direkt am Standort Mülheim?",
           a: "Ein Teil unseres Heiz- und Trocknungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind, disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    "leitern-gerueste": {
+      hookline:
+        "Leitern und Rollgerüste für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung von Rollgerüsten direkt zur Einsatzstelle.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Klapp- und Mehrzweckleitern lassen sich in der Regel im eigenen Pkw oder Kombi mitnehmen; Rollgerüste und größere Steh- bzw. Schiebeleitern liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Rollgerüste nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Ab unserem Service-Standort Mülheim liefern wir Rollgerüste, große Steh- und Schiebeleitern ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Tieflader-Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen die Leitern und Gerüste direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Leitern- und Gerüst-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind – insbesondere größere Rollgerüst-Konfigurationen – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich kleine Leitern in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. Klapp-, Steh- und Mehrzweckleitern passen in der Regel in jeden Kombi oder Pkw mit Dachträger und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für Rollgerüste und große Schiebeleitern empfehlen wir die Lieferung direkt zur Einsatzstelle.",
         },
       ],
     },
