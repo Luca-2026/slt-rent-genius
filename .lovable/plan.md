@@ -1,102 +1,77 @@
-## Ziel
+## Was du zurecht kritisiert hast
 
-Google soll alle Standort-Varianten (Bonn, Mülheim, Krefeld) als eigenständig indexieren – nicht mehr als "Alternative Seite mit richtigem kanonischen Tag" wegwerfen.
+1. **„Zentrallager Bonn"** ist falsch. Bonn ist eine **Filiale** mit eigenem Mietpark, kein Zentrallager. Nur Krefeld ist Hauptsitz/Hauptlager.
+2. **„Welche Rüttelplatte für Pflasterarbeiten in Bonn typisch"** ist keine Bonn-Frage, die Antwort gilt in Krefeld, Köln oder Hamburg genauso. Das ist Pseudo-Lokalisierung und schadet eher.
+3. **Doppelte FAQs**: Verdichtung hat bereits einen FAQ-Block aus `ProductSEOContent` mit zwei Fragen. Mein neuer Block hat einen zweiten – auf der Seite stehen jetzt zwei „Häufige Fragen"-Sektionen.
 
-Zwei Hebel:
+## Leitlinien (gelten ab jetzt für alle Standorte/Kategorien)
 
-1. **Automatik "echte Verfügbarkeit":** Ist für ein Produkt ein `rentwareCode[bonn]` (bzw. `muelheim`) hinterlegt → "Verfügbar in Bonn" (bzw. Mülheim) mit Sofort-Buchbarkeit. Fehlt der Code → "Auf Anfrage in Bonn – Lieferung aus Krefeld in 24 h". Beide Varianten sind crawl- und indexierbar (`index, follow`), unterscheiden sich aber sichtbar im DOM.
-2. **Sichtbare, einzigartige Inhalte pro Standort-Produkt-Kombi** (nicht nur `<head>`), damit Google echte Differenzierung sieht.
+- **Terminologie:** Nur Krefeld = „Hauptlager / Hauptsitz". Bonn = „Filiale Bonn / unser Standort Bonn". Mülheim = „Service-Standort Mülheim". Das Wort „Zentrallager" kommt ausschließlich vor, wenn wir die **Disposition aus Krefeld** beschreiben („Lieferung aus dem Hauptlager Krefeld") – nie als Bezeichnung für Bonn oder Mülheim.
+- **Lokal = wirklich lokal:** Eine Frage / ein Satz gehört nur dann auf die Bonn-Seite, wenn die Antwort in Bonn **anders** ist als an anderen Standorten. Tests vorm Schreiben:
+  - Würde derselbe Satz auf der Krefeld-Seite genauso stimmen? → Wenn ja, raus.
+  - Stützt sich der Inhalt auf nachprüfbare Fakten (Adresse, Öffnungszeiten, Liefergebiet, Telefon, A-Anbindung)? → Wenn nein, raus.
+- **Keine doppelten Blöcke:** Eine FAQ-Sektion pro Seite. Standort-FAQs werden in den bestehenden FAQ-Block **integriert**, nicht parallel gerendert.
+- **NEVER invent data:** Keine Anekdoten („Sanierungen im Ahrtal"), keine Behauptungen über Projekte, die wir nicht belegen können.
 
-## Bestandsaufnahme
+## Was wirklich Bonn-spezifisch ist (recherchiert aus `locationData.ts`)
 
-- `Product.rentwareCode: Record<string, string>` ist bereits pro Standort gepflegt (Krefeld, Bonn, Mülheim). Stand heute: ~30 Bonn-Codes, ~12 Mülheim-Codes – Rest läuft als "auf Anfrage" aus Krefeld.
-- `StandortVerfuegbarkeit.tsx` differenziert bisher nur per Standort-Charakter (`full-warehouse` / `service-handover` / `delivery-only`), nicht per Produkt-Verfügbarkeit.
-- Canonical zeigt aktuell pro Variante auf sich selbst → Google kanonisiert auf Krefeld, weil Body fast identisch.
+Hier die nachprüfbaren Fakten, die echte Differenzierung erlauben:
 
-## Lösung – 4 Bausteine
+| Merkmal | Krefeld | **Bonn** | Mülheim |
+|---|---|---|---|
+| Adresse | Anrather Str. 291, Krefeld-Fichtenhain | **Drachenburgstr. 8, 53179 Bonn-Mehlem (linksrheinisch, Bad Godesberg)** | Ruhrorter Str. 122, Mülheim |
+| Öffnung Mo–Fr | 08:00–18:00 | **07:00–18:00 (eine Stunde früher!)** | nach Vereinbarung |
+| Samstag | 10:00–14:30 (nach Buchung) | **08:00–17:30 (regulär offen!)** | – |
+| A-Anbindung | A44 | **A565, A555, B9** | A40, A52 |
+| Einzugsgebiet | Niederrhein, Düsseldorf, MG, Duisburg-West | **Bonn, Rhein-Sieg, Ahrtal, Köln-Süd** | Ruhrgebiet |
+| 24/7-Anhänger | ja | **ja, an der Drachenburgstraße** | ja |
 
-### 1. Verfügbarkeits-Automatik (`getProductAvailability`)
+Daraus lassen sich echte Bonn-FAQs ableiten, die in Krefeld so **nicht** stimmen:
 
-Neue Helper-Funktion in `src/lib/productAvailability.ts`:
+- „Habt ihr in Bonn auch samstags offen?" → Ja, Sa 08:00–17:30 (vs. Krefeld nur nach Voranmeldung).
+- „Wo genau ist der Standort Bonn?" → Drachenburgstr. 8, 53179 Bonn (Bad Godesberg, südlich des Bonner Stadtzentrums, direkt an der B9, schnelle Anfahrt aus Rhein-Sieg, Ahrtal und Köln-Süd).
+- „Kann ich Anhänger in Bonn auch außerhalb der Öffnungszeiten abholen?" → Ja, 24/7 per SMS-Code an der Drachenburgstr.
+- „Liefert ihr ins Ahrtal / nach Bad Honnef / Königswinter / Wachtberg?" → Ja, Lieferung im Rhein-Sieg-Kreis und linksrheinisch bis Ahrweiler/Sinzig.
 
-```ts
-type AvailabilityStatus = "available-local" | "on-request" | "available-warehouse";
-function getProductAvailability(product, locationId): {
-  status, badgeLabel, headline, body, deliveryHours, isBookable
-}
-```
+Alles andere („welche Plattengröße für Pflaster") gehört in den **kategorischen** FAQ-Block, nicht in den Standort-Block.
 
-Regel:
-- `rentwareCode[locationId]` vorhanden → `available-local` ("Sofort verfügbar in {Name}")
-- Standort ist `full-warehouse` (Krefeld) → `available-warehouse`
-- Sonst → `on-request` ("Auf Anfrage – Lieferung aus Krefeld in 24 h")
+## Umsetzungsschritte
 
-### 2. `StandortVerfuegbarkeit` erweitern
+1. **Wording-Fix in `productAvailability.ts`:**
+   - Entferne „Zentrallager" für nicht-Krefeld-Standorte.
+   - `available-warehouse` (Krefeld): „Verfügbar in unserem Hauptlager Krefeld".
+   - `available-local` (Bonn/Mülheim mit Rentware-Code): „Vor Ort an unserer Filiale {Name} verfügbar" (Bonn) bzw. „Vor Ort am Standort {Name} verfügbar" (Mülheim).
+   - `on-request`: „Lieferung aus unserem Hauptlager Krefeld" (statt „Zentrallager").
 
-Neue Props: `product`, damit pro Produkt unterschieden wird:
-- **Available-local:** grünes Badge "Vor Ort in Bonn verfügbar", konkrete Lieferzeit, Buttons "Jetzt verfügbar prüfen".
-- **On-request:** blaues Badge "Auf Anfrage", 24h-Lieferversprechen aus Krefeld, Anfrage-CTA, Hinweis "Crew, Beratung & Übergabe in {Stadt}".
-- Bei beiden: 2–3 standortspezifische Sätze (Lieferradius, A-Autobahnen, Zielgruppen Bonn/Mülheim).
+2. **`LocalCategoryContentBlock` umbauen:**
+   - **FAQ-Sektion komplett entfernen.** Die lokalen FAQs werden nur noch in den FAQPage-JSON-LD geschrieben (für Google) und in den **bestehenden** FAQ-Block visuell eingehängt (siehe Schritt 4).
+   - Sichtbar bleibt: **ein** Standort-Block mit Hookline (1 Satz) + harte Standort-Fakten (Adresse, Öffnungszeiten, A-Anbindung, Liefergebiet). Keine Use-Case-Prosa.
 
-### 3. Standortspezifischer SSR-Content im `ProductDetail`
+3. **`localCategoryContent.ts` neu strukturieren:**
+   - Felder umbauen: `standortFakten` (statt `useCase`/`deliveryNote`/`hookline`) als kompakter Faktenblock.
+   - `faqs` bleiben, aber nur **wirklich** lokale Fragen (siehe Tabelle oben).
+   - Bonn-Verdichtung-Inhalt neu schreiben mit echten Fakten und realen Fragen. Generische „Welche Plattengröße"-FAQs ersatzlos streichen – die sind im Kategorie-FAQ.
 
-Pro Standort sichtbarer Block (kein nur-`<head>`):
+4. **FAQ-Integration in `ProductSEOContent`:**
+   - `ProductSEOContent` bekommt einen optionalen Prop `additionalFaqs`, der die Standort-FAQs an die Kategorie-FAQs anhängt.
+   - `ProductDetail.tsx` reicht `getLocalCategoryContent(...).faqs` durch.
+   - Damit: **eine** sichtbare FAQ-Sektion, mit allen Fragen drin. JSON-LD bleibt synchron.
 
-- **Lokaler Mietpark-Hinweis** (Adresse, Anfahrt, ÖPNV-Anbindung) – aus `locationData.ts`.
-- **Verfügbarkeits-Sektion** (Baustein 2) – sichtbar verschieden je Status.
-- **1–2 standortspezifische FAQ** (z. B. "Liefern Sie {Produkt} in Bonn-Bad Godesberg?" / "Mülheim Innenstadt mit A40-Sperrung?").
-- **Lokaler Use-Case-Absatz** (z. B. "Tiefbau am Rheinufer Bonn", "Industrieprojekte Ruhrgebiet Mülheim").
-- Diese Blöcke gehen in **Prerender** + Live-Render, damit Googlebot sie ohne JS sieht.
+5. **SSR-Intro in `seo-routes-rental.ts`:**
+   - Statt `useCase` jetzt `standortFakten` in den Hero-Intro schreiben.
+   - Verfügbarkeits-Statement bleibt.
 
-Quelle der Texte: bereits vorhandene `localSeoData` + neue, kompakte Felder pro Kategorie (Verdichtung, Bagger, Anhänger, Werkzeug, Event, Möbel/Zelte) – nicht pro Einzelprodukt, sondern pro **Kategorie × Standort**. So bleibt der Pflegeaufwand handhabbar.
+6. **Visuelle QA nach Umsetzung:**
+   - `/mieten/bonn/verdichtung/bonn-ruettelplatte-vp25/` öffnen.
+   - Prüfen: kein „Zentrallager", nur **eine** FAQ-Sektion, Standort-Block enthält Adresse + Öffnungszeiten + A-Anbindung.
+   - Krefeld-Vergleichs-URL: `/mieten/krefeld/verdichtung/ruettelplatte-vp25-50/` darf keinen Bonn-Block zeigen.
 
-### 4. Self-Canonical für alle Standort-Varianten
+## Was ich danach nicht tue
 
-Canonical bleibt pro Variante self-canonical (Bonn-URL → Bonn-Canonical), weil jetzt echter Content-Unterschied existiert. Krefeld-Konsolidierung (Option A) wird verworfen.
+- Keine erfundenen Bezüge auf Bonner Stadtteile, Projekte, „typische Einsätze".
+- Keine zweite FAQ-Sektion.
+- Keine Sätze, die in Krefeld genauso stimmen würden.
 
-## Schrittweise Umsetzung (pro Kategorie – Bonn & Mülheim)
+## Erst nach deinem OK
 
-Reihenfolge: **erst die kleinste Kategorie (Verdichtung – 6 Produkte), dann hochskalieren**, damit wir nach jedem Schritt im Browser prüfen können.
-
-1. **Sprint 1 – Infrastruktur (gemeinsam, einmalig):**
-   - `getProductAvailability` Helper + Unit-Test
-   - `StandortVerfuegbarkeit` erweitern (Props: product, status-spezifische Darstellung)
-   - Neue Datei `src/data/localCategoryContent.ts` mit Schema `{ locationId, categoryId } → { hookline, useCase, faqs[], deliveryNote }`
-   - `ProductDetail.tsx` rendert neue Blöcke (sichtbar, im SSR-Hero ebenfalls)
-   - `scripts/prerender-rental.mjs` schreibt die neuen Blöcke in den Hero-Fallback
-
-2. **Sprint 2 – Kategorie "Verdichtung" (Bonn):**
-   - 6 Produkte: VP16, VP25, HVP30, HVP38, HVP50, Stampfer GS72
-   - Content für `bonn/verdichtung` schreiben (Rüttelplatten-Use-Cases, A555/A565, typische Bonner Tiefbau-Stadtteile)
-   - Visueller QA-Check + GSC-URL-Inspektion
-
-3. **Sprint 3 – Kategorie "Verdichtung" (Mülheim):**
-   - Mülheim-Service-Handover-Story + Ruhrgebiets-Use-Cases
-   - QA
-
-4. **Sprint 4–N:** restliche Kategorien analog, jeweils Bonn dann Mülheim:
-   - Erdbewegung / Bagger
-   - Anhänger
-   - Werkzeug / Bohrhammer
-   - Gartenpflege
-   - Event / Möbel / Zelte
-   - Hebebühnen
-   - …(nach `getCategoriesForLocation('bonn')` / `('muelheim')` durchgehen)
-
-5. **Abschluss:**
-   - Sitemap-Lastmod auf alle Bonn/Mülheim-URLs hochsetzen
-   - 50 Stichproben-URLs in GSC zur Re-Indexierung einreichen
-   - Smoke-Test (`scripts/smoke-canonical.mjs`) erweitern um "Standort-spezifischer Content vorhanden"
-
-## Technische Details
-
-- **Keine Datenbankänderungen** – alles statisch in `src/data/`.
-- **Keine API-Calls für Verfügbarkeit** – `rentwareCode[locationId]` ist die Wahrheit.
-- **SEO:** Robots bleibt `index, follow` für alle Varianten, Canonical bleibt self-canonical.
-- **Schema.org Offer:** Bei `available-local` `availability: InStock`, bei `on-request` `availability: PreOrder` mit `deliveryLeadTime: PT24H`.
-- **Performance:** Neue Blöcke sind reines HTML/CSS, keine zusätzlichen Bundle-Imports.
-- **Pflegeaufwand:** Pro Kategorie × Standort ein Eintrag (~10 Kategorien × 2 Standorte = 20 Einträge) statt pro Produkt × Standort (~450 Einträge).
-
-## Was ich zuerst tue
-
-Sprint 1 (Infrastruktur) + Sprint 2 (Bonn/Verdichtung) in dieser Antwort. Danach pausiere ich, du prüfst eine URL live in der GSC, und wir gehen Kategorie für Kategorie weiter.
+Setze ich Schritt 1–5 in Code um, danach gehen wir an Mülheim/Verdichtung (gleiche Logik, andere Fakten: Service-Standort, Disposition aus Krefeld 24 h, A40/A52, Ruhrgebiet-Einzugsgebiet).
