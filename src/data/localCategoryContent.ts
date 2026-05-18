@@ -235,6 +235,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    absperrtechnik: {
+      hookline:
+        "TL-Warnleuchten, Schrankenzäune, Warnbarken, Fußplatten und das 18-teilige Halteverbotsschilder-Set mietest du an unserer Filiale Bonn – kompakte Artikel wie Warnleuchten und Klemmschellen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Warnleuchten, Fußplatten, Klemmschellen und Warnbarken passen in der Regel in jeden Pkw oder Kombi. Das 18-teilige Halteverbotsschilder-Set für mobile Halteverbotszonen nach StVO wird vor Ort zusammengestellt und kann ebenfalls selbst abgeholt werden. Für Baustellen, Events und Umzüge im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal liefern wir auf Anfrage größere Mengen an Schrankenzäunen, Bauzäunen und Verkehrszeichen direkt zur Einsatzstelle.",
+      faqs: [
+        {
+          q: "Kann ich Warnleuchten und das Halteverbotsschilder-Set in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. TL-Warnleuchten, Fußplatten, Wemas-Klemmschellen, Warnbarken und das 18-teilige Halteverbotsschilder-Set kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
+        },
+        {
+          q: "Liefert ihr Absperrtechnik ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir größere Mengen an Schrankenzäunen, Bauzäunen, Verkehrszeichen und Halteverbotsschilder-Sets ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Kompakte Artikel wie Warnleuchten und Klemmschellen holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welche Absperrtechnik habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment an Absperrtechnik direkt vor Ort – darunter TL-Warnleuchte gelb, Fußplatte K1 TL, Schrankenzaun RA2 weiß/rot, Wemas Klemmschelle K1, Warnbarke RA2 und das 18-teilige Halteverbotsschilder-Set für mobile Halteverbotszonen. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezial-Verkehrszeichen oder größere Mengen an Bauzäunen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
@@ -462,6 +483,27 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Kann ich Vertikutierer und Häcksler in Mülheim einfach mit dem Pkw abholen?",
           a: "Ja. Vertikutierer (elektrisch und Benzin), Häcksler Axt und LS95, Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer und Erdbohrer 4308 passen in der Regel in jeden Pkw, Kombi oder kleinen Anhänger und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für die Baumstumpffräse F360 empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
+
+    absperrtechnik: {
+      hookline:
+        "Verkehrszeichen, Bauzäune, Schrankenzäune, Warnbarken, Warnleuchten und das Halteverbotsschilder-Set für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Warnleuchten, Fußplatten, Klemmschellen, Warnbarken und kleinere Verkehrszeichen passen in der Regel in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere Mengen an Bauzäunen, Schrankenzäunen, Verkehrszeichen und das 18-teilige Halteverbotsschilder-Set liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Baustellen, Umzüge, Events und Verkehrsführung. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Absperrtechnik nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Größere Mengen an Bauzäunen, Schrankenzäunen, Verkehrszeichen und Halteverbotsschilder-Sets liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Warnleuchten, Fußplatten und Klemmschellen holst du in der Regel selbst mit Pkw ab.",
+        },
+        {
+          q: "Steht die Absperrtechnik direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Absperrtechnik-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise Warnleuchten, Fußplatten, Klemmschellen, Warnbarken und das Halteverbotsschilder-Set. Größere Mengen an Bauzäunen, Mannesmanngittern oder spezielle Verkehrszeichen disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich Warnleuchten und das Halteverbotsschilder-Set in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. TL-Warnleuchten, Fußplatten K1 TL, Wemas-Klemmschellen, Warnbarken und das 18-teilige Halteverbotsschilder-Set passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Mengen an Bauzäunen oder Schrankenzäunen empfehlen wir die Lieferung direkt zur Einsatzstelle.",
         },
       ],
     },
