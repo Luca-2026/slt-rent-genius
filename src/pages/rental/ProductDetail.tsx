@@ -33,8 +33,11 @@ import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalcula
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
+import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { HalteverbotsSeoSection } from "@/components/rental/HalteverbotsSeoSection";
+import { getProductAvailability } from "@/lib/productAvailability";
+import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
@@ -1152,8 +1155,19 @@ export default function ProductDetail() {
                   categoryId={categoryId}
                 />
               )}
-              {/* Standort-Verfügbarkeitshinweis (Sprint 2) */}
-              {locationId && <StandortVerfuegbarkeit locationId={locationId} deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"} />}
+              {/* Standort-Verfügbarkeitshinweis – produktspezifisch (rentwareCode-basierte Automatik) */}
+              {locationId && (
+                <StandortVerfuegbarkeit
+                  locationId={locationId}
+                  product={product}
+                  deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"}
+                />
+              )}
+
+              {/* Standortspezifischer SEO-Content (Use-Case, Lieferradius, Standort-FAQs) */}
+              {locationId && categoryId && (
+                <LocalCategoryContentBlock locationId={locationId} categoryId={categoryId} />
+              )}
 
               {/* SEO Content Block */}
               <ProductSEOContent
