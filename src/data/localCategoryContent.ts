@@ -172,6 +172,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    aggregate: {
+      hookline:
+        "Stromaggregate von 2,8 bis 100 kVA mietest du an unserer Filiale Bonn – kleine tragbare Aggregate auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, große Diesel-Stromerzeuger mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Kleine Aggregate ab 2,8 kVA passen in der Regel in jeden Pkw oder Kombi. Größere Diesel-Aggregate (20, 50, 80, 100 kVA) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Baustellen ohne Netzanschluss, Events, Notstrom und Wasserschaden-Sanierung.",
+      faqs: [
+        {
+          q: "Liefert ihr große Stromaggregate ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Diesel-Aggregate ab 20 kVA liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Bei Wasserschäden oder Stromausfällen disponieren wir nach Möglichkeit kurzfristig.",
+        },
+        {
+          q: "Kann ich kleine Aggregate in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Tragbare Aggregate wie der 2,8 kVA Ford FG4050 oder der 7,5 kVA Kärcher PGG 8/3 passen in jeden Pkw und sind für Wochenend-Events oder Außen-Einsätze direkt mitnehmbar.",
+        },
+        {
+          q: "Welche Aggregate habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment an Stromaggregaten direkt vor Ort – von tragbaren Modellen ab 2,8 kVA bis zu größeren Diesel-Stromerzeugern. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Modelle, die nicht vor Ort stehen, oder Spezial-Konfigurationen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
