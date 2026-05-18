@@ -33,8 +33,11 @@ import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalcula
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
+import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { HalteverbotsSeoSection } from "@/components/rental/HalteverbotsSeoSection";
+import { getProductAvailability } from "@/lib/productAvailability";
+import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
@@ -295,9 +298,19 @@ export default function ProductDetail() {
                 const priceFrom = productSEO.dailyPriceFrom as number;
                 const validUntil = new Date();
                 validUntil.setFullYear(validUntil.getFullYear() + 1);
+                const availability = getProductAvailability(product, location.id);
                 return {
                   "@type": "Offer",
-                  "availability": "https://schema.org/InStock",
+                  "availability": availability.schemaAvailability,
+                  ...(availability.deliveryLeadTime
+                    ? {
+                        "deliveryLeadTime": {
+                          "@type": "QuantitativeValue",
+                          "value": 24,
+                          "unitCode": "HUR",
+                        },
+                      }
+                    : {}),
                   "url": canonicalUrl,
                   "priceCurrency": "EUR",
                   "price": priceFrom.toFixed(2),
@@ -364,11 +377,14 @@ export default function ProductDetail() {
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
-      // FAQ JSON-LD: prefer product-specific FAQs, fallback to category
+      // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
       const productFaqs = productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
-      const faqItems = productFaqs?.length ? productFaqs : categoryFaqs;
-      if (faqItems?.length) {
+      const localContent = getLocalCategoryContent(locationId, categoryId);
+      const localFaqs = localContent?.faqs ?? [];
+      const baseFaqs = productFaqs?.length ? productFaqs : (categoryFaqs ?? []);
+      const faqItems = [...baseFaqs, ...localFaqs];
+      if (faqItems.length) {
         jsonLdArray.push({
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -1152,8 +1168,19 @@ export default function ProductDetail() {
                   categoryId={categoryId}
                 />
               )}
-              {/* Standort-Verfügbarkeitshinweis (Sprint 2) */}
-              {locationId && <StandortVerfuegbarkeit locationId={locationId} deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"} />}
+              {/* Standort-Verfügbarkeitshinweis – produktspezifisch (rentwareCode-basierte Automatik) */}
+              {locationId && (
+                <StandortVerfuegbarkeit
+                  locationId={locationId}
+                  product={product}
+                  deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"}
+                />
+              )}
+
+              {/* Standortspezifischer SEO-Content (Use-Case, Lieferradius, Standort-FAQs) */}
+              {locationId && categoryId && (
+                <LocalCategoryContentBlock locationId={locationId} categoryId={categoryId} />
+              )}
 
               {/* SEO Content Block */}
               <ProductSEOContent

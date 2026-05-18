@@ -1,64 +1,102 @@
-# Karriereseite-Relaunch: Mehr Bewerbungen + Google Jobs Sichtbarkeit
-
 ## Ziel
-- Jede Stelle bekommt eine **eigene Landingpage** mit eigener URL (`/karriere/:slug`)
-- Strukturierte Daten (**JobPosting JSON-LD**) damit Google Jobs, Stepstone-Aggregatoren, Indeed & Co. die Stellen automatisch crawlen
-- Conversion-Optimierung: weniger Reibung, mehr Vertrauen, klare CTAs
 
-## Was wir bauen
+Google soll alle Standort-Varianten (Bonn, Mülheim, Krefeld) als eigenständig indexieren – nicht mehr als "Alternative Seite mit richtigem kanonischen Tag" wegwerfen.
 
-### 1. Dedizierte Stellen-Detailseiten (`/karriere/:slug`)
-Pro Stelle eine vollwertige Seite mit:
-- H1 = Jobtitel + Standort, klare Sub-Headline
-- Sticky "Jetzt bewerben"-Button (Mobile + Desktop)
-- Ausführliche Sections: Über die Rolle · Aufgaben · Anforderungen · Benefits · Über SLT · Standort/Anfahrt · FAQ
-- Vertrauenselemente: Team-/Werkstatt-Foto, Google-Bewertungen, Mitarbeiterstimmen
-- "Schnell-bewerben"-Variante (nur Name, Email, Telefon, CV upload) **+** ausführlicher Wizard als Option
-- Verwandte Stellen unten
+Zwei Hebel:
 
-### 2. Google Jobs / Job-Aggregator Indexierung
-- **JobPosting Schema.org JSON-LD** auf jeder Stellenseite mit allen Pflichtfeldern: `title`, `description` (HTML), `datePosted`, `validThrough`, `employmentType`, `hiringOrganization`, `jobLocation`, `baseSalary` (wenn möglich), `directApply: true`
-- Ergänzt um `identifier`, `industry`, `educationRequirements`, `experienceRequirements`
-- **Stellen-Sitemap** (`/sitemap-jobs.xml`) die im Sitemap-Index referenziert wird → Google Jobs entdeckt neue Stellen schnell
-- Saubere Meta-Tags + OpenGraph pro Stelle
-- `<link rel="canonical">` korrekt gesetzt
-- Übersichtsseite `/karriere` listet alle Stellen mit `ItemList`-Schema und verlinkt auf die Detailseiten
+1. **Automatik "echte Verfügbarkeit":** Ist für ein Produkt ein `rentwareCode[bonn]` (bzw. `muelheim`) hinterlegt → "Verfügbar in Bonn" (bzw. Mülheim) mit Sofort-Buchbarkeit. Fehlt der Code → "Auf Anfrage in Bonn – Lieferung aus Krefeld in 24 h". Beide Varianten sind crawl- und indexierbar (`index, follow`), unterscheiden sich aber sichtbar im DOM.
+2. **Sichtbare, einzigartige Inhalte pro Standort-Produkt-Kombi** (nicht nur `<head>`), damit Google echte Differenzierung sieht.
 
-### 3. Karriere-Übersichtsseite Überarbeitung
-- Stärkerer Hero mit konkretem Versprechen ("In 2 Min bewerben – Antwort in 5 Werktagen")
-- Stellen als Karten mit Standort-Badge, Jobtyp, Gehaltsspanne (wenn freigegeben), "Details" → eigene Seite
-- "Initiativbewerbung"-CTA prominent
-- Filter nach Standort & Jobtyp
+## Bestandsaufnahme
 
-### 4. Conversion-Boost
-- **Bestätigungsmail** an Bewerber mit klarer "Was passiert jetzt"-Timeline (haben wir teils schon)
-- WhatsApp/Telefon-Direktkontakt als Alternative zur Bewerbung
-- Reduzierte Pflichtfelder im Schnell-Modus
-- Trust-Badges: "Antwort in 5 Werktagen", "Familiäres Team seit XXX", Google-Sterne
+- `Product.rentwareCode: Record<string, string>` ist bereits pro Standort gepflegt (Krefeld, Bonn, Mülheim). Stand heute: ~30 Bonn-Codes, ~12 Mülheim-Codes – Rest läuft als "auf Anfrage" aus Krefeld.
+- `StandortVerfuegbarkeit.tsx` differenziert bisher nur per Standort-Charakter (`full-warehouse` / `service-handover` / `delivery-only`), nicht per Produkt-Verfügbarkeit.
+- Canonical zeigt aktuell pro Variante auf sich selbst → Google kanonisiert auf Krefeld, weil Body fast identisch.
 
-### 5. Job-Daten in Datenbank (optional, empfohlen)
-Damit du/Team neue Stellen ohne Code-Änderung anlegen kannst:
-- Tabelle `job_listings` (title, slug, location, type, description, requirements, benefits, salary_min/max, valid_through, is_active, ...)
-- Admin-Bereich um Stellen zu verwalten
-- Sitemap & JSON-LD lesen direkt aus DB → neue Stelle = sofort bei Google Jobs einreichbar
+## Lösung – 4 Bausteine
 
-```text
-Aktuell:  jobData.ts (hardcoded) → 1 Seite /karriere
-Neu:      DB / jobData.ts → /karriere (Liste) + /karriere/:slug (je Stelle, JSON-LD, Sitemap)
+### 1. Verfügbarkeits-Automatik (`getProductAvailability`)
+
+Neue Helper-Funktion in `src/lib/productAvailability.ts`:
+
+```ts
+type AvailabilityStatus = "available-local" | "on-request" | "available-warehouse";
+function getProductAvailability(product, locationId): {
+  status, badgeLabel, headline, body, deliveryHours, isBookable
+}
 ```
 
+Regel:
+- `rentwareCode[locationId]` vorhanden → `available-local` ("Sofort verfügbar in {Name}")
+- Standort ist `full-warehouse` (Krefeld) → `available-warehouse`
+- Sonst → `on-request` ("Auf Anfrage – Lieferung aus Krefeld in 24 h")
+
+### 2. `StandortVerfuegbarkeit` erweitern
+
+Neue Props: `product`, damit pro Produkt unterschieden wird:
+- **Available-local:** grünes Badge "Vor Ort in Bonn verfügbar", konkrete Lieferzeit, Buttons "Jetzt verfügbar prüfen".
+- **On-request:** blaues Badge "Auf Anfrage", 24h-Lieferversprechen aus Krefeld, Anfrage-CTA, Hinweis "Crew, Beratung & Übergabe in {Stadt}".
+- Bei beiden: 2–3 standortspezifische Sätze (Lieferradius, A-Autobahnen, Zielgruppen Bonn/Mülheim).
+
+### 3. Standortspezifischer SSR-Content im `ProductDetail`
+
+Pro Standort sichtbarer Block (kein nur-`<head>`):
+
+- **Lokaler Mietpark-Hinweis** (Adresse, Anfahrt, ÖPNV-Anbindung) – aus `locationData.ts`.
+- **Verfügbarkeits-Sektion** (Baustein 2) – sichtbar verschieden je Status.
+- **1–2 standortspezifische FAQ** (z. B. "Liefern Sie {Produkt} in Bonn-Bad Godesberg?" / "Mülheim Innenstadt mit A40-Sperrung?").
+- **Lokaler Use-Case-Absatz** (z. B. "Tiefbau am Rheinufer Bonn", "Industrieprojekte Ruhrgebiet Mülheim").
+- Diese Blöcke gehen in **Prerender** + Live-Render, damit Googlebot sie ohne JS sieht.
+
+Quelle der Texte: bereits vorhandene `localSeoData` + neue, kompakte Felder pro Kategorie (Verdichtung, Bagger, Anhänger, Werkzeug, Event, Möbel/Zelte) – nicht pro Einzelprodukt, sondern pro **Kategorie × Standort**. So bleibt der Pflegeaufwand handhabbar.
+
+### 4. Self-Canonical für alle Standort-Varianten
+
+Canonical bleibt pro Variante self-canonical (Bonn-URL → Bonn-Canonical), weil jetzt echter Content-Unterschied existiert. Krefeld-Konsolidierung (Option A) wird verworfen.
+
+## Schrittweise Umsetzung (pro Kategorie – Bonn & Mülheim)
+
+Reihenfolge: **erst die kleinste Kategorie (Verdichtung – 6 Produkte), dann hochskalieren**, damit wir nach jedem Schritt im Browser prüfen können.
+
+1. **Sprint 1 – Infrastruktur (gemeinsam, einmalig):**
+   - `getProductAvailability` Helper + Unit-Test
+   - `StandortVerfuegbarkeit` erweitern (Props: product, status-spezifische Darstellung)
+   - Neue Datei `src/data/localCategoryContent.ts` mit Schema `{ locationId, categoryId } → { hookline, useCase, faqs[], deliveryNote }`
+   - `ProductDetail.tsx` rendert neue Blöcke (sichtbar, im SSR-Hero ebenfalls)
+   - `scripts/prerender-rental.mjs` schreibt die neuen Blöcke in den Hero-Fallback
+
+2. **Sprint 2 – Kategorie "Verdichtung" (Bonn):**
+   - 6 Produkte: VP16, VP25, HVP30, HVP38, HVP50, Stampfer GS72
+   - Content für `bonn/verdichtung` schreiben (Rüttelplatten-Use-Cases, A555/A565, typische Bonner Tiefbau-Stadtteile)
+   - Visueller QA-Check + GSC-URL-Inspektion
+
+3. **Sprint 3 – Kategorie "Verdichtung" (Mülheim):**
+   - Mülheim-Service-Handover-Story + Ruhrgebiets-Use-Cases
+   - QA
+
+4. **Sprint 4–N:** restliche Kategorien analog, jeweils Bonn dann Mülheim:
+   - Erdbewegung / Bagger
+   - Anhänger
+   - Werkzeug / Bohrhammer
+   - Gartenpflege
+   - Event / Möbel / Zelte
+   - Hebebühnen
+   - …(nach `getCategoriesForLocation('bonn')` / `('muelheim')` durchgehen)
+
+5. **Abschluss:**
+   - Sitemap-Lastmod auf alle Bonn/Mülheim-URLs hochsetzen
+   - 50 Stichproben-URLs in GSC zur Re-Indexierung einreichen
+   - Smoke-Test (`scripts/smoke-canonical.mjs`) erweitern um "Standort-spezifischer Content vorhanden"
+
 ## Technische Details
-- React Router: neue Route `/karriere/:slug` → `KarriereJobDetail.tsx`
-- Komponenten: `JobDetailHero`, `JobDetailContent`, `QuickApplyForm`, `JobJsonLd`
-- SEO: Anpassung `SEO.tsx` Props, `SLT_JOBPOSTING_JSONLD` Helper
-- Sitemap-Edge-Function (`supabase/functions/sitemap`) erweitern oder neue `sitemap-jobs` anlegen
-- Prerendering-Skript (`scripts/prerender-rental.mjs` Pattern) ergänzen, damit Stellenseiten als statisches HTML ausgespielt werden → entscheidend für Google Jobs Crawler
 
-## Was ich von dir brauche
+- **Keine Datenbankänderungen** – alles statisch in `src/data/`.
+- **Keine API-Calls für Verfügbarkeit** – `rentwareCode[locationId]` ist die Wahrheit.
+- **SEO:** Robots bleibt `index, follow` für alle Varianten, Canonical bleibt self-canonical.
+- **Schema.org Offer:** Bei `available-local` `availability: InStock`, bei `on-request` `availability: PreOrder` mit `deliveryLeadTime: PT24H`.
+- **Performance:** Neue Blöcke sind reines HTML/CSS, keine zusätzlichen Bundle-Imports.
+- **Pflegeaufwand:** Pro Kategorie × Standort ein Eintrag (~10 Kategorien × 2 Standorte = 20 Einträge) statt pro Produkt × Standort (~450 Einträge).
 
-1. **Job-Daten-Quelle**: DB-Tabelle (komfortabel, du kannst selbst pflegen) **oder** weiter im Code (`jobData.ts`)?
-2. **Gehaltsangaben**: Dürfen wir Spannen veröffentlichen? Google Jobs rankt Stellen mit Gehalt deutlich besser. Falls ja, brauche ich min/max pro Stelle.
-3. **Quick-Apply**: Soll es zusätzlich zum ausführlichen Wizard ein 30-Sekunden-Formular geben (Name, Mail, Tel, CV)?
-4. **Scope dieses Schritts**: Soll ich direkt alles umsetzen (Detailseiten + JSON-LD + Sitemap + Übersicht-Redesign), oder lieber in 2 Etappen (erst Detailseiten + SEO, dann Conversion-Polish)?
+## Was ich zuerst tue
 
-Sobald du auf die 4 Punkte antwortest, lege ich los.
+Sprint 1 (Infrastruktur) + Sprint 2 (Bonn/Verdichtung) in dieser Antwort. Danach pausiere ich, du prüfst eine URL live in der GSC, und wir gehen Kategorie für Kategorie weiter.

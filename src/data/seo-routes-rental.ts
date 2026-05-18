@@ -11,6 +11,8 @@ import { productSEOData, type ProductSEOData } from "./productSEOData";
 import { blogArticles, type BlogArticle } from "./blogArticles";
 import { solutionData, type Solution } from "@/pages/Loesungen";
 import { jobListings } from "@/components/karriere/jobData";
+import { getLocalCategoryContent } from "./localCategoryContent";
+import { getProductAvailability } from "@/lib/productAvailability";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
@@ -599,6 +601,19 @@ for (const loc of locations as LocationData[]) {
       // jetzt eigenständig indexiert für lokale Suchanfragen.
       if (locInfo) {
         intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`));
+      }
+
+      // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
+      // Damit Google sofort erkennt, ob das Produkt am Standort
+      // verfügbar oder auf Anfrage ist (echter Content-Unterschied).
+      const availability = getProductAvailability(p, loc.id);
+      intro.push(`${availability.headline}. ${availability.body}`);
+
+      // Sprint 2+ – Standort × Kategorie spezifischer Content
+      const localContent = getLocalCategoryContent(loc.id, catId);
+      if (localContent) {
+        intro.push(`Einsatz in ${locName}: ${localContent.hookline} ${localContent.useCase}`);
+        intro.push(`Lieferung ab ${locName}: ${localContent.deliveryNote}`);
       }
 
       PRODUCT_ROUTES.push({
