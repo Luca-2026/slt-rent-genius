@@ -107,6 +107,37 @@ export const localCategoryContent: LocalContentMap = {
   },
 
   // =================================================================
+  // KREFELD – Hauptsitz Anrather Straße 291, 47807 Krefeld-Fichtenhain
+  // Öffnung: Mo–Fr 08:00–18:00, Sa 10:00–14:30 (früher nach Voranmeldung)
+  // Einzugsgebiet: Krefeld, Düsseldorf, Mönchengladbach, Viersen,
+  // Kempen, Willich, Neuss, Meerbusch, Korschenbroich
+  // =================================================================
+  krefeld: {
+    anhaenger: {
+      hookline:
+        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserem Hauptsitz Krefeld – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
+      standortFakten:
+        "Abholung und Rückgabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr vor Ort, samstags früher nach vorheriger Buchung möglich. Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
+      faqs: [
+        {
+          q: "Kann ich den Anhänger am Hauptsitz Krefeld auch nachts, sonntags oder an Feiertagen abholen und zurückgeben?",
+          a: "Ja. An unserem Hauptsitz Anrather Straße 291 in Krefeld-Fichtenhain sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 08:00–18:00 und Sa 10:00–14:30 (früher nach vorheriger Buchung möglich).",
+        },
+        {
+          q: "Liefert ihr Anhänger auch nach Krefeld oder in die Umgebung?",
+          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden an unserem Hauptsitz Krefeld (Anrather Straße 291) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss möglich, also völlig unabhängig von Öffnungszeiten.",
+        },
+        {
+          q: "Welche Anhänger habt ihr am Hauptsitz Krefeld vor Ort?",
+          a: "An unserem Hauptsitz Krefeld führen wir das komplette Anhänger-Sortiment direkt vor Ort – darunter Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger in allen Größenklassen. Als Hauptsitz mit großem Mietpark ist die Verfügbarkeit hier am höchsten. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    // Weitere Kategorien folgen in den nächsten Sprints.
+  },
+
+  // =================================================================
   // MÜLHEIM AN DER RUHR – Service-Standort Ruhrorter Str. 122
   // Übergabe nach Vereinbarung in der Bobcat-Filiale,
   // Geräte aus Hauptsitz Krefeld disponiert.
