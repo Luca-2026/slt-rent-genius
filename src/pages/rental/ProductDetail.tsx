@@ -377,11 +377,14 @@ export default function ProductDetail() {
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
-      // FAQ JSON-LD: prefer product-specific FAQs, fallback to category
+      // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
       const productFaqs = productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
-      const faqItems = productFaqs?.length ? productFaqs : categoryFaqs;
-      if (faqItems?.length) {
+      const localContent = getLocalCategoryContent(locationId, categoryId);
+      const localFaqs = localContent?.faqs ?? [];
+      const baseFaqs = productFaqs?.length ? productFaqs : (categoryFaqs ?? []);
+      const faqItems = [...baseFaqs, ...localFaqs];
+      if (faqItems.length) {
         jsonLdArray.push({
           "@context": "https://schema.org",
           "@type": "FAQPage",
