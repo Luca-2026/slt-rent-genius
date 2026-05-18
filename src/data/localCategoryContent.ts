@@ -214,6 +214,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    gartenpflege: {
+      hookline:
+        "Vertikutierer, Häcksler, Erdbohrer, Akku-Kettensägen, Freischneider, Baumstumpffräse und Hochdruckreiniger mietest du an unserer Filiale Bonn – die meisten Geräte passen in jeden Pkw oder Kombi und sind samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Vertikutierer (elektrisch und benzinbetrieben), Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer, Erdbohrer 4308 sowie Häcksler (Axt und LS95) lassen sich in der Regel im eigenen Pkw, Kombi oder kleinen Anhänger transportieren. Größere Geräte wie die Baumstumpffräse F360 liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Grundstückspflege, Heckenrückschnitt, Rasen-Sanierung im Frühjahr und Aufräumarbeiten nach Sturm- oder Hochwasser-Schäden.",
+      faqs: [
+        {
+          q: "Kann ich Vertikutierer und Häcksler in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Vertikutierer (elektrisch und Benzin), Häcksler (Axt und LS95), Akku-Kettensäge, Freischneider und Erdbohrer kannst du direkt mitnehmen – ideal für den Wochenend-Einsatz im Garten.",
+        },
+        {
+          q: "Welche Gartengeräte habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir das Kernsortiment Gartenpflege direkt vor Ort – darunter Vertikutierer (elektrisch und benzinbetrieben), Häcksler Axt und LS95, Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer, Erdbohrer 4308 und Hochdruckreiniger. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezialgeräte wie die Baumstumpffräse F360 disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+        {
+          q: "Liefert ihr Gartengeräte ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Größere Geräte wie die Baumstumpffräse F360 oder mehrere Gartengeräte als Paket liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Vertikutierer, Akku-Kettensägen und Erdbohrer holst du in der Regel selbst mit Pkw oder Kombi ab.",
+        },
+      ],
+    },
   },
 
   // =================================================================
