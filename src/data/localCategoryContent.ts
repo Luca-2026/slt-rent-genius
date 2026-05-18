@@ -193,6 +193,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "kabel-stromverteiler": {
+      hookline:
+        "CEE-Kabel (16/32/63 A), Schukokabel, Kabeltrommeln und CEE-Unterverteiler mietest du an unserer Filiale Bonn – kompakte Mengen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, große Verteilerschränke mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE- und Schukokabel (3, 5, 10, 20, 50 m), Schuko-Kabeltrommeln sowie CEE-Adapter (16↔32, 32↔63) passen in der Regel in jeden Pkw oder Kombi. Größere CEE-Unterverteiler und Verteilerschränke (z. B. 24 kVA, 44 kVA, 55 kVA Anschlussschrank) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien.",
+      faqs: [
+        {
+          q: "Liefert ihr CEE-Verteilerschränke ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Anschluss- und Verteilerschränke (24 kVA, 44 kVA, 55 kVA) sowie passende CEE-Kabel liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Kann ich CEE-Kabel und Adapter in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Kabel (16/32/63 A in Längen von 3 bis 50 m), Schukokabel, die 50-m-Schuko-Kabeltrommel sowie Mennekes-Adapter 16↔32 und 32↔63 kannst du direkt mitnehmen.",
+        },
+        {
+          q: "Welche Verteiler und Kabel habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment aus CEE-Kabeln, Schukokabeln, Kabeltrommeln, CEE-Unterverteilern (16/32/63 A) und CEE-Adaptern direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Große Verteilerschränke (z. B. Anschlussverteilerschrank 44 kVA) und passende Konfigurationen für Aggregat-Speisung disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
