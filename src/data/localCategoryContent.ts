@@ -402,6 +402,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "kabel-stromverteiler": {
+      hookline:
+        "CEE-Kabel (16/32/63 A), Schukokabel, Kabeltrommeln und CEE-Unterverteiler für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, große Verteilerschränke mit Lieferung direkt zur Baustelle.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. CEE- und Schukokabel (3, 5, 10, 20, 50 m), Schuko-Kabeltrommeln und CEE-Adapter (16↔32, 32↔63) passen in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere CEE-Unterverteiler und Verteilerschränke (z. B. 24 kVA, 44 kVA, 55 kVA Anschlussschrank) liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr CEE-Verteilerschränke nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Anschluss- und Verteilerschränke (24 kVA, 44 kVA, 55 kVA) sowie passende CEE-Kabel liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen die Verteiler und Kabel direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Kabel- und Verteiler-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise CEE-/Schukokabel, Kabeltrommeln und kleinere CEE-Unterverteiler. Große Verteilerschränke (z. B. Anschlussverteilerschrank 44 kVA) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich CEE-Kabel und Adapter in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. CEE-Kabel (16/32/63 A in Längen von 3 bis 50 m), Schukokabel, Schuko-Kabeltrommeln und Mennekes-Adapter 16↔32 sowie 32↔63 passen in jeden Pkw und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Verteilerschränke empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
   },
 };
 
