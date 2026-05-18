@@ -70,12 +70,7 @@ lines.push(
   "RewriteRule ^mieten/bonn/verdichtung/bonn-ruettelplatte-hvp50/?$ /mieten/bonn/verdichtung/ruettelplatte-hvp50-60/ [L,R=301]",
   "RewriteRule ^mieten/bonn/verdichtung/bonn-grabenwalze-bmp8500/?$ /mieten/bonn/verdichtung/grabenwalze-bmp8500/ [L,R=301]",
   "",
-  "# === 3. Trailing-Slash-Konsistenz ===",
-  "# Trailing slashes werden entfernt (außer für echte Verzeichnisse)",
-  "RewriteCond %{REQUEST_FILENAME} !-d",
-  "RewriteRule ^(.+)/$ /$1 [L,R=301]",
-  "",
-  `# === 4. Legacy-URL-Redirects (aus GSC-404-Liste, ${mapping.total} URLs) ===`,
+  `# === 3. Legacy-URL-Redirects (aus GSC-404-Liste, ${mapping.total} URLs) ===`,
   "# Generiert aus 404-mapping.json — sortiert nach Confidence absteigend.",
   "# Confidence:",
 );
@@ -118,7 +113,7 @@ if (fallbacks.length) {
 }
 
 lines.push(
-  "# === 5. Pauschale Legacy-Pattern-Fallbacks ===",
+  "# === 4. Pauschale Legacy-Pattern-Fallbacks ===",
   "# Für alle nicht in der GSC-Liste enthaltenen Legacy-URLs: in den Standort-Hub.",
   "RewriteRule ^produkte/(.+)$ /mieten/krefeld [L,R=301]",
   "RewriteRule ^produkte-bonn/(.+)$ /mieten/bonn [L,R=301]",
@@ -151,6 +146,13 @@ lines.push(
   "RewriteRule ^loesungen/handwerk$ /loesungen/handwerk-gewerbe [L,R=301]",
   "RewriteRule ^loesungen/transport$ /loesungen/umzug-transport [L,R=301]",
   "RewriteRule ^loesungen/kinder$ /loesungen/kindergeburtstage [L,R=301]",
+  "",
+  "# === 5. Trailing-Slash-Konsistenz ===",
+  "# Canonical-Form: Verzeichnisse/SPA-Routen enden mit /, Dateien bleiben unverändert.",
+  "RewriteCond %{REQUEST_FILENAME} !-f",
+  "RewriteCond %{REQUEST_URI} !(.+)/$",
+  "RewriteCond %{REQUEST_URI} !\\.[a-zA-Z0-9]+$",
+  "RewriteRule ^(.*)$ /$1/ [L,R=301]",
   "",
   "# === 6. SPA-Fallback / Prerender ===",
   "# Prerendered Routes liegen als /pfad/index.html im Build – Apache",

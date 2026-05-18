@@ -126,7 +126,7 @@ function buildHeroBlock(route) {
     parts.push(`<nav aria-label="Breadcrumb" style="font-size:14px;color:#555;margin-bottom:12px;"><ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px;">`);
     route.breadcrumbs.forEach((b, i) => {
       const sep = i > 0 ? `<span aria-hidden="true" style="margin:0 4px;">›</span>` : "";
-      parts.push(`<li>${sep}<a href="${escapeAttr(b.path)}" style="color:#00507d;text-decoration:none;">${escapeHtml(b.name)}</a></li>`);
+      parts.push(`<li>${sep}<a href="${escapeAttr(withTrailingSlash(b.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(b.name)}</a></li>`);
     });
     parts.push(`</ol></nav>`);
   }
