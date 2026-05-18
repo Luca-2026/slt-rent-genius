@@ -528,6 +528,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    beleuchtung: {
+      hookline:
+        "LED Outdoorscheinwerfer, Moving Heads, LED-Beleuchtungssets, LED-Fluter, Showtec Sunstrip und Nebelmaschinen für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set, das Party Ton & Licht-Set oder mehrere LED-Fluter RGBWAUV liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte, Stadtfeste und Außenveranstaltungen. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Beleuchtungstechnik nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Größere Beleuchtungssets wie das LED Outdoorscheinwerfer 6er-Set, das Party Ton & Licht-Set, LED-Fluter RGBWAUV und Showtec Sunstrip Active MKII liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Einzelne Scheinwerfer und Moving Heads holst du in der Regel selbst mit Pkw ab.",
+        },
+        {
+          q: "Steht die Beleuchtung direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Event-Beleuchtungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets. Größere Lichtanlagen, Spezial-Effekte wie der ADJ Fog Fury Jett PRO oder das komplette Party Ton & Licht-Set disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich LED-Scheinwerfer und Moving Heads in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot Zoom 2.0, LED Beleuchtungsset single und duo, einzelne LED-Fluter und Showtec Sunstrip Active MKII passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
+        },
+      ],
+    },
   },
 };
 
