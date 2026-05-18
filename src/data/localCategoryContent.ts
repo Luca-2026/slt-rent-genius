@@ -62,6 +62,24 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    erdbewegung: {
+      hookline:
+        "Minibagger, Dumper und Anbaugeräte mietest du an unserer Filiale Bonn – passend für Tiefbau und GaLaBau zwischen Rhein-Sieg-Kreis, Köln-Süd und Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über die B9, die A555 (Bonn–Köln) und die A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Tieflader-Transport für größere Bagger und Dumper organisieren wir bei Bedarf mit.",
+      faqs: [
+        {
+          q: "Welche Bagger und Dumper habt ihr an der Filiale Bonn vor Ort?",
+          a: "Wir führen einen Teil unseres Erdbewegungs-Sortiments – darunter Minibagger und passende Anbaugeräte – an unserer Filiale Bonn als Stamm-Sortiment. Modelle, die nicht vor Ort stehen, disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Liefert ihr Minibagger ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir Minibagger, Dumper und Anbaugeräte ins gesamte Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, Lieferung in der Regel am nächsten Werktag. Bei größeren Maschinen organisieren wir den Tieflader-Transport mit.",
+        },
+      ],
+    },
+
     // Weitere Kategorien folgen in den nächsten Sprints (mit gleichem
     // „echt lokal"-Maßstab: nur Aussagen, die in Krefeld so nicht
     // stimmen würden).
@@ -69,11 +87,28 @@ export const localCategoryContent: LocalContentMap = {
 
   // =================================================================
   // MÜLHEIM AN DER RUHR – Service-Standort Ruhrorter Str. 122
-  // Übergabe nach Vereinbarung, Geräte aus Hauptsitz Krefeld
-  // Einzugsgebiet: Mülheim, Essen, Duisburg, Oberhausen, Bochum
+  // Übergabe nach Vereinbarung in der Bobcat-Filiale,
+  // Geräte aus Hauptsitz Krefeld disponiert.
+  // Einzugsgebiet: Mülheim, Essen, Duisburg, Oberhausen, Bochum,
+  // Gelsenkirchen, Hattingen
   // =================================================================
   muelheim: {
-    // Inhalte werden in Sprint 3 (Mülheim/Verdichtung) ergänzt.
+    erdbewegung: {
+      hookline:
+        "Bagger, Dumper und Bobcat-Geräte für das Ruhrgebiet – Beratung und Übergabe an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Beratung, Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt; das Gerät selbst disponieren wir aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Liefer- und Übergabegebiet umfasst das gesamte Ruhrgebiet: Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+      faqs: [
+        {
+          q: "Stehen die Bagger direkt am Service-Standort Mülheim?",
+          a: "Nein. Unser Standort Mülheim ist eine Beratungs- und Übergabe-Stelle in der dortigen Bobcat-Filiale. Die Geräte selbst lagern in unserem Hauptsitz Krefeld und werden auf Anfrage nach Mülheim disponiert – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt.",
+        },
+        {
+          q: "Liefert ihr Bagger nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Unser Liefer- und Übergabegebiet ab Mülheim umfasst das gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt zum Standort über A40 und A52. Tieflader-Transport für größere Bagger organisieren wir bei Bedarf direkt aus Krefeld.",
+        },
+      ],
+    },
   },
 };
 
