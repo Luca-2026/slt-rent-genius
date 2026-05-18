@@ -256,6 +256,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    beleuchtung: {
+      hookline:
+        "LED Outdoorscheinwerfer TourLED 50 XCR, Moving Heads, LED-Beleuchtungssets und Party-Ton-&-Licht-Sets mietest du an unserer Filiale Bonn – einzelne Scheinwerfer und kleinere Sets auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und können direkt abgeholt werden. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte und Außenveranstaltungen.",
+      faqs: [
+        {
+          q: "Kann ich LED-Scheinwerfer und kleinere Licht-Sets in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
+        },
+        {
+          q: "Liefert ihr Beleuchtungstechnik ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir größere Beleuchtungssets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Einzelne Scheinwerfer und Moving Heads holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welche Beleuchtung habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Event-Beleuchtungs-Kernsortiment direkt vor Ort – darunter LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot Zoom 2.0, LED Beleuchtungsset single und duo (4in1 Multieffekt-Lichtanlage), Party Ton & Licht-Set und LED Outdoorscheinwerfer 6er-Set. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezial-Beleuchtung wie der SLT LED Fluter RGBWAUV, Showtec Sunstrip Active MKII oder Nebelmaschinen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
