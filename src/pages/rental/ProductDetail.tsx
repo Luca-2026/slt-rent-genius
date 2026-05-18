@@ -1177,19 +1177,22 @@ export default function ProductDetail() {
                 />
               )}
 
-              {/* Standortspezifischer SEO-Content (Use-Case, Lieferradius, Standort-FAQs) */}
+              {/* Standortspezifischer Block (Hookline + Standort-Fakten).
+                  FAQs werden weiter unten in den bestehenden FAQ-Block eingehängt. */}
               {locationId && categoryId && (
                 <LocalCategoryContentBlock locationId={locationId} categoryId={categoryId} />
               )}
 
-              {/* SEO Content Block */}
+              {/* SEO Content Block (Use-Cases + FAQ – inkl. lokaler FAQs) */}
               <ProductSEOContent
                 product={product}
                 location={location}
                 categoryId={categoryId || ""}
                 categoryTitle={category.title}
                 productSEO={productSEO}
+                additionalFaqs={locationId && categoryId ? getLocalCategoryContent(locationId, categoryId)?.faqs : undefined}
               />
+
 
               {/* Halteverbotsschilder: ausführlicher Ratgeber im SEO-Bereich */}
               {(product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set") && (

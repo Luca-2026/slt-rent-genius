@@ -10,6 +10,9 @@ interface ProductSEOContentProps {
   categoryId: string;
   categoryTitle: string;
   productSEO?: ProductSEOData;
+  /** Standortspezifische FAQs (aus localCategoryContent), werden an
+   *  den FAQ-Block angehängt. Verhindert doppelte FAQ-Sektionen. */
+  additionalFaqs?: { q: string; a: string }[];
 }
 
 // Category-specific rental tips and use cases (fallback when no product-specific SEO data)
@@ -367,7 +370,7 @@ export const categoryContent: Record<string, {
   },
 };
 
-export function ProductSEOContent({ product, location, categoryId, categoryTitle, productSEO }: ProductSEOContentProps) {
+export function ProductSEOContent({ product, location, categoryId, categoryTitle, productSEO, additionalFaqs }: ProductSEOContentProps) {
   const categoryData = useMemo(() => categoryContent[categoryId], [categoryId]);
   const productName = productSEO?.excelName || product.name;
   const locationName = location.name;
@@ -396,8 +399,10 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const hasProductUseCases = productSEO && (productSEO.useCaseBau || productSEO.useCaseEvent || productSEO.useCasePrivat);
   const hasCategoryUseCases = categoryData?.useCases?.length;
 
-  // Use product-specific FAQs if available, else category fallback
-  const faqs = productSEO?.faqs?.length ? productSEO.faqs : categoryData?.faqs || [];
+  // Produkt- bzw. Kategorie-FAQs PLUS standortspezifische FAQs.
+  // Eine einzige FAQ-Sektion auf der Seite – kein zweiter Block.
+  const baseFaqs = productSEO?.faqs?.length ? productSEO.faqs : (categoryData?.faqs || []);
+  const faqs = [...baseFaqs, ...(additionalFaqs ?? [])];
 
   // H2 headings from Excel
   const h2s = productSEO?.h2s || [];
