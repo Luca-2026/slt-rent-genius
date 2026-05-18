@@ -172,57 +172,6 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
-
-    verdichtung: {
-      hookline:
-        "Rüttelplatten, Stampfer und Walzen für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung direkt zur Einsatzstelle.",
-      standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Beratung, Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt; das Gerät selbst disponieren wir aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Liefer- und Übergabegebiet umfasst das gesamte Ruhrgebiet: Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – relevant für Pflasterarbeiten, GaLaBau, Grabenverfüllung und Tiefbau in dichter Innenstadtlage.",
-      faqs: [
-        {
-          q: "Liefert ihr Rüttelplatten und Stampfer nach Essen, Duisburg oder Oberhausen?",
-          a: "Ja. Ab unserem Service-Standort Mülheim liefern wir Rüttelplatten, Vibrationsstampfer und Walzen ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, in der Regel am nächsten Werktag. Für größere Geräte organisieren wir den Transport direkt aus Krefeld.",
-        },
-        {
-          q: "Stehen die Verdichtungsgeräte direkt am Standort Mülheim?",
-          a: "Ein Teil unseres Verdichtungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind – insbesondere große Tandemwalzen oder Spezialstampfer – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
-        },
-      ],
-    },
-
-    arbeitsbuehnen: {
-      hookline:
-        "Scheren-, Mast- und Anhängerbühnen für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung selbstfahrender Bühnen direkt zur Einsatzstelle.",
-      standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Selbstfahrende Scheren- und Mastbühnen liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anhängerbühnen werden vor Ort am Standort Mülheim übergeben und dort wieder zurückgegeben. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
-      faqs: [
-        {
-          q: "Liefert ihr selbstfahrende Arbeitsbühnen nach Essen, Duisburg oder Oberhausen?",
-          a: "Ja. Ab unserem Service-Standort Mülheim liefern wir selbstfahrende Scheren- und Mastbühnen ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Anhängerbühnen werden vor Ort an der Ruhrorter Str. 122 übergeben.",
-        },
-        {
-          q: "Stehen die Arbeitsbühnen direkt am Standort Mülheim?",
-          a: "Ein Teil unseres Arbeitsbühnen-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle mit größerer Arbeitshöhe oder Spezialbühnen disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
-        },
-      ],
-    },
-
-    werkzeuge: {
-      hookline:
-        "Bohr-, Säge-, Fräs- und Messwerkzeuge für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
-      standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Die meisten Werkzeuge lassen sich im eigenen Pkw oder Kombi transportieren – für Sanierungs- und Renovierungsprojekte im Ruhrgebiet ist Lieferung auf Anfrage ebenfalls möglich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt; das Werkzeug selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden.",
-      faqs: [
-        {
-          q: "Stehen die Werkzeuge direkt am Standort Mülheim?",
-          a: "Ein Teil unseres Werkzeug-Kernsortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Spezialwerkzeuge, die nicht vor Ort sind, disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
-        },
-        {
-          q: "Liefert ihr Werkzeuge ins Ruhrgebiet oder kann ich sie selbst abholen?",
-          a: "Beides ist möglich. Bohrhämmer, Sägen, Fräsen und Messtechnik passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Mengen oder Baustellen in Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen oder Hattingen organisieren wir auf Anfrage die Lieferung direkt zur Einsatzstelle.",
-        },
-      ],
-    },
   },
 
   // =================================================================
