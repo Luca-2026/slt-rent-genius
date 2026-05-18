@@ -229,6 +229,23 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "heizung-trocknung": {
+      hookline:
+        "Heizlüfter, Heizpilze und Bautrockner für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Beratung, Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt; das Gerät selbst disponieren wir aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Liefer- und Übergabegebiet umfasst das gesamte Ruhrgebiet: Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – relevant vor allem für Wasserschäden, Neubau-Trocknung und Außen-Events in der Region.",
+      faqs: [
+        {
+          q: "Liefert ihr Bautrockner und Heizgeräte ins Ruhrgebiet?",
+          a: "Ja. Ab unserem Service-Standort Mülheim liefern bzw. übergeben wir Bautrockner, Heizlüfter und Heizpilze ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52. Bei Wasserschäden disponieren wir nach Möglichkeit kurzfristig aus unserem Hauptsitz Krefeld, häufig taggleich.",
+        },
+        {
+          q: "Stehen die Bautrockner direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Heiz- und Trocknungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind, disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
   },
 };
 
