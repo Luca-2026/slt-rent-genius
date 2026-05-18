@@ -80,6 +80,23 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+    anhaenger: {
+      hookline:
+        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserer Filiale Bonn – 24/7 per SMS-Code-Schloss abholbar, persönliche Übergabe Mo–Sa möglich.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Anhänger sind dort rund um die Uhr per SMS-Code-Schloss abholbar – auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr ab 07:00 Uhr und samstags regulär von 08:00 bis 17:30 Uhr vor Ort. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Lieferung im Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+      faqs: [
+        {
+          q: "Kann ich den Anhänger an der Filiale Bonn auch nachts oder sonntags abholen?",
+          a: "Ja. An unserem Standort Drachenburgstraße 8 in Bonn-Bad Godesberg sind alle Mietanhänger 24/7 per SMS-Code-Schloss abholbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 07:00–18:00 und Sa 08:00–17:30.",
+        },
+        {
+          q: "Welche Anhänger habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir das gefragte Anhänger-Kernsortiment direkt vor Ort – darunter Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger in mehreren Größenklassen. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezialtypen, die nicht vor Ort stehen, disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
+
     // Weitere Kategorien folgen in den nächsten Sprints (mit gleichem
     // „echt lokal"-Maßstab: nur Aussagen, die in Krefeld so nicht
     // stimmen würden).
@@ -106,6 +123,23 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Liefert ihr Bagger nach Essen, Duisburg oder Oberhausen?",
           a: "Ja. Unser Liefer- und Übergabegebiet ab Mülheim umfasst das gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt zum Standort über A40 und A52. Tieflader-Transport für größere Bagger organisieren wir bei Bedarf direkt aus Krefeld.",
+        },
+      ],
+    },
+
+    anhaenger: {
+      hookline:
+        "Anhänger für das Ruhrgebiet – 24/7 per SMS-Code-Schloss abholbar an unserem Service-Standort Mülheim in der Bobcat-Filiale, persönliche Übergabe nach Vereinbarung.",
+      standortFakten:
+        "Abholung an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr, eingebettet in die Bobcat-Filiale vor Ort. Anhänger sind dort 24/7 per SMS-Code-Schloss abholbar – auch nachts, sonntags und an Feiertagen. Persönliche Übergabe, Einweisung und Beratung nach Vereinbarung. Anfahrt direkt über A40 (Ruhrschnellweg) und A52. Liefer- und Übergabegebiet umfasst das gesamte Ruhrgebiet: Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+      faqs: [
+        {
+          q: "Kann ich den Anhänger in Mülheim auch außerhalb der Öffnungszeiten abholen?",
+          a: "Ja. An unserem Standort Ruhrorter Str. 122 in der Bobcat-Filiale Mülheim sind Mietanhänger 24/7 per SMS-Code-Schloss abholbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Persönliche Übergabe und Einweisung sind zusätzlich nach Vereinbarung möglich.",
+        },
+        {
+          q: "Welche Anhänger habt ihr am Standort Mülheim vor Ort?",
+          a: "An unserem Service-Standort Mülheim führen wir einen Teil des Anhänger-Sortiments direkt vor Ort und 24/7 abholbar – unter anderem Baumaschinen- und Plattform-Anhänger sowie weitere häufig gefragte Typen. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Modelle, die nicht vor Ort stehen, disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
         },
       ],
     },
