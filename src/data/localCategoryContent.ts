@@ -256,6 +256,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    beleuchtung: {
+      hookline:
+        "LED Outdoorscheinwerfer TourLED 50 XCR, Moving Heads, LED-Beleuchtungssets und Party-Ton-&-Licht-Sets mietest du an unserer Filiale Bonn – einzelne Scheinwerfer und kleinere Sets auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und können direkt abgeholt werden. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte und Außenveranstaltungen.",
+      faqs: [
+        {
+          q: "Kann ich LED-Scheinwerfer und kleinere Licht-Sets in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
+        },
+        {
+          q: "Liefert ihr Beleuchtungstechnik ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir größere Beleuchtungssets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Einzelne Scheinwerfer und Moving Heads holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welche Beleuchtung habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Event-Beleuchtungs-Kernsortiment direkt vor Ort – darunter LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot Zoom 2.0, LED Beleuchtungsset single und duo (4in1 Multieffekt-Lichtanlage), Party Ton & Licht-Set und LED Outdoorscheinwerfer 6er-Set. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezial-Beleuchtung wie der SLT LED Fluter RGBWAUV, Showtec Sunstrip Active MKII oder Nebelmaschinen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
@@ -504,6 +525,27 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Kann ich Warnleuchten und das Halteverbotsschilder-Set in Mülheim einfach mit dem Pkw abholen?",
           a: "Ja. TL-Warnleuchten, Fußplatten K1 TL, Wemas-Klemmschellen, Warnbarken und das 18-teilige Halteverbotsschilder-Set passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Mengen an Bauzäunen oder Schrankenzäunen empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
+
+    beleuchtung: {
+      hookline:
+        "LED Outdoorscheinwerfer, Moving Heads, LED-Beleuchtungssets, LED-Fluter, Showtec Sunstrip und Nebelmaschinen für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set, das Party Ton & Licht-Set oder mehrere LED-Fluter RGBWAUV liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte, Stadtfeste und Außenveranstaltungen. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Beleuchtungstechnik nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Größere Beleuchtungssets wie das LED Outdoorscheinwerfer 6er-Set, das Party Ton & Licht-Set, LED-Fluter RGBWAUV und Showtec Sunstrip Active MKII liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Einzelne Scheinwerfer und Moving Heads holst du in der Regel selbst mit Pkw ab.",
+        },
+        {
+          q: "Steht die Beleuchtung direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Event-Beleuchtungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets. Größere Lichtanlagen, Spezial-Effekte wie der ADJ Fog Fury Jett PRO oder das komplette Party Ton & Licht-Set disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich LED-Scheinwerfer und Moving Heads in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot Zoom 2.0, LED Beleuchtungsset single und duo, einzelne LED-Fluter und Showtec Sunstrip Active MKII passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
         },
       ],
     },
