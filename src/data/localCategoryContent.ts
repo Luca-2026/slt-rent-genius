@@ -277,6 +277,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    beschallung: {
+      hookline:
+        "Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher), 2.1 Soundsystem 1400W RMS mit Mischpult sowie Ersatz-Akkus mietest du an unserer Filiale Bonn – Soundboks und Zubehör auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Soundboks Gen.3 (15,4 kg) und Batteryboks passen in jeden Pkw oder Kombi. Das 2.1 Soundsystem 1400W RMS (ca. 55 kg) liefert die 1400-Watt-PA-Anlage mit integriertem 4-Kanal-Mischpult für bis zu 75 Personen. Größere Beschallungssets liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Hochzeiten, Firmenevents, Geburtstage und Outdoor-Partys.",
+      faqs: [
+        {
+          q: "Kann ich den Soundboks in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Der Soundboks Gen.3 (15,4 kg, Bluetooth 5.0, bis zu 40 Stunden Akkulaufzeit) und der Batteryboks Ersatz-Akku passen in jeden Pkw oder Kombi und sind direkt mitnehmbar.",
+        },
+        {
+          q: "Liefert ihr das 2.1 Soundsystem ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult (geeignet für bis zu 75 Personen) ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Soundboks und kleines Zubehör holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welche Beschallung habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Beschallungs-Kernsortiment direkt vor Ort – darunter Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher mit TeamUP-Modus), Soundboks Batteryboks Ersatz-Akku und das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult für bis zu 75 Personen. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere PA-Systeme wie das D.A.S. Soundsystem 3500W RMS, D.A.S. Audio Action 508A/Vantec oder Funkmikrofon-Sets disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
@@ -546,6 +567,27 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Kann ich LED-Scheinwerfer und Moving Heads in Mülheim einfach mit dem Pkw abholen?",
           a: "Ja. LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot Zoom 2.0, LED Beleuchtungsset single und duo, einzelne LED-Fluter und Showtec Sunstrip Active MKII passen in der Regel in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
+        },
+      ],
+    },
+
+    beschallung: {
+      hookline:
+        "Soundboks Gen.3, PA-Systeme (2.0/2.1), D.A.S. Audio Line-Array, Funkmikrofone und Mischpulte für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Soundboks Gen.3 (15,4 kg, Bluetooth 5.0) und Batteryboks passen in jeden Pkw oder Kombi. Das 2.1 Soundsystem 1400W RMS (ca. 55 kg, bis 75 Personen) und das 2.0 Soundsystem 800W RMS (bis 50 Personen) werden nach Terminvereinbarung übergeben. Größere PA-Anlagen wie das D.A.S. Soundsystem 3500W RMS (bis 250 Personen), D.A.S. Audio Action 508A/Vantec oder Funkmikrofon-Sets liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr PA-Systeme und Beschallung nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Größere PA-Anlagen wie das D.A.S. Soundsystem 3500W RMS (bis 250 Personen), D.A.S. Audio Action 508A/Vantec Line-Array, 2.1 Soundsystem 1400W RMS sowie Funkmikrofon-Sets liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Soundboks und kleines Zubehör holst du in der Regel selbst mit Pkw ab.",
+        },
+        {
+          q: "Steht die Beschallung direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Beschallungs-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise Soundboks Gen.3, Batteryboks und das 2.1 Soundsystem 1400W RMS. Größere PA-Anlagen wie das D.A.S. Soundsystem 3500W RMS, D.A.S. Vantec 12A/18A Subwoofer, Funkmikrofon-Sets oder das 4-Kanal-Mischpult disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich den Soundboks in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. Der Soundboks Gen.3 (15,4 kg, 126 dB, Bluetooth 5.0 mit TeamUP-Modus für bis zu 5 Geräte) und der Batteryboks Ersatz-Akku passen in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere PA-Systeme wie das D.A.S. Soundsystem 3500W RMS oder das 2.1 Soundsystem 1400W RMS empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
         },
       ],
     },
