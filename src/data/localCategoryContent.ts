@@ -12,7 +12,7 @@
 // 2. „Echt lokal" Test: Eine Aussage gehört hier nur rein, wenn sie
 //    in Krefeld so NICHT stimmen würde. Generische Tipps („welche
 //    Plattengröße") gehören in den Kategorie-FAQ-Block, NICHT hier.
-// 3. Terminologie: Bonn = Filiale, Krefeld = Hauptlager,
+// 3. Terminologie: Bonn = Filiale, Krefeld = Hauptsitz,
 //    Mülheim = Service-Standort. Kein „Zentrallager Bonn".
 // 4. Keine doppelten FAQ-Sektionen: die `faqs` hier werden im
 //    bestehenden Produkt-FAQ-Block angehängt (kein zweiter Block).
