@@ -101,9 +101,56 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
-    // Weitere Kategorien folgen in den nächsten Sprints (mit gleichem
-    // „echt lokal"-Maßstab: nur Aussagen, die in Krefeld so nicht
-    // stimmen würden).
+    arbeitsbuehnen: {
+      hookline:
+        "Scheren-, Mast- und Anhängerbühnen mietest du an unserer Filiale Bonn – mit Lieferung ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung und Einweisung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anhängerbühnen werden vor Ort abgeholt, selbstfahrende Bühnen liefern wir per Transport an die Einsatzstelle.",
+      faqs: [
+        {
+          q: "Liefert ihr Arbeitsbühnen ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir selbstfahrende Scheren- und Mastbühnen ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Anhängerbühnen werden direkt vor Ort an der Drachenburgstraße abgeholt.",
+        },
+        {
+          q: "Welche Arbeitsbühnen habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment an Arbeitsbühnen direkt vor Ort – darunter Scheren-, Mast- und Anhängerbühnen für typische Einsätze in Tiefbau, Sanierung und GaLaBau. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere Arbeitshöhen oder Spezialmodelle disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
+
+    werkzeuge: {
+      hookline:
+        "Bohr-, Säge-, Fräs- und Messwerkzeuge mietest du an unserer Filiale Bonn – samstags bis 17:30 Uhr abholbar, ohne Voranmeldung.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr – damit eine Stunde früher als unser Hauptsitz in Krefeld und samstags deutlich länger. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Für Sanierungs- und Renovierungsprojekte im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal sind die meisten Werkzeuge kompakt genug für den eigenen Pkw – Lieferung ist auf Anfrage ebenfalls möglich.",
+      faqs: [
+        {
+          q: "Kann ich Werkzeuge an der Filiale Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Damit kannst du Bohrhämmer, Sägen, Fräsen oder Messtechnik auch für Wochenend-Projekte direkt vor Ort mitnehmen. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld.",
+        },
+        {
+          q: "Welche Werkzeuge habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein breites Werkzeug-Kernsortiment direkt vor Ort – Bohr-, Säge-, Fräs-, Schleif- und Messwerkzeuge für Sanierung, GaLaBau und Innenausbau. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Spezialwerkzeuge, die nicht vor Ort stehen, disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
+
+    "heizung-trocknung": {
+      hookline:
+        "Heizlüfter, Heizpilze und Bautrockner mietest du an unserer Filiale Bonn – mit Lieferung ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – relevant vor allem für Wasserschäden, Neubau-Trocknung und Außen-Events in der Region.",
+      faqs: [
+        {
+          q: "Liefert ihr Bautrockner und Heizgeräte ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir Bautrockner, Heizlüfter und Heizpilze ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Für Wasserschäden organisieren wir die Lieferung nach Möglichkeit kurzfristig.",
+        },
+        {
+          q: "Welche Heiz- und Trocknungsgeräte habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment an Heizlüftern, Heizpilzen und Bautrocknern direkt vor Ort – passend für Bautrocknung, Wasserschaden-Sanierung und Outdoor-Events. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere Mengen oder Spezialgeräte disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
