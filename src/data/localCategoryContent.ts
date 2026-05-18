@@ -172,6 +172,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "leitern-gerueste": {
+      hookline:
+        "Leitern und Rollgerüste für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung von Rollgerüsten direkt zur Einsatzstelle.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Klapp- und Mehrzweckleitern lassen sich in der Regel im eigenen Pkw oder Kombi mitnehmen; Rollgerüste und größere Steh- bzw. Schiebeleitern liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr Rollgerüste nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Ab unserem Service-Standort Mülheim liefern wir Rollgerüste, große Steh- und Schiebeleitern ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Tieflader-Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen die Leitern und Gerüste direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Leitern- und Gerüst-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind – insbesondere größere Rollgerüst-Konfigurationen – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich kleine Leitern in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. Klapp-, Steh- und Mehrzweckleitern passen in der Regel in jeden Kombi oder Pkw mit Dachträger und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für Rollgerüste und große Schiebeleitern empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
   },
 
   // =================================================================
