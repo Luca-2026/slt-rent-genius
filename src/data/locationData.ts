@@ -73,7 +73,7 @@ export const locationData: LocationInfo[] = [
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "*Samstags früher nach vorheriger Buchung möglich.",
-    features: ["Große Auswahl", "Hauptlager", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
+    features: ["Große Auswahl", "Hauptsitz", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
     serviceCharacter: "full-warehouse",
     storyHeadline: "Ihr zentraler Mietpark am Niederrhein",
@@ -163,7 +163,7 @@ export const locationData: LocationInfo[] = [
       "Mülheim an der Ruhr ist unser Service-Standort für das gesamte Ruhrgebiet. Beratung, Übergabe und Rücknahme finden vor Ort statt – die Geräte kommen direkt aus unserem Zentrallager in Krefeld, mit kurzen Wegen über die A40.",
     storyParagraphs: [
       "Mülheim an der Ruhr ist strategisch im Herzen des Ruhrgebiets gelegen. Von hier aus erreichen wir Essen, Duisburg, Oberhausen und Bochum innerhalb von 30 Minuten. Was uns von reinen Online-Anbietern unterscheidet: Sie haben einen festen Ansprechpartner vor Ort, können Geräte persönlich abholen und übergeben, und werden vor Mietbeginn praktisch eingewiesen.",
-      "Das vollständige Mietsortiment unseres Hauptlagers in Krefeld ist auch über den Standort Mülheim verfügbar. Bei Anfragen disponieren wir die benötigten Geräte aus Krefeld nach Mülheim – meist innerhalb von 24 Stunden, bei kurzfristigem Bedarf häufig auch am selben Werktag. Für planbare Mietzeiträume übernehmen wir die komplette Logistik.",
+      "Das vollständige Mietsortiment unseres Hauptsitzes in Krefeld ist auch über den Standort Mülheim verfügbar. Bei Anfragen disponieren wir die benötigten Geräte aus Krefeld nach Mülheim – meist innerhalb von 24 Stunden, bei kurzfristigem Bedarf häufig auch am selben Werktag. Für planbare Mietzeiträume übernehmen wir die komplette Logistik.",
       "Unser Standort Mülheim entwickelt sich. Mittelfristig werden wir vor Ort ein eigenes Stamm-Sortiment führen – die Geräte, die im Ruhrgebiet am häufigsten gefragt sind: Minibagger, Aggregate, Anhänger und Eventtechnik. Bis dahin sorgen wir mit kurzen Lieferwegen aus Krefeld für die gleiche Verfügbarkeit wie an einem klassischen Mietpark-Standort.",
       "Branchen, die wir im Ruhrgebiet besonders bedienen: Bauunternehmen, Industrie-Dienstleister, Logistik-Firmen, Veranstalter und Privatkunden für größere Heim- und Gartenprojekte. Beratung kostenfrei, persönlich, vor Ort.",
     ],

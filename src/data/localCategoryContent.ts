@@ -54,7 +54,7 @@ export const localCategoryContent: LocalContentMap = {
       faqs: [
         {
           q: "Hat die SLT-Filiale Bonn auch samstags geöffnet?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptlager in Krefeld. Damit kannst du Verdichtungsgeräte auch für Wochenendeinsätze direkt vor Ort abholen.",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld. Damit kannst du Verdichtungsgeräte auch für Wochenendeinsätze direkt vor Ort abholen.",
         },
         {
           q: "Liefert ihr Verdichtungsgeräte ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -69,7 +69,7 @@ export const localCategoryContent: LocalContentMap = {
 
   // =================================================================
   // MÜLHEIM AN DER RUHR – Service-Standort Ruhrorter Str. 122
-  // Übergabe nach Vereinbarung, Geräte aus Hauptlager Krefeld
+  // Übergabe nach Vereinbarung, Geräte aus Hauptsitz Krefeld
   // Einzugsgebiet: Mülheim, Essen, Duisburg, Oberhausen, Bochum
   // =================================================================
   muelheim: {

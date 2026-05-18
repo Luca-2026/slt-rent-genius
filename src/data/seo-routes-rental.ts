@@ -515,7 +515,7 @@ function buildLocationIntro(
   } else {
     // krefeld / fallback
     out.push(
-      `Standort ${loc.name} (Hauptlager): ${subject} liegt vor Ort in der ${loc.address}, ${loc.city} bereit – inklusive Werkstatt, Service-Team und Direkt-Übergabe.`,
+      `Standort ${loc.name} (Hauptsitz): ${subject} liegt vor Ort in der ${loc.address}, ${loc.city} bereit – inklusive Werkstatt, Service-Team und Direkt-Übergabe.`,
     );
     if (radius) {
       out.push(
