@@ -360,6 +360,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    aggregate: {
+      hookline:
+        "Stromaggregate von 2,8 bis 100 kVA für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung großer Diesel-Aggregate direkt zur Einsatzstelle.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Kleine tragbare Aggregate (z. B. 2,8 kVA Ford FG4050 oder 7,5 kVA Kärcher PGG 8/3) passen in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere Diesel-Aggregate (20, 50, 80, 100 kVA) liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Baustellen ohne Netzanschluss, Events, Notstrom und Wasserschaden-Sanierung. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+      faqs: [
+        {
+          q: "Liefert ihr große Stromaggregate nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Diesel-Aggregate ab 20 kVA liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag. Bei Notstrom-Bedarf disponieren wir nach Möglichkeit kurzfristig, häufig auch taggleich.",
+        },
+        {
+          q: "Stehen die Aggregate direkt am Standort Mülheim?",
+          a: "Ein Teil unseres Aggregate-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit. Modelle, die nicht vor Ort sind – insbesondere große Diesel-Stromerzeuger ab 50 kVA – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Kann ich kleine Aggregate in Mülheim einfach mit dem Pkw abholen?",
+          a: "Ja. Tragbare Aggregate wie der 2,8 kVA Ford FG4050 oder der 7,5 kVA Kärcher PGG 8/3 passen in jeden Pkw oder Kombi und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für Diesel-Stromerzeuger ab 20 kVA empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+        },
+      ],
+    },
   },
 };
 
