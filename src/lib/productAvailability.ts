@@ -16,7 +16,7 @@ import { getLocationInfoById } from "@/data/locationData";
 
 export type AvailabilityStatus =
   | "available-local"      // vor Ort am Standort verfügbar (rentwareCode vorhanden)
-  | "available-warehouse"  // Hauptlager Krefeld: immer vor Ort
+  | "available-warehouse"  // Hauptsitz Krefeld: immer vor Ort
   | "on-request";          // Lieferung aus Krefeld auf Anfrage
 
 export interface ProductAvailability {
@@ -56,7 +56,7 @@ export function getProductAvailability(
     return {
       status: "available-warehouse",
       badgeLabel: `Verfügbar in ${locName}`,
-      headline: `Verfügbar in unserem Hauptlager ${locName}`,
+      headline: `Verfügbar in unserem Hauptsitz ${locName}`,
       body: `Dieses Gerät ist Teil unseres Krefelder Mietsortiments. Abholung am Hauptsitz oder Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
       schemaAvailability: "https://schema.org/InStock",
       isBookable: true,
@@ -94,8 +94,8 @@ export function getProductAvailability(
   return {
     status: "on-request",
     badgeLabel: `Auf Anfrage in ${locName}`,
-    headline: `Auf Anfrage in ${locName} – Lieferung aus dem Hauptlager Krefeld`,
-    body: `Dieses Gerät disponieren wir auf Anfrage aus unserem Hauptlager in Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. ${charSuffix}`,
+    headline: `Auf Anfrage in ${locName} – Lieferung aus dem Hauptsitz Krefeld`,
+    body: `Dieses Gerät disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. ${charSuffix}`,
     schemaAvailability: "https://schema.org/PreOrder",
     deliveryLeadTime: "PT24H",
     isBookable: false,
