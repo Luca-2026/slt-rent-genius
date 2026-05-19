@@ -31,7 +31,7 @@ export const categoryContent: Record<string, {
     ],
     tips: [
       "Achten Sie auf das zulässige Gesamtgewicht Ihres Zugfahrzeugs.",
-      "Ladungssicherung ist Pflicht – Spanngurte liegen bei oder können dazu gebucht werden.",
+      "Ladungssicherung ist Pflicht – Spanngurte sind optional im Buchungsprozess dazubuchbar.",
       "Unsere Anhänger sind 24/7 per SMS-Codesystem verfügbar – auch am Wochenende.",
       "Planen schützen Ihre Ladung bei Regen und verhindern das Herausfallen kleiner Teile.",
     ],
