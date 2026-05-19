@@ -1173,8 +1173,10 @@ export default function ProductDetail() {
                 <StandortVerfuegbarkeit
                   locationId={locationId}
                   product={product}
+                  categoryId={categoryId}
                   deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"}
                 />
+
               )}
 
               {/* Standortspezifischer Block (Hookline + Standort-Fakten).
