@@ -143,7 +143,9 @@ Bezahlen Sie bequem per Kreditkarte, PayPal oder bar im Ladengeschäft. Nach erf
 Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Spätestens 15 Minuten vor Beginn der Buchungszeit ist der Code per SMS versendet. Dieser Code ist nur für Ihre Buchung gültig.
 
 ### 4. Anhänger entsperren
-Am Standort angekommen, geben Sie den Code am **Sicherheitsschloss** des gebuchten Anhängers ein. Das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.
+Am Standort angekommen, geben Sie den Code am **Schloss vorne an der Deichsel** des gebuchten Anhängers ein. Bestätigen Sie die Eingabe mit der **Schlosstaste**. Ziehen Sie anschließend **kräftig daran** – das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.
+
+Möchten Sie den Anhänger später wieder abstellen, drücken Sie den Bügel einfach **rein**, lassen Sie ihn **einrasten** und warten Sie auf den **langen Piepton**. Anschließend ist der Anhänger automatisch wieder gesperrt.
 
 ### 5. Losfahren
 Anhänger ankuppeln, Beleuchtung prüfen (13-polig oder 7-polig – beides gängig), Ladung sichern – und los geht's.
