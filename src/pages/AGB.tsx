@@ -5,7 +5,7 @@ import { SEO } from "@/components/SEO";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Download } from "lucide-react";
 import {
   AGB_B2B_META,
   AGB_B2B_SECTIONS,
@@ -21,6 +21,12 @@ const TABS: { key: TabKey; label: string; short: string }[] = [
   { key: "b2c", label: "AGB für Verbraucher (B2C)", short: "B2C" },
   { key: "widerruf", label: "Widerrufsbelehrung", short: "Widerruf" },
 ];
+
+const PDF_DOWNLOADS: Record<TabKey, { href: string; label: string }> = {
+  b2b: { href: "/legal/AGB-B2B.pdf", label: "AGB B2B als PDF herunterladen" },
+  b2c: { href: "/legal/AGB-B2C.pdf", label: "AGB B2C als PDF herunterladen" },
+  widerruf: { href: "/legal/Widerrufsbelehrung.pdf", label: "Widerrufsbelehrung als PDF herunterladen" },
+};
 
 const DATA: Record<
   TabKey,
@@ -180,14 +186,28 @@ export default function AGB() {
             const d = DATA[t.key];
             return (
               <TabsContent key={t.key} value={t.key} className="mt-0">
-                <div className="mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-                    {d.meta.title}
-                  </h2>
-                  <p className="text-muted-foreground">{d.meta.subtitle}</p>
-                  <p className="text-sm text-muted-foreground italic mt-1">
-                    {d.meta.stand}
-                  </p>
+                <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+                      {d.meta.title}
+                    </h2>
+                    <p className="text-muted-foreground">{d.meta.subtitle}</p>
+                    <p className="text-sm text-muted-foreground italic mt-1">
+                      {d.meta.stand}
+                    </p>
+                  </div>
+                  <Button asChild variant="outline" className="shrink-0">
+                    <a
+                      href={PDF_DOWNLOADS[t.key].href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      aria-label={PDF_DOWNLOADS[t.key].label}
+                    >
+                      <Download className="h-4 w-4" />
+                      PDF herunterladen
+                    </a>
+                  </Button>
                 </div>
 
                 <div className="grid lg:grid-cols-[260px_1fr] gap-8">
