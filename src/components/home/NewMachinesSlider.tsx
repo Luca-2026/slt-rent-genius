@@ -136,28 +136,20 @@ export function NewMachinesSlider() {
         </AnimatedSection>
       </div>
 
-      {/* Desktop: 4er Grid */}
-      <div className="hidden lg:block section-container">
-        <div className="grid grid-cols-4 gap-6">
-          {machines.slice(0, 4).map((m: any) => (
-            <div key={m.id}>{renderCard(m)}</div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobil & Tablet: Slider */}
-      <div className="lg:hidden overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4 pl-4 md:pl-8">
+      {/* Slider – alle Geräte */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4 lg:gap-6 pl-4 md:pl-8 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))]">
           {machines.map((m: any) => (
             <div
               key={m.id}
-              className="flex-[0_0_260px] sm:flex-[0_0_280px] min-w-0"
+              className="flex-[0_0_260px] sm:flex-[0_0_280px] lg:flex-[0_0_300px] min-w-0"
             >
               {renderCard(m)}
             </div>
           ))}
         </div>
       </div>
+
 
       <div className="section-container text-center mt-10">
         <Link to="/verkauf/neumaschinen">
