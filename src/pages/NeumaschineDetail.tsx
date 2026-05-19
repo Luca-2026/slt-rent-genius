@@ -537,6 +537,7 @@ export default function NeumaschineDetail() {
           model: machine.model,
           name: machine.name,
           slug: slug!,
+          category: machine.category,
           priceLabel,
           image: absoluteImages[0] || null,
         }}
