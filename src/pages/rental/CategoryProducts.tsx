@@ -466,6 +466,18 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Modell filter for Leitern & Gerüste (Standard vs Breitaufbau, only applies to Rollgerüste)
+          else if (sectionId === "modell") {
+            filtered = filtered.filter((p) => {
+              if (p.category !== "rollgeruest") return true;
+              const isBreitaufbau = /breitaufbau/i.test(p.name);
+              return selectedValues.some((v) => {
+                if (v === "breitaufbau") return isBreitaufbau;
+                if (v === "standard") return !isBreitaufbau;
+                return false;
+              });
+            });
+          }
           // Special handling for power filters (Werkzeuge vs Aggregate)
           else if (sectionId === "power") {
             filtered = filtered.filter((p) => {
@@ -913,7 +925,7 @@ export default function CategoryProducts() {
       });
     }
 
-    // Sort products for leitern-gerueste: Rollgerüste first, then Leitern, then Gerüstteile/Zubehör last
+    // Sort products for leitern-gerueste: Rollgerüste (Standard asc, then Breitaufbau asc), then Stehleiter, Kombileiter, etc.
     if (category?.id === "leitern-gerueste") {
       const categorySortOrder: Record<string, number> = {
         rollgeruest: 0,
@@ -923,23 +935,49 @@ export default function CategoryProducts() {
         geruestteil: 5,
         geruestteile: 5,
       };
+      const getArbeitshoehe = (p: typeof filtered[number]): number => {
+        const specHeight = (p.specifications as Record<string, string> | undefined)?.["Arbeitshöhe"] ||
+          (p.specifications as Record<string, string> | undefined)?.["Arbeitshöhe (Stehleiter)"] || "";
+        const m = String(specHeight).match(/([\d,]+)\s*m/);
+        if (m) return parseFloat(m[1].replace(",", "."));
+        const nm = p.name.match(/([\d,]+)\s*m/);
+        return nm ? parseFloat(nm[1].replace(",", ".")) : 0;
+      };
       filtered.sort((a, b) => {
         const orderA = categorySortOrder[a.category || ""] ?? 4;
         const orderB = categorySortOrder[b.category || ""] ?? 4;
-        return orderA - orderB;
+        if (orderA !== orderB) return orderA - orderB;
+        // Within rollgeruest: Standard before Breitaufbau
+        if (a.category === "rollgeruest" && b.category === "rollgeruest") {
+          const breitA = /breitaufbau/i.test(a.name) ? 1 : 0;
+          const breitB = /breitaufbau/i.test(b.name) ? 1 : 0;
+          if (breitA !== breitB) return breitA - breitB;
+        }
+        // Sort by Arbeitshöhe ascending within group
+        return getArbeitshoehe(a) - getArbeitshoehe(b);
       });
     }
 
+
+
     // Within each sub-category group, sort products with rentwareCode for current location first
-    // This preserves the overall group order (e.g. Bagger before Radlader) but within each
-    // group pushes on-request products (no rentwareCode) to the end.
+    // This preserves the overall group order (e.g. Bagger before Radlader, or Standard before
+    // Breitaufbau for Rollgerüste) but within each group pushes on-request products (no
+    // rentwareCode) to the end.
     if (locationId) {
       const stableIndexMap = new Map(filtered.map((p, i) => [p, i]));
+      const bucketKey = (p: typeof filtered[number]): string => {
+        const cat = p.category || "";
+        if (category?.id === "leitern-gerueste" && cat === "rollgeruest") {
+          return /breitaufbau/i.test(p.name) ? "rollgeruest:breitaufbau" : "rollgeruest:standard";
+        }
+        return cat;
+      };
       filtered.sort((a, b) => {
-        const catA = a.category || "";
-        const catB = b.category || "";
-        // Only re-sort within the same sub-category
-        if (catA !== catB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
+        const bA = bucketKey(a);
+        const bB = bucketKey(b);
+        // Only re-sort within the same bucket
+        if (bA !== bB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
         const hasCodeA = a.rentwareCode && a.rentwareCode[locationId] ? 0 : 1;
         const hasCodeB = b.rentwareCode && b.rentwareCode[locationId] ? 0 : 1;
         if (hasCodeA !== hasCodeB) return hasCodeA - hasCodeB;
