@@ -298,7 +298,7 @@ export default function NeumaschineDetail() {
                 )}
                 {machine.slug === "baumax-anhaengerkupplung-kde550" && priceGross && (
                   <div className="mt-3 p-3 rounded-lg bg-accent/10 border border-accent/30">
-                    <p className="text-sm font-semibold text-accent-foreground">
+                    <p className="text-sm font-semibold text-foreground">
                       10 % Vorbestellerrabatt: {formatPriceGross(priceGross * 0.9, false)} brutto
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
