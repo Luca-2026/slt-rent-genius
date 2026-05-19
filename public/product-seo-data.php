@@ -3961,6 +3961,20 @@ $productSEOLookup = [
       ['q' => 'Wann sollte ich ein Gerüst statt einer Leiter verwenden?', 'a' => 'Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Grundsätzlich gilt: Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben.'],
     ],
   ],
+  'krause-fahrgeruest-2x1-50-11-4m' => [
+    'name' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe',
+    'h1' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Technische Daten & Traglast', 'Normen & Sicherheitsvorschriften', 'Aufbauanleitung', 'Wann Gerüst statt Leiter?'],
+    'useCaseBau' => 'Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten',
+    'useCaseEvent' => 'Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten',
+    'useCasePrivat' => 'Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren',
+    'faqs' => [
+      ['q' => 'Welche maximale Traglast hat das Gerät?', 'a' => 'Belastbarkeit: 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last; Werkzeug und Materialien dürfen die Gesamttraglast nicht überschreiten.'],
+      ['q' => 'Welche Arbeitshöhe ist maximal erreichbar?', 'a' => 'Arbeitshöhe: 11,4 m (Gerüsthöhe 10,5 m, Standhöhe 9,4 m). Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe.'],
+      ['q' => 'Welche Normen gelten und ist das Gerät zertifiziert?', 'a' => 'TÜV-geprüft nach DIN EN 1004-1. Höhenverstellbare Fahrrollen Ø 150 mm (stufenloser Verstellbereich: 220–335 mm). Zusätzlich gelten die DGUV Vorschrift 38 (Leitern) und DGUV Information 201-011 (Rollgerüste). Eine Einweisung in den sicheren Aufbau ist Pflicht.'],
+      ['q' => 'Wann sollte ich ein Gerüst statt einer Leiter verwenden?', 'a' => 'Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben.'],
+    ],
+  ],
   'rollgeruest-krause-breitaufbau-4-4m' => [
     'name' => 'Rollgerüst Breitaufbau, 4,4 m',
     'h1' => 'Rollgerüst Breitaufbau, 4,4 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
