@@ -21,6 +21,9 @@ const staticPages = [
   { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
   { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   { path: '/tiefpreisgarantie', priority: '0.6', changefreq: 'monthly' },
+  { path: '/verkauf', priority: '0.8', changefreq: 'weekly' },
+  { path: '/verkauf/neumaschinen', priority: '0.8', changefreq: 'weekly' },
+  { path: '/verkauf/gebrauchtmaschinen', priority: '0.8', changefreq: 'weekly' },
   // Solutions (canonical URLs – no redirecting slugs!)
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
   { path: '/loesungen/tiefbau-erdbewegung', priority: '0.6', changefreq: 'monthly' },
@@ -203,6 +206,26 @@ Deno.serve(async (req) => {
     ];
     for (const slug of jobSlugs) {
       urls.push(urlEntry(`/karriere/${slug}`, '0.8', 'weekly', TODAY));
+    }
+
+    // 8. Verkauf detail pages (Neumaschinen & Gebrauchtmaschinen)
+    const { data: newMachines } = await supabase
+      .from('new_machines')
+      .select('slug, updated_at')
+      .eq('is_active', true);
+    for (const nm of newMachines || []) {
+      const lastmod = nm.updated_at ? nm.updated_at.split('T')[0] : TODAY;
+      urls.push(urlEntry(`/verkauf/neumaschinen/${nm.slug}`, '0.7', 'weekly', lastmod));
+    }
+
+    const { data: usedMachines } = await supabase
+      .from('used_machines')
+      .select('slug, updated_at')
+      .in('status', ['available', 'reserved']);
+    for (const um of usedMachines || []) {
+      if (!um.slug) continue;
+      const lastmod = um.updated_at ? um.updated_at.split('T')[0] : TODAY;
+      urls.push(urlEntry(`/verkauf/gebrauchtmaschinen/${um.slug}`, '0.7', 'weekly', lastmod));
     }
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

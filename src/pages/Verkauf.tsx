@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package,
   ArrowRight, Mail, Phone, Shield, Clock, Handshake, Loader2,
-  ExternalLink, ChevronDown,
+  ExternalLink, ChevronDown, Sparkles, Tag,
 } from "lucide-react";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
@@ -368,11 +368,18 @@ export default function Verkauf() {
               {t("verkauf.hero.subtitle")}
             </p>
             <div className="flex flex-wrap gap-4 mb-8">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={scrollToForm}>
-                <Mail className="mr-2 h-5 w-5" /> {t("verkauf.hero.ctaInquiry")}
-              </Button>
-              <a href="#marken">
+              <Link to="/verkauf/neumaschinen">
+                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Sparkles className="mr-2 h-5 w-5" /> Zu den Neumaschinen
+                </Button>
+              </Link>
+              <Link to="/verkauf/gebrauchtmaschinen">
                 <Button size="lg" variant="secondary" className="gap-2">
+                  <Tag className="mr-2 h-5 w-5" /> Zu den Gebrauchtmaschinen
+                </Button>
+              </Link>
+              <a href="#marken">
+                <Button size="lg" variant="outline" className="gap-2 bg-transparent text-primary-foreground border-primary-foreground/40 hover:bg-primary-foreground/10 hover:text-primary-foreground">
                   {t("verkauf.hero.ctaBrands")} <ChevronDown className="h-4 w-4" />
                 </Button>
               </a>
@@ -385,6 +392,54 @@ export default function Verkauf() {
               ))}
             </div>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Hub: Neu- vs. Gebrauchtmaschinen */}
+      <section className="py-16 lg:py-20 bg-background">
+        <div className="section-container">
+          <AnimatedSection className="text-center mb-10">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
+              Wähle deinen Bereich
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Direkt zum Angebot – Neumaschinen vom autorisierten Fachhändler oder geprüfte Gebrauchtmaschinen aus unserer Mietflotte.
+            </p>
+          </AnimatedSection>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link to="/verkauf/neumaschinen" className="group">
+              <Card className="h-full hover:shadow-xl hover:border-primary transition-all overflow-hidden">
+                <CardContent className="p-8 flex flex-col h-full">
+                  <div className="bg-accent/10 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                    <Sparkles className="h-7 w-7 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">Neumaschinen kaufen</h3>
+                  <p className="text-muted-foreground text-sm mb-6 flex-1">
+                    Fabrikneue Baumaschinen & Anhänger von Zoomlion, BAUMAX und Temared – mit Herstellergarantie, Service und Lieferung in NRW.
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-primary font-semibold group-hover:translate-x-1 transition-transform">
+                    Zu den Neumaschinen <ArrowRight className="h-4 w-4" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/verkauf/gebrauchtmaschinen" className="group">
+              <Card className="h-full hover:shadow-xl hover:border-primary transition-all overflow-hidden">
+                <CardContent className="p-8 flex flex-col h-full">
+                  <div className="bg-primary/10 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                    <Tag className="h-7 w-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">Gebrauchtmaschinen kaufen</h3>
+                  <p className="text-muted-foreground text-sm mb-6 flex-1">
+                    Geprüfte Vorführ- und Mietrückläufer mit transparenter Historie – sofort verfügbar, zum attraktiven Preis.
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-primary font-semibold group-hover:translate-x-1 transition-transform">
+                    Zu den Gebrauchtmaschinen <ArrowRight className="h-4 w-4" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
         </div>
       </section>
 
