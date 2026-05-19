@@ -149,6 +149,8 @@ const App = () => (
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
+              <Route path="/verkauf/neumaschinen" element={<Neumaschinen />} />
+              <Route path="/verkauf/neumaschinen/:slug" element={<NeumaschineDetail />} />
               
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
