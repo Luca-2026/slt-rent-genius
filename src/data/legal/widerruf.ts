@@ -23,7 +23,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
         body: [
           {
             type: "p",
-            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology Group GmbH & Co. KG („SLT“) einen Kaufvertrag über eine Neu- oder Gebrauchtmaschine (z.B. Bagger, Radlader, Arbeitsbühne, Stromaggregat, Anhänger, Kraftfahrzeug, sonstige Geräte) unter ausschließlicher Verwendung von Fernkommunikationsmitteln (insbesondere E-Mail, Post, Telefon) oder außerhalb der Geschäftsräume von SLT abschließen.",
+            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology GmbH und Co. KG („SLT Rental“) einen Kaufvertrag über eine Neu- oder Gebrauchtmaschine (z.B. Bagger, Radlader, Arbeitsbühne, Stromaggregat, Anhänger, Kraftfahrzeug, sonstige Geräte) unter ausschließlicher Verwendung von Fernkommunikationsmitteln (insbesondere E-Mail, Post, Telefon) oder außerhalb der Geschäftsräume von SLT Rental abschließen.",
           },
           {
             type: "p",
