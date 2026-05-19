@@ -301,6 +301,7 @@ export default function Verkauf() {
           rechnungLand: selectedLand,
           nachricht: fd.get("nachricht"),
           wieGefunden: selectedSource,
+          addons: isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : [],
         },
       });
       if (error) throw error;
