@@ -298,7 +298,7 @@ export default function ProductDetail() {
                 const priceFrom = productSEO.dailyPriceFrom as number;
                 const validUntil = new Date();
                 validUntil.setFullYear(validUntil.getFullYear() + 1);
-                const availability = getProductAvailability(product, location.id);
+                const availability = getProductAvailability(product, location.id, { categoryId });
                 return {
                   "@type": "Offer",
                   "availability": availability.schemaAvailability,
