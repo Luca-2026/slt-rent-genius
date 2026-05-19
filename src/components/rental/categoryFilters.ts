@@ -173,6 +173,15 @@ export const leiternGeruesteFilterSections: FilterSection[] = [
     ],
   },
   {
+    id: "modell",
+    label: "catFilters.modell",
+    defaultExpanded: true,
+    options: [
+      { id: "standard", label: "catFilters.modellStandard", sublabel: "catFilters.modellStandard_sub" },
+      { id: "breitaufbau", label: "catFilters.modellBreitaufbau", sublabel: "catFilters.modellBreitaufbau_sub" },
+    ],
+  },
+  {
     id: "arbeitshoehe",
     label: "catFilters.arbeitshoehe",
     defaultExpanded: true,
