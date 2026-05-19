@@ -639,15 +639,6 @@ export default function Neumaschinen() {
                           Details <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1 min-h-[1rem]">
-                        {m.article_number ? (
-                          <>
-                            <Tag className="h-3 w-3" /> Art.-Nr. {m.article_number}
-                          </>
-                        ) : (
-                          <>&nbsp;</>
-                        )}
-                      </p>
                     </CardContent>
                   </Card>
                 </Link>

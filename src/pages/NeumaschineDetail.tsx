@@ -284,11 +284,6 @@ export default function NeumaschineDetail() {
             </h1>
 
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground mb-6">
-              {machine.article_number && (
-                <span className="inline-flex items-center gap-1">
-                  <Tag className="h-3.5 w-3.5" /> Art.-Nr. {machine.article_number}
-                </span>
-              )}
               {machine.gtin && <span>GTIN {machine.gtin}</span>}
               {showroomNames && (
                 <span className="inline-flex items-center gap-1">
