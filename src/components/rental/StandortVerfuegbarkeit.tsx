@@ -73,7 +73,7 @@ export function StandortVerfuegbarkeit({
               </div>
               <p className="text-xs md:text-sm text-body leading-relaxed">{avail.body}</p>
 
-              {cities.length > 0 && (
+              {cities.length > 0 && !isPickupOnly && (
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
                   <span className="inline-flex items-center gap-1 text-[11px] md:text-xs text-muted-foreground mr-1">
                     <Clock className="h-3 w-3" />
