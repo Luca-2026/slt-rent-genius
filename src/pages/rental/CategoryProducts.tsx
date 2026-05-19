@@ -477,6 +477,7 @@ export default function CategoryProducts() {
                 return false;
               });
             });
+          }
           // Special handling for power filters (Werkzeuge vs Aggregate)
           else if (sectionId === "power") {
             filtered = filtered.filter((p) => {
