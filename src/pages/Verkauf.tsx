@@ -214,6 +214,15 @@ export default function Verkauf() {
   const [selectedAnrede, setSelectedAnrede] = useState("");
   const [selectedLand, setSelectedLand] = useState("Deutschland");
   const [selectedSource, setSelectedSource] = useState("");
+  const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+
+  const isBaumaxDumper =
+    selectedMarke === "BAUMAX Baumaschinen" &&
+    selectedKategorie === "Minidumper / Raddumper (elektrisch)";
+
+  useEffect(() => {
+    if (!isBaumaxDumper && addonAnhaengerkupplung) setAddonAnhaengerkupplung(false);
+  }, [isBaumaxDumper, addonAnhaengerkupplung]);
 
   const faqItems = t("verkauf.faq.items", { returnObjects: true }) as Array<{ q: string; a: string }>;
   const howFoundOptions = t("verkauf.form.howFoundOptions", { returnObjects: true }) as string[];
