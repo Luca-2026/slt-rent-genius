@@ -115,7 +115,143 @@ function jsonLdScript(obj) {
   return `<script type="application/ld+json">${json}</script>`;
 }
 
+// ---------------------------------------------------------------
+// Markdown → HTML (mirrors src/pages/RatgeberArticle.tsx renderer).
+// Supports: ## / ### headings, - / * lists, 1. ordered lists,
+// | table | rows |, **bold**, [text](href), `code`, paragraphs.
+// Output is escaped HTML safe for direct injection into the SSR hero.
+// ---------------------------------------------------------------
+function inlineMd(text) {
+  let out = "";
+  let last = 0;
+  const re = /\*\*(.+?)\*\*|\[(.+?)\]\((.+?)\)|`(.+?)`/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out += escapeHtml(text.slice(last, m.index));
+    if (m[1]) out += `<strong>${escapeHtml(m[1])}</strong>`;
+    else if (m[2] && m[3]) {
+      const href = m[3];
+      const external = /^https?:\/\//i.test(href);
+      const rel = external ? ` target="_blank" rel="noopener noreferrer"` : "";
+      out += `<a href="${escapeAttr(href)}"${rel} style="color:#00507d;text-decoration:underline;">${escapeHtml(m[2])}</a>`;
+    } else if (m[4]) out += `<code style="background:#f1f5f9;padding:1px 4px;border-radius:4px;font-size:0.9em;">${escapeHtml(m[4])}</code>`;
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out += escapeHtml(text.slice(last));
+  return out;
+}
+
+function renderMarkdown(md) {
+  const lines = String(md || "").split("\n");
+  const out = [];
+  let listBuf = [];
+  let olBuf = [];
+  let tblHead = [];
+  let tblRows = [];
+  let inTbl = false;
+
+  const flushUl = () => { if (listBuf.length) { out.push(`<ul style="margin:0 0 16px;padding-left:24px;">${listBuf.join("")}</ul>`); listBuf = []; } };
+  const flushOl = () => { if (olBuf.length) { out.push(`<ol style="margin:0 0 16px;padding-left:24px;">${olBuf.join("")}</ol>`); olBuf = []; } };
+  const flushTbl = () => {
+    if (!inTbl) return;
+    const thead = `<thead><tr>${tblHead.map(h => `<th style="border:1px solid #e2e8f0;padding:6px 10px;background:#f8fafc;text-align:left;">${inlineMd(h)}</th>`).join("")}</tr></thead>`;
+    const tbody = `<tbody>${tblRows.map(r => `<tr>${r.map(c => `<td style="border:1px solid #e2e8f0;padding:6px 10px;">${inlineMd(c)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+    out.push(`<div style="overflow-x:auto;margin:0 0 16px;"><table style="width:100%;border-collapse:collapse;font-size:14px;">${thead}${tbody}</table></div>`);
+    tblHead = []; tblRows = []; inTbl = false;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.startsWith("|")) {
+      const cells = line.split("|").slice(1, -1).map(c => c.trim());
+      if (!inTbl) {
+        tblHead = cells; inTbl = true;
+        if (i + 1 < lines.length && lines[i + 1].startsWith("|") && lines[i + 1].includes("---")) i++;
+        continue;
+      }
+      if (cells.every(c => /^[-:]+$/.test(c))) continue;
+      tblRows.push(cells);
+      continue;
+    } else {
+      flushTbl();
+    }
+
+    if (line.startsWith("### ")) { flushUl(); flushOl(); out.push(`<h3 style="font-size:20px;font-weight:600;color:#1a1a1a;margin:24px 0 10px;">${inlineMd(line.slice(4))}</h3>`); continue; }
+    if (line.startsWith("## ")) { flushUl(); flushOl(); out.push(`<h2 style="font-size:24px;font-weight:700;color:#1a1a1a;margin:32px 0 12px;">${inlineMd(line.slice(3))}</h2>`); continue; }
+
+    if (/^[-*☑]\s/.test(line.trimStart())) {
+      flushOl();
+      const text = line.replace(/^\s*[-*☑]\s/, "");
+      listBuf.push(`<li style="margin-bottom:4px;">${inlineMd(text)}</li>`);
+      continue;
+    } else {
+      flushUl();
+    }
+
+    if (/^\d+\.\s/.test(line.trimStart())) {
+      flushUl();
+      const text = line.replace(/^\s*\d+\.\s/, "");
+      olBuf.push(`<li style="margin-bottom:4px;">${inlineMd(text)}</li>`);
+      continue;
+    } else {
+      flushOl();
+    }
+
+    if (!line.trim()) continue;
+
+    out.push(`<p style="margin:0 0 14px;line-height:1.65;">${inlineMd(line)}</p>`);
+  }
+
+  flushUl(); flushOl(); flushTbl();
+  return out.join("");
+}
+
+function buildRatgeberHeroBlock(route) {
+  const a = route.ratgeber;
+  const parts = [
+    `<div data-prerender-hero style="max-width:780px;margin:0 auto;padding:32px 16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a;line-height:1.6;">`,
+  ];
+
+  if (route.breadcrumbs && route.breadcrumbs.length > 1) {
+    parts.push(`<nav aria-label="Breadcrumb" style="font-size:14px;color:#555;margin-bottom:16px;"><ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px;">`);
+    route.breadcrumbs.forEach((b, i) => {
+      const sep = i > 0 ? `<span aria-hidden="true" style="margin:0 4px;">›</span>` : "";
+      parts.push(`<li>${sep}<a href="${escapeAttr(withTrailingSlash(b.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(b.name)}</a></li>`);
+    });
+    parts.push(`</ol></nav>`);
+  }
+
+  parts.push(`<h1 style="font-size:clamp(28px,4vw,40px);color:#00507d;margin:0 0 12px;font-weight:700;line-height:1.2;">${escapeHtml(route.h1)}</h1>`);
+
+  if (a?.date || a?.category) {
+    const dateStr = a.date ? new Date(a.date).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }) : "";
+    parts.push(`<p style="font-size:14px;color:#666;margin:0 0 24px;">${a.date ? `<time datetime="${escapeAttr(a.date)}">${escapeHtml(dateStr)}</time>` : ""}${a.date && a.category ? " · " : ""}${a.category ? escapeHtml(a.category) : ""}</p>`);
+  }
+
+  if (a?.quickFacts && a.quickFacts.length) {
+    parts.push(`<aside style="background:#f0f6fa;border:1px solid #cfe0ec;border-radius:12px;padding:18px 20px;margin:0 0 28px;"><h2 style="font-size:16px;font-weight:600;margin:0 0 10px;">Auf einen Blick</h2><ul style="margin:0;padding-left:20px;">`);
+    for (const f of a.quickFacts) parts.push(`<li style="margin-bottom:4px;">${inlineMd(f)}</li>`);
+    parts.push(`</ul></aside>`);
+  }
+
+  if (a?.content) {
+    parts.push(`<div data-prerender-body>${renderMarkdown(a.content)}</div>`);
+  } else {
+    for (const p of route.intro || []) if (p) parts.push(`<p style="margin:0 0 12px;font-size:17px;">${escapeHtml(p)}</p>`);
+  }
+
+  if (a?.author || a?.updatedAt) {
+    const upd = a.updatedAt ? new Date(a.updatedAt).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }) : "";
+    parts.push(`<p style="margin:32px 0 0;padding-top:16px;border-top:1px solid #e2e8f0;font-size:14px;color:#666;">${a.author ? `Von <strong>${escapeHtml(a.author)}</strong>` : ""}${a.author && upd ? ", aktualisiert am " : (upd ? "Aktualisiert am " : "")}${upd ? `<time datetime="${escapeAttr(a.updatedAt)}">${escapeHtml(upd)}</time>` : ""}</p>`);
+  }
+
+  parts.push(`</div>`);
+  return parts.join("");
+}
+
 function buildHeroBlock(route) {
+  if (route.routeType === "ratgeber") return buildRatgeberHeroBlock(route);
   // Visible SSR-fallback content. Lives INSIDE #root so React's createRoot()
   // replaces it on hydration. Bots (Googlebot, GPTBot, ClaudeBot, PerplexityBot)
   // see real, visible HTML — users without JS see a usable page too.
