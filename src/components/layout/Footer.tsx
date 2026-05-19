@@ -40,7 +40,8 @@ export function Footer() {
     { to: "/standorte", label: t("footer.locations") },
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },
-    { to: "/ratgeber-dienstleistungen", label: "Ratgeber & Dienstleistungen" },
+    { to: "/ratgeber", label: "Ratgeber" },
+    { to: "/dienstleistungen", label: "Dienstleistungen" },
     { to: "/faq", label: t("footer.faq") },
   ];
 
