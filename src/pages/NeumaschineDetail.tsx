@@ -305,7 +305,10 @@ export default function NeumaschineDetail() {
                       10 % Vorbestellerrabatt: {formatPriceGross(priceGross * 0.9, false)} brutto
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Gültig bei Vorbestellung mit 30 % Anzahlung
+                      Nur gültig bis Ende Juni 2026 bei Vorbestellung mit 30 % Anzahlung – danach dauerhaft verfügbar zu {formatPriceGross(priceGross, false)} brutto.
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Versand: 9,90 € · Besichtigung in Krefeld oder Bonn
                     </p>
                   </div>
                 )}
