@@ -72,6 +72,8 @@ export default function NeumaschineDetail() {
   const whyItems: { title: string; desc: string }[] = Array.isArray(content.whyItems) ? content.whyItems : [];
   const options: { name: string; price: string; note?: string; href?: string }[] = Array.isArray(content.options) ? content.options : [];
   const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
+  const imageAlts: string[] = Array.isArray(content.imageAlts) ? content.imageAlts : [];
+  const altFor = (idx: number) => imageAlts[idx] || `${machine.brand} ${machine.model} – Bild ${idx + 1}`;
   const showroomLocs: string[] = Array.isArray(machine.showroom_locations) ? machine.showroom_locations : [];
   const showroomNames = showroomLocs.map((l) => locationLabels[l] || l).join(" oder ");
 
@@ -174,8 +176,13 @@ export default function NeumaschineDetail() {
               {images.length > 0 ? (
                 <img
                   src={images[activeImage]}
-                  alt={`${machine.brand} ${machine.model}`}
+                  alt={altFor(activeImage)}
                   className="w-full h-full object-contain"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  width={1600}
+                  height={1200}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
@@ -192,8 +199,15 @@ export default function NeumaschineDetail() {
                     className={`aspect-square rounded overflow-hidden border-2 transition-all ${
                       idx === activeImage ? "border-primary" : "border-transparent hover:border-primary/40"
                     }`}
+                    aria-label={`Bild ${idx + 1} anzeigen: ${altFor(idx)}`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={img}
+                      alt={altFor(idx)}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </button>
                 ))}
               </div>
