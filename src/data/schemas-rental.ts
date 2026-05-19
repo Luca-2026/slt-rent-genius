@@ -364,29 +364,110 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
   return out;
 }
 
+/**
+ * Extrahiert HowTo-Steps aus einem Ratgeber-Markdown, wenn dort
+ * nummerierte Schritt-Headings (### 1. Title, ### 2. ...) vorhanden sind.
+ * Liefert null zurück, wenn keine Schrittstruktur erkennbar ist – dann
+ * wird kein HowTo-Schema ausgespielt (vermeidet erfundene Strukturen).
+ */
+function extractHowToSteps(content: string): { name: string; text: string }[] | null {
+  if (!content) return null;
+  const stepRe = /^###\s+(\d+)\.\s+(.+)$/gm;
+  const matches: { idx: number; num: number; name: string; pos: number; end: number }[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = stepRe.exec(content)) !== null) {
+    matches.push({
+      idx: matches.length,
+      num: parseInt(m[1], 10),
+      name: m[2].trim(),
+      pos: m.index,
+      end: m.index + m[0].length,
+    });
+  }
+  if (matches.length < 3) return null;
+  // Validiere fortlaufende Nummerierung (1,2,3,...)
+  for (let i = 0; i < matches.length; i++) {
+    if (matches[i].num !== i + 1) return null;
+  }
+  return matches.map((step, i) => {
+    const nextPos = matches[i + 1]?.pos ?? content.length;
+    const body = content
+      .slice(step.end, nextPos)
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean)
+      // strip markdown noise
+      .map((l) => l.replace(/^[-*]\s+/, "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/\[(.+?)\]\((.+?)\)/g, "$1").replace(/`(.+?)`/g, "$1"))
+      .join(" ");
+    return { name: step.name, text: body.slice(0, 500) || step.name };
+  });
+}
+
+function buildArticleAuthor(authorName: string | undefined): JsonLd {
+  const name = authorName?.trim() || "SLT Rental";
+  if (name === "SLT Rental") {
+    return { "@type": "Organization", name, "@id": ORG_ID };
+  }
+  return { "@type": "Person", name };
+}
+
 export function buildRatgeberSchemas(a: BlogArticle | undefined): JsonLd[] {
   if (!a) return [];
   const url = `${BASE_URL}/ratgeber/${a.slug}`;
-  return [
+  const image = a.ogImage?.startsWith("http") ? a.ogImage : `${BASE_URL}${a.ogImage}`;
+  const wordCount = (a.content || "").trim().split(/\s+/).filter(Boolean).length;
+  const keywords = (a.keyword || "")
+    .split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
+
+  const out: JsonLd[] = [
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: a.title,
       description: a.metaDescription || a.teaser,
-      image: a.ogImage?.startsWith("http") ? a.ogImage : `${BASE_URL}${a.ogImage}`,
-      author: { "@type": "Organization", name: a.author || "SLT Rental", "@id": ORG_ID },
+      image: { "@type": "ImageObject", url: image },
+      author: buildArticleAuthor(a.author),
       publisher: { "@id": ORG_ID },
       datePublished: a.date,
       dateModified: a.updatedAt || a.date,
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      inLanguage: "de-DE",
+      articleSection: a.category,
+      ...(keywords.length ? { keywords } : {}),
+      ...(wordCount ? { wordCount } : {}),
       url,
     },
+  ];
+
+  const steps = extractHowToSteps(a.content || "");
+  if (steps && steps.length) {
+    out.push({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: a.title,
+      description: a.metaDescription || a.teaser,
+      image: { "@type": "ImageObject", url: image },
+      totalTime: undefined, // bewusst leer – nicht erfinden
+      step: steps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: s.name,
+        text: s.text,
+        url: `${url}#schritt-${i + 1}`,
+      })),
+    });
+  }
+
+  out.push(
     breadcrumbList([
       { name: "Start", path: "/" },
       { name: "Ratgeber", path: "/ratgeber" },
       { name: a.title, path: `/ratgeber/${a.slug}` },
     ]),
-  ];
+  );
+  return out;
 }
 
 export function buildLegalSchemas(route: SeoRoute): JsonLd[] {
