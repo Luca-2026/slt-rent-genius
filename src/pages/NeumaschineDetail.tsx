@@ -183,6 +183,20 @@ export default function NeumaschineDetail() {
     ],
   };
 
+  const youtubeId: string | undefined = (content as any).youtubeId;
+  const videoJsonLd = youtubeId
+    ? {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        name: `${machine.brand} ${machine.model} – Produktvideo`,
+        description: machine.short_description || description,
+        thumbnailUrl: `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`,
+        uploadDate: machine.created_at,
+        embedUrl: `https://www.youtube.com/embed/${youtubeId}`,
+        contentUrl: `https://www.youtube.com/watch?v=${youtubeId}`,
+      }
+    : null;
+
   const inquiryHref = `/verkauf#kaufanfrage`;
 
   return (
@@ -194,7 +208,7 @@ export default function NeumaschineDetail() {
         canonical={canonicalPath}
         ogImage={absoluteImages[0]}
         ogType="product"
-        jsonLd={[productJsonLd, breadcrumbJsonLd]}
+        jsonLd={videoJsonLd ? [productJsonLd, breadcrumbJsonLd, videoJsonLd] : [productJsonLd, breadcrumbJsonLd]}
       />
 
       <div className="bg-muted/30 border-b border-border">
@@ -361,6 +375,25 @@ export default function NeumaschineDetail() {
             <h2 className="text-2xl font-bold text-headline mb-4">Beschreibung</h2>
             <div className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed whitespace-pre-line">
               {machine.description}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Product video */}
+      {youtubeId && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl font-bold text-headline mb-4">Produktvideo</h2>
+            <div className="relative w-full overflow-hidden rounded-lg bg-muted" style={{ aspectRatio: "16 / 9" }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+                title={`${machine.brand} ${machine.model} – Produktvideo`}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
             </div>
           </div>
         </section>

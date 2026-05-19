@@ -1,0 +1,1 @@
+UPDATE public.new_machines SET content = jsonb_set(content, '{youtubeId}', '"1cjcu75rEzY"') WHERE slug='baumax-kde550-raddumper-elektrisch';
