@@ -412,6 +412,15 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Ratgeber-Teaser: stärkt interne Verlinkung der Ratgeber-Artikel */}
+      <RatgeberTeaserBlock
+        articles={getLatestArticles(3)}
+        heading="Aus unserem Ratgeber"
+        subheading="Praxiswissen rund ums Mieten – verständlich erklärt"
+      />
+
+
+
       <Suspense fallback={null}>
         <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />
       </Suspense>
