@@ -128,6 +128,76 @@ const jsonLdAutoDealer = {
   ],
 };
 
+const brandDbNames: Record<string, string> = {
+  zoomlion: "Zoomlion",
+  baumax: "BAUMAX",
+  temared: "Temared",
+};
+
+function BrandNewMachines({ brandKey }: { brandKey: string }) {
+  const { data: machines } = useQuery({
+    queryKey: ["verkauf-new-machines", brandKey],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("new_machines")
+        .select("id, slug, brand, model, name, short_description, price_gross, price_on_request, article_number, images")
+        .eq("is_active", true)
+        .eq("brand", brandDbNames[brandKey] || brandKey)
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  if (!machines || machines.length === 0) return null;
+
+  const fmt = (n: number) =>
+    new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(n);
+
+  return (
+    <div className="mt-2 pt-6 border-t border-border">
+      <h3 className="text-lg font-bold text-foreground mb-4">Verfügbare Neumaschinen</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {machines.map((m: any) => {
+          const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
+          return (
+            <Link
+              key={m.id}
+              to={`/verkauf/neumaschinen/${m.slug}`}
+              className="group flex gap-4 p-4 rounded-lg border border-border hover:border-primary hover:shadow-md transition-all bg-background"
+            >
+              <div className="w-20 h-20 rounded bg-muted flex items-center justify-center shrink-0 overflow-hidden">
+                {img ? (
+                  <img src={img} alt={m.name} className="w-full h-full object-contain" loading="lazy" />
+                ) : (
+                  <Package className="h-8 w-8 text-muted-foreground/40" />
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-foreground text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                  {m.name}
+                </p>
+                {m.short_description && (
+                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{m.short_description}</p>
+                )}
+                <div className="flex items-center justify-between gap-2 mt-2">
+                  <span className="text-sm font-bold text-primary">
+                    {m.price_on_request || !m.price_gross ? "Preis auf Anfrage" : `${fmt(Number(m.price_gross))} brutto`}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs text-primary group-hover:translate-x-0.5 transition-transform">
+                    Details <ArrowRight className="h-3 w-3" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Verkauf() {
   const { t } = useTranslation();
   const { toast } = useToast();
