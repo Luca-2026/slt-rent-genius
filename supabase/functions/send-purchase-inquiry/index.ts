@@ -45,6 +45,7 @@ Modell/Spezif.:    ${modell || "-"}
 Anzahl:            ${anzahl || "1"}
 Besondere Anford.: ${anforderungen || "-"}
 Zusätzliches Zubehör: ${Array.isArray(addons) && addons.length > 0 ? addons.join(", ") : "-"}
+${Array.isArray(addons) && addons.includes("Anhängerkupplung") ? "Anhängerkupplung Preis: 115 € brutto (103,50 € mit 10 % Vorbestellerrabatt)" : ""}
 
 LIEFERUNG / ABHOLUNG
 ─────────────────────
