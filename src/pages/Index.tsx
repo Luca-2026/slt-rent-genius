@@ -287,10 +287,16 @@ export default function Index() {
       {/* Sales Teaser - Herstellerlogos */}
       <SalesTeaser />
 
+      {/* New Machines Slider */}
+      <Suspense fallback={null}>
+        <NewMachinesSlider />
+      </Suspense>
+
       {/* Used Machines Slider */}
       <Suspense fallback={null}>
         <UsedMachinesSlider />
       </Suspense>
+
 
       {/* Google Reviews Section */}
       <section className="py-16 lg:py-20 bg-muted/30">
