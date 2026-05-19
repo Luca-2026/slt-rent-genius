@@ -340,6 +340,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "geschirr-glaeser-besteck": {
+      hookline:
+        "Gläser (Passionata & Brunelli), Teller, Schüsseln, Besteck und Gastro-Spülmaschine mietest du an unserer Filiale Bonn – abholbar samstags bis 17:30 Uhr, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Gläser-Sets (Longdrink, Wasser, Weißwein, Rotwein, Champagner), Teller SIMPLY und Deluxe, Dessertteller, Schüsseln, Kaffeetassen, Aschenbecher sowie Besteck-Sets (Gabeln, Löffel, Messer) und die Gastro-Spülmaschine passen in der Regel in jeden Pkw oder Kombi. Größere Mengen oder der Buffet-Tellerwärmer liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+      faqs: [
+        {
+          q: "Kann ich Geschirr und Gläser in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Gläser-Sets, Teller, Besteck und kleinere Geschirr-Mengen passen in der Regel in jeden Pkw oder Kombi und können direkt mitgenommen werden. Größere Mengen oder die Gastro-Spülmaschine organisieren wir auf Wunsch mit Lieferung.",
+        },
+        {
+          q: "Liefert ihr Geschirr, Gläser und Besteck ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir größere Mengen an Gläsern, Geschirr, Besteck und Event-Equipment ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Kleine Sets holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welches Geschirr, Gläser und Besteck habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Event-Geschirr-Kernsortiment direkt vor Ort – darunter Longdrink-, Wasser-, Weißwein-, Rotwein- und Champagnergläser (Passionata & Brunelli), Teller SIMPLY und Deluxe, Dessertteller, Schüsseln, Kaffeetassen, Aschenbecher, Besteck-Sets (Gabeln, Löffel, Messer) sowie die Gastro-Spülmaschine. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Der Buffet-Tellerwärmer oder größere Mengen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    }
   },
 
   // =================================================================
