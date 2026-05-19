@@ -10199,13 +10199,13 @@ $productDetails = [
       'Verriegelung' => 'Selbstsicherndes KRAUSE-System',
     ],
   ],
-  'krause-fahrgeruest-2x1-50-11-4m' => [
-    'name' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe',
-    'description' => 'KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 1,50 m und 11,4 m Arbeitshöhe (Gerüsthöhe 10,5 m, Standhöhe 9,4 m). TÜV-geprüft nach DIN EN 1004-1, Belastbarkeit 200 kg/m² (Gerüstgruppe 3). Höhenverstellbare Fahrrollen Ø 150 mm (220–335 mm). Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen sicheren Auf- und Abbau; Standfläche über 3,00 m².',
+  'krause-rollgeruest-breitaufbau-12-4m' => [
+    'name' => 'Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe',
+    'description' => 'KRAUSE Rollgerüst Breitaufbau mit einer Arbeitsfläche von 2,00 × 1,50 m und 12,4 m Arbeitshöhe (Gerüsthöhe 11,5 m, Standhöhe 10,4 m). TÜV-geprüft nach DIN EN 1004-1, Belastbarkeit 200 kg/m² (Gerüstgruppe 3). Höhenverstellbare Fahrrollen Ø 150 mm (220–335 mm). Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen sicheren Auf- und Abbau; Standfläche über 3,00 m².',
     'specs' => [
-      'Arbeitshöhe' => '11,4 m',
-      'Gerüsthöhe' => '10,5 m',
-      'Standhöhe' => '9,4 m',
+      'Arbeitshöhe' => '12,4 m',
+      'Gerüsthöhe' => '11,5 m',
+      'Standhöhe' => '10,4 m',
       'Arbeitsfläche' => '2,00 × 1,50 m',
       'Standfläche' => 'über 3,00 m²',
       'Fahrrollen' => 'Ø 150 mm, höhenverstellbar (220–335 mm)',
