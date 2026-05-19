@@ -137,7 +137,7 @@ Viele kennen das Problem: Der Umzug beginnt samstags um 7 Uhr, der Baumarkt-Eink
 Wählen Sie auf [slt-rental.de](/mieten/krefeld/anhaenger) Ihren Wunschanhänger, den gewünschten Zeitraum und den Abholstandort. Die Verfügbarkeit wird in Echtzeit angezeigt.
 
 ### 2. Online bezahlen
-Bezahlen Sie bequem per Kreditkarte, PayPal oder Sofortüberweisung. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
+Bezahlen Sie bequem per Kreditkarte, PayPal oder bar im Ladengeschäft. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
 
 ### 3. SMS-Code erhalten
 Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Dieser Code ist nur für Ihre Buchung gültig.
