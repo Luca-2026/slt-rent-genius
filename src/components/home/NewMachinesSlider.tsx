@@ -108,9 +108,9 @@ export function NewMachinesSlider() {
                 </span>
               )}
             </p>
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-2 pt-1 opacity-70 group-hover:opacity-100 transition-opacity">
               Details ansehen
-              <ArrowRight className="h-3 w-3" />
+              <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
             </span>
           </CardContent>
         </Card>
