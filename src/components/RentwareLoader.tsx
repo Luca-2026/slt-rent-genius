@@ -23,9 +23,7 @@ const IDLE_FALLBACK_MS = 3000;
 export function RentwareLoader() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
-  const isSales =
-    location.pathname.startsWith("/verkauf/neumaschinen") ||
-    location.pathname.startsWith("/verkauf/gebrauchtmaschinen");
+  const isSales = location.pathname.startsWith("/verkauf");
   const shouldHideCart = isB2B || isSales;
   // Homepage hat kein echtes rtr-Element im initialen Render. Wir sparen
   // dort 3s Hauptthread-Blockade, indem wir Rentware NUR bei expliziter
