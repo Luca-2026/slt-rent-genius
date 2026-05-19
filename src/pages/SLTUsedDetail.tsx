@@ -120,18 +120,31 @@ export default function SLTUsedDetail() {
     },
   };
 
+  const returnPolicyNode = {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "DE",
+    returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+  };
+
   const offerNode: Record<string, unknown> = priceNet
     ? {
         "@type": "Offer",
         url: `${BASE_URL}${canonicalPath}`,
         priceCurrency: "EUR",
         price: priceNet.toFixed(2),
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: priceNet.toFixed(2),
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: false,
+        },
         priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/UsedCondition",
         availability,
         seller: sellerNode,
         businessFunction: "https://schema.org/Sell",
         eligibleRegion: { "@type": "Country", name: "DE" },
+        hasMerchantReturnPolicy: returnPolicyNode,
       }
     : {
         "@type": "Offer",
@@ -146,6 +159,7 @@ export default function SLTUsedDetail() {
         itemCondition: "https://schema.org/UsedCondition",
         availability,
         seller: sellerNode,
+        hasMerchantReturnPolicy: returnPolicyNode,
       };
 
   const productJsonLd: Record<string, unknown> = {
