@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft, ArrowRight, Phone, MapPin, Shield, Wrench, Truck, CheckCircle2,
-  Package, Tag, Mail, Clock,
+  Package, Mail, Clock,
 } from "lucide-react";
 
 const locationLabels: Record<string, string> = {
