@@ -4710,9 +4710,9 @@ export const leiternGeruesteProducts: Product[] = [
     images: [imgRollgeruestKrause94m1, imgRollgeruestKrause94m2, imgRollgeruestKrause94m3],
     category: "rollgeruest",
     specifications: {
-      "Arbeitshöhe": "8,4 m",
-      "Gerüsthöhe": "7,5 m",
-      "Standhöhe": "6,4 m",
+      "Arbeitshöhe": "9,4 m",
+      "Gerüsthöhe": "8,4 m",
+      "Standhöhe": "7,4 m",
       "Arbeitsfläche": "2,00 × 0,75 m",
       "Standfläche": "über 1,5 m²",
       "Feldlängen": "2,00 m",
