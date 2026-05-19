@@ -114,7 +114,13 @@ function renderMarkdown(md: string) {
 
     // Headings
     if (line.startsWith("### ")) { flushList(); flushOrderedList(); elements.push(<h3 key={i} className="text-xl font-semibold text-foreground mt-8 mb-3">{inlineMarkdown(line.slice(4))}</h3>); continue; }
-    if (line.startsWith("## ")) { flushList(); flushOrderedList(); elements.push(<h2 key={i} className="text-2xl font-bold text-foreground mt-10 mb-4">{inlineMarkdown(line.slice(3))}</h2>); continue; }
+    if (line.startsWith("## ")) {
+      flushList(); flushOrderedList();
+      const text = line.slice(3).trim();
+      const id = slugifyHeading(text);
+      elements.push(<h2 key={i} id={id} className="text-2xl font-bold text-foreground mt-10 mb-4 scroll-mt-24">{inlineMarkdown(text)}</h2>);
+      continue;
+    }
 
     // Unordered list
     if (/^[-*☑] /.test(line.trimStart())) {
