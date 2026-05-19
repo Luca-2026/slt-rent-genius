@@ -4618,6 +4618,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Material": "Aluminium (Traverse aus Stahl)",
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
     },
+    rentwareCode: { krefeld: "55QTF9" },
     pdfUrl: "/manuals/krause-rollgeruest-stabilo-serie-10-50-aufbauanleitung.pdf",
     onRequest: true,
   },
