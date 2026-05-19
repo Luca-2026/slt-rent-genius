@@ -539,7 +539,7 @@ export default function NeumaschineDetail() {
           slug: slug!,
           category: machine.category,
           priceLabel,
-          image: absoluteImages[0] || null,
+          image: images[0] || absoluteImages[0] || null,
         }}
       />
     </Layout>
