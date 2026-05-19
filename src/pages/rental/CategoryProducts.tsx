@@ -961,15 +961,23 @@ export default function CategoryProducts() {
 
 
     // Within each sub-category group, sort products with rentwareCode for current location first
-    // This preserves the overall group order (e.g. Bagger before Radlader) but within each
-    // group pushes on-request products (no rentwareCode) to the end.
+    // This preserves the overall group order (e.g. Bagger before Radlader, or Standard before
+    // Breitaufbau for Rollgerüste) but within each group pushes on-request products (no
+    // rentwareCode) to the end.
     if (locationId) {
       const stableIndexMap = new Map(filtered.map((p, i) => [p, i]));
+      const bucketKey = (p: typeof filtered[number]): string => {
+        const cat = p.category || "";
+        if (category?.id === "leitern-gerueste" && cat === "rollgeruest") {
+          return /breitaufbau/i.test(p.name) ? "rollgeruest:breitaufbau" : "rollgeruest:standard";
+        }
+        return cat;
+      };
       filtered.sort((a, b) => {
-        const catA = a.category || "";
-        const catB = b.category || "";
-        // Only re-sort within the same sub-category
-        if (catA !== catB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
+        const bA = bucketKey(a);
+        const bB = bucketKey(b);
+        // Only re-sort within the same bucket
+        if (bA !== bB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
         const hasCodeA = a.rentwareCode && a.rentwareCode[locationId] ? 0 : 1;
         const hasCodeB = b.rentwareCode && b.rentwareCode[locationId] ? 0 : 1;
         if (hasCodeA !== hasCodeB) return hasCodeA - hasCodeB;
