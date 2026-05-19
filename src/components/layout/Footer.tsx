@@ -46,11 +46,7 @@ export function Footer() {
 
   const salesLinks = [
     { to: "/verkauf/neumaschinen", label: t("footer.buyMachines") },
-    { to: "/verkauf/neumaschinen#marken", label: t("footer.zoomlionDealer") },
-    { to: "/verkauf/neumaschinen#marken", label: t("footer.baumaxDealer") },
-    { to: "/verkauf/neumaschinen#marken", label: t("footer.temaredBuy") },
     { to: "/verkauf/gebrauchtmaschinen", label: t("footer.usedMachines", "Gebrauchtmaschinen") },
-    { to: "/verkauf/neumaschinen#kaufanfrage", label: t("footer.purchaseInquiry") },
   ];
 
   const legalLinks = [
