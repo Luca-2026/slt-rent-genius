@@ -151,7 +151,7 @@ Möchten Sie den Anhänger später wieder abstellen, drücken Sie den Bügel ein
 Anhänger ankuppeln, Beleuchtung prüfen (13-polig oder 7-polig – beides gängig), Ladung sichern – und los geht's.
 
 ### 6. Rückgabe
-Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem markierten Platz und verriegeln Sie das Schloss. Fertig. Sie erhalten eine Rückgabebestätigung per E-Mail.
+Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem markierten Platz und verriegeln Sie das Schloss. Fertig. Nachdem der Anhänger auf ordnungsgemäßen Zustand überprüft wurde, erhalten Sie eine **Rückgabebestätigung und die Rechnung per E-Mail**. Die Überprüfung erfolgt spätestens 48 Stunden nach Rückgabe.
 
 ## Welchen Führerschein brauche ich?
 
