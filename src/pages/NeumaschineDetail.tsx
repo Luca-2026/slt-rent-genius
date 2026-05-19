@@ -517,10 +517,8 @@ export default function NeumaschineDetail() {
             Wir beraten Dich persönlich – einfach Kaufanfrage stellen oder direkt anrufen.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" asChild>
-              <Link to={inquiryHref}>
-                <Mail className="mr-2 h-5 w-5" /> Kaufanfrage senden
-              </Link>
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => setInquiryOpen(true)}>
+              <Mail className="mr-2 h-5 w-5" /> Kaufanfrage senden
             </Button>
             <Button size="lg" variant="secondary" asChild>
               <a href="tel:021514179904">
@@ -530,6 +528,19 @@ export default function NeumaschineDetail() {
           </div>
         </div>
       </section>
+
+      <NewMachineInquiryModal
+        open={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        machine={{
+          brand: machine.brand,
+          model: machine.model,
+          name: machine.name,
+          slug: slug!,
+          priceLabel,
+          image: absoluteImages[0] || null,
+        }}
+      />
     </Layout>
   );
 }
