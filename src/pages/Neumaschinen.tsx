@@ -425,6 +425,17 @@ export default function Neumaschinen() {
         keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
         ogType="website"
         jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://www.slt-rental.de/verkauf/neumaschinen#webpage",
+            url: "https://www.slt-rental.de/verkauf/neumaschinen",
+            name: "Neumaschinen kaufen – Zoomlion, BAUMAX & Temared | SLT Rental",
+            description: "Neue Baumaschinen & Anhänger kaufen in NRW: Zoomlion Bagger, BAUMAX Rüttelplatten und Temared Anhänger vom autorisierten Fachhändler. Mit Garantie, Service und Lieferung.",
+            inLanguage: "de-DE",
+            isPartOf: { "@type": "WebSite", name: "SLT Rental", url: "https://www.slt-rental.de" },
+            about: { "@type": "Thing", name: "Baumaschinen und Anhänger zum Kauf" },
+          },
           jsonLdAutoDealer,
           jsonLdFaq,
           SLT_BREADCRUMB_JSONLD([
@@ -434,12 +445,28 @@ export default function Neumaschinen() {
           {
             "@context": "https://schema.org",
             "@type": "ItemList",
+            "@id": "https://www.slt-rental.de/verkauf/neumaschinen#machines",
             name: "Neumaschinen bei SLT Rental",
             itemListElement: (machines || []).map((m: any, i: number) => ({
               "@type": "ListItem",
               position: i + 1,
-              url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
-              name: m.name,
+              item: {
+                "@type": "Product",
+                name: m.name,
+                url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
+                brand: m.brand ? { "@type": "Brand", name: m.brand } : undefined,
+                category: m.category || undefined,
+                offers: m.price_gross && !m.price_on_request
+                  ? {
+                      "@type": "Offer",
+                      price: String(m.price_gross),
+                      priceCurrency: "EUR",
+                      availability: "https://schema.org/InStock",
+                      url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
+                      priceValidUntil: new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0],
+                    }
+                  : undefined,
+              },
             })),
           },
         ]}
