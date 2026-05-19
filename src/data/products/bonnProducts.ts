@@ -1751,7 +1751,7 @@ export const bonnStromProducts = [
 export const bonnLeiternProducts = [
   {
     id: "bonn-rollgeruest-krause-9-4m",
-    name: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 9,4 m Arbeitshöhe (8,4 m Arbeitshöhe, 7,5 m Gerüsthöhe). TÜV-geprüft nach DIN EN 1004-1. Das GuardMatic-System gewährleistet einen sicheren Aufbau mit 6-Punkt-Fixierung für maximale Stabilität. Die Standfläche von über 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nDurch die Befestigung des Geländerrahmens GuardMatic-System vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDie Integration der Diagonalen in das GuardMatic-System gewährleistet eine einfache und sichere Montage. Für Transport oder Lagerung kann der Geländerrahmen platzsparend zusammengefaltet werden.\n\nDie 6-Punkt-Fixierung des GuardMatic-Systems sorgt für maximale Stabilität in der Höhe. Das einzigartige selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nDie innovative Form der Diagonalen bietet eine maximale Nutzfläche auf der Belagbühne und stört in keiner Weise.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von über 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause94m1,
@@ -1778,7 +1778,7 @@ export const bonnLeiternProducts = [
   },
   {
     id: "bonn-rollgeruest-krause-4-4m",
-    name: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 4,4 m Arbeitshöhe (3,5 m Gerüsthöhe, 2,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause44m1,
@@ -1803,7 +1803,7 @@ export const bonnLeiternProducts = [
   },
   {
     id: "bonn-rollgeruest-krause-5-4m",
-    name: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 5,4 m Arbeitshöhe (6,4 m Arbeitshöhe, 5,5 m Gerüsthöhe, 4,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause54m1,
@@ -1828,7 +1828,7 @@ export const bonnLeiternProducts = [
   },
   {
     id: "bonn-rollgeruest-krause-6-4m",
-    name: "Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 6,4 m Arbeitshöhe (5,5 m Gerüsthöhe, 4,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause64m1,
@@ -1853,7 +1853,7 @@ export const bonnLeiternProducts = [
   },
   {
     id: "bonn-rollgeruest-krause-7-4m",
-    name: "Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 7,4 m Arbeitshöhe (6,4 m Arbeitshöhe, 5,5 m Gerüsthöhe, 4,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen einfachen, schnellen und sicheren Auf- und Abbau. Die Standfläche von 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDas selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause74m1,
@@ -1878,7 +1878,7 @@ export const bonnLeiternProducts = [
   },
   {
     id: "bonn-rollgeruest-krause-8-4m",
-    name: "Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m)",
+    name: "Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m)",
     description: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m und 8,4 m Arbeitshöhe (7,5 m Gerüsthöhe, 6,4 m Standhöhe). TÜV-geprüft nach DIN EN 1004-1. Das GuardMatic-System gewährleistet einen sicheren Aufbau mit 6-Punkt-Fixierung für maximale Stabilität. Die Standfläche von über 1,5 m² bietet einen sicheren Arbeitsplatz.",
     detailedDescription: "KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 0,75 m. Hier sorgt das komfortabel aufzubauende Verriegelungssystem für eine besonders hohe Stabilität.\n\nTÜV-geprüft, Belastbarkeit 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1.\n\nDurch die Befestigung des Geländerrahmens GuardMatic-System vor dem Einhängen der nächsthöheren Belagbühne ist der sichere Aufbau gewährleistet. Beim Durchsteigen der Belagbühne ist ein komplettes Geländer und damit eine Absturzsicherung vorhanden.\n\nDie Integration der Diagonalen in das GuardMatic-System gewährleistet eine einfache und sichere Montage. Für Transport oder Lagerung kann der Geländerrahmen platzsparend zusammengefaltet werden.\n\nDie 6-Punkt-Fixierung des GuardMatic-Systems sorgt für maximale Stabilität in der Höhe. Das einzigartige selbstsichernde KRAUSE-Verriegelungssystem mit einer formschlüssigen Verbindung ermöglicht den einfachen, schnellen und sicheren Auf- und Abbau.\n\nDie innovative Form der Diagonalen bietet eine maximale Nutzfläche auf der Belagbühne und stört in keiner Weise.\n\nHöhenverstellbare Fahrrollen (Ø 150 mm) gewährleisten durch das integrierte Spindelgewinde auch den Einsatz auf unebenem Gelände (stufenloser Verstellbereich: 220–335 mm).\n\nDie Standfläche von über 1,5 m² bietet einen großen und sicheren Arbeitsplatz für Personal und Material.",
     image: imgRollgeruestKrause84m1,
