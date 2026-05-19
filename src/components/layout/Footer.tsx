@@ -33,7 +33,7 @@ export function Footer() {
 
   const quickLinks = [
     { to: "/mietartikel", label: t("footer.rentalItems") },
-    { to: "/verkauf", label: t("footer.salesAndBrands") },
+    { to: "/verkauf/neumaschinen", label: t("footer.salesAndBrands") },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
@@ -45,11 +45,12 @@ export function Footer() {
   ];
 
   const salesLinks = [
-    { to: "/verkauf", label: t("footer.buyMachines") },
-    { to: "/verkauf#marken", label: t("footer.zoomlionDealer") },
-    { to: "/verkauf#marken", label: t("footer.baumaxDealer") },
-    { to: "/verkauf#marken", label: t("footer.temaredBuy") },
-    { to: "/verkauf#kaufanfrage", label: t("footer.purchaseInquiry") },
+    { to: "/verkauf/neumaschinen", label: t("footer.buyMachines") },
+    { to: "/verkauf/neumaschinen#marken", label: t("footer.zoomlionDealer") },
+    { to: "/verkauf/neumaschinen#marken", label: t("footer.baumaxDealer") },
+    { to: "/verkauf/neumaschinen#marken", label: t("footer.temaredBuy") },
+    { to: "/verkauf/gebrauchtmaschinen", label: t("footer.usedMachines", "Gebrauchtmaschinen") },
+    { to: "/verkauf/neumaschinen#kaufanfrage", label: t("footer.purchaseInquiry") },
   ];
 
   const legalLinks = [

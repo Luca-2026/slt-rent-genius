@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ChunkLoadErrorBoundary } from "@/components/ChunkLoadErrorBoundary";
@@ -60,7 +60,7 @@ const AGB = lazy(() => import("./pages/AGB"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
 const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
-const Verkauf = lazy(() => import("./pages/Verkauf"));
+
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 const SLTUsed = lazy(() => import("./pages/SLTUsed"));
 const SLTUsedDetail = lazy(() => import("./pages/SLTUsedDetail"));
@@ -145,7 +145,8 @@ const App = () => (
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/datenschutz" element={<Datenschutz />} />
               <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
-              <Route path="/verkauf" element={<Verkauf />} />
+              <Route path="/verkauf" element={<Navigate to="/verkauf/neumaschinen" replace />} />
+              <Route path="/verkauf/" element={<Navigate to="/verkauf/neumaschinen" replace />} />
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
