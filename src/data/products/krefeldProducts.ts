@@ -4697,6 +4697,7 @@ export const leiternGeruesteProducts: Product[] = [
       "Verriegelung": "Selbstsicherndes KRAUSE-System",
       "Sicherheit": "GuardMatic-System mit 6-Punkt-Fixierung",
     },
+    rentwareCode: { krefeld: "4TGJ2L" },
     pdfUrl: "/manuals/krause-rollgeruest-stabilo-serie-10-50-aufbauanleitung.pdf",
     onRequest: true,
   },
