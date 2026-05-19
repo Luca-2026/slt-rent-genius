@@ -104,18 +104,53 @@ export default function NeumaschineDetail() {
     },
   };
 
+  // Parse shipping cost (EUR) from content.shipping if a number is present
+  const shippingText: string = (content as any)?.shipping || "";
+  const shippingMatch = shippingText.match(/(\d+(?:[.,]\d+)?)\s*€/);
+  const shippingRate = shippingMatch ? parseFloat(shippingMatch[1].replace(",", ".")) : null;
+
+  const shippingDetailsNode = shippingRate !== null
+    ? {
+        "@type": "OfferShippingDetails",
+        shippingRate: { "@type": "MonetaryAmount", value: shippingRate.toFixed(2), currency: "EUR" },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "DE" },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 3, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" },
+        },
+      }
+    : undefined;
+
+  const returnPolicyNode = {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "DE",
+    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 14,
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/ReturnShippingFees",
+  };
+
   const offerNode: Record<string, unknown> | undefined = priceGross
     ? {
         "@type": "Offer",
         url: `${BASE_URL}${canonicalPath}`,
         priceCurrency: "EUR",
         price: priceGross.toFixed(2),
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: priceGross.toFixed(2),
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: true,
+        },
         priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/NewCondition",
         availability: "https://schema.org/PreOrder",
         seller: sellerNode,
         businessFunction: "https://schema.org/Sell",
         eligibleRegion: { "@type": "Country", name: "DE" },
+        ...(shippingDetailsNode ? { shippingDetails: shippingDetailsNode } : {}),
+        hasMerchantReturnPolicy: returnPolicyNode,
       }
     : undefined;
 
