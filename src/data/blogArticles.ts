@@ -140,7 +140,7 @@ Wählen Sie auf [slt-rental.de](/mieten/krefeld/anhaenger) Ihren Wunschanhänger
 Bezahlen Sie bequem per Kreditkarte, PayPal oder bar im Ladengeschäft. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
 
 ### 3. SMS-Code erhalten
-Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Dieser Code ist nur für Ihre Buchung gültig.
+Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Spätestens 15 Minuten vor Beginn der Buchungszeit ist der Code per SMS versendet. Dieser Code ist nur für Ihre Buchung gültig.
 
 ### 4. Anhänger entsperren
 Am Standort angekommen, geben Sie den Code am **Sicherheitsschloss** des gebuchten Anhängers ein. Das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.
