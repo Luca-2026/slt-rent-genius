@@ -925,7 +925,7 @@ export default function CategoryProducts() {
       });
     }
 
-    // Sort products for leitern-gerueste: Rollgerüste first, then Leitern, then Gerüstteile/Zubehör last
+    // Sort products for leitern-gerueste: Rollgerüste (Standard asc, then Breitaufbau asc), then Stehleiter, Kombileiter, etc.
     if (category?.id === "leitern-gerueste") {
       const categorySortOrder: Record<string, number> = {
         rollgeruest: 0,
@@ -935,12 +935,30 @@ export default function CategoryProducts() {
         geruestteil: 5,
         geruestteile: 5,
       };
+      const getArbeitshoehe = (p: typeof filtered[number]): number => {
+        const specHeight = (p.specifications as Record<string, string> | undefined)?.["Arbeitshöhe"] ||
+          (p.specifications as Record<string, string> | undefined)?.["Arbeitshöhe (Stehleiter)"] || "";
+        const m = String(specHeight).match(/([\d,]+)\s*m/);
+        if (m) return parseFloat(m[1].replace(",", "."));
+        const nm = p.name.match(/([\d,]+)\s*m/);
+        return nm ? parseFloat(nm[1].replace(",", ".")) : 0;
+      };
       filtered.sort((a, b) => {
         const orderA = categorySortOrder[a.category || ""] ?? 4;
         const orderB = categorySortOrder[b.category || ""] ?? 4;
-        return orderA - orderB;
+        if (orderA !== orderB) return orderA - orderB;
+        // Within rollgeruest: Standard before Breitaufbau
+        if (a.category === "rollgeruest" && b.category === "rollgeruest") {
+          const breitA = /breitaufbau/i.test(a.name) ? 1 : 0;
+          const breitB = /breitaufbau/i.test(b.name) ? 1 : 0;
+          if (breitA !== breitB) return breitA - breitB;
+        }
+        // Sort by Arbeitshöhe ascending within group
+        return getArbeitshoehe(a) - getArbeitshoehe(b);
       });
     }
+
+
 
     // Within each sub-category group, sort products with rentwareCode for current location first
     // This preserves the overall group order (e.g. Bagger before Radlader) but within each
