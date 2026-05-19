@@ -130,7 +130,7 @@ const enriched = allRoutes.map((route) => {
 
 const payload = {
   generatedAt: new Date().toISOString(),
-  stats: { ...ROUTE_STATS, usedMachines: usedMachineRoutes.length, total: enriched.length },
+  stats: { ...ROUTE_STATS, usedMachines: usedMachineRoutes.length, newMachines: newMachineRoutes.length, total: enriched.length },
   globalSchemas: buildGlobalSchemas(),
   routes: enriched,
 };
