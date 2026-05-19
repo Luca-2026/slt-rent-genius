@@ -261,6 +261,28 @@ const RatgeberArticle = () => {
           </div>
 
           {/* Article body */}
+          {/* Inhaltsverzeichnis (für Nutzer & Google SERP-Sitelinks) */}
+          {(() => {
+            const toc = extractToc(article.content);
+            if (toc.length < 3) return null;
+            return (
+              <nav aria-label="Inhaltsverzeichnis" className="bg-muted/40 border border-border rounded-xl p-5 mb-10">
+                <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <List className="h-4 w-4 text-primary" aria-hidden="true" />
+                  Inhalt
+                </h2>
+                <ol className="space-y-1.5 text-sm">
+                  {toc.map((t, i) => (
+                    <li key={t.id} className="text-muted-foreground">
+                      <span className="text-primary mr-2 tabular-nums">{i + 1}.</span>
+                      <a href={`#${t.id}`} className="hover:text-primary hover:underline">{t.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            );
+          })()}
+
           <div className="prose-custom">
             {renderMarkdown(article.content)}
           </div>
