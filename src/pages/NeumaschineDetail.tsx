@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { NewMachineInquiryModal } from "@/components/new-machines/NewMachineInquiryModal";
 import {
   ArrowLeft, ArrowRight, Phone, MapPin, Shield, Wrench, Truck, CheckCircle2,
   Package, Mail, Clock,
@@ -30,6 +31,7 @@ function formatPriceGross(price: number | null, onRequest: boolean) {
 export default function NeumaschineDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [activeImage, setActiveImage] = useState(0);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   const { data: machine, isLoading } = useQuery({
     queryKey: ["new-machine", slug],
@@ -197,7 +199,7 @@ export default function NeumaschineDetail() {
       }
     : null;
 
-  const inquiryHref = `/verkauf#kaufanfrage`;
+  const priceLabel = priceGross ? `${formatPriceGross(priceGross, false)} brutto` : "Preis auf Anfrage";
 
   return (
     <Layout>
@@ -334,10 +336,8 @@ export default function NeumaschineDetail() {
             </Card>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <Button size="lg" className="w-full sm:flex-1" asChild>
-                <Link to={inquiryHref}>
-                  Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
+              <Button size="lg" className="w-full sm:flex-1" onClick={() => setInquiryOpen(true)}>
+                Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
                 <a href="tel:021514179904" className="inline-flex items-center justify-center gap-2">
@@ -517,10 +517,8 @@ export default function NeumaschineDetail() {
             Wir beraten Dich persönlich – einfach Kaufanfrage stellen oder direkt anrufen.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" asChild>
-              <Link to={inquiryHref}>
-                <Mail className="mr-2 h-5 w-5" /> Kaufanfrage senden
-              </Link>
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => setInquiryOpen(true)}>
+              <Mail className="mr-2 h-5 w-5" /> Kaufanfrage senden
             </Button>
             <Button size="lg" variant="secondary" asChild>
               <a href="tel:021514179904">
@@ -530,6 +528,19 @@ export default function NeumaschineDetail() {
           </div>
         </div>
       </section>
+
+      <NewMachineInquiryModal
+        open={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        machine={{
+          brand: machine.brand,
+          model: machine.model,
+          name: machine.name,
+          slug: slug!,
+          priceLabel,
+          image: absoluteImages[0] || null,
+        }}
+      />
     </Layout>
   );
 }
