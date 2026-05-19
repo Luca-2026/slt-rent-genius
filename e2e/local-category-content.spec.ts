@@ -20,7 +20,8 @@
  * geparst werden müssen.
  */
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test, expect, type Page } from "@playwright/test";
 
 type Case = {
@@ -33,8 +34,9 @@ type Case = {
   faqs: { q: string; a: string }[];
 };
 
+const here = dirname(fileURLToPath(import.meta.url));
 const cases: Case[] = JSON.parse(
-  readFileSync(resolve(__dirname, "fixtures/local-category-cases.json"), "utf8"),
+  readFileSync(resolve(here, "fixtures/local-category-cases.json"), "utf8"),
 );
 
 function snippet(text: string, max = 50): string {
