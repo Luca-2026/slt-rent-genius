@@ -435,6 +435,9 @@ export default function Verkauf() {
                       ))}
                     </ul>
 
+                    <BrandNewMachines brandKey={key} />
+
+
                     <div className="flex flex-wrap gap-3 pt-4">
                       <Button className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={scrollToForm}>
                         {t("verkauf.brands.inquiryBtn")}
