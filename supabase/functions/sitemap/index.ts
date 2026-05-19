@@ -208,6 +208,26 @@ Deno.serve(async (req) => {
       urls.push(urlEntry(`/karriere/${slug}`, '0.8', 'weekly', TODAY));
     }
 
+    // 8. Verkauf detail pages (Neumaschinen & Gebrauchtmaschinen)
+    const { data: newMachines } = await supabase
+      .from('new_machines')
+      .select('slug, updated_at')
+      .eq('is_active', true);
+    for (const nm of newMachines || []) {
+      const lastmod = nm.updated_at ? nm.updated_at.split('T')[0] : TODAY;
+      urls.push(urlEntry(`/verkauf/neumaschinen/${nm.slug}`, '0.7', 'weekly', lastmod));
+    }
+
+    const { data: usedMachines } = await supabase
+      .from('used_machines')
+      .select('slug, updated_at')
+      .in('status', ['available', 'reserved']);
+    for (const um of usedMachines || []) {
+      if (!um.slug) continue;
+      const lastmod = um.updated_at ? um.updated_at.split('T')[0] : TODAY;
+      urls.push(urlEntry(`/verkauf/gebrauchtmaschinen/${um.slug}`, '0.7', 'weekly', lastmod));
+    }
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}
