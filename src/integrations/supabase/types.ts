@@ -1130,6 +1130,81 @@ export type Database = {
         }
         Relationships: []
       }
+      new_machines: {
+        Row: {
+          article_number: string | null
+          brand: string
+          category: string
+          content: Json | null
+          created_at: string
+          description: string | null
+          gtin: string | null
+          id: string
+          images: string[] | null
+          is_active: boolean
+          is_featured: boolean
+          model: string
+          name: string
+          price_gross: number | null
+          price_on_request: boolean
+          short_description: string | null
+          showroom_locations: string[] | null
+          slug: string
+          sort_order: number
+          specifications: Json | null
+          updated_at: string
+          vat_rate: number
+        }
+        Insert: {
+          article_number?: string | null
+          brand: string
+          category: string
+          content?: Json | null
+          created_at?: string
+          description?: string | null
+          gtin?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean
+          is_featured?: boolean
+          model: string
+          name: string
+          price_gross?: number | null
+          price_on_request?: boolean
+          short_description?: string | null
+          showroom_locations?: string[] | null
+          slug: string
+          sort_order?: number
+          specifications?: Json | null
+          updated_at?: string
+          vat_rate?: number
+        }
+        Update: {
+          article_number?: string | null
+          brand?: string
+          category?: string
+          content?: Json | null
+          created_at?: string
+          description?: string | null
+          gtin?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean
+          is_featured?: boolean
+          model?: string
+          name?: string
+          price_gross?: number | null
+          price_on_request?: boolean
+          short_description?: string | null
+          showroom_locations?: string[] | null
+          slug?: string
+          sort_order?: number
+          specifications?: Json | null
+          updated_at?: string
+          vat_rate?: number
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
