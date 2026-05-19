@@ -11,6 +11,7 @@ import { HowItWorksTimeline } from "@/components/home/HowItWorksTimeline";
 
 const ProductInspirationSlider = lazy(() => import("@/components/home/ProductInspirationSlider").then(m => ({ default: m.ProductInspirationSlider })));
 const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlider").then(m => ({ default: m.UsedMachinesSlider })));
+const NewMachinesSlider = lazy(() => import("@/components/home/NewMachinesSlider").then(m => ({ default: m.NewMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
 import { Loader2 } from "lucide-react";
 
@@ -286,10 +287,16 @@ export default function Index() {
       {/* Sales Teaser - Herstellerlogos */}
       <SalesTeaser />
 
+      {/* New Machines Slider */}
+      <Suspense fallback={null}>
+        <NewMachinesSlider />
+      </Suspense>
+
       {/* Used Machines Slider */}
       <Suspense fallback={null}>
         <UsedMachinesSlider />
       </Suspense>
+
 
       {/* Google Reviews Section */}
       <section className="py-16 lg:py-20 bg-muted/30">
