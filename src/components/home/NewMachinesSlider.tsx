@@ -65,7 +65,7 @@ export function NewMachinesSlider() {
         to={`/verkauf/neumaschinen/${m.slug}`}
         className="block w-full text-left group h-full"
       >
-        <Card className="h-[360px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+        <Card className="h-[420px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
           <div className="relative h-[200px] overflow-hidden bg-muted flex-shrink-0">
             {img ? (
               <img
