@@ -23,11 +23,28 @@ export function RentwarePositioner() {
       if (!el) return;
 
       if (shouldHide) {
-        el.style.display = "none";
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        el.setAttribute("aria-hidden", "true");
+        if (el.shadowRoot) {
+          let hideTag = el.shadowRoot.querySelector("#slt-hide-override") as HTMLStyleElement;
+          if (!hideTag) {
+            hideTag = document.createElement("style");
+            hideTag.id = "slt-hide-override";
+            el.shadowRoot.appendChild(hideTag);
+          }
+          hideTag.textContent = `:host, :host > * { display: none !important; visibility: hidden !important; }`;
+        }
         return;
       }
 
       el.style.display = "";
+      el.style.visibility = "";
+      el.removeAttribute("aria-hidden");
+      if (el.shadowRoot) {
+        const hideTag = el.shadowRoot.querySelector("#slt-hide-override");
+        if (hideTag) hideTag.remove();
+      }
       el.style.position = "fixed";
       el.style.top = "40px";
       el.style.right = "16px";

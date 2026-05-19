@@ -163,6 +163,14 @@ export default function SLTUsed() {
               </div>
             ))}
           </div>
+          <div className="mt-6">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Link to="/verkauf/neumaschinen">
+                Zu den Neumaschinen
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
