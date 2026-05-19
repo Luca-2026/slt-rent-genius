@@ -587,3 +587,40 @@ Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern 
 
 export const getArticleBySlug = (slug: string): BlogArticle | undefined =>
   blogArticles.find((a) => a.slug === slug);
+
+/**
+ * Mapping product-category-ID → Ratgeber-Kategorien, die thematisch passen.
+ * Wird auf den Kategorie-Seiten (z. B. /mieten/krefeld/anhaenger) für den
+ * Ratgeber-Teaserblock verwendet, um interne Verlinkung & Topical Authority
+ * zu stärken.
+ */
+const CATEGORY_TO_RATGEBER: Record<string, string[]> = {
+  erdbewegung: ["Baumaschinen", "Tipps & Sparen"],
+  verdichtung: ["Baumaschinen", "Tipps & Sparen"],
+  arbeitsbuehnen: ["Baumaschinen", "Tipps & Sparen"],
+  werkzeuge: ["Baumaschinen", "Tipps & Sparen"],
+  gartenpflege: ["Baumaschinen", "Tipps & Sparen"],
+  anhaenger: ["Anhänger", "Tipps & Sparen"],
+  absperrtechnik: ["Verkehrssicherung"],
+  "geschirr-glaeser-besteck": ["Event & Veranstaltung"],
+  "moebel-zelte": ["Event & Veranstaltung"],
+  beleuchtung: ["Event & Veranstaltung"],
+  beschallung: ["Event & Veranstaltung"],
+  buehne: ["Event & Veranstaltung"],
+  "traversen-rigging": ["Event & Veranstaltung"],
+  huepfburgen: ["Event & Veranstaltung"],
+  spezialeffekte: ["Event & Veranstaltung"],
+};
+
+export const getArticlesForCategory = (categoryId: string, limit = 3): BlogArticle[] => {
+  const cats = CATEGORY_TO_RATGEBER[categoryId];
+  if (!cats || !cats.length) return [];
+  const matches = blogArticles.filter((a) => cats.includes(a.category));
+  return matches.slice(0, limit);
+};
+
+/** Neueste Artikel nach updatedAt (Fallback: date), für die Startseite. */
+export const getLatestArticles = (limit = 3): BlogArticle[] =>
+  [...blogArticles]
+    .sort((a, b) => (b.updatedAt || b.date).localeCompare(a.updatedAt || a.date))
+    .slice(0, limit);
