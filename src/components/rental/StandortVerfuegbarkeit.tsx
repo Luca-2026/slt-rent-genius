@@ -7,6 +7,8 @@ interface StandortVerfuegbarkeitProps {
   locationId: string;
   /** Wenn gesetzt, wird die produktspezifische Verfügbarkeit (rentwareCode) ausgewertet */
   product?: Pick<Product, "rentwareCode">;
+  /** Top-Level Kategorie (z. B. "anhaenger") – steuert "keine Lieferung"-Hinweise */
+  categoryId?: string;
   /** Name des Zentrallagers für service-handover-Standorte */
   warehouseLocationName?: string;
   /** Bezeichnung für das Produkt, z.B. "Gerät" oder "Wohnwagen" */
