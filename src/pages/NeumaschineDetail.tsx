@@ -183,6 +183,20 @@ export default function NeumaschineDetail() {
     ],
   };
 
+  const youtubeId: string | undefined = (content as any).youtubeId;
+  const videoJsonLd = youtubeId
+    ? {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        name: `${machine.brand} ${machine.model} – Produktvideo`,
+        description: machine.short_description || description,
+        thumbnailUrl: `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`,
+        uploadDate: machine.created_at,
+        embedUrl: `https://www.youtube.com/embed/${youtubeId}`,
+        contentUrl: `https://www.youtube.com/watch?v=${youtubeId}`,
+      }
+    : null;
+
   const inquiryHref = `/verkauf#kaufanfrage`;
 
   return (
