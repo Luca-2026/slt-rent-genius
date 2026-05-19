@@ -33,7 +33,6 @@ export function Footer() {
 
   const quickLinks = [
     { to: "/mietartikel", label: t("footer.rentalItems") },
-    { to: "/verkauf/neumaschinen", label: t("footer.salesAndBrands") },
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
@@ -41,6 +40,7 @@ export function Footer() {
     { to: "/standorte", label: t("footer.locations") },
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },
+    { to: "/ratgeber-dienstleistungen", label: "Ratgeber & Dienstleistungen" },
     { to: "/faq", label: t("footer.faq") },
   ];
 
