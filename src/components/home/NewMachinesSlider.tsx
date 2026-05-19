@@ -65,7 +65,7 @@ export function NewMachinesSlider() {
         to={`/verkauf/neumaschinen/${m.slug}`}
         className="block w-full text-left group h-full"
       >
-        <Card className="h-[360px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+        <Card className="h-[420px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
           <div className="relative h-[200px] overflow-hidden bg-muted flex-shrink-0">
             {img ? (
               <img
@@ -108,9 +108,9 @@ export function NewMachinesSlider() {
                 </span>
               )}
             </p>
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-2 pt-1 opacity-70 group-hover:opacity-100 transition-opacity">
               Details ansehen
-              <ArrowRight className="h-3 w-3" />
+              <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
             </span>
           </CardContent>
         </Card>
@@ -136,28 +136,20 @@ export function NewMachinesSlider() {
         </AnimatedSection>
       </div>
 
-      {/* Desktop: 4er Grid */}
-      <div className="hidden lg:block section-container">
-        <div className="grid grid-cols-4 gap-6">
-          {machines.slice(0, 4).map((m: any) => (
-            <div key={m.id}>{renderCard(m)}</div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobil & Tablet: Slider */}
-      <div className="lg:hidden overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4 pl-4 md:pl-8">
+      {/* Slider – alle Geräte */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4 lg:gap-6 pl-4 md:pl-8 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))]">
           {machines.map((m: any) => (
             <div
               key={m.id}
-              className="flex-[0_0_260px] sm:flex-[0_0_280px] min-w-0"
+              className="flex-[0_0_260px] sm:flex-[0_0_280px] lg:flex-[0_0_300px] min-w-0"
             >
               {renderCard(m)}
             </div>
           ))}
         </div>
       </div>
+
 
       <div className="section-container text-center mt-10">
         <Link to="/verkauf/neumaschinen">
