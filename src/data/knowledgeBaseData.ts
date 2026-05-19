@@ -265,7 +265,7 @@ export const kbArticles: KBArticle[] = [
         icon: "MessageSquare",
         heading: "Code-Empfang und Gültigkeit",
         items: [
-          "Wenige Minuten nach der Buchung erhalten Sie den SMS-Code an die hinterlegte Mobilnummer – spätestens 15 Minuten vor Beginn der Buchungszeit ist er versendet.",
+          "Spätestens 15 Minuten vor Beginn der Buchungszeit erhalten Sie den SMS-Code an die hinterlegte Mobilnummer. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht.",
           "Der Code ist ausschließlich für Ihre Buchung und während des Mietzeitraums gültig.",
           "Bewahren Sie die SMS sicher auf – es wird kein Ersatzcode ausgestellt.",
         ],
