@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
       kundentyp, firmenname, ustIdNr,
       anrede, titel, vorname, nachname, email, telefon, wunschtermin,
       rechnungGleich, rechnungFirma, rechnungStrasse, rechnungPlz, rechnungOrt, rechnungLand,
-      nachricht, wieGefunden,
+      nachricht, wieGefunden, addons,
     } = body;
 
     if (!marke || !produktkategorie || !vorname || !nachname || !email || !telefon) {
