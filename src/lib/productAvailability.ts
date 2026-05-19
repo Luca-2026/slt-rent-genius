@@ -43,6 +43,7 @@ export interface ProductAvailability {
 export function getProductAvailability(
   product: Pick<Product, "rentwareCode"> | undefined,
   locationId: string,
+  options?: { categoryId?: string },
 ): ProductAvailability {
   const loc = getLocationInfoById(locationId);
   const locName = loc?.name || "Standort";
@@ -50,6 +51,8 @@ export function getProductAvailability(
   const isFiliale = loc?.serviceCharacter === "full-warehouse" && !isHauptlager;
   const isServiceStandort = loc?.serviceCharacter === "service-handover";
   const hasLocalCode = !!product?.rentwareCode?.[locationId];
+  const isPickupOnlyCategory =
+    options?.categoryId === "anhaenger" || options?.categoryId === "nutzfahrzeuge";
 
   // 1) Krefeld = Hauptlager – immer vor Ort
   if (isHauptlager) {
@@ -57,7 +60,9 @@ export function getProductAvailability(
       status: "available-warehouse",
       badgeLabel: `Verfügbar in ${locName}`,
       headline: `Verfügbar in unserem Hauptsitz ${locName}`,
-      body: `Dieses Gerät ist Teil unseres Krefelder Mietsortiments. Abholung am Hauptsitz oder Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
+      body: isPickupOnlyCategory
+        ? `Dieses Gerät ist Teil unseres Krefelder Mietsortiments. Anhänger und Nutzfahrzeuge werden grundsätzlich am Hauptsitz Krefeld abgeholt und dort wieder zurückgegeben – eine Lieferung bieten wir hierfür nicht an. Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss.`
+        : `Dieses Gerät ist Teil unseres Krefelder Mietsortiments. Abholung am Hauptsitz oder Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
       schemaAvailability: "https://schema.org/InStock",
       isBookable: true,
     };
