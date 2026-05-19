@@ -165,7 +165,7 @@ Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem m
 
 ## Ladungssicherung – Ihre Pflicht
 
-Nach § 22 StVO sind **Sie als Fahrer** für die ordnungsgemäße Ladungssicherung verantwortlich. SLT Rental stellt bei jedem Anhänger **Spanngurte** bereit. Beachten Sie:
+Nach § 22 StVO sind **Sie als Fahrer** für die ordnungsgemäße Ladungssicherung verantwortlich. SLT Rental bietet **Spanngurte als optionales Zubehör** an – einfach beim Buchungsprozess dazubuchen. Beachten Sie:
 
 - Schwere Gegenstände nach unten, leichte oben
 - Ladung formschlüssig an die Bordwand anlegen
