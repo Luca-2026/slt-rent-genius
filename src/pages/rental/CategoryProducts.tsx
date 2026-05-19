@@ -2024,6 +2024,15 @@ export default function CategoryProducts() {
         </section>
       )}
 
+      {/* Ratgeber-Teaser: stärkt interne Verlinkung & SEO der Ratgeber-Artikel */}
+      {categoryId && (
+        <RatgeberTeaserBlock
+          articles={getArticlesForCategory(categoryId, 3)}
+          heading="Passende Ratgeber-Artikel"
+          subheading="Praxistipps & Know-how rund um diese Kategorie"
+        />
+      )}
+
       {/* Product Booking Dialog */}
       <ProductBookingDialog
         product={selectedProduct}
