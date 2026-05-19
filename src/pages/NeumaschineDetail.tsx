@@ -199,7 +199,7 @@ export default function NeumaschineDetail() {
       }
     : null;
 
-  const inquiryHref = `/verkauf#kaufanfrage`;
+  const priceLabel = priceGross ? `${formatPriceGross(priceGross, false)} brutto` : "Preis auf Anfrage";
 
   return (
     <Layout>
