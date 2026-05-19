@@ -24,6 +24,8 @@ import { BaumaschinenanhaengerBundleHint } from "@/components/rental/Baumaschine
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } from "@/components/rental/categoryFilters";
 import { moebelZelteContent } from "@/data/moebelZelteContent";
+import { getArticlesForCategory } from "@/data/blogArticles";
+import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 
 export default function CategoryProducts() {
   const { t } = useTranslation();
@@ -2020,6 +2022,15 @@ export default function CategoryProducts() {
             </div>
           </div>
         </section>
+      )}
+
+      {/* Ratgeber-Teaser: stärkt interne Verlinkung & SEO der Ratgeber-Artikel */}
+      {categoryId && (
+        <RatgeberTeaserBlock
+          articles={getArticlesForCategory(categoryId, 3)}
+          heading="Passende Ratgeber-Artikel"
+          subheading="Praxistipps & Know-how rund um diese Kategorie"
+        />
       )}
 
       {/* Product Booking Dialog */}

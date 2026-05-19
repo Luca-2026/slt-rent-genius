@@ -13,6 +13,8 @@ const ProductInspirationSlider = lazy(() => import("@/components/home/ProductIns
 const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlider").then(m => ({ default: m.UsedMachinesSlider })));
 const NewMachinesSlider = lazy(() => import("@/components/home/NewMachinesSlider").then(m => ({ default: m.NewMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
+import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
+import { getLatestArticles } from "@/data/blogArticles";
 import { Loader2 } from "lucide-react";
 
 // Lazy load components that pull in rentalData (~100 product images)
@@ -409,6 +411,15 @@ export default function Index() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Ratgeber-Teaser: stärkt interne Verlinkung der Ratgeber-Artikel */}
+      <RatgeberTeaserBlock
+        articles={getLatestArticles(3)}
+        heading="Aus unserem Ratgeber"
+        subheading="Praxiswissen rund ums Mieten – verständlich erklärt"
+      />
+
+
 
       <Suspense fallback={null}>
         <ProductSearchDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen} />

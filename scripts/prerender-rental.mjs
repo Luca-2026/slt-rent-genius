@@ -141,6 +141,16 @@ function inlineMd(text) {
   return out;
 }
 
+function slugifyHeading(text) {
+  return String(text)
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 60);
+}
+
 function renderMarkdown(md) {
   const lines = String(md || "").split("\n");
   const out = [];
@@ -178,7 +188,13 @@ function renderMarkdown(md) {
     }
 
     if (line.startsWith("### ")) { flushUl(); flushOl(); out.push(`<h3 style="font-size:20px;font-weight:600;color:#1a1a1a;margin:24px 0 10px;">${inlineMd(line.slice(4))}</h3>`); continue; }
-    if (line.startsWith("## ")) { flushUl(); flushOl(); out.push(`<h2 style="font-size:24px;font-weight:700;color:#1a1a1a;margin:32px 0 12px;">${inlineMd(line.slice(3))}</h2>`); continue; }
+    if (line.startsWith("## ")) {
+      flushUl(); flushOl();
+      const txt = line.slice(3).trim();
+      const id = slugifyHeading(txt);
+      out.push(`<h2 id="${escapeAttr(id)}" style="font-size:24px;font-weight:700;color:#1a1a1a;margin:32px 0 12px;scroll-margin-top:96px;">${inlineMd(txt)}</h2>`);
+      continue;
+    }
 
     if (/^[-*☑]\s/.test(line.trimStart())) {
       flushOl();

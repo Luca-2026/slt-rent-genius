@@ -2,7 +2,37 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
-import { Calendar, ArrowLeft, ArrowRight } from "lucide-react";
+import { Calendar, ArrowLeft, ArrowRight, List } from "lucide-react";
+
+/** Slugify für stabile Anker-IDs (muss mit prerender-script übereinstimmen). */
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 60);
+}
+
+/** Extrahiert alle ## Headings aus Markdown für das Inhaltsverzeichnis. */
+function extractToc(md: string): { id: string; text: string }[] {
+  const out: { id: string; text: string }[] = [];
+  const seen = new Set<string>();
+  for (const line of md.split("\n")) {
+    if (line.startsWith("## ") && !line.startsWith("### ")) {
+      const text = line.slice(3).trim();
+      let id = slugifyHeading(text);
+      let i = 2;
+      while (seen.has(id)) id = `${slugifyHeading(text)}-${i++}`;
+      seen.add(id);
+      out.push({ id, text });
+    }
+  }
+  return out;
+}
+
+
 
 /** Very lightweight Markdown→JSX renderer for our controlled content */
 function renderMarkdown(md: string) {
@@ -84,7 +114,13 @@ function renderMarkdown(md: string) {
 
     // Headings
     if (line.startsWith("### ")) { flushList(); flushOrderedList(); elements.push(<h3 key={i} className="text-xl font-semibold text-foreground mt-8 mb-3">{inlineMarkdown(line.slice(4))}</h3>); continue; }
-    if (line.startsWith("## ")) { flushList(); flushOrderedList(); elements.push(<h2 key={i} className="text-2xl font-bold text-foreground mt-10 mb-4">{inlineMarkdown(line.slice(3))}</h2>); continue; }
+    if (line.startsWith("## ")) {
+      flushList(); flushOrderedList();
+      const text = line.slice(3).trim();
+      const id = slugifyHeading(text);
+      elements.push(<h2 key={i} id={id} className="text-2xl font-bold text-foreground mt-10 mb-4 scroll-mt-24">{inlineMarkdown(text)}</h2>);
+      continue;
+    }
 
     // Unordered list
     if (/^[-*☑] /.test(line.trimStart())) {
@@ -225,6 +261,28 @@ const RatgeberArticle = () => {
           </div>
 
           {/* Article body */}
+          {/* Inhaltsverzeichnis (für Nutzer & Google SERP-Sitelinks) */}
+          {(() => {
+            const toc = extractToc(article.content);
+            if (toc.length < 3) return null;
+            return (
+              <nav aria-label="Inhaltsverzeichnis" className="bg-muted/40 border border-border rounded-xl p-5 mb-10">
+                <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <List className="h-4 w-4 text-primary" aria-hidden="true" />
+                  Inhalt
+                </h2>
+                <ol className="space-y-1.5 text-sm">
+                  {toc.map((t, i) => (
+                    <li key={t.id} className="text-muted-foreground">
+                      <span className="text-primary mr-2 tabular-nums">{i + 1}.</span>
+                      <a href={`#${t.id}`} className="hover:text-primary hover:underline">{t.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            );
+          })()}
+
           <div className="prose-custom">
             {renderMarkdown(article.content)}
           </div>
