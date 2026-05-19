@@ -7,6 +7,8 @@ interface StandortVerfuegbarkeitProps {
   locationId: string;
   /** Wenn gesetzt, wird die produktspezifische Verfügbarkeit (rentwareCode) ausgewertet */
   product?: Pick<Product, "rentwareCode">;
+  /** Top-Level Kategorie (z. B. "anhaenger") – steuert "keine Lieferung"-Hinweise */
+  categoryId?: string;
   /** Name des Zentrallagers für service-handover-Standorte */
   warehouseLocationName?: string;
   /** Bezeichnung für das Produkt, z.B. "Gerät" oder "Wohnwagen" */
@@ -28,6 +30,7 @@ interface StandortVerfuegbarkeitProps {
 export function StandortVerfuegbarkeit({
   locationId,
   product,
+  categoryId,
   warehouseLocationName = "Krefeld",
   deviceLabel = "Gerät",
 }: StandortVerfuegbarkeitProps) {
@@ -36,10 +39,11 @@ export function StandortVerfuegbarkeit({
 
   const { name, deliveryRadius, futurePromise, serviceCharacter } = location;
   const cities = (deliveryRadius ?? []).slice(0, 5);
+  const isPickupOnly = categoryId === "anhaenger" || categoryId === "nutzfahrzeuge";
 
   // Produktspezifische Variante (Sprint 1)
   if (product) {
-    const avail = getProductAvailability(product, locationId);
+    const avail = getProductAvailability(product, locationId, { categoryId });
     const isLocal = avail.status === "available-local" || avail.status === "available-warehouse";
     const Icon = isLocal ? CheckCircle2 : MailQuestion;
     const accentClass = isLocal
@@ -69,7 +73,7 @@ export function StandortVerfuegbarkeit({
               </div>
               <p className="text-xs md:text-sm text-body leading-relaxed">{avail.body}</p>
 
-              {cities.length > 0 && (
+              {cities.length > 0 && !isPickupOnly && (
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
                   <span className="inline-flex items-center gap-1 text-[11px] md:text-xs text-muted-foreground mr-1">
                     <Clock className="h-3 w-3" />

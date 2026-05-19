@@ -606,7 +606,7 @@ for (const loc of locations as LocationData[]) {
       // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
       // Damit Google sofort erkennt, ob das Produkt am Standort
       // verfügbar oder auf Anfrage ist (echter Content-Unterschied).
-      const availability = getProductAvailability(p, loc.id);
+      const availability = getProductAvailability(p, loc.id, { categoryId: catId });
       intro.push(`${availability.headline}. ${availability.body}`);
 
       // Standort × Kategorie spezifischer Content (echt lokal,

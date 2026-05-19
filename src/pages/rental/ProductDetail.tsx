@@ -298,7 +298,7 @@ export default function ProductDetail() {
                 const priceFrom = productSEO.dailyPriceFrom as number;
                 const validUntil = new Date();
                 validUntil.setFullYear(validUntil.getFullYear() + 1);
-                const availability = getProductAvailability(product, location.id);
+                const availability = getProductAvailability(product, location.id, { categoryId });
                 return {
                   "@type": "Offer",
                   "availability": availability.schemaAvailability,
@@ -1173,8 +1173,10 @@ export default function ProductDetail() {
                 <StandortVerfuegbarkeit
                   locationId={locationId}
                   product={product}
+                  categoryId={categoryId}
                   deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"}
                 />
+
               )}
 
               {/* Standortspezifischer Block (Hookline + Standort-Fakten).
