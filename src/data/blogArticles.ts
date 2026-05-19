@@ -124,7 +124,7 @@ Für die meisten privaten Projekte gilt: **Sie brauchen keinen Führerschein und
       "Online buchen, bezahlen, Code per SMS erhalten – fertig",
       "Rückgabe jederzeit ohne Wartezeit",
       "Führerschein Klasse B (bis 750 kg Anhänger) oder BE erforderlich",
-      "Ladungssicherungsmittel (Spanngurte) liegen bei"
+      "Ladungssicherungsmittel (Spanngurte) sind optional zubuchbar"
     ],
     relatedSlugs: ["wochenendtarif-vs-tagesmiete", "minibagger-mieten-ohne-fuehrerschein"],
     content: `## So funktioniert die 24/7-Anhängermiete
@@ -137,19 +137,21 @@ Viele kennen das Problem: Der Umzug beginnt samstags um 7 Uhr, der Baumarkt-Eink
 Wählen Sie auf [slt-rental.de](/mieten/krefeld/anhaenger) Ihren Wunschanhänger, den gewünschten Zeitraum und den Abholstandort. Die Verfügbarkeit wird in Echtzeit angezeigt.
 
 ### 2. Online bezahlen
-Bezahlen Sie bequem per Kreditkarte, PayPal oder Sofortüberweisung. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
+Bezahlen Sie bequem per Kreditkarte, PayPal oder bar im Ladengeschäft. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
 
 ### 3. SMS-Code erhalten
-Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Dieser Code ist nur für Ihre Buchung gültig.
+Wenige Minuten nach der Buchung erhalten Sie einen **individuellen SMS-Code** auf die bei der Buchung hinterlegte Mobilnummer. Spätestens 15 Minuten vor Beginn der Buchungszeit ist der Code per SMS versendet. Dieser Code ist nur für Ihre Buchung gültig.
 
 ### 4. Anhänger entsperren
-Am Standort angekommen, geben Sie den Code am **Sicherheitsschloss** des gebuchten Anhängers ein. Das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.
+Am Standort angekommen, geben Sie den Code am **Schloss vorne an der Deichsel** des gebuchten Anhängers ein. Bestätigen Sie die Eingabe mit der **Schlosstaste**. Ziehen Sie anschließend **kräftig daran** – das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.
+
+Möchten Sie den Anhänger später wieder abstellen, drücken Sie den Bügel einfach **rein**, lassen Sie ihn **einrasten** und warten Sie auf den **langen Piepton**. Anschließend ist der Anhänger automatisch wieder gesperrt.
 
 ### 5. Losfahren
 Anhänger ankuppeln, Beleuchtung prüfen (13-polig oder 7-polig – beides gängig), Ladung sichern – und los geht's.
 
 ### 6. Rückgabe
-Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem markierten Platz und verriegeln Sie das Schloss. Fertig. Sie erhalten eine Rückgabebestätigung per E-Mail.
+Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem markierten Platz und verriegeln Sie das Schloss. Fertig. Nachdem der Anhänger auf ordnungsgemäßen Zustand überprüft wurde, erhalten Sie eine **Rückgabebestätigung und die Rechnung per E-Mail**. Die Überprüfung erfolgt spätestens 48 Stunden nach Rückgabe.
 
 ## Welchen Führerschein brauche ich?
 
@@ -163,7 +165,7 @@ Bringen Sie den Anhänger einfach zurück zum Standort, parken Sie ihn auf dem m
 
 ## Ladungssicherung – Ihre Pflicht
 
-Nach § 22 StVO sind **Sie als Fahrer** für die ordnungsgemäße Ladungssicherung verantwortlich. SLT Rental stellt bei jedem Anhänger **Spanngurte** bereit. Beachten Sie:
+Nach § 22 StVO sind **Sie als Fahrer** für die ordnungsgemäße Ladungssicherung verantwortlich. SLT Rental bietet **Spanngurte als optionales Zubehör** an – einfach beim Buchungsprozess dazubuchen. Beachten Sie:
 
 - Schwere Gegenstände nach unten, leichte oben
 - Ladung formschlüssig an die Bordwand anlegen
