@@ -124,7 +124,7 @@ Für die meisten privaten Projekte gilt: **Sie brauchen keinen Führerschein und
       "Online buchen, bezahlen, Code per SMS erhalten – fertig",
       "Rückgabe jederzeit ohne Wartezeit",
       "Führerschein Klasse B (bis 750 kg Anhänger) oder BE erforderlich",
-      "Ladungssicherungsmittel (Spanngurte) liegen bei"
+      "Ladungssicherungsmittel (Spanngurte) sind optional zubuchbar"
     ],
     relatedSlugs: ["wochenendtarif-vs-tagesmiete", "minibagger-mieten-ohne-fuehrerschein"],
     content: `## So funktioniert die 24/7-Anhängermiete
