@@ -10,6 +10,10 @@ import { useLocation } from "react-router-dom";
 export function RentwarePositioner() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
+  const isSales =
+    location.pathname.startsWith("/verkauf/neumaschinen") ||
+    location.pathname.startsWith("/verkauf/gebrauchtmaschinen");
+  const shouldHide = isB2B || isSales;
 
   useEffect(() => {
     let observer: MutationObserver | null = null;
