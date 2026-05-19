@@ -5,7 +5,7 @@ import { SEO } from "@/components/SEO";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Download } from "lucide-react";
 import {
   AGB_B2B_META,
   AGB_B2B_SECTIONS,
@@ -21,6 +21,12 @@ const TABS: { key: TabKey; label: string; short: string }[] = [
   { key: "b2c", label: "AGB für Verbraucher (B2C)", short: "B2C" },
   { key: "widerruf", label: "Widerrufsbelehrung", short: "Widerruf" },
 ];
+
+const PDF_DOWNLOADS: Record<TabKey, { href: string; label: string }> = {
+  b2b: { href: "/legal/AGB-B2B.pdf", label: "AGB B2B als PDF herunterladen" },
+  b2c: { href: "/legal/AGB-B2C.pdf", label: "AGB B2C als PDF herunterladen" },
+  widerruf: { href: "/legal/Widerrufsbelehrung.pdf", label: "Widerrufsbelehrung als PDF herunterladen" },
+};
 
 const DATA: Record<
   TabKey,
