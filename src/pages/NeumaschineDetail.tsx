@@ -116,8 +116,8 @@ export default function NeumaschineDetail() {
         shippingDestination: { "@type": "DefinedRegion", addressCountry: "DE" },
         deliveryTime: {
           "@type": "ShippingDeliveryTime",
-          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 3, unitCode: "DAY" },
-          transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" },
+          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 1, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" },
         },
       }
     : undefined;
@@ -146,6 +146,9 @@ export default function NeumaschineDetail() {
         priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/NewCondition",
         availability: "https://schema.org/PreOrder",
+        ...(machine.slug === "baumax-anhaengerkupplung-kde550"
+          ? { availabilityStarts: "2026-06-01" }
+          : {}),
         seller: sellerNode,
         businessFunction: "https://schema.org/Sell",
         eligibleRegion: { "@type": "Country", name: "DE" },
@@ -306,14 +309,13 @@ export default function NeumaschineDetail() {
                     </p>
                   </div>
                 )}
-                {content.leadTime && (
+                {content.leadTime ? (
                   <p className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1">
                     <Clock className="h-3 w-3" /> {content.leadTime}
                   </p>
-                )}
-                {machine.slug === "baumax-anhaengerkupplung-kde550" && !content.leadTime && (
+                ) : (
                   <p className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1">
-                    <Clock className="h-3 w-3" /> Lieferbar Ende Juni 2026
+                    <Clock className="h-3 w-3" /> Lieferbar innerhalb von 2–3 Werktagen
                   </p>
                 )}
               </CardContent>
