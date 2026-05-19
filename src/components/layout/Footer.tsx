@@ -45,8 +45,8 @@ export function Footer() {
   ];
 
   const salesLinks = [
-    { to: "/verkauf/neumaschinen", label: t("footer.buyMachines") },
-    { to: "/verkauf/gebrauchtmaschinen", label: t("footer.usedMachines", "Gebrauchtmaschinen") },
+    { to: "/verkauf/neumaschinen", label: "Neumaschinen kaufen" },
+    { to: "/verkauf/gebrauchtmaschinen", label: "Gebrauchtmaschinen kaufen" },
   ];
 
   const legalLinks = [
