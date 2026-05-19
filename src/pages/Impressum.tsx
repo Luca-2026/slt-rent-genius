@@ -23,13 +23,13 @@ export default function Impressum() {
         <div className="max-w-4xl mx-auto space-y-12">
           {/* Company Information */}
           <AnimatedSection animation="fade-in-up" delay={100}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
+            <div className="bg-card rounded-2xl p-5 sm:p-8 border border-border shadow-sm break-words">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <Building2 className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">{t("impressum.companyInfoTitle")}</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words">{t("impressum.companyInfoTitle")}</h2>
                   <p className="text-muted-foreground">{t("impressum.companyInfoSub")}</p>
                 </div>
               </div>
@@ -67,16 +67,16 @@ export default function Impressum() {
 
           {/* Geschäftsführer */}
           <AnimatedSection animation="fade-in-up" delay={200}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <h2 className="text-2xl font-bold text-foreground mb-4">{t("impressum.ceoTitle")}</h2>
+            <div className="bg-card rounded-2xl p-5 sm:p-8 border border-border shadow-sm break-words">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words mb-4">{t("impressum.ceoTitle")}</h2>
               <p className="text-lg text-foreground">Benedikt Nöchel</p>
             </div>
           </AnimatedSection>
 
           {/* Persönlich haftende Gesellschafterin */}
           <AnimatedSection animation="fade-in-up" delay={300}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <h2 className="text-2xl font-bold text-foreground mb-6">{t("impressum.liabilityPartnerTitle")}</h2>
+            <div className="bg-card rounded-2xl p-5 sm:p-8 border border-border shadow-sm break-words">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words mb-6">{t("impressum.liabilityPartnerTitle")}</h2>
               <div className="space-y-4">
                 <p className="text-lg font-semibold text-foreground">SLT Management GmbH</p>
                 <div className="grid md:grid-cols-2 gap-6">
@@ -113,8 +113,8 @@ export default function Impressum() {
 
           {/* Haftungsausschluss */}
           <AnimatedSection animation="fade-in-up" delay={400}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
-              <h2 className="text-2xl font-bold text-foreground mb-6">{t("impressum.disclaimerTitle")}</h2>
+            <div className="bg-card rounded-2xl p-5 sm:p-8 border border-border shadow-sm break-words">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words mb-6">{t("impressum.disclaimerTitle")}</h2>
               <div className="prose prose-gray max-w-none space-y-4 text-muted-foreground">
                 <p>{t("impressum.disclaimerP1")}</p>
                 <p>{t("impressum.disclaimerP2")}</p>
@@ -128,13 +128,13 @@ export default function Impressum() {
 
           {/* Versicherung */}
           <AnimatedSection animation="fade-in-up" delay={500}>
-            <div className="bg-card rounded-2xl p-8 border border-border shadow-sm">
+            <div className="bg-card rounded-2xl p-5 sm:p-8 border border-border shadow-sm break-words">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <Shield className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">{t("impressum.insuranceTitle")}</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words">{t("impressum.insuranceTitle")}</h2>
                 </div>
               </div>
               <div className="space-y-2">
