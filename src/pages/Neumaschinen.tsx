@@ -461,16 +461,16 @@ export default function Neumaschinen() {
                   Alle Neumaschinen ansehen <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </a>
-              <a href="#kaufanfrage">
-                <Button size="lg" variant="outline" className="gap-2 bg-transparent text-primary-foreground border-primary-foreground/40 hover:bg-primary-foreground/10 hover:text-primary-foreground">
-                  Kaufanfrage stellen
-                </Button>
-              </a>
               <Link to="/verkauf/gebrauchtmaschinen">
                 <Button size="lg" variant="secondary" className="gap-2">
                   <Tag className="mr-2 h-5 w-5" /> Zu den Gebrauchtmaschinen
                 </Button>
               </Link>
+              <a href="#kaufanfrage">
+                <Button size="lg" variant="outline" className="gap-2 bg-transparent text-primary-foreground border-primary-foreground/40 hover:bg-primary-foreground/10 hover:text-primary-foreground">
+                  Kaufanfrage stellen
+                </Button>
+              </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               {brandKeys.map((key) => (
