@@ -380,6 +380,25 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
+      {/* Product video */}
+      {youtubeId && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl font-bold text-headline mb-4">Produktvideo</h2>
+            <div className="relative w-full overflow-hidden rounded-lg bg-muted" style={{ aspectRatio: "16 / 9" }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+                title={`${machine.brand} ${machine.model} – Produktvideo`}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Highlights */}
       {highlights.length > 0 && (
         <section className="section-container py-8 md:py-12 border-t border-border">
