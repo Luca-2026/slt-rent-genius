@@ -56,7 +56,7 @@ export default function Impressum() {
                     </div>
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary shrink-0" />
-                      <a href="mailto:info@slt-rental.de" className="text-primary hover:underline">info@slt-rental.de</a>
+                      <a href="mailto:info@slt-rental.de" className="text-primary hover:underline break-all">info@slt-rental.de</a>
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default function Impressum() {
                     </div>
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary shrink-0" />
-                      <a href="mailto:info@slt-m.de" className="text-primary hover:underline">info@slt-m.de</a>
+                      <a href="mailto:info@slt-m.de" className="text-primary hover:underline break-all">info@slt-m.de</a>
                     </div>
                   </div>
                 </div>
