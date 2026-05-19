@@ -70,7 +70,7 @@ export default function NeumaschineDetail() {
   const highlights: string[] = Array.isArray(content.highlights) ? content.highlights : [];
   const suitableFor: string[] = Array.isArray(content.suitableFor) ? content.suitableFor : [];
   const whyItems: { title: string; desc: string }[] = Array.isArray(content.whyItems) ? content.whyItems : [];
-  const options: { name: string; price: string; note?: string }[] = Array.isArray(content.options) ? content.options : [];
+  const options: { name: string; price: string; note?: string; href?: string }[] = Array.isArray(content.options) ? content.options : [];
   const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
   const showroomLocs: string[] = Array.isArray(machine.showroom_locations) ? machine.showroom_locations : [];
   const showroomNames = showroomLocs.map((l) => locationLabels[l] || l).join(" oder ");
@@ -336,7 +336,13 @@ export default function NeumaschineDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
             {options.map((opt, idx) => (
               <Card key={idx} className="p-5">
-                <p className="font-semibold text-headline mb-1">{opt.name}</p>
+                {opt.href ? (
+                  <Link to={opt.href} className="font-semibold text-headline mb-1 block hover:text-primary transition-colors inline-flex items-center gap-1">
+                    {opt.name} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ) : (
+                  <p className="font-semibold text-headline mb-1">{opt.name}</p>
+                )}
                 <p className="text-primary font-bold">{opt.price}</p>
                 {opt.note && <p className="text-sm text-muted-foreground mt-1">{opt.note}</p>}
               </Card>

@@ -569,7 +569,14 @@ export default function Verkauf() {
                           className="mt-0.5"
                         />
                         <span className="text-sm text-foreground">
-                          <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen
+                          <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen{" "}
+                          <Link
+                            to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
+                            className="text-primary underline underline-offset-2 hover:text-primary/80"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Details ansehen
+                          </Link>
                         </span>
                       </label>
                     </div>
