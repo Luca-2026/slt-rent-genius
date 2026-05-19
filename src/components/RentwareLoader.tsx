@@ -18,11 +18,15 @@ const IDLE_FALLBACK_MS = 3000;
  *   3) A custom "rtr:load" event – fired by components that need the cart now
  *      (e.g. <LazyRentwareWidget> on focus, Booking dialog on open).
  *
- * Hides the cart on B2B routes.
+ * Hides the cart on B2B and sales routes.
  */
 export function RentwareLoader() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
+  const isSales =
+    location.pathname.startsWith("/verkauf/neumaschinen") ||
+    location.pathname.startsWith("/verkauf/gebrauchtmaschinen");
+  const shouldHideCart = isB2B || isSales;
   // Homepage hat kein echtes rtr-Element im initialen Render. Wir sparen
   // dort 3s Hauptthread-Blockade, indem wir Rentware NUR bei expliziter
   // Interaktion (Click/Scroll/Touch/Tastatur) oder via rtr:load-Event laden.
@@ -31,6 +35,16 @@ export function RentwareLoader() {
 
   // Lazy script injection
   useEffect(() => {
+    if (shouldHideCart) {
+      const el = document.querySelector("rtr-checkout") as HTMLElement | null;
+      if (el) {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        el.setAttribute("aria-hidden", "true");
+      }
+      return;
+    }
+
     (window as any).RTR_ACCESS_TOKEN = RTR_ACCESS_TOKEN;
 
     const inject = () => {
@@ -140,7 +154,7 @@ export function RentwareLoader() {
       }
       if (timeoutHandle) window.clearTimeout(timeoutHandle);
     };
-  }, [isHomepage]);
+  }, [isHomepage, shouldHideCart]);
 
   // Position / hide the cart widget
   useEffect(() => {
@@ -150,12 +164,25 @@ export function RentwareLoader() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      if (isB2B) {
-        el.style.display = "none";
+      if (shouldHideCart) {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        el.setAttribute("aria-hidden", "true");
+        if (el.shadowRoot) {
+          let hideTag = el.shadowRoot.querySelector("#slt-hide-override") as HTMLStyleElement;
+          if (!hideTag) {
+            hideTag = document.createElement("style");
+            hideTag.id = "slt-hide-override";
+            el.shadowRoot.appendChild(hideTag);
+          }
+          hideTag.textContent = `:host, :host > * { display: none !important; visibility: hidden !important; }`;
+        }
         return;
       }
 
       el.style.display = "";
+      el.style.visibility = "";
+      el.removeAttribute("aria-hidden");
       el.style.position = "fixed";
       el.style.top = "40px";
       el.style.right = "16px";
@@ -166,6 +193,9 @@ export function RentwareLoader() {
       el.style.height = "56px";
 
       if (el.shadowRoot) {
+        const hideTag = el.shadowRoot.querySelector("#slt-hide-override");
+        if (hideTag) hideTag.remove();
+
         let styleTag = el.shadowRoot.querySelector("#slt-pos-override") as HTMLStyleElement;
         if (!styleTag) {
           styleTag = document.createElement("style");
@@ -240,7 +270,7 @@ export function RentwareLoader() {
       window.removeEventListener("resize", onResize);
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
     };
-  }, [isB2B]);
+  }, [shouldHideCart]);
 
   return null;
 }
