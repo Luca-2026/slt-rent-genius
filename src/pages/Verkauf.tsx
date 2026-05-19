@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
