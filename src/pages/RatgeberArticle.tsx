@@ -2,7 +2,37 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
-import { Calendar, ArrowLeft, ArrowRight } from "lucide-react";
+import { Calendar, ArrowLeft, ArrowRight, List } from "lucide-react";
+
+/** Slugify für stabile Anker-IDs (muss mit prerender-script übereinstimmen). */
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 60);
+}
+
+/** Extrahiert alle ## Headings aus Markdown für das Inhaltsverzeichnis. */
+function extractToc(md: string): { id: string; text: string }[] {
+  const out: { id: string; text: string }[] = [];
+  const seen = new Set<string>();
+  for (const line of md.split("\n")) {
+    if (line.startsWith("## ") && !line.startsWith("### ")) {
+      const text = line.slice(3).trim();
+      let id = slugifyHeading(text);
+      let i = 2;
+      while (seen.has(id)) id = `${slugifyHeading(text)}-${i++}`;
+      seen.add(id);
+      out.push({ id, text });
+    }
+  }
+  return out;
+}
+
+
 
 /** Very lightweight Markdown→JSX renderer for our controlled content */
 function renderMarkdown(md: string) {
