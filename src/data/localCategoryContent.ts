@@ -827,20 +827,6 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
-  },
-};
-
-/**
- * Liefert den standortspezifischen Inhalt oder `null`, wenn (noch) nichts
- * gepflegt ist. Komponenten rendern in dem Fall keinen zusätzlichen Block.
- */
-export function getLocalCategoryContent(
-  locationId: string | undefined,
-  categoryId: string | undefined,
-): LocalCategoryContent | null {
-  if (!locationId || !categoryId) return null;
-  return localCategoryContent[locationId]?.[categoryId] ?? null;
-    },
 
     buehne: {
       hookline:
@@ -950,4 +936,18 @@ export function getLocalCategoryContent(
           a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,40 €/km netto und beim 3,5-Tonner 0,23 €/km netto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
         },
       ],
-    }
+    },
+  },
+};
+
+/**
+ * Liefert den standortspezifischen Inhalt oder `null`, wenn (noch) nichts
+ * gepflegt ist. Komponenten rendern in dem Fall keinen zusätzlichen Block.
+ */
+export function getLocalCategoryContent(
+  locationId: string | undefined,
+  categoryId: string | undefined,
+): LocalCategoryContent | null {
+  if (!locationId || !categoryId) return null;
+  return localCategoryContent[locationId]?.[categoryId] ?? null;
+}
