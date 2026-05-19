@@ -217,7 +217,7 @@ export function CategoryInfoBanner({ categoryId }: CategoryInfoBannerProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {config.items.map((item, index) => (
             <div key={index} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                 {item.icon}
               </div>
               <div>
