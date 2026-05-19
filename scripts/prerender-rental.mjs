@@ -141,6 +141,16 @@ function inlineMd(text) {
   return out;
 }
 
+function slugifyHeading(text) {
+  return String(text)
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 60);
+}
+
 function renderMarkdown(md) {
   const lines = String(md || "").split("\n");
   const out = [];
