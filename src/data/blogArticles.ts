@@ -530,7 +530,7 @@ Unser **18-teiliges Komplett-Set** passt mit den klappbaren Standfüßen in jede
 - Diebstahlsicherung
 - Werkzeug- & Zubehörtasche
 
-Verfügbar in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/bonn-halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
+Verfügbar in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
 
 | Variante | Preis | Leistungsumfang |
 |---|---|---|
@@ -577,7 +577,7 @@ Wer im ausgewiesenen Halteverbot parkt, riskiert ein **Verwarnungs- bzw. Bußgel
 
 ## Jetzt Halteverbotszone in NRW einrichten
 
-Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern Schilder, Beratung und auf Wunsch das komplette Sorglos-Paket – an unseren Standorten in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/bonn-halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
+Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern Schilder, Beratung und auf Wunsch das komplette Sorglos-Paket – an unseren Standorten in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
 
 [→ Halteverbotsschilder-Set jetzt mieten](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set)`
   }
