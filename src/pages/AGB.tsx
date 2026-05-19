@@ -186,14 +186,28 @@ export default function AGB() {
             const d = DATA[t.key];
             return (
               <TabsContent key={t.key} value={t.key} className="mt-0">
-                <div className="mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-                    {d.meta.title}
-                  </h2>
-                  <p className="text-muted-foreground">{d.meta.subtitle}</p>
-                  <p className="text-sm text-muted-foreground italic mt-1">
-                    {d.meta.stand}
-                  </p>
+                <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+                      {d.meta.title}
+                    </h2>
+                    <p className="text-muted-foreground">{d.meta.subtitle}</p>
+                    <p className="text-sm text-muted-foreground italic mt-1">
+                      {d.meta.stand}
+                    </p>
+                  </div>
+                  <Button asChild variant="outline" className="shrink-0">
+                    <a
+                      href={PDF_DOWNLOADS[t.key].href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      aria-label={PDF_DOWNLOADS[t.key].label}
+                    >
+                      <Download className="h-4 w-4" />
+                      PDF herunterladen
+                    </a>
+                  </Button>
                 </div>
 
                 <div className="grid lg:grid-cols-[260px_1fr] gap-8">
