@@ -35,6 +35,10 @@ export const AGB_B2C_SECTIONS: LegalSection[] = [
           },
           {
             type: "p",
+            text: "Diese AGB regeln ausschließlich Mietverträge. Für den Kauf von Neu- oder Gebrauchtmaschinen durch Verbraucher gelten gesonderte Bedingungen und – bei Vertragsschluss im Fernabsatz – eine gesonderte Widerrufsbelehrung, die SLT dem jeweiligen Angebot beifügt und die auf der Website unter www.slt-rental.de zum Abruf bereitsteht.",
+          },
+          {
+            type: "p",
             text: "Ergänzungen oder Abweichungen von diesen AGB bedürfen der Textform. Die Vertragssprache ist Deutsch.",
           },
           {
@@ -76,7 +80,7 @@ export const AGB_B2C_SECTIONS: LegalSection[] = [
           },
           {
             type: "p",
-            text: "Über das gesetzliche Widerrufsrecht des Verbrauchers belehrt SLT gesondert in der Widerrufsbelehrung, die Bestandteil dieser AGB ist und unter www.slt-rental.de/widerruf zum Abruf bereitsteht.",
+            text: "Bei Mietverträgen, die ausschließlich unter Verwendung von Fernkommunikationsmitteln zustande kommen (insbesondere Online-Buchungen über den Webshop), besteht für Verbraucher kein gesetzliches Widerrufsrecht nach §§ 312g, 355 BGB. Die rechtliche Begründung und Einzelheiten hierzu ergeben sich aus Ziff. VI dieser AGB.",
           },
         ],
       },
@@ -527,31 +531,52 @@ export const AGB_B2C_SECTIONS: LegalSection[] = [
   {
     id: "vi",
     number: "VI.",
-    title: "Rücktritt und Stornierung durch den Mieter",
+    title: "Information zum Widerrufsrecht und Stornierung",
     subsections: [
       {
         id: "vi-6-1",
         number: "6.1",
-        title: "Widerrufsrecht und Stornierung",
+        title: "Information über das Nichtbestehen eines Widerrufsrechts bei Mietverträgen",
         body: [
           {
             type: "p",
-            text: "Das gesetzliche Widerrufsrecht des Verbrauchers bei Fernabsatzverträgen und außerhalb von Geschäftsräumen geschlossenen Verträgen bleibt von den nachstehenden Stornoregelungen unberührt. Die Einzelheiten und Ausnahmen ergeben sich aus der gesonderten Widerrufsbelehrung.",
+            text: "Bei Mietverträgen, die mit SLT im Fernabsatz (insbesondere über den Webshop auf www.slt-rental.de, per E-Mail oder telefonisch) oder außerhalb von Geschäftsräumen geschlossen werden, besteht für den Verbraucher kein gesetzliches Widerrufsrecht nach §§ 312g, 355 BGB.",
           },
           {
             type: "p",
-            text: "Außerhalb des Widerrufsrechts kann der Mieter den Mietvertrag vor Mietbeginn jederzeit durch Erklärung in Textform gegenüber SLT kündigen („Stornierung“).",
+            text: "Rechtlicher Hintergrund: Nach § 312g Abs. 2 Nr. 9 BGB ist das Widerrufsrecht ausgeschlossen bei Verträgen zur Erbringung von Dienstleistungen in den Bereichen Beherbergung zu anderen als Wohnzwecken, Beförderung von Waren, Kraftfahrzeugvermietung, Lieferung von Speisen und Getränken sowie zur Erbringung weiterer Dienstleistungen im Zusammenhang mit Freizeitbetätigungen, wenn der Vertrag für die Erbringung einen spezifischen Termin oder Zeitraum vorsieht.",
+          },
+          {
+            type: "p",
+            text: "Sämtliche von SLT zur Vermietung angebotenen Mietsachen unterfallen dieser Bereichsausnahme:",
+          },
+          {
+            type: "list",
+            items: [
+              "a) Kraftfahrzeuge im Sinne des § 1 Abs. 2 StVG (insbesondere PKW, LKW, Transporter sowie selbstfahrende Arbeitsmaschinen wie Bagger, Radlader, mobile Arbeitsbühnen und Stapler) – erfasst als Kraftfahrzeugvermietung;",
+              "b) Anhänger – erfasst als Annex zur Kraftfahrzeugvermietung;",
+              "c) Party-, Event- und Freizeitequipment (insbesondere Zelte, Bühnen, Mobiliar, Ton-, Licht- und Bühnentechnik) – erfasst als Dienstleistungen im Zusammenhang mit Freizeitbetätigungen;",
+              "d) Stromaggregate, Beleuchtungsanlagen und sonstiges Zubehör, soweit es als Annex zu einer der vorgenannten Vermietungen mitvermietet wird.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Da die Mietverträge stets für einen spezifischen Mietzeitraum (Termin oder Zeitraum) geschlossen werden, ist die Bereichsausnahme nach § 312g Abs. 2 Nr. 9 BGB erfüllt und das Widerrufsrecht entsprechend ausgeschlossen.",
+          },
+          {
+            type: "p",
+            text: "Hinweis: Diese Information betrifft ausschließlich Mietverträge. Für Kaufverträge über Neu- und Gebrauchtmaschinen, die im Fernabsatz mit Verbrauchern geschlossen werden, gilt das gesetzliche Widerrufsrecht; SLT belehrt darüber in einer gesonderten Widerrufsbelehrung, die dem jeweiligen Angebot beigefügt und auf der Website unter www.slt-rental.de zum Abruf bereitgestellt wird.",
           },
         ],
       },
       {
         id: "vi-6-2",
         number: "6.2",
-        title: "Stornogebühren (pauschalierte Entschädigung)",
+        title: "Stornierung",
         body: [
           {
             type: "p",
-            text: "Im Falle der Stornierung kann SLT eine pauschalierte Entschädigung verlangen, die sich – vorbehaltlich des Nachweisvorbehaltes nach Abs. 6.3 – wie folgt bemisst (in Prozent des vereinbarten Bruttomietpreises):",
+            text: "Der Mieter kann den Mietvertrag vor Mietbeginn jederzeit durch Erklärung in Textform gegenüber SLT kündigen („Stornierung“). Im Falle der Stornierung kann SLT eine pauschalierte Entschädigung verlangen, die sich – vorbehaltlich des Nachweisvorbehaltes nach Abs. 6.3 – wie folgt bemisst (in Prozent des vereinbarten Bruttomietpreises):",
           },
           {
             type: "list",
