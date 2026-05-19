@@ -31,6 +31,7 @@ function formatPriceGross(price: number | null, onRequest: boolean) {
 export default function NeumaschineDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [activeImage, setActiveImage] = useState(0);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   const { data: machine, isLoading } = useQuery({
     queryKey: ["new-machine", slug],
