@@ -126,7 +126,7 @@ const faqCategories: FAQCategory[] = [
       },
       {
         q: "Wie funktioniert der SMS-Code?",
-        a: "Wenige Minuten nach der Online-Buchung erhältst du eine SMS mit deinem persönlichen Code. Spätestens 15 Minuten vor Beginn deiner Buchungszeit ist der Code aktiv. Damit öffnest du das Bügelschloss am Anhänger.",
+        a: "Spätestens 15 Minuten vor Beginn deiner Buchungszeit erhältst du per SMS deinen persönlichen Code. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht. Damit öffnest du das Bügelschloss am Anhänger.",
       },
       {
         q: "Wie öffne ich das Bügelschloss?",
