@@ -570,6 +570,8 @@ export default function Verkauf() {
                         />
                         <span className="text-sm text-foreground">
                           <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen{" "}
+                          <span className="text-primary font-bold">115 € brutto</span>
+                          {" "}(103,50 € mit 10 % Vorbestellerrabatt){" "}
                           <Link
                             to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
                             className="text-primary underline underline-offset-2 hover:text-primary/80"
@@ -579,6 +581,9 @@ export default function Verkauf() {
                           </Link>
                         </span>
                       </label>
+                      <p className="text-xs text-muted-foreground mt-2 ml-7">
+                        Lieferbar Ende Juni 2026
+                      </p>
                     </div>
                   )}
                 </CardContent>
