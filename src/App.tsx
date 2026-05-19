@@ -142,6 +142,7 @@ const App = () => (
               
               {/* Legal Pages */}
               <Route path="/agb" element={<AGB />} />
+              <Route path="/widerruf" element={<Navigate to="/agb#widerruf" replace />} />
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/datenschutz" element={<Datenschutz />} />
               <Route path="/tiefpreisgarantie" element={<Tiefpreisgarantie />} />
