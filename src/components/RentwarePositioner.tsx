@@ -22,7 +22,7 @@ export function RentwarePositioner() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      if (isB2B) {
+      if (shouldHide) {
         el.style.display = "none";
         return;
       }
