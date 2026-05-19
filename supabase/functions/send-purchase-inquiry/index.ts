@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
       kundentyp, firmenname, ustIdNr,
       anrede, titel, vorname, nachname, email, telefon, wunschtermin,
       rechnungGleich, rechnungFirma, rechnungStrasse, rechnungPlz, rechnungOrt, rechnungLand,
-      nachricht, wieGefunden,
+      nachricht, wieGefunden, addons,
     } = body;
 
     if (!marke || !produktkategorie || !vorname || !nachname || !email || !telefon) {
@@ -44,6 +44,7 @@ Produktkategorie:  ${produktkategorie}
 Modell/Spezif.:    ${modell || "-"}
 Anzahl:            ${anzahl || "1"}
 Besondere Anford.: ${anforderungen || "-"}
+Zusätzliches Zubehör: ${Array.isArray(addons) && addons.length > 0 ? addons.join(", ") : "-"}
 
 LIEFERUNG / ABHOLUNG
 ─────────────────────

@@ -214,6 +214,15 @@ export default function Verkauf() {
   const [selectedAnrede, setSelectedAnrede] = useState("");
   const [selectedLand, setSelectedLand] = useState("Deutschland");
   const [selectedSource, setSelectedSource] = useState("");
+  const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+
+  const isBaumaxDumper =
+    selectedMarke === "BAUMAX Baumaschinen" &&
+    selectedKategorie === "Minidumper / Raddumper (elektrisch)";
+
+  useEffect(() => {
+    if (!isBaumaxDumper && addonAnhaengerkupplung) setAddonAnhaengerkupplung(false);
+  }, [isBaumaxDumper, addonAnhaengerkupplung]);
 
   const faqItems = t("verkauf.faq.items", { returnObjects: true }) as Array<{ q: string; a: string }>;
   const howFoundOptions = t("verkauf.form.howFoundOptions", { returnObjects: true }) as string[];
@@ -292,6 +301,7 @@ export default function Verkauf() {
           rechnungLand: selectedLand,
           nachricht: fd.get("nachricht"),
           wieGefunden: selectedSource,
+          addons: isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : [],
         },
       });
       if (error) throw error;
@@ -548,6 +558,22 @@ export default function Verkauf() {
                     <Label>{t("verkauf.form.requirements")}</Label>
                     <Textarea name="anforderungen" rows={3} placeholder={t("verkauf.form.requirementsPlaceholder")} />
                   </div>
+
+                  {isBaumaxDumper && (
+                    <div className="rounded-lg border border-accent/40 bg-accent/5 p-4">
+                      <p className="font-semibold text-foreground text-sm mb-2">Optionales Zubehör</p>
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <Checkbox
+                          checked={addonAnhaengerkupplung}
+                          onCheckedChange={(v) => setAddonAnhaengerkupplung(v === true)}
+                          className="mt-0.5"
+                        />
+                        <span className="text-sm text-foreground">
+                          <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen
+                        </span>
+                      </label>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
