@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package,
   ArrowRight, Mail, Phone, Shield, Clock, Handshake, Loader2,
-  ExternalLink, ChevronDown,
+  ExternalLink, ChevronDown, Sparkles, Tag,
 } from "lucide-react";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
