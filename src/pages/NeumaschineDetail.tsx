@@ -77,8 +77,8 @@ export default function NeumaschineDetail() {
   const showroomLocs: string[] = Array.isArray(machine.showroom_locations) ? machine.showroom_locations : [];
   const showroomNames = showroomLocs.map((l) => locationLabels[l] || l).join(" oder ");
 
-  const title = `${machine.brand} ${machine.model} kaufen | Neumaschine – SLT Rental`;
-  const description = machine.short_description ||
+  const title = (content as any).seoTitle || `${machine.brand} ${machine.model} kaufen | Neumaschine – SLT Rental`;
+  const description = (content as any).seoDescription || machine.short_description ||
     `${machine.brand} ${machine.model} – Neumaschine bei SLT Rental. ${priceGross ? formatPriceGross(priceGross, false) + " brutto." : "Preis auf Anfrage."}`;
 
   const BASE_URL = "https://www.slt-rental.de";
