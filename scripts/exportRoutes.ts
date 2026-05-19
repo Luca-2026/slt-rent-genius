@@ -109,6 +109,16 @@ const enriched = allRoutes.map((route) => {
   if (route.ogImage) route.ogImage = stripImage(route.ogImage) || route.ogImage;
 
   const schemas = resolveRouteSchemas(route);
+  const ratgeber = route.routeType === "ratgeber" && route.ratgeberData
+    ? {
+        content: route.ratgeberData.content,
+        quickFacts: route.ratgeberData.quickFacts,
+        author: route.ratgeberData.author,
+        date: route.ratgeberData.date,
+        updatedAt: route.ratgeberData.updatedAt,
+        category: route.ratgeberData.category,
+      }
+    : undefined;
   return {
     path: route.path,
     routeType: route.routeType,
@@ -125,6 +135,7 @@ const enriched = allRoutes.map((route) => {
     lastmod: route.lastmod,
     breadcrumbs: route.breadcrumbs,
     schemas,
+    ratgeber,
   };
 });
 
