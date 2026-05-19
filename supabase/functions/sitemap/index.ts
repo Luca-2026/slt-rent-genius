@@ -21,8 +21,7 @@ const staticPages = [
   { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
   { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
   { path: '/tiefpreisgarantie', priority: '0.6', changefreq: 'monthly' },
-  { path: '/verkauf', priority: '0.8', changefreq: 'weekly' },
-  { path: '/verkauf/neumaschinen', priority: '0.8', changefreq: 'weekly' },
+  { path: '/verkauf/neumaschinen', priority: '0.9', changefreq: 'weekly' },
   { path: '/verkauf/gebrauchtmaschinen', priority: '0.8', changefreq: 'weekly' },
   // Solutions (canonical URLs – no redirecting slugs!)
   { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },

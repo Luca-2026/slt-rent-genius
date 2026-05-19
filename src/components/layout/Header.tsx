@@ -167,7 +167,7 @@ export function Header() {
   ];
 
   const kaufenItems: DropdownItem[] = [
-    { to: "/verkauf", label: t("nav.newMachines"), description: t("nav.newMachinesDesc") },
+    { to: "/verkauf/neumaschinen", label: t("nav.newMachines"), description: t("nav.newMachinesDesc") },
     { to: "/verkauf/gebrauchtmaschinen", label: t("nav.usedMachines"), description: t("nav.usedMachinesDesc") },
   ];
 
