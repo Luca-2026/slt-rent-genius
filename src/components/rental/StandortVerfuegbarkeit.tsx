@@ -30,6 +30,7 @@ interface StandortVerfuegbarkeitProps {
 export function StandortVerfuegbarkeit({
   locationId,
   product,
+  categoryId,
   warehouseLocationName = "Krefeld",
   deviceLabel = "Gerät",
 }: StandortVerfuegbarkeitProps) {
@@ -38,10 +39,11 @@ export function StandortVerfuegbarkeit({
 
   const { name, deliveryRadius, futurePromise, serviceCharacter } = location;
   const cities = (deliveryRadius ?? []).slice(0, 5);
+  const isPickupOnly = categoryId === "anhaenger" || categoryId === "nutzfahrzeuge";
 
   // Produktspezifische Variante (Sprint 1)
   if (product) {
-    const avail = getProductAvailability(product, locationId);
+    const avail = getProductAvailability(product, locationId, { categoryId });
     const isLocal = avail.status === "available-local" || avail.status === "available-warehouse";
     const Icon = isLocal ? CheckCircle2 : MailQuestion;
     const accentClass = isLocal
