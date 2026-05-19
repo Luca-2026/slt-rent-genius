@@ -932,6 +932,70 @@ export function buildUsedMachineRoute(m: UsedMachineSeoInput): SeoRoute {
 }
 
 // ---------------------------------------------------------------
+// New-Machine builder (data fetched at build-time in exportRoutes.ts)
+// ---------------------------------------------------------------
+
+export interface NewMachineSeoInput {
+  slug: string;
+  brand: string;
+  model: string;
+  name?: string | null;
+  category?: string | null;
+  price_gross?: number | null;
+  price_on_request?: boolean;
+  vat_rate?: number | null;
+  short_description?: string | null;
+  images?: string[] | null;
+  updated_at?: string | null;
+}
+
+function absolutizeImage(img: string | null | undefined): string {
+  if (!img) return DEFAULT_OG_IMAGE;
+  if (img.startsWith("http")) return img;
+  return `${BASE_URL}${img.startsWith("/") ? "" : "/"}${img}`;
+}
+
+export function buildNewMachineRoute(m: NewMachineSeoInput): SeoRoute {
+  const path = `/verkauf/neumaschinen/${m.slug}`;
+  const priceStr =
+    !m.price_on_request && m.price_gross
+      ? `${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(Number(m.price_gross))} brutto`
+      : "Preis auf Anfrage";
+  const title = clamp(`${m.brand} ${m.model} kaufen | Neumaschine – SLT Rental`, 65);
+  const description = clampDesc(
+    m.short_description ||
+      `${m.brand} ${m.model} – Neumaschine bei SLT Rental. ${priceStr}.`,
+  );
+  const ogImage = absolutizeImage(
+    Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null,
+  );
+  return {
+    path,
+    routeType: "page",
+    title,
+    description,
+    h1: `${m.brand} ${m.model}`,
+    intro: [
+      m.short_description ||
+        `${m.brand} ${m.model} – fabrikneue Maschine bei SLT Rental.`,
+      `${priceStr}. Persönliche Beratung & Service vor Ort.`,
+    ],
+    canonical: path,
+    ogType: "product",
+    ogImage,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Verkauf", path: "/verkauf" },
+      { name: "Neumaschinen", path: "/verkauf/neumaschinen" },
+      { name: `${m.brand} ${m.model}`, path },
+    ],
+    changefreq: "weekly",
+    priority: 0.6,
+    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : TODAY,
+  };
+}
+
+// ---------------------------------------------------------------
 // Final aggregate
 // ---------------------------------------------------------------
 

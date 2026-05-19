@@ -11,8 +11,10 @@ import {
   ALL_ROUTES,
   ROUTE_STATS,
   buildUsedMachineRoute,
+  buildNewMachineRoute,
   type SeoRoute,
   type UsedMachineSeoInput,
+  type NewMachineSeoInput,
 } from "../src/data/seo-routes-rental";
 import {
   resolveRouteSchemas,
@@ -55,8 +57,40 @@ async function fetchUsedMachineRoutes(): Promise<SeoRoute[]> {
   }
 }
 
-const usedMachineRoutes = await fetchUsedMachineRoutes();
-const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes];
+async function fetchNewMachineRoutes(): Promise<SeoRoute[]> {
+  const url = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    console.warn("[exportRoutes] No Supabase env – skipping new-machine routes");
+    return [];
+  }
+  try {
+    const endpoint =
+      `${url}/rest/v1/new_machines` +
+      `?select=slug,brand,model,name,category,price_gross,price_on_request,vat_rate,short_description,images,updated_at,is_active` +
+      `&is_active=eq.true`;
+    const res = await fetch(endpoint, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) {
+      console.warn(`[exportRoutes] new_machines fetch failed: ${res.status}`);
+      return [];
+    }
+    const rows = (await res.json()) as NewMachineSeoInput[];
+    return rows
+      .filter((r) => r && r.slug && r.brand && r.model)
+      .map(buildNewMachineRoute);
+  } catch (err) {
+    console.warn(`[exportRoutes] new_machines fetch error: ${(err as Error).message}`);
+    return [];
+  }
+}
+
+const [usedMachineRoutes, newMachineRoutes] = await Promise.all([
+  fetchUsedMachineRoutes(),
+  fetchNewMachineRoutes(),
+]);
+const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes];
 
 const enriched = allRoutes.map((route) => {
   // image fields from data-files may be webpack-resolved objects under
@@ -96,7 +130,7 @@ const enriched = allRoutes.map((route) => {
 
 const payload = {
   generatedAt: new Date().toISOString(),
-  stats: { ...ROUTE_STATS, usedMachines: usedMachineRoutes.length, total: enriched.length },
+  stats: { ...ROUTE_STATS, usedMachines: usedMachineRoutes.length, newMachines: newMachineRoutes.length, total: enriched.length },
   globalSchemas: buildGlobalSchemas(),
   routes: enriched,
 };
@@ -111,5 +145,5 @@ console.log(
     `category=${ROUTE_STATS.category} product=${ROUTE_STATS.product} ` +
     `[seo=${ROUTE_STATS.productWithSEO}] ratgeber=${ROUTE_STATS.ratgeber} ` +
     `karriere=${ROUTE_STATS.karriere} usedMachines=${usedMachineRoutes.length} ` +
-    `legal=${ROUTE_STATS.legal})`,
+    `newMachines=${newMachineRoutes.length} legal=${ROUTE_STATS.legal})`,
 );
