@@ -84,8 +84,8 @@ export default function Neumaschinen() {
             {machines.map((m) => {
               const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
               return (
-                <Link key={m.id} to={`/verkauf/neumaschinen/${m.slug}`} className="group">
-                  <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden">
+                <Link key={m.id} to={`/verkauf/neumaschinen/${m.slug}`} className="group flex">
+                  <Card className="h-full w-full flex flex-col hover:shadow-lg transition-shadow overflow-hidden">
                     <div className="aspect-[4/3] bg-muted flex items-center justify-center overflow-hidden">
                       {img ? (
                         <img
@@ -98,22 +98,20 @@ export default function Neumaschinen() {
                         <Package className="h-16 w-16 text-muted-foreground/30" />
                       )}
                     </div>
-                    <CardContent className="p-5">
-                      <div className="flex flex-wrap gap-2 mb-2">
+                    <CardContent className="p-5 flex flex-col flex-1">
+                      <div className="flex flex-wrap gap-2 mb-2 min-h-[28px]">
                         <Badge variant="outline">{m.brand}</Badge>
                         {m.is_featured && (
                           <Badge className="bg-accent text-accent-foreground">Top-Angebot</Badge>
                         )}
                       </div>
-                      <h2 className="font-bold text-headline text-lg leading-snug mb-2 group-hover:text-primary transition-colors">
+                      <h2 className="font-bold text-headline text-lg leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3 min-h-[4.5rem]">
                         {m.name}
                       </h2>
-                      {m.short_description && (
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                          {m.short_description}
-                        </p>
-                      )}
-                      <div className="flex items-baseline justify-between gap-2 pt-2 border-t border-border">
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">
+                        {m.short_description || ""}
+                      </p>
+                      <div className="mt-auto flex items-baseline justify-between gap-2 pt-3 border-t border-border">
                         <div>
                           <p className="text-xs text-muted-foreground">Preis</p>
                           <p className="text-lg font-bold text-primary">
@@ -127,11 +125,15 @@ export default function Neumaschinen() {
                           Details <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
-                      {m.article_number && (
-                        <p className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1">
-                          <Tag className="h-3 w-3" /> Art.-Nr. {m.article_number}
-                        </p>
-                      )}
+                      <p className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1 min-h-[1rem]">
+                        {m.article_number ? (
+                          <>
+                            <Tag className="h-3 w-3" /> Art.-Nr. {m.article_number}
+                          </>
+                        ) : (
+                          <>&nbsp;</>
+                        )}
+                      </p>
                     </CardContent>
                   </Card>
                 </Link>
