@@ -145,5 +145,5 @@ console.log(
     `category=${ROUTE_STATS.category} product=${ROUTE_STATS.product} ` +
     `[seo=${ROUTE_STATS.productWithSEO}] ratgeber=${ROUTE_STATS.ratgeber} ` +
     `karriere=${ROUTE_STATS.karriere} usedMachines=${usedMachineRoutes.length} ` +
-    `legal=${ROUTE_STATS.legal})`,
+    `newMachines=${newMachineRoutes.length} legal=${ROUTE_STATS.legal})`,
 );
