@@ -6,7 +6,7 @@ import type { LegalSection } from "./agb-b2b";
 export const WIDERRUF_META = {
   title:
     "Widerrufsbelehrung für den Verkauf von Neu- und Gebrauchtmaschinen an Verbraucher im Fernabsatz",
-  subtitle: "der SLT Technology Group GmbH & Co. KG / SLT-Rental",
+  subtitle: "der SLT Technology GmbH und Co. KG und der eingetragenen Marke SLT Rental",
   stand: "Stand: Mai 2026",
 };
 
