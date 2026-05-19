@@ -466,6 +466,17 @@ export default function CategoryProducts() {
               });
             });
           }
+          // Modell filter for Leitern & Gerüste (Standard vs Breitaufbau, only applies to Rollgerüste)
+          else if (sectionId === "modell") {
+            filtered = filtered.filter((p) => {
+              if (p.category !== "rollgeruest") return true;
+              const isBreitaufbau = /breitaufbau/i.test(p.name);
+              return selectedValues.some((v) => {
+                if (v === "breitaufbau") return isBreitaufbau;
+                if (v === "standard") return !isBreitaufbau;
+                return false;
+              });
+            });
           // Special handling for power filters (Werkzeuge vs Aggregate)
           else if (sectionId === "power") {
             filtered = filtered.filter((p) => {
