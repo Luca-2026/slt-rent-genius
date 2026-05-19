@@ -81,7 +81,7 @@ export function RentwarePositioner() {
       observer?.disconnect();
       window.removeEventListener("resize", applyStyles);
     };
-  }, [isB2B]);
+  }, [shouldHide]);
 
   return null;
 }
