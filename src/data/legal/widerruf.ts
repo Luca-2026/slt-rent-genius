@@ -1,10 +1,11 @@
-// Widerrufsbelehrung für Verbraucher
-// Quelle: vom Mandanten gelieferte Word-Datei, Stand Mai 2026.
+// Widerrufsbelehrung für den Verkauf von Neu- und Gebrauchtmaschinen an Verbraucher im Fernabsatz
+// Quelle: vom Mandanten gelieferte Word-Datei (SLT-Rental_Widerrufsbelehrung_Maschinenverkauf.docx), Stand Mai 2026.
 
 import type { LegalSection } from "./agb-b2b";
 
 export const WIDERRUF_META = {
-  title: "Widerrufsbelehrung für Verbraucher",
+  title:
+    "Widerrufsbelehrung für den Verkauf von Neu- und Gebrauchtmaschinen an Verbraucher im Fernabsatz",
   subtitle: "der SLT Technology Group GmbH & Co. KG / SLT-Rental",
   stand: "Stand: Mai 2026",
 };
@@ -22,11 +23,15 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
         body: [
           {
             type: "p",
-            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology Group GmbH & Co. KG („SLT“) einen Vertrag über Fernkommunikationsmittel (z.B. Webshop, E-Mail, Telefon) oder außerhalb der Geschäftsräume von SLT abschließen.",
+            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology Group GmbH & Co. KG („SLT“) einen Kaufvertrag über eine Neu- oder Gebrauchtmaschine (z.B. Bagger, Radlader, Arbeitsbühne, Stromaggregat, Anhänger, Kraftfahrzeug, sonstige Geräte) unter ausschließlicher Verwendung von Fernkommunikationsmitteln (insbesondere E-Mail, Post, Telefon) oder außerhalb der Geschäftsräume von SLT abschließen.",
           },
           {
             type: "p",
             text: "Unternehmern im Sinne von § 14 BGB steht das nachstehende Widerrufsrecht nicht zu.",
+          },
+          {
+            type: "p",
+            text: "Diese Belehrung gilt nicht für Mietverträge. Bei Mietverträgen besteht aufgrund der Bereichsausnahme nach § 312g Abs. 2 Nr. 9 BGB kein Widerrufsrecht; die Einzelheiten ergeben sich aus den Allgemeinen Geschäfts- und Vermietbedingungen für Verbraucher (B2C-AGB), abrufbar unter www.slt-rental.de.",
           },
         ],
       },
@@ -44,26 +49,15 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
         body: [
           {
             type: "p",
-            text: "Das Widerrufsrecht besteht gemäß § 312g Abs. 2 Nr. 9 BGB nicht bei Verträgen zur Erbringung von Dienstleistungen in den Bereichen Beherbergung zu anderen als Wohnzwecken, Beförderung von Waren, Kraftfahrzeugvermietung sowie weitere Dienstleistungen im Zusammenhang mit Freizeitbetätigungen, wenn der Vertrag für die Erbringung einen spezifischen Termin oder Zeitraum vorsieht.",
+            text: "Das Widerrufsrecht besteht nicht bei Verträgen zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind (§ 312g Abs. 2 Nr. 1 BGB).",
           },
           {
             type: "p",
-            text: "Bei SLT-Rental sind hiervon insbesondere folgende Sortimente erfasst, bei denen das Widerrufsrecht ausgeschlossen ist:",
-          },
-          {
-            type: "list",
-            items: [
-              "Vermietung von Kraftfahrzeugen und Anhängern für einen bestimmten Zeitraum;",
-              "Vermietung von Party-, Event- und Freizeitequipment für einen bestimmten Termin oder Zeitraum (z.B. Zelte, Bühnen, Mobiliar, Beschallung für Veranstaltungen).",
-            ],
+            text: "Hiervon erfasst sind insbesondere Maschinen mit kundenspezifischer Sonderausstattung, Sonderlackierung oder individueller Konfiguration, die auf konkrete Anforderung des Käufers hin beschafft oder umgerüstet werden. Bei Standard-Lagermaschinen ohne individuelle Konfiguration besteht das Widerrufsrecht.",
           },
           {
             type: "p",
-            text: "Das Widerrufsrecht besteht weiter nicht bei Verträgen zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind (§ 312g Abs. 2 Nr. 1 BGB). Hiervon können insbesondere Verkäufe von individuell konfigurierten Neumaschinen erfasst sein.",
-          },
-          {
-            type: "p",
-            text: "Für alle übrigen, durch Fernabsatz oder außerhalb der Geschäftsräume geschlossenen Verträge (insbesondere kurzfristige Vermietung von Baumaschinen, Werkstattgeräten, Arbeitsbühnen, Containern und Stromaggregaten an Verbraucher sowie der Verkauf von vorgefertigten Standard-Neumaschinen an Verbraucher) gilt das nachstehende Widerrufsrecht.",
+            text: "Im Einzelfall weist SLT bereits im Angebot ausdrücklich darauf hin, wenn ein Widerrufsausschluss nach § 312g Abs. 2 Nr. 1 BGB greift.",
           },
         ],
       },
@@ -85,7 +79,11 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
           },
           {
             type: "p",
-            text: "Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses bei Dienstleistungs- und Mietverträgen bzw. ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, bei Kaufverträgen.",
+            text: "Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Ware in Besitz genommen haben bzw. hat.",
+          },
+          {
+            type: "p",
+            text: "Bei einem Vertrag über mehrere Waren, die der Verbraucher im Rahmen einer einheitlichen Bestellung bestellt hat und die getrennt geliefert werden, beginnt die Frist erst, wenn die letzte Ware geliefert worden ist.",
           },
           {
             type: "p",
@@ -95,7 +93,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
             type: "list",
             items: [
               "SLT Technology Group GmbH & Co. KG, Hauptsitz Krefeld",
-              "E-Mail: widerruf@slt-rental.de",
+              "E-Mail: kaufanfrage@slt-rental.de",
               "Telefon: 02151 4179904",
             ],
           },
@@ -129,39 +127,64 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
             type: "p",
             text: "Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.",
           },
+          {
+            type: "p",
+            text: "Wir können die Rückzahlung verweigern, bis wir die Ware wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Ware zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.",
+          },
+          {
+            type: "p",
+            text: "Sie haben die Ware unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Ware vor Ablauf der Frist von vierzehn Tagen absenden.",
+          },
         ],
       },
       {
-        id: "folgen-warenlieferung",
+        id: "folgen-ruecksendekosten",
         number: "4.2",
-        title: "Zusätzliche Folgen bei Warenlieferung (Verkauf)",
+        title: "Rücksendekosten",
         body: [
           {
             type: "p",
-            text: "Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.",
+            text: "Sie tragen die unmittelbaren Kosten der Rücksendung der Ware.",
           },
           {
             type: "p",
-            text: "Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden.",
+            text: "Bei Maschinen, die aufgrund ihrer Beschaffenheit nicht normal mit der Post zurückgesandt werden können (Baumaschinen, Arbeitsbühnen, Anhänger, Kraftfahrzeuge, Stromaggregate ab einem bestimmten Gewicht oder Volumen), erfolgt die Rücksendung typischerweise per Spedition oder Selbstabholung am Aufstellort. Die hierdurch entstehenden Speditionskosten sind je nach Maschinengröße und Entfernung erheblich und können – bezogen auf eine durchschnittliche Lieferentfernung innerhalb Deutschlands – zwischen 250,00 EUR und 2.500,00 EUR brutto betragen. SLT informiert Sie über die geschätzten Rücksendekosten im jeweiligen Einzelfall vor Vertragsschluss.",
           },
           {
             type: "p",
-            text: "Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Bei Waren, die aufgrund ihrer Beschaffenheit nicht normal mit der Post zurückgesandt werden können (z.B. Baumaschinen, Arbeitsbühnen, Container), informieren wir Sie über die geschätzten Kosten der Rücksendung im Einzelfall vor Vertragsschluss.",
-          },
-          {
-            type: "p",
-            text: "Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.",
+            text: "Alternativ kann SLT auf Wunsch des Verbrauchers die Rückholung gegen Erstattung der tatsächlichen Speditionskosten organisieren.",
           },
         ],
       },
       {
-        id: "folgen-dienstleistungen",
+        id: "folgen-wertersatz",
         number: "4.3",
-        title: "Zusätzliche Folgen bei Dienstleistungen und Mietverträgen",
+        title: "Wertersatz bei Wertverlust der Ware",
         body: [
           {
             type: "p",
-            text: "Haben Sie verlangt, dass die Dienstleistungen oder die Vermietung während der Widerrufsfrist beginnen sollen, so haben Sie uns einen angemessenen Betrag zu zahlen, der dem Anteil der bis zu dem Zeitpunkt, zu dem Sie uns von der Ausübung des Widerrufsrechts hinsichtlich dieses Vertrages unterrichten, bereits erbrachten Dienstleistungen im Vergleich zum Gesamtumfang der im Vertrag vorgesehenen Dienstleistungen entspricht.",
+            text: "Sie müssen für einen etwaigen Wertverlust der Ware nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Ware nicht notwendigen Umgang mit ihnen zurückzuführen ist.",
+          },
+          {
+            type: "p",
+            text: "Bei Maschinen umfasst die zulässige Prüfung insbesondere die äußerliche Inaugenscheinnahme, die Funktionsprüfung in einem Maße, wie sie auch beim stationären Händler möglich gewesen wäre, sowie eine kurze Probefahrt im Stand bzw. eine kurze Erprobung der Grundfunktionen ohne tatsächlichen Arbeitseinsatz.",
+          },
+          {
+            type: "p",
+            text: "Ein Wertverlust, der zu einer Wertersatzpflicht führen kann, entsteht insbesondere durch:",
+          },
+          {
+            type: "list",
+            items: [
+              "die Aufnahme eines regulären Arbeitseinsatzes (z.B. tatsächliche Erdarbeiten mit einem Bagger, Hub- und Arbeitsstunden mit einer Arbeitsbühne, Transportfahrten mit einem Anhänger im öffentlichen Straßenverkehr außerhalb einer kurzen Probefahrt);",
+              "das Hinzufügen oder Entfernen von Anbauteilen, sofern dies nicht zur reinen Funktionsprüfung erforderlich war;",
+              "über die übliche Funktionsprüfung hinausgehende Betriebsstunden, die im Stundenzähler erfasst werden;",
+              "Beschädigungen an Lack, Hydraulik, Reifen oder mechanischen Bauteilen, die nicht auf einen sachgerechten Transport zurückzuführen sind.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Der konkrete Wertersatz wird auf Grundlage einer sachverständigen Bewertung des Wertunterschieds zwischen dem Übergabezustand und dem Rückgabezustand bemessen. Dem Verbraucher bleibt der Nachweis vorbehalten, dass kein oder ein geringerer Wertverlust eingetreten ist.",
           },
         ],
       },
@@ -179,7 +202,18 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
         body: [
           {
             type: "p",
-            text: "Das Widerrufsrecht erlischt bei Dienstleistungs- und Mietverträgen vorzeitig, wenn SLT die Dienstleistung vollständig erbracht hat und mit der Ausführung der Dienstleistung erst begonnen hat, nachdem Sie dazu Ihre ausdrückliche Zustimmung gegeben haben und gleichzeitig Ihre Kenntnis davon bestätigt haben, dass Sie Ihr Widerrufsrecht bei vollständiger Vertragserfüllung durch SLT verlieren (§ 356 Abs. 4 BGB).",
+            text: "Das Widerrufsrecht erlischt auch bei sonst widerruflichen Verträgen vorzeitig, wenn die in § 312g Abs. 2 BGB genannten Ausschlussgründe eintreten. Bei Maschinenverkäufen kann dies insbesondere der Fall sein bei:",
+          },
+          {
+            type: "list",
+            items: [
+              "kundenspezifisch konfigurierten oder umgerüsteten Maschinen (§ 312g Abs. 2 Nr. 1 BGB);",
+              "versiegelten Waren, deren Versiegelung nach der Lieferung entfernt wurde, sofern sie aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind (§ 312g Abs. 2 Nr. 3 BGB).",
+            ],
+          },
+          {
+            type: "p",
+            text: "Auf einen etwaigen Ausschluss des Widerrufsrechts weist SLT im jeweiligen Angebot ausdrücklich hin.",
           },
           { type: "p", text: "– Ende der Widerrufsbelehrung –" },
         ],
@@ -211,13 +245,15 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
           },
           {
             type: "p",
-            text: "Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*) / die Erbringung der folgenden Dienstleistung (*) / die Vermietung des folgenden Mietgegenstandes (*):",
+            text: "Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Ware (Maschine):",
           },
           {
             type: "list",
             items: [
-              "Mietgegenstand / Ware / Dienstleistung: __________________________",
+              "Bezeichnung / Typ der Maschine: __________________________",
+              "Seriennummer / Fahrzeug-Identifikationsnummer (sofern bekannt): __________________________",
               "Bestellt am (*) / erhalten am (*): __________________________",
+              "Kaufpreis: __________________________",
               "Name des/der Verbraucher(s): __________________________",
               "Anschrift des/der Verbraucher(s): __________________________",
               "Datum: __________________________",
