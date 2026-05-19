@@ -319,6 +319,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    "moebel-zelte": {
+      hookline:
+        "Partyzelte (3×3 m und 4×6 m), Zeltboden anthrazit, Bierzeltgarnituren mit Hussen, Stehtische, Stühle und Kleiderständer mietest du an unserer Filiale Bonn – Möbel auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, Partyzelte mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische, Stühle, Kleiderbügel und Kleiderständer mit Rollen passen in der Regel in jeden Kombi oder Transporter. Die Partyzelte 3×3 m (9 m² Grundfläche) und 4×6 m (24 m² Grundfläche) mit UV-beständiger 500 g/m² PVC-Plane sowie der Zeltboden Anthrazit 0,86 m² liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Hochzeiten, Geburtstage, Firmenfeiern und Vereinsfeste.",
+      faqs: [
+        {
+          q: "Kann ich Bierzeltgarnituren und Stehtische in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Bierzeltgarnitur-Sets, Hussen-Sets weiß, Stehtische, Stehtisch-Hussen weiß, Stühle weiß sowie Kleiderbügel-20er-Sets und Kleiderständer mit Rollen kannst du direkt mitnehmen, in der Regel passen sie in jeden Kombi oder kleinen Transporter.",
+        },
+        {
+          q: "Liefert ihr Partyzelte ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Die Partyzelte 3×3 m und 4×6 m (UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt, inkl. Dachspanner gegen Wassersäcke) sowie den Zeltboden Anthrazit liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Wichtig: Zelte trocken zurückgeben – andernfalls fällt eine Trocknungspauschale an (60 € für 3×3 m, 100 € für 4×6 m).",
+        },
+        {
+          q: "Welche Möbel und Zelte habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir ein Event-Kernsortiment direkt vor Ort – Partyzelt 3×3 m, Partyzelt 4×6 m, Zeltboden Anthrazit 0,86 m², Bierzeltgarnitur-Set, Bierzeltgarnitur Hussen-Set weiß, Stehtisch, Stehtisch Husse weiß, Stuhl weiß, Kleiderbügel 20er-Set black und Kleiderständer mit Rollen black. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere Zeltkonfigurationen (4×8, 4×10, 4×14 m), Eventzelte extra hoch (6×8 und 6×12 m), Sonnenschirme oder Getränkekühlschränke disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
