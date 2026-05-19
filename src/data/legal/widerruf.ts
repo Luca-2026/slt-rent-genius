@@ -238,7 +238,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
           {
             type: "list",
             items: [
-              "SLT Technology Group GmbH & Co. KG",
+              "SLT Technology GmbH und Co. KG",
               "Hauptsitz Krefeld",
               "E-Mail: widerruf@slt-rental.de",
             ],
