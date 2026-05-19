@@ -10,6 +10,10 @@ import { useLocation } from "react-router-dom";
 export function RentwarePositioner() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
+  const isSales =
+    location.pathname.startsWith("/verkauf/neumaschinen") ||
+    location.pathname.startsWith("/verkauf/gebrauchtmaschinen");
+  const shouldHide = isB2B || isSales;
 
   useEffect(() => {
     let observer: MutationObserver | null = null;
@@ -18,7 +22,7 @@ export function RentwarePositioner() {
       const el = document.querySelector("rtr-checkout") as HTMLElement | null;
       if (!el) return;
 
-      if (isB2B) {
+      if (shouldHide) {
         el.style.display = "none";
         return;
       }
@@ -77,7 +81,7 @@ export function RentwarePositioner() {
       observer?.disconnect();
       window.removeEventListener("resize", applyStyles);
     };
-  }, [isB2B]);
+  }, [shouldHide]);
 
   return null;
 }

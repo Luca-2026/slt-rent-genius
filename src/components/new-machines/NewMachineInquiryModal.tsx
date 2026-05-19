@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, CheckCircle2, AlertTriangle, Package } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2, CheckCircle2, AlertTriangle, Package, Shield, Phone, Clock, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 
@@ -19,6 +19,7 @@ interface Props {
     model: string;
     name: string;
     slug: string;
+    category?: string | null;
     priceLabel: string;
     image?: string | null;
   };
@@ -26,24 +27,68 @@ interface Props {
 
 type View = "form" | "success" | "error";
 
+const COUNTRIES = ["Deutschland", "Österreich", "Schweiz", "Niederlande", "Belgien", "Luxemburg"];
+
 export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
   const [view, setView] = useState<View>("form");
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [kundentyp, setKundentyp] = useState("Privatkunde");
+  // Addon visibility: BAUMAX Raddumper (KDE550) – Anhängerkupplung
+  const isBaumaxDumper =
+    /baumax/i.test(machine.brand) &&
+    (/dumper|kde550/i.test(machine.slug) ||
+      /dumper|kde550/i.test(machine.name) ||
+      (machine.category || "").toLowerCase().includes("dumper"));
+
+  const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+
+  // Block 2 — Lieferung
+  const [lieferOption, setLieferOption] = useState("");
+  const [lieferStrasse, setLieferStrasse] = useState("");
+  const [lieferPlz, setLieferPlz] = useState("");
+  const [lieferOrt, setLieferOrt] = useState("");
+  const [lieferhinweis, setLieferhinweis] = useState("");
+
+  // Block 3 — Kontakt
+  const [kundentyp, setKundentyp] = useState("");
   const [firmenname, setFirmenname] = useState("");
+  const [ustIdNr, setUstIdNr] = useState("");
   const [anrede, setAnrede] = useState("");
+  const [titel, setTitel] = useState("");
   const [vorname, setVorname] = useState("");
   const [nachname, setNachname] = useState("");
   const [email, setEmail] = useState("");
   const [telefon, setTelefon] = useState("");
-  const [anzahl, setAnzahl] = useState("1");
-  const [lieferOption, setLieferOption] = useState("Lieferung");
-  const [plz, setPlz] = useState("");
-  const [ort, setOrt] = useState("");
+  const [wunschtermin, setWunschtermin] = useState("");
+
+  // Block 4 — Rechnungsadresse
+  const [rechnungGleich, setRechnungGleich] = useState(true);
+  const [rechnungFirma, setRechnungFirma] = useState("");
+  const [rechnungStrasse, setRechnungStrasse] = useState("");
+  const [rechnungPlz, setRechnungPlz] = useState("");
+  const [rechnungOrt, setRechnungOrt] = useState("");
+  const [rechnungLand, setRechnungLand] = useState("Deutschland");
+
+  // Block 5
   const [nachricht, setNachricht] = useState("");
   const [datenschutz, setDatenschutz] = useState(false);
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split("T")[0];
+
+  const deliveryOptions = [
+    { val: "Lieferung gewünscht", label: "Lieferung an meine Adresse" },
+    { val: "Selbstabholung Krefeld", label: "Selbstabholung Krefeld" },
+    { val: "Selbstabholung Bonn", label: "Selbstabholung Bonn" },
+    { val: "Selbstabholung Mülheim an der Ruhr", label: "Selbstabholung Mülheim an der Ruhr" },
+  ];
+
+  const customerTypes = [
+    { val: "Gewerblicher Kunde", label: "Gewerblicher Kunde" },
+    { val: "Privatkunde", label: "Privatkunde" },
+  ];
 
   useEffect(() => {
     if (open) {
@@ -54,12 +99,25 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
 
   const validate = () => {
     const errs: Record<string, string> = {};
+    if (!lieferOption) errs.lieferOption = "Bitte Lieferung oder Abholung wählen";
+    if (lieferOption === "Lieferung gewünscht") {
+      if (!lieferStrasse.trim()) errs.lieferStrasse = "Pflichtfeld";
+      if (!lieferPlz.trim()) errs.lieferPlz = "Pflichtfeld";
+      if (!lieferOrt.trim()) errs.lieferOrt = "Pflichtfeld";
+    }
+    if (!kundentyp) errs.kundentyp = "Bitte Kundentyp wählen";
+    if (kundentyp === "Gewerblicher Kunde" && !firmenname.trim()) errs.firmenname = "Pflichtfeld";
     if (!anrede) errs.anrede = "Pflichtfeld";
     if (!vorname.trim()) errs.vorname = "Pflichtfeld";
     if (!nachname.trim()) errs.nachname = "Pflichtfeld";
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Bitte gültige E-Mail";
     if (!telefon.trim() || telefon.replace(/\D/g, "").length < 6) errs.telefon = "Mindestens 6 Ziffern";
-    if (kundentyp === "Gewerbekunde" && !firmenname.trim()) errs.firmenname = "Pflichtfeld";
+    if (!rechnungGleich) {
+      if (!rechnungFirma.trim()) errs.rechnungFirma = "Pflichtfeld";
+      if (!rechnungStrasse.trim()) errs.rechnungStrasse = "Pflichtfeld";
+      if (!rechnungPlz.trim()) errs.rechnungPlz = "Pflichtfeld";
+      if (!rechnungOrt.trim()) errs.rechnungOrt = "Pflichtfeld";
+    }
     if (!datenschutz) errs.datenschutz = "Bitte zustimmen";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -73,30 +131,34 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
       const { error } = await supabase.functions.invoke("send-purchase-inquiry", {
         body: {
           marke: machine.brand,
-          produktkategorie: machine.name,
-          modell: `${machine.brand} ${machine.model} (${machine.name})`,
-          anzahl,
-          anforderungen: `Direktanfrage zu: ${machine.name} – Preis: ${machine.priceLabel} – URL: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug}`,
+          produktkategorie: machine.category || machine.name,
+          modell: `${machine.brand} ${machine.model} – ${machine.name}`,
+          anzahl: "1",
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}`,
           lieferOption,
-          strasse: "",
-          plz,
-          ort,
-          lieferhinweis: "",
+          strasse: lieferStrasse,
+          plz: lieferPlz,
+          ort: lieferOrt,
+          lieferhinweis,
           kundentyp,
           firmenname,
-          ustIdNr: "",
+          ustIdNr,
           anrede,
-          titel: "",
+          titel,
           vorname,
           nachname,
           email,
           telefon,
-          wunschtermin: "",
-          rechnungGleich: true,
-          rechnungLand: "Deutschland",
+          wunschtermin,
+          rechnungGleich,
+          rechnungFirma,
+          rechnungStrasse,
+          rechnungPlz,
+          rechnungOrt,
+          rechnungLand,
           nachricht,
           wieGefunden: "Produktseite Neumaschine",
-          addons: [],
+          addons: isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : [],
         },
       });
       if (error) throw error;
@@ -114,13 +176,13 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
-      <DialogContent className="max-w-[620px] w-[calc(100vw-1rem)] max-h-[92vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="sticky top-0 z-10 bg-background border-b border-border px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg font-bold text-headline pr-8 leading-tight">
+      <DialogContent className="max-w-[640px] w-[calc(100vw-1rem)] max-h-[92vh] overflow-y-auto p-0 gap-0">
+        <DialogHeader className="sticky top-0 z-20 bg-background border-b border-border px-4 sm:px-6 py-4">
+          <DialogTitle className="text-base sm:text-lg font-bold text-headline pr-10 leading-tight">
             Anfrage: {machine.brand} {machine.model}
           </DialogTitle>
           <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
-            {machine.priceLabel} · Antwort innerhalb von 1 Werktag
+            {machine.priceLabel} · Antwort innerhalb von 1 Werktag · unverbindlich
           </DialogDescription>
         </DialogHeader>
 
@@ -147,133 +209,260 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
 
         {view === "form" && (
           <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-5">
-            {/* Machine summary */}
-            <div className="flex gap-3 items-center bg-muted/50 rounded-lg p-3">
-              <div className="w-14 h-14 rounded bg-background flex items-center justify-center shrink-0 overflow-hidden border border-border">
-                {machine.image ? (
-                  <img src={machine.image} alt={machine.name} className="w-full h-full object-contain p-1" />
-                ) : (
-                  <Package className="h-6 w-6 text-muted-foreground/40" />
+            {/* 1 — Pre-selected machine */}
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-foreground text-base">Ausgewählte Maschine</h3>
+                <div className="flex gap-3 items-center bg-muted/40 rounded-lg p-3">
+                  <div className="w-16 h-16 rounded bg-background flex items-center justify-center shrink-0 overflow-hidden border border-border">
+                    {machine.image ? (
+                      <img src={machine.image} alt={machine.name} className="w-full h-full object-contain p-1" />
+                    ) : (
+                      <Package className="h-6 w-6 text-muted-foreground/40" />
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{machine.brand}</p>
+                    <p className="font-semibold text-foreground text-sm leading-snug line-clamp-2">{machine.name}</p>
+                    <p className="text-xs text-primary font-semibold mt-0.5">{machine.priceLabel}</p>
+                  </div>
+                </div>
+
+                {isBaumaxDumper && (
+                  <div className="rounded-lg border border-accent/40 bg-accent/5 p-3">
+                    <p className="font-semibold text-foreground text-sm mb-2">Optionales Zubehör</p>
+                    <label className="flex items-start gap-2.5 cursor-pointer">
+                      <Checkbox
+                        checked={addonAnhaengerkupplung}
+                        onCheckedChange={(v) => setAddonAnhaengerkupplung(v === true)}
+                        className="mt-0.5"
+                      />
+                      <span className="text-sm text-foreground leading-snug">
+                        <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen{" "}
+                        <span className="text-primary font-bold">115 € brutto</span>
+                        {" "}(103,50 € mit 10 % Vorbestellerrabatt){" "}
+                        <Link
+                          to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
+                          target="_blank"
+                          className="text-primary underline underline-offset-2 hover:text-primary/80"
+                        >
+                          Details
+                        </Link>
+                      </span>
+                    </label>
+                    <p className="text-xs text-muted-foreground mt-2 ml-6">Lieferbar Ende Juni 2026</p>
+                  </div>
                 )}
-              </div>
-              <div className="min-w-0">
-                <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{machine.brand}</p>
-                <p className="font-semibold text-foreground text-sm leading-snug line-clamp-2">{machine.name}</p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            {/* Kundentyp */}
-            <div>
-              <Label>Kundentyp *</Label>
-              <RadioGroup value={kundentyp} onValueChange={setKundentyp} className="mt-1.5 flex flex-wrap gap-x-4 gap-y-2">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Privatkunde" id="kt-priv" />
-                  <Label htmlFor="kt-priv" className="font-normal cursor-pointer">Privatkunde</Label>
+            {/* 2 — Lieferung / Abholung */}
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-foreground text-base">Lieferung oder Abholung</h3>
+                <div className="space-y-2">
+                  {deliveryOptions.map((opt) => (
+                    <label key={opt.val} className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition-colors ${lieferOption === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
+                      <input type="radio" name="lieferOption" value={opt.val} checked={lieferOption === opt.val} onChange={() => setLieferOption(opt.val)} className="accent-primary" />
+                      <span className="text-sm text-foreground">{opt.label}</span>
+                    </label>
+                  ))}
                 </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Gewerbekunde" id="kt-gew" />
-                  <Label htmlFor="kt-gew" className="font-normal cursor-pointer">Gewerbekunde</Label>
+                <FieldError field="lieferOption" />
+
+                {lieferOption === "Lieferung gewünscht" && (
+                  <div className="space-y-3 pt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <Label>Straße & Hausnummer *</Label>
+                        <Input value={lieferStrasse} onChange={(e) => setLieferStrasse(e.target.value)} />
+                        <FieldError field="lieferStrasse" />
+                      </div>
+                      <div>
+                        <Label>PLZ *</Label>
+                        <Input inputMode="numeric" maxLength={5} value={lieferPlz} onChange={(e) => setLieferPlz(e.target.value)} />
+                        <FieldError field="lieferPlz" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Ort *</Label>
+                      <Input value={lieferOrt} onChange={(e) => setLieferOrt(e.target.value)} />
+                      <FieldError field="lieferOrt" />
+                    </div>
+                    <div>
+                      <Label>Lieferhinweis (optional)</Label>
+                      <Textarea rows={2} value={lieferhinweis} onChange={(e) => setLieferhinweis(e.target.value)} placeholder="z. B. Zugang, Anlieferzeiten, Kontaktperson vor Ort" />
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* 3 — Kontakt */}
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-foreground text-base">Kontaktdaten</h3>
+                <div className="space-y-2">
+                  {customerTypes.map((opt) => (
+                    <label key={opt.val} className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition-colors ${kundentyp === opt.val ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
+                      <input type="radio" name="kundentyp" value={opt.val} checked={kundentyp === opt.val} onChange={() => setKundentyp(opt.val)} className="accent-primary" />
+                      <span className="text-sm text-foreground">{opt.label}</span>
+                    </label>
+                  ))}
                 </div>
-              </RadioGroup>
-            </div>
+                <FieldError field="kundentyp" />
 
-            {kundentyp === "Gewerbekunde" && (
-              <div>
-                <Label htmlFor="firmenname">Firmenname *</Label>
-                <Input id="firmenname" value={firmenname} onChange={(e) => setFirmenname(e.target.value)} />
-                <FieldError field="firmenname" />
-              </div>
-            )}
+                {kundentyp === "Gewerblicher Kunde" && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <Label>Firmenname *</Label>
+                      <Input value={firmenname} onChange={(e) => setFirmenname(e.target.value)} />
+                      <FieldError field="firmenname" />
+                    </div>
+                    <div>
+                      <Label>USt-IdNr. (optional)</Label>
+                      <Input value={ustIdNr} onChange={(e) => setUstIdNr(e.target.value)} />
+                    </div>
+                  </div>
+                )}
 
-            {/* Contact */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="sm:col-span-2">
-                <Label>Anrede *</Label>
-                <Select value={anrede} onValueChange={setAnrede}>
-                  <SelectTrigger><SelectValue placeholder="Bitte wählen" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Herr">Herr</SelectItem>
-                    <SelectItem value="Frau">Frau</SelectItem>
-                    <SelectItem value="Divers">Divers</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FieldError field="anrede" />
-              </div>
-              <div>
-                <Label htmlFor="vorname">Vorname *</Label>
-                <Input id="vorname" value={vorname} onChange={(e) => setVorname(e.target.value)} />
-                <FieldError field="vorname" />
-              </div>
-              <div>
-                <Label htmlFor="nachname">Nachname *</Label>
-                <Input id="nachname" value={nachname} onChange={(e) => setNachname(e.target.value)} />
-                <FieldError field="nachname" />
-              </div>
-              <div>
-                <Label htmlFor="email">E-Mail *</Label>
-                <Input id="email" type="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <FieldError field="email" />
-              </div>
-              <div>
-                <Label htmlFor="telefon">Telefon *</Label>
-                <Input id="telefon" type="tel" inputMode="tel" value={telefon} onChange={(e) => setTelefon(e.target.value)} />
-                <FieldError field="telefon" />
-              </div>
-            </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label>Anrede *</Label>
+                    <Select value={anrede} onValueChange={setAnrede}>
+                      <SelectTrigger><SelectValue placeholder="Bitte wählen" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Herr">Herr</SelectItem>
+                        <SelectItem value="Frau">Frau</SelectItem>
+                        <SelectItem value="Divers">Divers</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FieldError field="anrede" />
+                  </div>
+                  <div>
+                    <Label>Titel (optional)</Label>
+                    <Input value={titel} onChange={(e) => setTitel(e.target.value)} placeholder="z. B. Dr." />
+                  </div>
+                </div>
 
-            {/* Order info */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <Label htmlFor="anzahl">Anzahl</Label>
-                <Input id="anzahl" type="number" min={1} value={anzahl} onChange={(e) => setAnzahl(e.target.value)} />
-              </div>
-              <div className="sm:col-span-2">
-                <Label>Lieferung / Abholung</Label>
-                <Select value={lieferOption} onValueChange={setLieferOption}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Lieferung">Lieferung an meine Adresse</SelectItem>
-                    <SelectItem value="Abholung Krefeld">Selbstabholung Krefeld</SelectItem>
-                    <SelectItem value="Abholung Bonn">Selbstabholung Bonn</SelectItem>
-                    <SelectItem value="Abholung Mülheim an der Ruhr">Selbstabholung Mülheim an der Ruhr</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <Label>Vorname *</Label>
+                    <Input value={vorname} onChange={(e) => setVorname(e.target.value)} />
+                    <FieldError field="vorname" />
+                  </div>
+                  <div>
+                    <Label>Nachname *</Label>
+                    <Input value={nachname} onChange={(e) => setNachname(e.target.value)} />
+                    <FieldError field="nachname" />
+                  </div>
+                </div>
 
-            {lieferOption === "Lieferung" && (
-              <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <Label>E-Mail *</Label>
+                    <Input type="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <FieldError field="email" />
+                  </div>
+                  <div>
+                    <Label>Telefon *</Label>
+                    <Input type="tel" inputMode="tel" value={telefon} onChange={(e) => setTelefon(e.target.value)} />
+                    <FieldError field="telefon" />
+                  </div>
+                </div>
+
                 <div>
-                  <Label htmlFor="plz">PLZ</Label>
-                  <Input id="plz" inputMode="numeric" value={plz} onChange={(e) => setPlz(e.target.value)} />
+                  <Label>Wunschtermin (optional)</Label>
+                  <Input type="date" min={minDate} value={wunschtermin} onChange={(e) => setWunschtermin(e.target.value)} />
                 </div>
-                <div className="col-span-2">
-                  <Label htmlFor="ort">Ort</Label>
-                  <Input id="ort" value={ort} onChange={(e) => setOrt(e.target.value)} />
+              </CardContent>
+            </Card>
+
+            {/* 4 — Rechnungsadresse */}
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-foreground text-base">Rechnungsadresse</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Checkbox checked={rechnungGleich} onCheckedChange={(v) => setRechnungGleich(v === true)} />
+                  <span className="text-sm text-foreground">Rechnungsadresse ist identisch mit Lieferadresse</span>
+                </label>
+
+                {!rechnungGleich && (
+                  <div className="space-y-3 pt-2">
+                    <div>
+                      <Label>Firma / Name *</Label>
+                      <Input value={rechnungFirma} onChange={(e) => setRechnungFirma(e.target.value)} />
+                      <FieldError field="rechnungFirma" />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <Label>Straße & Hausnummer *</Label>
+                        <Input value={rechnungStrasse} onChange={(e) => setRechnungStrasse(e.target.value)} />
+                        <FieldError field="rechnungStrasse" />
+                      </div>
+                      <div>
+                        <Label>PLZ *</Label>
+                        <Input value={rechnungPlz} onChange={(e) => setRechnungPlz(e.target.value)} />
+                        <FieldError field="rechnungPlz" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Ort *</Label>
+                      <Input value={rechnungOrt} onChange={(e) => setRechnungOrt(e.target.value)} />
+                      <FieldError field="rechnungOrt" />
+                    </div>
+                    <div>
+                      <Label>Land</Label>
+                      <Select value={rechnungLand} onValueChange={setRechnungLand}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {COUNTRIES.map((l) => (
+                            <SelectItem key={l} value={l}>{l}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* 5 — Nachricht & Datenschutz */}
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-foreground text-base">Nachricht & Einwilligung</h3>
+                <div>
+                  <Label>Deine Nachricht (optional)</Label>
+                  <Textarea rows={4} value={nachricht} onChange={(e) => setNachricht(e.target.value)} placeholder="Fragen, Wunschausstattung, Finanzierung, Rückruf …" />
                 </div>
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <Checkbox checked={datenschutz} onCheckedChange={(v) => setDatenschutz(v === true)} className="mt-0.5" />
+                  <span className="text-xs text-muted-foreground leading-snug">
+                    Ich habe die <Link to="/datenschutz" target="_blank" className="text-primary underline">Datenschutzerklärung</Link> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung der Anfrage zu. *
+                  </span>
+                </label>
+                <FieldError field="datenschutz" />
+              </CardContent>
+            </Card>
+
+            {/* Trust + Submit */}
+            <div className="space-y-3">
+              <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> SSL-verschlüsselt</span>
+                <span className="flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> Rückruf möglich</span>
+                <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> Antwort &lt; 1 Werktag</span>
+                <span className="flex items-center gap-1"><Handshake className="h-3.5 w-3.5" /> Unverbindlich</span>
               </div>
-            )}
 
-            <div>
-              <Label htmlFor="nachricht">Nachricht (optional)</Label>
-              <Textarea id="nachricht" rows={3} value={nachricht} onChange={(e) => setNachricht(e.target.value)} placeholder="Fragen, Wunschtermin, Finanzierung…" />
-            </div>
-
-            <label className="flex items-start gap-2.5 cursor-pointer">
-              <Checkbox checked={datenschutz} onCheckedChange={(v) => setDatenschutz(v === true)} className="mt-0.5" />
-              <span className="text-xs text-muted-foreground leading-snug">
-                Ich habe die <Link to="/datenschutz" target="_blank" className="text-primary underline">Datenschutzerklärung</Link> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung der Anfrage zu.
-              </span>
-            </label>
-            <FieldError field="datenschutz" />
-
-            <div className="flex flex-col sm:flex-row gap-2 sticky bottom-0 bg-background pt-2 -mx-4 sm:-mx-6 px-4 sm:px-6 pb-1 border-t border-border">
-              <Button type="button" variant="outline" onClick={onClose} className="sm:w-auto">
-                Abbrechen
-              </Button>
-              <Button type="submit" disabled={submitting} className="sm:flex-1">
-                {submitting ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Wird gesendet…</>) : "Anfrage absenden"}
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2 sticky bottom-0 bg-background pt-2 -mx-4 sm:-mx-6 px-4 sm:px-6 pb-1 border-t border-border">
+                <Button type="button" variant="outline" onClick={onClose} className="sm:w-auto">
+                  Abbrechen
+                </Button>
+                <Button type="submit" disabled={submitting} className="sm:flex-1 bg-accent text-accent-foreground hover:bg-accent/90">
+                  {submitting ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Wird gesendet…</>) : "Kaufanfrage absenden"}
+                </Button>
+              </div>
+              <p className="text-[11px] text-muted-foreground text-center">* Pflichtfelder</p>
             </div>
           </form>
         )}
