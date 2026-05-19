@@ -44,6 +44,7 @@ Produktkategorie:  ${produktkategorie}
 Modell/Spezif.:    ${modell || "-"}
 Anzahl:            ${anzahl || "1"}
 Besondere Anford.: ${anforderungen || "-"}
+Zusätzliches Zubehör: ${Array.isArray(addons) && addons.length > 0 ? addons.join(", ") : "-"}
 
 LIEFERUNG / ABHOLUNG
 ─────────────────────
