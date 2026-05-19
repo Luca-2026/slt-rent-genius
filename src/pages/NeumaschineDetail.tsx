@@ -208,7 +208,7 @@ export default function NeumaschineDetail() {
         canonical={canonicalPath}
         ogImage={absoluteImages[0]}
         ogType="product"
-        jsonLd={[productJsonLd, breadcrumbJsonLd]}
+        jsonLd={videoJsonLd ? [productJsonLd, breadcrumbJsonLd, videoJsonLd] : [productJsonLd, breadcrumbJsonLd]}
       />
 
       <div className="bg-muted/30 border-b border-border">
