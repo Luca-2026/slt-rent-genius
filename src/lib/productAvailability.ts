@@ -74,7 +74,9 @@ export function getProductAvailability(
       status: "available-local",
       badgeLabel: `Vor Ort in ${locName} verfügbar`,
       headline: `Vor Ort an unserer Filiale ${locName} verfügbar`,
-      body: `Dieses Gerät führen wir an unserer Filiale ${locName} als Stamm-Sortiment. Abholung vor Ort, Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
+      body: isPickupOnlyCategory
+        ? `Dieses Gerät führen wir an unserer Filiale ${locName} als Stamm-Sortiment. Anhänger und Nutzfahrzeuge werden grundsätzlich vor Ort abgeholt und zurückgegeben – eine Lieferung bieten wir hierfür nicht an. Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss.`
+        : `Dieses Gerät führen wir an unserer Filiale ${locName} als Stamm-Sortiment. Abholung vor Ort, Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
       schemaAvailability: "https://schema.org/InStock",
       isBookable: true,
     };
