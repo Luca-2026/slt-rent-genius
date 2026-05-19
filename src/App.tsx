@@ -64,6 +64,8 @@ const Verkauf = lazy(() => import("./pages/Verkauf"));
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 const SLTUsed = lazy(() => import("./pages/SLTUsed"));
 const SLTUsedDetail = lazy(() => import("./pages/SLTUsedDetail"));
+const Neumaschinen = lazy(() => import("./pages/Neumaschinen"));
+const NeumaschineDetail = lazy(() => import("./pages/NeumaschineDetail"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
 const PageLoader = () => (
@@ -147,6 +149,8 @@ const App = () => (
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
+              <Route path="/verkauf/neumaschinen" element={<Neumaschinen />} />
+              <Route path="/verkauf/neumaschinen/:slug" element={<NeumaschineDetail />} />
               
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
