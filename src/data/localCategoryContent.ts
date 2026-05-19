@@ -840,4 +840,114 @@ export function getLocalCategoryContent(
 ): LocalCategoryContent | null {
   if (!locationId || !categoryId) return null;
   return localCategoryContent[locationId]?.[categoryId] ?? null;
-}
+    },
+
+    buehne: {
+      hookline:
+        "Nivtec Systempodeste (2×0,5 m, 2×0,75 m, 2×1 m), Teleskopfüße (40/80 cm), Verstellspindelfüße (60 cm) und Manfrotto Autopoles disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Bühnenequipment (Nivtec Systempodeste in 2×0,5 m, 2×0,75 m und 2×1 m, Teleskopfüße 40/80 cm, Verstellspindelfuß 60 cm sowie Manfrotto 032B Autopole schwarz) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+      faqs: [
+        {
+          q: "Liefert ihr Bühnenpodeste nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Nivtec Systempodeste, Teleskopfüße, Verstellspindelfüße und Manfrotto Autopoles liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen Nivtec-Podeste direkt am Standort Mülheim?",
+          a: "Bühnenequipment disponieren wir in der Regel auf Anfrage aus unserem Hauptsitz Krefeld nach Mülheim – üblicherweise innerhalb von 24 Stunden. Übergabe, Beratung und Rückgabe finden vollständig am Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    "traversen-rigging": {
+      hookline:
+        "Milos M290 Traversen-System (Multicube, P4 QTU 500/1000/1500/2000, UBPQC Base) und Traversen-Cover weiß (2 m und 3 m) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Milos M290 Traversen (Multicube black, P4 QTU 500/1000/1500/2000 black, UBPQC Base black) und die Traversen-Cover weiß in 2 m und 3 m disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+      faqs: [
+        {
+          q: "Liefert ihr Milos-Traversen nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Milos M290 Traversen-Komponenten (Multicube, P4 QTU 500/1000/1500/2000, UBPQC Base) und Traversen-Cover weiß (2 m, 3 m) liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen Milos-Traversen direkt am Standort Mülheim?",
+          a: "Traversen-Equipment disponieren wir in der Regel auf Anfrage aus unserem Hauptsitz Krefeld nach Mülheim – üblicherweise innerhalb von 24 Stunden. Übergabe, Beratung und Rückgabe finden vollständig am Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    spezialeffekte: {
+      hookline:
+        "ADJ Fog Fury Jett PRO Nebelmaschine, Kalt-Funkenfontänen (Spark/Sparkular) als Einzelgerät, 2er- und 4er-Set, TCM FX Turbo CO2 Jet und XL Profi Popcornmaschine disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Spezialeffekt-Geräte – ADJ Fog Fury Jett PRO, Kalt-Funkenfontänen Einzelgerät/2er-Set/4er-Set, TCM FX Turbo CO2 Jet und die XL Profi Popcornmaschine – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Hochzeiten, Firmenfeiern, Bühnenshows und Stadtteilfeste.",
+      faqs: [
+        {
+          q: "Liefert ihr Nebelmaschinen und Kalt-Funkenfontänen ins Ruhrgebiet?",
+          a: "Ja. Die ADJ Fog Fury Jett PRO Nebelmaschine, Kalt-Funkenfontänen (Spark/Sparkular) als Einzelgerät, 2er- und 4er-Set, den TCM FX Turbo CO2 Jet sowie die XL Profi Popcornmaschine liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen Nebelmaschine und Sparkulars direkt am Standort Mülheim?",
+          a: "Spezialeffekt-Geräte disponieren wir in der Regel auf Anfrage aus unserem Hauptsitz Krefeld nach Mülheim – üblicherweise innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig am Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    huepfburgen: {
+      hookline:
+        "HappyHop Hüpfburg Lamar 2,8×2,1 m, Hüpfburg Wasserpark 3×4 m, Hüpfburg Rollercoaster 4,9×4 m und Hüpfburg Clown 6,1×5,2 m disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Lieferung ins gesamte Ruhrgebiet, Übergabe und Beratung am Service-Standort Mülheim.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Hüpfburgen – HappyHop Lamar 2,8×2,1 m, Wasserpark 3×4 m, Rollercoaster 4,9×4 m sowie Clown 6,1×5,2 m – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend für Kindergeburtstage, Schulfeste, Vereinsfeiern und Stadtteilfeste.",
+      faqs: [
+        {
+          q: "Liefert ihr Hüpfburgen nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Die HappyHop Hüpfburg Lamar 2,8×2,1 m, die Hüpfburg Wasserpark 3×4 m, die Hüpfburg Rollercoaster 4,9×4 m und die Hüpfburg Clown 6,1×5,2 m liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen die Hüpfburgen direkt am Standort Mülheim?",
+          a: "Hüpfburgen disponieren wir in der Regel auf Anfrage aus unserem Hauptsitz Krefeld nach Mülheim – üblicherweise innerhalb von 24 Stunden. Übergabe, Aufbau-Hinweise und Rückgabe finden vollständig am Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    "wohnwagen-camping": {
+      hookline:
+        "Den Weinsberg CaraOne 480 QDK (familientauglich, bis 5 Personen, Dusche, WC, Truma-Heizung und Mover) mietest du auf Anfrage an unserem Service-Standort Mülheim – ab 30 €/Tag inkl. Vollkasko.",
+      standortFakten:
+        "Übergabe und Rückgabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Der Weinsberg CaraOne 480 QDK (Gesamtlänge mit Deichsel 7,07 m, zulässiges Gesamtgewicht 1.500 kg, 2 Erwachsene + 3 Kinder) wird auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mindestmietdauer 5 Tage, Servicepauschale 99 € einmalig (Einweisung, 11-kg-Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Sanitärchemie, 2 Rollen Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 €, Teil- und Vollkasko enthalten (Selbstbeteiligung gegenüber Versicherung 2.500 €). Wohnwagen werden mit dem eigenen Zugfahrzeug (ab 1.500 kg Anhängelast) abgeholt – eine Lieferung bieten wir hierfür nicht an.",
+      faqs: [
+        {
+          q: "Kann ich den Wohnwagen direkt am Service-Standort Mülheim übernehmen?",
+          a: "Ja. Übergabe, Einweisung und Rückgabe des Weinsberg CaraOne 480 QDK finden nach Terminvereinbarung an unserem Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den Wohnwagen selbst disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – frag uns am besten frühzeitig an, gerade für Ferienzeiten.",
+        },
+        {
+          q: "Welches Zugfahrzeug brauche ich für den Weinsberg CaraOne 480 QDK?",
+          a: "Der Weinsberg CaraOne 480 QDK hat ein zulässiges Gesamtgewicht von 1.500 kg, eine Aufbaulänge von 5,84 m und eine Gesamtlänge mit Deichsel von 7,07 m. Du brauchst also ein Zugfahrzeug mit mindestens 1.500 kg Anhängelast. Mover und Antischlingerkupplung sind serienmäßig dabei. Wohnwagen werden bei uns ausschließlich abgeholt – wir liefern keine Wohnwagen.",
+        },
+        {
+          q: "Was ist in der Wohnwagen-Miete enthalten?",
+          a: "Im Mietpreis enthalten sind die voll ausgestattete Küche, eine 11-kg-Gasflasche, Strom- und Wasseranschlusskabel, Spiegelverlängerung und Vollkaskoversicherung. Mindestmietdauer 5 Tage, Servicepauschale 99 € einmalig (Einweisung, Gasflasche, Spiegelverlängerung, Strom-Adapter, Sanitärchemie, 2 Rollen Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 €. Die Selbstbeteiligung gegenüber der Versicherung beträgt 2.500 €, die Kaution selbst aber nur 1.000 €.",
+        },
+      ],
+    },
+
+    nutzfahrzeuge: {
+      hookline:
+        "Den 7,5-t Dreiseitenkipper (MAN TGL 8.220, Meiller D205, Automatik, Euro 6e) und den 3,5-t Pritschenwagen Dreiseitenkipper mit Doppelkabine (Opel Movano o. vgl., Klasse B) mietest du auf Anfrage an unserem Service-Standort Mülheim – Abholung vor Ort, eine Lieferung bieten wir für Nutzfahrzeuge nicht an.",
+      standortFakten:
+        "Übergabe und Rückgabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Der 7,5-t MAN-Dreiseitenkipper mit Meiller-D205-Aufbau (220 PS, Automatik, 4,5 m³ Volumen, Hydraulikanschluss für Kippanhänger, Führerscheinklasse C1) und der 3,5-t Opel Movano Pritschenwagen-Dreiseitenkipper mit Doppelkabine (bis zu 7 Sitzplätze, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängelast bis 2.500 kg, Führerscheinklasse B) werden auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mietkonditionen: 100 km/Tag inklusive, Diesel-Rückgabe vollgetankt (sonst 2,85 €/l), Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €. Hinweis: Nutzfahrzeuge werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist hierfür nicht vorgesehen.",
+      faqs: [
+        {
+          q: "Welchen Führerschein brauche ich für eure Kipper?",
+          a: "Der 3,5-t Opel Movano Pritschenwagen-Dreiseitenkipper mit Doppelkabine ist mit der Führerscheinklasse B fahrbar – also dem normalen Pkw-Führerschein. Für den 7,5-t MAN-Dreiseitenkipper (MAN TGL 8.220 mit Meiller D205) brauchst du mindestens die Führerscheinklasse C1.",
+        },
+        {
+          q: "Liefert ihr Kipper-Lkw und Pritschenwagen auch ins Ruhrgebiet?",
+          a: "Nein. Nutzfahrzeuge werden bei uns – genau wie Anhänger – grundsätzlich nicht geliefert. Übergabe und Rückgabe finden an unserem Service-Standort Ruhrorter Str. 122 in Mülheim statt. Den Wagen selbst disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – am besten frühzeitig anfragen.",
+        },
+        {
+          q: "Was kostet die Miete inkl. Kilometer und Diesel?",
+          a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,40 €/km netto und beim 3,5-Tonner 0,23 €/km netto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
+        },
+      ],
+    }
