@@ -298,6 +298,27 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    kommunikation: {
+      hookline:
+        "Funkmikrofon für Reden und Präsentationen mietest du an unserer Filiale Bonn – kompakt und samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Das Funkmikrofon passt in jeden Pkw oder Kombi und ist direkt mitnehmbar. Größere Funkgeräte-Sets oder Headset-Konfigurationen liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – die Geräte disponieren wir bei Bedarf aus unserem Hauptsitz in Krefeld, in der Regel innerhalb von 24 Stunden.",
+      faqs: [
+        {
+          q: "Kann ich das Funkmikrofon in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Das Funkmikrofon ist kompakt und passt in jeden Pkw oder Kombi, sodass du es direkt mitnehmen kannst.",
+        },
+        {
+          q: "Liefert ihr Funkmikrofone ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir Funkmikrofone und größere Kommunikationssets ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag. Das einzelne Funkmikrofon holst du in der Regel selbst ab.",
+        },
+        {
+          q: "Welche Kommunikationsgeräte habt ihr an der Filiale Bonn vor Ort?",
+          a: "An der Filiale Bonn führen wir das Funkmikrofon für Reden und Präsentationen direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. UHF-Funkgeräte-Sets, Headset-Taschensender oder größere Konfigurationen disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+        },
+      ],
+    },
   },
 
   // =================================================================
