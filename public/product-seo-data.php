@@ -3961,16 +3961,16 @@ $productSEOLookup = [
       ['q' => 'Wann sollte ich ein Gerüst statt einer Leiter verwenden?', 'a' => 'Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Grundsätzlich gilt: Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben.'],
     ],
   ],
-  'krause-fahrgeruest-2x1-50-11-4m' => [
-    'name' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe',
-    'h1' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+  'krause-rollgeruest-breitaufbau-12-4m' => [
+    'name' => 'Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe',
+    'h1' => 'Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Technische Daten & Traglast', 'Normen & Sicherheitsvorschriften', 'Aufbauanleitung', 'Wann Gerüst statt Leiter?'],
     'useCaseBau' => 'Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten',
     'useCaseEvent' => 'Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten',
     'useCasePrivat' => 'Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren',
     'faqs' => [
       ['q' => 'Welche maximale Traglast hat das Gerät?', 'a' => 'Belastbarkeit: 200 kg/m² (Gerüstgruppe 3) nach DIN EN 1004-1. Die Traglast gilt für gleichmäßig verteilte Last; Werkzeug und Materialien dürfen die Gesamttraglast nicht überschreiten.'],
-      ['q' => 'Welche Arbeitshöhe ist maximal erreichbar?', 'a' => 'Arbeitshöhe: 11,4 m (Gerüsthöhe 10,5 m, Standhöhe 9,4 m). Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe.'],
+      ['q' => 'Welche Arbeitshöhe ist maximal erreichbar?', 'a' => 'Arbeitshöhe: 12,4 m (Gerüsthöhe 11,5 m, Standhöhe 10,4 m). Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe.'],
       ['q' => 'Welche Normen gelten und ist das Gerät zertifiziert?', 'a' => 'TÜV-geprüft nach DIN EN 1004-1. Höhenverstellbare Fahrrollen Ø 150 mm (stufenloser Verstellbereich: 220–335 mm). Zusätzlich gelten die DGUV Vorschrift 38 (Leitern) und DGUV Information 201-011 (Rollgerüste). Eine Einweisung in den sicheren Aufbau ist Pflicht.'],
       ['q' => 'Wann sollte ich ein Gerüst statt einer Leiter verwenden?', 'a' => 'Ab einer Arbeitshöhe von ca. 2 m oder bei Tätigkeiten, die beide Hände erfordern, ist ein Rollgerüst der Leiter vorzuziehen. Wenn Sie auf der Leiter arbeiten (nicht nur klettern), ist ein Gerüst sicherer und gesetzlich oft vorgeschrieben.'],
     ],
@@ -10199,13 +10199,13 @@ $productDetails = [
       'Verriegelung' => 'Selbstsicherndes KRAUSE-System',
     ],
   ],
-  'krause-fahrgeruest-2x1-50-11-4m' => [
-    'name' => 'Krause Fahrgerüst 2,00 × 1,50 m – 11,4 m Arbeitshöhe',
-    'description' => 'KRAUSE Fahrgerüst mit einer Arbeitsfläche von 2,00 × 1,50 m und 11,4 m Arbeitshöhe (Gerüsthöhe 10,5 m, Standhöhe 9,4 m). TÜV-geprüft nach DIN EN 1004-1, Belastbarkeit 200 kg/m² (Gerüstgruppe 3). Höhenverstellbare Fahrrollen Ø 150 mm (220–335 mm). Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen sicheren Auf- und Abbau; Standfläche über 3,00 m².',
+  'krause-rollgeruest-breitaufbau-12-4m' => [
+    'name' => 'Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe',
+    'description' => 'KRAUSE Rollgerüst Breitaufbau mit einer Arbeitsfläche von 2,00 × 1,50 m und 12,4 m Arbeitshöhe (Gerüsthöhe 11,5 m, Standhöhe 10,4 m). TÜV-geprüft nach DIN EN 1004-1, Belastbarkeit 200 kg/m² (Gerüstgruppe 3). Höhenverstellbare Fahrrollen Ø 150 mm (220–335 mm). Das selbstsichernde KRAUSE-Verriegelungssystem ermöglicht einen sicheren Auf- und Abbau; Standfläche über 3,00 m².',
     'specs' => [
-      'Arbeitshöhe' => '11,4 m',
-      'Gerüsthöhe' => '10,5 m',
-      'Standhöhe' => '9,4 m',
+      'Arbeitshöhe' => '12,4 m',
+      'Gerüsthöhe' => '11,5 m',
+      'Standhöhe' => '10,4 m',
       'Arbeitsfläche' => '2,00 × 1,50 m',
       'Standfläche' => 'über 3,00 m²',
       'Fahrrollen' => 'Ø 150 mm, höhenverstellbar (220–335 mm)',

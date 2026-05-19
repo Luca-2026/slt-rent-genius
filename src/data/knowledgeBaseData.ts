@@ -933,7 +933,7 @@ export const kbArticles: KBArticle[] = [
       "rollgeruest-krause-breitaufbau-9-4m",
       "rollgeruest-krause-breitaufbau-10-4m",
       "rollgeruest-krause-breitaufbau-11-4m",
-      "krause-fahrgeruest-2x1-50-11-4m",
+      "krause-rollgeruest-breitaufbau-12-4m",
     ],
     type: "anleitung",
     pdfUrl: "/manuals/krause-rollgeruest-stabilo-serie-10-50-aufbauanleitung.pdf",
