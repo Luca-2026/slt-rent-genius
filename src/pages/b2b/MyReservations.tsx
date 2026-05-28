@@ -32,136 +32,16 @@ import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
-interface Reservation {
-  id: string;
-  product_id: string;
-  product_name: string | null;
-  category_slug: string | null;
-  location: string;
-  start_date: string;
-  end_date: string | null;
-  quantity: number;
-  status: string;
-  notes: string | null;
-  original_price: number | null;
-  discounted_price: number | null;
-  created_at: string;
-  rental_group_id?: string | null;
-}
+// Phase A2: types + helpers extracted to a shared module. Behavior unchanged.
+import {
+  statusConfig,
+  locationLabels,
+  groupReservations,
+  type Reservation,
+  type Offer,
+  type ReservationGroup,
+} from "@/components/b2b/reservations/reservationUtils";
 
-interface Offer {
-  id: string;
-  reservation_id: string | null;
-  offer_number: string;
-  offer_date: string;
-  valid_until: string | null;
-  status: string;
-  gross_amount: number;
-  file_url: string | null;
-}
-
-interface ReservationGroup {
-  key: string;
-  reservations: Reservation[];
-  location: string;
-  startDate: string;
-  endDate: string | null;
-  createdAt: string;
-  status: string;
-  isBatch: boolean;
-}
-
-const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: typeof Clock }> = {
-  pending: { label: "Ausstehend", variant: "secondary", icon: Clock },
-  offer_sent: { label: "Angebot erhalten", variant: "outline", icon: Send },
-  confirmed: { label: "Bestätigt", variant: "default", icon: CheckCircle2 },
-  cancelled: { label: "Storniert", variant: "destructive", icon: XCircle },
-  completed: { label: "Abgeschlossen", variant: "outline", icon: CheckCircle2 },
-};
-
-const locationLabels: Record<string, string> = {
-  krefeld: "Krefeld",
-  bonn: "Bonn",
-};
-
-/**
- * Group reservations by rental_group_id when available,
- * falling back to timestamp-based grouping for legacy data.
- */
-function groupReservations(reservations: Reservation[]): ReservationGroup[] {
-  if (reservations.length === 0) return [];
-
-  const grouped = new Map<string, Reservation[]>();
-  const ungrouped: Reservation[] = [];
-
-  for (const res of reservations) {
-    if (res.rental_group_id) {
-      const existing = grouped.get(res.rental_group_id) || [];
-      existing.push(res);
-      grouped.set(res.rental_group_id, existing);
-    } else {
-      ungrouped.push(res);
-    }
-  }
-
-  const groups: ReservationGroup[] = [];
-
-  // Groups with explicit rental_group_id
-  for (const [, items] of grouped) {
-    groups.push(buildGroup(items));
-  }
-
-  // Legacy: timestamp-based grouping for ungrouped items
-  if (ungrouped.length > 0) {
-    const sorted = [...ungrouped].sort(
-      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    );
-    let currentGroup: Reservation[] = [sorted[0]];
-
-    for (let i = 1; i < sorted.length; i++) {
-      const prev = currentGroup[currentGroup.length - 1];
-      const curr = sorted[i];
-      const timeDiff = Math.abs(
-        new Date(curr.created_at).getTime() - new Date(prev.created_at).getTime()
-      );
-
-      if (timeDiff <= 10000 && curr.location === prev.location) {
-        currentGroup.push(curr);
-      } else {
-        groups.push(buildGroup(currentGroup));
-        currentGroup = [curr];
-      }
-    }
-    groups.push(buildGroup(currentGroup));
-  }
-
-  // Sort groups by newest first
-  return groups.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-}
-
-function buildGroup(items: Reservation[]): ReservationGroup {
-  const first = items[0];
-  // Determine the "worst" status for display
-  const statusPriority = ["pending", "offer_sent", "confirmed", "completed", "cancelled"];
-  const groupStatus = items.reduce((worst, r) => {
-    const wi = statusPriority.indexOf(worst);
-    const ri = statusPriority.indexOf(r.status);
-    return ri < wi ? r.status : worst;
-  }, items[0].status);
-
-  return {
-    key: `${first.created_at}-${first.location}`,
-    reservations: items,
-    location: first.location,
-    startDate: first.start_date,
-    endDate: first.end_date,
-    createdAt: first.created_at,
-    status: groupStatus,
-    isBatch: items.length > 1,
-  };
-}
 
 export default function MyReservations() {
   const { user, b2bProfile } = useAuth();
