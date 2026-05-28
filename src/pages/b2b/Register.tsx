@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText, Download } from "lucide-react";
 import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
-import { AGBScrollableText } from "@/components/b2b/AGBScrollableText";
+import { AGBB2BScrollableText } from "@/components/b2b/AGBB2BScrollableText";
 
 const legalForms = [
   "GmbH",
