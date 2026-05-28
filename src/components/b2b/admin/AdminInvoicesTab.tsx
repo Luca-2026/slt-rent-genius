@@ -81,6 +81,10 @@ export function AdminInvoicesTab({
   const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
 
+  // Phase C1: Client-seitige Pagination (25 / Seite)
+  const { paged: pagedInvoices, page, setPage, totalPages, pageSize, total } =
+    usePagedList(invoices, 25);
+
   const sendInvoiceEmail = async (invoice: Invoice) => {
     setSendingEmailId(invoice.id);
     setSendEmailConfirmInvoice(null);
