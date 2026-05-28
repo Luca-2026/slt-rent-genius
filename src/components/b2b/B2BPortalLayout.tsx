@@ -8,7 +8,7 @@ import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 
 import { 
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2,
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -27,6 +27,7 @@ const customerNavItems = [
   { href: "/b2b/angebote", label: "Angebote", icon: FileText },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
   { href: "/b2b/firmendaten", label: "Firmendaten", icon: Building2 },
+  { href: "/b2b/downloads", label: "Downloads", icon: Download },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
   { href: "/kontakt", label: "Kontakt", icon: Phone },
 ];
