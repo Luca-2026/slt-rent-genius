@@ -83,12 +83,38 @@ State (Filterwert, Loading-Flag, Counts) bleibt im Parent. Reine Anzeige + Callb
 
 Imports im Hauptfile auf das Nötige reduziert (`Table*`, `Collapsible*`, Layout-Icons). Keine doppelten Render-Helfer mehr, kein toter Code.
 
-Folgeschritte (Phase A3 / A4):
+Folgeschritte (Phase A3 / A4): **erledigt — siehe unten**.
 
-- A3: `AdminCreateOfferDialog.tsx` (1211 Zeilen) in Wizard-Schritte zerlegen.
-- A4: Reservation-Status als TypeScript-Enum + zentrale Mapping-Funktion.
+## Phase A3 — AdminCreateOfferDialog entkoppeln (erledigt)
 
-## Verifikation nach jedem Schritt
+Neue Datei: `src/components/b2b/admin/adminOfferUtils.ts`
+
+Aus `AdminCreateOfferDialog.tsx` (1211 Zeilen → **1113 Zeilen**) ausgelagert:
+
+- Pure Helfer: `getProductDescription`, `getProductCategorySlug`
+- Modul-State: `offerDraftStore` (Survival des Form-Drafts über Dialog-Reopen hinweg)
+- Typen: `Reservation`, `B2BProfile`, `OfferItemInput`, `ExistingOffer`, `ExistingOfferItem`, `OfferFormDraft`
+
+`AdminCreateOfferDialog.tsx` re-exportiert `ExistingOffer` und `ExistingOfferItem`, damit bestehende Consumer (`AdminReservationsTab`, `AdminOffersTab`) **unverändert** weiterimportieren können — **kein Breaking Change** an externen Imports.
+
+Bewusst **nicht** als Wizard zerlegt: Der bestehende Single-Form-Flow funktioniert, ist von Admins eingeübt und enthält tief verzahnten State (Draft-Auto-Save, Customer-Pricing-Auto-Load, Service-Auto-Select). Eine Wizard-Zerlegung wäre ein hohes Risiko ohne unmittelbaren Nutzen ("Funktionalität first"). Die Helfer-Extraktion macht den Hauptfile lesbarer und ermöglicht spätere, kleinere Wizard-Schritte ohne Bigbang.
+
+## Phase A4 — Reservation-Status zentralisiert (erledigt)
+
+Neue Datei: `src/lib/reservationStatus.ts`
+
+Single Source of Truth für Reservation-Status:
+
+- `ReservationStatus` (`as const` Objekt + Type — typsicher, baumshakingfreundlich, kein TS-Enum-Overhead).
+- `RESERVATION_STATUS_ORDER` — Lifecycle-Reihenfolge.
+- `RESERVATION_STATUS_META` — `{ label, variant, icon }` pro Status.
+- Helfer: `isReservationStatus`, `getReservationStatusLabel`, `pickWorstStatus`, `isPending`/`isOfferSent`/`isConfirmed`/`isCancelled`/`isCompleted`.
+
+`reservationUtils.tsx` re-exportiert alles aus dem neuen Modul. Der bisherige Name `statusConfig` bleibt als Alias auf `RESERVATION_STATUS_META` bestehen, damit **alle bestehenden Verwendungen** (`statusConfig[r.status]` in `MyReservationRow`, `MyReservationsHeader`, `MyReservationDialogs`, `Dashboard`, `AdminReservationsTab` …) ohne Codeänderung weiterlaufen.
+
+`buildGroup` nutzt jetzt `pickWorstStatus` statt eines lokalen, hartkodierten Prioritäts-Arrays — ein Status-Rename muss zukünftig nur noch in `reservationStatus.ts` passieren.
+
+## Verifikation
 
 - Build muss grün sein (TypeScript).
 - Login B2B-Kunde → Mietvorgänge laden + zeigen Status korrekt.

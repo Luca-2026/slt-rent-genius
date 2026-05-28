@@ -7,9 +7,25 @@
  */
 import { Badge } from "@/components/ui/badge";
 import {
-  Clock, Send, CheckCircle2, XCircle,
-} from "lucide-react";
-import type { ComponentType } from "react";
+  RESERVATION_STATUS_META,
+  pickWorstStatus,
+  type ReservationStatusMeta,
+} from "@/lib/reservationStatus";
+
+// Re-export central status helpers so existing imports from this module keep working.
+export {
+  ReservationStatus,
+  RESERVATION_STATUS_META,
+  RESERVATION_STATUS_ORDER,
+  isReservationStatus,
+  getReservationStatusLabel,
+  pickWorstStatus,
+  isPending,
+  isOfferSent,
+  isConfirmed,
+  isCancelled,
+  isCompleted,
+} from "@/lib/reservationStatus";
 
 export interface Reservation {
   id: string;
@@ -50,19 +66,11 @@ export interface ReservationGroup {
   isBatch: boolean;
 }
 
-type StatusEntry = {
-  label: string;
-  variant: "default" | "secondary" | "destructive" | "outline";
-  icon: ComponentType<{ className?: string }>;
-};
-
-export const statusConfig: Record<string, StatusEntry> = {
-  pending: { label: "Ausstehend", variant: "secondary", icon: Clock },
-  offer_sent: { label: "Angebot erhalten", variant: "outline", icon: Send },
-  confirmed: { label: "Bestätigt", variant: "default", icon: CheckCircle2 },
-  cancelled: { label: "Storniert", variant: "destructive", icon: XCircle },
-  completed: { label: "Abgeschlossen", variant: "outline", icon: CheckCircle2 },
-};
+/**
+ * Backwards-compatible alias for `RESERVATION_STATUS_META`. Existing call
+ * sites use `statusConfig[r.status]` — keep that working.
+ */
+export const statusConfig: Record<string, ReservationStatusMeta> = RESERVATION_STATUS_META;
 
 export const locationLabels: Record<string, string> = {
   krefeld: "Krefeld",
@@ -91,12 +99,7 @@ export function ReservationStatusBadge({ status }: { status: string }) {
 function buildGroup(items: Reservation[]): ReservationGroup {
   const first = items[0];
   // Display the "worst" (earliest in lifecycle) status of the group
-  const statusPriority = ["pending", "offer_sent", "confirmed", "completed", "cancelled"];
-  const groupStatus = items.reduce((worst, r) => {
-    const wi = statusPriority.indexOf(worst);
-    const ri = statusPriority.indexOf(r.status);
-    return ri < wi ? r.status : worst;
-  }, items[0].status);
+  const groupStatus = pickWorstStatus(items.map((r) => r.status));
 
   return {
     key: `${first.created_at}-${first.location}`,
