@@ -164,19 +164,26 @@ export default function B2BRegister() {
       };
 
       if (hasSession) {
-        // Session available — upload document and create profile directly
-        const fileExt = documentFile.name.split(".").pop();
-        const fileName = `${userId}/${Date.now()}.${fileExt}`;
-        
+        // Session available — upload both documents and create profile directly
+        const docExt = documentFile.name.split(".").pop();
+        const docPath = `${userId}/handelsregister-${Date.now()}.${docExt}`;
         const { error: uploadError } = await supabase.storage
           .from("b2b-documents")
-          .upload(fileName, documentFile);
-
+          .upload(docPath, documentFile);
         if (uploadError) throw uploadError;
-
         const { data: { publicUrl } } = supabase.storage
           .from("b2b-documents")
-          .getPublicUrl(fileName);
+          .getPublicUrl(docPath);
+
+        const sepaExt = sepaFile.name.split(".").pop();
+        const sepaPath = `${userId}/sepa-mandat-${Date.now()}.${sepaExt}`;
+        const { error: sepaUploadError } = await supabase.storage
+          .from("b2b-documents")
+          .upload(sepaPath, sepaFile);
+        if (sepaUploadError) throw sepaUploadError;
+        const { data: { publicUrl: sepaPublicUrl } } = supabase.storage
+          .from("b2b-documents")
+          .getPublicUrl(sepaPath);
 
         const { error: profileError } = await supabase.from("b2b_profiles").insert({
           user_id: userId,
@@ -197,6 +204,8 @@ export default function B2BRegister() {
           assigned_location: assignedLocation,
           document_url: publicUrl,
           document_filename: documentFile.name,
+          sepa_mandate_url: sepaPublicUrl,
+          sepa_mandate_filename: sepaFile.name,
           postal_invoice: postalInvoice,
           status: "pending",
         });
