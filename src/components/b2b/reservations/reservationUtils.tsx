@@ -7,16 +7,10 @@
  */
 import { Badge } from "@/components/ui/badge";
 import {
-  Clock, Send, CheckCircle2, XCircle,
-} from "lucide-react";
-import type { ComponentType } from "react";
-
-import {
   RESERVATION_STATUS_META,
   pickWorstStatus,
   type ReservationStatusMeta,
 } from "@/lib/reservationStatus";
-import type { ComponentType } from "react";
 
 // Re-export central status helpers so existing imports from this module keep working.
 export {
