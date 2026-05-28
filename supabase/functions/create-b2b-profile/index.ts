@@ -53,6 +53,7 @@ async function sendAdminNotification(params: {
   assignedLocation?: string | null;
   postalInvoice?: boolean;
   attachment: { filename: string; content: string } | null;
+  sepaAttachment: { filename: string; content: string } | null;
 }): Promise<void> {
   const resendApiKey = Deno.env.get("RESEND_API_KEY");
   if (!resendApiKey) {
