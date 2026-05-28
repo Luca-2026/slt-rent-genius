@@ -73,9 +73,17 @@ export default function ProductDetail() {
       const locationProducts = getProductsForLocationCategory(location.id, categoryId);
       const found = locationProducts.find((p) => p.id === productId);
       if (found) return found;
+
+      // Legacy/canonical URLs can omit the location prefix while the local
+      // product carries the real local Rentware code (e.g. Bonn event items).
+      const localVariant = locationProducts.find((p) => p.id === `${location.id}-${productId}`);
+      if (localVariant) return localVariant;
     }
     if (location) {
       const allLocationProducts = getAllProductsForLocation(location.id);
+      const localVariant = allLocationProducts.find((p) => p.id === `${location.id}-${productId}`);
+      if (localVariant) return localVariant;
+
       const found = allLocationProducts.find((p) => p.id === productId);
       if (found) return found;
     }
