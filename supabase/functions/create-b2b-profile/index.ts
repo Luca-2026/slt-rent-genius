@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
 
   try {
     const {
-      password,
+      userId: bodyUserId,
       companyName,
       legalForm,
       taxId,
@@ -171,7 +171,7 @@ Deno.serve(async (req) => {
       documentFilename,
     } = await req.json();
 
-    if (!password || !companyName || !firstName || !lastName || !phone || !email || !street || !postalCode || !city) {
+    if (!bodyUserId || !companyName || !firstName || !lastName || !phone || !email || !street || !postalCode || !city) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -179,30 +179,35 @@ Deno.serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const serviceClient = createClient(supabaseUrl, serviceRoleKey);
 
-    // --- AuthN: verify caller controls the email by signing in with the
-    // provided password. This proves the caller just registered with these
-    // credentials, so we never trust a userId from the request body.
-    const authClient = createClient(supabaseUrl, anonKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    const { data: signIn, error: signInError } = await authClient.auth.signInWithPassword({
-      email: String(email).trim().toLowerCase(),
-      password: String(password),
-    });
-    if (signInError || !signIn?.user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+    // --- AuthN: verify the userId belongs to the email we received, and
+    // that the auth user was just created. Sign-in-with-password cannot be
+    // used here because Supabase rejects it for unconfirmed emails, which
+    // previously caused every confirmation-required signup to fail silently.
+    const { data: userLookup, error: lookupError } = await serviceClient.auth.admin.getUserById(String(bodyUserId));
+    if (lookupError || !userLookup?.user) {
+      return new Response(JSON.stringify({ error: "User not found" }), {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const authUser = userLookup.user;
+    if ((authUser.email || "").toLowerCase() !== String(email).trim().toLowerCase()) {
+      return new Response(JSON.stringify({ error: "Email mismatch" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const userId = signIn.user.id;
-    // Sign out the temporary session immediately
-    await authClient.auth.signOut().catch(() => {});
-
-    const serviceClient = createClient(supabaseUrl, serviceRoleKey);
+    const createdAtMs = authUser.created_at ? new Date(authUser.created_at).getTime() : 0;
+    if (!createdAtMs || Date.now() - createdAtMs > 15 * 60 * 1000) {
+      return new Response(JSON.stringify({ error: "Registration window expired" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const userId = authUser.id;
 
     // Check if profile already exists
     const { data: existing } = await serviceClient
