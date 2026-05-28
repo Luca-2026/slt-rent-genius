@@ -680,6 +680,8 @@ export type Database = {
           postal_code: string
           postal_invoice: boolean
           rejection_reason: string | null
+          sepa_mandate_filename: string | null
+          sepa_mandate_url: string | null
           status: Database["public"]["Enums"]["b2b_status"]
           status_changed_at: string | null
           status_changed_by: string | null
@@ -718,6 +720,8 @@ export type Database = {
           postal_code: string
           postal_invoice?: boolean
           rejection_reason?: string | null
+          sepa_mandate_filename?: string | null
+          sepa_mandate_url?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
           status_changed_at?: string | null
           status_changed_by?: string | null
@@ -756,6 +760,8 @@ export type Database = {
           postal_code?: string
           postal_invoice?: boolean
           rejection_reason?: string | null
+          sepa_mandate_filename?: string | null
+          sepa_mandate_url?: string | null
           status?: Database["public"]["Enums"]["b2b_status"]
           status_changed_at?: string | null
           status_changed_by?: string | null

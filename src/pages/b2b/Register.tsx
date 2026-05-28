@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText } from "lucide-react";
+import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText, Download } from "lucide-react";
 import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { AGBScrollableText } from "@/components/b2b/AGBScrollableText";
 
@@ -60,8 +60,11 @@ export default function B2BRegister() {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
 
-  // Document
+  // Documents (both mandatory for B2B registration)
   const [documentFile, setDocumentFile] = useState<File | null>(null);
+  // Signiertes SEPA-Firmenlastschrift-Mandat (Pflicht-Upload, weil wir Rechnungen
+  // bei Firmenkunden grundsätzlich per Lastschrift einziehen).
+  const [sepaFile, setSepaFile] = useState<File | null>(null);
 
   // Terms
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -98,7 +101,11 @@ export default function B2BRegister() {
     e.preventDefault();
     
     if (!documentFile) {
-      toast({ title: "Bitte lade ein Dokument hoch", variant: "destructive" });
+      toast({ title: "Bitte lade den Handelsregisterauszug oder die Gewerbeanmeldung hoch", variant: "destructive" });
+      return;
+    }
+    if (!sepaFile) {
+      toast({ title: "Bitte lade das unterschriebene SEPA-Firmenlastschrift-Mandat hoch", variant: "destructive" });
       return;
     }
     if (!acceptTerms || !acceptPrivacy) {
@@ -109,16 +116,14 @@ export default function B2BRegister() {
     setIsLoading(true);
 
     try {
-      // Convert document to base64 for email attachment
-      const documentBase64 = await new Promise<string>((resolve, reject) => {
+      const toBase64 = (f: File) => new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = (reader.result as string).split(",")[1];
-          resolve(base64);
-        };
+        reader.onload = () => resolve((reader.result as string).split(",")[1]);
         reader.onerror = reject;
-        reader.readAsDataURL(documentFile);
+        reader.readAsDataURL(f);
       });
+      const documentBase64 = await toBase64(documentFile);
+      const sepaBase64 = await toBase64(sepaFile);
 
       // 1. Create user account
       const { error: signUpError, data: signUpData } = await signUp(email, password);
@@ -141,7 +146,7 @@ export default function B2BRegister() {
       const hasSession = !!signUpData?.session;
       const assignedLocation = getNearestLocation(postalCode);
 
-      // Build notification payload with all data + document
+      // Build notification payload with all data + both documents
       const notificationPayload = {
         companyName, legalForm,
         contactName: `${firstName} ${lastName}`,
@@ -154,22 +159,31 @@ export default function B2BRegister() {
         postalInvoice,
         documentBase64,
         documentFilename: documentFile.name,
+        sepaBase64,
+        sepaFilename: sepaFile.name,
       };
 
       if (hasSession) {
-        // Session available — upload document and create profile directly
-        const fileExt = documentFile.name.split(".").pop();
-        const fileName = `${userId}/${Date.now()}.${fileExt}`;
-        
+        // Session available — upload both documents and create profile directly
+        const docExt = documentFile.name.split(".").pop();
+        const docPath = `${userId}/handelsregister-${Date.now()}.${docExt}`;
         const { error: uploadError } = await supabase.storage
           .from("b2b-documents")
-          .upload(fileName, documentFile);
-
+          .upload(docPath, documentFile);
         if (uploadError) throw uploadError;
-
         const { data: { publicUrl } } = supabase.storage
           .from("b2b-documents")
-          .getPublicUrl(fileName);
+          .getPublicUrl(docPath);
+
+        const sepaExt = sepaFile.name.split(".").pop();
+        const sepaPath = `${userId}/sepa-mandat-${Date.now()}.${sepaExt}`;
+        const { error: sepaUploadError } = await supabase.storage
+          .from("b2b-documents")
+          .upload(sepaPath, sepaFile);
+        if (sepaUploadError) throw sepaUploadError;
+        const { data: { publicUrl: sepaPublicUrl } } = supabase.storage
+          .from("b2b-documents")
+          .getPublicUrl(sepaPath);
 
         const { error: profileError } = await supabase.from("b2b_profiles").insert({
           user_id: userId,
@@ -190,6 +204,8 @@ export default function B2BRegister() {
           assigned_location: assignedLocation,
           document_url: publicUrl,
           document_filename: documentFile.name,
+          sepa_mandate_url: sepaPublicUrl,
+          sepa_mandate_filename: sepaFile.name,
           postal_invoice: postalInvoice,
           status: "pending",
         });
@@ -225,6 +241,8 @@ export default function B2BRegister() {
               postalInvoice,
               documentBase64,
               documentFilename: documentFile.name,
+              sepaBase64,
+              sepaFilename: sepaFile.name,
             },
           });
 
