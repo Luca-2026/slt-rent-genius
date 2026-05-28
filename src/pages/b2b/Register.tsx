@@ -684,6 +684,17 @@ export default function B2BRegister() {
                         <p className="text-xs text-muted-foreground mb-2">
                           Bitte lies die folgenden AGB sorgfältig durch und bestätige sie anschließend.
                         </p>
+                        <a
+                          href="/b2b-documents/agb-b2b.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium mb-3"
+                        >
+                          <Download className="h-4 w-4" />
+                          B2B-AGB als PDF herunterladen
+                        </a>
+
                         <AGBScrollableText />
                       </div>
 
