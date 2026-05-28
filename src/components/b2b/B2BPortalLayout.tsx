@@ -112,26 +112,70 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
       {/* Navigation */}
       <div className="bg-background border-b border-border sticky top-16 z-30">
         <div className="section-container">
-          <nav className="flex gap-1 overflow-x-auto py-1.5 sm:py-2 -mx-2 px-2 scrollbar-none">
-            {(isAdmin ? adminNavItems : [
-              ...customerNavItems,
-            ]).map((item) => {
-              const isActive = location.pathname === item.href;
-              const Icon = item.icon;
-              return (
-                <Link key={item.href} to={item.href}>
-                  <Button 
-                    variant={isActive ? "default" : "ghost"} 
-                    size="sm"
-                    className={`whitespace-nowrap ${isActive ? "bg-primary text-primary-foreground" : ""}`}
-                  >
-                    <Icon className="h-3.5 w-3.5 mr-1.5" />
-                    {item.label}
-                  </Button>
-                </Link>
-              );
-            })}
-          </nav>
+          {(() => {
+            const navItems = isAdmin ? adminNavItems : customerNavItems;
+            const activeItem = navItems.find((i) => i.pathname === location.pathname) ||
+              navItems.find((i) => i.href === location.pathname);
+
+            return (
+              <>
+                {/* Mobile: Burger */}
+                <div className="md:hidden flex items-center justify-between py-2">
+                  <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Menu className="h-4 w-4" />
+                        <span>{activeItem?.label ?? "Menü"}</span>
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-[280px] p-0">
+                      <SheetHeader className="p-4 border-b border-border">
+                        <SheetTitle className="text-left">B2B-Portal</SheetTitle>
+                      </SheetHeader>
+                      <nav className="flex flex-col p-2 gap-1">
+                        {navItems.map((item) => {
+                          const isActive = location.pathname === item.href;
+                          const Icon = item.icon;
+                          return (
+                            <Link key={item.href} to={item.href}>
+                              <Button
+                                variant={isActive ? "default" : "ghost"}
+                                size="sm"
+                                className={`w-full justify-start ${isActive ? "bg-primary text-primary-foreground" : ""}`}
+                              >
+                                <Icon className="h-4 w-4 mr-2" />
+                                {item.label}
+                              </Button>
+                            </Link>
+                          );
+                        })}
+                      </nav>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+
+                {/* Desktop: horizontale Leiste */}
+                <nav className="hidden md:flex gap-1 overflow-x-auto py-1.5 sm:py-2 -mx-2 px-2 scrollbar-none">
+                  {navItems.map((item) => {
+                    const isActive = location.pathname === item.href;
+                    const Icon = item.icon;
+                    return (
+                      <Link key={item.href} to={item.href}>
+                        <Button
+                          variant={isActive ? "default" : "ghost"}
+                          size="sm"
+                          className={`whitespace-nowrap ${isActive ? "bg-primary text-primary-foreground" : ""}`}
+                        >
+                          <Icon className="h-3.5 w-3.5 mr-1.5" />
+                          {item.label}
+                        </Button>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </>
+            );
+          })()}
         </div>
       </div>
 
