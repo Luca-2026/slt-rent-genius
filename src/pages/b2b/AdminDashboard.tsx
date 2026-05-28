@@ -121,6 +121,19 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Phase A1: tab state is synced with the URL (?tab=...) so admins can
+  // deep-link, share, and reload without losing their place. The default tab
+  // stays "reservations" for backward compatibility.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "staff"] as const;
+  const urlTab = searchParams.get("tab") ?? "";
+  const activeTab = (VALID_TABS as readonly string[]).includes(urlTab) ? urlTab : "reservations";
+  const setActiveTab = (next: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (next === "reservations") params.delete("tab"); else params.set("tab", next);
+    setSearchParams(params, { replace: true });
+  };
+
   // Data
   const [profiles, setProfiles] = useState<B2BProfile[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -130,7 +143,6 @@ export default function AdminDashboard() {
   const [returnProtocolIds, setReturnProtocolIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("reservations");
 
   // Dialog states
   const [selectedProfile, setSelectedProfile] = useState<B2BProfile | null>(null);
