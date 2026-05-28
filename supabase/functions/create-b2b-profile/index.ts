@@ -339,6 +339,8 @@ Deno.serve(async (req) => {
         postal_invoice: postalInvoice || false,
         document_url: documentUrl,
         document_filename: safeDocFilename,
+        sepa_mandate_url: sepaUrl,
+        sepa_mandate_filename: safeSepaFilename,
         status: "pending",
         email_confirmed: false,
       })
