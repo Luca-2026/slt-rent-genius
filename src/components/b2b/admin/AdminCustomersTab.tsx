@@ -82,6 +82,11 @@ export function AdminCustomersTab({
     );
   });
 
+  // Phase C1: Client-Pagination — 20 Kunden / Seite
+  const { paged: pagedProfiles, page, setPage, totalPages, pageSize, total } =
+    usePagedList(filteredProfiles, 20);
+
+
   const statusConfig = (status: string) => {
     switch (status) {
       case "approved":
