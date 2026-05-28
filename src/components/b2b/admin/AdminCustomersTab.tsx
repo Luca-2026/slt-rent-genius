@@ -258,6 +258,15 @@ export function AdminCustomersTab({
           })}
         </div>
       )}
+
+      <PaginationBar
+        page={page}
+        totalPages={totalPages}
+        total={total}
+        pageSize={pageSize}
+        onPage={setPage}
+        label="Kunden"
+      />
     </div>
   );
 }
