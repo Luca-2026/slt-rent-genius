@@ -50,10 +50,43 @@ Dialoge erhalten alle Daten + Handler per Props. Kein Supabase-Call, keine Auth-
 
 Nicht mehr benötigte Imports in `MyReservations.tsx` entfernt (`Dialog`, `AlertDialog`, `SignaturePad`, `XCircle`, `ThumbsUp`, `Pencil`).
 
-Folgeschritte für A2 (separate Iteration):
+### A2 Schritt 3 (erledigt)
 
-1. `ReservationCard`/Gruppen-Card-JSX (Mobile + Desktop-Row) in eigene Komponente.
-2. Stats-Kacheln + Filter-Toolbar in `MyReservationsHeader`.
+Neue Datei: `src/components/b2b/reservations/MyReservationRow.tsx`
+
+Drei rein-präsentationale Bausteine aus `MyReservations.tsx` extrahiert:
+
+- `<ReservationRow>` — Desktop-Tabellenzeile für eine einzelne Reservierung (inkl. Sub-Row-Variante für aufgeklappte Sammelanfragen).
+- `<ReservationMobileCard>` — Mobile-Karte für eine einzelne Reservierung.
+- `<OfferActions>` — gemeinsamer Block (Angebotsnummer, Preis, PDF-Button, Annehmen-Button, Bestätigt-Badge), wird sowohl von Row als auch Card als auch der Gruppen-Header-Zeile in der Desktop-Tabelle genutzt.
+
+Alle drei Komponenten besitzen keinen State, keinen Supabase-Call und keine Auth-Logik. Daten und Handler kommen ausschließlich per Props. Verhalten 1:1 identisch.
+
+### A2 Schritt 4 (erledigt)
+
+Neue Datei: `src/components/b2b/reservations/MyReservationsHeader.tsx`
+
+Zwei Komponenten aus `MyReservations.tsx` extrahiert:
+
+- `<MyReservationsStats>` — 5-Kachel-Stat-Grid (Gesamt · Ausstehend · Angebote · Bestätigt · Abgeschlossen).
+- `<MyReservationsFilterBar>` — Status-Filter `<Select>` + Aktualisieren-Button.
+
+State (Filterwert, Loading-Flag, Counts) bleibt im Parent. Reine Anzeige + Callback-Props. Sichtbarer Output ist exakt derselbe.
+
+### Ergebnis
+
+`src/pages/b2b/MyReservations.tsx`:
+
+- vor Phase A2: **929 Zeilen**
+- nach Schritt 1 + 2: **699 Zeilen**
+- nach Schritt 3 + 4: **~430 Zeilen** (nur noch Datenebene + Layout-Zusammenbau der extrahierten Bausteine)
+
+Imports im Hauptfile auf das Nötige reduziert (`Table*`, `Collapsible*`, Layout-Icons). Keine doppelten Render-Helfer mehr, kein toter Code.
+
+Folgeschritte (Phase A3 / A4):
+
+- A3: `AdminCreateOfferDialog.tsx` (1211 Zeilen) in Wizard-Schritte zerlegen.
+- A4: Reservation-Status als TypeScript-Enum + zentrale Mapping-Funktion.
 
 ## Verifikation nach jedem Schritt
 

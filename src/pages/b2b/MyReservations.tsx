@@ -2,24 +2,18 @@ import React, { useEffect, useMemo, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  Package, Calendar, MapPin, Clock, CheckCircle2,
-  FileText, Filter, RefreshCw, Download, Send, PenTool, LogOut,
-  ChevronDown, ChevronRight, Layers, Trash2,
+  Package, Calendar, MapPin,
+  ChevronDown, ChevronRight, Layers,
 } from "lucide-react";
 import {
   AcceptOfferDialog,
@@ -29,19 +23,29 @@ import {
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
-// Phase A2: types + helpers extracted to a shared module. Behavior unchanged.
+// Phase A2 Schritt 1 — types + grouping helpers
 import {
   statusConfig,
   locationLabels,
   groupReservations,
   type Reservation,
   type Offer,
-  type ReservationGroup,
 } from "@/components/b2b/reservations/reservationUtils";
+// Phase A2 Schritt 3 — row + mobile card + offer actions
+import {
+  ReservationRow,
+  ReservationMobileCard,
+  OfferActions,
+} from "@/components/b2b/reservations/MyReservationRow";
+// Phase A2 Schritt 4 — stats grid + filter toolbar
+import {
+  MyReservationsStats,
+  MyReservationsFilterBar,
+} from "@/components/b2b/reservations/MyReservationsHeader";
 
 
 export default function MyReservations() {
-  const { user, b2bProfile } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -92,7 +96,7 @@ export default function MyReservations() {
     if (!offerToAccept || !signatureData) return;
     setAcceptingOfferId(offerToAccept.id);
     try {
-      const { data, error } = await supabase.functions.invoke("accept-offer", {
+      const { error } = await supabase.functions.invoke("accept-offer", {
         body: { offer_id: offerToAccept.id, signature_data: signatureData },
       });
       if (error) throw error;
@@ -120,7 +124,7 @@ export default function MyReservations() {
     if (!reservationToReturn) return;
     setReturningId(reservationToReturn.id);
     try {
-      const { data, error } = await supabase.functions.invoke("notify-device-return", {
+      const { error } = await supabase.functions.invoke("notify-device-return", {
         body: { reservation_id: reservationToReturn.id },
       });
       if (error) throw error;
@@ -170,12 +174,11 @@ export default function MyReservations() {
   const groups = useMemo(() => groupReservations(filtered), [filtered]);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
-  const formatCurrency = (n: number) =>
-    n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const pendingCount = reservations.filter((r) => r.status === "pending").length;
   const offerCount = reservations.filter((r) => r.status === "offer_sent").length;
   const confirmedCount = reservations.filter((r) => r.status === "confirmed").length;
+  const completedCount = reservations.filter((r) => r.status === "completed").length;
   const totalCount = reservations.length;
 
   const getOfferForReservation = (reservationId: string) =>
@@ -190,296 +193,39 @@ export default function MyReservations() {
     });
   };
 
-  const renderOfferActions = (offer: Offer) => (
-    <div className="space-y-1.5">
-      <p className="text-xs font-medium text-primary">{offer.offer_number}</p>
-      <p className="text-xs text-muted-foreground">
-        {formatCurrency(offer.gross_amount)} brutto
-        {offer.valid_until && ` · bis ${formatDate(offer.valid_until)}`}
-      </p>
-      <div className="flex items-center gap-1.5">
-        {offer.file_url && (
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => openInvoiceInNewWindow(offer.file_url!, offer.offer_number)}
-            className="h-7 text-xs px-2"
-          >
-            <Download className="h-3 w-3 mr-1" />
-            PDF
-          </Button>
-        )}
-        {offer.status === "sent" && (
-          <Button
-            size="sm"
-            className="h-7 text-xs px-2 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-            onClick={() => {
-              setOfferToAccept(offer);
-              setSignatureData(null);
-              setConfirmDialogOpen(true);
-            }}
-            disabled={acceptingOfferId === offer.id}
-          >
-            {acceptingOfferId === offer.id ? (
-              <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
-            ) : (
-              <PenTool className="h-3 w-3 mr-1" />
-            )}
-            Annehmen
-          </Button>
-        )}
-        {offer.status === "accepted" && (
-          <Badge variant="default" className="text-xs">
-            <CheckCircle2 className="h-3 w-3 mr-1" />
-            Bestätigt
-          </Badge>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderReservationRow = (r: Reservation, isSubRow = false) => {
-    const cfg = statusConfig[r.status] || statusConfig.pending;
-    const StatusIcon = cfg.icon;
-    const offer = getOfferForReservation(r.id);
-
-    return (
-      <TableRow key={r.id} className={isSubRow ? "bg-muted/30" : ""}>
-        <TableCell className={isSubRow ? "pl-10" : ""}>
-          <div>
-            <p className="font-medium">{r.product_name || r.product_id}</p>
-            {r.category_slug && (
-              <p className="text-xs text-muted-foreground">{r.category_slug}</p>
-            )}
-          </div>
-        </TableCell>
-        <TableCell>{locationLabels[r.location] || r.location}</TableCell>
-        <TableCell>
-          <div className="text-sm">
-            <p>{formatDate(r.start_date)}</p>
-            {r.end_date && (
-              <p className="text-muted-foreground">bis {formatDate(r.end_date)}</p>
-            )}
-          </div>
-        </TableCell>
-        <TableCell className="text-center">{r.quantity}</TableCell>
-        <TableCell>
-          <Badge variant={cfg.variant} className="flex items-center gap-1 w-fit">
-            <StatusIcon className="h-3 w-3" />
-            {cfg.label}
-          </Badge>
-        </TableCell>
-        <TableCell>
-          {offer ? renderOfferActions(offer) : (
-            <span className="text-xs text-muted-foreground">—</span>
-          )}
-        </TableCell>
-        <TableCell className="text-sm text-muted-foreground">
-          {formatDate(r.created_at)}
-        </TableCell>
-        <TableCell className="text-right">
-          <div className="flex items-center gap-1.5 justify-end">
-            {r.status === "confirmed" && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  setReservationToReturn(r);
-                  setReturnDialogOpen(true);
-                }}
-                disabled={returningId === r.id}
-              >
-                {returningId === r.id ? (
-                  <RefreshCw className="h-3.5 w-3.5 mr-1 animate-spin" />
-                ) : (
-                  <LogOut className="h-3.5 w-3.5 mr-1" />
-                )}
-                Freimelden
-              </Button>
-            )}
-            {r.status === "pending" && (
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setReservationToDelete(r);
-                  setDeleteDialogOpen(true);
-                }}
-                disabled={deletingId === r.id}
-              >
-                {deletingId === r.id ? (
-                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <Trash2 className="h-3.5 w-3.5" />
-                )}
-              </Button>
-            )}
-          </div>
-        </TableCell>
-      </TableRow>
-    );
+  // Stable handlers passed to extracted row/card components.
+  const handleRequestAcceptOffer = (offer: Offer) => {
+    setOfferToAccept(offer);
+    setSignatureData(null);
+    setConfirmDialogOpen(true);
   };
-
-  const renderMobileCard = (r: Reservation) => {
-    const cfg = statusConfig[r.status] || statusConfig.pending;
-    const StatusIcon = cfg.icon;
-    const offer = getOfferForReservation(r.id);
-
-    return (
-      <div key={r.id} className="space-y-2 py-2 border-b border-border last:border-0">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="font-semibold text-sm">{r.product_name || r.product_id}</p>
-            <p className="text-xs text-muted-foreground">{r.category_slug}</p>
-          </div>
-          <Badge variant={cfg.variant} className="flex items-center gap-1 text-xs">
-            <StatusIcon className="h-3 w-3" />
-            {cfg.label}
-          </Badge>
-        </div>
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <MapPin className="h-3.5 w-3.5" />
-            {locationLabels[r.location] || r.location}
-          </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Calendar className="h-3.5 w-3.5" />
-            {formatDate(r.start_date)}
-            {r.end_date && ` – ${formatDate(r.end_date)}`}
-          </div>
-        </div>
-        {offer && (
-          <div className="bg-primary/5 rounded-lg p-2">
-            {renderOfferActions(offer)}
-          </div>
-        )}
-        {r.status === "confirmed" && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              setReservationToReturn(r);
-              setReturnDialogOpen(true);
-            }}
-            disabled={returningId === r.id}
-          >
-            {returningId === r.id ? (
-              <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird freigemeldet...</>
-            ) : (
-              <><LogOut className="h-3.5 w-3.5 mr-1.5" />Gerät freimelden</>
-            )}
-          </Button>
-        )}
-        {r.status === "pending" && (
-          <Button
-            size="sm"
-            variant="destructive"
-            className="w-full"
-            onClick={() => {
-              setReservationToDelete(r);
-              setDeleteDialogOpen(true);
-            }}
-            disabled={deletingId === r.id}
-          >
-            {deletingId === r.id ? (
-              <><RefreshCw className="h-3.5 w-3.5 mr-1.5 animate-spin" />Wird gelöscht...</>
-            ) : (
-              <><Trash2 className="h-3.5 w-3.5 mr-1.5" />Anfrage löschen</>
-            )}
-          </Button>
-        )}
-      </div>
-    );
+  const handleRequestReturn = (reservation: Reservation) => {
+    setReservationToReturn(reservation);
+    setReturnDialogOpen(true);
+  };
+  const handleRequestDelete = (reservation: Reservation) => {
+    setReservationToDelete(reservation);
+    setDeleteDialogOpen(true);
   };
 
   return (
     <B2BPortalLayout title="Mietvorgänge" subtitle={`${totalCount} Mietvorgänge insgesamt`}>
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 mb-4 sm:mb-6">
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{totalCount}</p>
-              <p className="text-xs text-muted-foreground">Gesamt</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center">
-              <Clock className="h-5 w-5 text-yellow-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{pendingCount}</p>
-              <p className="text-xs text-muted-foreground">Ausstehend</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-              <Send className="h-5 w-5 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{offerCount}</p>
-              <p className="text-xs text-muted-foreground">Angebote</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{confirmedCount}</p>
-              <p className="text-xs text-muted-foreground">Bestätigt</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-              <Package className="h-5 w-5 text-accent" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">
-                {reservations.filter((r) => r.status === "completed").length}
-              </p>
-              <p className="text-xs text-muted-foreground">Abgeschlossen</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Phase A2 Schritt 4: Stats extracted */}
+      <MyReservationsStats
+        totalCount={totalCount}
+        pendingCount={pendingCount}
+        offerCount={offerCount}
+        confirmedCount={confirmedCount}
+        completedCount={completedCount}
+      />
 
-      {/* Filter bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status filtern" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alle Status</SelectItem>
-              <SelectItem value="pending">Ausstehend</SelectItem>
-              <SelectItem value="offer_sent">Angebot erhalten</SelectItem>
-              <SelectItem value="confirmed">Bestätigt</SelectItem>
-              <SelectItem value="completed">Abgeschlossen</SelectItem>
-              <SelectItem value="cancelled">Storniert</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <Button variant="outline" size="sm" onClick={fetchData} disabled={loading}>
-          <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`} />
-          Aktualisieren
-        </Button>
-      </div>
+      {/* Phase A2 Schritt 4: Filter toolbar extracted */}
+      <MyReservationsFilterBar
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
+        onRefresh={fetchData}
+        loading={loading}
+      />
 
       {/* Content */}
       {loading ? (
@@ -508,11 +254,20 @@ export default function MyReservations() {
               const isExpanded = expandedGroups.has(group.key);
 
               if (!group.isBatch) {
-                // Single reservation - render directly
+                const r = group.reservations[0];
                 return (
                   <Card key={group.key}>
                     <CardContent className="p-4">
-                      {renderMobileCard(group.reservations[0])}
+                      <ReservationMobileCard
+                        reservation={r}
+                        offer={getOfferForReservation(r.id)}
+                        acceptingOfferId={acceptingOfferId}
+                        returningId={returningId}
+                        deletingId={deletingId}
+                        onAcceptOffer={handleRequestAcceptOffer}
+                        onReturnDevice={handleRequestReturn}
+                        onDeleteReservation={handleRequestDelete}
+                      />
                       <p className="text-xs text-muted-foreground mt-2">
                         Erstellt: {formatDate(group.createdAt)}
                       </p>
@@ -521,7 +276,6 @@ export default function MyReservations() {
                 );
               }
 
-              // Batch reservation (Sammelanfrage)
               return (
                 <Card key={group.key}>
                   <Collapsible open={isExpanded} onOpenChange={() => toggleGroup(group.key)}>
@@ -562,7 +316,19 @@ export default function MyReservations() {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="px-4 pb-4 space-y-1">
-                        {group.reservations.map((r) => renderMobileCard(r))}
+                        {group.reservations.map((r) => (
+                          <ReservationMobileCard
+                            key={r.id}
+                            reservation={r}
+                            offer={getOfferForReservation(r.id)}
+                            acceptingOfferId={acceptingOfferId}
+                            returningId={returningId}
+                            deletingId={deletingId}
+                            onAcceptOffer={handleRequestAcceptOffer}
+                            onReturnDevice={handleRequestReturn}
+                            onDeleteReservation={handleRequestDelete}
+                          />
+                        ))}
                       </div>
                     </CollapsibleContent>
                   </Collapsible>
@@ -589,13 +355,25 @@ export default function MyReservations() {
               <TableBody>
                 {groups.map((group) => {
                   if (!group.isBatch) {
-                    return renderReservationRow(group.reservations[0]);
+                    const r = group.reservations[0];
+                    return (
+                      <ReservationRow
+                        key={r.id}
+                        reservation={r}
+                        offer={getOfferForReservation(r.id)}
+                        acceptingOfferId={acceptingOfferId}
+                        returningId={returningId}
+                        deletingId={deletingId}
+                        onAcceptOffer={handleRequestAcceptOffer}
+                        onReturnDevice={handleRequestReturn}
+                        onDeleteReservation={handleRequestDelete}
+                      />
+                    );
                   }
 
                   const isExpanded = expandedGroups.has(group.key);
                   const cfg = statusConfig[group.status] || statusConfig.pending;
                   const StatusIcon = cfg.icon;
-                  // Check if any reservation in group has an offer
                   const groupOffer = group.reservations
                     .map((r) => getOfferForReservation(r.id))
                     .find(Boolean);
@@ -641,7 +419,13 @@ export default function MyReservations() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          {groupOffer ? renderOfferActions(groupOffer) : (
+                          {groupOffer ? (
+                            <OfferActions
+                              offer={groupOffer}
+                              acceptingOfferId={acceptingOfferId}
+                              onAcceptOffer={handleRequestAcceptOffer}
+                            />
+                          ) : (
                             <span className="text-xs text-muted-foreground">—</span>
                           )}
                         </TableCell>
@@ -653,7 +437,20 @@ export default function MyReservations() {
 
                       {/* Expanded sub-rows */}
                       {isExpanded &&
-                        group.reservations.map((r) => renderReservationRow(r, true))
+                        group.reservations.map((r) => (
+                          <ReservationRow
+                            key={r.id}
+                            reservation={r}
+                            offer={getOfferForReservation(r.id)}
+                            isSubRow
+                            acceptingOfferId={acceptingOfferId}
+                            returningId={returningId}
+                            deletingId={deletingId}
+                            onAcceptOffer={handleRequestAcceptOffer}
+                            onReturnDevice={handleRequestReturn}
+                            onDeleteReservation={handleRequestDelete}
+                          />
+                        ))
                       }
                     </React.Fragment>
                   );
