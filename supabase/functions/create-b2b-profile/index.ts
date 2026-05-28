@@ -175,6 +175,8 @@ Deno.serve(async (req) => {
       postalInvoice,
       documentBase64,
       documentFilename,
+      sepaBase64,
+      sepaFilename,
     } = await req.json();
 
     if (!bodyUserId || !companyName || !firstName || !lastName || !phone || !email || !street || !postalCode || !city) {
