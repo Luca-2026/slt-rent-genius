@@ -119,7 +119,8 @@ async function sendAdminNotification(params: {
         <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#888;">Zugewiesener Standort</td><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#1a1a1a;">${e.location}</td></tr>
         <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#888;">Post-Rechnung</td><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#1a1a1a;">${params.postalInvoice ? "Ja (+2,50€)" : "Nein"}</td></tr>
       </table>
-      ${params.attachment ? `<div style="margin-top:24px;padding:16px;background:#f0f9ff;border-radius:8px;border:1px solid #bae6fd;"><p style="margin:0;color:#0369a1;font-size:14px;font-weight:600;">Dokument im Anhang: ${e.docName}</p></div>` : ""}
+      ${params.attachment ? `<div style="margin-top:24px;padding:16px;background:#f0f9ff;border-radius:8px;border:1px solid #bae6fd;"><p style="margin:0;color:#0369a1;font-size:14px;font-weight:600;">Handelsregister/Gewerbeschein im Anhang: ${e.docName}</p></div>` : ""}
+      ${params.sepaAttachment ? `<div style="margin-top:12px;padding:16px;background:#fef3c7;border-radius:8px;border:1px solid #fde68a;"><p style="margin:0;color:#92400e;font-size:14px;font-weight:600;">SEPA-Firmenlastschrift-Mandat im Anhang: ${e.sepaName}</p></div>` : ""}
       <div style="margin-top:28px;text-align:center;"><p style="color:#555;font-size:13px;">Bitte prüfe die Registrierung im Admin-Dashboard und gib das Konto frei.</p></div>
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;font-size:12px;color:#999;">SLT Technology Group GmbH & Co. KG · Anrather Straße 291 · 47807 Krefeld</div>
