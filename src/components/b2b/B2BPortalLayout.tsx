@@ -1,14 +1,15 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-import { 
+import {
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download,
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
