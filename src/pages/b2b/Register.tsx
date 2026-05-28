@@ -613,6 +613,66 @@ export default function B2BRegister() {
                         </div>
                       </div>
 
+                      {/* SEPA-Firmenlastschrift-Mandat */}
+                      <div>
+                        <label className="block text-sm font-medium text-headline mb-2">
+                          SEPA-Firmenlastschrift-Mandat (unterschrieben) *
+                        </label>
+                        <div className="mb-3 flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-3">
+                          <FileText className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                          <div className="flex-1 text-sm text-muted-foreground">
+                            <p className="mb-2">
+                              Für die Abwicklung auf Rechnung benötigen wir ein unterschriebenes SEPA-Firmenlastschrift-Mandat. Bitte lade das Formular herunter, fülle es aus, unterschreibe es und lade es anschließend hier hoch.
+                            </p>
+                            <a
+                              href="/b2b-documents/sepa-firmenlastschrift-mandat.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              download
+                              className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                            >
+                              <Download className="h-4 w-4" />
+                              SEPA-Mandat-Vorlage herunterladen (PDF)
+                            </a>
+                          </div>
+                        </div>
+                        <div className="border-2 border-dashed border-border rounded-xl p-8 text-center">
+                          {sepaFile ? (
+                            <div className="flex items-center justify-center gap-3">
+                              <CheckCircle2 className="h-6 w-6 text-accent" />
+                              <span className="text-headline font-medium">{sepaFile.name}</span>
+                              <button
+                                type="button"
+                                onClick={() => setSepaFile(null)}
+                                className="text-destructive text-sm hover:underline"
+                              >
+                                Entfernen
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                              <p className="text-muted-foreground mb-3">
+                                Unterschriebenes PDF, JPG oder PNG (max. 10 MB)
+                              </p>
+                              <label className="cursor-pointer">
+                                <input
+                                  type="file"
+                                  accept=".pdf,.jpg,.jpeg,.png"
+                                  onChange={(e) => setSepaFile(e.target.files?.[0] || null)}
+                                  className="hidden"
+                                />
+                                <Button type="button" variant="outline" asChild>
+                                  <span>Datei auswählen</span>
+                                </Button>
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+
+
                       {/* AGB Full Text */}
                       <div>
                         <div className="flex items-center gap-2 mb-3">
