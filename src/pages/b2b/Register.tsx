@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText } from "lucide-react";
+import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText, Download } from "lucide-react";
 import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { AGBScrollableText } from "@/components/b2b/AGBScrollableText";
 
