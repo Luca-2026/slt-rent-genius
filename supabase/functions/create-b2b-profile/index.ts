@@ -86,6 +86,7 @@ async function sendAdminNotification(params: {
     address: escapeHtml(addressRaw),
     location: escapeHtml(locationDisplay),
     docName: params.attachment ? escapeHtml(params.attachment.filename) : "",
+    sepaName: params.sepaAttachment ? escapeHtml(params.sepaAttachment.filename) : "",
   };
 
   const htmlBody = `<!DOCTYPE html>
