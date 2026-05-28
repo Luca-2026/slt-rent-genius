@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Building2, Upload, CheckCircle2, Eye, EyeOff, Mail, FileText, Download } from "lucide-react";
 import { getNearestLocation, getLocationDisplayName } from "@/utils/plzLocationMapping";
-import { AGBScrollableText } from "@/components/b2b/AGBScrollableText";
+import { AGBB2BScrollableText } from "@/components/b2b/AGBB2BScrollableText";
 
 const legalForms = [
   "GmbH",
@@ -681,21 +681,21 @@ export default function B2BRegister() {
                             Allgemeine Geschäftsbedingungen (AGB) *
                           </label>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Bitte lies die folgenden AGB sorgfältig durch und bestätige sie anschließend.
+                        <p className="text-xs text-muted-foreground mb-3">
+                          Bitte lies die folgenden AGB sorgfältig durch und bestätige sie anschließend. Du kannst Sie{" "}
+                          <a
+                            href="/legal/AGB-B2B.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download
+                            className="font-semibold text-cta hover:underline underline-offset-2"
+                          >
+                            className="font-semibold text-cta-orange hover:underline underline-offset-2"
+                          </a>{" "}
+                          auch als PDF downloaden.
                         </p>
-                        <a
-                          href="/b2b-documents/agb-b2b.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          download
-                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium mb-3"
-                        >
-                          <Download className="h-4 w-4" />
-                          B2B-AGB als PDF herunterladen
-                        </a>
 
-                        <AGBScrollableText />
+                        <AGBB2BScrollableText />
                       </div>
 
                       <div className="space-y-3">
