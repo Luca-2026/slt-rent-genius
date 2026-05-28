@@ -813,8 +813,13 @@ export default function AdminDashboard() {
     .reduce((sum, i) => sum + (i.gross_amount ?? 0), 0);
 
   const todayIso = new Date().toISOString().slice(0, 10);
+  // Pipeline = bestätigte (= Kunde hat Angebot angenommen) UND laufende Mietvorgänge,
+  // deren Mietzeitraum noch nicht abgelaufen ist. Vor dem Fix wurden "active" gar nicht
+  // gezählt und "confirmed" tauchte zudem nirgends im UI auf.
   const pipelineRentals = reservations.filter(
-    (r) => r.status === "confirmed" && (!r.end_date || r.end_date >= todayIso),
+    (r) =>
+      (r.status === "confirmed" || r.status === "active") &&
+      (!r.end_date || r.end_date >= todayIso),
   ).length;
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000);
@@ -1041,7 +1046,7 @@ export default function AdminDashboard() {
 
         <TabsContent value="rentals" forceMount className="data-[state=inactive]:hidden">
           <AdminRentalsTab
-            reservations={reservations.filter((r) => r.status === "active")}
+            reservations={reservations.filter((r) => r.status === "active" || r.status === "confirmed")}
             profiles={profiles}
             invoices={invoices}
             offers={offers}
