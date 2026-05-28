@@ -114,8 +114,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
         <div className="section-container">
           {(() => {
             const navItems = isAdmin ? adminNavItems : customerNavItems;
-            const activeItem = navItems.find((i) => i.pathname === location.pathname) ||
-              navItems.find((i) => i.href === location.pathname);
+            const activeItem = navItems.find((i) => i.href === location.pathname);
 
             return (
               <>
