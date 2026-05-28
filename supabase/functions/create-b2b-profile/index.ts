@@ -376,6 +376,7 @@ Deno.serve(async (req) => {
         assignedLocation,
         postalInvoice: !!postalInvoice,
         attachment: safeAttachment,
+        sepaAttachment: safeSepaAttachment,
       });
     } catch (notifyErr) {
       console.error("Admin notification failed (non-blocking):", notifyErr);
