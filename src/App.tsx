@@ -38,6 +38,7 @@ const B2BReturnProtocols = lazy(() => import("./pages/b2b/ReturnProtocols"));
 const B2BCompanyProfile = lazy(() => import("./pages/b2b/CompanyProfile"));
 const B2BOffers = lazy(() => import("./pages/b2b/B2BOffers"));
 const B2BFAQ = lazy(() => import("./pages/b2b/B2BFAQ"));
+const B2BDownloads = lazy(() => import("./pages/b2b/Downloads"));
 const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
 const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
