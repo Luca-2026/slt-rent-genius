@@ -147,7 +147,7 @@ export function AdminCustomersTab({
         </Card>
       ) : (
         <div className="space-y-3">
-          {filteredProfiles.map((profile) => {
+          {pagedProfiles.map((profile) => {
             const profileInvoices = invoices.filter((i) => i.b2b_profile_id === profile.id);
             const profileReservations = reservations.filter((r) => r.b2b_profile_id === profile.id);
             const { label, variant } = statusConfig(profile.status);
