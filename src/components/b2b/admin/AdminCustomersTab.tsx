@@ -6,6 +6,7 @@ import {
   Building2, CreditCard, Clock, Receipt, Package, Shield,
   Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
+import { usePagedList, PaginationBar } from "./ClientPagination";
 
 interface B2BProfile {
   id: string;
@@ -81,6 +82,11 @@ export function AdminCustomersTab({
     );
   });
 
+  // Phase C1: Client-Pagination — 20 Kunden / Seite
+  const { paged: pagedProfiles, page, setPage, totalPages, pageSize, total } =
+    usePagedList(filteredProfiles, 20);
+
+
   const statusConfig = (status: string) => {
     switch (status) {
       case "approved":
@@ -141,7 +147,7 @@ export function AdminCustomersTab({
         </Card>
       ) : (
         <div className="space-y-3">
-          {filteredProfiles.map((profile) => {
+          {pagedProfiles.map((profile) => {
             const profileInvoices = invoices.filter((i) => i.b2b_profile_id === profile.id);
             const profileReservations = reservations.filter((r) => r.b2b_profile_id === profile.id);
             const { label, variant } = statusConfig(profile.status);
@@ -252,6 +258,15 @@ export function AdminCustomersTab({
           })}
         </div>
       )}
+
+      <PaginationBar
+        page={page}
+        totalPages={totalPages}
+        total={total}
+        pageSize={pageSize}
+        onPage={setPage}
+        label="Kunden"
+      />
     </div>
   );
 }

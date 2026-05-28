@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { usePagedList, PaginationBar } from "./ClientPagination";
 
 interface Invoice {
   id: string;
@@ -79,6 +80,10 @@ export function AdminInvoicesTab({
   const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
   const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+
+  // Phase C1: Client-seitige Pagination (25 / Seite)
+  const { paged: pagedInvoices, page, setPage, totalPages, pageSize, total } =
+    usePagedList(invoices, 25);
 
   const sendInvoiceEmail = async (invoice: Invoice) => {
     setSendingEmailId(invoice.id);
@@ -346,7 +351,7 @@ export function AdminInvoicesTab({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {invoices.map((inv) => (
+                  {pagedInvoices.map((inv) => (
                     <TableRow key={inv.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -464,7 +469,7 @@ export function AdminInvoicesTab({
 
           {/* Mobile card layout */}
           <div className="md:hidden space-y-3">
-            {invoices.map((inv) => (
+            {pagedInvoices.map((inv) => (
               <Card key={inv.id}>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex items-start justify-between gap-2">
@@ -575,6 +580,15 @@ export function AdminInvoicesTab({
               </Card>
             ))}
           </div>
+
+          <PaginationBar
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            pageSize={pageSize}
+            onPage={setPage}
+            label="Rechnungen"
+          />
         </>
       )}
 
