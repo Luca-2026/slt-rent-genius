@@ -6,6 +6,7 @@ import {
   Building2, CreditCard, Clock, Receipt, Package, Shield,
   Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
+import { usePagedList, PaginationBar } from "./ClientPagination";
 
 interface B2BProfile {
   id: string;
