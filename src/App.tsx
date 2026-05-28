@@ -178,6 +178,7 @@ const App = () => (
               <Route path="/b2b/firmendaten" element={<B2BCompanyProfile />} />
               <Route path="/b2b/angebote" element={<B2BOffers />} />
               <Route path="/b2b/faq" element={<B2BFAQ />} />
+              <Route path="/b2b/downloads" element={<B2BDownloads />} />
               <Route path="/b2b/admin" element={<AdminDashboard />} />
               <Route path="/b2b" element={<B2BLogin />} />
               
