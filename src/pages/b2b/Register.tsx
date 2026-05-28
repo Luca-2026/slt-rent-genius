@@ -690,7 +690,7 @@ export default function B2BRegister() {
                             download
                             className="font-semibold text-cta hover:underline underline-offset-2"
                           >
-                            hier
+                            className="font-semibold text-cta-orange hover:underline underline-offset-2"
                           </a>{" "}
                           auch als PDF downloaden.
                         </p>
