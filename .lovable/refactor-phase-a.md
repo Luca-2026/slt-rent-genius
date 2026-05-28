@@ -36,13 +36,24 @@ Extrahiert aus `src/pages/b2b/MyReservations.tsx`:
 
 `MyReservations.tsx` importiert jetzt aus dem neuen Modul — alle bestehenden Verwendungsstellen (`statusConfig[r.status]`, `locationLabels[...]`, `groupReservations(...)`) funktionieren unverändert weiter.
 
-Folgeschritte für A2 (separate Iteration, damit jedes Diff klein bleibt):
+### A2 Schritt 2 (erledigt)
 
-1. `ReservationCard`/Gruppen-Card-JSX in eigene Komponente.
-2. Rückgabe-Dialog (`returnDialogOpen` + Signaturpad) in `ReturnRequestDialog` ausgliedern.
-3. Filter-/Header-Bereich in `MyReservationsToolbar`.
+Neue Datei: `src/components/b2b/reservations/MyReservationDialogs.tsx`
 
-Risiko aktuell: keines. Reine Code-Bewegung, keine Logikänderung, keine API-Calls geändert.
+Drei in sich geschlossene Dialoge aus `MyReservations.tsx` extrahiert (~140 Zeilen JSX weniger im Hauptfile):
+
+- `<AcceptOfferDialog>` — Angebot annehmen + Unterschrift
+- `<ReturnDeviceDialog>` — Gerät freimelden
+- `<DeleteReservationDialog>` — Pending-Anfrage löschen
+
+Dialoge erhalten alle Daten + Handler per Props. Kein Supabase-Call, keine Auth-Logik, keine Business-Rule liegt im Dialog selbst — der Parent besitzt weiterhin den State und führt die Aktionen aus. Verhalten 1:1 identisch.
+
+Nicht mehr benötigte Imports in `MyReservations.tsx` entfernt (`Dialog`, `AlertDialog`, `SignaturePad`, `XCircle`, `ThumbsUp`, `Pencil`).
+
+Folgeschritte für A2 (separate Iteration):
+
+1. `ReservationCard`/Gruppen-Card-JSX (Mobile + Desktop-Row) in eigene Komponente.
+2. Stats-Kacheln + Filter-Toolbar in `MyReservationsHeader`.
 
 ## Verifikation nach jedem Schritt
 
