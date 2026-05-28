@@ -42,6 +42,10 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Close drawer on route change
+  useEffect(() => { setMobileNavOpen(false); }, [location.pathname]);
 
   // Prevent search engines from indexing B2B portal pages
   useEffect(() => {
