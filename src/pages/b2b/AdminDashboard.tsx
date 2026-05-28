@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Admin components
 import { AdminStatsOverview } from "@/components/b2b/admin/AdminStatsOverview";
+import { AdminGlobalSearch } from "@/components/b2b/admin/AdminGlobalSearch";
 import { AdminReservationsTab } from "@/components/b2b/admin/AdminReservationsTab";
 import { AdminRentalsTab } from "@/components/b2b/admin/AdminRentalsTab";
 import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
