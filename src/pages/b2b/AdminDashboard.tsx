@@ -854,6 +854,20 @@ export default function AdminDashboard() {
         invoices={invoices}
         offers={offers}
         reservations={reservations}
+        onSelect={(hit) => {
+          // Kunde → direkt Detail-Dialog öffnen (sonst landet man nur in der langen Liste,
+          // und bei gleichnamigen Konten lässt sich nicht erkennen, welches geklickt wurde).
+          if (hit.type === "customer") {
+            const profile = profiles.find((p) => p.id === hit.id);
+            if (profile) {
+              setSelectedProfile(profile);
+              setDetailCustomerOpen(true);
+              return;
+            }
+          }
+          // Andere Treffer-Typen: in den passenden Tab springen.
+          setActiveTab(hit.tab);
+        }}
       />
 
       {/* Quick Action Buttons */}
