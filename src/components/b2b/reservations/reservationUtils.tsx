@@ -11,6 +11,28 @@ import {
 } from "lucide-react";
 import type { ComponentType } from "react";
 
+import {
+  RESERVATION_STATUS_META,
+  pickWorstStatus,
+  type ReservationStatusMeta,
+} from "@/lib/reservationStatus";
+import type { ComponentType } from "react";
+
+// Re-export central status helpers so existing imports from this module keep working.
+export {
+  ReservationStatus,
+  RESERVATION_STATUS_META,
+  RESERVATION_STATUS_ORDER,
+  isReservationStatus,
+  getReservationStatusLabel,
+  pickWorstStatus,
+  isPending,
+  isOfferSent,
+  isConfirmed,
+  isCancelled,
+  isCompleted,
+} from "@/lib/reservationStatus";
+
 export interface Reservation {
   id: string;
   product_id: string;
@@ -50,19 +72,11 @@ export interface ReservationGroup {
   isBatch: boolean;
 }
 
-type StatusEntry = {
-  label: string;
-  variant: "default" | "secondary" | "destructive" | "outline";
-  icon: ComponentType<{ className?: string }>;
-};
-
-export const statusConfig: Record<string, StatusEntry> = {
-  pending: { label: "Ausstehend", variant: "secondary", icon: Clock },
-  offer_sent: { label: "Angebot erhalten", variant: "outline", icon: Send },
-  confirmed: { label: "Bestätigt", variant: "default", icon: CheckCircle2 },
-  cancelled: { label: "Storniert", variant: "destructive", icon: XCircle },
-  completed: { label: "Abgeschlossen", variant: "outline", icon: CheckCircle2 },
-};
+/**
+ * Backwards-compatible alias for `RESERVATION_STATUS_META`. Existing call
+ * sites use `statusConfig[r.status]` — keep that working.
+ */
+export const statusConfig: Record<string, ReservationStatusMeta> = RESERVATION_STATUS_META;
 
 export const locationLabels: Record<string, string> = {
   krefeld: "Krefeld",
