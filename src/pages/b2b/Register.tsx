@@ -60,8 +60,11 @@ export default function B2BRegister() {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
 
-  // Document
+  // Documents (both mandatory for B2B registration)
   const [documentFile, setDocumentFile] = useState<File | null>(null);
+  // Signiertes SEPA-Firmenlastschrift-Mandat (Pflicht-Upload, weil wir Rechnungen
+  // bei Firmenkunden grundsätzlich per Lastschrift einziehen).
+  const [sepaFile, setSepaFile] = useState<File | null>(null);
 
   // Terms
   const [acceptTerms, setAcceptTerms] = useState(false);
