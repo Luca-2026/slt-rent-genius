@@ -230,42 +230,37 @@ Deno.serve(async (req) => {
       });
     }
 
-
-    // Validate + upload document if provided
-    let documentUrl: string | null = null;
-    let safeAttachment: { filename: string; content: string } | null = null;
-    let safeDocFilename: string | null = null;
-
-    if (documentBase64 && documentFilename) {
-      const approxSize = Math.floor((String(documentBase64).length * 3) / 4);
+    // Shared upload helper — validates magic-byte/extension match, enforces
+    // size limit, uploads to b2b-documents bucket, returns public URL +
+    // sanitised filename + base64 for email attachment.
+    async function uploadDoc(
+      base64: string,
+      filename: string,
+      label: string,
+    ): Promise<
+      | { url: string; safeName: string; attachment: { filename: string; content: string } }
+      | { error: { status: number; message: string } }
+    > {
+      const approxSize = Math.floor((String(base64).length * 3) / 4);
       if (approxSize > MAX_DOCUMENT_BYTES) {
-        return new Response(JSON.stringify({ error: "Attachment too large" }), {
-          status: 413,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return { error: { status: 413, message: `${label}: Datei zu groß (max. 8 MB)` } };
       }
-      const kind = detectAttachmentType(documentBase64);
+      const kind = detectAttachmentType(base64);
       if (!kind) {
-        return new Response(JSON.stringify({ error: "Unsupported attachment type" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return { error: { status: 400, message: `${label}: Nicht unterstütztes Dateiformat` } };
       }
-      const ext = String(documentFilename).split(".").pop()?.toLowerCase();
+      const ext = String(filename).split(".").pop()?.toLowerCase();
       const allowedExt = kind === "jpg" ? ["jpg", "jpeg"] : [kind];
       if (!ext || !allowedExt.includes(ext)) {
-        return new Response(JSON.stringify({ error: "Filename does not match content type" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return { error: { status: 400, message: `${label}: Dateiendung passt nicht zum Inhalt` } };
       }
-      safeDocFilename = String(documentFilename).replace(/[\\/\x00-\x1f]/g, "_").slice(0, 120);
+      const safeName = String(filename).replace(/[\\/\x00-\x1f]/g, "_").slice(0, 120);
 
-      const binaryStr = atob(documentBase64);
+      const binaryStr = atob(base64);
       const bytes = new Uint8Array(binaryStr.length);
       for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
 
-      const filePath = `${userId}/${Date.now()}.${ext}`;
+      const filePath = `${userId}/${label}-${Date.now()}.${ext}`;
       const contentType =
         kind === "pdf" ? "application/pdf" : kind === "png" ? "image/png" : "image/jpeg";
 
@@ -273,13 +268,52 @@ Deno.serve(async (req) => {
         .from("b2b-documents")
         .upload(filePath, bytes, { contentType });
 
-      if (!uploadError) {
-        const { data: urlData } = serviceClient.storage.from("b2b-documents").getPublicUrl(filePath);
-        documentUrl = urlData.publicUrl;
-        safeAttachment = { filename: safeDocFilename, content: documentBase64 };
-      } else {
-        console.error("Document upload error:", uploadError);
+      if (uploadError) {
+        console.error(`${label} upload error:`, uploadError);
+        return { error: { status: 500, message: `${label}: Upload fehlgeschlagen` } };
       }
+      const { data: urlData } = serviceClient.storage.from("b2b-documents").getPublicUrl(filePath);
+      return {
+        url: urlData.publicUrl,
+        safeName,
+        attachment: { filename: safeName, content: base64 },
+      };
+    }
+
+    // Handelsregister / Gewerbeschein
+    let documentUrl: string | null = null;
+    let safeAttachment: { filename: string; content: string } | null = null;
+    let safeDocFilename: string | null = null;
+
+    if (documentBase64 && documentFilename) {
+      const r = await uploadDoc(documentBase64, documentFilename, "handelsregister");
+      if ("error" in r) {
+        return new Response(JSON.stringify({ error: r.error.message }), {
+          status: r.error.status,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      documentUrl = r.url;
+      safeDocFilename = r.safeName;
+      safeAttachment = r.attachment;
+    }
+
+    // SEPA-Firmenlastschrift-Mandat (Pflichtdokument seit 2026-05)
+    let sepaUrl: string | null = null;
+    let safeSepaAttachment: { filename: string; content: string } | null = null;
+    let safeSepaFilename: string | null = null;
+
+    if (sepaBase64 && sepaFilename) {
+      const r = await uploadDoc(sepaBase64, sepaFilename, "sepa-mandat");
+      if ("error" in r) {
+        return new Response(JSON.stringify({ error: r.error.message }), {
+          status: r.error.status,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      sepaUrl = r.url;
+      safeSepaFilename = r.safeName;
+      safeSepaAttachment = r.attachment;
     }
 
     // Create b2b_profile
