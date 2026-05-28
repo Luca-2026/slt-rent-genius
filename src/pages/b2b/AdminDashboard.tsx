@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Admin components
 import { AdminStatsOverview } from "@/components/b2b/admin/AdminStatsOverview";
+import { AdminGlobalSearch } from "@/components/b2b/admin/AdminGlobalSearch";
 import { AdminReservationsTab } from "@/components/b2b/admin/AdminReservationsTab";
 import { AdminRentalsTab } from "@/components/b2b/admin/AdminRentalsTab";
 import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
@@ -797,8 +798,29 @@ export default function AdminDashboard() {
   const paidInvoices = invoices.filter((i) => i.status === "paid");
   const openInvoices = invoices.filter((i) => i.status === "open");
   const overdueInvoices = invoices.filter((i) => i.status === "overdue");
-  const totalRevenue = paidInvoices.reduce((sum, i) => sum + i.gross_amount, 0);
+  const openReceivables = [...openInvoices, ...overdueInvoices].reduce(
+    (sum, i) => sum + (i.gross_amount ?? 0),
+    0,
+  );
   const pendingCustomers = profiles.filter((p) => p.status === "pending");
+
+  // ─── Phase B2 KPIs ────────────────────────────────────
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+  const revenueThisMonth = paidInvoices
+    .filter((i) => i.invoice_date && new Date(i.invoice_date) >= monthStart)
+    .reduce((sum, i) => sum + (i.gross_amount ?? 0), 0);
+
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const pipelineRentals = reservations.filter(
+    (r) => r.status === "confirmed" && (!r.end_date || r.end_date >= todayIso),
+  ).length;
+
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000);
+  const newRegistrationsLast30Days = profiles.filter(
+    (p) => p.created_at && new Date(p.created_at) >= thirtyDaysAgo,
+  ).length;
 
   // ─── Loading ──────────────────────────────────────────
   if (authLoading || loading) {
@@ -813,16 +835,25 @@ export default function AdminDashboard() {
 
   return (
     <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung & Übersicht">
-      {/* KPI Overview */}
+      {/* KPI Overview (Phase B2) */}
       <AdminStatsOverview
-        totalCustomers={profiles.length}
-        pendingCustomers={pendingCustomers.length}
-        totalReservations={reservations.length}
+        revenueThisMonth={revenueThisMonth}
+        openReceivables={openReceivables}
+        openInvoicesCount={openInvoices.length}
+        overdueInvoicesCount={overdueInvoices.length}
+        pipelineRentals={pipelineRentals}
         pendingReservations={pendingReservations.length}
-        totalInvoices={invoices.length}
-        openInvoices={openInvoices.length}
-        overdueInvoices={overdueInvoices.length}
-        totalRevenue={totalRevenue}
+        newRegistrationsLast30Days={newRegistrationsLast30Days}
+        pendingCustomers={pendingCustomers.length}
+      />
+
+
+      {/* Phase B3 — Global search across loaded customers / invoices / offers / reservations */}
+      <AdminGlobalSearch
+        customers={profiles}
+        invoices={invoices}
+        offers={offers}
+        reservations={reservations}
       />
 
       {/* Quick Action Buttons */}

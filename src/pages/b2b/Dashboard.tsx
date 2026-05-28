@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
+import { DashboardKpis } from "@/components/b2b/dashboard/DashboardKpis";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
@@ -368,8 +369,18 @@ export default function B2BDashboard() {
             </div>
           )}
 
+          {/* Phase B1 — KPI tiles + Nächste Schritte (only for approved profiles) */}
+          {isApproved && b2bProfile && (
+            <DashboardKpis
+              profileId={b2bProfile.id}
+              creditLimit={b2bProfile.credit_limit ?? 0}
+              usedCredit={b2bProfile.used_credit ?? 0}
+            />
+          )}
+
           {/* Price Guarantee */}
           <PriceGuaranteeBadge variant="card" className="mb-4" />
+
 
           {/* Dashboard Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
