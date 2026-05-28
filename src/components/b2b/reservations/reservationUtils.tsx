@@ -99,12 +99,7 @@ export function ReservationStatusBadge({ status }: { status: string }) {
 function buildGroup(items: Reservation[]): ReservationGroup {
   const first = items[0];
   // Display the "worst" (earliest in lifecycle) status of the group
-  const statusPriority = ["pending", "offer_sent", "confirmed", "completed", "cancelled"];
-  const groupStatus = items.reduce((worst, r) => {
-    const wi = statusPriority.indexOf(worst);
-    const ri = statusPriority.indexOf(r.status);
-    return ri < wi ? r.status : worst;
-  }, items[0].status);
+  const groupStatus = pickWorstStatus(items.map((r) => r.status));
 
   return {
     key: `${first.created_at}-${first.location}`,
