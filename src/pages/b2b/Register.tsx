@@ -101,7 +101,11 @@ export default function B2BRegister() {
     e.preventDefault();
     
     if (!documentFile) {
-      toast({ title: "Bitte lade ein Dokument hoch", variant: "destructive" });
+      toast({ title: "Bitte lade den Handelsregisterauszug oder die Gewerbeanmeldung hoch", variant: "destructive" });
+      return;
+    }
+    if (!sepaFile) {
+      toast({ title: "Bitte lade das unterschriebene SEPA-Firmenlastschrift-Mandat hoch", variant: "destructive" });
       return;
     }
     if (!acceptTerms || !acceptPrivacy) {
@@ -112,16 +116,14 @@ export default function B2BRegister() {
     setIsLoading(true);
 
     try {
-      // Convert document to base64 for email attachment
-      const documentBase64 = await new Promise<string>((resolve, reject) => {
+      const toBase64 = (f: File) => new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = (reader.result as string).split(",")[1];
-          resolve(base64);
-        };
+        reader.onload = () => resolve((reader.result as string).split(",")[1]);
         reader.onerror = reject;
-        reader.readAsDataURL(documentFile);
+        reader.readAsDataURL(f);
       });
+      const documentBase64 = await toBase64(documentFile);
+      const sepaBase64 = await toBase64(sepaFile);
 
       // 1. Create user account
       const { error: signUpError, data: signUpData } = await signUp(email, password);
