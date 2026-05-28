@@ -133,7 +133,10 @@ async function sendAdminNotification(params: {
     subject: `Neue B2B-Registrierung: ${companyDisplayRaw} (${params.city})`.slice(0, 200),
     html: htmlBody,
   };
-  if (params.attachment) emailPayload.attachments = [params.attachment];
+  const attachments: Array<{ filename: string; content: string }> = [];
+  if (params.attachment) attachments.push(params.attachment);
+  if (params.sepaAttachment) attachments.push(params.sepaAttachment);
+  if (attachments.length > 0) emailPayload.attachments = attachments;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
