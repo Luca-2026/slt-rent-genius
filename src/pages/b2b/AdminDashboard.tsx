@@ -848,6 +848,14 @@ export default function AdminDashboard() {
       />
 
 
+      {/* Phase B3 — Global search across loaded customers / invoices / offers / reservations */}
+      <AdminGlobalSearch
+        customers={profiles}
+        invoices={invoices}
+        offers={offers}
+        reservations={reservations}
+      />
+
       {/* Quick Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6">
         <Button
