@@ -241,6 +241,8 @@ export default function B2BRegister() {
               postalInvoice,
               documentBase64,
               documentFilename: documentFile.name,
+              sepaBase64,
+              sepaFilename: sepaFile.name,
             },
           });
 
