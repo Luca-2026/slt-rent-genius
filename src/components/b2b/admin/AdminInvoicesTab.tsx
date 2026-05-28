@@ -351,7 +351,7 @@ export function AdminInvoicesTab({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {invoices.map((inv) => (
+                  {pagedInvoices.map((inv) => (
                     <TableRow key={inv.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -469,7 +469,7 @@ export function AdminInvoicesTab({
 
           {/* Mobile card layout */}
           <div className="md:hidden space-y-3">
-            {invoices.map((inv) => (
+            {pagedInvoices.map((inv) => (
               <Card key={inv.id}>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex items-start justify-between gap-2">
@@ -580,6 +580,15 @@ export function AdminInvoicesTab({
               </Card>
             ))}
           </div>
+
+          <PaginationBar
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            pageSize={pageSize}
+            onPage={setPage}
+            label="Rechnungen"
+          />
         </>
       )}
 
