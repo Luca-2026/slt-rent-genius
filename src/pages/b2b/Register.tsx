@@ -216,8 +216,8 @@ export default function B2BRegister() {
         try {
           const { data: profileResult, error: profileFnError } = await supabase.functions.invoke("create-b2b-profile", {
             body: {
+              userId,
               email,
-              password,
               companyName, legalForm, taxId, tradeRegisterNumber,
               firstName, lastName, position, phone,
               billingEmail, street, houseNumber, postalCode, city,
