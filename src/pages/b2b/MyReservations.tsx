@@ -667,143 +667,36 @@ export default function MyReservations() {
         </>
       )}
 
-      {/* Confirm Offer Dialog with Signature */}
-      <Dialog open={confirmDialogOpen} onOpenChange={(open) => {
-        setConfirmDialogOpen(open);
-        if (!open) { setSignatureData(null); setOfferToAccept(null); }
-      }}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <PenTool className="h-5 w-5 text-primary" />
-              Angebot annehmen & unterschreiben
-            </DialogTitle>
-            <DialogDescription>
-              Bitte unterschreiben Sie das Angebot, um es verbindlich anzunehmen.
-            </DialogDescription>
-          </DialogHeader>
-          {offerToAccept && (
-            <div className="space-y-4">
-              <Card>
-                <CardContent className="p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-primary">{offerToAccept.offer_number}</p>
-                    <p className="text-lg font-bold">{formatCurrency(offerToAccept.gross_amount)}</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Angebotsdatum: {formatDate(offerToAccept.offer_date)}
-                    {offerToAccept.valid_until && ` · Gültig bis: ${formatDate(offerToAccept.valid_until)}`}
-                  </p>
-                </CardContent>
-              </Card>
+      {/* Phase A2: dialogs extracted to MyReservationDialogs.tsx — identical behavior */}
+      <AcceptOfferDialog
+        open={confirmDialogOpen}
+        onOpenChange={(open) => {
+          setConfirmDialogOpen(open);
+          if (!open) setOfferToAccept(null);
+        }}
+        offer={offerToAccept}
+        signatureData={signatureData}
+        onSignatureChange={setSignatureData}
+        onAccept={handleAcceptOffer}
+        acceptingOfferId={acceptingOfferId}
+      />
 
-              <SignaturePad 
-                onSignatureChange={setSignatureData} 
-                height={180}
-                label="Ihre Unterschrift"
-              />
+      <ReturnDeviceDialog
+        open={returnDialogOpen}
+        onOpenChange={setReturnDialogOpen}
+        reservation={reservationToReturn}
+        onConfirm={handleReturnDevice}
+        returningId={returningId}
+      />
 
-              <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit Ihrer Unterschrift nehmen Sie das Angebot verbindlich an. Das unterschriebene Angebot wird als PDF gespeichert.</p>
-              </div>
+      <DeleteReservationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        reservation={reservationToDelete}
+        onConfirm={handleDeleteReservation}
+        deletingId={deletingId}
+      />
 
-              <div className="flex gap-3 justify-end">
-                <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
-                  Abbrechen
-                </Button>
-                <Button
-                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={handleAcceptOffer}
-                  disabled={acceptingOfferId === offerToAccept.id || !signatureData}
-                >
-                  {acceptingOfferId === offerToAccept.id ? (
-                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird bestätigt...</>
-                  ) : (
-                    <><ThumbsUp className="h-4 w-4 mr-1.5" />Angebot verbindlich annehmen</>
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Return Device Dialog */}
-      <Dialog open={returnDialogOpen} onOpenChange={setReturnDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <LogOut className="h-5 w-5 text-primary" />
-              Gerät freimelden
-            </DialogTitle>
-            <DialogDescription>
-              Möchten Sie dieses Mietgerät als zurückgegeben melden?
-            </DialogDescription>
-          </DialogHeader>
-          {reservationToReturn && (
-            <div className="space-y-4">
-              <Card>
-                <CardContent className="p-4 space-y-2">
-                  <p className="font-semibold">{reservationToReturn.product_name || reservationToReturn.product_id}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Standort: {locationLabels[reservationToReturn.location] || reservationToReturn.location}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Zeitraum: {formatDate(reservationToReturn.start_date)}
-                    {reservationToReturn.end_date ? ` – ${formatDate(reservationToReturn.end_date)}` : ""}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <div className="bg-muted/50 rounded-lg p-3 text-sm text-muted-foreground">
-                <p>Mit der Freimeldung wird der Mietvorgang beendet und unser Team über die Rückgabe informiert.</p>
-              </div>
-
-              <div className="flex gap-3 justify-end">
-                <Button variant="outline" onClick={() => setReturnDialogOpen(false)}>
-                  Abbrechen
-                </Button>
-                <Button
-                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
-                  onClick={handleReturnDevice}
-                  disabled={returningId === reservationToReturn.id}
-                >
-                  {returningId === reservationToReturn.id ? (
-                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird freigemeldet...</>
-                  ) : (
-                    <><LogOut className="h-4 w-4 mr-1.5" />Gerät freimelden</>
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Reservation Dialog */}
-      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Anfrage löschen?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Möchtest du die Anfrage für „{reservationToDelete?.product_name || reservationToDelete?.product_id}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteReservation}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {deletingId ? (
-                <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird gelöscht...</>
-              ) : (
-                <><Trash2 className="h-4 w-4 mr-1.5" />Löschen</>
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </B2BPortalLayout>
   );
 }
