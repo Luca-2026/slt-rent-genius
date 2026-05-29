@@ -285,6 +285,9 @@ import ruettelplatteVp2550_1 from "@/assets/products/ruettelplatte-vp2550-1.jpeg
 import ruettelplatteVp2550_2 from "@/assets/products/ruettelplatte-vp2550-2.jpeg";
 import ruettelplatteVp1644_1 from "@/assets/products/ruettelplatte-vp1644-1.jpeg";
 import ruettelplatteVp1644_2 from "@/assets/products/ruettelplatte-vp1644-2.jpeg";
+import ruettelplatteVp1550w_1 from "@/assets/products/ruettelplatte-vp1550w-1.png";
+import ruettelplatteVp1550w_2 from "@/assets/products/ruettelplatte-vp1550w-2.png";
+import ruettelplatteVp1550w_3 from "@/assets/products/ruettelplatte-vp1550w-3.png";
 import stampferGs72xh1 from "@/assets/products/stampfer-gs72xh-1.jpeg";
 import ruettelplatteHvp3860 from "@/assets/products/ruettelplatte-hvp3860-1.jpeg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
