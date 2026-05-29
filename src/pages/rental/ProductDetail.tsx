@@ -301,59 +301,104 @@ export default function ProductDetail() {
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        ...(typeof productSEO?.dailyPriceFrom === "number"
-          ? {
-              "offers": (() => {
-                const priceFrom = productSEO.dailyPriceFrom as number;
-                const validUntil = new Date();
-                validUntil.setFullYear(validUntil.getFullYear() + 1);
-                const availability = getProductAvailability(product, location.id, { categoryId });
-                return {
-                  "@type": "Offer",
-                  "availability": availability.schemaAvailability,
-                  ...(availability.deliveryLeadTime
-                    ? {
-                        "deliveryLeadTime": {
-                          "@type": "QuantitativeValue",
-                          "value": 24,
-                          "unitCode": "HUR",
-                        },
-                      }
-                    : {}),
-                  "url": canonicalUrl,
-                  "priceCurrency": "EUR",
-                  "price": priceFrom.toFixed(2),
-                  "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                  "seller": {
-                    "@type": "LocalBusiness",
-                    "name": "SLT Rental",
-                    "url": "https://www.slt-rental.de",
-                  },
-                  "areaServed": { "@type": "City", "name": location.name },
-                  "priceSpecification": {
-                    "@type": "UnitPriceSpecification",
-                    "price": priceFrom.toFixed(2),
-                    "priceCurrency": "EUR",
-                    "unitCode": "DAY",
-                    "referenceQuantity": {
+        ...((() => {
+          // Monthly offer (e.g. Winterdienst-Set) — has priority because it's a concrete price
+          if (product.pricePerMonth) {
+            const numeric = parseFloat(product.pricePerMonth.replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."));
+            if (!isFinite(numeric) || numeric <= 0) return {};
+            const validUntil = new Date();
+            validUntil.setFullYear(validUntil.getFullYear() + 1);
+            const availability = getProductAvailability(product, location.id, { categoryId });
+            return {
+              offers: {
+                "@type": "Offer",
+                "availability": availability.schemaAvailability,
+                "url": canonicalUrl,
+                "priceCurrency": "EUR",
+                "price": numeric.toFixed(2),
+                "priceValidUntil": validUntil.toISOString().slice(0, 10),
+                "seller": {
+                  "@type": "LocalBusiness",
+                  "name": "SLT Rental",
+                  "url": "https://www.slt-rental.de",
+                },
+                "areaServed": { "@type": "City", "name": location.name },
+                "eligibleQuantity": product.minRentalMonths
+                  ? {
                       "@type": "QuantitativeValue",
-                      "value": 1,
-                      "unitCode": "DAY",
-                    },
+                      "value": product.minRentalMonths,
+                      "unitCode": "MON",
+                    }
+                  : undefined,
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": numeric.toFixed(2),
+                  "priceCurrency": "EUR",
+                  "unitCode": "MON",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": 1,
+                    "unitCode": "MON",
                   },
-                };
-              })(),
-            }
-          : {}),
+                  "valueAddedTaxIncluded": true,
+                },
+              },
+            };
+          }
+          if (typeof productSEO?.dailyPriceFrom === "number") {
+            const priceFrom = productSEO.dailyPriceFrom as number;
+            const validUntil = new Date();
+            validUntil.setFullYear(validUntil.getFullYear() + 1);
+            const availability = getProductAvailability(product, location.id, { categoryId });
+            return {
+              offers: {
+                "@type": "Offer",
+                "availability": availability.schemaAvailability,
+                ...(availability.deliveryLeadTime
+                  ? {
+                      "deliveryLeadTime": {
+                        "@type": "QuantitativeValue",
+                        "value": 24,
+                        "unitCode": "HUR",
+                      },
+                    }
+                  : {}),
+                "url": canonicalUrl,
+                "priceCurrency": "EUR",
+                "price": priceFrom.toFixed(2),
+                "priceValidUntil": validUntil.toISOString().slice(0, 10),
+                "seller": {
+                  "@type": "LocalBusiness",
+                  "name": "SLT Rental",
+                  "url": "https://www.slt-rental.de",
+                },
+                "areaServed": { "@type": "City", "name": location.name },
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": priceFrom.toFixed(2),
+                  "priceCurrency": "EUR",
+                  "unitCode": "DAY",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": 1,
+                    "unitCode": "DAY",
+                  },
+                },
+              },
+            };
+          }
+          return {};
+        })()),
 
       };
       // Add brand + model if modelName exists
       if (product.modelName) {
-        // Extract brand from modelName (first word) or from specs
         const specs = product.specifications || {};
-        const brand = specs["Hersteller"] || product.modelName.split(" ")[0];
+        // Skip generic prefixes like "Special-Set:" when deriving the brand
+        const cleanedModel = product.modelName.replace(/^(Special-Set|Set|Paket|Bundle)\s*[:\-–]\s*/i, "");
+        const brand = specs["Hersteller"] || specs["Marke"] || cleanedModel.split(" ")[0] || "SLT Rental";
         jsonLd["brand"] = { "@type": "Brand", "name": brand };
-        jsonLd["model"] = product.modelName;
+        jsonLd["model"] = cleanedModel;
       } else {
         jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
       }
