@@ -658,7 +658,18 @@ export default function ProductDetail() {
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
-                  {typeof productSEO?.dailyPriceFrom === "number" && !getMoebelInfoKey(product.id) && (
+                  {product.pricePerMonth && (
+                    <div className="mt-2">
+                      <div className="inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
+                        <span className="text-xl font-bold text-accent">{product.pricePerMonth}</span>
+                        <span className="text-sm font-medium text-accent/90">/ Monat</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 ml-1">
+                        Inkl. 19 % USt.{product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""} · zzgl. Maschinenbruchversicherung
+                      </p>
+                    </div>
+                  )}
+                  {typeof productSEO?.dailyPriceFrom === "number" && !getMoebelInfoKey(product.id) && !product.pricePerMonth && (
                     <div className="mt-2">
                       <div className="inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
                         <span className="text-xl font-bold text-accent">ab {Number.isInteger(productSEO.dailyPriceFrom) ? productSEO.dailyPriceFrom : productSEO.dailyPriceFrom.toFixed(2).replace(".", ",")} €</span>
@@ -1217,20 +1228,24 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {(product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
+                  {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
                     <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
-                        {product.pricePerDay
-                          ? product.pricePerDay
-                          : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+                        {product.pricePerMonth
+                          ? product.pricePerMonth
+                          : product.pricePerDay
+                            ? product.pricePerDay
+                            : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
                       </div>
-                      {product.priceWeekend && (
+                      {product.priceWeekend && !product.pricePerMonth && (
                         <p className="text-sm md:text-xs lg:text-sm text-accent font-medium mt-1">
                           Weekend-Tarif: {product.priceWeekend}
                         </p>
                       )}
-                      <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
+                      <p className="text-[11px] text-muted-foreground mt-1">
+                        Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
+                      </p>
                     </div>
                   )}
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
@@ -1402,21 +1417,27 @@ function MobileBookingCard({
   t: (key: string) => string;
 }) {
   if (!location) return null;
-  const showPrice = product.pricePerDay || typeof dailyPriceFrom === "number";
+  const showPrice = product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number";
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
           <div className="text-2xl font-bold text-primary">
-            {product.pricePerDay ? product.pricePerDay : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-            <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+            {product.pricePerMonth
+              ? product.pricePerMonth
+              : product.pricePerDay
+                ? product.pricePerDay
+                : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+            <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
           </div>
-          {product.priceWeekend && (
+          {product.priceWeekend && !product.pricePerMonth && (
             <p className="text-sm text-accent font-medium mt-0.5">
               Weekend-Tarif: {product.priceWeekend}
             </p>
           )}
-          <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
+          </p>
         </div>
       )}
       <div className="flex flex-col sm:flex-row gap-2">
