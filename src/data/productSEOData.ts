@@ -3885,8 +3885,9 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie kurzfristig ist das Set in Mülheim verfügbar?", a: "Das Winterdienst-Set wird auf Anfrage vermietet. Vor Wintereinbruch empfehlen wir eine frühzeitige Reservierung – die Kapazitäten im Ruhrgebiet sind in der Saison schnell ausgebucht." },
     ],
   },
-
+  "kramer-5050": {
     excelName: "3t Radlader",
+
     seoTitle: "3t Radlader Kramer 5050 mieten",
     metaDescription: "Mieten Sie den Kramer 5050 Radlader mit 3.000 kg Einsatzgewicht für Materialumschlag und Winterdienst. Kompakter Diesel-Radlader inklusive Schaufel.",
     h1: "3t Radlader mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
