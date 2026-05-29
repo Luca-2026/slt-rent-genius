@@ -1228,20 +1228,24 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {(product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
+                  {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
                     <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
-                        {product.pricePerDay
-                          ? product.pricePerDay
-                          : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+                        {product.pricePerMonth
+                          ? product.pricePerMonth
+                          : product.pricePerDay
+                            ? product.pricePerDay
+                            : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
                       </div>
-                      {product.priceWeekend && (
+                      {product.priceWeekend && !product.pricePerMonth && (
                         <p className="text-sm md:text-xs lg:text-sm text-accent font-medium mt-1">
                           Weekend-Tarif: {product.priceWeekend}
                         </p>
                       )}
-                      <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
+                      <p className="text-[11px] text-muted-foreground mt-1">
+                        Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
+                      </p>
                     </div>
                   )}
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
