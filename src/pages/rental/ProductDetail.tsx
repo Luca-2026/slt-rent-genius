@@ -423,6 +423,22 @@ export default function ProductDetail() {
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
+      // LocalBusiness JSON-LD for the active location (links Product → verified GBP via sameAs)
+      const localBusiness = { ...SLT_LOCATION_JSONLD(location.id) } as Record<string, unknown>;
+      if (locRating) {
+        localBusiness["aggregateRating"] = {
+          "@type": "AggregateRating",
+          "ratingValue": locRating.ratingValue,
+          "reviewCount": locRating.reviewCount,
+          "bestRating": "5",
+          "worstRating": "1",
+        };
+      }
+      jsonLdArray.push(localBusiness);
+
+      // Also expose duplicate types removal for LocalBusiness below
+      // (kept here so dupTypes list stays in one place)
+
       // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
       const productFaqs = productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
