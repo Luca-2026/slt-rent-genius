@@ -893,6 +893,37 @@ const erdbewegungProductsUnsorted: Product[] = [
     ],
   },
   {
+    id: "winterdienst-set-kramer-5045",
+    name: "Winterdienst-Set Kramer 5045",
+    modelName: "Special-Set: Kramer 5045 + Adler Schneeschild + App-Streuer",
+    description: "Profi-Winterdienstpaket: 3t Radlader Kramer 5045 + hydraulisches Adler-Schneeschild + app-gesteuerter Salzstreuer. Aktionspreis 1.499 € brutto/Monat zzgl. Maschinenbruchversicherung. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    detailedDescription:
+      "Schnee war gestern – mit unserem Winterdienst-Set Kramer 5045 räumst du Hof, Parkplatz, Werksgelände und Zufahrt in Rekordzeit frei.\n\nDas Paket kombiniert den kompakten, wendigen 3t Kramer 5045 Radlader mit einem hochwertigen Adler-Schneeschild (hydraulisch im Neigungswinkel verstellbar – also schwenkbar nach links und rechts) und einem app-gesteuerten Salzstreuer am Heck. Damit räumst du vorne und streust hinten in einem Arbeitsgang – ohne Aussteigen, ohne Umrüsten.\n\nDer Salzstreuer lässt sich bequem per Smartphone direkt aus der Kabine steuern: Streumenge, Streubreite und Vorlauf einstellen, fertig. Bei Glätte und Schneechaos optional mit Schneeketten – damit bleibt der Radlader auch auf vereisten Flächen und Steigungen sicher fahrbar.\n\n**Aktionspreis:** 1.499 € brutto pro Monat (inkl. MwSt.) zzgl. Maschinenbruchversicherung. Verfügbar auf Anfrage an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.\n\n**Im Set enthalten:**\n• 3t Radlader Kramer 5045 (Dieselmotor, kompakt & wendig)\n• Adler Schneeschild – hydraulisch, Neigungswinkel verstellbar\n• App-gesteuerter Salzstreuer (Heckanbau)\n• Optional buchbar: Schneeketten\n\nFordere jetzt unverbindlich dein Angebot an – wir melden uns kurzfristig mit Verfügbarkeit und Konditionen.",
+    image: imgKramer5045_1,
+    images: [imgKramer5045_1, imgKramer5045_2],
+    weightKg: 3000,
+    category: "radlader",
+    tags: ["radlader", "diesel", "ab-2500", "maschine", "winterdienst", "special-set"],
+    onRequest: true,
+    driveType: "diesel",
+    specifications: {
+      "Set-Inhalt": "Kramer 5045 + Adler Schneeschild (hydraulisch, schwenkbar) + app-gesteuerter Salzstreuer",
+      "Aktionspreis": "1.499 € brutto/Monat (inkl. MwSt., zzgl. Maschinenbruchversicherung)",
+      "Einsatzgewicht Radlader": "3.000 kg",
+      "Motor": "Dieselmotor",
+      "Schneeschild": "Adler – hydraulisch im Neigungswinkel verstellbar",
+      "Salzstreuer": "App-gesteuert per Smartphone aus der Kabine",
+      "Schneeketten": "optional buchbar",
+      "Verfügbarkeit": "auf Anfrage an allen drei Standorten",
+    },
+    rentalNotes: [
+      "Aktionspreis 1.499 € brutto/Monat zzgl. Maschinenbruchversicherung.",
+      "Anlieferung, Einweisung und Schneeketten optional – bitte bei der Anfrage angeben.",
+      "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
+    ],
+  },
+
+  {
     id: "bobcat-l28-knicklader",
     name: "Knicklader",
     modelName: "Bobcat L28",
