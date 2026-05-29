@@ -363,11 +363,7 @@ export default function ProductDetail() {
                 "priceCurrency": "EUR",
                 "price": priceFrom.toFixed(2),
                 "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                "seller": {
-                  "@type": "LocalBusiness",
-                  "name": "SLT Rental",
-                  "url": "https://www.slt-rental.de",
-                },
+                "seller": { "@id": `https://www.slt-rental.de/mieten/${location.id}#localbusiness` },
                 "areaServed": { "@type": "City", "name": location.name },
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
