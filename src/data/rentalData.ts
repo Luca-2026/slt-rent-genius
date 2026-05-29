@@ -198,6 +198,8 @@ export interface Product {
   videoUrls?: string[]; // Additional YouTube video URLs
   pricePerDay?: string;
   priceWeekend?: string;
+  pricePerMonth?: string; // Monthly price (e.g. for long-term sets)
+  minRentalMonths?: number; // Minimum rental period in months for pricePerMonth
   features?: string[];
   specifications?: Record<string, string>; // Technical specs key-value pairs
   pdfUrl?: string; // PDF download link (e.g. manual)
