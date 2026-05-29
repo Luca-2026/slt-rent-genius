@@ -199,7 +199,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
     muelheim: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://www.slt-rental.de/mieten/muelheim",
+      "@id": "https://www.slt-rental.de/mieten/muelheim#localbusiness",
       name: "SLT Rental – Mülheim an der Ruhr",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/muelheim",
