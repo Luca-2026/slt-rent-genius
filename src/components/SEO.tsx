@@ -140,7 +140,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
     krefeld: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://www.slt-rental.de/mieten/krefeld",
+      "@id": "https://www.slt-rental.de/mieten/krefeld#localbusiness",
       name: "SLT Rental – Krefeld (Hauptsitz)",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/krefeld",
