@@ -3,7 +3,7 @@ import { categoryContent as seoCategoryContent } from "@/components/rental/Produ
 import { getProductSEO } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
-import { SEO } from "@/components/SEO";
+import { SEO, SLT_LOCATION_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -317,11 +317,7 @@ export default function ProductDetail() {
                 "priceCurrency": "EUR",
                 "price": numeric.toFixed(2),
                 "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                "seller": {
-                  "@type": "LocalBusiness",
-                  "name": "SLT Rental",
-                  "url": "https://www.slt-rental.de",
-                },
+                "seller": { "@id": `https://www.slt-rental.de/mieten/${location.id}#localbusiness` },
                 "areaServed": { "@type": "City", "name": location.name },
                 "eligibleQuantity": product.minRentalMonths
                   ? {
@@ -367,11 +363,7 @@ export default function ProductDetail() {
                 "priceCurrency": "EUR",
                 "price": priceFrom.toFixed(2),
                 "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                "seller": {
-                  "@type": "LocalBusiness",
-                  "name": "SLT Rental",
-                  "url": "https://www.slt-rental.de",
-                },
+                "seller": { "@id": `https://www.slt-rental.de/mieten/${location.id}#localbusiness` },
                 "areaServed": { "@type": "City", "name": location.name },
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
@@ -431,6 +423,22 @@ export default function ProductDetail() {
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 
+      // LocalBusiness JSON-LD for the active location (links Product → verified GBP via sameAs)
+      const localBusiness = { ...SLT_LOCATION_JSONLD(location.id) } as Record<string, unknown>;
+      if (locRating) {
+        localBusiness["aggregateRating"] = {
+          "@type": "AggregateRating",
+          "ratingValue": locRating.ratingValue,
+          "reviewCount": locRating.reviewCount,
+          "bestRating": "5",
+          "worstRating": "1",
+        };
+      }
+      jsonLdArray.push(localBusiness);
+
+      // Also expose duplicate types removal for LocalBusiness below
+      // (kept here so dupTypes list stays in one place)
+
       // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
       const productFaqs = productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
@@ -464,7 +472,7 @@ export default function ProductDetail() {
 
       // Remove any prerendered duplicates of the same JSON-LD types so Google
       // doesn't see two FAQPage / Product / BreadcrumbList entries on the page.
-      const dupTypes = ['"FAQPage"', '"Product"', '"BreadcrumbList"'];
+      const dupTypes = ['"FAQPage"', '"Product"', '"BreadcrumbList"', '"LocalBusiness"'];
       document.head
         .querySelectorAll('script[type="application/ld+json"]:not([data-product-jsonld])')
         .forEach((el) => {

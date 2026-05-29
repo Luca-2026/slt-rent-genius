@@ -140,7 +140,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
     krefeld: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://www.slt-rental.de/mieten/krefeld",
+      "@id": "https://www.slt-rental.de/mieten/krefeld#localbusiness",
       name: "SLT Rental – Krefeld (Hauptsitz)",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/krefeld",
@@ -167,8 +167,8 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
     bonn: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://www.slt-rental.de/mieten/bonn",
-      name: "SLT Rental – Bonn",
+      "@id": "https://www.slt-rental.de/mieten/bonn#localbusiness",
+      name: "SLT Rental Bonn | Anhänger - Arbeitsbühnen - Baumaschinen - Eventausstattung | Zoomlion Händler NRW",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/bonn",
       logo: DEFAULT_OG_IMAGE,
@@ -184,7 +184,12 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
         addressRegion: "NRW",
         addressCountry: "DE",
       },
-      geo: { "@type": "GeoCoordinates", latitude: 50.6879, longitude: 7.1534 },
+      geo: { "@type": "GeoCoordinates", latitude: 50.6679178, longitude: 7.1795948 },
+      hasMap: "https://maps.google.com/?cid=2313761103288101712",
+      sameAs: [
+        "https://maps.google.com/?cid=2313761103288101712",
+        "https://maps.app.goo.gl/kqckK45DSwd5eyhb9",
+      ],
       openingHoursSpecification: [
         { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:00", closes: "18:00" },
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "17:30" },
@@ -194,7 +199,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
     muelheim: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://www.slt-rental.de/mieten/muelheim",
+      "@id": "https://www.slt-rental.de/mieten/muelheim#localbusiness",
       name: "SLT Rental – Mülheim an der Ruhr",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/muelheim",
