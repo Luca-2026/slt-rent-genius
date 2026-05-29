@@ -903,11 +903,13 @@ const erdbewegungProductsUnsorted: Product[] = [
     id: "winterdienst-set-kramer-5045",
     name: "Winterdienst-Set Kramer 5045",
     modelName: "Special-Set: Kramer 5045 Radlader + Adler Schneeschild + Bluetooth-Salzstreuer",
-    description: "Profi-Winterdienstpaket: Kramer 5045 Radlader (Betriebsgewicht ca. 2.675 – 2.750 kg) mit hydraulisch schwenkbarem Adler-Schneeschild und Bluetooth-Anbau-Salzstreuer am Heck. Aktionspreis 1.499 € brutto/Monat inkl. MwSt. zzgl. Maschinenbruchversicherung. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    description: "Profi-Winterdienstpaket: Kramer 5045 Radlader (Betriebsgewicht ca. 2.675 – 2.750 kg) mit hydraulisch schwenkbarem Adler-Schneeschild und Bluetooth-Anbau-Salzstreuer am Heck. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
     detailedDescription:
-      "Schnee war gestern – mit unserem Winterdienst-Set Kramer 5045 räumst du Hof, Parkplatz, Werksgelände und Zufahrt in Rekordzeit frei.\n\nDas Set kombiniert den kompakten, wendigen Kramer 5045 Radlader (Betriebsgewicht ca. 2.675 – 2.750 kg, Yanmar-Dieselmotor, Stage V) mit einem hochwertigen Adler-Schneeschild und einem heckseitigen Anbau-Salzstreuer. So räumst du vorne und streust hinten in einem einzigen Arbeitsgang – ohne Aussteigen, ohne Umrüsten, ohne Werkzeug.\n\nDas Adler-Schneeschild ist hydraulisch im Neigungswinkel verstellbar: Per Joystick aus der Kabine schwenkst du das Schild stufenlos nach links und rechts, je nach Räumrichtung. So bleibt der Schnee zuverlässig auf der gewünschten Seite – entlang von Bordsteinen, Hauswänden oder Tordurchfahrten.\n\nDer Anbau-Salzstreuer wird per Bluetooth über eine Hersteller-App mit deinem Smartphone gekoppelt. Streumenge (g/m²), Streubreite und Vor-/Nachlauf stellst du direkt aus der Fahrerkabine ein – die Steuereinheit am Streuer regelt Förderschnecke und Streuteller entsprechend. Funkfernbedienung als Alternative ebenfalls möglich. Optional sind dazu Schneeketten zubuchbar, damit der Radlader auch auf vereisten Flächen und Steigungen sicher und mit voller Traktion arbeitet.\n\nAktionspreis: 1.499 € brutto pro Monat (inkl. 19 % MwSt.) zzgl. Maschinenbruchversicherung. Verfügbar auf Anfrage an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.\n\nIm Set enthalten:\n• Kramer 5045 Radlader (Yanmar Diesel, Stage V, 0,45 m³ Standardschaufel)\n• Adler-Schneeschild, hydraulisch schwenkbar (Neigungswinkel verstellbar)\n• Anbau-Salzstreuer (Heck) mit Bluetooth-/App-Steuerung\n• Optional zubuchbar: Schneeketten für Vorder- und Hinterachse\n\nFordere jetzt unverbindlich dein Angebot an – wir melden uns kurzfristig mit Verfügbarkeit und Konditionen.",
+      "Schnee war gestern – mit unserem Winterdienst-Set Kramer 5045 räumst du Hof, Parkplatz, Werksgelände und Zufahrt in Rekordzeit frei.\n\nDas Set kombiniert den kompakten, wendigen Kramer 5045 Radlader (Betriebsgewicht ca. 2.675 – 2.750 kg, Yanmar-Dieselmotor, Stage V) mit einem hochwertigen Adler-Schneeschild und einem heckseitigen Anbau-Salzstreuer. So räumst du vorne und streust hinten in einem einzigen Arbeitsgang – ohne Aussteigen, ohne Umrüsten, ohne Werkzeug.\n\nDas Adler-Schneeschild ist hydraulisch im Neigungswinkel verstellbar: Per Joystick aus der Kabine schwenkst du das Schild stufenlos nach links und rechts, je nach Räumrichtung. So bleibt der Schnee zuverlässig auf der gewünschten Seite – entlang von Bordsteinen, Hauswänden oder Tordurchfahrten.\n\nDer Anbau-Salzstreuer wird per Bluetooth über eine Hersteller-App mit deinem Smartphone gekoppelt. Streumenge (g/m²), Streubreite und Vor-/Nachlauf stellst du direkt aus der Fahrerkabine ein – die Steuereinheit am Streuer regelt Förderschnecke und Streuteller entsprechend. Funkfernbedienung als Alternative ebenfalls möglich. Optional sind dazu Schneeketten zubuchbar, damit der Radlader auch auf vereisten Flächen und Steigungen sicher und mit voller Traktion arbeitet.\n\nPreis: 1.499 € pro Monat inkl. 19 % USt. – Mindestbuchungszeit 3 Monate, zzgl. Maschinenbruchversicherung. Verfügbar auf Anfrage an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.\n\nIm Set enthalten:\n• Kramer 5045 Radlader (Yanmar Diesel, Stage V, 0,45 m³ Standardschaufel)\n• Adler-Schneeschild, hydraulisch schwenkbar (Neigungswinkel verstellbar)\n• Anbau-Salzstreuer (Heck) mit Bluetooth-/App-Steuerung\n• Optional zubuchbar: Schneeketten für Vorder- und Hinterachse\n\nFordere jetzt unverbindlich dein Angebot an – wir melden uns kurzfristig mit Verfügbarkeit und Konditionen.",
     image: imgWinterdienstKramer1,
     images: [imgWinterdienstKramer1, imgWinterdienstKramer2, imgWinterdienstKramer3, imgWinterdienstKramer4],
+    pricePerMonth: "1.499 €",
+    minRentalMonths: 3,
     weightKg: 2750,
     category: "radlader",
     tags: ["radlader", "diesel", "ab-2500", "maschine", "winterdienst", "special-set"],
@@ -915,7 +917,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     driveType: "diesel",
     specifications: {
       "Set-Inhalt": "Kramer 5045 Radlader + Adler-Schneeschild (hydraulisch schwenkbar) + Anbau-Salzstreuer mit Bluetooth-/App-Steuerung",
-      "Aktionspreis": "1.499 € brutto/Monat inkl. MwSt. (zzgl. Maschinenbruchversicherung)",
+      "Mietpreis": "1.499 € / Monat inkl. 19 % USt. (Mindestbuchungszeit 3 Monate, zzgl. Maschinenbruchversicherung)",
       "Betriebsgewicht Radlader": "ca. 2.675 – 2.750 kg",
       "Motorhersteller": "Yanmar",
       "Motorleistung": "18,5 kW / 25,2 PS (Standard) – optional 33,3 kW / 45,3 PS",
@@ -931,7 +933,7 @@ const erdbewegungProductsUnsorted: Product[] = [
       "Verfügbarkeit": "auf Anfrage an allen drei Standorten",
     },
     rentalNotes: [
-      "Aktionspreis 1.499 € brutto/Monat inkl. MwSt. zzgl. Maschinenbruchversicherung.",
+      "Mietpreis 1.499 € / Monat inkl. 19 % USt. – Mindestbuchungszeit 3 Monate, zzgl. Maschinenbruchversicherung.",
       "Anlieferung, Einweisung und Schneeketten optional – bitte bei der Anfrage angeben.",
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
