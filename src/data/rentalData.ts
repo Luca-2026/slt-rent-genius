@@ -1793,7 +1793,20 @@ export const locations: LocationData[] = [
       "werkzeuge": werkzeugeProducts,
       "gartenpflege": gartenpflegeProducts,
       "arbeitsbuehnen": arbeitsbuehnenProducts,
-      "verdichtung": verdichtungProducts,
+      "verdichtung": mergeWithFallback(
+        [
+          {
+            id: "mh-ruettelplatte-vp1550w",
+            name: "Rüttelplatte VP 15/50W 97kg",
+            description: "Vorwärtslaufende Baumax Rüttelplatte mit 97 kg Gewicht, 14 kN Zentrifugalkraft und integriertem Wassertank mit Sprinkleranlage zur Staubbindung – auf Anfrage in Mülheim an der Ruhr.",
+            image: "/placeholder.svg",
+            category: "ruettelplatte",
+            rentwareCode: { muelheim: "" },
+          } as Product,
+        ],
+        verdichtungProducts,
+        "muelheim"
+      ),
       "kabel-stromverteiler": kabelStromverteilerProducts,
       "leitern-gerueste": leiternGeruesteProducts,
       "absperrtechnik": absperrtechnikProducts,
