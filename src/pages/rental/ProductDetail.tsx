@@ -1417,21 +1417,27 @@ function MobileBookingCard({
   t: (key: string) => string;
 }) {
   if (!location) return null;
-  const showPrice = product.pricePerDay || typeof dailyPriceFrom === "number";
+  const showPrice = product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number";
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
           <div className="text-2xl font-bold text-primary">
-            {product.pricePerDay ? product.pricePerDay : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-            <span className="text-sm font-normal text-muted-foreground"> {t("rental.perDay")}</span>
+            {product.pricePerMonth
+              ? product.pricePerMonth
+              : product.pricePerDay
+                ? product.pricePerDay
+                : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+            <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
           </div>
-          {product.priceWeekend && (
+          {product.priceWeekend && !product.pricePerMonth && (
             <p className="text-sm text-accent font-medium mt-0.5">
               Weekend-Tarif: {product.priceWeekend}
             </p>
           )}
-          <p className="text-[11px] text-muted-foreground mt-1">Brutto inkl. 19% USt.</p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
+          </p>
         </div>
       )}
       <div className="flex flex-col sm:flex-row gap-2">
