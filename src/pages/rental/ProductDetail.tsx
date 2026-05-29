@@ -472,7 +472,7 @@ export default function ProductDetail() {
 
       // Remove any prerendered duplicates of the same JSON-LD types so Google
       // doesn't see two FAQPage / Product / BreadcrumbList entries on the page.
-      const dupTypes = ['"FAQPage"', '"Product"', '"BreadcrumbList"'];
+      const dupTypes = ['"FAQPage"', '"Product"', '"BreadcrumbList"', '"LocalBusiness"'];
       document.head
         .querySelectorAll('script[type="application/ld+json"]:not([data-product-jsonld])')
         .forEach((el) => {
