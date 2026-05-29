@@ -157,7 +157,12 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
         addressRegion: "NRW",
         addressCountry: "DE",
       },
-      geo: { "@type": "GeoCoordinates", latitude: 51.3388, longitude: 6.5853 },
+      geo: { "@type": "GeoCoordinates", latitude: 51.2976801, longitude: 6.5669847 },
+      hasMap: "https://maps.google.com/?cid=10910050431267506432",
+      sameAs: [
+        "https://maps.google.com/?cid=10910050431267506432",
+        "https://maps.app.goo.gl/o3rHYzBRQ8ytVWVA7",
+      ],
       openingHoursSpecification: [
         { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "14:30" },
