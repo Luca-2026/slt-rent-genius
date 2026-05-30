@@ -429,12 +429,15 @@ Deno.serve(async (req: Request) => {
       ? servicesWithPrices
       : null;
 
-    // Encode structured delivery metadata into notes so edit/resend can restore exact values
+    // Encode structured metadata into notes so edit/resend can restore exact values
     let finalNotes = notes || "";
-    finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "");
+    finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "");
     finalNotes += `[DELIVERY:${delivery_cost_delivery || 0}|RETURN:${delivery_cost_return || 0}]`;
     if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
       finalNotes += `[DELADDR:${deliveryAddress.street || ""}|${deliveryAddress.postal_code || ""}|${deliveryAddress.city || ""}]`;
+    }
+    if (paymentTerms) {
+      finalNotes += `[PAYMENT:${paymentTerms}]`;
     }
 
     let offer: any;
