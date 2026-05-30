@@ -71,9 +71,8 @@ import imgBaumaschinen1800_2 from "@/assets/products/anhaenger/baumaschinen-1800
 import imgBaumaschinen3500_1 from "@/assets/products/anhaenger/baumaschinen-3500-1.jpg";
 import imgBaumaschinen3500_2 from "@/assets/products/anhaenger/baumaschinen-3500-2.jpg";
 import imgBaumaschinen3500_3 from "@/assets/products/anhaenger/baumaschinen-3500-3.jpg";
-import imgRueckwaertskipp1500_1 from "@/assets/products/anhaenger/rueckwaertskipp-1500-1.jpg";
-import imgRueckwaertskipp1500_2 from "@/assets/products/anhaenger/rueckwaertskipp-1500-2.jpg";
-import imgRueckwaertskipp1500_3 from "@/assets/products/anhaenger/rueckwaertskipp-1500-3.jpg";
+import imgRueckwaertskipp1500_1 from "@/assets/products/anhaenger/rueckwaertskipp-1300-1.jpg";
+import imgRueckwaertskipp1500_2 from "@/assets/products/anhaenger/rueckwaertskipp-1300-2.jpg";
 import imgRueckwaertskipp2700_1 from "@/assets/products/anhaenger/rueckwaertskipp-2700-1.jpg";
 import imgRueckwaertskipp2700_2 from "@/assets/products/anhaenger/rueckwaertskipp-2700-2.jpg";
 import imgRueckwaertskipp2700_3 from "@/assets/products/anhaenger/rueckwaertskipp-2700-3.jpg";
@@ -623,14 +622,14 @@ const trailerProducts: Product[] = [
   },
   { 
     id: "rueckwaertskipp-1500", 
-    name: "1500 kg Rückwärtskippanhänger & Laubgitter", 
+    name: "1300 kg Rückwärtskippanhänger & Laubgitter", 
     description: "Ladefläche: 300 x 150 x 95 cm | Händische Kippfunktion (Handpumpe)",
-    image: imgRueckwaertskipp1500_3, 
-    images: [imgRueckwaertskipp1500_3, imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2], 
-    weightKg: 1500, 
+    image: imgRueckwaertskipp1500_1, 
+    images: [imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2], 
+    weightKg: 1300, 
     category: "rueckwaertskipp",
     tags: ["laubgitter", "gebremst", "zweiachser"], 
-    specifications: { "Eigengewicht": "ca. 410 kg", "Nutzlast": "ca. 1.090 kg" },
+    specifications: { "Eigengewicht": "ca. 410 kg", "Nutzlast": "ca. 890 kg" },
     rentwareCode: { krefeld: "QNRXMH" } 
   },
   { 
