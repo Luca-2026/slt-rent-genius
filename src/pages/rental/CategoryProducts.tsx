@@ -1078,7 +1078,11 @@ export default function CategoryProducts() {
     "leitern-gerueste": `Leitern & Rollgerüste mieten in ${cityName}: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.`,
     "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${cityName}: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.`,
     absperrtechnik: `Absperrtechnik & Verkehrszeichen mieten in ${cityName}: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.`,
-    beschallung: `PA-Anlage & Beschallung mieten in ${cityName}: Soundboks Gen.3, DAS PA-Systeme, Pioneer CDJ/DJM, Shure Funkmikrofone. SLT Rental.`,
+    beschallung: location.id === "krefeld"
+      ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Krefeld. Inkl. Aufbau, Abbau & Betreuung durch erfahrene Tontechniker – seit über 10 Jahren.`
+      : location.id === "bonn"
+      ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Bonn. Aufbau, Abbau & Tontechniker für Hochzeit & Firmenevent – 10+ Jahre Erfahrung.`
+      : `PA-Anlage, DJ-Equipment, Mischpult & Funkmikrofone mieten in Mülheim an der Ruhr. Aufbau, Abbau & Tontechniker für Events – 10+ Jahre Erfahrung.`,
     kommunikation: `Funkgeräte mieten in ${cityName}: UHF-Funkgeräte für Events & Baustellen. Kurzfristig verfügbar – SLT Rental.`,
     beleuchtung: `Eventbeleuchtung mieten in ${cityName}: LED-Scheinwerfer, Moving Head, 4er Bar, LED-Fluter RGBWAUV. SLT Rental.`,
     buehne: `Bühnenelemente & Podeste mieten in ${cityName}: Nivtec Systempodeste, Teleskopfüße. Für Events in NRW – SLT Rental.`,
