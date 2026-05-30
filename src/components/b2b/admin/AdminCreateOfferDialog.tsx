@@ -210,8 +210,11 @@ export function AdminCreateOfferDialog({
         setDeliveryAddressPostalCode("");
         setDeliveryAddressCity("");
       }
+      // Parse payment terms marker
+      const payMatch = existingNotesFull.match(/\[PAYMENT:([^\]]+)\]/);
+      setPaymentTerms(payMatch ? payMatch[1] : "default");
       // Remove structured tags from visible notes
-      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim());
+      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "").trim());
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
       setReturnLocation(existingOffer.return_location || "");
