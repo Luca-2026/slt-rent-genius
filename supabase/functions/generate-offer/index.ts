@@ -1296,7 +1296,7 @@ async function generateOfferPdf(data: {
   y -= 35;
 
   // ── NOTES ──
-  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
+  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "").trim() : null;
   if (visibleNotes) {
     ensureSpace(40);
     drawText("Anmerkungen:", margin, y, { f: fontBold, s: 10 });
