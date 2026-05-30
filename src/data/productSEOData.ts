@@ -1548,6 +1548,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Hof-, Terrassen- und Wegebau bei privaten Bauprojekten in Mülheim an der Ruhr und Umgebung.",
     primaryKeywords: "Rüttelplatte VP 15/50W mieten Mülheim an der Ruhr, Baumax Rüttelplatte mit Wassertank Mülheim, Rüttelplatte Sprinkleranlage Ruhrgebiet",
     is247: false,
+    dailyPriceFrom: 29,
     faqs: [
       { q: "Ist die VP 15/50W in Mülheim an der Ruhr direkt verfügbar?", a: "Diesen Artikel führen wir am Service-Standort Mülheim an der Ruhr nicht als Stamm-Gerät. Wir disponieren ihn auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden – und stellen ihn zur Übergabe in Mülheim bereit." },
       { q: "Hat die Rüttelplatte eine Wasserkühlung?", a: "Nein. Der gelbe Tank speist eine Sprinkleranlage, die die Grundplatte beim Verdichten von Asphalt oder Pflaster befeuchtet, damit nichts anhaftet. Der Loncin Motor ist luftgekühlt." },
