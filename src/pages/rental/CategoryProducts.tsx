@@ -2000,9 +2000,27 @@ export default function CategoryProducts() {
                     {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
                   </p>
                   {categorySeoTexts[category.id]?.[2] && (
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground mb-4">
                       {categorySeoTexts[category.id][2]}
                     </p>
+                  )}
+                  {categorySeoTexts[category.id]?.[3] && (
+                    <p className="text-muted-foreground mb-4">
+                      {categorySeoTexts[category.id][3]}
+                    </p>
+                  )}
+                  {category.id === "beschallung" && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-headline mt-6 mb-3">Beliebte Beschallungs- und DJ-Artikel</h3>
+                      <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                        <li><Link to={`/mieten/${location.id}/beschallung/soundsystem-2-1-1400w`} className="text-primary hover:underline">2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger (bis 75 Personen)</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-soundsystem-3500w`} className="text-primary hover:underline">D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-vantec-12a`} className="text-primary hover:underline">D.A.S. Audio Vantec 12A Aktiv-Topteil</Link> · <Link to={`/mieten/${location.id}/beschallung/das-vantec-18a`} className="text-primary hover:underline">Vantec 18A Subwoofer</Link> · <Link to={`/mieten/${location.id}/beschallung/das-action-508a`} className="text-primary hover:underline">Action 508A</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/pioneer-cdj2000-nxs`} className="text-primary hover:underline">Pioneer CDJ 2000 NXS</Link> · <Link to={`/mieten/${location.id}/beschallung/pioneer-djm900-nxs2`} className="text-primary hover:underline">Pioneer DJM 900 NXS2 Mixer</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/yamaha-dm3`} className="text-primary hover:underline">Yamaha DM3 Digitalmischpult</Link> · <Link to={`/mieten/${location.id}/beschallung/midas-dl16-stagebox`} className="text-primary hover:underline">Midas DL16 Digital-Stagebox</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/funkmikrofon`} className="text-primary hover:underline">Sennheiser XSW 1-835 Funkmikrofon</Link> · <Link to={`/mieten/${location.id}/beschallung/shure-qlxd4e-empfaenger`} className="text-primary hover:underline">Shure QLXD-Funkstrecken</Link></li>
+                      </ul>
+                    </div>
                   )}
                 </>
               )}
