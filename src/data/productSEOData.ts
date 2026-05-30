@@ -307,6 +307,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Sicherer Transport und Überführung von Mittelklassewagen, kompakten SUVs oder schwereren Pannenfahrzeugen bis zu einer Last von ca. 2.047 kg.",
     primaryKeywords: "2700 kg Autotransportanhänger mieten in Krefeld, 2700 kg Autotransportanhänger leihen in Krefeld, 2700 kg Autotransportanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Welche Fahrzeuge können mit diesem 2700 kg Modell transportiert werden?", a: "Dieser Anhänger ist für die Mittelklasse ausgelegt und eignet sich aufgrund der Nutzlast von ca. 2.047 kg für kompakte SUVs, schwerere Limousinen und gängige PKW." },
       { q: "Wie groß ist die effektive Ladefläche des Anhängers?", a: "Die nutzbare Ladefläche beträgt 452 cm in der Länge und 205 cm in der Breite." },
