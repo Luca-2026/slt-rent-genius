@@ -279,9 +279,11 @@ Deno.serve(async (req) => {
         </tr>
       </table>
 
-      ${safeAttachment ? `
-      <div style="margin-top:24px;padding:16px;background:#f0f9ff;border-radius:8px;border:1px solid #bae6fd;">
-        <p style="margin:0;color:#0369a1;font-size:14px;font-weight:600;">Dokument im Anhang: ${e.docName}</p>
+      ${(safeAttachment || safeSepa) ? `
+      <h2 style="color:#1a1a1a;font-size:16px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:6px;">Dokumente im Anhang</h2>
+      <div style="margin-top:12px;padding:16px;background:#f0f9ff;border-radius:8px;border:1px solid #bae6fd;">
+        ${safeAttachment ? `<p style="margin:0 0 8px;color:#0369a1;font-size:14px;"><strong>Handelsregister/Gewerbeschein:</strong> ${e.docName}</p>` : ""}
+        ${safeSepa ? `<p style="margin:0;color:#0369a1;font-size:14px;"><strong>SEPA-Firmenlastschrift-Mandat:</strong> ${e.sepaName}</p>` : ""}
       </div>
       ` : ""}
 
@@ -303,8 +305,8 @@ Deno.serve(async (req) => {
       html: htmlBody,
     };
 
-    if (safeAttachment) {
-      emailPayload.attachments = [safeAttachment];
+    if (attachments.length > 0) {
+      emailPayload.attachments = attachments;
     }
 
     const emailRes = await fetch("https://api.resend.com/emails", {
