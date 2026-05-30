@@ -6757,25 +6757,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie hoch ist das Gewicht und die maximale Lautstärke?", a: "Der Lautsprecher wiegt 15,4 kg und erreicht einen maximalen Schalldruckpegel von 126 dB SPL." },
     ],
   },
-   Auto-generated SEO data from SLT_SEO_Produkte_Komplett.xlsx and SLT_FAQ_mit_Antworten.xlsx
-// DO NOT EDIT MANUALLY - regenerate from Excel source
-
-export interface ProductSEOData {
-  excelName: string;
-  seoTitle: string;
-  metaDescription: string;
-  h1: string;
-  h2s: string[];
-  useCaseBau: string;
-  useCaseEvent: string;
-  useCasePrivat: string;
-  primaryKeywords: string;
-  is247: boolean;
-  faqs: { q: string; a: string }[];
-  /** Tagespreis ab (EUR netto) für JSON-LD Offer.priceSpecification */
-  dailyPriceFrom?: number;
-}
-
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
   "adj-fog-fury-jett-pro": {
