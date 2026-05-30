@@ -7819,15 +7819,17 @@ export const productSEOData: Record<string, ProductSEOData> = {
 };
 
 export function getProductSEO(productId: string, locationId?: string): ProductSEOData | undefined {
+  // Mülheim nutzt historisch das Präfix "mh-" in den SEO-Keys.
+  const locPrefix = locationId === "muelheim" ? "mh" : locationId;
   // 1) Standortspezifische Variante hat Vorrang (z. B. "bonn-zwangsmischer-140l")
-  if (locationId) {
-    const prefixed = `${locationId}-${productId}`;
+  if (locPrefix) {
+    const prefixed = `${locPrefix}-${productId}`;
     if (productSEOData[prefixed]) return productSEOData[prefixed];
   }
   // 2) Direkter Treffer auf die Produkt-ID
   if (productSEOData[productId]) return productSEOData[productId];
   // 3) Fallback: ID enthält bereits Standort-Präfix → Basiseintrag versuchen
-  for (const prefix of ["bonn-", "muelheim-", "krefeld-"]) {
+  for (const prefix of ["bonn-", "muelheim-", "mh-", "krefeld-"]) {
     if (productId.startsWith(prefix)) {
       const stripped = productId.slice(prefix.length);
       if (productSEOData[stripped]) return productSEOData[stripped];
