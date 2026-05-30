@@ -75,6 +75,7 @@ export function AdminCreateOfferDialog({
   const [deliveryAddressStreet, setDeliveryAddressStreet] = useState("");
   const [deliveryAddressPostalCode, setDeliveryAddressPostalCode] = useState("");
   const [deliveryAddressCity, setDeliveryAddressCity] = useState("");
+  const [paymentTerms, setPaymentTerms] = useState<string>("default");
   const lastInitKey = useRef<string | null>(null);
   const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -109,8 +110,9 @@ export function AdminCreateOfferDialog({
       deliveryAddressStreet,
       deliveryAddressPostalCode,
       deliveryAddressCity,
+      paymentTerms,
     };
-  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, deliveryAddressStreet, deliveryAddressPostalCode, deliveryAddressCity, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, deliveryAddressStreet, deliveryAddressPostalCode, deliveryAddressCity, paymentTerms, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
@@ -147,6 +149,7 @@ export function AdminCreateOfferDialog({
       setDeliveryAddressStreet(draft.deliveryAddressStreet || "");
       setDeliveryAddressPostalCode(draft.deliveryAddressPostalCode || "");
       setDeliveryAddressCity(draft.deliveryAddressCity || "");
+      setPaymentTerms(draft.paymentTerms || "default");
       return;
     }
 
@@ -207,8 +210,11 @@ export function AdminCreateOfferDialog({
         setDeliveryAddressPostalCode("");
         setDeliveryAddressCity("");
       }
+      // Parse payment terms marker
+      const payMatch = existingNotesFull.match(/\[PAYMENT:([^\]]+)\]/);
+      setPaymentTerms(payMatch ? payMatch[1] : "default");
       // Remove structured tags from visible notes
-      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim());
+      setNotes(existingNotesFull.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "").trim());
       setDeposit(existingOffer.deposit ? String(existingOffer.deposit) : "");
       setIssuingLocation(existingOffer.issuing_location || "krefeld");
       setReturnLocation(existingOffer.return_location || "");
@@ -253,6 +259,7 @@ export function AdminCreateOfferDialog({
         setDeliveryAddressPostalCode("");
         setDeliveryAddressCity("");
       }
+      setPaymentTerms("default");
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
       setDeliveryCostDelivery(0);
@@ -268,6 +275,7 @@ export function AdminCreateOfferDialog({
       setDeliveryAddressStreet("");
       setDeliveryAddressPostalCode("");
       setDeliveryAddressCity("");
+      setPaymentTerms("default");
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
@@ -537,6 +545,7 @@ export function AdminCreateOfferDialog({
             postal_code: deliveryAddressPostalCode,
             city: deliveryAddressCity,
           } : undefined,
+          payment_terms: paymentTerms && paymentTerms !== "default" ? paymentTerms : undefined,
         },
       });
 
@@ -916,6 +925,26 @@ export function AdminCreateOfferDialog({
               </SelectContent>
             </Select>
           </div>
+        </div>
+
+        {/* Payment terms */}
+        <div>
+          <Label className="text-xs">Zahlungsbedingungen</Label>
+          <Select value={paymentTerms} onValueChange={setPaymentTerms}>
+            <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Automatisch (laut Kundenprofil)</SelectItem>
+              <SelectItem value="vorkasse">Vorkasse (vor Mietbeginn)</SelectItem>
+              <SelectItem value="net_7">Rechnung – 7 Tage netto</SelectItem>
+              <SelectItem value="net_14">Rechnung – 14 Tage netto</SelectItem>
+              <SelectItem value="net_30">Rechnung – 30 Tage netto</SelectItem>
+              <SelectItem value="net_60">Rechnung – 60 Tage netto</SelectItem>
+              <SelectItem value="50_50_14">50 % Vorkasse · 50 % nach 14 Tagen</SelectItem>
+            </SelectContent>
+          </Select>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Wird im Angebot unter „Zahlungsbedingungen" angezeigt.
+          </p>
         </div>
 
         {/* Additional Services */}

@@ -57,6 +57,7 @@ interface OfferRequest {
   issuing_location?: string;
   return_location?: string;
   delivery_address?: { street?: string; postal_code?: string; city?: string };
+  payment_terms?: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -123,6 +124,7 @@ Deno.serve(async (req: Request) => {
       issuing_location: issuingLocation,
       return_location: returnLocation,
       delivery_address: deliveryAddress,
+      payment_terms: paymentTerms,
     } = body;
 
     if (!items || items.length === 0) {
@@ -394,6 +396,7 @@ Deno.serve(async (req: Request) => {
       issuingLocation: issuingLocation || reservation?.location || profile.assigned_location || "krefeld",
       returnLocation: returnLocation || undefined,
       deliveryAddress: deliveryAddress || undefined,
+      paymentTerms: paymentTerms || undefined,
     });
 
     // Store as PDF file
@@ -426,12 +429,15 @@ Deno.serve(async (req: Request) => {
       ? servicesWithPrices
       : null;
 
-    // Encode structured delivery metadata into notes so edit/resend can restore exact values
+    // Encode structured metadata into notes so edit/resend can restore exact values
     let finalNotes = notes || "";
-    finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "");
+    finalNotes = finalNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "");
     finalNotes += `[DELIVERY:${delivery_cost_delivery || 0}|RETURN:${delivery_cost_return || 0}]`;
     if (deliveryAddress && (deliveryAddress.street || deliveryAddress.city)) {
       finalNotes += `[DELADDR:${deliveryAddress.street || ""}|${deliveryAddress.postal_code || ""}|${deliveryAddress.city || ""}]`;
+    }
+    if (paymentTerms) {
+      finalNotes += `[PAYMENT:${paymentTerms}]`;
     }
 
     let offer: any;
@@ -809,6 +815,7 @@ async function generateOfferPdf(data: {
   issuingLocation: string;
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
+  paymentTerms?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -1253,9 +1260,19 @@ async function generateOfferPdf(data: {
   ensureSpace(40);
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
   const paymentDueDays = data.profile.payment_due_days || 14;
-  const paymentText = hasCreditLimit
-    ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fmtCurrency(data.profile.credit_limit)}).`
-    : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.";
+  const PAYMENT_TEXTS: Record<string, string> = {
+    vorkasse: "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.",
+    net_7: "Zahlungsbedingungen: Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
+    net_14: "Zahlungsbedingungen: Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto).",
+    net_30: "Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
+    net_60: "Zahlungsbedingungen: Zahlung innerhalb von 60 Tagen nach Rechnungsstellung (netto).",
+    "50_50_14": "Zahlungsbedingungen: 50 % Vorkasse vor Mietbeginn, 50 % Restzahlung innerhalb von 14 Tagen nach Rechnungsstellung.",
+  };
+  const paymentText = (data.paymentTerms && PAYMENT_TEXTS[data.paymentTerms])
+    ? PAYMENT_TEXTS[data.paymentTerms]
+    : (hasCreditLimit
+        ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fmtCurrency(data.profile.credit_limit)}).`
+        : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.");
   page.drawRectangle({ x: margin, y: y - 6, width: contentWidth, height: 22, color: rgb(0.95, 0.97, 1) });
   page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: blue });
   drawText(paymentText, margin + 10, y + 2, { s: 8 });
@@ -1279,7 +1296,7 @@ async function generateOfferPdf(data: {
   y -= 35;
 
   // ── NOTES ──
-  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() : null;
+  const visibleNotes = data.notes ? data.notes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").replace(/\[PAYMENT:[^\]]*\]/g, "").trim() : null;
   if (visibleNotes) {
     ensureSpace(40);
     drawText("Anmerkungen:", margin, y, { f: fontBold, s: 10 });
