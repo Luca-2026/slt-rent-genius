@@ -396,6 +396,7 @@ Deno.serve(async (req: Request) => {
       issuingLocation: issuingLocation || reservation?.location || profile.assigned_location || "krefeld",
       returnLocation: returnLocation || undefined,
       deliveryAddress: deliveryAddress || undefined,
+      paymentTerms: paymentTerms || undefined,
     });
 
     // Store as PDF file
