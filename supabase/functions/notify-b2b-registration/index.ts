@@ -206,6 +206,7 @@ Deno.serve(async (req) => {
       address: escapeHtml(addressRaw),
       location: escapeHtml(locationDisplay),
       docName: safeAttachment ? escapeHtml(safeAttachment.filename) : "",
+      sepaName: safeSepa ? escapeHtml(safeSepa.filename) : "",
     };
 
     const htmlBody = `<!DOCTYPE html>
