@@ -655,7 +655,7 @@ const trailerProducts: Product[] = [
     images: [imgPlattform3500_1, imgPlattform3500_2, imgPlattform3500_3, imgPlattform3500_4, imgPlattform3500_5, imgPlattform3500_6], 
     weightKg: 3500, 
     category: "plattform",
-    tags: ["autotransport", "gebremst", "zweiachser"], 
+    tags: ["autotransport", "baumaschine", "gebremst", "zweiachser"], 
     specifications: { "Eigengewicht": "ca. 900 kg", "Nutzlast": "ca. 2.600 kg", "Ausstattung": "Seilwinde" },
     rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
   },
