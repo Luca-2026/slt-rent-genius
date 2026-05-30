@@ -266,9 +266,18 @@ export default function B2BRegister() {
         // (the user has no session yet, so a client-side call to
         // notify-b2b-registration would fail with 401).
 
+        // Send welcome email to the customer (Resend, DE, Du-Form)
+        try {
+          await supabase.functions.invoke("send-b2b-welcome", {
+            body: { email, firstName, companyName },
+          });
+        } catch (welcomeErr) {
+          console.error("Welcome email failed (non-blocking):", welcomeErr);
+        }
+
         toast({
-          title: "Bestätigungs-E-Mail gesendet!",
-          description: "Bitte überprüfe dein E-Mail-Postfach und klicke auf den Bestätigungslink, um die Registrierung abzuschließen.",
+          title: "Registrierung erfolgreich!",
+          description: "Dein Antrag wurde übermittelt. Du bekommst gleich eine Willkommens-E-Mail – sobald wir deine Unterlagen geprüft haben, schalten wir dein Konto frei.",
         });
         navigate("/b2b/login");
       }
