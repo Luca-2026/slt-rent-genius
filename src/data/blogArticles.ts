@@ -605,7 +605,8 @@ const CATEGORY_TO_RATGEBER: Record<string, string[]> = {
   "geschirr-glaeser-besteck": ["Event & Veranstaltung"],
   "moebel-zelte": ["Event & Veranstaltung"],
   beleuchtung: ["Event & Veranstaltung"],
-  beschallung: ["Event & Veranstaltung"],
+  // beschallung: bewusst kein Mapping – die einzige Event-Veranstaltung-Story
+  // ist der Geschirr-Hochzeit-Artikel, der nicht zur Beschallungskategorie passt.
   buehne: ["Event & Veranstaltung"],
   "traversen-rigging": ["Event & Veranstaltung"],
   huepfburgen: ["Event & Veranstaltung"],

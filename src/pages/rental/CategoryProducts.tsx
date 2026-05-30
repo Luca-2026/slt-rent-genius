@@ -1045,7 +1045,11 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
     absperrtechnik: `Bauzaun & Halteverbotsschilder mieten ${location.name} – StVO-konform ✓`,
     "kabel-stromverteiler": `Stromverteiler & Kabel mieten ${location.name} – CEE 16A bis 63A`,
-    beschallung: `PA-Anlage & Beschallung mieten ${location.name} – Professionell`,
+    beschallung: location.id === "krefeld"
+      ? `PA-Anlage, DJ-Equipment & Beschallung mieten Krefeld`
+      : location.id === "bonn"
+      ? `PA-Anlage, DJ-Equipment & Beschallung mieten Bonn`
+      : `PA-Anlage, DJ-Equipment & Beschallung mieten Mülheim a. d. Ruhr`,
     beleuchtung: `Beleuchtung mieten ${location.name} – LED Moving Heads & Bars`,
     buehne: `Bühne mieten ${location.name} – Bühnenpodeste & Zubehör`,
     "traversen-rigging": `Traversen mieten ${location.name} – Rigging & Bühnentechnik`,
@@ -1074,7 +1078,11 @@ export default function CategoryProducts() {
     "leitern-gerueste": `Leitern & Rollgerüste mieten in ${cityName}: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.`,
     "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${cityName}: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.`,
     absperrtechnik: `Absperrtechnik & Verkehrszeichen mieten in ${cityName}: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.`,
-    beschallung: `PA-Anlage & Beschallung mieten in ${cityName}: Soundboks Gen.3, DAS PA-Systeme, Pioneer CDJ/DJM, Shure Funkmikrofone. SLT Rental.`,
+    beschallung: location.id === "krefeld"
+      ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Krefeld. Inkl. Aufbau, Abbau & Betreuung durch erfahrene Tontechniker – seit über 10 Jahren.`
+      : location.id === "bonn"
+      ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Bonn. Aufbau, Abbau & Tontechniker für Hochzeit & Firmenevent – 10+ Jahre Erfahrung.`
+      : `PA-Anlage, DJ-Equipment, Mischpult & Funkmikrofone mieten in Mülheim an der Ruhr. Aufbau, Abbau & Tontechniker für Events – 10+ Jahre Erfahrung.`,
     kommunikation: `Funkgeräte mieten in ${cityName}: UHF-Funkgeräte für Events & Baustellen. Kurzfristig verfügbar – SLT Rental.`,
     beleuchtung: `Eventbeleuchtung mieten in ${cityName}: LED-Scheinwerfer, Moving Head, 4er Bar, LED-Fluter RGBWAUV. SLT Rental.`,
     buehne: `Bühnenelemente & Podeste mieten in ${cityName}: Nivtec Systempodeste, Teleskopfüße. Für Events in NRW – SLT Rental.`,
@@ -1209,9 +1217,21 @@ export default function CategoryProducts() {
       `Kabel und Stromverteiler mieten in ${location.name} – CEE-Kabel, Schuko-Kabeltrommeln, Kabelbrücken, Anschlussschränke und Stromverteiler für Event und Baustelle. Bei SLT Rental finden Sie die richtige Stromversorgung für jedes Projekt.`,
       `Von der 16A Schuko-Kabeltrommel bis zum 63A CEE-Anschlussschrank – wir beraten Sie zur richtigen Stromverteilung für Ihr Event oder Ihre Baustelle in ${location.name}.`,
     ],
-    beschallung: [
-      `PA-Anlage und Lautsprecher mieten in ${location.name} – vom Bluetooth-Speaker für die Gartenparty bis zur professionellen PA-Anlage für 250 Personen. SLT Rental bietet professionelle Beschallungstechnik für jeden Anlass.`,
-      `Komplette Sound-Pakete mit Lautsprechern, Subwoofern und Mischpult. Für Hochzeiten, Firmenfeiern, Sportveranstaltungen und Konzerte in ${location.name} und Umgebung.`,
+    beschallung: location.id === "krefeld" ? [
+      `PA-Anlage, DJ-Equipment und Beschallungstechnik mieten in Krefeld – bei SLT Rental bekommst du am Niederrhein das komplette Sortiment für Hochzeiten, Firmenevents, Open-Airs und Konzerte: vom 2.1 Soundsystem 1400W RMS mit eingebautem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen) über das D.A.S. Soundsystem 3500W RMS mit 2× VANTEC-18A Subwoofern und 2× VANTEC-12A Aktiv-Topteilen (bis 250 Personen) bis zu Einzelkomponenten wie D.A.S. Audio Action 508A Aktiv-Lautsprechern als Monitor oder Delay-Line.`,
+      `Komplettes DJ-Equipment ergänzt unseren Mietpark: Pioneer CDJ 2000 NXS Player und der Pioneer DJM 900 NXS2 4-Kanal-Mixer als Industrie-Standard im DJ-Booth, das digitale Yamaha DM3 Mischpult (Dante-Version) für Live-Bands und Konferenzen sowie die Midas DL16 Digital-Stagebox für saubere Signalführung von der Bühne ins FOH. Für Sprache und Vocals stehen Shure QLXD-Funkstrecken (QLXD4E Empfänger, QLXD2/Beta58 Handsender, QLXD1 Taschensender) und das Sennheiser XSW 1-835 Funkmikrofon bereit.`,
+      `Auf Wunsch übernehmen wir Aufbau, Soundcheck, Betreuung während der Veranstaltung und den Abbau – mit eigenen, professionellen Tontechnikern. Wir mischen seit über 10 Jahren Hochzeiten, Firmenfeiern, Galas, Modenschauen und Konzerte in Krefeld, Düsseldorf, Mönchengladbach und am Niederrhein. So musst du dich nicht selbst um Routing, EQ, Bluetooth-Streaming oder die DAS Audio Aliante App-Steuerung kümmern, sondern kannst dich auf deine Gäste konzentrieren.`,
+      `Lieferung in Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg – die Lieferkosten kalkulierst du transparent im Buchungsprozess. Tipp: Wer selbst mischt, kann unsere PA-Sets, DJ-Equipment und Funkmikrofone direkt online buchen und am Hauptsitz in Krefeld abholen.`,
+    ] : location.id === "bonn" ? [
+      `PA-Anlage, DJ-Equipment und Beschallungstechnik mieten in Bonn – bei SLT Rental findest du das komplette Sortiment für Hochzeiten, Firmenevents, Geburtstage und Open-Airs: Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher mit TeamUP-Modus) und Batteryboks zur Selbstabholung an der Filiale Bonn, das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen) sowie auf Anfrage das D.A.S. Soundsystem 3500W RMS mit 2× VANTEC-18A Subwoofern und 2× VANTEC-12A Aktiv-Topteilen (bis 250 Personen).`,
+      `Für DJs und Bands liefern wir komplettes DJ-Equipment: Pioneer CDJ 2000 NXS Player und Pioneer DJM 900 NXS2 4-Kanal-Mixer als Club-Standard, das Yamaha DM3 Digitalmischpult mit Dante-Vernetzung sowie die Midas DL16 Digital-Stagebox. Für Trauungen, Reden und Moderationen stehen Shure QLXD-Funkstrecken (Handsender QLXD2/Beta58, Taschensender QLXD1) und das Sennheiser XSW 1-835 Funkmikrofon zur Verfügung – alles auf Anfrage aus Krefeld disponiert, in der Regel innerhalb von 24 Stunden in Bonn.`,
+      `Auf Wunsch übernehmen wir Aufbau, Soundcheck, Betreuung während der Veranstaltung und Abbau in Bonn, Bad Godesberg, Beuel, Königswinter, Sankt Augustin, im Rhein-Sieg-Kreis und im Ahrtal – mit eigenen, professionellen Tontechnikern. Wir mischen seit über 10 Jahren Hochzeiten, Firmenfeiern, Galas und Konzerte im Rheinland und sorgen dafür, dass Musik, Mikrofon und Bühnensignale störungsfrei laufen.`,
+      `Soundboks und kleines Zubehör holst du in der Regel selbst an der Filiale Bonn (Drachenburgstraße 8, Bad Godesberg/Mehlem, samstags bis 17:30 Uhr ohne Voranmeldung) ab. Größere PA-Systeme, DJ-Pulte und Funkstrecken liefern wir auf Anfrage – Anfahrt über A555, A565 und B9.`,
+    ] : [
+      `PA-Anlage, DJ-Equipment und Beschallungstechnik mieten in Mülheim an der Ruhr – bei SLT Rental findest du das komplette Sortiment für Hochzeiten, Firmenfeiern, Festivals und Open-Airs im Ruhrgebiet: Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher) und Batteryboks zur Übergabe am Service-Standort Mülheim, das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen) sowie auf Anfrage das D.A.S. Soundsystem 3500W RMS mit 2× VANTEC-18A Subwoofern und 2× VANTEC-12A Aktiv-Topteilen (bis 250 Personen).`,
+      `Auch komplettes DJ-Equipment ist verfügbar: Pioneer CDJ 2000 NXS Player und Pioneer DJM 900 NXS2 4-Kanal-Mixer als Club-Standard, das Yamaha DM3 Digitalmischpult mit Dante-Vernetzung sowie die Midas DL16 Digital-Stagebox für saubere Signalführung. Für Sprache, Trauungen und Moderationen stehen Shure QLXD-Funkstrecken (Handsender QLXD2/Beta58, Taschensender QLXD1) und das Sennheiser XSW 1-835 Funkmikrofon bereit – aus unserem Hauptsitz Krefeld disponiert, in der Regel innerhalb von 24 Stunden in Mülheim.`,
+      `Auf Wunsch übernehmen wir Aufbau, Soundcheck, Betreuung und Abbau in Mülheim an der Ruhr, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen und Hattingen – mit eigenen, professionellen Tontechnikern. Mit über 10 Jahren Erfahrung im Mischen von Hochzeiten, Firmenfeiern, Galas und Konzerten sorgen wir dafür, dass Musik, Bandsignale, Funkmikrofone und Monitorwege störungsfrei laufen.`,
+      `Übergabe nach Vereinbarung an der Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (eingebettet in die Bobcat-Filiale vor Ort). Größere PA-Systeme, DJ-Pulte und Funkstrecken liefern wir auf Anfrage – Anfahrt über A40 und A52.`,
     ],
     beleuchtung: [
       `Eventbeleuchtung mieten in ${location.name} – LED Spots, Moving Heads, PAR-Scheinwerfer, LED Bars und Baustellenstrahler. SLT Rental bietet professionelle Lichttechnik für Events, Bühnen und Baustellen.`,
@@ -1348,9 +1368,25 @@ export default function CategoryProducts() {
       { question: `Kann ich Halteverbotsschilder in ${location.name} mieten?`, answer: `Ja, wir vermieten Halteverbotsschilder nach StVO. Bitte beachten Sie: Die Genehmigung beim Ordnungsamt müssen Sie selbst beantragen.` },
       { question: `Was kostet Absperrtechnik mieten?`, answer: `Absperrgitter, Bauzäune und Verkehrszeichen gibt es ab ca. 3 €/Tag. Komplett-Sets für Baustellen-Absicherung auf Anfrage.` },
     ],
-    beschallung: [
-      { question: `Was kostet eine PA-Anlage mieten in ${location.name}?`, answer: `Bluetooth-Speaker gibt es ab ca. 25 €/Tag. Professionelle PA-Anlagen für bis zu 250 Personen ab ca. 79 €/Tag.` },
-      { question: `Welche Beschallung brauche ich für mein Event?`, answer: `Für bis zu 30 Personen reicht ein Bluetooth-Speaker. Für 30-75 Personen empfehlen wir ein Kompakt-Set. Ab 75 Personen eine professionelle PA-Anlage.` },
+    beschallung: location.id === "krefeld" ? [
+      { question: `Welche PA-Anlagen kann ich in Krefeld mieten?`, answer: `In Krefeld stehen u.a. das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen), das D.A.S. Soundsystem 3500W RMS mit 2× VANTEC-18A Subwoofern und 2× VANTEC-12A Aktiv-Topteilen (bis 250 Personen) sowie einzelne D.A.S. Audio Action 508A / Vantec 12A / Vantec 18A Aktivkomponenten bereit.` },
+      { question: `Habt ihr DJ-Equipment zur Miete?`, answer: `Ja. Bei SLT Rental in Krefeld mietest du den Pioneer CDJ 2000 NXS Player, den Pioneer DJM 900 NXS2 4-Kanal-Mixer, das Yamaha DM3 Digitalmischpult (Dante-Version) sowie die Midas DL16 Digital-Stagebox – Industrie-Standard für DJ-Booth, Live-Mix und Festinstallationen.` },
+      { question: `Welche Funkmikrofone gibt es?`, answer: `Wir vermieten Shure QLXD-Funkstrecken (QLXD4E Empfänger, QLXD2/Beta58 Handsender, QLXD1 Taschensender) für Bühnen- und Konferenz-Einsatz sowie das Sennheiser XSW 1-835 Funkmikrofon für Reden, Trauungen und Moderationen.` },
+      { question: `Übernehmt ihr Aufbau, Abbau und Betreuung mit Tontechniker?`, answer: `Ja. Auf Wunsch bauen unsere eigenen, professionellen Tontechniker die Anlage auf, machen den Soundcheck, betreuen die Veranstaltung live und bauen anschließend wieder ab. Wir mischen seit über 10 Jahren Hochzeiten, Firmenevents, Galas und Konzerte in Krefeld und Umgebung – sprich uns für ein individuelles Angebot an.` },
+      { question: `Was kostet eine PA-Anlage mieten in Krefeld?`, answer: `Das 2.1 Soundsystem 1400W RMS startet im Tarif deutlich günstiger als die große D.A.S. 3500W RMS Anlage (Tagespreis ab ca. 90 €). Den tagesaktuellen Endpreis inkl. eventueller Tontechniker- und Lieferkosten siehst du im Buchungsprozess oder erhältst du innerhalb von 24 Stunden auf Anfrage.` },
+      { question: `Liefert ihr die Beschallung in Krefeld und Umgebung?`, answer: `Ja. Lieferung in Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Moers und Duisburg ist möglich – die Lieferkosten kalkulierst du transparent im Buchungsprozess. Selbstabholung am Hauptsitz Krefeld ist ebenfalls jederzeit möglich.` },
+    ] : location.id === "bonn" ? [
+      { question: `Welche Beschallung kann ich in Bonn mieten?`, answer: `An der Filiale Bonn stehen Soundboks Gen.3, Batteryboks und das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen) direkt vor Ort. Größere PA-Systeme wie das D.A.S. Soundsystem 3500W RMS (bis 250 Personen), D.A.S. Vantec 12A/18A oder Action 508A disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden in Bonn.` },
+      { question: `Habt ihr auch DJ-Equipment für Bonn?`, answer: `Ja. Pioneer CDJ 2000 NXS Player, Pioneer DJM 900 NXS2 4-Kanal-Mixer, Yamaha DM3 Digitalmischpult und Midas DL16 Digital-Stagebox liefern wir auf Anfrage in Bonn, Bad Godesberg, Beuel und in den Rhein-Sieg-Kreis. Funkmikrofone (Shure QLXD-Serie, Sennheiser XSW 1-835) für Reden und Trauungen ebenfalls.` },
+      { question: `Übernehmt ihr Aufbau, Abbau und Betreuung mit Tontechniker?`, answer: `Ja. Unsere eigenen, professionellen Tontechniker übernehmen Aufbau, Soundcheck, Live-Betreuung und Abbau bei Hochzeiten, Firmenevents und Galas in Bonn und Umgebung. Mit über 10 Jahren Erfahrung im Rheinland sorgen wir dafür, dass Musik, Funkmikrofone und Bandsignale störungsfrei laufen.` },
+      { question: `Wo kann ich Soundboks und 2.1 PA in Bonn abholen?`, answer: `An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr, samstags ohne Voranmeldung. Anfahrt über B9, A555 und A565.` },
+      { question: `Liefert ihr die Beschallung ins Ahrtal und in den Rhein-Sieg-Kreis?`, answer: `Ja. Wir liefern ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis und ins Ahrtal bis Bad Neuenahr-Ahrweiler – Anfahrt über A555, A565 und B9.` },
+    ] : [
+      { question: `Welche Beschallung kann ich in Mülheim an der Ruhr mieten?`, answer: `Am Service-Standort Mülheim stehen Soundboks Gen.3, Batteryboks und das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger (bis 75 Personen) zur Übergabe bereit. Größere PA-Systeme wie das D.A.S. Soundsystem 3500W RMS (bis 250 Personen), D.A.S. Vantec 12A/18A oder Action 508A disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden im Ruhrgebiet.` },
+      { question: `Habt ihr auch DJ-Equipment fürs Ruhrgebiet?`, answer: `Ja. Pioneer CDJ 2000 NXS Player, Pioneer DJM 900 NXS2 4-Kanal-Mixer, Yamaha DM3 Digitalmischpult mit Dante und die Midas DL16 Digital-Stagebox liefern wir auf Anfrage in Mülheim, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen und Hattingen. Funkmikrofone (Shure QLXD-Serie, Sennheiser XSW 1-835) ebenfalls.` },
+      { question: `Übernehmt ihr Aufbau, Abbau und Betreuung mit Tontechniker?`, answer: `Ja. Unsere eigenen, professionellen Tontechniker übernehmen Aufbau, Soundcheck, Live-Betreuung und Abbau bei Hochzeiten, Firmenfeiern und Galas im Ruhrgebiet. Mit über 10 Jahren Erfahrung sorgen wir dafür, dass Musik, Bandsignale und Funkmikrofone störungsfrei laufen.` },
+      { question: `Wo wird die Beschallung in Mülheim übergeben?`, answer: `Übergabe nach Vereinbarung an der Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – eingebettet in die Bobcat-Filiale vor Ort. Anfahrt über A40 und A52.` },
+      { question: `Liefert ihr die Beschallung ins gesamte Ruhrgebiet?`, answer: `Ja. Wir liefern ab Mülheim an der Ruhr ins gesamte westliche Ruhrgebiet – inkl. Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Geräte selbst disponieren wir aus Krefeld, in der Regel am nächsten Werktag.` },
     ],
     beleuchtung: [
       { question: `Was kostet Eventbeleuchtung mieten in ${location.name}?`, answer: `LED-Spots gibt es ab ca. 10 €/Tag. Moving Heads ab 35 €/Tag. Komplette Licht-Sets für Events auf Anfrage.` },
@@ -1964,9 +2000,27 @@ export default function CategoryProducts() {
                     {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
                   </p>
                   {categorySeoTexts[category.id]?.[2] && (
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground mb-4">
                       {categorySeoTexts[category.id][2]}
                     </p>
+                  )}
+                  {categorySeoTexts[category.id]?.[3] && (
+                    <p className="text-muted-foreground mb-4">
+                      {categorySeoTexts[category.id][3]}
+                    </p>
+                  )}
+                  {category.id === "beschallung" && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-headline mt-6 mb-3">Beliebte Beschallungs- und DJ-Artikel</h3>
+                      <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                        <li><Link to={`/mieten/${location.id}/beschallung/soundsystem-2-1-1400w`} className="text-primary hover:underline">2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger (bis 75 Personen)</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-soundsystem-3500w`} className="text-primary hover:underline">D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-vantec-12a`} className="text-primary hover:underline">D.A.S. Audio Vantec 12A Aktiv-Topteil</Link> · <Link to={`/mieten/${location.id}/beschallung/das-vantec-18a`} className="text-primary hover:underline">Vantec 18A Subwoofer</Link> · <Link to={`/mieten/${location.id}/beschallung/das-action-508a`} className="text-primary hover:underline">Action 508A</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/pioneer-cdj2000-nxs`} className="text-primary hover:underline">Pioneer CDJ 2000 NXS</Link> · <Link to={`/mieten/${location.id}/beschallung/pioneer-djm900-nxs2`} className="text-primary hover:underline">Pioneer DJM 900 NXS2 Mixer</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/yamaha-dm3`} className="text-primary hover:underline">Yamaha DM3 Digitalmischpult</Link> · <Link to={`/mieten/${location.id}/beschallung/midas-dl16-stagebox`} className="text-primary hover:underline">Midas DL16 Digital-Stagebox</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/funkmikrofon`} className="text-primary hover:underline">Sennheiser XSW 1-835 Funkmikrofon</Link> · <Link to={`/mieten/${location.id}/beschallung/shure-qlxd4e-empfaenger`} className="text-primary hover:underline">Shure QLXD-Funkstrecken</Link></li>
+                      </ul>
+                    </div>
                   )}
                 </>
               )}
