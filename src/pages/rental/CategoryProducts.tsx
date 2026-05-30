@@ -1045,7 +1045,11 @@ export default function CategoryProducts() {
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
     absperrtechnik: `Bauzaun & Halteverbotsschilder mieten ${location.name} – StVO-konform ✓`,
     "kabel-stromverteiler": `Stromverteiler & Kabel mieten ${location.name} – CEE 16A bis 63A`,
-    beschallung: `PA-Anlage & Beschallung mieten ${location.name} – Professionell`,
+    beschallung: location.id === "krefeld"
+      ? `PA-Anlage, DJ-Equipment & Beschallung mieten Krefeld`
+      : location.id === "bonn"
+      ? `PA-Anlage, DJ-Equipment & Beschallung mieten Bonn`
+      : `PA-Anlage, DJ-Equipment & Beschallung mieten Mülheim a. d. Ruhr`,
     beleuchtung: `Beleuchtung mieten ${location.name} – LED Moving Heads & Bars`,
     buehne: `Bühne mieten ${location.name} – Bühnenpodeste & Zubehör`,
     "traversen-rigging": `Traversen mieten ${location.name} – Rigging & Bühnentechnik`,
