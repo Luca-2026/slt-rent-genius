@@ -99,6 +99,10 @@ export interface PrerenderProduct {
   seoTitle?: string;
   metaDescription?: string;
   h1?: string;
+  h2s?: string[];
+  useCaseBau?: string;
+  useCaseEvent?: string;
+  useCasePrivat?: string;
   faqs?: { q: string; a: string }[];
   modelName?: string;
 }
