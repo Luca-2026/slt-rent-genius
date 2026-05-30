@@ -2846,8 +2846,9 @@ export const beschallungProducts: Product[] = [
   },
   {
     id: "soundsystem-2-1-1400w",
-    name: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult – bis zu 75 Personen",
-    description: "Aktive 2.1 Anlage mit 1400W RMS Systemleistung und integriertem 4-Kanal Mischpult. Bis zu 75 Personen, 126 dB Lautstärke, Bluetooth-fähig und einfacher Aufbau. Inkl. 1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel sowie Miniklinke-auf-XLR Adapter. Optional: Bluetooth Empfänger.",
+    name: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult und Bluetooth-Empfänger – bis zu 75 Personen",
+    description: "Aktive 2.1 PA-Anlage mit 1400W RMS Systemleistung, integriertem 4-Kanal-Mischpult und bereits enthaltenem Bluetooth-Empfänger. Bis zu 75 Personen, 126 dB Lautstärke, einfacher Aufbau. Inkl. 1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel sowie Miniklinke-auf-XLR Adapter.",
+    detailedDescription: "Kompakte 2.1 PA-Anlage mit 1400W RMS – ideal für mobile DJs, Hochzeiten, Geburtstage, Firmenfeiern und kleinere Open-Air-Events mit bis zu 75 Personen.\n\n✅ 1400W RMS Systemleistung, bis zu 126 dB\n✅ Integriertes 4-Kanal-Mischpult (XLR, AUX, Klinke)\n✅ Bluetooth-Empfänger im Set enthalten – direkt vom Smartphone streamen\n✅ Aktiv mit eingebauter Endstufe – keine externe Endstufe nötig\n✅ Komplett-Set inkl. Stativ, Distanzstange, Speakon-Kabeln (3 m & 5 m) und Miniklinke-auf-XLR-Adapter\n✅ Schneller Aufbau in wenigen Minuten\n✅ Gesamtgewicht ca. 55 kg – transportabel im Pkw oder Kombi\n\nPerfekt für alle, die eine professionell klingende, einsatzfertige Anlage mit Bluetooth-Streaming für mittelgroße Räume und Open-Air-Veranstaltungen suchen.",
     image: imgSoundsystem1400w1,
     images: [imgSoundsystem1400w1, imgSoundsystem1400w2],
     category: "pa-system",
@@ -2857,9 +2858,9 @@ export const beschallungProducts: Product[] = [
       "Max. Schalldruckpegel": "126 dB",
       "Mischpult": "Integriertes 4-Kanal Mischpult",
       "Anschlüsse": "XLR, AUX, Klinke",
+      "Bluetooth-Empfänger": "Im Set enthalten",
       "Verbindung": "Kabellos / Bluetooth",
-      "Lieferumfang": "1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke-auf-XLR Adapter",
-      "Optional": "Bluetooth Empfänger",
+      "Lieferumfang": "1× Stativ, 1× Distanzstange, 1× 3m & 1× 5m Speakonkabel, Miniklinke-auf-XLR Adapter, Bluetooth-Empfänger",
       "Gewicht": "ca. 55 kg",
     },
     rentwareCode: { krefeld: "HP9CD4" }
