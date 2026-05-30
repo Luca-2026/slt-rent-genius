@@ -343,6 +343,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Privatpersonen nutzen das Fahrzeug für den Transport gemieteter Baumaschinen zu ihrem jeweiligen Privatprojekt.",
     primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Krefeld, 1800 kg Baumaschinenanhänger leihen in Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die maximale Nutzlast beträgt ca. 1.155 kg bei einem Eigengewicht von ca. 645 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Ladefläche des 1800 kg Baumaschinenanhängers misst 260 x 150 x 25 cm." },
