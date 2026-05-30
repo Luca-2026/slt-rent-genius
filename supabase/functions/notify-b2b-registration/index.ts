@@ -125,35 +125,58 @@ Deno.serve(async (req) => {
       });
     }
 
-    // --- Validate optional attachment ---
-    let safeAttachment: { filename: string; content: string } | null = null;
-    if (data.documentBase64 && data.documentFilename) {
-      // Approx decoded size from base64 length
-      const approxSize = Math.floor((data.documentBase64.length * 3) / 4);
+    // --- Validate optional attachments (Handelsregister/Gewerbeschein + SEPA-Mandat) ---
+    const attachments: { filename: string; content: string }[] = [];
+
+    async function validateAttachment(
+      b64: string,
+      filename: string,
+      labelPrefix: string,
+    ): Promise<{ filename: string; content: string } | Response> {
+      const approxSize = Math.floor((b64.length * 3) / 4);
       if (approxSize > MAX_DOCUMENT_BYTES) {
-        return new Response(JSON.stringify({ error: "Attachment too large" }), {
+        return new Response(JSON.stringify({ error: `${labelPrefix}: Attachment too large` }), {
           status: 413,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const kind = detectAttachmentType(data.documentBase64);
+      const kind = detectAttachmentType(b64);
       if (!kind) {
-        return new Response(JSON.stringify({ error: "Unsupported attachment type" }), {
+        return new Response(JSON.stringify({ error: `${labelPrefix}: Unsupported attachment type` }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const ext = data.documentFilename.split(".").pop()?.toLowerCase();
+      const ext = filename.split(".").pop()?.toLowerCase();
       const allowedExt = kind === "jpg" ? ["jpg", "jpeg"] : [kind];
       if (!ext || !allowedExt.includes(ext)) {
-        return new Response(JSON.stringify({ error: "Filename does not match content type" }), {
+        return new Response(JSON.stringify({ error: `${labelPrefix}: Filename does not match content type` }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      // Sanitize filename: strip path separators and control chars
-      const safeName = data.documentFilename.replace(/[\\/\x00-\x1f]/g, "_").slice(0, 120);
-      safeAttachment = { filename: safeName, content: data.documentBase64 };
+      const safeName = filename.replace(/[\\/\x00-\x1f]/g, "_").slice(0, 120);
+      return { filename: safeName, content: b64 };
+    }
+
+    let safeAttachment: { filename: string; content: string } | null = null;
+    if (data.documentBase64 && data.documentFilename) {
+      const result = await validateAttachment(data.documentBase64, data.documentFilename, "Handelsregister/Gewerbeschein");
+      if (result instanceof Response) return result;
+      safeAttachment = result;
+      attachments.push(result);
+    }
+
+    let safeSepa: { filename: string; content: string } | null = null;
+    if (data.sepaBase64 && data.sepaFilename) {
+      // Prefix filename so it's easy to distinguish in the inbox
+      const prefixedName = data.sepaFilename.toLowerCase().startsWith("sepa")
+        ? data.sepaFilename
+        : `SEPA-Mandat-${data.sepaFilename}`;
+      const result = await validateAttachment(data.sepaBase64, prefixedName, "SEPA-Mandat");
+      if (result instanceof Response) return result;
+      safeSepa = result;
+      attachments.push(result);
     }
 
     // --- Build email (everything escaped) ---
