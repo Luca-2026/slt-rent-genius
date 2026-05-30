@@ -378,50 +378,8 @@ export function AdminCustomerDetailDialog({
         {/* Pending Approval Banner */}
         {profile.status === "pending" && (
           <div className="space-y-2">
-            {/* Email confirmation status */}
-            {!(profile as any).email_confirmed && (
-              <div className="flex items-center gap-2 p-3 rounded-lg border border-orange-300 bg-orange-50">
-                <Mail className="h-4 w-4 text-orange-600 shrink-0" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-orange-800">E-Mail nicht bestätigt</p>
-                  <p className="text-xs text-orange-700">
-                    Der Kunde hat seine E-Mail-Adresse noch nicht bestätigt.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="shrink-0 border-orange-300 text-orange-700 hover:bg-orange-100"
-                  disabled={resendingEmail}
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    setResendingEmail(true);
-                    try {
-                      const { data, error } = await supabase.functions.invoke("resend-confirmation", {
-                        body: { email: profile.contact_email, type: "signup" },
-                      });
-                      if (error) throw error;
-                      if (data?.error) throw new Error(data.error);
-                      toast({
-                        title: "Bestätigungsemail erneut gesendet",
-                        description: `E-Mail wurde an ${profile.contact_email} gesendet.`,
-                      });
-                    } catch (err: any) {
-                      toast({
-                        title: "Fehler",
-                        description: err.message || "E-Mail konnte nicht gesendet werden.",
-                        variant: "destructive",
-                      });
-                    } finally {
-                      setResendingEmail(false);
-                    }
-                  }}
-                >
-                  <Mail className="h-3.5 w-3.5 mr-1" />
-                  {resendingEmail ? "Wird gesendet..." : "Erneut senden"}
-                </Button>
-              </div>
-            )}
+            {/* Email confirmation is handled via auto-confirm — no manual verification needed */}
+
 
             <div className="flex items-center gap-2 p-3 rounded-lg border border-yellow-300 bg-yellow-50">
               <Clock className="h-4 w-4 text-yellow-600 shrink-0" />
