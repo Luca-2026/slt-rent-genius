@@ -6737,7 +6737,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich mehrere Soundboks koppeln?", a: "Ja, kabellos über TeamUP (SKAA) – für mehr Lautstärke und echtes Stereo." },
       { q: "Ist die Soundbox wetterfest?", a: "Ja, das Gehäuse ist nach IP65 gegen Staub und Spritzwasser geschützt und damit outdoor-tauglich." },
       { q: "Für welche Anlässe eignet sie sich?", a: "Geburtstage, Hochzeiten, Firmenevents, Straßenfeste, Open-Air- und Gartenpartys. Sie ist plug-and-play und sofort einsatzbereit." },
-      { q: "Wo kann ich die Soundbox in Mülheim an der Ruhr mieten?", a: "Bei SLT Rental, Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – Abholung vor Ort oder Lieferung im Ruhrgebiet (Essen, Duisburg, Oberhausen)." },
+      { q: "Wo kann ich die Soundbox in Mülheim an der Ruhr mieten?", a: "Bei SLT Rental, Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (SLT x Bobcat Corporate-Standort) – Abholung vor Ort oder Lieferung im Ruhrgebiet (Essen, Duisburg, Oberhausen). Telefon: +49 2151 4179904 (Zentrale Krefeld)." },
     ],
   },
 };
