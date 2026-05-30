@@ -1097,7 +1097,8 @@ export const verdichtungProducts: Product[] = [
     images: [ruettelplatteVp1550w_1, ruettelplatteVp1550w_2, ruettelplatteVp1550w_3],
     weightKg: 97,
     category: "ruettelplatte",
-    rentwareCode: { krefeld: "IHTL3N" },
+    onRequest: true,
+    pricePerDay: "ab 29 €",
     modelName: "Baumax VP 15/50W",
     detailedDescription: "Die Baumax VP 15/50W ist eine vorwärtslaufende Rüttelplatte mit 97 kg Betriebsgewicht und 14 kN Zentrifugalkraft. Charakteristisch ist die integrierte Sprinkleranlage mit Wassertank zur Befeuchtung der Grundplatte – ideal bei der Verdichtung von Asphalt und Pflasterflächen, damit kein Material an der Platte haftet. Mit 500 × 500 mm Grundplatte, 105 Hz Vibrationsfrequenz und bis zu 600 m²/h Flächenleistung deckt sie typische Garten-, Wege- und kleinere Tiefbau-Arbeiten ab. Der luftgekühlte 1-Zylinder Loncin Benzinmotor (196 cm³, 4,8 kW) startet per Reversierstarter und verbraucht ca. 0,9 l/h aus dem 3,5-Liter-Tank. Klappbarer Führungsbügel und integrierte Räder erleichtern den Transport. Hinweis: Der Wassertank versorgt ausschließlich die Sprinkleranlage – der Motor selbst ist luftgekühlt.",
     specifications: {
