@@ -6693,3 +6693,19 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
 };
+
+/**
+ * Lookup helper with optional location prefix fallback.
+ * Mirrors the lookup logic used in src/data/seo-routes-rental.ts.
+ */
+export function getProductSEO(
+  productId: string,
+  locationId?: string,
+): ProductSEOData | undefined {
+  if (locationId) {
+    const prefix = locationId === "muelheim" ? "mh" : locationId;
+    const prefixed = productSEOData[`${prefix}-${productId}`];
+    if (prefixed) return prefixed;
+  }
+  return productSEOData[productId];
+}
