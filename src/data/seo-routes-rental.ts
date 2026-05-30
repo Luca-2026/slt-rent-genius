@@ -295,6 +295,17 @@ const STATIC_ROUTES: SeoRoute[] = [
     lastmod: TODAY,
   },
   {
+    path: "/verkauf/neumaschinen",
+    routeType: "page",
+    title: "Neumaschinen kaufen | SLT Rental",
+    description: "Neumaschinen kaufen bei SLT Rental – Bagger, Anhänger, Aggregate und Zubehör mit Beratung und Service in NRW.",
+    h1: "Neumaschinen",
+    intro: ["Neumaschinen aus unserem Sortiment – mit persönlicher Beratung, Einweisung und Service-Anbindung."],
+    changefreq: "weekly",
+    priority: 0.6,
+    lastmod: TODAY,
+  },
+  {
     path: "/hilfe",
     routeType: "page",
     title: "Hilfe & Wissen | SLT Rental",
