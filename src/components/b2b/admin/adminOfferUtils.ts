@@ -114,6 +114,7 @@ export interface OfferFormDraft {
   deliveryAddressStreet: string;
   deliveryAddressPostalCode: string;
   deliveryAddressCity: string;
+  paymentTerms: string;
 }
 
 export const offerDraftStore: { key: string | null; data: OfferFormDraft | null } = {
