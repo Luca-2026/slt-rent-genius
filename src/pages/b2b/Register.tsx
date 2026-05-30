@@ -224,7 +224,7 @@ export default function B2BRegister() {
         // Send welcome email to the customer (Resend, DE, Du-Form)
         try {
           await supabase.functions.invoke("send-b2b-welcome", {
-            body: { email, firstName, companyName },
+            body: { email, firstName, companyName, postalCode },
           });
         } catch (welcomeErr) {
           console.error("Welcome email failed (non-blocking):", welcomeErr);
@@ -272,7 +272,7 @@ export default function B2BRegister() {
         // Send welcome email to the customer (Resend, DE, Du-Form)
         try {
           await supabase.functions.invoke("send-b2b-welcome", {
-            body: { email, firstName, companyName },
+            body: { email, firstName, companyName, postalCode },
           });
         } catch (welcomeErr) {
           console.error("Welcome email failed (non-blocking):", welcomeErr);
