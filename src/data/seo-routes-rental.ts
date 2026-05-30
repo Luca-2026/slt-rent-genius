@@ -572,8 +572,16 @@ for (const loc of locations as LocationData[]) {
       lastmod: TODAY,
     });
 
+    // Standort-Präfix für SEO-Lookup. mergeWithFallback() überschreibt
+    // standortspezifische IDs (z.B. "bonn-ruettelplatte-vp1550w") mit der
+    // kanonischen Krefeld-ID ("ruettelplatte-vp1550w"). Ohne diesen
+    // Lookup würden Bonn/Mülheim-URLs den Krefeld-SEO-Eintrag erben
+    // (Title "... mieten Krefeld" auf einer Bonn-URL). Mülheim nutzt
+    // historisch das Präfix "mh-" statt "muelheim-".
+    const seoLocPrefix = loc.id === "muelheim" ? "mh" : loc.id;
     for (const p of products) {
-      const seo: ProductSEOData | undefined = productSEOData[p.id];
+      const seo: ProductSEOData | undefined =
+        productSEOData[`${seoLocPrefix}-${p.id}`] ?? productSEOData[p.id];
       const hasSEO = !!seo;
       const fallbackTitle = `${p.name} mieten in ${locName} | SLT Rental`;
       const title = clamp(seo?.seoTitle || fallbackTitle, 60);
