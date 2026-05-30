@@ -4417,7 +4417,8 @@ export const huepfburgenProducts: Product[] = [
       "Doppelt vernähte Nähte",
       "Inkl. Heringe & Plane",
     ],
-    rentwareCode: { krefeld: "A92U2I" }
+    rentwareCode: { krefeld: "A92U2I" },
+    pdfUrl: "/manuals/aufbauanleitung-huepfburg.pdf",
   },
   {
     id: "huepfburg-clown",
@@ -4448,7 +4449,8 @@ export const huepfburgenProducts: Product[] = [
       "Doppelt vernähte Nähte",
       "Inkl. Heringe & Plane",
     ],
-    rentwareCode: { krefeld: "Y6ASNV" }
+    rentwareCode: { krefeld: "Y6ASNV" },
+    pdfUrl: "/manuals/aufbauanleitung-huepfburg.pdf",
   },
 ];
 

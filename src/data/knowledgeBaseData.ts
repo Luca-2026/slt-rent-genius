@@ -1098,7 +1098,8 @@ export const kbArticles: KBArticle[] = [
     ],
     type: "sicherheit",
     tags: ["hüpfburg", "aufbau", "abbau", "sicherheit", "kinder", "gebläse", "verankerung", "din en 14960", "bouncy castle"],
-    updatedAt: "2026-03-05",
+    pdfUrl: "/manuals/aufbauanleitung-huepfburg.pdf",
+    updatedAt: "2026-05-30",
     sections: [
       {
         type: "warning",
