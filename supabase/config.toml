@@ -61,3 +61,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.send-b2b-welcome]
     verify_jwt = false
+  [functions.notify-credit-limit-request]
+    verify_jwt = false
