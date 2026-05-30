@@ -307,6 +307,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Sicherer Transport und Überführung von Mittelklassewagen, kompakten SUVs oder schwereren Pannenfahrzeugen bis zu einer Last von ca. 2.047 kg.",
     primaryKeywords: "2700 kg Autotransportanhänger mieten in Krefeld, 2700 kg Autotransportanhänger leihen in Krefeld, 2700 kg Autotransportanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Welche Fahrzeuge können mit diesem 2700 kg Modell transportiert werden?", a: "Dieser Anhänger ist für die Mittelklasse ausgelegt und eignet sich aufgrund der Nutzlast von ca. 2.047 kg für kompakte SUVs, schwerere Limousinen und gängige PKW." },
       { q: "Wie groß ist die effektive Ladefläche des Anhängers?", a: "Die nutzbare Ladefläche beträgt 452 cm in der Länge und 205 cm in der Breite." },
@@ -324,6 +325,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Überführung tiefergelegter Sportwagen oder Tuning-Fahrzeuge, die aufgrund ihrer geringen Bodenfreiheit nicht über klassische Rampen geladen werden können.",
     primaryKeywords: "2700 kg Autotransportkippanhänger mieten in Krefeld, 2700 kg Autotransportkippanhänger leihen in Krefeld, 2700 kg Autotransportkippanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 49,
     faqs: [
       { q: "Wie funktioniert das Beladen ohne separate Rampen?", a: "Die Ladefläche dieses Anhängers lässt sich kippen, sodass das Heck direkt auf den Boden absinkt und ein flaches Auffahren ermöglicht wird." },
       { q: "Wie hoch ist die maximale Zuladung dieses Kippanhängers?", a: "Bei einem Eigengewicht von ca. 700 kg und einem zulässigen Gesamtgewicht von 2700 kg beträgt die Nutzlast ca. 2.000 kg." },
@@ -341,6 +343,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Privatpersonen nutzen das Fahrzeug für den Transport gemieteter Baumaschinen zu ihrem jeweiligen Privatprojekt.",
     primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Krefeld, 1800 kg Baumaschinenanhänger leihen in Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die maximale Nutzlast beträgt ca. 1.155 kg bei einem Eigengewicht von ca. 645 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Ladefläche des 1800 kg Baumaschinenanhängers misst 260 x 150 x 25 cm." },
@@ -3606,6 +3609,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für großzügige Garten-Entrümpelungen, den Transport kompletter Heckenrückschnitte oder umfangreicher Mengen an losem Grünschnitt.",
     primaryKeywords: "1300 kg Kastenanhänger & Laubgitter mieten in Krefeld, 1300 kg Kastenanhänger & Laubgitter leihen in Krefeld, 1300 kg Kastenanhänger & Laubgitter mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung bei diesem 1300 kg Modell?", a: "Die verbleibende Nutzlast für das Ladegut beträgt bei diesem Kastenanhänger ca. 900 kg." },
       { q: "Welche Abmessungen hat die Ladefläche inklusive dem Laubgitter?", a: "Die Innenmaße der Ladefläche betragen 255 cm in der Länge, 151 cm in der Breite und 100 cm in der Höhe." },
@@ -4607,6 +4611,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieser Anhänger dient dem Transport von Motorrädern zu Touren oder Werkstattterminen. Er ermöglicht die Überführung von ein bis drei Maschinen unter Verwendung von Auflahrrampen.",
     primaryKeywords: "750 kg Motorradanhänger 3-fach mieten in Krefeld, 750 kg Motorradanhänger 3-fach leihen in Krefeld, 750 kg Motorradanhänger 3-fach mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die zulässige Nutzlast beträgt circa 602 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Ladefläche des Anhängers misst 220 x 131 cm." },
@@ -5399,6 +5404,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Beförderung einzelner Pakete, kleinerer Möbelstücke, Heimwerkerbedarf oder Entsorgung von Sperrmüll am Wertstoffhof.",
     primaryKeywords: "750 kg Planenanhänger S mieten in Krefeld, 750 kg Planenanhänger S leihen in Krefeld, 750 kg Planenanhänger S mieten NRW",
     is247: false,
+    dailyPriceFrom: 14,
     faqs: [
       { q: "Wie viel Ladevolumen bietet der Planenanhänger S?", a: "Dieser Anhänger bietet mit einer Ladefläche von 200 x 108 x 100 cm ein kompaktes Ladevolumen von circa 1,5 m³." },
       { q: "Wie hoch ist die maximale Zuladung bei diesem Modell?", a: "Bei einem Eigengewicht von ca. 180 kg und einem zulässigen Gesamtgewicht von 750 kg beträgt die maximale Nutzlast ca. 570 kg." },
@@ -5986,6 +5992,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "2700 kg Rückwärtskippanhänger mieten in Krefeld, 2700 kg Rückwärtskippanhänger leihen in Krefeld, 2700 kg Rückwärtskippanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Rückwärtskippers?", a: "Die maximale Nutzlast beträgt etwa 1.961 kg." },
       { q: "Welche Maße hat die Ladefläche des Anhängers?", a: "Die Ladefläche weist die Maße 300 x 150 x 40 cm auf." },
