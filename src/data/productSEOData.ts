@@ -6729,6 +6729,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Soundboks Gen.3 dient der mobilen Musikbeschallung bei Geburtstagen, Hochzeiten und Gartenpartys in Mülheim, Essen, Duisburg und Oberhausen.",
     primaryKeywords: "Soundboks Gen.3 mieten in Mülheim, Soundboks Gen.3 leihen Ruhrgebiet, Akku-Lautsprecher mieten Mülheim",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wie laut ist die Soundbox Gen.3?", a: "Die Soundboks Gen.3 erreicht maximal 126 dB. Dafür sorgen drei Class-D-Verstärker mit je 72 W RMS, zwei 10-Zoll-Tieftöner und ein 1-Zoll-Kompressionstreiber-Hochtöner." },
       { q: "Wie lange hält der Akku?", a: "Bis zu 40 Stunden bei mittlerer Lautstärke, ca. 5 Stunden bei maximaler Lautstärke. Der Akku ist wechselbar, Ladezeit ca. 3,5 Stunden. Ersatz-Akkus (Batteryboks) sind bei uns dazubuchbar." },
