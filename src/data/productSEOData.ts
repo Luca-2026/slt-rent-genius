@@ -5991,6 +5991,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     primaryKeywords: "2700 kg Rückwärtskippanhänger mieten in Krefeld, 2700 kg Rückwärtskippanhänger leihen in Krefeld, 2700 kg Rückwärtskippanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 39,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Rückwärtskippers?", a: "Die maximale Nutzlast beträgt etwa 1.961 kg." },
       { q: "Welche Maße hat die Ladefläche des Anhängers?", a: "Die Ladefläche weist die Maße 300 x 150 x 40 cm auf." },
