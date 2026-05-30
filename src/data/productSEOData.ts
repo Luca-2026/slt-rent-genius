@@ -6707,6 +6707,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Soundboks Gen.3 dient der mobilen Musikbeschallung bei Geburtstagen, Hochzeiten und Gartenpartys in Bonn und Umgebung.",
     primaryKeywords: "Soundboks Gen.3 mieten in Bonn, Soundboks Gen.3 leihen in Bonn, Akku-Lautsprecher mieten Bonn",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wie laut ist die Soundbox Gen.3?", a: "Die Soundboks Gen.3 erreicht maximal 126 dB. Dafür sorgen drei Class-D-Verstärker mit je 72 W RMS, zwei 10-Zoll-Tieftöner und ein 1-Zoll-Kompressionstreiber-Hochtöner." },
       { q: "Wie lange hält der Akku?", a: "Bis zu 40 Stunden bei mittlerer Lautstärke, ca. 5 Stunden bei maximaler Lautstärke. Der Akku ist wechselbar, Ladezeit ca. 3,5 Stunden. Ersatz-Akkus (Batteryboks) sind bei uns dazubuchbar." },
@@ -6728,6 +6729,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Die Soundboks Gen.3 dient der mobilen Musikbeschallung bei Geburtstagen, Hochzeiten und Gartenpartys in Mülheim, Essen, Duisburg und Oberhausen.",
     primaryKeywords: "Soundboks Gen.3 mieten in Mülheim, Soundboks Gen.3 leihen Ruhrgebiet, Akku-Lautsprecher mieten Mülheim",
     is247: false,
+    dailyPriceFrom: 20,
     faqs: [
       { q: "Wie laut ist die Soundbox Gen.3?", a: "Die Soundboks Gen.3 erreicht maximal 126 dB. Dafür sorgen drei Class-D-Verstärker mit je 72 W RMS, zwei 10-Zoll-Tieftöner und ein 1-Zoll-Kompressionstreiber-Hochtöner." },
       { q: "Wie lange hält der Akku?", a: "Bis zu 40 Stunden bei mittlerer Lautstärke, ca. 5 Stunden bei maximaler Lautstärke. Der Akku ist wechselbar, Ladezeit ca. 3,5 Stunden. Ersatz-Akkus (Batteryboks) sind bei uns dazubuchbar." },
@@ -6735,7 +6737,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich mehrere Soundboks koppeln?", a: "Ja, kabellos über TeamUP (SKAA) – für mehr Lautstärke und echtes Stereo." },
       { q: "Ist die Soundbox wetterfest?", a: "Ja, das Gehäuse ist nach IP65 gegen Staub und Spritzwasser geschützt und damit outdoor-tauglich." },
       { q: "Für welche Anlässe eignet sie sich?", a: "Geburtstage, Hochzeiten, Firmenevents, Straßenfeste, Open-Air- und Gartenpartys. Sie ist plug-and-play und sofort einsatzbereit." },
-      { q: "Wo kann ich die Soundbox in Mülheim an der Ruhr mieten?", a: "Bei SLT Rental, Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – Abholung vor Ort oder Lieferung im Ruhrgebiet (Essen, Duisburg, Oberhausen)." },
+      { q: "Wo kann ich die Soundbox in Mülheim an der Ruhr mieten?", a: "Bei SLT Rental, Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (SLT x Bobcat Corporate-Standort) – Abholung vor Ort oder Lieferung im Ruhrgebiet (Essen, Duisburg, Oberhausen). Telefon: +49 2151 4179904 (Zentrale Krefeld)." },
     ],
   },
 };
