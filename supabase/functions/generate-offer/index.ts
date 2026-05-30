@@ -1260,9 +1260,19 @@ async function generateOfferPdf(data: {
   ensureSpace(40);
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
   const paymentDueDays = data.profile.payment_due_days || 14;
-  const paymentText = hasCreditLimit
-    ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fmtCurrency(data.profile.credit_limit)}).`
-    : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.";
+  const PAYMENT_TEXTS: Record<string, string> = {
+    vorkasse: "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.",
+    net_7: "Zahlungsbedingungen: Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
+    net_14: "Zahlungsbedingungen: Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto).",
+    net_30: "Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
+    net_60: "Zahlungsbedingungen: Zahlung innerhalb von 60 Tagen nach Rechnungsstellung (netto).",
+    "50_50_14": "Zahlungsbedingungen: 50 % Vorkasse vor Mietbeginn, 50 % Restzahlung innerhalb von 14 Tagen nach Rechnungsstellung.",
+  };
+  const paymentText = (data.paymentTerms && PAYMENT_TEXTS[data.paymentTerms])
+    ? PAYMENT_TEXTS[data.paymentTerms]
+    : (hasCreditLimit
+        ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fmtCurrency(data.profile.credit_limit)}).`
+        : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.");
   page.drawRectangle({ x: margin, y: y - 6, width: contentWidth, height: 22, color: rgb(0.95, 0.97, 1) });
   page.drawRectangle({ x: margin, y: y - 6, width: 3, height: 22, color: blue });
   drawText(paymentText, margin + 10, y + 2, { s: 8 });
