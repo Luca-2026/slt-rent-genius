@@ -325,6 +325,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Überführung tiefergelegter Sportwagen oder Tuning-Fahrzeuge, die aufgrund ihrer geringen Bodenfreiheit nicht über klassische Rampen geladen werden können.",
     primaryKeywords: "2700 kg Autotransportkippanhänger mieten in Krefeld, 2700 kg Autotransportkippanhänger leihen in Krefeld, 2700 kg Autotransportkippanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 49,
     faqs: [
       { q: "Wie funktioniert das Beladen ohne separate Rampen?", a: "Die Ladefläche dieses Anhängers lässt sich kippen, sodass das Heck direkt auf den Boden absinkt und ein flaches Auffahren ermöglicht wird." },
       { q: "Wie hoch ist die maximale Zuladung dieses Kippanhängers?", a: "Bei einem Eigengewicht von ca. 700 kg und einem zulässigen Gesamtgewicht von 2700 kg beträgt die Nutzlast ca. 2.000 kg." },
