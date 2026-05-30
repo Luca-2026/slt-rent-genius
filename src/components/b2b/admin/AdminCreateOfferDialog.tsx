@@ -259,6 +259,7 @@ export function AdminCreateOfferDialog({
         setDeliveryAddressPostalCode("");
         setDeliveryAddressCity("");
       }
+      setPaymentTerms("default");
     } else if (isStandalone) {
       setItems([{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0, rental_start: "", rental_end: "", start_time: "", end_time: "" }]);
       setDeliveryCostDelivery(0);
