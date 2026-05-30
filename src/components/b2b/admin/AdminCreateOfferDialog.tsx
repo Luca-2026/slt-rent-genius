@@ -545,6 +545,7 @@ export function AdminCreateOfferDialog({
             postal_code: deliveryAddressPostalCode,
             city: deliveryAddressCity,
           } : undefined,
+          payment_terms: paymentTerms && paymentTerms !== "default" ? paymentTerms : undefined,
         },
       });
 
