@@ -927,6 +927,26 @@ export function AdminCreateOfferDialog({
           </div>
         </div>
 
+        {/* Payment terms */}
+        <div>
+          <Label className="text-xs">Zahlungsbedingungen</Label>
+          <Select value={paymentTerms} onValueChange={setPaymentTerms}>
+            <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Automatisch (laut Kundenprofil)</SelectItem>
+              <SelectItem value="vorkasse">Vorkasse (vor Mietbeginn)</SelectItem>
+              <SelectItem value="net_7">Rechnung – 7 Tage netto</SelectItem>
+              <SelectItem value="net_14">Rechnung – 14 Tage netto</SelectItem>
+              <SelectItem value="net_30">Rechnung – 30 Tage netto</SelectItem>
+              <SelectItem value="net_60">Rechnung – 60 Tage netto</SelectItem>
+              <SelectItem value="50_50_14">50 % Vorkasse · 50 % nach 14 Tagen</SelectItem>
+            </SelectContent>
+          </Select>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Wird im Angebot unter „Zahlungsbedingungen" angezeigt.
+          </p>
+        </div>
+
         {/* Additional Services */}
         {relevantServices.length > 0 && (
           <div>
