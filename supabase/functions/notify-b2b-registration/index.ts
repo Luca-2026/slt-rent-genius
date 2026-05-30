@@ -40,6 +40,8 @@ const BodySchema = z.object({
   postalInvoice: z.boolean().optional(),
   documentBase64: z.string().max(MAX_DOCUMENT_BYTES * 2).optional().nullable(),
   documentFilename: z.string().trim().max(255).optional().nullable(),
+  sepaBase64: z.string().max(MAX_DOCUMENT_BYTES * 2).optional().nullable(),
+  sepaFilename: z.string().trim().max(255).optional().nullable(),
 });
 
 // Magic-byte sniffing for allowed attachment types
