@@ -4611,6 +4611,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Dieser Anhänger dient dem Transport von Motorrädern zu Touren oder Werkstattterminen. Er ermöglicht die Überführung von ein bis drei Maschinen unter Verwendung von Auflahrrampen.",
     primaryKeywords: "750 kg Motorradanhänger 3-fach mieten in Krefeld, 750 kg Motorradanhänger 3-fach leihen in Krefeld, 750 kg Motorradanhänger 3-fach mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die zulässige Nutzlast beträgt circa 602 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Ladefläche des Anhängers misst 220 x 131 cm." },
