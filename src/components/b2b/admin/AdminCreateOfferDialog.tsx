@@ -275,6 +275,7 @@ export function AdminCreateOfferDialog({
       setDeliveryAddressStreet("");
       setDeliveryAddressPostalCode("");
       setDeliveryAddressCity("");
+      setPaymentTerms("default");
     }
   }, [open, existingOffer?.id, reservation?.id]);
 
