@@ -671,7 +671,7 @@ const trailerProducts: Product[] = [
     weightKg: 3500,
     sortOrder: 2,
     category: "plattform",
-    tags: ["autotransport", "baumaschine", "gebremst", "dreiachser", "absenkbar"],
+    tags: ["autotransport", "baumaschine", "laubgitter", "gebremst", "dreiachser", "absenkbar"],
     specifications: {
       "Hersteller": "Temared",
       "Modellreihe": "Universal (absenkbar)",
