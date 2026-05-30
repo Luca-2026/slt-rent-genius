@@ -6676,7 +6676,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "soundboks-gen3": {
     excelName: "Soundboks Gen.3",
-    seoTitle: "Soundboks Gen.3 mieten in Krefeld | 126 dB Akku-Lautsprecher | SLT Rental",
+    seoTitle: "Soundboks Gen.3 mieten in Krefeld | 126 dB Akku-Lautsprecher",
     metaDescription: "Soundboks Gen.3 in Krefeld mieten: 126 dB Akku-Lautsprecher, bis 40 Std. Laufzeit, Bluetooth & IP65. Abholung Anrather Straße 291 oder Lieferung in der Region. Jetzt buchen.",
     h1: "Soundboks Gen.3 mieten in Krefeld – bei SLT Rental",
     h2s: ["Hoher Schalldruckpegel und lange Akkulaufzeit", "Drahtlose Verbindung via TeamUP-Modus", "Technische Ausstattung und Ladezeiten"],
@@ -6698,7 +6698,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "bonn-soundboks-gen3": {
     excelName: "Soundboks Gen.3",
-    seoTitle: "Soundboks Gen.3 mieten in Bonn | 126 dB Akku-Lautsprecher | SLT Rental",
+    seoTitle: "Soundboks Gen.3 mieten in Bonn | 126 dB Akku-Lautsprecher",
     metaDescription: "Soundboks Gen.3 in Bonn mieten: 126 dB Akku-Lautsprecher, bis 40 Std. Laufzeit, Bluetooth & IP65. Abholung Drachenburgstraße 8 oder Lieferung in Bonn, Bad Honnef & Umgebung.",
     h1: "Soundboks Gen.3 mieten in Bonn – Jetzt verfügbar bei SLT Rental",
     h2s: ["Hoher Schalldruckpegel und lange Akkulaufzeit", "Drahtlose Verbindung via TeamUP-Modus", "Technische Ausstattung und Ladezeiten"],
@@ -6720,7 +6720,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "mh-soundboks-gen3": {
     excelName: "Soundboks Gen.3",
-    seoTitle: "Soundboks Gen.3 mieten in Mülheim a.d. Ruhr | 126 dB Lautsprecher | SLT Rental",
+    seoTitle: "Soundboks Gen.3 mieten in Mülheim a.d. Ruhr | 126 dB Lautsprecher",
     metaDescription: "Soundboks Gen.3 in Mülheim an der Ruhr mieten: 126 dB Akku-Lautsprecher, bis 40 Std. Laufzeit. Abholung vor Ort oder Lieferung im Ruhrgebiet (Essen, Duisburg, Oberhausen).",
     h1: "Soundboks Gen.3 mieten in Mülheim an der Ruhr – bei SLT Rental",
     h2s: ["Hoher Schalldruckpegel und lange Akkulaufzeit", "Drahtlose Verbindung via TeamUP-Modus", "Technische Ausstattung und Ladezeiten"],
