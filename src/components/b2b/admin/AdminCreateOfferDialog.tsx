@@ -75,6 +75,7 @@ export function AdminCreateOfferDialog({
   const [deliveryAddressStreet, setDeliveryAddressStreet] = useState("");
   const [deliveryAddressPostalCode, setDeliveryAddressPostalCode] = useState("");
   const [deliveryAddressCity, setDeliveryAddressCity] = useState("");
+  const [paymentTerms, setPaymentTerms] = useState<string>("default");
   const lastInitKey = useRef<string | null>(null);
   const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
