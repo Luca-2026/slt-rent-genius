@@ -119,6 +119,32 @@ const enriched = allRoutes.map((route) => {
         category: route.ratgeberData.category,
       }
     : undefined;
+  // Pass product/category payloads through so prerender can render
+  // specs + FAQ statically (SEO-critical: no "Inhalt wird geladen…").
+  const productData = route.routeType === "product" && route.productData
+    ? {
+        id: route.productData.id,
+        name: route.productData.name,
+        description: route.productData.description,
+        image: route.productData.image,
+        category: route.productData.category,
+        locationId: route.productData.locationId,
+        h2s: route.productData.h2s,
+        useCaseBau: route.productData.useCaseBau,
+        useCaseEvent: route.productData.useCaseEvent,
+        useCasePrivat: route.productData.useCasePrivat,
+        faqs: route.productData.faqs,
+        modelName: route.productData.modelName,
+      }
+    : undefined;
+  const categoryData = route.routeType === "category" && route.categoryData
+    ? {
+        category: route.categoryData.category,
+        locationId: route.categoryData.locationId,
+        productCount: route.categoryData.productCount,
+        productSummaries: route.categoryData.productSummaries,
+      }
+    : undefined;
   return {
     path: route.path,
     routeType: route.routeType,
@@ -136,6 +162,8 @@ const enriched = allRoutes.map((route) => {
     breadcrumbs: route.breadcrumbs,
     schemas,
     ratgeber,
+    productData,
+    categoryData,
   };
 });
 
