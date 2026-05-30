@@ -266,11 +266,74 @@ function buildRatgeberHeroBlock(route) {
   return parts.join("");
 }
 
+function buildProductSpecsBlock(route) {
+  const p = route.productData;
+  if (!p) return "";
+  const parts = [];
+
+  // Beschreibender Fließtext (description aus rentalData, falls vorhanden).
+  if (p.description) {
+    parts.push(
+      `<section data-prerender-description style="margin:32px 0 24px;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Produktbeschreibung</h2><p style="margin:0;line-height:1.65;">${escapeHtml(p.description)}</p></section>`,
+    );
+  }
+
+  // Einsatzbereiche (Bau / Event / Privat) – echte SEO-Daten, kein Erfundenes.
+  const useCases = [];
+  if (p.useCaseBau && p.useCaseBau.trim()) useCases.push(["Einsatz Bau", p.useCaseBau]);
+  if (p.useCaseEvent && p.useCaseEvent.trim()) useCases.push(["Einsatz Event", p.useCaseEvent]);
+  if (p.useCasePrivat && p.useCasePrivat.trim()) useCases.push(["Einsatz Privat", p.useCasePrivat]);
+  if (useCases.length) {
+    parts.push(`<section data-prerender-usecases style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Einsatzbereiche</h2><dl style="margin:0;display:grid;grid-template-columns:max-content 1fr;gap:8px 16px;">`);
+    for (const [label, text] of useCases) {
+      parts.push(`<dt style="font-weight:600;color:#1a1a1a;">${escapeHtml(label)}:</dt><dd style="margin:0;">${escapeHtml(text)}</dd>`);
+    }
+    parts.push(`</dl></section>`);
+  }
+
+  // H2-Themenliste (Inhaltsverzeichnis aus SEO-Daten).
+  if (p.h2s && p.h2s.length) {
+    parts.push(`<section data-prerender-topics style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Themen auf dieser Seite</h2><ul style="margin:0;padding-left:20px;">`);
+    for (const t of p.h2s) parts.push(`<li style="margin-bottom:4px;">${escapeHtml(t)}</li>`);
+    parts.push(`</ul></section>`);
+  }
+
+  return parts.join("");
+}
+
+function buildProductFaqBlock(route) {
+  const faqs = route.productData?.faqs;
+  if (!faqs || !faqs.length) return "";
+  const items = faqs
+    .map(
+      (f) =>
+        `<details style="border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;margin-bottom:8px;background:#fff;"><summary style="font-weight:600;cursor:pointer;color:#1a1a1a;">${escapeHtml(f.q)}</summary><div style="margin-top:8px;line-height:1.6;color:#374151;">${escapeHtml(f.a)}</div></details>`,
+    )
+    .join("");
+  return `<section data-prerender-faq style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 16px;font-weight:600;">Häufige Fragen</h2>${items}</section>`;
+}
+
+function buildCategoryListBlock(route) {
+  const cat = route.categoryData;
+  if (!cat || !cat.productSummaries || !cat.productSummaries.length) return "";
+  const items = cat.productSummaries
+    .map(
+      (p) =>
+        `<li style="margin-bottom:6px;"><a href="${escapeAttr(withTrailingSlash(p.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(p.name)}</a></li>`,
+    )
+    .join("");
+  return `<section data-prerender-products style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Verfügbare Geräte (${cat.productCount})</h2><ul style="margin:0;padding-left:20px;">${items}</ul></section>`;
+}
+
 function buildHeroBlock(route) {
   if (route.routeType === "ratgeber") return buildRatgeberHeroBlock(route);
   // Visible SSR-fallback content. Lives INSIDE #root so React's createRoot()
   // replaces it on hydration. Bots (Googlebot, GPTBot, ClaudeBot, PerplexityBot)
   // see real, visible HTML — users without JS see a usable page too.
+  //
+  // For product + category routes we additionally inject the descriptive
+  // copy, specs and FAQ statically so search engines & LLMs index the full
+  // content (not just an "Inhalt wird geladen…" placeholder).
   const parts = [
     `<div data-prerender-hero style="max-width:1200px;margin:0 auto;padding:24px 16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a;line-height:1.6;">`,
   ];
@@ -286,7 +349,14 @@ function buildHeroBlock(route) {
   for (const p of route.intro || []) {
     if (p) parts.push(`<p style="margin:0 0 12px;font-size:17px;">${escapeHtml(p)}</p>`);
   }
-  parts.push(`<p style="margin-top:24px;color:#888;font-size:14px;">Inhalt wird geladen…</p>`);
+
+  if (route.routeType === "product") {
+    parts.push(buildProductSpecsBlock(route));
+    parts.push(buildProductFaqBlock(route));
+  } else if (route.routeType === "category") {
+    parts.push(buildCategoryListBlock(route));
+  }
+
   parts.push(`</div>`);
   return parts.join("");
 }
