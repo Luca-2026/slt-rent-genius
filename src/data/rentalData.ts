@@ -564,13 +564,22 @@ const trailerProducts: Product[] = [
   { 
     id: "baumaschinen-3500", 
     name: "3500 kg Baumaschinenanhänger", 
-    description: "Ladefläche: 350 x 168 x 25 cm",
+    description: "Temared Baumaschinenanhänger mit 350 x 168 x 25 cm Ladefläche und durchgehender Auffahrrampe. 3.500 kg Gesamtgewicht, 2.785 kg Nutzlast, 13-Pol-Anschluss (Adapter erhältlich). Führerschein Klasse 3 oder BE erforderlich. 100 km/h-Zulassung möglich, wenn das Zugfahrzeug ein eingetragenes Leergewicht von 3.182 kg hat.",
     image: imgBaumaschinen3500_1, 
     images: [imgBaumaschinen3500_1, imgBaumaschinen3500_2, imgBaumaschinen3500_3], 
     weightKg: 3500, 
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
-    specifications: { "Eigengewicht": "ca. 674 kg", "Nutzlast": "ca. 2.826 kg" },
+    specifications: { 
+      "Hersteller": "Temared",
+      "Ladefläche (LxBxH)": "350 x 168 x 25 cm",
+      "Gesamtgewicht": "3.500 kg",
+      "Nutzlast": "2.785 kg",
+      "Anschluss": "13-Pol (Adapter erhältlich)",
+      "Ausstattung": "Durchgehende Auffahrrampe",
+      "Führerschein": "Klasse 3 oder BE",
+      "100 km/h-Zulassung": "Zugfahrzeug-Leergewicht min. 3.182 kg"
+    },
     compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
