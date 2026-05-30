@@ -31,7 +31,7 @@ export default function B2BRegister() {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { signUp } = useAuth();
+  const { signUp, refreshB2BProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -229,6 +229,9 @@ export default function B2BRegister() {
         } catch (welcomeErr) {
           console.error("Welcome email failed (non-blocking):", welcomeErr);
         }
+
+        // Refresh profile in auth context so dashboard shows correct pending state
+        try { await refreshB2BProfile(); } catch {}
 
         toast({
           title: "Registrierung erfolgreich!",
