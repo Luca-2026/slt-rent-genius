@@ -83,6 +83,11 @@ import imgPlattform3500_3 from "@/assets/products/anhaenger/plattform-3500-3.jpg
 import imgPlattform3500_4 from "@/assets/products/anhaenger/plattform-3500-4.jpg";
 import imgPlattform3500_5 from "@/assets/products/anhaenger/plattform-3500-5.jpg";
 import imgPlattform3500_6 from "@/assets/products/anhaenger/plattform-3500-6.jpg";
+import imgPlattform3500Absenkbar_1 from "@/assets/products/anhaenger/plattform-3500-absenkbar-1.webp";
+import imgPlattform3500Absenkbar_2 from "@/assets/products/anhaenger/plattform-3500-absenkbar-2.webp";
+import imgPlattform3500Absenkbar_3 from "@/assets/products/anhaenger/plattform-3500-absenkbar-3.jpg";
+import imgPlattform3500Absenkbar_4 from "@/assets/products/anhaenger/plattform-3500-absenkbar-4.jpg";
+import imgPlattform3500Absenkbar_5 from "@/assets/products/anhaenger/plattform-3500-absenkbar-5.jpg";
 
 // Product Images - Erdbewegung
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
@@ -644,6 +649,39 @@ const trailerProducts: Product[] = [
     tags: ["autotransport", "gebremst", "zweiachser"], 
     specifications: { "Eigengewicht": "ca. 900 kg", "Nutzlast": "ca. 2.600 kg" },
     rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
+  },
+  {
+    id: "plattform-3500-absenkbar",
+    name: "3500 kg Plattformanhänger absenkbar",
+    modelName: "Temared Universal (Tridem, absenkbar)",
+    description: "Absenkbarer 3-Achs-Plattformanhänger mit Seilwinde und Auffahrrampen – Ladefläche 512 x 211 cm.",
+    detailedDescription: "Der absenkbare Plattformanhänger von Temared kombiniert eine ebene Ladefläche von 512 x 211 cm mit einer absenkbaren Plattform und integrierten Auffahrrampen. Dadurch eignet er sich gleichermaßen für den Fahrzeugtransport (PKW, Oldtimer, leichte Nutzfahrzeuge) und für den Transport von Baumaschinen wie Minibaggern, Radladern oder Stampfern. Die elektrische Seilwinde erleichtert das Beladen nicht fahrbereiter Fahrzeuge oder Maschinen.\n\nDer Tridem-Achser bietet 2.672 kg Nutzlast bei 3.500 kg zulässigem Gesamtgewicht. Mit 13-poligem Stecker serienmäßig (Adapter auf 7-polig erhältlich). 100 km/h-Zulassung möglich, sofern dein Zugfahrzeug ein eingetragenes Leergewicht von mindestens 3.182 kg aufweist. Für Fahrten ins Ausland ist die Haftpflicht-Erweiterung notwendig – diese kann bei der Reservierung direkt mitgebucht werden.",
+    image: imgPlattform3500Absenkbar_1,
+    images: [imgPlattform3500Absenkbar_1, imgPlattform3500Absenkbar_2, imgPlattform3500Absenkbar_3, imgPlattform3500Absenkbar_4, imgPlattform3500Absenkbar_5],
+    pricePerDay: "ab 49 €",
+    weightKg: 3500,
+    sortOrder: 2,
+    category: "plattform",
+    tags: ["autotransport", "baumaschine", "gebremst", "dreiachser", "absenkbar"],
+    specifications: {
+      "Hersteller": "Temared",
+      "Modellreihe": "Universal (absenkbar)",
+      "Ladeflächenmaß (L x B)": "512 x 211 cm",
+      "Zul. Gesamtgewicht": "3.500 kg",
+      "Eigengewicht": "ca. 828 kg",
+      "Nutzlast": "ca. 2.672 kg",
+      "Achsen": "3 (Tridem)",
+      "Plattform": "absenkbar",
+      "Anschluss": "13-polig (Adapter auf 7-polig erhältlich)",
+      "Ausstattung": "Seilwinde, Auffahrrampen",
+      "100 km/h Zulassung": "Zugfahrzeug muss mind. 3.182 kg Leergewicht eingetragen haben",
+    },
+    rentalNotes: [
+      "13-Pol Stecker – Adapter auf 7-Pol auf Anfrage erhältlich",
+      "100 km/h nur mit Zugfahrzeug ≥ 3.182 kg Leergewicht",
+      "Auslandsfahrt nur mit Auslandsfahrt-Haftpflichterweiterung (bei Reservierung auswählbar)",
+    ],
+    rentwareCode: { krefeld: "6AZY6J" },
   },
 
   // === LAUBGITTER ===
