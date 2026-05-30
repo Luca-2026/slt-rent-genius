@@ -46,6 +46,15 @@ export function CreditLimitWidget({ creditLimit, usedCredit, profileId, creditLi
         .update({ credit_limit_requested_at: new Date().toISOString() } as any)
         .eq("id", profileId);
       if (error) throw error;
+
+      // Notify SLT team via email (non-blocking on failure)
+      const { error: notifyError } = await supabase.functions.invoke("notify-credit-limit-request", {
+        body: { profileId },
+      });
+      if (notifyError) {
+        console.error("notify-credit-limit-request failed:", notifyError);
+      }
+
       toast({
         title: "Kreditlimit beantragt",
         description: "Dein Antrag wurde an unser Team weitergeleitet. Wir melden uns bei dir.",
