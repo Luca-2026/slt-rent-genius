@@ -3623,6 +3623,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Im privaten Bereich dient das Modell vor allem der Laubabfuhr sowie dem Transport von Hecken- und Grünschnitt zum lokalen Wertstoffhof.",
     primaryKeywords: "750 kg Kastenanhänger & Laubgitter mieten in Krefeld, 750 kg Kastenanhänger & Laubgitter leihen in Krefeld, 750 kg Kastenanhänger & Laubgitter mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Welches Ladevolumen bietet der Laubgitter-Anhänger?", a: "Durch die Kombination der Ladefläche von 264 x 126 cm mit dem Gitteraufsatz ergibt sich eine Nutzhöhe von insgesamt 100 cm für leichtes Transportgut." },
       { q: "Wie hoch ist die zulässige Zuladung bei diesem Modell?", a: "Bei einem Eigengewicht von ca. 250 kg beträgt die maximale Nutzlast dieses 750 kg Anhängers ca. 500 kg." },
@@ -3778,6 +3779,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Das Fahrzeug ermöglicht den sicheren Transport von Wertgegenständen beim Umzug sowie den Transport empfindlicher Gegenstände.",
     primaryKeywords: "750 kg Kofferanhänger mieten in Krefeld, 750 kg Kofferanhänger leihen in Krefeld, 750 kg Kofferanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Kofferanhängers?", a: "Die Nutzlast beträgt ca. 372 kg bei einem Eigengewicht von ca. 378 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Abmessungen der Ladefläche betragen 223 x 147 x 147 cm." },
@@ -5326,6 +5328,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Durchführung von Wohnungsumzügen mit massivem Mobiliar oder Transport von schweren Gartenmaterialien wie Pflastersteinen in Säcken.",
     primaryKeywords: "1300 kg Planenanhänger mieten in Krefeld, 1300 kg Planenanhänger leihen in Krefeld, 1300 kg Planenanhänger mieten NRW",
     is247: false,
+    dailyPriceFrom: 35,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung bei diesem Modell?", a: "Dieser Anhänger hat ein zulässiges Gesamtgewicht von 1300 kg und bietet eine Nutzlast von ca. 850 kg." },
       { q: "Welche Innenmaße weist die Ladefläche auf?", a: "Die Ladefläche unter der Plane beträgt 300 cm in der Länge, 150 cm in der Breite und 190 cm in der Höhe." },
@@ -5360,6 +5363,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Durchführung kleinerer Umzüge (1-Zimmer-Wohnung) oder Transport mehrerer Möbelstücke und voluminöser Gartenmaterialien.",
     primaryKeywords: "750 kg Planenanhänger L mieten in Krefeld, 750 kg Planenanhänger L leihen in Krefeld, 750 kg Planenanhänger L mieten NRW",
     is247: false,
+    dailyPriceFrom: 24,
     faqs: [
       { q: "Wie hoch ist das maximale Ladevolumen dieses Anhängers?", a: "Dieser Anhänger in der Variante L bietet bei Innenmaßen von 200 x 108 x 160 cm ein Ladevolumen von circa 3,5 m³." },
       { q: "Wie viel Zuladung ist bei diesem Modell zulässig?", a: "Trotz des großen Volumens beträgt die maximale Nutzlast ca. 530 kg bei einem Eigengewicht von ca. 220 kg." },
@@ -5377,6 +5381,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Geeignet für Studentenumzüge, den Transport einzelner Möbelstücke oder die wettergeschützte Abholung von Geräten aus dem Fachmarkt.",
     primaryKeywords: "750 kg Planenanhänger M mieten in Krefeld, 750 kg Planenanhänger M leihen in Krefeld, 750 kg Planenanhänger M mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       { q: "Welches Ladevolumen bietet der Planenanhänger M?", a: "Dieses Modell verfügt bei einer Ladefläche von 200 x 108 x 130 cm über ein Volumen von ca. 2,5 m³ für moderate Ladungsmengen." },
       { q: "Wie hoch ist die maximale Nutzlast dieses Modells?", a: "Die zulässige Nutzlast beträgt bei einem Eigengewicht von ca. 200 kg etwa 550 kg." },
@@ -5411,6 +5416,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Durchführung von Umzügen kleinerer Wohnungen mit voluminösen Möbelstücken wie Kleiderschränken, die eine Innenhöhe von 160 cm benötigen.",
     primaryKeywords: "750 kg Planenanhänger XL mieten in Krefeld, 750 kg Planenanhänger XL leihen in Krefeld, 750 kg Planenanhänger XL mieten NRW",
     is247: false,
+    dailyPriceFrom: 26,
     faqs: [
       { q: "Wie viel Volumen bietet der XL Anhänger?", a: "Dieser Anhänger verfügt bei einer Innenhöhe von 160 cm über ein Ladevolumen von etwa 4,5 m³." },
       { q: "Dürfen schwere Schüttgüter mit diesem Modell transportiert werden?", a: "Nein, dieser XL Anhänger ist auf leichtes Sperrgut ausgelegt. Die maximale Nutzlast beträgt ca. 500 kg." },
@@ -5445,6 +5451,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Durchführung von Wohnungsumzügen mit viel leichtem Hausrat sowie der Transport von mehreren Matratzen oder hohen Kleiderschränken.",
     primaryKeywords: "750 kg Planenanhänger XXL mieten in Krefeld, 750 kg Planenanhänger XXL leihen in Krefeld, 750 kg Planenanhänger XXL mieten NRW",
     is247: false,
+    dailyPriceFrom: 29,
     faqs: [
       { q: "Wie hoch ist das maximale Ladevolumen dieses Anhängers?", a: "Dieser XXL-Anhänger bietet bei einer Ladefläche von 300 x 150 cm und einer Innenhöhe von 180 cm ein Gesamtvolumen von ca. 5,5 m³." },
       { q: "Darf ich diesen XXL-Anhänger mit schweren Baumaterialien beladen?", a: "Nein, die zulässige Nutzlast beträgt ca. 470 kg. Das Modell ist speziell für den Transport von sehr leichter, sperriger Ladung konzipiert." },
