@@ -59,3 +59,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.send-invoice-email]
     verify_jwt = false
+  [functions.send-b2b-welcome]
+    verify_jwt = false
