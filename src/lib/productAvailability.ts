@@ -41,7 +41,7 @@ export interface ProductAvailability {
  * neutralen "on-request" Default.
  */
 export function getProductAvailability(
-  product: Pick<Product, "rentwareCode"> | undefined,
+  product: Pick<Product, "rentwareCode" | "onRequest"> | undefined,
   locationId: string,
   options?: { categoryId?: string },
 ): ProductAvailability {
@@ -49,6 +49,24 @@ export function getProductAvailability(
   const locName = loc?.name || "Standort";
   const isHauptlager = locId(loc?.id) === "krefeld";
   const isFiliale = loc?.serviceCharacter === "full-warehouse" && !isHauptlager;
+
+  // 0) Explizites Override per Produkt-Flag: überall "auf Anfrage"
+  if (product?.onRequest) {
+    const charSuffix = loc?.serviceCharacter === "service-handover"
+      ? `Übergabe und Beratung erfolgen direkt an unserem Service-Standort ${locName}.`
+      : isHauptlager
+        ? `Beratung und Abholung am Hauptsitz Krefeld.`
+        : `Beratung durch unser ${locName}-Team.`;
+    return {
+      status: "on-request",
+      badgeLabel: `Auf Anfrage in ${locName}`,
+      headline: `Auf Anfrage in ${locName}${isHauptlager ? "" : " – Lieferung aus dem Hauptsitz Krefeld"}`,
+      body: `Dieses Gerät disponieren wir ausschließlich auf Anfrage – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich. ${charSuffix}`,
+      schemaAvailability: "https://schema.org/PreOrder",
+      deliveryLeadTime: "PT24H",
+      isBookable: false,
+    };
+  }
   const isServiceStandort = loc?.serviceCharacter === "service-handover";
   const hasLocalCode = !!product?.rentwareCode?.[locationId];
   const isPickupOnlyCategory =
