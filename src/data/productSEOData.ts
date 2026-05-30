@@ -1528,6 +1528,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Privat-Projekte rund um Bonn: Verdichtung von Splitt, Kies und Pflasterbett bei Hof- und Terrassenarbeiten.",
     primaryKeywords: "Rüttelplatte VP 15/50W mieten Bonn, Baumax Rüttelplatte mit Wassertank Bonn, Rüttelplatte Sprinkleranlage Bonn",
     is247: false,
+    dailyPriceFrom: 29,
     faqs: [
       { q: "Ist die VP 15/50W in Bonn vor Ort verfügbar?", a: "Diesen Artikel halten wir in Bonn nicht als Stamm-Sortiment vor. Wir disponieren ihn auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich." },
       { q: "Wofür ist der gelbe Wassertank?", a: "Der Tank versorgt die integrierte Sprinkleranlage, die die Grundplatte beim Verdichten befeuchtet. Das ist vor allem bei Asphalt- und Pflasterarbeiten wichtig, damit das Material nicht an der Platte haftet. Der Motor ist luftgekühlt – es ist keine Wasserkühlung." },
