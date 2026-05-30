@@ -3609,6 +3609,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für großzügige Garten-Entrümpelungen, den Transport kompletter Heckenrückschnitte oder umfangreicher Mengen an losem Grünschnitt.",
     primaryKeywords: "1300 kg Kastenanhänger & Laubgitter mieten in Krefeld, 1300 kg Kastenanhänger & Laubgitter leihen in Krefeld, 1300 kg Kastenanhänger & Laubgitter mieten NRW",
     is247: false,
+    dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung bei diesem 1300 kg Modell?", a: "Die verbleibende Nutzlast für das Ladegut beträgt bei diesem Kastenanhänger ca. 900 kg." },
       { q: "Welche Abmessungen hat die Ladefläche inklusive dem Laubgitter?", a: "Die Innenmaße der Ladefläche betragen 255 cm in der Länge, 151 cm in der Breite und 100 cm in der Höhe." },
