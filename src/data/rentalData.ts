@@ -622,14 +622,14 @@ const trailerProducts: Product[] = [
   },
   { 
     id: "rueckwaertskipp-1500", 
-    name: "1500 kg Rückwärtskippanhänger & Laubgitter", 
+    name: "1300 kg Rückwärtskippanhänger & Laubgitter", 
     description: "Ladefläche: 300 x 150 x 95 cm | Händische Kippfunktion (Handpumpe)",
-    image: imgRueckwaertskipp1500_3, 
-    images: [imgRueckwaertskipp1500_3, imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2], 
-    weightKg: 1500, 
+    image: imgRueckwaertskipp1500_1, 
+    images: [imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2], 
+    weightKg: 1300, 
     category: "rueckwaertskipp",
     tags: ["laubgitter", "gebremst", "zweiachser"], 
-    specifications: { "Eigengewicht": "ca. 410 kg", "Nutzlast": "ca. 1.090 kg" },
+    specifications: { "Eigengewicht": "ca. 410 kg", "Nutzlast": "ca. 890 kg" },
     rentwareCode: { krefeld: "QNRXMH" } 
   },
   { 
