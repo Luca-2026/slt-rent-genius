@@ -124,6 +124,7 @@ Deno.serve(async (req: Request) => {
       issuing_location: issuingLocation,
       return_location: returnLocation,
       delivery_address: deliveryAddress,
+      payment_terms: paymentTerms,
     } = body;
 
     if (!items || items.length === 0) {
