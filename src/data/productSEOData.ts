@@ -5404,6 +5404,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Beförderung einzelner Pakete, kleinerer Möbelstücke, Heimwerkerbedarf oder Entsorgung von Sperrmüll am Wertstoffhof.",
     primaryKeywords: "750 kg Planenanhänger S mieten in Krefeld, 750 kg Planenanhänger S leihen in Krefeld, 750 kg Planenanhänger S mieten NRW",
     is247: false,
+    dailyPriceFrom: 14,
     faqs: [
       { q: "Wie viel Ladevolumen bietet der Planenanhänger S?", a: "Dieser Anhänger bietet mit einer Ladefläche von 200 x 108 x 100 cm ein kompaktes Ladevolumen von circa 1,5 m³." },
       { q: "Wie hoch ist die maximale Zuladung bei diesem Modell?", a: "Bei einem Eigengewicht von ca. 180 kg und einem zulässigen Gesamtgewicht von 750 kg beträgt die maximale Nutzlast ca. 570 kg." },
