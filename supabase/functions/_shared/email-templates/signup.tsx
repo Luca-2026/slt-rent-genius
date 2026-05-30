@@ -35,36 +35,40 @@ export const SignupEmail = ({
     <Head>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
     </Head>
-    <Preview>Bestätigen Sie Ihre E-Mail-Adresse für SLT Rental</Preview>
+    <Preview>Nur noch ein Klick – bestätige deine E-Mail bei SLT Rental</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={logoSection}>
           <Img src={LOGO_URL} width="180" height="auto" alt="SLT Rental" style={logo} />
         </Section>
         <Section style={divider} />
-        <Heading style={h1}>E-Mail-Adresse bestätigen</Heading>
+        <Heading style={h1}>Willkommen bei SLT Rental!</Heading>
         <Text style={text}>
-          Vielen Dank für Ihre Registrierung bei{' '}
+          Schön, dass du dabei bist – danke für deine Registrierung bei{' '}
           <Link href={siteUrl} style={link}>
             <strong>SLT Rental</strong>
           </Link>
-          !
+          .
         </Text>
         <Text style={text}>
-          Bitte bestätigen Sie Ihre E-Mail-Adresse (
+          Damit wir loslegen können, bestätige bitte kurz deine E-Mail-Adresse{' '}
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
-          </Link>
-          ), indem Sie auf den folgenden Button klicken:
+          </Link>{' '}
+          mit einem Klick auf den Button:
         </Text>
         <Section style={buttonSection}>
           <Button style={button} href={confirmationUrl}>
-            E-Mail bestätigen
+            Jetzt E-Mail bestätigen
           </Button>
         </Section>
-        <Text style={footer}>
-          Falls Sie kein Konto erstellt haben, können Sie diese E-Mail ignorieren.
+        <Text style={text}>
+          Danach kannst du direkt mit dem Mieten loslegen. Wenn du Fragen hast, antworte einfach auf diese E-Mail – wir sind für dich da.
         </Text>
+        <Text style={footer}>
+          Solltest du dich nicht bei SLT Rental registriert haben, kannst du diese E-Mail einfach ignorieren.
+        </Text>
+
         <Section style={divider} />
         <Text style={footerBrand}>
           © {new Date().getFullYear()} SLT Rental · Alle Rechte vorbehalten
