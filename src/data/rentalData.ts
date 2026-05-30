@@ -569,7 +569,7 @@ const trailerProducts: Product[] = [
     images: [imgBaumaschinen3500_1, imgBaumaschinen3500_2, imgBaumaschinen3500_3], 
     weightKg: 3500, 
     category: "baumaschine",
-    tags: ["baumaschine", "gebremst", "zweiachser"],
+    tags: ["baumaschine", "gebremst", "dreiachser"],
     specifications: { 
       "Hersteller": "Temared",
       "Ladefläche (LxBxH)": "350 x 168 x 25 cm",
