@@ -221,6 +221,15 @@ export default function B2BRegister() {
           console.error("Notification failed (non-blocking):", notifyErr);
         }
 
+        // Send welcome email to the customer (Resend, DE, Du-Form)
+        try {
+          await supabase.functions.invoke("send-b2b-welcome", {
+            body: { email, firstName, companyName },
+          });
+        } catch (welcomeErr) {
+          console.error("Welcome email failed (non-blocking):", welcomeErr);
+        }
+
         toast({
           title: "Registrierung erfolgreich!",
           description: "Dein Antrag wird geprüft. Du erhältst eine E-Mail, sobald dein Konto freigeschaltet wurde.",
