@@ -815,6 +815,7 @@ async function generateOfferPdf(data: {
   issuingLocation: string;
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
+  paymentTerms?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
