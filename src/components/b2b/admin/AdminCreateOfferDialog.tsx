@@ -149,6 +149,7 @@ export function AdminCreateOfferDialog({
       setDeliveryAddressStreet(draft.deliveryAddressStreet || "");
       setDeliveryAddressPostalCode(draft.deliveryAddressPostalCode || "");
       setDeliveryAddressCity(draft.deliveryAddressCity || "");
+      setPaymentTerms(draft.paymentTerms || "default");
       return;
     }
 
