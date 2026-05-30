@@ -332,7 +332,7 @@ export default function B2BDashboard() {
             </Card>
           )}
 
-          {/* No profile yet */}
+          {/* No profile yet — likely waiting for admin approval right after signup */}
           {!b2bProfile && (
             <Card className="mb-8 bg-yellow-50">
               <CardContent className="p-6">
@@ -340,16 +340,17 @@ export default function B2BDashboard() {
                   <Clock className="h-8 w-8 text-yellow-600" />
                   <div>
                     <h2 className="font-semibold text-lg text-yellow-600">
-                      B2B-Profil nicht vollständig
+                      Dein Antrag wird geprüft
                     </h2>
                     <p className="text-muted-foreground mb-3">
-                      Um das B2B-Portal nutzen zu können, vervollständige bitte deine Registrierung.
+                      Bitte habe noch einen Moment Geduld – unser Team prüft deine Registrierung und schaltet dein B2B-Konto in der Regel innerhalb von 1–2 Werktagen frei. Sobald es so weit ist, bekommst du eine E-Mail von uns.
                     </p>
-                    <Link to="/b2b/registrieren">
-                      <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                        Registrierung abschließen
-                      </Button>
-                    </Link>
+                    <p className="text-sm text-muted-foreground">
+                      Falls du deine Registrierung noch nicht abgeschlossen hast,{" "}
+                      <Link to="/b2b/registrieren" className="text-primary underline hover:no-underline">
+                        kannst du sie hier vervollständigen
+                      </Link>.
+                    </p>
                   </div>
                 </div>
               </CardContent>
