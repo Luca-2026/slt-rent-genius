@@ -591,25 +591,25 @@ const trailerProducts: Product[] = [
   { 
     id: "autotransport-2700", 
     name: "2700 kg Autotransportanhänger", 
-    description: "Ladefläche: 452 x 205 cm",
+    description: "Ladefläche: 452 x 205 cm | Inklusive Seilwinde zum Aufziehen von Fahrzeugen",
     image: imgAutotransport2700_1, 
     images: [imgAutotransport2700_1, imgAutotransport2700_2], 
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    specifications: { "Eigengewicht": "ca. 653 kg", "Nutzlast": "ca. 2.047 kg" },
+    specifications: { "Eigengewicht": "ca. 653 kg", "Nutzlast": "ca. 2.047 kg", "Ausstattung": "Seilwinde" },
     rentwareCode: { krefeld: "OXUI12", bonn: "EVZK31" } 
   },
   { 
     id: "autotransportkipp-2700", 
     name: "2700 kg Autotransportkippanhänger", 
-    description: "Ladefläche: 469 x 210 cm",
+    description: "Ladefläche: 469 x 210 cm | Inklusive Seilwinde zum Aufziehen von Fahrzeugen",
     image: imgAutotransportkipp2700_1, 
     images: [imgAutotransportkipp2700_1, imgAutotransportkipp2700_2], 
     weightKg: 2700, 
     category: "autotransport",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    specifications: { "Eigengewicht": "ca. 700 kg", "Nutzlast": "ca. 2.000 kg" },
+    specifications: { "Eigengewicht": "ca. 700 kg", "Nutzlast": "ca. 2.000 kg", "Ausstattung": "Seilwinde, Kippfunktion" },
     rentwareCode: { bonn: "4POSMU" } 
   },
   { 
@@ -641,13 +641,13 @@ const trailerProducts: Product[] = [
   { 
     id: "plattform-3500", 
     name: "3500 kg Plattformanhänger", 
-    description: "Ladefläche: 512 x 211 cm",
+    description: "Ladefläche: 512 x 211 cm | Inklusive Seilwinde zum Aufziehen von Fahrzeugen",
     image: imgPlattform3500_1, 
     images: [imgPlattform3500_1, imgPlattform3500_2, imgPlattform3500_3, imgPlattform3500_4, imgPlattform3500_5, imgPlattform3500_6], 
     weightKg: 3500, 
     category: "plattform",
     tags: ["autotransport", "gebremst", "zweiachser"], 
-    specifications: { "Eigengewicht": "ca. 900 kg", "Nutzlast": "ca. 2.600 kg" },
+    specifications: { "Eigengewicht": "ca. 900 kg", "Nutzlast": "ca. 2.600 kg", "Ausstattung": "Seilwinde" },
     rentwareCode: { krefeld: "BOLUXJ", muelheim: "HO4PII" } 
   },
   {
