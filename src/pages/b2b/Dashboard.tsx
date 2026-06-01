@@ -358,6 +358,11 @@ export default function B2BDashboard() {
             </Card>
           )}
 
+          {/* Admin Messages Inbox */}
+          {isApproved && b2bProfile && (
+            <AdminMessagesInbox profileId={b2bProfile.id} />
+          )}
+
           {/* Credit / Vorkasse Widget - always for approved users */}
           {isApproved && b2bProfile && (
             <div className="mb-8">
