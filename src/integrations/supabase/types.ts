@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      b2b_admin_messages: {
+        Row: {
+          b2b_profile_id: string
+          body: string
+          created_at: string
+          email_sent: boolean
+          email_sent_at: string | null
+          id: string
+          read_at: string | null
+          sender_name: string | null
+          sender_user_id: string | null
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id: string
+          body: string
+          created_at?: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+          id?: string
+          read_at?: string | null
+          sender_name?: string | null
+          sender_user_id?: string | null
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string
+          body?: string
+          created_at?: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+          id?: string
+          read_at?: string | null
+          sender_name?: string | null
+          sender_user_id?: string | null
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       b2b_authorized_persons: {
         Row: {
           b2b_profile_id: string
