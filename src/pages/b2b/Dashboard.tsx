@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { DashboardKpis } from "@/components/b2b/dashboard/DashboardKpis";
+import { AdminMessagesInbox } from "@/components/b2b/AdminMessagesInbox";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
@@ -355,6 +356,11 @@ export default function B2BDashboard() {
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Admin Messages Inbox */}
+          {isApproved && b2bProfile && (
+            <AdminMessagesInbox profileId={b2bProfile.id} />
           )}
 
           {/* Credit / Vorkasse Widget - always for approved users */}

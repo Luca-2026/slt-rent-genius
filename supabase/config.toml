@@ -63,3 +63,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.notify-credit-limit-request]
     verify_jwt = false
+  [functions.send-admin-message]
+    verify_jwt = false

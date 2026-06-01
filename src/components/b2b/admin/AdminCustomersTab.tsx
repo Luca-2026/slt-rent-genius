@@ -7,6 +7,7 @@ import {
   Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
 import { usePagedList, PaginationBar } from "./ClientPagination";
+import { SendMessageDialog } from "./SendMessageDialog";
 
 interface B2BProfile {
   id: string;
@@ -231,7 +232,12 @@ export function AdminCustomersTab({
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 shrink-0">
+                    <div className="flex gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                      <SendMessageDialog
+                        profileId={profile.id}
+                        companyName={profile.company_name}
+                        contactEmail={profile.contact_email}
+                      />
                       <Button
                         size="sm"
                         variant="outline"
