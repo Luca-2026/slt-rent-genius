@@ -7,6 +7,7 @@ import {
   Edit, Search, RefreshCw, UserPlus, Users, Trash2, Banknote,
 } from "lucide-react";
 import { usePagedList, PaginationBar } from "./ClientPagination";
+import { SendMessageDialog } from "./SendMessageDialog";
 
 interface B2BProfile {
   id: string;
