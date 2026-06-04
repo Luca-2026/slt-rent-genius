@@ -55,7 +55,7 @@ export function JobCard({ job }: JobCardProps) {
           </div>
           <div className="shrink-0 flex sm:flex-col gap-2">
             <Button asChild className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-              <Link to={`/karriere/${job.slug}`}>
+              <Link to={`/karriere/${job.slug}/`}>
                 Jetzt bewerben
               </Link>
             </Button>
