@@ -1333,6 +1333,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.slt-rental.de/mieten/krefeld/kabel-stromverteiler/endverteilerschrank-22kva-ev32/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.slt-rental.de/mieten/krefeld/kabel-stromverteiler/cee-kabel-16a-3m/</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -3432,6 +3438,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.slt-rental.de/mieten/bonn/kabel-stromverteiler/endverteilerschrank-22kva-ev32/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.slt-rental.de/mieten/bonn/kabel-stromverteiler/cee-kabel-63a-3m/</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -5480,6 +5492,12 @@
   <url>
     <loc>https://www.slt-rental.de/mieten/muelheim/kabel-stromverteiler/anschlussverteilerschrank-44kva/</loc>
     <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.slt-rental.de/mieten/muelheim/kabel-stromverteiler/endverteilerschrank-22kva-ev32/</loc>
+    <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

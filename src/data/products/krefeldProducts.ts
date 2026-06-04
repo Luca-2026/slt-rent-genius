@@ -347,6 +347,12 @@ import etherconCat5e50m2 from "@/assets/products/ethercon-cat5e-50m-2.jpeg";
 import anschlussverteilerschrank44kva1 from "@/assets/products/anschlussverteilerschrank-44kva-1.jpeg";
 import anschlussverteilerschrank44kva2 from "@/assets/products/anschlussverteilerschrank-44kva-2.jpeg";
 import anschlussverteilerschrank44kva3 from "@/assets/products/anschlussverteilerschrank-44kva-3.jpeg";
+import endverteilerEv32_1Asset from "@/assets/products/endverteiler-ev32-1.jpg.asset.json";
+import endverteilerEv32_2Asset from "@/assets/products/endverteiler-ev32-2.jpg.asset.json";
+import endverteilerEv32_3Asset from "@/assets/products/endverteiler-ev32-3.jpg.asset.json";
+const imgEndverteilerEv32_1 = endverteilerEv32_1Asset.url;
+const imgEndverteilerEv32_2 = endverteilerEv32_2Asset.url;
+const imgEndverteilerEv32_3 = endverteilerEv32_3Asset.url;
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
@@ -5070,6 +5076,29 @@ export const kabelStromverteilerProducts: Product[] = [
       "Prüfung": "Stückgeprüft",
     },
     rentwareCode: { krefeld: "2EKAZB" }
+  },
+  {
+    id: "endverteilerschrank-22kva-ev32",
+    name: "Endverteilerschrank 22 kVA – EV32 Typ B",
+    description: "Mobiler Baustromverteiler / Endverteilerschrank EV32 Typ B mit 22 kVA Anschlussleistung – ideal für Baustromversorgung, Veranstaltungen und Industrie. Ausgestattet mit allstromsensitiven FI-Schutzschaltern Typ B (2× 40 A / 0,03 A), 32 A Phasenwender-Zuleitung sowie 1× CEE 32 A, 2× CEE 16 A und 6× 230 V Schutzkontakt-Steckdosen. Robustes verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell – stückgeprüft nach VDE.",
+    image: imgEndverteilerEv32_1,
+    images: [imgEndverteilerEv32_1, imgEndverteilerEv32_2, imgEndverteilerEv32_3],
+    category: "anschlussschrank",
+    specifications: {
+      "Typ": "EV32 – Typ B",
+      "Anschlussleistung": "22 kVA",
+      "Stromaufnahme / Zuleitung": "32 A – 400 V CEE (Phasenwender)",
+      "CEE-Steckdosen 400 V/6h": "1× 32 A + 2× 16 A (5-polig)",
+      "Schutzkontaktsteckdosen": "6× 230 V / 16 A",
+      "FI-Schutzschalter": "2× 40 A / 0,03 A – Typ B (allstromsensitiv)",
+      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
+      "Standgestell": "Feuerverzinkt",
+      "Transportmaße (B×H×T)": "670 × 1060 × 360 mm",
+      "Transportgewicht": "39 kg",
+      "Verarbeitung": "Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft",
+    },
+    pdfUrl: "/manuals/datenblatt-endverteiler-ev32.pdf",
+    rentwareCode: { krefeld: "CIRWT3", bonn: "ZA2THI" }
   },
   // CEE-Kabel
   {
