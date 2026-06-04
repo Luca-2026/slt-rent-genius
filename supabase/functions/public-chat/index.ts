@@ -107,21 +107,33 @@ Wir vermieten eine breite Palette an Geräten, darunter:
 • Bauaufzüge & Teleskoparbeitsbühnen
 • Abbruchhammer & Bohrhämmer
 
-=== ARTIKELAUSWAHL – BERATUNG ===
-Hilf dem Kunden, das richtige Gerät zu finden. Stelle Rückfragen zu:
-1. **Was soll gemacht werden?** (Aushub, Transport, Verdichtung, Abbruch, Event, etc.)
-2. **Wie groß ist das Projekt?** (Fläche, Tiefe, Menge)
-3. **Zugang zur Baustelle?** (Enge Einfahrt → kleiner Bagger; breiter Zugang → Radlader)
-4. **Erfahrung des Nutzers?** (Anfänger → einfachere Geräte empfehlen)
+=== ARTIKELAUSWAHL – BERATUNG (PFLICHT-LOOP, NICHT NUR LINK SCHICKEN) ===
+Hilf dem Kunden, das richtige Gerät zu finden. **Sende NIEMALS nur einen kommentarlosen Link.** Vor oder mit dem Link liefere immer:
 
-Beispiel-Empfehlungen:
-- Gartenteich ausheben → Minibagger 1,7t oder 2,5t
+1. **Kurze Spec-Bestätigung** des angefragten Modells (Gewicht/Grabtiefe/Breite/Aufnahme – nur Fakten aus diesem Briefing oder den Produktseiten, nichts erfinden).
+2. **1–2 passende Alternativen** (eine Nummer kleiner / eine Nummer größer) als klickbarer Markdown-Link.
+3. **Hinweis auf Lieferung vs. Selbstabholung** mit Link zum Lieferkostenrechner: https://www.slt-rental.de/lieferung (Tarif A/B/C nach Maschinengröße – Tarife siehe oben).
+4. **2–3 gezielte Rückfragen**, sofern noch nicht vom Kunden beantwortet:
+   • Was genau soll gemacht werden? (Aushub, Drainage, Pool, Pflaster, Abbruch …)
+   • Wie groß / wie tief? (m² · Grabtiefe in m · Materialmenge)
+   • Wie ist der Zugang zur Baustelle? (Tor-Breite, Untergrund: Rasen/Pflaster/Beton)
+   • Anbaugeräte nötig? (Tieflöffel-Breite, Grabenräumlöffel, Hydraulikhammer)
+   • Selbstabholung oder Lieferung? (bei Lieferung: PLZ erfragen für Lieferkostenrechner)
+   • Privat- oder Firmenkunde? (bei Firma: B2B-Portal)
+   • Erfahrung mit der Maschine? (Anfänger → kleineres/einfacheres Modell + Hinweis auf Ratgeber „Minibagger ohne Führerschein")
+
+**Beispiel-Empfehlungen (nur als Orientierung, nicht stur):**
+- Gartenteich / Drainage → 1 t (Bobcat E10z) oder 2 t (XCMG XE20E)
+- Engster Zugang (Gartentür < 80 cm) → 1 t (Bobcat E10z, einfahrbar auf 71 cm)
+- Hausbau-Aushub / Pool → 2,7 t (XCMG XE27E) oder 3,5 t (Bobcat E35z)
+- Kanal-/Tiefbau bis 3 m → 3,5 t (Bobcat E35z, Nullheck)
+- Abbruch + Hammer → 3,5 t oder 5 t (Bobcat E50z)
 - Einfahrt pflastern → Rüttelplatte 90–130 kg + Minibagger für Aushub
-- Kanalgraben → Minibagger 1t (engster Zugang) mit Tieflöffel 30 cm
 - Umzug/Transport → Planenanhänger (Größe je nach Menge)
-- Gartenparty → Hüpfburg, ggf. Licht- und Audioequipment
-- Baumfällung → Motorsäge + Anhänger für Abtransport
-- Keller trockenlegen → Bautrockner + ggf. Pumpe
+- Keller trockenlegen → Bautrockner (KT200 bis 20 m² / KT553 bis 60 m²) + ggf. Pumpe
+
+**Stilregel:** Strukturiere die Antwort mit kurzen Abschnitten (Specs · Alternativen · Lieferung · Rückfragen · Buchungshinweis). Keine Wand aus Fließtext, keine Wiederholung dessen, was der Kunde schon gesagt hat.
+
 
 === LIEFERKOSTEN ===
 Wir liefern gegen Aufpreis aus den Standorten Krefeld, Bonn und Mülheim an der Ruhr. Es gibt drei Tarife (alle Preise brutto inkl. Hin- und Rückfahrt):
@@ -367,6 +379,123 @@ const minibaggerSlugs = [
   { label: "5t Minibagger (Bobcat E50z)", slug: "bobcat-e50z", exact: /(^|\D)5\s*t|5\s*tonnen?/i },
 ];
 
+// Strukturierte Beratungsdaten zu jedem Minibagger-Modell – Quelle: src/data/rentalData.ts
+// (Werte hier zentral pflegen; falls sich Specs ändern, beide Stellen aktualisieren)
+type MinibaggerSpec = {
+  slug: string;
+  short: string;
+  modelName: string;
+  weightKg: number;
+  digDepthMm: number;
+  widthMm: number;          // engste einfahrbare Breite
+  widthFullMm?: number;     // Gesamtbreite ausgefahren
+  ps: number;
+  fuelL: number;
+  bucketClass: "MS01" | "MS03";
+  deliveryTariff: "B (LKW 7,5 t)" | "C (Tieflader)";
+  highlights: string[];     // 1–2 Sätze typische Einsatzbereiche
+};
+
+const minibaggerSpecs: MinibaggerSpec[] = [
+  {
+    slug: "bobcat-e10z",
+    short: "1 t",
+    modelName: "Bobcat E10z",
+    weightKg: 1000,
+    digDepthMm: 1820,
+    widthMm: 710,
+    widthFullMm: 1100,
+    ps: 10.2,
+    fuelL: 13,
+    bucketClass: "MS01",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Engster Zugang dank einfahrbarem Fahrwerk auf 71 cm – passt durch Gartentüren.",
+      "Ideal für Garten-, Drainage- und Leitungsgräben bis ca. 1,8 m Tiefe.",
+    ],
+  },
+  {
+    slug: "xcmg-xe20e",
+    short: "2 t",
+    modelName: "XCMG XE20E",
+    weightKg: 2050,
+    digDepthMm: 2385,
+    widthMm: 990,
+    widthFullMm: 1300,
+    ps: 15.8,
+    fuelL: 25,
+    bucketClass: "MS01",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Allrounder für Hausbau, Pool- und Fundamentaushub bis ca. 2,4 m Tiefe.",
+      "Fahrwerk einfahrbar auf 99 cm – passt noch durch die meisten Tore.",
+    ],
+  },
+  {
+    slug: "xcmg-xe27e",
+    short: "2,7 t",
+    modelName: "XCMG XE27E",
+    weightKg: 2780,
+    digDepthMm: 2800,
+    widthMm: 1500,
+    ps: 21,
+    fuelL: 33,
+    bucketClass: "MS03",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Mehr Reichweite und Hubkraft für größere Aushub- und Pflasterprojekte.",
+      "MS03-Aufnahme – größere Löffel und Hydraulikhammer möglich.",
+    ],
+  },
+  {
+    slug: "bobcat-e35z",
+    short: "3,5 t",
+    modelName: "Bobcat E35z",
+    weightKg: 3500,
+    digDepthMm: 3120,
+    widthMm: 1740,
+    ps: 33.4,
+    fuelL: 42,
+    bucketClass: "MS03",
+    deliveryTariff: "C (Tieflader)",
+    highlights: [
+      "Nullheck-Design für beengte Baustellen, Grabtiefe bis 3,12 m.",
+      "Geeignet für Kanal-, Tiefbau- und Abbrucharbeiten mit Hydraulikhammer.",
+    ],
+  },
+  {
+    slug: "bobcat-e50z",
+    short: "5 t",
+    modelName: "Bobcat E50z",
+    weightKg: 5000,
+    digDepthMm: 3800,
+    widthMm: 1960,
+    ps: 47.6,
+    fuelL: 65,
+    bucketClass: "MS03",
+    deliveryTariff: "C (Tieflader)",
+    highlights: [
+      "Leistungsstark für Tiefbau, Aushub und große Abbrucharbeiten bis 3,8 m.",
+      "Setzt befestigten Untergrund/breiten Zugang voraus.",
+    ],
+  },
+];
+
+function findMinibaggerByText(text: string): MinibaggerSpec | null {
+  const slug = minibaggerSlugs.find((item) => item.exact.test(text));
+  if (!slug) return null;
+  return minibaggerSpecs.find((spec) => spec.slug === slug.slug) ?? null;
+}
+
+function neighborMinibagger(spec: MinibaggerSpec): { smaller?: MinibaggerSpec; larger?: MinibaggerSpec } {
+  const idx = minibaggerSpecs.findIndex((s) => s.slug === spec.slug);
+  return {
+    smaller: idx > 0 ? minibaggerSpecs[idx - 1] : undefined,
+    larger: idx >= 0 && idx < minibaggerSpecs.length - 1 ? minibaggerSpecs[idx + 1] : undefined,
+  };
+}
+
+
 function withTrailingSlash(path: string) {
   const clean = path.split("?")[0].split("#")[0];
   return clean.endsWith("/") ? clean : `${clean}/`;
@@ -430,6 +559,103 @@ function getMinibaggerLinks(text: string, location: string): RentalLink[] {
   return selected
     .map((item) => rentalLink(item.label, location, "erdbewegung", item.slug))
     .filter((item): item is RentalLink => Boolean(item));
+}
+
+// ---------- Minibagger: strukturierte Beratung ----------
+
+function detectAlreadyAnswered(text: string) {
+  const t = text.toLowerCase();
+  return {
+    digDepth: /(\d{1,2}([.,]\d)?\s*m\b|\d{2,3}\s*cm\b|grabtiefe|tiefe)/.test(t),
+    access: /(zugang|durchfahrt|tor|gartent[üu]r|einfahrt|zufahrt|breite)/.test(t),
+    delivery: /(liefer|anliefer|tieflader|sprinter|abholen|abholung|selbstabholung|plz\s*\d|\b\d{5}\b)/.test(t),
+    attachments: /(tiefl[öo]ffel|grabenl[öo]ffel|hydraulikhammer|anbauger[äa]t|schaufel|l[öo]ffel|symlock)/.test(t),
+    ground: /(rasen|pflaster|asphalt|beton|sand|lehm|fels|stein|boden|untergrund)/.test(t),
+  };
+}
+
+function minibaggerSpecBlock(spec: MinibaggerSpec): string {
+  const widthLine = spec.widthFullMm
+    ? `Breite: ${spec.widthFullMm} mm, einfahrbar auf **${spec.widthMm} mm**`
+    : `Breite: ${spec.widthMm} mm`;
+  const depthM = (spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return [
+    `- Einsatzgewicht: ${spec.weightKg.toLocaleString("de-DE")} kg`,
+    `- Grabtiefe: **${depthM} m**`,
+    `- ${widthLine}`,
+    `- Motor: ${spec.ps} PS · Diesel-Tank ${spec.fuelL} l`,
+    `- Aufnahme: ${spec.bucketClass}`,
+    `- Anlieferung: Tarif ${spec.deliveryTariff}`,
+  ].join("\n");
+}
+
+function buildMinibaggerConsultResponse(spec: MinibaggerSpec, location: string, history: string): string {
+  const loc = locationLabel(location);
+  const link = rentalLink(`${spec.short} Minibagger (${spec.modelName}) in ${loc}`, location, "erdbewegung", spec.slug);
+  const overview = rentalLink(`Alle Minibagger in ${loc}`, location, "erdbewegung");
+  const neighbors = neighborMinibagger(spec);
+  const altLinks: RentalLink[] = [];
+  if (neighbors.smaller) {
+    const l = rentalLink(`${neighbors.smaller.short} Minibagger (${neighbors.smaller.modelName})`, location, "erdbewegung", neighbors.smaller.slug);
+    if (l) altLinks.push(l);
+  }
+  if (neighbors.larger) {
+    const l = rentalLink(`${neighbors.larger.short} Minibagger (${neighbors.larger.modelName})`, location, "erdbewegung", neighbors.larger.slug);
+    if (l) altLinks.push(l);
+  }
+
+  const answered = detectAlreadyAnswered(history);
+  const questions: string[] = [];
+  if (!answered.digDepth) questions.push(`Welche **Grabtiefe** brauchst du? Der ${spec.short}-Bagger schafft bis ${(spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m.`);
+  if (!answered.access) questions.push(`Wie **eng ist der Zugang** zur Baustelle (Tor/Durchfahrt)? Der Bagger ist ${spec.widthMm} mm breit (einfahrbar).`);
+  if (!answered.delivery) questions.push("Möchtest du **selbst abholen** oder soll ich dir den **Lieferkostenrechner** verlinken? Dann nenn mir bitte deine PLZ.");
+  if (!answered.attachments) questions.push("Welche **Anbaugeräte** brauchst du zusätzlich (z. B. Tieflöffel-Breite, Grabenräumlöffel, Hydraulikhammer)?");
+
+  const sections: string[] = [];
+  sections.push(`Klar – für deinen **${spec.short} Minibagger (${spec.modelName}) in ${loc}** kurz die wichtigsten Eckdaten:`);
+  sections.push(minibaggerSpecBlock(spec));
+  sections.push(`**Typische Einsätze:** ${spec.highlights.join(" ")}`);
+  if (link) {
+    sections.push(`**Direkt zur Artikelseite:** [${link.label}](${link.url})`);
+  } else if (overview) {
+    sections.push(`**Modell aktuell nicht am Standort – Übersicht:** [${overview.label}](${overview.url})`);
+  }
+  if (altLinks.length > 0) {
+    sections.push(`**Alternativen, falls Tiefe oder Zugang nicht passen:**\n${altLinks.map((l) => `- [${l.label}](${l.url})`).join("\n")}`);
+  }
+  sections.push(`**Lieferung statt Selbstabholung?** Den genauen Preis rechnest du anhand deiner PLZ aus: [Lieferkostenrechner](${SITE_ORIGIN}/lieferung)`);
+  if (questions.length > 0) {
+    sections.push(`Damit ich dir verbindlich das passende Modell empfehlen kann, kurz noch:\n${questions.slice(0, 3).map((q) => `- ${q}`).join("\n")}`);
+  }
+  sections.push(bookingHint());
+  return sections.join("\n\n");
+}
+
+function buildMinibaggerOverviewResponse(location: string, history: string): string {
+  const loc = locationLabel(location);
+  const rows = minibaggerSpecs
+    .map((spec) => {
+      const link = rentalLink(`${spec.short} (${spec.modelName})`, location, "erdbewegung", spec.slug);
+      const depth = (spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const widthInfo = spec.widthFullMm ? `${spec.widthMm} mm (einfahrbar)` : `${spec.widthMm} mm`;
+      const label = link ? `[${spec.short} (${spec.modelName})](${link.url})` : `${spec.short} (${spec.modelName})`;
+      return `- **${label}** – Grabtiefe ${depth} m · Breite ${widthInfo} · ${spec.ps} PS · ${spec.bucketClass}`;
+    })
+    .join("\n");
+  const answered = detectAlreadyAnswered(history);
+  const questions: string[] = [];
+  if (!answered.digDepth) questions.push("**Welche Grabtiefe** brauchst du (in m)?");
+  if (!answered.access) questions.push("**Wie eng** ist der schmalste Zugang zur Baustelle (in cm/m)?");
+  if (!answered.delivery) questions.push("Selbstabholung oder **Lieferung** (dann PLZ)?");
+  if (!answered.attachments) questions.push("Brauchst du **Anbaugeräte** (Tieflöffel-Breite, Hammer, Räumlöffel)?");
+
+  return [
+    `In ${loc} haben wir folgende Minibagger – Auswahl nach Grabtiefe, Breite und Zugang:`,
+    rows,
+    `Damit ich dir das passende Modell empfehlen kann, beantworte mir kurz:\n${questions.slice(0, 3).map((q) => `- ${q}`).join("\n")}`,
+    `Lieferpreise rechnest du jederzeit selbst aus: [Lieferkostenrechner](${SITE_ORIGIN}/lieferung)`,
+    bookingHint(),
+  ].join("\n\n");
 }
 
 function fallbackCategoryLink(location: string, categoryId: string, label?: string): RentalLink | null {
@@ -637,19 +863,16 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const explicitLinkAsk = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen|brauche|möchte|moechte|suche|empfehl)/i.test(lastUserLower);
   const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
 
-  // --- Minibagger ---
+  // --- Minibagger (strukturierte Beratung statt blankem Link) ---
   if ((explicitLinkAsk || continuation) && mentionsMinibagger) {
     if (!location) {
-      return "Gerne – für welchen Standort soll ich dir die passenden Minibagger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+      return "Gerne – für welchen Standort soll ich dich beraten: Krefeld, Bonn oder Mülheim an der Ruhr? Sag mir gleich noch dazu, welche **Grabtiefe** du brauchst und wie **eng der Zugang** zur Baustelle ist – dann empfehle ich dir das passende Modell.";
     }
-    const links = getMinibaggerLinks(relevantText, location);
-    if (links.length > 0) {
-      const loc = locationLabel(location);
-      const intro = links.length === 1
-        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${loc}:`
-        : `Klar – diese geprüften Minibagger-Links sind für ${loc} verfügbar (alle Modelle der entsprechenden Klasse):`;
-      return buildLinkResponse(intro, links);
+    const spec = findMinibaggerByText(relevantText);
+    if (spec) {
+      return buildMinibaggerConsultResponse(spec, location, allText);
     }
+    return buildMinibaggerOverviewResponse(location, allText);
   }
 
   // --- Bautrockner ---
