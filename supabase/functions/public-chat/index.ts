@@ -1,3 +1,5 @@
+import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -66,7 +68,7 @@ Allgemeiner Kontakt: Tel. 02151 417 990 4, E-Mail: mieten@slt-rental.de, Website
 Wir vermieten eine breite Palette an Geräten, darunter:
 
 **Erdbewegung & Baumaschinen:**
-• Minibagger (1t, 1,7t, 2,5t, 3,5t, 5t) – ideal für Gartenarbeiten, Aushub, Drainage
+• Minibagger (1t, 2t, 2,7t, 3,5t, 5t) – ideal für Gartenarbeiten, Aushub, Drainage
 • Radlader & Hoflader – für Materialumschlag und Planierarbeiten
 • Dumper & Raddumper – für Erdtransport auf der Baustelle
 • Kettenbagger bis 20t – für größere Tiefbauarbeiten
@@ -196,7 +198,7 @@ Auf der Website gibt es eine ausführliche Anleitung zum 24/7-Codesystem und zur
 Wenn der Kunde nach einem konkreten Mietartikel fragt (z. B. "Habt ihr einen Minibagger 1,7t?", "Brauche eine Rüttelplatte", "750 kg Planenanhänger in Bonn"):
 
 0. **Link-Regeln – absolut verbindlich:**
-   - Erfinde NIEMALS URLs. Nutze nur URLs, die in diesem Briefing ausdrücklich stehen.
+   - Erfinde NIEMALS URLs. Mietartikel-Links dürfen ausschließlich aus der geprüften Sitemap/Linkliste stammen. Wenn du unsicher bist: Kategorie-Link statt Produkt-Link.
    - Schreibe Links IMMER als klickbaren Markdown-Link: [Linktext](https://www.slt-rental.de/...). Keine ausgeschriebenen URL-Zeilen.
    - Verwende NIEMALS die falschen alten Pfade /mieten/anhaenger oder /mieten/anhaenger/planenanhaenger.
    - Wenn du den exakten Produktlink aus diesem Briefing nicht kennst, verlinke nur die passende Standort-Kategorie aus der Liste unten und sage offen, dass dort alle verfügbaren Modelle stehen.
@@ -330,6 +332,165 @@ Zahlung: Bar, EC-Karte oder Überweisung.
 
 type ChatMessage = { role?: string; content?: string };
 
+type RentalLink = { label: string; path: string; url: string };
+
+const SITE_ORIGIN = "https://www.slt-rental.de";
+const verifiedRentalPathSet = new Set<string>(RENTAL_LINK_PATHS);
+
+const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
+  { id: "anhaenger", label: "Anhänger", terms: ["anhänger", "anhaenger", "planenanhänger", "planenanhaenger", "kofferanhänger", "kastenanhänger", "trailer"] },
+  { id: "erdbewegung", label: "Erdbewegung", terms: ["minibagger", "bagger", "radlader", "knicklader", "dumper", "raddumper", "tieflöffel", "tieflöffel", "loeffel", "hydraulikhammer", "grabenräumlöffel"] },
+  { id: "verdichtung", label: "Verdichtung", terms: ["rüttelplatte", "ruettelplatte", "stampfer", "vibrationsstampfer", "grabenwalze", "verdichten"] },
+  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "scherenbühne", "mastbühne", "steiger"] },
+  { id: "werkzeuge", label: "Werkzeuge", terms: ["werkzeug", "bohrhammer", "abbruchhammer", "winkelschleifer", "fliesenschneider", "trennschleifer", "laser"] },
+  { id: "gartenpflege", label: "Gartenpflege", terms: ["garten", "häcksler", "haecksler", "vertikutierer", "freischneider", "erdbohrer", "kettensäge", "rasen"] },
+  { id: "aggregate", label: "Aggregate", terms: ["aggregat", "stromerzeuger", "kompressor", "powerstation", "presslufthammer"] },
+  { id: "moebel-zelte", label: "Möbel & Zelte", terms: ["zelt", "partyzelte", "pavillon", "stehtisch", "bierzeltgarnitur", "möbel", "moebel"] },
+  { id: "beleuchtung", label: "Beleuchtung", terms: ["licht", "beleuchtung", "scheinwerfer", "led", "spot"] },
+  { id: "beschallung", label: "Beschallung", terms: ["lautsprecher", "pa", "sound", "mikrofon", "beschallung"] },
+  { id: "buehne", label: "Bühne", terms: ["bühne", "buehne", "podest"] },
+  { id: "traversen-rigging", label: "Traversen & Rigging", terms: ["traverse", "rigging"] },
+  { id: "geschirr-glaeser-besteck", label: "Geschirr, Gläser & Besteck", terms: ["geschirr", "glas", "gläser", "besteck", "teller", "messer", "gabel"] },
+  { id: "huepfburgen", label: "Hüpfburgen", terms: ["hüpfburg", "huepfburg", "hüpfburgen", "huepfburgen"] },
+  { id: "spezialeffekte", label: "Spezialeffekte", terms: ["nebelmaschine", "co2", "konfetti", "funken", "spezialeffekt"] },
+];
+
+const stopWords = new Set([
+  "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr"
+]);
+
+const minibaggerSlugs = [
+  { label: "1t Minibagger (Bobcat E10Z)", slug: "bobcat-e10z", exact: /(^|\D)(1|1[,.]0)\s*t|1\s*tonnen?|ein\s*tonnen?/i },
+  { label: "2t Minibagger (XCMG XE20E)", slug: "xcmg-xe20e", exact: /(^|\D)2\s*t|2\s*tonnen?/i },
+  { label: "2,7t Minibagger (XCMG XE27E)", slug: "xcmg-xe27e", exact: /2[,.]7\s*t|2[,.]7\s*tonnen?/i },
+  { label: "3,5t Minibagger (Bobcat E35z)", slug: "bobcat-e35z", exact: /3[,.]5\s*t|3[,.]5\s*tonnen?/i },
+  { label: "5t Minibagger (Bobcat E50z)", slug: "bobcat-e50z", exact: /(^|\D)5\s*t|5\s*tonnen?/i },
+];
+
+function withTrailingSlash(path: string) {
+  const clean = path.split("?")[0].split("#")[0];
+  return clean.endsWith("/") ? clean : `${clean}/`;
+}
+
+function toVerifiedRentalUrl(path: string) {
+  const normalized = withTrailingSlash(path);
+  return verifiedRentalPathSet.has(normalized) ? `${SITE_ORIGIN}${normalized}` : null;
+}
+
+function rentalLink(label: string, location: string, category: string, slug?: string): RentalLink | null {
+  const path = `/mieten/${location}/${category}/${slug ? `${slug}/` : ""}`;
+  const url = toVerifiedRentalUrl(path);
+  return url ? { label, path: withTrailingSlash(path), url } : null;
+}
+
+function detectCategory(text: string) {
+  const normalized = text.toLowerCase();
+  return categoryTerms.find((category) => category.terms.some((term) => normalized.includes(term.toLowerCase()))) ?? null;
+}
+
+function normalizeForSearch(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss");
+}
+
+function queryTokens(text: string) {
+  return Array.from(new Set(
+    normalizeForSearch(text)
+      .match(/[a-z0-9]+/g)
+      ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? []
+  ));
+}
+
+function markdownLinks(links: RentalLink[]) {
+  return links.map((item) => `- [${item.label}](${item.url})`).join("\n");
+}
+
+function bookingHint() {
+  return "Klick auf den passenden Artikel. Auf der Artikelseite öffnest du über **„Jetzt mieten“** den Kalender, siehst die aktuelle Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.";
+}
+
+function buildLinkResponse(intro: string, links: RentalLink[]) {
+  return `${intro}\n\n${markdownLinks(links)}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+}
+
+function getMinibaggerLinks(text: string, location: string): RentalLink[] {
+  const exact = minibaggerSlugs.filter((item) => item.exact.test(text));
+  const selected = exact.length > 0 ? exact : minibaggerSlugs;
+  return selected
+    .map((item) => rentalLink(item.label, location, "erdbewegung", item.slug))
+    .filter((item): item is RentalLink => Boolean(item));
+}
+
+function fallbackCategoryLink(location: string, categoryId: string, label?: string): RentalLink | null {
+  const category = categoryTerms.find((item) => item.id === categoryId);
+  return rentalLink(label ?? `${category?.label ?? "Kategorie"} in ${location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld"}`, location, categoryId);
+}
+
+function searchVerifiedProductLinks(text: string, location: string, categoryId?: string): RentalLink[] {
+  const tokens = queryTokens(text);
+  if (tokens.length === 0) return [];
+  const prefix = categoryId ? `/mieten/${location}/${categoryId}/` : `/mieten/${location}/`;
+  const scored = RENTAL_LINK_PATHS
+    .filter((path) => path.startsWith(prefix) && path.split("/").filter(Boolean).length >= 4)
+    .map((path) => {
+      const slug = path.split("/").filter(Boolean).at(-1) ?? "";
+      const haystack = normalizeForSearch(slug.replace(/-/g, ""));
+      const score = tokens.reduce((sum, token) => sum + (haystack.includes(token) ? token.length : 0), 0);
+      return { path, slug, score };
+    })
+    .filter((item) => item.score >= Math.min(6, tokens.join("").length))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
+
+  return scored.map((item) => ({
+    label: item.slug.split("-").map((part) => part.length <= 3 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" "),
+    path: item.path,
+    url: `${SITE_ORIGIN}${item.path}`,
+  }));
+}
+
+function pathFromSltUrl(rawUrl: string) {
+  try {
+    const url = new URL(rawUrl);
+    if (url.hostname !== "www.slt-rental.de" && url.hostname !== "slt-rental.de") return null;
+    return withTrailingSlash(url.pathname);
+  } catch {
+    return null;
+  }
+}
+
+function fallbackUrlFromPath(path: string | null) {
+  if (!path) return null;
+  const parts = path.split("/").filter(Boolean);
+  if (parts[0] !== "mieten") return null;
+  const categoryPath = parts.length >= 3 ? `/mieten/${parts[1]}/${parts[2]}/` : null;
+  const locationPath = parts.length >= 2 ? `/mieten/${parts[1]}/` : null;
+  return categoryPath && verifiedRentalPathSet.has(categoryPath)
+    ? `${SITE_ORIGIN}${categoryPath}`
+    : locationPath && verifiedRentalPathSet.has(locationPath)
+      ? `${SITE_ORIGIN}${locationPath}`
+      : null;
+}
+
+function sanitizeAssistantText(text: string) {
+  const markdownSanitized = text.replace(/\[([^\]]+)\]\((https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)]+)\)/g, (match, label, url) => {
+    const path = pathFromSltUrl(url);
+    if (path && verifiedRentalPathSet.has(path)) return `[${label}](${SITE_ORIGIN}${path})`;
+    const fallback = fallbackUrlFromPath(path);
+    return fallback ? `[${label}](${fallback})` : label;
+  });
+
+  return markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
+    const path = pathFromSltUrl(url);
+    if (path && verifiedRentalPathSet.has(path)) return `${SITE_ORIGIN}${path}`;
+    return fallbackUrlFromPath(path) ?? "die passende Kategorie auf slt-rental.de";
+  });
+}
+
 const planen750Links: Record<string, { label: string; url: string }[]> = {
   krefeld: [
     { label: "Planenanhänger S 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-s-750/" },
@@ -375,13 +536,48 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const relevantText = `${lastUser}\n${allText}`.toLowerCase();
   const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
   const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUser.toLowerCase());
-
-  if (!asksForTrailer || !asksForLinks) return null;
   const location = detectLocation(lastUser) ?? detectLocation(allText);
-  if (!location) {
-    return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+
+  if (asksForTrailer && asksForLinks) {
+    if (!location) {
+      return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+    }
+    return buildPlanen750Response(location);
   }
-  return buildPlanen750Response(location);
+
+  const asksForRentalLink = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen)/i.test(lastUser);
+  const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
+
+  if (asksForRentalLink && mentionsMinibagger) {
+    if (!location) {
+      return "Gerne – für welchen Standort soll ich dir die passenden Minibagger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+    }
+    const links = getMinibaggerLinks(relevantText, location);
+    if (links.length > 0) {
+      const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+      const intro = links.length === 1
+        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${locationLabel}:`
+        : `Klar – diese geprüften Minibagger-Links sind für ${locationLabel} verfügbar:`;
+      return buildLinkResponse(intro, links);
+    }
+  }
+
+  if (asksForRentalLink) {
+    const category = detectCategory(relevantText);
+    if (location && category) {
+      const productLinks = searchVerifiedProductLinks(relevantText, location, category.id);
+      if (productLinks.length > 0) {
+        const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+        return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel}:`, productLinks);
+      }
+      const categoryLink = fallbackCategoryLink(location, category.id, `${category.label} in ${location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld"}`);
+      if (categoryLink) {
+        return buildLinkResponse("Den exakten Produktlink kann ich hier nicht eindeutig genug bestimmen. Deshalb verlinke ich dir bewusst nur die geprüfte Kategorie-Übersicht:", [categoryLink]);
+      }
+    }
+  }
+
+  return null;
 }
 
 function streamText(text: string) {
@@ -439,7 +635,7 @@ Deno.serve(async (req: Request) => {
           { role: "system", content: systemPrompt },
           ...messages,
         ],
-        stream: true,
+        stream: false,
       }),
     });
 
@@ -464,9 +660,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    return new Response(aiResponse.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    const completion = await aiResponse.json();
+    const assistantText = completion?.choices?.[0]?.message?.content ?? "Da möchte ich dich nicht mit einer ungenauen Antwort abspeisen – bitte nutze die passende Kategorie auf slt-rental.de oder kontaktiere das Team direkt.";
+    return streamText(sanitizeAssistantText(assistantText));
   } catch (error: any) {
     console.error("public-chat error:", error);
     return new Response(JSON.stringify({ error: error.message || "Unbekannter Fehler" }), {
