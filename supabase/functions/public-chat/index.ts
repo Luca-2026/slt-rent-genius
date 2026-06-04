@@ -686,6 +686,206 @@ function searchVerifiedProductLinks(text: string, location: string, categoryId?:
   }));
 }
 
+// ---------- Generisches Beratungs-Framework (alle Kategorien außer Minibagger/Bautrockner) ----------
+
+type ConsultQuestion = { key: string; answered: RegExp; question: string };
+type ConsultConfig = {
+  id: string;
+  selectionDrivers: string;
+  questions: ConsultQuestion[];
+  extraTips?: string;
+  deliveryNote?: string; // Zusatzhinweis zur Standard-Lieferkostenrechner-Zeile
+};
+
+const categoryConsult: Record<string, ConsultConfig> = {
+  anhaenger: {
+    id: "anhaenger",
+    selectionDrivers: "Größe (S–XXL), Aufbau (Plane, Kasten, Koffer, Plattform, Rückwärtskipper) und zulässiges Gesamtgewicht (750 kg vs. ab 1.300 kg).",
+    questions: [
+      { key: "loadType", answered: /(umzug|transport|m[oö]bel|m[uü]ll|gartenabfall|rasen|laub|motorrad|quad|auto|baumaschine|pflaster|kies|sand|fracht)/i, question: "**Was möchtest du transportieren?** (z. B. Umzugsgut, Gartenabfälle, Pflastersteine, Motorrad …)" },
+      { key: "weight", answered: /(\d{3,4}\s*kg|tonne|leergewicht|nutzlast|gesamtgewicht)/i, question: "**Wie schwer ist die Ladung** ungefähr (kg) – brauchst du 750 kg oder einen größeren Anhänger?" },
+      { key: "license", answered: /(f[üu]hrerschein|klasse\s*b|be|b96)/i, question: "Welchen **Führerschein** hast du? (Klasse B reicht bis 3,5 t Zugkombi, darüber B96/BE)" },
+      { key: "pickup", answered: /(24[\/ -]?7|selbstabholung|nachts|wochenende|sms|code)/i, question: "Brauchst du **24/7-Abholung per SMS-Code** oder reicht eine Abholung zu den Öffnungszeiten?" },
+    ],
+    extraTips: "Unsere Anhänger haben **100 km/h-Zulassung** und **13-poligen Anschluss** (Adapter auf 7-polig erhältlich). 24/7-Selbstabholung per SMS-Code ist bei den meisten Modellen möglich.",
+  },
+  erdbewegung: {
+    id: "erdbewegung",
+    selectionDrivers: "Maschinentyp (Bagger, Radlader, Dumper), Gewichtsklasse, Schaufel-/Löffelaufnahme (MS01/MS03) und Zugang zur Baustelle.",
+    questions: [
+      { key: "task", answered: /(aushub|graben|drainage|fundament|pool|kanal|abbruch|planieren|materialtransport|verladen)/i, question: "**Was genau soll gemacht werden?** (Aushub, Graben, Planieren, Materialtransport, Abbruch …)" },
+      { key: "depth", answered: /(\d{1,2}([.,]\d)?\s*m\b|\d{2,3}\s*cm\b|grabtiefe|tiefe)/i, question: "Wie **tief / wie groß** ist das Volumen (Grabtiefe in m, Materialmenge in m³)?" },
+      { key: "access", answered: /(zugang|durchfahrt|tor|gartent[üu]r|einfahrt|zufahrt|breite|untergrund|rasen|pflaster)/i, question: "Wie ist der **Zugang zur Baustelle** (Tor-Breite, Untergrund)?" },
+      { key: "attachments", answered: /(tiefl[öo]ffel|grabenl[öo]ffel|hydraulikhammer|anbauger[äa]t|schaufel|l[öo]ffel|symlock)/i, question: "Brauchst du **Anbaugeräte** (Tieflöffel-Breite, Räumlöffel, Hydraulikhammer)?" },
+    ],
+  },
+  verdichtung: {
+    id: "verdichtung",
+    selectionDrivers: "Maschinengewicht (60 kg Stampfer für Gräben bis 500 kg Walze für große Flächen), reversierbar/nicht-reversierbar und Untergrund.",
+    questions: [
+      { key: "task", answered: /(pflaster|verbund|terrasse|einfahrt|wegebau|graben|asphalt|fundament|sand|schotter|fro?stschutz)/i, question: "**Was wird verdichtet?** (Verbundpflaster, Asphalt, Schotter, Gräben …)" },
+      { key: "area", answered: /(\d+\s*m[²2]|qm|quadratmeter|fl[äa]che)/i, question: "Wie **groß ist die Fläche** bzw. wie lang der Graben?" },
+      { key: "machine", answered: /(\d+\s*kg|grabenwalze|stampfer|r[üu]ttelplatte|reversier)/i, question: "Reicht eine **Rüttelplatte** (90–500 kg) oder brauchst du einen **Vibrationsstampfer** für schmale Gräben?" },
+    ],
+    extraTips: "Faustregel: Verbundpflaster im Garten → 90–130 kg vorwärts. Wegebau/Tragschicht → 200–500 kg reversierbar. Schmale Gräben → Vibrationsstampfer.",
+  },
+  arbeitsbuehnen: {
+    id: "arbeitsbuehnen",
+    selectionDrivers: "Arbeitshöhe, Bühnentyp (Scheren-, Gelenk-, Mast-, Anhängerbühne), Indoor/Outdoor und Untergrund.",
+    questions: [
+      { key: "height", answered: /(\d{1,2}\s*m\b|h[öo]he|stockwerk|etage|dach)/i, question: "Welche **Arbeitshöhe** brauchst du (in m – nicht Stockwerke)?" },
+      { key: "indoor", answered: /(innen|halle|indoor|drau[ßs]en|au[ßs]en|outdoor|stra[ßs]e|gel[äa]nde)/i, question: "**Indoor oder Outdoor**, und ist der Untergrund eben/befestigt?" },
+      { key: "reach", answered: /(reichweite|seitlich|um.?die.?ecke|hindernis|baum|kabel)/i, question: "Brauchst du **seitliche Reichweite** (z. B. um Hindernisse herum) oder reicht vertikal?" },
+      { key: "load", answered: /(\d{2,3}\s*kg|personen|2\s*personen|tragkraft|werkzeug)/i, question: "Wie viele **Personen + Werkzeug** sollen rauf (Tragkraft in kg)?" },
+    ],
+  },
+  werkzeuge: {
+    id: "werkzeuge",
+    selectionDrivers: "Werkzeugtyp, Material (Holz, Beton, Fliesen, Stahl), Stromanschluss (230 V / 400 V / Akku) und Einsatzdauer.",
+    questions: [
+      { key: "task", answered: /(bohren|schneiden|trennen|fl[iy]esen|stemmen|abbruch|schleifen|messen|nivellieren)/i, question: "**Was soll gemacht werden?** (Bohren, Stemmen, Trennen, Fliesen schneiden, Vermessen …)" },
+      { key: "material", answered: /(beton|stahl|holz|fl[iy]ese|stein|asphalt|mauerwerk|metall)/i, question: "In welchem **Material** arbeitest du?" },
+      { key: "power", answered: /(230\s*v|400\s*v|cee|akku|starkstrom|stromanschluss|generator)/i, question: "Hast du **230 V** oder **400 V Starkstrom** vor Ort – oder brauchst du Akku/Generator?" },
+    ],
+  },
+  gartenpflege: {
+    id: "gartenpflege",
+    selectionDrivers: "Tätigkeit (Vertikutieren, Häckseln, Erdbohren, Freischneiden), Grundstücksgröße und Erfahrung des Bedieners.",
+    questions: [
+      { key: "task", answered: /(rasen|vertikutier|h[äa]cksel|freischneid|kettens[äa]ge|erdbohr|wurzel|pflanz|baum)/i, question: "**Was steht an?** (Rasen vertikutieren, Äste häckseln, Pflanzlöcher bohren, Bäume fällen …)" },
+      { key: "size", answered: /(\d+\s*m[²2]|qm|quadratmeter|grundst[üu]ck|garten|hektar)/i, question: "Wie **groß ist die Fläche** bzw. wie viel Material?" },
+      { key: "experience", answered: /(anf[äa]nger|erfahren|profi|noch.?nie|hobby|erste\s*mal)/i, question: "Hast du **Erfahrung** mit dem Gerät oder ist es das erste Mal?" },
+    ],
+  },
+  aggregate: {
+    id: "aggregate",
+    selectionDrivers: "Benötigte Leistung in kVA/kW, anzuschließende Geräte, Diesel vs. Benzin und Lärmschutz-Anforderungen.",
+    questions: [
+      { key: "power", answered: /(\d+\s*(kva|kw|w|ampere|a)\b|leistung|verbrauch)/i, question: "Welche **Leistung** brauchst du (kVA/kW) bzw. welche Geräte sollen laufen?" },
+      { key: "duration", answered: /(\d+\s*(stunden|tage|woche|nacht)|dauer|laufzeit|24\s*h)/i, question: "Wie **lange** soll der Generator durchlaufen (Tank-/Diesel-Bedarf)?" },
+      { key: "noise", answered: /(lärm|leise|schallged[äa]mmt|nacht|wohngebiet|silent)/i, question: "Brauchst du ein **schallgedämmtes** Modell (Wohngebiet/Nacht)?" },
+    ],
+  },
+  "moebel-zelte": {
+    id: "moebel-zelte",
+    selectionDrivers: "Personenzahl, Indoor/Outdoor, Witterungsschutz und Möblierung (Bierzeltgarnitur, Stehtisch, Pavillon, Zelt).",
+    questions: [
+      { key: "guests", answered: /(\d{1,4}\s*(personen|g[äa]ste|leute)|hochzeit|geburtstag|firmenfeier|event)/i, question: "Mit wie vielen **Personen** rechnest du und was ist der Anlass?" },
+      { key: "outdoor", answered: /(drau[ßs]en|outdoor|garten|wiese|halle|indoor|regen|wind|wetter)/i, question: "**Indoor oder Outdoor** – und brauchst du Wetterschutz (Zelt/Pavillon)?" },
+      { key: "tables", answered: /(tisch|bank|bierzelt|stehtisch|hussen|stuhl|garnitur)/i, question: "Brauchst du **Sitzgarnituren, Stehtische oder beides**?" },
+    ],
+  },
+  beleuchtung: {
+    id: "beleuchtung",
+    selectionDrivers: "Veranstaltungstyp (Party, Tagung, Bauarbeit), Fläche, Indoor/Outdoor, Stromanschluss und gewünschte Lichtfarbe/Effekte.",
+    questions: [
+      { key: "purpose", answered: /(party|disco|dj|konzert|tagung|baustelle|fl[uü]tlicht|zelt|terrasse|garten|event)/i, question: "**Was soll beleuchtet werden?** (Tanzfläche, Bühne, Zelt, Baustelle …)" },
+      { key: "area", answered: /(\d+\s*m[²2]|qm|fl[äa]che|gr[öo][ßs]e|raum)/i, question: "Wie **groß ist die Fläche** in m²?" },
+      { key: "outdoor", answered: /(drau[ßs]en|outdoor|au[ßs]en|indoor|halle|regen|witterung)/i, question: "**Indoor oder Outdoor** (Witterungsschutz erforderlich)?" },
+      { key: "power", answered: /(230\s*v|400\s*v|cee|stromanschluss|generator|verteiler)/i, question: "Wie ist die **Stromversorgung** (230 V Steckdosen, 400 V CEE oder brauchst du einen Generator)?" },
+    ],
+  },
+  beschallung: {
+    id: "beschallung",
+    selectionDrivers: "Personenzahl, Indoor/Outdoor, Programm (Sprache/Musik/DJ) und benötigte Mikrofone.",
+    questions: [
+      { key: "guests", answered: /(\d{1,4}\s*(personen|g[äa]ste|leute|zuh[öo]rer))/i, question: "Für wie viele **Personen** soll die PA reichen?" },
+      { key: "outdoor", answered: /(drau[ßs]en|outdoor|au[ßs]en|indoor|halle|garten|zelt)/i, question: "**Indoor oder Outdoor** – und ist der Raum hallig?" },
+      { key: "program", answered: /(sprache|rede|moderation|musik|dj|live|band|konzert|tanz)/i, question: "Was wird gespielt: **Sprache/Moderation, Musik vom DJ, Live-Band**?" },
+      { key: "mics", answered: /(mikrofon|funk|kabel|headset|reden|moderator)/i, question: "Brauchst du **Mikrofone** (Funk, Headset, Kabel) und wenn ja wie viele?" },
+    ],
+  },
+  buehne: {
+    id: "buehne",
+    selectionDrivers: "Bühnengröße (m²), Höhe, Personen/Equipment auf der Bühne und Indoor/Outdoor.",
+    questions: [
+      { key: "size", answered: /(\d+\s*x\s*\d+|\d+\s*m[²2]|gr[öo][ßs]e|fl[äa]che)/i, question: "Wie **groß** soll die Bühne sein (m × m oder m²)?" },
+      { key: "height", answered: /(\d+\s*cm|\d+\s*m\b|h[öo]he|sicht)/i, question: "Welche **Höhe** brauchst du (Sichtachsen, Treppe)?" },
+      { key: "use", answered: /(band|dj|moderation|tanz|catwalk|preisverleihung|theater|konzert)/i, question: "Wofür wird die Bühne genutzt (Band, DJ, Moderation, Tanz)?" },
+    ],
+  },
+  "traversen-rigging": {
+    id: "traversen-rigging",
+    selectionDrivers: "Spannweite, Tragkraft (Lichter/Boxen), Material (Aluminium) und ob Statik nötig ist.",
+    questions: [
+      { key: "span", answered: /(\d+\s*m\b|spannweite|breite|l[äa]nge)/i, question: "Welche **Spannweite** brauchst du (m)?" },
+      { key: "load", answered: /(\d+\s*kg|tragkraft|lichter|boxen|equipment)/i, question: "Welches **Equipment** soll dran hängen (Tragkraft in kg)?" },
+      { key: "shape", answered: /(viereck|dreieck|ground.?support|truss|gerade|bogen)/i, question: "**Ground-Support, gerade Brücke** oder Sondergeometrie?" },
+    ],
+    extraTips: "Für Lasten über ca. 100 kg oder größere Aufbauten brauchst du eine **statische Berechnung** – das klären wir am besten direkt mit dem Standort.",
+  },
+  "geschirr-glaeser-besteck": {
+    id: "geschirr-glaeser-besteck",
+    selectionDrivers: "Personenzahl, Anlass (Hochzeit, Buffet, Tagung), gewünschte Serie (Simply, Deluxe, Darwin) und benötigte Gänge.",
+    questions: [
+      { key: "guests", answered: /(\d{1,4}\s*(personen|g[äa]ste|leute|gedecke))/i, question: "Für wie viele **Personen / Gedecke**?" },
+      { key: "occasion", answered: /(hochzeit|buffet|tagung|geburtstag|firmenfeier|stehempfang|gala|catering)/i, question: "Was ist der **Anlass** (Hochzeit, Buffet, Stehempfang, Tagung …)?" },
+      { key: "courses", answered: /(vorspeise|hauptgang|dessert|suppe|salat|drei.?gang|men[üu])/i, question: "Wie viele **Gänge** und Getränkearten (Wein/Sekt/Wasser/Bier) – damit ich Gläser- und Bestecksets richtig empfehle?" },
+      { key: "rental", answered: /(spuelmaschine|tellerw[äa]rmer|warmhalt|sp[uü]l|reinigung)/i, question: "Brauchst du zusätzlich **Spülmaschine, Tellerwärmer** oder Warmhalte-Equipment?" },
+    ],
+    extraTips: "Mengen-Faustregel siehe unser Ratgeber: [Geschirr für Hochzeiten – Mengen-Checkliste](https://www.slt-rental.de/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste).",
+  },
+  huepfburgen: {
+    id: "huepfburgen",
+    selectionDrivers: "Altersgruppe, gleichzeitige Anzahl Kinder, verfügbare Stellfläche (inkl. Sicherheitsabstand) und Stromanschluss.",
+    questions: [
+      { key: "age", answered: /(\d{1,2}\s*jahr|kind|kleinkind|jugend|erwachsene)/i, question: "Welche **Altersgruppe** und wie viele Kinder gleichzeitig?" },
+      { key: "space", answered: /(\d+\s*x\s*\d+|\d+\s*m[²2]|fl[äa]che|wiese|garten|hof)/i, question: "Wie viel **Stellfläche** hast du (inkl. Sicherheitsabstand)?" },
+      { key: "power", answered: /(steckdose|230\s*v|stromanschluss|verl[äa]ngerung)/i, question: "Hast du eine **230-V-Steckdose** in der Nähe (Gebläse läuft dauerhaft)?" },
+    ],
+    extraTips: "Eine Sicherheitseinweisung nach DIN EN 14960 findest du unter [Hilfe](https://www.slt-rental.de/hilfe).",
+  },
+  spezialeffekte: {
+    id: "spezialeffekte",
+    selectionDrivers: "Effekttyp (Nebel, CO2, Konfetti, Funken), Indoor/Outdoor, Auslösung (DMX/Manuell) und Brandschutzvorgaben am Veranstaltungsort.",
+    questions: [
+      { key: "type", answered: /(nebel|haze|co2|jet|konfetti|funken|sparkular|pyro)/i, question: "Welchen **Effekt** möchtest du (Nebel/Haze, CO2-Jet, Konfettishooter, Funkenfontäne)?" },
+      { key: "venue", answered: /(halle|indoor|drau[ßs]en|outdoor|club|b[uü]hne|brandschutz|rauchmelder)/i, question: "**Indoor oder Outdoor** – und sind Brandschutzauflagen/Rauchmelder zu beachten?" },
+      { key: "trigger", answered: /(dmx|manuell|fernbedienung|operator|automatisch|cue)/i, question: "Auslösung über **DMX/Operator** oder manuelle Fernbedienung?" },
+    ],
+  },
+};
+
+function detectAnswers(text: string, questions: ConsultQuestion[]) {
+  const answered = new Set<string>();
+  for (const q of questions) {
+    if (q.answered.test(text)) answered.add(q.key);
+  }
+  return answered;
+}
+
+function buildCategoryConsultResponse(category: { id: string; label: string }, location: string, history: string, lastUser: string): string {
+  const loc = locationLabel(location);
+  const config = categoryConsult[category.id];
+  const productLinks = searchVerifiedProductLinks(lastUser, location, category.id).slice(0, 5);
+  const categoryLink = fallbackCategoryLink(location, category.id, `Alle ${category.label} in ${loc}`);
+
+  const sections: string[] = [];
+  sections.push(`Klar – hier zur **${category.label} in ${loc}**:`);
+
+  if (productLinks.length > 0) {
+    sections.push(`**Passende Produkte aus unserem Katalog:**\n${productLinks.map((l) => `- [${l.label}](${l.url})`).join("\n")}`);
+    if (categoryLink) sections.push(`Gesamte Kategorie: [${categoryLink.label}](${categoryLink.url})`);
+  } else if (categoryLink) {
+    sections.push(`**Kategorie-Übersicht (alle verfügbaren Modelle):** [${categoryLink.label}](${categoryLink.url})`);
+  }
+
+  if (config) {
+    sections.push(`**Was bestimmt die Auswahl:** ${config.selectionDrivers}`);
+    const answered = detectAnswers(history, config.questions);
+    const open = config.questions.filter((q) => !answered.has(q.key)).slice(0, 3);
+    if (open.length > 0) {
+      sections.push(`Damit ich dir konkret das passende Modell empfehlen kann, beantworte mir kurz:\n${open.map((q) => `- ${q.question}`).join("\n")}`);
+    }
+    if (config.extraTips) sections.push(config.extraTips);
+  }
+
+  sections.push(`**Lieferung statt Selbstabholung?** Den genauen Preis rechnest du anhand deiner PLZ aus: [Lieferkostenrechner](${SITE_ORIGIN}/lieferung)`);
+  sections.push(bookingHint());
+  return sections.join("\n\n");
+}
+
+
 function pathFromSltUrl(rawUrl: string) {
   try {
     const url = new URL(rawUrl);
