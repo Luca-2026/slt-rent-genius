@@ -209,6 +209,7 @@ export const RENTAL_LINK_PATHS = [
   "/mieten/krefeld/kabel-stromverteiler/anschlussverteilerschrank-44kva/",
   "/mieten/krefeld/kabel-stromverteiler/endverteilerschrank-22kva-ev32/",
   "/mieten/krefeld/kabel-stromverteiler/endverteilerschrank-44kva-ev63/",
+  "/mieten/krefeld/kabel-stromverteiler/hauptverteilerschrank-86kva-hv125/",
   "/mieten/krefeld/kabel-stromverteiler/cee-kabel-16a-3m/",
   "/mieten/krefeld/kabel-stromverteiler/cee-kabel-16a-5m/",
   "/mieten/krefeld/kabel-stromverteiler/cee-kabel-16a-10m/",
