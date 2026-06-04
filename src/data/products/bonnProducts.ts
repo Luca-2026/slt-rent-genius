@@ -2043,6 +2043,31 @@ export const bonnZelteProducts = [
 // ==================== MÖBEL ====================
 export const bonnMoebelProducts = [
   {
+    id: "bonn-klappstuhl-event-black",
+    name: "Klappstuhl Event black",
+    description: "Wetterbeständiger Event-Klappstuhl mit Stahlrohrgestell und Polypropylen-Sitzschale. Stapelbar bis 50 Stück, Belastbarkeit max. 120 kg, mit praktischer Regenabfluss-Bohrung in der Sitzfläche.",
+    image: imgKlappstuhlBlack1,
+    images: [imgKlappstuhlBlack1, imgKlappstuhlBlack2, imgKlappstuhlBlack3, imgKlappstuhlBlack4, imgKlappstuhlBlack5, imgKlappstuhlBlack6, imgKlappstuhlBlack7, imgKlappstuhlBlack8],
+    category: "moebel",
+    specifications: {
+      "Farbe": "schwarz",
+      "Material Gestell": "geschweißtes Stahlrohr (Ø 19 × 1,20 mm)",
+      "Material Sitz / Rückenlehne": "Polypropylen",
+      "Sitzhöhe": "45 cm",
+      "Sitzfläche": "39,5 × 40 cm",
+      "Stuhlhöhe (offen)": "80,5 cm",
+      "Stuhlhöhe (geklappt)": "97 cm",
+      "Stuhltiefe (offen)": "44 cm",
+      "Abmessungen zusammengeklappt": "97 × 45,5 cm",
+      "Belastbarkeit": "max. 120 kg",
+      "Gewicht": "3,4 kg",
+      "Stapelhöhe": "bis 50 Stück (eingeklappt)",
+      "Pro Euro-Palette": "100 Stühle (2 Stapel à 50)",
+      "Besonderheit": "Regenabfluss-Bohrung in der Sitzfläche",
+    },
+    rentwareCode: { bonn: "KRQ7C7" },
+  },
+  {
     id: "bonn-bierzeltgarnitur-hussen-weiss",
     name: "Bierzeltgarnitur Hussen-Set weiß",
     description: "Elegantes weißes Hussen-Set für Bierzeltgarnituren. 1 Set = 2× Bankhusse + 1× Tischhusse. Gewaschen zurückzugeben.",
