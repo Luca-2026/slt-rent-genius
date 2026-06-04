@@ -376,6 +376,27 @@ const stopWords = new Set([
   "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr", "meter", "ca", "circa"
 ]);
 
+const categoryLabels: Record<string, string> = Object.fromEntries(categoryTerms.map((item) => [item.id, item.label]));
+
+const searchSynonyms: Record<string, string[]> = {
+  scherenarbeitsbuehne: ["scherenbuehne"],
+  scherenarbeitsbuehnen: ["scherenbuehne"],
+  teleskoparbeitsbuehne: ["gelenkteleskopsteiger", "teleskopsteiger"],
+  teleskoparbeitsbuehnen: ["gelenkteleskopsteiger", "teleskopsteiger"],
+  teleskopbuehne: ["gelenkteleskopsteiger"],
+  arbeitsbuehne: ["buehne"],
+  arbeitsbuehnen: ["buehne"],
+  funkgeraete: ["funkgeraet", "uhf"],
+  rüttelplatte: ["ruettelplatte"],
+  ruettelplatten: ["ruettelplatte"],
+  anhänger: ["anhaenger"],
+  anhaenger: ["anhaenger"],
+  anhängerbühne: ["anhaengerbuehne"],
+  anhaengerbuehne: ["anhaengerbuehne"],
+  geruest: ["rollgeruest"],
+  gerueste: ["rollgeruest"],
+};
+
 const minibaggerSlugs = [
   { label: "1t Minibagger (Bobcat E10Z)", slug: "bobcat-e10z", exact: /(^|\D)(1|1[,.]0)\s*t|1\s*tonnen?|ein\s*tonnen?/i },
   { label: "2t Minibagger (XCMG XE20E)", slug: "xcmg-xe20e", exact: /(^|\D)2\s*t|2\s*tonnen?/i },
