@@ -1086,15 +1086,16 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // --- Sonstige Kategorien: strukturierte Beratung ---
-  if (explicitLinkAsk) {
-    // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung
-    const category = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
-    if (category) {
-      if (!location) {
-        return `Gerne berate ich dich zu **${category.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
-      }
-      return buildCategoryConsultResponse(category, location, allText, lastUser);
+  // Trigger sobald eine Kategorie erkennbar ist – nicht erst bei expliziten Link-/Miet-Keywords.
+  // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
+  // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
+  // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
+  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
+  if (categoryFromLast) {
+    if (!location) {
+      return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
     }
+    return buildCategoryConsultResponse(categoryFromLast, location, allText, lastUser);
   }
 
   return null;
