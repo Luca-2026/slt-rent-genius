@@ -2003,6 +2003,7 @@ export const bonnZelteProducts = [
     id: "bonn-sonnenschirm",
     name: "Sonnenschirm LEMVIG Ø 3 m",
     description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
+    category: "sonnenschirm",
     specifications: {
       "Durchmesser": "3 m",
       "Höhe": "2,6 m",
@@ -2018,6 +2019,7 @@ export const bonnZelteProducts = [
     images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
     rentwareCode: { bonn: "S8U5XL" },
   },
+
   {
     id: "bonn-zeltboden-anthrazit",
     name: "Zeltboden Anthrazit 0,86 m²",

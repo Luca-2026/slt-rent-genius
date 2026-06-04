@@ -3576,7 +3576,8 @@ export const moebelZelteProducts: Product[] = [
     description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
     image: imgSonnenschirm1,
     images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
-    category: "zelt",
+    category: "sonnenschirm",
+
     specifications: {
       "Durchmesser": "3 m",
       "Höhe": "2,6 m",

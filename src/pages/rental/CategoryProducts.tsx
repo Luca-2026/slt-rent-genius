@@ -533,12 +533,14 @@ export default function CategoryProducts() {
                 };
                 const moebelZelteTypeGroups: Record<string, string[]> = {
                   "zelt": ["zelt"],
-                  "moebel": ["moebel", "stuhl", "tisch", "bank"],
+                  "moebel": ["moebel", "stuhl", "tisch", "bank", "husse"],
                   "stuhl": ["stuhl"],
                   "husse": ["husse"],
+                  "schirm": ["sonnenschirm"],
                   "kuehlgeraet": ["kuehlgeraet"],
                   "garderobe": ["garderobe"],
                 };
+
 
                 const beleuchtungTypeGroups: Record<string, string[]> = {
                   "fluter": ["fluter", "baustrahler", "led-fluter"],
