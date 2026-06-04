@@ -609,6 +609,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "partyzelt-4x6m": { name: "Party Tent 4x6m", description: "Party tent for approx. 40 people" },
   "eventzelt-6x8m": { name: "Event Tent 6x8m extra high", description: "Large event tent with extra height" },
   "partyzelt-5x8m": { name: "Party / Event Tent 5x8m extra high", description: "Event tent with 40 m² floor area and 2.6 m clearance height" },
+  "partyzelt-5x12m": { name: "Party / Event Tent 5x12m extra high", description: "Fire-resistant event tent with 60 m² floor area and 2.3 m clearance height" },
   "bierzeltgarnitur-set": { name: "Beer Garden Set", description: "1 table and 2 benches" },
   "bierzeltgarnitur-hussen-set-weiss": { name: "Beer Garden Set with White Covers", description: "Complete set with white covers" },
   "stehtisch": { name: "Standing Table", description: "Foldable standing table" },
