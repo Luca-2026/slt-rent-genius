@@ -353,10 +353,15 @@ const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
   { id: "anhaenger", label: "Anhänger", terms: ["anhänger", "anhaenger", "planenanhänger", "planenanhaenger", "kofferanhänger", "kastenanhänger", "trailer"] },
   { id: "erdbewegung", label: "Erdbewegung", terms: ["minibagger", "bagger", "radlader", "knicklader", "dumper", "raddumper", "tieflöffel", "tieflöffel", "loeffel", "hydraulikhammer", "grabenräumlöffel"] },
   { id: "verdichtung", label: "Verdichtung", terms: ["rüttelplatte", "ruettelplatte", "stampfer", "vibrationsstampfer", "grabenwalze", "verdichten"] },
-  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "scherenbühne", "mastbühne", "steiger"] },
+  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "teleskoparbeitsbühne", "teleskoparbeitsbuehne", "teleskopbühne", "teleskopbuehne", "teleskopsteiger", "gelenkteleskopsteiger", "scherenbühne", "scherenbuehne", "mastbühne", "mastbuehne", "anhängerbühne", "anhaengerbuehne", "steiger"] },
   { id: "werkzeuge", label: "Werkzeuge", terms: ["werkzeug", "bohrhammer", "abbruchhammer", "winkelschleifer", "fliesenschneider", "trennschleifer", "laser"] },
-  { id: "gartenpflege", label: "Gartenpflege", terms: ["garten", "häcksler", "haecksler", "vertikutierer", "freischneider", "erdbohrer", "kettensäge", "rasen"] },
+  { id: "gartenpflege", label: "Gartenpflege", terms: ["gartenpflege", "gartengerät", "gartengeraet", "häcksler", "haecksler", "vertikutierer", "freischneider", "erdbohrer", "kettensäge", "kettensaege", "bodenhacke", "baumstumpffräse", "baumstumpffraese", "hochdruckreiniger", "rasenwalze"] },
   { id: "aggregate", label: "Aggregate", terms: ["aggregat", "stromerzeuger", "kompressor", "powerstation", "presslufthammer"] },
+  { id: "kabel-stromverteiler", label: "Kabel & Stromverteiler", terms: ["stromverteiler", "stromkabel", "cee", "schukokabel", "kabeltrommel", "kabelbrücke", "kabelbruecke", "anschlussschrank", "verteiler", "stromanschluss"] },
+  { id: "leitern-gerueste", label: "Leitern & Gerüste", terms: ["leiter", "stehleiter", "mehrzweckleiter", "gerüst", "geruest", "rollgerüst", "rollgeruest", "fahrgerüst", "fahrgeruest"] },
+  { id: "heizung-trocknung", label: "Heizung & Trocknung", terms: ["heizung", "trocknung", "heizlüfter", "heizluefter", "heizpilz", "bauheizung", "heizgerät", "heizgeraet", "bautrockner", "luftentfeuchter"] },
+  { id: "absperrtechnik", label: "Absperrtechnik", terms: ["absperrtechnik", "absperrung", "bauzaun", "warnbake", "warnleuchte", "verkehrsschild", "halteverbot", "schrankenzaun", "mannesmanngitter", "fussplatte", "fußplatte"] },
+  { id: "kommunikation", label: "Kommunikation", terms: ["funkgerät", "funkgeraet", "walkie", "sprechfunk", "kommunikation"] },
   { id: "moebel-zelte", label: "Möbel & Zelte", terms: ["zelt", "partyzelte", "pavillon", "stehtisch", "bierzeltgarnitur", "möbel", "moebel"] },
   { id: "beleuchtung", label: "Beleuchtung", terms: ["licht", "beleuchtung", "scheinwerfer", "led", "spot"] },
   { id: "beschallung", label: "Beschallung", terms: ["lautsprecher", "pa", "sound", "mikrofon", "beschallung"] },
@@ -527,6 +532,31 @@ function detectCategory(text: string) {
   return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
 }
 
+function detectRecentUserCategory(messages: ChatMessage[]) {
+  const userMessages = messages.filter((message) => message.role === "user" && typeof message.content === "string");
+  for (let i = userMessages.length - 2; i >= Math.max(0, userMessages.length - 6); i--) {
+    const category = detectCategory(userMessages[i].content ?? "");
+    if (category) return category;
+  }
+  return null;
+}
+
+function userHistoryText(messages: ChatMessage[]) {
+  return messages
+    .filter((message) => message.role === "user" && typeof message.content === "string")
+    .map((message) => message.content ?? "")
+    .join("\n");
+}
+
+function detectRecentUserTopic(messages: ChatMessage[], matcher: (text: string) => boolean) {
+  const userMessages = messages.filter((message) => message.role === "user" && typeof message.content === "string");
+  const start = Math.max(0, userMessages.length - 6);
+  for (let i = userMessages.length - 2; i >= start; i--) {
+    if (matcher(userMessages[i].content ?? "")) return true;
+  }
+  return false;
+}
+
 function normalizeForSearch(value: string) {
   return value
     .toLowerCase()
@@ -537,10 +567,18 @@ function normalizeForSearch(value: string) {
 }
 
 function queryTokens(text: string) {
+  const baseTokens = normalizeForSearch(text)
+    .match(/[a-z0-9]+/g)
+    ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? [];
+  const expanded = baseTokens.flatMap((token) => {
+    const variants = [token];
+    if (token.length > 5 && token.endsWith("en")) variants.push(token.slice(0, -2));
+    if (token.length > 4 && /[ens]$/.test(token)) variants.push(token.slice(0, -1));
+    if (token.length > 6 && token.endsWith("er")) variants.push(token.slice(0, -2));
+    return variants;
+  });
   return Array.from(new Set(
-    normalizeForSearch(text)
-      .match(/[a-z0-9]+/g)
-      ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? []
+    expanded
   ));
 }
 
@@ -689,6 +727,56 @@ function searchVerifiedProductLinks(text: string, location: string, categoryId?:
   }));
 }
 
+function uniqueLinks(links: Array<RentalLink | null>) {
+  const seen = new Set<string>();
+  return links.filter((link): link is RentalLink => {
+    if (!link || seen.has(link.path)) return false;
+    seen.add(link.path);
+    return true;
+  });
+}
+
+function extractRequestedHeightMeters(text: string) {
+  const match = text.match(/(\d{1,2})(?:[,.](\d))?\s*m\b/i);
+  if (!match) return null;
+  const value = Number(`${match[1]}.${match[2] ?? "0"}`);
+  return Number.isFinite(value) ? value : null;
+}
+
+function curatedProductLinks(categoryId: string, text: string, location: string): RentalLink[] {
+  const normalized = normalizeForSearch(text);
+  if (categoryId !== "arbeitsbuehnen") return [];
+
+  const links: Array<RentalLink | null> = [];
+  const add = (label: string, slug: string) => links.push(rentalLink(label, location, "arbeitsbuehnen", slug));
+  const height = extractRequestedHeightMeters(text);
+  const wantsTelescope = /(teleskop|gelenk|seitlich|reichweite|ueberstand|hindernis|fassade)/i.test(normalized);
+  const wantsMast = /(mast|eng|schmal|innen|indoor|halle|vertikal)/i.test(normalized);
+  const wantsScissor = /(schere|scheren|eben|beton|asphalt|plattform)/i.test(normalized);
+  const wantsTrailer = /(anhaenger|anhaengerbuehne|18\s*m)/i.test(normalized);
+
+  if (wantsTelescope) add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
+  if (wantsMast || height === 11) add("Mastbühne 11 m", "mastbuehne-11m");
+  if (wantsScissor || height === 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+  if (wantsScissor || height === 12) add("Scherenbühne 12 m", "scherenbuehne-12m");
+  if (wantsTrailer || (height !== null && height > 12)) add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
+
+  if (links.length === 0 && height !== null) {
+    if (height <= 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+    else if (height <= 11) {
+      add("Mastbühne 11 m", "mastbuehne-11m");
+      add("Scherenbühne 12 m", "scherenbuehne-12m");
+    } else if (height <= 12) {
+      add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
+      add("Scherenbühne 12 m", "scherenbuehne-12m");
+    } else {
+      add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
+    }
+  }
+
+  return uniqueLinks(links).slice(0, 5);
+}
+
 // ---------- Generisches Beratungs-Framework (alle Kategorien außer Minibagger/Bautrockner) ----------
 
 type ConsultQuestion = { key: string; answered: RegExp; question: string };
@@ -767,6 +855,51 @@ const categoryConsult: Record<string, ConsultConfig> = {
       { key: "power", answered: /(\d+\s*(kva|kw|w|ampere|a)\b|leistung|verbrauch)/i, question: "Welche **Leistung** brauchst du (kVA/kW) bzw. welche Geräte sollen laufen?" },
       { key: "duration", answered: /(\d+\s*(stunden|tage|woche|nacht)|dauer|laufzeit|24\s*h)/i, question: "Wie **lange** soll der Generator durchlaufen (Tank-/Diesel-Bedarf)?" },
       { key: "noise", answered: /(lärm|leise|schallged[äa]mmt|nacht|wohngebiet|silent)/i, question: "Brauchst du ein **schallgedämmtes** Modell (Wohngebiet/Nacht)?" },
+    ],
+  },
+  "kabel-stromverteiler": {
+    id: "kabel-stromverteiler",
+    selectionDrivers: "Anschlussart (Schuko/CEE), Stromstärke (16 A/32 A/63 A), Kabellänge, Verteilerbedarf und Outdoor-Tauglichkeit.",
+    questions: [
+      { key: "current", answered: /(16\s*a|32\s*a|63\s*a|cee|schuko|230\s*v|400\s*v|starkstrom)/i, question: "Welche **Anschlüsse** brauchst du (Schuko, CEE 16 A, 32 A oder 63 A)?" },
+      { key: "length", answered: /(\d+\s*m\b|meter|l[äa]nge|distanz|entfernung)/i, question: "Welche **Kabellänge / Entfernung** musst du überbrücken?" },
+      { key: "load", answered: /(licht|ton|b[üu]hne|maschine|heizung|gerät|verbraucher|kw|kva)/i, question: "Welche **Verbraucher** sollen daran laufen (Licht, Ton, Maschinen, Heizung …)?" },
+    ],
+  },
+  "leitern-gerueste": {
+    id: "leitern-gerueste",
+    selectionDrivers: "Arbeitshöhe, Standzeit, Untergrund, Arbeitsbreite und ob häufig umpositioniert werden muss.",
+    questions: [
+      { key: "height", answered: /(\d{1,2}\s*m\b|arbeitsh[öo]he|höhe|dach|fassade)/i, question: "Welche **Arbeitshöhe** brauchst du (in m)?" },
+      { key: "duration", answered: /(stunden|tag|tage|woche|dauer|länger|laenger)/i, question: "Wie lange arbeitest du dort – kurz mit Leiter oder länger mit Gerüst?" },
+      { key: "ground", answered: /(innen|außen|aussen|drau[ßs]en|halle|rasen|pflaster|beton|uneben|untergrund)/i, question: "Ist der **Untergrund eben und befestigt** oder uneben/außen?" },
+    ],
+  },
+  "heizung-trocknung": {
+    id: "heizung-trocknung",
+    selectionDrivers: "Raumgröße, Feuchte-/Trocknungsziel, Heizleistung, Stromanschluss und ob Abluft/Schlauchführung möglich ist.",
+    questions: [
+      { key: "area", answered: /(\d+\s*m[²2]|qm|quadratmeter|raumgr[öo][ßs]e|fläche)/i, question: "Wie groß ist der **Raum / die Fläche** in m²?" },
+      { key: "purpose", answered: /(wasserschaden|neubau|estrich|keller|feucht|trocknen|heizen|wärme|waerme)/i, question: "Geht es um **Trocknung** (Neubau/Wasserschaden) oder **Heizen**?" },
+      { key: "power", answered: /(230\s*v|400\s*v|steckdose|strom|anschluss)/i, question: "Welche **Stromversorgung** ist vorhanden (normale Steckdose oder 400 V)?" },
+    ],
+  },
+  absperrtechnik: {
+    id: "absperrtechnik",
+    selectionDrivers: "Einsatz (Baustelle, Halteverbot, Veranstaltung), Länge der Absperrung, öffentlicher Verkehrsraum und benötigte Schilder/Warnleuchten.",
+    questions: [
+      { key: "purpose", answered: /(baustelle|halteverbot|umzug|veranstaltung|straße|strasse|gehweg|absperren)/i, question: "Wofür brauchst du die **Absperrung** (Baustelle, Halteverbot, Veranstaltung, Gehweg/Straße)?" },
+      { key: "length", answered: /(\d+\s*m\b|meter|l[äa]nge|strecke)/i, question: "Wie viele **Meter** sollen abgesperrt werden?" },
+      { key: "public", answered: /(öffentlich|oeffentlich|verkehr|genehmigung|ordnungsamt|straße|strasse)/i, question: "Ist das im **öffentlichen Verkehrsraum**? Dann können Genehmigungen nötig sein." },
+    ],
+  },
+  kommunikation: {
+    id: "kommunikation",
+    selectionDrivers: "Anzahl Funkgeräte, Gelände/Etagen, Headset-/Lautsprecherbedarf und Einsatzdauer.",
+    questions: [
+      { key: "count", answered: /(\d+\s*(funkgeräte|funkgeraete|geräte|geraete|st[üu]ck)|personen|teams)/i, question: "Wie viele **Funkgeräte / Teams** brauchst du?" },
+      { key: "range", answered: /(halle|gelände|gelaende|etage|stockwerk|outdoor|baustelle|reichweite)/i, question: "Wo sollen sie funktionieren – **Halle, Baustelle, mehrere Etagen oder Outdoor-Gelände**?" },
+      { key: "accessory", answered: /(headset|lautsprecher|ohrhörer|ohrhoerer|freisprechen)/i, question: "Brauchst du **Headsets oder Lautsprecher-Zubehör**?" },
     ],
   },
   "moebel-zelte": {
@@ -860,7 +993,11 @@ function detectAnswers(text: string, questions: ConsultQuestion[]) {
 function buildCategoryConsultResponse(category: { id: string; label: string }, location: string, history: string, lastUser: string): string {
   const loc = locationLabel(location);
   const config = categoryConsult[category.id];
-  const productLinks = searchVerifiedProductLinks(lastUser, location, category.id).slice(0, 5);
+  const queryText = `${lastUser}\n${history}`;
+  const productLinks = uniqueLinks([
+    ...curatedProductLinks(category.id, queryText, location),
+    ...searchVerifiedProductLinks(queryText, location, category.id),
+  ]).slice(0, 5);
   const categoryLink = fallbackCategoryLink(location, category.id, `Alle ${category.label} in ${loc}`);
 
   const sections: string[] = [];
@@ -1043,11 +1180,11 @@ function isShortFollowUp(text: string) {
 function getDeterministicResponse(messages: ChatMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
   const allText = messages.map((message) => message.content ?? "").join("\n");
-  const relevantText = `${lastUser}\n${allText}`.toLowerCase();
-  const historyLower = allText.toLowerCase();
+  const userText = userHistoryText(messages);
+  const relevantText = `${lastUser}\n${userText}`.toLowerCase();
   const lastUserLower = lastUser.toLowerCase();
 
-  const location = detectLocation(lastUser) ?? detectLocation(allText);
+  const location = detectLocation(lastUser) ?? detectLocation(userText);
 
   // --- Anhänger 750 kg Planen ---
   const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
@@ -1060,8 +1197,10 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // Continuation-Detektor: Topic im Verlauf erwähnt, lastUser ist kurz (z. B. nur Standort/Spec)
-  const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
-  const mentionsBautrockner = /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(relevantText);
+  const minibaggerMatcher = (text: string) => /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(text);
+  const bautrocknerMatcher = (text: string) => /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(text);
+  const mentionsMinibagger = minibaggerMatcher(lastUser) || (isShortFollowUp(lastUser) && detectRecentUserTopic(messages, minibaggerMatcher));
+  const mentionsBautrockner = bautrocknerMatcher(lastUser) || (isShortFollowUp(lastUser) && detectRecentUserTopic(messages, bautrocknerMatcher));
 
   // (Frühere Heuristiken explicitLinkAsk/continuation entfernt – Beratungs-Trigger basiert jetzt direkt
   // auf erkannter Kategorie bzw. erkanntem Thema im letzten User-Turn.)
@@ -1074,9 +1213,9 @@ function getDeterministicResponse(messages: ChatMessage[]) {
     }
     const spec = findMinibaggerByText(relevantText);
     if (spec) {
-      return buildMinibaggerConsultResponse(spec, location, allText);
+      return buildMinibaggerConsultResponse(spec, location, userText);
     }
-    return buildMinibaggerOverviewResponse(location, allText);
+    return buildMinibaggerOverviewResponse(location, userText);
   }
 
   // --- Bautrockner ---
@@ -1094,12 +1233,12 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
   // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
   // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
-  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
+  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
   if (categoryFromLast) {
     if (!location) {
       return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
     }
-    return buildCategoryConsultResponse(categoryFromLast, location, allText, lastUser);
+    return buildCategoryConsultResponse(categoryFromLast, location, userText, lastUser);
   }
 
   return null;
