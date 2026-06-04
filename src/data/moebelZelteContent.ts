@@ -22,8 +22,8 @@ const sizeTable = {
   rows: [
     ["Kleine Geburtstagsfeier (10–20 Pers.)", "9–16 m²", "Party- / Eventzelt 3×3 oder 4×4"],
     ["Familienfest (30–40 Pers.)", "24–32 m²", "Party- / Eventzelt 4×6 oder 4×8"],
-    ["Größere Feier (50–70 Pers.)", "40–48 m²", "Party- / Eventzelt 4×10 oder Eventzelt 6×8"],
-    ["Hochzeit / Vereinsfest (80–120 Pers.)", "56–72 m²", "Party- / Eventzelt 4×14 oder Eventzelt 6×12"],
+    ["Größere Feier (50–70 Pers.)", "40–48 m²", "Party- / Eventzelt 4×10 oder Party- / Eventzelt 6×8"],
+    ["Hochzeit / Vereinsfest (80–120 Pers.)", "56–72 m²", "Party- / Eventzelt 4×14 oder Party- / Eventzelt 6×12"],
   ],
 };
 
@@ -32,11 +32,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
   krefeld: {
     metaTitle: "Möbel & Zelte mieten Krefeld – mit Aufbauservice | SLT",
     metaDescription:
-      "Party- / Eventzelt mieten Krefeld: Bierzeltgarnituren, Stehtische, Eventzelte 6×8 & 6×12. Mit Tiefpreisgarantie und optionalem Aufbauservice. Jetzt online anfragen.",
+      "Party- / Eventzelt mieten Krefeld: Bierzeltgarnituren, Stehtische, Party- / Eventzelte 6×8 & 6×12. Mit Tiefpreisgarantie und optionalem Aufbauservice. Jetzt online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Krefeld, Party- / Eventzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Bierzeltgarnitur Set mieten Krefeld, Bierzeltgarnitur mit Hussen Krefeld, Bierbankgarnitur mieten Krefeld, Festzeltgarnitur mieten Krefeld, Biertische und Bänke mieten Krefeld, Stehtisch mieten Krefeld, Stehtisch mit Husse mieten Krefeld, Bistrotisch mieten Krefeld, Cocktailtisch mieten Krefeld, Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld, Tische und Stühle mieten Krefeld",
+      "Möbel und Zelte mieten Krefeld, Party- / Eventzelt mieten Krefeld, Festzelt mieten Krefeld, Bierzeltgarnitur mieten Krefeld, Bierzeltgarnitur Set mieten Krefeld, Bierzeltgarnitur mit Hussen Krefeld, Bierbankgarnitur mieten Krefeld, Festzeltgarnitur mieten Krefeld, Biertische und Bänke mieten Krefeld, Stehtisch mieten Krefeld, Stehtisch mit Husse mieten Krefeld, Bistrotisch mieten Krefeld, Cocktailtisch mieten Krefeld, Party- / Eventzelt mieten Krefeld, Hochzeitszelt mieten Krefeld, Zeltverleih Krefeld, Tische und Stühle mieten Krefeld",
     heroLead:
-      "Vom Schützenfest in Fischeln über die Vereinsfeier in Bockum bis zur Hochzeit im eigenen Garten in Uerdingen: Bei SLT Rental am Niederrhein finden Sie das passende Mobiliar und die richtigen Zelte aus einer Hand. Party- / Eventzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen, Stehtische, Stapelstühle und Sonnenschirme – sauber, geprüft und auf Wunsch inklusive Aufbauservice vor Ort.",
+      "Vom Schützenfest in Fischeln über die Vereinsfeier in Bockum bis zur Hochzeit im eigenen Garten in Uerdingen: Bei SLT Rental am Niederrhein finden Sie das passende Mobiliar und die richtigen Zelte aus einer Hand. Party- / Eventzelte von 3×3 bis 4×14 m, Party- / Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen, Stehtische, Stapelstühle und Sonnenschirme – sauber, geprüft und auf Wunsch inklusive Aufbauservice vor Ort.",
     bottomHeadline: "Möbel und Zelte mieten in Krefeld – Komplettausstattung für Feste am Niederrhein",
     sections: [
       {
@@ -51,15 +51,15 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         paragraphs: [
           "Ein Bierzeltgarnitur-Set – im Sprachgebrauch oft auch Festzeltgarnitur, Bierbankgarnitur oder schlicht Biertisch mit Bänken genannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei dazu passenden Bänken (25 × 220 cm). Pro Garnitur planen Sie acht bis zehn Sitzplätze ein, je nachdem wie eng zusammengerückt wird. Das Holz ist abwischbar, die Beine klappen ohne Werkzeug ein, und das Set lässt sich von zwei Personen in unter einer Minute aufstellen. Damit sind Bierzeltgarnituren in Krefeld die Standardlösung für Schützenfeste, Karnevalssitzungen, runde Geburtstage und Vereinsabende.",
           "Wer Biertische und Bänke mieten möchte, ohne dass es nach Vereinsheim aussieht, kombiniert das Set mit unserem Hussen-Set in Weiß: zwei Bankhussen plus eine Tischhusse, gewaschen zurückzugeben. Das macht aus der Standard-Bierzeltgarnitur in wenigen Minuten eine Tischlandschaft, die auch bei Hochzeiten in Bockum, Verberg oder Forstwald oder bei Firmen-Sommerfesten in Fichtenhain gut aussieht.",
-          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke und ein paar Stehtische am Eingang. Praktisch ist die Bierzeltgarnitur auch als Buffettisch: zwei Garnituren parallel gestellt ergeben eine 4,4 m lange Buffetzeile, die mit weißer Tischhusse sofort nach Catering aussieht.",
+          "Typische Konstellation für ein Bauernschützenfest in Krefeld-Oppum oder Linn: drei bis vier Bierzeltgarnituren mit Hussen unter einem Party- / Eventzelt 6×12 m, dazu ein Getränkekühlschrank mit Glastür für die Theke und ein paar Stehtische am Eingang. Praktisch ist die Bierzeltgarnitur auch als Buffettisch: zwei Garnituren parallel gestellt ergeben eine 4,4 m lange Buffetzeile, die mit weißer Tischhusse sofort nach Catering aussieht.",
           "Preise Bierzeltgarnitur Krefeld: Ein komplettes Set (Tisch + zwei Bänke) gibt es bereits ab 8 € pro Tag, ein ganzes Wochenende (Freitag bis Montag) ab 15 € pro Set – ideal für Schützenfeste, Hochzeiten und Vereinsfeiern. Die finalen Mietpreise je nach Anzahl, Mietdauer und Hussen-Option sehen Sie transparent im Buchungsschritt; auf alle Sätze greift unsere Tiefpreisgarantie.",
         ],
       },
       {
-        h2: "Eventzelte mit 2,6 m Durchgangshöhe – wenn es repräsentativer werden soll",
+        h2: "Party- / Eventzelte mit 2,6 m Durchgangshöhe – wenn es repräsentativer werden soll",
         paragraphs: [
-          "Für Hochzeiten, Firmenjubiläen oder Karnevalssitzungen empfehlen wir die Eventzelte 6×8 m (48 m²) und 6×12 m (72 m²). Beide bieten 2,6 m lichte Durchgangshöhe – das wirkt deutlich großzügiger als ein klassisches Party- / Eventzelt und lässt Stehtische, Sektempfang und Live-Band ohne gefühlte Decke über dem Kopf zu. Im Lieferumfang sind Seiten- und Stirnwände enthalten.",
-          "Das Eventzelt 6×12 m ist zusätzlich nach EN 13501-1 schwer entflammbar zertifiziert. Damit eignet es sich für Veranstaltungen mit erhöhten Brandschutzauflagen, etwa bei Vereinsjubiläen mit größerer Personenzahl oder Firmenevents auf gemieteten Außenflächen in Krefeld-Fichtenhain.",
+          "Für Hochzeiten, Firmenjubiläen oder Karnevalssitzungen empfehlen wir die Party- / Eventzelte 6×8 m (48 m²) und 6×12 m (72 m²). Beide bieten 2,6 m lichte Durchgangshöhe – das wirkt deutlich großzügiger als ein klassisches Party- / Eventzelt und lässt Stehtische, Sektempfang und Live-Band ohne gefühlte Decke über dem Kopf zu. Im Lieferumfang sind Seiten- und Stirnwände enthalten.",
+          "Das Party- / Eventzelt 6×12 m ist zusätzlich nach EN 13501-1 schwer entflammbar zertifiziert. Damit eignet es sich für Veranstaltungen mit erhöhten Brandschutzauflagen, etwa bei Vereinsjubiläen mit größerer Personenzahl oder Firmenevents auf gemieteten Außenflächen in Krefeld-Fichtenhain.",
         ],
       },
       {
@@ -89,12 +89,12 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         question: "Welches Zelt eignet sich für ein Schützen- oder Vereinsfest in Krefeld?",
         answer:
-          "Für klassische Schützen- und Vereinsfeste mit 60 bis 100 Personen empfehlen wir das Eventzelt 6×12 m (72 m², 2,6 m Durchgangshöhe, schwer entflammbar nach EN 13501-1) in Kombination mit Bierzeltgarnitur-Sets. Für kleinere Vereinsabende reicht ein Party- / Eventzelt 4×8 oder das modulare 4×10.",
+          "Für klassische Schützen- und Vereinsfeste mit 60 bis 100 Personen empfehlen wir das Party- / Eventzelt 6×12 m (72 m², 2,6 m Durchgangshöhe, schwer entflammbar nach EN 13501-1) in Kombination mit Bierzeltgarnitur-Sets. Für kleinere Vereinsabende reicht ein Party- / Eventzelt 4×8 oder das modulare 4×10.",
       },
       {
         question: "Welche Zeltgrößen sind in Krefeld verfügbar?",
         answer:
-          "Wir vermieten Party- / Eventzelte in 9, 16, 24, 32, 40 und 56 m² sowie Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit decken wir Anlässe vom Garten-Geburtstag bis zum Vereinsjubiläum mit über 100 Gästen ab.",
+          "Wir vermieten Party- / Eventzelte in 9, 16, 24, 32, 40 und 56 m² sowie Party- / Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit decken wir Anlässe vom Garten-Geburtstag bis zum Vereinsjubiläum mit über 100 Gästen ab.",
       },
       {
         question: "Bietet SLT Rental einen Aufbau- und Abbauservice an?",
@@ -109,7 +109,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         question: "Sind die Zelte feuerfest?",
         answer:
-          "Das Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Bei den weiteren Zelten teilen wir die jeweils gültige Brandschutz-Klassifizierung gerne auf Anfrage mit, damit Sie die Vorgaben des Veranstaltungsorts oder Ordnungsamts einhalten.",
+          "Das Party- / Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Bei den weiteren Zelten teilen wir die jeweils gültige Brandschutz-Klassifizierung gerne auf Anfrage mit, damit Sie die Vorgaben des Veranstaltungsorts oder Ordnungsamts einhalten.",
       },
       {
         question: "Was kostet ein Party- / Eventzelt in Krefeld?",
@@ -128,24 +128,24 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
   bonn: {
     metaTitle: "Möbel & Zelte mieten Bonn – inkl. Lieferung & Aufbau | SLT",
     metaDescription:
-      "Eventzelte, Bierzeltgarnituren mit Hussen und Stehtische mieten in Bonn. Für Gartenhochzeit, Sommerfest und Empfang – B2B-Konditionen verfügbar. Jetzt anfragen.",
+      "Party- / Eventzelte, Bierzeltgarnituren mit Hussen und Stehtische mieten in Bonn. Für Gartenhochzeit, Sommerfest und Empfang – B2B-Konditionen verfügbar. Jetzt anfragen.",
     keywords:
-      "Möbel und Zelte mieten Bonn, Party- / Eventzelt mieten Bonn, Hochzeitszelt mieten Bonn, Eventzelt mieten Bonn, Bierzeltgarnitur mieten Bonn, Bierzeltgarnitur Set mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Festzeltgarnitur mieten Bonn, Bierbankgarnitur mieten Bonn, Biertische und Bänke mieten Bonn, Stehtisch mieten Bonn, Stehtisch mit Husse mieten Bonn, Bistrotisch mieten Bonn, Cocktailtisch mieten Bonn, Mietmöbel Bonn, Zeltverleih Bonn, Tische und Stühle mieten Bonn",
+      "Möbel und Zelte mieten Bonn, Party- / Eventzelt mieten Bonn, Hochzeitszelt mieten Bonn, Party- / Eventzelt mieten Bonn, Bierzeltgarnitur mieten Bonn, Bierzeltgarnitur Set mieten Bonn, Bierzeltgarnitur mit Hussen Bonn, Festzeltgarnitur mieten Bonn, Bierbankgarnitur mieten Bonn, Biertische und Bänke mieten Bonn, Stehtisch mieten Bonn, Stehtisch mit Husse mieten Bonn, Bistrotisch mieten Bonn, Cocktailtisch mieten Bonn, Mietmöbel Bonn, Zeltverleih Bonn, Tische und Stühle mieten Bonn",
     heroLead:
-      "Ob Gartenhochzeit in Bad Godesberg, Sommerfest einer Bundesbehörde am Rhein oder Sektempfang in Endenich: Über die Filiale in Bonn bekommen Sie bei SLT Rental das passende Equipment für repräsentative wie private Anlässe. Vom 6×8 m Eventzelt mit 2,6 m Durchgangshöhe über Bierzeltgarnituren mit weißen Hussen bis hin zu Stehtischen, Stapelstühlen und Sonnenschirmen – im Rheinland aus einer Hand mietbar.",
+      "Ob Gartenhochzeit in Bad Godesberg, Sommerfest einer Bundesbehörde am Rhein oder Sektempfang in Endenich: Über die Filiale in Bonn bekommen Sie bei SLT Rental das passende Equipment für repräsentative wie private Anlässe. Vom 6×8 m Party- / Eventzelt mit 2,6 m Durchgangshöhe über Bierzeltgarnituren mit weißen Hussen bis hin zu Stehtischen, Stapelstühlen und Sonnenschirmen – im Rheinland aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Bonn – Eventausstattung für Rhein und Vorgebirge",
     sections: [
       {
-        h2: "Eventzelte mit 2,6 m Durchgangshöhe – die Basis für Hochzeit und Empfang",
+        h2: "Party- / Eventzelte mit 2,6 m Durchgangshöhe – die Basis für Hochzeit und Empfang",
         paragraphs: [
-          "Das Eventzelt 6×8 m (48 m²) ist die Standardlösung für Gartenhochzeiten in Bad Godesberg, Beuel oder Endenich. Mit 2,6 m lichter Durchgangshöhe und kompletten Seiten- und Stirnwänden lässt es genug Raum für Tafeltische, eine kleine Tanzfläche und einen DJ-Bereich. Für größere Feiern mit 80 bis 120 Gästen liefern wir das Eventzelt 6×12 m (72 m²), nach EN 13501-1 schwer entflammbar zertifiziert.",
-          "Beispielszene: Sektempfang im Garten in Bad Godesberg mit acht Stehtischen unter weißen Stretch-Hussen, anschließend Hochzeitsdinner unter dem 6×8 m Eventzelt mit Bierzeltgarnituren in der weißen Hussen-Variante – funktional, aber durchaus elegant.",
+          "Das Party- / Eventzelt 6×8 m (48 m²) ist die Standardlösung für Gartenhochzeiten in Bad Godesberg, Beuel oder Endenich. Mit 2,6 m lichter Durchgangshöhe und kompletten Seiten- und Stirnwänden lässt es genug Raum für Tafeltische, eine kleine Tanzfläche und einen DJ-Bereich. Für größere Feiern mit 80 bis 120 Gästen liefern wir das Party- / Eventzelt 6×12 m (72 m²), nach EN 13501-1 schwer entflammbar zertifiziert.",
+          "Beispielszene: Sektempfang im Garten in Bad Godesberg mit acht Stehtischen unter weißen Stretch-Hussen, anschließend Hochzeitsdinner unter dem 6×8 m Party- / Eventzelt mit Bierzeltgarnituren in der weißen Hussen-Variante – funktional, aber durchaus elegant.",
         ],
       },
       {
         h2: "Bierzeltgarnitur mieten in Bonn – das Rückgrat jeder Feier im Rheinland",
         paragraphs: [
-          "Ein Bierzeltgarnitur-Set – auch als Festzeltgarnitur, Bierbankgarnitur oder einfach Biertisch mit Bänken bekannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Pro Garnitur rechnen Sie mit acht bis zehn Sitzplätzen. Das ergibt für eine klassische Hochzeit mit 60 Gästen rund sieben bis acht Bierzeltgarnituren – aufgebaut in U-Form unter dem Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik.",
+          "Ein Bierzeltgarnitur-Set – auch als Festzeltgarnitur, Bierbankgarnitur oder einfach Biertisch mit Bänken bekannt – besteht bei uns aus einem klappbaren Tisch (50 × 220 cm) und zwei Bänken (25 × 220 cm). Pro Garnitur rechnen Sie mit acht bis zehn Sitzplätzen. Das ergibt für eine klassische Hochzeit mit 60 Gästen rund sieben bis acht Bierzeltgarnituren – aufgebaut in U-Form unter dem Party- / Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik.",
           "Mit dem Hussen-Set in Weiß (zwei Bankhussen plus eine Tischhusse) wird aus dem nüchternen Werkstatt-Mobiliar eine ruhige, repräsentative Tischlandschaft. Damit ist die Bierzeltgarnitur mit Hussen in Bonn die naheliegende Wahl für Sommerfeste von NGOs, UN-Organisationen und Bundesbehörden in der Rheinaue ebenso wie für Schützen- und Vereinsfeste im Bonner Norden, in Beuel oder in Pützchen.",
           "Hussen geben Sie bitte gewaschen zurück; das hält die Aufbereitungskosten transparent und sorgt dafür, dass das nächste Hochzeitspaar wieder ein einwandfrei vorbereitetes Set bekommt. Wer nur Biertische und Bänke mieten möchte, ohne Hussen, fährt mit der Standard-Garnitur am günstigsten – etwa für Vereinsabende, Stammtische oder als Zusatztische beim Pützchens-Markt-Vorglühen im Garten.",
           "Preise Bierzeltgarnitur Bonn: Ein komplettes Set (Tisch + zwei Bänke) ist bereits ab 8 € pro Tag verfügbar, ein ganzes Wochenende (Freitag bis Montag) ab 15 € pro Set – attraktiv für Sommerfeste, Hochzeiten in Bad Godesberg und Veranstaltungen am Rhein. Die genauen Mietpreise je nach Stückzahl, Mietdauer und optionalem Hussen-Set sehen Sie transparent im Buchungsschritt; Tiefpreisgarantie inklusive.",
@@ -154,7 +154,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         h2: "Welche Zeltgröße passt zu welchem Anlass?",
         paragraphs: [
-          "Faustformel: 0,8 bis 1,0 m² pro sitzender Person, mit Tanzfläche und Buffet eher 1,5 m². Eine Hochzeit mit 60 Gästen sitzt komfortabel im Eventzelt 6×8 m, eine Firmenfeier mit 100 Personen passt unter das Eventzelt 6×12 m. Für kleine Gartenrunden reichen die Party- / Eventzelte 3×3 bis 4×8.",
+          "Faustformel: 0,8 bis 1,0 m² pro sitzender Person, mit Tanzfläche und Buffet eher 1,5 m². Eine Hochzeit mit 60 Gästen sitzt komfortabel im Party- / Eventzelt 6×8 m, eine Firmenfeier mit 100 Personen passt unter das Party- / Eventzelt 6×12 m. Für kleine Gartenrunden reichen die Party- / Eventzelte 3×3 bis 4×8.",
         ],
         table: sizeTable,
       },
@@ -186,7 +186,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         question: "Welches Zelt passt zu einer Hochzeit im Garten in Bonn?",
         answer:
-          "Für Gartenhochzeiten in Bad Godesberg, Beuel oder Endenich empfehlen wir das Eventzelt 6×8 m (48 m², 2,6 m Durchgangshöhe). Für 80 bis 120 Gäste das Eventzelt 6×12 m mit 72 m² – schwer entflammbar nach EN 13501-1.",
+          "Für Gartenhochzeiten in Bad Godesberg, Beuel oder Endenich empfehlen wir das Party- / Eventzelt 6×8 m (48 m², 2,6 m Durchgangshöhe). Für 80 bis 120 Gäste das Party- / Eventzelt 6×12 m mit 72 m² – schwer entflammbar nach EN 13501-1.",
       },
       {
         question: "Sind die Bierzeltgarnituren mit Hussen verfügbar?",
@@ -196,7 +196,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         question: "Welche Zeltgrößen kann ich in Bonn mieten?",
         answer:
-          "Verfügbar sind Party- / Eventzelte mit 9, 16, 24, 32, 40 und 56 m² Grundfläche sowie Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit decken wir Anlässe von der Gartenfeier bis zum Bundesbehörden-Sommerfest ab.",
+          "Verfügbar sind Party- / Eventzelte mit 9, 16, 24, 32, 40 und 56 m² Grundfläche sowie Party- / Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit decken wir Anlässe von der Gartenfeier bis zum Bundesbehörden-Sommerfest ab.",
       },
       {
         question: "Bietet SLT Rental Aufbauservice in Bonn an?",
@@ -209,9 +209,9 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
           "Wir liefern unter anderem nach Bonn-Zentrum, Bad Godesberg, Beuel und Hardtberg sowie in Endenich, Poppelsdorf, Pützchen, Duisdorf und Tannenbusch. Die Lieferkosten kalkuliert der Lieferkostenrechner im Buchungsschritt anhand der Adresse.",
       },
       {
-        question: "Sind die Eventzelte feuerfest?",
+        question: "Sind die Party- / Eventzelte feuerfest?",
         answer:
-          "Das Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Für die übrigen Zelte erhalten Sie die jeweils gültige Brandschutz-Klassifizierung auf Anfrage – wichtig, falls die Veranstaltungsfläche entsprechende Auflagen vorsieht.",
+          "Das Party- / Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Für die übrigen Zelte erhalten Sie die jeweils gültige Brandschutz-Klassifizierung auf Anfrage – wichtig, falls die Veranstaltungsfläche entsprechende Auflagen vorsieht.",
       },
       {
         question: "Brauche ich für ein Zelt in der Rheinaue eine Genehmigung?",
@@ -230,11 +230,11 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
   muelheim: {
     metaTitle: "Möbel & Zelte mieten Mülheim an der Ruhr | SLT Rental",
     metaDescription:
-      "Party- / Eventzelte, Eventzelte und Bierzeltgarnituren mieten in Mülheim an der Ruhr. Tiefpreisgarantie, optionaler Aufbauservice, Lieferung im Ruhrgebiet. Online anfragen.",
+      "Party- / Eventzelte, Party- / Eventzelte und Bierzeltgarnituren mieten in Mülheim an der Ruhr. Tiefpreisgarantie, optionaler Aufbauservice, Lieferung im Ruhrgebiet. Online anfragen.",
     keywords:
-      "Möbel und Zelte mieten Mülheim an der Ruhr, Party- / Eventzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Bierzeltgarnitur Set mieten Mülheim, Bierzeltgarnitur mit Hussen Mülheim, Festzeltgarnitur mieten Mülheim, Bierbankgarnitur mieten Mülheim, Biertische und Bänke mieten Mülheim, Stehtisch mieten Mülheim, Stehtisch mit Husse mieten Mülheim, Bistrotisch mieten Mülheim, Cocktailtisch mieten Mülheim, Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Zeltverleih Mülheim, Tische und Stühle mieten Mülheim",
+      "Möbel und Zelte mieten Mülheim an der Ruhr, Party- / Eventzelt mieten Mülheim, Festzelt mieten Mülheim, Bierzeltgarnitur mieten Mülheim, Bierzeltgarnitur Set mieten Mülheim, Bierzeltgarnitur mit Hussen Mülheim, Festzeltgarnitur mieten Mülheim, Bierbankgarnitur mieten Mülheim, Biertische und Bänke mieten Mülheim, Stehtisch mieten Mülheim, Stehtisch mit Husse mieten Mülheim, Bistrotisch mieten Mülheim, Cocktailtisch mieten Mülheim, Party- / Eventzelt mieten Mülheim, Hochzeitszelt mieten Mülheim, Zeltverleih Mülheim, Tische und Stühle mieten Mülheim",
     heroLead:
-      "Ob Hochzeit im Garten an der Ruhr in Saarn, Familienfeier in Speldorf oder Vereinsjubiläum in Broich: Über die Filiale in Mülheim an der Ruhr stellt SLT Rental Zelte, Tische und Stühle für das westliche Ruhrgebiet bereit. Modulare Party- / Eventzelte von 3×3 bis 4×14 m, Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen sowie Stehtische und Stapelstühle – an der Ruhrtalstadt aus einer Hand mietbar.",
+      "Ob Hochzeit im Garten an der Ruhr in Saarn, Familienfeier in Speldorf oder Vereinsjubiläum in Broich: Über die Filiale in Mülheim an der Ruhr stellt SLT Rental Zelte, Tische und Stühle für das westliche Ruhrgebiet bereit. Modulare Party- / Eventzelte von 3×3 bis 4×14 m, Party- / Eventzelte mit 2,6 m Durchgangshöhe, Bierzeltgarnituren mit oder ohne Hussen sowie Stehtische und Stapelstühle – an der Ruhrtalstadt aus einer Hand mietbar.",
     bottomHeadline: "Möbel und Zelte mieten in Mülheim an der Ruhr – Eventausstattung für das westliche Ruhrgebiet",
     sections: [
       {
@@ -245,15 +245,15 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         ],
       },
       {
-        h2: "Eventzelte mit 2,6 m Durchgangshöhe für Schloss-, Stadthallen- und MüGa-Anschluss-Anlässe",
+        h2: "Party- / Eventzelte mit 2,6 m Durchgangshöhe für Schloss-, Stadthallen- und MüGa-Anschluss-Anlässe",
         paragraphs: [
-          "Für repräsentativere Anlässe – etwa Hochzeiten in der Nachbarschaft von Schloss Broich, Vereinsjubiläen in der Stadthalle oder Sommerempfänge mit Blick zum MüGa-Park – setzen wir die Eventzelte 6×8 m (48 m²) und 6×12 m (72 m²) ein. Beide bieten 2,6 m lichte Durchgangshöhe; das 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert.",
+          "Für repräsentativere Anlässe – etwa Hochzeiten in der Nachbarschaft von Schloss Broich, Vereinsjubiläen in der Stadthalle oder Sommerempfänge mit Blick zum MüGa-Park – setzen wir die Party- / Eventzelte 6×8 m (48 m²) und 6×12 m (72 m²) ein. Beide bieten 2,6 m lichte Durchgangshöhe; das 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert.",
         ],
       },
       {
         h2: "Welche Zeltgröße passt zu welchem Anlass?",
         paragraphs: [
-          "Faustformel: 0,8 bis 1,0 m² pro sitzender Person, mit Tanzfläche und Buffet eher 1,5 m². Eine Geburtstagsfeier mit 30 Gästen sitzt im Party- / Eventzelt 4×6 oder 4×8 komfortabel; eine Familien- oder Vereinsfeier mit 70 Personen ist im 4×10 oder 6×8 gut aufgehoben; Hochzeiten ab 100 Gästen wandern in das Eventzelt 6×12 m.",
+          "Faustformel: 0,8 bis 1,0 m² pro sitzender Person, mit Tanzfläche und Buffet eher 1,5 m². Eine Geburtstagsfeier mit 30 Gästen sitzt im Party- / Eventzelt 4×6 oder 4×8 komfortabel; eine Familien- oder Vereinsfeier mit 70 Personen ist im 4×10 oder 6×8 gut aufgehoben; Hochzeiten ab 100 Gästen wandern in das Party- / Eventzelt 6×12 m.",
         ],
         table: sizeTable,
       },
@@ -287,12 +287,12 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         question: "Welches Zelt eignet sich für eine Feier in einem Garten an der Ruhr?",
         answer:
-          "Für Gartenfeiern in Saarn, Mintard oder Speldorf empfehlen wir die modularen Party- / Eventzelte 4×10 m oder 4×14 m – sie passen sich verwinkelten Grundstücken an. Bei repräsentativeren Anlässen das Eventzelt 6×8 m mit 2,6 m Durchgangshöhe.",
+          "Für Gartenfeiern in Saarn, Mintard oder Speldorf empfehlen wir die modularen Party- / Eventzelte 4×10 m oder 4×14 m – sie passen sich verwinkelten Grundstücken an. Bei repräsentativeren Anlässen das Party- / Eventzelt 6×8 m mit 2,6 m Durchgangshöhe.",
       },
       {
         question: "Welche Zeltgrößen sind in Mülheim an der Ruhr verfügbar?",
         answer:
-          "Verfügbar sind Party- / Eventzelte mit 9, 16, 24, 32, 40 und 56 m² sowie Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit lassen sich Geburtstage, Vereinsfeste und Hochzeiten unterschiedlicher Größenordnung im westlichen Ruhrgebiet abdecken.",
+          "Verfügbar sind Party- / Eventzelte mit 9, 16, 24, 32, 40 und 56 m² sowie Party- / Eventzelte mit 48 m² (6×8) und 72 m² (6×12). Damit lassen sich Geburtstage, Vereinsfeste und Hochzeiten unterschiedlicher Größenordnung im westlichen Ruhrgebiet abdecken.",
       },
       {
         question: "Bietet SLT Rental einen Aufbauservice in Mülheim an?",
@@ -305,9 +305,9 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
           "Wir liefern unter anderem nach Speldorf, Saarn, Broich, Styrum, Heißen, Mintard, Selbeck, Dümpten und Holthausen. Die genauen Lieferkosten berechnet der Lieferkostenrechner im Buchungsschritt anhand der Adresse.",
       },
       {
-        question: "Sind die Eventzelte feuerfest?",
+        question: "Sind die Party- / Eventzelte feuerfest?",
         answer:
-          "Das Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Bei den weiteren Zelten teilen wir die jeweils gültige Brandschutz-Klassifizierung auf Anfrage mit – relevant, falls der Veranstaltungsort entsprechende Auflagen vorsieht.",
+          "Das Party- / Eventzelt 6×12 m ist nach EN 13501-1 schwer entflammbar zertifiziert. Bei den weiteren Zelten teilen wir die jeweils gültige Brandschutz-Klassifizierung auf Anfrage mit – relevant, falls der Veranstaltungsort entsprechende Auflagen vorsieht.",
       },
       {
         question: "Brauche ich für ein Zelt im Bereich MüGa oder am Wasserbahnhof eine Genehmigung?",

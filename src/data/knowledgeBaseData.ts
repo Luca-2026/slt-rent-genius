@@ -95,7 +95,7 @@ export const kbCategories: KBCategory[] = [
   {
     id: "moebel-zelte",
     title: "Möbel & Zelte",
-    description: "Aufbauanleitungen für Party- / Eventzelte, Eventzelte, Sonnenschirme und Eventmöbel.",
+    description: "Aufbauanleitungen für Party- / Eventzelte, Party- / Eventzelte, Sonnenschirme und Eventmöbel.",
     icon: "Tent",
     articleCount: 2,
   },
@@ -1214,8 +1214,8 @@ export const kbArticles: KBArticle[] = [
   },
   {
     id: "eventzelt-giant-6m-aufbau",
-    title: "Eventzelt Giant 6m – Aufbauanleitung (PDF)",
-    description: "Offizielle Aufbauanleitung für Eventzelte mit 6m Breite (Giant-Serie): Aufbau, Sicherung und Abbau.",
+    title: "Party- / Eventzelt Giant 6m – Aufbauanleitung (PDF)",
+    description: "Offizielle Aufbauanleitung für Party- / Eventzelte mit 6m Breite (Giant-Serie): Aufbau, Sicherung und Abbau.",
     categoryId: "moebel-zelte",
     productIds: ["eventzelt-6x8m", "eventzelt-6x12m"],
     type: "anleitung",
@@ -1225,7 +1225,7 @@ export const kbArticles: KBArticle[] = [
     sections: [
       {
         heading: "Aufbauanleitung",
-        text: "Die vollständige Aufbauanleitung für Eventzelte der Giant-Serie (6m Breite) finden Sie als PDF-Download auf dieser Seite.",
+        text: "Die vollständige Aufbauanleitung für Party- / Eventzelte der Giant-Serie (6m Breite) finden Sie als PDF-Download auf dieser Seite.",
       },
     ],
   },

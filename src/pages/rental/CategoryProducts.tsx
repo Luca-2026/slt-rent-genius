@@ -1133,7 +1133,7 @@ export default function CategoryProducts() {
     "leitern-gerueste": `Rollgerüst mieten ${location.name}, Leiter mieten ${location.name}, 12 Meter Leiter mieten, 10 Meter Leiter mieten, Gerüst leihen ${location.name}`,
     "heizung-trocknung": `Bautrockner mieten ${location.name}, Heizlüfter mieten, Trocknung mieten, Baustellen Heizlüfter mieten`,
     absperrtechnik: `Bauzaun mieten ${location.name}, Halteverbotsschilder mieten ${location.name}, Absperrgitter mieten, Warnbarke mieten`,
-    "moebel-zelte": `Party- / Eventzelt mieten ${location.name}, Zelt mieten ${location.name}, Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
+    "moebel-zelte": `Party- / Eventzelt mieten ${location.name}, Zelt mieten ${location.name}, Party- / Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
     "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
     "wohnwagen-camping": `Wohnwagen mieten ${location.name}, Caravan mieten ${location.name}, Camping Wohnwagen leihen ${location.name}, Weinsberg CaraOne mieten, Familien-Wohnwagen mieten ${location.name}, Anhänger-Caravan mieten NRW`,
