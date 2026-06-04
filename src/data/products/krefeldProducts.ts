@@ -446,8 +446,7 @@ import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 import imgPartyzelt5x8_1 from "@/assets/products/partyzelt-5x8-1.avif";
 import imgPartyzelt5x8_2 from "@/assets/products/partyzelt-5x8-2.jpeg";
 import imgPartyzelt5x8_3 from "@/assets/products/partyzelt-5x8-3.jpeg";
-import partyzelt5x12_1Asset from "@/assets/products/partyzelt-5x12-1.avif.asset.json";
-const imgPartyzelt5x12_1 = partyzelt5x12_1Asset.url;
+const imgPartyzelt5x12_1 = "/product-images/partyzelt-5x12-1.avif";
 
 // Maß-Bilder für Zelte
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
