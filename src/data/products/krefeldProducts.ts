@@ -379,9 +379,10 @@ import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.j
 // Stehtisch images
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 
-// Zeltboden Anthrazit images
+// Event- / Zeltboden Anthrazit images
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
+import imgZeltbodenAnthrazit3 from "@/assets/products/zeltboden-anthrazit-3.jpeg";
 
 // Bierzeltgarnitur-Set images
 import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jpeg";
@@ -3570,10 +3571,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "zeltboden-anthrazit",
-    name: "Zeltboden Anthrazit 0,86 m²",
-    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
-    image: imgZeltbodenAnthrazit2,
-    images: [imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit1],
+    name: "Event- / Zeltboden Anthrazit",
+    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag – ideal für Zelte, Outdoor-Events und temporäre Veranstaltungsflächen. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
+    image: imgZeltbodenAnthrazit1,
+    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit3],
     category: "zelt",
     pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
     specifications: {
