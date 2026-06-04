@@ -646,9 +646,9 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // --- Bautrockner ---
-  if ((explicitLinkAsk || continuation) && mentionsBautrockner) {
+  if (mentionsBautrockner) {
     if (!location) {
-      return "Gerne – für welchen Standort soll ich dir den passenden Bautrockner empfehlen: Krefeld, Bonn oder Mülheim an der Ruhr?";
+      return "Ja – wir vermieten Bautrockner. Für welchen Standort brauchst du den Link: Krefeld, Bonn oder Mülheim an der Ruhr?";
     }
     const need = extractBautrocknerNeed(relevantText);
     const response = buildBautrocknerResponse(location, need);
