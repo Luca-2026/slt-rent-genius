@@ -1085,19 +1085,15 @@ function getDeterministicResponse(messages: ChatMessage[]) {
     if (response) return response;
   }
 
-  // --- Sonstige Kategorien mit Standort ---
+  // --- Sonstige Kategorien: strukturierte Beratung ---
   if (explicitLinkAsk) {
     // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung
     const category = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
-    if (location && category) {
-      const productLinks = searchVerifiedProductLinks(lastUser, location, category.id);
-      if (productLinks.length > 0) {
-        return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel(location)}:`, productLinks);
+    if (category) {
+      if (!location) {
+        return `Gerne berate ich dich zu **${category.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
       }
-      const categoryLink = fallbackCategoryLink(location, category.id, `${category.label} in ${locationLabel(location)}`);
-      if (categoryLink) {
-        return buildLinkResponse("Den exakten Produktlink kann ich hier nicht eindeutig genug bestimmen. Deshalb verlinke ich dir bewusst nur die geprüfte Kategorie-Übersicht:", [categoryLink]);
-      }
+      return buildCategoryConsultResponse(category, location, allText, lastUser);
     }
   }
 
