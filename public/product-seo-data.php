@@ -115,6 +115,21 @@ $productSEOLookup = [
       ['q' => 'Werden Kabel mitgeliefert?', 'a' => 'Die Anschlusskabel sind je nach Modell enthalten oder können separat dazu gebucht werden. Schauen Sie sich unser Sortiment an CEE-Kabeln und Verlängerungen an.'],
     ],
   ],
+  'endverteilerschrank-22kva-ev32' => [
+    'name' => 'Endverteilerschrank 22 kVA – EV32 Typ B',
+    'h1' => 'Endverteilerschrank 22 kVA – EV32 Typ B mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Technische Daten EV32 Typ B mit 22 kVA', 'Steckdosen-Konfiguration & Absicherung FI Typ B', 'Robustes Stahlblechgehäuse & Standgestell', 'Einsatz als Baustromverteiler & Eventstromverteilung'],
+    'useCaseBau' => 'Baustromverteiler / Endverteiler für Baustellen, Anschluss von Baumaschinen, Werkzeugen und Ladegeräten mit allstromsensitivem FI Typ B',
+    'useCaseEvent' => 'Zentrale Stromverteilung auf Events, Festivals und Märkten – CEE 32 A für Bühne/Kühltechnik, 6× Schuko für Stände',
+    'useCasePrivat' => 'Endverteiler für größere Privatbaustellen, Sanierungen und Garten-/Hofprojekte mit Hochleistungsmaschinen',
+    'faqs' => [
+      ['q' => 'Wofür wird der Endverteilerschrank EV32 mit 22 kVA eingesetzt?', 'a' => 'Der EV32 ist ein mobiler Baustromverteiler / Endverteiler. Er wird auf Baustellen als Unterverteilung, auf Events als zentrale Stromverteilung und in Industrie- und Handwerksbetrieben temporär eingesetzt – mit 400 V und 230 V.'],
+      ['q' => 'Welche Steckdosen stehen am EV32 zur Verfügung?', 'a' => '1× CEE 32 A und 2× CEE 16 A (jeweils 5-polig, 400 V/6h) sowie 6× Schutzkontakt-Steckdosen 230 V/16 A. Zuleitung über 32 A CEE-Phasenwender.'],
+      ['q' => 'Was bedeutet FI-Schutzschalter Typ B?', 'a' => 'Der EV32 hat 2 allstromsensitive FI-Schutzschalter Typ B (40 A / 0,03 A). Diese erkennen auch glatte Gleichfehlerströme und sind zwingend für frequenzumrichtergesteuerte Maschinen, Ladestationen und Wechselrichter.'],
+      ['q' => 'Wie sind Transportmaße und Gewicht des EV32?', 'a' => 'Transportmaße 670 × 1060 × 360 mm (B × H × T), Gewicht 39 kg. Das feuerverzinkte Standgestell ermöglicht den sicheren Aufbau direkt vor Ort.'],
+      ['q' => 'Ist der Endverteilerschrank für den Außeneinsatz geeignet?', 'a' => 'Ja – das Stahlblechgehäuse ist verzinkt und orange pulverbeschichtet, korrosionsbeständig und für Baustellen und Outdoor-Events ausgelegt. Bei Dauerregen empfehlen wir eine geschützte Aufstellung.'],
+    ],
+  ],
   'aschenbecher-glas' => [
     'name' => 'Aschenbecher Glas',
     'h1' => 'Aschenbecher Glas mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
