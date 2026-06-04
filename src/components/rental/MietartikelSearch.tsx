@@ -217,10 +217,10 @@ export function MietartikelSearch() {
             preserveAspectRatio="none"
           >
             <rect
-              x="1"
-              y="1"
-              width="calc(100% - 2px)"
-              height="calc(100% - 2px)"
+              x="0"
+              y="0"
+              width="100%"
+              height="100%"
               rx="12"
               ry="12"
               fill="none"
