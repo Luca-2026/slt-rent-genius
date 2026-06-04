@@ -552,7 +552,7 @@ function buildPlanen750Response(location: string) {
 // ---------- Bautrockner Flow ----------
 
 function extractArea(text: string): number | null {
-  const match = text.match(/(\d{1,4})\s*(?:m²|m2|qm|quadratmeter)/i);
+  const match = text.match(/(\d{1,4})\s*(?:m²|m2|qm|quadratmeter|l(?:iter)?(?:\s*\/\s*(?:tag|24\s*h))?)/i);
   if (!match) return null;
   const n = parseInt(match[1], 10);
   return Number.isFinite(n) ? n : null;
@@ -572,20 +572,21 @@ function buildBautrocknerResponse(location: string, area: number | null) {
 
   if (both.length === 0) return null;
 
-  // Empfehlung anhand der Fläche
+  // Empfehlung anhand der Fläche bzw. Leistung (z. B. "20l")
   let recommended: typeof both | null = null;
   let intro: string;
   if (area !== null) {
     const pick = area <= 20 ? both.filter((b) => b.slug === "bautrockner-kt200") : both.filter((b) => b.slug === "bautrockner-kt553");
     recommended = pick.length ? pick : both;
-    intro = `Für ca. ${area} m² in ${loc} passt das hier am besten:`;
+    intro = `Für ${area} ${area <= 20 ? "l/Tag bzw. ca. 20 m²" : "m²"} in ${loc} passt dieser Bautrockner:`;
   } else {
     recommended = both;
-    intro = `Damit ich dir das richtige Modell in ${loc} empfehle, hilft mir kurz: Wie groß ist die zu trocknende Fläche (in m²) und wie hoch ist der Wasserschaden grob (feucht / nass / stark durchnässt)?\n\nUnsere zwei Modelle in ${loc}:`;
+    intro = `Ja – in ${loc} haben wir diese Bautrockner:`;
   }
 
   const lines = recommended.map((item) => `- [${item.label}](${SITE_ORIGIN}${item.url!.replace(SITE_ORIGIN, "")}) – ${item.summary}`).join("\n");
-  return `${intro}\n\n${lines}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  const question = area === null ? "\n\nWenn du unsicher bist: Wie groß ist die zu trocknende Fläche in m²?" : "";
+  return `${intro}\n\n${lines}\n\n${bookingHint()}${question}`;
 }
 
 // ---------- Conversation helpers ----------
