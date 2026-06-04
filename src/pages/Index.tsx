@@ -212,7 +212,7 @@ export default function Index() {
                     </a>
 
                     {/* Hours - fixed height for consistency across all 3 cards */}
-                    <div className="mb-2 md:mb-2 lg:mb-3 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg h-[90px] md:h-[76px] lg:h-[108px]">
+                    <div className="mb-2 md:mb-2 lg:mb-3 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg min-h-[90px] md:min-h-[76px] lg:min-h-[108px]">
                       <div className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm font-medium text-headline mb-2 md:mb-1 lg:mb-2">
                         <Clock className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-primary" />
                         {t("locations.openingHours")}
