@@ -607,6 +607,13 @@ export default function CategoryProducts() {
                   const nameLower = p.name.toLowerCase();
                   return nameLower.includes("stuhl") || nameLower.includes("tisch") || nameLower.includes("bank") || nameLower.includes("bierzelt");
                 }
+                // For moebel-zelte "stuhl" group: match by tag or name keywords
+                if (category?.id === "moebel-zelte" && value === "stuhl") {
+                  const nameLower = p.name.toLowerCase();
+                  if (p.tags?.includes("stuhl")) return true;
+                  return nameLower.includes("stuhl") || nameLower.includes("klappstuhl");
+                }
+
                 // Arbeitsbühnen: name-based fallback (covers products without category field)
                 if (category?.id === "arbeitsbuehnen") {
                   const nameLower = p.name.toLowerCase();
