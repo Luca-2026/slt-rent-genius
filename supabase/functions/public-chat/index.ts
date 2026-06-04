@@ -353,7 +353,7 @@ const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
   { id: "anhaenger", label: "Anhänger", terms: ["anhänger", "anhaenger", "planenanhänger", "planenanhaenger", "kofferanhänger", "kastenanhänger", "trailer"] },
   { id: "erdbewegung", label: "Erdbewegung", terms: ["minibagger", "bagger", "radlader", "knicklader", "dumper", "raddumper", "tieflöffel", "tieflöffel", "loeffel", "hydraulikhammer", "grabenräumlöffel"] },
   { id: "verdichtung", label: "Verdichtung", terms: ["rüttelplatte", "ruettelplatte", "stampfer", "vibrationsstampfer", "grabenwalze", "verdichten"] },
-  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "teleskoparbeitsbühne", "teleskoparbeitsbuehne", "teleskopbühne", "teleskopbuehne", "teleskopsteiger", "gelenkteleskopsteiger", "scherenbühne", "scherenbuehne", "mastbühne", "mastbuehne", "anhängerbühne", "anhaengerbuehne", "steiger"] },
+  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "arbeitsbühnen", "arbeitsbuehnen", "scherenarbeitsbühne", "scherenarbeitsbuehne", "teleskoparbeitsbühne", "teleskoparbeitsbuehne", "teleskopbühne", "teleskopbuehne", "teleskopsteiger", "gelenkteleskopsteiger", "scherenbühne", "scherenbuehne", "mastbühne", "mastbuehne", "anhängerbühne", "anhaengerbuehne", "steiger"] },
   { id: "werkzeuge", label: "Werkzeuge", terms: ["werkzeug", "bohrhammer", "abbruchhammer", "winkelschleifer", "fliesenschneider", "trennschleifer", "laser"] },
   { id: "gartenpflege", label: "Gartenpflege", terms: ["gartenpflege", "gartengerät", "gartengeraet", "häcksler", "haecksler", "vertikutierer", "freischneider", "erdbohrer", "kettensäge", "kettensaege", "bodenhacke", "baumstumpffräse", "baumstumpffraese", "hochdruckreiniger", "rasenwalze"] },
   { id: "aggregate", label: "Aggregate", terms: ["aggregat", "stromerzeuger", "kompressor", "powerstation", "presslufthammer"] },
@@ -373,8 +373,29 @@ const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
 ];
 
 const stopWords = new Set([
-  "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr"
+  "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr", "meter", "ca", "circa"
 ]);
+
+const categoryLabels: Record<string, string> = Object.fromEntries(categoryTerms.map((item) => [item.id, item.label]));
+
+const searchSynonyms: Record<string, string[]> = {
+  scherenarbeitsbuehne: ["scherenbuehne"],
+  scherenarbeitsbuehnen: ["scherenbuehne"],
+  teleskoparbeitsbuehne: ["gelenkteleskopsteiger", "teleskopsteiger"],
+  teleskoparbeitsbuehnen: ["gelenkteleskopsteiger", "teleskopsteiger"],
+  teleskopbuehne: ["gelenkteleskopsteiger"],
+  arbeitsbuehne: ["buehne"],
+  arbeitsbuehnen: ["buehne"],
+  funkgeraete: ["funkgeraet", "uhf"],
+  rüttelplatte: ["ruettelplatte"],
+  ruettelplatten: ["ruettelplatte"],
+  anhänger: ["anhaenger"],
+  anhaenger: ["anhaenger"],
+  anhängerbühne: ["anhaengerbuehne"],
+  anhaengerbuehne: ["anhaengerbuehne"],
+  geruest: ["rollgeruest"],
+  gerueste: ["rollgeruest"],
+};
 
 const minibaggerSlugs = [
   { label: "1t Minibagger (Bobcat E10Z)", slug: "bobcat-e10z", exact: /(^|\D)(1|1[,.]0)\s*t|1\s*tonnen?|ein\s*tonnen?/i },
@@ -518,15 +539,15 @@ function rentalLink(label: string, location: string, category: string, slug?: st
 }
 
 function detectCategory(text: string) {
-  const normalized = text.toLowerCase();
+  const normalized = normalizeForSearch(text);
   // Wortgrenzen-Matching mit optionaler deutscher Flexionsendung (n/en/s/e/er),
   // damit Plural- und Beugungsformen wie "Rüttelplatten" oder "Anhängern"
   // den Term "rüttelplatte"/"anhänger" matchen. Trotzdem schützt der Anfangs-
   // Wortbreak vor Fehl-Matches in Wörtern wie "passend" oder "Apparat".
   const matchesTerm = (term: string) => {
-    const t = term.toLowerCase();
+    const t = normalizeForSearch(term);
     const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:n|en|s|e|er)?(?:[^a-zäöüß0-9]|$)`, "i");
+    const re = new RegExp(`(?:^|[^a-z0-9])${escaped}(?:n|en|s|e|er)?(?:[^a-z0-9]|$)`, "i");
     return re.test(normalized);
   };
   return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
@@ -572,6 +593,7 @@ function queryTokens(text: string) {
     ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? [];
   const expanded = baseTokens.flatMap((token) => {
     const variants = [token];
+    variants.push(...(searchSynonyms[token] ?? []));
     if (token.length > 5 && token.endsWith("en")) variants.push(token.slice(0, -2));
     if (token.length > 4 && /[ens]$/.test(token)) variants.push(token.slice(0, -1));
     if (token.length > 6 && token.endsWith("er")) variants.push(token.slice(0, -2));
@@ -584,6 +606,17 @@ function queryTokens(text: string) {
 
 function markdownLinks(links: RentalLink[]) {
   return links.map((item) => `- [${item.label}](${item.url})`).join("\n");
+}
+
+function labelFromSlug(slug: string) {
+  const overrides: Record<string, string> = {
+    "scherenbuehne-8m": "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
+    "scherenbuehne-12m": "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
+    "mastbuehne-11m": "11 m Mastbühne",
+    "gelenkteleskopsteiger-12m": "12 m Gelenkteleskopsteiger",
+    "anhaengerbuehne-18m": "18 m Anhängerbühne",
+  };
+  return overrides[slug] ?? slug.split("-").map((part) => part.length <= 3 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
 }
 
 function bookingHint() {
@@ -721,10 +754,31 @@ function searchVerifiedProductLinks(text: string, location: string, categoryId?:
     .slice(0, 5);
 
   return scored.map((item) => ({
-    label: item.slug.split("-").map((part) => part.length <= 3 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" "),
+    label: labelFromSlug(item.slug),
     path: item.path,
     url: `${SITE_ORIGIN}${item.path}`,
   }));
+}
+
+function detectCategoryFromProductSearch(text: string, location?: string | null) {
+  const tokens = queryTokens(text);
+  if (tokens.length === 0) return null;
+  const prefix = location ? `/mieten/${location}/` : "/mieten/";
+  const best = RENTAL_LINK_PATHS
+    .filter((path) => path.startsWith(prefix) && path.split("/").filter(Boolean).length >= 4)
+    .map((path) => {
+      const parts = path.split("/").filter(Boolean);
+      const categoryId = parts[2];
+      const slug = parts.at(-1) ?? "";
+      const haystack = normalizeForSearch(slug.replace(/-/g, ""));
+      const score = tokens.reduce((sum, token) => sum + (haystack.includes(token) ? token.length : 0), 0);
+      return { categoryId, score };
+    })
+    .filter((item) => item.score >= Math.min(8, tokens.join("").length))
+    .sort((a, b) => b.score - a.score)[0];
+  return best?.categoryId && categoryLabels[best.categoryId]
+    ? { id: best.categoryId, label: categoryLabels[best.categoryId] }
+    : null;
 }
 
 function uniqueLinks(links: Array<RentalLink | null>) {
@@ -755,20 +809,20 @@ function curatedProductLinks(categoryId: string, text: string, location: string)
   const wantsScissor = /(schere|scheren|eben|beton|asphalt|plattform)/i.test(normalized);
   const wantsTrailer = /(anhaenger|anhaengerbuehne|18\s*m)/i.test(normalized);
 
-  if (wantsTelescope) add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
-  if (wantsMast || height === 11) add("Mastbühne 11 m", "mastbuehne-11m");
-  if (wantsScissor || height === 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
-  if (wantsScissor || height === 12) add("Scherenbühne 12 m", "scherenbuehne-12m");
+  if (wantsTelescope) add("12 m Gelenkteleskopsteiger", "gelenkteleskopsteiger-12m");
+  if (wantsMast || height === 11) add("11 m Mastbühne", "mastbuehne-11m");
+  if (wantsScissor && (height === null || height <= 8)) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
+  if (wantsScissor && (height === null || height > 8)) add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
   if (wantsTrailer || (height !== null && height > 12)) add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
 
   if (links.length === 0 && height !== null) {
-    if (height <= 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+    if (height <= 8) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
     else if (height <= 11) {
       add("Mastbühne 11 m", "mastbuehne-11m");
-      add("Scherenbühne 12 m", "scherenbuehne-12m");
+      add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
     } else if (height <= 12) {
       add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
-      add("Scherenbühne 12 m", "scherenbuehne-12m");
+      add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
     } else {
       add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
     }
@@ -994,10 +1048,11 @@ function buildCategoryConsultResponse(category: { id: string; label: string }, l
   const loc = locationLabel(location);
   const config = categoryConsult[category.id];
   const queryText = `${lastUser}\n${history}`;
-  const productLinks = uniqueLinks([
-    ...curatedProductLinks(category.id, queryText, location),
-    ...searchVerifiedProductLinks(queryText, location, category.id),
-  ]).slice(0, 5);
+  const curatedLinks = curatedProductLinks(category.id, queryText, location);
+  const productLinks = (curatedLinks.length > 0
+    ? curatedLinks
+    : searchVerifiedProductLinks(queryText, location, category.id)
+  ).slice(0, 5);
   const categoryLink = fallbackCategoryLink(location, category.id, `Alle ${category.label} in ${loc}`);
 
   const sections: string[] = [];
@@ -1049,6 +1104,21 @@ function fallbackUrlFromPath(path: string | null) {
       : null;
 }
 
+function markdownLabelForPath(path: string | null) {
+  if (!path) return "Link öffnen";
+  const parts = path.split("/").filter(Boolean);
+  if (parts[0] === "mieten" && parts[1] && parts[2]) {
+    const loc = locationLabel(parts[1]);
+    const category = categoryLabels[parts[2]] ?? "Kategorie";
+    return parts[3] ? labelFromSlug(parts[3]) : `${category} in ${loc}`;
+  }
+  if (path.startsWith("/lieferung")) return "Lieferkostenrechner";
+  if (path.startsWith("/b2b")) return "B2B-Portal";
+  if (path.startsWith("/hilfe")) return "Hilfe-Seite";
+  if (path.startsWith("/ratgeber")) return "Ratgeber";
+  return "Link öffnen";
+}
+
 function sanitizeAssistantText(text: string) {
   const markdownSanitized = text.replace(/\[([^\]]+)\]\((https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)]+)\)/g, (match, label, url) => {
     const path = pathFromSltUrl(url);
@@ -1057,10 +1127,16 @@ function sanitizeAssistantText(text: string) {
     return fallback ? `[${label}](${fallback})` : label;
   });
 
-  return markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
+  const rentalSanitized = markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
     const path = pathFromSltUrl(url);
-    if (path && verifiedRentalPathSet.has(path)) return `${SITE_ORIGIN}${path}`;
-    return fallbackUrlFromPath(path) ?? "die passende Kategorie auf slt-rental.de";
+    if (path && verifiedRentalPathSet.has(path)) return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path})`;
+    const fallback = fallbackUrlFromPath(path);
+    return fallback ? `[${markdownLabelForPath(path)}](${fallback})` : "die passende Kategorie auf slt-rental.de";
+  });
+
+  return rentalSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/(lieferung|b2b|hilfe|ratgeber[^\s)\]}]*)\/?/g, (url) => {
+    const path = pathFromSltUrl(url);
+    return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path ?? "/"})`;
   });
 }
 
@@ -1233,7 +1309,9 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
   // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
   // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
-  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
+  const categoryFromLast = detectCategory(lastUser)
+    ?? detectCategoryFromProductSearch(lastUser, location)
+    ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
   if (categoryFromLast) {
     if (!location) {
       return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
