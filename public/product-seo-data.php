@@ -2498,6 +2498,20 @@ $productSEOLookup = [
       ['q' => 'Kann ich mehrere Kabel für längere Strecken zusammenstecken?', 'a' => 'Dieses Kabel hat eine Länge von arke / Hersteller: Major. Das Zusammenstecken mehrerer Kabel ist möglich, jedoch sind bei langen Strecken Spannungsabfälle zu berücksichtigen. Bei Strecken über 50 m empfehlen wir einen dickeren Kabelquerschnitt oder eine Einspeisepunkt-Verlagerung.'],
     ],
   ],
+  'partyzelt-5x12m' => [
+    'name' => 'Party- / Eventzelt 5x12m extra hoch',
+    'h1' => 'Party- / Eventzelt 5x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Feuerfeste Konstruktion mit 60 m²', 'Materialeigenschaften und Brandschutz', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
+    'useCaseBau' => 'Baustellenunterstand, Materialdepot mit Brandschutzanforderung',
+    'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Tagungen, genehmigungspflichtige Outdoor-Events',
+    'useCasePrivat' => 'Gartenfest, Jubiläum, Familienfeier mit größerem Gästekreis',
+    'faqs' => [
+      ['q' => 'Ist das 5x12m Zelt feuerfest?', 'a' => 'Ja, die 500 g/m² PVC-Plane ist feuerfest nach EN-13501-1 und damit für Veranstaltungen mit Brandschutzauflagen geeignet.'],
+      ['q' => 'Für wie viele Personen ist das Zelt geeignet?', 'a' => 'Bei 60 m² Grundfläche stehend ca. 100 Personen, bei Reihenbestuhlung oder Bierzeltgarnituren ca. 84 Personen.'],
+      ['q' => 'Benötige ich eine behördliche Genehmigung für das Zelt?', 'a' => 'Zelte unter 75 m² benötigen in der Regel keine Baugenehmigung, häufig reicht eine Anzeige beim Ordnungsamt. Bitte mit der zuständigen Behörde abklären.'],
+      ['q' => 'Sind Seitenteile, Boden und Beleuchtungsanschlüsse dabei?', 'a' => 'Seitenwände, Zeltböden, Heizung und Stromanschlüsse sind optional und können separat hinzugebucht werden.'],
+    ],
+  ],
   'eventzelt-6x12m' => [
     'name' => 'Party- / Eventzelt 6x12m extra hoch',
     'h1' => 'Party- / Eventzelt 6x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
