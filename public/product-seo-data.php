@@ -10373,6 +10373,23 @@ $productDetails = [
       'Prüfung' => 'Stückgeprüft',
     ],
   ],
+  'endverteilerschrank-22kva-ev32' => [
+    'name' => 'Endverteilerschrank 22 kVA – EV32 Typ B',
+    'description' => 'Mobiler Baustromverteiler / Endverteilerschrank EV32 Typ B mit 22 kVA Anschlussleistung – CEE 32 A Phasenwender-Zuleitung, 1× CEE 32 A, 2× CEE 16 A, 6× Schuko 230 V, 2× FI Typ B 40 A/0,03 A. Verzinktes, orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell, stückgeprüft.',
+    'specs' => [
+      'Typ' => 'EV32 – Typ B',
+      'Anschlussleistung' => '22 kVA',
+      'Stromaufnahme / Zuleitung' => '32 A – 400 V CEE (Phasenwender)',
+      'CEE-Steckdosen 400 V/6h' => '1× 32 A + 2× 16 A (5-polig)',
+      'Schutzkontaktsteckdosen' => '6× 230 V / 16 A',
+      'FI-Schutzschalter' => '2× 40 A / 0,03 A – Typ B (allstromsensitiv)',
+      'Gehäuse' => 'Stahlblech, verzinkt und orange pulverbeschichtet',
+      'Standgestell' => 'Feuerverzinkt',
+      'Transportmaße (B×H×T)' => '670 × 1060 × 360 mm',
+      'Transportgewicht' => '39 kg',
+      'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
+    ],
+  ],
   'cee-kabel-16a-3m' => [
     'name' => 'CEE Kabel 16A rot 3 m',
     'description' => '3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot',
