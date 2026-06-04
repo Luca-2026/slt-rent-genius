@@ -549,6 +549,103 @@ function getMinibaggerLinks(text: string, location: string): RentalLink[] {
     .filter((item): item is RentalLink => Boolean(item));
 }
 
+// ---------- Minibagger: strukturierte Beratung ----------
+
+function detectAlreadyAnswered(text: string) {
+  const t = text.toLowerCase();
+  return {
+    digDepth: /(\d{1,2}([.,]\d)?\s*m\b|\d{2,3}\s*cm\b|grabtiefe|tiefe)/.test(t),
+    access: /(zugang|durchfahrt|tor|gartent[üu]r|einfahrt|zufahrt|breite)/.test(t),
+    delivery: /(liefer|anliefer|tieflader|sprinter|abholen|abholung|selbstabholung|plz\s*\d|\b\d{5}\b)/.test(t),
+    attachments: /(tiefl[öo]ffel|grabenl[öo]ffel|hydraulikhammer|anbauger[äa]t|schaufel|l[öo]ffel|symlock)/.test(t),
+    ground: /(rasen|pflaster|asphalt|beton|sand|lehm|fels|stein|boden|untergrund)/.test(t),
+  };
+}
+
+function minibaggerSpecBlock(spec: MinibaggerSpec): string {
+  const widthLine = spec.widthFullMm
+    ? `Breite: ${spec.widthFullMm} mm, einfahrbar auf **${spec.widthMm} mm**`
+    : `Breite: ${spec.widthMm} mm`;
+  const depthM = (spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return [
+    `- Einsatzgewicht: ${spec.weightKg.toLocaleString("de-DE")} kg`,
+    `- Grabtiefe: **${depthM} m**`,
+    `- ${widthLine}`,
+    `- Motor: ${spec.ps} PS · Diesel-Tank ${spec.fuelL} l`,
+    `- Aufnahme: ${spec.bucketClass}`,
+    `- Anlieferung: Tarif ${spec.deliveryTariff}`,
+  ].join("\n");
+}
+
+function buildMinibaggerConsultResponse(spec: MinibaggerSpec, location: string, history: string): string {
+  const loc = locationLabel(location);
+  const link = rentalLink(`${spec.short} Minibagger (${spec.modelName}) in ${loc}`, location, "erdbewegung", spec.slug);
+  const overview = rentalLink(`Alle Minibagger in ${loc}`, location, "erdbewegung");
+  const neighbors = neighborMinibagger(spec);
+  const altLinks: RentalLink[] = [];
+  if (neighbors.smaller) {
+    const l = rentalLink(`${neighbors.smaller.short} Minibagger (${neighbors.smaller.modelName})`, location, "erdbewegung", neighbors.smaller.slug);
+    if (l) altLinks.push(l);
+  }
+  if (neighbors.larger) {
+    const l = rentalLink(`${neighbors.larger.short} Minibagger (${neighbors.larger.modelName})`, location, "erdbewegung", neighbors.larger.slug);
+    if (l) altLinks.push(l);
+  }
+
+  const answered = detectAlreadyAnswered(history);
+  const questions: string[] = [];
+  if (!answered.digDepth) questions.push(`Welche **Grabtiefe** brauchst du? Der ${spec.short}-Bagger schafft bis ${(spec.digDepthMm / 1000).toLocaleString("de-DE")} m.`);
+  if (!answered.access) questions.push(`Wie **eng ist der Zugang** zur Baustelle (Tor/Durchfahrt)? Der Bagger ist ${spec.widthMm} mm breit (einfahrbar).`);
+  if (!answered.delivery) questions.push("Möchtest du **selbst abholen** oder soll ich dir den **Lieferkostenrechner** verlinken? Dann nenn mir bitte deine PLZ.");
+  if (!answered.attachments) questions.push("Welche **Anbaugeräte** brauchst du zusätzlich (z. B. Tieflöffel-Breite, Grabenräumlöffel, Hydraulikhammer)?");
+
+  const sections: string[] = [];
+  sections.push(`Klar – für deinen **${spec.short} Minibagger (${spec.modelName}) in ${loc}** kurz die wichtigsten Eckdaten:`);
+  sections.push(minibaggerSpecBlock(spec));
+  sections.push(`**Typische Einsätze:** ${spec.highlights.join(" ")}`);
+  if (link) {
+    sections.push(`**Direkt zur Artikelseite:** [${link.label}](${link.url})`);
+  } else if (overview) {
+    sections.push(`**Modell aktuell nicht am Standort – Übersicht:** [${overview.label}](${overview.url})`);
+  }
+  if (altLinks.length > 0) {
+    sections.push(`**Alternativen, falls Tiefe oder Zugang nicht passen:**\n${altLinks.map((l) => `- [${l.label}](${l.url})`).join("\n")}`);
+  }
+  sections.push(`**Lieferung statt Selbstabholung?** Den genauen Preis rechnest du anhand deiner PLZ aus: [Lieferkostenrechner](${SITE_ORIGIN}/lieferung)`);
+  if (questions.length > 0) {
+    sections.push(`Damit ich dir verbindlich das passende Modell empfehlen kann, kurz noch:\n${questions.slice(0, 3).map((q) => `- ${q}`).join("\n")}`);
+  }
+  sections.push(bookingHint());
+  return sections.join("\n\n");
+}
+
+function buildMinibaggerOverviewResponse(location: string, history: string): string {
+  const loc = locationLabel(location);
+  const rows = minibaggerSpecs
+    .map((spec) => {
+      const link = rentalLink(`${spec.short} (${spec.modelName})`, location, "erdbewegung", spec.slug);
+      const depth = (spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const widthInfo = spec.widthFullMm ? `${spec.widthMm} mm (einfahrbar)` : `${spec.widthMm} mm`;
+      const label = link ? `[${spec.short} (${spec.modelName})](${link.url})` : `${spec.short} (${spec.modelName})`;
+      return `- **${label}** – Grabtiefe ${depth} m · Breite ${widthInfo} · ${spec.ps} PS · ${spec.bucketClass}`;
+    })
+    .join("\n");
+  const answered = detectAlreadyAnswered(history);
+  const questions: string[] = [];
+  if (!answered.digDepth) questions.push("**Welche Grabtiefe** brauchst du (in m)?");
+  if (!answered.access) questions.push("**Wie eng** ist der schmalste Zugang zur Baustelle (in cm/m)?");
+  if (!answered.delivery) questions.push("Selbstabholung oder **Lieferung** (dann PLZ)?");
+  if (!answered.attachments) questions.push("Brauchst du **Anbaugeräte** (Tieflöffel-Breite, Hammer, Räumlöffel)?");
+
+  return [
+    `In ${loc} haben wir folgende Minibagger – Auswahl nach Grabtiefe, Breite und Zugang:`,
+    rows,
+    `Damit ich dir das passende Modell empfehlen kann, beantworte mir kurz:\n${questions.slice(0, 3).map((q) => `- ${q}`).join("\n")}`,
+    `Lieferpreise rechnest du jederzeit selbst aus: [Lieferkostenrechner](${SITE_ORIGIN}/lieferung)`,
+    bookingHint(),
+  ].join("\n\n");
+}
+
 function fallbackCategoryLink(location: string, categoryId: string, label?: string): RentalLink | null {
   const category = categoryTerms.find((item) => item.id === categoryId);
   return rentalLink(label ?? `${category?.label ?? "Kategorie"} in ${location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld"}`, location, categoryId);
