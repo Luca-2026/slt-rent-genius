@@ -534,10 +534,12 @@ export default function CategoryProducts() {
                 const moebelZelteTypeGroups: Record<string, string[]> = {
                   "zelt": ["zelt"],
                   "moebel": ["moebel", "stuhl", "tisch", "bank"],
+                  "stuhl": ["stuhl"],
                   "husse": ["husse"],
                   "kuehlgeraet": ["kuehlgeraet"],
                   "garderobe": ["garderobe"],
                 };
+
                 const beleuchtungTypeGroups: Record<string, string[]> = {
                   "fluter": ["fluter", "baustrahler", "led-fluter"],
                   "spot": ["spot", "par", "led-spot", "scheinwerfer", "led-bar", "blinder"],
