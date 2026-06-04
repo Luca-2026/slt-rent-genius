@@ -840,6 +840,51 @@ const categoryConsult: Record<string, ConsultConfig> = {
       { key: "noise", answered: /(lärm|leise|schallged[äa]mmt|nacht|wohngebiet|silent)/i, question: "Brauchst du ein **schallgedämmtes** Modell (Wohngebiet/Nacht)?" },
     ],
   },
+  "kabel-stromverteiler": {
+    id: "kabel-stromverteiler",
+    selectionDrivers: "Anschlussart (Schuko/CEE), Stromstärke (16 A/32 A/63 A), Kabellänge, Verteilerbedarf und Outdoor-Tauglichkeit.",
+    questions: [
+      { key: "current", answered: /(16\s*a|32\s*a|63\s*a|cee|schuko|230\s*v|400\s*v|starkstrom)/i, question: "Welche **Anschlüsse** brauchst du (Schuko, CEE 16 A, 32 A oder 63 A)?" },
+      { key: "length", answered: /(\d+\s*m\b|meter|l[äa]nge|distanz|entfernung)/i, question: "Welche **Kabellänge / Entfernung** musst du überbrücken?" },
+      { key: "load", answered: /(licht|ton|b[üu]hne|maschine|heizung|gerät|verbraucher|kw|kva)/i, question: "Welche **Verbraucher** sollen daran laufen (Licht, Ton, Maschinen, Heizung …)?" },
+    ],
+  },
+  "leitern-gerueste": {
+    id: "leitern-gerueste",
+    selectionDrivers: "Arbeitshöhe, Standzeit, Untergrund, Arbeitsbreite und ob häufig umpositioniert werden muss.",
+    questions: [
+      { key: "height", answered: /(\d{1,2}\s*m\b|arbeitsh[öo]he|höhe|dach|fassade)/i, question: "Welche **Arbeitshöhe** brauchst du (in m)?" },
+      { key: "duration", answered: /(stunden|tag|tage|woche|dauer|länger|laenger)/i, question: "Wie lange arbeitest du dort – kurz mit Leiter oder länger mit Gerüst?" },
+      { key: "ground", answered: /(innen|außen|aussen|drau[ßs]en|halle|rasen|pflaster|beton|uneben|untergrund)/i, question: "Ist der **Untergrund eben und befestigt** oder uneben/außen?" },
+    ],
+  },
+  "heizung-trocknung": {
+    id: "heizung-trocknung",
+    selectionDrivers: "Raumgröße, Feuchte-/Trocknungsziel, Heizleistung, Stromanschluss und ob Abluft/Schlauchführung möglich ist.",
+    questions: [
+      { key: "area", answered: /(\d+\s*m[²2]|qm|quadratmeter|raumgr[öo][ßs]e|fläche)/i, question: "Wie groß ist der **Raum / die Fläche** in m²?" },
+      { key: "purpose", answered: /(wasserschaden|neubau|estrich|keller|feucht|trocknen|heizen|wärme|waerme)/i, question: "Geht es um **Trocknung** (Neubau/Wasserschaden) oder **Heizen**?" },
+      { key: "power", answered: /(230\s*v|400\s*v|steckdose|strom|anschluss)/i, question: "Welche **Stromversorgung** ist vorhanden (normale Steckdose oder 400 V)?" },
+    ],
+  },
+  absperrtechnik: {
+    id: "absperrtechnik",
+    selectionDrivers: "Einsatz (Baustelle, Halteverbot, Veranstaltung), Länge der Absperrung, öffentlicher Verkehrsraum und benötigte Schilder/Warnleuchten.",
+    questions: [
+      { key: "purpose", answered: /(baustelle|halteverbot|umzug|veranstaltung|straße|strasse|gehweg|absperren)/i, question: "Wofür brauchst du die **Absperrung** (Baustelle, Halteverbot, Veranstaltung, Gehweg/Straße)?" },
+      { key: "length", answered: /(\d+\s*m\b|meter|l[äa]nge|strecke)/i, question: "Wie viele **Meter** sollen abgesperrt werden?" },
+      { key: "public", answered: /(öffentlich|oeffentlich|verkehr|genehmigung|ordnungsamt|straße|strasse)/i, question: "Ist das im **öffentlichen Verkehrsraum**? Dann können Genehmigungen nötig sein." },
+    ],
+  },
+  kommunikation: {
+    id: "kommunikation",
+    selectionDrivers: "Anzahl Funkgeräte, Gelände/Etagen, Headset-/Lautsprecherbedarf und Einsatzdauer.",
+    questions: [
+      { key: "count", answered: /(\d+\s*(funkgeräte|funkgeraete|geräte|geraete|st[üu]ck)|personen|teams)/i, question: "Wie viele **Funkgeräte / Teams** brauchst du?" },
+      { key: "range", answered: /(halle|gelände|gelaende|etage|stockwerk|outdoor|baustelle|reichweite)/i, question: "Wo sollen sie funktionieren – **Halle, Baustelle, mehrere Etagen oder Outdoor-Gelände**?" },
+      { key: "accessory", answered: /(headset|lautsprecher|ohrhörer|ohrhoerer|freisprechen)/i, question: "Brauchst du **Headsets oder Lautsprecher-Zubehör**?" },
+    ],
+  },
   "moebel-zelte": {
     id: "moebel-zelte",
     selectionDrivers: "Personenzahl, Indoor/Outdoor, Witterungsschutz und Möblierung (Bierzeltgarnitur, Stehtisch, Pavillon, Zelt).",
