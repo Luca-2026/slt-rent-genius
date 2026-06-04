@@ -353,6 +353,12 @@ import endverteilerEv32_3Asset from "@/assets/products/endverteiler-ev32-3.jpg.a
 const imgEndverteilerEv32_1 = endverteilerEv32_1Asset.url;
 const imgEndverteilerEv32_2 = endverteilerEv32_2Asset.url;
 const imgEndverteilerEv32_3 = endverteilerEv32_3Asset.url;
+import endverteilerEv63_1Asset from "@/assets/products/endverteiler-ev63-1.png.asset.json";
+import endverteilerEv63_2Asset from "@/assets/products/endverteiler-ev63-2.jpg.asset.json";
+import endverteilerEv63_3Asset from "@/assets/products/endverteiler-ev63-3.webp.asset.json";
+const imgEndverteilerEv63_1 = endverteilerEv63_1Asset.url;
+const imgEndverteilerEv63_2 = endverteilerEv63_2Asset.url;
+const imgEndverteilerEv63_3 = endverteilerEv63_3Asset.url;
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
@@ -5099,6 +5105,29 @@ export const kabelStromverteilerProducts: Product[] = [
     },
     pdfUrl: "/manuals/datenblatt-endverteiler-ev32.pdf",
     rentwareCode: { krefeld: "CIRWT3", bonn: "ZA2THI" }
+  },
+  {
+    id: "endverteilerschrank-44kva-ev63",
+    name: "Endverteilerschrank 44 kVA – EV63 Typ B",
+    description: "Mobiler Baustromverteiler / Endverteilerschrank EV63 Typ B mit 44 kVA Anschlussleistung – ideal für große Baustellen, Veranstaltungen, Industrie und Eventstromversorgung. Ausgestattet mit allstromsensitivem FI Typ B (63 A / 0,03 A) plus zusätzlichem FI 40 A, 63 A CEE-Phasenwender-Zuleitung sowie 2× CEE 32 A, 2× CEE 16 A und 6× 230 V Schutzkontakt-Steckdosen. Robustes verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell – stückgeprüft nach VDE.",
+    image: imgEndverteilerEv63_1,
+    images: [imgEndverteilerEv63_1, imgEndverteilerEv63_2, imgEndverteilerEv63_3],
+    category: "anschlussschrank",
+    specifications: {
+      "Typ": "EV63 – Typ B",
+      "Anschlussleistung": "44 kVA",
+      "Stromaufnahme / Zuleitung": "63 A – 400 V CEE (Phasenwender)",
+      "CEE-Steckdosen 400 V/6h": "2× 32 A + 2× 16 A (5-polig)",
+      "Schutzkontaktsteckdosen": "6× 230 V / 16 A",
+      "FI-Schutzschalter": "1× 63 A / 0,03 A – Typ B (allstromsensitiv), 1× 40 A",
+      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
+      "Standgestell": "Feuerverzinkt",
+      "Transportmaße (B×H×T)": "670 × 1060 × 360 mm",
+      "Transportgewicht": "45 kg",
+      "Verarbeitung": "Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft",
+    },
+    pdfUrl: "/manuals/datenblatt-endverteiler-ev63.pdf",
+    rentwareCode: { krefeld: "4VXWR6" }
   },
   // CEE-Kabel
   {

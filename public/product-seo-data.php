@@ -130,6 +130,22 @@ $productSEOLookup = [
       ['q' => 'Ist der Endverteilerschrank für den Außeneinsatz geeignet?', 'a' => 'Ja – das Stahlblechgehäuse ist verzinkt und orange pulverbeschichtet, korrosionsbeständig und für Baustellen und Outdoor-Events ausgelegt. Bei Dauerregen empfehlen wir eine geschützte Aufstellung.'],
     ],
   ],
+  'endverteilerschrank-44kva-ev63' => [
+    'name' => 'Endverteilerschrank 44 kVA – EV63 Typ B',
+    'h1' => 'Endverteilerschrank 44 kVA – EV63 Typ B mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Technische Daten EV63 Typ B mit 44 kVA', 'Steckdosen-Konfiguration & Absicherung FI Typ B', 'Robustes Stahlblechgehäuse & Standgestell', 'Einsatz als Baustromverteiler & Eventstromverteilung'],
+    'useCaseBau' => 'Leistungsstarker Baustromverteiler für mittlere und große Baustellen, Anschluss von Kränen, Mischanlagen, Bautrocknern und Ladeinfrastruktur mit allstromsensitivem FI Typ B',
+    'useCaseEvent' => 'Zentrale Eventstromverteilung für Festivals, Stadtfeste und Messen – CEE 63 A Zuleitung, 32 A CEE für Bühne/Licht/Ton, 6× Schuko für Catering und Stände',
+    'useCasePrivat' => 'Endverteiler für sehr große Privatbaustellen, Neubau, Sanierung und Hofprojekte mit mehreren Hochleistungsmaschinen',
+    'faqs' => [
+      ['q' => 'Wofür wird der Endverteilerschrank EV63 mit 44 kVA eingesetzt?', 'a' => 'Der EV63 ist ein leistungsstarker mobiler Baustromverteiler / Endverteiler. Er dient als Unterverteilung auf größeren Baustellen, als zentrale Eventstromverteilung für Festivals und Messen sowie in Industrie und Handwerk – mit 400 V und 230 V.'],
+      ['q' => 'Welche Steckdosen stehen am EV63 zur Verfügung?', 'a' => '2× CEE 32 A und 2× CEE 16 A (jeweils 5-polig, 400 V/6h) sowie 6× Schutzkontakt-Steckdosen 230 V/16 A. Zuleitung über 63 A CEE-Phasenwender.'],
+      ['q' => 'Was bedeutet FI-Schutzschalter Typ B?', 'a' => 'Der EV63 hat einen allstromsensitiven FI Typ B (63 A / 0,03 A) plus zusätzlichen FI 40 A. Typ B erkennt auch glatte Gleichfehlerströme und ist zwingend für frequenzumrichtergesteuerte Maschinen, Ladestationen und Wechselrichter.'],
+      ['q' => 'Wie sind Transportmaße und Gewicht des EV63?', 'a' => 'Transportmaße 670 × 1060 × 360 mm (B × H × T), Gewicht 45 kg. Das feuerverzinkte Standgestell ermöglicht den sicheren Aufbau direkt vor Ort.'],
+      ['q' => 'Welche Zuleitung benötigt der EV63?', 'a' => 'Der EV63 wird über eine 63 A CEE-Zuleitung (5-polig, 400 V) mit Phasenwender angeschlossen. Passende 63 A CEE-Kabel können bei uns ergänzend gemietet werden.'],
+      ['q' => 'Ist der Endverteilerschrank für den Außeneinsatz geeignet?', 'a' => 'Ja – das Stahlblechgehäuse ist verzinkt und orange pulverbeschichtet, korrosionsbeständig und für Baustellen und Outdoor-Events ausgelegt. Bei Dauerregen empfehlen wir eine geschützte Aufstellung.'],
+    ],
+  ],
   'aschenbecher-glas' => [
     'name' => 'Aschenbecher Glas',
     'h1' => 'Aschenbecher Glas mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
@@ -10388,8 +10404,25 @@ $productDetails = [
       'Transportmaße (B×H×T)' => '670 × 1060 × 360 mm',
       'Transportgewicht' => '39 kg',
       'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
+  ],
+  'endverteilerschrank-44kva-ev63' => [
+    'name' => 'Endverteilerschrank 44 kVA – EV63 Typ B',
+    'description' => 'Mobiler Baustromverteiler / Endverteilerschrank EV63 Typ B mit 44 kVA Anschlussleistung – CEE 63 A Phasenwender-Zuleitung, 2× CEE 32 A, 2× CEE 16 A, 6× Schuko 230 V, FI Typ B 63 A/0,03 A plus FI 40 A. Verzinktes, orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell, stückgeprüft.',
+    'specs' => [
+      'Typ' => 'EV63 – Typ B',
+      'Anschlussleistung' => '44 kVA',
+      'Stromaufnahme / Zuleitung' => '63 A – 400 V CEE (Phasenwender)',
+      'CEE-Steckdosen 400 V/6h' => '2× 32 A + 2× 16 A (5-polig)',
+      'Schutzkontaktsteckdosen' => '6× 230 V / 16 A',
+      'FI-Schutzschalter' => '1× 63 A / 0,03 A – Typ B (allstromsensitiv), 1× 40 A',
+      'Gehäuse' => 'Stahlblech, verzinkt und orange pulverbeschichtet',
+      'Standgestell' => 'Feuerverzinkt',
+      'Transportmaße (B×H×T)' => '670 × 1060 × 360 mm',
+      'Transportgewicht' => '45 kg',
+      'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
     ],
   ],
+
   'cee-kabel-16a-3m' => [
     'name' => 'CEE Kabel 16A rot 3 m',
     'description' => '3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot',
