@@ -60,7 +60,7 @@ export function JobCard({ job }: JobCardProps) {
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to={`/karriere/${job.slug}`}>
+              <Link to={`/karriere/${job.slug}/`}>
                 Details <ChevronRight className="h-4 w-4 ml-1" />
               </Link>
             </Button>
