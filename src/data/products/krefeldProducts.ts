@@ -3713,24 +3713,8 @@ export const moebelZelteProducts: Product[] = [
     },
     rentwareCode: { krefeld: "KKVNMJ" }
   },
-  {
-    id: "stuhl-weiss",
-    name: "Stuhl weiß",
-    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
-    image: imgStuhlWeiss1,
-    images: [imgStuhlWeiss1],
-    category: "moebel",
-    tags: ["stuhl"],
-    specifications: {
-      "Farbe": "weiß",
-      "Material": "100% Polypropylen, wetterfest",
-      "Max. Belastbarkeit": "ca. 120 kg",
-      "Sitzhöhe": "ca. 42,5 cm",
-      "Sitztiefe": "ca. 38 cm",
-      "Höhe Rückenlehne": "ca. 37,5 cm",
-    },
-    rentwareCode: { krefeld: "3KTRT8" }
-  },
+
+
 
   {
     id: "getraenkekuehlschrank-236l",
