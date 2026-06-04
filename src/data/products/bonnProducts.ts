@@ -2108,23 +2108,8 @@ export const bonnMoebelProducts = [
     },
     rentwareCode: { bonn: "KRQ7C7" },
   },
-  {
-    id: "bonn-stuhl-weiss",
-    name: "Stuhl weiß",
-    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
-    category: "moebel",
-    tags: ["stuhl"],
-    specifications: {
-      "Farbe": "weiß",
-      "Material": "100% Polypropylen",
-      "maximale Belastbarkeit": "ca. 120 kg",
-      "Sitzhöhe": "ca. 42,5 cm",
-      "Sitztiefe": "ca. 38 cm",
-      "Höhe Rückenlehne": "ca. 37,5 cm",
-    },
-    image: "/placeholder.svg",
-    rentwareCode: { bonn: "671OZJ" },
-  },
+
+
 
   {
     id: "bonn-kleiderbuegel-20er-set",

@@ -1565,20 +1565,6 @@ $productSEOLookup = [
       ['q' => 'Ist Kraftstoff im Mietpreis enthalten?', 'a' => 'Nein – Kraftstoff ist nicht im Mietpreis enthalten. Bitte geben Sie die Säge mit vollem Tank zurück.'],
     ],
   ],
-  'bonn-stuhl-weiss' => [
-    'name' => 'Stuhl weiß',
-    'h1' => 'Stuhl weiß mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
-    'h2s' => ['Technische Daten', 'Für welche Events geeignet?', 'Kombination mit Tischen & Zelten', 'Lieferung & Abholung'],
-    'useCaseBau' => 'Baubesprechungen, Richtfest, Bürocontainer-Ausstattung',
-    'useCaseEvent' => 'Empfänge, Cocktailpartys, Firmenfeiern, Hochzeiten, Messen',
-    'useCasePrivat' => 'Geburtstag, Gartenparty, Sektempfang, Familienfeier',
-    'faqs' => [
-      ['q' => 'Wie viele Stück sind verfügbar und gibt es Mengenrabatte?', 'a' => 'Die verfügbare Menge entnehmen Sie bitte dem Buchungssystem. Bei größeren Mengen (ab 20 Stück) bieten wir Mengenrabatte an – sprechen Sie uns direkt an.'],
-      ['q' => 'Sind Hussen oder Bezüge verfügbar?', 'a' => 'Ja – passende Hussen in Weiß und Schwarz sind separat zu mieten. Bitte bei der Buchung angeben, damit wir die Verfügbarkeit prüfen können.'],
-      ['q' => 'Ist das Mobiliar für den Außenbereich geeignet?', 'a' => 'Die Eignung für den Außenbereich entnehmen Sie bitte der Produktbeschreibung. Generell empfehlen wir, Holzmöbel vor direkter Nässe zu schützen. Unsere Metall- und Kunststoffmöbel sind witterungsbeständig.'],
-      ['q' => 'Wie erfolgt die Lieferung und Abholung?', 'a' => 'Wir liefern das Mobiliar direkt zu Ihrem Veranstaltungsort und holen es anschließend wieder ab. Der Lieferservice wird separat berechnet und ist abhängig von Menge und Entfernung. Alternativ ist eine Abholung bei uns möglich.'],
-    ],
-  ],
   'bonn-teller-simply-25' => [
     'name' => 'Teller SIMPLY 25, 10er Set',
     'h1' => 'Teller SIMPLY 25, 10er Set mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
@@ -6961,18 +6947,6 @@ $productDetails = [
     'name' => 'Stehtisch Husse weiß',
     'description' => 'Elegante weiße Stretch-Husse für runde Stehtische (Ø 80 cm, H 110 cm). Gewaschen zurückzugeben – Reinigung gegen Aufpreis möglich.',
   ],
-  'bonn-stuhl-weiss' => [
-    'name' => 'Stuhl weiß',
-    'description' => 'Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.',
-    'specs' => [
-      'Farbe' => 'weiß',
-      'Material' => '100% Polypropylen',
-      'maximale Belastbarkeit' => 'ca. 120 kg',
-      'Sitzhöhe' => 'ca. 42,5 cm',
-      'Sitztiefe' => 'ca. 38 cm',
-      'Höhe Rückenlehne' => 'ca. 37,5 cm',
-    ],
-  ],
   'bonn-kleiderbuegel-20er-set' => [
     'name' => 'Kleiderbügel 20er Set, black',
     'description' => '20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.',
@@ -9437,18 +9411,6 @@ $productDetails = [
       'Farbe' => 'schwarz',
       'Passend für' => 'Stehtisch Ø 80 cm × H 110 cm',
       'Rückgabe' => 'gewaschen (Reinigung gegen Aufpreis möglich)',
-    ],
-  ],
-  'stuhl-weiss' => [
-    'name' => 'Stuhl weiß',
-    'description' => 'Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.',
-    'specs' => [
-      'Farbe' => 'weiß',
-      'Material' => '100% Polypropylen, wetterfest',
-      'Max. Belastbarkeit' => 'ca. 120 kg',
-      'Sitzhöhe' => 'ca. 42,5 cm',
-      'Sitztiefe' => 'ca. 38 cm',
-      'Höhe Rückenlehne' => 'ca. 37,5 cm',
     ],
   ],
   'getraenkekuehlschrank-236l' => [

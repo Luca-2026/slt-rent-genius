@@ -388,8 +388,6 @@ import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jp
 import imgBierzeltgarniturSet2 from "@/assets/products/bierzeltgarnitur-set-2.jpeg";
 import imgBierzeltgarniturSet3 from "@/assets/products/bierzeltgarnitur-set-3.jpeg";
 
-// Stuhl weiß images
-import imgStuhlWeiss1 from "@/assets/products/stuhl-weiss-1.jpeg";
 import imgKlappstuhlEventBlack1 from "@/assets/products/moebel/klappstuhl-event-4505050-awzr41xgq1dhtz.jpg.webp";
 import imgKlappstuhlEventBlack2 from "@/assets/products/moebel/klappstuhl-event-4505050_3d.jpg.webp";
 import imgKlappstuhlEventBlack3 from "@/assets/products/moebel/klappstuhl-event-4505050_3h.jpg.webp";
@@ -3713,24 +3711,8 @@ export const moebelZelteProducts: Product[] = [
     },
     rentwareCode: { krefeld: "KKVNMJ" }
   },
-  {
-    id: "stuhl-weiss",
-    name: "Stuhl weiß",
-    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
-    image: imgStuhlWeiss1,
-    images: [imgStuhlWeiss1],
-    category: "moebel",
-    tags: ["stuhl"],
-    specifications: {
-      "Farbe": "weiß",
-      "Material": "100% Polypropylen, wetterfest",
-      "Max. Belastbarkeit": "ca. 120 kg",
-      "Sitzhöhe": "ca. 42,5 cm",
-      "Sitztiefe": "ca. 38 cm",
-      "Höhe Rückenlehne": "ca. 37,5 cm",
-    },
-    rentwareCode: { krefeld: "3KTRT8" }
-  },
+
+
 
   {
     id: "getraenkekuehlschrank-236l",

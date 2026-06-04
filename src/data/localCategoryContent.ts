@@ -336,7 +336,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Welche Möbel und Zelte habt ihr an der Filiale Bonn vor Ort?",
-          a: "An der Filiale Bonn führen wir ein Event-Kernsortiment direkt vor Ort – Party- / Eventzelt 3×3 m, Party- / Eventzelt 4×6 m, Zeltboden Anthrazit 0,86 m², Bierzeltgarnitur-Set, Bierzeltgarnitur Hussen-Set weiß, Stehtisch, Stehtisch Husse weiß, Stuhl weiß, Kleiderbügel 20er-Set black und Kleiderständer mit Rollen black. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere Zeltkonfigurationen (4×8, 4×10, 4×14 m), Party- / Eventzelte extra hoch (6×8 und 6×12 m), Sonnenschirme oder Getränkekühlschränke disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+          a: "An der Filiale Bonn führen wir ein Event-Kernsortiment direkt vor Ort – Party- / Eventzelt 3×3 m, Party- / Eventzelt 4×6 m, Zeltboden Anthrazit 0,86 m², Bierzeltgarnitur-Set, Bierzeltgarnitur Hussen-Set weiß, Stehtisch, Stehtisch Husse weiß, Klappstuhl Event black, Kleiderbügel 20er-Set black und Kleiderständer mit Rollen black. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Größere Zeltkonfigurationen (4×8, 4×10, 4×14 m), Party- / Eventzelte extra hoch (6×8 und 6×12 m), Sonnenschirme oder Getränkekühlschränke disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
         },
       ],
     },
