@@ -219,12 +219,13 @@ export function PublicChatAssistant() {
       if (linkMatch) {
         const [, label, rawHref] = linkMatch;
         const href = rawHref.replace(/[.,;:!?]+$/, "");
+        const isInternalRentalLink = /^https:\/\/(www\.)?slt-rental\.de\//.test(href);
         return (
           <a
             key={idx}
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={isInternalRentalLink ? undefined : "_blank"}
+            rel={isInternalRentalLink ? undefined : "noopener noreferrer"}
             className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80"
           >
             {label}
@@ -234,12 +235,13 @@ export function PublicChatAssistant() {
       const urlMatch = part.match(/^(https?:\/\/[^\s<>()]+)$/);
       if (urlMatch) {
         const href = urlMatch[1].replace(/[.,;:!?]+$/, "");
+        const isInternalRentalLink = /^https:\/\/(www\.)?slt-rental\.de\//.test(href);
         return (
           <a
             key={idx}
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={isInternalRentalLink ? undefined : "_blank"}
+            rel={isInternalRentalLink ? undefined : "noopener noreferrer"}
             className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80 break-words"
           >
             Link öffnen
