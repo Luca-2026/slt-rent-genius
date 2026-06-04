@@ -226,9 +226,10 @@ export default function ProductDetail() {
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
       if (product.description) {
-        const descSnippet = product.description.length > 80 
-          ? product.description.substring(0, 80).replace(/\s+\S*$/, '') 
-          : product.description;
+        const localizedDesc = localizeText(product.description);
+        const descSnippet = localizedDesc.length > 80 
+          ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
+          : localizedDesc;
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       } else {
