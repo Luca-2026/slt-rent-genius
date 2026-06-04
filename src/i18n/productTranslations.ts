@@ -671,14 +671,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "cee-32a-uv-6xschuko": { description: "Distributor CEE 32A to 6x Schuko" },
   "cee-63a-uv-2x32a-1x16a-6xschuko": { description: "Solid rubber distributor with CEE 63A input, 2x CEE 32A, 1x CEE 16A and 6x Schuko outputs" },
   "cee-63a-uv-2x32a-2x16a": { description: '19" rack-mount power distributor (3U) with CEE 63A input, 2x CEE 32A and 2x CEE 16A outputs, RCD Type B 63A' },
-  "anschlussschrank-55kva": { name: "Connection Cabinet 55 kVA", description: "Large connection cabinet" },
-  "anschlussverteilerschrank-24kva": {
-    name: "Connection Distribution Cabinet 24 kVA",
-    description: "24 kVA connection with one meter panel. Robust, galvanized and orange powder-coated steel housing with hot-dip galvanized stand frame.",
-    detailedDescription: "Robust and stable steel housing, galvanized and orange powder-coated. Hot-dip galvanized stand frame. High-quality wiring and connectors. Individually tested."
-  },
   "anschlussverteilerschrank-44kva": { name: "Connection Distribution Cabinet 44 kVA", description: "44 kVA connection with one meter panel" },
-  "verteilerschrank-44kva": { name: "Distribution Cabinet 44 kVA", description: "44 kVA connection power" },
   "cee-kabel-16a-3m": { description: "3 m extension cable with plug and coupling, cable type: H07RN-F5G2.5 – 16A red" },
   "cee-kabel-16a-5m": { description: "5 m extension cable with plug and coupling, cable type: H07RN-F5G2.5 – 16A red" },
   "cee-kabel-16a-10m": { description: "10 m extension cable with plug and coupling, cable type: H07RN-F5G2.5 – 16A red" },
