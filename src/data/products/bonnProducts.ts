@@ -2,7 +2,7 @@
 // Images imported from shared assets
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
 import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
-import imgParty- / EventzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
 import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
 import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
 import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
@@ -1981,7 +1981,7 @@ export const bonnZelteProducts = [
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
     image: imgMasse3x3,
-    images: [imgMasse3x3, imgParty- / EventzeltWeiss],
+    images: [imgMasse3x3, imgPartyzeltWeiss],
     pdfUrl: "/manuals/aufbauanleitung-classicpro-3x3.pdf",
     rentwareCode: { bonn: "ZPBA4S" },
   },
@@ -1996,7 +1996,7 @@ export const bonnZelteProducts = [
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
     image: imgMasse4x6,
-    images: [imgMasse4x6, imgParty- / EventzeltWeiss],
+    images: [imgMasse4x6, imgPartyzeltWeiss],
     rentwareCode: { bonn: "6GI1UN" },
   },
   {
