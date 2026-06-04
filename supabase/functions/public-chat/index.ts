@@ -976,7 +976,11 @@ function detectAnswers(text: string, questions: ConsultQuestion[]) {
 function buildCategoryConsultResponse(category: { id: string; label: string }, location: string, history: string, lastUser: string): string {
   const loc = locationLabel(location);
   const config = categoryConsult[category.id];
-  const productLinks = searchVerifiedProductLinks(lastUser, location, category.id).slice(0, 5);
+  const queryText = `${lastUser}\n${history}`;
+  const productLinks = uniqueLinks([
+    ...curatedProductLinks(category.id, queryText, location),
+    ...searchVerifiedProductLinks(queryText, location, category.id),
+  ]).slice(0, 5);
   const categoryLink = fallbackCategoryLink(location, category.id, `Alle ${category.label} in ${loc}`);
 
   const sections: string[] = [];
@@ -1159,11 +1163,11 @@ function isShortFollowUp(text: string) {
 function getDeterministicResponse(messages: ChatMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
   const allText = messages.map((message) => message.content ?? "").join("\n");
-  const relevantText = `${lastUser}\n${allText}`.toLowerCase();
-  const historyLower = allText.toLowerCase();
+  const userText = userHistoryText(messages);
+  const relevantText = `${lastUser}\n${userText}`.toLowerCase();
   const lastUserLower = lastUser.toLowerCase();
 
-  const location = detectLocation(lastUser) ?? detectLocation(allText);
+  const location = detectLocation(lastUser) ?? detectLocation(userText);
 
   // --- Anhänger 750 kg Planen ---
   const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
@@ -1190,9 +1194,9 @@ function getDeterministicResponse(messages: ChatMessage[]) {
     }
     const spec = findMinibaggerByText(relevantText);
     if (spec) {
-      return buildMinibaggerConsultResponse(spec, location, allText);
+      return buildMinibaggerConsultResponse(spec, location, userText);
     }
-    return buildMinibaggerOverviewResponse(location, allText);
+    return buildMinibaggerOverviewResponse(location, userText);
   }
 
   // --- Bautrockner ---
@@ -1210,12 +1214,12 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
   // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
   // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
-  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
+  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
   if (categoryFromLast) {
     if (!location) {
       return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
     }
-    return buildCategoryConsultResponse(categoryFromLast, location, allText, lastUser);
+    return buildCategoryConsultResponse(categoryFromLast, location, userText, lastUser);
   }
 
   return null;
