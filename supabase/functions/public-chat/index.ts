@@ -593,6 +593,7 @@ function queryTokens(text: string) {
     ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? [];
   const expanded = baseTokens.flatMap((token) => {
     const variants = [token];
+    variants.push(...(searchSynonyms[token] ?? []));
     if (token.length > 5 && token.endsWith("en")) variants.push(token.slice(0, -2));
     if (token.length > 4 && /[ens]$/.test(token)) variants.push(token.slice(0, -1));
     if (token.length > 6 && token.endsWith("er")) variants.push(token.slice(0, -2));
@@ -605,6 +606,17 @@ function queryTokens(text: string) {
 
 function markdownLinks(links: RentalLink[]) {
   return links.map((item) => `- [${item.label}](${item.url})`).join("\n");
+}
+
+function labelFromSlug(slug: string) {
+  const overrides: Record<string, string> = {
+    "scherenbuehne-8m": "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
+    "scherenbuehne-12m": "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
+    "mastbuehne-11m": "11 m Mastbühne",
+    "gelenkteleskopsteiger-12m": "12 m Gelenkteleskopsteiger",
+    "anhaengerbuehne-18m": "18 m Anhängerbühne",
+  };
+  return overrides[slug] ?? slug.split("-").map((part) => part.length <= 3 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
 }
 
 function bookingHint() {
