@@ -2483,6 +2483,7 @@ export const bonnGeschirrProducts = [
     image: getraenkekuehlschrank236l_1,
     images: [getraenkekuehlschrank236l_1, getraenkekuehlschrank236l_2, getraenkekuehlschrank236l_3],
     detailedDescription: "Der Getränkekühlschrank mit 236 Litern Fassungsvermögen ist ein gewerblicher Glastürkühlschrank mit energieeffizienter LED-Beleuchtung. Dank seiner kompakten Abmessungen (54 × 55 × 144 cm) passt er in jede Eventlocation und bietet ausreichend Platz für Getränke aller Art.",
+    pricePerDay: "ab 20 € / Tag",
     specifications: {
       "Fassungsvermögen": "236 l",
       "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
