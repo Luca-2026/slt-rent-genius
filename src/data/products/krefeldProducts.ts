@@ -384,16 +384,11 @@ import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
 import imgZeltbodenAnthrazit3 from "@/assets/products/zeltboden-anthrazit-3.jpeg";
-import zeltbodenExtra1Asset from "@/assets/products/zeltboden-extra-1.jpeg.asset.json";
-import zeltbodenExtra2Asset from "@/assets/products/zeltboden-extra-2.jpeg.asset.json";
-import zeltbodenExtra3Asset from "@/assets/products/zeltboden-extra-3.jpeg.asset.json";
-import zeltbodenExtra4Asset from "@/assets/products/zeltboden-extra-4.jpeg.asset.json";
-import zeltbodenExtra5Asset from "@/assets/products/zeltboden-extra-5.jpeg.asset.json";
-const imgZeltbodenExtra1 = zeltbodenExtra1Asset.url;
-const imgZeltbodenExtra2 = zeltbodenExtra2Asset.url;
-const imgZeltbodenExtra3 = zeltbodenExtra3Asset.url;
-const imgZeltbodenExtra4 = zeltbodenExtra4Asset.url;
-const imgZeltbodenExtra5 = zeltbodenExtra5Asset.url;
+const imgZeltbodenExtra1 = "/product-images/zeltboden-extra-1.jpeg";
+const imgZeltbodenExtra2 = "/product-images/zeltboden-extra-2.jpeg";
+const imgZeltbodenExtra3 = "/product-images/zeltboden-extra-3.jpeg";
+const imgZeltbodenExtra4 = "/product-images/zeltboden-extra-4.jpeg";
+const imgZeltbodenExtra5 = "/product-images/zeltboden-extra-5.jpeg";
 
 // Bierzeltgarnitur-Set images
 import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jpeg";
