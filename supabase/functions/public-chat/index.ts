@@ -422,6 +422,11 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    const deterministicResponse = getDeterministicResponse(messages);
+    if (deterministicResponse) {
+      return streamText(deterministicResponse);
+    }
+
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
