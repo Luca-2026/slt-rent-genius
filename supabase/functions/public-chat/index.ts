@@ -1048,10 +1048,11 @@ function buildCategoryConsultResponse(category: { id: string; label: string }, l
   const loc = locationLabel(location);
   const config = categoryConsult[category.id];
   const queryText = `${lastUser}\n${history}`;
-  const productLinks = uniqueLinks([
-    ...curatedProductLinks(category.id, queryText, location),
-    ...searchVerifiedProductLinks(queryText, location, category.id),
-  ]).slice(0, 5);
+  const curatedLinks = curatedProductLinks(category.id, queryText, location);
+  const productLinks = (curatedLinks.length > 0
+    ? curatedLinks
+    : searchVerifiedProductLinks(queryText, location, category.id)
+  ).slice(0, 5);
   const categoryLink = fallbackCategoryLink(location, category.id, `Alle ${category.label} in ${loc}`);
 
   const sections: string[] = [];
