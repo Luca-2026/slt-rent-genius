@@ -635,7 +635,7 @@ Deno.serve(async (req: Request) => {
           { role: "system", content: systemPrompt },
           ...messages,
         ],
-        stream: true,
+        stream: false,
       }),
     });
 
@@ -660,9 +660,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    return new Response(aiResponse.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    const completion = await aiResponse.json();
+    const assistantText = completion?.choices?.[0]?.message?.content ?? "Da möchte ich dich nicht mit einer ungenauen Antwort abspeisen – bitte nutze die passende Kategorie auf slt-rental.de oder kontaktiere das Team direkt.";
+    return streamText(sanitizeAssistantText(assistantText));
   } catch (error: any) {
     console.error("public-chat error:", error);
     return new Response(JSON.stringify({ error: error.message || "Unbekannter Fehler" }), {
