@@ -193,15 +193,54 @@ Auf der Website gibt es eine ausführliche Anleitung zum 24/7-Codesystem und zur
 - **Verifizierung bei Abholung**: Ausweis/Führerschein erforderlich
 
 === ARTIKEL-LINKS & BUCHUNGSPROZESS (wichtig!) ===
-Wenn der Kunde nach einem konkreten Mietartikel fragt (z. B. "Habt ihr einen Minibagger 1,7t?", "Brauche eine Rüttelplatte"):
+Wenn der Kunde nach einem konkreten Mietartikel fragt (z. B. "Habt ihr einen Minibagger 1,7t?", "Brauche eine Rüttelplatte", "750 kg Planenanhänger in Bonn"):
+
+0. **Link-Regeln – absolut verbindlich:**
+   - Erfinde NIEMALS URLs. Nutze nur URLs, die in diesem Briefing ausdrücklich stehen.
+   - Schreibe Links IMMER als klickbaren Markdown-Link: [Linktext](https://www.slt-rental.de/...). Keine ausgeschriebenen URL-Zeilen.
+   - Verwende NIEMALS die falschen alten Pfade /mieten/anhaenger oder /mieten/anhaenger/planenanhaenger.
+   - Wenn du den exakten Produktlink aus diesem Briefing nicht kennst, verlinke nur die passende Standort-Kategorie aus der Liste unten und sage offen, dass dort alle verfügbaren Modelle stehen.
+   - Wenn Standort und Artikel bekannt sind, direkt passende Produktlinks nennen – nicht nur die Startseite.
+
+**Bekannte Anhänger-Kategorie-Links:**
+• Krefeld: [Anhänger in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger)
+• Bonn: [Anhänger in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger)
+• Mülheim an der Ruhr: [Anhänger in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger)
+
+**Bekannte 750-kg-Planenanhänger-Links – Krefeld:**
+• [Planenanhänger S 750 kg in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-s-750/)
+• [Planenanhänger M 750 kg in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-m-750/)
+• [Planenanhänger L 750 kg in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-l-750/)
+• [Planenanhänger XL 750 kg in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xl-750/)
+• [Planenanhänger XXL 750 kg in Krefeld](https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xxl-750/)
+
+**Bekannte 750-kg-Planenanhänger-Links – Bonn:**
+• [Planenanhänger S 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-s-750/)
+• [Planenanhänger M 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-m-750/)
+• [Planenanhänger L 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-l-750/)
+• [Planenanhänger XL 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xl-750/)
+• [Planenanhänger XXL 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xxl-750/)
+
+**Bekannte 750-kg-Planenanhänger-Links – Mülheim an der Ruhr:**
+• [Planenanhänger S 750 kg in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-s-750/)
+• [Planenanhänger M 750 kg in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-m-750/)
+• [Planenanhänger L 750 kg in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-l-750/)
+• [Planenanhänger XL 750 kg in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xl-750/)
+• [Planenanhänger XXL 750 kg in Mülheim an der Ruhr](https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xxl-750/)
+
+**Musterantwort für "Ich möchte in Bonn einen 750kg Planenanhänger mieten":**
+"Klar – für Bonn sind diese 750-kg-Planenanhänger passend:
+- [Planenanhänger S 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-s-750/)
+- [Planenanhänger M 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-m-750/)
+- [Planenanhänger L 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-l-750/)
+- [Planenanhänger XL 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xl-750/)
+- [Planenanhänger XXL 750 kg in Bonn](https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xxl-750/)
+
+Klick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online. Bist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren."
 
 1. **Standort klären**: Falls noch nicht bekannt, frag zuerst: "Aus welcher Region kommst du / wo soll das Gerät zum Einsatz kommen?" – damit du den richtigen Standort-Link gibst.
 
-2. **Direkten Produkt-Link senden** (immer den Standort im Pfad nutzen):
-   • Krefeld: https://www.slt-rental.de/mieten/krefeld/<kategorie>/<artikel-slug>
-   • Bonn: https://www.slt-rental.de/mieten/bonn/<kategorie>/<artikel-slug>
-   • Mülheim: https://www.slt-rental.de/mieten/muelheim/<kategorie>/<artikel-slug>
-   Falls du den exakten Slug nicht kennst, verlinke die Kategorie-Übersicht des passenden Standorts (z. B. https://www.slt-rental.de/mieten/krefeld/minibagger) und sag offen: "Auf der Übersicht siehst du alle verfügbaren Modelle."
+2. **Direkten Produkt-Link senden** (immer den Standort im Pfad nutzen und nur, wenn der Link oben bekannt ist). Falls du den exakten Slug nicht kennst, verlinke die Kategorie-Übersicht des passenden Standorts und sag offen: "Auf der Übersicht siehst du alle verfügbaren Modelle."
 
 3. **Buchungsprozess erklären** (immer in dieser Form, OHNE den Begriff "Rentware" zu nennen):
    "So buchst du direkt online:
@@ -289,6 +328,77 @@ Zahlung: Bar, EC-Karte oder Überweisung.
 - Für B2B-Kunden (Unternehmen) gibt es ein separates B2B-Portal unter /b2b
 - Verweise bei Anleitungsfragen auf die Hilfe-Seite: www.slt-rental.de/hilfe`;
 
+type ChatMessage = { role?: string; content?: string };
+
+const planen750Links: Record<string, { label: string; url: string }[]> = {
+  krefeld: [
+    { label: "Planenanhänger S 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xxl-750/" },
+  ],
+  bonn: [
+    { label: "Planenanhänger S 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xxl-750/" },
+  ],
+  muelheim: [
+    { label: "Planenanhänger S 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xxl-750/" },
+  ],
+};
+
+function detectLocation(text: string) {
+  const normalized = text.toLowerCase();
+  if (normalized.includes("bonn")) return "bonn";
+  if (normalized.includes("krefeld")) return "krefeld";
+  if (normalized.includes("mülheim") || normalized.includes("muelheim") || normalized.includes("ruhr")) return "muelheim";
+  return null;
+}
+
+function buildPlanen750Response(location: string) {
+  const links = planen750Links[location];
+  if (!links) return null;
+  const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+  return `Klar – für ${locationLabel} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+}
+
+function getDeterministicResponse(messages: ChatMessage[]) {
+  const lastUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
+  const allText = messages.map((message) => message.content ?? "").join("\n");
+  const relevantText = `${lastUser}\n${allText}`.toLowerCase();
+  const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
+  const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUser.toLowerCase());
+
+  if (!asksForTrailer || !asksForLinks) return null;
+  const location = detectLocation(lastUser) ?? detectLocation(allText);
+  if (!location) {
+    return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+  }
+  return buildPlanen750Response(location);
+}
+
+function streamText(text: string) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`));
+      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+  });
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -310,6 +420,11 @@ Deno.serve(async (req: Request) => {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    const deterministicResponse = getDeterministicResponse(messages);
+    if (deterministicResponse) {
+      return streamText(deterministicResponse);
     }
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {

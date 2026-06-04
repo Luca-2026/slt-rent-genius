@@ -180,11 +180,26 @@ export function PublicChatAssistant() {
     }
   };
 
-  // Very small inline markdown renderer for **bold** so the welcome message
-  // doesn't show raw asterisks. Keeps surface area tiny — no new dependency.
+  // Very small inline markdown renderer for **bold** and [clickable links](https://...)
+  // so assistant answers can provide direct product links without raw markdown.
   const renderInlineMarkdown = (text: string) => {
-    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    const parts = text.split(/(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|\*\*[^*]+\*\*)/g);
     return parts.map((part, idx) => {
+      const linkMatch = part.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
+      if (linkMatch) {
+        const [, label, href] = linkMatch;
+        return (
+          <a
+            key={idx}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80"
+          >
+            {label}
+          </a>
+        );
+      }
       if (part.startsWith("**") && part.endsWith("**")) {
         return <strong key={idx}>{part.slice(2, -2)}</strong>;
       }
