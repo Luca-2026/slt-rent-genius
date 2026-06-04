@@ -984,6 +984,10 @@ export default function CategoryProducts() {
         if (category?.id === "leitern-gerueste" && cat === "rollgeruest") {
           return /breitaufbau/i.test(p.name) ? "rollgeruest:breitaufbau" : "rollgeruest:standard";
         }
+        // moebel-zelte: Zeltboden in eigenen Sub-Bucket nach allen Zelten
+        if (category?.id === "moebel-zelte" && cat === "zelt" && /zeltboden/i.test(p.id)) {
+          return "zelt:zubehoer";
+        }
         return cat;
       };
       filtered.sort((a, b) => {
