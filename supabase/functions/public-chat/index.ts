@@ -567,10 +567,18 @@ function normalizeForSearch(value: string) {
 }
 
 function queryTokens(text: string) {
+  const baseTokens = normalizeForSearch(text)
+    .match(/[a-z0-9]+/g)
+    ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? [];
+  const expanded = baseTokens.flatMap((token) => {
+    const variants = [token];
+    if (token.length > 5 && token.endsWith("en")) variants.push(token.slice(0, -2));
+    if (token.length > 4 && /[ens]$/.test(token)) variants.push(token.slice(0, -1));
+    if (token.length > 6 && token.endsWith("er")) variants.push(token.slice(0, -2));
+    return variants;
+  });
   return Array.from(new Set(
-    normalizeForSearch(text)
-      .match(/[a-z0-9]+/g)
-      ?.filter((token) => token.length > 1 && !stopWords.has(token)) ?? []
+    expanded
   ));
 }
 
