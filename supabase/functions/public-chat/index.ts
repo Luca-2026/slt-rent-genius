@@ -385,7 +385,14 @@ function rentalLink(label: string, location: string, category: string, slug?: st
 
 function detectCategory(text: string) {
   const normalized = text.toLowerCase();
-  return categoryTerms.find((category) => category.terms.some((term) => normalized.includes(term.toLowerCase()))) ?? null;
+  // Wortgrenzen-Matching, damit kurze Terme wie "pa" nicht in "passend", "Apparat" etc. matchen
+  const matchesTerm = (term: string) => {
+    const t = term.toLowerCase();
+    const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:[^a-zäöüß0-9]|$)`, "i");
+    return re.test(normalized);
+  };
+  return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
 }
 
 function normalizeForSearch(value: string) {
