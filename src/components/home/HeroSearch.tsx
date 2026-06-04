@@ -338,37 +338,39 @@ export function HeroSearch() {
       <div ref={searchRef} className="bg-background rounded-xl p-4 shadow-xl max-w-2xl relative">
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Article Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder={t("hero.searchPlaceholder")}
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setShowResults(true);
-              }}
-              onFocus={() => setShowResults(true)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  // Use a microtask to ensure filtered results are up to date
-                  setTimeout(() => handleSearchSubmit(), 0);
-                }
-              }}
-              className="pl-10 pr-10 py-3 h-auto text-base border-input focus-visible:ring-accent"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setShowResults(false);
+          <div className="flex-1 relative search-highlight-shell shadow-sm">
+            <div className="search-highlight-inner">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+              <Input
+                type="text"
+                placeholder={t("hero.searchPlaceholder")}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowResults(true);
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
+                onFocus={() => setShowResults(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    // Use a microtask to ensure filtered results are up to date
+                    setTimeout(() => handleSearchSubmit(), 0);
+                  }
+                }}
+                className="relative pl-10 pr-10 py-3 h-auto text-base bg-background border-transparent focus-visible:ring-0 focus-visible:ring-offset-0 rounded-[10px]"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setShowResults(false);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground z-10"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
           </div>
 
           <Button

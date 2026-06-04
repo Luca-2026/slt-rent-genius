@@ -151,6 +151,38 @@
 }
 
 @layer components {
+  @keyframes search-highlight-spin {
+    to {
+      transform: translate(-50%, -50%) rotate(1turn);
+    }
+  }
+
+  .search-highlight-shell {
+    @apply relative rounded-xl overflow-hidden p-[2px];
+    background: hsl(var(--accent) / 0.28);
+  }
+
+  .search-highlight-shell::before {
+    content: "";
+    @apply pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[200%];
+    transform: translate(-50%, -50%) rotate(0deg);
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      transparent 230deg,
+      hsl(var(--accent) / 0) 250deg,
+      hsl(var(--accent) / 0.95) 304deg,
+      hsl(var(--accent) / 0.68) 326deg,
+      hsl(var(--accent) / 0) 352deg,
+      transparent 360deg
+    );
+    animation: search-highlight-spin 3.8s linear infinite;
+  }
+
+  .search-highlight-inner {
+    @apply relative rounded-[10px] bg-background;
+  }
+
   /* CTA Button - Orange */
   .btn-cta {
     @apply bg-accent text-accent-foreground font-semibold px-6 py-3 rounded-lg 
