@@ -253,7 +253,7 @@ export default function ProductDetail() {
           keywordsMeta.setAttribute("name", "keywords");
           document.head.appendChild(keywordsMeta);
         }
-        keywordsMeta.setAttribute("content", productSEO.primaryKeywords);
+        keywordsMeta.setAttribute("content", localizeText(productSEO.primaryKeywords));
       }
 
       // SEO: Canonical URL

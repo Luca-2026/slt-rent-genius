@@ -378,21 +378,29 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
 
   // Helper: replace multi-location strings with current location only
   const loc = (text: string): string => {
-    return text
+    let result = text
       .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
       .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
       .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
       .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
       .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
-      .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim/gi, locationName)
-      .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim/gi, locationName)
-      .replace(/Mülheim\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
+      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
       .replace(/Bonn\s*[&,]\s*Krefeld/gi, locationName)
       .replace(/Krefeld\s*[&,]\s*Bonn/gi, locationName)
-      .replace(/Bonn\s*[&,]\s*Mülheim/gi, locationName)
-      .replace(/Krefeld\s*[&,]\s*Mülheim/gi, locationName)
-      .replace(/Mülheim\s*[&,]\s*Krefeld/gi, locationName)
-      .replace(/Mülheim\s*[&,]\s*Bonn/gi, locationName);
+      .replace(/Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
+      .replace(/Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
+      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Krefeld/gi, locationName)
+      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn/gi, locationName);
+    // Then replace any remaining standalone city names with the current location
+    // so that base (Krefeld) SEO entries never leak the wrong city on Bonn/Mülheim pages.
+    if (locationName !== "Krefeld") result = result.replace(/\bKrefeld\b/g, locationName);
+    if (locationName !== "Bonn") result = result.replace(/\bBonn\b/g, locationName);
+    if (locationName !== "Mülheim" && locationName !== "Mülheim an der Ruhr") {
+      result = result.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locationName);
+    }
+    return result;
   };
 
   // Use product-specific use cases if available, else category fallback
