@@ -209,11 +209,16 @@ export function PublicChatAssistant() {
   // Very small inline markdown renderer for **bold** and [clickable links](https://...)
   // so assistant answers can provide direct product links without raw markdown.
   const renderInlineMarkdown = (text: string) => {
-    const parts = text.split(/(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|\*\*[^*]+\*\*)/g);
+    const normalizedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, href) => {
+      const safeHref = String(href).replace(/[.,;:!?]+$/, "");
+      return `[${label}](${safeHref})`;
+    });
+    const parts = normalizedText.split(/(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|https?:\/\/[^\s<>()]+|\*\*[^*]+\*\*)/g);
     return parts.map((part, idx) => {
       const linkMatch = part.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
       if (linkMatch) {
-        const [, label, href] = linkMatch;
+        const [, label, rawHref] = linkMatch;
+        const href = rawHref.replace(/[.,;:!?]+$/, "");
         return (
           <a
             key={idx}
@@ -223,6 +228,21 @@ export function PublicChatAssistant() {
             className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80"
           >
             {label}
+          </a>
+        );
+      }
+      const urlMatch = part.match(/^(https?:\/\/[^\s<>()]+)$/);
+      if (urlMatch) {
+        const href = urlMatch[1].replace(/[.,;:!?]+$/, "");
+        return (
+          <a
+            key={idx}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80 break-words"
+          >
+            Link öffnen
           </a>
         );
       }
