@@ -115,6 +115,28 @@ export default function B2BRegister() {
 
     setIsLoading(true);
 
+    // Hard safety net: if anything in the flow hangs (e.g. Cloud restart,
+    // dropped connection), the user gets feedback after 60 s instead of
+    // staring at "Wird registriert..." forever.
+    const stuckTimer = setTimeout(() => {
+      toast({
+        title: "Registrierung dauert ungewöhnlich lange",
+        description: "Bitte prüfe deine Internetverbindung und versuche es in einigen Minuten erneut. Falls eine Bestätigungs-Mail im Postfach liegt, ist die Anmeldung bereits erfolgreich.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }, 60_000);
+
+    // Helper: race a promise against a timeout so a hanging network call
+    // can't lock the UI.
+    const withTimeout = <T,>(p: Promise<T>, ms: number, label: string): Promise<T> =>
+      Promise.race([
+        p,
+        new Promise<T>((_, reject) =>
+          setTimeout(() => reject(new Error(`Timeout: ${label} (${ms}ms)`)), ms)
+        ),
+      ]);
+
     try {
       const toBase64 = (f: File) => new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
@@ -126,7 +148,11 @@ export default function B2BRegister() {
       const sepaBase64 = await toBase64(sepaFile);
 
       // 1. Create user account
-      const { error: signUpError, data: signUpData } = await signUp(email, password);
+      const { error: signUpError, data: signUpData } = await withTimeout(
+        signUp(email, password),
+        30_000,
+        "Account anlegen",
+      );
       if (signUpError) throw signUpError;
 
       const user = signUpData?.user;
@@ -167,9 +193,11 @@ export default function B2BRegister() {
         // Session available — upload both documents and create profile directly
         const docExt = documentFile.name.split(".").pop();
         const docPath = `${userId}/handelsregister-${Date.now()}.${docExt}`;
-        const { error: uploadError } = await supabase.storage
-          .from("b2b-documents")
-          .upload(docPath, documentFile);
+        const { error: uploadError } = await withTimeout(
+          supabase.storage.from("b2b-documents").upload(docPath, documentFile),
+          45_000,
+          "Handelsregister-Upload",
+        );
         if (uploadError) throw uploadError;
         const { data: { publicUrl } } = supabase.storage
           .from("b2b-documents")
@@ -177,55 +205,72 @@ export default function B2BRegister() {
 
         const sepaExt = sepaFile.name.split(".").pop();
         const sepaPath = `${userId}/sepa-mandat-${Date.now()}.${sepaExt}`;
-        const { error: sepaUploadError } = await supabase.storage
-          .from("b2b-documents")
-          .upload(sepaPath, sepaFile);
+        const { error: sepaUploadError } = await withTimeout(
+          supabase.storage.from("b2b-documents").upload(sepaPath, sepaFile),
+          45_000,
+          "SEPA-Upload",
+        );
         if (sepaUploadError) throw sepaUploadError;
         const { data: { publicUrl: sepaPublicUrl } } = supabase.storage
           .from("b2b-documents")
           .getPublicUrl(sepaPath);
 
-        const { error: profileError } = await supabase.from("b2b_profiles").insert({
-          user_id: userId,
-          company_name: companyName,
-          legal_form: legalForm,
-          tax_id: taxId,
-          trade_register_number: tradeRegisterNumber,
-          contact_first_name: firstName,
-          contact_last_name: lastName,
-          contact_position: position,
-          contact_phone: phone,
-          contact_email: email,
-          billing_email: billingEmail || null,
-          street: street,
-          house_number: houseNumber,
-          postal_code: postalCode,
-          city: city,
-          assigned_location: assignedLocation,
-          document_url: publicUrl,
-          document_filename: documentFile.name,
-          sepa_mandate_url: sepaPublicUrl,
-          sepa_mandate_filename: sepaFile.name,
-          postal_invoice: postalInvoice,
-          status: "pending",
-        });
+        const { error: profileError } = await withTimeout(
+          Promise.resolve(
+            supabase.from("b2b_profiles").insert({
+              user_id: userId,
+              company_name: companyName,
+              legal_form: legalForm,
+              tax_id: taxId,
+              trade_register_number: tradeRegisterNumber,
+              contact_first_name: firstName,
+              contact_last_name: lastName,
+              contact_position: position,
+              contact_phone: phone,
+              contact_email: email,
+              billing_email: billingEmail || null,
+              street: street,
+              house_number: houseNumber,
+              postal_code: postalCode,
+              city: city,
+              assigned_location: assignedLocation,
+              document_url: publicUrl,
+              document_filename: documentFile.name,
+              sepa_mandate_url: sepaPublicUrl,
+              sepa_mandate_filename: sepaFile.name,
+              postal_invoice: postalInvoice,
+              status: "pending",
+              email_confirmed: true, // session present → email auto-confirmed by Auth
+            })
+          ),
+          20_000,
+          "Profil speichern",
+        );
 
         if (profileError) throw profileError;
 
         // Send notification email with document attachment
         try {
-          await supabase.functions.invoke("notify-b2b-registration", {
-            body: notificationPayload,
-          });
+          await withTimeout(
+            supabase.functions.invoke("notify-b2b-registration", {
+              body: notificationPayload,
+            }),
+            20_000,
+            "Admin-Benachrichtigung",
+          );
         } catch (notifyErr) {
           console.error("Notification failed (non-blocking):", notifyErr);
         }
 
         // Send welcome email to the customer (Resend, DE, Du-Form)
         try {
-          await supabase.functions.invoke("send-b2b-welcome", {
-            body: { email, firstName, companyName, postalCode },
-          });
+          await withTimeout(
+            supabase.functions.invoke("send-b2b-welcome", {
+              body: { email, firstName, companyName, postalCode },
+            }),
+            20_000,
+            "Willkommens-Mail",
+          );
         } catch (welcomeErr) {
           console.error("Welcome email failed (non-blocking):", welcomeErr);
         }
@@ -233,6 +278,7 @@ export default function B2BRegister() {
         // Refresh profile in auth context so dashboard shows correct pending state
         try { await refreshB2BProfile(); } catch {}
 
+        clearTimeout(stuckTimer);
         toast({
           title: "Registrierung erfolgreich!",
           description: "Dein Antrag wird geprüft. Du erhältst eine E-Mail, sobald dein Konto freigeschaltet wurde.",
@@ -242,21 +288,25 @@ export default function B2BRegister() {
         // No session — email confirmation required
         // Create profile immediately via edge function (service role) so admin can see it
         try {
-          const { data: profileResult, error: profileFnError } = await supabase.functions.invoke("create-b2b-profile", {
-            body: {
-              userId,
-              email,
-              companyName, legalForm, taxId, tradeRegisterNumber,
-              firstName, lastName, position, phone,
-              billingEmail, street, houseNumber, postalCode, city,
-              assignedLocation,
-              postalInvoice,
-              documentBase64,
-              documentFilename: documentFile.name,
-              sepaBase64,
-              sepaFilename: sepaFile.name,
-            },
-          });
+          const { data: profileResult, error: profileFnError } = await withTimeout(
+            supabase.functions.invoke("create-b2b-profile", {
+              body: {
+                userId,
+                email,
+                companyName, legalForm, taxId, tradeRegisterNumber,
+                firstName, lastName, position, phone,
+                billingEmail, street, houseNumber, postalCode, city,
+                assignedLocation,
+                postalInvoice,
+                documentBase64,
+                documentFilename: documentFile.name,
+                sepaBase64,
+                sepaFilename: sepaFile.name,
+              },
+            }),
+            45_000,
+            "Profil anlegen (Edge Function)",
+          );
 
           if (profileFnError) {
             console.error("Profile creation failed:", profileFnError);
@@ -265,19 +315,22 @@ export default function B2BRegister() {
           console.error("Profile creation failed (non-blocking):", profileErr);
         }
 
-        // Admin notification is sent server-side from create-b2b-profile
-        // (the user has no session yet, so a client-side call to
-        // notify-b2b-registration would fail with 401).
+        // Admin notification is sent server-side from create-b2b-profile.
 
         // Send welcome email to the customer (Resend, DE, Du-Form)
         try {
-          await supabase.functions.invoke("send-b2b-welcome", {
-            body: { email, firstName, companyName, postalCode },
-          });
+          await withTimeout(
+            supabase.functions.invoke("send-b2b-welcome", {
+              body: { email, firstName, companyName, postalCode },
+            }),
+            20_000,
+            "Willkommens-Mail",
+          );
         } catch (welcomeErr) {
           console.error("Welcome email failed (non-blocking):", welcomeErr);
         }
 
+        clearTimeout(stuckTimer);
         toast({
           title: "Registrierung erfolgreich!",
           description: "Dein Antrag wurde übermittelt. Du bekommst gleich eine Willkommens-E-Mail – sobald wir deine Unterlagen geprüft haben, schalten wir dein Konto frei.",
@@ -285,13 +338,17 @@ export default function B2BRegister() {
         navigate("/b2b/login");
       }
     } catch (error: any) {
+      clearTimeout(stuckTimer);
       console.error("Registration error:", error);
       
       let errorTitle = "Registrierung fehlgeschlagen";
       let errorDescription = error.message || "Ein Fehler ist aufgetreten. Bitte versuche es erneut.";
       
       const msg = (error.message || "").toLowerCase();
-      if (msg.includes("rate limit") || msg.includes("rate_limit")) {
+      if (msg.includes("timeout")) {
+        errorTitle = "Server antwortet nicht";
+        errorDescription = "Die Verbindung zum Server ist langsam oder unterbrochen. Bitte prüfe deine Verbindung und versuche es in einigen Minuten erneut.";
+      } else if (msg.includes("rate limit") || msg.includes("rate_limit")) {
         errorTitle = "Zu viele Versuche";
         errorDescription = "Bitte warte einige Minuten und versuche es dann erneut.";
       } else if (msg.includes("already registered") || msg.includes("bereits registriert")) {
