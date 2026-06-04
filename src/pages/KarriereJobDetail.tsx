@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEO, SLT_BREADCRUMB_JSONLD, SLT_JOBPOSTING_JSONLD, SLT_FAQ_JSONLD } from "@/components/SEO";
