@@ -94,6 +94,31 @@ export default function KarriereJobDetail() {
   const salary = formatSalary(job.salaryMin, job.salaryMax, job.salaryUnit);
   const relatedJobs = jobListings.filter((j) => j.id !== job.id).slice(0, 3);
 
+  // Dedupe JSON-LD: prerendered HTML + react-helmet hydration kann doppelte
+  // FAQPage / JobPosting / BreadcrumbList Scripts erzeugen. Wir entfernen
+  // Duplikate (gleicher @type) und behalten nur das erste Vorkommen je Typ.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const seen = new Set<string>();
+    const dupTypes = ["FAQPage", "JobPosting", "BreadcrumbList"];
+    document.head
+      .querySelectorAll('script[type="application/ld+json"]')
+      .forEach((el) => {
+        const txt = el.textContent || "";
+        for (const t of dupTypes) {
+          const needle = `"@type":"${t}"`;
+          if (txt.includes(needle) || txt.includes(`"@type": "${t}"`)) {
+            if (seen.has(t)) {
+              el.remove();
+              return;
+            }
+            seen.add(t);
+          }
+        }
+      });
+  }, [job.id]);
+
+
   return (
     <Layout>
       <SEO
