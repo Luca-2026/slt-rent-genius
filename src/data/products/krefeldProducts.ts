@@ -383,6 +383,16 @@ import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
 import imgZeltbodenAnthrazit3 from "@/assets/products/zeltboden-anthrazit-3.jpeg";
+import zeltbodenExtra1Asset from "@/assets/products/zeltboden-extra-1.jpeg.asset.json";
+import zeltbodenExtra2Asset from "@/assets/products/zeltboden-extra-2.jpeg.asset.json";
+import zeltbodenExtra3Asset from "@/assets/products/zeltboden-extra-3.jpeg.asset.json";
+import zeltbodenExtra4Asset from "@/assets/products/zeltboden-extra-4.jpeg.asset.json";
+import zeltbodenExtra5Asset from "@/assets/products/zeltboden-extra-5.jpeg.asset.json";
+const imgZeltbodenExtra1 = zeltbodenExtra1Asset.url;
+const imgZeltbodenExtra2 = zeltbodenExtra2Asset.url;
+const imgZeltbodenExtra3 = zeltbodenExtra3Asset.url;
+const imgZeltbodenExtra4 = zeltbodenExtra4Asset.url;
+const imgZeltbodenExtra5 = zeltbodenExtra5Asset.url;
 
 // Bierzeltgarnitur-Set images
 import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jpeg";
@@ -3620,7 +3630,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Event- / Zeltboden Anthrazit",
     description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag – ideal für Zelte, Outdoor-Events und temporäre Veranstaltungsflächen. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
     image: imgZeltbodenAnthrazit1,
-    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit3],
+    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit3, imgZeltbodenExtra1, imgZeltbodenExtra2, imgZeltbodenExtra3, imgZeltbodenExtra4, imgZeltbodenExtra5],
     category: "zelt",
     pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
     pricePerDay: "ab 1 €",
