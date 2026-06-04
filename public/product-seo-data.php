@@ -10438,6 +10438,24 @@ $productDetails = [
       'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
     ],
   ],
+  'hauptverteilerschrank-86kva-hv125' => [
+    'name' => 'Hauptverteilerschrank 86 kVA – HV125 Typ B',
+    'description' => 'Mobiler Hauptverteilerschrank / Baustromverteiler HV125 Typ B mit 86 kVA Anschlussleistung – 125 A CEE oder 10 mm² Kabelschuh-Zuleitung, 1× CEE 63 A, 3× CEE 32 A, 3× CEE 16 A, 6× Schuko 230 V, FI Typ B 63 A/0,03 A plus FI 40 A. Verzinktes, orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell, schwenkbare Kranöse, stückgeprüft.',
+    'specs' => [
+      'Typ' => 'HV125 – Typ B',
+      'Anschlussleistung' => '86 kVA',
+      'Stromaufnahme / Zuleitung' => '125 A – 400 V CEE oder 10 mm² Kabelschuhe',
+      'CEE-Steckdosen 400 V/6h' => '1× 63 A + 3× 32 A + 3× 16 A (5-polig)',
+      'Schutzkontaktsteckdosen' => '6× 230 V / 16 A',
+      'FI-Schutzschalter' => '1× 63 A / 0,03 A – Typ B (allstromsensitiv), 1× 40 A',
+      'Gehäuse' => 'Stahlblech, verzinkt und orange pulverbeschichtet',
+      'Standgestell' => 'Feuerverzinkt',
+      'Handling' => 'Schwenkbare Kranöse, Tragegriff mit 90°-Winkelstopp',
+      'Transportmaße (B×H×T)' => '840 × 1330 × 480 mm',
+      'Transportgewicht' => '90 kg',
+      'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
+    ],
+  ],
 
   'cee-kabel-16a-3m' => [
     'name' => 'CEE Kabel 16A rot 3 m',
