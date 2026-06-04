@@ -390,6 +390,14 @@ import imgBierzeltgarniturSet3 from "@/assets/products/bierzeltgarnitur-set-3.jp
 
 // Stuhl weiß images
 import imgStuhlWeiss1 from "@/assets/products/stuhl-weiss-1.jpeg";
+import imgKlappstuhlEventBlack1 from "@/assets/products/moebel/klappstuhl-event-4505050-awzr41xgq1dhtz.jpg.webp";
+import imgKlappstuhlEventBlack2 from "@/assets/products/moebel/klappstuhl-event-4505050_3d.jpg.webp";
+import imgKlappstuhlEventBlack3 from "@/assets/products/moebel/klappstuhl-event-4505050_3h.jpg.webp";
+import imgKlappstuhlEventBlack4 from "@/assets/products/moebel/klappstuhl-event-4505050-02la3xtmriarxhi.jpg.webp";
+import imgKlappstuhlEventBlack5 from "@/assets/products/moebel/klappstuhl-event-4505050-d.jpg.webp";
+import imgKlappstuhlEventBlack6 from "@/assets/products/moebel/klappstuhl-event-4505050-01qu0piv2hby4xm.jpg.webp";
+import imgKlappstuhlEventBlack7 from "@/assets/products/moebel/klappstuhl-event-4505050-b.jpg.webp";
+import imgKlappstuhlEventBlack8 from "@/assets/products/moebel/klappstuhl-event-4505050_3i.jpg.webp";
 
 // Bierzeltgarnitur Hussen-Set images
 import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-weiss-1.jpeg";
