@@ -388,8 +388,6 @@ import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jp
 import imgBierzeltgarniturSet2 from "@/assets/products/bierzeltgarnitur-set-2.jpeg";
 import imgBierzeltgarniturSet3 from "@/assets/products/bierzeltgarnitur-set-3.jpeg";
 
-// Stuhl weiß images
-import imgStuhlWeiss1 from "@/assets/products/stuhl-weiss-1.jpeg";
 import imgKlappstuhlEventBlack1 from "@/assets/products/moebel/klappstuhl-event-4505050-awzr41xgq1dhtz.jpg.webp";
 import imgKlappstuhlEventBlack2 from "@/assets/products/moebel/klappstuhl-event-4505050_3d.jpg.webp";
 import imgKlappstuhlEventBlack3 from "@/assets/products/moebel/klappstuhl-event-4505050_3h.jpg.webp";

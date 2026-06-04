@@ -613,7 +613,6 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "stehtisch": { name: "Standing Table", description: "Foldable standing table" },
   "stehtisch-husse-weiss": { name: "Standing Table Cover white", description: "White cover for standing table" },
   "stehtisch-husse-schwarz": { name: "Standing Table Cover black", description: "Black cover for standing table" },
-  "stuhl-weiss": { name: "Chair white", description: "White folding chair" },
   "getraenkekuehlschrank-236l": { name: "Beverage Cooler 236l", description: "Refrigerator with glass door" },
 
   // ===== TABLEWARE =====
@@ -818,7 +817,6 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-bierzeltgarnitur-set": { name: "Beer Garden Set", description: "Classic beer garden set with table and 2 benches." },
   "bonn-stehtisch": { name: "Standing Table", description: "Robust standing table for events." },
   "bonn-stehtisch-husse-weiss": { name: "Standing Table Cover white", description: "Elegant white cover for standing tables." },
-  "bonn-stuhl-weiss": { name: "Chair white", description: "Stackable plastic chair in white." },
   "bonn-getraenkekuehlschrank-236l": { name: "Beverage Cooler 236l", description: "Large cooler for event beverages." },
   "bonn-dessertteller-simply-19": { name: "Dessert Plate SIMPLY 19, Set of 10", description: "Elegant dessert plates in a set of 10." },
   "bonn-kaffeetasse-12er": { name: "Coffee Cup, Set of 12", description: "Classic coffee cups in a set of 12." },

@@ -83,7 +83,6 @@ const LEGACY_404_URLS = [
   "/produkte/zeltboden-anthrazit",
   "/produkte/3kw-elektro-heizlufter",
   "/produkte/akku-baustrahler-gli-18v-2200-c",
-  "/produkte/stuhl-weiss",
   "/produkte/messer-simply-20-10er-set",
   "/produkte/diamantbohrer-gdb-180-we",
   "/produkte/midas-dl16-digital-stagebox",
