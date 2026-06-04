@@ -532,6 +532,22 @@ function detectCategory(text: string) {
   return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
 }
 
+function detectRecentUserCategory(messages: ChatMessage[]) {
+  const userMessages = messages.filter((message) => message.role === "user" && typeof message.content === "string");
+  for (let i = userMessages.length - 2; i >= Math.max(0, userMessages.length - 6); i--) {
+    const category = detectCategory(userMessages[i].content ?? "");
+    if (category) return category;
+  }
+  return null;
+}
+
+function userHistoryText(messages: ChatMessage[]) {
+  return messages
+    .filter((message) => message.role === "user" && typeof message.content === "string")
+    .map((message) => message.content ?? "")
+    .join("\n");
+}
+
 function normalizeForSearch(value: string) {
   return value
     .toLowerCase()
