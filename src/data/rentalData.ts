@@ -1502,6 +1502,9 @@ function sortByReference(list: Product[], reference: Product[]): Product[] {
     .map((p, i) => ({ p, i, r: rankOf(p) }))
     .sort((a, b) => (a.r - b.r) || (a.i - b.i))
     .map((x) => x.p);
+}
+
+
 
 
 // === Wohnwagen & Camping (on-request, alle Standorte) =========================
