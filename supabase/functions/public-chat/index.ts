@@ -1103,6 +1103,21 @@ function fallbackUrlFromPath(path: string | null) {
       : null;
 }
 
+function markdownLabelForPath(path: string | null) {
+  if (!path) return "Link öffnen";
+  const parts = path.split("/").filter(Boolean);
+  if (parts[0] === "mieten" && parts[1] && parts[2]) {
+    const loc = locationLabel(parts[1]);
+    const category = categoryLabels[parts[2]] ?? "Kategorie";
+    return parts[3] ? labelFromSlug(parts[3]) : `${category} in ${loc}`;
+  }
+  if (path.startsWith("/lieferung")) return "Lieferkostenrechner";
+  if (path.startsWith("/b2b")) return "B2B-Portal";
+  if (path.startsWith("/hilfe")) return "Hilfe-Seite";
+  if (path.startsWith("/ratgeber")) return "Ratgeber";
+  return "Link öffnen";
+}
+
 function sanitizeAssistantText(text: string) {
   const markdownSanitized = text.replace(/\[([^\]]+)\]\((https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)]+)\)/g, (match, label, url) => {
     const path = pathFromSltUrl(url);
@@ -1111,10 +1126,16 @@ function sanitizeAssistantText(text: string) {
     return fallback ? `[${label}](${fallback})` : label;
   });
 
-  return markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
+  const rentalSanitized = markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
     const path = pathFromSltUrl(url);
-    if (path && verifiedRentalPathSet.has(path)) return `${SITE_ORIGIN}${path}`;
-    return fallbackUrlFromPath(path) ?? "die passende Kategorie auf slt-rental.de";
+    if (path && verifiedRentalPathSet.has(path)) return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path})`;
+    const fallback = fallbackUrlFromPath(path);
+    return fallback ? `[${markdownLabelForPath(path)}](${fallback})` : "die passende Kategorie auf slt-rental.de";
+  });
+
+  return rentalSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/(lieferung|b2b|hilfe|ratgeber[^\s)\]}]*)\/?/g, (url) => {
+    const path = pathFromSltUrl(url);
+    return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path ?? "/"})`;
   });
 }
 
