@@ -144,7 +144,7 @@ export function SummerPromoDialog() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-accent hover:bg-white/90 font-bold flex-1"
+              className="bg-white text-accent hover:bg-white/90 font-bold w-full sm:flex-1"
               onClick={close}
             >
               <Link to={EVENT_LINK}>
@@ -156,7 +156,7 @@ export function SummerPromoDialog() {
               variant="ghost"
               size="lg"
               onClick={close}
-              className="text-white hover:bg-white/15 hover:text-white"
+              className="text-white hover:bg-white/15 hover:text-white w-full sm:flex-1"
             >
               Später
             </Button>
