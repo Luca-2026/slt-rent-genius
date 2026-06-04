@@ -809,20 +809,20 @@ function curatedProductLinks(categoryId: string, text: string, location: string)
   const wantsScissor = /(schere|scheren|eben|beton|asphalt|plattform)/i.test(normalized);
   const wantsTrailer = /(anhaenger|anhaengerbuehne|18\s*m)/i.test(normalized);
 
-  if (wantsTelescope) add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
-  if (wantsMast || height === 11) add("Mastbühne 11 m", "mastbuehne-11m");
-  if (wantsScissor || height === 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
-  if (wantsScissor || height === 12) add("Scherenbühne 12 m", "scherenbuehne-12m");
+  if (wantsTelescope) add("12 m Gelenkteleskopsteiger", "gelenkteleskopsteiger-12m");
+  if (wantsMast || height === 11) add("11 m Mastbühne", "mastbuehne-11m");
+  if (wantsScissor && (height === null || height <= 8)) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
+  if (wantsScissor && (height === null || height > 8)) add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
   if (wantsTrailer || (height !== null && height > 12)) add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
 
   if (links.length === 0 && height !== null) {
-    if (height <= 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+    if (height <= 8) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
     else if (height <= 11) {
       add("Mastbühne 11 m", "mastbuehne-11m");
-      add("Scherenbühne 12 m", "scherenbuehne-12m");
+      add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
     } else if (height <= 12) {
       add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
-      add("Scherenbühne 12 m", "scherenbuehne-12m");
+      add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
     } else {
       add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
     }
