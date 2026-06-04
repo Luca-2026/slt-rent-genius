@@ -436,6 +436,11 @@ import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 
+// Party- / Eventzelt 5x8m extra hoch images
+import imgPartyzelt5x8_1 from "@/assets/products/partyzelt-5x8-1.avif";
+import imgPartyzelt5x8_2 from "@/assets/products/partyzelt-5x8-2.jpeg";
+import imgPartyzelt5x8_3 from "@/assets/products/partyzelt-5x8-3.jpeg";
+
 // Maß-Bilder für Zelte
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
 import imgMasse4x4 from "@/assets/products/masse-4x4.avif";
