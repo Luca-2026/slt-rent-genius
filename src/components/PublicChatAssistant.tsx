@@ -361,8 +361,18 @@ export function PublicChatAssistant() {
             </a>
           </div>
 
+          {messages.length > 1 && (
+            <button
+              type="button"
+              onClick={() => setMessages([INITIAL_ASSISTANT_MESSAGE])}
+              className="border-b border-border bg-surface-light px-4 py-2 text-left text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Neuen Chat starten
+            </button>
+          )}
+
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3">
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
                 <div className={`w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs ${
@@ -372,7 +382,7 @@ export function PublicChatAssistant() {
                 }`}>
                   {msg.role === "user" ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
                 </div>
-                <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
+                <div className={`max-w-[82%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words ${
                   msg.role === "user"
                     ? "bg-primary text-primary-foreground rounded-tr-sm"
                     : "bg-muted text-foreground rounded-tl-sm"
