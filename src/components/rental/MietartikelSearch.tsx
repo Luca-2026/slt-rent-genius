@@ -184,8 +184,15 @@ export function MietartikelSearch() {
   return (
     <>
       <div ref={searchRef} className="max-w-2xl mx-auto relative">
+        <style>{`
+          @keyframes searchRingDraw {
+            0%   { stroke-dashoffset: 1; }
+            50%  { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -1; }
+          }
+        `}</style>
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
           <Input
             type="text"
             placeholder={t("mietartikel.searchPlaceholder", { defaultValue: "Artikel suchen, z.B. Minibagger, Anhänger, Hüpfburg..." })}
@@ -203,10 +210,33 @@ export function MietartikelSearch() {
             }}
             className="pl-12 pr-10 py-3 h-12 text-base border-input focus-visible:ring-accent rounded-xl shadow-sm"
           />
+          {/* Animated orange highlight border – draws around, erases, repeats */}
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 w-full h-full overflow-visible"
+            preserveAspectRatio="none"
+          >
+            <rect
+              x="1"
+              y="1"
+              width="calc(100% - 2px)"
+              height="calc(100% - 2px)"
+              rx="12"
+              ry="12"
+              fill="none"
+              stroke="#ff8e02"
+              strokeWidth="2"
+              pathLength={1}
+              strokeDasharray="1 1"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+              style={{ animation: "searchRingDraw 3s ease-in-out infinite" }}
+            />
+          </svg>
           {searchQuery && (
             <button
               onClick={() => { setSearchQuery(""); setShowResults(false); }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground z-10"
             >
               <X className="h-4 w-4" />
             </button>
