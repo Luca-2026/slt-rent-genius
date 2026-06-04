@@ -138,6 +138,11 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Summer Promo – 10% EVENT10 */}
+      <SummerPromoBanner />
+      <SummerPromoDialog />
+
+
       {/* Locations / Standorte */}
       <section className="py-16 lg:py-20">
         <div className="section-container">
