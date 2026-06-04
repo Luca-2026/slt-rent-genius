@@ -379,9 +379,10 @@ import imgShowtecSunstripMkii2 from "@/assets/products/showtec-sunstrip-mkii-2.j
 // Stehtisch images
 import imgStehtischRund1 from "@/assets/products/stehtisch-rund-1.jpeg";
 
-// Zeltboden Anthrazit images
+// Event- / Zeltboden Anthrazit images
 import imgZeltbodenAnthrazit1 from "@/assets/products/zeltboden-anthrazit-1.jpeg";
 import imgZeltbodenAnthrazit2 from "@/assets/products/zeltboden-anthrazit-2.jpeg";
+import imgZeltbodenAnthrazit3 from "@/assets/products/zeltboden-anthrazit-3.jpeg";
 
 // Bierzeltgarnitur-Set images
 import imgBierzeltgarniturSet1 from "@/assets/products/bierzeltgarnitur-set-1.jpeg";
