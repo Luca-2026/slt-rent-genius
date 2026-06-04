@@ -16,13 +16,34 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const TEASER_DISMISSED_KEY = "renty_teaser_dismissed_v1";
+const CHAT_MESSAGES_KEY = "renty_messages_v1";
 const HERO_SCROLL_THRESHOLD = 400;
+
+const INITIAL_ASSISTANT_MESSAGE: Message = {
+  role: "assistant",
+  content:
+    "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental.\n\nFrag mich kurz nach Artikel, Standort oder Mietablauf – ich schicke dir passende Links, wenn ich sie sicher zuordnen kann.",
+};
 
 export function PublicChatAssistant() {
   const { toast } = useToast();
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = sessionStorage.getItem(CHAT_MESSAGES_KEY);
+      const parsed = saved ? JSON.parse(saved) : null;
+      if (Array.isArray(parsed) && parsed.every((message) =>
+        (message?.role === "user" || message?.role === "assistant") && typeof message?.content === "string"
+      )) {
+        return parsed;
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
@@ -77,13 +98,18 @@ export function PublicChatAssistant() {
 
   useEffect(() => {
     if (open && messages.length === 0) {
-      setMessages([{
-        role: "assistant",
-        content:
-          "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental. 👋\n\nIch helfe dir bei Fragen zu Geräten, Mietablauf, Anhängern, Lieferung und unseren Standorten. Wenn ich etwas nicht sicher beantworten kann, verweise ich dich auf das passende Team vor Ort. Wie kann ich dir helfen?",
-      }]);
+      setMessages([INITIAL_ASSISTANT_MESSAGE]);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || messages.length === 0) return;
+    try {
+      sessionStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(messages));
+    } catch {
+      // ignore
+    }
+  }, [messages]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
