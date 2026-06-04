@@ -557,6 +557,7 @@ export const RENTAL_LINK_PATHS = [
   "/mieten/bonn/kabel-stromverteiler/cee-kabel-16a-10m/",
   "/mieten/bonn/kabel-stromverteiler/cee-kabel-16a-20m/",
   "/mieten/bonn/kabel-stromverteiler/anschlussverteilerschrank-44kva/",
+  "/mieten/bonn/kabel-stromverteiler/endverteilerschrank-22kva-ev32/",
   "/mieten/bonn/kabel-stromverteiler/cee-kabel-63a-3m/",
   "/mieten/bonn/kabel-stromverteiler/cee-kabel-63a-5m/",
   "/mieten/bonn/kabel-stromverteiler/schukokabel-3m/",
