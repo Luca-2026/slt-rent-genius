@@ -226,6 +226,14 @@ import imgKleiderstaenderRollen1 from "@/assets/products/moebel/kleiderstaender-
 import imgKleiderstaenderRollen2 from "@/assets/products/moebel/kleiderstaender-rollen-2.jpg";
 import imgKleiderstaenderRollen3 from "@/assets/products/moebel/kleiderstaender-rollen-3.jpg";
 import imgKleiderstaenderRollen4 from "@/assets/products/moebel/kleiderstaender-rollen-4.jpg";
+import imgKlappstuhlBlack1 from "@/assets/products/moebel/klappstuhl-event-4505050-awzr41xgq1dhtz.jpg.webp";
+import imgKlappstuhlBlack2 from "@/assets/products/moebel/klappstuhl-event-4505050_3d.jpg.webp";
+import imgKlappstuhlBlack3 from "@/assets/products/moebel/klappstuhl-event-4505050_3h.jpg.webp";
+import imgKlappstuhlBlack4 from "@/assets/products/moebel/klappstuhl-event-4505050-02la3xtmriarxhi.jpg.webp";
+import imgKlappstuhlBlack5 from "@/assets/products/moebel/klappstuhl-event-4505050-d.jpg.webp";
+import imgKlappstuhlBlack6 from "@/assets/products/moebel/klappstuhl-event-4505050-01qu0piv2hby4xm.jpg.webp";
+import imgKlappstuhlBlack7 from "@/assets/products/moebel/klappstuhl-event-4505050-b.jpg.webp";
+import imgKlappstuhlBlack8 from "@/assets/products/moebel/klappstuhl-event-4505050_3i.jpg.webp";
 import imgSortiergreiferSSG390 from "@/assets/products/erdbewegung/sortiergreifer-ssg390.jpg";
 import ruettelplatteHvp5060 from "@/assets/products/ruettelplatte-hvp5060-1.jpg";
 import presslufthammerTex21pe from "@/assets/products/presslufthammer-tex21pe-1.jpeg";
