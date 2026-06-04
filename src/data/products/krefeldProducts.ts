@@ -359,6 +359,8 @@ import endverteilerEv63_3Asset from "@/assets/products/endverteiler-ev63-3.webp.
 const imgEndverteilerEv63_1 = endverteilerEv63_1Asset.url;
 const imgEndverteilerEv63_2 = endverteilerEv63_2Asset.url;
 const imgEndverteilerEv63_3 = endverteilerEv63_3Asset.url;
+import hauptverteilerHv125_1Asset from "@/assets/products/hauptverteiler-hv125-1.png.asset.json";
+const imgHauptverteilerHv125_1 = hauptverteilerHv125_1Asset.url;
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
@@ -5128,6 +5130,30 @@ export const kabelStromverteilerProducts: Product[] = [
     },
     pdfUrl: "/manuals/datenblatt-endverteiler-ev63.pdf",
     rentwareCode: { krefeld: "4VXWR6" }
+  },
+  {
+    id: "hauptverteilerschrank-86kva-hv125",
+    name: "Hauptverteilerschrank 86 kVA – HV125 Typ B",
+    description: "Mobiler Hauptverteilerschrank / Baustromverteiler HV125 Typ B mit 86 kVA Anschlussleistung – ideal als Hauptverteilung für Großbaustellen, Industrie, Festivals und Großveranstaltungen. Zuleitung wahlweise über 125 A CEE oder 10 mm² Kabelschuhe (Direktanschluss). Ausgestattet mit allstromsensitivem FI Typ B (63 A / 0,03 A) und zusätzlichem FI 40 A, 1× CEE 63 A, 3× CEE 32 A, 3× CEE 16 A sowie 6× 230 V Schutzkontakt-Steckdosen. Robustes verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell, schwenkbare Kranöse und Tragegriff mit 90°-Winkelstopp – stückgeprüft nach VDE.",
+    image: imgHauptverteilerHv125_1,
+    images: [imgHauptverteilerHv125_1],
+    category: "anschlussschrank",
+    specifications: {
+      "Typ": "HV125 – Typ B",
+      "Anschlussleistung": "86 kVA",
+      "Stromaufnahme / Zuleitung": "125 A – 400 V CEE oder 10 mm² Kabelschuhe",
+      "CEE-Steckdosen 400 V/6h": "1× 63 A + 3× 32 A + 3× 16 A (5-polig)",
+      "Schutzkontaktsteckdosen": "6× 230 V / 16 A",
+      "FI-Schutzschalter": "1× 63 A / 0,03 A – Typ B (allstromsensitiv), 1× 40 A",
+      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
+      "Standgestell": "Feuerverzinkt",
+      "Handling": "Schwenkbare Kranöse, Tragegriff mit 90°-Winkelstopp",
+      "Transportmaße (B×H×T)": "840 × 1330 × 480 mm",
+      "Transportgewicht": "90 kg",
+      "Verarbeitung": "Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft",
+    },
+    pdfUrl: "/manuals/datenblatt-hauptverteiler-hv125.pdf",
+    rentwareCode: { krefeld: "DI55LU" }
   },
   // CEE-Kabel
   {
