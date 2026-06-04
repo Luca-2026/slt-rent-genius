@@ -281,6 +281,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Eignet sich der EV32 auch für Ladegeräte und Wechselrichter?", a: "Ja. Durch die allstromsensitiven FI-Schutzschalter Typ B (2× 40 A / 0,03 A) ist der Verteiler ausdrücklich für moderne Verbraucher mit Frequenzumrichtern, E-Ladegeräten und Wechselrichtern freigegeben." },
     ],
   },
+  "aschenbecher-glas": {
     excelName: "Aschenbecher Glas",
     seoTitle: "Aschenbecher Glas Ø 10,7 cm stapelbar",
     metaDescription: "Klassischer Glas-Aschenbecher in klarem Design. Durchmesser 10,7 cm, Höhe 3,5 cm und stapelbar. Ideal für Gastronomie und Veranstaltungen.",
