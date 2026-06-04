@@ -2513,8 +2513,8 @@ $productSEOLookup = [
     ],
   ],
   'eventzelt-6x12m' => [
-    'name' => 'Eventzelt 6x12m extra hoch',
-    'h1' => 'Eventzelt 6x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 6x12m extra hoch',
+    'h1' => 'Party- / Eventzelt 6x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -2527,8 +2527,8 @@ $productSEOLookup = [
     ],
   ],
   'eventzelt-6x8m' => [
-    'name' => 'Eventzelt 6x8m extra hoch',
-    'h1' => 'Eventzelt 6x8m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 6x8m extra hoch',
+    'h1' => 'Party- / Eventzelt 6x8m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -9334,8 +9334,8 @@ $productDetails = [
     ],
   ],
   'eventzelt-6x8m' => [
-    'name' => 'Eventzelt 6x8m extra hoch',
-    'description' => 'Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.',
+    'name' => 'Party- / Eventzelt 6x8m extra hoch',
+    'description' => 'Party- / Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.',
     'specs' => [
       'Grundfläche' => '48 m² (6 m × 8 m)',
       'Durchgangshöhe' => '2,6 m (extra hoch)',
@@ -9348,8 +9348,8 @@ $productDetails = [
     ],
   ],
   'eventzelt-6x12m' => [
-    'name' => 'Eventzelt 6x12m extra hoch',
-    'description' => 'Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.',
+    'name' => 'Party- / Eventzelt 6x12m extra hoch',
+    'description' => 'Großes Party- / Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.',
     'specs' => [
       'Grundfläche' => '72 m² (6 m × 12 m)',
       'Durchgangshöhe' => '2,6 m (extra hoch)',

@@ -1479,6 +1479,34 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
   return result;
 }
 
+/**
+ * Reorder a product list so that its items follow the order of a reference list
+ * (matched by id, then by normalised name). Items not found in the reference
+ * keep their original relative order and are appended at the end.
+ */
+function sortByReference(list: Product[], reference: Product[]): Product[] {
+  const normalise = (s: string | undefined | null) => (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const rankById = new Map<string, number>();
+  const rankByName = new Map<string, number>();
+  reference.forEach((r, i) => {
+    rankById.set(r.id, i);
+    rankByName.set(normalise(r.name), i);
+  });
+  const rankOf = (p: Product) => {
+    if (rankById.has(p.id)) return rankById.get(p.id)!;
+    const n = normalise(p.name);
+    if (rankByName.has(n)) return rankByName.get(n)!;
+    return Number.MAX_SAFE_INTEGER;
+  };
+  return [...list]
+    .map((p, i) => ({ p, i, r: rankOf(p) }))
+    .sort((a, b) => (a.r - b.r) || (a.i - b.i))
+    .map((x) => x.p);
+}
+
+
+
+
 // === Wohnwagen & Camping (on-request, alle Standorte) =========================
 const weinsbergCaraOne480QDK: Product = {
   id: "weinsberg-caraone-480-qdk",
@@ -1817,14 +1845,18 @@ export const locations: LocationData[] = [
       ),
       "buehne": buehneProducts.map((p) => ({ ...p })),
       "traversen-rigging": traversenRiggingProducts.map((p) => ({ ...p })),
-      "moebel-zelte": mergeWithFallback(
-        [
-          ...(bonnMoebelProducts as unknown as Product[]),
-          ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
-        ],
-        moebelZelteProducts,
-        "bonn"
+      "moebel-zelte": sortByReference(
+        mergeWithFallback(
+          [
+            ...(bonnMoebelProducts as unknown as Product[]),
+            ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
+          ],
+          moebelZelteProducts,
+          "bonn"
+        ),
+        moebelZelteProducts
       ),
+
       "geschirr-glaeser-besteck": mergeWithFallback(
         [
           ...withFixedCategory(bonnGeschirrProducts as unknown as Product[], "geschirr"),

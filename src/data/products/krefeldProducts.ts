@@ -424,12 +424,12 @@ import imgPartyzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
 // Party- / Eventzelt 4x10m images
 import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
 
-// Eventzelt 6x8m images
+// Party- / Eventzelt 6x8m images
 import imgEventzelt6x8_1 from "@/assets/products/eventzelt-6x8-1.jpeg";
 import imgEventzelt6x8_2 from "@/assets/products/eventzelt-6x8-2.jpeg";
 import imgEventzelt6x8_3 from "@/assets/products/eventzelt-6x8-3.jpeg";
 
-// Eventzelt 6x12m images
+// Party- / Eventzelt 6x12m images
 import imgEventzelt6x12_1 from "@/assets/products/eventzelt-6x12-1.jpeg";
 import imgEventzelt6x12_2 from "@/assets/products/eventzelt-6x12-2.jpeg";
 
@@ -3532,8 +3532,8 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "eventzelt-6x8m",
-    name: "Eventzelt 6x8m extra hoch",
-    description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
+    name: "Party- / Eventzelt 6x8m extra hoch",
+    description: "Party- / Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
     image: imgMasse6x8,
     images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
@@ -3552,8 +3552,8 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "eventzelt-6x12m",
-    name: "Eventzelt 6x12m extra hoch",
-    description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
+    name: "Party- / Eventzelt 6x12m extra hoch",
+    description: "Großes Party- / Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
     image: imgMasse6x12,
     images: [imgMasse6x12, imgEventzelt6x12_1, imgPartyzeltWeiss, imgEventzelt6x12_2],
     category: "zelt",

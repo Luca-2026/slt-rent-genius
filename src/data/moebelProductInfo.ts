@@ -36,7 +36,7 @@ export const moebelProductInfo: Record<ProductKey, Record<LocationKey, MoebelPro
       },
       seoParagraphs: [
         "Eine Bierzeltgarnitur in Bonn zu mieten passt zu Gartenhochzeiten in Bad Godesberg, zu Sommerfesten von NGOs und Bundesbehörden in der Rheinaue und zu klassischen Schützen- und Vereinsfesten in Beuel oder Pützchen. Das Set kombiniert einen klappbaren Tisch (50 × 220 cm) mit zwei Bänken (25 × 220 cm) und bietet acht bis zehn Sitzplätze pro Garnitur.",
-        "Für 60 Hochzeitsgäste rechnen Sie mit rund sieben bis acht Garnituren – aufgebaut in U-Form unter einem Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik. Das weiße Hussen-Set ist im Buchungsprozess optional zubuchbar und macht aus der Bierbankgarnitur eine repräsentative Tischlandschaft. Abholung an der Filiale in Bonn; Lieferung im Rheinland transparent über den Lieferkostenrechner kalkuliert.",
+        "Für 60 Hochzeitsgäste rechnen Sie mit rund sieben bis acht Garnituren – aufgebaut in U-Form unter einem Party- / Eventzelt 6×8 m oder in Reihen für eine Tafel-Optik. Das weiße Hussen-Set ist im Buchungsprozess optional zubuchbar und macht aus der Bierbankgarnitur eine repräsentative Tischlandschaft. Abholung an der Filiale in Bonn; Lieferung im Rheinland transparent über den Lieferkostenrechner kalkuliert.",
       ],
     },
     muelheim: {
