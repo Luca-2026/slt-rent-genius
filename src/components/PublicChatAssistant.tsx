@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, X, Send, Loader2, Bot, User, Phone, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "react-router-dom";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -15,16 +16,39 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const TEASER_DISMISSED_KEY = "renty_teaser_dismissed_v1";
+const HERO_SCROLL_THRESHOLD = 400;
 
 export function PublicChatAssistant() {
   const { toast } = useToast();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Track scroll position and viewport size for mobile-homepage hero logic
+  useEffect(() => {
+    const update = () => {
+      setScrollY(window.scrollY);
+      setIsMobile(window.innerWidth < 768);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const isHomePage = location.pathname === "/";
+  const isInHero = scrollY < HERO_SCROLL_THRESHOLD;
+  const pulseOrange = isMobile && isHomePage && isInHero;
 
   // Teaser pop-up: appears after a short delay on first visit (per session)
   useEffect(() => {
@@ -212,9 +236,13 @@ export function PublicChatAssistant() {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center group"
         aria-label="Renty – KI-Assistentin öffnen"
       >
-        {/* Pulsing ring to draw attention when closed */}
+        {/* Pulsing ring to draw attention when closed — orange on mobile homepage hero, blue elsewhere */}
         {!open && (
-          <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping pointer-events-none" />
+          <span
+            className={`absolute inset-0 rounded-full animate-ping pointer-events-none ${
+              pulseOrange ? "bg-[#ff8e02]/40" : "bg-primary/40"
+            }`}
+          />
         )}
         <span className="relative">
           {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
