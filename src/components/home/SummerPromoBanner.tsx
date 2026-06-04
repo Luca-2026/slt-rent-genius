@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, PartyPopper, Copy, Check, X } from "lucide-react";
+import { Sparkles, PartyPopper, Copy, Check } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -111,25 +111,19 @@ export function SummerPromoDialog() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden border-0 bg-transparent shadow-2xl">
-        <div className="relative bg-gradient-to-br from-accent via-accent to-[#ff7400] text-white p-6 md:p-8 rounded-lg">
-          <button
-            onClick={close}
-            className="absolute top-3 right-3 rounded-full bg-white/20 hover:bg-white/30 p-1.5 transition"
-            aria-label="Schließen"
-          >
-            <X className="h-4 w-4" />
-          </button>
-
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider mb-3">
-            <PartyPopper className="h-3.5 w-3.5" />
-            Sommer-Aktion · bis {PROMO_VALID_UNTIL}
+      <DialogContent
+        className="w-[calc(100vw-2rem)] max-w-lg p-0 overflow-hidden border-0 bg-transparent shadow-2xl [&>button]:text-white [&>button]:bg-white/20 [&>button]:hover:bg-white/30 [&>button]:rounded-full [&>button]:p-1.5 [&>button]:opacity-100 [&>button]:ring-0 [&>button]:top-3 [&>button]:right-3"
+      >
+        <div className="relative bg-gradient-to-br from-accent via-accent to-[#ff7400] text-white p-5 sm:p-6 md:p-8 rounded-lg">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-3 max-w-[calc(100%-3rem)]">
+            <PartyPopper className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Sommer-Aktion · bis {PROMO_VALID_UNTIL}</span>
           </div>
 
-          <h3 className="text-2xl md:text-3xl font-bold leading-tight mb-3">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-3 pr-2">
             {PROMO_HEADLINE} – 10% Rabatt auf alle Event-Mietartikel!
           </h3>
-          <p className="text-white/90 mb-5">
+          <p className="text-sm sm:text-base text-white/90 mb-5">
             {PROMO_DETAILS}
           </p>
 
@@ -153,10 +147,10 @@ export function SummerPromoDialog() {
               </Link>
             </Button>
             <Button
-              variant="ghost"
+              variant="outline"
               size="lg"
               onClick={close}
-              className="text-white hover:bg-white/15 hover:text-white w-full sm:flex-1"
+              className="w-full sm:flex-1 bg-transparent border-2 border-white/70 text-white hover:bg-white/15 hover:text-white hover:border-white"
             >
               Später
             </Button>
