@@ -272,7 +272,7 @@ export function PublicChatAssistant() {
                   strokeWidth="3"
                   strokeDasharray="289 289"
                   strokeLinecap="round"
-                  style={{ animation: "rentyRingDraw 3s ease-in-out infinite" }}
+                  style={{ animation: "rentyRingDraw 3.8s linear infinite" }}
                 />
               </svg>
             </span>
