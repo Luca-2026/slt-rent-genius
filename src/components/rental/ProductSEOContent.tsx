@@ -157,13 +157,13 @@ export const categoryContent: Record<string, {
       "Messen und Ausstellungen im Außenbereich",
     ],
     tips: [
-      "Partyzelte benötigen einen ebenen, festen Untergrund.",
+      "Party- / Eventzelte benötigen einen ebenen, festen Untergrund.",
       "Seitenwände schützen vor Wind und Regen – als Zubehör buchbar.",
       "Für Veranstaltungen mit mehr als 200 Gästen sprechen Sie uns wegen Sonderlösungen an.",
     ],
     faqs: [
-      { q: "Kann ich das Zelt selbst aufbauen?", a: "Kleinere Partyzelte (bis 4x8m) können zu zweit aufgebaut werden. Für größere Zelte bieten wir einen Auf- und Abbauservice an." },
-      { q: "Was passiert bei schlechtem Wetter?", a: "Unsere Partyzelte sind wind- und regenfest. Bei extremen Wetterlagen (Sturm) empfehlen wir den Abbau. Seitenwände erhöhen den Wetterschutz." },
+      { q: "Kann ich das Zelt selbst aufbauen?", a: "Kleinere Party- / Eventzelte (bis 4x8m) können zu zweit aufgebaut werden. Für größere Zelte bieten wir einen Auf- und Abbauservice an." },
+      { q: "Was passiert bei schlechtem Wetter?", a: "Unsere Party- / Eventzelte sind wind- und regenfest. Bei extremen Wetterlagen (Sturm) empfehlen wir den Abbau. Seitenwände erhöhen den Wetterschutz." },
     ],
   },
   "geschirr-glaeser-besteck": {

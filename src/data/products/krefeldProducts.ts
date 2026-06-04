@@ -406,23 +406,23 @@ import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-w
 import imgStehtischHusseSchwarz1 from "@/assets/products/stehtisch-husse-schwarz-1.jpg";
 import imgStehtischHusseWeiss1 from "@/assets/products/stehtisch-husse-weiss-1.jpeg";
 
-// Partyzelt 3x3m images
-import imgPartyzelt3x3_1 from "@/assets/products/partyzelt-3x3-1.jpeg";
-import imgPartyzelt3x3_2 from "@/assets/products/partyzelt-3x3-2.avif";
+// Party- / Eventzelt 3x3m images
+import imgParty- / Eventzelt3x3_1 from "@/assets/products/partyzelt-3x3-1.jpeg";
+import imgParty- / Eventzelt3x3_2 from "@/assets/products/partyzelt-3x3-2.avif";
 
 // Getränkekühlschrank 236l images
 import imgGetraenkekuehlschrank236l_1 from "@/assets/products/getraenkekuehlschrank-236l-1.jpeg";
 import imgGetraenkekuehlschrank236l_2 from "@/assets/products/getraenkekuehlschrank-236l-2.jpeg";
 import imgGetraenkekuehlschrank236l_3 from "@/assets/products/getraenkekuehlschrank-236l-3.jpeg";
 
-// Partyzelt 4x4m images
-import imgPartyzelt4x4_1 from "@/assets/products/partyzelt-4x4-1.jpeg";
+// Party- / Eventzelt 4x4m images
+import imgParty- / Eventzelt4x4_1 from "@/assets/products/partyzelt-4x4-1.jpeg";
 
-// Partyzelt 4x6m images
-import imgPartyzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
+// Party- / Eventzelt 4x6m images
+import imgParty- / Eventzelt4x6_1 from "@/assets/products/partyzelt-4x6-1.jpeg";
 
-// Partyzelt 4x10m images
-import imgPartyzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
+// Party- / Eventzelt 4x10m images
+import imgParty- / Eventzelt4x10_1 from "@/assets/products/partyzelt-4x10-1.jpeg";
 
 // Eventzelt 6x8m images
 import imgEventzelt6x8_1 from "@/assets/products/eventzelt-6x8-1.jpeg";
@@ -433,9 +433,9 @@ import imgEventzelt6x8_3 from "@/assets/products/eventzelt-6x8-3.jpeg";
 import imgEventzelt6x12_1 from "@/assets/products/eventzelt-6x12-1.jpeg";
 import imgEventzelt6x12_2 from "@/assets/products/eventzelt-6x12-2.jpeg";
 
-import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
-import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
-import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
+import imgParty- / Eventzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
+import imgParty- / Eventzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
+import imgParty- / Eventzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 
 // Maß-Bilder für Zelte
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
@@ -443,7 +443,7 @@ import imgMasse4x4 from "@/assets/products/masse-4x4.avif";
 import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
 import imgMasse6x8 from "@/assets/products/masse-6x8.avif";
 import imgMasse6x12 from "@/assets/products/masse-6x12.avif";
-import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgParty- / EventzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
 import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
 import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
 import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
@@ -3418,10 +3418,10 @@ export const spezialeffekteProducts: Product[] = [
 export const moebelZelteProducts: Product[] = [
   {
     id: "partyzelt-3x3m",
-    name: "Partyzelt 3x3m",
-    description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
+    name: "Party- / Eventzelt 3x3m",
+    description: "Party- / Eventzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     image: imgMasse3x3,
-    images: [imgMasse3x3, imgPartyzelt3x3_1, imgPartyzeltWeiss, imgPartyzelt3x3_2],
+    images: [imgMasse3x3, imgParty- / Eventzelt3x3_1, imgParty- / EventzeltWeiss, imgParty- / Eventzelt3x3_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "9 m² (3 m × 3 m)",
@@ -3436,10 +3436,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "partyzelt-4x4m",
-    name: "Partyzelt 4x4m",
-    description: "Partyzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
+    name: "Party- / Eventzelt 4x4m",
+    description: "Party- / Eventzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     image: imgMasse4x4,
-    images: [imgMasse4x4, imgPartyzelt4x4_1, imgPartyzeltWeiss],
+    images: [imgMasse4x4, imgParty- / Eventzelt4x4_1, imgParty- / EventzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "16 m² (4 m × 4 m)",
@@ -3455,10 +3455,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "partyzelt-4x6m",
-    name: "Partyzelt 4x6m",
-    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    name: "Party- / Eventzelt 4x6m",
+    description: "Party- / Eventzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     image: imgMasse4x6,
-    images: [imgMasse4x6, imgPartyzelt4x6_1, imgPartyzeltWeiss],
+    images: [imgMasse4x6, imgParty- / Eventzelt4x6_1, imgParty- / EventzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "24 m² (4 m × 6 m)",
@@ -3474,10 +3474,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "partyzelt-4x8m",
-    name: "Partyzelt 4x8m",
-    description: "Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
-    image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss],
+    name: "Party- / Eventzelt 4x8m",
+    description: "Party- / Eventzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    image: imgParty- / Eventzelt4x10_1,
+    images: [imgParty- / Eventzelt4x10_1, imgParty- / EventzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "32 m² (4 m × 8 m)",
@@ -3493,10 +3493,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "partyzelt-4x10m",
-    name: "Partyzelt 4x10m",
+    name: "Party- / Eventzelt 4x10m",
     description: "Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
-    image: imgPartyzelt4x10_1,
-    images: [imgPartyzelt4x10_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_1],
+    image: imgParty- / Eventzelt4x10_1,
+    images: [imgParty- / Eventzelt4x10_1, imgParty- / EventzeltWeiss, imgParty- / Eventzelt4x14_2, imgParty- / Eventzelt4x14_1],
     category: "zelt",
     specifications: {
       "Grundfläche": "40 m² (4 m × 10 m)",
@@ -3513,10 +3513,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "partyzelt-4x14m",
-    name: "Partyzelt 4x14m",
+    name: "Party- / Eventzelt 4x14m",
     description: "Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
-    image: imgPartyzelt4x14_1,
-    images: [imgPartyzelt4x14_1, imgPartyzeltWeiss, imgPartyzelt4x14_2, imgPartyzelt4x14_3],
+    image: imgParty- / Eventzelt4x14_1,
+    images: [imgParty- / Eventzelt4x14_1, imgParty- / EventzeltWeiss, imgParty- / Eventzelt4x14_2, imgParty- / Eventzelt4x14_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "56 m² (4 m × 14 m)",
@@ -3535,7 +3535,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Eventzelt 6x8m extra hoch",
     description: "Eventzelt mit 48 m² und extra hoher Durchgangshöhe von 2,6m – inkl. Seiten- und Stirnwände. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachstangen gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
     image: imgMasse6x8,
-    images: [imgMasse6x8, imgEventzelt6x8_1, imgPartyzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
+    images: [imgMasse6x8, imgEventzelt6x8_1, imgParty- / EventzeltWeiss, imgEventzelt6x8_2, imgEventzelt6x8_3],
     category: "zelt",
     specifications: {
       "Grundfläche": "48 m² (6 m × 8 m)",
@@ -3555,7 +3555,7 @@ export const moebelZelteProducts: Product[] = [
     name: "Eventzelt 6x12m extra hoch",
     description: "Großes Eventzelt mit 72 m² und extra hoher Durchgangshöhe von 2,6m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 130 € an.",
     image: imgMasse6x12,
-    images: [imgMasse6x12, imgEventzelt6x12_1, imgPartyzeltWeiss, imgEventzelt6x12_2],
+    images: [imgMasse6x12, imgEventzelt6x12_1, imgParty- / EventzeltWeiss, imgEventzelt6x12_2],
     category: "zelt",
     specifications: {
       "Grundfläche": "72 m² (6 m × 12 m)",

@@ -26,7 +26,7 @@ const solutionMetaDescriptions: Record<string, string> = {
   "events-veranstaltungen": "Eventausstattung mieten in NRW: PA-Anlagen, Zelte, Beleuchtung, Möbel & Geschirr. Für Hochzeiten, Firmenfeiern & Festivals – inkl. Auf-/Abbauservice.",
   "handwerk-gewerbe": "Profi-Werkzeug & Baumaschinen für Handwerk und Gewerbe mieten in NRW: Bohrmaschinen, Trockner, Kompressoren & mehr. Tiefpreisgarantie.",
   "umzug-transport": "Anhänger für Ihren Umzug mieten: Kastenanhänger, Autotransporter, Planenanhänger – 24/7 per SMS-Code. 3 Standorte in NRW, faire Preise.",
-  "kindergeburtstage": "Kindergeburtstag mieten in NRW: Hüpfburgen, Partyzelte, Besteck, Spiele & Deko. Alles aus einer Hand – mit Lieferung nach Krefeld, Bonn & Mülheim.",
+  "kindergeburtstage": "Kindergeburtstag mieten in NRW: Hüpfburgen, Party- / Eventzelte, Besteck, Spiele & Deko. Alles aus einer Hand – mit Lieferung nach Krefeld, Bonn & Mülheim.",
 };
 
 export default function LoesungDetail() {

@@ -765,7 +765,7 @@ export default function CategoryProducts() {
             filtered = filtered.filter((p) => {
               // Only apply to tents
               if (p.category !== "zelt") return false;
-              // Extract area from product name (e.g. "Partyzelt 4x6m" -> 24m²)
+              // Extract area from product name (e.g. "Party- / Eventzelt 4x6m" -> 24m²)
               const dimMatch = p.name.match(/(\d+)\s*x\s*(\d+)\s*m/i);
               if (dimMatch) {
                 const area = parseInt(dimMatch[1]) * parseInt(dimMatch[2]);
@@ -1050,7 +1050,7 @@ export default function CategoryProducts() {
     huepfburgen: `Hüpfburg mieten ${location.name} – für Kindergeburtstag & Events`,
     "leitern-gerueste": `Rollgerüst & Leiter mieten ${location.name} – bis 8,4m Höhe`,
     "heizung-trocknung": `Bautrockner & Heizung mieten ${location.name} – Sofort verfügbar`,
-    "moebel-zelte": `Partyzelt & Mobiliar mieten ${location.name} – für Events & Feiern`,
+    "moebel-zelte": `Party- / Eventzelt & Mobiliar mieten ${location.name} – für Events & Feiern`,
     "geschirr-glaeser-besteck": `Geschirr & Gläser mieten ${location.name} – 10er-Sets ab 5 €`,
     absperrtechnik: `Bauzaun & Halteverbotsschilder mieten ${location.name} – StVO-konform ✓`,
     "kabel-stromverteiler": `Stromverteiler & Kabel mieten ${location.name} – CEE 16A bis 63A`,
@@ -1096,7 +1096,7 @@ export default function CategoryProducts() {
     beleuchtung: `Eventbeleuchtung mieten in ${cityName}: LED-Scheinwerfer, Moving Head, 4er Bar, LED-Fluter RGBWAUV. SLT Rental.`,
     buehne: `Bühnenelemente & Podeste mieten in ${cityName}: Nivtec Systempodeste, Teleskopfüße. Für Events in NRW – SLT Rental.`,
     "traversen-rigging": `Traversen & Rigging mieten in ${cityName}: Milos M290 Traversen, Multicube, Traversencover. Für Licht & Ton – SLT Rental.`,
-    "moebel-zelte": `Partyzelte & Eventmöbel mieten in ${cityName}: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.`,
+    "moebel-zelte": `Party- / Eventzelte & Eventmöbel mieten in ${cityName}: 3×3 m bis 6×12 m, Bierzeltgarnituren, Stehtische, Stühle. SLT Rental.`,
     "geschirr-glaeser-besteck": `Geschirr, Gläser & Besteck mieten in ${cityName}: Teller, Weingläser, Sektgläser, Besteck – Gastro-Qualität für Events.`,
     spezialeffekte: `Spezialeffekte mieten in ${cityName}: Nebelmaschine, Kalte Funkenfontänen, CO2-Jet. Für Events & Hochzeiten – SLT Rental.`,
     "wohnwagen-camping": `Wohnwagen mieten in ${cityName} ab 30 €/Tag: Weinsberg CaraOne 480 QDK für bis zu 5 Personen mit Dusche, WC, Truma-Heizung & Mover. Servicepauschale 99 €.`,
@@ -1133,7 +1133,7 @@ export default function CategoryProducts() {
     "leitern-gerueste": `Rollgerüst mieten ${location.name}, Leiter mieten ${location.name}, 12 Meter Leiter mieten, 10 Meter Leiter mieten, Gerüst leihen ${location.name}`,
     "heizung-trocknung": `Bautrockner mieten ${location.name}, Heizlüfter mieten, Trocknung mieten, Baustellen Heizlüfter mieten`,
     absperrtechnik: `Bauzaun mieten ${location.name}, Halteverbotsschilder mieten ${location.name}, Absperrgitter mieten, Warnbarke mieten`,
-    "moebel-zelte": `Partyzelt mieten ${location.name}, Zelt mieten ${location.name}, Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
+    "moebel-zelte": `Party- / Eventzelt mieten ${location.name}, Zelt mieten ${location.name}, Eventzelt mieten, Pavillon mieten ${location.name}, Bierzeltgarnitur mieten`,
     "geschirr-glaeser-besteck": `Geschirr mieten ${location.name}, Gläser mieten, Besteck mieten, Eventgeschirr leihen`,
     "kabel-stromverteiler": `Verteilerschrank mieten ${location.name}, Stromverteiler mieten, CEE Adapter mieten, Kabeltrommel mieten`,
     "wohnwagen-camping": `Wohnwagen mieten ${location.name}, Caravan mieten ${location.name}, Camping Wohnwagen leihen ${location.name}, Weinsberg CaraOne mieten, Familien-Wohnwagen mieten ${location.name}, Anhänger-Caravan mieten NRW`,
@@ -1211,8 +1211,8 @@ export default function CategoryProducts() {
       `Unsere Bautrockner haben Trocknungsflächen bis zu 80 m². Heizlüfter bis 9 kW für die Baustellenbeheizung. Wir beraten Sie zur richtigen Gerätekombination für Ihr Trocknungsprojekt.`,
     ],
     "moebel-zelte": [
-      `Partyzelt und Eventmobiliar mieten in ${location.name} – Zelte, Tische, Stühle, Bänke und Bierzeltgarnituren für Hochzeit, Geburtstag, Firmenfeier oder Vereinsfest. Bei SLT Rental finden Sie alles für Ihre Veranstaltung unter einem Dach.`,
-      `Von der kleinen Gartenparty bis zum großen Firmenevent: Wir bieten Partyzelte in verschiedenen Größen und passende Bestuhlung. Lieferung und Abholung in ${location.name} und Umgebung.`,
+      `Party- / Eventzelt und Eventmobiliar mieten in ${location.name} – Zelte, Tische, Stühle, Bänke und Bierzeltgarnituren für Hochzeit, Geburtstag, Firmenfeier oder Vereinsfest. Bei SLT Rental finden Sie alles für Ihre Veranstaltung unter einem Dach.`,
+      `Von der kleinen Gartenparty bis zum großen Firmenevent: Wir bieten Party- / Eventzelte in verschiedenen Größen und passende Bestuhlung. Lieferung und Abholung in ${location.name} und Umgebung.`,
     ],
     "geschirr-glaeser-besteck": [
       `Geschirr, Gläser und Besteck mieten in ${location.name} – 10er-Sets ab 5 €. Hochwertiges Eventgeschirr der Linien Passionata und Darwin sowie praktisches Standard-Geschirr der Linien Simply und Brunelli. Perfekt für Hochzeit, Firmenevent oder Gartenparty.`,
@@ -1366,7 +1366,7 @@ export default function CategoryProducts() {
       { question: `Wann brauche ich einen Bautrockner?`, answer: `Nach Wasserschäden, bei Neubau-Trocknung, Estrichtrocknung oder zur Schimmelvermeidung. Wir beraten Sie zur richtigen Gerätegröße.` },
     ],
     "moebel-zelte": [
-      { question: `Was kostet ein Partyzelt mieten in ${location.name}?`, answer: `Partyzelte gibt es ab ca. 49 €/Tag. Größere Zelte für Hochzeiten und Firmenfeiern sind ab ca. 99 €/Tag verfügbar. Bierzeltgarnituren ab 10 €/Tag.` },
+      { question: `Was kostet ein Party- / Eventzelt mieten in ${location.name}?`, answer: `Party- / Eventzelte gibt es ab ca. 49 €/Tag. Größere Zelte für Hochzeiten und Firmenfeiern sind ab ca. 99 €/Tag verfügbar. Bierzeltgarnituren ab 10 €/Tag.` },
       { question: `Welche Möbel kann ich für Events mieten?`, answer: `Tische, Stühle, Bänke, Bierzeltgarnituren, Stehtische und Polstermöbel – alles bei SLT Rental in ${location.name}.` },
     ],
     "geschirr-glaeser-besteck": [

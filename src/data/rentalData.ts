@@ -347,7 +347,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "moebel-zelte",
     title: "Möbel & Zelte",
-    description: "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
+    description: "Party- / Eventzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar.",
     icon: iconMoebelZelte,
   },
   {

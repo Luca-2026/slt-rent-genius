@@ -95,7 +95,7 @@ export const kbCategories: KBCategory[] = [
   {
     id: "moebel-zelte",
     title: "Möbel & Zelte",
-    description: "Aufbauanleitungen für Partyzelte, Eventzelte, Sonnenschirme und Eventmöbel.",
+    description: "Aufbauanleitungen für Party- / Eventzelte, Eventzelte, Sonnenschirme und Eventmöbel.",
     icon: "Tent",
     articleCount: 2,
   },
@@ -1180,8 +1180,8 @@ export const kbArticles: KBArticle[] = [
   // Zelte
   {
     id: "partyzelt-3x3-aufbau",
-    title: "Partyzelt ClassicPro 3x3m – Aufbauanleitung (PDF)",
-    description: "Offizielle Aufbauanleitung für das Partyzelt ClassicPro 3x3m: Aufbau, Sicherung und Abbau.",
+    title: "Party- / Eventzelt ClassicPro 3x3m – Aufbauanleitung (PDF)",
+    description: "Offizielle Aufbauanleitung für das Party- / Eventzelt ClassicPro 3x3m: Aufbau, Sicherung und Abbau.",
     categoryId: "moebel-zelte",
     productIds: ["partyzelt-3x3m", "bonn-partyzelt-3x3"],
     type: "anleitung",
@@ -1191,14 +1191,14 @@ export const kbArticles: KBArticle[] = [
     sections: [
       {
         heading: "Aufbauanleitung",
-        text: "Die vollständige Aufbauanleitung für das Partyzelt ClassicPro 3x3m finden Sie als PDF-Download auf dieser Seite.",
+        text: "Die vollständige Aufbauanleitung für das Party- / Eventzelt ClassicPro 3x3m finden Sie als PDF-Download auf dieser Seite.",
       },
     ],
   },
   {
     id: "partyzelt-4m-aufbau",
-    title: "Partyzelt 4m Breite – Aufbauanleitung (PDF)",
-    description: "Offizielle Aufbauanleitung für Partyzelte mit 4m Breite (4x4, 4x6, 4x10, 4x14): Aufbau, Sicherung und Abbau.",
+    title: "Party- / Eventzelt 4m Breite – Aufbauanleitung (PDF)",
+    description: "Offizielle Aufbauanleitung für Party- / Eventzelte mit 4m Breite (4x4, 4x6, 4x10, 4x14): Aufbau, Sicherung und Abbau.",
     categoryId: "moebel-zelte",
     productIds: ["partyzelt-4x4m", "partyzelt-4x6m", "partyzelt-4x10m", "partyzelt-4x14m"],
     type: "anleitung",
@@ -1208,7 +1208,7 @@ export const kbArticles: KBArticle[] = [
     sections: [
       {
         heading: "Aufbauanleitung",
-        text: "Die vollständige Aufbauanleitung für Partyzelte mit 4m Breite (4x4, 4x6, 4x10, 4x14) findest Du als PDF-Download auf dieser Seite.",
+        text: "Die vollständige Aufbauanleitung für Party- / Eventzelte mit 4m Breite (4x4, 4x6, 4x10, 4x14) findest Du als PDF-Download auf dieser Seite.",
       },
     ],
   },
