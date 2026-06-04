@@ -3703,6 +3703,31 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "3KTRT8" }
   },
   {
+    id: "klappstuhl-event-black",
+    name: "Klappstuhl Event black",
+    description: "Wetterbeständiger Event-Klappstuhl mit Stahlrohrgestell und Polypropylen-Sitzschale. Stapelbar bis 50 Stück, Belastbarkeit max. 120 kg, mit praktischer Regenabfluss-Bohrung in der Sitzfläche.",
+    image: imgKlappstuhlEventBlack1,
+    images: [imgKlappstuhlEventBlack1, imgKlappstuhlEventBlack2, imgKlappstuhlEventBlack3, imgKlappstuhlEventBlack4, imgKlappstuhlEventBlack5, imgKlappstuhlEventBlack6, imgKlappstuhlEventBlack7, imgKlappstuhlEventBlack8],
+    category: "moebel",
+    specifications: {
+      "Farbe": "schwarz",
+      "Material Gestell": "geschweißtes Stahlrohr (Ø 19 × 1,20 mm)",
+      "Material Sitz / Rückenlehne": "Polypropylen",
+      "Sitzhöhe": "45 cm",
+      "Sitzfläche": "39,5 × 40 cm",
+      "Stuhlhöhe (offen)": "80,5 cm",
+      "Stuhlhöhe (geklappt)": "97 cm",
+      "Stuhltiefe (offen)": "44 cm",
+      "Abmessungen zusammengeklappt": "97 × 45,5 cm",
+      "Belastbarkeit": "max. 120 kg",
+      "Gewicht": "3,4 kg",
+      "Stapelhöhe": "bis 50 Stück (eingeklappt)",
+      "Pro Euro-Palette": "100 Stühle (2 Stapel à 50)",
+      "Besonderheit": "Regenabfluss-Bohrung in der Sitzfläche",
+    },
+    rentwareCode: { krefeld: "KKVNMJ" }
+  },
+  {
     id: "getraenkekuehlschrank-236l",
     name: "Getränkekühlschrank 236l",
     description: "Gewerblicher Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
