@@ -353,6 +353,12 @@ import endverteilerEv32_3Asset from "@/assets/products/endverteiler-ev32-3.jpg.a
 const imgEndverteilerEv32_1 = endverteilerEv32_1Asset.url;
 const imgEndverteilerEv32_2 = endverteilerEv32_2Asset.url;
 const imgEndverteilerEv32_3 = endverteilerEv32_3Asset.url;
+import endverteilerEv63_1Asset from "@/assets/products/endverteiler-ev63-1.png.asset.json";
+import endverteilerEv63_2Asset from "@/assets/products/endverteiler-ev63-2.jpg.asset.json";
+import endverteilerEv63_3Asset from "@/assets/products/endverteiler-ev63-3.webp.asset.json";
+const imgEndverteilerEv63_1 = endverteilerEv63_1Asset.url;
+const imgEndverteilerEv63_2 = endverteilerEv63_2Asset.url;
+const imgEndverteilerEv63_3 = endverteilerEv63_3Asset.url;
 import ceeKabel32aRot50m1 from "@/assets/products/cee-kabel-32a-rot-50m-1.jpeg";
 import schukokabel3m1 from "@/assets/products/schukokabel-3m-1.jpeg";
 import netzwerkkabelCat5e5m1 from "@/assets/products/netzwerkkabel-cat5e-5m-1.jpeg";
