@@ -410,11 +410,11 @@ function markdownLinks(links: RentalLink[]) {
 }
 
 function bookingHint() {
-  return "Klick auf den passenden Artikel. Auf der Artikelseite öffnest du über **„Jetzt mieten“** den Kalender, siehst die aktuelle Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.";
+  return "Auf der Artikelseite klickst du auf **„Jetzt mieten“** und buchst dort Zeitraum und Verfügbarkeit direkt online.";
 }
 
 function buildLinkResponse(intro: string, links: RentalLink[]) {
-  return `${intro}\n\n${markdownLinks(links)}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  return `${intro}\n\n${markdownLinks(links)}\n\n${bookingHint()}`;
 }
 
 function getMinibaggerLinks(text: string, location: string): RentalLink[] {
@@ -546,7 +546,7 @@ function locationLabel(location: string) {
 function buildPlanen750Response(location: string) {
   const links = planen750Links[location];
   if (!links) return null;
-  return `Klar – für ${locationLabel(location)} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  return `Klar – für ${locationLabel(location)} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nAuf der Artikelseite klickst du auf **„Jetzt mieten“** und buchst dort direkt online.`;
 }
 
 // ---------- Bautrockner Flow ----------
