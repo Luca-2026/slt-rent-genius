@@ -40,6 +40,7 @@ import { locationData } from "@/data/locationData";
 
 import { HeroBackgroundSlider } from "@/components/home/HeroBackgroundSlider";
 import { GoogleReviews as GoogleReviewsComponent } from "@/components/reviews/GoogleReviews";
+import { SummerPromoBanner, SummerPromoDialog } from "@/components/home/SummerPromoBanner";
 
 export default function Index() {
   const { t } = useTranslation();
@@ -136,6 +137,11 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* Summer Promo – 10% EVENT10 */}
+      <SummerPromoBanner />
+      <SummerPromoDialog />
+
 
       {/* Locations / Standorte */}
       <section className="py-16 lg:py-20">
