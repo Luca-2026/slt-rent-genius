@@ -328,6 +328,77 @@ Zahlung: Bar, EC-Karte oder Überweisung.
 - Für B2B-Kunden (Unternehmen) gibt es ein separates B2B-Portal unter /b2b
 - Verweise bei Anleitungsfragen auf die Hilfe-Seite: www.slt-rental.de/hilfe`;
 
+type ChatMessage = { role?: string; content?: string };
+
+const planen750Links: Record<string, { label: string; url: string }[]> = {
+  krefeld: [
+    { label: "Planenanhänger S 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Krefeld", url: "https://www.slt-rental.de/mieten/krefeld/anhaenger/planen-xxl-750/" },
+  ],
+  bonn: [
+    { label: "Planenanhänger S 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Bonn", url: "https://www.slt-rental.de/mieten/bonn/anhaenger/planen-xxl-750/" },
+  ],
+  muelheim: [
+    { label: "Planenanhänger S 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-s-750/" },
+    { label: "Planenanhänger M 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-m-750/" },
+    { label: "Planenanhänger L 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-l-750/" },
+    { label: "Planenanhänger XL 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xl-750/" },
+    { label: "Planenanhänger XXL 750 kg in Mülheim an der Ruhr", url: "https://www.slt-rental.de/mieten/muelheim/anhaenger/planen-xxl-750/" },
+  ],
+};
+
+function detectLocation(text: string) {
+  const normalized = text.toLowerCase();
+  if (normalized.includes("bonn")) return "bonn";
+  if (normalized.includes("krefeld")) return "krefeld";
+  if (normalized.includes("mülheim") || normalized.includes("muelheim") || normalized.includes("ruhr")) return "muelheim";
+  return null;
+}
+
+function buildPlanen750Response(location: string) {
+  const links = planen750Links[location];
+  if (!links) return null;
+  const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+  return `Klar – für ${locationLabel} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+}
+
+function getDeterministicResponse(messages: ChatMessage[]) {
+  const lastUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
+  const allText = messages.map((message) => message.content ?? "").join("\n");
+  const relevantText = `${lastUser}\n${allText}`.toLowerCase();
+  const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
+  const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUser.toLowerCase());
+
+  if (!asksForTrailer || !asksForLinks) return null;
+  const location = detectLocation(lastUser) ?? detectLocation(allText);
+  if (!location) {
+    return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+  }
+  return buildPlanen750Response(location);
+}
+
+function streamText(text: string) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`));
+      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+  });
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
