@@ -26,7 +26,7 @@ export function JobCard({ job }: JobCardProps) {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex-1 min-w-0">
             <h3 className="text-xl font-semibold text-foreground mb-2">
-              <Link to={`/karriere/${job.slug}`} className="hover:text-primary transition-colors">
+              <Link to={`/karriere/${job.slug}/`} className="hover:text-primary transition-colors">
                 {job.title}
               </Link>
             </h3>
@@ -55,12 +55,12 @@ export function JobCard({ job }: JobCardProps) {
           </div>
           <div className="shrink-0 flex sm:flex-col gap-2">
             <Button asChild className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-              <Link to={`/karriere/${job.slug}`}>
+              <Link to={`/karriere/${job.slug}/`}>
                 Jetzt bewerben
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to={`/karriere/${job.slug}`}>
+              <Link to={`/karriere/${job.slug}/`}>
                 Details <ChevronRight className="h-4 w-4 ml-1" />
               </Link>
             </Button>

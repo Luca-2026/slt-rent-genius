@@ -791,7 +791,7 @@ function buildJobPostingJsonLd(job: typeof jobListings[number], absUrl: string) 
 }
 
 const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
-  const path = `/karriere/${job.slug}`;
+  const path = `/karriere/${job.slug}/`;
   const absUrl = `${BASE_URL}${path}`;
   const title = clamp(job.seoTitle ?? `${job.title} – Job in ${job.location} | SLT Rental`, 65);
   const description = clampDesc(
