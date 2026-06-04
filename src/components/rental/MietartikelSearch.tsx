@@ -185,62 +185,50 @@ export function MietartikelSearch() {
     <>
       <div ref={searchRef} className="max-w-2xl mx-auto relative">
         <style>{`
-          @keyframes searchRingDraw {
-            0%   { stroke-dashoffset: 1; }
-            50%  { stroke-dashoffset: 0; }
-            100% { stroke-dashoffset: -1; }
+          @keyframes searchRingSpin {
+            to { transform: rotate(1turn); }
           }
         `}</style>
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-          <Input
-            type="text"
-            placeholder={t("mietartikel.searchPlaceholder", { defaultValue: "Artikel suchen, z.B. Minibagger, Anhänger, Hüpfburg..." })}
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setShowResults(true);
-            }}
-            onFocus={() => { if (searchQuery) setShowResults(true); }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && filteredProducts.length > 0) {
-                e.preventDefault();
-                handleProductSelect(filteredProducts[0]);
-              }
-            }}
-            className="pl-12 pr-10 py-3 h-12 text-base border-input focus-visible:ring-accent rounded-xl shadow-sm"
-          />
-          {/* Animated orange highlight border – draws around, erases, repeats */}
-          <svg
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 w-full h-full overflow-visible"
-            preserveAspectRatio="none"
-          >
-            <rect
-              x="0"
-              y="0"
-              width="100%"
-              height="100%"
-              rx="12"
-              ry="12"
-              fill="none"
-              stroke="#ff8e02"
-              strokeWidth="2"
-              pathLength={1}
-              strokeDasharray="1 1"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-              style={{ animation: "searchRingDraw 3s ease-in-out infinite" }}
+        <div className="relative rounded-xl">
+          {/* Animated orange rotating border */}
+          <div className="pointer-events-none absolute -inset-[2px] rounded-xl overflow-hidden">
+            <div
+              className="absolute left-1/2 top-1/2 aspect-square w-[200%] -translate-x-1/2 -translate-y-1/2"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, transparent 240deg, rgba(255,142,2,0.0) 250deg, #ff8e02 305deg, #ffb255 325deg, rgba(255,142,2,0.0) 350deg, transparent 360deg)",
+                animation: "searchRingSpin 3s linear infinite",
+              }}
             />
-          </svg>
-          {searchQuery && (
-            <button
-              onClick={() => { setSearchQuery(""); setShowResults(false); }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground z-10"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+          </div>
+          <div className="relative bg-background rounded-xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+            <Input
+              type="text"
+              placeholder={t("mietartikel.searchPlaceholder", { defaultValue: "Artikel suchen, z.B. Minibagger, Anhänger, Hüpfburg..." })}
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowResults(true);
+              }}
+              onFocus={() => { if (searchQuery) setShowResults(true); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && filteredProducts.length > 0) {
+                  e.preventDefault();
+                  handleProductSelect(filteredProducts[0]);
+                }
+              }}
+              className="relative pl-12 pr-10 py-3 h-12 text-base bg-background border-transparent focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl shadow-sm"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => { setSearchQuery(""); setShowResults(false); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground z-10"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Dropdown Results */}
