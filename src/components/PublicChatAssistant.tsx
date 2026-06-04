@@ -236,27 +236,32 @@ export function PublicChatAssistant() {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center group"
         aria-label="Renty – KI-Assistentin öffnen"
       >
-        {/* Slowly rotating highlight ring around the button */}
+        {/* Orange highlight ring – draws fully around, then erases, then repeats */}
         {!open && (
-          <span className="absolute inset-[-3px] pointer-events-none z-0">
-            <svg
-              className={`w-full h-full animate-[spin_4s_linear_infinite] ${
-                pulseOrange ? "text-[#ff8e02]" : "text-primary"
-              }`}
-              viewBox="0 0 100 100"
-            >
-              <circle
-                cx="50"
-                cy="50"
-                r="46"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeDasharray="280 40"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
+          <>
+            <style>{`
+              @keyframes rentyRingDraw {
+                0%   { stroke-dashoffset: 289; }
+                50%  { stroke-dashoffset: 0; }
+                100% { stroke-dashoffset: -289; }
+              }
+            `}</style>
+            <span className="absolute inset-[-3px] pointer-events-none z-0">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="46"
+                  fill="none"
+                  stroke="#ff8e02"
+                  strokeWidth="3"
+                  strokeDasharray="289 289"
+                  strokeLinecap="round"
+                  style={{ animation: "rentyRingDraw 3s ease-in-out infinite" }}
+                />
+              </svg>
+            </span>
+          </>
         )}
         <span className="relative z-10">
           {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
