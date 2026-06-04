@@ -851,19 +851,16 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const explicitLinkAsk = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen|brauche|möchte|moechte|suche|empfehl)/i.test(lastUserLower);
   const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
 
-  // --- Minibagger ---
+  // --- Minibagger (strukturierte Beratung statt blankem Link) ---
   if ((explicitLinkAsk || continuation) && mentionsMinibagger) {
     if (!location) {
-      return "Gerne – für welchen Standort soll ich dir die passenden Minibagger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+      return "Gerne – für welchen Standort soll ich dich beraten: Krefeld, Bonn oder Mülheim an der Ruhr? Sag mir gleich noch dazu, welche **Grabtiefe** du brauchst und wie **eng der Zugang** zur Baustelle ist – dann empfehle ich dir das passende Modell.";
     }
-    const links = getMinibaggerLinks(relevantText, location);
-    if (links.length > 0) {
-      const loc = locationLabel(location);
-      const intro = links.length === 1
-        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${loc}:`
-        : `Klar – diese geprüften Minibagger-Links sind für ${loc} verfügbar (alle Modelle der entsprechenden Klasse):`;
-      return buildLinkResponse(intro, links);
+    const spec = findMinibaggerByText(relevantText);
+    if (spec) {
+      return buildMinibaggerConsultResponse(spec, location, allText);
     }
+    return buildMinibaggerOverviewResponse(location, allText);
   }
 
   // --- Bautrockner ---
