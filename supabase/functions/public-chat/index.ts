@@ -548,6 +548,15 @@ function userHistoryText(messages: ChatMessage[]) {
     .join("\n");
 }
 
+function detectRecentUserTopic(messages: ChatMessage[], matcher: (text: string) => boolean) {
+  const userMessages = messages.filter((message) => message.role === "user" && typeof message.content === "string");
+  const start = Math.max(0, userMessages.length - 6);
+  for (let i = userMessages.length - 2; i >= start; i--) {
+    if (matcher(userMessages[i].content ?? "")) return true;
+  }
+  return false;
+}
+
 function normalizeForSearch(value: string) {
   return value
     .toLowerCase()
