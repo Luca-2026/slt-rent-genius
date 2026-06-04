@@ -650,8 +650,8 @@ function getDeterministicResponse(messages: ChatMessage[]) {
     if (!location) {
       return "Gerne – für welchen Standort soll ich dir den passenden Bautrockner empfehlen: Krefeld, Bonn oder Mülheim an der Ruhr?";
     }
-    const area = extractArea(relevantText);
-    const response = buildBautrocknerResponse(location, area);
+    const need = extractBautrocknerNeed(relevantText);
+    const response = buildBautrocknerResponse(location, need);
     if (response) return response;
   }
 
