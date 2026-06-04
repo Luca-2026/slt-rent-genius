@@ -227,10 +227,12 @@ export const moebelZelteFilterSections: FilterSection[] = [
     options: [
       { id: "zelt", label: "catFilters.zelte", sublabel: "catFilters.zelte_sub" },
       { id: "moebel", label: "catFilters.tischeStühle", sublabel: "catFilters.tischeStühle_sub" },
+      { id: "stuhl", label: "catFilters.stuehle", sublabel: "catFilters.stuehle_sub" },
       { id: "husse", label: "catFilters.hussen", sublabel: "catFilters.hussen_sub" },
       { id: "kuehlgeraet", label: "catFilters.kuehlgeraete", sublabel: "catFilters.kuehlgeraete_sub" },
       { id: "garderobe", label: "catFilters.garderobe", sublabel: "catFilters.garderobe_sub" },
     ],
+
   },
   {
     id: "zeltgroesse",

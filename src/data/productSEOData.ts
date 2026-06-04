@@ -6743,9 +6743,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "bonn-klappstuhl-event-black": {
     excelName: "Klappstuhl Event black",
     seoTitle: "Klappstuhl Event black mieten in Bonn | SLT Rental",
-    metaDescription: "Robuster Event-Klappstuhl (schwarz) in Bonn mieten: Stahlrohr-Gestell, Polypropylen-Sitz, bis 120 kg belastbar, stapelbar bis 50 Stück, mit Regenabfluss.",
-    h1: "Klappstuhl Event black mieten in Bonn – Jetzt verfügbar bei SLT Rental",
+    metaDescription: "Robuster Event-Klappstuhl (schwarz) in Bonn mieten ab 1,90 € pro Tag: Stahlrohr-Gestell, Polypropylen-Sitz, bis 120 kg belastbar, stapelbar bis 50 Stück.",
+    h1: "Klappstuhl Event black mieten in Bonn – ab 1,90 € / Tag bei SLT Rental",
     h2s: ["Technische Daten & Material", "Wetterbeständig & stapelbar", "Transport & Lagerung"],
+    dailyPriceFrom: 1.9,
+
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für Reihenbestuhlung bei Tagungen, Konzerten, Open-Air-Events, Hochzeiten und Firmenfeiern in Bonn und Umgebung.",
     useCasePrivat: "Geeignet für Geburtstage, Familienfeiern und Gartenpartys – schnell auf- und abgebaut, platzsparend stapelbar.",
@@ -6762,9 +6764,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "klappstuhl-event-black": {
     excelName: "Klappstuhl Event black",
     seoTitle: "Klappstuhl Event black mieten in Krefeld | SLT Rental",
-    metaDescription: "Event-Klappstuhl (schwarz) in Krefeld mieten – Stahlrohr-Gestell, Polypropylen, 120 kg belastbar, stapelbar bis 50 Stück. In Mülheim an der Ruhr auf Anfrage.",
-    h1: "Klappstuhl Event black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
+    metaDescription: "Event-Klappstuhl (schwarz) in Krefeld mieten ab 1,90 € pro Tag – Stahlrohr-Gestell, Polypropylen, 120 kg belastbar, stapelbar. In Mülheim an der Ruhr auf Anfrage.",
+    h1: "Klappstuhl Event black mieten in Krefeld – ab 1,90 € / Tag bei SLT Rental",
     h2s: ["Technische Daten & Material", "Wetterbeständig & stapelbar", "Transport, Lagerung & Verfügbarkeit"],
+    dailyPriceFrom: 1.9,
+
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für Reihenbestuhlung bei Konzerten, Open-Air-Events, Tagungen, Hochzeiten und Firmenfeiern – am Standort Krefeld direkt buchbar, in Mülheim an der Ruhr auf Anfrage.",
     useCasePrivat: "Passend für Geburtstage, Familienfeste und Gartenpartys. Dank geringem Gewicht von 3,4 kg schnell auf- und abgebaut und platzsparend stapelbar.",
