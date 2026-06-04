@@ -236,15 +236,29 @@ export function PublicChatAssistant() {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center group"
         aria-label="Renty – KI-Assistentin öffnen"
       >
-        {/* Pulsing ring to draw attention when closed — orange on mobile homepage hero, blue elsewhere */}
+        {/* Slowly rotating highlight ring around the button */}
         {!open && (
-          <span
-            className={`absolute inset-0 rounded-full animate-ping pointer-events-none ${
-              pulseOrange ? "bg-[#ff8e02]/40" : "bg-primary/40"
-            }`}
-          />
+          <span className="absolute inset-[-3px] pointer-events-none z-0">
+            <svg
+              className={`w-full h-full animate-[spin_4s_linear_infinite] ${
+                pulseOrange ? "text-[#ff8e02]" : "text-primary"
+              }`}
+              viewBox="0 0 100 100"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="46"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeDasharray="280 40"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
         )}
-        <span className="relative">
+        <span className="relative z-10">
           {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
         </span>
         {/* "Renty" label – visible on hover on desktop */}
