@@ -515,6 +515,22 @@ const planen750Links: Record<string, { label: string; url: string }[]> = {
   ],
 };
 
+// Bautrockner – exakt aus Produktdatenbank (Allegra KT200 + KT553)
+const bautrocknerCatalog = [
+  {
+    slug: "bautrockner-kt200",
+    label: "Bautrockner 20 l/Tag (Allegra KT200)",
+    maxArea: 20,
+    summary: "kompakter Kondensations-Bautrockner, bis 20 l/24h, geeignet für Räume bis ca. 20 m² (350 W, 4-l-Tank, Schlauchanschluss, geeichter MID-Stromzähler).",
+  },
+  {
+    slug: "bautrockner-kt553",
+    label: "Bautrockner 50 l/Tag (Allegra KT553/KT554)",
+    maxArea: 60,
+    summary: "professioneller Kondensations-Bautrockner, bis 50 l/24h, geeignet für 50–60 m² (700 W, 4-l-Tank, Schlauchanschluss, geeichter MID-Stromzähler).",
+  },
+];
+
 function detectLocation(text: string) {
   const normalized = text.toLowerCase();
   if (normalized.includes("bonn")) return "bonn";
@@ -523,21 +539,74 @@ function detectLocation(text: string) {
   return null;
 }
 
+function locationLabel(location: string) {
+  return location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+}
+
 function buildPlanen750Response(location: string) {
   const links = planen750Links[location];
   if (!links) return null;
-  const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
-  return `Klar – für ${locationLabel} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  return `Klar – für ${locationLabel(location)} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+}
+
+// ---------- Bautrockner Flow ----------
+
+function extractArea(text: string): number | null {
+  const match = text.match(/(\d{1,4})\s*(?:m²|m2|qm|quadratmeter)/i);
+  if (!match) return null;
+  const n = parseInt(match[1], 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+function bautrocknerLink(location: string, slug: string) {
+  const path = `/mieten/${location}/heizung-trocknung/${slug}/`;
+  const url = toVerifiedRentalUrl(path);
+  return url;
+}
+
+function buildBautrocknerResponse(location: string, area: number | null) {
+  const loc = locationLabel(location);
+  const both = bautrocknerCatalog
+    .map((item) => ({ ...item, url: bautrocknerLink(location, item.slug) }))
+    .filter((item) => item.url);
+
+  if (both.length === 0) return null;
+
+  // Empfehlung anhand der Fläche
+  let recommended: typeof both | null = null;
+  let intro: string;
+  if (area !== null) {
+    const pick = area <= 20 ? both.filter((b) => b.slug === "bautrockner-kt200") : both.filter((b) => b.slug === "bautrockner-kt553");
+    recommended = pick.length ? pick : both;
+    intro = `Für ca. ${area} m² in ${loc} passt das hier am besten:`;
+  } else {
+    recommended = both;
+    intro = `Damit ich dir das richtige Modell in ${loc} empfehle, hilft mir kurz: Wie groß ist die zu trocknende Fläche (in m²) und wie hoch ist der Wasserschaden grob (feucht / nass / stark durchnässt)?\n\nUnsere zwei Modelle in ${loc}:`;
+  }
+
+  const lines = recommended.map((item) => `- [${item.label}](${SITE_ORIGIN}${item.url!.replace(SITE_ORIGIN, "")}) – ${item.summary}`).join("\n");
+  return `${intro}\n\n${lines}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+}
+
+// ---------- Conversation helpers ----------
+
+function isShortFollowUp(text: string) {
+  // Kurze Antworten wie "für Krefeld", "Bonn", "ca. 30 m²"
+  return text.trim().split(/\s+/).length <= 6;
 }
 
 function getDeterministicResponse(messages: ChatMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
   const allText = messages.map((message) => message.content ?? "").join("\n");
   const relevantText = `${lastUser}\n${allText}`.toLowerCase();
-  const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
-  const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUser.toLowerCase());
+  const historyLower = allText.toLowerCase();
+  const lastUserLower = lastUser.toLowerCase();
+
   const location = detectLocation(lastUser) ?? detectLocation(allText);
 
+  // --- Anhänger 750 kg Planen ---
+  const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
+  const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUserLower);
   if (asksForTrailer && asksForLinks) {
     if (!location) {
       return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
@@ -545,32 +614,47 @@ function getDeterministicResponse(messages: ChatMessage[]) {
     return buildPlanen750Response(location);
   }
 
-  const asksForRentalLink = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen)/i.test(lastUser);
+  // Continuation-Detektor: Topic im Verlauf erwähnt, lastUser ist kurz (z. B. nur Standort/Spec)
   const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
+  const mentionsBautrockner = /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(relevantText);
 
-  if (asksForRentalLink && mentionsMinibagger) {
+  const explicitLinkAsk = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen|brauche|möchte|moechte|suche|empfehl)/i.test(lastUserLower);
+  const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
+
+  // --- Minibagger ---
+  if ((explicitLinkAsk || continuation) && mentionsMinibagger) {
     if (!location) {
       return "Gerne – für welchen Standort soll ich dir die passenden Minibagger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
     }
     const links = getMinibaggerLinks(relevantText, location);
     if (links.length > 0) {
-      const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+      const loc = locationLabel(location);
       const intro = links.length === 1
-        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${locationLabel}:`
-        : `Klar – diese geprüften Minibagger-Links sind für ${locationLabel} verfügbar:`;
+        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${loc}:`
+        : `Klar – diese geprüften Minibagger-Links sind für ${loc} verfügbar (alle Modelle der entsprechenden Klasse):`;
       return buildLinkResponse(intro, links);
     }
   }
 
-  if (asksForRentalLink) {
+  // --- Bautrockner ---
+  if ((explicitLinkAsk || continuation) && mentionsBautrockner) {
+    if (!location) {
+      return "Gerne – für welchen Standort soll ich dir den passenden Bautrockner empfehlen: Krefeld, Bonn oder Mülheim an der Ruhr?";
+    }
+    const area = extractArea(relevantText);
+    const response = buildBautrocknerResponse(location, area);
+    if (response) return response;
+  }
+
+  // --- Sonstige Kategorien mit Standort ---
+  if (explicitLinkAsk) {
     const category = detectCategory(relevantText);
     if (location && category) {
       const productLinks = searchVerifiedProductLinks(relevantText, location, category.id);
       if (productLinks.length > 0) {
-        const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
-        return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel}:`, productLinks);
+        return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel(location)}:`, productLinks);
       }
-      const categoryLink = fallbackCategoryLink(location, category.id, `${category.label} in ${location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld"}`);
+      const categoryLink = fallbackCategoryLink(location, category.id, `${category.label} in ${locationLabel(location)}`);
       if (categoryLink) {
         return buildLinkResponse("Den exakten Produktlink kann ich hier nicht eindeutig genug bestimmen. Deshalb verlinke ich dir bewusst nur die geprüfte Kategorie-Übersicht:", [categoryLink]);
       }
