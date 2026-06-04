@@ -551,11 +551,16 @@ function buildPlanen750Response(location: string) {
 
 // ---------- Bautrockner Flow ----------
 
-function extractArea(text: string): number | null {
-  const match = text.match(/(\d{1,4})\s*(?:m²|m2|qm|quadratmeter|l(?:iter)?(?:\s*\/\s*(?:tag|24\s*h))?)/i);
+function extractBautrocknerNeed(text: string): { value: number; unit: "area" | "capacity" } | null {
+  const match = text.match(/(\d{1,4})\s*(m²|m2|qm|quadratmeter|l(?:iter)?(?:\s*\/\s*(?:tag|24\s*h))?)/i);
   if (!match) return null;
   const n = parseInt(match[1], 10);
-  return Number.isFinite(n) ? n : null;
+  if (!Number.isFinite(n)) return null;
+  return { value: n, unit: /^l/i.test(match[2]) ? "capacity" : "area" };
+}
+
+function extractArea(text: string): number | null {
+  return extractBautrocknerNeed(text)?.value ?? null;
 }
 
 function bautrocknerLink(location: string, slug: string) {
@@ -564,7 +569,7 @@ function bautrocknerLink(location: string, slug: string) {
   return url;
 }
 
-function buildBautrocknerResponse(location: string, area: number | null) {
+function buildBautrocknerResponse(location: string, need: { value: number; unit: "area" | "capacity" } | null) {
   const loc = locationLabel(location);
   const both = bautrocknerCatalog
     .map((item) => ({ ...item, url: bautrocknerLink(location, item.slug) }))
@@ -575,17 +580,20 @@ function buildBautrocknerResponse(location: string, area: number | null) {
   // Empfehlung anhand der Fläche bzw. Leistung (z. B. "20l")
   let recommended: typeof both | null = null;
   let intro: string;
-  if (area !== null) {
+  if (need !== null) {
+    const area = need.value;
     const pick = area <= 20 ? both.filter((b) => b.slug === "bautrockner-kt200") : both.filter((b) => b.slug === "bautrockner-kt553");
     recommended = pick.length ? pick : both;
-    intro = `Für ${area} ${area <= 20 ? "l/Tag bzw. ca. 20 m²" : "m²"} in ${loc} passt dieser Bautrockner:`;
+    intro = need.unit === "capacity"
+      ? `Für ${area} l/Tag in ${loc} passt dieser Bautrockner:`
+      : `Für ca. ${area} m² in ${loc} passt dieser Bautrockner:`;
   } else {
     recommended = both;
     intro = `Ja – in ${loc} haben wir diese Bautrockner:`;
   }
 
   const lines = recommended.map((item) => `- [${item.label}](${SITE_ORIGIN}${item.url!.replace(SITE_ORIGIN, "")}) – ${item.summary}`).join("\n");
-  const question = area === null ? "\n\nWenn du unsicher bist: Wie groß ist die zu trocknende Fläche in m²?" : "";
+  const question = need === null ? "\n\nWenn du unsicher bist: Wie groß ist die zu trocknende Fläche in m²?" : "";
   return `${intro}\n\n${lines}\n\n${bookingHint()}${question}`;
 }
 
