@@ -390,6 +390,14 @@ import imgBierzeltgarniturSet3 from "@/assets/products/bierzeltgarnitur-set-3.jp
 
 // Stuhl weiß images
 import imgStuhlWeiss1 from "@/assets/products/stuhl-weiss-1.jpeg";
+import imgKlappstuhlEventBlack1 from "@/assets/products/moebel/klappstuhl-event-4505050-awzr41xgq1dhtz.jpg.webp";
+import imgKlappstuhlEventBlack2 from "@/assets/products/moebel/klappstuhl-event-4505050_3d.jpg.webp";
+import imgKlappstuhlEventBlack3 from "@/assets/products/moebel/klappstuhl-event-4505050_3h.jpg.webp";
+import imgKlappstuhlEventBlack4 from "@/assets/products/moebel/klappstuhl-event-4505050-02la3xtmriarxhi.jpg.webp";
+import imgKlappstuhlEventBlack5 from "@/assets/products/moebel/klappstuhl-event-4505050-d.jpg.webp";
+import imgKlappstuhlEventBlack6 from "@/assets/products/moebel/klappstuhl-event-4505050-01qu0piv2hby4xm.jpg.webp";
+import imgKlappstuhlEventBlack7 from "@/assets/products/moebel/klappstuhl-event-4505050-b.jpg.webp";
+import imgKlappstuhlEventBlack8 from "@/assets/products/moebel/klappstuhl-event-4505050_3i.jpg.webp";
 
 // Bierzeltgarnitur Hussen-Set images
 import imgBierzeltHussenWeiss1 from "@/assets/products/bierzeltgarnitur-hussen-weiss-1.jpeg";
@@ -3693,6 +3701,31 @@ export const moebelZelteProducts: Product[] = [
       "Höhe Rückenlehne": "ca. 37,5 cm",
     },
     rentwareCode: { krefeld: "3KTRT8" }
+  },
+  {
+    id: "klappstuhl-event-black",
+    name: "Klappstuhl Event black",
+    description: "Wetterbeständiger Event-Klappstuhl mit Stahlrohrgestell und Polypropylen-Sitzschale. Stapelbar bis 50 Stück, Belastbarkeit max. 120 kg, mit praktischer Regenabfluss-Bohrung in der Sitzfläche.",
+    image: imgKlappstuhlEventBlack1,
+    images: [imgKlappstuhlEventBlack1, imgKlappstuhlEventBlack2, imgKlappstuhlEventBlack3, imgKlappstuhlEventBlack4, imgKlappstuhlEventBlack5, imgKlappstuhlEventBlack6, imgKlappstuhlEventBlack7, imgKlappstuhlEventBlack8],
+    category: "moebel",
+    specifications: {
+      "Farbe": "schwarz",
+      "Material Gestell": "geschweißtes Stahlrohr (Ø 19 × 1,20 mm)",
+      "Material Sitz / Rückenlehne": "Polypropylen",
+      "Sitzhöhe": "45 cm",
+      "Sitzfläche": "39,5 × 40 cm",
+      "Stuhlhöhe (offen)": "80,5 cm",
+      "Stuhlhöhe (geklappt)": "97 cm",
+      "Stuhltiefe (offen)": "44 cm",
+      "Abmessungen zusammengeklappt": "97 × 45,5 cm",
+      "Belastbarkeit": "max. 120 kg",
+      "Gewicht": "3,4 kg",
+      "Stapelhöhe": "bis 50 Stück (eingeklappt)",
+      "Pro Euro-Palette": "100 Stühle (2 Stapel à 50)",
+      "Besonderheit": "Regenabfluss-Bohrung in der Sitzfläche",
+    },
+    rentwareCode: { krefeld: "KKVNMJ" }
   },
   {
     id: "getraenkekuehlschrank-236l",
