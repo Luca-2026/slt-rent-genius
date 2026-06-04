@@ -2027,6 +2027,7 @@ export const bonnZelteProducts = [
     image: "/placeholder.svg",
     category: "zelt",
     pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
+    pricePerDay: "ab 1 €",
     specifications: {
       "Material": "Recycelter Kunststoff-Mix",
       "Abmessung": "1.000 × 860 mm (0,86 m²)",
