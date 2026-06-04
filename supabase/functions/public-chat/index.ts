@@ -754,10 +754,31 @@ function searchVerifiedProductLinks(text: string, location: string, categoryId?:
     .slice(0, 5);
 
   return scored.map((item) => ({
-    label: item.slug.split("-").map((part) => part.length <= 3 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" "),
+    label: labelFromSlug(item.slug),
     path: item.path,
     url: `${SITE_ORIGIN}${item.path}`,
   }));
+}
+
+function detectCategoryFromProductSearch(text: string, location?: string | null) {
+  const tokens = queryTokens(text);
+  if (tokens.length === 0) return null;
+  const prefix = location ? `/mieten/${location}/` : "/mieten/";
+  const best = RENTAL_LINK_PATHS
+    .filter((path) => path.startsWith(prefix) && path.split("/").filter(Boolean).length >= 4)
+    .map((path) => {
+      const parts = path.split("/").filter(Boolean);
+      const categoryId = parts[2];
+      const slug = parts.at(-1) ?? "";
+      const haystack = normalizeForSearch(slug.replace(/-/g, ""));
+      const score = tokens.reduce((sum, token) => sum + (haystack.includes(token) ? token.length : 0), 0);
+      return { categoryId, score };
+    })
+    .filter((item) => item.score >= Math.min(8, tokens.join("").length))
+    .sort((a, b) => b.score - a.score)[0];
+  return best?.categoryId && categoryLabels[best.categoryId]
+    ? { id: best.categoryId, label: categoryLabels[best.categoryId] }
+    : null;
 }
 
 function uniqueLinks(links: Array<RentalLink | null>) {
