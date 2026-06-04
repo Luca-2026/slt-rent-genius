@@ -1817,14 +1817,18 @@ export const locations: LocationData[] = [
       ),
       "buehne": buehneProducts.map((p) => ({ ...p })),
       "traversen-rigging": traversenRiggingProducts.map((p) => ({ ...p })),
-      "moebel-zelte": mergeWithFallback(
-        [
-          ...(bonnMoebelProducts as unknown as Product[]),
-          ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
-        ],
-        moebelZelteProducts,
-        "bonn"
+      "moebel-zelte": sortByReference(
+        mergeWithFallback(
+          [
+            ...(bonnMoebelProducts as unknown as Product[]),
+            ...withFixedCategory(bonnZelteProducts as unknown as Product[], "zelt"),
+          ],
+          moebelZelteProducts,
+          "bonn"
+        ),
+        moebelZelteProducts
       ),
+
       "geschirr-glaeser-besteck": mergeWithFallback(
         [
           ...withFixedCategory(bonnGeschirrProducts as unknown as Product[], "geschirr"),
