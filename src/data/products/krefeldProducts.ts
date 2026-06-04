@@ -440,6 +440,8 @@ import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 import imgPartyzelt5x8_1 from "@/assets/products/partyzelt-5x8-1.avif";
 import imgPartyzelt5x8_2 from "@/assets/products/partyzelt-5x8-2.jpeg";
 import imgPartyzelt5x8_3 from "@/assets/products/partyzelt-5x8-3.jpeg";
+import partyzelt5x12_1Asset from "@/assets/products/partyzelt-5x12-1.avif.asset.json";
+const imgPartyzelt5x12_1 = partyzelt5x12_1Asset.url;
 
 // Maß-Bilder für Zelte
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
@@ -3577,8 +3579,8 @@ export const moebelZelteProducts: Product[] = [
     id: "partyzelt-5x12m",
     name: "Party- / Eventzelt 5x12m extra hoch",
     description: "Party- / Eventzelt mit 60 m² Grundfläche und extra hoher Durchgangshöhe von 2,3 m – feuerfest nach EN-13501-1. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), ähnlich einer LKW-Plane, inkl. Dachspanner gegen die Bildung von Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
-    image: imgPartyzeltWeiss,
-    images: [imgPartyzeltWeiss],
+    image: imgPartyzelt5x12_1,
+    images: [imgPartyzelt5x12_1, imgPartyzeltWeiss],
     category: "zelt",
     specifications: {
       "Grundfläche": "60 m² (5 m × 12 m)",
