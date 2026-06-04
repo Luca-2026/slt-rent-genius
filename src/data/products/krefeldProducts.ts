@@ -3569,26 +3569,6 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "O3E6TK" }
   },
   {
-    id: "sonnenschirm",
-    name: "Sonnenschirm LEMVIG Ø 3 m",
-    description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
-    image: imgSonnenschirm1,
-    images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
-    category: "sonnenschirm",
-
-    specifications: {
-      "Durchmesser": "3 m",
-      "Höhe": "2,6 m",
-      "Farbe": "weiß/natur",
-      "Material Stange": "Lackiertes FSC® 100 % Hartholz",
-      "Material Bespannung": "UV-beständiges Polyester, wasserabweisend",
-      "Neigungsfunktion": "Ja – Schirmkopf kippbar",
-      "Öffnungsmechanismus": "Zugschnur",
-      "Belüftung": "Belüftungsöffnung oben (reduziert Winddruck)",
-      "Ständer": "Nicht enthalten – mind. 35 kg empfohlen",
-    },
-  },
-  {
     id: "zeltboden-anthrazit",
     name: "Zeltboden Anthrazit 0,86 m²",
     description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
@@ -3715,22 +3695,6 @@ export const moebelZelteProducts: Product[] = [
 
 
   {
-    id: "getraenkekuehlschrank-236l",
-    name: "Getränkekühlschrank 236l",
-    description: "Gewerblicher Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
-    image: imgGetraenkekuehlschrank236l_1,
-    images: [imgGetraenkekuehlschrank236l_1, imgGetraenkekuehlschrank236l_2, imgGetraenkekuehlschrank236l_3],
-    category: "kuehlgeraet",
-    specifications: {
-      "Fassungsvermögen": "236 l",
-      "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
-      "Gewicht": "45 kg",
-      "Beleuchtung": "LED",
-      "Tür": "Glastür",
-    },
-    rentwareCode: { krefeld: "Q3VB7F" }
-  },
-  {
     id: "kleiderstaender-rollen",
     name: "Kleiderständer mit Rollen inkl. Bügel",
     description: "Robuster, ausziehbarer Garderobenständer auf Rollen mit bis zu 90 kg Tragkraft – inkl. 20 Holz-Kleiderbügel (schwarz). Ideal für Events, Messen, Fotostudios und Garderobenbereiche.",
@@ -3782,6 +3746,41 @@ export const moebelZelteProducts: Product[] = [
       "Farbe": "Schwarz",
     },
     rentwareCode: { krefeld: "BLMZ6M" }
+  },
+  {
+    id: "getraenkekuehlschrank-236l",
+    name: "Getränkekühlschrank 236l",
+    description: "Gewerblicher Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
+    image: imgGetraenkekuehlschrank236l_1,
+    images: [imgGetraenkekuehlschrank236l_1, imgGetraenkekuehlschrank236l_2, imgGetraenkekuehlschrank236l_3],
+    category: "kuehlgeraet",
+    specifications: {
+      "Fassungsvermögen": "236 l",
+      "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
+      "Gewicht": "45 kg",
+      "Beleuchtung": "LED",
+      "Tür": "Glastür",
+    },
+    rentwareCode: { krefeld: "Q3VB7F" }
+  },
+  {
+    id: "sonnenschirm",
+    name: "Sonnenschirm LEMVIG Ø 3 m",
+    description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
+    image: imgSonnenschirm1,
+    images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],
+    category: "sonnenschirm",
+    specifications: {
+      "Durchmesser": "3 m",
+      "Höhe": "2,6 m",
+      "Farbe": "weiß/natur",
+      "Material Stange": "Lackiertes FSC® 100 % Hartholz",
+      "Material Bespannung": "UV-beständiges Polyester, wasserabweisend",
+      "Neigungsfunktion": "Ja – Schirmkopf kippbar",
+      "Öffnungsmechanismus": "Zugschnur",
+      "Belüftung": "Belüftungsöffnung oben (reduziert Winddruck)",
+      "Ständer": "Nicht enthalten – mind. 35 kg empfohlen",
+    },
   },
 ];
 
