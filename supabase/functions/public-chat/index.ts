@@ -664,9 +664,10 @@ function getDeterministicResponse(messages: ChatMessage[]) {
 
   // --- Sonstige Kategorien mit Standort ---
   if (explicitLinkAsk) {
-    const category = detectCategory(relevantText);
+    // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung
+    const category = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
     if (location && category) {
-      const productLinks = searchVerifiedProductLinks(relevantText, location, category.id);
+      const productLinks = searchVerifiedProductLinks(lastUser, location, category.id);
       if (productLinks.length > 0) {
         return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel(location)}:`, productLinks);
       }
