@@ -5061,35 +5061,6 @@ export const kabelStromverteilerProducts: Product[] = [
     rentwareCode: { krefeld: "42SR2E" }
   },
   {
-    id: "anschlussschrank-55kva",
-    name: "Anschlussschrank 55 kVA",
-    description: "Großer Anschlussschrank",
-    specifications: {
-      "Produktmaße": "1430 x 500 x 285 mm",
-      "Gewicht": "45 kg",
-    },
-    image: "/placeholder.svg",
-    images: ["/placeholder.svg"],
-    category: "anschlussschrank",
-    rentwareCode: { krefeld: "F9UF3M" }
-  },
-  {
-    id: "anschlussverteilerschrank-24kva",
-    name: "Anschlussverteilerschrank 24 kVA",
-    description: "Anschlußleistung 24 kVA mit einem Zählerfeld. Robustes, verzinktes und orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell.",
-    image: anschlussverteilerschrank24kva1,
-    images: [anschlussverteilerschrank24kva1, anschlussverteilerschrank24kva2, anschlussverteilerschrank24kva3],
-    category: "anschlussschrank",
-    specifications: {
-      "Anschlussleistung": "24 kVA",
-      "Produktmaße": "1270 x 710 x 360 mm",
-      "Gewicht": "49 kg",
-      "Zählerfeld": "1x",
-    },
-    detailedDescription: "Robustes und stabiles Stahlblechgehäuse, verzinkt und orange pulverbeschichtet. Feuerverzinktes Standgestell. Hochwertige Verdrahtung und Steckvorrichtungen. Stückgeprüft.",
-    rentwareCode: { krefeld: "CIRWT3" }
-  },
-  {
     id: "anschlussverteilerschrank-44kva",
     name: "Anschlussverteilerschrank 44kVA",
     description: "Anschlußleistung 44 kVA mit einem Zählerfeld",
@@ -5105,23 +5076,6 @@ export const kabelStromverteilerProducts: Product[] = [
       "Prüfung": "Stückgeprüft",
     },
     rentwareCode: { krefeld: "2EKAZB" }
-  },
-  {
-    id: "verteilerschrank-44kva",
-    name: "Verteilerschrank 44 kVA",
-    description: "Anschlußleistung 44 kVA",
-    image: verteilerschrank44kva1,
-    images: [verteilerschrank44kva1, verteilerschrank44kva2, verteilerschrank44kva3],
-    category: "anschlussschrank",
-    specifications: {
-      "Anschlußleistung": "44 kVA",
-      "Produktmaße": "935 x 710 x 360 mm",
-      "Gewicht": "40 kg",
-      "Gehäuse": "Stahlblech, verzinkt und orange pulverbeschichtet",
-      "Standgestell": "Feuerverzinkt",
-      "Prüfung": "Stückgeprüft",
-    },
-    rentwareCode: { krefeld: "486A6A" }
   },
   // CEE-Kabel
   {
