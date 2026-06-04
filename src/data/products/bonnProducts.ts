@@ -2082,6 +2082,12 @@ export const bonnMoebelProducts = [
     rentwareCode: { bonn: "QGPZGO" },
   },
   {
+    id: "bonn-stehtisch-husse-schwarz",
+    name: "Stehtisch Husse schwarz",
+    description: "Elegante schwarze Stretch-Husse für runde Stehtische (Ø 80 cm, H 110 cm). Gewaschen zurückzugeben – Reinigung gegen Aufpreis möglich.",
+    image: "/placeholder.svg",
+  },
+  {
     id: "bonn-klappstuhl-event-black",
     name: "Klappstuhl Event black",
     description: "Wetterbeständiger Event-Klappstuhl mit Stahlrohrgestell und Polypropylen-Sitzschale. Stapelbar bis 50 Stück, Belastbarkeit max. 120 kg, mit praktischer Regenabfluss-Bohrung in der Sitzfläche.",
