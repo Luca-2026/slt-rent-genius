@@ -353,7 +353,7 @@ const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
   { id: "anhaenger", label: "Anhänger", terms: ["anhänger", "anhaenger", "planenanhänger", "planenanhaenger", "kofferanhänger", "kastenanhänger", "trailer"] },
   { id: "erdbewegung", label: "Erdbewegung", terms: ["minibagger", "bagger", "radlader", "knicklader", "dumper", "raddumper", "tieflöffel", "tieflöffel", "loeffel", "hydraulikhammer", "grabenräumlöffel"] },
   { id: "verdichtung", label: "Verdichtung", terms: ["rüttelplatte", "ruettelplatte", "stampfer", "vibrationsstampfer", "grabenwalze", "verdichten"] },
-  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "teleskoparbeitsbühne", "teleskoparbeitsbuehne", "teleskopbühne", "teleskopbuehne", "teleskopsteiger", "gelenkteleskopsteiger", "scherenbühne", "scherenbuehne", "mastbühne", "mastbuehne", "anhängerbühne", "anhaengerbuehne", "steiger"] },
+  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", terms: ["arbeitsbühne", "arbeitsbuehne", "arbeitsbühnen", "arbeitsbuehnen", "scherenarbeitsbühne", "scherenarbeitsbuehne", "teleskoparbeitsbühne", "teleskoparbeitsbuehne", "teleskopbühne", "teleskopbuehne", "teleskopsteiger", "gelenkteleskopsteiger", "scherenbühne", "scherenbuehne", "mastbühne", "mastbuehne", "anhängerbühne", "anhaengerbuehne", "steiger"] },
   { id: "werkzeuge", label: "Werkzeuge", terms: ["werkzeug", "bohrhammer", "abbruchhammer", "winkelschleifer", "fliesenschneider", "trennschleifer", "laser"] },
   { id: "gartenpflege", label: "Gartenpflege", terms: ["gartenpflege", "gartengerät", "gartengeraet", "häcksler", "haecksler", "vertikutierer", "freischneider", "erdbohrer", "kettensäge", "kettensaege", "bodenhacke", "baumstumpffräse", "baumstumpffraese", "hochdruckreiniger", "rasenwalze"] },
   { id: "aggregate", label: "Aggregate", terms: ["aggregat", "stromerzeuger", "kompressor", "powerstation", "presslufthammer"] },
@@ -373,7 +373,7 @@ const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
 ];
 
 const stopWords = new Set([
-  "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr"
+  "ich", "moechte", "möchte", "bitte", "mir", "den", "die", "das", "der", "zum", "zur", "einen", "eine", "ein", "in", "mieten", "miete", "link", "links", "url", "schick", "sende", "produkt", "artikel", "direkt", "gerne", "brauche", "haben", "habt", "ihr", "fuer", "für", "standort", "bonn", "krefeld", "muelheim", "mülheim", "ruhr", "meter", "ca", "circa"
 ]);
 
 const minibaggerSlugs = [
