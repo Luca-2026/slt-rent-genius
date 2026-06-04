@@ -536,13 +536,48 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const relevantText = `${lastUser}\n${allText}`.toLowerCase();
   const asksForTrailer = /anh[aä]nger/.test(relevantText) && /(planen|plane)/.test(relevantText) && /750\s?(kg)?/.test(relevantText);
   const asksForLinks = /(direkt|link|links|url|artikelseite|mieten)/.test(lastUser.toLowerCase());
-
-  if (!asksForTrailer || !asksForLinks) return null;
   const location = detectLocation(lastUser) ?? detectLocation(allText);
-  if (!location) {
-    return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+
+  if (asksForTrailer && asksForLinks) {
+    if (!location) {
+      return "Gerne – für welchen Standort soll ich dir die direkten 750-kg-Planenanhänger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+    }
+    return buildPlanen750Response(location);
   }
-  return buildPlanen750Response(location);
+
+  const asksForRentalLink = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen)/i.test(lastUser);
+  const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
+
+  if (asksForRentalLink && mentionsMinibagger) {
+    if (!location) {
+      return "Gerne – für welchen Standort soll ich dir die passenden Minibagger-Links geben: Krefeld, Bonn oder Mülheim an der Ruhr?";
+    }
+    const links = getMinibaggerLinks(relevantText, location);
+    if (links.length > 0) {
+      const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+      const intro = links.length === 1
+        ? `Klar – hier ist der geprüfte Direktlink zum passenden Minibagger in ${locationLabel}:`
+        : `Klar – diese geprüften Minibagger-Links sind für ${locationLabel} verfügbar:`;
+      return buildLinkResponse(intro, links);
+    }
+  }
+
+  if (asksForRentalLink) {
+    const category = detectCategory(relevantText);
+    if (location && category) {
+      const productLinks = searchVerifiedProductLinks(relevantText, location, category.id);
+      if (productLinks.length > 0) {
+        const locationLabel = location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld";
+        return buildLinkResponse(`Ich habe dazu nur geprüfte Links aus der Sitemap genommen – passend für ${locationLabel}:`, productLinks);
+      }
+      const categoryLink = fallbackCategoryLink(location, category.id, `${category.label} in ${location === "muelheim" ? "Mülheim an der Ruhr" : location === "bonn" ? "Bonn" : "Krefeld"}`);
+      if (categoryLink) {
+        return buildLinkResponse("Den exakten Produktlink kann ich hier nicht eindeutig genug bestimmen. Deshalb verlinke ich dir bewusst nur die geprüfte Kategorie-Übersicht:", [categoryLink]);
+      }
+    }
+  }
+
+  return null;
 }
 
 function streamText(text: string) {
