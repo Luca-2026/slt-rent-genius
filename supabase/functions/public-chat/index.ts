@@ -1189,8 +1189,10 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // Continuation-Detektor: Topic im Verlauf erwähnt, lastUser ist kurz (z. B. nur Standort/Spec)
-  const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
-  const mentionsBautrockner = /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(relevantText);
+  const minibaggerMatcher = (text: string) => /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(text);
+  const bautrocknerMatcher = (text: string) => /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(text);
+  const mentionsMinibagger = minibaggerMatcher(lastUser) || (isShortFollowUp(lastUser) && detectRecentUserTopic(messages, minibaggerMatcher));
+  const mentionsBautrockner = bautrocknerMatcher(lastUser) || (isShortFollowUp(lastUser) && detectRecentUserTopic(messages, bautrocknerMatcher));
 
   // (Frühere Heuristiken explicitLinkAsk/continuation entfernt – Beratungs-Trigger basiert jetzt direkt
   // auf erkannter Kategorie bzw. erkanntem Thema im letzten User-Turn.)
