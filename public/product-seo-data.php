@@ -146,6 +146,22 @@ $productSEOLookup = [
       ['q' => 'Ist der Endverteilerschrank für den Außeneinsatz geeignet?', 'a' => 'Ja – das Stahlblechgehäuse ist verzinkt und orange pulverbeschichtet, korrosionsbeständig und für Baustellen und Outdoor-Events ausgelegt. Bei Dauerregen empfehlen wir eine geschützte Aufstellung.'],
     ],
   ],
+  'hauptverteilerschrank-86kva-hv125' => [
+    'name' => 'Hauptverteilerschrank 86 kVA – HV125 Typ B',
+    'h1' => 'Hauptverteilerschrank 86 kVA – HV125 Typ B mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Technische Daten HV125 Typ B mit 86 kVA', 'Steckdosen-Konfiguration & Absicherung FI Typ B', 'Robustes Stahlblechgehäuse, Kranöse & Standgestell', 'Einsatz als Hauptverteiler & Eventstromverteilung'],
+    'useCaseBau' => 'Mobile Hauptverteilung für Großbaustellen, Anschluss von Turmdrehkränen, Mischanlagen, Schweißgeräten, Bautrocknern und Ladeinfrastruktur – allstromsensitiver FI Typ B für moderne Verbraucher',
+    'useCaseEvent' => 'Zentrale Eventstromverteilung für Festivals, Stadtfeste und Großveranstaltungen – 125 A CEE oder Kabelschuh-Direktanschluss, 63 A & 32 A CEE für Bühne/FOH/Licht/Ton, Schuko für Catering',
+    'useCasePrivat' => 'Hauptverteiler für sehr große Privatbaustellen, Neubau, Sanierung und Hofprojekte mit mehreren Hochleistungsmaschinen',
+    'faqs' => [
+      ['q' => 'Wofür wird der Hauptverteilerschrank HV125 mit 86 kVA eingesetzt?', 'a' => 'Der HV125 ist ein leistungsstarker mobiler Hauptverteiler / Baustromverteiler. Er wird direkt hinter dem Netzanschluss, Trafo oder Stromaggregat eingesetzt und versorgt nachgeschaltete Endverteiler, Maschinen und 230-V-Verbraucher auf Großbaustellen, Festivals und Industrieanlagen.'],
+      ['q' => 'Welche Zuleitung benötigt der HV125?', 'a' => 'Die Einspeisung erfolgt wahlweise über 125 A CEE (5-polig, 400 V) oder über 10 mm² Kabelschuhe für den Direktanschluss an Trafo, Generator oder Hausanschluss.'],
+      ['q' => 'Welche Steckdosen stehen am HV125 zur Verfügung?', 'a' => '1× CEE 63 A, 3× CEE 32 A und 3× CEE 16 A (jeweils 5-polig, 400 V/6h) sowie 6× Schutzkontakt-Steckdosen 230 V/16 A.'],
+      ['q' => 'Was bedeutet FI-Schutzschalter Typ B?', 'a' => 'Der HV125 hat einen allstromsensitiven FI Typ B (63 A / 0,03 A) plus zusätzlichen FI 40 A. Typ B erkennt auch glatte Gleichfehlerströme und ist zwingend für frequenzumrichtergesteuerte Maschinen, E-Ladestationen, PV-Wechselrichter und Schweißinverter.'],
+      ['q' => 'Wie sind Transportmaße und Gewicht des HV125?', 'a' => 'Transportmaße 840 × 1330 × 480 mm (B × H × T), Gewicht 90 kg. Schwenkbare Kranöse und Tragegriff mit 90°-Winkelstopp ermöglichen ein sicheres Handling.'],
+      ['q' => 'Ist der Hauptverteilerschrank für den Außeneinsatz geeignet?', 'a' => 'Ja – Stahlblechgehäuse verzinkt und orange pulverbeschichtet, Standgestell feuerverzinkt, korrosionsbeständig für Baustellen und Outdoor-Events.'],
+    ],
+  ],
   'aschenbecher-glas' => [
     'name' => 'Aschenbecher Glas',
     'h1' => 'Aschenbecher Glas mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
