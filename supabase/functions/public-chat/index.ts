@@ -1060,8 +1060,8 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
   const mentionsBautrockner = /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(relevantText);
 
-  const explicitLinkAsk = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen|brauche|möchte|moechte|suche|empfehl)/i.test(lastUserLower);
-  const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
+  // (Frühere Heuristiken explicitLinkAsk/continuation entfernt – Beratungs-Trigger basiert jetzt direkt
+  // auf erkannter Kategorie bzw. erkanntem Thema im letzten User-Turn.)
 
   // --- Minibagger (strukturierte Beratung statt blankem Link) ---
   // Triggert sobald Minibagger/Modell im Verlauf erkannt wurde – kein expliziter „Link"-Wunsch nötig.
