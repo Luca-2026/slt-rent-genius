@@ -28,7 +28,7 @@ const bauTeaserProducts: TeaserProduct[] = [
 
 const eventTeaserProducts: TeaserProduct[] = [
   { name: "Lautsprecher für Veranstaltungen", price: "ab 25 €/Tag", categoryId: "beschallung" },
-  { name: "Partyzelte", price: "ab 25 €/Tag", categoryId: "moebel-zelte", query: "type=zelt" },
+  { name: "Party- / Eventzelte", price: "ab 25 €/Tag", categoryId: "moebel-zelte", query: "type=zelt" },
   { name: "Hüpfburgen", price: "ab 25 €/Tag", categoryId: "huepfburgen" },
 ];
 

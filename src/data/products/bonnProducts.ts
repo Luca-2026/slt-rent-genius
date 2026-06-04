@@ -2,7 +2,7 @@
 // Images imported from shared assets
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
 import imgMasse4x6 from "@/assets/products/masse-4x6.avif";
-import imgPartyzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
+import imgParty- / EventzeltWeiss from "@/assets/products/partyzelt-weiss-allgemein.jpeg";
 import imgSonnenschirm1 from "@/assets/products/sonnenschirm-1.jpeg";
 import imgSonnenschirm2 from "@/assets/products/sonnenschirm-2.jpeg";
 import imgSonnenschirm3 from "@/assets/products/sonnenschirm-3.jpeg";
@@ -1972,8 +1972,8 @@ export const bonnGeruestteileProducts: any[] = [];
 export const bonnZelteProducts = [
   {
     id: "bonn-partyzelt-3x3",
-    name: "Partyzelt 3x3m",
-    description: "Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
+    name: "Party- / Eventzelt 3x3m",
+    description: "Party- / Eventzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.",
     specifications: {
       "Grundfläche": "3 m x 3 m",
       "Farbe": "weiß",
@@ -1981,14 +1981,14 @@ export const bonnZelteProducts = [
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
     image: imgMasse3x3,
-    images: [imgMasse3x3, imgPartyzeltWeiss],
+    images: [imgMasse3x3, imgParty- / EventzeltWeiss],
     pdfUrl: "/manuals/aufbauanleitung-classicpro-3x3.pdf",
     rentwareCode: { bonn: "ZPBA4S" },
   },
   {
     id: "bonn-partyzelt-4x6",
-    name: "Partyzelt 4x6m",
-    description: "Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
+    name: "Party- / Eventzelt 4x6m",
+    description: "Party- / Eventzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.",
     specifications: {
       "Grundfläche (BxL)": "4 m x 6 m",
       "Farbe": "weiß",
@@ -1996,7 +1996,7 @@ export const bonnZelteProducts = [
       "Reihenbestuhlung/Bierzeltgarnituren": "0,71m²/Person",
     },
     image: imgMasse4x6,
-    images: [imgMasse4x6, imgPartyzeltWeiss],
+    images: [imgMasse4x6, imgParty- / EventzeltWeiss],
     rentwareCode: { bonn: "6GI1UN" },
   },
   {

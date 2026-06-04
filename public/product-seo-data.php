@@ -1200,8 +1200,8 @@ $productSEOLookup = [
     ],
   ],
   'bonn-partyzelt-4x6' => [
-    'name' => 'Partyzelt 4x6m',
-    'h1' => 'Partyzelt 4x6m mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 4x6m',
+    'h1' => 'Party- / Eventzelt 4x6m mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -3598,8 +3598,8 @@ $productSEOLookup = [
     ],
   ],
   'partyzelt-3x3m' => [
-    'name' => 'Partyzelt 3x3m',
-    'h1' => 'Partyzelt 3x3m mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 3x3m',
+    'h1' => 'Party- / Eventzelt 3x3m mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -3612,8 +3612,8 @@ $productSEOLookup = [
     ],
   ],
   'partyzelt-4x10m' => [
-    'name' => 'Partyzelt 4x10m',
-    'h1' => 'Partyzelt 4x10m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 4x10m',
+    'h1' => 'Party- / Eventzelt 4x10m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -3626,8 +3626,8 @@ $productSEOLookup = [
     ],
   ],
   'partyzelt-4x14m' => [
-    'name' => 'Partyzelt 4x14m',
-    'h1' => 'Partyzelt 4x14m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 4x14m',
+    'h1' => 'Party- / Eventzelt 4x14m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -3640,8 +3640,8 @@ $productSEOLookup = [
     ],
   ],
   'partyzelt-4x4m' => [
-    'name' => 'Partyzelt 4x4m',
-    'h1' => 'Partyzelt 4x4m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 4x4m',
+    'h1' => 'Party- / Eventzelt 4x4m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -3654,8 +3654,8 @@ $productSEOLookup = [
     ],
   ],
   'partyzelt-4x8m' => [
-    'name' => 'Partyzelt 4x8m',
-    'h1' => 'Partyzelt 4x8m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Party- / Eventzelt 4x8m',
+    'h1' => 'Party- / Eventzelt 4x8m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
     'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
@@ -6891,8 +6891,8 @@ $productDetails = [
     ],
   ],
   'bonn-partyzelt-3x3' => [
-    'name' => 'Partyzelt 3x3m',
-    'description' => 'Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
+    'name' => 'Party- / Eventzelt 3x3m',
+    'description' => 'Party- / Eventzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
     'specs' => [
       'Grundfläche' => '3 m x 3 m',
       'Farbe' => 'weiß',
@@ -6901,8 +6901,8 @@ $productDetails = [
     ],
   ],
   'bonn-partyzelt-4x6' => [
-    'name' => 'Partyzelt 4x6m',
-    'description' => 'Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
+    'name' => 'Party- / Eventzelt 4x6m',
+    'description' => 'Party- / Eventzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
     'specs' => [
       'Grundfläche (BxL)' => '4 m x 6 m',
       'Farbe' => 'weiß',
@@ -9260,8 +9260,8 @@ $productDetails = [
     ],
   ],
   'partyzelt-3x3m' => [
-    'name' => 'Partyzelt 3x3m',
-    'description' => 'Partyzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
+    'name' => 'Party- / Eventzelt 3x3m',
+    'description' => 'Party- / Eventzelt mit 9 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
     'specs' => [
       'Grundfläche' => '9 m² (3 m × 3 m)',
       'Farbe' => 'weiß',
@@ -9272,8 +9272,8 @@ $productDetails = [
     ],
   ],
   'partyzelt-4x4m' => [
-    'name' => 'Partyzelt 4x4m',
-    'description' => 'Partyzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
+    'name' => 'Party- / Eventzelt 4x4m',
+    'description' => 'Party- / Eventzelt mit 16 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 60 € an.',
     'specs' => [
       'Grundfläche' => '16 m² (4 m × 4 m)',
       'Farbe' => 'weiß',
@@ -9284,8 +9284,8 @@ $productDetails = [
     ],
   ],
   'partyzelt-4x6m' => [
-    'name' => 'Partyzelt 4x6m',
-    'description' => 'Partyzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
+    'name' => 'Party- / Eventzelt 4x6m',
+    'description' => 'Party- / Eventzelt mit 24 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
     'specs' => [
       'Grundfläche' => '24 m² (4 m × 6 m)',
       'Farbe' => 'weiß',
@@ -9296,8 +9296,8 @@ $productDetails = [
     ],
   ],
   'partyzelt-4x8m' => [
-    'name' => 'Partyzelt 4x8m',
-    'description' => 'Partyzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
+    'name' => 'Party- / Eventzelt 4x8m',
+    'description' => 'Party- / Eventzelt mit 32 m² Grundfläche – UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
     'specs' => [
       'Grundfläche' => '32 m² (4 m × 8 m)',
       'Farbe' => 'weiß',
@@ -9308,7 +9308,7 @@ $productDetails = [
     ],
   ],
   'partyzelt-4x10m' => [
-    'name' => 'Partyzelt 4x10m',
+    'name' => 'Party- / Eventzelt 4x10m',
     'description' => 'Modularzelt mit 40 m² Grundfläche – zusammengesetzt aus einem 4×6m und einem 4×4m Zelt, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
     'specs' => [
       'Grundfläche' => '40 m² (4 m × 10 m)',
@@ -9321,7 +9321,7 @@ $productDetails = [
     ],
   ],
   'partyzelt-4x14m' => [
-    'name' => 'Partyzelt 4x14m',
+    'name' => 'Party- / Eventzelt 4x14m',
     'description' => 'Großes Modularzelt mit 56 m² Grundfläche – zusammengesetzt aus einem 4×6m und zwei 4×4m Zelten, trocken verbunden durch eine Regenrinne. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), inkl. Dachspanner gegen Wassersäcken. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 100 € an.',
     'specs' => [
       'Grundfläche' => '56 m² (4 m × 14 m)',

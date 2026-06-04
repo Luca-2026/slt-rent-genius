@@ -184,7 +184,7 @@
     "sortimentTo": "bis hin zu",
     "tools": "Werkzeugen",
     "sortimentEvents": "Für Veranstaltungen bieten wir",
-    "tentsAndFurniture": "Partyzelte und Bierzeltgarnituren",
+    "tentsAndFurniture": "Party- / Eventzelte und Bierzeltgarnituren",
     "dishware": "Geschirr-Sets",
     "paSystem": "PA-Anlagen",
     "lighting": "Beleuchtungstechnik",
@@ -380,7 +380,7 @@
       "anhaenger": { "title": "Anhänger", "desc": "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger." },
       "hebebuehnen": { "title": "Hebebühnen & Arbeitsbühnen", "desc": "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten." },
       "buehnen-podeste": { "title": "Bühnen & Podeste", "desc": "Event-Bühnen, Podeste und Laufstege für Veranstaltungen." },
-      "moebel-zelte": { "title": "Möbel & Zelte", "desc": "Partyzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar." },
+      "moebel-zelte": { "title": "Möbel & Zelte", "desc": "Party- / Eventzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar." },
       "geschirr": { "title": "Geschirr", "desc": "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung." },
       "besteck": { "title": "Besteck", "desc": "Messer, Gabeln und Löffel für Events und Feiern." },
       "huepfburgen": { "title": "Hüpfburgen", "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen." },
@@ -502,11 +502,11 @@
         "title": "Events & Veranstaltungen",
         "subtitle": "Firmenfeiern, Hochzeiten, Festivals",
         "description": "Alles für unvergessliche Events: Von der Beschallung über Beleuchtung bis zu Zelten und Möbeln. Wir statten Veranstaltungen jeder Größe professionell aus.",
-        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Partyzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"],
+        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Party- / Eventzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"],
         "contentSections": [
           {
             "heading": "Eventausstattung für jede Veranstaltungsgröße",
-            "text": "Egal ob Hochzeit im Garten, Firmenjubiläum, Straßenfest oder privates Sommerfest – wir liefern die komplette Eventtechnik und Ausstattung. Unsere PA-Systeme sorgen für kristallklaren Sound bei bis zu 500 Gästen. LED-Scheinwerfer und Moving Heads setzen Location und Bühne perfekt in Szene. Partyzelte schützen vor Regen und Sonne und schaffen einen eleganten Rahmen. Dazu bieten wir Geschirr, Gläser und Besteck in Gastro-Qualität – sauber und einsatzbereit."
+            "text": "Egal ob Hochzeit im Garten, Firmenjubiläum, Straßenfest oder privates Sommerfest – wir liefern die komplette Eventtechnik und Ausstattung. Unsere PA-Systeme sorgen für kristallklaren Sound bei bis zu 500 Gästen. LED-Scheinwerfer und Moving Heads setzen Location und Bühne perfekt in Szene. Party- / Eventzelte schützen vor Regen und Sonne und schaffen einen eleganten Rahmen. Dazu bieten wir Geschirr, Gläser und Besteck in Gastro-Qualität – sauber und einsatzbereit."
           },
           {
             "heading": "Planung deines Events: Schritt für Schritt",
@@ -519,7 +519,7 @@
         ],
         "advantages": ["Alles aus einer Hand: Technik, Zelte, Ausstattung", "Professioneller Auf- und Abbauservice", "Hochwertige Gastro-Qualität bei Geschirr", "Flexible Mietzeiten auch am Wochenende"],
         "faq": [
-          {"q": "Wie groß muss mein Partyzelt sein?", "a": "Als Faustregel rechnet man 2-3 m² pro stehendem Gast und 3-4 m² pro sitzendem Gast (mit Tisch). Für 50 sitzende Gäste empfehlen wir ein 6x6m Zelt. Für 100 Gäste eignet sich ein 6x12m Zelt oder zwei verbundene Zelte."},
+          {"q": "Wie groß muss mein Party- / Eventzelt sein?", "a": "Als Faustregel rechnet man 2-3 m² pro stehendem Gast und 3-4 m² pro sitzendem Gast (mit Tisch). Für 50 sitzende Gäste empfehlen wir ein 6x6m Zelt. Für 100 Gäste eignet sich ein 6x12m Zelt oder zwei verbundene Zelte."},
           {"q": "Bietet ihr auch Auf- und Abbau an?", "a": "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Bühnen, Beschallung und Beleuchtung. Sprich uns bei der Buchung einfach darauf an – wir erstellen dir ein Komplettangebot."},
           {"q": "Wie viel Geschirr brauche ich pro Person?", "a": "Wir empfehlen pro Gast: 2 Teller (flach + tief), 3 Gläser (Wasser, Wein, Sekt), 1 Besteckset. Bei mehrgängigen Menüs entsprechend mehr. Unsere Sets sind in 10er-Einheiten buchbar und kommen sauber und sortiert."},
           {"q": "Welches PA-System reicht für 100 Gäste outdoor?", "a": "Für 100 Gäste im Freien empfehlen wir ein aktives PA-System mit mindestens 2x 500W Topspeakern und einem Subwoofer. Bei Partys mit Tanzfläche empfehlen wir ein stärkeres Setup. Wir beraten dich gerne zur passenden Konfiguration."},
@@ -622,7 +622,7 @@
           },
           {
             "heading": "Spezialeffekte & Sound für die Party",
-            "text": "Eine Nebelmaschine verwandelt den Garten in eine mystische Landschaft, Seifenblasenmaschinen sorgen für magische Momente und eine Soundboks liefert den Soundtrack zur Feier – kabellos und outdoor-tauglich. Für größere Kinderfeste oder Schulfeiern bieten wir auch LED-Beleuchtung und PA-Systeme. Ergänze die Party mit unseren Partyzelten als Schutz vor Sonne oder Regen."
+            "text": "Eine Nebelmaschine verwandelt den Garten in eine mystische Landschaft, Seifenblasenmaschinen sorgen für magische Momente und eine Soundboks liefert den Soundtrack zur Feier – kabellos und outdoor-tauglich. Für größere Kinderfeste oder Schulfeiern bieten wir auch LED-Beleuchtung und PA-Systeme. Ergänze die Party mit unseren Party- / Eventzelten als Schutz vor Sonne oder Regen."
           },
           {
             "heading": "Sicherheitshinweise für Hüpfburgen",
@@ -633,7 +633,7 @@
         "faq": [
           {"q": "Wie viel Platz brauche ich für eine Hüpfburg?", "a": "Je nach Modell benötigst du eine ebene Fläche von 4x4m (kleine Hüpfburg) bis 8x8m (große Eventburg mit Rutsche). Dazu sollte rundherum 1,5 m Sicherheitsabstand eingehalten werden. Gras ist der ideale Untergrund."},
           {"q": "Ab welchem Alter können Kinder hüpfen?", "a": "Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Für kleinere Kinder empfehlen wir die kompakten Modelle mit niedrigeren Seitenwänden. Eine erwachsene Aufsichtsperson muss immer dabei sein."},
-          {"q": "Was passiert bei schlechtem Wetter?", "a": "Leichter Regen ist kein Problem – die Hüpfburg kann weiter genutzt werden (wird etwas rutschiger). Bei starkem Wind oder Gewitter muss die Hüpfburg aus Sicherheitsgründen abgebaut werden. Bei Regen empfehlen wir zusätzlich ein Partyzelt."},
+          {"q": "Was passiert bei schlechtem Wetter?", "a": "Leichter Regen ist kein Problem – die Hüpfburg kann weiter genutzt werden (wird etwas rutschiger). Bei starkem Wind oder Gewitter muss die Hüpfburg aus Sicherheitsgründen abgebaut werden. Bei Regen empfehlen wir zusätzlich ein Party- / Eventzelt."},
           {"q": "Liefert ihr die Hüpfburg auch?", "a": "Ja, wir liefern Hüpfburgen direkt zu dir und bauen sie auf Wunsch auch auf. Die Lieferkosten richten sich nach der Entfernung. Alternativ kannst du kleinere Modelle auch selbst abholen – sie passen in einen Kombi."},
           {"q": "Brauche ich einen Stromanschluss?", "a": "Ja, Hüpfburgen benötigen ein Dauergebläse (230V Schuko-Steckdose). Ein normaler Hausanschluss reicht aus. Alternativ bieten wir auch Stromerzeuger für Standorte ohne Steckdose."}
         ]
@@ -1866,8 +1866,8 @@
       "item3": "Aufbau & Betreuung", "item3sub": "Vor Ort durch unser Team"
     },
     "moebelZelte": {
-      "desc": "Event-Mobiliar und Zelte für Ihre Veranstaltung. Bierzeltgarnituren, Stehtische, Partyzelte und Lounge-Möbel.",
-      "item1": "Partyzelte", "item1sub": "Verschiedene Größen",
+      "desc": "Event-Mobiliar und Zelte für Ihre Veranstaltung. Bierzeltgarnituren, Stehtische, Party- / Eventzelte und Lounge-Möbel.",
+      "item1": "Party- / Eventzelte", "item1sub": "Verschiedene Größen",
       "item2": "Tische & Stühle", "item2sub": "Für jeden Anlass",
       "item3": "Sauber & gepflegt", "item3sub": "Event-ready"
     },
