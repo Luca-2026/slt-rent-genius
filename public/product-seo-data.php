@@ -10404,8 +10404,25 @@ $productDetails = [
       'Transportmaße (B×H×T)' => '670 × 1060 × 360 mm',
       'Transportgewicht' => '39 kg',
       'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
+  ],
+  'endverteilerschrank-44kva-ev63' => [
+    'name' => 'Endverteilerschrank 44 kVA – EV63 Typ B',
+    'description' => 'Mobiler Baustromverteiler / Endverteilerschrank EV63 Typ B mit 44 kVA Anschlussleistung – CEE 63 A Phasenwender-Zuleitung, 2× CEE 32 A, 2× CEE 16 A, 6× Schuko 230 V, FI Typ B 63 A/0,03 A plus FI 40 A. Verzinktes, orange pulverbeschichtetes Stahlblechgehäuse mit feuerverzinktem Standgestell, stückgeprüft.',
+    'specs' => [
+      'Typ' => 'EV63 – Typ B',
+      'Anschlussleistung' => '44 kVA',
+      'Stromaufnahme / Zuleitung' => '63 A – 400 V CEE (Phasenwender)',
+      'CEE-Steckdosen 400 V/6h' => '2× 32 A + 2× 16 A (5-polig)',
+      'Schutzkontaktsteckdosen' => '6× 230 V / 16 A',
+      'FI-Schutzschalter' => '1× 63 A / 0,03 A – Typ B (allstromsensitiv), 1× 40 A',
+      'Gehäuse' => 'Stahlblech, verzinkt und orange pulverbeschichtet',
+      'Standgestell' => 'Feuerverzinkt',
+      'Transportmaße (B×H×T)' => '670 × 1060 × 360 mm',
+      'Transportgewicht' => '45 kg',
+      'Verarbeitung' => 'Hochwertige Verdrahtung & Steckvorrichtungen, stückgeprüft',
     ],
   ],
+
   'cee-kabel-16a-3m' => [
     'name' => 'CEE Kabel 16A rot 3 m',
     'description' => '3 m Verlängerungskabel mit Stecker und Kupplung, Kabel-Typ: H07RN-F5G2,5 – 16A rot',
