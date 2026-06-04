@@ -367,6 +367,123 @@ const minibaggerSlugs = [
   { label: "5t Minibagger (Bobcat E50z)", slug: "bobcat-e50z", exact: /(^|\D)5\s*t|5\s*tonnen?/i },
 ];
 
+// Strukturierte Beratungsdaten zu jedem Minibagger-Modell – Quelle: src/data/rentalData.ts
+// (Werte hier zentral pflegen; falls sich Specs ändern, beide Stellen aktualisieren)
+type MinibaggerSpec = {
+  slug: string;
+  short: string;
+  modelName: string;
+  weightKg: number;
+  digDepthMm: number;
+  widthMm: number;          // engste einfahrbare Breite
+  widthFullMm?: number;     // Gesamtbreite ausgefahren
+  ps: number;
+  fuelL: number;
+  bucketClass: "MS01" | "MS03";
+  deliveryTariff: "B (LKW 7,5 t)" | "C (Tieflader)";
+  highlights: string[];     // 1–2 Sätze typische Einsatzbereiche
+};
+
+const minibaggerSpecs: MinibaggerSpec[] = [
+  {
+    slug: "bobcat-e10z",
+    short: "1 t",
+    modelName: "Bobcat E10z",
+    weightKg: 1000,
+    digDepthMm: 1820,
+    widthMm: 710,
+    widthFullMm: 1100,
+    ps: 10.2,
+    fuelL: 13,
+    bucketClass: "MS01",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Engster Zugang dank einfahrbarem Fahrwerk auf 71 cm – passt durch Gartentüren.",
+      "Ideal für Garten-, Drainage- und Leitungsgräben bis ca. 1,8 m Tiefe.",
+    ],
+  },
+  {
+    slug: "xcmg-xe20e",
+    short: "2 t",
+    modelName: "XCMG XE20E",
+    weightKg: 2050,
+    digDepthMm: 2385,
+    widthMm: 990,
+    widthFullMm: 1300,
+    ps: 15.8,
+    fuelL: 25,
+    bucketClass: "MS01",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Allrounder für Hausbau, Pool- und Fundamentaushub bis ca. 2,4 m Tiefe.",
+      "Fahrwerk einfahrbar auf 99 cm – passt noch durch die meisten Tore.",
+    ],
+  },
+  {
+    slug: "xcmg-xe27e",
+    short: "2,7 t",
+    modelName: "XCMG XE27E",
+    weightKg: 2780,
+    digDepthMm: 2800,
+    widthMm: 1500,
+    ps: 21,
+    fuelL: 33,
+    bucketClass: "MS03",
+    deliveryTariff: "B (LKW 7,5 t)",
+    highlights: [
+      "Mehr Reichweite und Hubkraft für größere Aushub- und Pflasterprojekte.",
+      "MS03-Aufnahme – größere Löffel und Hydraulikhammer möglich.",
+    ],
+  },
+  {
+    slug: "bobcat-e35z",
+    short: "3,5 t",
+    modelName: "Bobcat E35z",
+    weightKg: 3500,
+    digDepthMm: 3120,
+    widthMm: 1740,
+    ps: 33.4,
+    fuelL: 42,
+    bucketClass: "MS03",
+    deliveryTariff: "C (Tieflader)",
+    highlights: [
+      "Nullheck-Design für beengte Baustellen, Grabtiefe bis 3,12 m.",
+      "Geeignet für Kanal-, Tiefbau- und Abbrucharbeiten mit Hydraulikhammer.",
+    ],
+  },
+  {
+    slug: "bobcat-e50z",
+    short: "5 t",
+    modelName: "Bobcat E50z",
+    weightKg: 5000,
+    digDepthMm: 3800,
+    widthMm: 1960,
+    ps: 47.6,
+    fuelL: 65,
+    bucketClass: "MS03",
+    deliveryTariff: "C (Tieflader)",
+    highlights: [
+      "Leistungsstark für Tiefbau, Aushub und große Abbrucharbeiten bis 3,8 m.",
+      "Setzt befestigten Untergrund/breiten Zugang voraus.",
+    ],
+  },
+];
+
+function findMinibaggerByText(text: string): MinibaggerSpec | null {
+  const slug = minibaggerSlugs.find((item) => item.exact.test(text));
+  if (!slug) return null;
+  return minibaggerSpecs.find((spec) => spec.slug === slug.slug) ?? null;
+}
+
+function neighborMinibagger(spec: MinibaggerSpec): { smaller?: MinibaggerSpec; larger?: MinibaggerSpec } {
+  const idx = minibaggerSpecs.findIndex((s) => s.slug === spec.slug);
+  return {
+    smaller: idx > 0 ? minibaggerSpecs[idx - 1] : undefined,
+    larger: idx >= 0 && idx < minibaggerSpecs.length - 1 ? minibaggerSpecs[idx + 1] : undefined,
+  };
+}
+
+
 function withTrailingSlash(path: string) {
   const clean = path.split("?")[0].split("#")[0];
   return clean.endsWith("/") ? clean : `${clean}/`;
