@@ -40,6 +40,7 @@ import { locationData } from "@/data/locationData";
 
 import { HeroBackgroundSlider } from "@/components/home/HeroBackgroundSlider";
 import { GoogleReviews as GoogleReviewsComponent } from "@/components/reviews/GoogleReviews";
+import { SummerPromoBanner, SummerPromoDialog } from "@/components/home/SummerPromoBanner";
 
 export default function Index() {
   const { t } = useTranslation();
