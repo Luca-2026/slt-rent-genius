@@ -1064,7 +1064,8 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
 
   // --- Minibagger (strukturierte Beratung statt blankem Link) ---
-  if ((explicitLinkAsk || continuation) && mentionsMinibagger) {
+  // Triggert sobald Minibagger/Modell im Verlauf erkannt wurde – kein expliziter „Link"-Wunsch nötig.
+  if (mentionsMinibagger) {
     if (!location) {
       return "Gerne – für welchen Standort soll ich dich beraten: Krefeld, Bonn oder Mülheim an der Ruhr? Sag mir gleich noch dazu, welche **Grabtiefe** du brauchst und wie **eng der Zugang** zur Baustelle ist – dann empfehle ich dir das passende Modell.";
     }
