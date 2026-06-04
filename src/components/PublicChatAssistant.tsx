@@ -209,6 +209,17 @@ export function PublicChatAssistant() {
   // Very small inline markdown renderer for **bold** and [clickable links](https://...)
   // so assistant answers can provide direct product links without raw markdown.
   const renderInlineMarkdown = (text: string) => {
+    const normalizeHref = (href: string) => {
+      try {
+        const url = new URL(href);
+        if (url.hostname === "www.slt-rental.de" || url.hostname === "slt-rental.de") {
+          return `${url.pathname}${url.search}${url.hash}`;
+        }
+      } catch {
+        // keep original href
+      }
+      return href;
+    };
     const normalizedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label, href) => {
       const safeHref = String(href).replace(/[.,;:!?]+$/, "");
       return `[${label}](${safeHref})`;
@@ -218,8 +229,8 @@ export function PublicChatAssistant() {
       const linkMatch = part.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
       if (linkMatch) {
         const [, label, rawHref] = linkMatch;
-        const href = rawHref.replace(/[.,;:!?]+$/, "");
-        const isInternalRentalLink = /^https:\/\/(www\.)?slt-rental\.de\//.test(href);
+        const href = normalizeHref(rawHref.replace(/[.,;:!?]+$/, ""));
+        const isInternalRentalLink = href.startsWith("/");
         return (
           <a
             key={idx}
@@ -234,8 +245,8 @@ export function PublicChatAssistant() {
       }
       const urlMatch = part.match(/^(https?:\/\/[^\s<>()]+)$/);
       if (urlMatch) {
-        const href = urlMatch[1].replace(/[.,;:!?]+$/, "");
-        const isInternalRentalLink = /^https:\/\/(www\.)?slt-rental\.de\//.test(href);
+        const href = normalizeHref(urlMatch[1].replace(/[.,;:!?]+$/, ""));
+        const isInternalRentalLink = href.startsWith("/");
         return (
           <a
             key={idx}
