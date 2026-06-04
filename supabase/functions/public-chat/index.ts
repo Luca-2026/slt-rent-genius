@@ -514,11 +514,14 @@ function rentalLink(label: string, location: string, category: string, slug?: st
 
 function detectCategory(text: string) {
   const normalized = text.toLowerCase();
-  // Wortgrenzen-Matching, damit kurze Terme wie "pa" nicht in "passend", "Apparat" etc. matchen
+  // Wortgrenzen-Matching mit optionaler deutscher Flexionsendung (n/en/s/e/er),
+  // damit Plural- und Beugungsformen wie "Rüttelplatten" oder "Anhängern"
+  // den Term "rüttelplatte"/"anhänger" matchen. Trotzdem schützt der Anfangs-
+  // Wortbreak vor Fehl-Matches in Wörtern wie "passend" oder "Apparat".
   const matchesTerm = (term: string) => {
     const t = term.toLowerCase();
     const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:[^a-zäöüß0-9]|$)`, "i");
+    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:n|en|s|e|er)?(?:[^a-zäöüß0-9]|$)`, "i");
     return re.test(normalized);
   };
   return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
@@ -1060,11 +1063,12 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   const mentionsMinibagger = /mini\s*bagger|minibagger|bobcat\s*e\s*10|e10z?|xcmg\s*xe\s*20|xe20e|xcmg\s*xe\s*27|xe27e|bobcat\s*e\s*35|e35z|bobcat\s*e\s*50|e50z/i.test(relevantText);
   const mentionsBautrockner = /bautrockner|luftentfeuchter|trocknungsger[aä]t|raumentfeuchter/i.test(relevantText);
 
-  const explicitLinkAsk = /(link|links|url|artikelseite|produktseite|mieten|miete|reservieren|buchen|brauche|möchte|moechte|suche|empfehl)/i.test(lastUserLower);
-  const continuation = isShortFollowUp(lastUser) && (location || extractArea(lastUser) !== null);
+  // (Frühere Heuristiken explicitLinkAsk/continuation entfernt – Beratungs-Trigger basiert jetzt direkt
+  // auf erkannter Kategorie bzw. erkanntem Thema im letzten User-Turn.)
 
   // --- Minibagger (strukturierte Beratung statt blankem Link) ---
-  if ((explicitLinkAsk || continuation) && mentionsMinibagger) {
+  // Triggert sobald Minibagger/Modell im Verlauf erkannt wurde – kein expliziter „Link"-Wunsch nötig.
+  if (mentionsMinibagger) {
     if (!location) {
       return "Gerne – für welchen Standort soll ich dich beraten: Krefeld, Bonn oder Mülheim an der Ruhr? Sag mir gleich noch dazu, welche **Grabtiefe** du brauchst und wie **eng der Zugang** zur Baustelle ist – dann empfehle ich dir das passende Modell.";
     }
@@ -1086,15 +1090,16 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // --- Sonstige Kategorien: strukturierte Beratung ---
-  if (explicitLinkAsk) {
-    // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung
-    const category = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
-    if (category) {
-      if (!location) {
-        return `Gerne berate ich dich zu **${category.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
-      }
-      return buildCategoryConsultResponse(category, location, allText, lastUser);
+  // Trigger sobald eine Kategorie erkennbar ist – nicht erst bei expliziten Link-/Miet-Keywords.
+  // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
+  // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
+  // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
+  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectCategory(relevantText) : null);
+  if (categoryFromLast) {
+    if (!location) {
+      return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
     }
+    return buildCategoryConsultResponse(categoryFromLast, location, allText, lastUser);
   }
 
   return null;
