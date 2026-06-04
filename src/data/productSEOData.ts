@@ -6743,9 +6743,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "bonn-klappstuhl-event-black": {
     excelName: "Klappstuhl Event black",
     seoTitle: "Klappstuhl Event black mieten in Bonn | SLT Rental",
-    metaDescription: "Robuster Event-Klappstuhl (schwarz) in Bonn mieten: Stahlrohr-Gestell, Polypropylen-Sitz, bis 120 kg belastbar, stapelbar bis 50 Stück, mit Regenabfluss.",
-    h1: "Klappstuhl Event black mieten in Bonn – Jetzt verfügbar bei SLT Rental",
+    metaDescription: "Robuster Event-Klappstuhl (schwarz) in Bonn mieten ab 1,90 € pro Tag: Stahlrohr-Gestell, Polypropylen-Sitz, bis 120 kg belastbar, stapelbar bis 50 Stück.",
+    h1: "Klappstuhl Event black mieten in Bonn – ab 1,90 € / Tag bei SLT Rental",
     h2s: ["Technische Daten & Material", "Wetterbeständig & stapelbar", "Transport & Lagerung"],
+    dailyPriceFrom: 1.9,
+
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für Reihenbestuhlung bei Tagungen, Konzerten, Open-Air-Events, Hochzeiten und Firmenfeiern in Bonn und Umgebung.",
     useCasePrivat: "Geeignet für Geburtstage, Familienfeiern und Gartenpartys – schnell auf- und abgebaut, platzsparend stapelbar.",
