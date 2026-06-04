@@ -3611,6 +3611,20 @@ $productSEOLookup = [
       ['q' => 'Sind Seitenteile, Boden und Beleuchtungsanschlüsse dabei?', 'a' => 'Seitenteile, Zeltböden und Stromanschlüsse sind optional und müssen separat hinzugebucht werden. Wir bieten passende Zeltböden, Heizgeräte und Beleuchtung aus unserem Sortiment an – fragen Sie uns nach einem Komplett-Paket.'],
     ],
   ],
+  'partyzelt-5x8m' => [
+    'name' => 'Party- / Eventzelt 5x8m extra hoch',
+    'h1' => 'Party- / Eventzelt 5x8m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
+    'h2s' => ['Abmessungen & Ausstattung', 'Aufbau & Befestigung', 'Genehmigungspflichten', 'Kombination mit Möbeln & Heizung'],
+    'useCaseBau' => 'Baustellenunterstand, provisorische Lagerhalle, Materialdepot',
+    'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Stadtfeste, Geburtstage, Konzerte',
+    'useCasePrivat' => 'Gartenfest, Jubiläum, Kommunion, Silvesterparty, Familienfeier',
+    'faqs' => [
+      ['q' => 'Für wie viele Personen ist das Zelt geeignet?', 'a' => 'Bei 40 m² Grundfläche bietet das Zelt stehend Platz für ca. 66 Personen und bei Reihenbestuhlung oder Bierzeltgarnituren ca. 56 Personen.'],
+      ['q' => 'Wie hoch ist die Durchgangshöhe?', 'a' => 'Das Zelt verfügt über eine extra hohe Durchgangshöhe von 2,6 m – ideal für Stehtische, Bühnen oder größere Aufbauten im Inneren.'],
+      ['q' => 'Benötige ich eine behördliche Genehmigung für das Zelt?', 'a' => 'Zelte über 75 m² benötigen in der Regel eine Baugenehmigung. Für das 5x8m Zelt (40 m²) reicht häufig eine Anzeige beim Ordnungsamt – bitte mit der zuständigen Behörde abklären.'],
+      ['q' => 'Sind Seitenteile, Boden und Beleuchtungsanschlüsse dabei?', 'a' => 'Seitenwände und Stirnwände sind im Mietpreis enthalten. Zeltböden, Heizung und Stromanschlüsse sind optional und können separat hinzugebucht werden.'],
+    ],
+  ],
   'partyzelt-4x14m' => [
     'name' => 'Party- / Eventzelt 4x14m',
     'h1' => 'Party- / Eventzelt 4x14m mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
@@ -9305,6 +9319,20 @@ $productDetails = [
       'Kapazität (Stehend)' => 'ca. 93 Personen (0,6 m²/Person)',
       'Kapazität (Bestuhlung)' => 'ca. 79 Personen (0,71 m²/Person)',
       'Hinweis' => 'Trocken zurückgeben (Trocknungspauschale 100 € bei Nichtbeachtung)',
+    ],
+  ],
+  'partyzelt-5x8m' => [
+    'name' => 'Party- / Eventzelt 5x8m extra hoch',
+    'description' => 'Party- / Eventzelt mit 40 m² Grundfläche und extra hoher Durchgangshöhe von 2,6 m – inkl. Seiten- und Stirnwände sowie Dachstangen gegen die Bildung von Wassersäcken. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), ähnlich einer LKW-Plane. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.',
+    'specs' => [
+      'Grundfläche' => '40 m² (5 m × 8 m)',
+      'Durchgangshöhe' => '2,6 m (extra hoch)',
+      'Farbe' => 'weiß',
+      'Inklusive' => 'Seiten- und Stirnwände, Dachstangen',
+      'Material' => 'UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt',
+      'Kapazität (Stehend)' => 'ca. 66 Personen (0,6 m²/Person)',
+      'Kapazität (Bestuhlung)' => 'ca. 56 Personen (0,71 m²/Person)',
+      'Hinweis' => 'Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)',
     ],
   ],
   'eventzelt-6x8m' => [

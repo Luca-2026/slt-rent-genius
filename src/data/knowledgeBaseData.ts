@@ -1200,7 +1200,7 @@ export const kbArticles: KBArticle[] = [
     title: "Party- / Eventzelt 4m Breite – Aufbauanleitung (PDF)",
     description: "Offizielle Aufbauanleitung für Party- / Eventzelte mit 4m Breite (4x4, 4x6, 4x10, 4x14): Aufbau, Sicherung und Abbau.",
     categoryId: "moebel-zelte",
-    productIds: ["partyzelt-4x4m", "partyzelt-4x6m", "partyzelt-4x10m", "partyzelt-4x14m"],
+    productIds: ["partyzelt-4x4m", "partyzelt-4x6m", "partyzelt-4x10m", "partyzelt-4x14m", "partyzelt-5x8m"],
     type: "anleitung",
     tags: ["partyzelt", "4x4", "4x6", "4x10", "4x14", "aufbau", "zelt", "4m"],
     updatedAt: "2026-05-03",

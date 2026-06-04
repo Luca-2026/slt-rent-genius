@@ -436,6 +436,11 @@ import imgPartyzelt4x14_1 from "@/assets/products/partyzelt-4x14-1.jpeg";
 import imgPartyzelt4x14_2 from "@/assets/products/partyzelt-4x14-2.jpeg";
 import imgPartyzelt4x14_3 from "@/assets/products/partyzelt-4x14-3.jpeg";
 
+// Party- / Eventzelt 5x8m extra hoch images
+import imgPartyzelt5x8_1 from "@/assets/products/partyzelt-5x8-1.avif";
+import imgPartyzelt5x8_2 from "@/assets/products/partyzelt-5x8-2.jpeg";
+import imgPartyzelt5x8_3 from "@/assets/products/partyzelt-5x8-3.jpeg";
+
 // Maß-Bilder für Zelte
 import imgMasse3x3 from "@/assets/products/masse-3x3.avif";
 import imgMasse4x4 from "@/assets/products/masse-4x4.avif";
@@ -3528,6 +3533,25 @@ export const moebelZelteProducts: Product[] = [
     },
     pdfUrl: "/manuals/partyzelt-4x14-aufbauanleitung.pdf",
     videoUrls: ["https://www.youtube.com/watch?v=kh1RA96IBcU"],
+  },
+  {
+    id: "partyzelt-5x8m",
+    name: "Party- / Eventzelt 5x8m extra hoch",
+    description: "Party- / Eventzelt mit 40 m² Grundfläche und extra hoher Durchgangshöhe von 2,6 m – inkl. Seiten- und Stirnwände sowie Dachstangen gegen die Bildung von Wassersäcken. UV-beständige 500 g/m² PVC-Plane (rasterfaserverstärkt), ähnlich einer LKW-Plane. Trocken zurückgeben – andernfalls fällt eine Trocknungspauschale von 150 € an.",
+    image: imgPartyzelt5x8_1,
+    images: [imgPartyzelt5x8_1, imgPartyzelt5x8_2, imgPartyzelt5x8_3, imgPartyzeltWeiss],
+    category: "zelt",
+    specifications: {
+      "Grundfläche": "40 m² (5 m × 8 m)",
+      "Durchgangshöhe": "2,6 m (extra hoch)",
+      "Farbe": "weiß",
+      "Inklusive": "Seiten- und Stirnwände, Dachstangen",
+      "Material": "UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt",
+      "Kapazität (Stehend)": "ca. 66 Personen (0,6 m²/Person)",
+      "Kapazität (Bestuhlung)": "ca. 56 Personen (0,71 m²/Person)",
+      "Hinweis": "Trocken zurückgeben (Trocknungspauschale 150 € bei Nichtbeachtung)",
+    },
+    rentwareCode: { krefeld: "MI45AU" }
   },
   {
     id: "eventzelt-6x8m",
