@@ -3686,29 +3686,14 @@ export const moebelZelteProducts: Product[] = [
     rentwareCode: { krefeld: "V9E8C7" }
   },
   {
-    id: "stuhl-weiss",
-    name: "Stuhl weiß",
-    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
-    image: imgStuhlWeiss1,
-    images: [imgStuhlWeiss1],
-    category: "moebel",
-    specifications: {
-      "Farbe": "weiß",
-      "Material": "100% Polypropylen, wetterfest",
-      "Max. Belastbarkeit": "ca. 120 kg",
-      "Sitzhöhe": "ca. 42,5 cm",
-      "Sitztiefe": "ca. 38 cm",
-      "Höhe Rückenlehne": "ca. 37,5 cm",
-    },
-    rentwareCode: { krefeld: "3KTRT8" }
-  },
-  {
     id: "klappstuhl-event-black",
     name: "Klappstuhl Event black",
     description: "Wetterbeständiger Event-Klappstuhl mit Stahlrohrgestell und Polypropylen-Sitzschale. Stapelbar bis 50 Stück, Belastbarkeit max. 120 kg, mit praktischer Regenabfluss-Bohrung in der Sitzfläche.",
     image: imgKlappstuhlEventBlack1,
     images: [imgKlappstuhlEventBlack1, imgKlappstuhlEventBlack2, imgKlappstuhlEventBlack3, imgKlappstuhlEventBlack4, imgKlappstuhlEventBlack5, imgKlappstuhlEventBlack6, imgKlappstuhlEventBlack7, imgKlappstuhlEventBlack8],
     category: "moebel",
+    tags: ["stuhl"],
+    pricePerDay: "ab 1,90 €",
     specifications: {
       "Farbe": "schwarz",
       "Material Gestell": "geschweißtes Stahlrohr (Ø 19 × 1,20 mm)",
@@ -3727,6 +3712,25 @@ export const moebelZelteProducts: Product[] = [
     },
     rentwareCode: { krefeld: "KKVNMJ" }
   },
+  {
+    id: "stuhl-weiss",
+    name: "Stuhl weiß",
+    description: "Wetterfester Stapelstuhl aus 100% Polypropylen in weiß – robust, leicht und stapelbar. Max. Belastbarkeit ca. 120 kg.",
+    image: imgStuhlWeiss1,
+    images: [imgStuhlWeiss1],
+    category: "moebel",
+    tags: ["stuhl"],
+    specifications: {
+      "Farbe": "weiß",
+      "Material": "100% Polypropylen, wetterfest",
+      "Max. Belastbarkeit": "ca. 120 kg",
+      "Sitzhöhe": "ca. 42,5 cm",
+      "Sitztiefe": "ca. 38 cm",
+      "Höhe Rückenlehne": "ca. 37,5 cm",
+    },
+    rentwareCode: { krefeld: "3KTRT8" }
+  },
+
   {
     id: "getraenkekuehlschrank-236l",
     name: "Getränkekühlschrank 236l",
