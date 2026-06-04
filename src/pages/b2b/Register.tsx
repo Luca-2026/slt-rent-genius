@@ -216,31 +216,33 @@ export default function B2BRegister() {
           .getPublicUrl(sepaPath);
 
         const { error: profileError } = await withTimeout(
-          supabase.from("b2b_profiles").insert({
-            user_id: userId,
-            company_name: companyName,
-            legal_form: legalForm,
-            tax_id: taxId,
-            trade_register_number: tradeRegisterNumber,
-            contact_first_name: firstName,
-            contact_last_name: lastName,
-            contact_position: position,
-            contact_phone: phone,
-            contact_email: email,
-            billing_email: billingEmail || null,
-            street: street,
-            house_number: houseNumber,
-            postal_code: postalCode,
-            city: city,
-            assigned_location: assignedLocation,
-            document_url: publicUrl,
-            document_filename: documentFile.name,
-            sepa_mandate_url: sepaPublicUrl,
-            sepa_mandate_filename: sepaFile.name,
-            postal_invoice: postalInvoice,
-            status: "pending",
-            email_confirmed: true, // session present → email auto-confirmed by Auth
-          }),
+          Promise.resolve(
+            supabase.from("b2b_profiles").insert({
+              user_id: userId,
+              company_name: companyName,
+              legal_form: legalForm,
+              tax_id: taxId,
+              trade_register_number: tradeRegisterNumber,
+              contact_first_name: firstName,
+              contact_last_name: lastName,
+              contact_position: position,
+              contact_phone: phone,
+              contact_email: email,
+              billing_email: billingEmail || null,
+              street: street,
+              house_number: houseNumber,
+              postal_code: postalCode,
+              city: city,
+              assigned_location: assignedLocation,
+              document_url: publicUrl,
+              document_filename: documentFile.name,
+              sepa_mandate_url: sepaPublicUrl,
+              sepa_mandate_filename: sepaFile.name,
+              postal_invoice: postalInvoice,
+              status: "pending",
+              email_confirmed: true, // session present → email auto-confirmed by Auth
+            })
+          ),
           20_000,
           "Profil speichern",
         );
