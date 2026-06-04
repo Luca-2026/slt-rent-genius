@@ -410,11 +410,11 @@ function markdownLinks(links: RentalLink[]) {
 }
 
 function bookingHint() {
-  return "Klick auf den passenden Artikel. Auf der Artikelseite öffnest du über **„Jetzt mieten“** den Kalender, siehst die aktuelle Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.";
+  return "Auf der Artikelseite klickst du auf **„Jetzt mieten“** und buchst dort Zeitraum und Verfügbarkeit direkt online.";
 }
 
 function buildLinkResponse(intro: string, links: RentalLink[]) {
-  return `${intro}\n\n${markdownLinks(links)}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  return `${intro}\n\n${markdownLinks(links)}\n\n${bookingHint()}`;
 }
 
 function getMinibaggerLinks(text: string, location: string): RentalLink[] {
@@ -546,16 +546,21 @@ function locationLabel(location: string) {
 function buildPlanen750Response(location: string) {
   const links = planen750Links[location];
   if (!links) return null;
-  return `Klar – für ${locationLabel(location)} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nKlick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jetzt mieten" den Kalender, siehst die Verfügbarkeit, wählst deinen Mietzeitraum aus und buchst direkt online.\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  return `Klar – für ${locationLabel(location)} sind diese 750-kg-Planenanhänger passend:\n\n${links.map((item) => `- [${item.label}](${item.url})`).join("\n")}\n\nAuf der Artikelseite klickst du auf **„Jetzt mieten“** und buchst dort direkt online.`;
 }
 
 // ---------- Bautrockner Flow ----------
 
-function extractArea(text: string): number | null {
-  const match = text.match(/(\d{1,4})\s*(?:m²|m2|qm|quadratmeter)/i);
+function extractBautrocknerNeed(text: string): { value: number; unit: "area" | "capacity" } | null {
+  const match = text.match(/(\d{1,4})\s*(m²|m2|qm|quadratmeter|l(?:iter)?(?:\s*\/\s*(?:tag|24\s*h))?)/i);
   if (!match) return null;
   const n = parseInt(match[1], 10);
-  return Number.isFinite(n) ? n : null;
+  if (!Number.isFinite(n)) return null;
+  return { value: n, unit: /^l/i.test(match[2]) ? "capacity" : "area" };
+}
+
+function extractArea(text: string): number | null {
+  return extractBautrocknerNeed(text)?.value ?? null;
 }
 
 function bautrocknerLink(location: string, slug: string) {
@@ -564,7 +569,7 @@ function bautrocknerLink(location: string, slug: string) {
   return url;
 }
 
-function buildBautrocknerResponse(location: string, area: number | null) {
+function buildBautrocknerResponse(location: string, need: { value: number; unit: "area" | "capacity" } | null) {
   const loc = locationLabel(location);
   const both = bautrocknerCatalog
     .map((item) => ({ ...item, url: bautrocknerLink(location, item.slug) }))
@@ -572,20 +577,24 @@ function buildBautrocknerResponse(location: string, area: number | null) {
 
   if (both.length === 0) return null;
 
-  // Empfehlung anhand der Fläche
+  // Empfehlung anhand der Fläche bzw. Leistung (z. B. "20l")
   let recommended: typeof both | null = null;
   let intro: string;
-  if (area !== null) {
+  if (need !== null) {
+    const area = need.value;
     const pick = area <= 20 ? both.filter((b) => b.slug === "bautrockner-kt200") : both.filter((b) => b.slug === "bautrockner-kt553");
     recommended = pick.length ? pick : both;
-    intro = `Für ca. ${area} m² in ${loc} passt das hier am besten:`;
+    intro = need.unit === "capacity"
+      ? `Für ${area} l/Tag in ${loc} passt dieser Bautrockner:`
+      : `Für ca. ${area} m² in ${loc} passt dieser Bautrockner:`;
   } else {
     recommended = both;
-    intro = `Damit ich dir das richtige Modell in ${loc} empfehle, hilft mir kurz: Wie groß ist die zu trocknende Fläche (in m²) und wie hoch ist der Wasserschaden grob (feucht / nass / stark durchnässt)?\n\nUnsere zwei Modelle in ${loc}:`;
+    intro = `Ja – in ${loc} haben wir diese Bautrockner:`;
   }
 
   const lines = recommended.map((item) => `- [${item.label}](${SITE_ORIGIN}${item.url!.replace(SITE_ORIGIN, "")}) – ${item.summary}`).join("\n");
-  return `${intro}\n\n${lines}\n\n${bookingHint()}\n\nBist du Privat- oder Firmenkunde? Als Firmenkunde kannst du dich zusätzlich kostenlos im [B2B-Portal](https://www.slt-rental.de/b2b) registrieren.`;
+  const question = need === null ? "\n\nWenn du unsicher bist: Wie groß ist die zu trocknende Fläche in m²?" : "";
+  return `${intro}\n\n${lines}\n\n${bookingHint()}${question}`;
 }
 
 // ---------- Conversation helpers ----------
@@ -637,12 +646,12 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   }
 
   // --- Bautrockner ---
-  if ((explicitLinkAsk || continuation) && mentionsBautrockner) {
+  if (mentionsBautrockner) {
     if (!location) {
-      return "Gerne – für welchen Standort soll ich dir den passenden Bautrockner empfehlen: Krefeld, Bonn oder Mülheim an der Ruhr?";
+      return "Ja – wir vermieten Bautrockner. Für welchen Standort brauchst du den Link: Krefeld, Bonn oder Mülheim an der Ruhr?";
     }
-    const area = extractArea(relevantText);
-    const response = buildBautrocknerResponse(location, area);
+    const need = extractBautrocknerNeed(relevantText);
+    const response = buildBautrocknerResponse(location, need);
     if (response) return response;
   }
 
