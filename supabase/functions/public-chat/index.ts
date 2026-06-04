@@ -710,6 +710,56 @@ function searchVerifiedProductLinks(text: string, location: string, categoryId?:
   }));
 }
 
+function uniqueLinks(links: Array<RentalLink | null>) {
+  const seen = new Set<string>();
+  return links.filter((link): link is RentalLink => {
+    if (!link || seen.has(link.path)) return false;
+    seen.add(link.path);
+    return true;
+  });
+}
+
+function extractRequestedHeightMeters(text: string) {
+  const match = text.match(/(\d{1,2})(?:[,.](\d))?\s*m\b/i);
+  if (!match) return null;
+  const value = Number(`${match[1]}.${match[2] ?? "0"}`);
+  return Number.isFinite(value) ? value : null;
+}
+
+function curatedProductLinks(categoryId: string, text: string, location: string): RentalLink[] {
+  const normalized = normalizeForSearch(text);
+  if (categoryId !== "arbeitsbuehnen") return [];
+
+  const links: Array<RentalLink | null> = [];
+  const add = (label: string, slug: string) => links.push(rentalLink(label, location, "arbeitsbuehnen", slug));
+  const height = extractRequestedHeightMeters(text);
+  const wantsTelescope = /(teleskop|gelenk|seitlich|reichweite|ueberstand|hindernis|fassade)/i.test(normalized);
+  const wantsMast = /(mast|eng|schmal|innen|indoor|halle|vertikal)/i.test(normalized);
+  const wantsScissor = /(schere|scheren|eben|beton|asphalt|plattform)/i.test(normalized);
+  const wantsTrailer = /(anhaenger|anhaengerbuehne|18\s*m)/i.test(normalized);
+
+  if (wantsTelescope) add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
+  if (wantsMast || height === 11) add("Mastbühne 11 m", "mastbuehne-11m");
+  if (wantsScissor || height === 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+  if (wantsScissor || height === 12) add("Scherenbühne 12 m", "scherenbuehne-12m");
+  if (wantsTrailer || (height !== null && height > 12)) add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
+
+  if (links.length === 0 && height !== null) {
+    if (height <= 8) add("Scherenbühne 8 m", "scherenbuehne-8m");
+    else if (height <= 11) {
+      add("Mastbühne 11 m", "mastbuehne-11m");
+      add("Scherenbühne 12 m", "scherenbuehne-12m");
+    } else if (height <= 12) {
+      add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
+      add("Scherenbühne 12 m", "scherenbuehne-12m");
+    } else {
+      add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
+    }
+  }
+
+  return uniqueLinks(links).slice(0, 5);
+}
+
 // ---------- Generisches Beratungs-Framework (alle Kategorien außer Minibagger/Bautrockner) ----------
 
 type ConsultQuestion = { key: string; answered: RegExp; question: string };
