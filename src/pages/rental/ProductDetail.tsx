@@ -226,9 +226,10 @@ export default function ProductDetail() {
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
       if (product.description) {
-        const descSnippet = product.description.length > 80 
-          ? product.description.substring(0, 80).replace(/\s+\S*$/, '') 
-          : product.description;
+        const localizedDesc = localizeText(product.description);
+        const descSnippet = localizedDesc.length > 80 
+          ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
+          : localizedDesc;
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       } else {
@@ -296,7 +297,7 @@ export default function ProductDetail() {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
-        "description": product.description || "",
+        "description": localizeText(product.description || ""),
         "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
         "url": canonicalUrl,
         "category": category.title,
