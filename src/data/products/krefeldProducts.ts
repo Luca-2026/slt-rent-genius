@@ -3571,10 +3571,10 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "zeltboden-anthrazit",
-    name: "Zeltboden Anthrazit 0,86 m²",
-    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
-    image: imgZeltbodenAnthrazit2,
-    images: [imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit1],
+    name: "Event- / Zeltboden Anthrazit",
+    description: "Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag – ideal für Zelte, Outdoor-Events und temporäre Veranstaltungsflächen. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.",
+    image: imgZeltbodenAnthrazit1,
+    images: [imgZeltbodenAnthrazit1, imgZeltbodenAnthrazit2, imgZeltbodenAnthrazit3],
     category: "zelt",
     pdfUrl: "/manuals/slt-rental-datenblatt-eventboden.pdf",
     specifications: {
