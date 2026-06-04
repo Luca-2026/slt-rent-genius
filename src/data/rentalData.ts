@@ -1462,10 +1462,19 @@ function mergeWithFallback(primary: Product[], krefeld: Product[], _locationId: 
     };
   });
 
-  // Step 2: Add Krefeld products that are NOT represented in primary at all
+  // Step 2: Add Krefeld products that are NOT represented in primary at all.
+  // Preserve a location-specific rentwareCode if the Krefeld entry already declares one
+  // (e.g. { krefeld: "...", bonn: "ZA2THI" }) so that the article still gets bookable
+  // at the target location instead of falling back to the "Auf Anfrage" inquiry mask.
   const fallbacks = krefeld
     .filter((k) => !isCovered(k))
-    .map((k) => ({ ...k, rentwareCode: undefined }));
+    .map((k) => {
+      const locCode = (k.rentwareCode as Record<string, string> | undefined)?.[_locationId];
+      return {
+        ...k,
+        rentwareCode: locCode ? ({ [_locationId]: locCode } as Product["rentwareCode"]) : undefined,
+      };
+    });
 
   // Deduplicate by ID (in case multiple primary products resolved to the same canonical ID)
   const seen = new Set<string>();
