@@ -296,7 +296,7 @@ export default function ProductDetail() {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
-        "description": product.description || "",
+        "description": localizeText(product.description || ""),
         "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
         "url": canonicalUrl,
         "category": category.title,
