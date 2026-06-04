@@ -899,6 +899,7 @@ export const RENTAL_LINK_PATHS = [
   "/mieten/muelheim/kabel-stromverteiler/cee-63a-uv-2x32a-1x16a-6xschuko/",
   "/mieten/muelheim/kabel-stromverteiler/cee-63a-uv-2x32a-2x16a/",
   "/mieten/muelheim/kabel-stromverteiler/anschlussverteilerschrank-44kva/",
+  "/mieten/muelheim/kabel-stromverteiler/endverteilerschrank-22kva-ev32/",
   "/mieten/muelheim/kabel-stromverteiler/cee-kabel-16a-3m/",
   "/mieten/muelheim/kabel-stromverteiler/cee-kabel-16a-5m/",
   "/mieten/muelheim/kabel-stromverteiler/cee-kabel-16a-10m/",
