@@ -1287,7 +1287,9 @@ function getDeterministicResponse(messages: ChatMessage[]) {
   // So bekommen Anfragen wie „Rüttelplatten in Bonn" direkt den Verdichtungs-Link
   // statt einer KI-Antwort mit unspezifischer /mieten/<standort>/-URL.
   // Kategorie primär aus der letzten User-Nachricht ableiten – sonst zieht alte History (z. B. „passend") fälschlich Kategorien wie Beschallung.
-  const categoryFromLast = detectCategory(lastUser) ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
+  const categoryFromLast = detectCategory(lastUser)
+    ?? detectCategoryFromProductSearch(lastUser, location)
+    ?? (isShortFollowUp(lastUser) ? detectRecentUserCategory(messages) : null);
   if (categoryFromLast) {
     if (!location) {
       return `Gerne berate ich dich zu **${categoryFromLast.label}** – für welchen Standort: **Krefeld, Bonn oder Mülheim an der Ruhr**? Sag mir gleich noch dazu, wofür du die Geräte konkret brauchst, dann empfehle ich dir die passenden Modelle.`;
