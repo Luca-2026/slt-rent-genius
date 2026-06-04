@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_FAQ_JSONLD } from "@/components/SEO";
 import { Card, CardContent } from "@/components/ui/card";
@@ -71,8 +71,22 @@ export default function Mietartikel() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | undefined>();
-
   const [selectedCategoryQuery, setSelectedCategoryQuery] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (window.location.hash === "#event") {
+      const timer = setTimeout(() => {
+        const el = document.getElementById("event");
+        if (el) {
+          const headerOffset = 100;
+          const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
@@ -228,18 +242,21 @@ export default function Mietartikel() {
             group.id === "bau" ? bauTeaserProducts : group.id === "event" ? eventTeaserProducts : null;
           const teaserLabel = group.id === "bau" ? "Bau" : "Event";
           return (
-            <AnimatedSection key={group.id}>
-              <div className="flex items-baseline gap-2 md:gap-3 mb-4 md:mb-6 border-b border-border pb-2">
-                <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary self-center" aria-hidden />
-                <h2 className="text-xl md:text-2xl font-bold uppercase tracking-wide text-headline">
-                  {group.title}
-                </h2>
-                {group.subtitle && (
-                  <span className="text-sm md:text-base text-muted-foreground">
-                    — {group.subtitle}
-                  </span>
-                )}
-              </div>
+          <AnimatedSection key={group.id}>
+            <div
+              id={group.id === "event" ? "event" : undefined}
+              className="flex items-baseline gap-2 md:gap-3 mb-4 md:mb-6 border-b border-border pb-2"
+            >
+              <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary self-center" aria-hidden />
+              <h2 className="text-xl md:text-2xl font-bold uppercase tracking-wide text-headline">
+                {group.title}
+              </h2>
+              {group.subtitle && (
+                <span className="text-sm md:text-base text-muted-foreground">
+                  — {group.subtitle}
+                </span>
+              )}
+            </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
                 {group.cats.map((cat) => (
                   <CategoryCard key={cat.id} category={cat} />
