@@ -3756,6 +3756,7 @@ export const moebelZelteProducts: Product[] = [
     image: imgGetraenkekuehlschrank236l_1,
     images: [imgGetraenkekuehlschrank236l_1, imgGetraenkekuehlschrank236l_2, imgGetraenkekuehlschrank236l_3],
     category: "kuehlgeraet",
+    pricePerDay: "ab 20 € / Tag",
     specifications: {
       "Fassungsvermögen": "236 l",
       "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
