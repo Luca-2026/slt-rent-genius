@@ -4832,8 +4832,8 @@ $productSEOLookup = [
     ],
   ],
   'zeltboden-anthrazit' => [
-    'name' => 'Zeltboden Anthrazit 0,86m²',
-    'h1' => 'Eventboden / Zeltboden Anthrazit mieten – robust, belastbar & schnell verlegt',
+    'name' => 'Event- / Zeltboden Anthrazit',
+    'h1' => 'Event- / Zeltboden Anthrazit mieten – robust, belastbar & schnell verlegt',
     'h2s' => ['Technische Daten & Material', 'Verlegung & Handhabung', 'Einsatzbereiche', 'Kombination mit Zelten & Equipment'],
     'useCaseBau' => 'Baustellenzufahrt, temporäre Lagerflächen, Personenwege auf unbefestigtem Untergrund',
     'useCaseEvent' => 'Zeltböden für Hochzeiten, Firmenfeiern, Stadtfeste, Messen, Konzerte',
@@ -6912,8 +6912,8 @@ $productDetails = [
     ],
   ],
   'bonn-zeltboden-anthrazit' => [
-    'name' => 'Zeltboden Anthrazit 0,86 m²',
-    'description' => 'Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.',
+    'name' => 'Event- / Zeltboden Anthrazit',
+    'description' => 'Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag – ideal für Zelte, Outdoor-Events und temporäre Veranstaltungsflächen. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.',
     'specs' => [
       'Material' => 'Recycelter Kunststoff-Mix',
       'Abmessung' => '1.000 × 860 mm (0,86 m²)',
@@ -9351,8 +9351,8 @@ $productDetails = [
     ],
   ],
   'zeltboden-anthrazit' => [
-    'name' => 'Zeltboden Anthrazit 0,86 m²',
-    'description' => 'Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.',
+    'name' => 'Event- / Zeltboden Anthrazit',
+    'description' => 'Robuster Event- und Zeltboden aus recyceltem Kunststoff-Mix mit Nut-und-Feder-System für lückenlosen, stabilen Bodenbelag – ideal für Zelte, Outdoor-Events und temporäre Veranstaltungsflächen. Anthrazit, rutschfeste Oberfläche, ca. 15 t/m² belastbar. Besenrein zurückzugeben.',
     'specs' => [
       'Material' => 'Recycelter Kunststoff-Mix',
       'Abmessung' => '1.000 × 860 mm (0,86 m²)',
