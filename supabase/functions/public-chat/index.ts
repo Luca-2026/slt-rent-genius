@@ -606,7 +606,7 @@ function buildMinibaggerConsultResponse(spec: MinibaggerSpec, location: string, 
 
   const answered = detectAlreadyAnswered(history);
   const questions: string[] = [];
-  if (!answered.digDepth) questions.push(`Welche **Grabtiefe** brauchst du? Der ${spec.short}-Bagger schafft bis ${(spec.digDepthMm / 1000).toLocaleString("de-DE")} m.`);
+  if (!answered.digDepth) questions.push(`Welche **Grabtiefe** brauchst du? Der ${spec.short}-Bagger schafft bis ${(spec.digDepthMm / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m.`);
   if (!answered.access) questions.push(`Wie **eng ist der Zugang** zur Baustelle (Tor/Durchfahrt)? Der Bagger ist ${spec.widthMm} mm breit (einfahrbar).`);
   if (!answered.delivery) questions.push("Möchtest du **selbst abholen** oder soll ich dir den **Lieferkostenrechner** verlinken? Dann nenn mir bitte deine PLZ.");
   if (!answered.attachments) questions.push("Welche **Anbaugeräte** brauchst du zusätzlich (z. B. Tieflöffel-Breite, Grabenräumlöffel, Hydraulikhammer)?");
