@@ -2052,13 +2052,6 @@ export const bonnMoebelProducts = [
   },
 
   {
-    id: "bonn-bierzeltgarnitur-hussen-weiss",
-    name: "Bierzeltgarnitur Hussen-Set weiß",
-    description: "Elegantes weißes Hussen-Set für Bierzeltgarnituren. 1 Set = 2× Bankhusse + 1× Tischhusse. Gewaschen zurückzugeben.",
-    image: "/placeholder.svg",
-    rentwareCode: { bonn: "6AVVWR" },
-  },
-  {
     id: "bonn-bierzeltgarnitur-set",
     name: "Bierzeltgarnitur-Set",
     description: "Klassische Bierzeltgarnitur als Set: 1× Tisch (50×220 cm) + 2× Bank (25×220 cm). Optional sind weiße Hussen für Tisch und Bänke erhältlich – im nächsten Schritt der Bestellung hinzufügbar.",
