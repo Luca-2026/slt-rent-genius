@@ -514,11 +514,14 @@ function rentalLink(label: string, location: string, category: string, slug?: st
 
 function detectCategory(text: string) {
   const normalized = text.toLowerCase();
-  // Wortgrenzen-Matching, damit kurze Terme wie "pa" nicht in "passend", "Apparat" etc. matchen
+  // Wortgrenzen-Matching mit optionaler deutscher Flexionsendung (n/en/s/e/er),
+  // damit Plural- und Beugungsformen wie "Rüttelplatten" oder "Anhängern"
+  // den Term "rüttelplatte"/"anhänger" matchen. Trotzdem schützt der Anfangs-
+  // Wortbreak vor Fehl-Matches in Wörtern wie "passend" oder "Apparat".
   const matchesTerm = (term: string) => {
     const t = term.toLowerCase();
     const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:[^a-zäöüß0-9]|$)`, "i");
+    const re = new RegExp(`(?:^|[^a-zäöüß0-9])${escaped}(?:n|en|s|e|er)?(?:[^a-zäöüß0-9]|$)`, "i");
     return re.test(normalized);
   };
   return categoryTerms.find((category) => category.terms.some(matchesTerm)) ?? null;
