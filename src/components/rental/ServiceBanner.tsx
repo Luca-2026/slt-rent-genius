@@ -183,14 +183,39 @@ function ServiceBannerItem({ service }: { service: ServiceInfo }) {
           )}
           {service.emailLink && (
             <a
-              href={`mailto:${service.emailLink}`}
+              href={`mailto:${service.emailLink}${service.emailSubject || service.emailBody ? `?${[
+                service.emailSubject ? `subject=${encodeURIComponent(service.emailSubject)}` : "",
+                service.emailBody ? `body=${encodeURIComponent(service.emailBody)}` : "",
+              ].filter(Boolean).join("&")}` : ""}`}
               className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1.5 hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
-              Jetzt Kontakt aufnehmen
+              {service.emailLabel || "Jetzt Kontakt aufnehmen"}
             </a>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
+  if (!categoryId) return null;
+
+  let service = categoryServices[categoryId];
+  const showWorkshop = workshopCategories.includes(categoryId) && workshopLocations.includes(locationId || "");
+
+  // Standort-spezifische E-Mail für Kabel & Stromverteiler (Full-Service / Baustrom-Anfragen)
+  if (service && categoryId === "kabel-stromverteiler") {
+    const email = stromEmailByLocation[locationId || ""] || "info@slt-rental.de";
+    service = {
+      ...service,
+      emailLink: email,
+      emailLabel: "Full-Service-Anfrage senden",
+      emailSubject: "Anfrage Stromversorgung / Baustrom – Planung & Installation",
+      emailBody: "Hallo SLT Rental Team,\n\nich interessiere mich für eine Full-Service-Anfrage zur Stromversorgung (Planung, Installation, ggf. Baustromantrag).\n\nVeranstaltung / Baustelle:\nOrt / Adresse:\nZeitraum:\nBenötigte Leistung (kVA / Verbraucher):\nWeitere Details:\n\nVielen Dank!",
+    };
+  }
       </div>
     </div>
   );
