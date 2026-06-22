@@ -298,7 +298,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "kabel-stromverteiler",
     title: "Kabel & Stromverteiler",
-    description: "Verlängerungskabel, Kabelbrücken und Stromverteiler.",
+    description: "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
     icon: iconKabel,
   },
   {

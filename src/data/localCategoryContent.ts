@@ -196,21 +196,25 @@ export const localCategoryContent: LocalContentMap = {
 
     "kabel-stromverteiler": {
       hookline:
-        "CEE-Kabel (16/32/63 A), Schukokabel, Kabeltrommeln und CEE-Unterverteiler mietest du an unserer Filiale Bonn – kompakte Mengen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, große Verteilerschränke mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung – an unserer Filiale Bonn abholbar, samstags bis 17:30 Uhr ohne Voranmeldung. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE- und Schukokabel (3, 5, 10, 20, 50 m), Schuko-Kabeltrommeln sowie CEE-Adapter (16↔32, 32↔63) passen in der Regel in jeden Pkw oder Kombi. Größere CEE-Unterverteiler und Verteilerschränke (z. B. 24 kVA, 44 kVA, 55 kVA Anschlussschrank) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack-Variante) sowie die Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör direkt zur Baustelle.",
       faqs: [
         {
+          q: "Übernehmt ihr auch die Anträge für den Baustromanschluss?",
+          a: "Ja. Für Bonn, den Rhein-Sieg-Kreis und das Ahrtal übernehmen wir die komplette Beantragung des Baustromanschlusses beim zuständigen Netzbetreiber zum Festpreis. Dazu liefern wir den passenden Endverteilerschrank (EV32 22 kVA Typ B oder EV63 44 kVA Typ B) bzw. den Anschlussverteilerschrank 44 kVA inklusive CEE-Zuleitungskabeln direkt zur Baustelle.",
+        },
+        {
           q: "Liefert ihr CEE-Verteilerschränke ins Ahrtal oder in den Rhein-Sieg-Kreis?",
-          a: "Ja. Anschluss- und Verteilerschränke (24 kVA, 44 kVA, 55 kVA) sowie passende CEE-Kabel liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
+          a: "Ja. Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) sowie passende CEE-Kabel (16/32/63 A) liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
         },
         {
           q: "Kann ich CEE-Kabel und Adapter in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Kabel (16/32/63 A in Längen von 3 bis 50 m), Schukokabel, die 50-m-Schuko-Kabeltrommel sowie Mennekes-Adapter 16↔32 und 32↔63 kannst du direkt mitnehmen.",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Verlängerungskabel 16/32/63 A in Längen von 3, 5, 10, 20 und 50 m, Schukokabel, die Schuko-Kabeltrommel 50 m sowie die Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung) kannst du direkt mitnehmen.",
         },
         {
           q: "Welche Verteiler und Kabel habt ihr an der Filiale Bonn vor Ort?",
-          a: "An der Filiale Bonn führen wir ein Kernsortiment aus CEE-Kabeln, Schukokabeln, Kabeltrommeln, CEE-Unterverteilern (16/32/63 A) und CEE-Adaptern direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Große Verteilerschränke (z. B. Anschlussverteilerschrank 44 kVA) und passende Konfigurationen für Aggregat-Speisung disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment aus CEE-Verlängerungskabeln (16/32/63 A), Schukokabeln, Schuko-Kabeltrommel 50 m, CEE-Unterverteilern (16 A/32 A/63 A auf Schuko und CEE-Ausgänge) sowie Mennekes-CEE-Adaptern direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Große Verteilerschränke (Endverteilerschrank 22/44 kVA, Anschlussverteilerschrank 44 kVA, Hauptverteilerschrank 86 kVA HV125) und passende Konfigurationen für Aggregat-Speisung disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
         },
       ],
     },
@@ -501,6 +505,28 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+
+    "kabel-stromverteiler": {
+      hookline:
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung – direkt am Hauptsitz Krefeld verfügbar. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. Vollgummi- und 19\"-Rack-CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack mit FI Typ B 63 A) sowie die mobilen Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B, alternativ Direktanschluss über Kabelschuhe) sind im Mietpark vor Ort. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör (Erdungsspieß 1,5 m, passende CEE-Zuleitungen) direkt zur Baustelle in Krefeld und im Niederrhein-Raum.",
+      faqs: [
+        {
+          q: "Übernehmt ihr auch die Anträge für den Baustromanschluss in Krefeld und am Niederrhein?",
+          a: "Ja. Wir übernehmen die komplette Beantragung des Baustromanschlusses beim zuständigen Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank (EV32 22 kVA Typ B oder EV63 44 kVA Typ B) bzw. den Anschlussverteilerschrank 44 kVA inklusive CEE-Zuleitungskabeln direkt zur Baustelle. Bei sehr großen Baustellen oder Festivals setzen wir den Hauptverteilerschrank 86 kVA HV125 Typ B ein, der wahlweise per 125 A CEE oder direkt über Kabelschuhe vom Trafo bzw. Aggregat gespeist wird.",
+        },
+        {
+          q: "Welche Stromverteiler und Kabel führt ihr am Hauptsitz Krefeld?",
+          a: "Am Hauptsitz Krefeld führen wir das komplette Sortiment vor Ort: CEE-Verlängerungskabel 16/32/63 A in 3, 5, 10, 20 und 50 m, Schukokabel, Schuko-Kabeltrommel 50 m, sämtliche Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung), CEE-Unterverteiler 16 A/32 A/63 A (Schuko- und CEE-Ausgänge, auch als 19\"-Rack), Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA, Hauptverteilerschrank 86 kVA HV125 Typ B sowie Erdungsspieß 1,5 m mit 3 m Leitung. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Welche Kabelbrücken habt ihr im Sortiment?",
+          a: "Für die sichere Kabelführung bei Veranstaltungen führen wir Defender Micro 2 (2 Kanäle, Typ 535-5) und Defender Midi 5 (5 Kanäle, Typ 535-5, max. Achslast 5 t, Brandschutzklasse B2) für den Outdoor- und Befahrbar-Einsatz sowie Office-Kabelbrücken in 1 m und 2 m Länge mit 4 Kanälen für die Innenanwendung.",
+        },
+      ],
+    },
+
     // Weitere Kategorien folgen in den nächsten Sprints.
   },
 
@@ -662,21 +688,25 @@ export const localCategoryContent: LocalContentMap = {
 
     "kabel-stromverteiler": {
       hookline:
-        "CEE-Kabel (16/32/63 A), Schukokabel, Kabeltrommeln und CEE-Unterverteiler für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale, große Verteilerschränke mit Lieferung direkt zur Baustelle.",
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung – Übergabe an unserem Service-Standort Mülheim in der Bobcat-Filiale, Lieferung ins gesamte Ruhrgebiet. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
       standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. CEE- und Schukokabel (3, 5, 10, 20, 50 m), Schuko-Kabeltrommeln und CEE-Adapter (16↔32, 32↔63) passen in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. Größere CEE-Unterverteiler und Verteilerschränke (z. B. 24 kVA, 44 kVA, 55 kVA Anschlussschrank) liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in jeden Pkw oder Kombi und werden nach Terminvereinbarung übergeben. CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack-Variante) sowie die Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) liefern wir per Transport ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör direkt zur Baustelle. Die Geräte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
       faqs: [
         {
+          q: "Übernehmt ihr auch die Anträge für den Baustromanschluss im Ruhrgebiet?",
+          a: "Ja. Für Mülheim, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen und Hattingen übernehmen wir die komplette Beantragung des Baustromanschlusses beim zuständigen Netzbetreiber zum Festpreis. Dazu liefern wir den passenden Endverteilerschrank (EV32 22 kVA Typ B oder EV63 44 kVA Typ B) bzw. den Anschlussverteilerschrank 44 kVA inklusive CEE-Zuleitungskabeln direkt zur Baustelle.",
+        },
+        {
           q: "Liefert ihr CEE-Verteilerschränke nach Essen, Duisburg oder Oberhausen?",
-          a: "Ja. Anschluss- und Verteilerschränke (24 kVA, 44 kVA, 55 kVA) sowie passende CEE-Kabel liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+          a: "Ja. Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) sowie passende CEE-Kabel liefern wir ab unserem Service-Standort Mülheim ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird direkt aus Krefeld organisiert, in der Regel am nächsten Werktag.",
         },
         {
           q: "Stehen die Verteiler und Kabel direkt am Standort Mülheim?",
-          a: "Ein Teil unseres Kabel- und Verteiler-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise CEE-/Schukokabel, Kabeltrommeln und kleinere CEE-Unterverteiler. Große Verteilerschränke (z. B. Anschlussverteilerschrank 44 kVA) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+          a: "Ein Teil unseres Kabel- und Verteiler-Sortiments steht direkt am Service-Standort Mülheim zur Übergabe bereit – typischerweise CEE-Verlängerungskabel (16/32/63 A in 3 bis 50 m), Schukokabel, Schuko-Kabeltrommel 50 m, CEE-Adapter und kleinere CEE-Unterverteiler. Große Verteilerschränke (Endverteilerschrank 22/44 kVA, Anschlussverteilerschrank 44 kVA, Hauptverteilerschrank 86 kVA HV125) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Übergabe, Einweisung und Rückgabe finden vollständig in Mülheim statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
         },
         {
           q: "Kann ich CEE-Kabel und Adapter in Mülheim einfach mit dem Pkw abholen?",
-          a: "Ja. CEE-Kabel (16/32/63 A in Längen von 3 bis 50 m), Schukokabel, Schuko-Kabeltrommeln und Mennekes-Adapter 16↔32 sowie 32↔63 passen in jeden Pkw und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Verteilerschränke empfehlen wir die Lieferung direkt zur Einsatzstelle.",
+          a: "Ja. CEE-Verlängerungskabel 16/32/63 A in Längen von 3, 5, 10, 20 und 50 m, Schukokabel, Schuko-Kabeltrommel 50 m sowie die Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung) passen in jeden Pkw und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für größere Verteilerschränke empfehlen wir die Lieferung direkt zur Einsatzstelle.",
         },
       ],
     },
