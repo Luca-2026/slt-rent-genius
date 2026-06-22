@@ -142,12 +142,28 @@ export default function NeumaschineDetail() {
         url: `${BASE_URL}${canonicalPath}`,
         priceCurrency: "EUR",
         price: priceGross.toFixed(2),
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: priceGross.toFixed(2),
-          priceCurrency: "EUR",
-          valueAddedTaxIncluded: true,
-        },
+        priceSpecification: hasDiscount
+          ? [
+              {
+                "@type": "UnitPriceSpecification",
+                price: priceGross.toFixed(2),
+                priceCurrency: "EUR",
+                valueAddedTaxIncluded: true,
+              },
+              {
+                "@type": "UnitPriceSpecification",
+                priceType: "https://schema.org/ListPrice",
+                price: (compareAtPrice as number).toFixed(2),
+                priceCurrency: "EUR",
+                valueAddedTaxIncluded: true,
+              },
+            ]
+          : {
+              "@type": "UnitPriceSpecification",
+              price: priceGross.toFixed(2),
+              priceCurrency: "EUR",
+              valueAddedTaxIncluded: true,
+            },
         priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/NewCondition",
         availability: "https://schema.org/PreOrder",
