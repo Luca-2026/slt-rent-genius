@@ -327,6 +327,90 @@ const STATIC_ROUTES: SeoRoute[] = [
     priority: 0.7,
     lastmod: TODAY,
   },
+  // ---------------------------------------------------------------
+  // Anbietervergleiche (statisch geprerendert wie City-Pages)
+  // ---------------------------------------------------------------
+  ...([
+    {
+      slug: "slt-vs-hkl",
+      competitor: "HKL",
+      title: "SLT Rental vs. HKL: Maschinenvermietung in NRW im Vergleich",
+      description:
+        "Sachlicher Vergleich von SLT Rental und HKL: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      h1: "SLT Rental und HKL im Vergleich",
+      faqs: [
+        { q: "Was unterscheidet SLT Rental von HKL?", a: "SLT Rental ist ein regionaler Mietpark in Nordrhein-Westfalen mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr und einem breiten Sortiment, das neben Baumaschinen auch Anhänger, Stromaggregate und Event-Equipment umfasst. HKL ist ein bundesweit aktiver Vermieter mit Schwerpunkt Baumaschinen und einem dichten Filialnetz." },
+        { q: "Kann ich bei SLT Rental auch als Privatkunde mieten?", a: "Ja. SLT Rental vermietet an Privatkunden (B2C) und an Unternehmen (B2B). Anhänger sind 24/7 online buchbar, Baumaschinen und Eventtechnik werden über Anfrage oder den Mietkatalog reserviert." },
+        { q: "Gibt es bei SLT Rental eine Tiefpreisgarantie?", a: "Ja. Finden Sie ein vergleichbares Mietangebot in der Region günstiger, unterbietet SLT Rental den Preis. Details stehen auf der Seite Tiefpreisgarantie." },
+        { q: "An welchen Standorten ist SLT Rental in NRW vertreten?", a: "SLT Rental ist mit drei Standorten in Nordrhein-Westfalen vertreten: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr. Lieferung in den Umkreis ist über alle Standorte möglich." },
+      ],
+    },
+    {
+      slug: "slt-vs-boels",
+      competitor: "Boels",
+      title: "SLT Rental vs. Boels: Maschinenvermietung in NRW im Vergleich",
+      description:
+        "Sachlicher Vergleich von SLT Rental und Boels Rental: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      h1: "SLT Rental und Boels im Vergleich",
+      faqs: [
+        { q: "Was unterscheidet SLT Rental von Boels?", a: "SLT Rental ist ein regional verwurzelter Mietpark in NRW mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Boels Rental ist international aufgestellt und betreibt ein dichtes Netz an Niederlassungen. SLT bietet zusätzlich Event-Equipment und 24/7-Anhängerbuchung an." },
+        { q: "Kann ich bei SLT Rental auch kurzfristig mieten?", a: "Ja. Über die Online-Buchung sind Anhänger 24/7 verfügbar, viele Baumaschinen und Geräte können kurzfristig nach Verfügbarkeit reserviert werden. Telefonische Beratung läuft über die Standortteams." },
+        { q: "Welche Gerätekategorien bietet SLT Rental?", a: "Baumaschinen (zum Beispiel Minibagger), Anhänger, Arbeitsbühnen, Stromaggregate und Event-Equipment. Das vollständige Sortiment finden Sie im Mietkatalog je Standort." },
+        { q: "Liefert SLT Rental zur Baustelle?", a: "Ja. Die Lieferkosten werden anhand einer Kilometerpauschale kalkuliert. Auf der Seite Lieferung steht ein Rechner für eine erste Preisindikation." },
+      ],
+    },
+    {
+      slug: "slt-vs-beyer",
+      competitor: "Beyer",
+      title: "SLT Rental vs. Beyer: Maschinenvermietung in NRW im Vergleich",
+      description:
+        "Sachlicher Vergleich von SLT Rental und Beyer-Mietservice: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      h1: "SLT Rental und Beyer-Mietservice im Vergleich",
+      faqs: [
+        { q: "Was unterscheidet SLT Rental von Beyer-Mietservice?", a: "SLT Rental ist ein regional aufgestellter Mietpark mit drei Standorten in NRW (Krefeld, Bonn, Mülheim an der Ruhr) und einem Sortiment, das neben Baumaschinen auch Anhänger, Stromaggregate und Event-Equipment umfasst. Beyer-Mietservice fokussiert sich auf Bau- und Industriegeräte und ist an mehreren Standorten in NRW vertreten." },
+        { q: "Bietet SLT Rental auch Event-Equipment an?", a: "Ja. Zum SLT-Sortiment gehören Zelte, Bestuhlung, Stromaggregate und weitere Eventtechnik. Diese Geräte sind über den Mietkatalog der Standorte verfügbar." },
+        { q: "Wie schnell kann ich Geräte bei SLT Rental bekommen?", a: "Anhänger sind 24/7 online buchbar. Für Baumaschinen und Aggregate hängt die Verfügbarkeit vom Standort und Zeitraum ab. Eine Verfügbarkeitsprüfung läuft direkt im Mietkatalog oder telefonisch über die Standortteams." },
+        { q: "Gibt es eine Tiefpreisgarantie bei SLT Rental?", a: "Ja. Sollten Sie ein vergleichbares Angebot in der Region günstiger finden, unterbietet SLT Rental den Preis. Bedingungen stehen auf der Seite Tiefpreisgarantie." },
+      ],
+    },
+  ].map((v): SeoRoute => ({
+    path: `/vergleich/${v.slug}`,
+    routeType: "page",
+    title: v.title,
+    description: v.description,
+    h1: v.h1,
+    intro: [
+      "Sachlicher Anbietervergleich nach objektiven Kriterien. SLT Rental ist ein regionaler Mietpark in Nordrhein-Westfalen mit drei Standorten.",
+    ],
+    changefreq: "monthly",
+    priority: 0.6,
+    lastmod: TODAY,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Vergleich", path: "/vergleich" },
+      { name: v.competitor, path: `/vergleich/${v.slug}` },
+    ],
+    inlineSchemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: v.faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Start", item: `${BASE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Vergleich", item: `${BASE_URL}/vergleich` },
+          { "@type": "ListItem", position: 3, name: v.competitor, item: `${BASE_URL}/vergleich/${v.slug}` },
+        ],
+      },
+    ],
+  }))),
 ];
 
 // ---------------------------------------------------------------
