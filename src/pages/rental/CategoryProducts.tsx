@@ -2014,16 +2014,11 @@ export default function CategoryProducts() {
                   <p className="text-muted-foreground mb-4">
                     {categorySeoTexts[category.id]?.[1] || `Profitieren Sie von unserer Tiefpreisgarantie und attraktiven Wochenend-Tarifen. Alle Geräte werden regelmäßig gewartet und sind sofort einsatzbereit. Lieferung direkt auf Ihre Baustelle oder zu Ihrem Veranstaltungsort in ${location.name} und Umgebung ist selbstverständlich möglich.`}
                   </p>
-                  {categorySeoTexts[category.id]?.[2] && (
-                    <p className="text-muted-foreground mb-4">
-                      {categorySeoTexts[category.id][2]}
+                  {(categorySeoTexts[category.id] || []).slice(2).map((para, idx) => (
+                    <p key={idx} className="text-muted-foreground mb-4">
+                      {para}
                     </p>
-                  )}
-                  {categorySeoTexts[category.id]?.[3] && (
-                    <p className="text-muted-foreground mb-4">
-                      {categorySeoTexts[category.id][3]}
-                    </p>
-                  )}
+                  ))}
                   {category.id === "beschallung" && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-headline mt-6 mb-3">Beliebte Beschallungs- und DJ-Artikel</h3>
