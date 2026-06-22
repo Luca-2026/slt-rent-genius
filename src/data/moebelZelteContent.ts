@@ -170,7 +170,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
       {
         h2: "Sonnenschirme, Zeltboden und ergänzendes Mobiliar",
         paragraphs: [
-          "Für Garten- und Außenbereiche bieten wir den Sonnenschirm LEMVIG (Ø 3 m) mit FSC-zertifizierter Hartholzstange, UV-beständiger Polyesterbespannung und Neigungsfunktion. Ein passender Ständer mit mindestens 35 kg ist nicht im Lieferumfang enthalten – bitte separat planen.",
+          "Für Garten- und Außenbereiche bieten wir den Sonnenschirm Premium (Ø 3 m) mit FSC-zertifizierter Hartholzstange, UV-beständiger Polyesterbespannung und Neigungsfunktion. Ein passender Ständer mit mindestens 35 kg ist nicht im Lieferumfang enthalten – bitte separat planen.",
           "Bei feuchten Wiesen oder unebenen Untergründen empfehlen wir den Zeltboden in Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, ca. 15 t/m² belastbar, recycelter Kunststoff-Mix). Rückgabe besenrein. Ergänzend mietbar: Getränkekühlschrank 236 l mit Glastür und LED-Beleuchtung sowie der ausziehbare Kleiderständer auf Rollen für Garderobenbereiche bei Tagungen und Empfängen.",
         ],
       },
@@ -241,7 +241,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         h2: "Modulare Party- / Eventzelte 4×10 und 4×14 – flexibel an der Ruhr",
         paragraphs: [
           "Viele Gärten in Saarn, Mintard oder Selbeck sind verwinkelt, leicht hängig oder grenzen direkt an die Ruhraue. Hier spielen die modularen Party- / Eventzelte 4×10 m (56 m²) und 4×14 m (eigentlich 4×6 + 2× 4×4 = 56 m²) ihre Stärke aus: einzelne Module lassen sich versetzt aufbauen, das 4×10 m ist mit Regenrinne ausgestattet, sodass auch zwei aneinandergesetzte Zelte trocken bleiben.",
-          "Beispielszene: Familienfeier Richtung Ruhraue mit modularem 4×10 m Party- / Eventzelt, vier Bierzeltgarnituren mit weißen Hussen, vier Stehtischen für den Aperitif und einem Sonnenschirm LEMVIG für die Kaffeezone am Nachmittag.",
+          "Beispielszene: Familienfeier Richtung Ruhraue mit modularem 4×10 m Party- / Eventzelt, vier Bierzeltgarnituren mit weißen Hussen, vier Stehtischen für den Aperitif und einem Sonnenschirm Premium für die Kaffeezone am Nachmittag.",
         ],
       },
       {
@@ -271,7 +271,7 @@ export const moebelZelteContent: Record<string, MoebelZelteContent> = {
         paragraphs: [
           "Unsere Stehtische sind klappbar (Ø 80 cm, Höhe 110 cm), haben Metallbeine und eine pflegeleichte Kunststoffplatte. Damit entsprechen sie der klassischen Geometrie eines Bistrotischs bzw. Cocktailtischs, an dem vier bis sechs Personen entspannt stehen. Faustregel: Pro 25 Empfangsgäste rund fünf Stehtische.",
           "Die Stretch-Husse ist in Weiß und Schwarz verfügbar. Weiß empfehlen wir für Hochzeiten am Schloss Broich, Trauungen im Standesamt und Sommerempfänge in Saarn; Schwarz für Industrie-Events, Tagungen und Produktpräsentationen in Mülheimer Eventlocations. Beide Varianten sitzen faltenfrei und werden gewaschen zurückgegeben.",
-          "Sonnige Stunden im Garten deckt der Sonnenschirm LEMVIG (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion) ab; ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Event- / Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
+          "Sonnige Stunden im Garten deckt der Sonnenschirm Premium (Ø 3 m, FSC-zertifizierte Hartholzstange, UV-beständige Polyesterbespannung, Neigungsfunktion) ab; ein Ständer ab 35 kg ist nicht im Lieferumfang. Bei weichem Boden empfiehlt sich der Event- / Zeltboden Anthrazit (0,86 m² pro Element, Nut-und-Feder-System, recycelter Kunststoff-Mix, ca. 15 t/m² belastbar; besenrein zurückgeben).",
           "Preise Stehtisch Mülheim an der Ruhr: Klappbare Stehtische sind ab 5 € pro Tag verfügbar, ein ganzes Wochenende ab 10 € pro Tisch. Stretch-Hussen in Weiß für Hochzeiten am Schloss Broich oder Schwarz für Industrie- und Tagungsanlässe sind optional zubuchbar. Endgültige Mietpreise inklusive Hussen-Aufpreis erscheinen transparent im Buchungsprozess – mit Tiefpreisgarantie.",
         ],
       },
