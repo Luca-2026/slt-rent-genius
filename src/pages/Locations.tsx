@@ -371,6 +371,20 @@ export default function Locations() {
           </div>
         </div>
       </section>
+
+      {/* Dezenter Hinweis: Anbietervergleiche */}
+      <section className="py-6 bg-background border-t border-border">
+        <div className="section-container max-w-4xl text-center">
+          <p className="text-xs md:text-sm text-muted-foreground">
+            Sie vergleichen Anbieter in NRW? Sachliche Anbietervergleiche:{" "}
+            <Link to="/vergleich/slt-vs-hkl" className="underline hover:text-primary">SLT vs. HKL</Link>
+            {" · "}
+            <Link to="/vergleich/slt-vs-boels" className="underline hover:text-primary">SLT vs. Boels</Link>
+            {" · "}
+            <Link to="/vergleich/slt-vs-beyer" className="underline hover:text-primary">SLT vs. Beyer</Link>.
+          </p>
+        </div>
+      </section>
     </Layout>
   );
 }
