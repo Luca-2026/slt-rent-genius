@@ -330,6 +330,24 @@ const STATIC_ROUTES: SeoRoute[] = [
   // ---------------------------------------------------------------
   // Anbietervergleiche (statisch geprerendert wie City-Pages)
   // ---------------------------------------------------------------
+  {
+    path: "/vergleich",
+    routeType: "page",
+    title: "Anbietervergleich: SLT Rental vs. HKL, Boels, Beyer",
+    description:
+      "Sachlicher Vergleich von SLT Rental mit HKL, Boels Rental und Beyer-Mietservice. Standorte, Online-Buchung, Tiefpreisgarantie, Lieferung und Sortiment im Überblick.",
+    h1: "SLT Rental im Vergleich zu anderen Vermietern in NRW",
+    intro: [
+      "Sachlicher Anbietervergleich nach objektiven, nachprüfbaren Kriterien. Drei Detailseiten vergleichen SLT Rental mit HKL Baumaschinen, Boels Rental und Beyer-Mietservice.",
+    ],
+    changefreq: "monthly",
+    priority: 0.6,
+    lastmod: TODAY,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Anbietervergleich", path: "/vergleich" },
+    ],
+  },
   ...([
     {
       slug: "slt-vs-hkl",

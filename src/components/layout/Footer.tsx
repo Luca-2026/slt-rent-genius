@@ -42,6 +42,7 @@ export function Footer() {
     { to: "/kontakt", label: t("footer.contact") },
     { to: "/ratgeber", label: "Ratgeber" },
     { to: "/dienstleistungen", label: "Dienstleistungen" },
+    { to: "/vergleich", label: "Anbietervergleich" },
     { to: "/faq", label: t("footer.faq") },
   ];
 

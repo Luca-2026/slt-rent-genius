@@ -190,6 +190,7 @@ export function Header() {
     { to: "/ratgeber", label: "Ratgeber" },
     { to: "/lieferung", label: t("nav.delivery") },
     { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
+    { to: "/vergleich", label: "Anbietervergleich" },
     { to: "/faq", label: t("nav.faq") },
   ];
 
