@@ -65,6 +65,9 @@ export default function NeumaschineDetail() {
   const priceGross = machine.price_gross ? Number(machine.price_gross) : null;
   const vatRate = machine.vat_rate ? Number(machine.vat_rate) : 19;
   const priceNet = priceGross ? priceGross / (1 + vatRate / 100) : null;
+  const compareAtPrice = (machine as any).compare_at_price ? Number((machine as any).compare_at_price) : null;
+  const hasDiscount = !!(priceGross && compareAtPrice && compareAtPrice > priceGross);
+  const discountPercent = hasDiscount ? Math.round((1 - (priceGross as number) / (compareAtPrice as number)) * 100) : 0;
 
   const content: any = (machine as any).content || {};
   const specs: Record<string, string> = (machine.specifications as any) || {};
@@ -139,12 +142,28 @@ export default function NeumaschineDetail() {
         url: `${BASE_URL}${canonicalPath}`,
         priceCurrency: "EUR",
         price: priceGross.toFixed(2),
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: priceGross.toFixed(2),
-          priceCurrency: "EUR",
-          valueAddedTaxIncluded: true,
-        },
+        priceSpecification: hasDiscount
+          ? [
+              {
+                "@type": "UnitPriceSpecification",
+                price: priceGross.toFixed(2),
+                priceCurrency: "EUR",
+                valueAddedTaxIncluded: true,
+              },
+              {
+                "@type": "UnitPriceSpecification",
+                priceType: "https://schema.org/ListPrice",
+                price: (compareAtPrice as number).toFixed(2),
+                priceCurrency: "EUR",
+                valueAddedTaxIncluded: true,
+              },
+            ]
+          : {
+              "@type": "UnitPriceSpecification",
+              price: priceGross.toFixed(2),
+              priceCurrency: "EUR",
+              valueAddedTaxIncluded: true,
+            },
         priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/NewCondition",
         availability: "https://schema.org/PreOrder",
@@ -305,6 +324,14 @@ export default function NeumaschineDetail() {
                     <span className="text-sm text-muted-foreground">brutto inkl. {vatRate} % MwSt.</span>
                   )}
                 </div>
+                {hasDiscount && (
+                  <div className="mt-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-sm text-muted-foreground line-through">
+                      UVP {formatPriceGross(compareAtPrice, false)}
+                    </span>
+                    <Badge className="bg-accent text-accent-foreground">−{discountPercent}% Sonderangebot</Badge>
+                  </div>
+                )}
                 {priceNet && (
                   <p className="text-sm text-muted-foreground mt-1">
                     entspricht {formatPriceGross(priceNet, false)} netto

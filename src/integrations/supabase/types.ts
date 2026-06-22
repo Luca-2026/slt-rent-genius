@@ -1183,6 +1183,7 @@ export type Database = {
           article_number: string | null
           brand: string
           category: string
+          compare_at_price: number | null
           content: Json | null
           created_at: string
           description: string | null
@@ -1207,6 +1208,7 @@ export type Database = {
           article_number?: string | null
           brand: string
           category: string
+          compare_at_price?: number | null
           content?: Json | null
           created_at?: string
           description?: string | null
@@ -1231,6 +1233,7 @@ export type Database = {
           article_number?: string | null
           brand?: string
           category?: string
+          compare_at_price?: number | null
           content?: Json | null
           created_at?: string
           description?: string | null

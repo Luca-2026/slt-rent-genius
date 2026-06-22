@@ -1,0 +1,1 @@
+ALTER TABLE public.new_machines ADD COLUMN IF NOT EXISTS compare_at_price numeric;

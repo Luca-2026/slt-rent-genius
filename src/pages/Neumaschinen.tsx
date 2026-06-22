@@ -151,7 +151,7 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("new_machines")
-        .select("id, slug, brand, model, name, short_description, price_gross, price_on_request, article_number, images")
+        .select("id, slug, brand, model, name, short_description, price_gross, compare_at_price, price_on_request, article_number, images")
         .eq("is_active", true)
         .eq("brand", brandDbNames[brandKey] || brandKey)
         .order("sort_order", { ascending: true })
@@ -193,9 +193,16 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
                   <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{m.short_description}</p>
                 )}
                 <div className="flex items-center justify-between gap-2 mt-2">
-                  <span className="text-sm font-bold text-primary">
-                    {m.price_on_request || !m.price_gross ? "Preis auf Anfrage" : `${fmt(Number(m.price_gross))} brutto`}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-primary">
+                      {m.price_on_request || !m.price_gross ? "Preis auf Anfrage" : `${fmt(Number(m.price_gross))} brutto`}
+                    </span>
+                    {!m.price_on_request && m.price_gross && m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross) && (
+                      <span className="text-[11px] text-muted-foreground line-through">
+                        UVP {fmt(Number(m.compare_at_price))}
+                      </span>
+                    )}
+                  </div>
                   <span className="inline-flex items-center gap-1 text-xs text-primary group-hover:translate-x-0.5 transition-transform">
                     Details <ArrowRight className="h-3 w-3" />
                   </span>
@@ -464,6 +471,25 @@ export default function Neumaschinen() {
                       availability: "https://schema.org/InStock",
                       url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
                       priceValidUntil: new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0],
+                      ...(m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross)
+                        ? {
+                            priceSpecification: [
+                              {
+                                "@type": "UnitPriceSpecification",
+                                price: Number(m.price_gross).toFixed(2),
+                                priceCurrency: "EUR",
+                                valueAddedTaxIncluded: true,
+                              },
+                              {
+                                "@type": "UnitPriceSpecification",
+                                priceType: "https://schema.org/ListPrice",
+                                price: Number(m.compare_at_price).toFixed(2),
+                                priceCurrency: "EUR",
+                                valueAddedTaxIncluded: true,
+                              },
+                            ],
+                          }
+                        : {}),
                     }
                   : undefined,
               },
@@ -631,6 +657,11 @@ export default function Neumaschinen() {
                           <p className="text-lg font-bold text-primary">
                             {formatPriceGross(m.price_gross ? Number(m.price_gross) : null, m.price_on_request)}
                           </p>
+                          {!m.price_on_request && m.price_gross && m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross) && (
+                            <p className="text-xs text-muted-foreground line-through">
+                              UVP {formatPriceGross(Number(m.compare_at_price), false)}
+                            </p>
+                          )}
                           {!m.price_on_request && m.price_gross && (
                             <p className="text-xs text-muted-foreground">brutto inkl. MwSt.</p>
                           )}
