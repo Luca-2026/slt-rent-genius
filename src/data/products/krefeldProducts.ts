@@ -3911,12 +3911,12 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   },
   {
     id: "rotweinglas-passionata-25er",
-    name: "Rotweinglas Passionata, 25er Set",
+    name: "Rotweinglas Passionata, 20er Set",
     description: "Schott Zwiesel Passionata Rotweinglas, Tritan®-Kristallglas. Bruchsicher, kratzfest & spülmaschinenfest. Reinigungspauschale: 3,90 €/Set.",
     image: rotweinPassionata1,
     images: [rotweinPassionata1, rotweinPassionata2, rotweinPassionata3],
     category: "glaeser",
-    detailedDescription: "Das Schott Zwiesel Passionata Rotweinglas im 10er Set – bruchsichere Klasse für Rotwein. Speziell geformt, um die Aromen und den Geschmack von Rotwein optimal zur Geltung zu bringen. Hergestellt aus patentiertem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Langanhaltender Glanz auch nach tausenden Spülvorgängen. Abmessungen ca. 94 × 94 × 238 mm (B × T × H). Perfekt für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Schott Zwiesel Passionata Rotweinglas im 20er Set – bruchsichere Klasse für Rotwein. Speziell geformt, um die Aromen und den Geschmack von Rotwein optimal zur Geltung zu bringen. Hergestellt aus patentiertem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Langanhaltender Glanz auch nach tausenden Spülvorgängen. Abmessungen ca. 94 × 94 × 238 mm (B × T × H). Perfekt für gehobene Veranstaltungen, Caterings und private Feiern. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
       "Hersteller": "Schott Zwiesel",
       "Serie": "Passionata",
@@ -3926,7 +3926,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Abmessung (B×T×H)": "ca. 94 × 94 × 238 mm",
       "Spülmaschinenfest": "Ja",
       "Eigenschaft": "Bruchsicher, kratzfest, langanhaltender Glanz",
-      "Stückzahl": "25 Stück pro Set",
+      "Stückzahl": "20 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
     rentwareCode: { krefeld: "S2KNX3" }
