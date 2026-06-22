@@ -623,7 +623,7 @@ const trailerProducts: Product[] = [
   { 
     id: "rueckwaertskipp-1500", 
     name: "1300 kg Rückwärtskippanhänger & Laubgitter", 
-    description: "Ladefläche: 300 x 150 x 95 cm | Händische Kippfunktion (Handpumpe)",
+    description: "Ladefläche: 250 x 150 x 100 cm | Händische Kippfunktion (Handpumpe)",
     image: imgRueckwaertskipp1500_1, 
     images: [imgRueckwaertskipp1500_1, imgRueckwaertskipp1500_2], 
     weightKg: 1300, 
