@@ -216,16 +216,6 @@ export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
       emailBody: "Hallo SLT Rental Team,\n\nich interessiere mich für eine Full-Service-Anfrage zur Stromversorgung (Planung, Installation, ggf. Baustromantrag).\n\nVeranstaltung / Baustelle:\nOrt / Adresse:\nZeitraum:\nBenötigte Leistung (kVA / Verbraucher):\nWeitere Details:\n\nVielen Dank!",
     };
   }
-      </div>
-    </div>
-  );
-}
-
-export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
-  if (!categoryId) return null;
-
-  const service = categoryServices[categoryId];
-  const showWorkshop = workshopCategories.includes(categoryId) && workshopLocations.includes(locationId || "");
 
   if (!service && !showWorkshop) return null;
 
