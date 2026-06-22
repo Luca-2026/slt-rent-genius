@@ -201,6 +201,13 @@ export default function Vergleich() {
       <section className="bg-primary py-8 md:py-10 lg:py-16">
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
+            <Link
+              to="/vergleich"
+              className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-xs md:text-sm mb-4 transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Zurück zur Vergleichsübersicht
+            </Link>
             <p className="text-primary-foreground/70 text-xs md:text-sm uppercase tracking-wide mb-2">
               Anbietervergleich
             </p>
