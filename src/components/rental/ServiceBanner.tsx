@@ -12,9 +12,18 @@ interface ServiceInfo {
   externalLink?: string;
   externalLabel?: string;
   emailLink?: string;
+  emailLabel?: string;
+  emailSubject?: string;
+  emailBody?: string;
   colorClass: string;
   iconBgClass: string;
 }
+
+const stromEmailByLocation: Record<string, string> = {
+  krefeld: "krefeld@slt-rental.de",
+  bonn: "bonn@slt-rental.de",
+  muelheim: "muelheim@slt-rental.de",
+};
 
 const categoryServices: Record<string, ServiceInfo> = {
   absperrtechnik: {
