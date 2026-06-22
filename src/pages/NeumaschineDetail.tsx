@@ -341,18 +341,6 @@ export default function NeumaschineDetail() {
                   <div className="mt-3 p-3 rounded-lg bg-accent/10 border border-accent/30">
                     <p className="text-sm font-semibold text-foreground">
                       10 % Vorbestellerrabatt: {formatPriceGross(priceGross * 0.9, false)} brutto
-                    <span className="text-sm text-muted-foreground">brutto inkl. {vatRate} % MwSt.</span>
-                  )}
-                </div>
-                {priceNet && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    entspricht {formatPriceGross(priceNet, false)} netto
-                  </p>
-                )}
-                {machine.slug === "baumax-anhaengerkupplung-kde550" && priceGross && (
-                  <div className="mt-3 p-3 rounded-lg bg-accent/10 border border-accent/30">
-                    <p className="text-sm font-semibold text-foreground">
-                      10 % Vorbestellerrabatt: {formatPriceGross(priceGross * 0.9, false)} brutto
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       Nur gültig bis Ende Juni 2026 bei Vorbestellung mit 30 % Anzahlung – danach dauerhaft verfügbar zu {formatPriceGross(priceGross, false)} brutto.
