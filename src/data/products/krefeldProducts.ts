@@ -3934,16 +3934,16 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   {
     id: "sektglas-passionata-36er",
     name: "Sektglas Passionata, 36er Set",
-    description: "Schott Zwiesel Passionata Champagnerglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
+    description: "Schott Zwiesel Passionata Sektglas, 325 ml, Tritan®-Kristallglas. Reinigungspauschale: 3,90 €/Set.",
     image: champagnerPassionata1,
     images: [champagnerPassionata1, champagnerPassionata2, champagnerPassionata3, champagnerPassionata4],
     category: "glaeser",
-    detailedDescription: "Das Schott Zwiesel Passionata Champagnerglas im 10er Set – feierliche Eleganz mit jeder Flasche. Das hohe, schlanke Design verstärkt das Prickeln und den Geschmack von Champagner und Sekt. Hergestellt aus bleifreiem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Spülmaschinenfest mit langanhaltender Brillanz. Ideal für gehobene Veranstaltungen, Empfänge und festliche Anlässe. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
+    detailedDescription: "Das Schott Zwiesel Passionata Sektglas im 36er Set – feierliche Eleganz mit jeder Flasche. Das hohe, schlanke Design verstärkt das Prickeln und den Geschmack von Sekt und Champagner. Hergestellt aus bleifreiem Tritan®-Kristallglas, das extrem bruchfest und kratzfest ist. Spülmaschinenfest mit langanhaltender Brillanz. Ideal für gehobene Veranstaltungen, Empfänge und festliche Anlässe. Bitte beachten: Die Gläser müssen gereinigt zurückgegeben werden. Bei Rückgabe ohne Reinigung wird eine Reinigungspauschale von 3,90 € pro Set erhoben.",
     specifications: {
       "Hersteller": "Schott Zwiesel",
       "Serie": "Passionata",
       "Material": "Tritan®-Kristallglas (bleifrei)",
-      "Typ": "Champagnerglas / Sektflöte",
+      "Typ": "Sektglas / Sektflöte",
       "Fassungsvermögen": "325 ml",
       "Farbe": "Transparent",
       "Spülmaschinenfest": "Ja",
@@ -3951,7 +3951,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Stückzahl": "36 Stück pro Set",
       "Reinigungspauschale": "3,90 € pro Set (bei Rückgabe ohne Reinigung)",
     },
-    rentwareCode: { krefeld: "F66UKS" }
+    rentwareCode: { krefeld: "F66UKS", bonn: "7CD2SE" }
   },
   {
     id: "rotweinglas-brunelli-9er",

@@ -6754,7 +6754,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "sektglas-passionata-36er": {
     excelName: "Sektglas Passionata, 36er Set",
     seoTitle: "Sektglas Passionata 36er Set | Schott Zwiesel 325 ml",
-    metaDescription: "Schott Zwiesel Passionata Champagnergläser aus bruchfestem Tritan®-Kristallglas. 325 ml Fassungsvermögen, spülmaschinenfest. 36 Stück im Set mieten.",
+    metaDescription: "Schott Zwiesel Passionata Sektgläser aus bruchfestem Tritan®-Kristallglas. 325 ml Fassungsvermögen, spülmaschinenfest. 36 Stück im Set mieten.",
     h1: "Sektglas Passionata, 36er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
     h2s: ["Hochwertiges Design aus Tritan®-Kristallglas", "Funktionale Eigenschaften und Material", "Hinweise zur Reinigung und Rückgabe"],
     useCaseBau: "",
@@ -6764,7 +6764,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     is247: false,
     faqs: [
       { q: "Woraus bestehen die Sektgläser der Serie Passionata?", a: "Die Gläser sind aus bleifreiem Tritan®-Kristallglas gefertigt, das als besonders bruchsicher und kratzfest gilt." },
-      { q: "Wie groß ist das Fassungsvermögen eines Champagnerglases?", a: "Ein Glas der Serie Passionata verfügt über ein Fassungsvermögen von 325 ml." },
+      { q: "Wie groß ist das Fassungsvermögen eines Sektglases?", a: "Ein Glas der Serie Passionata verfügt über ein Fassungsvermögen von 325 ml." },
       { q: "Welche Bedingungen gelten für die Reinigung der Gläser?", a: "Die Gläser müssen gereinigt zurückgegeben werden; andernfalls wird eine Reinigungspauschale von 3,90 € pro Set berechnet." },
     ],
   },
