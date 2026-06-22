@@ -505,6 +505,28 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+
+    "kabel-stromverteiler": {
+      hookline:
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung – direkt am Hauptsitz Krefeld verfügbar. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. Vollgummi- und 19\"-Rack-CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack mit FI Typ B 63 A) sowie die mobilen Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B, alternativ Direktanschluss über Kabelschuhe) sind im Mietpark vor Ort. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör (Erdungsspieß 1,5 m, passende CEE-Zuleitungen) direkt zur Baustelle in Krefeld und im Niederrhein-Raum.",
+      faqs: [
+        {
+          q: "Übernehmt ihr auch die Anträge für den Baustromanschluss in Krefeld und am Niederrhein?",
+          a: "Ja. Wir übernehmen die komplette Beantragung des Baustromanschlusses beim zuständigen Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank (EV32 22 kVA Typ B oder EV63 44 kVA Typ B) bzw. den Anschlussverteilerschrank 44 kVA inklusive CEE-Zuleitungskabeln direkt zur Baustelle. Bei sehr großen Baustellen oder Festivals setzen wir den Hauptverteilerschrank 86 kVA HV125 Typ B ein, der wahlweise per 125 A CEE oder direkt über Kabelschuhe vom Trafo bzw. Aggregat gespeist wird.",
+        },
+        {
+          q: "Welche Stromverteiler und Kabel führt ihr am Hauptsitz Krefeld?",
+          a: "Am Hauptsitz Krefeld führen wir das komplette Sortiment vor Ort: CEE-Verlängerungskabel 16/32/63 A in 3, 5, 10, 20 und 50 m, Schukokabel, Schuko-Kabeltrommel 50 m, sämtliche Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung), CEE-Unterverteiler 16 A/32 A/63 A (Schuko- und CEE-Ausgänge, auch als 19\"-Rack), Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA, Hauptverteilerschrank 86 kVA HV125 Typ B sowie Erdungsspieß 1,5 m mit 3 m Leitung. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Welche Kabelbrücken habt ihr im Sortiment?",
+          a: "Für die sichere Kabelführung bei Veranstaltungen führen wir Defender Micro 2 (2 Kanäle, Typ 535-5) und Defender Midi 5 (5 Kanäle, Typ 535-5, max. Achslast 5 t, Brandschutzklasse B2) für den Outdoor- und Befahrbar-Einsatz sowie Office-Kabelbrücken in 1 m und 2 m Länge mit 4 Kanälen für die Innenanwendung.",
+        },
+      ],
+    },
+
     // Weitere Kategorien folgen in den nächsten Sprints.
   },
 
