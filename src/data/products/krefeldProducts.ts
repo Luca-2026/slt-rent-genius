@@ -3819,7 +3819,7 @@ export const moebelZelteProducts: Product[] = [
   },
   {
     id: "sonnenschirm",
-    name: "Sonnenschirm LEMVIG Ø 3 m",
+    name: "Sonnenschirm Premium Ø 3 m",
     description: "Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.",
     image: imgSonnenschirm1,
     images: [imgSonnenschirm1, imgSonnenschirm2, imgSonnenschirm3, imgSonnenschirm4, imgSonnenschirm5],

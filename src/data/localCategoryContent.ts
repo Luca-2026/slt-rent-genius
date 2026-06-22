@@ -790,7 +790,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Party- / Eventzelte (3×3 bis 4×14 m), Party- / Eventzelte extra hoch (6×8 und 6×12 m), Bierzeltgarnituren, Stehtische, Stühle, Sonnenschirme und Getränkekühlschränke für das Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim in der Bobcat-Filiale.",
       standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Bierzeltgarnitur-Sets, Hussen-Sets (weiß/schwarz), Stehtische, Stühle weiß, Sonnenschirm LEMVIG Ø 3 m, Kleiderständer mit Rollen und Zeltboden-Module passen in der Regel in jeden Kombi oder kleinen Transporter. Die Party- / Eventzelte 3×3, 4×4, 4×6, 4×8, 4×10 und 4×14 m (UV-beständige 500 g/m² PVC-Plane), die Party- / Eventzelte 6×8 m und 6×12 m extra hoch sowie Getränkekühlschränke (236 l) liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Möbel und Zelte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Bierzeltgarnitur-Sets, Hussen-Sets (weiß/schwarz), Stehtische, Stühle weiß, Sonnenschirm Premium Ø 3 m, Kleiderständer mit Rollen und Zeltboden-Module passen in der Regel in jeden Kombi oder kleinen Transporter. Die Party- / Eventzelte 3×3, 4×4, 4×6, 4×8, 4×10 und 4×14 m (UV-beständige 500 g/m² PVC-Plane), die Party- / Eventzelte 6×8 m und 6×12 m extra hoch sowie Getränkekühlschränke (236 l) liefern wir auf Anfrage ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Möbel und Zelte selbst disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich.",
       faqs: [
         {
           q: "Liefert ihr Party- / Eventzelte und Party- / Eventzelte nach Essen, Duisburg oder Oberhausen?",
@@ -802,7 +802,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Kann ich Bierzeltgarnituren und Stehtische in Mülheim einfach mit dem Pkw abholen?",
-          a: "Ja. Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische mit Hussen (weiß/schwarz), Stühle weiß, Sonnenschirm LEMVIG Ø 3 m, Kleiderständer mit Rollen und einzelne Zeltboden-Module passen in der Regel in jeden Kombi oder kleinen Transporter und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für komplette Party- / Eventzelt- oder Party- / Eventzelt-Aufbauten empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
+          a: "Ja. Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische mit Hussen (weiß/schwarz), Stühle weiß, Sonnenschirm Premium Ø 3 m, Kleiderständer mit Rollen und einzelne Zeltboden-Module passen in der Regel in jeden Kombi oder kleinen Transporter und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für komplette Party- / Eventzelt- oder Party- / Eventzelt-Aufbauten empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
         },
       ],
     },

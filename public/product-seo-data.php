@@ -1473,8 +1473,8 @@ $productSEOLookup = [
     ],
   ],
   'bonn-sonnenschirm' => [
-    'name' => 'Sonnenschirm LEMVIG Ø 3 m',
-    'h1' => 'Sonnenschirm LEMVIG Ø 3 m mieten in Bonn – Jetzt verfügbar bei SLT Rental',
+    'name' => 'Sonnenschirm Premium Ø 3 m',
+    'h1' => 'Sonnenschirm Premium Ø 3 m mieten in Bonn – Jetzt verfügbar bei SLT Rental',
     'h2s' => ['Ausstattung & Material', 'Aufbau & Handhabung', 'Einsatzmöglichkeiten', 'Zubehör & Kombination'],
     'useCaseBau' => 'Sonnenschutz auf Baustellen, temporäre Beschattung für Außenarbeitsplätze',
     'useCaseEvent' => 'Hochzeiten, Firmenfeiern, Gartenpartys, Empfänge, Catering-Events',
@@ -6930,7 +6930,7 @@ $productDetails = [
     ],
   ],
   'bonn-sonnenschirm' => [
-    'name' => 'Sonnenschirm LEMVIG Ø 3 m',
+    'name' => 'Sonnenschirm Premium Ø 3 m',
     'description' => 'Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.',
     'specs' => [
       'Durchmesser' => '3 m',
@@ -9398,7 +9398,7 @@ $productDetails = [
     ],
   ],
   'sonnenschirm' => [
-    'name' => 'Sonnenschirm LEMVIG Ø 3 m',
+    'name' => 'Sonnenschirm Premium Ø 3 m',
     'description' => 'Hochwertiger Marktschirm mit FSC®-zertifizierter Hartholzstange und UV-beständiger, wasserabweisender Polyesterbespannung.\\nMit praktischer Neigungsfunktion für optimalen Schatten – auch bei tiefem Sonnenstand.\\nBelüftungsöffnung reduziert Winddruck. Öffnen und Schließen per Zugschnur.\\nSonnenschirmständer (mind. 35 kg empfohlen) nicht im Lieferumfang.',
     'specs' => [
       'Durchmesser' => '3 m',
