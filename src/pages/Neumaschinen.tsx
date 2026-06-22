@@ -151,7 +151,7 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("new_machines")
-        .select("id, slug, brand, model, name, short_description, price_gross, price_on_request, article_number, images")
+        .select("id, slug, brand, model, name, short_description, price_gross, compare_at_price, price_on_request, article_number, images")
         .eq("is_active", true)
         .eq("brand", brandDbNames[brandKey] || brandKey)
         .order("sort_order", { ascending: true })
