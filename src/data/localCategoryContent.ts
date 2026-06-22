@@ -196,21 +196,25 @@ export const localCategoryContent: LocalContentMap = {
 
     "kabel-stromverteiler": {
       hookline:
-        "CEE-Kabel (16/32/63 A), Schukokabel, Kabeltrommeln und CEE-Unterverteiler mietest du an unserer Filiale Bonn – kompakte Mengen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, große Verteilerschränke mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung – an unserer Filiale Bonn abholbar, samstags bis 17:30 Uhr ohne Voranmeldung. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE- und Schukokabel (3, 5, 10, 20, 50 m), Schuko-Kabeltrommeln sowie CEE-Adapter (16↔32, 32↔63) passen in der Regel in jeden Pkw oder Kombi. Größere CEE-Unterverteiler und Verteilerschränke (z. B. 24 kVA, 44 kVA, 55 kVA Anschlussschrank) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack-Variante) sowie die Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör direkt zur Baustelle.",
       faqs: [
         {
+          q: "Übernehmt ihr auch die Anträge für den Baustromanschluss?",
+          a: "Ja. Für Bonn, den Rhein-Sieg-Kreis und das Ahrtal übernehmen wir die komplette Beantragung des Baustromanschlusses beim zuständigen Netzbetreiber zum Festpreis. Dazu liefern wir den passenden Endverteilerschrank (EV32 22 kVA Typ B oder EV63 44 kVA Typ B) bzw. den Anschlussverteilerschrank 44 kVA inklusive CEE-Zuleitungskabeln direkt zur Baustelle.",
+        },
+        {
           q: "Liefert ihr CEE-Verteilerschränke ins Ahrtal oder in den Rhein-Sieg-Kreis?",
-          a: "Ja. Anschluss- und Verteilerschränke (24 kVA, 44 kVA, 55 kVA) sowie passende CEE-Kabel liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
+          a: "Ja. Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) sowie passende CEE-Kabel (16/32/63 A) liefern wir ab unserer Filiale Bonn ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
         },
         {
           q: "Kann ich CEE-Kabel und Adapter in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Kabel (16/32/63 A in Längen von 3 bis 50 m), Schukokabel, die 50-m-Schuko-Kabeltrommel sowie Mennekes-Adapter 16↔32 und 32↔63 kannst du direkt mitnehmen.",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Verlängerungskabel 16/32/63 A in Längen von 3, 5, 10, 20 und 50 m, Schukokabel, die Schuko-Kabeltrommel 50 m sowie die Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung) kannst du direkt mitnehmen.",
         },
         {
           q: "Welche Verteiler und Kabel habt ihr an der Filiale Bonn vor Ort?",
-          a: "An der Filiale Bonn führen wir ein Kernsortiment aus CEE-Kabeln, Schukokabeln, Kabeltrommeln, CEE-Unterverteilern (16/32/63 A) und CEE-Adaptern direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Große Verteilerschränke (z. B. Anschlussverteilerschrank 44 kVA) und passende Konfigurationen für Aggregat-Speisung disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
+          a: "An der Filiale Bonn führen wir ein Kernsortiment aus CEE-Verlängerungskabeln (16/32/63 A), Schukokabeln, Schuko-Kabeltrommel 50 m, CEE-Unterverteilern (16 A/32 A/63 A auf Schuko und CEE-Ausgänge) sowie Mennekes-CEE-Adaptern direkt vor Ort. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an. Große Verteilerschränke (Endverteilerschrank 22/44 kVA, Anschlussverteilerschrank 44 kVA, Hauptverteilerschrank 86 kVA HV125) und passende Konfigurationen für Aggregat-Speisung disponieren wir auf Anfrage aus unserem Hauptsitz in Krefeld – in der Regel innerhalb von 24 Stunden.",
         },
       ],
     },
