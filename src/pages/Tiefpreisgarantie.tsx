@@ -208,6 +208,14 @@ export default function Tiefpreisgarantie() {
               <Mail className="h-4 w-4" />
               Preisgarantie@slt-rental.de
             </a>
+            <p className="text-xs text-muted-foreground mt-6">
+              Sie vergleichen Anbieter? Sachliche Anbietervergleiche:{" "}
+              <a href="/vergleich/slt-vs-hkl/" className="underline hover:text-primary">SLT vs. HKL</a>
+              {" · "}
+              <a href="/vergleich/slt-vs-boels/" className="underline hover:text-primary">SLT vs. Boels</a>
+              {" · "}
+              <a href="/vergleich/slt-vs-beyer/" className="underline hover:text-primary">SLT vs. Beyer</a>.
+            </p>
           </AnimatedSection>
         </div>
       </section>
