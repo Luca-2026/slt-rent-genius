@@ -49,18 +49,7 @@ export default function KarriereJobDetail() {
     return <Navigate to="/karriere" replace />;
   }
 
-  // Auto-Refresh: Google entfernt JobPostings ~30 Tage nach datePosted aus den
-  // Rich Results. Wir rollen das Datum daher automatisch nach: ist der harte
-  // Wert älter als 25 Tage, nutzen wir "heute minus 20 Tage" — so bleibt die
-  // Anzeige dauerhaft frisch, ohne dass jemand jobData.ts bearbeiten muss.
-  const STALE_AFTER_DAYS = 25;
-  const ROLL_BACK_DAYS = 20;
-  const hardDate = job.datePosted ?? new Date().toISOString().slice(0, 10);
-  const ageDays = (Date.now() - new Date(hardDate).getTime()) / 86_400_000;
-  const datePosted =
-    ageDays > STALE_AFTER_DAYS
-      ? new Date(Date.now() - ROLL_BACK_DAYS * 86_400_000).toISOString().slice(0, 10)
-      : hardDate;
+  const datePosted = job.datePosted ?? new Date().toISOString().slice(0, 10);
   const validThrough =
     job.validThrough ??
     new Date(Date.now() + 1000 * 60 * 60 * 24 * 90).toISOString().slice(0, 10);
