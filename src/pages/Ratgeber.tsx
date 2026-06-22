@@ -35,7 +35,9 @@ const Ratgeber = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogArticles.map((article) => (
+            {[...blogArticles]
+              .sort((a, b) => (b.updatedAt || b.date).localeCompare(a.updatedAt || a.date))
+              .map((article) => (
               <Link
                 key={article.slug}
                 to={`/ratgeber/${article.slug}`}

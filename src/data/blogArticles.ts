@@ -594,7 +594,7 @@ Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern 
     author: "SLT Rental",
     category: "Anhänger",
     keyword: "anhänger führerschein",
-    image: "/images/ratgeber/blog_thumbnail_anhaenger_fuehrerschein.svg",
+    image: "/images/ratgeber/cover_anhaenger_fuehrerschein.png",
     imageAlt: "Illustration: Pkw mit Anhänger und drei Gewichtsbalken für 3.500 kg, 4.250 kg und 7.000 kg – Ratgeber von SLT Rental",
     ogImage: "/images/ratgeber/og/blog_thumbnail_anhaenger_fuehrerschein.png",
     quickFacts: [
@@ -697,7 +697,7 @@ Ob Kastenanhänger, Kippanhänger oder Maschinentransporter: An allen SLT-Stando
     author: "SLT Rental",
     category: "Baumaschinen",
     keyword: "arbeitsbühne mieten",
-    image: "/images/ratgeber/blog_thumbnail_arbeitsbuehne_mieten.svg",
+    image: "/images/ratgeber/cover_arbeitsbuehne_mieten.png",
     imageAlt: "Illustration: Scherenbühne und Gelenkteleskopbühne nebeneinander mit Höhenlinie Arbeitshöhe = Plattformhöhe + 2 m – Ratgeber von SLT Rental",
     ogImage: "/images/ratgeber/og/blog_thumbnail_arbeitsbuehne_mieten.png",
     quickFacts: [
