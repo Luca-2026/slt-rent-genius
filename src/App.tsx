@@ -69,6 +69,7 @@ const Neumaschinen = lazy(() => import("./pages/Neumaschinen"));
 const NeumaschineDetail = lazy(() => import("./pages/NeumaschineDetail"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
+const Vergleich = lazy(() => import("./pages/Vergleich"));
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -158,6 +159,9 @@ const App = () => (
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
               <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />
+
+              {/* Anbietervergleiche */}
+              <Route path="/vergleich/:slug" element={<Vergleich />} />
 
               
               {/* B2B Portal */}

@@ -156,6 +156,15 @@ function localBusiness(locId: string): JsonLd {
     geo: { "@type": "GeoCoordinates", latitude: loc.geo.latitude, longitude: loc.geo.longitude },
     openingHoursSpecification: hours,
     priceRange: "€€",
+    areaServed: [
+      { "@type": "City", name: loc.cityFull },
+      { "@type": "AdministrativeArea", name: "Nordrhein-Westfalen" },
+    ],
+    // sameAs: nur verifizierte Profile. Facebook ist real (siehe Footer).
+    // TODO: Sobald die echten URLs vorliegen, hier Trustpilot- und sellwerk-Profil
+    // je Standort ergänzen, z.B. "https://de.trustpilot.com/review/slt-rental.de"
+    // und das jeweilige sellwerk-Profil pro Standort.
+    sameAs: ["https://www.facebook.com/sltrental"],
     parentOrganization: { "@id": ORG_ID },
   };
 }
@@ -532,7 +541,8 @@ export function buildGlobalSchemas(): JsonLd[] {
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: BASE_URL,
       logo: DEFAULT_IMG,
-      sameAs: ["https://www.facebook.com/slt-rental"],
+      // TODO: Trustpilot- und sellwerk-Profil ergänzen, sobald URLs vorliegen.
+      sameAs: ["https://www.facebook.com/sltrental"],
     },
     {
       "@context": "https://schema.org",
