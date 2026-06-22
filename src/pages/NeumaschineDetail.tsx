@@ -65,6 +65,9 @@ export default function NeumaschineDetail() {
   const priceGross = machine.price_gross ? Number(machine.price_gross) : null;
   const vatRate = machine.vat_rate ? Number(machine.vat_rate) : 19;
   const priceNet = priceGross ? priceGross / (1 + vatRate / 100) : null;
+  const compareAtPrice = (machine as any).compare_at_price ? Number((machine as any).compare_at_price) : null;
+  const hasDiscount = !!(priceGross && compareAtPrice && compareAtPrice > priceGross);
+  const discountPercent = hasDiscount ? Math.round((1 - (priceGross as number) / (compareAtPrice as number)) * 100) : 0;
 
   const content: any = (machine as any).content || {};
   const specs: Record<string, string> = (machine.specifications as any) || {};
