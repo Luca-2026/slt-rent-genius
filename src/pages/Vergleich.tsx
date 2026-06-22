@@ -37,133 +37,114 @@ type Vergleich = {
 const VERGLEICHE: Record<string, Vergleich> = {
   "slt-vs-hkl": {
     slug: "slt-vs-hkl",
-    competitor: "HKL Baumaschinen",
+    competitor: "HKL",
     competitorShort: "HKL",
-    h1: "SLT Rental und HKL im Vergleich",
-    title: "SLT Rental vs. HKL: Maschinenvermietung in NRW im Vergleich",
+    h1: "SLT Rental oder HKL: Der Vergleich für Mietgeräte in NRW",
+    title: "SLT Rental oder HKL: Der Vergleich für Mietgeräte in NRW",
     description:
-      "Sachlicher Vergleich von SLT Rental und HKL: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      "SLT Rental und HKL im Vergleich: Regionaler Mietpark in NRW mit Online-Buchung und Tiefpreisgarantie gegenüber bundesweitem Großvermieter.",
     intro: [
-      "Wer in Nordrhein-Westfalen Baumaschinen, Anhänger oder Eventtechnik mieten möchte, stößt häufig auf zwei Anbieter: SLT Rental als regionalen Mietpark mit drei Standorten und HKL Baumaschinen als bundesweit aktiven Vermieter mit dichtem Filialnetz.",
-      "Diese Seite vergleicht beide Anbieter sachlich anhand objektiver, nachprüfbarer Kriterien. Ziel ist es, die Auswahl zu erleichtern, nicht den Wettbewerb herabzusetzen.",
+      "SLT Rental und HKL sind beide in NRW als Vermieter aktiv, verfolgen aber unterschiedliche Ansätze. HKL ist ein bundesweiter Großvermieter mit über 180 Centern. SLT Rental ist der regionale Spezialist mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr, mit persönlicher Betreuung, Online-Buchung und Tiefpreisgarantie. Wer Baumaschinen, Anhänger, Arbeitsbühnen oder Event-Equipment in NRW mieten möchte, findet bei SLT kurze Wege und faire Konditionen.",
     ],
     rows: [
-      { feature: "Standorte in NRW", slt: "3 Standorte: Krefeld, Bonn, Mülheim an der Ruhr", competitor: "Mehrere Niederlassungen bundesweit, auch in NRW" },
-      { feature: "Online-Buchung 24/7", slt: "Ja, inklusive Anhänger-Selbstbedienung rund um die Uhr", competitor: "Online-Anfrage möglich, Abwicklung primär über Niederlassung" },
-      { feature: "Tiefpreisgarantie", slt: "Ja, wir unterbieten vergleichbare Angebote der Region", competitor: "Keine veröffentlichte Tiefpreisgarantie bekannt" },
-      { feature: "Lieferung im Umkreis", slt: "Eigene Lieferung, kalkulierbare Kilometerpauschale", competitor: "Lieferung über Niederlassung verfügbar" },
-      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Stromaggregate, Event-Equipment", competitor: "Schwerpunkt Baumaschinen und Baugeräte" },
-      { feature: "Zielgruppe", slt: "B2B und B2C, Bauunternehmen, Handwerk, GaLaBau, Privatkunden, Veranstalter", competitor: "Primär gewerbliche Kunden aus dem Bau" },
-      { feature: "Persönlicher Ansprechpartner", slt: "Feste Standortteams in Krefeld und Bonn", competitor: "Niederlassungspersonal je Standort" },
+      { feature: "Gegründet / Hauptsitz", slt: "SLT Technology Group GmbH & Co. KG, Hauptsitz Krefeld", competitor: "1970, Hauptsitz Hamburg" },
+      { feature: "Ausrichtung", slt: "Regionaler Mietpark mit Fokus NRW", competitor: "Bundesweiter Großvermieter und Händler" },
+      { feature: "Standorte in NRW", slt: "Krefeld, Bonn, Mülheim an der Ruhr", competitor: "u.a. Krefeld, Dortmund, Langenfeld, Arbeitsbühnencenter Köln/Bonn" },
+      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Event-Equipment", competitor: "Baumaschinen, Baugeräte, Raumsysteme, Arbeitsbühnen und Teleskopmaschinen, Strom, Fahrzeuge" },
+      { feature: "Online-Buchung", slt: "Ja, online buchbar", competitor: "Ja, Online-Miete und Baushop" },
+      { feature: "Tiefpreisgarantie", slt: "Ja (10 % Rabatt auf den Nettopreis bei nachweislich günstigerem identischem Angebot)", competitor: "Keine ausgewiesen" },
+      { feature: "Lieferung", slt: "Lieferung im Umkreis der Standorte", competitor: "Transportservice, Lieferung" },
+      { feature: "Zielgruppe", slt: "Gewerbe und Privatkunden (B2B und B2C)", competitor: "Vorwiegend gewerblich (Bau, Handwerk, Industrie, Kommunen)" },
     ],
     faqs: [
       {
-        question: "Was unterscheidet SLT Rental von HKL?",
+        question: "Worin unterscheidet sich SLT Rental von HKL?",
         answer:
-          "SLT Rental ist ein regionaler Mietpark in Nordrhein-Westfalen mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr und einem breiten Sortiment, das neben Baumaschinen auch Anhänger, Stromaggregate und Event-Equipment umfasst. HKL ist ein bundesweit aktiver Vermieter mit Schwerpunkt Baumaschinen und einem dichten Filialnetz.",
+          "HKL ist ein bundesweiter Großvermieter. SLT Rental ist regional auf NRW fokussiert, mit drei Standorten, Anhängern und Event-Equipment im Programm, Online-Buchung und Tiefpreisgarantie.",
       },
       {
-        question: "Kann ich bei SLT Rental auch als Privatkunde mieten?",
-        answer:
-          "Ja. SLT Rental vermietet an Privatkunden (B2C) und an Unternehmen (B2B). Anhänger sind 24/7 online buchbar, Baumaschinen und Eventtechnik werden über Anfrage oder den Mietkatalog reserviert.",
+        question: "Kann ich bei SLT Rental online buchen?",
+        answer: "Ja, das Sortiment ist direkt online buchbar.",
       },
       {
-        question: "Gibt es bei SLT Rental eine Tiefpreisgarantie?",
+        question: "Bietet SLT Rental eine Tiefpreisgarantie?",
         answer:
-          "Ja. Finden Sie ein vergleichbares Mietangebot in der Region günstiger, unterbietet SLT Rental den Preis. Details stehen auf der Seite Tiefpreisgarantie.",
-      },
-      {
-        question: "An welchen Standorten ist SLT Rental in NRW vertreten?",
-        answer:
-          "SLT Rental ist mit drei Standorten in Nordrhein-Westfalen vertreten: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr. Lieferung in den Umkreis ist über alle Standorte möglich.",
+          "Ja. Bei einem nachweislich günstigeren identischen Angebot erhalten Sie 10 % Rabatt auf den Nettopreis.",
       },
     ],
   },
   "slt-vs-boels": {
     slug: "slt-vs-boels",
-    competitor: "Boels Rental",
+    competitor: "Boels",
     competitorShort: "Boels",
-    h1: "SLT Rental und Boels im Vergleich",
-    title: "SLT Rental vs. Boels: Maschinenvermietung in NRW im Vergleich",
+    h1: "SLT Rental oder Boels: Mietgeräte in NRW im Vergleich",
+    title: "SLT Rental oder Boels: Mietgeräte in NRW im Vergleich",
     description:
-      "Sachlicher Vergleich von SLT Rental und Boels Rental: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      "SLT Rental und Boels im Vergleich: Regionaler NRW-Mietpark mit Tiefpreisgarantie versus internationaler Großvermieter.",
     intro: [
-      "Boels Rental ist ein international tätiger Vermieter aus den Niederlanden mit einem dichten Standortnetz auch in Nordrhein-Westfalen. SLT Rental konzentriert sich als regionaler Mietpark auf drei Standorte in NRW und ein breites Sortiment für Bau, Veranstaltung und Privatkunden.",
-      "Diese Seite stellt beide Anbieter anhand objektiver Kriterien gegenüber, ohne Mitbewerber abzuwerten.",
+      "Boels ist ein international tätiger Großvermieter mit rund 200 Niederlassungen in Deutschland. SLT Rental konzentriert sich bewusst auf NRW, mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Beide bieten ein breites Sortiment inklusive Event-Equipment. Der Unterschied liegt in der regionalen Nähe, der persönlichen Betreuung und der Tiefpreisgarantie von SLT.",
     ],
     rows: [
-      { feature: "Standorte in NRW", slt: "3 Standorte: Krefeld, Bonn, Mülheim an der Ruhr", competitor: "Zahlreiche Niederlassungen, international und in NRW" },
-      { feature: "Online-Buchung 24/7", slt: "Ja, inklusive Anhänger-Selbstbedienung rund um die Uhr", competitor: "Online-Buchung möglich, Filialabwicklung üblich" },
-      { feature: "Tiefpreisgarantie", slt: "Ja, wir unterbieten vergleichbare Angebote der Region", competitor: "Keine veröffentlichte Tiefpreisgarantie bekannt" },
-      { feature: "Lieferung im Umkreis", slt: "Eigene Lieferung, kalkulierbare Kilometerpauschale", competitor: "Lieferung über die jeweilige Niederlassung" },
-      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Stromaggregate, Event-Equipment", competitor: "Breites Sortiment, Schwerpunkt Bau und Industrie" },
-      { feature: "Zielgruppe", slt: "B2B und B2C, Bau, Handwerk, GaLaBau, Privatkunden, Veranstalter", competitor: "Primär gewerbliche Kunden" },
-      { feature: "Persönlicher Ansprechpartner", slt: "Feste Standortteams in Krefeld und Bonn", competitor: "Filialteam je Standort" },
+      { feature: "Gegründet / Hauptsitz", slt: "SLT Technology Group GmbH & Co. KG, Hauptsitz Krefeld", competitor: "1977 (Niederlande), seit 1992 in Deutschland, deutscher Sitz Feldkirchen" },
+      { feature: "Ausrichtung", slt: "Regionaler Mietpark mit Fokus NRW", competitor: "International tätiger Großvermieter (One-Stop-Shop)" },
+      { feature: "Standorte in NRW", slt: "Krefeld, Bonn, Mülheim an der Ruhr", competitor: "u.a. Krefeld (Teil eines bundesweiten Filialnetzes)" },
+      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Event-Equipment", competitor: "Baumaschinen, Werkzeug, Arbeitsbühnen, Container, Catering- und Event-Equipment, mobile Küchen" },
+      { feature: "Online-Buchung", slt: "Ja, online buchbar", competitor: "Ja, Online-Vermietung über boels.com" },
+      { feature: "Tiefpreisgarantie", slt: "Ja (10 % Rabatt auf den Nettopreis bei nachweislich günstigerem identischem Angebot)", competitor: "Keine ausgewiesen" },
+      { feature: "Lieferung", slt: "Lieferung im Umkreis der Standorte", competitor: "Eigener Transportservice" },
+      { feature: "Zielgruppe", slt: "Gewerbe und Privatkunden (B2B und B2C)", competitor: "Privatkunden bis große Baufirmen und Facility Management (B2B und B2C)" },
     ],
     faqs: [
       {
-        question: "Was unterscheidet SLT Rental von Boels?",
+        question: "Was ist der Unterschied zwischen SLT Rental und Boels?",
         answer:
-          "SLT Rental ist ein regional verwurzelter Mietpark in NRW mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Boels Rental ist international aufgestellt und betreibt ein dichtes Netz an Niederlassungen. SLT bietet zusätzlich Event-Equipment und 24/7-Anhängerbuchung an.",
+          "Boels ist international aufgestellt mit rund 200 Niederlassungen in Deutschland. SLT Rental ist der regionale NRW-Spezialist mit drei Standorten, persönlicher Betreuung und Tiefpreisgarantie.",
       },
       {
-        question: "Kann ich bei SLT Rental auch kurzfristig mieten?",
-        answer:
-          "Ja. Über die Online-Buchung sind Anhänger 24/7 verfügbar, viele Baumaschinen und Geräte können kurzfristig nach Verfügbarkeit reserviert werden. Telefonische Beratung läuft über die Standortteams.",
+        question: "Vermietet SLT Rental auch Event-Equipment?",
+        answer: "Ja. Neben Baumaschinen, Anhängern und Arbeitsbühnen gehört auch Event-Equipment zum Sortiment.",
       },
       {
-        question: "Welche Gerätekategorien bietet SLT Rental?",
-        answer:
-          "Baumaschinen (zum Beispiel Minibagger), Anhänger, Arbeitsbühnen, Stromaggregate und Event-Equipment. Das vollständige Sortiment finden Sie im Mietkatalog je Standort.",
-      },
-      {
-        question: "Liefert SLT Rental zur Baustelle?",
-        answer:
-          "Ja. Die Lieferkosten werden anhand einer Kilometerpauschale kalkuliert. Auf der Seite Lieferung steht ein Rechner für eine erste Preisindikation.",
+        question: "Liefert SLT Rental die Mietgeräte?",
+        answer: "Ja, im Umkreis der Standorte Krefeld, Bonn und Mülheim an der Ruhr.",
       },
     ],
   },
   "slt-vs-beyer": {
     slug: "slt-vs-beyer",
-    competitor: "Beyer-Mietservice",
-    competitorShort: "Beyer",
-    h1: "SLT Rental und Beyer-Mietservice im Vergleich",
-    title: "SLT Rental vs. Beyer: Maschinenvermietung in NRW im Vergleich",
+    competitor: "BEYER-Mietservice",
+    competitorShort: "BEYER-Mietservice",
+    h1: "SLT Rental oder BEYER-Mietservice: Der Vergleich in NRW",
+    title: "SLT Rental oder BEYER-Mietservice: Der Vergleich in NRW",
     description:
-      "Sachlicher Vergleich von SLT Rental und Beyer-Mietservice: Standorte in NRW, Online-Buchung, Tiefpreisgarantie, Lieferung und Gerätekategorien.",
+      "SLT Rental und BEYER-Mietservice im Vergleich: Regionaler NRW-Mietpark mit Anhängern, Event-Equipment und Tiefpreisgarantie.",
     intro: [
-      "Beyer-Mietservice gehört zu den bekannten Vermietern für Bau- und Industriegeräte mit Standorten unter anderem in Nordrhein-Westfalen. SLT Rental ist ein regionaler Mietpark mit drei Standorten in NRW und einem auf Bau, Event und Privatkunden ausgerichteten Sortiment.",
-      "Der folgende Vergleich beschränkt sich auf objektive, nachprüfbare Kriterien.",
+      "BEYER-Mietservice ist ein überregionaler Vermieter mit Schwerpunkt auf Arbeitsbühnen und Erdbewegungstechnik. SLT Rental deckt in NRW zusätzlich Anhänger und Event-Equipment ab und bietet Online-Buchung sowie Tiefpreisgarantie. Mit drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr ist SLT nah an Projekten am Niederrhein, im Ruhrgebiet und im Raum Bonn.",
     ],
     rows: [
-      { feature: "Standorte in NRW", slt: "3 Standorte: Krefeld, Bonn, Mülheim an der Ruhr", competitor: "Mehrere Standorte in NRW und angrenzenden Regionen" },
-      { feature: "Online-Buchung 24/7", slt: "Ja, inklusive Anhänger-Selbstbedienung rund um die Uhr", competitor: "Online-Anfrage, Buchung primär über Niederlassung" },
-      { feature: "Tiefpreisgarantie", slt: "Ja, wir unterbieten vergleichbare Angebote der Region", competitor: "Keine veröffentlichte Tiefpreisgarantie bekannt" },
-      { feature: "Lieferung im Umkreis", slt: "Eigene Lieferung, kalkulierbare Kilometerpauschale", competitor: "Lieferung über die Niederlassung verfügbar" },
-      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Stromaggregate, Event-Equipment", competitor: "Bau- und Industriegeräte" },
-      { feature: "Zielgruppe", slt: "B2B und B2C, Bau, Handwerk, GaLaBau, Privatkunden, Veranstalter", competitor: "Primär gewerbliche Kunden" },
-      { feature: "Persönlicher Ansprechpartner", slt: "Feste Standortteams in Krefeld und Bonn", competitor: "Niederlassungspersonal je Standort" },
+      { feature: "Gegründet / Hauptsitz", slt: "SLT Technology Group GmbH & Co. KG, Hauptsitz Krefeld", competitor: "1994, Hauptsitz Roth-Heckenhof (Westerwald)" },
+      { feature: "Ausrichtung", slt: "Regionaler Mietpark mit Fokus NRW", competitor: "Überregionaler Vermieter, Schwerpunkt Höhenzugangs- und Erdbewegungstechnik" },
+      { feature: "Standorte in NRW", slt: "Krefeld, Bonn, Mülheim an der Ruhr", competitor: "Pulheim, Hürth, Lünen, Freudenberg" },
+      { feature: "Gerätekategorien", slt: "Baumaschinen, Anhänger, Arbeitsbühnen, Event-Equipment", competitor: "Arbeitsbühnen, Baumaschinen, Teleskoplader, Gabelstapler, Minikrane, Baugeräte" },
+      { feature: "Online-Buchung", slt: "Ja, online buchbar", competitor: "Mietanfrage online und über BEYER-App" },
+      { feature: "Tiefpreisgarantie", slt: "Ja (10 % Rabatt auf den Nettopreis bei nachweislich günstigerem identischem Angebot)", competitor: "Keine ausgewiesen" },
+      { feature: "Lieferung", slt: "Lieferung im Umkreis der Standorte", competitor: "Eigene LKW- und Tiefladerflotte, europaweit" },
+      { feature: "Zielgruppe", slt: "Gewerbe und Privatkunden (B2B und B2C)", competitor: "Vorwiegend gewerblich (Industrie, Handwerk, Messebau, Garten- und Landschaftsbau, Kommunen), Selbstabholer auch privat" },
     ],
     faqs: [
       {
-        question: "Was unterscheidet SLT Rental von Beyer-Mietservice?",
+        question: "Worin unterscheidet sich SLT Rental von BEYER-Mietservice?",
         answer:
-          "SLT Rental ist ein regional aufgestellter Mietpark mit drei Standorten in NRW (Krefeld, Bonn, Mülheim an der Ruhr) und einem Sortiment, das neben Baumaschinen auch Anhänger, Stromaggregate und Event-Equipment umfasst. Beyer-Mietservice fokussiert sich auf Bau- und Industriegeräte und ist an mehreren Standorten in NRW vertreten.",
+          "BEYER hat seinen Schwerpunkt bei Arbeitsbühnen und Erdbewegung. SLT Rental bietet zusätzlich Anhänger und Event-Equipment, Online-Buchung und Tiefpreisgarantie, an drei NRW-Standorten.",
       },
       {
-        question: "Bietet SLT Rental auch Event-Equipment an?",
-        answer:
-          "Ja. Zum SLT-Sortiment gehören Zelte, Bestuhlung, Stromaggregate und weitere Eventtechnik. Diese Geräte sind über den Mietkatalog der Standorte verfügbar.",
+        question: "Wo hat SLT Rental Standorte?",
+        answer: "In Krefeld, Bonn und Mülheim an der Ruhr.",
       },
       {
-        question: "Wie schnell kann ich Geräte bei SLT Rental bekommen?",
+        question: "Bietet SLT Rental eine Tiefpreisgarantie?",
         answer:
-          "Anhänger sind 24/7 online buchbar. Für Baumaschinen und Aggregate hängt die Verfügbarkeit vom Standort und Zeitraum ab. Eine Verfügbarkeitsprüfung läuft direkt im Mietkatalog oder telefonisch über die Standortteams.",
-      },
-      {
-        question: "Gibt es eine Tiefpreisgarantie bei SLT Rental?",
-        answer:
-          "Ja. Sollten Sie ein vergleichbares Angebot in der Region günstiger finden, unterbietet SLT Rental den Preis. Bedingungen stehen auf der Seite Tiefpreisgarantie.",
+          "Ja. Bei einem nachweislich günstigeren identischen Angebot gibt es 10 % Rabatt auf den Nettopreis.",
       },
     ],
   },
@@ -248,14 +229,14 @@ export default function Vergleich() {
                     <tr>
                       <th className="text-left p-3 md:p-4 font-semibold">Kriterium</th>
                       <th className="text-left p-3 md:p-4 font-semibold">
-                      <span className="inline-flex items-center">
-                        <img
-                          src={sltLogo}
-                          alt="SLT Rental"
-                          className="h-10 md:h-14 w-auto bg-white rounded px-2 py-1"
-                          loading="lazy"
-                        />
-                      </span>
+                        <span className="inline-flex items-center">
+                          <img
+                            src={sltLogo}
+                            alt="SLT Rental"
+                            className="h-10 md:h-14 w-auto bg-white rounded px-2 py-1"
+                            loading="lazy"
+                          />
+                        </span>
                       </th>
                       <th className="text-left p-3 md:p-4 font-semibold">{data.competitorShort}</th>
                     </tr>
