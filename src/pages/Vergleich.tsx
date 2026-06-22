@@ -248,11 +248,11 @@ export default function Vergleich() {
                     <tr>
                       <th className="text-left p-3 md:p-4 font-semibold">Kriterium</th>
                       <th className="text-left p-3 md:p-4 font-semibold">
-                      <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex items-center">
                         <img
                           src={sltLogo}
                           alt="SLT Rental"
-                          className="h-8 md:h-10 w-auto bg-white rounded px-2 py-1"
+                          className="h-10 md:h-14 w-auto bg-white rounded px-2 py-1"
                           loading="lazy"
                         />
                       </span>
