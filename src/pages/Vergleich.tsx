@@ -11,7 +11,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { CheckCircle2, Phone } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Phone } from "lucide-react";
+import sltLogo from "@/assets/slt-logo-sm.webp";
 
 type ComparisonRow = {
   feature: string;
