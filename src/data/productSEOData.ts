@@ -6408,7 +6408,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "rueckwaertskipp-1500": {
     excelName: "1300 kg Rückwärtskippanhänger & Laubgitter",
     seoTitle: "1300 kg Rückwärtskippanhänger mit Laubgitter mieten",
-    metaDescription: "Rückwärtskippanhänger mit Laubgitter. Ladefläche 300 x 150 x 95 cm, ca. 890 kg Nutzlast und händische Kippfunktion per Handpumpe.",
+    metaDescription: "Rückwärtskippanhänger mit Laubgitter. Ladefläche 250 x 150 x 100 cm, ca. 890 kg Nutzlast und händische Kippfunktion per Handpumpe.",
     h1: "1300 kg Rückwärtskippanhänger & Laubgitter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
     h2s: ["Technische Daten und Abmessungen", "Kippfunktion und Aufbau", "Gewichtsklassen und Zuladung"],
     useCaseBau: "",
@@ -6419,7 +6419,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       { q: "Wie wird die Kippfunktion des Anhängers bedient?", a: "Der Anhänger verfügt über eine händische Kippfunktion, die mittels einer Handpumpe betätigt wird." },
       { q: "Wie hoch ist die maximale Nutzlast?", a: "Die zulässige Nutzlast beträgt circa 890 kg bei einem Eigengewicht von etwa 410 kg." },
-      { q: "Welche Maße hat die Ladefläche inklusive Laubgitter?", a: "Die Ladefläche des Rückwärtskippers misst 300 x 150 x 95 cm." },
+      { q: "Welche Maße hat die Ladefläche inklusive Laubgitter?", a: "Die Ladefläche des Rückwärtskippers misst 250 x 150 x 100 cm." },
     ],
   },
   "rueckwaertskipp-2700": {
