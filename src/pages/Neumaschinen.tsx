@@ -471,6 +471,25 @@ export default function Neumaschinen() {
                       availability: "https://schema.org/InStock",
                       url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
                       priceValidUntil: new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0],
+                      ...(m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross)
+                        ? {
+                            priceSpecification: [
+                              {
+                                "@type": "UnitPriceSpecification",
+                                price: Number(m.price_gross).toFixed(2),
+                                priceCurrency: "EUR",
+                                valueAddedTaxIncluded: true,
+                              },
+                              {
+                                "@type": "UnitPriceSpecification",
+                                priceType: "https://schema.org/ListPrice",
+                                price: Number(m.compare_at_price).toFixed(2),
+                                priceCurrency: "EUR",
+                                valueAddedTaxIncluded: true,
+                              },
+                            ],
+                          }
+                        : {}),
                     }
                   : undefined,
               },
