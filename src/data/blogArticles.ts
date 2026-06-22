@@ -685,6 +685,106 @@ Nein. Zusätzlich müssen die zulässige Anhängelast und die Stützlast Deines 
 Ob Kastenanhänger, Kippanhänger oder Maschinentransporter: An allen SLT-Standorten holst Du Deinen Anhänger rund um die Uhr per SMS-Code ab. Wähle Deinen Standort und vergleiche die Modelle direkt nach zulässiger Gesamtmasse.
 
 [→ Anhänger in Krefeld](/mieten/krefeld/anhaenger) · [→ Anhänger in Bonn](/mieten/bonn/anhaenger) · [→ Anhänger in Mülheim an der Ruhr](/mieten/muelheim/anhaenger)`
+  },
+  {
+    slug: "arbeitsbuehne-mieten-typ-arbeitshoehe",
+    title: "Arbeitsbühne mieten: welcher Typ und welche Arbeitshöhe für welchen Einsatz?",
+    metaTitle: "Arbeitsbühne mieten: welcher Typ und welche Höhe? | SLT Rental",
+    metaDescription: "Scherenbühne, Teleskop oder Anhängerbühne? So wählst Du die richtige Arbeitsbühne nach Arbeitshöhe, Reichweite und Einsatzort. Mit Sicherheits-Check.",
+    teaser: "Scherenbühne, Gelenkteleskop oder Anhängerbühne? So findest Du in wenigen Minuten den passenden Typ und die richtige Arbeitshöhe.",
+    date: "2026-06-22",
+    updatedAt: "2026-06-22",
+    author: "SLT Rental",
+    category: "Baumaschinen",
+    keyword: "arbeitsbühne mieten",
+    image: "/images/ratgeber/blog_thumbnail_arbeitsbuehne_mieten.svg",
+    imageAlt: "Illustration: Scherenbühne und Gelenkteleskopbühne nebeneinander mit Höhenlinie Arbeitshöhe = Plattformhöhe + 2 m – Ratgeber von SLT Rental",
+    ogImage: "/images/ratgeber/og/blog_thumbnail_arbeitsbuehne_mieten.png",
+    quickFacts: [
+      "Arbeitshöhe ist nicht Plattformhöhe: Faustformel Arbeitshöhe = Plattformhöhe plus rund 2 m",
+      "Scherenbühne nur senkrecht, Gelenk- und Teleskopbühne mit seitlicher Reichweite über Hindernisse",
+      "Innen: Elektrobühne (leise, abgasfrei). Außen auf unebenem Gelände: Diesel oder Hybrid mit Allrad",
+      "Gewerblich: Bediener müssen nach DGUV Grundsatz 308-008 ausgebildet, unterwiesen und schriftlich beauftragt sein",
+      "Vier Werte vor der Anfrage parat haben: Arbeitshöhe, seitliche Reichweite, Korblast, Untergrund und Zugang"
+    ],
+    relatedSlugs: ["baustelle-innenstadt-baumaschine-beengte-verhaeltnisse", "anhaenger-fuehrerschein-b-b96-be", "wochenendtarif-vs-tagesmiete"],
+    content: `## Arbeitsbühne mieten auf einen Blick
+
+Fassade streichen, Hallenbeleuchtung tauschen, einen Baum auslichten oder Werbeschilder montieren: Sobald die Arbeit ein paar Meter über dem Boden liegt, ist die Leiter schnell am Limit. Eine [Arbeitsbühne](/mieten/krefeld/arbeitsbuehnen) ist dann sicherer und meist auch schneller. Die Frage ist nur: Welche? Zwischen Scherenbühne, Gelenkteleskop und Anhängerbühne liegen Welten, und wer den falschen Typ bestellt, steht am Einsatztag entweder zu niedrig oder kommt mit dem Gerät gar nicht erst an die Arbeitsstelle. Dieser Ratgeber zeigt Dir, worauf es bei der Auswahl wirklich ankommt.
+
+- **Arbeitshöhe ist nicht Plattformhöhe.** Faustformel: Arbeitshöhe = Plattformhöhe plus rund 2 Meter. Eine Bühne mit "12 m Arbeitshöhe" bringt Dich also auf etwa 10 m Standhöhe.
+- **Der Typ entscheidet über die Reichweite.** Senkrecht nach oben? Scherenbühne. Über Hindernisse hinweg oder seitlich versetzt? Gelenk- oder Teleskopbühne.
+- **Innen oder außen** bestimmt den Antrieb: Elektro für drinnen (leise, abgasfrei, schonende Reifen), Diesel oder Hybrid mit Allrad für unebenes Gelände.
+- **Im gewerblichen Einsatz** dürfen Bühnen nur ausgebildete, unterwiesene und schriftlich beauftragte Personen bedienen (DGUV Grundsatz 308-008). Die Verantwortung bleibt auch bei der Mietbühne beim Nutzer.
+
+## Der häufigste Denkfehler: Arbeitshöhe gegen Plattformhöhe
+
+Arbeitsbühnen werden fast immer mit ihrer **Arbeitshöhe** beworben, also dem höchsten Punkt, den eine durchschnittlich große Person mit ausgestrecktem Arm erreicht. Die **Plattformhöhe** (auch Standhöhe) liegt etwa zwei Meter darunter, denn so hoch reicht ein stehender Bediener über die Plattform hinaus. Diese zwei Meter sind in der Höhenzugangstechnik die übliche Faustformel.
+
+Praktisch heißt das: Wenn Du an einer Stelle in 10 Metern Höhe arbeiten willst, brauchst Du keine 10-Meter-Plattform, sondern ein Gerät mit rund 10 Metern Arbeitshöhe (Plattform also bei circa 8 m). Plane lieber etwas Reserve ein, statt Dich am Einsatztag strecken zu müssen. Sich auf der Plattform auf die Zehenspitzen zu stellen oder gar eine Leiter in den Korb zu stellen ist nicht nur unbequem, sondern verstößt klar gegen die Sicherheitsregeln.
+
+## Die Bühnentypen im Überblick
+
+| Typ | Bewegung | Stärke | Typischer Einsatz |
+|---|---|---|---|
+| **Scherenbühne** | Nur senkrecht | Große Plattform, hohe Traglast, oft mehrere Personen plus Material | Hallen, Decken, Lager, ebener Untergrund |
+| **Gelenkteleskopbühne** | Senkrecht plus Knick | Über Hindernisse hinweg, seitliche Reichweite | Fassaden mit Vorbauten, Bäume, verwinkelte Bereiche |
+| **Teleskopbühne** | Geradliniger Ausleger | Große Höhe und Reichweite in einer Richtung | Industriehallen, Stahlbau, hohe Wände |
+| **Anhängerbühne** | Senkrecht / Gelenk | Leicht, selbst transportierbar, günstig | Privat, Hausmeister, Garten, kleinere Fassaden |
+| **LKW-Arbeitsbühne** | Teleskop / Gelenk | Sehr große Höhen, schnell einsatzbereit | Hochhausfassaden, Baumpflege, Inspektionen |
+| **Raupenbühne (Spinne)** | Gelenk / Teleskop | Kettenfahrwerk für enge oder weiche Böden | Innenhöfe, Friedhöfe, empfindliche Flächen |
+
+Ein paar Punkte, die in der Tabelle leicht untergehen:
+
+**Scherenbühnen** haben praktisch keine seitliche Reichweite. Du stehst senkrecht über der Maschine. Genau dort, wo Du den Korb hinfährst, kannst Du arbeiten, sonst nirgends. Dafür bieten sie viel Standfläche und Traglast, ideal also, wenn zwei Leute mit Material gleichzeitig hochmüssen.
+
+**Anhängerbühnen** sind der Liebling vieler Privatkunden und Hausmeisterdienste: geringes Eigengewicht, niedriger Mietpreis, und mit der passenden Anhängerkupplung kannst Du sie selbst abholen und vor Ort umsetzen. Ob Dein Zugfahrzeug und Führerschein dafür reichen, klärst Du am besten vorab mit unserem [Anhänger-Führerschein-Ratgeber](/ratgeber/anhaenger-fuehrerschein-b-b96-be).
+
+## Innen oder außen: der Antrieb entscheidet
+
+Für **Innenräume** ist eine **elektrisch angetriebene** Bühne fast immer die richtige Wahl. Sie arbeitet abgasfrei und leise, und nicht-markierende Reifen schonen den Hallenboden. Achte zusätzlich auf die Durchfahrtsbreite, denn das Gerät muss durch jede Tür und jeden Gang passen, der zwischen Anlieferung und Einsatzort liegt.
+
+Im **Außenbereich** auf unbefestigtem oder unebenem Gelände spielen **Diesel- oder Hybridbühnen mit Allradantrieb** ihre Stärke aus. Hier zählt außerdem die Bodenpressung: Auf weichem Untergrund oder über Kellerdecken kann eine schwere Bühne ein Problem sein. Im Zweifel hilft eine Raupenbühne mit großer Aufstandsfläche oder eine Lastverteilung über Platten.
+
+## Diese vier Werte solltest Du vor der Anfrage kennen
+
+1. **Arbeitshöhe**, also wie hoch Du tatsächlich kommen musst (Plattformhöhe plus rund 2 m mitdenken).
+2. **Seitliche Reichweite**, falls Du über ein Hindernis hinweg oder seitlich versetzt arbeitest. Sie nimmt mit zunehmender Höhe ab.
+3. **Korblast**, das maximale Gewicht im Korb. Dazu zählen Personen, Werkzeug und Material zusammen, nicht nur Dein Körpergewicht.
+4. **Untergrund und Zugang**, also Bodenbeschaffenheit, Steigungen, Türbreiten und ob Strom vor Ort verfügbar ist.
+
+Wer diese vier Angaben parat hat, bekommt von uns deutlich schneller die passende Maschine, statt am Telefon raten zu müssen. Unser KI-Assistent Renty hilft Dir bei einer ersten Einordnung rund um die Uhr, die finale Geräteauswahl stimmst Du mit unserem Team ab.
+
+## Sicherheit und Recht: was beim Mieten oft übersehen wird
+
+Im **gewerblichen Einsatz** gilt: Eine Hubarbeitsbühne darf nur bedienen, wer dafür ausgebildet, unterwiesen und vom Arbeitgeber schriftlich beauftragt ist. Maßstab ist der DGUV Grundsatz 308-008, der eine Schulung aus Theorie und Praxis sowie eine jährliche Unterweisung vorsieht. Das Mindestalter liegt bei 18 Jahren. Wichtig: Diese Verantwortung wandert nicht mit der Mietbühne zum Vermieter. Als Nutzer brauchst Du eine Gefährdungsbeurteilung, musst die persönliche Schutzausrüstung stellen und vor dem Einsatz eine Sicht- und Funktionsprüfung durchführen. In Auslegerbühnen, also Gelenk- und Teleskopgeräten, ist ein Auffanggurt als Absturzsicherung üblich und je nach Gerät vorgeschrieben.
+
+Für **Privatpersonen** gibt es keinen verpflichtenden "Bühnenführerschein", die DGUV-Regeln richten sich an Betriebe und ihre Beschäftigten. Trotzdem solltest Du Dich gründlich einweisen lassen und nie ohne Sicherung in einer Auslegerbühne stehen. Wir weisen Dich bei der Übergabe in das konkrete Gerät ein.
+
+Und noch ein praktischer Punkt, der die beiden Welten verbindet: Einen **Straßenführerschein** brauchst Du für die Bühne selbst nur, wenn sie auf öffentlicher Straße bewegt wird. LKW-Arbeitsbühnen auf einem Fahrgestell bis 3,5 Tonnen lassen sich noch mit dem normalen Pkw-Führerschein (Klasse B) fahren, größere Fahrgestelle verlangen den Lkw-Führerschein.
+
+## Häufige Fragen zum Arbeitsbühne mieten
+
+**Was ist der Unterschied zwischen Arbeitshöhe und Plattformhöhe?**
+Die Plattformhöhe ist die Höhe, auf der Du mit den Füßen stehst. Die Arbeitshöhe ist die Höhe, die Du mit ausgestrecktem Arm erreichst, in der Regel rund zwei Meter mehr. Arbeitsbühnen werden nach Arbeitshöhe benannt.
+
+**Welche Arbeitsbühne brauche ich für Innenarbeiten?**
+Meist eine elektrische Scherenbühne. Sie ist abgasfrei, leise, hat eine große Standfläche und schont mit nicht-markierenden Reifen den Boden. Achte auf die Durchfahrtsbreite, damit das Gerät durch Türen und Gänge passt.
+
+**Brauche ich einen Schein, um eine Arbeitsbühne zu bedienen?**
+Im Betrieb ja: Bediener müssen nach DGUV Grundsatz 308-008 ausgebildet, unterwiesen und schriftlich beauftragt sein. Privat gibt es keine Pflicht, eine gründliche Einweisung und Absturzsicherung sind aber dringend zu empfehlen.
+
+**Wie weit reicht eine Arbeitsbühne zur Seite?**
+Das hängt stark vom Typ ab. Eine Scherenbühne fährt fast nur senkrecht, eine Gelenk- oder Teleskopbühne erreicht deutliche seitliche Reichweiten. Diese sinken jedoch, je höher Du fährst, und stehen im Arbeitsdiagramm des Geräts.
+
+**Kann ich eine Arbeitsbühne selbst transportieren?**
+Bei einer Anhängerbühne oft ja, wenn Zugfahrzeug, Anhängelast und Führerschein passen. Selbstfahrende Bühnen liefern wir an. Frag uns einfach, was für Dein Vorhaben sinnvoller ist.
+
+## Jetzt passende Arbeitsbühne bei SLT mieten
+
+Ob Scherenbühne für die Halle, Gelenkteleskop für die Fassade oder Anhängerbühne für den schnellen Einsatz: An allen SLT-Standorten findest Du Arbeitsbühnen mit unterschiedlichen Arbeitshöhen und Reichweiten. Wähle Deinen Standort und vergleiche die Modelle direkt nach Arbeitshöhe, Korblast und Antrieb.
+
+[→ Arbeitsbühnen in Krefeld](/mieten/krefeld/arbeitsbuehnen) · [→ Arbeitsbühnen in Bonn](/mieten/bonn/arbeitsbuehnen) · [→ Arbeitsbühnen in Mülheim an der Ruhr](/mieten/muelheim/arbeitsbuehnen)`
   }
 ];
 
