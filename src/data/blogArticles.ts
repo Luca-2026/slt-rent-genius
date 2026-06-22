@@ -582,6 +582,109 @@ Wer im ausgewiesenen Halteverbot parkt, riskiert ein **Verwarnungs- bzw. Bußgel
 Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern Schilder, Beratung und auf Wunsch das komplette Sorglos-Paket – an unseren Standorten in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
 
 [→ Halteverbotsschilder-Set jetzt mieten](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set)`
+  },
+  {
+    slug: "anhaenger-fuehrerschein-b-b96-be",
+    title: "Anhänger-Führerschein: B, B96 oder BE, welchen Anhänger darfst Du ziehen?",
+    metaTitle: "Anhänger-Führerschein: B, B96 oder BE? | SLT Rental",
+    metaDescription: "Welchen Anhänger darfst Du mit Klasse B ziehen, wann brauchst Du B96 oder BE? So rechnest Du es in 2 Minuten aus, plus Hinweis zu Anhängelast und Stützlast.",
+    teaser: "B, B96 oder BE? Welche Klasse Du für Deinen Wunsch-Anhänger brauchst, entscheidet eine einzige Zahl – wir zeigen Dir in zwei Minuten, welche.",
+    date: "2026-06-20",
+    updatedAt: "2026-06-22",
+    author: "SLT Rental",
+    category: "Anhänger",
+    keyword: "anhänger führerschein",
+    image: "/images/ratgeber/blog_thumbnail_anhaenger_fuehrerschein.svg",
+    imageAlt: "Illustration: Pkw mit Anhänger und drei Gewichtsbalken für 3.500 kg, 4.250 kg und 7.000 kg – Ratgeber von SLT Rental",
+    ogImage: "/images/ratgeber/og/blog_thumbnail_anhaenger_fuehrerschein.png",
+    quickFacts: [
+      "Klasse B: Gespann bis 3.500 kg zulässiger Gesamtmasse, Anhänger bis 750 kg immer erlaubt",
+      "B96: Schlüsselzahl zur Klasse B für Gespanne bis 4.250 kg, nur Schulung, keine Prüfung",
+      "BE: eigene Klasse für Gespanne bis 7.000 kg, mit praktischer Prüfung",
+      "Es zählt immer die zulässige Gesamtmasse (zGM) laut Schein, nicht das tatsächliche Gewicht",
+      "Auch Anhängelast und Stützlast Deines Zugfahrzeugs müssen passen (Felder O.1 und O.2)"
+    ],
+    relatedSlugs: ["anhaenger-24-stunden-mieten-sms-code", "wochenendtarif-vs-tagesmiete"],
+    content: `## Anhänger-Führerschein auf einen Blick
+
+Du willst einen [Anhänger mieten](/mieten/krefeld/anhaenger), einen Baggertransporter, einen Kastenanhänger oder einen Tieflader, und plötzlich stellt sich die Frage: Reicht mein normaler Pkw-Führerschein dafür überhaupt? Die Antwort entscheidet sich an einer einzigen Zahl, die viele falsch verstehen, nämlich der zulässigen Gesamtmasse. Hier bekommst Du die Regeln klar und korrekt, plus eine kleine Rechnung, mit der Du in zwei Minuten weißt, ob Du B, B96 oder BE brauchst.
+
+- **Klasse B:** Gespann bis 3.500 kg zulässiger Gesamtmasse. Ein Anhänger bis 750 kg ist immer erlaubt, ein schwererer nur, solange die Summe aus Auto und Anhänger 3.500 kg nicht überschreitet.
+- **B96:** Erweiterung der Klasse B (eine Schlüsselzahl, keine eigene Klasse) für Gespanne über 3.500 bis maximal 4.250 kg. Nur eine Schulung, keine Prüfung.
+- **BE:** Eigene Klasse. Anhänger über 750 kg bis 3.500 kg hinter einem Pkw bis 3.500 kg, das Gespann darf bis 7.000 kg wiegen.
+- **Entscheidend ist immer die zulässige Gesamtmasse (zGM), nicht das tatsächliche Gewicht.** Es zählt, was im Schein steht, nicht, wie voll der Anhänger gerade ist.
+
+## Die drei Stufen im Detail
+
+### Klasse B: was im normalen Pkw-Führerschein steckt
+
+Mit der Klasse B fährst Du ein Kraftfahrzeug bis 3.500 kg zulässiger Gesamtmasse. Einen Anhänger bis 750 kg zGM darfst Du dabei immer anhängen. Ist der Anhänger schwerer als 750 kg, geht das ebenfalls noch mit Klasse B, aber nur, solange Auto und Anhänger zusammen die 3.500 kg zGM nicht überschreiten. Sobald die Summe darüber liegt, reicht die Klasse B nicht mehr.
+
+### B96: die günstige Erweiterung bis 4.250 kg
+
+B96 ist streng genommen kein eigener Führerschein, sondern eine Schlüsselzahl, die in der Zeile der Klasse B eingetragen wird. Mit ihr darfst Du Gespanne über 3.500 kg und bis maximal 4.250 kg zulässiger Gesamtmasse fahren, der Anhänger darf also auch schwerer als 750 kg sein. Der große Vorteil: Für B96 ist weder eine Theorie- noch eine Praxisprüfung nötig, sondern nur eine Fahrerschulung, die viele Fahrschulen als Tageskurs anbieten.
+
+Ein Punkt, der oft Ärger macht: Die Teilnahmebescheinigung allein reicht nicht. Die Schlüsselzahl muss erst von der Fahrerlaubnisbehörde im Führerschein eingetragen werden. Erst danach darfst Du das schwerere Gespann fahren. Vorher gilt es als Fahren ohne Fahrerlaubnis, und auch beim Versicherungsschutz kann es dann eng werden.
+
+### BE: für die wirklich schweren Anhänger
+
+Reicht auch B96 nicht mehr, kommt die Klasse BE ins Spiel. Sie erlaubt einen Anhänger über 750 kg bis maximal 3.500 kg zGM hinter einem Zugfahrzeug bis 3.500 kg. In Summe sind das Gespanne bis 7.000 kg. BE ist eine eigene Führerscheinklasse, für die eine praktische Prüfung abgelegt werden muss, eine Theorieprüfung ist für Inhaber der Klasse B dagegen nicht nötig. In der Regel fallen dafür einige Pflichtfahrstunden an.
+
+Liegt die zulässige Gesamtmasse des Anhängers sogar über 3.500 kg, reicht auch BE nicht mehr, dann brauchst Du die Klasse C1E.
+
+## Die schnelle Eigenrechnung
+
+So findest Du in zwei Minuten heraus, welche Klasse Du brauchst:
+
+1. **zGM des Zugfahrzeugs ablesen:** Zulassungsbescheinigung Teil I, Feld F.2.
+2. **zGM des Anhängers ablesen:** ebenfalls Feld F.2 in den Papieren des Anhängers.
+3. **Beide Werte addieren.** Es zählen die zulässigen Gesamtmassen laut Schein, nicht das tatsächliche Ladegewicht.
+
+Dann gilt:
+
+| Summe der zGM (Auto + Anhänger) | Anhänger über 750 kg? | Du brauchst |
+|---|---|---|
+| bis 3.500 kg | egal | Klasse B |
+| über 3.500 bis 4.250 kg | ja | B96 |
+| über 4.250 bis 7.000 kg | ja (bis 3.500 kg Anhänger) | BE |
+| Anhänger über 3.500 kg | ja | C1E |
+
+Beispiel: Dein Auto hat 2.300 kg zGM, der gemietete Anhänger 2.000 kg. Summe 4.300 kg. Damit ist B96 schon zu wenig, Du brauchst BE. Hätte der Anhänger nur 1.800 kg, lägst Du bei 4.100 kg und kämst mit B96 hin.
+
+## Die zweite Hürde, die viele vergessen: Anhängelast und Stützlast
+
+Der Führerschein ist nur die halbe Miete. Selbst wenn Deine Fahrerlaubnis passt, muss auch **Dein Zugfahrzeug** den Anhänger ziehen dürfen. Jeder Pkw hat eine vom Hersteller festgelegte zulässige Anhängelast, getrennt nach gebremstem und ungebremstem Anhänger. Diese Werte findest Du in der Zulassungsbescheinigung Teil I in den Feldern O.1 (gebremst) und O.2 (ungebremst). Dazu kommt die zulässige Stützlast, also das Gewicht, das senkrecht auf der Kupplung lasten darf.
+
+Kurz gesagt: Führerschein, Anhängelast und Stützlast müssen alle drei passen. Erst dann darfst Du losfahren.
+
+## Und was heißt das beim Anhänger mieten bei SLT?
+
+Wir haben Anhänger in unterschiedlichen Gewichtsklassen, vom leichten Kastenanhänger bis zum Maschinentransporter. Viele lassen sich mit dem normalen Pkw-Führerschein der Klasse B fahren, schwerere Modelle setzen je nach Zugfahrzeug B96 oder BE voraus. Weil es immer auf die Kombination aus Deinem Auto und dem konkreten Anhänger ankommt, lohnt sich vor der Buchung ein kurzer Blick in Deinen Fahrzeugschein. Wenn Du unsicher bist, welcher Anhänger zu Deinem Führerschein und Deinem Zugfahrzeug passt, hilft Dir unser Team weiter, und unser KI-Assistent Renty beantwortet die ersten Fragen rund um die Uhr.
+
+Unsere Anhänger findest Du an allen drei Standorten: [Krefeld](/mieten/krefeld/anhaenger), [Bonn](/mieten/bonn/anhaenger) und [Mülheim an der Ruhr](/mieten/muelheim/anhaenger). Jedes Modell zeigt die zulässige Gesamtmasse direkt in den Produktdaten, so siehst Du auf einen Blick, ob Dein Führerschein passt.
+
+## Häufige Fragen zum Anhänger-Führerschein
+
+**Welchen Anhänger darf ich mit Klasse B ziehen?**
+Einen Anhänger bis 750 kg zGM immer. Einen schwereren nur, wenn Auto und Anhänger zusammen 3.500 kg zulässige Gesamtmasse nicht überschreiten.
+
+**Was ist der Unterschied zwischen B96 und BE?**
+B96 ist nur eine Schlüsselzahl zur Klasse B und reicht für Gespanne bis 4.250 kg, dafür genügt eine Schulung ohne Prüfung. BE ist eine eigene Klasse für Gespanne bis 7.000 kg und erfordert eine praktische Prüfung.
+
+**Zählt das tatsächliche Gewicht oder das zulässige Gesamtgewicht?**
+Immer die zulässige Gesamtmasse laut Fahrzeugschein. Ob der Anhänger gerade leer oder beladen ist, spielt für die Führerscheinfrage keine Rolle.
+
+**Darf ich mit B96 ohne Eintrag im Führerschein schon fahren?**
+Nein. Die Schlüsselzahl muss erst von der Fahrerlaubnisbehörde eingetragen werden. Die Teilnahmebescheinigung der Fahrschule allein reicht nicht.
+
+**Reicht der Führerschein allein, um einen schweren Anhänger zu ziehen?**
+Nein. Zusätzlich müssen die zulässige Anhängelast und die Stützlast Deines Zugfahrzeugs passen. Diese Werte stehen in der Zulassungsbescheinigung Teil I.
+
+## Jetzt passenden Anhänger bei SLT mieten
+
+Ob Kastenanhänger, Kippanhänger oder Maschinentransporter: An allen SLT-Standorten holst Du Deinen Anhänger rund um die Uhr per SMS-Code ab. Wähle Deinen Standort und vergleiche die Modelle direkt nach zulässiger Gesamtmasse.
+
+[→ Anhänger in Krefeld](/mieten/krefeld/anhaenger) · [→ Anhänger in Bonn](/mieten/bonn/anhaenger) · [→ Anhänger in Mülheim an der Ruhr](/mieten/muelheim/anhaenger)`
   }
 ];
 
