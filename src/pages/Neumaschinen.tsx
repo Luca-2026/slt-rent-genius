@@ -638,6 +638,11 @@ export default function Neumaschinen() {
                           <p className="text-lg font-bold text-primary">
                             {formatPriceGross(m.price_gross ? Number(m.price_gross) : null, m.price_on_request)}
                           </p>
+                          {!m.price_on_request && m.price_gross && m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross) && (
+                            <p className="text-xs text-muted-foreground line-through">
+                              UVP {formatPriceGross(Number(m.compare_at_price), false)}
+                            </p>
+                          )}
                           {!m.price_on_request && m.price_gross && (
                             <p className="text-xs text-muted-foreground">brutto inkl. MwSt.</p>
                           )}
