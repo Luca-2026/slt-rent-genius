@@ -348,16 +348,20 @@ export default function GlasfaserMaschinen() {
           </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {[
-              { name: "Krefeld", region: "Niederrhein, linker Niederrhein, Düsseldorf-Nord" },
-              { name: "Bonn", region: "Bonn, Rhein-Sieg-Kreis, Köln-Süd, Region Ahr" },
-              { name: "Mülheim an der Ruhr", region: "Ruhrgebiet, Essen, Duisburg, Oberhausen" },
+              { name: "Krefeld", region: "Niederrhein, linker Niederrhein, Düsseldorf-Nord", phone: "02151 417 99 04", tel: "+4921514179904" },
+              { name: "Bonn", region: "Bonn, Rhein-Sieg-Kreis, Köln-Süd, Region Ahr", phone: "0228 504 660 61", tel: "+4922850466061" },
+              { name: "Mülheim an der Ruhr", region: "Ruhrgebiet, Essen, Duisburg, Oberhausen", phone: "02151 417 99 04", tel: "+4921514179904" },
             ].map((s) => (
               <Card key={s.name} className="border-2">
                 <CardContent className="p-5 flex gap-3 items-start">
                   <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold text-headline">{s.name}</h3>
-                    <p className="text-sm text-muted-foreground">{s.region}</p>
+                    <p className="text-sm text-muted-foreground mb-2">{s.region}</p>
+                    <a href={`tel:${s.tel}`} className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+                      <Phone className="h-3.5 w-3.5" />
+                      {s.phone}
+                    </a>
                   </div>
                 </CardContent>
               </Card>
