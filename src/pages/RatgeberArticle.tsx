@@ -383,8 +383,19 @@ const RatgeberArticle = () => {
         <h1>{article.title}</h1>
         {article.quickFacts.map((f, i) => <p key={i}>{f}</p>)}
       </div>
+
+      {categoryCta && (
+        <LocationSelectDialog
+          open={locationDialogOpen}
+          onOpenChange={setLocationDialogOpen}
+          targetCategoryId={categoryCta.categoryId}
+          title={categoryCta.label}
+          description="Wähle Deinen Standort – wir zeigen Dir die verfügbaren Artikel."
+        />
+      )}
     </Layout>
   );
 };
 
 export default RatgeberArticle;
+
