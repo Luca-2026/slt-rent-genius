@@ -43,6 +43,7 @@ export function Footer() {
     { to: "/ratgeber", label: "Ratgeber" },
     { to: "/dienstleistungen", label: "Dienstleistungen" },
     { to: "/vergleich", label: "Anbietervergleich" },
+    { to: "/glasfaserausbau-maschinen-mieten", label: "Glasfaserausbau" },
     { to: "/faq", label: t("footer.faq") },
   ];
 
