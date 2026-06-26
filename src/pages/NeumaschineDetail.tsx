@@ -469,7 +469,7 @@ export default function NeumaschineDetail() {
           <div className="max-w-5xl">
             <Badge className="bg-accent text-accent-foreground mb-3">Autorisierter BAUMAX Fachhändler in NRW</Badge>
             <h2 className="text-2xl md:text-3xl font-bold text-headline mb-3">
-              Warum {machine.name} bei SLT Rental kaufen?
+              Warum den {machine.brand} {machine.model} bei SLT Rental kaufen?
             </h2>
 
             <p className="text-foreground/80 mb-8 max-w-3xl">
