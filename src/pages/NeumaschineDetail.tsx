@@ -389,6 +389,56 @@ export default function NeumaschineDetail() {
         </div>
       </section>
 
+      {/* Accessory teaser: Anhängerkupplung für KDe550 / KDe550p */}
+      {(slug === "baumax-kde550-raddumper-elektrisch" || slug === "baumax-kde550p-raddumper-elektrisch") && (
+        <section className="section-container py-8 md:py-10 border-t border-border">
+          <Card className="overflow-hidden border-accent/40 bg-accent/5">
+            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr_auto] gap-4 md:gap-6 items-center p-5">
+              <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550" className="block">
+                <div className="aspect-square bg-white rounded-lg overflow-hidden border border-border">
+                  <img
+                    src="/product-images/neumaschinen/baumax-anhaengerkupplung-kde550-1.jpg"
+                    alt="Anhängerkupplung für BAUMAX KDe550 / KDe550p"
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                  />
+                </div>
+              </Link>
+              <div>
+                <Badge className="bg-accent text-accent-foreground mb-2">Passendes Zubehör</Badge>
+                <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550" className="block hover:text-primary transition-colors">
+                  <h3 className="text-xl font-bold text-headline mb-1">
+                    Anhängerkupplung für BAUMAX Raddumper KDe550 / KDe550p
+                  </h3>
+                </Link>
+                <p className="text-sm text-foreground/80 mb-2">
+                  Passgenaues, baugleiches Zubehör mit 50-mm-Kugelkopf nach DIN – werkzeuglose Montage über die werkseitige Steckaufnahme.
+                </p>
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <span className="text-2xl font-bold text-primary">99 € brutto</span>
+                  <span className="text-sm text-muted-foreground line-through">119 €</span>
+                  <Badge className="bg-accent text-accent-foreground">Sonderpreis bis 30.06.2026</Badge>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 inline-flex items-center gap-1">
+                  <Clock className="h-3 w-3" /> Sofort lieferbar · Lieferung 1–2 Werktage
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 md:items-end">
+                <Button asChild>
+                  <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550">
+                    Details ansehen <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" onClick={() => setInquiryOpen(true)}>
+                  In Anfrage hinzufügen
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </section>
+      )}
+
       {/* Description */}
       {machine.description && (
         <section className="section-container py-8 md:py-12 border-t border-border">
