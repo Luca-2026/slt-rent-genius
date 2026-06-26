@@ -310,6 +310,31 @@ const RatgeberArticle = () => {
             {renderMarkdown(article.content)}
           </div>
 
+          {/* Interne Verlinkung: Ratgeber → passende Mietkategorie */}
+          {categoryCta && (
+            <div className="mt-10 bg-primary/5 border border-primary/20 rounded-xl p-5 sm:p-6">
+              <div className="flex items-start gap-4 flex-col sm:flex-row sm:items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-foreground mb-1 flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-primary" aria-hidden="true" />
+                    {categoryCta.label}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    Direkt online buchbar an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.
+                  </p>
+                </div>
+                <Button
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover shrink-0"
+                  onClick={() => setLocationDialogOpen(true)}
+                >
+                  Standort wählen
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Author block */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
@@ -317,6 +342,7 @@ const RatgeberArticle = () => {
               {new Date(article.updatedAt).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
+
 
           {/* Related articles */}
           {relatedArticles.length > 0 && (
