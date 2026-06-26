@@ -81,6 +81,8 @@ export default function NeumaschineDetail() {
   const altFor = (idx: number) => imageAlts[idx] || `${machine.brand} ${machine.model} – Bild ${idx + 1}`;
   const showroomLocs: string[] = Array.isArray(machine.showroom_locations) ? machine.showroom_locations : [];
   const showroomNames = showroomLocs.map((l) => locationLabels[l] || l).join(" oder ");
+  const demoLocs: string[] = Array.isArray((content as any).demoLocations) ? (content as any).demoLocations : [];
+  const demoNames = demoLocs.map((l) => locationLabels[l] || l).join(" und ");
 
   const title = (content as any).seoTitle || `${machine.brand} ${machine.model} kaufen | Neumaschine – SLT Rental`;
   const description = (content as any).seoDescription || machine.short_description ||
@@ -311,6 +313,16 @@ export default function NeumaschineDetail() {
                 </span>
               )}
             </div>
+
+            {demoNames && (
+              <div className="mb-6 flex items-start gap-3 rounded-lg border border-accent/40 bg-accent/10 p-3">
+                <CheckCircle2 className="h-5 w-5 text-accent-foreground flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <span className="font-semibold text-headline">Vorführmodell verfügbar in {demoNames}.</span>{" "}
+                  <span className="text-foreground/80">Komm vorbei, schau Dir die Maschine an und teste sie direkt vor Ort – Termin am besten kurz vorab telefonisch abstimmen.</span>
+                </div>
+              </div>
+            )}
 
             <Card className="mb-6 border-primary/20">
               <CardContent className="p-5">
