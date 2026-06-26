@@ -410,10 +410,16 @@ export default function GlasfaserMaschinen() {
                   Jetzt Angebot anfordern
                 </Button>
               </Link>
-              <a href="tel:+4921519955780">
+              <a href="tel:+4921514179904">
                 <Button size="lg" variant="outline" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground hover:text-primary">
                   <Phone className="mr-2 h-4 w-4" />
-                  02151 9955780
+                  Krefeld / Mülheim: 02151 417 99 04
+                </Button>
+              </a>
+              <a href="tel:+4922850466061">
+                <Button size="lg" variant="outline" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground hover:text-primary">
+                  <Phone className="mr-2 h-4 w-4" />
+                  Bonn: 0228 504 660 61
                 </Button>
               </a>
             </div>
