@@ -451,6 +451,54 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
+      {/* Warum bei SLT Rental kaufen – speziell für RMD800P */}
+      {slug === "baumax-rmd800p-minidumper" && (
+        <section className="section-container py-10 md:py-14 border-t border-border">
+          <div className="max-w-5xl">
+            <Badge className="bg-accent text-accent-foreground mb-3">Autorisierter BAUMAX Fachhändler in NRW</Badge>
+            <h2 className="text-2xl md:text-3xl font-bold text-headline mb-3">
+              Warum den BAUMAX RMD800P bei SLT Rental kaufen?
+            </h2>
+            <p className="text-foreground/80 mb-8 max-w-3xl">
+              Wir sind autorisierter BAUMAX Fachhändler mit eigenem Standort in Krefeld und Bonn. Statt anonymem Online-Kauf bekommst Du bei uns persönliche Beratung, Vorführung vor Ort und Service-Werkstatt in NRW – aus einer Hand.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {[
+                { icon: MapPin, title: "Vor Ort anschauen & testen", text: "Maschine vor dem Kauf in Krefeld oder Bonn live erleben, Probefahrt inklusive. Kein Blindkauf wie im reinen Online-Shop." },
+                { icon: Wrench, title: "Eigene Service-Werkstatt in NRW", text: "Wartung, Reparatur, Ersatzteile und Garantieabwicklung übernehmen wir direkt – kein Versand der Maschine quer durch Deutschland." },
+                { icon: Shield, title: "Fachhändler-Beratung", text: "Echte Beratung von erfahrenen Mietprofis: Wir kennen Einsatzgrenzen, passende Zubehöre und die Praxis auf der Baustelle." },
+                { icon: Truck, title: "Lieferung NRW-weit", text: "Lieferung mit eigenem Fuhrpark in NRW inklusive Einweisung beim Kunden – keine Spedition, kein Palettenchaos." },
+                { icon: Package, title: "Probemiete & Anrechnung", text: "Unsicher beim Modell? Erst mieten, dann kaufen – die Mietkosten rechnen wir auf Wunsch beim Kauf an." },
+                { icon: CheckCircle2, title: "Original BAUMAX Ersatzteile", text: "Direkter Draht zum Hersteller, schnelle Ersatzteilversorgung und Wartung nach Herstellervorgaben." },
+              ].map((b, i) => (
+                <div key={i} className="flex gap-3 p-4 rounded-lg border border-border bg-card">
+                  <b.icon className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold text-headline mb-1">{b.title}</div>
+                    <p className="text-sm text-foreground/80">{b.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-lg border border-border bg-muted/40 p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <div className="font-semibold text-headline mb-1">Mehr zum Hersteller</div>
+                <p className="text-sm text-foreground/80">
+                  Technische Hintergründe und das komplette Sortiment findest Du direkt beim Hersteller BAUMAX.
+                </p>
+              </div>
+              <Button asChild variant="outline">
+                <a href="https://www.baumax.de" target="_blank" rel="noopener noreferrer">
+                  Zur BAUMAX Herstellerseite <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Product video */}
       {youtubeId && (
         <section className="section-container py-8 md:py-12 border-t border-border">
