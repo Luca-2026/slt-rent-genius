@@ -348,6 +348,27 @@ const STATIC_ROUTES: SeoRoute[] = [
       { name: "Anbietervergleich", path: "/vergleich" },
     ],
   },
+  // ---------------------------------------------------------------
+  // BAUMAX Service & Reparatur (Landing-Page für lokale Sichtbarkeit)
+  // ---------------------------------------------------------------
+  {
+    path: "/service/baumax-reparatur-nrw",
+    routeType: "page",
+    title: "BAUMAX Reparatur & Servicebetrieb NRW – Krefeld & Bonn",
+    description:
+      "Autorisierter BAUMAX Fachhändler in NRW: Reparatur, Wartung, Inspektion und Original-Ersatzteile für Raddumper, Minidumper, Rüttelplatten und Stampfer in Krefeld und Bonn.",
+    h1: "BAUMAX Reparatur & Servicebetrieb in NRW",
+    intro: [
+      "SLT Rental ist autorisierter BAUMAX Fachhändler mit eigener Werkstatt in Krefeld und Bonn – Wartung, Reparatur, Garantieabwicklung und Original-Ersatzteile für das gesamte BAUMAX-Sortiment.",
+    ],
+    changefreq: "monthly",
+    priority: 0.7,
+    lastmod: TODAY,
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "BAUMAX Service NRW", path: "/service/baumax-reparatur-nrw" },
+    ],
+  },
   ...([
     {
       slug: "slt-vs-hkl",
