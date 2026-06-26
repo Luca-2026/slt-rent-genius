@@ -2854,6 +2854,13 @@ export const bonnHuepfburgProducts = [
 // ==================== ABSPERRTECHNIK ====================
 export const bonnAbsperrtechnikProducts = [
   {
+    id: "bonn-halteverbotsschilder-set",
+    name: "Halteverbotsschilder-Set",
+    description: "18-teiliges Komplett-Set für mobile Halteverbotszonen-Kennzeichnung. Besonders standfest durch 2 Fußplatten. Zusatzschilder individuell beschriftbar (StVO Größe 1). Aufstellung mind. 72 Stunden vor Nutzungsbeginn erforderlich.",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "BDX3N5" },
+  },
+  {
     id: "bonn-warnleuchte-gelb",
     name: "TL-Warnleuchte, gelb",
     description: "LED Warnleuchte nach EN 12352, gelbe Streuscheibe, doppelseitig, Ø 180 mm. Blink-/Dauerlicht per Lampenschlüssel umschaltbar. Batterien optional.",
@@ -2891,14 +2898,8 @@ export const bonnAbsperrtechnikProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "FD2IMJ" },
   },
-  {
-    id: "bonn-halteverbotsschilder-set",
-    name: "Halteverbotsschilder-Set",
-    description: "18-teiliges Komplett-Set für mobile Halteverbotszonen-Kennzeichnung. Besonders standfest durch 2 Fußplatten. Zusatzschilder individuell beschriftbar (StVO Größe 1). Aufstellung mind. 72 Stunden vor Nutzungsbeginn erforderlich.",
-    image: "/placeholder.svg",
-    rentwareCode: { bonn: "BDX3N5" },
-  },
 ];
+
 
 // ==================== EXPORT ALL BONN PRODUCTS ====================
 export const allBonnProducts = {
