@@ -204,8 +204,12 @@ function inlineMarkdown(text: string): React.ReactNode {
 const RatgeberArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const article = slug ? getArticleBySlug(slug) : undefined;
+  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
 
   if (!article) return <Navigate to="/ratgeber" replace />;
+
+  const categoryCta = SLUG_TO_CATEGORY[article.slug];
+
 
   const breadcrumbJsonLd = SLT_BREADCRUMB_JSONLD([
     { name: "Startseite", url: "/" },
