@@ -281,7 +281,7 @@ export default function SLTUsed() {
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{machine.manufacturer}</p>
                       <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{getUsedMachineDisplayModel(machine.model)}</h3>
                     </Wrapper>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3 min-h-[1.5rem]">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3 min-h-[2.75rem] content-start">
                       {machine.year && <span>Bj. {machine.year}</span>}
                       {machine.hours != null && <span>{machine.hours.toLocaleString("de-DE")} Bh</span>}
                       {machine.location && (
