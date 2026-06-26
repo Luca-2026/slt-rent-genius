@@ -1,8 +1,27 @@
+import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
-import { Calendar, ArrowLeft, ArrowRight, List } from "lucide-react";
+import { Calendar, ArrowLeft, ArrowRight, List, MapPin } from "lucide-react";
+import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
+import { Button } from "@/components/ui/button";
+
+/**
+ * Internal-Link-Mapping: Ratgeber-Slug → passende Mietkategorie.
+ * Quelle: src/data/rentalData.ts (productCategories[].id).
+ * Stand: 2026-06-28 – jede Verlinkung manuell geprüft.
+ */
+const SLUG_TO_CATEGORY: Record<string, { categoryId: string; label: string }> = {
+  "minibagger-mieten-ohne-fuehrerschein": { categoryId: "erdbewegung", label: "Minibagger & Erdbewegung mieten" },
+  "anhaenger-24-stunden-mieten-sms-code": { categoryId: "anhaenger", label: "Anhänger 24/7 mieten" },
+  "baustelle-innenstadt-baumaschine-beengte-verhaeltnisse": { categoryId: "erdbewegung", label: "Kompakt-Baumaschinen mieten" },
+  "geschirr-mieten-hochzeit-mengen-checkliste": { categoryId: "geschirr-glaeser-besteck", label: "Geschirr, Gläser & Besteck mieten" },
+  "halteverbotszone-einrichten-ratgeber": { categoryId: "absperrtechnik", label: "Halteverbotsschilder & Absperrtechnik mieten" },
+  "anhaenger-fuehrerschein-b-b96-be": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
+  "arbeitsbuehne-mieten-typ-arbeitshoehe": { categoryId: "arbeitsbuehnen", label: "Arbeitsbühne mieten" },
+};
+
 
 /** Slugify für stabile Anker-IDs (muss mit prerender-script übereinstimmen). */
 function slugifyHeading(text: string): string {
