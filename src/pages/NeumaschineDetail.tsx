@@ -397,7 +397,7 @@ export default function NeumaschineDetail() {
               <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550" className="block">
                 <div className="aspect-square bg-white rounded-lg overflow-hidden border border-border">
                   <img
-                    src="/product-images/neumaschinen/baumax-anhaengerkupplung-kde550-1.jpg"
+                    src="/product-images/anhaengerkupplung-kde550-1.png"
                     alt="Anhängerkupplung für BAUMAX KDe550 / KDe550p"
                     className="w-full h-full object-contain"
                     loading="lazy"
