@@ -3835,6 +3835,7 @@ export const moebelZelteProducts: Product[] = [
       "Belüftung": "Belüftungsöffnung oben (reduziert Winddruck)",
       "Ständer": "Nicht enthalten – mind. 35 kg empfohlen",
     },
+    rentwareCode: { krefeld: "UIHFH3" }
   },
 ];
 
