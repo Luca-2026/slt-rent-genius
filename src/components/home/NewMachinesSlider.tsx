@@ -65,7 +65,7 @@ export function NewMachinesSlider() {
         to={`/verkauf/neumaschinen/${m.slug}`}
         className="block w-full text-left group h-full"
       >
-        <Card className="h-[420px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+        <Card className="h-[460px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
           <div className="relative h-[200px] overflow-hidden bg-muted flex-shrink-0">
             {img ? (
               <img
@@ -90,29 +90,32 @@ export function NewMachinesSlider() {
               )}
             </div>
           </div>
-          <CardContent className="p-4 flex-1 flex flex-col">
+          <CardContent className="p-4 flex-1 flex flex-col min-h-0">
             <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium mb-0.5">
               {m.brand}
             </p>
-            <p className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-primary transition-colors">
+            <p className="font-semibold text-headline text-sm leading-snug line-clamp-3 min-h-[3.75rem] mb-1 group-hover:text-primary transition-colors break-words hyphens-auto">
               {m.name}
             </p>
-            <p className="text-xs text-muted-foreground flex-1 line-clamp-2">
+            <p className="text-xs text-muted-foreground line-clamp-2 break-words">
               {m.short_description || m.model}
             </p>
-            <p className="text-sm font-bold text-primary mt-2">
-              {formatPrice(price, m.price_on_request)}
-              {price && !m.price_on_request && (
-                <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                  brutto
-                </span>
-              )}
-            </p>
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-2 pt-1 opacity-70 group-hover:opacity-100 transition-opacity">
-              Details ansehen
-              <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
-            </span>
+            <div className="mt-auto pt-2">
+              <p className="text-sm font-bold text-primary">
+                {formatPrice(price, m.price_on_request)}
+                {price && !m.price_on_request && (
+                  <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                    brutto
+                  </span>
+                )}
+              </p>
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                Details ansehen
+                <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+            </div>
           </CardContent>
+
         </Card>
       </Link>
     );
