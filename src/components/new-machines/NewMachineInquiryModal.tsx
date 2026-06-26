@@ -239,8 +239,8 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                       />
                       <span className="text-sm text-foreground leading-snug">
                         <strong>Anhängerkupplung</strong> für den Raddumper hinzufügen{" "}
-                        <span className="text-primary font-bold">115 € brutto</span>
-                        {" "}(103,50 € mit 10 % Vorbestellerrabatt){" "}
+                        <span className="text-primary font-bold">99 € brutto</span>
+                        {" "}<span className="text-muted-foreground line-through">119 €</span>{" "}
                         <Link
                           to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
                           target="_blank"
@@ -250,7 +250,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                         </Link>
                       </span>
                     </label>
-                    <p className="text-xs text-muted-foreground mt-2 ml-6">Lieferbar Ende Juni 2026</p>
+                    <p className="text-xs text-muted-foreground mt-2 ml-6">Sofort lieferbar · 1–2 Werktage · Sonderpreis bis 30.06.2026</p>
                   </div>
                 )}
               </CardContent>
