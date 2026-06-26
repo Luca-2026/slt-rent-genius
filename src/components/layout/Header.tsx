@@ -191,6 +191,7 @@ export function Header() {
     { to: "/lieferung", label: t("nav.delivery") },
     { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
     { to: "/vergleich", label: "Anbietervergleich" },
+    { to: "/service/baumax-reparatur-nrw", label: "BAUMAX Service & Reparatur" },
     { to: "/faq", label: t("nav.faq") },
   ];
 
