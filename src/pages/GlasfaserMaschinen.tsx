@@ -108,7 +108,7 @@ const ADVANTAGES = [
 const FAQ = [
   {
     q: "Welche Maschinen brauche ich typischerweise für den Glasfaserausbau?",
-    a: "Für den klassischen FTTH-Hausanschluss benötigst Du in der Regel einen Minibagger (1–3 t), eine Rüttelplatte oder einen Stampfer für die Grabenverfüllung, einen Fugenschneider für den Asphaltschnitt sowie Absperrmaterial (Bauzaun, Leitkegel, Warnleuchten, Halteverbotsschilder). Wir stellen Dir das passende Paket nach Trassenmeter und Bodenklasse zusammen.",
+    a: "Für den klassischen FTTH-Hausanschluss benötigst Du in der Regel einen Minibagger (1–3 t), eine Rüttelplatte oder einen Stampfer für die Grabenverfüllung, einen Fugenschneider für den Asphaltschnitt sowie Absperrmaterial (Bauzaun, Leitkegel, Warnleuchten, Halteverbotsschilder). Sag uns einfach, wie viele Maschinen Du benötigst und für welchen Zeitraum Du planst – wir stellen Dir das passende Paket zusammen.",
   },
   {
     q: "Was kostet die Miete von Glasfaser-Baumaschinen?",
@@ -132,7 +132,7 @@ const FAQ = [
   },
   {
     q: "Welche Bezahlmodelle gibt es für Glasfaser-Projekte?",
-    a: "Für gewerbliche Kunden bieten wir Rechnungskauf mit Zahlungsziel, Sammelrechnungen für mehrere Trupps und – nach Bonitätsprüfung – ein dediziertes Kreditlimit über unser B2B-Portal. So bleibt die Abwicklung schlank und projektbezogen.",
+    a: "Gewerblichen Kunden bieten wir Rechnungsmiete an – allerdings ausschließlich nach erfolgreicher Bonitätsprüfung. Die erste Miete läuft grundsätzlich auf Vorkasse; anschließend ist die Abwicklung per Rechnung (inkl. Sammelrechnungen für mehrere Trupps und optionalem Kreditlimit über unser B2B-Portal) möglich.",
   },
 ];
 
@@ -401,7 +401,7 @@ export default function GlasfaserMaschinen() {
               Maschinenpaket für Dein Glasfaserprojekt anfragen
             </h2>
             <p className="text-primary-foreground/85 mb-6 max-w-2xl mx-auto">
-              Sag uns Trassenmeter, Bodenklasse und Truppgröße – wir schicken Dir innerhalb eines Werktages ein passendes Maschinenpaket mit Sonderkonditionen.
+              Sag uns, wie viele Maschinen Du brauchst und für welchen Zeitraum Du planst – wir schicken Dir innerhalb eines Werktages ein passendes Maschinenpaket mit Sonderkonditionen.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link to="/kontakt">
