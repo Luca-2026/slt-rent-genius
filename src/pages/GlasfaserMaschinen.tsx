@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
+import { useState } from "react";
 import {
   Cable,
   Wrench,
@@ -17,50 +19,58 @@ import {
   MapPin,
   Percent,
 } from "lucide-react";
+import glasfaserHero from "@/assets/glasfaser-baumaschinen-nrw.jpg";
 
 const BASE_URL = "https://www.slt-rental.de";
 const PAGE_PATH = "/glasfaserausbau-maschinen-mieten";
+const OG_IMAGE = `${BASE_URL}/og/glasfaser-baumaschinen-nrw.jpg`;
 
-// Direktverlinkung zu den passendsten Kategorien (Krefeld als zentraler Hub, von dort
-// werden Bonn / Mülheim per Standortauswahl weitergereicht).
-const MACHINE_PACKAGES = [
+// Maschinenpakete – jeweils mit Ziel-Kategorie (Standortauswahl-Dialog davor).
+// Kategorie-IDs müssen mit src/data/rentalData.ts übereinstimmen:
+//   erdbewegung | verdichtung | absperrtechnik | aggregate
+const MACHINE_PACKAGES: Array<{
+  title: string;
+  desc: string;
+  category: "erdbewegung" | "verdichtung" | "absperrtechnik" | "aggregate";
+  bullets: string[];
+}> = [
   {
-    title: "Minibagger 1,5–3 t",
+    title: "Minibagger mieten (1–3 t) für Glasfaser-Hausanschluss",
     desc: "Wendige Kettenbagger für Hausanschluss-Gräben, Verteilerkästen und Trassen in beengten Lagen.",
-    href: "/mieten/krefeld/bagger-radlader",
+    category: "erdbewegung",
     bullets: ["Tieflöffel & Grabenlöffel", "Gummikette – schonend für Gehwege", "Auf 3,5 t Anhänger transportierbar"],
   },
   {
-    title: "Radlader & Hoflader",
-    desc: "Für Bodenaushub, Verfüllmaterial und Materialhandling an der Baustelle.",
-    href: "/mieten/krefeld/bagger-radlader",
+    title: "Radlader & Hoflader mieten",
+    desc: "Für Bodenaushub, Verfüllmaterial und Materialhandling an der Glasfaser-Baustelle.",
+    category: "erdbewegung",
     bullets: ["Schaufel, Palettengabel", "Diesel oder elektrisch", "Knicklenkung für enge Trassen"],
   },
   {
-    title: "Rüttelplatten & Stampfer",
+    title: "Rüttelplatte & Stampfer mieten für Grabenverdichtung",
     desc: "Verdichtung von Grabenverfüllung über Tiefbausand bis zur Tragschicht – reversierbar oder vorwärts.",
-    href: "/mieten/krefeld/verdichtung",
+    category: "verdichtung",
     bullets: ["50–500 kg Klasse", "Reversierbar für Grabensohle", "Vibrationsstampfer für enge Gräben"],
   },
   {
-    title: "Fugenschneider",
+    title: "Fugenschneider mieten für Asphaltschnitt",
     desc: "Sauberer Asphaltschnitt für die Wiederherstellung der Decke nach dem Glasfasergraben.",
-    href: "/mieten/krefeld/verdichtung",
+    category: "verdichtung",
     bullets: ["Bis 200 mm Schnitttiefe", "Benzin & Elektro-Start", "Inkl. Diamantscheibe auf Wunsch"],
   },
   {
-    title: "Absperrung & Verkehrssicherung",
+    title: "Absperrung & Verkehrssicherung mieten",
     desc: "Bauzäune, Warnzäune, Leitkegel, Warnleuchten und Halteverbotsschilder – alles aus einer Hand.",
-    href: "/mieten/krefeld/absperrung-sicherheit",
+    category: "absperrtechnik",
     bullets: ["Bauzaun mobil", "Halteverbotsschilder mit Genehmigung", "Leitkegel, Warnbaken, Blitzleuchten"],
   },
   {
-    title: "Stromerzeuger & Kabel",
-    desc: "Baustrom-Anschluss, Stromerzeuger und Kabeltrommeln für Werkzeug, Beleuchtung und Spleißcontainer.",
-    href: "/mieten/krefeld/stromerzeuger",
+    title: "Stromerzeuger mieten für Glasfaser-Baustellen",
+    desc: "Baustrom, Stromerzeuger und Verteilung für Werkzeug, Beleuchtung und Spleißcontainer.",
+    category: "aggregate",
     bullets: ["3–60 kVA Aggregate", "Baustromverteiler & CEE-Kabel", "Baustromanschluss zum Festpreis"],
   },
-] as const;
+];
 
 const ADVANTAGES = [
   {
@@ -71,7 +81,7 @@ const ADVANTAGES = [
   {
     icon: Truck,
     title: "Lieferung in ganz NRW",
-    text: "Von Krefeld, Bonn und Mülheim aus liefern wir Baumaschinen und Absperrmaterial direkt auf Deine Baustelle – auch kurzfristig.",
+    text: "Von Krefeld, Bonn und Mülheim an der Ruhr liefern wir Baumaschinen und Absperrmaterial direkt auf Deine Baustelle – auch kurzfristig.",
   },
   {
     icon: Clock,
@@ -98,7 +108,11 @@ const ADVANTAGES = [
 const FAQ = [
   {
     q: "Welche Maschinen brauche ich typischerweise für den Glasfaserausbau?",
-    a: "Für den klassischen FTTH-Hausanschluss benötigst Du in der Regel einen Minibagger (1,5–3 t), eine Rüttelplatte oder einen Stampfer für die Grabenverfüllung, einen Fugenschneider für den Asphaltschnitt sowie Absperrmaterial (Bauzaun, Leitkegel, Warnleuchten, Halteverbotsschilder). Wir stellen Dir das passende Paket nach Trassenmeter und Bodenklasse zusammen.",
+    a: "Für den klassischen FTTH-Hausanschluss benötigst Du in der Regel einen Minibagger (1–3 t), eine Rüttelplatte oder einen Stampfer für die Grabenverfüllung, einen Fugenschneider für den Asphaltschnitt sowie Absperrmaterial (Bauzaun, Leitkegel, Warnleuchten, Halteverbotsschilder). Wir stellen Dir das passende Paket nach Trassenmeter und Bodenklasse zusammen.",
+  },
+  {
+    q: "Was kostet die Miete von Glasfaser-Baumaschinen?",
+    a: "Die Miete richtet sich nach Maschine, Mietdauer und Standort. Tagespreise starten z. B. bei Rüttelplatten ab ~35 €/Tag, Minibagger ab ~140 €/Tag. Für Glasfaser-Trupps berechnen wir gestaffelte Wochen- und Monatspakete mit Sonderkonditionen – auf Anfrage erhältst Du ein verbindliches Angebot. Tagesaktuelle Preise zeigt Dir die jeweilige Standort-Kategorieseite.",
   },
   {
     q: "Gibt es Sonderkonditionen für Glasfaser-Tiefbaufirmen und Generalunternehmer?",
@@ -124,6 +138,13 @@ const FAQ = [
 
 export default function GlasfaserMaschinen() {
   const canonical = `${BASE_URL}${PAGE_PATH}`;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [targetCategory, setTargetCategory] = useState<string | undefined>(undefined);
+
+  const openCategoryDialog = (categoryId: string) => {
+    setTargetCategory(categoryId);
+    setDialogOpen(true);
+  };
 
   const jsonLd = [
     SLT_BREADCRUMB_JSONLD([
@@ -133,7 +154,7 @@ export default function GlasfaserMaschinen() {
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      name: "Maschinenvermietung für Glasfaserausbau",
+      name: "Baumaschinen für den Glasfaserausbau mieten",
       serviceType: "Baumaschinenvermietung Glasfaserausbau",
       provider: {
         "@type": "Organization",
@@ -168,25 +189,26 @@ export default function GlasfaserMaschinen() {
   return (
     <Layout>
       <SEO
-        title="Glasfaserausbau Maschinen mieten in NRW | SLT Rental"
-        description="Minibagger, Rüttelplatte, Stampfer, Fugenschneider & Verkehrssicherung für den Glasfaserausbau in NRW. Sonderkonditionen für Glasfaser-Trupps – Lieferung in Krefeld, Bonn, Mülheim."
+        title="Baumaschinen für den Glasfaserausbau in NRW mieten | SLT Rental"
+        description="Minibagger, Rüttelplatte, Stampfer, Fugenschneider & Verkehrssicherung für den Glasfaserausbau in NRW mieten. Sonderkonditionen für Glasfaser-Trupps – Lieferung in Krefeld, Bonn und Mülheim an der Ruhr."
         canonical={PAGE_PATH}
-        keywords="Glasfaserausbau Maschinen mieten, Tiefbau Maschinen mieten NRW, Minibagger mieten Glasfaser, Rüttelplatte mieten, Fugenschneider mieten, Bauzaun mieten Glasfaser, Halteverbotsschilder Glasfaserausbau, Maschinenpaket Glasfaser-Trupp"
+        keywords="Baumaschinen Glasfaserausbau mieten, Minibagger mieten NRW, Rüttelplatte mieten NRW, Stampfer mieten, Fugenschneider mieten, Bauzaun mieten Glasfaser, Halteverbotsschilder Glasfaserausbau, Maschinenpaket Glasfaser-Trupp, FTTH Hausanschluss Maschinen, Microtrenching Maschinen mieten"
+        ogImage={OG_IMAGE}
         jsonLd={jsonLd}
       />
 
       {/* Hero */}
       <section className="bg-primary py-10 md:py-14 lg:py-20">
-        <div className="section-container">
+        <div className="section-container grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <AnimatedSection animation="fade-in-up">
             <p className="text-primary-foreground/70 text-xs md:text-sm uppercase tracking-wide mb-2">
               Maschinenpakete für den Glasfaserausbau
             </p>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl">
-              Glasfaserausbau in NRW – Baumaschinen & Verkehrssicherung mit Sonderkonditionen
+              Baumaschinen für den Glasfaserausbau in NRW mieten
             </h1>
             <p className="text-primary-foreground/85 max-w-3xl text-sm md:text-base lg:text-lg leading-relaxed mb-6">
-              Minibagger, Radlader, Rüttelplatten, Stampfer, Fugenschneider und das komplette Absperrmaterial – aus einer Hand, kurzfristig verfügbar, mit gestaffelten Wochen- und Monatspaketen für Glasfaser-Trupps und Tiefbau-Generalunternehmer.
+              Minibagger, Radlader, Rüttelplatten, Stampfer, Fugenschneider und das komplette Absperrmaterial – aus einer Hand, kurzfristig verfügbar, mit gestaffelten Wochen- und Monatspaketen für Glasfaser-Trupps und Tiefbau-Generalunternehmer in <strong>Krefeld, Bonn und Mülheim an der Ruhr</strong>.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link to="/kontakt">
@@ -203,6 +225,15 @@ export default function GlasfaserMaschinen() {
               </a>
             </div>
           </AnimatedSection>
+          <AnimatedSection animation="fade-in-up" delay={120}>
+            <img
+              src={glasfaserHero}
+              alt="Minibagger mieten für den Glasfaserausbau – Baustelle mit Kabeltrommel und Absperrung in NRW"
+              width={1920}
+              height={1024}
+              className="w-full h-auto rounded-xl shadow-2xl object-cover aspect-[16/9]"
+            />
+          </AnimatedSection>
         </div>
       </section>
 
@@ -214,10 +245,16 @@ export default function GlasfaserMaschinen() {
               Spezialisiert auf den Glasfaserausbau – von Hausanschluss bis Trassen-Los
             </h2>
             <p className="text-sm md:text-base text-body leading-relaxed mb-3">
-              Beim Glasfaserausbau zählt jede Schicht: Trupps brauchen die richtige Maschine zur richtigen Zeit, einsatzbereit und ohne Leerlauf. SLT Rental hat den Mietpark, die Lager­tiefe und die Reaktionsgeschwindigkeit darauf ausgelegt – mit Standorten in <strong>Krefeld, Bonn und Mülheim an der Ruhr</strong> bedienen wir Glasfaserprojekte in ganz Nordrhein-Westfalen.
+              Beim Glasfaserausbau zählt jede Schicht: Trupps brauchen die richtige Maschine zur richtigen Zeit, einsatzbereit und ohne Leerlauf. SLT Rental hat den Mietpark, die Lagertiefe und die Reaktionsgeschwindigkeit darauf ausgelegt – mit Standorten in <strong>Krefeld, Bonn und Mülheim an der Ruhr</strong> bedienen wir Glasfaserprojekte in ganz Nordrhein-Westfalen.
             </p>
             <p className="text-sm md:text-base text-body leading-relaxed">
-              Ob FTTH-Hausanschluss, Microtrenching oder klassischer Tiefbaugraben: Du bekommst die passenden Maschinen, Verdichter, Asphaltschnitt-Werkzeuge und das vollständige Absperr- und Verkehrssicherungs-Material aus einer Hand – zu Konditionen, die für Glasfaser-Trupps kalkuliert sind.
+              Ob <strong>FTTH-Hausanschluss</strong>, <strong>Microtrenching</strong> oder klassischer Tiefbaugraben: Du bekommst die passenden Maschinen, Verdichter, Asphaltschnitt-Werkzeuge und das vollständige Absperr- und Verkehrssicherungs-Material aus einer Hand – zu Konditionen, die für Glasfaser-Trupps kalkuliert sind.
+            </p>
+            <h3 className="text-lg md:text-xl font-bold text-headline mt-8 mb-2">
+              Minibagger mieten in NRW – das Arbeitspferd jedes Glasfaser-Trupps
+            </h3>
+            <p className="text-sm md:text-base text-body leading-relaxed">
+              Für FTTH-Hausanschlüsse und schmale Trassen sind Minibagger der Klasse <strong>1–3 t</strong> ideal: wendig, mit Gummiketten gehwegschonend und auf einem 3,5 t-Anhänger transportierbar. Bei SLT Rental stehen u. a. Bobcat E10z, XCMG XE20E und XE27E sowie der Bobcat E35z für etwas größere Schächte bereit – an allen drei NRW-Standorten.
             </p>
           </AnimatedSection>
         </div>
@@ -228,10 +265,10 @@ export default function GlasfaserMaschinen() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">
-              Maschinen & Pakete für Glasfaser-Trupps
+              Maschinen & Pakete für Glasfaser-Trupps in NRW
             </h2>
             <p className="text-sm md:text-base text-muted-foreground mb-8 max-w-2xl">
-              Direkt zu den passenden Kategorien – online buchen oder als Paket anfragen.
+              Direkt zu den passenden Kategorien – nach Klick wählst Du Deinen Standort (Krefeld, Bonn oder Mülheim) und siehst die verfügbaren Geräte.
             </p>
           </AnimatedSection>
 
@@ -250,12 +287,14 @@ export default function GlasfaserMaschinen() {
                         </li>
                       ))}
                     </ul>
-                    <Link to={pkg.href} className="mt-auto">
-                      <Button variant="outline" className="w-full group">
-                        Zur Kategorie
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="outline"
+                      className="w-full group mt-auto"
+                      onClick={() => openCategoryDialog(pkg.category)}
+                    >
+                      Zur Kategorie
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
                   </CardContent>
                 </Card>
               </AnimatedSection>
@@ -371,6 +410,14 @@ export default function GlasfaserMaschinen() {
           </AnimatedSection>
         </div>
       </section>
+
+      <LocationSelectDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        targetCategoryId={targetCategory}
+        title="Standort für Deine Glasfaser-Baustelle wählen"
+        description="Wähle den nächstgelegenen Standort – wir zeigen Dir die verfügbaren Maschinen dieser Kategorie."
+      />
     </Layout>
   );
 }
