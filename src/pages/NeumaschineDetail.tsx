@@ -463,14 +463,15 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
-      {/* Warum bei SLT Rental kaufen – speziell für RMD800P */}
-      {slug === "baumax-rmd800p-minidumper" && (
+      {/* Warum bei SLT Rental kaufen – für alle BAUMAX Maschinen */}
+      {machine.brand?.toLowerCase() === "baumax" && (
         <section className="section-container py-10 md:py-14 border-t border-border">
           <div className="max-w-5xl">
             <Badge className="bg-accent text-accent-foreground mb-3">Autorisierter BAUMAX Fachhändler in NRW</Badge>
             <h2 className="text-2xl md:text-3xl font-bold text-headline mb-3">
-              Warum den BAUMAX RMD800P bei SLT Rental kaufen?
+              Warum {machine.name} bei SLT Rental kaufen?
             </h2>
+
             <p className="text-foreground/80 mb-8 max-w-3xl">
               Wir sind autorisierter BAUMAX Fachhändler mit eigenem Standort in Krefeld und Bonn. Statt anonymem Online-Kauf bekommst Du bei uns persönliche Beratung, Vorführung vor Ort und Service-Werkstatt in NRW – aus einer Hand.
             </p>
