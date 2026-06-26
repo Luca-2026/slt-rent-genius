@@ -34,12 +34,9 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Addon visibility: BAUMAX Raddumper (KDE550) – Anhängerkupplung
+  // Addon visibility: nur KDE550 / KDE550P Raddumper – Anhängerkupplung ist NICHT für RMD800P o. ä. kompatibel
   const isBaumaxDumper =
-    /baumax/i.test(machine.brand) &&
-    (/dumper|kde550/i.test(machine.slug) ||
-      /dumper|kde550/i.test(machine.name) ||
-      (machine.category || "").toLowerCase().includes("dumper"));
+    /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug);
 
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
 
