@@ -81,6 +81,8 @@ export default function NeumaschineDetail() {
   const altFor = (idx: number) => imageAlts[idx] || `${machine.brand} ${machine.model} – Bild ${idx + 1}`;
   const showroomLocs: string[] = Array.isArray(machine.showroom_locations) ? machine.showroom_locations : [];
   const showroomNames = showroomLocs.map((l) => locationLabels[l] || l).join(" oder ");
+  const demoLocs: string[] = Array.isArray((content as any).demoLocations) ? (content as any).demoLocations : [];
+  const demoNames = demoLocs.map((l) => locationLabels[l] || l).join(" und ");
 
   const title = (content as any).seoTitle || `${machine.brand} ${machine.model} kaufen | Neumaschine – SLT Rental`;
   const description = (content as any).seoDescription || machine.short_description ||
