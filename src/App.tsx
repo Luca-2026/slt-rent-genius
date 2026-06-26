@@ -71,6 +71,7 @@ const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
 const Vergleich = lazy(() => import("./pages/Vergleich"));
 const VergleichIndex = lazy(() => import("./pages/VergleichIndex"));
+const BaumaxService = lazy(() => import("./pages/BaumaxService"));
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -164,6 +165,11 @@ const App = () => (
               {/* Anbietervergleiche */}
               <Route path="/vergleich" element={<VergleichIndex />} />
               <Route path="/vergleich/:slug" element={<Vergleich />} />
+
+              {/* BAUMAX Service & Repair landing */}
+              <Route path="/service/baumax-reparatur-nrw" element={<BaumaxService />} />
+              <Route path="/baumax-service-nrw" element={<Navigate to="/service/baumax-reparatur-nrw" replace />} />
+              <Route path="/baumax-reparatur" element={<Navigate to="/service/baumax-reparatur-nrw" replace />} />
 
               
               {/* B2B Portal */}

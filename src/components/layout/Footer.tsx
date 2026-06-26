@@ -49,6 +49,7 @@ export function Footer() {
   const salesLinks = [
     { to: "/verkauf/neumaschinen", label: "Neumaschinen kaufen" },
     { to: "/verkauf/gebrauchtmaschinen", label: "Gebrauchtmaschinen kaufen" },
+    { to: "/service/baumax-reparatur-nrw", label: "BAUMAX Service & Reparatur" },
   ];
 
   const legalLinks = [
