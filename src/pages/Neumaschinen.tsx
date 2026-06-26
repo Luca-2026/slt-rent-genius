@@ -651,7 +651,7 @@ export default function Neumaschinen() {
                       <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">
                         {m.short_description || ""}
                       </p>
-                      <div className="mt-auto flex items-baseline justify-between gap-2 pt-3 border-t border-border">
+                      <div className="mt-auto flex items-baseline justify-between gap-2 pt-3 border-t border-border min-h-[6.25rem]">
                         <div>
                           <p className="text-xs text-muted-foreground">Preis</p>
                           <p className="text-lg font-bold text-primary">
