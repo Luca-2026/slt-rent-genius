@@ -164,12 +164,11 @@ export default function NeumaschineDetail() {
               priceCurrency: "EUR",
               valueAddedTaxIncluded: true,
             },
-        priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
+        priceValidUntil: machine.slug === "baumax-anhaengerkupplung-kde550"
+          ? "2026-06-30"
+          : `${new Date().getFullYear() + 1}-12-31`,
         itemCondition: "https://schema.org/NewCondition",
-        availability: "https://schema.org/PreOrder",
-        ...(machine.slug === "baumax-anhaengerkupplung-kde550"
-          ? { availabilityStarts: "2026-06-01" }
-          : {}),
+        availability: "https://schema.org/InStock",
         seller: sellerNode,
         businessFunction: "https://schema.org/Sell",
         eligibleRegion: { "@type": "Country", name: "DE" },
@@ -340,10 +339,10 @@ export default function NeumaschineDetail() {
                 {machine.slug === "baumax-anhaengerkupplung-kde550" && priceGross && (
                   <div className="mt-3 p-3 rounded-lg bg-accent/10 border border-accent/30">
                     <p className="text-sm font-semibold text-foreground">
-                      10 % Vorbestellerrabatt: {formatPriceGross(priceGross * 0.9, false)} brutto
+                      Sofort lieferbar · Lieferung innerhalb von 1–2 Werktagen
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Nur gültig bis Ende Juni 2026 bei Vorbestellung mit 30 % Anzahlung – danach dauerhaft verfügbar zu {formatPriceGross(priceGross, false)} brutto.
+                      Sonderangebotspreis nur gültig bis 30.06.2026 – danach regulär {formatPriceGross(compareAtPrice || 119, false)} brutto.
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">
                       Versand: 9,90 € · Besichtigung in Krefeld oder Bonn
