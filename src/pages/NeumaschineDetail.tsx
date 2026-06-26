@@ -314,6 +314,16 @@ export default function NeumaschineDetail() {
               )}
             </div>
 
+            {demoNames && (
+              <div className="mb-6 flex items-start gap-3 rounded-lg border border-accent/40 bg-accent/10 p-3">
+                <CheckCircle2 className="h-5 w-5 text-accent-foreground flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <span className="font-semibold text-headline">Vorführmodell verfügbar in {demoNames}.</span>{" "}
+                  <span className="text-foreground/80">Komm vorbei, schau Dir die Maschine an und teste sie direkt vor Ort – Termin am besten kurz vorab telefonisch abstimmen.</span>
+                </div>
+              </div>
+            )}
+
             <Card className="mb-6 border-primary/20">
               <CardContent className="p-5">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Preis</p>
