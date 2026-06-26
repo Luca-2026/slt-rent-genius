@@ -192,6 +192,7 @@ export function Header() {
     { to: "/tiefpreisgarantie", label: t("nav.priceGuarantee") },
     { to: "/vergleich", label: "Anbietervergleich" },
     { to: "/service/baumax-reparatur-nrw", label: "BAUMAX Service & Reparatur" },
+    { to: "/glasfaserausbau-maschinen-mieten", label: "Glasfaserausbau – Maschinen mieten" },
     { to: "/faq", label: t("nav.faq") },
   ];
 
