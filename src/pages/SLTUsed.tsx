@@ -294,7 +294,7 @@ export default function SLTUsed() {
                       </span>
                     </div>
                     {machine.specifications && (
-                      <div className="text-xs text-muted-foreground space-y-0.5 mb-4 border-t border-border pt-3">
+                      <div className="text-xs text-muted-foreground space-y-0.5 mb-4">
                         {Object.entries(machine.specifications as Record<string, string>).slice(0, 3).map(([key, val]) => (
                           <div key={key} className="flex justify-between gap-2">
                             <span className="shrink-0">{key}:</span>
@@ -304,7 +304,8 @@ export default function SLTUsed() {
                       </div>
                     )}
 
-                    <div className="mt-auto">
+                    <div className="mt-auto pt-3 border-t border-border">
+
                     {isDisabled ? (
                       <Tooltip>
                         <TooltipTrigger asChild>
