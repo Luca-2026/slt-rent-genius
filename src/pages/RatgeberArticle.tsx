@@ -1,8 +1,27 @@
+import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
-import { Calendar, ArrowLeft, ArrowRight, List } from "lucide-react";
+import { Calendar, ArrowLeft, ArrowRight, List, MapPin } from "lucide-react";
+import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
+import { Button } from "@/components/ui/button";
+
+/**
+ * Internal-Link-Mapping: Ratgeber-Slug → passende Mietkategorie.
+ * Quelle: src/data/rentalData.ts (productCategories[].id).
+ * Stand: 2026-06-28 – jede Verlinkung manuell geprüft.
+ */
+const SLUG_TO_CATEGORY: Record<string, { categoryId: string; label: string }> = {
+  "minibagger-mieten-ohne-fuehrerschein": { categoryId: "erdbewegung", label: "Minibagger & Erdbewegung mieten" },
+  "anhaenger-24-stunden-mieten-sms-code": { categoryId: "anhaenger", label: "Anhänger 24/7 mieten" },
+  "baustelle-innenstadt-baumaschine-beengte-verhaeltnisse": { categoryId: "erdbewegung", label: "Kompakt-Baumaschinen mieten" },
+  "geschirr-mieten-hochzeit-mengen-checkliste": { categoryId: "geschirr-glaeser-besteck", label: "Geschirr, Gläser & Besteck mieten" },
+  "halteverbotszone-einrichten-ratgeber": { categoryId: "absperrtechnik", label: "Halteverbotsschilder & Absperrtechnik mieten" },
+  "anhaenger-fuehrerschein-b-b96-be": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
+  "arbeitsbuehne-mieten-typ-arbeitshoehe": { categoryId: "arbeitsbuehnen", label: "Arbeitsbühne mieten" },
+};
+
 
 /** Slugify für stabile Anker-IDs (muss mit prerender-script übereinstimmen). */
 function slugifyHeading(text: string): string {
@@ -185,8 +204,12 @@ function inlineMarkdown(text: string): React.ReactNode {
 const RatgeberArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const article = slug ? getArticleBySlug(slug) : undefined;
+  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
 
   if (!article) return <Navigate to="/ratgeber" replace />;
+
+  const categoryCta = SLUG_TO_CATEGORY[article.slug];
+
 
   const breadcrumbJsonLd = SLT_BREADCRUMB_JSONLD([
     { name: "Startseite", url: "/" },
@@ -287,6 +310,31 @@ const RatgeberArticle = () => {
             {renderMarkdown(article.content)}
           </div>
 
+          {/* Interne Verlinkung: Ratgeber → passende Mietkategorie */}
+          {categoryCta && (
+            <div className="mt-10 bg-primary/5 border border-primary/20 rounded-xl p-5 sm:p-6">
+              <div className="flex items-start gap-4 flex-col sm:flex-row sm:items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-foreground mb-1 flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-primary" aria-hidden="true" />
+                    {categoryCta.label}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    Direkt online buchbar an unseren Standorten Krefeld, Bonn und Mülheim an der Ruhr.
+                  </p>
+                </div>
+                <Button
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover shrink-0"
+                  onClick={() => setLocationDialogOpen(true)}
+                >
+                  Standort wählen
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Author block */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
@@ -294,6 +342,7 @@ const RatgeberArticle = () => {
               {new Date(article.updatedAt).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
+
 
           {/* Related articles */}
           {relatedArticles.length > 0 && (
@@ -334,8 +383,19 @@ const RatgeberArticle = () => {
         <h1>{article.title}</h1>
         {article.quickFacts.map((f, i) => <p key={i}>{f}</p>)}
       </div>
+
+      {categoryCta && (
+        <LocationSelectDialog
+          open={locationDialogOpen}
+          onOpenChange={setLocationDialogOpen}
+          targetCategoryId={categoryCta.categoryId}
+          title={categoryCta.label}
+          description="Wähle Deinen Standort – wir zeigen Dir die verfügbaren Artikel."
+        />
+      )}
     </Layout>
   );
 };
 
 export default RatgeberArticle;
+

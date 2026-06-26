@@ -1474,6 +1474,12 @@ export default function CategoryProducts() {
     itemListJsonLd,
   ];
 
+  // OG-Image: erstes Produktbild der Kategorie (absolut), Fallback = SLT-Logo Default in <SEO/>
+  const firstImg = products.find((p) => p.image && p.image !== "/placeholder.svg")?.image;
+  const categoryOgImage = firstImg
+    ? (firstImg.startsWith("http") ? firstImg : `https://www.slt-rental.de${firstImg.startsWith("/") ? "" : "/"}${firstImg}`)
+    : undefined;
+
   return (
     <Layout>
       <SEO
@@ -1481,8 +1487,10 @@ export default function CategoryProducts() {
         description={finalSeoDescription}
         canonical={seoCanonical}
         keywords={seoKeywords}
+        ogImage={categoryOgImage}
         jsonLd={jsonLdArray as unknown as Record<string, unknown>[]}
       />
+
       {/* Header */}
       <section className="bg-primary py-8 lg:py-12">
         <div className="section-container">
