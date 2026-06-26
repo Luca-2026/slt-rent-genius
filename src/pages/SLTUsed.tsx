@@ -281,17 +281,12 @@ export default function SLTUsed() {
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{machine.manufacturer}</p>
                       <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{getUsedMachineDisplayModel(machine.model)}</h3>
                     </Wrapper>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3 min-h-[1.5rem]">
                       {machine.year && <span>Bj. {machine.year}</span>}
                       {machine.hours != null && <span>{machine.hours.toLocaleString("de-DE")} Bh</span>}
                       {machine.location && (
                         <span>{locationLabels[machine.location] || machine.location}</span>
                       )}
-                    </div>
-                    <div className="mb-3">
-                      <span className="text-xl font-bold text-primary">
-                        {formatPrice(machine.price_net, machine.price_on_request)}
-                      </span>
                     </div>
                     {machine.specifications && (
                       <div className="text-xs text-muted-foreground space-y-0.5 mb-4">
@@ -304,7 +299,14 @@ export default function SLTUsed() {
                       </div>
                     )}
 
-                    <div className="mt-auto pt-3 border-t border-border">
+                    <div className="mt-auto mb-3">
+                      <span className="text-xl font-bold text-primary">
+                        {formatPrice(machine.price_net, machine.price_on_request)}
+                      </span>
+                    </div>
+
+                    <div className="pt-3 border-t border-border">
+
 
                     {isDisabled ? (
                       <Tooltip>
