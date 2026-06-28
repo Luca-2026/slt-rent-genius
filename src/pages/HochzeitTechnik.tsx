@@ -23,12 +23,12 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import imgHero from "/images/hochzeit/hochzeit-ringtausch.jpg";
-import imgDjLicht from "/images/hochzeit/dj-licht-ton-hochzeit.jpg";
-import imgStehtische from "/images/hochzeit/stehtische-hussen-hochzeit.jpg";
-import imgFotoboxGaeste from "/images/hochzeit/fotobox-gaeste-hochzeit.jpg";
-import imgFotoboxProps from "/images/hochzeit/fotobox-props-hochzeit.jpg";
-import imgGeschirrDarwin from "/images/hochzeit/geschirr-darwin-hochzeit.jpg";
+const imgHero = "/images/hochzeit/hochzeit-ringtausch.jpg";
+const imgDjLicht = "/images/hochzeit/dj-licht-ton-hochzeit.jpg";
+const imgStehtische = "/images/hochzeit/stehtische-hussen-hochzeit.jpg";
+const imgFotoboxGaeste = "/images/hochzeit/fotobox-gaeste-hochzeit.jpg";
+const imgFotoboxProps = "/images/hochzeit/fotobox-props-hochzeit.jpg";
+const imgGeschirrDarwin = "/images/hochzeit/geschirr-darwin-hochzeit.jpg";
 
 interface CategoryTarget {
   categoryId?: string;
