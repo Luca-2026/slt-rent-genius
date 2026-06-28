@@ -455,6 +455,54 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
                 />
               </div>
 
+              <div>
+                <Label className="mb-2 block">
+                  Bilder vom Aufstellort (optional, max. 3 · je 5 MB)
+                </Label>
+                <div className="rounded-md border border-dashed border-border p-3 space-y-3">
+                  {photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {photos.map((f, i) => (
+                        <div key={i} className="relative group">
+                          <img
+                            src={URL.createObjectURL(f)}
+                            alt={f.name}
+                            className="h-24 w-full object-cover rounded border border-border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(i)}
+                            className="absolute -top-2 -right-2 bg-foreground text-background rounded-full p-1 shadow"
+                            aria-label="Entfernen"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                          <div className="text-[10px] text-muted-foreground truncate mt-1">
+                            {(f.size / 1024 / 1024).toFixed(1)} MB
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {photos.length < MAX_PHOTOS && (
+                    <label className="flex items-center gap-2 text-sm cursor-pointer text-primary hover:underline">
+                      <ImagePlus className="h-4 w-4" />
+                      Bilder auswählen ({photos.length}/{MAX_PHOTOS})
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handlePhotoSelect}
+                      />
+                    </label>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Hilft uns enorm bei der Planung von Aufbau, Strom & Sichtachsen.
+                  </p>
+                </div>
+              </div>
+
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border">
                 <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)} disabled={submitting}>
                   <ArrowLeft className="h-4 w-4 mr-1" /> Standort ändern
