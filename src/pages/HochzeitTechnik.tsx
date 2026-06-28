@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { WeddingInquiryDialog } from "@/components/hochzeit/WeddingInquiryDialog";
+import { CategoryLocationDialog } from "@/components/hochzeit/CategoryLocationDialog";
 import {
   Music,
   Lightbulb,
