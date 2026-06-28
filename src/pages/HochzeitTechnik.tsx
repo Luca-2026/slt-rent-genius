@@ -292,11 +292,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Sparkles className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Sparkular &amp; Nebelmaschine</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Kalt-Funkenfontänen (Sparkular) als 2er- und 4er-Set, ADJ Fog Fury
                   Jett PRO Vertikal-Nebelmaschine, TCM FX Turbo CO₂-Jet – BAM-frei und
                   in den meisten NRW-Locations zugelassen.
                 </p>
+                <CategoryLocationDialog categoryId="spezialeffekte" categoryLabel="Special FX" triggerLabel="Zu Special FX" />
               </div>
             </Card>
 
