@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, ArrowLeft, Mail, Loader2, CheckCircle2 } from "lucide-react";
+import { MapPin, ArrowLeft, Mail, Loader2, CheckCircle2, ImagePlus, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -88,11 +88,54 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     notes: "",
   });
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]);
+
+  const MAX_PHOTOS = 3;
+  const MAX_BYTES = 5 * 1024 * 1024;
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    const next = [...photos];
+    for (const f of files) {
+      if (next.length >= MAX_PHOTOS) {
+        toast.error(`Maximal ${MAX_PHOTOS} Bilder.`);
+        break;
+      }
+      if (!f.type.startsWith("image/")) {
+        toast.error(`„${f.name}" ist kein Bild.`);
+        continue;
+      }
+      if (f.size > MAX_BYTES) {
+        toast.error(`„${f.name}" ist größer als 5 MB.`);
+        continue;
+      }
+      next.push(f);
+    }
+    setPhotos(next);
+  };
+
+  const removePhoto = (idx: number) => {
+    setPhotos((p) => p.filter((_, i) => i !== idx));
+  };
+
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // strip "data:<mime>;base64,"
+        resolve(result.split(",")[1] || "");
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
 
   const reset = () => {
     setStep(1);
     setLoc(null);
     setSelectedTech([]);
+    setPhotos([]);
     setSubmitting(false);
     setForm({
       name: "",
