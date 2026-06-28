@@ -2334,7 +2334,532 @@ export const categoryExpertContent: ExpertContentMap = {
     },
   },
 
-  // Bonn und Mülheim folgen analog in späteren Tranchen.
+  // ================================================================
+  // BONN – Filiale Drachenburgstraße 8, 53179 Bonn-Mehlem
+  // Öffnungszeiten: Mo–Fr 07:00–18:00, Sa 08:00–17:30
+  // Liefergebiet: Bonn, Köln-Süd, Wachtberg, Bad Honnef,
+  // Königswinter, Sankt Augustin, Bad Neuenahr-Ahrweiler,
+  // Rhein-Sieg-Kreis. Direkte Anbindung an B9, A555 (Bonn–Köln),
+  // A565 (Bonner Autobahn) und A59.
+  // ================================================================
+  bonn: {
+    // -------------------------------------------------------------
+    // ERDBEWEGUNG (Minibagger, Midibagger, Dumper, Anbaugeräte)
+    // Quellen: DGUV V1, DGUV Regel 100-500, DGUV Grundsatz 308-009,
+    //   DIN 4124, StVZO § 34, FeV Anlage 9, LAGA M20 /
+    //   Ersatzbaustoffverordnung 2023, § 127 TKG, Baumschutz-
+    //   satzung Bonn (Schutz öffentlicher und privater Bäume
+    //   ab 80 cm Stammumfang), Hochwasserschutz im Rheinauen-
+    //   bereich (Bezirksregierung Köln).
+    // -------------------------------------------------------------
+    erdbewegung: {
+      faqs: [
+        {
+          question: "Welche Baggergröße brauche ich für mein Projekt in Bonn und der Rheinschiene?",
+          answer:
+            "Für die typischen Bonner Hanglagen (Venusberg, Bad Godesberg, Königswinter, Wachtberg) gilt: Vorgarten- und Hofprojekte mit schmalen Durchgängen (ab ca. 80 cm) brauchen Minibagger der 1-Tonnen-Klasse. GaLaBau-Projekte mit Stützmauern, Terrassen und Pflasterunterbau sind mit 1,5–2,5 t gut bedient. Bei Hausanschluss-, Kanal- und Glasfasergräben über 1,25 m Tiefe greift DIN 4124 (Verbau bzw. Böschung) – hier sind 2,5–5 t Standard. Am Standort Bonn-Mehlem (Drachenburgstraße 8) führen wir das Kernsortiment direkt vor Ort; Spezialmaschinen liefern wir aus unserem Hauptsitz Krefeld nach.",
+        },
+        {
+          question: "Brauche ich einen Baggerschein für die Miete in Bonn?",
+          answer:
+            "Privat auf eigenem, nicht öffentlich zugänglichem Grundstück nicht. Sobald die Maschine gewerblich oder auf einer fremden Baustelle eingesetzt wird, verlangt DGUV Regel 100-500 in Verbindung mit DGUV Grundsatz 308-009 einen schriftlichen Befähigungsnachweis (\"Bedienerausweis Erdbaumaschinen\"). Diese Beauftragung muss der Arbeitgeber bzw. Auftraggeber dokumentieren – wir stellen sie nicht aus. Bei der Übergabe in Bonn bekommst du eine sorgfältige Geräteeinweisung am konkreten Modell.",
+        },
+        {
+          question: "Welche Anbaugeräte halte ich am Standort Bonn vor – und welche kommen aus Krefeld?",
+          answer:
+            "Vor Ort in Bonn-Mehlem haben wir die gängigen Tief- und Grabenräumlöffel (300–1.200 mm), Hydraulikhämmer, Erdbohrer und Sortiergreifer für das lokale Kernsortiment. Sonderausstattung wie Verdichterlöffel, schmale Mikrobagger-Anbauten oder spezielle Schnellwechsler-Adapter (S30, S40) liefern wir aus dem Hauptsitz Krefeld an – in der Regel innerhalb von 24 Stunden. Bei der Buchung sehen wir die Standort-Verfügbarkeit live; im Zweifel ruf vorab unter 0228 504 660 61 an.",
+        },
+        {
+          question: "Wie schwer darf der Bagger sein, damit ich ihn mit dem PKW transportieren darf?",
+          answer:
+            "Maßgeblich ist FeV Anlage 9. Klasse B (alt: Klasse 3): bis 3.500 kg Kombi-Gesamtmasse. B96: bis 4.250 kg. BE: bis 7.000 kg. Ein 1-Tonnen-Minibagger plus gebremster Baumaschinenanhänger liegt typischerweise im BE-Bereich. Wir vermieten am Standort Bonn auch passende Plateau- und Baumaschinenanhänger; Stützlast und zulässiges Gesamtgewicht stehen im jeweiligen Datenblatt.",
+        },
+        {
+          question: "Welche Mindestabstände gelten beim Ausheben von Baugruben und Gräben?",
+          answer:
+            "DIN 4124 ist verbindlich: Gräben bis 1,25 m Tiefe dürfen bei standfestem Boden senkrecht ausgehoben werden. Tiefer muss verbaut oder geböscht werden (nicht-bindiger Boden ≤ 45°, bindiger Boden ≤ 60°, Fels bis 80°). An Verkehrsflächen, Gebäuden und Nachbargrenzen gelten zusätzliche Sicherheitsabstände. Vor dem Aushub Bestandspläne (Strom, Gas, Wasser, Telekom, Glasfaser) bei den Netzbetreibern bzw. der Sparten-Auskunft anfordern – die Erkundigungspflicht liegt beim Bauherrn. In Bonn sind das u. a. SWB Energie und Wasser sowie westliche Vorwahlnetze.",
+        },
+        {
+          question: "Brauche ich für Erdarbeiten in Bonn eine Genehmigung?",
+          answer:
+            "Auf privatem Grund für reine Erdarbeiten in der Regel nicht. Sobald öffentlicher Verkehrsraum betroffen ist (Gehweg, Straße, Bordstein), brauchst du eine Aufgrabungsgenehmigung des Tiefbauamtes der Stadt Bonn bzw. – bei verkehrslenkenden Maßnahmen – eine verkehrsrechtliche Anordnung des Straßenverkehrsamtes. In Bonn ist außerdem die Baumschutzsatzung zu beachten: Bäume ab 80 cm Stammumfang (in 1 m Höhe gemessen) auf öffentlichen und privaten Flächen sind geschützt; Eingriffe im Wurzelbereich bedürfen einer Genehmigung. In Rheinauen-Bereichen (z. B. Mehlem, Plittersdorf) kommen Hochwasserschutzauflagen der Bezirksregierung Köln hinzu.",
+        },
+        {
+          question: "Wie wird Bauaushub im Bonner Raum fachgerecht entsorgt?",
+          answer:
+            "Aushub wird nach LAGA M20 bzw. der seit August 2023 geltenden Mantelverordnung (Ersatzbaustoffverordnung + BBodSchV-Novelle) in die Einbauklassen Z0, Z1.1, Z1.2 und Z2 eingestuft. Z0 ist unbelastet und frei verwertbar, Z2 nur eingeschränkt. Annahmestellen im Raum Bonn / Rhein-Sieg verlangen vor Anlieferung in der Regel eine deklarationsanalytische Untersuchung. Bei größeren Mengen empfiehlt sich ein zertifizierter Entsorgungsfachbetrieb nach § 56 KrWG. Wir vermieten den Bagger – die Entsorgung organisierst du separat.",
+        },
+        {
+          question: "Was kostet ein Minibagger am Standort Bonn?",
+          answer:
+            "Tagespreise sind pro Modell tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht typischerweise ca. 5 Tagessätzen, Monatsmiete ca. 15 Tagessätzen. Treibstoff wird nach Rückgabe nach vollem Tank abgerechnet, AdBlue bei Maschinen mit Abgasnachbehandlung analog. Lieferpauschalen werden anhand der PLZ im Bonner Liefergebiet (Bonn, Köln-Süd, Wachtberg, Bad Honnef, Königswinter, Sankt Augustin, Bad Neuenahr-Ahrweiler) transparent kalkuliert.",
+        },
+        {
+          question: "Wie läuft die Übergabe in Bonn-Mehlem konkret ab?",
+          answer:
+            "Abholung in der Drachenburgstraße 8 (53179 Bonn) – verkehrsgünstig direkt an der B9, mit kurzem Weg zur A562 und A565. Reguläre Übergabezeiten Mo–Fr 07:00–18:00 (früherer Start als die anderen Standorte) und Sa 08:00–17:30. Bei der Übergabe Geräteeinweisung am konkreten Modell, gemeinsame Sichtprüfung und schriftliches Übergabeprotokoll. Bei Lieferung auf die Baustelle erfolgt die Einweisung vor Ort durch unseren Fahrer.",
+        },
+        {
+          question: "Welche PSA muss der Bediener tragen?",
+          answer:
+            "Im gewerblichen Bereich verlangt die DGUV: S3-Sicherheitsschuhe, Warnschutzkleidung nach EN ISO 20471 (mindestens Klasse 2 im öffentlichen Verkehrsraum), Schutzhelm nach EN 397; bei Hammer- und Abbrucharbeiten zusätzlich Gehörschutz und Schutzbrille. PSA stellt der Arbeitgeber bzw. Bauherr – wir vermieten ausschließlich die Maschine.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Bonner Topografie: warum die Baggerwahl hier besonders sorgfältig sein muss",
+          paragraphs: [
+            "Bonn ist eine der topografisch anspruchsvollsten Mietregionen am Rhein. Im Süden steigt das Gelände steil zum Venusberg, im Osten zum Siebengebirge (Königswinter, Bad Honnef), im Westen liegen die Hänge des Vorgebirges. Für Hanglagen sind Maschinen mit niedrigem Schwerpunkt und Gummiketten Pflicht; das herstellerseitig zulässige Längsgefälle (typisch 15–20° für Minibagger, 25° für Midibagger) steht in jedem Datenblatt. Beim Arbeiten quer zum Hang ist der zulässige Querneigungswinkel deutlich geringer – im Zweifel die Maschine bergauf bzw. bergab arbeiten lassen.",
+            "In den Rheinauen (Mehlem, Plittersdorf, Beuel) ist der Untergrund oft weich und schlick­haltig; hier punkten breite Gummiketten gegenüber Stahlketten und der Schwertransport per Tieflader wird wichtig, weil mancher Wirtschaftsweg im Hochwasserschutz­bereich gewichts­beschränkt ist. Wir kennen die typischen Engstellen im Bonner Süden und beraten zur passenden Maschinenklasse am Telefon (0228 504 660 61).",
+          ],
+        },
+        {
+          h3: "Sicherheit & Bedienerqualifikation: DGUV-Pflichten in der Praxis",
+          paragraphs: [
+            "Im gewerblichen Einsatz gelten DGUV V1 und DGUV Regel 100-500 (Kapitel 2.12). Die Qualifikation regelt DGUV Grundsatz 308-009: theoretische und praktische Ausbildung plus schriftliche Beauftragung durch den Unternehmer – personen- und maschinengebunden. Ein Bediener mit Schein auf Minibagger darf nicht automatisch einen Midibagger fahren. Bei Tätigkeiten in der Nähe von Freileitungen, im Gleisbereich (z. B. Stadtbahnlinien Bonn-Bad Godesberg, Linie 16/63/66) oder im Bahnnähebereich kommen zusätzliche Schulungs- und Sicherungs­pflichten dazu.",
+            "Häufigste Schadens­ursache bei Mietbaggern ist nach unserer Erfahrung nicht Maschinenversagen, sondern fehlende Erkundung der Untergrund-Sparten und unzureichende Sicherung der Baugrubenränder nach DIN 4124. Wir empfehlen jedem Erstmieter, sich bei der Übergabe in Bonn die volle Einweisung geben zu lassen – inklusive Standsicherheit am Grabenrand und sicherem Anbaugerätewechsel.",
+          ],
+        },
+        {
+          h3: "Anbaugeräte: die richtige Kombination für Tiefbau, GaLaBau und Sanierung",
+          paragraphs: [
+            "Drei Löffel plus ein Spezialwerkzeug – damit ist die Mehrzahl der Bonner Baustellen ausgerüstet. Der schmale Tieflöffel (300–400 mm) zieht saubere Versorgungsgräben für Hausanschlüsse, der mittlere Tieflöffel (500–600 mm) ist der Allrounder für Pflanz- und Pfostengruben, der breite Grabenräumlöffel (800–1.200 mm, zahnlos) profiliert Böschungen und räumt Gräben sauber aus.",
+            "Als viertes Werkzeug wählt man je nach Aufgabe: Hydraulikhammer für Asphalt-, Beton- und Naturstein-Abbruch (besonders relevant in Bonner Altstadt-Sanierungen, wo häufig Basaltpflaster und alte Betonfundamente liegen), Erdbohrer mit Schneckenwendel 150–300 mm für Pfostengründungen und Zaunbau, Sortiergreifer für Rückbau. Achte auf die Schnellwechsler-Aufnahme (MS01, MS03, S30/S40) – wir prüfen die Kombination im Bestellprozess und legen passende Adapter bei.",
+          ],
+        },
+        {
+          h3: "Transport in der Bonner Region: B9, A555, A565 und enge Innenstadt",
+          paragraphs: [
+            "Vom Standort Bonn-Mehlem aus erreichen wir das gesamte Liefergebiet kurz: über die B9 nach Bad Godesberg und in die Bonner Innenstadt, über die A562/A565 nach Beuel und Sankt Augustin, über die A555 (Köln–Bonn) ins südliche Köln-Stadtgebiet, über die A59 ins Siebengebirge nach Königswinter und Bad Honnef. Im engen Bonner Innenstadtbereich (Altstadt, Südstadt, Poppelsdorf) lohnt sich oft die Tieflader-Lieferung statt der Selbstabholung – schmale Einbahnstraßen und enge Pollerregelungen machen das Anhängerrangieren mühsam.",
+            "Für gewichtsbeschränkte Wege im Hochwasserschutz­bereich (Rheinauen, Drachenfels-Zufahrten) bieten wir leichte Tieflader an. Die Liefer­pauschale kalkulieren wir transparent über die PLZ im Buchungsprozess; für Gewerbekunden organisieren wir auf Wunsch feste Zeitfenster (z. B. vor 08:00 Anlieferung in der Bonner Südstadt).",
+          ],
+        },
+        {
+          h3: "Bonn als zweiter SLT-Standort: lokales Sortiment plus 24-Stunden-Nachlieferung aus Krefeld",
+          paragraphs: [
+            "Die Filiale Bonn (Drachenburgstraße 8, 53179 Bonn-Mehlem) führt das nachgefragte Kernsortiment vor Ort: Minibagger 1,0–2,5 t, Plateauanhänger, Rüttelplatten, Stromaggregate, Bauwerkzeug, GaLaBau-Geräte und das wichtigste Eventequipment. Spezialmaschinen aus dem erweiterten Programm liefern wir aus dem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, oft schon am Folgetag.",
+            "Reguläre Öffnungszeiten Mo–Fr 07:00–18:00 (eine Stunde früher als Krefeld), Sa 08:00–17:30 (länger als Krefeld). Damit kannst du auch nach Feierabend oder samstags abholen und zurückgeben – ideal für Wochenend­projekte zwischen Köln-Süd, Bonn und Ahrtal. Beratung zur Maschinenwahl und zum Tieflader-Transport telefonisch unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // VERDICHTUNG (Rüttelplatten, Stampfer, Walzen)
+    // Quellen: DIN 18134 (Plattendruckversuch / Ev2), ZTV E-StB 17
+    //   (Verdichtungsanforderungen, Proctordichte), DGUV
+    //   Information 212-024 (Hand-Arm-Vibration), LärmVibrations-
+    //   ArbSchV (A(8) Auslöse 2,5 m/s², Grenz 5,0 m/s²),
+    //   TA Lärm Nr. 6.1 (Immissionsrichtwerte: Wohngebiete tags
+    //   55 dB(A), Mischgebiete 60 dB(A)), Lärmschutzauflagen
+    //   in geschützten Bonner Lagen (Rheinaue, Bad Godesberger
+    //   Kurpark, Siebengebirge – Naturpark seit 1958).
+    // -------------------------------------------------------------
+    verdichtung: {
+      faqs: [
+        {
+          question: "Welche Rüttelplatte für Pflaster, Schotter oder Asphalt am Bonner Bauprojekt?",
+          answer:
+            "Faustregel über das Betriebsgewicht: Bis ca. 100 kg für Bettungssand und kleine Verbundsteinflächen (Garten, Terrasse). 100–200 kg für Standard-Pflaster, Bordsteinverlegung und kleine Wegeflächen. 200–400 kg für Schotter-Tragschichten und Hofflächen. Über 400 kg (Reversierplatten) für Frostschutz­schichten und größere Asphalt- bzw. Tragschichtarbeiten. Stampfer (Vibrationsstampfer 60–80 kg) sind für schmale Gräben und Leitungsverfüllungen erste Wahl. Den passenden Geräteklasse zeigen wir bei der Buchung im Bonner Mietpark direkt an.",
+        },
+        {
+          question: "Welche Verdichtung verlangt die ZTV E-StB für Hausanschluss- und Pflastergräben?",
+          answer:
+            "ZTV E-StB 17 (Zusätzliche Technische Vertragsbedingungen Erdbau) verlangt für Verfüllungen lagenweisen Einbau (typisch 20–30 cm je Lage) und Verdichtung auf Proctordichten von 97 % (frostfreie Tragschicht) bis 100 % (Straßenoberbau). Für Hausanschluss-Gräben unter Verkehrsflächen ist 100 % DPr Standard. Nachweis erfolgt über Plattendruckversuch nach DIN 18134 (Ev2-Werte je nach Schichtaufbau 45–120 MN/m²). Wir vermieten geeignete Stampfer und Reversierplatten; den Plattendruckversuch beauftragt der Bauherr separat beim Prüfingenieur.",
+        },
+        {
+          question: "Wie laut sind Rüttelplatten – darf ich in Bonner Wohngebieten frei verdichten?",
+          answer:
+            "Maßgeblich ist die TA Lärm. Tags (06:00–22:00) gelten in reinen Wohngebieten 50 dB(A), in allgemeinen Wohngebieten 55 dB(A), in Mischgebieten 60 dB(A) als Immissionsrichtwert. Eine 200-kg-Rüttelplatte erreicht in 7 m Abstand typisch 80–85 dB(A) – einzelne Tageseinsätze auf privaten Baustellen sind als anlagenbezogene Geräusche zulässig, kontinuierlicher Mehrtagesbetrieb in dichter Wohnbebauung kann Auflagen auslösen. In sensiblen Bonner Lagen (Kurbereich Bad Godesberg, Rheinaue als Naherholungsgebiet) lohnt eine Vorabklärung mit dem Ordnungsamt der Stadt Bonn.",
+        },
+        {
+          question: "Wie viel Hand-Arm-Vibration ist beim Stampfen zulässig?",
+          answer:
+            "Die LärmVibrationsArbSchV setzt für Hand-Arm-Vibration einen Auslösewert von A(8) = 2,5 m/s² und einen Expositions­grenzwert von A(8) = 5,0 m/s² fest. Ein Vibrationsstampfer erreicht typisch 5–10 m/s² am Griff – das bedeutet, dass der zulässige Achtstunden-Mittelwert oft schon nach 1–2 Stunden reiner Verdichtungs­arbeit erreicht ist. Praxis: Wechselrotation im Team, vibrationsdämpfende Handschuhe (EN ISO 10819), regelmäßige Pausen. Der Vibrations­kennwert (\"a_hv\" in m/s²) steht im Handbuch jedes Geräts.",
+        },
+        {
+          question: "Brauche ich für eine Rüttelplatte Diesel, Benzin oder Hybrid?",
+          answer:
+            "Kleine Vorwärts-Rüttelplatten bis ca. 150 kg fahren in der Regel mit Benzin (Honda-Motor, EU-Stufe V); mittelschwere Reversier­platten ab ca. 200 kg sind oft als Diesel- oder Benziner-Variante verfügbar; schwere Reversierplatten über 400 kg sind meist Diesel. In Innenräumen und Bonner Tiefgaragen empfehlen wir – sofern verfügbar – elektrische bzw. Akku-Stampfer wegen der CO-Belastung. Die Antriebsart steht in jedem Produktdatenblatt.",
+        },
+        {
+          question: "Wie viel Quadratmeter schaffe ich pro Stunde mit welcher Maschine?",
+          answer:
+            "Richtwerte aus der Praxis: 100-kg-Vorwärts­platte ca. 200 m²/h Verbundpflaster, 200-kg-Reversier­platte ca. 400 m²/h Pflaster bzw. 250 m²/h Schotter, 400-kg-Reversierplatte ca. 600 m²/h Schotter. Stampfer (60–80 kg) im Graben: ca. 30–50 lfm Graben (40 cm Breite) pro Stunde inklusive lagenweisem Einbau. Diese Werte sinken in Bonner Schräglagen und bei beengter Zugänglichkeit deutlich – im Zweifel eine Größe größer wählen.",
+        },
+        {
+          question: "Wann ist ein Verdichtungsnachweis Pflicht und wie wird er erbracht?",
+          answer:
+            "Bei jeder Verfüllung im öffentlichen Verkehrsraum (Aufgrabung der Stadt Bonn), bei Hausanschluss-Gräben unter befahrenen Flächen und bei Verfüllungen unter Bauwerken (Fundamente, Bodenplatten) verlangt die ZTV E-StB einen Verdichtungs­nachweis. Standardverfahren ist der Plattendruckversuch nach DIN 18134 (Ev2-Wert) oder der Proctorversuch im Labor. Wir vermieten das Verdichtungs­gerät; den Plattendruck­versuch führt ein zertifiziertes Prüflabor durch.",
+        },
+        {
+          question: "Was passiert bei Über- oder Unterverdichtung?",
+          answer:
+            "Unterverdichtung führt zu späteren Setzungen – Pflasterflächen sacken nach, Hausanschluss-Gräben unter dem Bürgersteig brechen ein. Überverdichtung bei bindigen Böden (Lehm, Ton, wie sie im Bonner Vorgebirge häufig sind) zerstört die Bodenstruktur und führt zu Wasserstau und Frosthebung. Faustregel: bei nicht-bindigem Boden (Sand, Kies) lieber zwei Übergänge mehr; bei bindigem Boden auf die Proctorkurve achten und bei optimalem Wassergehalt verdichten. Im Zweifel die Bodenmechanik des Bauvorhabens prüfen lassen.",
+        },
+        {
+          question: "Können wir Walzen für größere Bonner Flächen mieten – und welche Klasse?",
+          answer:
+            "Ja, für Hofflächen, Wege und kleine Asphaltflächen vermieten wir Tandem­vibrationswalzen ab ca. 700 kg bis 2,5 t Betriebsgewicht. Bandagenbreiten 600–1.000 mm. Schwere Walzen über 4 t organisieren wir auf Anfrage aus dem Hauptsitz Krefeld. Für Asphalt-Heißeinbau (Decken­schicht) sind statische Walzen mit ausreichend Eigengewicht Standard. Beratung zur Wahl unter 0228 504 660 61.",
+        },
+        {
+          question: "Was kostet die Verdichtungsmiete in Bonn und wie sind die Tarife gestaffelt?",
+          answer:
+            "Tagespreise pro Modell sind im Buchungsprozess tagesaktuell hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15 Tagessätzen. Treibstoff (Benzin/Diesel) wird nach Rückgabe nach gefülltem Tank abgerechnet. Lieferpauschalen kalkulieren wir transparent nach PLZ im Bonner Liefergebiet.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Verdichtungsmechanik: warum die Maschine zum Boden passen muss",
+          paragraphs: [
+            "Verdichtung funktioniert über zwei Mechanismen: dynamische Stoßenergie (Stampfer) und schnelle Schwingungen (Rüttelplatten, Walzen). Stampfer wirken tief und schmal – ideal für Leitungsgräben und schmale Streifenfundamente. Rüttelplatten wirken flächig, aber weniger tief – ideal für Pflasterbettungen und Tragschichten. Walzen kombinieren statisches Eigengewicht mit Vibration und sind die Wahl für große Flächen.",
+            "Bindige Böden (Lehm, Ton – im Bonner Vorgebirge weit verbreitet) reagieren anders als nicht-bindige (Sand, Kies, Rheinkies). Bei bindigem Material kommt es auf den optimalen Wassergehalt nach Proctor an; zu trocken oder zu nass verdichtet sich der Boden kaum. Bei nicht-bindigem Material sind mehrere Übergänge mit derselben Maschine zielführender als ein Übergang mit zu schwerer Walze. Wir beraten am Standort Bonn zur passenden Kombination, idealerweise mit Bodenkenntnis vom Vorgewerk.",
+          ],
+        },
+        {
+          h3: "ZTV E-StB und DIN 18134: was die Norm im Bauvertrag verlangt",
+          paragraphs: [
+            "Die ZTV E-StB ist die maßgebliche Vertragsgrundlage für Erdbauarbeiten im öffentlichen Bereich – sie wird auch in vielen privaten Bauverträgen referenziert. Verlangt werden Verdichtungsgrade (Proctordichte DPr) je nach Schichtfunktion: 97 % für Damm- und Frostschutzschichten, 100 % für Tragschichten und Verfüllungen unter Verkehrsflächen. Der Nachweis erfolgt entweder über statische Plattendruckversuche nach DIN 18134 (Ev2-Wert mit den Grenzwerten z. B. 45 MN/m² für Frostschutzschicht F1 und 120 MN/m² für STSuB) oder über die dynamische Plattendruckmessung nach TP BF-StB Teil B 8.3.",
+            "Praxis: Vor dem Pflastern einer Hofeinfahrt in Bonn-Bad Godesberg oder einer Tiefgaragenzufahrt in Beuel verlangen viele Auftraggeber den Plattendruckversuch. Wir vermieten die nötige Verdichtungsmaschinerie; die Prüfung selbst erfolgt durch ein anerkanntes Prüflabor (häufig in Kombination mit der Bauüberwachung). Den Geräteumfang stimmen wir am Standort Bonn auf das Vertragsleistungsverzeichnis ab.",
+          ],
+        },
+        {
+          h3: "Lärm und Vibration: was TA Lärm und LärmVibrationsArbSchV vorgeben",
+          paragraphs: [
+            "Die TA Lärm regelt die Immissionsrichtwerte am nächsten schutzbedürftigen Aufpunkt: Wohngebiet tags 55 dB(A), Mischgebiet 60 dB(A), Kerngebiet 65 dB(A); nachts (22–06 Uhr) jeweils 15 dB(A) niedriger. Punktuelle Bauverdichtung an Werktagen tagsüber ist in der Regel zulässig, dauerhafter Mehrtagesbetrieb in sensibler Wohnlage (z. B. Bonner Südstadt, Bad Godesberger Villenviertel) kann eine Schalltechnische Untersuchung auslösen.",
+            "Beim Bediener greift die LärmVibrationsArbSchV mit Auslösewerten von 80 dB(A) (Lärm) und 2,5 m/s² (Hand-Arm-Vibration) und Grenzwerten von 85 dB(A) bzw. 5,0 m/s². Bei modernen Stampfern und Reversierplatten ist Gehörschutz schon ab dem ersten Einsatz Standard, Vibrationsschutzhandschuhe nach EN ISO 10819 dämpfen die Belastung weiter. Wir geben die Vibrations­kennwerte jeder Maschine im Datenblatt an – wichtig für die Gefährdungsbeurteilung des Auftraggebers.",
+          ],
+        },
+        {
+          h3: "Maschinenwahl: vom 60-kg-Stampfer bis zur 2,5-t-Tandemwalze",
+          paragraphs: [
+            "Die richtige Maschine spart Zeit und schont den Untergrund. Mikro-Klasse (Stampfer 60–80 kg): Leitungs- und Hausanschluss-Gräben, Pfostengründungen, Verfüllung unter Bordsteinen. Vorwärts-Rüttelplatten 80–150 kg: Garten- und Terrassenpflaster bis ca. 30 m². Reversier­platten 200–400 kg: Hofflächen, Pflasterstraßen, Schotter-Tragschichten bis ca. 200 m². Schwere Reversier­platten ab 400 kg und Tandem­walzen 700 kg–2,5 t: Asphalt­einbauten, große Tragschichten, Wege­bau im Außenbereich.",
+            "Im Bonner Mietpark führen wir das gesamte Spektrum bis zur 2,5-t-Tandemwalze. Schwerere Walzen (über 4 t) und Spezialgeräte wie Polygonwalzen organisieren wir aus dem Hauptsitz Krefeld nach. Die Verfügbarkeit jeder Klasse zeigen wir live im Buchungssystem an.",
+          ],
+        },
+        {
+          h3: "Bonn-spezifisch: Rheinauen, Hanglagen, Naturpark Siebengebirge",
+          paragraphs: [
+            "Die Bonner Topografie und der Landschaftsschutz prägen viele Verdichtungs­einsätze in der Region. In den Rheinauen (Mehlem, Plittersdorf, Beuel-Süd) ist der Untergrund oft weich und schluffig; hier punktet eine breite Bandage und ein langsamer Walzgang gegenüber Hochfrequenz­vibration. Im Siebengebirge (Königswinter, Bad Honnef – seit 1958 Naturpark) gelten erhöhte Anforderungen an Lärmschutz und Wegebreite; oft ist die Anlieferung per kleinem Tieflader die einzige praktikable Option.",
+            "In Bad Godesberg und Poppelsdorf liegen viele Verbundpflaster­flächen in privaten Vorgärten, oft mit Wurzelausläufern alter Bestandsbäume (Baumschutzsatzung Bonn ab 80 cm Stammumfang). Eine zu schwere Rüttelplatte kann hier Wurzelschäden verursachen – im Zweifel eine Nummer kleiner wählen. Wir kennen die typischen Anforderungen und beraten unter 0228 504 660 61 zur passenden Maschinenklasse.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // ARBEITSBÜHNEN (Scherenbühnen, Gelenkteleskopbühnen,
+    //   Anhängerbühnen, Mastbühnen, LKW-Arbeitsbühnen)
+    // Quellen: BetrSichV, DGUV Grundsatz 308-008 (Ausbildung
+    //   Bediener Hubarbeitsbühnen, IPAF-konform), DGUV
+    //   Information 208-019, DIN EN 280 (Anforderungen an
+    //   Hubarbeitsbühnen), DIN EN 1495 (Hängegerüste),
+    //   StVO § 45 (verkehrsrechtliche Anordnung), TRBS 2121
+    //   Teil 1 (Gefährdung durch Absturz – Bereit­stellung und
+    //   Benutzung von Hubarbeitsbühnen), Sondernutzung Stadt Bonn
+    //   (Gebührensatzung, Aufstellung im öffentlichen Verkehrs­raum).
+    // -------------------------------------------------------------
+    arbeitsbuehnen: {
+      faqs: [
+        {
+          question: "Welche Arbeitsbühne brauche ich für welche Arbeitshöhe?",
+          answer:
+            "Arbeitshöhe = Plattformhöhe + 2 m (anerkannte Faustregel der Branche). Innen-Scherenbühnen elektrisch erreichen typischerweise 6–14 m Arbeitshöhe, sind kompakt (Durchfahrtsbreite 0,8–1,2 m) und für Hallen und Bürogebäude ideal. Anhängerbühnen 12–20 m Arbeitshöhe, einfach mit BE-Führerschein zur Baustelle zu bringen. Gelenkteleskopbühnen 14–28 m mit horizontaler Reichweite bis 17 m – Standard für Fassaden- und Dacharbeiten. LKW-Arbeitsbühnen ab 22 m, auf Wunsch mit Bedienpersonal. Die exakte Arbeitshöhe steht im Datenblatt jeder Bonner Mietbühne.",
+        },
+        {
+          question: "Brauche ich einen Bedienerschein für die Hubarbeitsbühne?",
+          answer:
+            "Im gewerblichen Einsatz ja – DGUV Grundsatz 308-008 verlangt eine Ausbildung nach IPAF (oder gleichwertig), bestehend aus Theorie, Praxis und Sicht-/Befähigungsnachweis. Die Beauftragung erfolgt schriftlich durch den Unternehmer, getrennt nach Bühnenklassen (1a, 1b, 3a, 3b nach IPAF). Privat auf eigenem Grundstück ist kein formaler Schein vorgeschrieben; trotzdem ist eine gründliche Einweisung Pflicht. Bei der Übergabe in Bonn-Mehlem bekommst du eine Geräteeinweisung am konkreten Modell.",
+        },
+        {
+          question: "Welche PSA gegen Absturz ist auf Arbeitsbühnen Pflicht?",
+          answer:
+            "TRBS 2121 Teil 1 und DGUV Information 208-019: Auf Gelenkteleskop- und LKW-Arbeitsbühnen ist ein Auffanggurt mit kurzem Verbindungsmittel (max. 1,8 m), angeschlagen am vorgesehenen Anschlagpunkt der Plattform, vorgeschrieben. Auf Scherenbühnen mit allseitig geschlossenem Geländer (≥ 1,10 m) ist PSAgA in der Regel nicht zusätzlich nötig, wird aber von vielen Bauherren bei Einsatz im Verkehrsraum verlangt. Wir liefern auf Wunsch die Auffanggurte mit – die Verantwortung für die Nutzung liegt beim Arbeitgeber.",
+        },
+        {
+          question: "Was ist die maximale Wind­geschwindigkeit für den Einsatz im Freien?",
+          answer:
+            "Hersteller geben in der Betriebsanleitung eine maximal zulässige Windgeschwindigkeit an – typischerweise 12,5 m/s (rund 45 km/h, Windstärke 6 \"starker Wind\"). Bei stärkerem Wind muss die Bühne in Transportstellung gefahren und die Arbeit eingestellt werden. Praxisrelevant gerade in den Bonner Rheinauen und am Siebengebirge, wo Böen am Hang oft deutlich stärker als der vorhergesagte Mittelwind sind. Ein Handanemometer am Korb ist gute Praxis; den maximal zulässigen Wert findest du im Datenblatt jeder Mietbühne.",
+        },
+        {
+          question: "Welche Auflagen gelten für die Aufstellung im öffentlichen Verkehrsraum in Bonn?",
+          answer:
+            "Für Aufstellung auf Bürgersteig oder Fahrbahn ist eine Sondernutzungserlaubnis sowie eine verkehrsrechtliche Anordnung nach § 45 StVO bei der Stadt Bonn (Straßenverkehrsamt) erforderlich. Vorlauf in der Regel 5–10 Werktage; bei Aufstellung in Hauptverkehrsstraßen (z. B. Reuterstraße, Adenauerallee, B9) länger. Eine Beschilderung nach RSA 21 (Richtlinien für die Sicherung von Arbeitsstellen) ist Pflicht. Wir vermieten die Bühne; Antrag und Beschilderung organisiert der Bauherr bzw. ein beauftragtes Verkehrssicherungs-Unternehmen.",
+        },
+        {
+          question: "Wie schwer ist die Bühne – und ist mein Untergrund tragfähig?",
+          answer:
+            "Anhängerbühnen 700–2.000 kg, Selbstfahrer-Gelenkbühnen 4–12 t, LKW-Arbeitsbühnen 7,5–26 t. Auf gepflasterten Innenhöfen, Tiefgaragendecken und Rasenflächen sind die Punkt­lasten der Stützen kritisch – oft 5–15 t pro Stütze. Lastverteilplatten (mind. 50 × 50 cm, robust) sind Pflicht. Bei Tiefgaragen-Aufstellung den Statikplan des Gebäudes prüfen lassen. Wir geben die Achs- und Stützlasten in jedem Bühnen-Datenblatt an und beraten am Standort Bonn zur Aufstellung.",
+        },
+        {
+          question: "Kann ich die Anhängerbühne mit einem normalen PKW ziehen?",
+          answer:
+            "Anhängerbühnen wiegen typisch 700–1.800 kg. Bis 750 kg zGM reicht Klasse B. Über 750 kg muss die Kombination aus Zugfahrzeug und Anhängerbühne unter 3.500 kg zGM bleiben (Klasse B); mit B96 bis 4.250 kg, mit BE bis 7.000 kg. Eine 15-m-Anhängerbühne mit ca. 1.500 kg zGM hinter einem 2.000-kg-Pkw liegt im BE-Bereich. Wir prüfen die Führerscheinklasse bei der Übergabe in Bonn.",
+        },
+        {
+          question: "Wie sind die Mietdauern und Preisstufen kalkuliert?",
+          answer:
+            "Tagespreise pro Modell sind tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15 Tagessätzen. Bei Selbstfahrer-Bühnen wird Diesel/Strom nach Rückgabe abgerechnet; Elektro-Scherenbühnen werden vollgeladen herausgegeben und sind im Innenbereich nahezu lautlos. Längere Mieten (Sanierungs- und Renovierungsprojekte 2–4 Wochen) sind so meist die günstigere Variante.",
+        },
+        {
+          question: "Was ist beim Einsatz auf Bonner Tiefgaragen­decken zu beachten?",
+          answer:
+            "Tiefgaragen­decken sind in der Regel auf 5 kN/m² Verkehrslast ausgelegt – das entspricht ca. 500 kg/m². Eine LKW-Arbeitsbühne mit 5–8 t Stützlast überschreitet das punktuell deutlich. Pflicht ist die Abstimmung mit dem Tragwerksplaner bzw. dem Statik-Gutachten des Gebäudes (\"Bauwerksbuch\"). Lastverteilung über mind. 1 × 1 m große, biege­steife Lastverteiler. In Bonner Mehrfamilien­häusern mit Tiefgarage (Bad Godesberg, Beuel-Süd) ist das ein häufiges Thema – wir beraten zur passenden Kleinst-Scheren­bühne, die mit der Verkehrslast verträglich ist.",
+        },
+        {
+          question: "Wie funktioniert die Übergabe in Bonn-Mehlem zeitlich?",
+          answer:
+            "Reguläre Übergabezeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30. Für Selbstfahrer-Gelenkbühnen und LKW-Arbeitsbühnen empfehlen wir Selbstabholung mit eigenem Tieflader oder Lieferung durch uns – das spart Risiko beim Ent- und Aufladen. Bei der Übergabe Geräteeinweisung, gemeinsame Sichtprüfung mit Funktions­test (Heben, Senken, Notabsenkung) und schriftliches Protokoll.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Bühnentypen im Überblick: Scheren, Gelenk-Teleskop, Anhänger, LKW",
+          paragraphs: [
+            "Vier Bauarten decken nahezu alle Höhenarbeiten ab. Scherenbühnen fahren rein vertikal, haben eine große Plattformfläche und kommen meist elektrisch in Innenräumen oder dieselbetrieben im Außenbereich vor (typisch 6–15 m Arbeitshöhe). Gelenkteleskopbühnen kombinieren vertikales Heben mit horizontalem Ausleger und sind die Wahl, wenn Hindernisse überfahren werden müssen (z. B. Vordächer, Markisen, Fahrzeuge) – 14–28 m Arbeitshöhe sind Standard.",
+            "Anhängerbühnen sind die mobilste Variante: mit BE-Führerschein an die Baustelle bringen, Stützen ausfahren, in 5 Minuten einsatzbereit. Reichweiten 12–20 m, ideal für Baumschnitt, Werbeanlagen­montage und kleinere Fassadenarbeiten. LKW-Arbeitsbühnen ab 22 m Arbeitshöhe sind die Lösung für Hochhaus-Fassaden, Glasdach-Reinigung und Industriebau – auf Wunsch liefern wir vom Standort Bonn aus mit Bedienpersonal, weil die Aufstellung in Innenstadt-Sondernutzung oft anspruchsvoll ist.",
+          ],
+        },
+        {
+          h3: "IPAF-Schein und Bedienerqualifikation: was DGUV 308-008 verlangt",
+          paragraphs: [
+            "DGUV Grundsatz 308-008 verlangt eine theoretische und praktische Ausbildung des Bedieners, schriftliche Beauftragung durch den Unternehmer und eine Wiederholung mindestens alle 12 Monate (Unterweisung). In Deutschland hat sich der IPAF-Schein („PAL-Karte\") als Standard etabliert; er gliedert sich nach Bühnenklassen 1a (statisch vertikal), 1b (statisch ausladend), 3a (mobil vertikal), 3b (mobil ausladend). Wer mit einer Gelenkteleskopbühne arbeitet, braucht 3b.",
+            "Privat auf dem eigenen Grundstück ist kein formaler Schein vorgeschrieben. Trotzdem ist eine gründliche Einweisung Pflicht – und in unserem Interesse, denn die meisten Schadensbilder entstehen aus Fehlbedienung (zu enge Annäherung an Stromleitungen, falsche Lastverteilung der Stützen, zu hohe Korblast). Bei der Übergabe in Bonn-Mehlem nehmen wir uns die Zeit für diese Einweisung.",
+          ],
+        },
+        {
+          h3: "Aufstellung und Stützlast: Tragfähigkeit des Untergrunds",
+          paragraphs: [
+            "Selbstfahrer-Gelenkbühnen verteilen ihr Gewicht über vier Stützen oder vier Räder. Eine 14-m-Gelenkbühne mit ca. 6 t Gesamtgewicht kann pro Stütze 6–8 t Punktlast erzeugen, weil die Last bei voller Ausladung asymmetrisch wirkt. Auf gepflasterten Innenhöfen, Verbundpflaster und Tiefgaragendecken muss diese Last über Lastverteilplatten (Holz, mind. 50 × 50 cm, dick genug zur Biegesteifigkeit) reduziert werden. Auf weichem Untergrund (Wiese, Schotter) sind größere Platten oder Bohlen Pflicht.",
+            "In Tiefgaragen ist das Statik-Gutachten des Gebäudes maßgeblich; viele Garagen erlauben max. 2,5–3 t Achslast. Hier kommt nur eine kleine Scherenbühne (ca. 2 t) infrage. Wir beraten am Standort Bonn zur passenden Kombination aus Bühnenklasse und Lastverteilung – das ist gerade bei Sanierungs- und Renovierungsprojekten in Bonner Mehrfamilien­häusern ein häufiges Thema.",
+          ],
+        },
+        {
+          h3: "Sondernutzung im öffentlichen Verkehrsraum: was die Stadt Bonn verlangt",
+          paragraphs: [
+            "Wer eine Arbeitsbühne auf Bürgersteig oder Fahrbahn aufstellt, nutzt öffentlichen Verkehrsraum sondernutzungspflichtig (Straßen- und Wegegesetz NRW, Sondernutzungssatzung Stadt Bonn). Antrag beim Straßenverkehrsamt Bonn, in der Regel 5–10 Werktage Vorlauf, in stark befahrenen Bonner Hauptverkehrsstraßen (Reuterstraße, B9, Adenauerallee) eher länger. Die Verkehrsrechtliche Anordnung nach § 45 StVO regelt die Beschilderung; Standard ist RSA 21.",
+            "Praktisch bedeutet das: Vor dem Mietbeginn den Antrag stellen, die Genehmigung dem Aufstellplatz beilegen, Beschilderung (Verkehrszeichen, Absperrgitter, Halteverbots-Schilder bei Bedarf) entweder selbst stellen oder ein zertifiziertes Verkehrssicherungs-Unternehmen beauftragen. Wir vermieten Halteverbotsschilder und Absperrmaterial am selben Standort in Bonn – das spart einen Lieferanten.",
+          ],
+        },
+        {
+          h3: "Bonner Einsatzfelder: vom Baumpflege-Schnitt im Siebengebirge bis zur Bürofassade in der Südstadt",
+          paragraphs: [
+            "Im Bonner Liefergebiet (Bonn, Köln-Süd, Wachtberg, Bad Honnef, Königswinter, Sankt Augustin, Bad Neuenahr-Ahrweiler, Rhein-Sieg-Kreis) decken wir vier typische Einsatzfelder ab. Baumpflege und Obstbau im Siebengebirge und im Vorgebirge: kompakte Anhängerbühnen 12–17 m, oft mit Allrad-Selbstfahrt zur Aufstellung auf weichem Untergrund. Fassaden- und Dacharbeiten in Bonner Mehrfamilienhäusern: 15–22-m-Gelenkteleskopbühnen mit langer horizontaler Reichweite, um Vorgartenpflanzungen zu überfahren.",
+            "Werbeanlagen- und Beleuchtungs­montage in der Bonner Innenstadt: schmale Gelenkbühnen mit kurzem Schwenkradius, oft in Verbindung mit Sondernutzung. Industriebau und Versorgungs­technik im Bonner Norden (Beuel, Pützchen, Sankt Augustin): Scherenbühnen 12–14 m für Hallen-Innenarbeiten an Beleuchtung, Lüftung und Brandmelde­anlagen. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – Beratung unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // WERKZEUGE (Bohrhammer, Trennschleifer, Kernbohrer,
+    //   Schlagschrauber, Tauchsäge, Sauger, Akkugeräte)
+    // Quellen: Maschinenrichtlinie 2006/42/EG (CE), DGUV V3
+    //   (Elektrische Betriebsmittel), DIN VDE 0701-0702
+    //   (Wiederholungsprüfung), LärmVibrationsArbSchV, DIN EN
+    //   60745 (Handgeführte Elektrowerkzeuge), DGUV Information
+    //   209-017 (Lärm am Arbeitsplatz), TRGS 559 (Mineralischer
+    //   Staub – Quarzgrenzwert 0,05 mg/m³ A-Staub), TRGS 900
+    //   (Allgemeiner Staubgrenzwert 1,25 mg/m³ A-Staub).
+    // -------------------------------------------------------------
+    werkzeuge: {
+      faqs: [
+        {
+          question: "Welcher Bohrhammer für welchen Anwendungsfall?",
+          answer:
+            "Klassifizierung nach Schlagenergie: bis 3 J für Mauerwerk und kleine Beton­bohrungen bis ca. 20 mm; 3–8 J für klassische Sanitär- und Elektroinstallation (Beton bis 32 mm, leichte Meißelarbeiten); 8–25 J Kombihammer für Stemm- und Abbruch­arbeiten in Beton; ab 25 J Abbruchhammer für massiven Beton- und Mauerwerk-Abbruch. SDS-plus bis ca. 32 mm, SDS-max ab 35 mm Bohr­durchmesser. Wir vermieten am Standort Bonn das volle Spektrum von Bohrhammern bis 25 J Schlagenergie.",
+        },
+        {
+          question: "Welche Schutzklasse müssen Bau-Elektrowerkzeuge haben – und brauchen sie eine DGUV-V3-Prüfung?",
+          answer:
+            "Auf Baustellen verlangt DGUV V3 in Verbindung mit DIN VDE 0701-0702 für ortsveränderliche elektrische Betriebsmittel eine Wiederholungsprüfung – die Intervalle hängen von der Beanspruchung ab (Faustregel: alle 3–6 Monate auf der Baustelle, jährlich im Werkstattbetrieb). Schutzklasse I (Schutzleiter) oder II (Schutzisoliert, doppeltes Quadrat) sind Pflicht. Unsere Mietwerkzeuge sind DGUV-V3-geprüft, die Prüfplakette mit Datum und Prüfer-Kennung ist sichtbar am Gerät.",
+        },
+        {
+          question: "Wie laut ist mein Werkzeug – und wann brauche ich Gehörschutz?",
+          answer:
+            "Auslösewerte nach LärmVibrationsArbSchV: ab 80 dB(A) Tagesexposition Gehörschutz bereitzustellen, ab 85 dB(A) zwingend zu tragen. Praxiswerte: Bohrhammer 95–105 dB(A), Trennschleifer 100–110 dB(A), Diamantkernbohrgerät 90–100 dB(A), Tauchsäge 95–105 dB(A). Bei nahezu allen Bau-Elektrowerkzeugen ist Gehörschutz Pflicht. Der LpA-Wert (Schalldruckpegel am Bediener) steht im Datenblatt jedes Geräts.",
+        },
+        {
+          question: "Welche Stäube entstehen – und welcher Sauger gehört dazu?",
+          answer:
+            "Beim Bohren und Schneiden mineralischer Werkstoffe (Beton, Mauerwerk, Naturstein) entsteht Quarzfeinstaub – ein KMR-Stoff der Kategorie 1A nach TRGS 906. Der Arbeitsplatzgrenzwert (AGW) nach TRGS 900 für allgemeinen A-Staub liegt bei 1,25 mg/m³; für alveolengängigen Quarzstaub gilt nach TRGS 559 ein deutlich strengerer Akzeptanz­wert von 0,05 mg/m³. Praxis: H-Klasse-Sauger nach DIN EN 60335-2-69 mit Bürstensystem an Bohr­hammer und Trenn­schleifer; M-Klasse für Holz- und Gipsfein­staub. Wir vermieten passende H- und M-Sauger sowie Adapter; bitte bei der Buchung in Bonn das passende Set kombinieren.",
+        },
+        {
+          question: "Kernbohren in Beton – welche Maschine und welche Befestigung?",
+          answer:
+            "Diamantkernbohrgeräte ab 1.500 W trocken oder nass; Durchmesser 30–200 mm Standard, bis 350 mm mit größeren Maschinen. Bohrtiefe pro Krone typischerweise 300–500 mm; größere Tiefen mit Verlängerung. Befestigung: bei kleinen Maschinen Handführung mit Seitengriff, ab ca. 60 mm Bohr­durchmesser Bohrständer mit Schwerlast­dübel (M12/M16) oder Vakuumplatte (auf glattem, dichtem Beton). Nass­bohren mit Schmutzwasser-Sauger ist Standard wegen Staub und Kühlung. Wir geben im Bonner Mietpark Bohr­ständer und passende Kronen mit aus.",
+        },
+        {
+          question: "Welche Akkugeräte halte ich am Standort Bonn vor?",
+          answer:
+            "Wir setzen primär auf 18-V- und 36-V-Systeme der etablierten Hersteller (DeWalt, Makita, Hilti) – Akkubohrer, Akku-Schlagschrauber, Akku-Bohrhammer, Akku-Tauchsäge, Akku-Trennschleifer 125/230 mm. Vorteil gegenüber kabelgebundenen Geräten: keine Stolperfallen, ideal in Bonner Altbau­sanierungen ohne Bau­stromanschluss, leiser im Innenausbau. Wir geben Reserve­akkus und Ladegerät grundsätzlich mit aus – Mietzeit ist nicht durch die Akku­laufzeit limitiert.",
+        },
+        {
+          question: "Welche PSA ist beim Werkzeug-Einsatz Pflicht?",
+          answer:
+            "Branchenüblich auf der Baustelle: S3-Sicherheitsschuhe, Schutzbrille (EN 166), Gehörschutz (EN 352, ab Trenn-, Bohr- und Stemmarbeiten), Atemschutz FFP2/FFP3 (EN 149) bei mineralischem Staub, Schutzhandschuhe (EN 388) gegen mechanische Risiken, Helm (EN 397) im Bau­umfeld. PSA stellt der Arbeitgeber bzw. Bauherr – wir vermieten ausschließlich das Werkzeug. Eine PSA-Ausstattungsliste je Werkzeug findest du im Datenblatt.",
+        },
+        {
+          question: "Wie lange darf ich mit einem Hand-Werkzeug am Tag arbeiten?",
+          answer:
+            "Begrenzend ist Hand-Arm-Vibration nach LärmVibrationsArbSchV. Auslöse 2,5 m/s² A(8), Grenzwert 5,0 m/s² A(8). Beispiel: Ein Bohrhammer mit 11 m/s² am Griff erreicht den Auslösewert bereits nach ca. 25 Minuten reiner Vibration, den Grenzwert nach ca. 100 Minuten. In der Praxis bedeutet das: Wechselrotation im Team und vibrationsdämpfende Handschuhe (EN ISO 10819). Der Vibrationskennwert (a_hv) steht in jedem Geräte­datenblatt.",
+        },
+        {
+          question: "Was kostet die Werkzeug-Miete in Bonn und gibt es Wochenend-Tarife?",
+          answer:
+            "Tagespreise pro Gerät sind tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Wochenend-Miete (Freitag-Abholung / Montag-Rückgabe) wird in vielen Fällen wie 1 Tag berechnet – siehe Wochenend-Tarif im Buchungsprozess. Verbrauchsmaterial (Bohrkronen, Trennscheiben, Bohrer) wird nach Verbrauch abgerechnet bzw. ist im Mietpreis je nach Artikel enthalten.",
+        },
+        {
+          question: "Was passiert bei Verlust oder Beschädigung?",
+          answer:
+            "Bei normalem Verschleiß (stumpfe Bohrer, gebrauchte Schleifscheiben) erfolgt keine Berechnung – das ist in der Tagesmiete einkalkuliert. Bei Beschädigung durch Fehlbedienung (Sturz, Wassereintritt, Überlastung) bzw. Verlust wird das Gerät zum Tageswert ersetzt. Eine optionale Haftungs­reduzierung kann bei der Buchung gewählt werden – Details im Mietvertrag. Wir prüfen jedes Gerät bei Rückgabe gemeinsam mit dir.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Werkzeugauswahl nach Aufgabe: warum die richtige Klasse Zeit und Geld spart",
+          paragraphs: [
+            "Ein zu kleines Werkzeug zwingt zu mehrfachem Ansetzen, beansprucht die Mechanik überproportional und verlängert die Mietdauer. Ein zu großes Werkzeug ist schwer, vibrationsstark und für feine Arbeiten ungeeignet. Faustregel: Bohrlochdurchmesser unter 12 mm und Tiefe unter 100 mm → leichter Bohrhammer bis 3 J. 12–20 mm und bis 250 mm Tiefe → mittlerer Bohrhammer 3–8 J. Über 20 mm oder Stemm­arbeit → Kombi­hammer ab 8 J. Beton-Abbruch und Stemmen großer Wandöffnungen → Abbruch­hammer ab 25 J oder elektrischer Stemm­hammer.",
+            "Im Bonner Mietpark führen wir alle Klassen. Bei der Buchung filterst du nach Schlagenergie, Werkzeug­aufnahme (SDS-plus/SDS-max) und Antriebsart (kabelgebunden 230 V, 36-V-Akku, Druckluft). Im Zweifel rufen wir kurz zur Anwendung zurück und empfehlen die passende Maschine – das spart auf der Baustelle in Bad Godesberg oder Beuel oft Stunden.",
+          ],
+        },
+        {
+          h3: "Staubschutz und H/M-Sauger: TRGS 559 und der Quarz-Grenzwert",
+          paragraphs: [
+            "Quarzfeinstaub aus Beton-, Mauerwerk- und Naturstein­bearbeitung ist nach TRGS 906 als KMR-Stoff Kategorie 1A klassifiziert (krebserzeugend beim Menschen). TRGS 559 setzt einen Akzeptanzkonzentrations­wert von 0,05 mg/m³ für alveolengängigen Quarzstaub und einen Toleranz­wert von 0,1 mg/m³ – beides deutlich strenger als der allgemeine A-Staub-Grenzwert von 1,25 mg/m³ nach TRGS 900.",
+            "Praktisch heißt das: Bei jeder Bohr-, Trenn-, Stemm- oder Schleifarbeit an mineralischen Werkstoffen muss eine wirksame Staubminderung erfolgen – entweder durch Nassbearbeitung oder durch Absaugung an der Entstehungsstelle. Geeignete Sauger sind H-Klasse-Sauger nach DIN EN 60335-2-69 (Abscheidegrad ≥ 99,995 % für Partikel ≥ 0,3 µm). M-Klasse genügt für Holz- und Gipsstaub, aber nicht für Quarz. Wir vermieten beide Klassen und kombinieren das passende Sauger-Werkzeug-Set bei der Buchung in Bonn-Mehlem.",
+          ],
+        },
+        {
+          h3: "Lärm und Vibration: was die LärmVibrationsArbSchV in Stunden bedeutet",
+          paragraphs: [
+            "Die LärmVibrationsArbSchV setzt zwei Schwellen: Auslösewerte (ab denen Schutz­maßnahmen Pflicht sind) und Grenzwerte (die nicht überschritten werden dürfen). Lärm: Auslöse 80 dB(A) LEX,8h, Grenz 85 dB(A) LEX,8h. Hand-Arm-Vibration: Auslöse 2,5 m/s² A(8), Grenz 5,0 m/s² A(8).",
+            "Konkret für ein typisches Bonner Sanierungsprojekt: Trennschleifer mit 105 dB(A) erreicht in 8 Stunden eine Tages­exposition von 105 dB(A) – Faktor 100 über dem Grenzwert. Reduktion auf 30 Minuten reine Schleifzeit pro Tag bringt rund 90 dB(A) LEX,8h – immer noch über dem Grenzwert, also Gehörschutz Pflicht. Bei der Vibration: Bohrhammer mit 11 m/s² erreicht in 100 Minuten den Grenzwert. Wechselrotation im Team und vibrationsdämpfende Handschuhe (EN ISO 10819) sind die wirksamen Maßnahmen.",
+          ],
+        },
+        {
+          h3: "DGUV V3 und Prüfintervalle: warum die Prüfplakette zählt",
+          paragraphs: [
+            "DGUV Vorschrift 3 in Verbindung mit DIN VDE 0701-0702 schreibt für jedes elektrische Betriebsmittel eine Wiederholungsprüfung vor. Auf Bau- und Montagestellen mit hoher Beanspruchung sind Intervalle von 3 Monaten (handgeführte Werkzeuge im täglichen Einsatz) bis 6 Monaten (sporadisch genutzte Geräte) Standard. Prüfumfang: Sichtprüfung (Kabel, Stecker, Gehäuse), Schutzleiter­widerstand (≤ 0,3 Ω), Isolationswiderstand (≥ 0,3 MΩ), Funktionsprüfung.",
+            "Unsere gesamte Mietwerkzeug-Flotte in Bonn ist DGUV-V3-geprüft, jede Plakette ist mit Datum und Prüfer-Kennung versehen. Auf der Baustelle wird die gültige Plakette vom Sicherheits- und Gesundheits­schutz­koordinator (SiGeKo) bzw. der Bauleitung kontrolliert. Mit unserer Vermietflotte hast du den Nachweis automatisch in der Hand – das ist ein konkreter Mehrwert gegenüber Hobby-Werkzeug aus dem Privatbestand.",
+          ],
+        },
+        {
+          h3: "Bonn-spezifisch: Altbau-Sanierung, Tiefgaragen, Sondergewerbe",
+          paragraphs: [
+            "Bonn hat einen hohen Anteil an Gründerzeit- und Nachkriegs­bauten (Südstadt, Poppelsdorf, Beuel-Mitte), in denen Wand­stärken, Mörtelqualität und Bewehrungs­dichte stark variieren. Für die Sanierung empfiehlt sich oft ein Mix aus mittlerem Bohrhammer (3–6 J) für die meisten Bohrungen plus einer Reserve in Form eines stärkeren Kombihammers für unerwartet harte Sturzbeton-Lagen. Wir halten in Bonn beide Klassen vor.",
+            "In Tiefgaragen­sanierungen und Gewerbe­standorten (Bonner Norden, Sankt Augustin) sind Akku- und elektrische Geräte wegen der CO-Belastung von Verbrennungs­motoren erste Wahl. Für Trennschnitte in Beton bietet sich Nass-Trenntechnik an, weil der Wasserschleier sowohl die Staub­belastung als auch die Lärmemission reduziert. Beratung zum passenden Werkzeug-Set unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // AGGREGATE (Stromerzeuger, Schweißaggregate, Kompressoren,
+    //   Pumpen, Heizölaggregate)
+    // Quellen: DIN VDE 0100-551 (Niederspannungs-Stromerzeugungs-
+    //   anlagen), DIN VDE 0100-410 (Schutz gegen elektrischen
+    //   Schlag), 32. BImSchV (Geräte- und Maschinenlärmschutz-
+    //   verordnung, Anhang Bauarten), DIN EN ISO 8528 (Strom-
+    //   erzeugungsaggregate mit Verbrennungsmotoren), DGUV V3,
+    //   AVV Wassergefährdende Stoffe (Aufstellung und Betank-
+    //   ung von Dieselaggregaten), AwSV (Anlagen­verordnung
+    //   wassergefährdender Stoffe).
+    // -------------------------------------------------------------
+    aggregate: {
+      faqs: [
+        {
+          question: "Welches Stromaggregat brauche ich für welche Leistung?",
+          answer:
+            "Faustregel über die Scheinleistung (kVA): Kleine Baustellen mit Bohrhammer + Trennschleifer + Beleuchtung: 3–5 kVA. Mittlere Bauwagen-Versorgung oder Hauptmaschine: 6–13 kVA. Bühne, Catering oder mittelgroße Eventversorgung: 20–40 kVA. Großevent oder mehrere Hochleistungsmaschinen parallel: 60–100 kVA und mehr. Wichtig: Anlaufstrom von Motoren und Pumpen kann das 3–5-fache des Nennstroms betragen – Aggregat eine Nummer größer wählen. Wir halten am Standort Bonn das volle Spektrum von 3 bis 100+ kVA vor.",
+        },
+        {
+          question: "Wie ist das Aggregat geerdet – und brauche ich ein zusätzliches IT-/TN-System?",
+          answer:
+            "Stromaggregate werden nach DIN VDE 0100-551 als IT-System (Isolation Terre, Netz nicht direkt geerdet) oder TN-System (Netz mit geerdetem Sternpunkt) betrieben. Aggregate unter 10 kVA mit interner Schutztrennung dürfen IT betrieben werden, mit FI-Schutz für jeden Abgang. Größere Aggregate werden als TN-S betrieben und müssen über einen Erdungsstab (Tiefe mind. 1,5 m im gewachsenen Boden) geerdet werden – Erdungswiderstand möglichst ≤ 4 Ω. Wir geben Erdungsspieß und Erdungsleitung passend zur Aggregat-Größe mit aus.",
+        },
+        {
+          question: "Welche Geräuschemission haben Dieselaggregate – und gibt es Schallschutz-Hauben?",
+          answer:
+            "Maßgeblich ist die 32. BImSchV (Geräte- und Maschinenlärmschutz­verordnung). Stromerzeuger sind in Anhang aufgeführt; Tagesbetrieb in Wohngebieten ist eingeschränkt zulässig, in Wohngebieten zwischen 20–07 Uhr verboten. Unsere modernen schallgedämmten Aggregate erreichen 65–75 dB(A) in 7 m Abstand – das ist im Mischgebiet tagsüber problemlos einsetzbar, in reinen Wohngebieten je nach Standort eng. Für sensible Einsätze (Events in Bonner Innenstadt, Krankenhausnähe) bieten wir besonders leise Stage-V-Aggregate (\"Whisper\"-Klasse) mit ca. 55 dB(A) in 7 m.",
+        },
+        {
+          question: "Wie wird ein Dieselaggregat sicher aufgestellt und betankt?",
+          answer:
+            "Aufstellung auf ebener, tragfähiger Fläche; Schutzabstand zu brennbaren Materialien mind. 2 m; Abgasrohrführung so, dass keine Abgase in Innenräume gelangen. Betankung nach AVV/AwSV nur in dichten Auffangwannen bzw. mit doppelwandiger Aggregat-Bauweise. Unsere Aggregate ab 20 kVA sind als Bauaggregat mit integrierter, dichter Auffangwanne nach AwSV ausgeführt – sie können ohne zusätzliche Vorkehrung auf wasserdurchlässigem Untergrund (Schotter, gewachsener Boden) betrieben werden.",
+        },
+        {
+          question: "Wie wechseln Aggregate zwischen 230 V Schuko, CEE 16, 32 und 63 A?",
+          answer:
+            "Aggregate ab 5 kVA haben in der Regel mehrere Steckdosen parallel: 2× Schuko 230 V/16 A, 1× CEE 16 A blau (230 V), und je nach Größe CEE 16/32/63 A rot (400 V). Größere Aggregate (>20 kVA) typischerweise nur noch CEE 32 A bzw. 63 A rot. Verteiler mit Adaptern auf Schuko/Caravan-Steckdosen ergänzen wir aus unserer Kategorie \"Kabel & Stromverteiler\" – im Buchungsprozess kannst du beides kombinieren.",
+        },
+        {
+          question: "Sind die Aggregate für sensible Verbraucher (Server, LED-Pixel) geeignet?",
+          answer:
+            "Standardaggregate erzeugen Spannungen mit ±5–10 % Spannungs­toleranz und ±2,5 % Frequenztoleranz – das ist für Bauwerkzeuge und Beleuchtung unkritisch. Für sensible Verbraucher (Medizintechnik, Server, hochwertige Eventtechnik mit LED-Pixel und Funk-Strecken) bieten wir Inverter- bzw. Stage-V-Aggregate mit deutlich saubererer Sinusspannung (THD < 5 %) und engerer Toleranz. Bitte bei der Buchung in Bonn angeben, welche Verbraucher angeschlossen werden.",
+        },
+        {
+          question: "Welchen Kraftstoffverbrauch muss ich einplanen?",
+          answer:
+            "Richtwerte (Diesel) je nach Last: 5-kVA-Aggregat bei 70 % Last ca. 1,5 l/h, 13-kVA-Aggregat ca. 3 l/h, 40-kVA-Aggregat ca. 9 l/h, 100-kVA-Aggregat ca. 22 l/h. Bei Volllast 30–50 % mehr, bei 25 % Last 30–40 % weniger. Die Tankgröße ist bei unseren Bauaggregaten so dimensioniert, dass ein 8-Stunden-Schichtbetrieb ohne Nachtanken möglich ist (typisch 60–250 l Tankinhalt). AdBlue bei Stage-V-Aggregaten analog – im Datenblatt jedes Aggregats.",
+        },
+        {
+          question: "Welche Versicherung greift bei einem Defekt am angeschlossenen Verbraucher?",
+          answer:
+            "Wir liefern geprüfte, technisch einwandfreie Aggregate (DIN VDE 0100-551 / DGUV V3); im seltenen Fall eines Aggregat-Defekts (Spannungs­überhöhung, Frequenz­drift) prüfen wir gemeinsam den Ablauf. Schäden an angeschlossenen Verbrauchern werden im Einzelfall geprüft – häufige Schadens­ursache ist nicht das Aggregat, sondern fehlende Erdung, falsche Belastung (Schieflast) oder unzulässige Kabel­querschnitte. Eine separate Maschinen­bruch­versicherung für hochwertige eigene Verbraucher empfiehlt sich.",
+        },
+        {
+          question: "Vermieten wir auch Pumpen, Kompressoren und Schweißaggregate?",
+          answer:
+            "Ja. Schmutzwasserpumpen 1–5\" für Baugruben­entwässerung, Tauchpumpen für Keller­überflutung (auch leihweise im Notfall), Druckluft­kompressoren 5–10 bar für Druckluft­werkzeuge und Sandstrahlen, fahrbare Schweißaggregate (Inverter-WIG/MAG) für Bau­schweißarbeiten. Verfügbarkeit am Standort Bonn zeigt jedes Produkt direkt an; Spezial­ausführungen liefern wir aus dem Hauptsitz Krefeld nach.",
+        },
+        {
+          question: "Was kostet die Aggregat-Miete in Bonn und gibt es Kraftstoff-Pakete?",
+          answer:
+            "Tagespreise pro Aggregat sind tagesaktuell im Buchungsprozess hinterlegt; Diesel wird nach Rückgabe nach vollem Tank abgerechnet. Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15 Tagessätzen. Für mehrwöchige Bau­einsätze bieten wir auf Wunsch ein Kraftstoff-Logistikpaket (Tankwagen-Befüllung vor Ort) – Anfrage unter 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Leistungsauslegung: kVA, Wirkleistung und Anlaufstrom",
+          paragraphs: [
+            "Stromaggregate werden in Scheinleistung kVA angegeben, Verbraucher meist in Wirkleistung kW. Faustregel: kVA ≈ kW × 1,1–1,4, abhängig vom Leistungsfaktor (cos φ). Reine Heiz- und Glühlampen-Lasten haben cos φ ≈ 1, Motoren und Frequenzumrichter cos φ ≈ 0,8. Zusätzlich kritisch: der Anlaufstrom von Motoren kann das 3-fache (Sanftanlauf), 5-fache (Stern-Dreieck-Anlauf) oder 7-fache (Direktanlauf) des Nennstroms erreichen – ein Aggregat muss diesen Spitzen kurzzeitig liefern können, ohne dass die Spannung einbricht.",
+            "Praxis: Für eine Hubarbeitsbühne mit 7,5-kW-Hubmotor empfehlen wir mindestens 20 kVA Aggregatleistung, obwohl die Dauerleistung nur 7,5 kW beträgt. Wir rechnen das bei der Buchung in Bonn gemeinsam mit dir durch – bitte die größten Einzelverbraucher mit kW und Anlauf­art (Direkt, Stern-Dreieck, Sanft, Frequenz­umrichter) angeben.",
+          ],
+        },
+        {
+          h3: "Erdung und Schutzkonzept: warum DIN VDE 0100-551 zählt",
+          paragraphs: [
+            "DIN VDE 0100-551 regelt die Erdung von Niederspannungs-Stromerzeugungs­anlagen. Kleinaggregate bis 10 kVA mit interner Schutztrennung (Trafo im Aggregat) sind als IT-System ausgelegt – jeder Abgang braucht einen RCD (FI) ≤ 30 mA als Personen­schutz. Ab ca. 10 kVA wird das Aggregat als TN-S betrieben, der Sternpunkt wird mit einem Erdungsstab geerdet; ein RCD ist auch hier auf jedem 230-V-Abgang Pflicht.",
+            "Auf der Baustelle in Bonn bedeutet das praktisch: Erdungsstab 1,5 m Tiefe in den gewachsenen Boden (nicht im verdichteten Bauschutt), Erdungsleitung mit Querschnitt ≥ 16 mm² Cu, Verbindung am Aggregat-PE. Erdungswiderstand mit einem Erdungsmessgerät messen (idealerweise ≤ 4 Ω). Wir geben Erdungsspieß und passende Leitung mit aus; der Nachweis der Erdung gehört zur DGUV-V3-Pflicht für die Bau-Elektrik.",
+          ],
+        },
+        {
+          h3: "Geräusch- und Schadstoffemissionen: 32. BImSchV, Stage V und der Gewinn an Sauberkeit",
+          paragraphs: [
+            "Die 32. BImSchV begrenzt die Geräuschemission von im Freien betriebenen Geräten – Stromerzeuger sind im Anhang gelistet. Konformitäts­bewertete Aggregate tragen das CE-Kennzeichen plus die garantierte LWA-Angabe in dB(A). Unsere schallgedämmten Bauaggregate liegen typisch bei 95–98 dB(A) LWA, Stage-V-„Whisper\"-Aggregate bei 85–90 dB(A) LWA. In 7 m Abstand entspricht das 65–75 dB(A) bzw. 55–65 dB(A).",
+            "Schadstoff­seitig löst die EU-Stage-V (Verordnung 2016/1628) seit 2020 die alte Stufe IV ab und reduziert Partikel- und NOx-Emissionen drastisch (Partikelfilter, AdBlue-SCR). Praxis: In Innenstadtbereichen und Eventlocations mit Anwohner­nähe (Bonner Innenstadt, Beuel-Süd, Bad Godesberger Kurbereich) ist Stage V die richtige Wahl – wir halten am Standort Bonn beide Generationen vor und beraten zur passenden Stufe.",
+          ],
+        },
+        {
+          h3: "Gewässerschutz und Betankung: AVV/AwSV in der Praxis",
+          paragraphs: [
+            "Dieselaggregate fallen unter die AwSV (Anlagen­verordnung wasser­gefährdender Stoffe). Wichtige Schwellenwerte: Aggregate mit Tankinhalt > 220 l sind anlagenbezogen einzustufen; Aufstellung auf wassergefährdetem Boden (Wasserschutzgebiet, Überschwemmungsgebiet) erfordert zusätzliche Auffangwannen. Unsere Bauaggregate ab 20 kVA sind doppelwandig mit integrierter Auffangwanne ausgeführt – das deckt die typischen Bonner Baustellen­anforderungen ab.",
+            "Bei der Betankung gelten: Kein Betanken bei laufendem Motor, Abstand zu Zündquellen, Betankung mit Pistolen­ventil oder Trichter, keine offenen Kanister auf der Aggregat-Oberseite. Für mehrwöchige Mieten organisieren wir auf Wunsch eine Tankwagen-Befüllung vor Ort durch unseren Logistik-Partner – das vermeidet Kanister­transporte mit dem Pkw (gefahrgut­rechtlich begrenzt auf 240 l).",
+          ],
+        },
+        {
+          h3: "Bonn-spezifisch: vom Hochwasser-Notbetrieb bis zum Stage-V-Eventaggregat in der Innenstadt",
+          paragraphs: [
+            "Im Bonner Liefergebiet decken Aggregate vier typische Einsatzfelder ab. Notstrom bei Hochwasser (Ahrtal, Rheinauen): mobile Aggregate 5–20 kVA, kurzfristig verfügbar – wir halten Reserve-Aggregate für solche Lagen bereit. Baustromversorgung in Bonner Tiefbau- und GaLaBau-Projekten: 13–40 kVA als Standard-Bauaggregat, schallgedämmt. Eventversorgung in der Bonner Innenstadt (Münsterplatz, Marktplatz, Hofgarten): Stage-V-Whisper-Aggregate 40–60 kVA wegen Wohnnähe und Tagungsbetrieb.",
+            "Industriestrom für temporäre Gewerbeprojekte (Sankt Augustin, Beuel-Nord): 60–100+ kVA mit CEE-32/63-A-Verteilern. Beratung zur passenden Größe und Schadstoff­klasse telefonisch unter 0228 504 660 61. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – für Notfälle (Hochwasser, Stromausfall) erreichst du uns auch außerhalb der Öffnungszeiten über die Standortnummer.",
+          ],
+        },
+      ],
+    },
+  },
+
+  // Mülheim und weitere Bonn-Tranchen folgen analog.
 };
 
 export function getCategoryExpertContent(
