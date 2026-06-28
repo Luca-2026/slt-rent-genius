@@ -11,13 +11,13 @@
 //    DIN, StVZO/StVO, LAGA, TA-Lärm, BG-BAU, Herstellerangabe,
 //    locationData.ts). Wenn nicht belegbar → weglassen.
 // 2. Quellen werden im Code-Kommentar über jedem Abschnitt
-//    benannt, im Frontend NICHT als „Quelle: …" gerendert,
+//    benannt, im Frontend NICHT als „Quelle: …“ gerendert,
 //    sondern fachlich-natürlich formuliert.
 // 3. Standortspezifika nur, wenn sie in einem anderen Standort
 //    nicht stimmen würden (Liefergebiet, Öffnungszeiten,
 //    Hauptsitz/Filiale/Service-Standort).
 // 4. Keine Preisversprechen, die im Buchungsprozess nicht
-//    hinterlegt sind. „Ab"-Preise nur, wenn sie aus rentalData
+//    hinterlegt sind. „Ab“-Preise nur, wenn sie aus rentalData
 //    bzw. dem Shop belegbar sind.
 
 export interface ExpertFaq {
@@ -53,7 +53,7 @@ export const categoryExpertContent: ExpertContentMap = {
     // Quellen für Fakten:
     //   - DGUV Vorschrift 1 (Grundsätze der Prävention)
     //   - DGUV Grundsatz 308-009 „Ausbildung und Beauftragung
-    //     von Bedienern von Erdbaumaschinen"
+    //     von Bedienern von Erdbaumaschinen“
     //   - DGUV Regel 101-004 (Hydraulikschläuche)
     //   - DIN 4124 (Baugruben und Gräben – Böschungen,
     //     Verbau, Arbeitsraumbreiten)
@@ -75,7 +75,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Brauche ich einen Baggerschein, um einen Minibagger zu mieten?",
           answer:
-            "Privat – also auf dem eigenen, nicht öffentlich zugänglichen Grundstück – ist kein formaler Schein vorgeschrieben; eine sorgfältige Geräteeinweisung bekommst du bei der Übergabe in Krefeld. Sobald die Maschine gewerblich oder auf einer fremden Baustelle eingesetzt wird, fordert die DGUV-Regel 100-500 in Verbindung mit DGUV Grundsatz 308-009 einen Befähigungsnachweis („Bedienerausweis Erdbaumaschinen"). Den stellen wir nicht aus – der Auftraggeber bzw. Arbeitgeber muss die Beauftragung dokumentieren. Wir prüfen das bei gewerblicher Vermietung im Buchungsprozess.",
+            "Privat – also auf dem eigenen, nicht öffentlich zugänglichen Grundstück – ist kein formaler Schein vorgeschrieben; eine sorgfältige Geräteeinweisung bekommst du bei der Übergabe in Krefeld. Sobald die Maschine gewerblich oder auf einer fremden Baustelle eingesetzt wird, fordert die DGUV-Regel 100-500 in Verbindung mit DGUV Grundsatz 308-009 einen Befähigungsnachweis („Bedienerausweis Erdbaumaschinen“). Den stellen wir nicht aus – der Auftraggeber bzw. Arbeitgeber muss die Beauftragung dokumentieren. Wir prüfen das bei gewerblicher Vermietung im Buchungsprozess.",
         },
         {
           question: "Welche Anbaugeräte sind sinnvoll – und welche bekomme ich am Standort Krefeld?",
@@ -85,7 +85,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie schwer darf der Bagger sein, damit ich ihn mit dem PKW transportieren darf?",
           answer:
-            "Maßgeblich sind FeV Anlage 9 und die zulässige Gesamtmasse von Zugfahrzeug + Anhänger. Mit Klasse B (alt: Klasse 3) sind 3.500 kg zulässige Gesamtmasse der Kombination nicht zu überschreiten. Mit B96 erhöht sich das auf 4.250 kg, mit BE auf 7.000 kg. Ein 1-Tonnen-Minibagger plus passender Baumaschinenanhänger liegt in der Regel im BE-Bereich. Wir verleihen am Hauptsitz Krefeld gebremste Baumaschinen- und Plateauanhänger – der jeweilige Eintrag „zulässige Stützlast" und „Gesamtgewicht" steht in jedem Anhänger-Datenblatt.",
+            "Maßgeblich sind FeV Anlage 9 und die zulässige Gesamtmasse von Zugfahrzeug + Anhänger. Mit Klasse B (alt: Klasse 3) sind 3.500 kg zulässige Gesamtmasse der Kombination nicht zu überschreiten. Mit B96 erhöht sich das auf 4.250 kg, mit BE auf 7.000 kg. Ein 1-Tonnen-Minibagger plus passender Baumaschinenanhänger liegt in der Regel im BE-Bereich. Wir verleihen am Hauptsitz Krefeld gebremste Baumaschinen- und Plateauanhänger – der jeweilige Eintrag „zulässige Stützlast“ und „Gesamtgewicht“ steht in jedem Anhänger-Datenblatt.",
         },
         {
           question: "Welche Mindestabstände gelten beim Ausheben von Baugruben und Gräben?",
