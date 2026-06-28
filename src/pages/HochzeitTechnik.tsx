@@ -313,11 +313,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Tent className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Stehtische, Hussen &amp; Möbel</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Stehtische mit Stretchhussen (schwarz/weiß), 6er-/8er-/12er-
                   Bierzeltgarnituren, Klappstühle. Schnell auf- und abgebaut – auch
                   Selbstabholung im Pkw möglich.
                 </p>
+                <CategoryLocationDialog categoryId="moebel-zelte" categoryLabel="Möbel &amp; Zelte" triggerLabel="Zu Möbel &amp; Zelte" />
               </div>
             </Card>
 
