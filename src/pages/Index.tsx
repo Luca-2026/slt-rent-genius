@@ -343,12 +343,18 @@ export default function Index() {
             <div className="flex flex-col items-center max-w-4xl mx-auto">
               {/* Personal touch: Benedikt Nöchel */}
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                <img
-                  src={imgBenedikt}
-                  alt="Benedikt Nöchel – Geschäftsführer und Inhaber SLT Rental"
-                  className="h-20 w-20 md:h-24 md:w-24 rounded-full object-cover ring-4 ring-primary/20 shadow-lg"
-                  loading="lazy"
-                />
+                <a
+                  href="mailto:b.noechle@slt-rental.de"
+                  title="E-Mail an Benedikt Nöchel"
+                  className="shrink-0"
+                >
+                  <img
+                    src={imgBenedikt}
+                    alt="Benedikt Nöchel – Geschäftsführer und Inhaber SLT Rental"
+                    className="h-20 w-20 md:h-24 md:w-24 rounded-full object-cover ring-4 ring-primary/20 shadow-lg hover:ring-accent transition-all duration-300 cursor-pointer"
+                    loading="lazy"
+                  />
+                </a>
                 <div className="text-center md:text-left">
                   <p className="text-sm text-accent font-medium uppercase tracking-wide mb-1">
                     Dein persönlicher Ansprechpartner
@@ -357,7 +363,7 @@ export default function Index() {
                     Benedikt Nöchel
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Geschäftsführer & Inhaber · Standortleiter Krefeld
+                    Geschäftsführer & Inhaber
                   </p>
                 </div>
               </div>
