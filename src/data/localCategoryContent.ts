@@ -527,6 +527,103 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+    erdbewegung: {
+      hookline:
+        "Minibagger, Midibagger, Dumper und Anbaugeräte mietest du direkt an unserem Hauptsitz Krefeld – mit dem größten Mietpark der drei Standorte für Tiefbau, GaLaBau und Glasfaserausbau am gesamten Niederrhein.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Geliefert wird im gesamten Niederrhein-Raum: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Als Hauptsitz mit dem größten Mietpark führen wir das komplette Erdbewegungs-Sortiment – vom 1-Tonnen-Minibagger bis zu größeren Midibaggern, Dumpern und passenden Anbaugeräten – direkt vor Ort. Tieflader-Transport für größere Maschinen organisieren wir bei Bedarf mit.",
+      faqs: [
+        {
+          q: "Welche Bagger und Dumper habt ihr am Hauptsitz Krefeld vor Ort?",
+          a: "An unserem Hauptsitz Krefeld führen wir das komplette Erdbewegungs-Sortiment direkt vor Ort – darunter Minibagger ab 1 Tonne, Midibagger, Dumper und passende Anbaugeräte. Als Hauptsitz mit dem größten Mietpark der drei Standorte ist die Verfügbarkeit hier am höchsten. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Liefert ihr Minibagger nach Meerbusch, Willich, Mönchengladbach oder Neuss?",
+          a: "Ja. Ab unserem Hauptsitz Krefeld liefern wir Minibagger, Dumper und Anbaugeräte in das gesamte Niederrhein-Liefergebiet: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über die A57 und A40, Lieferung in der Regel am nächsten Werktag. Bei größeren Maschinen organisieren wir den Tieflader-Transport mit.",
+        },
+        {
+          q: "Kann ich den Bagger am Hauptsitz Krefeld auch samstags abholen?",
+          a: "Ja. Unser Hauptsitz in der Anrather Straße 291 ist samstags regulär von 10:00 bis 14:30 Uhr geöffnet – ohne Voranmeldung. Wer bereits früher abholen möchte, kann das nach vorheriger Buchung organisieren. Werktags öffnen wir Mo–Fr von 08:00 bis 18:00 Uhr.",
+        },
+      ],
+    },
+
+    verdichtung: {
+      hookline:
+        "Rüttelplatten von 60 bis 600 kg, Stampfer und Walzen mietest du am Hauptsitz Krefeld – mit Lieferung in das gesamte Niederrhein-Liefergebiet und kompletter Größenpalette vor Ort.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Als Hauptsitz mit dem größten Mietpark führen wir Rüttelplatten in allen Gewichtsklassen, Vibrationsstampfer und Walzen komplett vor Ort. Geliefert wird im gesamten Niederrhein-Raum: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd – in der Regel am nächsten Werktag.",
+      faqs: [
+        {
+          q: "Welche Rüttelplatten habt ihr am Hauptsitz Krefeld vor Ort?",
+          a: "Am Hauptsitz Krefeld führen wir die komplette Größenpalette direkt vor Ort: Vorlauf-Rüttelplatten für Pflasterarbeiten (rund 60–120 kg) sowie reversierbare Rüttelplatten in den größeren Gewichtsklassen für Verdichtung im Tief- und Straßenbau. Ergänzend dazu Vibrationsstampfer für Gräben und Walzen für größere Flächen. Den konkreten Verfügbarkeits-Status und das passende Eigengewicht zeigen wir an jedem Produkt direkt an.",
+        },
+        {
+          q: "Liefert ihr Rüttelplatten nach Mönchengladbach, Neuss oder Düsseldorf-Linksrheinisch?",
+          a: "Ja. Ab unserem Hauptsitz Krefeld liefern wir Rüttelplatten, Stampfer und Walzen ins gesamte Niederrhein-Gebiet: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über die A57 und A40, in der Regel am nächsten Werktag.",
+        },
+      ],
+    },
+
+    arbeitsbuehnen: {
+      hookline:
+        "Scheren-, Mast-, Gelenk- und Anhängerbühnen mietest du am Hauptsitz Krefeld – mit kompletter Höhenpalette vor Ort und Lieferung in den gesamten Niederrhein.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Als Hauptsitz mit dem größten Mietpark führen wir Scherenbühnen, Mastbühnen, Gelenkbühnen sowie Anhängerbühnen (PKW-anhängbar, Führerschein BE) in einer breiten Höhenpalette direkt vor Ort. Geliefert wird im gesamten Niederrhein-Raum: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Für Anhängerbühnen ist die Selbstabholung mit dem eigenen Zugfahrzeug die häufigste Variante – Self-Drive zum Einsatzort, ohne Tieflader-Logistik.",
+      faqs: [
+        {
+          q: "Welche Arbeitsbühnen habt ihr am Hauptsitz Krefeld vor Ort?",
+          a: "Am Hauptsitz Krefeld führen wir das komplette Sortiment vor Ort: Scherenbühnen für flächige Innen- und Außenarbeiten, Mastbühnen für enge Räume und punktuelle Höhenarbeit, Gelenkbühnen für seitliches Ausladen über Hindernisse hinweg sowie Anhängerbühnen, die mit dem PKW (Führerschein BE) zum Einsatzort gezogen werden. Die jeweilige Arbeitshöhe und der konkrete Verfügbarkeits-Status sind an jedem Produkt direkt angegeben.",
+        },
+        {
+          q: "Kann ich die Anhängerbühne in Krefeld selbst mit dem PKW abholen?",
+          a: "Ja. Unsere Anhängerbühnen sind so ausgelegt, dass sie mit einem geeigneten Zugfahrzeug und der Fahrerlaubnis Klasse BE selbst am Hauptsitz Krefeld (Anrather Straße 291) abgeholt und zum Einsatzort gefahren werden können. Übergabe und Einweisung erfolgen Mo–Fr 08:00–18:00 Uhr oder samstags 10:00–14:30 Uhr direkt vor Ort.",
+        },
+        {
+          q: "Liefert ihr selbstfahrende Scheren- und Gelenkbühnen nach Düsseldorf-Linksrheinisch oder Mönchengladbach?",
+          a: "Ja. Selbstfahrende Bühnen liefern wir ab unserem Hauptsitz Krefeld in das gesamte Niederrhein-Gebiet: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über die A57 und A40, in der Regel am nächsten Werktag.",
+        },
+      ],
+    },
+
+    werkzeuge: {
+      hookline:
+        "Bohrhämmer, Abbruchhämmer, Kernbohrer, Fliesenschneider, Säbel- und Kreissägen sowie Bauleuchten und Messgeräte mietest du am Hauptsitz Krefeld – Selbstabholung im PKW oder Lieferung in den Niederrhein.",
+      standortFakten:
+        "Abholung am Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Als Hauptsitz mit dem größten Mietpark führen wir das komplette Werkzeug-Sortiment vor Ort: Bohrhämmer und Abbruchhämmer (Akku- und Netzbetrieb), Bohrschrauber, Winkelschleifer, Kreis-, Säbel- und Multicutter-Sägen, Schlagschrauber, Kernbohrgeräte, Fliesenschneider, Zwangsmischer, Bau- und Industriestaubsauger, Rotations- und Linienlaser, Ortungsgeräte sowie Bauleuchten. Die meisten Werkzeuge passen in jeden PKW oder Kombi und werden direkt mitgenommen; auf Wunsch liefern wir ergänzend in das Niederrhein-Gebiet Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd.",
+      faqs: [
+        {
+          q: "Kann ich Werkzeuge am Hauptsitz Krefeld einfach im PKW mitnehmen?",
+          a: "Ja. Bohrhämmer, Abbruchhämmer, Bohrschrauber, Winkelschleifer, Sägen, Fliesenschneider, Laser und Bauleuchten passen in der Regel in jeden PKW oder Kombi und können am Hauptsitz Krefeld (Anrather Straße 291) direkt mitgenommen werden. Größere Geräte wie Zwangsmischer oder Kernbohrständer liefern wir bei Bedarf in das Niederrhein-Gebiet.",
+        },
+        {
+          q: "Welche Bohrhämmer und Kernbohrer habt ihr in Krefeld vor Ort?",
+          a: "Am Hauptsitz Krefeld führen wir das komplette Werkzeug-Sortiment vor Ort – darunter SDS-Plus- und SDS-Max-Bohrhämmer, Abbruchhämmer in mehreren Gewichtsklassen sowie Kernbohrgeräte für Beton und Mauerwerk. Den konkreten Verfügbarkeits-Status und die passenden Aufnahmen zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
+    aggregate: {
+      hookline:
+        "Stromaggregate, Kompressoren, Druckluftwerkzeuge und Erdraketen mietest du am Hauptsitz Krefeld – mit kompletter Leistungsklasse vor Ort und Lieferung in den gesamten Niederrhein.",
+      standortFakten:
+        "Abholung am Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Als Hauptsitz mit dem größten Mietpark führen wir Stromaggregate (Akkupack und Diesel) in verschiedenen Leistungsklassen, Schraubenkompressoren mit passendem Druckluftwerkzeug sowie Erdraketen für die grabenlose Verlegung direkt vor Ort. Geliefert wird im gesamten Niederrhein-Raum: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Für Baustrom-Lösungen mit Aggregat plus passendem Endverteilerschrank kombinieren wir das Aggregat mit unserem Kabel- und Stromverteiler-Sortiment vom selben Standort.",
+      faqs: [
+        {
+          q: "Welche Stromaggregate habt ihr am Hauptsitz Krefeld vor Ort?",
+          a: "Am Hauptsitz Krefeld führen wir Stromaggregate in mehreren Leistungsklassen vor Ort – vom leisen Akkupack für sensible Innenraum-Anwendungen bis zu Diesel-Stromerzeugern für Baustellen und Veranstaltungen. Den konkreten Verfügbarkeits-Status und die passende Leistung (kVA) zeigen wir an jedem Produkt direkt an. Für größere Baustellen kombinieren wir das Aggregat mit unseren Endverteilerschränken aus der Kategorie Kabel & Stromverteiler.",
+        },
+        {
+          q: "Liefert ihr Aggregate und Kompressoren nach Mönchengladbach, Neuss oder Düsseldorf-Linksrheinisch?",
+          a: "Ja. Ab unserem Hauptsitz Krefeld liefern wir Stromaggregate, Kompressoren und Druckluftwerkzeuge in das gesamte Niederrhein-Gebiet: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über die A57 und A40, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Habt ihr auch Erdraketen für den grabenlosen Hausanschluss?",
+          a: "Ja. Am Hauptsitz Krefeld führen wir Erdraketen für die grabenlose Verlegung von Strom-, Wasser- und Glasfaser-Hausanschlüssen direkt vor Ort. Den passenden Durchmesser und die Verfügbarkeit zeigen wir an jedem Produkt direkt an.",
+        },
+      ],
+    },
+
     // Weitere Kategorien folgen in den nächsten Sprints.
   },
 
