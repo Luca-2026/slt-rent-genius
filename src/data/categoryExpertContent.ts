@@ -3858,6 +3858,495 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // MÖBEL & ZELTE – Bonn
+    // Quellen: DIN EN 13782/13814, SBauVO NRW Teil 5, MFlBauR 2015,
+    //   § 73 BauO NRW, DIN EN 1991-1-4 (Windzone 2), DIN 4102-1 /
+    //   EN 13501-1 (B1/Cs3d0), DGUV Information 215-313.
+    // -------------------------------------------------------------
+    "moebel-zelte": {
+      faqs: [
+        {
+          question: "Welche Zeltgröße brauche ich für wie viele Gäste in Bonn?",
+          answer:
+            "Faustregel: Stehempfang 0,5–0,8 m²/Person, Sitzdinner an Bierzeltgarnituren 0,8–1,0 m²/Person, Bankett mit runden Tischen 1,2–1,5 m²/Person. Für 60 Personen Sitzdinner ist ein 5 × 10 m Partyzelt (50 m²) zu klein – realistisch sind 6 × 12 m. Wir beraten am Standort Bonn-Mehlem (Drachenburgstraße 1B) zur passenden Größe inklusive Tanzfläche, Buffet- und Bar-Bereich – telefonisch unter 0228 504 660 61.",
+        },
+        {
+          question: "Sind Partyzelte ab einer bestimmten Größe genehmigungspflichtig?",
+          answer:
+            "Für rein private Nutzung auf Privatgrund (z. B. Garten in Bad Godesberg, Plittersdorf oder Beuel) sind Partyzelte bis 75 m² regelmäßig genehmigungsfrei. Bei öffentlich zugänglichen Veranstaltungen oder Zelten über 75 m² (§ 73 BauO NRW i. V. m. MFlBauR 2015) ist eine Ausführungsgenehmigung mit Prüfbuch nach DIN EN 13782/13814 erforderlich. Wir stellen die Herstellerunterlagen (Standsicherheits- und Brandschutznachweis) bereit; die Anzeige bzw. Genehmigung erfolgt bei der Bauaufsicht der Stadt Bonn (Berliner Platz 2).",
+        },
+        {
+          question: "Wie windstabil sind die Zelte – ab welcher Windgeschwindigkeit muss abgebaut werden?",
+          answer:
+            "Klassische Partyzelte (PE-Plane, Steckgestänge) sind nach Herstellerangabe bis Windstärke 5 Bft (ca. 38 km/h) ausgelegt. Profi-Pagoden- und PVC-Profizelte nach DIN EN 13782 sind bei korrekter Verankerung deutlich höher belastbar – die Werte stehen im Prüfbuch. Bonn liegt wie Krefeld in Windzone 2 nach DIN EN 1991-1-4/NA. Bei DWD-Sturmwarnung – im Rheintal und am Venusberg keine Seltenheit – ist der Veranstalter verpflichtet, das Zelt zu räumen und ggf. abzubauen.",
+        },
+        {
+          question: "Wie wird ein Partyzelt fachgerecht verankert?",
+          answer:
+            "Auf Rasen: Heringe ab 50 cm Länge je Eckpunkt plus Sturmabspannungen. Auf versiegeltem Untergrund (Pflaster am Münsterplatz, Asphalt in der Rheinaue) arbeiten wir mit Ballastgewichten – Standard 50–80 kg je Eckpunkt bei Partyzelten, 150–300 kg bei Profizelten gemäß Standsicherheitsnachweis. Heringe liefern wir mit; Ballastgewichte können auf Anfrage organisiert werden.",
+        },
+        {
+          question: "Welche Brandschutzanforderungen gelten für Zeltplanen und Möbel?",
+          answer:
+            "Bei genehmigungspflichtigen Fliegenden Bauten muss die Plane mindestens schwer entflammbar nach DIN 4102-1 Klasse B1 bzw. EN 13501-1 Klasse C-s3,d0 sein – Nachweis über das Prüfbuch. In Versammlungsstätten nach SBauVO NRW Teil 5 (typisch WCCB, Beethovenhalle, La Redoute) gilt dasselbe für Tischdecken und Dekoration. Unsere Profizelte erfüllen B1; klassische Garten-Partyzelte (privat) sind regelmäßig nicht zertifiziert – außerhalb von Versammlungsstätten zulässig.",
+        },
+        {
+          question: "Wie viele Bierzeltgarnituren brauche ich für meine Veranstaltung?",
+          answer:
+            "Eine Standard-Garnitur (Tisch 220 × 50 cm + 2 Bänke à 220 × 25 cm) bietet 8–10 Sitzplätze. Für 60 Gäste also 6–8 Garnituren. Bei Stehausschank (Schützenfest, Pützchens Markt-Stil) reichen Stehtische à 4–6 Personen. Wir empfehlen 10–15 % Reserveplätze.",
+        },
+        {
+          question: "Welche Stuhl- und Tischformate sind für Bankett oder Hochzeit üblich?",
+          answer:
+            "Runde Tische 160 cm Durchmesser (8–10 Personen) oder Bankett-Tische 180/200 × 80 cm (6–8 Personen). Als Bestuhlung gepolsterte Bankett- oder Chiavari-Stühle. Wir führen am Standort Bonn-Mehlem Bankett-Stühle und Tische in haushaltsüblichen Mengen vor; Lounge-Möbel, Theken-Sets und Spezialformate auf Anfrage – Nachlieferung aus dem Hauptlager Krefeld bei Großbestellungen möglich.",
+        },
+        {
+          question: "Wie ist der Auf- und Abbau organisiert – mit oder ohne Personal?",
+          answer:
+            "Zelte bis 5 × 10 m können geübte Selbstbauer mit 3–4 Personen in 1,5–2 Stunden aufstellen. Ab 6 × 12 m sowie bei allen Pagoden- und Profizelten empfehlen wir den Aufbauservice durch unser Team – aus Sicherheits- und Standsicherheitsgründen. Möbel werden auf Paletten geliefert; Auf-/Abbau der Möbel übernimmt der Veranstalter. Aufbauservice kalkulieren wir nach Aufwand und Anfahrt vom Bonner Standort (Mehlem, B9-Anbindung).",
+        },
+        {
+          question: "Was ist beim Heizen oder Beleuchten im Zelt zu beachten?",
+          answer:
+            "Heizpilze und Gas-Heizstrahler sind in geschlossenen Zelten unzulässig (CO-Gefahr, DGUV 213-056). Für beheizte Zelte gibt es Direktluft-Heizgeräte mit Außenaufstellung und Warmluftschlauch ins Zelt (Kategorie Heizung & Trocknung). Beleuchtung nur über Niedervolt-LED oder fachgerecht installierte 230-V-Anlagen nach DIN VDE 0100-711. Offene Flammen im B1-Zelt nur mit feuersicherer Halterung und Abstand zu Planen – siehe SBauVO NRW Teil 5.",
+        },
+        {
+          question: "Bis wann muss ich Zelt und Möbel für Bonn reservieren?",
+          answer:
+            "In der Hauptsaison Mai–September empfehlen wir am Standort Bonn 4–6 Wochen Vorlauf, für Großzelte und komplette Hochzeits-Setups 8–12 Wochen. Rund um Bonn-Festtermine (Beethovenfest, Pützchens Markt, Rhein in Flammen) bitte noch früher anfragen, weil Eventbestand stadtweit gebunden ist. Verfügbarkeit zeigen wir tagesaktuell im Buchungsprozess.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Fliegende Bauten in Bonn: Prüfbuch, Genehmigung und Veranstalterpflichten",
+          paragraphs: [
+            "Ein \"Fliegender Bau\" nach § 73 BauO NRW ist ein wiederholt aufgestellter und zerlegter Bau – Partyzelte ab 75 m², Bühnen ab 5 m Tiefe, Tribünen. Die MFlBauR 2015 verlangt dafür eine Ausführungsgenehmigung, die einmalig vom Hersteller beantragt und ins Prüfbuch eingetragen wird (bundesweit gültig).",
+            "Der Veranstalter muss das Prüfbuch am Aufstellort vorhalten und die Gebrauchsabnahme bei der Bauaufsicht der Stadt Bonn (Amt 63, Berliner Platz 2) anzeigen bzw. beantragen. Für unsere genehmigungspflichtigen Mietzelte liefern wir das Prüfbuch – Anzeige/Genehmigung beim Bauamt Bonn bleibt Aufgabe des Veranstalters. Bei Veranstaltungen auf öffentlichen Bonner Flächen (Hofgarten, Rheinaue, Münsterplatz) kommt die Sondernutzungserlaubnis des Tiefbauamts/Ordnungsamts hinzu.",
+          ],
+        },
+        {
+          h3: "Standsicherheit und Windlasten am Rhein nach DIN EN 1991-1-4",
+          paragraphs: [
+            "Bonn liegt – wie das gesamte linke Niederrhein-Gebiet – in Windzone 2 nach DIN EN 1991-1-4/NA mit einer Bezugswindgeschwindigkeit von 25 m/s (≈ 90 km/h). Lokale Besonderheit: das Rheintal kanalisiert Westwindlagen, am Drachenfels/Siebengebirge entstehen Düseneffekte mit Böenspitzen über den Mittelwerten. Standsicherheitsnachweise unserer Profizelte berücksichtigen das; klassische Garten-Partyzelte sind typisch nur bis 38 km/h ausgelegt.",
+            "Bei Verankerung auf Rasen reichen Standard-Heringe; auf versiegelten Flächen (Pflaster Münsterplatz, Asphalt Rheinwerft) müssen Ballaste eingesetzt werden, deren Masse aus dem Standsicherheitsnachweis hervorgeht. Verankerungspunkte sind nicht verhandelbar – sie sichern Personen, nicht nur das Zelt.",
+          ],
+        },
+        {
+          h3: "Brandverhalten: B1, Cs3d0 und die SBauVO NRW bei Bonner Versammlungsstätten",
+          paragraphs: [
+            "Versammlungsstätten nach SBauVO NRW Teil 5 (ab 200 Personen in Räumen, ab 1.000 Personen im Freien) verlangen schwer entflammbare Planen, Vorhänge und Dekomaterialien – DIN 4102-1 Klasse B1 bzw. EU-Brandklasse C-s3,d0 nach DIN EN 13501-1. Maßgeblich ist das Materialdatenblatt mit Prüfzeugnis.",
+            "Bei Locations wie WCCB, Beethovenhalle, La Redoute, Maritim oder Telekom-Forum prüft die Hausverwaltung diese Zertifikate vor Aufbaubeginn. Unsere Profi-Pagoden- und Großpartyzelte erfüllen B1 inkl. Datenblatt. Für Tischdecken und Dekoration vom Floristen/Stoffanbieter immer B1-Zertifikat einfordern – der Veranstalter haftet im Brandfall mit.",
+          ],
+        },
+        {
+          h3: "Bestuhlungs- und Flächenplanung: realistische m² pro Person",
+          paragraphs: [
+            "Häufigste Fehleinschätzung bei Eigenplanung von Hochzeiten und Firmenfeiern ist eine zu enge Bestuhlung. Verbindliche Orientierungswerte: Stehempfang 0,5 m²/Person, Reihenbestuhlung (Trauung, Vortrag) 0,8 m²/Person, Bankett mit runden Tischen 1,2–1,5 m²/Person, Tanzfläche zusätzlich 0,5–0,8 m²/tanzendem Gast.",
+            "Hinzu kommen Funktionsflächen: Buffet 1,5–2 m² pro lfd. Meter Buffetkante, Bar 4–6 m² je Theke, DJ/Band-Bühne 6–15 m². Wir kalkulieren das in der Beratung am Standort Bonn-Mehlem konkret für Gästezahl und Eventform – auf Wunsch mit Skizze für die Location (Rheinaue, Hofgarten, La Redoute, eigener Garten).",
+          ],
+        },
+        {
+          h3: "Lieferung im Raum Bonn/Rhein-Sieg: was wir abdecken",
+          paragraphs: [
+            "Vom Standort Bonn-Mehlem (Drachenburgstraße 1B) liefern wir Zelte und Eventmöbel im gesamten Bonner Stadtgebiet, dem Rhein-Sieg-Kreis (Königswinter, Bad Honnef, Niederkassel, Troisdorf, Sankt Augustin, Siegburg, Hennef, Meckenheim, Rheinbach), Bonn-Beuel/Hardtberg sowie auf der linken Rheinseite bis Bornheim und Wesseling. Über die B9 und A555/A565 sind alle Liefergebiete unkompliziert erreichbar.",
+            "Selbstabholung von Bierzeltgarnituren, Stehtischen, Stühlen und Kleinzelten ist möglich; benötigt wird ein passender Anhänger oder Transporter (siehe Kategorie Anhänger, am Standort Bonn vor Ort). Größere Zelte ab 5 × 10 m vermieten wir aus Sicherheits- und Standsicherheitsgründen ausschließlich mit Lieferung und Aufbau durch unser Team. Anfragen unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // GESCHIRR, GLÄSER & BESTECK – Bonn
+    // Quellen: VO (EG) 852/2004, LMHV, DIN 10510/10512, DIN 10516,
+    //   VO (EG) 1935/2004, BedGgstV, BfR-Empfehlung XXXVI.
+    // -------------------------------------------------------------
+    "geschirr-glaeser-besteck": {
+      faqs: [
+        {
+          question: "Wie viele Teller, Gläser und Besteck-Sets brauche ich pro Gast?",
+          answer:
+            "Klassisches Drei-Gänge-Menü: 3 Teller (Vorspeise/flach, Hauptgang, Dessert), 1 Suppentasse, 3 Bestecksätze, 3 Gläser (Wasser, Wein, Sekt/Bier). Buffet ohne fixe Gänge eher 2–3 Teller pro Gast (Mehrfachnutzung). Für Sektempfang 1,5–2 Sektgläser/Gast. Am Standort Bonn empfehlen wir 10–15 % Reserve – Gläser brechen statistisch häufiger als Teller.",
+        },
+        {
+          question: "Wird das Geschirr gespült geliefert oder muss ich selbst spülen?",
+          answer:
+            "Unser Mietgeschirr wird gewerblich nach DIN 10510/10512 gespült und einsatzbereit in Stiegen geliefert. Nach der Veranstaltung gibst du es grob entleert zurück; das Nachspülen übernehmen wir. Auf Wunsch kannst du gegen Aufschlag selbst nachspülen – dann muss das Geschirr trocken und schmutzfrei zurückkommen. Konditionen pro Artikelgruppe im Buchungsprozess hinterlegt.",
+        },
+        {
+          question: "Welches Glas für welches Getränk – die kurze Eventliste",
+          answer:
+            "Sekt/Champagner → Sektflöte 17–20 cl, Weißwein → Kelch 28–35 cl, Rotwein → Burgunderglas 45–60 cl, Wasser → Becher/Kelch 22–28 cl, Bier → Kölsch-Stange 0,2 l (Rheinland-Standard, auch in Bonn dominant) oder Pils-Tulpe 0,3 l, Longdrink → 30–40 cl Tumbler. Für Bonner Hochzeiten halten wir Standardformate als Sets vor; Champagner- und Cocktailgläser auf Anfrage.",
+        },
+        {
+          question: "Aus welchem Material sind die Mietgläser – Echtglas oder Polycarbonat?",
+          answer:
+            "Standard ist Echtglas (Kalk-Natron) – optisch und haptisch das Original und für Hochzeiten/Bankette die richtige Wahl. Für Outdoor-Events ohne befestigte Flächen (Rheinaue, Strand-Events, Familienfeier mit Kindern) bieten wir Polycarbonat-Gläser an: bruchsicher, lebensmittelecht, optisch sehr nah an Glas.",
+        },
+        {
+          question: "Was passiert bei Bruch oder Verlust?",
+          answer:
+            "Bruch in haushaltsüblicher Höhe (typisch 1–3 % bei Gläsern) ist in der Mietkalkulation eingerechnet und kostenfrei. Darüber hinausgehender Bruch oder Verlust wird zum Wiederbeschaffungspreis berechnet – Stückpreise sind in den AGB transparent. Tipp: Gläser und Besteck in den Lieferstiegen sortiert zurückstellen, das vereinfacht die Zählung erheblich.",
+        },
+        {
+          question: "Sind die Materialien für den Lebensmittelkontakt zugelassen?",
+          answer:
+            "Ja. Sämtliches Geschirr, Besteck und alle Gläser entsprechen der EU-Rahmenverordnung (EG) 1935/2004 und der deutschen Bedarfsgegenstände-Verordnung (BedGgstV). Edelstahlbesteck aus 18/10 (X5CrNi18-10), Porzellan ist hartgebranntes Hotelporzellan, Gläser aus Kalk-Natron-Glas. Konformitätsnachweis des Herstellers auf Anfrage.",
+        },
+        {
+          question: "Welche Mengen führen wir am Standort Bonn vor Ort?",
+          answer:
+            "Am Standort Bonn-Mehlem halten wir gängige Sortimente für Veranstaltungen bis ca. 150 Personen direkt vor Ort vor (Hotelporzellan, Wein-/Wasser-/Sektgläser, 18/10-Besteck-Sets, Servierplatten, Kannen, Tabletts). Für Großevents (>150 Personen, z. B. Empfänge in der Beethovenhalle oder im WCCB) disponieren wir größere Stückzahlen mit wenigen Tagen Vorlauf aus dem Hauptlager Krefeld – Logistik organisieren wir.",
+        },
+        {
+          question: "Wie wird Geschirr transportiert und gelagert?",
+          answer:
+            "Geschirr in stapelbaren Profi-Stiegen, Gläser in Glas-Gitterkisten (jedes Glas in eigener Fachzelle, bruchsicher). Diese Behältnisse bleiben während der Mietzeit beim Kunden und werden zur Abholung wieder befüllt. Vorteil: kein Auspacken, direkter Einsatz – nach dem Event grob entleeren und zurück in Stiege/Kiste.",
+        },
+        {
+          question: "Kann ich Geschirr und Möbel im Paket mieten?",
+          answer:
+            "Ja – wir stellen für Bonner Veranstaltungen häufig komplette Setups zusammen: Zelt + Bierzeltgarnituren + Geschirr + Gläser + Besteck + Servierware aus einer Hand. Vorteil: ein Liefer-/Abholtermin, eine Rechnung, ein Ansprechpartner unter 0228 504 660 61. Im Beratungsgespräch kalkulieren wir das Paket für deine Gästezahl und Eventform (Stehempfang, Bankett, Buffet, Brunch).",
+        },
+        {
+          question: "Wie früh sollte ich Geschirr für eine Hochzeit reservieren?",
+          answer:
+            "Für Hochzeiten in der Hauptsaison (Mai–September, plus Dezember) empfehlen wir 6–10 Wochen vor dem Termin. Für die exakte Stückzahl reicht eine Vorab-Schätzung – die finale Menge stimmen wir 10–14 Tage vorher ab, sobald die finale Gästezahl steht.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Mengenplanung für Hochzeiten und Bankette – konkrete Beispielrechnung",
+          paragraphs: [
+            "Beispiel 80-Personen-Hochzeit in Bonn mit Sektempfang, Drei-Gänge-Menü und Abendbuffet: 80 × 2 Sektgläser (Empfang + Reserve) = 160 Sektflöten. 80 × 1 Wasserglas + 80 × 1 Weißweinglas + 80 × 1 Rotweinglas = 240 Stielgläser. Menü: 80 × 3 Teller + 80 × 1 Suppentasse = 320 Porzellanteile. Besteck: 80 × 3 Sätze à 3 Teile = 720 Besteckteile.",
+            "Plus 10–15 % Reserve, Servierware (Salatschüsseln, Platten, Saucieren, Brotkörbe) und Kaffeegedeck (Tasse, Untertasse, Kaffeelöffel, Kuchenteller, Kuchengabel) für die Tortenphase. Solche Setups stellen wir am Standort Bonn zusammen – inklusive Buffer für Mehrgang-Wechsel ohne Spülpause.",
+          ],
+        },
+        {
+          h3: "Hygiene und Spülstandards: DIN 10510/10512 in der Praxis",
+          paragraphs: [
+            "Gewerbliches Geschirrspülen ist in DIN 10510 (Gläser) und DIN 10512 (Geschirr) geregelt: Klarspülung bei 80–85 °C, Reinigung bei 55–65 °C, definierte Dosierung von Reiniger und Klarspüler – das sichert die mikrobiologische Reinheit nach VO (EG) 852/2004.",
+            "Unser Spülprozess erfüllt diese Normen. Für dich heißt das: keine Nachspül-Pflicht vor Rückgabe, keine Hygiene-Risiken gegenüber deinen Gästen. Wer Reste antrocknen lässt, riskiert allerdings Sonderreinigungs-Aufschläge – grob entleeren bleibt wichtig.",
+          ],
+        },
+        {
+          h3: "Materialkunde Glas: Kalk-Natron vs. Kristall vs. Polycarbonat",
+          paragraphs: [
+            "Kalk-Natron-Glas ist Standard im Eventbereich: robust, spülmaschinenfest, lebensmittelecht, optisch ansprechend, günstig in der Wiederbeschaffung. Kristallglas (bleifreies \"Crystal\") ist optisch hochwertiger, aber empfindlicher und teurer – im Mietkreislauf selten. Polycarbonat (PC) ist bruchsicher, lebensmittelecht und optisch sehr nah an Glas – ideal für Pool, Garten, Outdoor und Kinder.",
+            "Für klassische Bonner Hochzeiten in WCCB, La Redoute, Maritim oder Festsälen setzen wir Kalk-Natron-Echtglas ein. Polycarbonat-Sets bieten wir für Open-Air am Rheinufer, Familienfeiern mit Kindern und Sport-/Vereinsveranstaltungen an.",
+          ],
+        },
+        {
+          h3: "Besteck: 18/10, 18/0 und Stahlsorten im Vergleich",
+          paragraphs: [
+            "\"18/10\" steht für die Legierung: 18 % Chrom (Korrosionsschutz), 10 % Nickel (Glanz, Bearbeitbarkeit) – Werkstoff X5CrNi18-10, Standard für Hotelbesteck. \"18/0\" ist nickelfrei, magnetisch, matter – günstiger, für Bankett-Hochzeiten unüblich.",
+            "Wir vermieten am Standort Bonn ausschließlich 18/10-Besteck in Hotelqualität. Bonner Trinkwasser liegt bei ca. 8–14 °dH (weich bis mittelhart, Quelle: SWB) – 18/10 läuft hier kaum an und bleibt auch nach 100 Spülgängen hochwertig.",
+          ],
+        },
+        {
+          h3: "Lagerung, Transport und Bruchquoten in der Mietpraxis",
+          paragraphs: [
+            "Wir liefern Gläser in Glas-Gitterkisten (50er-/25er-Einsätze je nach Glasform), Porzellan in Geschirrkörben mit Trennzwischenlagen. Diese Verpackung minimiert Bruch im Transport. Während der Veranstaltung sind die häufigsten Bruchquellen: Servieren auf Schräglage, harte Untergründe (Steinplatten am Münsterplatz, Stahltische), Kinder und – statistisch nachweisbar – die letzte Stunde nach Mitternacht.",
+            "Statistisch entstehen bei normalen Bonner Hochzeitsabläufen Bruchquoten von 1–3 % bei Gläsern, < 1 % bei Porzellan, ≈ 0 % bei Besteck. Diese Werte sind im Mietpreis eingerechnet; nur Bruch deutlich darüber wird gesondert berechnet. Tipp: leere Gläser zeitnah einsammeln lassen – das senkt die Bruchquote spürbar.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // SPEZIALEFFEKTE – Bonn
+    // Quellen: 1. BImSchV, DGUV 215-313, DGUV Regel 113-004 (CO2),
+    //   ASR A3.6, SBauVO NRW Teil 5, 1. SprengV / SprengG § 20
+    //   (T1/T2), DIN 56950, DIN EN 12198, DGUV 215-310 (Laser).
+    // -------------------------------------------------------------
+    spezialeffekte: {
+      faqs: [
+        {
+          question: "Sind Nebelmaschinen und Hazer in geschlossenen Räumen erlaubt?",
+          answer:
+            "Ja, sofern die Nebelfluide herstellerseitig freigegeben sind (Wasser-Glykol/Glycerin, lebensmittelechte Komponenten) und die Raumlüftung nach ASR A3.6 sichergestellt ist. DGUV Information 215-313 gibt Hinweise zur szenischen Nebelnutzung. Brandmelder müssen für die Nebel-Phase durch eine Brandsicherheitswache überbrückt werden – das stimmen wir am Standort Bonn mit dem Veranstalter und der Location (z. B. Beethovenhalle, WCCB, Telekom-Forum) ab.",
+        },
+        {
+          question: "Wo liegt der Unterschied zwischen Nebel, Haze und Dunst?",
+          answer:
+            "Nebel (Fog) ist eine dichte Wolke – für Effekt-Cues, Bühnenbilder, Tanzeinlagen. Haze ist ein feiner, langanhaltender Schwebenebel und macht Licht- und Laserstrahlen sichtbar (Konzert-Standard). Dunst liegt dazwischen. Am Standort Bonn führen wir DMX-gesteuerte Nebelmaschinen, Profi-Hazer (Wasserbasis) und Bodennebel-Geräte.",
+        },
+        {
+          question: "Welche Sicherheitsabstände gelten bei CO2-Effekten?",
+          answer:
+            "CO2-Effekte (Jets, Cryo-Guns, Stage-Cooler) arbeiten mit flüssigem CO2 aus Druckflaschen. Hauptgefahr: Sauerstoffverdrängung in geschlossenen Räumen (CO2 schwerer als Luft) und Kälteverbrennungen (–78 °C). DGUV Regel 113-004: ab 4 Vol.-% CO2 Lebensgefahr. Praktisch: CO2-Effekte nur in gut belüfteten Räumen oder Outdoor, Sicherheitsabstand 3 m zum Publikum, kein Einsatz in Tiefgaragen, Bühnenkellern oder Räumen unter Erdniveau ohne Zwangsbelüftung.",
+        },
+        {
+          question: "Brauche ich für Pyrotechnik einen Befähigungsschein?",
+          answer:
+            "Ja. Pyrotechnik T1 (Bühnenpyrotechnik mit geringer Gefahr) und T2 (für nur fachkundige Personen) darf nur mit Befähigungsschein nach § 20 SprengG abgebrannt werden. Standard-Eventeffekte (Nebel, Haze, CO2, Konfetti, Streamer, Bubble) vermieten wir ohne Befähigungsschein-Pflicht; klassische Pyrotechnik vermitteln wir nur an Kunden mit nachgewiesenem Befähigungsschein oder über lizenzierte Pyrotechniker in unserem Netzwerk. Bei Großevents wie Rhein in Flammen wird das Höhenfeuerwerk ohnehin von spezialisierten Pyro-Crews ausgeführt.",
+        },
+        {
+          question: "Wie funktionieren Konfetti- und Streamer-Shooter – Druckluft oder CO2?",
+          answer:
+            "Handgeräte (Party-Popper, Hand-Shooter bis ca. 50 cm Wurfweite) sind mechanisch federgespannt. Stationäre Bühnen-Shooter arbeiten mit Druckluft (Kompressor) oder elektrisch gezündeten Druckkartuschen. Profi-Stadium-Shooter laufen über CO2-Druckflaschen, Wurfweiten bis 20 m. Am Standort Bonn führen wir den klassischen Veranstaltungsbedarf (Hand- und Standgeräte für Hochzeit/Firmenfeier); Bühnen-Stadium-Shooter auf Projektbasis.",
+        },
+        {
+          question: "Welche Konfetti- und Streamer-Materialien sind umweltverträglich?",
+          answer:
+            "Klassisches Konfetti ist Papier (FSC-zertifiziert, biologisch abbaubar) oder Metallfolie (Mylar – glänzend, nicht abbaubar). Für Outdoor in Bonn (Rheinaue, Hofgarten, Münsterplatz) empfehlen wir FSC-Papierkonfetti – wirft sich gut, regnet schön, ist biologisch abbaubar. Foliekonfetti nur in Innenräumen – in Bonner Grünanlagen und Uferbereichen ist nicht-abbaubares Wurfmaterial in der Regel untersagt.",
+        },
+        {
+          question: "Welche Brandmelder-Konsequenzen haben Nebel und Haze?",
+          answer:
+            "Optische Rauchmelder (Standard in Hotels, Sälen, Industriehallen) sprechen auf Nebel und Haze an. Bei Veranstaltungen mit Nebel muss die Brandmeldeanlage temporär durch eine Brandsicherheitswache (Feuerwehr oder zertifizierter Sicherheits­wachdienst nach DGUV Vorschrift 17) ersetzt werden – vorab beim Betreiber bzw. der Bauaufsicht Bonn anmelden. Für Bonner Versammlungsstätten ist das Routine; wir geben bei Buchung Hinweise.",
+        },
+        {
+          question: "Wie laut sind CO2-Jets und Konfetti-Shooter – ist Gehörschutz nötig?",
+          answer:
+            "Druckluft-CO2-Jets erzeugen kurzzeitig 110–125 dB(C) Spitzenpegel. Nach DIN 15905-5 sind Spitzenpegel > 137 dB(C) ohne Gehörschutz für das Publikum unzulässig – Bühnen-CO2-Jets liegen darunter, aber Personen direkt am Effekt sollten Gehörschutz tragen. Konfetti-Shooter mit Druckluft 100–110 dB(C), eher unkritisch.",
+        },
+        {
+          question: "Sind Seifenblasen-Maschinen für Innenräume und Kinder geeignet?",
+          answer:
+            "Ja, sofern Profi-Bubble-Fluid auf Wasser-Tensid-Basis ohne reizende Zusatzstoffe verwendet wird (lebensmittelechte Tenside, REACH-konform). Achtung: Seifenblasen hinterlassen auf glatten Böden (Parkett, Marmor, Fliesen am Münsterplatz) einen rutschigen Film – Sturzgefahr. Wir empfehlen Einsatz nur über Teppichflächen oder im Freien, sonst Nachwischen einplanen.",
+        },
+        {
+          question: "Wie steuere ich Effekte zentral – DMX, MIDI oder manuell?",
+          answer:
+            "Profi-Effektgeräte (Nebel, Hazer, CO2-Jet, Konfetti-Shooter) sind über DMX512 ansteuerbar – derselbe Standard wie Beleuchtung. Damit lassen sich Effekt-Cues mit dem Lichtprogramm exakt synchronisieren. Bei kleineren Hochzeits-Setups reicht meist die Funkfernbedienung (DJ oder Hochzeitsplaner triggert manuell). Wir konfigurieren am Standort Bonn auf Wunsch vor und übergeben einsatzbereit – Anfragen unter 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Nebelfluid-Kunde: Wasser-Glykol, Wasser-Glycerin und die Unterschiede",
+          paragraphs: [
+            "Profi-Nebelfluide bestehen aus deionisiertem Wasser plus Trägermedium – meist Propylenglykol (PG), Glycerin oder Gemisch. PG-Fluide: dichter, schnell verschwindender Nebel (Effekt-Cues). Glycerin-Fluide: feiner, langanhaltender Haze (Licht-/Lasersichtbarkeit). Wichtig: nur Fluide einsetzen, die der Maschinenhersteller freigegeben hat – falsche Fluide verstopfen die Heizung und können bei Pyrolyse reizende Aldehyde freisetzen.",
+            "DGUV Information 215-313 enthält Hinweise zu Konzentrationen und Lüftungsraten bei längerem Nebelbetrieb. Bei Bonner Konzert-Setups (z. B. Beethovenfest, KunstRasen Gronau) arbeiten Profi-Crews mit Messgeräten und Lüftungsmanagement; für klassische Bonner Hochzeitsdiscos bleibt der Nebeleinsatz weit unter kritischen Grenzwerten.",
+          ],
+        },
+        {
+          h3: "CO2-Effekte: Sauerstoffverdrängung und Lüftungsplanung",
+          paragraphs: [
+            "Flüssiges CO2 expandiert beim Austritt ca. 800-fach. Eine 10-kg-Flasche liefert theoretisch 5 m³ Gas – in einem unbelüfteten 25-m²-Raum (≈ 60 m³) ergäbe das rechnerisch ca. 8 Vol.-% CO2, deutlich über der DGUV-Grenze von 4 Vol.-%. In der Praxis verteilt sich das Gas; trotzdem gilt: CO2 nur in Räumen mit nachweislicher Frischluftrate nach ASR A3.6 oder im Außenbereich.",
+            "Nicht geeignet: Tiefgaragen, Bühnenkeller, Räume unter Erdniveau ohne Zwangsbelüftung, kleine Backstage-Bereiche. Geeignet: Säle mit RLT-Anlage (WCCB, Beethovenhalle, Maritim), Hallen ab ca. 1.000 m³, Außenbühnen (Rheinaue, KunstRasen). Wir beraten am Standort Bonn anhand der konkreten Location.",
+          ],
+        },
+        {
+          h3: "Pyrotechnik in NRW: Befähigungsschein, Anzeige und Versicherung in Bonn",
+          paragraphs: [
+            "Bühnenpyrotechnik (Funkenfontänen, Wasserfälle, Knall-/Lichtblitzeffekte T1/T2) unterliegt dem SprengG. Befähigungsschein nach § 20 SprengG (Lehrgang + Prüfung bei IHK/anerkanntem Träger) ist Pflicht. Zusätzlich: Anzeige beim Ordnungsamt der Stadt Bonn (in der Regel 14 Tage vor dem Termin), in Außenbereichen ggf. brandschutz­rechtliche Stellungnahme der Feuerwehr Bonn.",
+            "Wir vermieten Standard-Eventeffekte (Nebel, Haze, CO2, Konfetti, Streamer, Bubble) ohne Befähigungsschein-Pflicht. Für klassische Pyrotechnik vermitteln wir lizenzierte Pyrotechniker aus unserem Netzwerk – inklusive Versicherung, Anzeige und Brandsicherheits-Konzept. Bei Großevents wie Rhein in Flammen wird das Höhenfeuerwerk separat von spezialisierten Crews verantwortet.",
+          ],
+        },
+        {
+          h3: "Effekt-Cueing und DMX: Synchronisation mit Licht und Sound",
+          paragraphs: [
+            "Profi-Effektgeräte haben DMX512-Eingang (XLR 5-polig) und belegen 1–4 DMX-Kanäle (Trigger, Intensität, Dauer, teils Pan/Tilt). Damit integrieren sie sich nahtlos in ein bestehendes Lichtsteuerpult (GrandMA, Avolites, Chamsys) und lassen sich mit Licht-Cues und Musikstellen exakt synchronisieren. Beispiel: Schlusschor einer Hochzeit – auf den letzten Beat zünden 4 Konfetti-Shooter simultan mit Lichtwechsel auf Weiß.",
+            "Für kleinere Setups reicht eine DMX-fähige App auf Tablet (LightKey, MagicQ) oder die Funkfernbedienung. Wir übergeben am Standort Bonn auf Wunsch programmiert und mit Bedien-Briefing.",
+          ],
+        },
+        {
+          h3: "Effekt-Wahl nach Anlass: Hochzeit, Firmenfeier und Bühne in Bonn",
+          paragraphs: [
+            "Hochzeit (Petersberg, La Redoute, Schloss Drachenburg, Godesburg, eigener Garten): Nebel für den ersten Tanz, Bubble-Maker für Sektempfang im Freien, Konfetti-Hand-Shooter beim Ja-Wort oder Tortenanschnitt, Papier-Konfetti-Kanonen beim Brautstrauß-Wurf. Romantisch, gut planbar, niedrige Sicherheits-Hürde.",
+            "Firmenfeier (WCCB, Beethovenhalle, Telekom-Forum, Post-Tower-Lounge): Haze + bewegtes Licht, 1–2 Konfetti-Shooter zu Highlight-Momenten. Live-Konzert/Bühne (KunstRasen, Brückenforum, Harmonie Endenich): Haze als Dauereffekt für Lasersichtbarkeit, CO2-Jets zu Refrain-Endpunkten, Konfetti-Stadium-Shooter zum Encore – hier mit Profi-Crew aus unserem Netzwerk. Festival-Outdoor mit Pyrotechnik bitte stets über lizenzierten Pyrotechniker. Anfragen am Standort Bonn unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // HÜPFBURGEN – Bonn
+    // Quellen: DIN EN 14960-1:2019, ProdSG, 1. ProdSV, DGUV
+    //   Information 202-022, GS-Zeichen § 21 ProdSG.
+    // -------------------------------------------------------------
+    huepfburgen: {
+      faqs: [
+        {
+          question: "Sind unsere Hüpfburgen nach DIN EN 14960 geprüft?",
+          answer:
+            "Ja. Sämtliche Hüpfburgen erfüllen DIN EN 14960 \"Aufblasbare Spielgeräte – Sicherheitsanforderungen und Prüfverfahren\" – Stoßdämpfung der Aufprallflächen, max. Fallhöhen, Materialfestigkeit, Verankerungspunkte, Anzahl/Größe der Notausgänge, jährliches Prüfintervall. Jede Hüpfburg wird jährlich durch einen Sachkundigen geprüft, das Prüfprotokoll fährt mit.",
+        },
+        {
+          question: "Bis zu welcher Windstärke darf eine Hüpfburg betrieben werden?",
+          answer:
+            "DIN EN 14960: ab Windstärke 5 Beaufort (ca. 38 km/h, 10,8 m/s) außer Betrieb nehmen. Im Rheintal und am Venusberg/Siebengebirge entstehen bei Westwindlagen Düseneffekte – DWD-Wetterbericht und lokale Windvorhersage vor dem Aufbau prüfen. Bei plötzlichen Böen über 38 km/h sofort räumen und Gebläse abschalten (Hüpfburg fällt kontrolliert in sich zusammen) – nicht gegen den Wind aufgeblasen lassen.",
+        },
+        {
+          question: "Wie wird eine Hüpfburg sicher verankert?",
+          answer:
+            "Auf Rasen: Erdnägel ab 380 mm Länge × 16 mm Durchmesser, schräg vom Gerät weg eingeschlagen, an allen Verankerungspunkten (typisch 6–12 je nach Größe). Auf Asphalt/Pflaster (Münsterplatz, Schulhöfe in Bad Godesberg): Ballastsäcke oder Wassertanks mit der im Prüfbuch dokumentierten Mindestlast – 80–300 kg pro Punkt. Wir liefern passende Erdnägel mit; Ballast auf Anfrage.",
+        },
+        {
+          question: "Wer haftet während der Veranstaltung – Vermieter oder Veranstalter?",
+          answer:
+            "Während des Betriebs übernimmt der Veranstalter die Verkehrssicherungspflicht: Aufsicht durch erwachsene Person, Einhaltung der Maximalpersonenzahl, Trennung der Altersgruppen (DIN EN 14960 empfiehlt getrennte Slots 0–3, 3–6, 6–12 Jahre). Wir stellen die Hüpfburg geprüft, eingewiesen und verankert bereit; die laufende Aufsicht liegt beim Veranstalter.",
+        },
+        {
+          question: "Wie viele Kinder dürfen gleichzeitig in eine Hüpfburg?",
+          answer:
+            "Die Maximalpersonenzahl steht im Prüfbuch und auf einem dauerhaft am Gerät angebrachten Schild (Vorgabe DIN EN 14960). Klassische 4 × 4 m Hüpfburgen sind typischerweise für 6–8 Kinder zugelassen, größere Anlagen entsprechend mehr. Wichtig: Personenzahl gilt pro Altersgruppe – Kinder unterschiedlicher Größe niemals gleichzeitig.",
+        },
+        {
+          question: "Wie ist der Aufbau – kommt das Gebläse mit, brauche ich Strom vor Ort?",
+          answer:
+            "Im Mietumfang: Hüpfburg, Gebläse, Befestigungs-Erdnägel, Sicherheitsanleitung mit Prüfbuch-Auszug. Vor Ort nötig: ebene Aufstellfläche (mind. 1 m Sicherheitsabstand rundum, möglichst Rasen), 230-V-Steckdose im Umkreis ca. 25 m (Gebläse 750–1.500 W, Dauerbetrieb über gesamte Mietzeit). Aufbauzeit klassische 4 × 4 m Hüpfburg: ca. 15–20 Minuten.",
+        },
+        {
+          question: "Kann ich die Hüpfburg auf Asphalt oder Pflaster aufstellen?",
+          answer:
+            "Ja, mit Einschränkungen. Auf festem Untergrund kann der Boden der Hüpfburg durch scharfe Steine/Splitter beschädigt werden – wir empfehlen eine Schutzplane (auf Anfrage). Verankerung dann über Ballastgewichte statt Erdnägel. Bitte bei Buchung am Standort Bonn angeben, dann liefern wir die passende Ausrüstung mit.",
+        },
+        {
+          question: "Sind Schuhe, Brillen und Essen in der Hüpfburg erlaubt?",
+          answer:
+            "Nein. DIN EN 14960 und alle Hersteller: keine Schuhe (beschädigen Springfläche), keine Brillen (Verletzungsgefahr), keine harten Gegenstände, kein Essen/Trinken (Erstickungsgefahr), keine Haustiere. Diese Regeln gehören auf ein Hinweisschild am Eingang – entsprechende Hinweise liefern wir mit.",
+        },
+        {
+          question: "Was passiert bei Regen – darf die Hüpfburg nass werden?",
+          answer:
+            "Hüpfburgen mit Dach sind regenresistent (PVC-beschichtetes Polyester). Bei Nässe wird die Hüpffläche allerdings extrem rutschig (Verletzungsgefahr). Bei Regen: Hüpfburg räumen, ggf. abdecken; nach dem Trocknen wieder freigeben. Hüpfburgen ohne Dach bei Regen schließen.",
+        },
+        {
+          question: "Brauche ich für eine private Geburtstagsparty in Bonn eine Genehmigung?",
+          answer:
+            "Auf eigenem privaten Grundstück nicht. Auf öffentlichen Flächen (Bonner Park, Spielplatz, Hofgarten, Rheinaue, Schulhof) braucht es eine Sondernutzungserlaubnis der Stadt Bonn (Tiefbauamt bzw. Ordnungsamt). Bei größeren öffentlichen Veranstaltungen kommen Veranstaltungssicherheits-Auflagen hinzu (Sanitätsdienst, Brandschutz, Versicherung). Wir beraten am Standort Bonn zur Vorgehensweise – 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "DIN EN 14960 in der Praxis: was eine geprüfte Hüpfburg auszeichnet",
+          paragraphs: [
+            "DIN EN 14960 ist in Deutschland für aufblasbare Spielgeräte verbindlich und definiert konkrete Anforderungen: stoßdämpfende Aufprallflächen mit definierter Polsterdicke, Begrenzungswände in Mindesthöhe abhängig von der Spielhöhe, doppelt abgesteppte Nähte, Verankerungspunkte mit Mindestlasten, Notausgänge mit Mindestbreite (60 cm bei Tunnel-Modulen), Kennzeichnung der zulässigen Personenzahl und Altersgruppe.",
+            "Jede Hüpfburg am Standort Bonn ist nach dieser Norm gebaut, jährlich sachkundig geprüft und mit Prüfbuch im Gepäck. Auf Wunsch zeigen wir das Prüfprotokoll bei Übergabe – wichtig für gewerbliche Veranstalter (Schule, Kita, Verein), die das im eigenen Sicherheitskonzept dokumentieren müssen.",
+          ],
+        },
+        {
+          h3: "Verankerung: warum ein vergessener Erdnagel zur Katastrophe führen kann",
+          paragraphs: [
+            "Eine nicht oder unzureichend verankerte Hüpfburg ist bei aufkommendem Wind eine ernste Gefahr. Es gibt dokumentierte Unfälle (BAuA-Unfallstatistik) mit Hüpfburgen, die über hunderte Meter durch die Luft geschleudert wurden – teils mit tödlichen Folgen. Ursache regelmäßig: fehlende oder zu kurze Verankerung, fehlende Ballastlasten auf Asphalt oder Weiterbetrieb bei zu hohem Wind.",
+            "Wir investieren in vollständige Verankerungssets (alle Erdnägel passend zur Hüpfburg, Spannschlaufen, Ballast-Bügel) und weisen bei jeder Übergabe in Bonn auf die Windregel hin. Im Rheintal mit West-/Süd­westwind und Düseneffekten am Siebengebirge gilt: lieber 30 Minuten früher räumen als ein Unfall.",
+          ],
+        },
+        {
+          h3: "Aufsichtspflicht und Altersgruppen-Trennung",
+          paragraphs: [
+            "Während des Betriebs muss eine erwachsene Aufsichtsperson ständig anwesend sein – sie achtet auf Maximalpersonenzahl, Schuh-/Brillenfreiheit, Altersgruppen-Trennung und greift bei Quatsch ein. DGUV Information 202-022 empfiehlt eine Aufsichtsperson für maximal eine Hüpfburg gleichzeitig.",
+            "Praktisch: Kinder bis 3 Jahre nur mit Eltern in der Hüpfburg, 3–6 Jahre eigene Zeitfenster, 6–12 Jahre eigene Zeitfenster, Jugendliche/Erwachsene nur in dafür explizit geprüften XXL-Geräten. Für Bonner Kindergeburtstage mit gemischten Altersgruppen empfehlen wir 15-min-Slots je Altersgruppe – Verletzungsrisiko bleibt niedrig, alle haben Spaß.",
+          ],
+        },
+        {
+          h3: "Gebläse-Technik: warum es dauerhaft laufen muss",
+          paragraphs: [
+            "Veranstaltungs-Hüpfburgen werden über ein kontinuierlich laufendes Gebläse (Radial- oder Axiallüfter) auf Druck gehalten – sie sind kein luftdichtes System (Nähte, Reißverschlüsse, Eingangsöffnung lassen ständig etwas Luft entweichen). Stoppt das Gebläse, fällt die Hüpfburg in 20–60 Sekunden in sich zusammen – gewollt, weil sicherer als plötzliches Aufreißen.",
+            "Stromversorgung muss dauerhaft anliegen: Mehrfachverteiler nicht überlasten, Kabel sicher verlegen (Stolperfalle!), bei Open-Air in der Rheinaue oder am Vereinsheim ggf. Generator vorhalten (passende Stromverteiler und Kabel siehe Kategorie Kabel & Stromverteiler).",
+          ],
+        },
+        {
+          h3: "Modellauswahl: passende Hüpfburg für Anlass und Altersgruppe in Bonn",
+          paragraphs: [
+            "Klassische Kindergeburtstage (4–10 Jahre, 6–10 Kinder): Standard-Hüpfburg 3 × 3 m oder 4 × 4 m mit Dach. Stadt-, Schul- und Vereinsfeste (Pützchens Markt-Begleitveranstaltungen, Kita-Sommerfeste in Bad Godesberg/Beuel): größere Modelle 5 × 5 m oder Kombigeräte mit Rutsche/Hindernisparcours. Kleinkind-Bereiche (1–4 Jahre): niedrige Hüpfburgen ohne Stufen, weiche Polsterung. Jugend-/Erwachsenenfeste: XXL-Hindernisparcours, Bullriding-Matten.",
+            "Am Standort Bonn führen wir die gängigen Modelle für private Kindergeburtstage und Vereinsfeste; XXL-Geräte und Spezialformate auf Projektbasis bzw. via Partner. Bei Buchung Alter und Anzahl der Kinder angeben – wir schlagen die passende Konfiguration vor (0228 504 660 61).",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // WOHNWAGEN & CAMPING – Bonn
+    // Quellen: StVZO §§ 32, 34, FeV Anlage 9 (B/B96/BE/C1E),
+    //   100-km/h-VO (Anlage zu § 18 Abs. 5 StVO), DIN EN 1645,
+    //   DIN EN 1949, DVGW G 607, StVZO § 19 Abs. 3, DIN VDE
+    //   0100-721, CIVD.
+    // -------------------------------------------------------------
+    "wohnwagen-camping": {
+      faqs: [
+        {
+          question: "Welchen Führerschein brauche ich, um einen Wohnwagen zu ziehen?",
+          answer:
+            "Maßgeblich ist FeV Anlage 9 plus die zulässige Gesamtmasse von Zugfahrzeug und Wohnwagen zusammen. Klasse B: bis 3.500 kg Kombi-Gesamtmasse. B96: bis 4.250 kg (eintägige Schulung, keine Prüfung). BE: bis 7.000 kg (Theorie- + Praxisprüfung). Ein 1.500-kg-Wohnwagen hinter einem 2-Tonnen-PKW liegt typisch im B96-Bereich. Wir beraten am Standort Bonn-Mehlem zum passenden Wohnwagen für deinen Führerschein.",
+        },
+        {
+          question: "Was ist die zulässige Stützlast – und warum wichtig?",
+          answer:
+            "Die Stützlast ist das Gewicht, das die Anhängerdeichsel auf die Anhängerkupplung überträgt. Sie steht in den Fahrzeugpapieren (Feld O.1) und auf dem Wohnwagen (Typenschild). Faustregel 4 % des Wohnwagen-Gesamtgewichts (bei 1.500 kg ≈ 60 kg), maximal die niedrigste der drei Angaben (PKW, Kupplung, Wohnwagen). Falsche Stützlast – zu hoch oder zu niedrig – führt zu Schlingern. Wir prüfen die Stützlast bei der Übergabe gemeinsam.",
+        },
+        {
+          question: "Darf ich mit dem Wohnwagen 100 km/h auf der A555/A565/A3 fahren?",
+          answer:
+            "Standard ist Tempo 80 km/h auf Autobahn und außerorts. Mit der \"Tempo-100-Plakette\" nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h zulässig: max. 3,5 t zul. Gesamtmasse, Reifen mit Geschwindigkeitsindex ≥ L (120 km/h) und max. 6 Jahre alt, hydraulische Stoßdämpfer, AKS oder ESC. Zugfahrzeug-Leermasse ≥ 1,1 × Wohnwagen-Gesamtmasse (entfällt bei ESC). Plakettenstatus geben wir bei jedem Mietfahrzeug an.",
+        },
+        {
+          question: "Wie funktioniert die Gasanlage – und muss sie geprüft sein?",
+          answer:
+            "Wohnwagen haben Flüssiggas-Anlagen (Propan/Butan) für Heizung, Kochen, Kühlschrank. Nach DVGW-Arbeitsblatt G 607 ist eine Sachkundigenprüfung alle 2 Jahre Pflicht. Ohne gültige Prüfplakette kein Anschluss am Campingplatz. Unsere Mietwohnwagen sind geprüft, Plakette klebt am Gaskasten. Bei Anmietung erklären wir Flaschenwechsel, Hauptabsperrhahn und Verhalten im Störungsfall.",
+        },
+        {
+          question: "Wie viele Gasflaschen gehen mit – wie lange reichen sie?",
+          answer:
+            "Standard: 2 × 11-kg-Propanflaschen im Gaskasten (eine in Betrieb, eine Reserve). Verbrauchsrichtwerte: Kochen 2 ×/Tag + Kühlschrank auf Gas + Heizung kalt-saisonal: 7–10 Tage pro Flasche. Im Sommer ohne Heizung: 3–4 Wochen pro Flasche. Wir geben den Wohnwagen mit vollen Flaschen heraus; Verbrauch wird bei Rückgabe nach Gewicht abgerechnet oder über DVFG-Flaschenpool getauscht (an Tankstellen im Bonner Umland verbreitet).",
+        },
+        {
+          question: "Brauche ich für den Wohnwagen-Standort eine Genehmigung?",
+          answer:
+            "Auf einem ausgewiesenen Campingplatz nein. Auf eigenem privaten Grundstück gilt der Wohnwagen rechtlich als Bauwerk, sobald er länger als 4 Wochen am selben Ort steht – dann BauO NRW. Kürzere Aufenthalte (Wochenende, Hochzeit, Besuch) sind in der Regel unproblematisch. Auf öffentlichen Flächen/Straßenrand in Bonn gilt § 12 StVO: maximal 14 Tage am Stück; das Ordnungsamt Bonn kontrolliert insbesondere in Bewohnerparkzonen (z. B. Bonn-Zentrum, Bad Godesberg-Mitte).",
+        },
+        {
+          question: "Was ist beim Vorzelt-Aufbau zu beachten?",
+          answer:
+            "Vorzelt wird seitlich in die Kederleiste eingezogen. Aufbau Standard-Vorzelt mit 2 Personen ca. 60–90 Minuten; moderne Air-Vorzelte (Luftschläuche statt Gestänge) 20–30 Minuten. Verankerung mit Heringen am Boden, bei Sturmprognose zusätzliche Sturmleinen. Bei aufgebautem Vorzelt darf der Wohnwagen nicht gefahren werden. Wir beraten am Standort Bonn zur passenden Vorzelt-Größe für deinen Wohnwagen (Umlaufmaß).",
+        },
+        {
+          question: "Wie wird der Wohnwagen winterfest gemacht – und ist das Mietsache?",
+          answer:
+            "Vor Übernahme im Winter prüfen wir: Frischwasser-/Abwassertanks entleert, Boiler entleert, Toiletten-Spülwasser entleert, Heizung funktionsfähig. Im Wintereinsatz: dauerhaft heizen oder bei Nichtbenutzung wieder vollständig entwässern. Frostschäden an Boiler/Wasserleitungen sind teuer und nicht von der normalen Mietkaution gedeckt. Bei Wintermiete erklären wir am Standort Bonn den Frostschutz im Detail.",
+        },
+        {
+          question: "Brauche ich eine Versicherung für den gemieteten Wohnwagen?",
+          answer:
+            "Während der Miete ist der Wohnwagen im Rahmen unserer Geschäftskonditionen versichert (KFZ-Haftpflicht und Vollkasko gemäß Mietvertrag); die Selbstbeteiligung ist im Vertrag ausgewiesen. Inhaltsversicherung für eigene Sachen ggf. über die private Hausratversicherung (Außenversicherung) – mit deinem Versicherer klären. Auf manchen Campingplätzen greift eine zusätzliche Platzbetreiber-Versicherung (haftungsbeschränkt).",
+        },
+        {
+          question: "Was kostet eine Wohnwagen-Miete am Standort Bonn typischerweise?",
+          answer:
+            "Tagespreise sind im Buchungsprozess pro Modell tagesaktuell hinterlegt. Der effektive Tagessatz sinkt bei längerer Miete deutlich: Wochenmiete ≈ 5 Tagessätze, Zwei-Wochen-Miete ≈ 9 Tagessätze. Hauptsaison Juni–August und Weihnachten ist stark nachgefragt – früh buchen lohnt sich. Verfügbarkeit für deinen Wunschzeitraum siehst du im Buchungsformular oder telefonisch unter 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Zulässiges Gesamtgewicht: die Mathematik dahinter",
+          paragraphs: [
+            "Bei jedem Gespann ist die zulässige Gesamtmasse der Kombination der zentrale Wert. Beispiel: VW Tiguan 2.500 kg + Wohnwagen 1.300 kg = 3.800 kg. Damit ist Klasse B (Grenze 3.500 kg) ausgeschöpft – B96 (bis 4.250 kg) oder BE (bis 7.000 kg) nötig. Häufiger Fehler: Rechnen mit Leergewicht statt zulässigem Gesamtgewicht – rechtlich falsch.",
+            "Zusätzlich relevant: die Anhängelast des Zugfahrzeugs (Feld O.1) muss mindestens dem zul. Gesamtgewicht des Wohnwagens entsprechen. Anhängelast ist herstellerseitig je nach Motorisierung/Getriebe unterschiedlich. Wir prüfen das bei der Buchungsanfrage am Standort Bonn gemeinsam.",
+          ],
+        },
+        {
+          h3: "Fahrdynamik: Schlingerneigung und wie man sie verhindert",
+          paragraphs: [
+            "Wohnwagen-Gespanne neigen ab ca. 90 km/h zur Pendelschwingung. Ursache: ungleiche Beladung (zu viel Heck-Last), zu niedrige Stützlast, schlechte Reifen, Seitenwind. Auf der A555 (Bonn–Köln) und A565 (Bonner Bogen) sind Seitenwindböen am Rheinquerung-Brückenbauwerk verbreitet – Vorsicht.",
+            "Gegenmaßnahmen: schwere Last über der Achse, Stützlast auf 4 % des Gesamtgewichts einstellen, Antischlingerkupplung (AKS) oder ESC nutzen, Geschwindigkeit anpassen. AL-KO AKS 3004 dämpft mechanisch, ESC (z. B. AL-KO ATC) erkennt beginnendes Pendeln und bremst gezielt – unsere Mietwohnwagen sind mit AKS und je nach Modell mit ESC ausgestattet.",
+          ],
+        },
+        {
+          h3: "Tempo 100 in Deutschland: die Plakette und ihre Anforderungen",
+          paragraphs: [
+            "Die \"100-km/h-Plakette\" wird von TÜV, DEKRA oder GTÜ ausgestellt, wenn alle Voraussetzungen erfüllt sind: max. 3,5 t zul. Gesamtmasse, Reifen mit Geschwindigkeitsindex ≥ L (120 km/h) und max. 6 Jahre alt, hydraulische Stoßdämpfer in Ordnung, AKS oder ESC. Zugfahrzeug-Leermasse ≥ 1,1 × Wohnwagen-Gesamtmasse (bei ESC entfällt diese Bedingung).",
+            "Praktisch: Auf langen Strecken Richtung Süden (A3 nach Frankfurt/München, A61 nach Süden) spart die Plakette Zeit und macht das Mitschwimmen entspannter. Im Ausland (Österreich, Schweiz, Italien, Spanien) gelten unabhängig von der deutschen Plakette die jeweiligen Tempolimits (typisch 80–100 km/h für Gespanne). Plakettenstatus geben wir am Standort Bonn pro Mietfahrzeug an.",
+          ],
+        },
+        {
+          h3: "Gasanlage und G 607: Sicherheit, die nicht verhandelbar ist",
+          paragraphs: [
+            "Die Gasanlage wird nach DIN EN 1949 gebaut und nach DVGW G 607 alle 2 Jahre geprüft (Druckdichtigkeitstest, Sichtprüfung der Schläuche und Verschraubungen). Eine ungültige Gasprüfung ist nicht nur ein Verstoß – sie ist ein echtes Sicherheitsrisiko (CO-Vergiftung, Gasexplosion). Auf Campingplätzen in NL, FR, IT und auch Deutschland wird die Plakette kontrolliert; ohne gültige Plakette kein Anschluss.",
+            "Unsere Vermietflotte ist geprüft. Bei längerer Miete achten wir auf das Ablaufdatum und tauschen ggf. die Plakette frisch. Bei Übergabe in Bonn-Mehlem nicht vergessen, den Gasanschluss-Schlüssel und das Manometer kurz erklären zu lassen – falsches Aufdrehen kostet Druck und Sicherheit.",
+          ],
+        },
+        {
+          h3: "Camping-Strom: 230 V Caravan, CEE-Stecker und FI-Schutz",
+          paragraphs: [
+            "Campingplätze stellen 230-V-Strom über CEE-Außensteckdosen (blau, 3-polig, 16 A) bereit. Im Wohnwagen ist ein Stromverteiler mit FI-Schutzschalter (RCD 30 mA) verbaut – Pflicht nach DIN VDE 0100-721. Anschluss über 25-m-CEE-Kabel (im Vermietumfang). Wichtig: Kabel vor Einschalten vollständig abrollen, sonst überhitzt die Trommel (Induktion).",
+            "Verbraucher: Boiler (1.500–2.000 W), Klimaanlage (800–1.500 W), Kühlschrank (300 W auf Strom), Steckdosen (gesamt max. 16 A = 3.680 W). Bei Mehrfachbetrieb löst der FI aus oder die Platzsicherung (oft nur 6 oder 10 A pro Stellplatz). Wir erklären am Standort Bonn die typischen Stromverbräuche und wie man sie managt – Anfragen unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
   },
 
   // Mülheim und weitere Bonn-Tranchen folgen analog.
