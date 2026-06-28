@@ -26,6 +26,7 @@ import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } f
 import { moebelZelteContent } from "@/data/moebelZelteContent";
 import { getArticlesForCategory } from "@/data/blogArticles";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
+import { getCategoryExpertContent } from "@/data/categoryExpertContent";
 
 export default function CategoryProducts() {
   const { t } = useTranslation();
@@ -1439,7 +1440,8 @@ export default function CategoryProducts() {
 
   const moebelZelteCustom = category.id === "moebel-zelte" ? moebelZelteContent[location.id] : undefined;
 
-  const faqs = moebelZelteCustom?.faqs || categoryFaqs[category.id] || [
+  const expertContent = getCategoryExpertContent(location.id, category.id);
+  const faqs = expertContent?.faqs || moebelZelteCustom?.faqs || categoryFaqs[category.id] || [
     { question: `Kann ich ${categoryDisplayName} in ${location.name} mieten?`, answer: `Ja! SLT Rental bietet ${categoryDisplayName} zur Miete in ${location.name} an. Wählen Sie aus ${products.length} verfügbaren Artikeln.` },
     { question: `Wie kann ich bei SLT Rental ${categoryDisplayName} reservieren?`, answer: `Sie können direkt über unsere Website buchen oder uns telefonisch bzw. per E-Mail kontaktieren. Auf-Anfrage-Artikel werden innerhalb eines Werktages bestätigt.` },
     { question: `Bietet SLT Rental Lieferung für ${categoryDisplayName} an?`, answer: `Ja, wir liefern ${categoryDisplayName} direkt zu Ihrem Einsatzort in ${location.name} und Umgebung. Die Lieferkosten können Sie mit unserem Online-Rechner ermitteln.` },
@@ -2069,6 +2071,23 @@ export default function CategoryProducts() {
                   </details>
                 ))}
               </div>
+
+              {/* Expert long-form block (location × category specific) */}
+              {expertContent?.expertSections?.length ? (
+                <div className="mt-10 pt-8 border-t border-border">
+                  <h3 className="text-lg font-semibold text-headline mb-4">
+                    Experten-Wissen: {categoryDisplayName} in {location.name}
+                  </h3>
+                  {expertContent.expertSections.map((sec, sIdx) => (
+                    <div key={sIdx} className="mb-6">
+                      <h4 className="text-base font-semibold text-headline mt-5 mb-2">{sec.h3}</h4>
+                      {sec.paragraphs.map((p, pIdx) => (
+                        <p key={pIdx} className="text-muted-foreground mb-3 text-sm leading-relaxed">{p}</p>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
