@@ -4347,6 +4347,209 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // ANHÄNGER (Plateau, Baumaschinen, Koffer, Autotransport,
+    //   Motorrad) – Bonn-Mehlem, Liefergebiet Rhein-Sieg, Ahrtal,
+    //   Köln-Süd. Quellen: FeV Anlage 9, § 22/§ 23 StVO,
+    //   DIN EN 12195-1, VDI 2700 ff., 100-km/h-Verordnung,
+    //   §§ 19/29 StVZO, § 12 Abs. 3b StVO.
+    // -------------------------------------------------------------
+    anhaenger: {
+      faqs: [
+        {
+          question: "Welchen Führerschein brauche ich für einen Anhänger in Bonn und im Rhein-Sieg-Kreis?",
+          answer:
+            "Maßgeblich ist FeV Anlage 9 in Verbindung mit der zulässigen Gesamtmasse (zGM) von Zugfahrzeug und Anhänger. Klasse B (alt: Klasse 3) erlaubt ungebremste Anhänger bis 750 kg zGM uneingeschränkt; gebremste Anhänger nur, solange die Kombination 3.500 kg zGM nicht übersteigt. Klasse B96 (eintägige Schulung ohne Prüfung, in Bonn z. B. bei TÜV Rheinland Bonn-Beuel oder ortsansässigen Fahrschulen) erweitert auf 4.250 kg zGM, BE auf 7.000 kg. An unserem Standort Bonn-Mehlem (Drachenburgstraße 8) prüfen wir die zGM-Konstellation bei der Übergabe – gerade bei Hangprojekten in Bad Godesberg, am Venusberg oder im Siebengebirge wird ein BE oft Pflicht.",
+        },
+        {
+          question: "Welcher Anhängertyp ist für meinen Transport in der Rheinschiene richtig?",
+          answer:
+            "Plateauanhänger (offene Ladefläche, mit/ohne Bordwände) für Holz, Möbel und Gartenabfälle – beliebt für Grünschnitt-Touren zu den Bonner Wertstoffhöfen Weidenpescher Weg und Hirschberger Straße. Baumaschinenanhänger mit Auffahrrampen für Minibagger und Rüttelplatten – Standard bei GaLaBau-Projekten in Wachtberg und Königswinter. Kofferanhänger für Messetechnik und Umzugsgut, regelmäßig genutzt für WCCB, Beethovenhalle und Telekom-Standorte. Autotransportanhänger mit Seilwinde für Fahrzeugüberführungen ins Ahrtal und in die Eifel. Motorradanhänger mit Schiene für Touren ins Siebengebirge oder zum Nürburgring. Am Standort Bonn führen wir das Kernsortiment direkt vor; Sondergrößen disponieren wir aus Krefeld nach.",
+        },
+        {
+          question: "Was bedeutet zulässige Stützlast – und warum ist sie bei Bonner Hanglagen kritisch?",
+          answer:
+            "Die Stützlast ist das Gewicht, das die Deichsel auf die Anhängerkupplung des Zugfahrzeugs überträgt. Sie steht im Fahrzeugschein (Feld 13) sowie am Anhänger-Typenschild – maßgeblich ist immer der niedrigste der drei Werte (PKW, Kupplung, Anhänger). Typische Werte: 50–100 kg bei PKW-Anhängern, bis 150 kg bei stärkeren SUV/Transporter. Auf den steilen Abschnitten der B9 zwischen Bad Godesberg und Remagen, an der Drachenfelsbahnstraße oder am Venusberg führt eine zu niedrige Stützlast (zu hecklastig beladen) zu gefährlichem Schlingern; eine zu hohe Stützlast überlastet die Hinterachse und reduziert die Lenkfähigkeit. Wir prüfen die Beladung bei der Übergabe in Bonn-Mehlem gemeinsam.",
+        },
+        {
+          question: "Wie sichere ich Ladung korrekt nach § 22 StVO und VDI 2700?",
+          answer:
+            "§ 22/§ 23 StVO verlangen verkehrssichere Verstauung gegen Verrutschen, Umfallen, Herabfallen und vermeidbaren Lärm. VDI 2700 ff. und DIN EN 12195-1 sind der anerkannte Stand der Technik. Praxis: Formschluss (Ladung dicht an die Bordwand) ist die effektivste Sicherung. Zurrgurte müssen zur geforderten Zurrkraft passen (Etikett: LC-Wert). Faustregel beim Niederzurren: pro 500 kg Ladung mindestens 2 Gurte mit STF ≥ 350 daN. Wir geben Zurrgurte und Antirutschmatten zu jedem Anhänger in Bonn mit aus. Verantwortlich bleibt der Fahrer/Halter – die Polizei Bonn kontrolliert regelmäßig an A555 (Auffahrt Bornheim), A565 (Hardthöhe) und im Bereich Rheinaue (Großveranstaltungen).",
+        },
+        {
+          question: "Darf ich mit dem Mietanhänger 100 km/h auf der A565 oder A555 fahren?",
+          answer:
+            "Standard ist Tempo 80 km/h. Mit Tempo-100-Plakette nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h erlaubt, wenn der Anhänger ≤ 3,5 t zGM hat, die Reifen mindestens Geschwindigkeitsindex L (120 km/h) und maximal 6 Jahre alt sind, hydraulische Stoßdämpfer in Ordnung, eine Antischlingerkupplung (AKS) verbaut ist und die Leermasse des Zugfahrzeugs mindestens das 1,1-fache der zGM des Anhängers beträgt (Pkw/Wohnmobil bis 3,5 t). Den Plakettenstatus geben wir an jedem Bonner Mietanhänger explizit aus – auf den kurvigen Abschnitten der A562 (Konrad-Adenauer-Brücke) und der A565 bei Lohmar ist das oft sicherheitsrelevant.",
+        },
+        {
+          question: "Was muss ich vor jeder Fahrt am Anhänger prüfen?",
+          answer:
+            "Sechs-Punkte-Check vor jedem Antritt: 1) Kupplungskugel sauber eingerastet, Verriegelung sichtbar geschlossen; 2) Abreißseil bzw. Sicherungsstift eingehängt; 3) 13-/7-poliger Stecker eingesteckt, Funktionsprüfung Blinker, Brems- und Schlusslicht; 4) Stützrad vollständig hochgekurbelt und arretiert; 5) Ladung formschlüssig und niedergezurrt, Plane gespannt; 6) Reifen visuell prüfen (Druck, Profil, Schäden). Wir erklären diesen Ablauf bei jeder Übergabe in Bonn-Mehlem und stellen eine Kurz-Anleitung als PDF zur Verfügung – mit illustriertem Stecker-Tutorial 7- und 13-polig.",
+        },
+        {
+          question: "Wie funktioniert die Auflaufbremse – was ist beim Rückwärtsfahren zu beachten?",
+          answer:
+            "Gebremste Anhänger nutzen eine mechanische Auflaufbremse: Beim Bremsen schiebt der Anhänger gegen das Zugfahrzeug, die Deichsel staucht sich, ein Gestänge betätigt die Trommelbremsen. Beim Rückwärtsfahren würde derselbe Mechanismus die Bremse betätigen – moderne Anhänger haben deshalb eine automatische Rückfahrautomatik. Vor dem Rangieren auf engen Hofeinfahrten in Bonn-Mitte, Bad Godesberger Villenvierteln oder im Beueler Altstadtkern: kurz vorrollen lassen, dann rückwärts. Bei älteren Modellen muss der Rückfahrhebel manuell arretiert werden. Wir zeigen den jeweiligen Mechanismus an deinem Modell bei der Übergabe.",
+        },
+        {
+          question: "Brauche ich für den Mietanhänger eine eigene Versicherung?",
+          answer:
+            "In Deutschland ist der Anhänger über die KFZ-Haftpflicht des Zugfahrzeugs mitversichert, solange er angekuppelt ist (BGH-Rechtsprechung). Eigene Schäden am Mietanhänger deckt der Mietvertrag mit ausgewiesener Selbstbeteiligung; eine Haftungsreduzierung ist optional buchbar. Im Ausland (z. B. Niederlande, Belgien – beide gut aus Bonn erreichbar über A61/A4) gelten teils abweichende Regeln – Anhänger benötigen dort eigene Haftpflicht. Bitte vor Grenzübertritt mit eigenem Versicherer klären; wir vermerken Auslandsfahrten auf dem Mietvertrag.",
+        },
+        {
+          question: "Wie alt dürfen Reifen am Mietanhänger sein und wann werden sie getauscht?",
+          answer:
+            "Die DOT-Nummer auf der Reifenflanke nennt Produktionswoche und -jahr. Für Anhänger mit Tempo-100-Zulassung dürfen Reifen max. 6 Jahre alt sein (Stichtag bei Plakettenerteilung). Unabhängig davon: bei sichtbarer Alterung (Risse, Sprödigkeit) tauschen, spätestens nach 10 Jahren. Mindestprofiltiefe gesetzlich 1,6 mm; wir tauschen ab 3 mm. Die Bonner Vermietflotte wird turnusmäßig in unserer Werkstatt am Standort geprüft – DOT, Profiltiefe und Bremsentest sind Teil der Übergabe-Checkliste. Reparatur und Wartung von Fremdanhängern bieten wir ebenfalls an: service@slt-rental.de.",
+        },
+        {
+          question: "Wie lange darf ich einen Anhänger am Straßenrand in Bonn abstellen?",
+          answer:
+            "§ 12 Abs. 3b StVO: Anhänger ohne Zugfahrzeug dürfen auf öffentlichen Straßen längstens zwei Wochen abgestellt werden; danach drohen Verwarn-/Bußgeld und Abschleppkosten. Die Stadt Bonn (Ordnungsamt, Tel. 0228 77-3939) verfolgt das in Wohngebieten konsequent – insbesondere in der Bonner Südstadt, in Plittersdorf, Endenich und Beuel sind die Parkflächen knapp. Auf Autobahnen, Kraftfahrstraßen und in eingeschränkten Halteverbots-Zonen gilt sofortiges Abstellverbot. Auf privatem Grund (Hof, eigene Stellfläche) gilt diese Regel nicht – bei Wochenendmieten bitte Stellplatz vorhalten.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Führerscheinklassen B, B96 und BE – Bonner Realität auf der Rheinschiene",
+          paragraphs: [
+            "Die häufigste Fehlannahme: „Mit Klasse B darf ich alles bis 3.500 kg ziehen.\" Das stimmt nur halb. Klasse B erlaubt ungebremste Anhänger bis 750 kg zGM uneingeschränkt. Gebremste Anhänger über 750 kg zGM sind nur erlaubt, solange die Summe aus zGM Zugfahrzeug + zGM Anhänger 3.500 kg nicht überschreitet – das schließt einen 1.300-kg-Baumaschinenanhänger hinter einem 2.300-kg-PKW bereits aus, eine im Bonner GaLaBau-Geschäft (Hardtberg, Duisdorf, Wachtberg) sehr typische Konstellation.",
+            "Klasse B96 ist eine eintägige Schulung (ca. 7 Stunden, davon mind. 2,5 h Praxis) ohne Prüfung und erweitert die Kombi-Grenze auf 4.250 kg; in Bonn z. B. bei TÜV Rheinland und mehreren Fahrschulen in Beuel/Bad Godesberg buchbar. BE ist eine vollwertige Führerscheinklasse (Praxisprüfung mit Anhänger, keine Theorie) und erlaubt Anhänger bis 3.500 kg zGM, Gespanne bis 7.000 kg. Für Baumaschinen-Transporte ins Ahrtal oder ins Siebengebirge empfehlen wir am Standort Bonn grundsätzlich BE – die Kombination Pickup + Minibagger 2,5–3,5 t liegt zwangsläufig im BE-Bereich.",
+          ],
+        },
+        {
+          h3: "Ladungssicherung nach VDI 2700: vom Reibwert bis zum Zurrgurt",
+          paragraphs: [
+            "Die VDI-Richtlinie 2700 (Ladungssicherung auf Straßenfahrzeugen) ist der anerkannte Stand der Technik und wird im Schadens- bzw. Bußgeldfall regelmäßig herangezogen. Grundprinzip: Sicherung gegen Verrutschen nach vorn mit mindestens 0,8 g, nach hinten und zur Seite mit mindestens 0,5 g. Übersetzt: Beim scharfen Bremsen wirken bis zu 80 % der Ladungsmasse als horizontale Kraft – eine 1.000-kg-Maschine drückt mit bis zu 800 kg gegen die Bordwand bzw. die Zurrgurte. Auf der kurvenreichen B42 (rechtsrheinisch) oder bei abrupten Bremsmanövern an Bonner Knotenpunkten (Reuterstraße, Endenicher Allee) ist das hoch relevant.",
+            "In der Praxis empfehlen wir den Mix aus Formschluss (Ladung dicht an die Bordwand, Lücken mit Antirutschmatten füllen) und Niederzurren (Zurrgurte mit STF ≥ 350 daN, kreuzweise über die Ladung). Diagonalzurren ist nochmals effizienter, erfordert aber Zurrösen am Anhängerboden. Wir geben pro Anhänger eine fachgerechte Anzahl Zurrgurte und Antirutschmatten mit; das Etikett am Gurt zeigt die zulässige Zurrkraft (LC) und die Standard-Spannkraft (STF) – das sind die im Streitfall relevanten Werte.",
+          ],
+        },
+        {
+          h3: "Auflaufbremse, Antischlingerkupplung und ESC: was die Technik leistet",
+          paragraphs: [
+            "Gebremste Anhänger nutzen die Auflaufbremse: Eine in der Deichsel verbaute Dämpferpatrone übersetzt die Schubkraft des bremsenden Anhängers in einen Bremsdruck auf die Trommelbremsen der Achsen. Das System ist mechanisch, wartungsarm und seit Jahrzehnten erprobt; die regelmäßige Inspektion betrifft vor allem Trommeln, Bremsbacken und Kugelaufnahme. Beim Rückwärtsfahren verhindert eine Rückfahrautomatik (Klinke an der Bremsbacke), dass die Auflaufbewegung als Bremsung interpretiert wird – wichtig auf engen Hofeinfahrten der Bonner Altstadt.",
+            "Antischlingerkupplungen (z. B. AL-KO AKS) erzeugen Reibung zwischen Kupplungskugel und Spannbacken und dämpfen Pendelschwingungen – Pflicht für jede Tempo-100-Plakette, in unseren Bonner Anhängern ab 1.500 kg zGM Standard. Elektronische Stabilitätsprogramme (ESC, z. B. AL-KO ATC) erkennen beginnendes Pendeln über einen Deichsel-Sensor und bremsen den Anhänger gezielt ab – das verkürzt die Pendelphase signifikant. Besonders sinnvoll auf den windexponierten Rhein-Brücken (Konrad-Adenauer-Brücke, Friedrich-Ebert-Brücke, Südbrücke) und Autobahnabschnitten an der A565 zwischen Bonn und Meckenheim.",
+          ],
+        },
+        {
+          h3: "TÜV, ABE und Prüfintervalle – was du als Mieter wissen musst",
+          paragraphs: [
+            "Anhänger bis 750 kg zGM sind alle zwei Jahre HU-pflichtig (§ 29 StVZO). Anhänger über 750 kg zGM ebenfalls alle zwei Jahre, schwere Anhänger über 3,5 t jährlich. Die HU-Plakette sitzt am Kennzeichen. Bei jedem Vermietvorgang ab Bonn-Mehlem stellen wir sicher, dass die HU gültig ist – bei abgelaufener HU dürfen wir nicht vermieten und tun das auch nicht. Prüfdienstleister in Bonn: TÜV Rheinland (Beuel, Friedrich-Breuer-Straße), DEKRA (Endenich), KÜS und GTÜ.",
+            "Die ABE bzw. EBE des Anhängers ist die Grundlage für die Zulassung. Eigenmächtige Umbauten (zusätzliche Lampen, andere Bordwände, andere Reifen ohne Freigabe) führen zum Erlöschen der Betriebserlaubnis (§ 19 Abs. 2 StVZO) – mit gravierenden versicherungs- und bußgeldrechtlichen Folgen. Bitte den Mietanhänger unverändert verwenden; Sonderwünsche bitte vorab mit unserem Bonner Team klären (0228 504 660 61).",
+          ],
+        },
+        {
+          h3: "Bonn-Mehlem als Anhänger-Standort: B9, A555, A565 und das Liefergebiet",
+          paragraphs: [
+            "Unsere Filiale in der Drachenburgstraße 8 (53179 Bonn-Mehlem) liegt unmittelbar an der B9 und mit kurzem Zugang zur A562 (Friedrich-Ebert-Brücke), A555 (Bonn–Köln) und A565 (Bonner Autobahn nach Meckenheim/Eifel). Aus dieser Lage erreichst du das Bonner Stadtgebiet, Bad Godesberg, Königswinter, Bad Honnef, Wachtberg, den gesamten Rhein-Sieg-Kreis und das Ahrtal (Bad Neuenahr-Ahrweiler, Sinzig, Remagen) ohne Stadtdurchquerung – ideal für Anhänger-Selbstabholung.",
+            "Im Bonner Mietpark halten wir Plateau-, Baumaschinen-, Koffer-, Autotransport- und Motorradanhänger jeweils in mehreren Größen vor – Verfügbarkeit zeigt jedes Produkt direkt an. Reguläre Übergabezeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 (eine der längsten Samstags-Verfügbarkeiten in der Region). Zurrgurt-Set, Antirutschmatten und ein Adapter 7-/13-polig sind im Mietpreis enthalten. Reparatur und Wartung – auch von Fremdanhängern – bietet unsere Werkstatt in Bonn an: service@slt-rental.de.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // KABEL & STROMVERTEILER – Bonn-Mehlem. Inklusive Baustrom-
+    //   Komplettservice (Antrag, Schrank, Zähler-Koordination)
+    //   mit dem örtlichen Netzbetreiber SWB / Westnetz / e-regio.
+    // Quellen: DIN VDE 0100-704 (Baustellen), DIN VDE 0100-410
+    //   (Schutz gegen elektrischen Schlag), DIN VDE 0100-520
+    //   (Spannungsabfall), DIN VDE 0298-4 (Strombelastbarkeit),
+    //   DIN VDE 0701-0702 (Wiederholungsprüfung), DGUV V3,
+    //   DGUV Information 203-006, IEC 60309 (CEE-Stecker),
+    //   TAB NS Nord, § 8 NAV, TA Lärm (Eventstrom in
+    //   Wohngebieten Bonn).
+    // -------------------------------------------------------------
+    "kabel-stromverteiler": {
+      faqs: [
+        {
+          question: "Was bedeutet CEE – und welche Größen brauche ich in Bonn?",
+          answer:
+            "CEE steht historisch für „Commission on the Rules for the Approval of the Electrical Equipment\" – heute geregelt in IEC 60309. Blaue 3-polige CEE-Stecker (230 V, 16 A) versorgen Wohnwagen (z. B. auf dem Campingplatz Genienaue Mehlem), Marktstände am Münsterplatz und kleine Werkzeuge. Rote 5-polige CEE-Stecker (400 V) gibt es in 16 A (bis 11 kW), 32 A (bis 22 kW), 63 A (bis 43 kW) und 125 A (bis 86 kW). Faustregel: Werkzeuge/Beleuchtung mit 16/32 A, Mischer mit 32 A rot, Kräne/Hebebühnen mit 63 A. Am Standort Bonn-Mehlem halten wir alle Größen plus Adapter vor.",
+        },
+        {
+          question: "Welcher Kabelquerschnitt für welche Länge und Last?",
+          answer:
+            "Maßgeblich sind DIN VDE 0298-4 (Strombelastbarkeit) und DIN VDE 0100-520 (max. 3 % Spannungsabfall). Praxisrichtwerte für H07RN-F: 3 × 2,5 mm² für 16 A bis ca. 50 m, 5 × 2,5 mm² für 16 A dreiphasig bis ca. 70 m, 5 × 4 mm² für 32 A bis ca. 65 m, 5 × 6 mm² für 32 A bis ca. 100 m, 5 × 10/16 mm² für 63 A. Auf den weitläufigen Bonner Eventflächen (Rheinaue, Hofgarten, KunstRasen am Gronau) sind 100–200 m Speisestrecken Standard – wir empfehlen dann konservativ einen Querschnitt höher. Wir konfigurieren in Bonn bei der Buchung den passenden Mix.",
+        },
+        {
+          question: "Welche Schutzklasse müssen Baustellen-Kabel und -Verteiler haben?",
+          answer:
+            "DIN VDE 0100-704 schreibt für Bau-/Montagestellen vor: Leitungen mind. H07RN-F (öl-, säure-, abriebfest), Stecker/Kupplungen mind. IP44 (spritzwassergeschützt), Stromverteiler mind. IP44, in Außenbereichen typisch IP54/IP65, plus RCD ≤ 30 mA für alle 230-V- und Drehstrom-Abgänge bis 32 A. Unsere Bonner Verteiler erfüllen mindestens IP44 mit allpoligem FI 30 mA; größere Einheiten (63/125 A) zusätzlich mit selektivem FI 300 mA. Wichtig bei Rhein-Hochwasser-Lagen (Beuel, Mehlem, Plittersdorf): Verteiler grundsätzlich erhöht aufstellen, nie in der Hochwasserprognose-Zone.",
+        },
+        {
+          question: "Brauche ich einen FI-Schutzschalter – und wie oft wird er geprüft?",
+          answer:
+            "Ja. DIN VDE 0100-704 Abschnitt 411.3.3 schreibt einen RCD ≤ 30 mA für alle Steckvorrichtungen bis 32 A zwingend vor. Der FI ist vor jeder Schicht über die Prüftaste zu testen; Wiederholungsprüfung der gesamten Anlage nach DGUV V3 mindestens jährlich (Baustellenverteiler teils alle 3 Monate). Unsere Bonner Mietverteiler durchlaufen vor jeder Vermietung eine DGUV-V3-Prüfung – das Protokoll mit Datum und Prüfer-Kennung klebt sichtbar am Verteiler. Auf Großevents (KunstRasen, Pützchens Markt, Rhein in Flammen) prüfen wir auf Wunsch täglich vor Ort.",
+        },
+        {
+          question: "Bietet ihr Baustrom-Anschluss mit Antragstellung in Bonn?",
+          answer:
+            "Ja, als Komplettservice. Wir übernehmen die Bau­strom-Anmeldung beim zuständigen Netzbetreiber (in Bonn: SWB Netz GmbH; im Rhein-Sieg-Kreis: Westnetz; im Ahrtal: e-regio bzw. Ahrtal-Werke), liefern und installieren den normgerechten Bau­anschluss­schrank mit Wandlermesszählerplatz nach TAB NS Nord, koordinieren den Zähler­wechsel und holen den Schrank nach Bauende ab. Pauschalpreis je nach Region und Anschlussleistung – telefonische Beratung unter 0228 504 660 61 oder per E-Mail an bonn@slt-rental.de.",
+        },
+        {
+          question: "Wie schließe ich Kabel und Verteiler auf der Baustelle korrekt an?",
+          answer:
+            "Reihenfolge nach DIN VDE 0100-704: Zuerst Verteiler standsicher auf ebenem Untergrund aufstellen oder am Bauhilfsstützpunkt aufhängen (kein Wassersack). Speisekabel von der Einspeisestelle zum Verteiler verlegen – Quetsch-/Scherstellen vermeiden, keine Querung von Verkehrswegen ohne Kabelbrücken. Stecker erst nach Verlegung einstecken. Vor Inbetriebnahme: FI-Test, Spannungsprüfung an jeder Steckdose, Drehfeldprüfung bei Drehstrom (rechtsdrehend für Motoren). Wir geben am Standort Bonn eine Übergabe-Einweisung für Verteiler größer 32 A und stellen einen Drehfeldprüfer im Mietpaket bei.",
+        },
+        {
+          question: "Was tun, wenn der FI-Schutzschalter ständig auslöst?",
+          answer:
+            "Häufige Ursachen: feuchter/defekter Verbraucher (Bohrhammer mit Wassereintritt – auf Bonner Baustellen im Rheinhochwasser-Bereich nicht selten), beschädigtes Kabel mit Erdschluss, zu viele Verbraucher mit Ableitströmen am selben Kreis (Summen­ableitstrom > 30 mA). Vorgehen: alle Verbraucher abstecken, FI einschalten – hält er, einzeln nachstecken bis der Auslöser identifiziert ist. Hält der FI auch ohne Verbraucher nicht, ist der Verteiler betroffen (Wasser im Gehäuse, defekter Schalter). Niemals „brücken\" oder den FI dauerhaft drücken – lebensgefährlich. Tausch-Verteiler bekommst du am Standort Bonn-Mehlem kurzfristig (Ersatzlieferung in der Regel binnen 2 h im Stadtgebiet).",
+        },
+        {
+          question: "Kann ich Kabeltrommeln aufgerollt nutzen – oder müssen sie ganz abgerollt werden?",
+          answer:
+            "Kabeltrommeln müssen für die volle Nennlast vollständig abgerollt werden, sonst überhitzt das Kabel durch induktive Wärmestauung (Spuleneffekt). Aufgerollt darf nur ein Bruchteil entnommen werden – typische Herstellerangabe ca. 30 % der Trommelnennlast. Konkret: Eine 25-m-Trommel mit 16 A Nennstrom (3.680 W) darf aufgerollt nur ca. 1.000 W abgeben, sonst schmilzt die Isolierung. Wir verleihen am Standort Bonn bevorzugt H07RN-F-Leitungen als lose Ringe oder in offenen Kabelboxen – die haben dieses Problem nicht und sind auf Eventflächen (WCCB, Rheinaue) auch sauberer zu verlegen.",
+        },
+        {
+          question: "Welche Verteilergröße brauche ich für mein Event oder meine Baustelle in Bonn?",
+          answer:
+            "Faustregel über die Anschlussleistung: kleines Event (DJ + Licht + Catering-Hütte, z. B. Hofgarten- oder Schlosspark-Feier): 32 A rot (22 kW). Mittleres Event (Bühne + PA + Licht + Catering, z. B. KunstRasen oder Beueler Rheinwiesen): 63 A rot (43 kW). Großevent mit Tour-Bühne und Foodtruck-Reihe (Pützchens Markt, Rhein in Flammen): 125 A rot (86 kW) oder Aggregat-Lösung. Baustelle: Stromkreise zählen – pro 16-A-Abgang konservativ ein Verbraucher mit Anlaufstrom (Mischer, Hubarbeitsbühne). Wir konfigurieren am Standort Bonn den passenden Verteilerstamm und legen Verlängerungen passend dazu.",
+        },
+        {
+          question: "Wie verhält sich Stromversorgung in den Bonner Lärm- und Wohngebieten?",
+          answer:
+            "In reinen Wohngebieten Bonns (Plittersdorf, Bad Godesberg-Villenviertel, Endenich, Poppelsdorf) ist die TA Lärm streng – Aggregate bei Bauarbeiten möglichst durch Netzanschluss ersetzen, sonst Schallschutzhauben einsetzen. Für Events am Rhein (Rheinaue, Beueler Rheinwiesen) gelten Sondergenehmigungen des Ordnungsamtes Bonn. Beim Baustromanschluss berücksichtigen wir das in der Antragsplanung: kurze Wege zur SWB-Anschlussstelle, möglichst Netzbezug statt Aggregat. Beratung über die Bonner Standortnummer 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "DIN VDE 0100-704: warum Baustellen ein eigenes Regelwerk haben",
+          paragraphs: [
+            "Bau- und Montagestellen sind elektrotechnisch besondere Umgebungen: viele wechselnde Nutzer, oft Feuchtigkeit, mechanische Beanspruchung, häufiges Stecken und Trennen, parallele Gewerke. DIN VDE 0100-704 bündelt die Anforderungen und ist verbindlich für jede Baustromverteilung. Kernpunkte: Speisung aus einem TN-S-System mit separatem Schutzleiter (kein PEN auf Baustellen ab 32 A), RCD ≤ 30 mA für Steckdosenkreise bis 32 A, RCD ≤ 500 mA als Vorstufe für größere Abgänge, Schutzart mindestens IP44, mechanische Schutzart IK08.",
+            "Praktisch heißt das: Stecker, Kupplungen und Verteiler müssen dem CEE-System nach IEC 60309 entsprechen, Leitungen H07RN-F oder gleichwertig (klassisches PVC-Kabel ist auf Baustellen unzulässig), und der Verteiler braucht eine gültige DGUV-V3-Prüfung. Unsere Bonner Vermietflotte erfüllt diese Anforderungen vollständig – das spart Diskussionen mit dem SiGeKo bzw. der BG BAU auf den Baustellen in Bonn-Bundesviertel, Plittersdorf-Süd oder den Konversionsflächen in Hardthöhe/Hochkreuz.",
+          ],
+        },
+        {
+          h3: "Spannungsabfall und Kabelquerschnitt: warum man oft eine Nummer größer wählt",
+          paragraphs: [
+            "Jede Leitung hat einen Widerstand; bei großer Länge oder hoher Stromstärke fällt entlang der Leitung Spannung ab. DIN VDE 0100-520 erlaubt maximal 3 % Spannungsabfall zwischen Einspeisung und Verbraucher (bei 400 V: 12 V). Nach 100 m mit 5 × 2,5 mm² und 32 A wird das nicht mehr eingehalten. Effekt: Motoren laufen mit Untertemperatur, ziehen mehr Strom, werden heiß; Frequenzumrichter melden „Unterspannung\" und schalten ab; LED-Scheinwerfer flimmern.",
+            "Praxisregel: pro 50 m Länge bei 32 A eine Querschnittstufe größer wählen (statt 5 × 4 mm² besser 5 × 6 mm²). Bei 63 A grundsätzlich 5 × 10 mm² für die ersten 50 m, 5 × 16 mm² ab 50 m. Auf der weitläufigen Bonner Rheinaue (über 160 ha) oder bei Aufbauten am KunstRasen lohnt sich oft ein zweiter Verteiler näher am Verbraucher – kürzere Niederlastkabel statt einem langen Speisekabel. Wir rechnen den passenden Mix in Bonn-Mehlem bei der Buchung gemeinsam durch.",
+          ],
+        },
+        {
+          h3: "FI-Schutz, RCD-Typen und warum „Typ A\" oft nicht reicht",
+          paragraphs: [
+            "FI-Schutzschalter (RCD) erkennen Fehlerströme zum Schutzleiter und schalten bei ≤ 30 mA innerhalb von 40 ms ab – das schützt Personen vor Herzkammerflimmern. Vier wichtige Typen: AC (nur sinusförmige Wechselfehlerströme, seit 1985 unzulässig), A (sinusförmig + pulsierende Gleichströme; Standard), F (zusätzlich Mischfrequenzen, für einphasige Frequenzumrichter), B (zusätzlich glatte Gleichfehlerströme, für dreiphasige Frequenzumrichter, PV-Wechselrichter, Ladesäulen).",
+            "Auf modernen Bonner Baustellen mit Frequenzumrichter-Maschinen oder E-Lade­geräten (Telekom-Campus, Bonner Bogen, Bundesviertel) reicht ein Typ-A-FI nicht aus – glatte Gleichfehlerströme „blenden\" einen Typ-A-FI und verhindern dessen Auslösung. Hier muss Typ B (oder mindestens Typ F) eingesetzt werden. Unsere großen Verteiler (63/125 A) sind je nach Modell mit Typ B nachrüstbar; bei Frequenzumrichter-Geräten weisen wir bei der Buchung in Bonn explizit auf den nötigen FI-Typ hin.",
+          ],
+        },
+        {
+          h3: "Baustromanschluss in Bonn: vom Antrag bei SWB Netz bis zum fertigen Schrank",
+          paragraphs: [
+            "Ein Baustromanschluss ist kein Mietgerät, sondern ein temporärer Netzanschluss nach § 8 NAV. Ablauf in Bonn: 1) Konzessionsvertrag mit dem zuständigen Netzbetreiber – im Bonner Stadtgebiet SWB Netz GmbH, im Rhein-Sieg-Kreis Westnetz, im Ahrtal e-regio bzw. Ahrtal-Werke. 2) Antragsformular mit Lageplan, gewünschter Leistung (kW), Standort des Anschlussschranks. 3) Netzbetreiber prüft die Anschlussmöglichkeit (Hausanschlusskasten in der Nähe? Tiefbau nötig?). 4) Schrank-Aufstellung mit Wandlermesszählerplatz nach TAB NS Nord. 5) Zählersetzen durch den Netzbetreiber, Inbetriebnahme. 6) Nach Bauende: Demontage, Rückbau, Endabrechnung.",
+            "Wir übernehmen das als Komplettpaket: Antrag, Schrank, Stellung, Koordination Zählerwechsel, Rückbau. Festpreis je nach Region und Anschlussleistung. Gerade in den Bonner Konversionsflächen (Bonner Bogen, ehem. Plittersdorfer Siedlung), in Großbaustellen rund um das Bundesviertel und im Wiederaufbau Ahrtal eine deutliche Entlastung für Bauherren ohne Elektro-Hintergrund. Beratung: 0228 504 660 61 oder bonn@slt-rental.de.",
+          ],
+        },
+        {
+          h3: "Steckverbindersystem CEE und IEC 60309: Farben, Polzahl, Schutzart",
+          paragraphs: [
+            "Das CEE-System nach IEC 60309 ist international standardisiert und über Farbe, Polzahl, Stromstärke und Schutzart eindeutig codiert – Fehlsteckungen sind dadurch praktisch ausgeschlossen. Blau steht für 230 V (50 Hz), Rot für 400 V (50 Hz), Gelb für 110 V (UK-Bau), Schwarz für 500 V (Industrie), Grün für 24/50 V (Schutzkleinspannung). Die Polzahl gibt Auskunft über die Stromart: 3-polig (L+N+PE) = einphasig 230 V; 4-polig (L1+L2+L3+PE) = Drehstrom ohne Neutralleiter; 5-polig (L1+L2+L3+N+PE) = Drehstrom mit Neutralleiter (Standard im Bau).",
+            "Stromstärken sind durch die Steckergeometrie unverwechselbar: 16 A, 32 A, 63 A und 125 A haben unterschiedliche Außendurchmesser und Stiftbilder. Adapter zwischen den Stufen sind erlaubt, wenn sie das Schutzkonzept (FI, Überstromschutz) nicht aufheben. Wir verleihen am Standort Bonn-Mehlem den kompletten Adaptersatz (16/32 A blau auf 16 A Schuko, 32 A rot auf 16 A rot, 63 A rot auf 32 A rot etc.) – damit baust du dir die passende Verteilerkette ohne Fremdmaterial zusammen. Übergabe inklusive Drehfeldprüfung an größeren Einheiten.",
+          ],
+        },
+      ],
+    },
   },
 
   // Mülheim und weitere Bonn-Tranchen folgen analog.
