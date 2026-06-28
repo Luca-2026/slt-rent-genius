@@ -193,6 +193,7 @@ export function Header() {
     { to: "/vergleich", label: "Anbietervergleich" },
     { to: "/service/baumax-reparatur-nrw", label: "BAUMAX Service & Reparatur" },
     { to: "/glasfaserausbau-maschinen-mieten", label: "Glasfaserausbau – Maschinen mieten" },
+    { to: "/hochzeit-technik-mieten", label: "Hochzeit Technik mieten" },
     { to: "/faq", label: t("nav.faq") },
   ];
 
