@@ -3362,6 +3362,502 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // BELEUCHTUNG (LED-PARs, Moving Heads, Effekte, DMX)
+    // Quellen: ANSI E1.11 (DMX512), DIN EN 60529 (IP-Schutz),
+    //   SBauVO NRW Teil 5, DGUV Vorschrift 17/18, DIN EN 17206,
+    //   DIN VDE 0100-711 (Veranstaltungsstrom), DGUV 215-310
+    //   (Laser). Bonner Locations: WCCB, Beethovenhalle, La Redoute,
+    //   Maritim, Telekom-Forum, Post-Tower-Foyer, Stadthalle Bad
+    //   Godesberg.
+    // -------------------------------------------------------------
+    beleuchtung: {
+      faqs: [
+        {
+          question: "Welche Lichttechnik brauche ich für Hochzeit, Geburtstag oder Firmenevent in Bonn?",
+          answer:
+            "Faustregel nach Gästezahl: Bis 50 Personen reichen 4–6 LED-PARs für Wash-Licht plus 2 Effektgeräte (Derby/Moving Head) auf einem T-Bar-Stativ. Bis 150 Personen 8–12 LED-PARs, 2–4 Moving Heads, kleines DMX-Pult. Ab 200 Personen Traversenaufbau mit getrennten Wash-/Spot-/Effekt-Ebenen. Am Standort Bonn-Mehlem stellen wir Pakete passgenau zusammen – inkl. DMX-Verkabelung und Stromplan; spezialisierte Showtechnik kommt bei Bedarf binnen 24 Stunden aus Krefeld nach.",
+        },
+        {
+          question: "Was ist DMX512 und brauche ich ein Lichtpult zur Steuerung?",
+          answer:
+            "DMX512 (ANSI E1.11) ist das Standard-Steuerprotokoll für Veranstaltungslicht: ein Universum überträgt 512 Steuerkanäle über XLR. Jeder Scheinwerfer belegt je Modus 4–16 Kanäle. Für kleine Setups reicht Stand-alone oder Master/Slave-Verkettung; ab 6–8 Geräten lohnt ein DMX-Pult oder Software-Lösung (USB-DMX-Interface). Wir geben jedes Gerät mit Kanalbelegung und Beispiel-Patchliste mit.",
+        },
+        {
+          question: "Welche Scheinwerfer sind outdoor-tauglich – worauf achte ich beim IP-Schutz?",
+          answer:
+            "Outdoor-Einsatz (Rheinaue, Hofgarten, Garten-Events Bad Godesberg) verlangt mindestens IP65 nach DIN EN 60529 (staubdicht, strahlwassergeschützt). IP44 reicht für überdachte Bühnen, nicht bei freier Bewitterung. Auch Steckverbindungen müssen abgedichtet sein (TRUE1-IP65 oder vergossen). Im Eventtechnik-Sortiment kennzeichnen wir outdoor-fähige Geräte explizit und ergänzen bei Regenrisiko Regenhauben für Stative.",
+        },
+        {
+          question: "Wie viel Strom zieht ein typisches Lichtpaket – passt das an eine Schuko?",
+          answer:
+            "Eine Schuko-Steckdose (16 A / 230 V) liefert max. ca. 3.680 W, real über B16-Automat 3.000–3.300 W. Ein LED-PAR zieht 30–180 W, ein moderner LED-Moving-Head 150–400 W. Beispiel: 8 LED-PARs (à 100 W) + 4 Moving Heads (à 250 W) = ca. 1.800 W – passt auf eine Phase. Kommt Nebelmaschine (1.500 W) oder Hazer dazu, ist eine zweite Steckdose auf separater Sicherung Pflicht. Bei größeren Setups planen wir CEE16/CEE32 mit Lichtverteiler.",
+        },
+        {
+          question: "Wer darf Veranstaltungslicht in Bonn aufbauen und betreiben?",
+          answer:
+            "Für nicht-öffentliche Privatfeiern in begrenzter Größe gibt es keinen formalen Befähigungsnachweis – wir weisen ein. Sobald eine Versammlungsstätte nach SBauVO NRW Teil 5 betroffen ist (über 200 Besucher in Räumen, über 1.000 im Freien) oder eine gewerbliche Veranstaltung mit szenischer Darstellung stattfindet, greift DGUV V17/V18 – dann ist eine \"Verantwortliche Person für Veranstaltungstechnik\" erforderlich. Bei Events in Bonner Locations (WCCB, Beethovenhalle, La Redoute, Maritim) klären wir mit dem Hausherrn, was nötig ist.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen Wash-, Beam-, Spot- und Effekt-Licht?",
+          answer:
+            "Wash-Light flutet Flächen mit weichem, weitem Strahl (LED-PAR, Wash-Moving) – Grund-Stimmungslicht. Beam ist ein extrem enger, paralleler Strahl (5–8°), wirkt nur mit Nebel/Haze. Spot ist ein Mittelding mit Gobo-Projektion (Logos, Muster). Effekt-Geräte (Derby, Flowereffekt) erzeugen multidirektionale Lichtmuster für Tanzflächen. Eine gute Show kombiniert alle vier Schichten – wir beraten am Standort Bonn nach Location-Typ und Stilrichtung.",
+        },
+        {
+          question: "Sind die Geräte VDE-/E-Check-geprüft?",
+          answer:
+            "Ja. Sämtliche elektrische Mietgeräte werden gemäß DGUV V3 in regelmäßigen Intervallen geprüft (ortsveränderliche Betriebsmittel: typisch alle 6–24 Monate). Die Prüfplakette mit Datum klebt sichtbar am Gerät bzw. am Netzkabel. Für gewerbliche Veranstalter heißt das: Betreiberpflicht auf der Veranstaltung mit unseren Geräten ohne zusätzliche Prüfung. Prüfprotokolle stellen wir auf Anfrage bereit.",
+        },
+        {
+          question: "Wie ist die Logistik – Selbstabholung oder Lieferung im Bonner Raum?",
+          answer:
+            "Selbstabholung in der Drachenburgstraße 8 ist Mo–Fr 07:00–18:00 und Sa 08:00–17:30 möglich – kleinere Pakete passen in Kombi/Bus. Für komplette Lichtsetups mit Stativen, Truss und Verkabelung empfehlen wir Lieferung im Liefergebiet Bonn, Köln-Süd, Sankt Augustin, Wachtberg, Königswinter, Bad Honnef, Bad Neuenahr-Ahrweiler. Auf- und Abbau führen wir auf Anfrage durch – Preise nach Aufwand.",
+        },
+        {
+          question: "Brauche ich für Nebel oder Hazer eine Brandmelde-Abschaltung?",
+          answer:
+            "In Bonner Locations mit Rauchwarnmeldern oder aufgeschalteter Brandmeldeanlage (BMA) – typisch WCCB, Beethovenhalle, Hotelballsäle, Bundesbehörden – muss die Anlage vor Einsatz von Nebel/Haze freigegeben (Hausmeister/Wachdienst informiert) oder im betroffenen Bereich abgeschaltet werden – sonst Falschalarm und Feuerwehreinsatz auf Kosten des Veranstalters. Wir weisen darauf hin und stellen Hinweisschilder \"Künstlicher Nebel im Einsatz\" bereit.",
+        },
+        {
+          question: "Sind Laser auf Privat- und Firmenevents erlaubt?",
+          answer:
+            "Showlaser fallen unter DGUV Information 215-310 und die OStrV. Für Laser ab Klasse 3B/4 sind ein Laserschutzbeauftragter mit Sachkundenachweis, eine Anzeige bei der Berufsgenossenschaft sowie eine schriftliche Gefährdungsbeurteilung Pflicht. Aus diesem Grund führen wir am Standort Bonn bewusst keine offenen Show-Laser im freien Verleih – für Effektlicht setzen wir auf moderne LED-Beams mit Haze, optisch vergleichbar und ohne Sondergenehmigung.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Lichtdesign-Grundlagen: drei Ebenen, ein Konzept",
+          paragraphs: [
+            "Professionelles Veranstaltungslicht arbeitet in drei Ebenen: (1) Funktionslicht – damit Gäste den Raum nutzen können, gemessen in Lux am Boden (DIN EN 12464-1 nennt 100–300 lx für Verkehrsflächen, 50–100 lx für Lounge-Bereiche). (2) Atmosphärenlicht – farbiges Wash über Wände, Dancefloor, Decke; schafft Stimmung und Raumtiefe. (3) Effektlicht – Beams, Moving Heads, Strobe für Akzente in der Show.",
+            "Klassischer Fehler: \"zu viel Effekt, zu wenig Funktion\" – wenn die Tanzfläche nur noch von Movings beleuchtet wird, sehen Gäste sich kaum. Faustregel: Funktionslicht 60 %, Atmosphäre 30 %, Effekt 10 %. Am Standort Bonn-Mehlem stellen wir Pakete entsprechend zusammen statt nur Geräte zu zählen.",
+          ],
+        },
+        {
+          h3: "Stromplanung in Bonner Locations: Phasen, Sicherungen, FI",
+          paragraphs: [
+            "Veranstaltungsstrom wird nach DIN VDE 0100-711 betrieben: jeder Stromkreis mit FI-Schutzschalter (RCD 30 mA), ortsveränderliche Verteiler mit Personenschutz, Kabel mit ausreichendem Querschnitt (H07RN-F 3×1,5 mm² bis 16 A, 3×2,5 mm² ab 25 m). Häufiger Praxisfehler: vier Mehrfachsteckdosen hintereinandergehängt – Sicherung im Haus löst aus, Bühnenlicht ist tot.",
+            "Bei größeren Setups planen wir CEE-Drehstrom (16 A / 32 A, 5-polig). Drei Phasen × 16 A × 230 V = ca. 11 kW pro CEE16-Verteiler. Wir berechnen Belastung vorab und liefern bei Bedarf Drehstrom-Verteiler mit FI/LS-Kombination mit. Wo der vorhandene Hausanschluss in Bonner Altbauten oder Garten-Locations nicht reicht (typisch Trauung im Rheinauen-Pavillon), koppeln wir ein Stromaggregat aus unserem Aggregate-Sortiment an.",
+          ],
+        },
+        {
+          h3: "Hängung, Stative und Statik: Sicherheit über Köpfen",
+          paragraphs: [
+            "Sobald Scheinwerfer über Personen hängen, gelten DGUV V17/V18 und DIN EN 17206. Punktlasten an Hallendecken brauchen einen Nachweis durch den Hausherrn (Riggingplan, Lastenliste). Auf Stativen darf die Hersteller-Höchstlast nicht überschritten werden – ein klassisches T-Bar-Stativ trägt 30–50 kg bei 3 m Höhe. Jeder hängende Scheinwerfer wird mit einem Safety (Stahlseil) gegen Absturz gesichert, dimensioniert auf das 6-fache Eigengewicht.",
+            "Wir geben am Standort Bonn zu jedem Stativ und jedem Truss-Set Datenblatt mit max. Last und Aufbauanleitung mit. Bei komplexen Hängungen liefern wir Truss aus \"Traversen & Rigging\" passend dazu – inkl. Stahlseilen, Kettenzügen (manuell oder elektrisch) und Lastverteilung.",
+          ],
+        },
+        {
+          h3: "LED vs. Entladungslampen: warum 2026 fast alles LED ist",
+          paragraphs: [
+            "Klassische Entladungslampen (HMI, MSR, MSD) sind nahezu vollständig durch LED verdrängt. Gründe: Lebensdauer (LED 30.000–50.000 h vs. 1.000–3.000 h Entladung), kein Lampenwechsel im Mietkreislauf, niedriger Stromverbrauch (Faktor 3–5), Dimmbarkeit ohne Farbverschiebung, kein UV-Anteil. Nachteil LED: hochwertige Farbwiedergabe (CRI 90+) ist teurer; bei Hauttönen und Foto-/Video-Mitschnitt auf CRI achten.",
+            "Unsere aktuelle Mietflotte am Standort Bonn besteht zu nahezu 100 % aus LED – schont Strombilanz und reduziert Hitzeentwicklung (in Sommer-Locations ohne Klima ein echter Faktor). Bei Anfragen mit Foto-/Video-Verwertung (Bonner Konferenzen, Pressefotos im Bundesviertel) empfehlen wir explizit Geräte mit hohem CRI bzw. TLCI.",
+          ],
+        },
+        {
+          h3: "Programmierung und Steuerung: vom Stand-alone bis zum Show-Pult",
+          paragraphs: [
+            "Für kleine Pakete reichen Stand-alone-Modi: Sound-to-Light über eingebautes Mikrofon, vorgefertigte Programme, Master/Slave. Vorteil: kein Bediener nötig. Nachteil: keine Synchronisation auf konkrete Songs oder Programmpunkte. Sobald ein Live-Programm (Reden, Bandauftritte, Choreographien) bespielt werden soll, lohnt ein DMX-Pult oder Software (Tablet plus USB-DMX-Bridge), das auf Knopfdruck Stimmungen (Cues) abruft.",
+            "Für Bonner Mietkunden erstellen wir auf Wunsch Patchliste und einfache Programmiervorlage. Wer einen Operator stellen muss, dem empfehlen wir, einen lokalen Lichttechniker zu beauftragen – wir vermitteln im Raum Bonn/Köln/Sankt Augustin.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // BESCHALLUNG (PA, Aktivlautsprecher, Pulte, Mikros, Funk)
+    // Quellen: TA Lärm, DIN 15905-5 (LAeq max. 99 dB(A)/30 min),
+    //   DIN VDE 0100-711, BNetzA-Frequenzplan PMSE (Mittenband
+    //   470–608 MHz, 614–694 MHz, 863–865 MHz, 1785–1805 MHz).
+    //   Bonner Lärmschutz: Rheinaue, Hofgarten, Bundesviertel
+    //   mit Hotel- und Konferenznähe.
+    // -------------------------------------------------------------
+    beschallung: {
+      faqs: [
+        {
+          question: "Welche Lautsprecherleistung brauche ich für meine Veranstaltungsgröße in Bonn?",
+          answer:
+            "Faustregel: Sprache/Hintergrundmusik indoor 5–10 W/Person; Live-Musik und Tanzfläche 15–25 W/Person. Outdoor verdoppelt sich der Bedarf, weil kein Raum reflektiert. Beispiele: 50 Personen Geburtstag indoor mit Tanz → 1× Aktiv-Top 12\" mit ca. 800 W RMS plus passender Sub. 150 Personen Hochzeit indoor mit Live-Band → Stereo-Set Tops 15\" + 2 Subs. 300 Personen Open Air in der Rheinaue → kompaktes PA-System mit 4 Tops + 4 Subs. Wir kalkulieren am Standort Bonn-Mehlem pro Anfrage konkret.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen Aktiv- und Passivlautsprechern?",
+          answer:
+            "Aktivlautsprecher haben Endstufe und Filter intern – einfacher Aufbau (Strom + Signal), teurer pro Stück, Strom an jedem Standort nötig. Passivlautsprecher brauchen externe Endstufe und Controller-Preset (DSP/Frequenzweiche) – flexibler und günstiger bei größeren Setups, aber komplexer im Aufbau. Für 90 % der Privat- und Firmenkunden in Bonn empfehlen wir Aktiv-Setups – schneller aufgebaut, weniger Fehlerquellen.",
+        },
+        {
+          question: "Brauche ich einen Subwoofer – und wie viele?",
+          answer:
+            "Für reine Sprache (Vortrag, Trauung, Hochzeitsrede) reichen Tops ohne Sub. Für Musik mit elektronischem Anteil (Pop, House, HipHop) ist mindestens ein Sub Pflicht, sonst fehlt der Druck. Faustregel: ein Sub pro zwei Tops, Sub-Leistung etwa gleich Tops-Leistung in Watt RMS. Bei zwei Subs lohnt End-Fire- oder Cardio-Aufstellung, damit Bass nach vorne fokussiert und nicht hinter die Bühne strahlt (in Bonner Hotel-Ballsälen mit Wohnnachbarschaft besonders wichtig).",
+        },
+        {
+          question: "Was muss ich zur Lautstärke und zum Lärmschutz in Bonn wissen?",
+          answer:
+            "Bei Veranstaltungen mit Publikum gilt DIN 15905-5: max. LAeq 99 dB(A) gemittelt über 30 Minuten, gemessen an der lautesten zugänglichen Stelle. Wer höher fährt, muss Schallpegelmessung dokumentieren und Gehörschutz auslegen. Im Freien gilt zusätzlich die TA Lärm: tags (06–22 Uhr) Misch-/Wohngebiete ca. 60 dB(A), nachts 45 dB(A) Immissionsrichtwert. In Bonn besonders relevant: Rheinaue, Hofgarten, Münsterplatz und Bundesviertel mit Hotel- und Tagungsnähe. Für Ausnahmen \"seltene Ereignisse\" (max. 10/Jahr) ist eine Anzeige beim Ordnungsamt der Stadt Bonn ratsam.",
+        },
+        {
+          question: "Funkmikrofon mieten – gibt es Frequenzregeln in Bonn?",
+          answer:
+            "Ja. Die BNetzA hat den UHF-Frequenzplan klar geregelt. Anmeldefrei: 863–865 MHz (10 mW, sehr begrenzt) und 1785–1805 MHz (DECT-Bereich). Anmeldepflichtig (kostenpflichtige Frequenzzuteilung): Mittenband 470–608 MHz und Duplexlücke 614–694 MHz. Unsere Mietsysteme am Standort Bonn arbeiten auf koordinierbaren Frequenzblöcken – wir wählen pro Einsatz freie Kanäle und übergeben Geräte vorprogrammiert. Im Bonner Raum ist der Sender Langenberg (DVB-T2) zu beachten.",
+        },
+        {
+          question: "Wie viele Mikrofone passen gleichzeitig in eine Funkstrecke?",
+          answer:
+            "Pro 8-MHz-TV-Kanal lassen sich typisch 6–10 koordinierte Funkstrecken parallel betreiben, je nach Hersteller und Frequenzbreite. Praxis: Hochzeit 2 Strecken (Trauredner, Brautpaar/Wechsel). Konferenz mit Podiumsdiskussion: 4–8 Strecken plus Reserve. Über 12 parallele Strecken ist professionelle Frequenzkoordination Pflicht (Intermodulationsberechnung) – wir greifen auf koordinierte Frequenzblöcke unserer Geräte zurück.",
+        },
+        {
+          question: "Welches Mischpult brauche ich – analog, digital oder Tablet-gesteuert?",
+          answer:
+            "Kleinevents bis 8 Eingänge (1–2 Mikrofone, 1 Stereo-Zuspielung) → kompaktes Analogpult oder kleines Digitalpult mit Tablet. Mittelevents bis 16 Eingänge (Band + Sprecher + DJ) → Digitalpult der 16–32-Kanal-Klasse, idealerweise Tablet-Mix vom Saal aus. Große Events mit Live-Band und Monitoring → 32+-Kanal Digitalpult mit separatem Monitormix. Wir führen am Standort Bonn digitale Pulte – Tablet-Steuerung ist heute Standard.",
+        },
+        {
+          question: "Stromversorgung der PA – Schuko oder CEE?",
+          answer:
+            "Kleine Aktiv-Sets (2 Tops, 1 Sub) laufen an Schuko (16 A / 3.500 W). Größere Setups mit 4 Tops + 4 Subs und Pult ziehen leicht 4.000–6.000 W – das gehört auf CEE16 (Drehstrom, 11 kW). Wichtig: Audio und Licht auf getrennte Phasen, sonst Brummschleifen über Stromversorgung. Wir liefern auf Wunsch passende Stromverteiler aus unserem Kabel- & Stromverteiler-Sortiment am Standort Bonn mit.",
+        },
+        {
+          question: "Wie kommt Audio von der Bühne zum Mischpult – Multicore oder digital?",
+          answer:
+            "Analog: Multicore-Kabel mit 8/16/24 Eingängen plus Stagebox – robust, kein Latenzproblem, aber schwer und teuer pro Meter. Digital: ein CAT5e/CAT6-Kabel (Ethercon) überträgt 32–64 Kanäle bidirektional, sehr leichte Verlegung. Heute Standard auf digitalen Pulten. Bei Outdoor-Events (Rheinaue, Hofgarten) achten wir auf wasserdichte Steckverbindungen und Kabelschutz an Wegekreuzungen (Kabelbrücken aus unserem Absperrtechnik-Sortiment).",
+        },
+        {
+          question: "Können wir die PA selbst aufbauen oder kommt jemand mit?",
+          answer:
+            "Pakete bis ca. 4 Tops/2 Subs übergeben wir am Standort Bonn-Mehlem inkl. Verkabelungsschema und kurzer Einweisung – technikaffine Mieter schaffen das problemlos selbst. Bei größeren Setups, Bands mit Monitormix, mehreren Funkstrecken oder zeitkritischen Veranstaltungen empfehlen wir Aufbau und Operator aus unserem Netzwerk lokaler Veranstaltungstechniker im Raum Bonn/Köln/Sankt Augustin – Vermittlung über uns.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "PA-Dimensionierung: Watt sind nicht gleich Lautstärke",
+          paragraphs: [
+            "Die Watt-Angabe ist nur ein grober Indikator. Maßgeblich für die wahrgenommene Lautstärke ist der maximale Schalldruck (SPL @ 1 m in dB), der sich aus Wirkungsgrad und Belastbarkeit ergibt. Ein 800-W-Top mit 134 dB max. SPL kann lauter spielen als ein 1.200-W-Top mit 128 dB. Mit jeder Verdopplung der Entfernung sinkt der Schalldruck im Freifeld um 6 dB – ein Top mit 134 dB @ 1 m liefert in 16 m noch 110 dB.",
+            "Praxis für Bonner Locations: in halligen Sälen (Stadthallen, Glaspavillons, Industriekonvertierungen in Beuel-Nord) lieber kleinere Lautsprecher kürzer zum Publikum – mehr Leistung erhöht hier vor allem den Hall, nicht die Sprachverständlichkeit. In gedämpften Räumen (Bonner Hotelballsäle mit Teppich, Maritim, Marriott World Conference Hotel) lohnt Power, weil der Raum schluckt.",
+          ],
+        },
+        {
+          h3: "Lärmschutz in der Praxis: TA Lärm und DIN 15905-5 in der Bonner Innenstadt",
+          paragraphs: [
+            "Für Innenveranstaltungen ist DIN 15905-5 der zentrale Maßstab: max. LAeq 99 dB(A) über 30 Minuten am lautesten Publikumsplatz. Wer höher fährt, braucht Pegelbegrenzung, Schallpegel-Aufzeichnung und ausgelegten Gehörschutz für Gäste. Für Bonner Hallen-Events mit Sprache reichen 75–80 dB(A) deutlich – Tanz und Live-Band bewegen sich typisch zwischen 90 und 97 dB(A).",
+            "Outdoor in Wohnnähe (Rheinaue, Hofgarten, Stadtgarten Bad Godesberg): TA Lärm tagsüber 60 dB(A), nachts 45 dB(A) Richtwert in allgemeinen Wohngebieten – sehr leise, ein normales Gespräch erreicht 60 dB. Für Sommerfeste und Hochzeiten im Freien gibt es \"seltene Ereignisse\" (max. 10/Jahr und Ort). Wir empfehlen frühzeitige Abstimmung mit dem Ordnungsamt der Stadt Bonn.",
+          ],
+        },
+        {
+          h3: "Funkmikrofone: Frequenzplanung und PMSE in Bonn",
+          paragraphs: [
+            "Drahtlose Mikrofone arbeiten im UHF-Bereich. Die BNetzA verwaltet PMSE (Programme Making and Special Events): Mittenband 470–608 MHz (Allgemeinzuteilung max. 50 mW, Co-Existenz mit DVB-T2), Duplexlücke 614–694 MHz (anmeldepflichtige Einzelzuteilung), DECT-Bereich 1785–1805 MHz (kostenfrei, ortsfest), 863–865 MHz (sehr begrenzt).",
+            "Praktische Folge für Bonner Mieter: einzelne Mikrofone laufen anmeldefrei auf 1785–1805 MHz oder im Mittenband. Bei 4+ parallelen Strecken empfehlen wir koordinierte Geräte aus dem Mittenband. Bei Veranstaltungen in DVB-T2-Belegung Senders Langenberg führen wir vor Übergabe einen Scan der freien Kanäle durch. Im Bundesviertel und beim Plenarsaal-Umfeld gibt es zusätzlich diplomatische und behördliche Funkbelegung – wir scannen vor Ort.",
+          ],
+        },
+        {
+          h3: "Verkabelung, Erdung und Brummschleifen vermeiden",
+          paragraphs: [
+            "Brummen auf der PA ist meist ein Erdungsproblem (Ground Loop): zwei Stromkreise mit unterschiedlichem Schutzleiter-Potenzial, verbunden über Audio-Masse. Lösungen: alle Audio-Geräte auf dieselbe Phase und denselben Schutzleiter (idealerweise einen Strang aus einem CEE-Verteiler), symmetrische Audio-Verbindungen (XLR statt unsymmetrische Klinke), DI-Boxen mit Groundlift.",
+            "Niemals den Schutzleiter abklemmen – lebensgefährlich und verstößt gegen DIN VDE 0100. Wir liefern für Bonner Setups grundsätzlich nur Verkabelung mit korrekter Erdung. Bei Mischmoderation aus Hausstrom und Bühnenstrom ergänzen wir DI-Boxen für saubere Pegelübergänge.",
+          ],
+        },
+        {
+          h3: "Monitoring und Stagesound: warum auch kleine Events davon profitieren",
+          paragraphs: [
+            "Auch bei kleinen Events ist Monitoring wichtig: Trauredner braucht eigene Lautsprecher Richtung Publikum – nicht in den Rücken; ein Brautpaar mit Funkmikro hört sich selbst nicht, wenn der PA-Hauptklang weit entfernt steht. Lösungen: kleine Aktiv-Monitore (8–10\") als Sidefill, In-Ear-Monitorstrecken für Bands (DECT/UHF), reine Bestätigungs-Lautsprecher (Confidence Speaker) am Rednerpult.",
+            "Für Bonner Hochzeiten und Firmen-Events (typisch La Redoute Bad Godesberg, Steigenberger, Telekom-Forum) stellen wir Monitor-Pakete zusammen, die mit dem Haupt-PA-Setup zusammenarbeiten. Bei reinen Konferenz-Setups setzen wir oft auf Decken-/Wand-Lautsprecher der Location und ergänzen mit mobilen Stativ-Lautsprechern für flexible Bereiche.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // BÜHNE (Modulpodeste, Treppen, Geländer, Verkleidung)
+    // Quellen: DIN EN 13200-1/-5, SBauVO NRW Teil 5,
+    //   DGUV V17/V18, DIN EN 17206, DIN 18065, DIN 18040-1,
+    //   DIN EN 1991-1-4, DIN 4102-1 (B1).
+    // -------------------------------------------------------------
+    buehne: {
+      faqs: [
+        {
+          question: "Welche Bühnengröße brauche ich für meine Veranstaltung?",
+          answer:
+            "Faustregel: Solo-Sprecher mit Stehpult und Wand-Beamer → 2 × 2 m. DJ mit Lichteffekten → 3 × 2 m. Band mit 4 Musikern und Drumrise → 6 × 4 m. 5–8-köpfige Band mit Backline → 8 × 5 m. Pro Person auf der Bühne ca. 1,5 m² Aufstellfläche plus Bewegungsraum. Wir konfigurieren am Standort Bonn-Mehlem modulare Bühnenpodeste flexibel in 20-cm-Höhenrastern (40, 60, 80, 100 cm); größere Bühnen-Sets aus Krefeld binnen 24 Stunden.",
+        },
+        {
+          question: "Welche Belastbarkeit haben die Bühnenpodeste?",
+          answer:
+            "Standard-Modulbühnenpodeste sind nach DIN EN 13200 für 5 kN/m² (500 kg/m²) Verkehrslast ausgelegt – Anforderung an Stehplätze für Publikum. Für reine Sprecher- oder Tanzbühnen mit max. 3 Personen pro Quadratmeter mehr als ausreichend. Schwere Last (Flügel, schwere Backline) auf mindestens 2 Felder verteilen. Belastbarkeit pro Podest steht im Datenblatt.",
+        },
+        {
+          question: "Brauche ich eine Treppe oder Rampe?",
+          answer:
+            "Ab 60 cm Bühnenhöhe ist eine Treppe verpflichtend (DGUV 17/18). Standard-Bühnentreppen haben ca. 18 cm Steigung und 28 cm Auftritt – entspricht DIN 18065 für Notwendigtreppen. Eine Rollstuhlrampe nach DIN 18040 (max. 6 % Steigung – heißt für 60 cm Höhe 10 m Rampenlänge) ist bei öffentlichen Veranstaltungen empfohlen. Bei Hochzeits- und Firmen-Bühnen liefern wir Treppe als Standard mit, Rampe auf explizite Anfrage.",
+        },
+        {
+          question: "Ab welcher Bühnenhöhe brauche ich Absturzsicherung/Geländer?",
+          answer:
+            "Ab 1 m Absturzhöhe fordert die DGUV-Vorschrift Geländer mit Höhe mindestens 1,10 m, Mittelholm, Fußleiste. Bei 80 cm Bühne ist Geländer optional, ab 100 cm Pflicht. Im sichtbaren Frontbereich der Bühne (zum Publikum) entfällt das Geländer üblicherweise – Absturzkante klar erkennbar und Teil der künstlerischen Nutzung. Seiten und Rückseite werden mit Geländer abgesichert.",
+        },
+        {
+          question: "Ist eine Modulbühne ein \"fliegender Bau\" nach SBauVO NRW?",
+          answer:
+            "Fliegende Bauten sind nach SBauVO NRW Teil 5 bauliche Anlagen, die wiederholt aufgestellt werden und Personenzugang bieten. Unsere Standard-Modulbühnen bis ca. 6 × 4 m mit Höhen bis 80 cm und ohne Überdachung gelten in der Regel als untergeordnete Aufstellung und brauchen keine separate Ausführungsgenehmigung. Tribünen über 100 m², Höhen über 1,5 m oder Überdachungen können prüfbuchpflichtig und sachverständigenpflichtig werden.",
+        },
+        {
+          question: "Bühne für Outdoor in der Rheinaue – wie schütze ich gegen Regen und Wind?",
+          answer:
+            "Standard-Modulbühnenpodeste sind wetterfest, rutschhemmend. Outdoor braucht eine Überdachung gegen Regen – Pavillon, Eventzelt oder Bühnendach mit Traversen. Wind ist der kritische Faktor: ein offenes Bühnendach 4 × 4 m kann bei 80 km/h mehrere Tonnen Auftrieb erzeugen. Wir prüfen die Statik (Standort-Windlast nach DIN EN 1991-1-4) vor Outdoor-Aufbauten in Bonner Hochwasser- und Freiluftlagen (Rheinaue, Hofgarten, Drachenfels-Plateau) und liefern Ballast bzw. Erdanker mit.",
+        },
+        {
+          question: "Wie lange dauert Aufbau und Abbau einer Bühne?",
+          answer:
+            "Eine 4 × 3 m Bühne (12 m²) bauen zwei eingewiesene Personen in ca. 45–60 Minuten auf, inkl. Höheneinstellung und Treppenmontage. 6 × 4 m (24 m²) mit Verkleidung dauert ca. 90 Minuten. Abbau typisch 70 % der Aufbauzeit. Werkzeug (Inbus, Steckschlüssel) ist im Mietpaket enthalten. Auf Wunsch übernehmen wir Aufbau und Abbau am Veranstaltungsort im Raum Bonn/Köln/Sankt Augustin – Stundensatz nach Aufwand.",
+        },
+        {
+          question: "Kann man die Bühnenfläche verkleiden – in welchen Farben?",
+          answer:
+            "Ja. Standard ist schwarzer, schwer entflammbarer Bühnenmolton (B1 nach DIN 4102-1, in NRW nach SBauVO Teil 5 verpflichtend für Versammlungsstätten). Wir bieten Molton in Standard-Schwarz; andere Farben (weiß, rot, blau) auf Sondervorlauf. Befestigung mit Velcro – schnell und werkzeuglos. Für Bonner Markenevents (Telekom, Post, Bundesbehörden) lassen sich bedruckte Frontverkleidungen (Banner mit Logo) ergänzen.",
+        },
+        {
+          question: "Welcher Untergrund ist für eine Bühne geeignet?",
+          answer:
+            "Indoor: jeder ebene Hartboden (Parkett, PVC, Beton, Estrich). Bei Teppich ggf. Lastverteilungsplatten, weil punktuelle Last die Bühnenfüße eindrücken. Outdoor: ebener Rasen, Pflaster, Asphalt. Bei Rasen (typisch Hofgarten, Rheinaue) Last mit Holzbohlen unter den Füßen verteilen, sonst sinken die Stützen ein. Bei stark geneigtem Gelände (Drachenfels, Bonner Hänge) gleichen wir mit höhenverstellbaren Füßen aus (Bereich ca. ±10 cm pro Fuß).",
+        },
+        {
+          question: "Bühne plus Licht plus Ton – bekomme ich das aus einer Hand in Bonn?",
+          answer:
+            "Ja. Am Standort Bonn-Mehlem führen wir Bühne, Beleuchtung, Beschallung, Traversen, Rigging, Stromverteilung und Eventzelte aus einem Lager (mit Nachlieferung Krefeld bei Spezialequipment). Das spart Logistik (eine Anlieferung, ein Ansprechpartner) und stellt sicher, dass technische Schnittstellen passen (Truss-Hängung über Bühne mit korrekter Höhe und Statik, Stromplan abgestimmt, Audio-Hängung außerhalb der Lichtstrahlen). Komplettangebote unter 0228 504 660 61.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Modulbühnen-Systeme: Funktionsweise und Grenzen",
+          paragraphs: [
+            "Professionelle Modulbühnen bestehen aus einer Aluminium-Rahmen-Konstruktion mit aufgelegter Holzwerkstoff-Platte (typisch 18-mm-Birkenmultiplex mit rutschhemmender Beschichtung). Standardraster 1 × 1 m, 2 × 1 m oder 2 × 2 m. Höheneinstellung über höhenverstellbare Standbeine in 20-cm-Schritten von 20 cm bis 100 cm; für Tribünen und Show-Bühnen sind 120 cm und mehr möglich.",
+            "Belastbarkeit folgt DIN EN 13200-1: 5 kN/m² Verkehrslast für Stehplätze, 7,5 kN/m² für rhythmische Belastung (Tanzfläche, springendes Publikum bei Konzerten). Für Tanzflächen empfehlen wir Tanzbodenauflage (PVC oder Laminat) – schont die Bühnenoberfläche und sieht repräsentativer aus.",
+          ],
+        },
+        {
+          h3: "Versammlungsstätten in NRW: SBauVO Teil 5 in der Praxis",
+          paragraphs: [
+            "Die Sonderbauverordnung NRW Teil 5 gilt für Versammlungsstätten ab 200 Besucher in geschlossenen Räumen oder 1.000 Besucher im Freien. Sie regelt Rettungswege, Fluchttüren, Brandschutz, Bestuhlungspläne, Aufsichtspersonen und – relevant für Bühnen – die brandschutztechnischen Anforderungen an Bühnenmaterialien (mindestens B1 schwer entflammbar nach DIN 4102-1).",
+            "Praktische Folge für Bonner Veranstalter: Für private Hochzeiten unter 200 Gästen in privatem Rahmen greift die VStättVO nicht. Sobald eine kommerzielle Veranstaltung in einer öffentlich zugänglichen Halle stattfindet (Konzerte in der Beethovenhalle, Messen im WCCB, Stadtteilfeste), prüfen wir die Anforderungen mit dem Veranstalter – Bühnenmolton und alle Verkleidungen aus unserem Lager sind B1-zertifiziert; die Zertifikate liegen vor.",
+          ],
+        },
+        {
+          h3: "Statische Sicherheit: was hält wirklich was?",
+          paragraphs: [
+            "Bühnenpodeste werden in Deutschland nach DIN EN 13200 typgeprüft. Jedes Modul hat eine Bauartzulassung mit konkreter Belastungsangabe; wir führen ausschließlich Systeme, deren Zulassung vorliegt. Bei Sonderlasten (Flügel mit 350 kg auf 1,5 × 1 m – typisch für Beethovenstadt) erstellen wir vorab eine Lastverteilung mit Spreader-Platten. Bei mehrstöckigen Tribünen oder Bühnen mit Dachkonstruktion wird ein Statiker hinzugezogen – das ist im Mietpaket nicht enthalten.",
+            "Auf Vor- und Hauptbühnen bei Konzerten kalkuliert man dynamische Belastungen (springendes Publikum) doppelt zur statischen Last. Eine Bühnenfront 6 × 4 m mit 100 Personen Tanzfläche bedeutet ca. 10 kN/m² Spitze – das schaffen Modulbühnensysteme bei richtiger Stützweite.",
+          ],
+        },
+        {
+          h3: "Aufbau-Reihenfolge: Praxis-Workflow für saubere Bühnen",
+          paragraphs: [
+            "Empfohlene Reihenfolge für 4 × 3 m Bühne mit 80 cm Höhe: (1) Standfläche prüfen, eben und tragfähig. (2) Eckpodeste setzen und Höhenfüße mit Libelle einstellen. (3) Mittlere Podeste einsetzen, Verbindungsklammern verriegeln. (4) Komplette Fläche prüfen (kein Wackeln, keine Spalte). (5) Treppe(n) montieren und sichern. (6) Geländer Seiten- und Rückseite. (7) Molton-Verkleidung. (8) Erst danach Technik (Licht, Ton, Backline) aufbauen.",
+            "Häufiger Fehler bei Eigenaufbau: Technik wird vor Geländer aufgebaut, dann fehlt der Platz und das Geländer wird weggelassen – beim Aufbau eines Mikroständers stürzt jemand rückwärts. Wir empfehlen die Reihenfolge konsequent. Bei Großevents im Raum Bonn übernimmt unser Team oder ein vermittelter lokaler Partner den Aufbau auf Wunsch komplett.",
+          ],
+        },
+        {
+          h3: "Rollstuhlzugänglichkeit und Barrierefreiheit",
+          paragraphs: [
+            "Für barrierefreie Bühnen gilt DIN 18040-1: Rampenneigung max. 6 %, beidseitiger Handlauf, Zwischenpodeste alle 6 m Länge, rutschfester Belag. Bei 60 cm Bühnenhöhe heißt das 10 m Rampenlänge – ein ernst zu nehmender Platzbedarf. Alternative für Locations mit Platznot: niedrige Bühne (40 cm) mit kürzerer Rampe, oder Hublift bei festen Bühnenanlagen.",
+            "Bei Bonner Trauungen, Reden und Preisverleihungen in öffentlichen Locations (Beethovenhalle, WCCB, Plenarsaal-Umfeld) empfehlen wir die niedrigere Bühnenvariante. Unsere Rampen sind 1 m breit; DIN 18040 fordert für reine Bühnenrampen 1,20 m Begegnungsverkehr nicht zwingend. Im Zweifel beraten wir und bieten projektspezifische Lösungen.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // TRAVERSEN & RIGGING (Alu-Truss, Kettenzüge, Tower, Ballast)
+    // Quellen: DIN EN 17206, DGUV V17/V18, DGUV Regel 115-002,
+    //   DIN EN 818-7, DIN EN 1492-2, DIN EN 13414,
+    //   DIN EN 1991-1-4, BGV C1/D8/D8+.
+    // -------------------------------------------------------------
+    "traversen-rigging": {
+      faqs: [
+        {
+          question: "Welche Traversengröße brauche ich für mein Setup?",
+          answer:
+            "Faustregel nach Spannweite: bis 4 m und max. 50 kg Last → 220er Truss (22 × 22 cm, F32) reicht. 4–8 m oder höhere Lasten (Lichtbatterie, Lautsprecher) → 290er Truss (F34, 29 × 29 cm). Ab 8 m oder schwerer Hängelasten → 390er Truss (F44) bzw. Box-Truss. Am Standort Bonn-Mehlem führen wir die gängigen Größen für das Eventgeschäft; Sondergrößen liefern wir aus Krefeld nach.",
+        },
+        {
+          question: "Wie hoch darf ich Traversen aufbauen – Tower und Ground-Support?",
+          answer:
+            "Aluminium-Truss-Tower mit Kettenzug oder Steigerverfahren erreichen typisch 4–8 m Aufbauhöhe (Standard-Mietsysteme). Höhere Tower (12+ m) sind statisch geprüfte Spezialkonstruktionen mit schwerem Ballast (typisch 250 kg pro Tower) – Indoor möglich, Outdoor windkritisch. Wir liefern in Bonn Tower bis ca. 5 m mit Heberahmen für Einzelpersonen-Aufbau; höhere Setups mit Aufbauservice.",
+        },
+        {
+          question: "Brauche ich Kettenzüge oder reicht statische Hängung?",
+          answer:
+            "Statische Hängung (fix, nicht beweglich): einfacher, billiger, ausreichend für Setups, die einmal hängen. Kettenzüge (manuell oder elektrisch): nötig, wenn Truss am Boden bestückt und dann hochgefahren wird (Standard bei Konzerten) oder Höhen während der Show verändert werden. Elektrokettenzüge der 250/500/1.000 kg-Klasse sind im professionellen Veranstaltungsbau Standard. Wir vermieten beides – Kettenzüge erfordern Sachkundenachweis nach DGUV 17 für gewerbliche Mieter.",
+        },
+        {
+          question: "Wie viel Last kann ich an eine Truss hängen?",
+          answer:
+            "Die zulässige Hängelast hängt von Truss-Typ, Spannweite und Hängepunkt-Konfiguration ab. Beispiel 290er Box-Truss bei 6 m und 2 Hängepunkten (1/4-Punkt): ca. 250–400 kg gleichverteilte Last (UDL), je nach Hersteller. Punktlasten sind kritischer – ein 50-kg-Moving Head mittig auf 6 m Truss kann die zulässige Belastung schon überschreiten. Wir geben für jedes Truss-Modul ein Datenblatt mit Belastungskurven heraus.",
+        },
+        {
+          question: "Welche Sicherheitsausrüstung gehört zu jeder Truss-Hängung?",
+          answer:
+            "Pflicht: Anschlagmittel mit ausreichender Tragfähigkeit (Rundschlinge oder Stahlseil, geprüft nach DIN EN 1492-2/13414), Schäkel mit ausreichendem WLL (typisch 1.000 oder 1.500 kg), Stahlseil-Safety als Sekundärsicherung (6-fache Tragfähigkeit des Geräts), Lastverteiler bei mehreren Punkten. Wir geben am Standort Bonn zu jedem Truss-Paket geprüfte Anschlagmittel mit Prüfplakette (jährliche Sichtprüfung dokumentiert) mit.",
+        },
+        {
+          question: "Outdoor-Tower in Bonn – wie viel Wind ist okay?",
+          answer:
+            "Standard-Aluminium-Tower mit Ballast (250–500 kg pro Tower) sind typisch bis Windgeschwindigkeit 8 m/s (29 km/h, Bft 5) auslegbar. Bei höheren Werten muss das System abgesenkt oder demontiert werden. Bei Outdoor-Bühnen mit Plane/Banner erhöht sich die Windlast quadratisch – ein 4 × 6 m Banner bei 50 km/h erzeugt mehrere Tonnen Druck. Wir kalkulieren Windlast nach DIN EN 1991-1-4 und liefern entsprechend dimensionierten Ballast oder empfehlen Erdanker; in der Bonner Rheinaue auf weichem Untergrund sind Erdanker oft die bessere Wahl.",
+        },
+        {
+          question: "Darf ich Truss in Eigenaufbau machen?",
+          answer:
+            "Privat (nicht öffentlich, nicht gewerblich): ja, mit Geräteeinweisung am Standort Bonn. Gewerblich oder bei öffentlichen Veranstaltungen greift DGUV V17/V18: Aufbau über Personenköpfe darf nur durch sachkundige Personen erfolgen (Verantwortlicher für Veranstaltungstechnik mit IHK-Abschluss). Für Hochzeiten und kleine Firmen-Events bauen wir auf Wunsch selbst auf oder vermitteln einen lokalen IHK-Veranstaltungsmeister im Raum Bonn/Köln.",
+        },
+        {
+          question: "Welche Kupplungssysteme gibt es – passt alles zusammen?",
+          answer:
+            "Branchenstandards: F32/F34/F44-Reihe (Konusverbindung mit Stiften und Sicherungssplint, herstellerübergreifend kompatibel innerhalb der Größe), Spigot-Verbindungen, Box-Truss-Konus. Innerhalb einer Truss-Größe sind die meisten Marken kompatibel – wir mischen bewusst nicht Hersteller, weil Toleranzen variieren. Am Standort Bonn führen wir geschlossene Sets eines Herstellers für reibungslosen Aufbau.",
+        },
+        {
+          question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
+          answer:
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Bonn liegt typisch bei 60–95 € netto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standardkonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+        },
+        {
+          question: "Gibt es eine Versicherung für hängendes Material?",
+          answer:
+            "Wir versichern unsere Mietsachen über eine Maschinen-/Inhaltsversicherung. Für Sach- und Personenschäden auf der Veranstaltung ist eine Veranstalterhaftpflichtversicherung des Mieters Pflicht – jeder gewerbliche Veranstalter hat das ohnehin, für Privatpersonen ist eine erweiterte Haftpflicht oder Eventversicherung sinnvoll. Bei Buchung von Trusskonstruktionen weisen wir explizit darauf hin.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Truss-Statik verstehen: UDL, CPL und 1/3-Punkt-Regel",
+          paragraphs: [
+            "Herstellerdatenblätter für Truss geben drei zentrale Werte an: UDL (Uniformly Distributed Load, gleichverteilt), CPL (Center Point Load, eine Punktlast in der Mitte) und 1/3-Point oder 1/4-Point-Loading (zwei oder drei symmetrische Punkte). Beispiel 290er Box-Truss, 6 m Spannweite: UDL ca. 350 kg, CPL ca. 150 kg, 1/3-Punkt-Lasten 2 × 175 kg. Hängung an zwei Punkten im 1/4-Bereich ist statisch deutlich günstiger als ein einziger Punkt mittig.",
+            "Für Bonner Setups planen wir Hängung in Lastpunkten – nicht \"auf gut Glück\". Schwere Geräte (Moving Heads, große Lautsprecher) hängen direkt unter einem Anschlagpunkt, leichte Wash-Lichter dazwischen. Das halbiert die effektive Biegelast und ist die professionelle Vorgehensweise.",
+          ],
+        },
+        {
+          h3: "Anschlagmittel: Rundschlinge, Stahlseil, Schäkel",
+          paragraphs: [
+            "Rundschlingen (Polyester, farbcodiert: violett 1 t, grün 2 t, gelb 3 t, grau 4 t, rot 5 t, braun 6 t) sind das Standard-Anschlagmittel im Veranstaltungsbau. Leicht, deckenschonend, normiert nach DIN EN 1492-2. Wichtig: nicht über scharfe Kanten ziehen (Trägerflansch) – sonst Faserbruch. Stahlseile (DIN EN 13414) sind robuster gegen Kanten und Hitze, aber schwerer.",
+            "Schäkel: omega- oder dee-förmig, in Güteklasse 6 oder 8, mit WLL-Aufprägung am Bügel. Niemals lose Schrauben oder Eigenbau-Lösungen verwenden. Wir liefern am Standort Bonn nur geprüfte Anschlagmittel mit aktueller Prüfplakette (jährliche Sichtprüfung nach DGUV Grundsatz 309-007 dokumentiert).",
+          ],
+        },
+        {
+          h3: "Kettenzüge: manuell vs. elektrisch, D8 und D8+",
+          paragraphs: [
+            "Manuelle Kettenzüge (Stirnradflaschenzug) heben mit Handkette – günstig, langsam, max. ca. 250 kg, für Trauerhöhungen und kleine Lasten. Elektro-Kettenzüge sind die Arbeitspferde der Veranstaltungsbranche: 250 kg, 500 kg, 1.000 kg WLL. Über Personenköpfen muss der Kettenzug in der Ausführung D8+ ausgeführt sein (zusätzliche Sicherungsbremse, 10-fache Sicherheit) – D8 reicht nur für Lasten, die nicht über Personen geführt werden.",
+            "Im Bonner Mietsortiment führen wir je nach Setup-Größe geprüfte D8-Hebezeuge mit aktueller Sachverständigenprüfung. Für gewerbliche Veranstalter mit Personenhängung empfehlen wir D8+-Geräte und Vermittlung eines IHK-Sachkundigen für den Aufbau.",
+          ],
+        },
+        {
+          h3: "Outdoor und Windlast in der Rheinaue: DIN EN 1991-1-4 praxisnah",
+          paragraphs: [
+            "DIN EN 1991-1-4 berechnet Windlast als q = ½·ρ·v². Für 50 km/h Wind (14 m/s) ergibt sich Staudruck von ca. 120 N/m². Ein 4 × 6 m Banner bei 50 km/h heißt 24 m² × 120 N/m² = 2.880 N (≈ 290 kg) seitliche Belastung – ohne Ballast oder Verankerung kippt der Tower. Bei 80 km/h (Bft 9) sind es 730 N/m² – das Vierfache.",
+            "Standard-Ballast aus Beton wiegt 25 kg pro Modul, Standard-Tower brauchen 8–16 Module (200–400 kg pro Standfuß) für Bühnendächer. Alternative: Erdanker für Rasen/Erdboden – in der Rheinaue, im Hofgarten oder auf Schulhöfen meist möglich. Bei harten Untergründen (Asphalt Münsterplatz, Pflaster Marktplatz) ist Ballast die einzige Option. Bei Windwarnung über Bft 8 wird das System abgebaut oder abgesenkt.",
+          ],
+        },
+        {
+          h3: "Prüfung und Doku: was Veranstalter vorhalten müssen",
+          paragraphs: [
+            "Gewerbliche Veranstalter müssen nach DGUV V17/V18 für jede Veranstaltungstechnik vorhalten: Gefährdungsbeurteilung (ArbSchG § 5), Herstellerdatenblätter der Mietsachen, Sachkundenachweis der eingesetzten Personen, Aufbau-/Abbauplan, Prüfprotokolle der Anschlagmittel. Wir liefern als Vermieter Datenblätter und Prüfplaketten – die Gefährdungsbeurteilung erstellt der Veranstalter (Beratung möglich).",
+            "Für Privat-Events (Hochzeit, Geburtstag, geschlossener Kreis) gelten diese Pflichten nicht – eine sachgerechte Einweisung am Standort reicht. Sobald die Veranstaltung öffentlich, gewerblich oder über 200 Besucher in der Halle umfasst, greift SBauVO NRW Teil 5 und die Pflichten gelten vollständig.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // KOMMUNIKATION (Funkgeräte, Headsets, Intercom)
+    // Quellen: BNetzA-Allgemeinzuteilung PMR446 (Vfg. 28/2017),
+    //   dPMR446/DMR446 (Vfg. 33/2014), Betriebsfunk 410–470 MHz
+    //   (Einzelzuteilung), DECT 1880–1900 MHz. BOS-Funk
+    //   ausschließlich für Behörden – KEINE Vermietung.
+    // -------------------------------------------------------------
+    kommunikation: {
+      faqs: [
+        {
+          question: "Welche Funkgeräte sind in Deutschland anmeldefrei – PMR446 erklärt",
+          answer:
+            "PMR446 ist der Standard für anmeldefreie Handfunkgeräte in Deutschland und der EU. BNetzA-Allgemeinzuteilung Vfg. 28/2017: 16 Kanäle im Bereich 446,0–446,2 MHz, max. 500 mW Sendeleistung, fest angebaute Antenne. Reichweite im Außenbereich (freie Sicht) typisch 2–4 km, in der Stadt 300–800 m, in Gebäuden 1–3 Etagen. Reicht für Veranstaltungsabsprache, Baustellenkoordination, kleine Festivals. Am Standort Bonn führen wir PMR446-Geräte als Standard – sofortiger Einsatz ohne Anmeldung.",
+        },
+        {
+          question: "Wie viele Funkgeräte brauche ich – pro Person oder mehrere Gruppen?",
+          answer:
+            "Faustregel: 1 Gerät pro Funktion. Für Veranstaltungsleitung, Bühne, Einlass, Bar, Catering je ein eigenes Gerät – ggf. auch je ein eigener Kanal. PMR446 hat 16 Kanäle (mit CTCSS/DCS weitere virtuelle Trennung). Bei Hochzeiten und kleinen Firmen-Events kommt man mit 4–6 Geräten aus, bei Festivals und Großhochzeiten 10–20+. Wir konfigurieren und übergeben am Standort Bonn vorprogrammiert mit dem gleichen Kanal.",
+        },
+        {
+          question: "Headset oder Hand-PTT – was ist praktischer?",
+          answer:
+            "Headset (Bügel- oder Nackenbügel) mit PTT-Taste am Kabel ist Standard für Personal mit beiden Händen voll (Sicherheitsdienst, Bühnencrew, Service). Hand-PTT mit Lautsprecher reicht für Veranstaltungsleitung und Außenbereich. Profi-Headsets mit Noise Cancelling sind für laute Locations (Bühne nahe Lautsprecher) sinnvoll – wir empfehlen je Einsatz und Lärmumgebung in Bonn.",
+        },
+        {
+          question: "Reichweite – stimmen die \"bis zu 10 km\" auf der Verpackung?",
+          answer:
+            "Die Herstellerangaben gelten unter Idealbedingungen (freie Sicht, See, Wüste, beide auf Bergen). Praxis: PMR446 in der Stadt 300–800 m, im Freien mit Bebauung 1–2 km, im Wald oder Tal entsprechend weniger. Für größere Reichweiten (Bonn Marathon mit Streckenlänge 42 km, Festival mit 1 km Länge, Industrieanlage) braucht es Einzelzuteilung im Betriebsfunk – aufpreispflichtig, aber bis 5 W Sendeleistung erlaubt.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen analog und digital (DMR)?",
+          answer:
+            "Analoge PMR446-Geräte: einfach, robust, herstellerübergreifend kompatibel. Reichweite und Sprachqualität nehmen mit zunehmendem Abstand allmählich ab. Digital (dPMR/DMR im 446-Band, BNetzA Vfg. 33/2014): bessere Sprachqualität bis zur Reichweitengrenze (dann abrupter Abbruch), mehr Funktionen (Display, Textnachrichten, Verschlüsselung), zwei Sprachkanäle pro Frequenz möglich. Am Standort Bonn führen wir beide Varianten.",
+        },
+        {
+          question: "Kann ich Funkgeräte über mehrere Etagen oder im Keller nutzen?",
+          answer:
+            "Beton- und Stahlwände dämpfen Funksignale stark; PMR446 übersteht typisch 1–3 Stahlbetonetagen, im Tiefkeller je nach Bauweise gar nicht. Lösungen: (a) DECT-Intercom für gebäudeinterne Kommunikation (1880–1900 MHz, anmeldefrei, mit Repeater 50+ Etagen möglich), (b) Mobilfunk-PTT (4G/5G, deutschlandweit, monatliche SIM), (c) Betriebsfunk mit Repeater im Gebäude (Einzelzuteilung BNetzA, kostenpflichtig). Im Post-Tower, Telekom-Forum oder WCCB ist DECT-Intercom oft die saubere Lösung.",
+        },
+        {
+          question: "Akku-Laufzeit – reicht das für einen Tag?",
+          answer:
+            "Standard-PMR446 mit Li-Ion-Akku hält 8–12 Stunden im Mischbetrieb (5 % senden, 5 % empfangen, 90 % stand-by). Bei intensiver Nutzung (Sicherheitsdienst, Dauerkommunikation) 6–8 Stunden. Für Mehrtageseinsätze geben wir Ersatzakkus oder Mehrfach-Lader (4er-/6er-Schalen) mit. Akkus werden vor Ausgabe vollgeladen übergeben.",
+        },
+        {
+          question: "Brauche ich für Funkgeräte auf einer Baustelle in Bonn eine Genehmigung?",
+          answer:
+            "Für PMR446: nein. Allgemeinzuteilung BNetzA, anmelde- und gebührenfrei, in ganz Deutschland und der EU zulässig. Für Betriebsfunk (höhere Leistung, eigene Frequenz): ja, Einzelzuteilung bei der BNetzA mit jährlicher Gebühr und Standortbindung. Für BOS-Funk (Feuerwehr, Polizei, Rettungsdienst): ausschließlich autorisierte Organisationen – wir vermieten keinen BOS-Funk. Für Baustellenalltag in Bonn sind PMR446-Geräte die Standardlösung.",
+        },
+        {
+          question: "Wie ist die Sprachqualität bei lauter Umgebung (Konzert, Baustelle)?",
+          answer:
+            "Mit Standard-Headset und PTT-Mikro vor dem Mund ist Sprache bis ca. 90 dB(A) Umgebungsgeräusch verständlich. In sehr lauten Umgebungen (Front-of-House Konzert in der Beethovenhalle, Bohrhammereinsatz) empfiehlt sich Profi-Headset mit Boom-Mikrofon und aktiver Noise-Cancellation oder Kehlkopfmikrofon (nimmt Umgebungsgeräusche nicht auf). Solche Spezialheadsets vermieten wir am Standort Bonn auf Anfrage.",
+        },
+        {
+          question: "Werden die Geräte vor Ausgabe geprüft und gereinigt?",
+          answer:
+            "Ja. Jedes Gerät durchläuft vor Ausgabe einen Funktionscheck (Sende-/Empfangstest, Akkuspannung, Tastenfunktion). Headset-Ohrauflagen und Mikro-Windschutz werden gereinigt bzw. ausgetauscht – hygienisch wichtig bei Personenwechsel. Programmierung auf den gewünschten Kanal erfolgt vor Übergabe; wir notieren den Kanal auf dem Übergabeschein, damit die ganze Crew startklar ist.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "PMR446 vs. Betriebsfunk vs. LTE-PTT: was lohnt wann?",
+          paragraphs: [
+            "PMR446: anmelde- und gebührenfrei, max. 500 mW, Reichweite stadttypisch 300–800 m, ideal für Veranstaltungen, kleine Baustellen, Outdoor-Events in der Rheinaue oder im Hofgarten. Betriebsfunk (Einzelzuteilung BNetzA, 410–430 MHz oder 440–470 MHz): bis 5 W, ca. 5-fache Reichweite, jährliche Frequenzgebühr (typisch 100–500 € je Standort), ortsgebunden – lohnt für stationäre Betriebe (Industriestandorte in Beuel-Nord, Großlager Sankt Augustin).",
+            "LTE-PTT (Push-to-Talk über Mobilfunk): deutschland-/weltweite Reichweite, monatliche SIM-Gebühr pro Gerät (ca. 10–25 €), Abhängigkeit von Mobilfunkabdeckung. Lohnt für verteilte Teams (Außendienst, Servicetechniker, Marathon-Streckenposten). Im Mietkreislauf am Standort Bonn führen wir PMR446 als Standard; Betriebsfunk und LTE-PTT auf Projektbasis.",
+          ],
+        },
+        {
+          h3: "CTCSS, DCS und virtuelle Kanaltrennung",
+          paragraphs: [
+            "PMR446 hat 16 physikalische Kanäle. Damit auf einem Kanal mehrere Gruppen parallel sprechen können, ohne sich gegenseitig zu hören, gibt es CTCSS (38 sub-audible Tonsignale) und DCS (83 digitale Codes). Beide öffnen den Lautsprecher nur, wenn der passende Sub-Code mitgesendet wird. Achtung: das schützt nur den Empfang – andere Gruppen können dich trotzdem hören und stören.",
+            "Praktische Folge für Bonner Veranstaltungen: bei einer Großhochzeit mit getrennten Teams (Catering, Service, Sicherheit) belegen wir 3 verschiedene Kanäle, nicht 3 Sub-Codes auf einem Kanal – reduziert Funkchaos und Störungen erheblich.",
+          ],
+        },
+        {
+          h3: "Headset-Qualität: warum \"billig\" auf Dauer teuer wird",
+          paragraphs: [
+            "Konsumer-Headsets aus dem 10–30-€-Segment haben dünne Kabel, instabile PTT-Mechanik und schlechte Mikrofone. Auf einer 8-Stunden-Veranstaltung fallen sie typisch aus (Kabelbruch am Stecker), und das schwache Mikro überträgt Umgebungslärm statt Sprache. Profi-Headsets im 80–200-€-Segment haben verstärkte Kabel, Metall-PTT und Geräuschdämpfung.",
+            "Wir vermieten am Standort Bonn nur Profi-Headsets – die langfristig günstigere Wahl, weil keine Ausfälle während der Veranstaltung. Bei besonders kritischen Setups (TV-Produktion, Konferenz mit Simultandolmetschern – typisch in WCCB und Plenarsaal) führen wir auch echte Intercom-Systeme mit kabelgebundener oder DECT-Anbindung.",
+          ],
+        },
+        {
+          h3: "Reichweiten in der Praxis: Beispiele aus Bonn",
+          paragraphs: [
+            "Beispiel 1: Hochzeit in einem Park-Pavillon der Rheinaue (200 × 100 m Gelände): PMR446 reicht problemlos vom Eingang bis zur Tanzfläche, Headsets für 6 Personen empfohlen. Beispiel 2: Firmen-Event im Post-Tower (41 Etagen): Betonwände dämpfen massiv, PMR446 bis 2 Etagen brauchbar – für das ganze Gebäude empfehlen wir DECT-Intercom mit Repeater oder LTE-PTT.",
+            "Beispiel 3: Sicherheitsfunk auf einem Stadtfest in der Bonner Innenstadt (Münsterplatz, Marktplatz, 500 × 300 m, dichte Bebauung, viele Funkquellen): PMR446 funktioniert, aber wir empfehlen vorab einen Testtag mit den finalen Geräte-Positionen. Bei Großevents (Bonn Marathon, Rhein in Flammen, Pützchens Markt) lohnt sich Einzelzuteilung Betriebsfunk – wir vermitteln bei Bedarf.",
+          ],
+        },
+        {
+          h3: "DECT-Intercom: die unterschätzte Lösung für Bonner Tagungs-Locations",
+          paragraphs: [
+            "DECT (Digital Enhanced Cordless Telecommunications) arbeitet im 1880–1900-MHz-Band, ist anmeldefrei und in jedem Schnurlostelefon enthalten. Profi-Intercom-Systeme nutzen denselben Standard mit erweiterten Funktionen (Konferenz-Modus, Privacy-Channel, Headset-Anbindung). Vorteile: stabile Sprachqualität, gute Gebäudedurchdringung mit Repeater, Verschlüsselung ab Werk.",
+            "Für Bonner Konferenz-Locations (WCCB, Maritim, Telekom-Forum, Universitätsclub), Hotelsäle und Industriehallen ist DECT-Intercom oft die professionellere Wahl als PMR446 – einfacher Aufbau (Basisstation an Steckdose, Headsets pairen automatisch), bis 8 simultane Gespräche pro Basisstation, Reichweite 50 m indoor, 300 m outdoor pro Basis. Wir führen DECT-Intercom-Sets am Standort Bonn und beraten zum passenden Setup unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
   },
 
   // Mülheim und weitere Bonn-Tranchen folgen analog.
