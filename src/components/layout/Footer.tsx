@@ -44,6 +44,7 @@ export function Footer() {
     { to: "/dienstleistungen", label: "Dienstleistungen" },
     { to: "/vergleich", label: "Anbietervergleich" },
     { to: "/glasfaserausbau-maschinen-mieten", label: "Glasfaserausbau" },
+    { to: "/hochzeit-technik-mieten", label: "Hochzeit Technik mieten" },
     { to: "/faq", label: t("footer.faq") },
   ];
 

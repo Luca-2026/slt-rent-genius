@@ -73,6 +73,7 @@ const Vergleich = lazy(() => import("./pages/Vergleich"));
 const VergleichIndex = lazy(() => import("./pages/VergleichIndex"));
 const BaumaxService = lazy(() => import("./pages/BaumaxService"));
 const GlasfaserMaschinen = lazy(() => import("./pages/GlasfaserMaschinen"));
+const HochzeitTechnik = lazy(() => import("./pages/HochzeitTechnik"));
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -176,6 +177,13 @@ const App = () => (
               <Route path="/glasfaserausbau-maschinen-mieten" element={<GlasfaserMaschinen />} />
               <Route path="/glasfaser" element={<Navigate to="/glasfaserausbau-maschinen-mieten" replace />} />
               <Route path="/glasfaserausbau" element={<Navigate to="/glasfaserausbau-maschinen-mieten" replace />} />
+
+              {/* Hochzeit Technik mieten – Landingpage Bonn & Krefeld */}
+              <Route path="/hochzeit-technik-mieten" element={<HochzeitTechnik />} />
+              <Route path="/hochzeit" element={<Navigate to="/hochzeit-technik-mieten" replace />} />
+              <Route path="/hochzeit-mieten" element={<Navigate to="/hochzeit-technik-mieten" replace />} />
+
+              
 
               
               {/* B2B Portal */}
