@@ -1100,6 +1100,509 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // BELEUCHTUNG (LED-PAR, Moving Heads, Fluter, Stative, DMX)
+    // Quellen: DIN VDE 0100-711 (Elektrische Anlagen in Räumen
+    //   für Veranstaltungen, Ausstellungen und Stände),
+    //   DGUV Vorschrift 3 (Prüfung elektrischer Betriebsmittel),
+    //   DGUV Information 215-310 (Laser-Einrichtungen),
+    //   DIN EN 60529 (IP-Schutz), USITT DMX512-A (ANSI E1.11),
+    //   SBauVO NRW Teil 5 (Versammlungsstätten).
+    // -------------------------------------------------------------
+    beleuchtung: {
+      faqs: [
+        {
+          question: "Welche Lichttechnik brauche ich für eine Hochzeit, einen Geburtstag oder ein Firmenevent in Krefeld?",
+          answer:
+            "Faustregel nach Gästezahl: Bis 50 Personen reichen 4–6 LED-PARs für Wash-Licht plus 2 Effektgeräte (Derby/Moving Head) auf einem T-Bar-Stativ. Bis 150 Personen kalkuliert man 8–12 LED-PARs, 2–4 Moving Heads und ein kleines DMX-Pult. Ab 200 Personen wird Traversenaufbau mit getrennten Wash-/Spot-/Effekt-Ebenen üblich. Am Hauptsitz Krefeld stellen wir Pakete aus dem Eventtechnik-Sortiment passgenau zusammen – inklusive DMX-Verkabelung und Stromplan.",
+        },
+        {
+          question: "Was ist DMX512 und brauche ich ein Lichtpult zur Steuerung?",
+          answer:
+            "DMX512 (ANSI E1.11) ist das Standard-Steuerprotokoll für Veranstaltungslicht: ein Universum überträgt 512 Steuerkanäle über eine XLR-Linie. Jeder Scheinwerfer belegt je nach Modus 4–16 Kanäle. Für kleine Setups reicht ein Stand-alone-Modus oder eine Master/Slave-Verkettung; ab 6–8 Geräten lohnt ein DMX-Pult oder eine Software-Lösung (z. B. mit USB-DMX-Interface). Wir geben jedes Gerät mit Kanal-Belegung und einer Beispiel-Patch-Liste mit.",
+        },
+        {
+          question: "Welche Scheinwerfer sind outdoor-tauglich – worauf achte ich bei IP-Schutz?",
+          answer:
+            "Outdoor-Einsatz verlangt mindestens IP65 nach DIN EN 60529 (staubdicht, strahlwassergeschützt). IP44 reicht für überdachte Bühnen, nicht aber bei freier Bewitterung. Wichtig: Auch die Steckverbindungen müssen entsprechend abgedichtet sein (TRUE1-IP65 oder vergossene Verbindung). Im Eventtechnik-Sortiment am Standort Krefeld kennzeichnen wir outdoor-fähige Geräte explizit. Bei Regen-Risiko ergänzen wir Regenhauben für Stativaufbauten und planen Stromverteilung mit FI-Schutzschalter.",
+        },
+        {
+          question: "Wie viel Strom zieht ein typisches Lichtpaket – passt das an eine normale Haushaltssteckdose?",
+          answer:
+            "Eine Schuko-Steckdose (16 A / 230 V) liefert maximal ca. 3.680 W, abgesichert über den B16-Automaten meist real 3.000–3.300 W. Ein LED-PAR zieht je nach Leistung 30–180 W, ein moderner LED-Moving-Head 150–400 W. Beispiel: 8 LED-PARs (à 100 W) + 4 Moving Heads (à 250 W) = ca. 1.800 W – passt auf eine Phase. Sobald Nebelmaschine (1.500 W) oder Hazer dazukommen, ist eine zweite Steckdose auf einer separaten Sicherung Pflicht. Bei größeren Setups planen wir Drehstrom (CEE16/CEE32) mit Lichtverteiler ein.",
+        },
+        {
+          question: "Wer darf Veranstaltungslicht in NRW eigentlich aufbauen und betreiben?",
+          answer:
+            "Für nicht-öffentliche Privatfeiern in begrenzter Größe gibt es keinen formalen Befähigungsnachweis – der Vermieter weist in die Geräte ein. Sobald eine Versammlungsstätte nach SBauVO NRW Teil 5 betroffen ist (über 200 Besucher in Räumen, über 1.000 im Freien) oder eine gewerbliche Veranstaltung mit szenischer Darstellung stattfindet, greift die DGUV Vorschrift 17/18 – dann ist eine „Verantwortliche Person für Veranstaltungstechnik“ erforderlich. Bei Firmenevents in Krefelder Locations klären wir gemeinsam mit dem Hausherrn, was nötig ist.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen Wash-, Beam-, Spot- und Effekt-Licht?",
+          answer:
+            "Wash-Light flutet Flächen mit weichem, weitem Strahl (LED-PAR, Wash-Moving) – das Grund-Stimmungslicht. Beam ist ein extrem enger, paralleler Strahl (5–8°), der scharfe Lichtsäbel in den Raum zeichnet – wirkt nur mit Nebel/Haze. Spot ist ein Mittelding mit Gobo-Projektion (Logos, Muster). Effekt-Geräte (Derby, Flowereffekt) erzeugen multidirektionale Lichtmuster für Tanzflächen. Eine gute Show kombiniert alle vier Schichten – wir beraten am Standort Krefeld nach Location-Typ und Stilrichtung.",
+        },
+        {
+          question: "Sind die Geräte VDE-/E-Check-geprüft?",
+          answer:
+            "Ja. Sämtliche elektrische Mietgeräte werden gemäß DGUV Vorschrift 3 in regelmäßigen Intervallen geprüft (ortsveränderliche Betriebsmittel: typisch alle 6–24 Monate je Einsatzbedingung). Die Prüfplakette mit Datum klebt sichtbar am Gerät bzw. am Netzkabel. Für gewerbliche Veranstalter heißt das: Du erfüllst die Betreiberpflicht auf der Veranstaltung mit unseren Geräten ohne zusätzliche Prüfung. Auf Anfrage stellen wir das Prüfprotokoll bereit.",
+        },
+        {
+          question: "Wie ist die Logistik – Selbstabholung oder Lieferung in Krefeld und Umgebung?",
+          answer:
+            "Selbstabholung an der Anrather Straße 291 ist während der Öffnungszeiten Mo–Fr 08:00–18:00, Sa 10:00–14:30 möglich – kleinere Pakete passen in den Kombi/Bus. Für komplette Lichtsetups mit Stativen, Truss und Verkabelung empfehlen wir Lieferung mit unserem Transporter im Lieferradius Krefeld, Meerbusch, Willich, Düsseldorf, Mönchengladbach, Neuss. Auf- und Abbau führen wir auf Anfrage durch – Preise je nach Aufwand auf Angebot.",
+        },
+        {
+          question: "Brauche ich für Nebel- oder Hazermaschinen eine Brandmelde-Abschaltung?",
+          answer:
+            "In Locations mit Rauchwarnmeldern oder aufgeschalteter Brandmeldeanlage (BMA) muss die Anlage vor Einsatz von Nebel/Haze entweder freigegeben (Hausmeister/Wachdienst informiert) oder im betroffenen Bereich abgeschaltet werden – sonst droht Falschalarm und Feuerwehr-Einsatz auf Kosten des Veranstalters. Wir weisen darauf hin und stellen auf Wunsch Hinweis-Schilder „Künstlicher Nebel im Einsatz“ bereit.",
+        },
+        {
+          question: "Sind Laser auf Privat- und Firmenevents erlaubt?",
+          answer:
+            "Showlaser fallen unter DGUV Information 215-310 und die OStrV (Optische-Strahlung-Verordnung). Für Laser ab Klasse 3B/4 ist ein Laserschutzbeauftragter mit Sachkundenachweis Pflicht, eine Anzeige bei der zuständigen Berufsgenossenschaft sowie eine schriftliche Gefährdungsbeurteilung. Aus diesem Grund führen wir am Standort Krefeld bewusst keine offenen Show-Laser im freien Verleih – für Effektlicht setzen wir auf moderne LED-Beams mit Haze, die optisch vergleichbar wirken und ohne Sondergenehmigung betrieben werden dürfen.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Lichtdesign-Grundlagen: drei Ebenen, ein Konzept",
+          paragraphs: [
+            "Professionelles Veranstaltungslicht arbeitet in drei Ebenen: (1) Funktionslicht – damit Gäste den Raum nutzen können, gemessen in Lux am Boden (DIN EN 12464-1 nennt 100–300 lx für Verkehrsflächen, 50–100 lx für Lounge-Bereiche). (2) Atmosphärenlicht – farbiges Wash über Wände, Dancefloor und Decke, schafft Stimmung und Raumtiefe. (3) Effektlicht – Beams, Moving Heads, Strobe für Akzente in der Show.",
+            "Ein klassischer Fehler ist „zu viel Effekt, zu wenig Funktion“: Wenn die Tanzfläche nur noch von Movings beleuchtet wird, sehen Gäste sich gegenseitig kaum. Faustregel: Funktionslicht macht ca. 60 % des Bedarfs aus, Atmosphäre 30 %, Effekt 10 %. Am Standort Krefeld stellen wir Pakete entsprechend zusammen statt nur Geräte zu zählen.",
+          ],
+        },
+        {
+          h3: "Stromplanung: Phasen, Sicherungen, FI – was wirklich passieren kann",
+          paragraphs: [
+            "Veranstaltungsstrom wird in NRW nach DIN VDE 0100-711 betrieben: jeder Stromkreis mit FI-Schutzschalter (RCD 30 mA), ortsveränderliche Verteiler mit Personenschutz, Kabel mit ausreichendem Querschnitt (H07RN-F 3×1,5 mm² bis 16 A, 3×2,5 mm² für längere Strecken ab 25 m). Häufiger Praxis-Fehler: vier Mehrfachsteckdosen hintereinandergehängt – die Sicherung im Haus löst aus, das Bühnenlicht ist tot.",
+            "Bei größeren Setups planen wir mit CEE-Drehstrom (16 A bzw. 32 A, 5-polig). Drei Phasen × 16 A × 230 V = ca. 11 kW pro CEE16-Verteiler. Wir berechnen die Belastung vorab und liefern bei Bedarf Drehstrom-Verteiler mit FI/LS-Kombinationen mit. Wo der vorhandene Hausanschluss nicht ausreicht, koppeln wir ein Stromaggregat aus unserem Aggregate-Sortiment in Krefeld an.",
+          ],
+        },
+        {
+          h3: "Hängung, Stative und Statik: Sicherheit über Köpfen",
+          paragraphs: [
+            "Sobald Scheinwerfer über Personen hängen, gilt die DGUV Vorschrift 17/18 sowie DIN EN 17206 (Veranstaltungstechnik – Maschinerie). Punktlasten an Hallendecken benötigen einen Nachweis durch den Hausherrn (Riggingplan, Lastenliste). Auf Stativen darf die Hersteller-Höchstlast nicht überschritten werden – ein klassisches T-Bar-Stativ trägt typisch 30–50 kg bei 3 m Höhe. Jeder hängende Scheinwerfer ist mit einem Safety (Stahlseil) gegen Absturz zu sichern, dimensioniert auf das 6-fache Eigengewicht.",
+            "Wir geben am Standort Krefeld zu jedem Stativ und jedem Truss-Set ein Datenblatt mit max. Last und Aufbauanleitung mit. Bei komplexen Hängungen liefern wir Truss aus dem Sortiment „Traversen & Rigging“ passend dazu – inklusive Stahlseilen, Kettenzügen (manuell oder elektrisch) und Lastverteilung.",
+          ],
+        },
+        {
+          h3: "LED vs. Entladungslampen: warum 2026 fast alles LED ist",
+          paragraphs: [
+            "Klassische Entladungslampen (HMI, MSR, MSD) sind nahezu vollständig durch LED-Lichtquellen verdrängt. Gründe: Lebensdauer (LED 30.000–50.000 h vs. 1.000–3.000 h Entladung), kein Lampenwechsel im Mietkreislauf, niedriger Stromverbrauch (Faktor 3–5), Dimmbarkeit ohne Farbverschiebung und kein UV-Anteil. Nachteil LED: hochwertige Farbwiedergabe (CRI 90+) ist teurer; bei Hauttönen und Foto-/Video-Mitschnitt auf CRI achten.",
+            "Unsere aktuelle Mietflotte am Standort Krefeld besteht zu nahezu 100 % aus LED-Geräten – das schont Strombilanz und reduziert Hitzeentwicklung in der Location (gerade in Sommer-Locations ohne Klima ein echter Faktor). Bei Anfragen mit Foto-/Video-Verwertung empfehlen wir explizit Geräte mit hohem CRI bzw. TLCI.",
+          ],
+        },
+        {
+          h3: "Programmierung und Steuerung: vom Stand-alone bis zum Show-Pult",
+          paragraphs: [
+            "Für kleine Pakete reichen Stand-alone-Modi: Sound-to-Light über das eingebaute Mikrofon, vorgefertigte Programme, Master/Slave-Verkettung. Vorteil: kein Bediener nötig. Nachteil: keine Synchronisation auf konkrete Songs oder Programmpunkte. Sobald ein Live-Programm (Reden, Bandauftritte, Choreographien) bespielt werden soll, lohnt ein DMX-Pult oder Software (z. B. mit Tablet und USB-DMX-Bridge), das auf Knopfdruck Stimmungen (Cues) abruft.",
+            "Für unsere Mietkunden in Krefeld erstellen wir auf Wunsch eine Patch-Liste und einfache Programmiervorlage. Wer einen Operator stellen muss, dem empfehlen wir, einen lokalen Lichttechniker zu beauftragen – wir können in der Region Krefeld/Düsseldorf vermitteln.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // BESCHALLUNG (PA, Aktivlautsprecher, Pulte, Mikros, Funk)
+    // Quellen: TA Lärm, DIN 15905-5 (Schutz gegen Gehörschäden
+    //   durch hohe Schallpegel bei Veranstaltungen, LAeq max.
+    //   99 dB(A)/30 min), DIN VDE 0100-711, BNetzA-Frequenzplan
+    //   PMSE (Mittenband 470–608 MHz Allgemeinzuteilung,
+    //   614–694 MHz Einzelzuteilung, 863–865 MHz und
+    //   1785–1805 MHz anmeldefrei).
+    // -------------------------------------------------------------
+    beschallung: {
+      faqs: [
+        {
+          question: "Welche Lautsprecherleistung brauche ich für meine Veranstaltungsgröße?",
+          answer:
+            "Faustregel für Sprache und Hintergrundmusik in Innenräumen: 5–10 W pro Person, für Live-Musik und Tanzfläche 15–25 W pro Person. Outdoor verdoppelt sich der Bedarf, weil kein Raum reflektiert. Beispiele: 50 Personen Geburtstag indoor mit Tanz → 1× Aktiv-Top 12\" mit ca. 800 W RMS plus passender Sub. 150 Personen Hochzeit indoor mit Live-Band → Stereo-Set Tops 15\" + 2 Subs. 300 Personen Open Air → kompaktes PA-System mit 4 Tops + 4 Subs. Wir kalkulieren am Hauptsitz Krefeld pro Anfrage konkret.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen Aktiv- und Passivlautsprechern?",
+          answer:
+            "Aktivlautsprecher haben die Endstufe und das Filter-Setup intern verbaut – einfacher Aufbau (Strom + Signal), aber teurer pro Stück und Strom an jedem Standort nötig. Passivlautsprecher brauchen eine externe Endstufe und ein Controller-Preset (DSP/Frequenzweiche) – flexibler und günstiger bei größeren Setups, aber komplexer im Aufbau. Für 90 % der Privat- und Firmenkunden am Standort Krefeld empfehlen wir Aktiv-Setups – schneller aufgebaut, weniger Fehlerquellen.",
+        },
+        {
+          question: "Brauche ich einen Subwoofer – und wie viele?",
+          answer:
+            "Für reine Sprache (Vortrag, Trauung, Hochzeitsrede) reichen Tops ohne Sub. Für Musik mit elektronischem Anteil (Pop, House, HipHop) ist mindestens ein Sub Pflicht, sonst fehlt der Druck. Faustregel: ein Sub pro zwei Tops, oder Sub-Leistung etwa gleich Tops-Leistung in Watt RMS. Bei zwei Subs lohnt End-Fire- oder Cardio-Aufstellung, damit Bass nach vorne fokussiert und nicht hinter die Bühne strahlt. Wir beraten am Standort Krefeld konkret nach Musikrichtung.",
+        },
+        {
+          question: "Was muss ich zur Lautstärke und zum Lärmschutz in Krefeld wissen?",
+          answer:
+            "Bei Veranstaltungen mit Publikum gilt DIN 15905-5: max. LAeq 99 dB(A) gemittelt über 30 Minuten, gemessen an der lautesten zugänglichen Stelle. Wer höher fährt, muss Schallpegelmessung dokumentieren und Gehörschutz auslegen. Im Freien gilt zusätzlich die TA Lärm: tags (06–22 Uhr) in Misch-/Wohngebieten ca. 60 dB(A), nachts 45 dB(A) Immissionsrichtwert. Für seltene Ereignisse (max. 10 pro Jahr und Ort) gibt es Ausnahmen – bei Open-Air-Events ist eine Anzeige beim Ordnungsamt Krefeld ratsam.",
+        },
+        {
+          question: "Funkmikrofon mieten – gibt es Frequenzregeln in NRW?",
+          answer:
+            "Ja. Die BNetzA hat den UHF-Frequenzplan klar geregelt. Anmeldefreie Bereiche für drahtlose Mikrofone: 863–865 MHz (10 mW, sehr begrenzt) und 1785–1805 MHz (DECT-Bereich). Anmeldepflichtig (kostenpflichtige Frequenzzuteilung): Mittenband 470–608 MHz und Duplexbereich 614–694 MHz. Unsere Mietsysteme am Standort Krefeld arbeiten ab Werk auf koordinierbaren Frequenzblöcken – wir wählen pro Einsatz freie Kanäle und übergeben Geräte vorprogrammiert.",
+        },
+        {
+          question: "Wie viele Mikrofone passen gleichzeitig in eine Funkstrecke?",
+          answer:
+            "Pro 8-MHz-TV-Kanal lassen sich typisch 6–10 koordinierte Funkstrecken parallel betreiben, je nach Hersteller und Frequenzbreite. Praxis: für eine Standardhochzeit reichen 2 Strecken (1× Trauredner, 1× Brautpaar/Wechsel). Konferenz mit Podiumsdiskussion: 4–8 Strecken plus Reserve. Über 12 parallele Strecken ist eine professionelle Frequenzkoordination Pflicht (Intermodulationsberechnung) – dafür greifen wir auf koordinierte Frequenzblöcke unserer Geräte zurück.",
+        },
+        {
+          question: "Welches Mischpult brauche ich – analog, digital oder Tablet-gesteuert?",
+          answer:
+            "Kleinevents bis 8 Eingänge (1–2 Mikrofone, 1 Stereo-Zuspielung) → kompaktes Analogpult oder kleines Digitalpult mit Tablet-Steuerung. Mittelevents bis 16 Eingänge (Band + Sprecher + DJ) → Digitalpult der 16–32-Kanal-Klasse, idealerweise mit Tablet-Mix vom Saal aus. Große Events mit Live-Band und Monitoring → 32+-Kanal Digitalpult mit separatem Monitormix. Wir führen am Standort Krefeld digitale Pulte – Tablet-Steuerung ist heute Standard, weil der Mix-Punkt im Saal mobil gewählt werden kann.",
+        },
+        {
+          question: "Stromversorgung der PA – Schuko oder CEE?",
+          answer:
+            "Kleine Aktiv-Sets (2 Tops, 1 Sub) laufen bequem an Schuko (16 A / 3.500 W). Größere Setups mit 4 Tops + 4 Subs und Pult ziehen leicht 4.000–6.000 W – das gehört auf CEE16 (Drehstrom, 11 kW). Wichtig: Audio und Licht möglichst auf getrennte Phasen, sonst können Brummschleifen über die Stromversorgung entstehen. Wir liefern auf Wunsch passende Stromverteiler aus unserem Kabel- & Stromverteiler-Sortiment in Krefeld mit.",
+        },
+        {
+          question: "Wie kommt Audio von der Bühne zum Mischpult – Multicore oder digital?",
+          answer:
+            "Analog: Multicore-Kabel mit 8/16/24 Eingängen plus Stagebox-Anschluss – robust, kein Latenzproblem, aber schwer und teuer pro Meter. Digital: ein einzelnes CAT5e/CAT6-Kabel (Ethercon) überträgt 32–64 Kanäle bidirektional, sehr leichte Verlegung. Heute Standard auf digitalen Pulten. Bei Outdoor-Events achten wir auf wasserdichte Steckverbindungen und Kabelschutz an Wegekreuzungen (Kabelbrücken aus unserem Absperrtechnik-Sortiment).",
+        },
+        {
+          question: "Können wir die PA selbst aufbauen oder kommt jemand mit?",
+          answer:
+            "Pakete bis ca. 4 Tops/2 Subs übergeben wir am Hauptsitz Krefeld inklusive Verkabelungs-Schema und kurzer Einweisung – das schaffen technikaffine Mieter problemlos selbst. Bei größeren Setups, Bands mit Monitormix, mehreren Funkstrecken oder zeitkritischen Veranstaltungen empfehlen wir Aufbau und Operator aus unserem Netzwerk lokaler Veranstaltungstechniker im Raum Krefeld/Düsseldorf – Vermittlung über uns.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "PA-Dimensionierung: Watt sind nicht gleich Lautstärke",
+          paragraphs: [
+            "Die Watt-Angabe auf Lautsprechern ist nur ein grober Indikator. Maßgeblich für die wahrgenommene Lautstärke ist der maximale Schalldruck (SPL @ 1 m, in dB), der sich aus Wirkungsgrad und Belastbarkeit ergibt. Ein 800-W-Top mit 134 dB max. SPL kann lauter spielen als ein 1.200-W-Top mit 128 dB. Mit jeder Verdopplung der Entfernung sinkt der Schalldruck im Freifeld um 6 dB – ein Top mit 134 dB @ 1 m liefert in 16 m noch 110 dB.",
+            "Praxis für Krefelder Locations: in halligen Sälen (Industriehallen, Glaspavillons) lieber kleinere Lautsprecher kürzer zum Publikum – mehr Leistung erhöht hier vor allem den Hall, nicht die Sprachverständlichkeit. In gedämpften Räumen (Hotel-Ballsaal mit Teppich) lohnt Power, weil der Raum schluckt. Wir berücksichtigen die Locations beim Packvorschlag.",
+          ],
+        },
+        {
+          h3: "Lärmschutz in der Praxis: TA Lärm und DIN 15905-5",
+          paragraphs: [
+            "Für Innenveranstaltungen ist DIN 15905-5 der zentrale Maßstab: maximal LAeq 99 dB(A) über 30 Minuten am lautesten zugänglichen Publikumsplatz. Wer höher fährt, braucht Pegelbegrenzung, Schallpegel-Aufzeichnung und ausgelegten Gehörschutz für Gäste. Für Krefelder Hallen-Veranstaltungen mit reiner Sprache reichen 75–80 dB(A) deutlich – Tanz und Live-Band bewegen sich typisch zwischen 90 und 97 dB(A).",
+            "Für Outdoor in Wohnnähe gilt die TA Lärm: tagsüber 60 dB(A), nachts 45 dB(A) Richtwert in allgemeinen Wohngebieten. Das ist sehr leise – bereits ein normales Gespräch erreicht 60 dB. Für Sommerfeste und Hochzeiten im Freien gibt es die Möglichkeit „seltener Ereignisse“ (max. 10 pro Jahr und Ort). Wir empfehlen, dies frühzeitig mit dem Ordnungsamt Krefeld abzustimmen.",
+          ],
+        },
+        {
+          h3: "Funkmikrofone: Frequenzplanung und PMSE in Deutschland",
+          paragraphs: [
+            "Drahtlose Mikrofone arbeiten im UHF-Bereich. Die BNetzA verwaltet PMSE (Programme Making and Special Events) und hat den Frequenzplan in mehrere Bereiche geteilt: Mittenband 470–608 MHz (Allgemeinzuteilung mit max. 50 mW, Co-Existenz mit DVB-T2), Duplexlücke 614–694 MHz (anmeldepflichtige Einzelzuteilung), DECT-Bereich 1785–1805 MHz (kostenfrei, ortsfest) und 863–865 MHz (sehr begrenzt).",
+            "Praktische Folge für Mieter: einzelne Mikrofone laufen anmeldefrei auf 1785–1805 MHz oder im Mittenband. Bei 4+ parallelen Strecken empfehlen wir koordinierte Geräte aus dem Mittenband. Bei Veranstaltungen mit großer DVB-T2-Belegung in der Region (Sender Langenberg) führen wir vor Übergabe einen Scan der freien Kanäle durch.",
+          ],
+        },
+        {
+          h3: "Verkabelung, Erdung und Brummschleifen vermeiden",
+          paragraphs: [
+            "Brummen auf der PA ist meist ein Erdungsproblem (Ground Loop): zwei Stromkreise mit unterschiedlichem Schutzleiter-Potenzial, verbunden über die Audio-Masse. Lösungen: alle Audio-Geräte auf dieselbe Phase und denselben Schutzleiter (im Idealfall einen Strang aus einem CEE-Verteiler), symmetrische Audio-Verbindungen (XLR statt Klinke unsymmetrisch) und im Notfall DI-Boxen mit Groundlift.",
+            "Niemals den Schutzleiter abklemmen – das ist lebensgefährlich und verstößt gegen DIN VDE 0100. Wir liefern für Krefelder Setups grundsätzlich nur Verkabelung mit korrekter Erdung. Bei Mischmoderation aus Hausstrom und Bühnenstrom ergänzen wir DI-Boxen, um saubere Pegelübergänge zu garantieren.",
+          ],
+        },
+        {
+          h3: "Monitoring und Stagesound: warum kleine Veranstaltungen davon profitieren",
+          paragraphs: [
+            "Auch bei kleinen Events ist Monitoring wichtig: Trauredner braucht eigene Lautsprecher Richtung Publikum – nicht in den Rücken; ein Brautpaar mit Funkmikro hört sich selbst nicht, wenn der PA-Hauptklang weit entfernt steht. Lösungen: kleine Aktiv-Monitore (8–10\") als Sidefill, In-Ear-Monitorstrecken für Bands (DECT- oder UHF-basiert), reine Bestätigungs-Lautsprecher („Confidence Speaker“) am Rednerpult.",
+            "Für Krefelder Hochzeiten und Firmen-Events stellen wir auf Anfrage Monitor-Pakete zusammen, die mit dem Haupt-PA-Setup zusammenarbeiten. Bei reinen Konferenz-Setups setzen wir oft auf Decken- bzw. Wand-Lautsprecher der Location und ergänzen mit mobilen Stativ-Lautsprechern für flexible Bereiche.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // BÜHNE (Modulpodeste, Treppen, Geländer, Verkleidung)
+    // Quellen: DIN EN 13200-1/-5 (Zuschaueranlagen),
+    //   SBauVO NRW Teil 5 (Versammlungsstätten),
+    //   DGUV Vorschrift 17/18, DIN EN 17206,
+    //   DIN 18065 (Treppen), DIN 18040-1 (Barrierefreiheit),
+    //   DIN EN 1991-1-4 (Windlast), DIN 4102-1 (Brandschutz B1).
+    // -------------------------------------------------------------
+    buehne: {
+      faqs: [
+        {
+          question: "Welche Bühnengröße brauche ich für meine Veranstaltung?",
+          answer:
+            "Faustregel: Solo-Sprecher mit Stehpult und Wand-Beamer → 2 × 2 m reichen. DJ mit Lichteffekten → 3 × 2 m. Band mit 4 Musikern und Drumrise → 6 × 4 m. 5–8-köpfige Band mit Backline → 8 × 5 m. Für jede Person auf der Bühne kalkuliert man ca. 1,5 m² Aufstellfläche plus Bewegungsraum. Wir konfigurieren am Hauptsitz Krefeld modulare Bühnenpodeste flexibel in 20-cm-Höhenrastern (40, 60, 80, 100 cm).",
+        },
+        {
+          question: "Welche Belastbarkeit haben die Bühnenpodeste?",
+          answer:
+            "Standard-Modulbühnenpodeste aus dem professionellen Veranstaltungsbau sind nach DIN EN 13200 für 5 kN/m² (500 kg/m²) Verkehrslast ausgelegt – das ist die Anforderung an Stehplätze für Publikum. Für reine Sprecher- oder Tanzbühnen mit max. 3 Personen pro Quadratmeter ist das mehr als ausreichend. Schwere Last (z. B. Flügel, schwere Backline) verteilt man auf mindestens 2 Felder. Die genaue Belastbarkeit pro Podest steht im Datenblatt.",
+        },
+        {
+          question: "Brauche ich eine Treppe oder Rampe?",
+          answer:
+            "Ab 60 cm Bühnenhöhe ist eine Treppe verpflichtend (DGUV 17/18). Standard-Bühnentreppen haben ca. 18 cm Steigung und 28 cm Auftritt – das entspricht DIN 18065 für Notwendigtreppen. Eine Rollstuhlrampe nach DIN 18040 (max. 6 % Steigung – heißt für 60 cm Höhe 10 m Rampenlänge) ist bei öffentlichen Veranstaltungen empfohlen. Bei Hochzeits- und Firmen-Bühnen liefern wir Treppe als Standard mit, Rampe auf explizite Anfrage.",
+        },
+        {
+          question: "Ab welcher Bühnenhöhe brauche ich Absturzsicherung/Geländer?",
+          answer:
+            "Ab einer Absturzhöhe von 1 m fordert die DGUV-Vorschrift Geländer mit Höhe mindestens 1,10 m, Mittelholm, Fußleiste. Bei Bühnen mit 80 cm Höhe ist Geländer noch optional, ab 100 cm Pflicht. Im sichtbaren Frontbereich der Bühne (zum Publikum gerichtet) entfällt das Geländer üblicherweise – dort ist die Absturzkante klar erkennbar und Teil der „künstlerischen Nutzung“. Seiten und Rückseite werden mit Geländer abgesichert.",
+        },
+        {
+          question: "Ist eine Modulbühne ein „fliegender Bau“ nach SBauVO NRW?",
+          answer:
+            "„Fliegende Bauten“ sind nach SBauVO NRW Teil 5 bauliche Anlagen, die wiederholt aufgestellt werden und Personenzugang bieten. Unsere Standard-Modulbühnen bis ca. 6 × 4 m mit Höhen bis 80 cm und ohne Überdachung gelten in der Regel als „untergeordnete Aufstellung“ und benötigen keine separate Ausführungsgenehmigung. Sobald Tribünen über 100 m² Fläche, Höhen über 1,5 m oder Überdachungen ins Spiel kommen, ist eine Prüfbuch-Pflicht und Sachverständigen-Abnahme möglich.",
+        },
+        {
+          question: "Bühne für Outdoor – wie schütze ich gegen Regen und Wind?",
+          answer:
+            "Standard-Modulbühnenpodeste sind wetterfest, die Oberfläche ist rutschhemmend. Bei Outdoor-Einsatz braucht es jedoch eine Überdachung gegen Regen – entweder als Pavillon, Eventzelt oder Bühnendach mit Traversen. Wind ist der kritische Faktor: ein offenes Bühnendach mit 4 × 4 m Fläche kann bei 80 km/h Wind mehrere Tonnen Auftrieb erzeugen. Wir prüfen die Statik (Standort-Windlast nach DIN EN 1991-1-4) vor Outdoor-Aufbauten und liefern Ballast bzw. Erdanker mit.",
+        },
+        {
+          question: "Wie lange dauert Aufbau und Abbau einer Bühne?",
+          answer:
+            "Eine 4 × 3 m Bühne (12 m²) bauen zwei eingewiesene Personen in ca. 45–60 Minuten auf, inkl. Höheneinstellung und Treppenmontage. 6 × 4 m (24 m²) mit Verkleidung dauert ca. 90 Minuten. Abbau geht typisch in 70 % der Aufbauzeit. Werkzeug (Inbus, Steckschlüssel) ist im Mietpaket enthalten. Auf Wunsch übernehmen wir Aufbau und Abbau am Veranstaltungsort im Raum Krefeld/Düsseldorf/Mönchengladbach – Stundensatz nach Aufwand.",
+        },
+        {
+          question: "Kann man die Bühnenfläche verkleiden – und in welchen Farben?",
+          answer:
+            "Ja. Standard-Verkleidung ist schwarzer, schwer entflammbarer Bühnenmolton (B1 nach DIN 4102-1, in NRW nach SBauVO Teil 5 verpflichtend für Versammlungsstätten). Wir bieten Molton in Standard-Schwarz; andere Farben (weiß, rot, blau) auf Sondervorlauf. Befestigung erfolgt mit Velcro-Bändern an den Bühnenelementen – schnell und werkzeuglos. Für Hochzeiten und Markenevents lassen sich auch bedruckte Frontverkleidungen (Banner mit Logo) ergänzen.",
+        },
+        {
+          question: "Welcher Untergrund ist für eine Bühne geeignet?",
+          answer:
+            "Indoor: jeder ebene Hartboden (Parkett, PVC, Beton, Estrich). Bei Teppichböden ggf. Lastverteilungsplatten, weil die punktuelle Last der Bühnenfüße den Teppich eindrücken kann. Outdoor: ebener Rasen, Pflaster, Asphalt. Bei Rasenuntergrund verteilt man die Last mit Holzbohlen unter den Füßen, sonst sinken die Stützen ein. Bei stark geneigtem Gelände gleichen wir mit höhenverstellbaren Füßen aus (Bereich ca. ±10 cm pro Fuß).",
+        },
+        {
+          question: "Bühne plus Licht plus Ton – bekomme ich das aus einer Hand in Krefeld?",
+          answer:
+            "Ja. Am Hauptsitz Krefeld führen wir Bühne, Beleuchtung, Beschallung, Traversen, Rigging, Stromverteilung und Eventzelte aus einem Lager. Das spart Logistik (eine Anlieferung, ein Ansprechpartner) und stellt sicher, dass technische Schnittstellen passen (Truss-Hängung über Bühne mit korrekter Höhe und Statik, Stromplan abgestimmt, Audio-Hängung außerhalb der Lichtstrahlen). Wir kalkulieren Pakete „Bühne + Technik“ gerne als Komplettangebot.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Modulbühnen-Systeme: Funktionsweise und Grenzen",
+          paragraphs: [
+            "Professionelle Modulbühnen bestehen aus einer Aluminium-Rahmen-Konstruktion mit aufgelegter Holzwerkstoff-Platte (typisch 18-mm-Birkenmultiplex mit rutschhemmender Beschichtung). Standardraster ist 1 × 1 m, 2 × 1 m oder 2 × 2 m. Höheneinstellung erfolgt mit höhenverstellbaren Standbeinen, typisch in 20-cm-Schritten von 20 cm bis 100 cm; für Tribünen und Show-Bühnen sind 120 cm und mehr möglich.",
+            "Die Belastbarkeit folgt DIN EN 13200-1 (Zuschaueranlagen): 5 kN/m² Verkehrslast für Stehplätze, 7,5 kN/m² für rhythmische Belastung (Tanzfläche, springendes Publikum bei Konzerten). Für Tanzflächen empfehlen wir Tanzbodenauflage (PVC oder Laminat) auf der Bühne – schont die Bühnenoberfläche und sieht repräsentativer aus.",
+          ],
+        },
+        {
+          h3: "Versammlungsstätten in NRW: SBauVO Teil 5 in der Praxis",
+          paragraphs: [
+            "Die Sonderbauverordnung NRW Teil 5 (SBauVO NRW) gilt für Versammlungsstätten ab 200 Besucher in geschlossenen Räumen oder 1.000 Besucher im Freien. Sie regelt Rettungswege, Fluchttüren, Brandschutz, Bestuhlungspläne, Anzahl der notwendigen Aufsichtspersonen und – relevant für Bühnen – die brandschutztechnischen Anforderungen an Bühnenmaterialien (mindestens B1 schwer entflammbar nach DIN 4102-1).",
+            "Praktische Folge für Krefelder Veranstalter: Für private Hochzeiten unter 200 Gästen in privatem Rahmen greift die VStättVO nicht. Sobald eine kommerzielle Veranstaltung in einer öffentlich zugänglichen Halle stattfindet (Konzerte, Märkte, Messen), prüfen wir die Anforderungen mit dem Veranstalter – Bühnenmolton und alle Verkleidungen aus unserem Lager sind B1-zertifiziert; die Zertifikate liegen vor.",
+          ],
+        },
+        {
+          h3: "Statische Sicherheit: was hält wirklich was?",
+          paragraphs: [
+            "Bühnenpodeste werden in Deutschland nach DIN EN 13200 typgeprüft. Jedes Modul hat eine Bauartzulassung mit konkreter Belastungsangabe; wir führen ausschließlich Systeme, deren Zulassung vorliegt. Bei Sonderlasten (Flügel mit 350 kg auf 1,5 × 1 m Standfläche) erstellen wir vorab eine Lastverteilung mit Spreader-Platten. Bei mehrstöckigen Tribünen oder Bühnen mit Dachkonstruktion wird ein Statiker hinzugezogen – das ist im Mietpaket nicht enthalten.",
+            "Auf Vor- und Hauptbühnen bei Konzerten kalkuliert man dynamische Belastungen (springendes Publikum) doppelt zur statischen Last. Eine Bühnenfront mit 6 × 4 m und 100 Personen Tanzfläche darüber bedeutet ca. 10 kN/m² Spitze – das schaffen Modulbühnensysteme bei richtiger Stützweite.",
+          ],
+        },
+        {
+          h3: "Aufbau-Reihenfolge: Praxis-Workflow für saubere Bühnen",
+          paragraphs: [
+            "Empfohlene Reihenfolge für 4 × 3 m Bühne mit 80 cm Höhe: (1) Standfläche prüfen, eben und ausreichend tragfähig. (2) Eckpodeste setzen und Höhenfüße einstellen mit Libelle. (3) Mittlere Podeste einsetzen, Verbindungsklammern verriegeln. (4) Komplette Fläche prüfen (kein Wackeln, keine Spalte). (5) Treppe(n) montieren und sichern. (6) Geländer Seiten- und Rückseite. (7) Molton-Verkleidung. (8) Erst danach Technik (Licht, Ton, Backline) aufbauen.",
+            "Häufiger Fehler bei Eigenaufbau: Technik wird vor Geländer aufgebaut, dann wird das Geländer wegen Platzmangel weggelassen – und beim Aufbau eines Mikroständers stürzt jemand rückwärts. Wir empfehlen die Reihenfolge konsequent. Bei Großevents im Raum Krefeld übernimmt unser Team oder ein vermittelter lokaler Partner den Aufbau auf Wunsch komplett.",
+          ],
+        },
+        {
+          h3: "Rollstuhlzugänglichkeit und Barrierefreiheit",
+          paragraphs: [
+            "Für barrierefreie Bühnen gilt DIN 18040-1 (öffentlich zugängliche Gebäude): Rampenneigung max. 6 %, beidseitiger Handlauf, Zwischenpodeste alle 6 m Länge, rutschfester Belag. Bei 60 cm Bühnenhöhe heißt das 10 m Rampenlänge – ein ernst zu nehmender Platzbedarf. Alternative für Locations mit Platznot: niedrige Bühne (40 cm) mit kürzerer Rampe, oder Hublift bei festen Bühnenanlagen.",
+            "Bei Krefelder Trauungen, Reden und Preisverleihungen, wo Rollstuhlzugang nötig sein kann, empfehlen wir die niedrigere Bühnenvariante. Unsere Rampen sind 1 m breit; DIN 18040 fordert für reine Bühnenrampen 1,20 m Begegnungsverkehr nicht zwingend. Im Zweifel beraten wir und bieten projektspezifische Lösungen.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // TRAVERSEN & RIGGING (Alu-Truss, Kettenzüge, Tower, Ballast)
+    // Quellen: DIN EN 17206 (Veranstaltungstechnik – Maschinerie),
+    //   DGUV Vorschrift 17/18, DGUV Regel 115-002, DIN EN 818-7
+    //   (Rundstahlketten Güte 8), DIN EN 1492-2 (Rundschlingen),
+    //   DIN EN 13414 (Anschlagseile), DIN EN 1991-1-4 (Windlast),
+    //   BGV C1/D8/D8+ (Hebezeuge im Veranstaltungsbau).
+    // -------------------------------------------------------------
+    "traversen-rigging": {
+      faqs: [
+        {
+          question: "Welche Traversengröße brauche ich für mein Setup?",
+          answer:
+            "Faustregel nach Spannweite: bis 4 m Spannweite und max. 50 kg Last → 220er Truss (22 × 22 cm, oft als F32 bekannt) reicht. 4–8 m oder höhere Lasten (Lichtbatterie, Lautsprecher) → 290er Truss (F34, 29 × 29 cm). Ab 8 m Spannweite oder schwerer Hängelasten → 390er Truss (F44, 39 × 39 cm) bzw. Box-Truss. Am Hauptsitz Krefeld führen wir die gängigen Größen und stellen passend zu Last und Spannweite zusammen.",
+        },
+        {
+          question: "Wie hoch darf ich Traversen aufbauen – Tower und Ground-Support?",
+          answer:
+            "Aluminium-Truss-Tower mit Kettenzug oder Steigerverfahren erreichen typisch 4–8 m Aufbauhöhe (Standard-Mietsysteme). Höhere Tower (12+ m) sind statisch geprüfte Spezialkonstruktionen, die mit Verstrebungen und schwerem Ballast (typisch 250 kg pro Tower) gesichert werden – Indoor möglich, Outdoor windkritisch. Wir liefern am Standort Krefeld Tower bis ca. 5 m mit Heberahmen für Einzelpersonen-Aufbau; höhere Setups mit Aufbau-Service.",
+        },
+        {
+          question: "Brauche ich Kettenzüge oder reicht statische Hängung?",
+          answer:
+            "Statische Hängung (fix montiert, nicht beweglich): einfacher, billiger, ausreichend für Setups, die einmal hängen und nicht in der Höhe verändert werden. Kettenzüge (manuell oder elektrisch): nötig, wenn Truss am Boden bestückt und dann hochgefahren wird (Standard bei Konzerten), oder wenn Höhen während der Show angepasst werden. Elektrokettenzüge der 250/500/1.000 kg-Klasse sind im professionellen Veranstaltungsbau Standard. Wir vermieten beides – Kettenzüge erfordern Sachkunde-Nachweis nach DGUV 17 für gewerbliche Mieter.",
+        },
+        {
+          question: "Wie viel Last kann ich an eine Truss hängen?",
+          answer:
+            "Die zulässige Hängelast hängt von Truss-Typ, Spannweite und Hängepunkt-Konfiguration ab. Beispiel 290er Box-Truss bei 6 m Spannweite und 2 Hängepunkten (1/4-Punkt-Aufhängung): ca. 250–400 kg gleichverteilte Last (UDL), je nach Hersteller. Punktlasten sind kritischer – ein 50-kg-Moving Head in der Mitte einer 6 m Truss kann die zulässige Belastung schon überschreiten. Wir geben für jedes Truss-Modul ein Datenblatt mit Belastungskurven heraus.",
+        },
+        {
+          question: "Welche Sicherheitsausrüstung gehört zu jeder Truss-Hängung?",
+          answer:
+            "Pflichtausrüstung: Anschlagmittel mit ausreichender Tragfähigkeit (Rundschlinge oder Stahlseil, geprüft nach DIN EN 1492-2/13414), Schäkel mit ausreichendem WLL (Working Load Limit, typisch 1.000 kg oder 1.500 kg), Stahlseil-Safety als sekundäre Sicherung (6-fache Tragfähigkeit des Geräts), Lastverteiler bei mehreren Punkten. Wir geben am Standort Krefeld zu jedem Truss-Paket geprüfte Anschlagmittel mit Prüfplakette (jährliche Sichtprüfung dokumentiert) mit.",
+        },
+        {
+          question: "Outdoor-Tower – wie viel Wind ist okay?",
+          answer:
+            "Standard-Aluminium-Tower mit Ballastfundament (250–500 kg pro Tower) sind typisch bis Windgeschwindigkeit 8 m/s (29 km/h, Windstärke 5 Bft) auslegbar. Bei höheren Windgeschwindigkeiten muss das System abgesenkt oder demontiert werden. Bei Outdoor-Bühnen mit Plane (Banner, Dach) erhöht sich die Windlast quadratisch – ein 4 × 6 m Banner bei 50 km/h Wind erzeugt mehrere Tonnen Druck. Wir kalkulieren Windlast nach DIN EN 1991-1-4 und liefern entsprechend dimensionierten Ballast oder empfehlen Erdanker.",
+        },
+        {
+          question: "Darf ich Truss in Eigenaufbau machen?",
+          answer:
+            "Privat (nicht-öffentlich, kein gewerblicher Kontext): ja, mit Geräteeinweisung an unserem Standort Krefeld. Gewerblich oder bei öffentlichen Veranstaltungen greift DGUV Vorschrift 17/18: Aufbau über Personenköpfe darf nur durch sachkundige Personen erfolgen („Verantwortlicher für Veranstaltungstechnik“ mit IHK-Abschluss oder vergleichbar). Für Hochzeiten und kleine Firmen-Events bauen wir auf Wunsch selbst auf oder vermitteln einen lokalen IHK-Veranstaltungsmeister im Raum Krefeld.",
+        },
+        {
+          question: "Welche Kupplungssysteme gibt es – passt alles zusammen?",
+          answer:
+            "Globale Branchenstandards sind: F32/F34/F44-Reihe (Konusverbindung mit Stiften und Sicherungssplint, herstellerübergreifend kompatibel innerhalb der Größe), Spigot-Verbindungen und Box-Truss-Konus. Innerhalb einer Truss-Größe sind die meisten Marken kompatibel – wir mischen aber bewusst nicht Hersteller, weil Toleranzen variieren können. Am Standort Krefeld führen wir geschlossene Sets eines Herstellers für reibungslosen Aufbau.",
+        },
+        {
+          question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
+          answer:
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Krefeld liegt typisch bei 60–95 € netto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standard-Trusskonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+        },
+        {
+          question: "Gibt es eine Versicherung für hängendes Material?",
+          answer:
+            "Wir versichern unsere Mietsachen über eine Maschinen-/Inhaltsversicherung. Für Sach- und Personenschäden auf der Veranstaltung ist eine Veranstalterhaftpflichtversicherung des Mieters Pflicht – jeder gewerbliche Veranstalter hat das ohnehin, für Privatpersonen ist eine erweiterte Haftpflicht oder eine Eventversicherung sinnvoll. Wir weisen darauf bei Buchung von Trusskonstruktionen explizit hin.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Truss-Statik verstehen: UDL, CPL und 1/3-Punkt-Regel",
+          paragraphs: [
+            "Herstellerdatenblätter für Truss geben drei zentrale Werte an: UDL (Uniformly Distributed Load, gleichverteilte Last über die ganze Länge), CPL (Center Point Load, eine Punktlast in der Mitte) und 1/3-Point oder 1/4-Point-Loading (zwei oder drei symmetrische Punkte). Beispiel 290er Box-Truss, 6 m Spannweite: UDL ca. 350 kg, CPL ca. 150 kg, 1/3-Punkt-Lasten 2 × 175 kg. Die Hängung an zwei Punkten im 1/4-Bereich ist statisch deutlich günstiger als ein einziger Punkt mittig.",
+            "Für Krefelder Setups planen wir Hängung in Lastpunkten – nicht „auf gut Glück“. Schwere Geräte (Moving Heads, große Lautsprecher) hängen direkt unter einem Anschlagpunkt, leichte Wash-Lichter dazwischen. Das halbiert die effektive Biegelast und ist die professionelle Vorgehensweise.",
+          ],
+        },
+        {
+          h3: "Anschlagmittel: Rundschlinge, Stahlseil, Schäkel",
+          paragraphs: [
+            "Rundschlingen (Polyester, farbcodiert nach Tragfähigkeit: violett 1 t, grün 2 t, gelb 3 t, grau 4 t, rot 5 t, braun 6 t) sind das Standard-Anschlagmittel im Veranstaltungsbau. Sie sind leicht, schonen die Decke und sind nach DIN EN 1492-2 normiert. Wichtig: nicht über scharfe Kanten ziehen (Trägerflansch) – sonst Faserbruch. Stahlseile (DIN EN 13414) sind robuster gegen Kanten und Hitze, aber schwerer.",
+            "Schäkel: omega- oder dee-förmig, in Güteklasse 6 oder 8, mit WLL-Aufprägung am Bügel. Niemals lose Schrauben oder Eigenbau-Lösungen verwenden. Wir liefern am Standort Krefeld nur geprüfte Anschlagmittel mit aktueller Prüfplakette (jährliche Sichtprüfung dokumentiert nach DGUV Grundsatz 309-007).",
+          ],
+        },
+        {
+          h3: "Kettenzüge: manuell vs. elektrisch, D8 und D8+",
+          paragraphs: [
+            "Manuelle Kettenzüge (Stirnradflaschenzug) heben mit Handkette – günstig, langsam, max. ca. 250 kg, für Trauerhöhungen und kleine Lasten. Elektro-Kettenzüge sind die Arbeitspferde der Veranstaltungsbranche: 250 kg, 500 kg, 1.000 kg WLL. Im Veranstaltungsbau über Personenköpfen muss der Kettenzug in der Ausführung „D8+“ (mit zusätzlicher Sicherungsbremse, 10-facher Sicherheit) ausgeführt sein – „D8“ reicht nur für Lasten, die nicht über Personen geführt werden.",
+            "Im Krefelder Mietsortiment führen wir je nach Setup-Größe geprüfte D8-Hebezeuge mit aktueller Sachverständigenprüfung. Für gewerbliche Veranstalter mit Personenhängung empfehlen wir D8+-Geräte und Vermittlung eines IHK-Sachkundigen für den Aufbau.",
+          ],
+        },
+        {
+          h3: "Outdoor und Windlast: DIN EN 1991-1-4 praxisnah",
+          paragraphs: [
+            "DIN EN 1991-1-4 berechnet Windlast als q = ½·ρ·v². Für 50 km/h Wind (14 m/s) ergibt sich Staudruck von ca. 120 N/m². Ein 4 × 6 m Banner bei 50 km/h heißt also 24 m² × 120 N/m² = 2.880 N (≈ 290 kg) seitliche Belastung – ohne Ballast oder Verankerung kippt der Tower. Bei 80 km/h (Sturmböe Bft 9) sind es 730 N/m² – das Vierfache.",
+            "Standard-Ballast aus Beton wiegt 25 kg pro Modul, Standard-Tower brauchen 8–16 Module (200–400 kg pro Standfuß) für Bühnendächer. Alternative: Erdanker (Schrauben oder Erdspieße) für Rasen-/Erdboden. Bei harten Untergründen (Asphalt, Beton) ist Ballast die einzige Option. Bei Windwarnung über Bft 8 wird das System abgebaut oder abgesenkt.",
+          ],
+        },
+        {
+          h3: "Prüfung und Doku: was Veranstalter vorhalten müssen",
+          paragraphs: [
+            "Gewerbliche Veranstalter müssen nach DGUV V17/V18 für jede Veranstaltungstechnik vorhalten: Gefährdungsbeurteilung (Arbeitsschutzgesetz § 5), Herstellerdatenblätter der Mietsachen, Sachkundenachweis der eingesetzten Personen, Aufbau-/Abbauplan, Prüfprotokolle der Anschlagmittel. Wir liefern als Vermieter am Standort Krefeld Datenblätter und Prüfplaketten – die Gefährdungsbeurteilung erstellt der Veranstalter (Beratung möglich).",
+            "Für Privat-Events (Hochzeit, Geburtstag, geschlossener Kreis) gelten diese Pflichten nicht – hier reicht eine sachgerechte Einweisung an unserem Standort. Sobald die Veranstaltung öffentlich, gewerblich oder über 200 Besucher in der Halle umfasst, greift SBauVO NRW Teil 5 und die Pflichten gelten vollständig.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // KOMMUNIKATION (Funkgeräte, Headsets, Intercom)
+    // Quellen: BNetzA-Allgemeinzuteilung PMR446 (Vfg. 28/2017,
+    //   anmelde-/gebührenfrei, 446,0–446,2 MHz, 16 Kanäle,
+    //   max. 500 mW), Allgemeinzuteilung dPMR446/DMR446
+    //   (Vfg. 33/2014), Betriebsfunk im 410–470 MHz Bereich
+    //   (Einzelzuteilung), DECT 1880–1900 MHz (anmeldefrei).
+    //   BOS-Funk ausschließlich für Behörden – KEINE Vermietung.
+    // -------------------------------------------------------------
+    kommunikation: {
+      faqs: [
+        {
+          question: "Welche Funkgeräte sind in Deutschland anmeldefrei – PMR446 erklärt",
+          answer:
+            "PMR446 ist der Standard für anmeldefreie Handfunkgeräte in Deutschland und der EU. BNetzA-Allgemeinzuteilung Vfg. 28/2017: 16 Kanäle im Bereich 446,0–446,2 MHz, max. 500 mW Sendeleistung, fest angebaute Antenne. Damit erreicht man im Außenbereich (freie Sicht) typisch 2–4 km, in der Stadt mit Bebauung 300–800 m, in Gebäuden 1–3 Etagen. Reicht für Veranstaltungsabsprache, Baustellenkoordination, kleine Festivals. Am Standort Krefeld führen wir PMR446-Geräte als Standard – sofortiger Einsatz ohne Anmeldung möglich.",
+        },
+        {
+          question: "Wie viele Funkgeräte brauche ich – pro Person oder mehrere Gruppen?",
+          answer:
+            "Faustregel: 1 Gerät pro Funktion. Für Veranstaltungsleitung, Bühne, Einlass, Bar, Catering empfiehlt sich je ein eigenes Gerät – ggf. auch je ein eigener Kanal. PMR446 hat 16 Kanäle (mit CTCSS/DCS-Codes weitere virtuelle Trennung). Bei Hochzeiten und kleinen Firmen-Events kommt man mit 4–6 Geräten aus, bei Festivals und Großhochzeiten 10–20+. Wir konfigurieren und übergeben am Standort Krefeld vorprogrammiert mit dem gleichen Kanal.",
+        },
+        {
+          question: "Headset oder Hand-PTT – was ist praktischer?",
+          answer:
+            "Headset (Bügel- oder Nackenbügel) mit PTT-Taste am Kabel ist Standard für Personal mit beiden Händen voll (Sicherheitsdienst, Bühnencrew, Service). Hand-PTT mit Lautsprecher reicht für Veranstaltungsleitung und Außenbereich. Profi-Headsets mit Geräuschunterdrückung (Noise Cancelling) sind für laute Locations (Bühne nahe Lautsprecher) sinnvoll – wir empfehlen je Einsatz und Lärmumgebung am Standort Krefeld.",
+        },
+        {
+          question: "Reichweite – stimmen die „bis zu 10 km“ auf der Verpackung?",
+          answer:
+            "Die Herstellerangaben „bis zu 10 km Reichweite“ gelten unter Idealbedingungen (freie Sicht, See, Wüste, beide Geräte auf Berggipfeln). In der Praxis erreicht PMR446 in der Stadt 300–800 m, im Freien mit Bebauung 1–2 km, im Wald oder Tal entsprechend weniger. Für größere Reichweiten (Festival mit 1 km Länge, große Baustelle, Industrieanlage) braucht es Einzelzuteilung im Betriebsfunk – aufpreispflichtig, aber bis zu 5 W Sendeleistung erlaubt.",
+        },
+        {
+          question: "Was ist der Unterschied zwischen analog und digital (DMR)?",
+          answer:
+            "Analoge PMR446-Geräte: einfach, robust, kompatibel mit allen anderen analogen PMR446-Geräten herstellerübergreifend. Reichweite und Sprachqualität nehmen mit zunehmendem Abstand allmählich ab. Digital (dPMR/DMR im 446-Band, BNetzA Vfg. 33/2014): bessere Sprachqualität bis zur Reichweitengrenze (dann abrupter Abbruch), mehr Funktionen (Display, Textnachrichten, Verschlüsselung), zwei Sprachkanäle pro Frequenz möglich. Am Standort Krefeld führen wir beide Varianten.",
+        },
+        {
+          question: "Kann ich Funkgeräte über mehrere Etagen oder im Keller nutzen?",
+          answer:
+            "Beton- und Stahlwände dämpfen Funksignale stark; ein PMR446-Gerät übersteht typisch 1–3 Stahlbeton-Etagen, im Tiefkeller je nach Bauweise gar nicht. Lösungen: (a) DECT-Intercom für gebäudeinterne Kommunikation (1880–1900 MHz, anmeldefrei, mit Repeater bis 50+ Etagen möglich), (b) Mobilfunk-PTT-Lösungen (4G/5G-basiert, deutschlandweit, monatliche SIM-Gebühr), (c) Betriebsfunk-Anlage mit Repeater im Gebäude (Einzelzuteilung BNetzA, kostenpflichtig).",
+        },
+        {
+          question: "Akku-Laufzeit – reicht das für einen Tag?",
+          answer:
+            "Standard-PMR446-Geräte mit Li-Ion-Akku halten typisch 8–12 Stunden im normalen Mischbetrieb (Senden/Empfangen 5/5/90: 5 % senden, 5 % empfangen, 90 % stand-by). Bei intensiver Nutzung (Sicherheitsdienst, ständige Kommunikation) eher 6–8 Stunden. Für Mehrtageseinsätze geben wir Ersatz-Akkus oder Mehrfach-Lader (4er- oder 6er-Ladeschalen) mit. Akkus werden vor Ausgabe vollgeladen übergeben.",
+        },
+        {
+          question: "Brauche ich für Funkgeräte auf einer Baustelle in Krefeld eine Genehmigung?",
+          answer:
+            "Für PMR446-Geräte: nein. Allgemeinzuteilung BNetzA, anmelde- und gebührenfrei, in ganz Deutschland und der EU zulässig. Für Betriebsfunk-Geräte (höhere Leistung, eigene Frequenz): ja, Einzelzuteilung bei der BNetzA mit jährlicher Gebühr und Standortbindung. Für BOS-Funk (Feuerwehr, Polizei, Rettungsdienst): ausschließlich autorisierte Organisationen; wir vermieten keinen BOS-Funk. Für Baustellenalltag in Krefeld sind PMR446-Geräte die Standardlösung.",
+        },
+        {
+          question: "Wie ist die Sprachqualität bei lauter Umgebung (Konzert, Baustelle)?",
+          answer:
+            "Mit Standard-Headset und PTT-Mikro vor dem Mund ist Sprache bis ca. 90 dB(A) Umgebungsgeräusch verständlich. In sehr lauten Umgebungen (Front-of-House Konzert, Bohrhammereinsatz) empfiehlt sich ein Profi-Headset mit Boom-Mikrofon und aktiver Noise-Cancellation oder ein Kehlkopfmikrofon (kontaktmikrofonisch direkt am Kehlkopf, nimmt Umgebungsgeräusche nicht auf). Solche Spezialheadsets vermieten wir am Standort Krefeld auf Anfrage.",
+        },
+        {
+          question: "Werden die Geräte vor Ausgabe geprüft und gereinigt?",
+          answer:
+            "Ja. Jedes Gerät durchläuft vor Ausgabe einen Funktionscheck (Sende-/Empfangstest, Akkuspannung, Tastenfunktion). Headset-Ohr-Auflagen und Mikro-Windschutz werden gereinigt bzw. ausgetauscht – hygienisch wichtig bei Personenwechsel. Programmierung auf den gewünschten Kanal erfolgt vor Übergabe; wir notieren den verwendeten Kanal auf dem Übergabeschein, damit die ganze Crew startklar ist.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "PMR446 vs. Betriebsfunk vs. LTE-PTT: was lohnt wann?",
+          paragraphs: [
+            "PMR446: anmelde- und gebührenfrei, max. 500 mW, Reichweite stadttypisch 300–800 m, ideal für Veranstaltungen, kleine Baustellen, Outdoor-Events. Betriebsfunk (Einzelzuteilung BNetzA, 410–430 MHz oder 440–470 MHz): bis 5 W Sendeleistung, ca. 5-fache Reichweite, jährliche Frequenzgebühr (typisch 100–500 € je nach Standort und Anzahl), ortsgebunden – lohnt für stationäre Betriebe (Industriestandort, Großlager).",
+            "LTE-PTT (Push-to-Talk über Mobilfunk): deutschland- bzw. weltweit Reichweite, monatliche SIM-Gebühr pro Gerät (ca. 10–25 € pro Gerät und Monat), Abhängigkeit von Mobilfunkabdeckung. Lohnt für verteilte Teams (Außendienst, Servicetechniker). Im Mietkreislauf am Standort Krefeld führen wir PMR446 als Standard; Betriebsfunk und LTE-PTT auf Projektbasis nach Absprache.",
+          ],
+        },
+        {
+          h3: "CTCSS, DCS und virtuelle Kanaltrennung",
+          paragraphs: [
+            "PMR446 hat 16 physikalische Kanäle. Damit auf einem Kanal mehrere Gruppen parallel sprechen können, ohne sich gegenseitig zu hören, gibt es CTCSS (Continuous Tone-Coded Squelch System, 38 sub-audible Tonsignale) und DCS (Digital Coded Squelch, 83 digitale Codes). Beide Verfahren öffnen die Lautsprecher nur, wenn der passende Sub-Code mitgesendet wird. Achtung: das schützt nur den Empfang – andere Gruppen können dich trotzdem hören und stören.",
+            "Praktische Folge für Krefelder Veranstaltungen: bei einer Großhochzeit mit getrennten Teams (Catering, Service, Sicherheit) belegen wir 3 verschiedene Kanäle, nicht 3 Sub-Codes auf einem Kanal – das reduziert Funkchaos und Störungen erheblich.",
+          ],
+        },
+        {
+          h3: "Headset-Qualität: warum „billig“ auf Dauer teuer wird",
+          paragraphs: [
+            "Konsumer-Headsets aus dem 10–30-€-Segment haben dünne Kabel, instabile PTT-Mechanik und schlechte Mikrofone. Auf einer Veranstaltung mit 8 Stunden Dauereinsatz fallen sie typischerweise aus (Kabelbruch am Stecker), und das schwache Mikro überträgt Umgebungslärm statt Sprache. Profi-Headsets im 80–200-€-Segment haben verstärkte Kabel, Metall-PTT und Geräuschdämpfung.",
+            "Wir vermieten am Standort Krefeld nur Profi-Headsets – die langfristig günstigere Wahl, weil keine Ausfälle während der Veranstaltung. Bei besonders kritischen Setups (TV-Produktion, Konferenz mit Simultandolmetschern) führen wir auch echte Intercom-Systeme mit kabelgebundener oder DECT-Anbindung.",
+          ],
+        },
+        {
+          h3: "Reichweiten in der Praxis: Beispiele aus Krefeld",
+          paragraphs: [
+            "Beispiel 1: Hochzeit in einem Park-Pavillon (200 × 100 m Gelände): PMR446 reicht problemlos vom Eingang bis zur Tanzfläche, Headsets für 6 Personen empfohlen. Beispiel 2: Firmen-Event in einer 5-stöckigen Krefelder Industriehalle: Betonwände dämpfen massiv, PMR446 bis 2 Etagen brauchbar – für die ganze Halle empfehlen wir DECT-Intercom mit Repeater oder LTE-PTT.",
+            "Beispiel 3: Sicherheitsfunk auf einem Stadtfest in der Krefelder Innenstadt (500 × 300 m, dichte Bebauung, viele Funkquellen): PMR446 funktioniert, aber wir empfehlen vorab einen Testtag mit den finalen Geräte-Positionen. Bei Großevents (mehr als 5.000 Besucher) lohnt sich Einzelzuteilung Betriebsfunk – wir vermitteln bei Bedarf.",
+          ],
+        },
+        {
+          h3: "DECT-Intercom: die unterschätzte Lösung für Hallen und Gebäude",
+          paragraphs: [
+            "DECT (Digital Enhanced Cordless Telecommunications) arbeitet im 1880–1900-MHz-Band, ist anmeldefrei und in jedem Schnurlostelefon enthalten. Profi-Intercom-Systeme nutzen denselben Standard mit erweiterten Funktionen (Konferenz-Modus, Privacy-Channel, Headset-Anbindung). Vorteile: stabile Sprachqualität, gute Gebäudedurchdringung mit Repeater, Verschlüsselung ab Werk.",
+            "Für Krefelder Konferenz-Locations, Hotelsäle und Industriehallen ist DECT-Intercom oft die professionellere Wahl als PMR446 – einfacher Aufbau (Basisstation an Steckdose, Headsets pairen sich automatisch), bis zu 8 simultane Gespräche pro Basisstation, Reichweite 50 m indoor, 300 m outdoor pro Basis. Wir führen DECT-Intercom-Sets am Standort Krefeld und beraten zum passenden Setup.",
+          ],
+        },
+      ],
+    },
   },
 
   // Bonn und Mülheim folgen analog in späteren Tranchen.
