@@ -31,6 +31,7 @@ const imgFotoboxProps = "/images/hochzeit/fotobox-props-hochzeit.jpg";
 const imgGeschirrDarwin = "/images/hochzeit/geschirr-darwin-hochzeit.jpg";
 const imgSound = "/product-images/soundsystem-1400w-1.jpeg";
 const imgPartyzelt = "/product-images/partyzelt-5x12-1.avif";
+const imgSparkular = "/images/hochzeit/sparkular-hochzeit.jpeg";
 
 const faqs = [
   {
