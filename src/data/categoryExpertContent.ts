@@ -2121,6 +2121,217 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // ANHÄNGER (PKW-Anhänger, Plateau-/Baumaschinen-/Auto-
+    //   transport-/Kofferanhänger, Motorradanhänger)
+    // Quellen: StVZO §§ 30a, 32, 34, 43 (Abmessungen, Achslast,
+    //   Gesamtgewicht, Anhängerkupplungen); FeV Anlage 9
+    //   (Klassen B / B96 / BE); StVO § 22 (Ladungssicherung);
+    //   DIN EN 12195-1 (Berechnung von Zurrkräften);
+    //   VDI 2700 ff. (Ladungssicherung auf Straßenfahrzeugen);
+    //   100-km/h-Verordnung (Anlage zu § 18 Abs. 5 StVO);
+    //   §§ 29, 19 StVZO (HU, ABE).
+    // -------------------------------------------------------------
+    anhaenger: {
+      faqs: [
+        {
+          question: "Welchen Führerschein brauche ich für einen Anhänger?",
+          answer:
+            "Maßgeblich ist FeV Anlage 9 in Verbindung mit der zulässigen Gesamtmasse (zGM) von Zugfahrzeug und Anhänger. Mit Klasse B (alt: Klasse 3, vor 1999) sind ungebremste Anhänger bis 750 kg zGM ohne Weiteres erlaubt; gebremste Anhänger nur, wenn die Kombination 3.500 kg zGM nicht überschreitet. Klasse B96 (eintägige Schulung, keine Prüfung) erweitert auf 4.250 kg zGM. Klasse BE deckt Anhänger bis 3.500 kg zGM und Kombinationen bis 7.000 kg ab. Wir vermieten am Hauptsitz Krefeld die volle Bandbreite – die zGM steht im Datenblatt jedes Anhängers und wir prüfen die Führerscheinklasse bei der Übergabe.",
+        },
+        {
+          question: "Welcher Anhängertyp ist für meinen Transport richtig?",
+          answer:
+            "Faustregel: Plateauanhänger (offene Ladefläche, mit/ohne Bordwände) für sperriges Material wie Holz, Möbel, Gartenabfälle. Baumaschinenanhänger mit Auffahrrampen und niedriger Ladekante für Minibagger, Rüttelplatten und Stapler. Kofferanhänger für witterungsempfindliches Gut wie Werkzeug, Umzugsmaterial, Messetechnik. Autotransportanhänger mit Seilwinde für PKW-Überführungen. Motorradanhänger mit Schiene und Wippe für Motorräder bis ca. 350 kg. Am Standort Krefeld halten wir alle Bauarten vor; bei der Buchung filterst du nach Nutzlast und Innenmaß.",
+        },
+        {
+          question: "Was bedeutet zulässige Stützlast – und warum ist sie kritisch?",
+          answer:
+            "Die Stützlast ist das Gewicht, das die Anhängerdeichsel auf die Anhängerkupplung des Zugfahrzeugs überträgt. Sie steht im Fahrzeugschein des Zugfahrzeugs (Feld 13) und auf dem Anhänger (Typenschild). Maßgeblich ist immer der niedrigste der drei Werte (PKW, Kupplung, Anhänger). Typische Werte: 50–100 kg bei PKW-Anhängern, bis 150 kg bei stärkeren SUV-/Transporter-Gespannen. Eine zu geringe Stützlast (Heck-Last beim Anhänger) führt zum Schlingern, eine zu hohe Stützlast überlastet die Hinterachse. Wir prüfen die Beladung gemeinsam bei der Übergabe in Krefeld.",
+        },
+        {
+          question: "Wie sichere ich Ladung korrekt nach § 22 StVO und VDI 2700?",
+          answer:
+            "§ 22 StVO und § 23 StVO verlangen, dass die Ladung verkehrssicher verstaut und gegen Verrutschen, Umfallen, Hin- und Herrollen, Herabfallen und vermeidbaren Lärm gesichert ist. VDI 2700 ff. und DIN EN 12195-1 sind der anerkannte Stand der Technik. Praxis: Formschluss (Ladung an die Bordwand) ist die beste Sicherung. Zurrgurte müssen für die geforderten Zurrkräfte ausgelegt sein (Etikett am Gurt: LC-Wert). Faustregel beim Niederzurren: pro 500 kg Ladung mindestens 2 Gurte mit STF ≥ 350 daN über die Ladung. Wir geben Zurrgurte zu den Mietanhängern mit aus und beraten zur Sicherung – die Verantwortung für die Ladungssicherung bleibt aber beim Fahrer und Halter (Bußgeld bis 75 €, bei Unfall Mitschuld).",
+        },
+        {
+          question: "Darf ich mit dem Anhänger 100 km/h auf der Autobahn fahren?",
+          answer:
+            "Standard ist Tempo 80 km/h auf Autobahn und außerorts. Mit der Tempo-100-Plakette nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h erlaubt, wenn der Anhänger und das Gespann die Voraussetzungen erfüllen: Anhänger ≤ 3,5 t zGM, geeignete Reifen (Index L = 120 km/h, max. 6 Jahre alt), hydraulische Stoßdämpfer in Ordnung, Antischlingerkupplung (AKS), und die Leermasse des Zugfahrzeugs muss mindestens das 1,1-fache der zGM des Anhängers betragen (bei Pkw bzw. Wohnmobil bis 3,5 t). Den Plakettenstatus geben wir an jedem Mietanhänger an.",
+        },
+        {
+          question: "Wie alt dürfen Reifen am Mietanhänger sein und wann werden sie getauscht?",
+          answer:
+            "Die DOT-Nummer auf der Reifenflanke nennt Produktionswoche und -jahr. Für Anhänger mit Tempo-100-Zulassung dürfen Reifen max. 6 Jahre alt sein (Stichtag bei Erteilung der Plakette). Unabhängig davon gilt: bei sichtbarer Alterung (Risse, Sprödigkeit) tauschen, spätestens nach 10 Jahren. Mindestprofiltiefe ist gesetzlich 1,6 mm, praxistauglich tauschen wir ab 3 mm. Unsere Vermietflotte am Standort Krefeld wird turnusmäßig geprüft – DOT und Profiltiefe sind Teil der Übergabe-Checkliste.",
+        },
+        {
+          question: "Was muss ich vor jeder Fahrt am Anhänger prüfen?",
+          answer:
+            "Sechs-Punkte-Check vor jedem Antritt: 1) Kupplungskugel sauber eingerastet, Verriegelung sichtbar geschlossen; 2) Abreißseil bzw. Sicherungsstift eingehängt; 3) 13- bzw. 7-poliger Stecker eingesteckt, Funktionsprüfung Blinker, Brems-, Schlusslicht; 4) Stützrad vollständig hochgekurbelt und arretiert; 5) Ladung formschlüssig und niedergezurrt, Plane gespannt; 6) Reifen visuell prüfen (Druck, Profil, sichtbare Schäden). Wir erklären diesen Ablauf bei der Übergabe in Krefeld und stellen eine Kurz-Anleitung als PDF zur Verfügung.",
+        },
+        {
+          question: "Wie funktioniert die Auflaufbremse – und was ist beim Rückwärtsfahren zu beachten?",
+          answer:
+            "Gebremste Anhänger haben eine mechanische Auflaufbremse: Beim Bremsen schiebt der Anhänger gegen das Zugfahrzeug, die Deichsel staucht sich, ein Gestänge betätigt die Trommelbremsen. Beim Rückwärtsfahren würde derselbe Mechanismus die Bremse betätigen – moderne Anhänger haben deshalb eine automatische Rückfahrautomatik, die das verhindert. Vor dem Rangieren also kurz vorrollen lassen, dann rückwärts. Bei älteren Anhängern muss der Rückfahrhebel manuell arretiert werden. Wir erklären den jeweiligen Mechanismus am konkreten Modell in Krefeld.",
+        },
+        {
+          question: "Brauche ich für den Anhänger eine eigene Versicherung?",
+          answer:
+            "In Deutschland ist der Anhänger über die KFZ-Haftpflicht des Zugfahrzeugs mitversichert, solange er angekuppelt ist (BGH-Rechtsprechung, sogenannte „Bulgarien-Entscheidung\" hat das nochmals bestätigt). Eigene Schäden am gemieteten Anhänger deckt der Mietvertrag mit ausgewiesener Selbstbeteiligung; eine zusätzliche Haftungsreduzierung kann optional gebucht werden. Im Ausland gelten teils abweichende Regeln (z. B. Italien, Niederlande – eigene Anhänger-Versicherung), prüfe das vor Grenzübertritt mit deinem Versicherer.",
+        },
+        {
+          question: "Wie lange darf ich einen Anhänger am Straßenrand abstellen?",
+          answer:
+            "§ 12 Abs. 3b StVO: Anhänger ohne Zugfahrzeug dürfen auf öffentlichen Straßen längstens zwei Wochen abgestellt werden; danach drohen Verwarn- bzw. Bußgeld und Abschleppkosten. Auf Autobahnen, Kraftfahrstraßen und in eingeschränkten Halteverbots-Zonen gilt das Abstellverbot ohnehin sofort. In reinen Wohngebieten dulden viele Kommunen kürzere Zeiten; die Stadt Krefeld weist im Zweifel über das Ordnungsamt aus. Auf privatem Grund (Hof, eigene Stellfläche) gilt diese Regel nicht.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Führerscheinklassen B, B96 und BE: was du wirklich ziehen darfst",
+          paragraphs: [
+            "Die häufigste Fehlannahme: „Mit Klasse B darf ich alles bis 3.500 kg ziehen.\" Das stimmt nur halb. Klasse B erlaubt ungebremste Anhänger bis 750 kg zGM ohne weitere Bedingung. Gebremste Anhänger über 750 kg zGM sind nur erlaubt, solange die Summe aus zGM Zugfahrzeug + zGM Anhänger 3.500 kg nicht überschreitet – das schließt einen 1.300-kg-Baumaschinenanhänger hinter einem 2.300-kg-PKW bereits aus.",
+            "Klasse B96 ist eine eintägige Schulung (ca. 7 Stunden, davon mind. 2,5 h Praxis) ohne Prüfung und erweitert die Kombi-Grenze auf 4.250 kg. BE ist eine vollwertige Führerschein-Klasse (Theorie ist nicht erforderlich, Praxisprüfung mit Anhänger), erlaubt Anhänger bis 3.500 kg zGM und Gespanne bis 7.000 kg. Für die meisten Bau- und Umzugs-Mieten in Krefeld empfehlen wir BE; die Kombination eines klassischen Baumaschinenanhängers (ab 2.000 kg zGM) mit einem 1-Tonnen-Minibagger liegt zwangsläufig im BE-Bereich.",
+          ],
+        },
+        {
+          h3: "Ladungssicherung nach VDI 2700: vom Reibwert bis zum Zurrgurt",
+          paragraphs: [
+            "Die VDI-Richtlinie 2700 (Ladungssicherung auf Straßenfahrzeugen) ist der anerkannte Stand der Technik und wird im Schadens- bzw. Bußgeldfall regelmäßig herangezogen. Grundprinzip: Sicherung gegen Verrutschen nach vorn mit mindestens 0,8 g, nach hinten und zur Seite mit mindestens 0,5 g. Übersetzt: Beim scharfen Bremsen wirken bis zu 80 % der Ladungsmasse als horizontale Kraft – eine 1.000 kg schwere Maschine drückt mit bis zu 800 kg auf die Bordwand bzw. die Zurrgurte.",
+            "In der Praxis empfehlen wir den Mix aus Formschluss (Ladung dicht an die Bordwand, Lücken mit Antirutschmatten füllen) und Niederzurren (Zurrgurte mit STF ≥ 350 daN, kreuzweise über die Ladung). Diagonalzurren ist nochmals effizienter, erfordert aber Zurrösen am Boden des Anhängers. Wir geben pro Anhänger eine fachgerechte Anzahl Zurrgurte und Antirutschmatten mit aus; das Etikett am Gurt zeigt die zulässige Zurrkraft (LC) und die Standard-Spannkraft (STF) – das sind die Werte, die im Streitfall zählen.",
+          ],
+        },
+        {
+          h3: "Auflaufbremse, Antischlingerkupplung und ESC: was die Technik leistet",
+          paragraphs: [
+            "Gebremste Anhänger nutzen die Auflaufbremse: Eine in der Deichsel verbaute Dämpferpatrone übersetzt die Schubkraft des bremsenden Anhängers in einen Bremsdruck auf die Trommelbremsen der Achsen. Das System ist mechanisch, wartungsarm und seit Jahrzehnten erprobt – die regelmäßige Inspektion betrifft vor allem die Trommeln, Bremsbacken und die Kugelaufnahme. Beim Rückwärtsfahren verhindert eine Rückfahrautomatik (Klinke an der Bremsbacke), dass die Auflaufbewegung als Bremsung interpretiert wird.",
+            "Antischlingerkupplungen (z. B. AL-KO AKS) erzeugen Reibung zwischen Kupplungskugel und Spannbacken und dämpfen damit Pendelschwingungen. Sie sind Pflicht für jede Tempo-100-Plakette und in unseren Anhänger ab 1.500 kg zGM standardmäßig verbaut. Elektronische Stabilitätsprogramme (ESC, z. B. AL-KO ATC) erkennen beginnendes Pendeln über einen Sensor in der Deichsel und bremsen den Anhänger gezielt ab – das verkürzt die Pendelphase deutlich und ist die wirksamste Einzelmaßnahme gegen Anhänger-Unfälle bei Seitenwind.",
+          ],
+        },
+        {
+          h3: "TÜV, ABE und Prüfintervalle: was du als Mieter wissen musst",
+          paragraphs: [
+            "Anhänger bis 750 kg zGM sind alle zwei Jahre HU-pflichtig (§ 29 StVZO). Anhänger über 750 kg zGM ebenfalls alle zwei Jahre, schwere Anhänger (über 3,5 t) jährlich. Die HU-Plakette sitzt am Kennzeichen. Bei jedem Vermietvorgang ab Krefeld stellen wir sicher, dass die HU gültig ist – bei abgelaufener HU dürfen wir nicht vermieten und tun das auch nicht.",
+            "Die ABE bzw. EBE des Anhängers ist die Grundlage für die Zulassung. Eigenmächtige Umbauten (zusätzliche Lampen, andere Bordwände, andere Reifen ohne Freigabe) führen zum Erlöschen der Betriebserlaubnis (§ 19 Abs. 2 StVZO) – mit gravierenden versicherungs- und bußgeldrechtlichen Folgen. Bitte den Mietanhänger unverändert verwenden; Sonderwünsche (z. B. zusätzliche Spanngurt-Ösen, andere Plane) bitte vorab mit uns klären.",
+          ],
+        },
+        {
+          h3: "Krefeld als Anhänger-Standort: Hauptsitz, A57, A40 und das Liefergebiet",
+          paragraphs: [
+            "Unser Hauptsitz in der Anrather Straße 291 (Krefeld-Fichtenhain) liegt unmittelbar am Autobahnkreuz A57 (Köln–Krefeld–Nimwegen) und A44 mit kurzer Anbindung an die A40 (Ruhrschnellweg). Aus dieser Lage erreichst du das gesamte Niederrhein-Liefergebiet (Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch, Duisburg-Süd) und das angrenzende Ruhrgebiet ohne Stadtdurchquerung – ideal für Anhänger-Selbstabholung.",
+            "Im Mietpark Krefeld halten wir Plateau-, Baumaschinen-, Koffer-, Auto­transport- und Motorrad­anhänger jeweils in mehreren Größen vor – Verfügbarkeit zeigt jedes Produkt direkt an. Reguläre Übergabezeiten Mo–Fr 08:00–18:00, Sa 10:00–14:30. Frühere Samstags-Abholungen organisieren wir nach Vorbuchung – gerade für Wochenendprojekte mit Rückgabe am Montag eine sinnvolle Option. Die Zurrgurt-Ausstattung, ein Satz Antirutschmatten und ein Adapter 7-/13-polig sind im Mietpreis enthalten.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // KABEL & STROMVERTEILER (CEE-Kabel, Gummischlauchleitungen
+    //   H07RN-F, Stromverteiler 16/32/63/125 A, Baustrom-
+    //   Anschluss-Schrank, FI-Schutzschalter, Adapter)
+    // Quellen: DIN VDE 0100-704 (Errichten von Niederspannungs-
+    //   anlagen – Baustellen), DIN VDE 0100-410 (Schutz gegen
+    //   elektrischen Schlag), DIN VDE 0100-540 (Auswahl und
+    //   Errichtung elektrischer Betriebsmittel – Erdung),
+    //   DIN VDE 0701-0702 (Wiederholungsprüfung elektrischer
+    //   Geräte), DGUV Vorschrift 3 (Elektrische Anlagen und
+    //   Betriebsmittel), DGUV Information 203-006 (Auswahl
+    //   und Betrieb elektrischer Anlagen auf Bau- und Montage-
+    //   stellen), TAB NS Nord (Technische Anschluss-
+    //   bedingungen Niederspannung), § 8 NAV (Netzanschluss-
+    //   verordnung).
+    // -------------------------------------------------------------
+    "kabel-stromverteiler": {
+      faqs: [
+        {
+          question: "Was bedeutet CEE – und welche Größen brauche ich auf der Baustelle?",
+          answer:
+            "CEE steht für „Commission on the Rules for the Approval of the Electrical Equipment\" – heute geregelt in IEC 60309. Die blauen 3-poligen CEE-Stecker (230 V, 16 A) versorgen Wohnwagen, Marktstände und kleine Werkzeuge. Die roten 5-poligen CEE-Stecker (400 V) gibt es in den Stromstärken 16 A (bis 11 kW), 32 A (bis 22 kW), 63 A (bis 43 kW) und 125 A (bis 86 kW). Faustregel: Kleine Werkzeuge und Beleuchtung mit 16/32 A blau bzw. rot, Mischer und mittlere Maschinen mit 32 A rot, Kräne, Hebebühnen und Schweißgeräte mit 63 A. Wir halten am Standort Krefeld alle Größen plus passende Adapter vor.",
+        },
+        {
+          question: "Welcher Kabelquerschnitt für welche Länge und Last?",
+          answer:
+            "Maßgeblich ist die Strombelastbarkeit nach DIN VDE 0298-4 und der zulässige Spannungsabfall (max. 3 % nach DIN VDE 0100-520). Praxisrichtwerte für H07RN-F-Gummischlauchleitungen: 3 × 2,5 mm² für 16 A bis ca. 50 m, 5 × 2,5 mm² für 16 A drei­phasig bis ca. 70 m, 5 × 4 mm² für 32 A bis ca. 65 m, 5 × 6 mm² für 32 A bis ca. 100 m, 5 × 10 mm² oder 5 × 16 mm² für 63 A. Bei längeren Strecken auf den nächstgrößeren Querschnitt gehen – sonst sinkt die Spannung ab, Motoren werden heiß und Sicherungen lösen aus. Wir konfigurieren bei der Buchung in Krefeld die passende Kombination.",
+        },
+        {
+          question: "Welche Schutzklasse müssen Baustellen-Kabel und -Verteiler haben?",
+          answer:
+            "Auf Bau- und Montagestellen schreibt DIN VDE 0100-704 vor: Leitungen mindestens vom Typ H07RN-F oder gleichwertig (öl-, säure-, abriebfest), Stecker und Kupplungen mindestens IP44 (spritzwassergeschützt). Stromverteiler („Bau­strom­verteiler\") müssen mindestens IP44, in Außenbereichen typischerweise IP54 oder IP65 sein und mit RCD (FI-Schutz­schalter) ≤ 30 mA für alle 230-V- und Dreh­strom-Abgänge bis 32 A ausgerüstet sein. Unsere Verteiler erfüllen mindestens IP44 mit allpoligem FI 30 mA; größere Verteiler (63/125 A) zusätzlich mit selektivem FI 300 mA in der Vorstufe.",
+        },
+        {
+          question: "Brauche ich einen FI-Schutzschalter – und wie oft wird er geprüft?",
+          answer:
+            "Ja, auf Baustellen ist ein RCD mit Nennfehlerstrom ≤ 30 mA für alle Stromkreise mit Steckvorrichtungen bis 32 A nach DIN VDE 0100-704 Abschnitt 411.3.3 zwingend vorgeschrieben. Der FI-Schalter muss vor jeder Schicht über die Prüftaste getestet werden; eine Wiederholungsprüfung der gesamten Anlage erfolgt nach DGUV V3 mindestens jährlich (bei Baustellen-Verteilern teils alle 3 Monate). Unsere Mietverteiler durchlaufen vor jeder Vermietung eine DGUV-V3-Prüfung – das Prüfprotokoll mit Datum und Prüfer-Kennung klebt am Verteiler.",
+        },
+        {
+          question: "Bietet ihr Baustrom-Anschluss mit Antragstellung?",
+          answer:
+            "Ja, das ist ein eigener Service: Wir übernehmen die komplette Bau­strom-Anmeldung beim zuständigen Netzbetreiber (in Krefeld z. B. SWK Netze, im Umland Westnetz/Westenergie), liefern und installieren den genormten Bau­anschluss­schrank mit Wandlermesszählerplatz nach TAB NS Nord, übernehmen den Stromzähler-Wechsel mit dem Netzbetreiber und holen den Schrank nach Bau­ende wieder ab. Pauschal­preis je nach Region und Anschluss­leistung – Angebot über unseren Service-Standort Krefeld telefonisch oder per Anfrageformular.",
+        },
+        {
+          question: "Wie schließe ich Kabel und Verteiler auf der Baustelle korrekt an?",
+          answer:
+            "Reihenfolge nach DIN VDE 0100-704: Zuerst Verteiler an festen, ebenen Untergrund stellen oder am Bau­stützpunkt aufhängen (Stand­standsfest, kein Wassersack). Speisekabel von der Einspeise­stelle (Bau­strom­schrank oder Gebäudeanschluss) zum Verteiler verlegen, dabei Quetsch- und Scherstellen vermeiden (keine quer über Verkehrswege, sonst Kabel­brücken einsetzen). Stecker erst nach Verlegung einstecken. Vor Inbetriebnahme: Funktion FI-Test, Spannungs­prüfung an jeder Steckdose, Drehfeld­prüfung bei Drehstrom (rechts­drehend für Motoren). Wir geben am Standort Krefeld eine Übergabe-Einweisung an Verteilern größer 32 A.",
+        },
+        {
+          question: "Was tun, wenn der FI-Schutzschalter ständig auslöst?",
+          answer:
+            "Häufige Ursachen: feuchter oder defekter Verbraucher (Bohrhammer mit Wassereintritt), beschädigtes Kabel mit Erdschluss, zu viele Verbraucher mit Ableit­strömen am selben Stromkreis (Summen­ableit­strom > 30 mA). Vorgehen: Alle Verbraucher abstecken, FI einschalten – hält er, einzeln nachstecken bis der Auslöser identifiziert ist. Hält der FI auch ohne Verbraucher nicht, ist der Verteiler selbst betroffen (Wasser im Gehäuse, defekter Schalter). Bitte solche Verteiler nicht „brücken\" oder den FI dauerhaft drücken – das ist lebensgefährlich. Tausch-Verteiler bekommst du am Standort Krefeld kurzfristig.",
+        },
+        {
+          question: "Kann ich Kabeltrommeln voll abgerollt lassen – oder müssen sie ganz abgerollt werden?",
+          answer:
+            "Kabeltrommeln müssen für die volle Nennlast vollständig abgerollt werden, sonst überhitzt das Kabel auf der Trommel durch induktive Wärmestauung (Spulen­effekt). Aufgerollt darf nur ein Bruchteil der Nennlast entnommen werden – typische Herstellerangabe: ca. 30 % der Trommel­last bei vollem Aufrollen. Konkret: Eine 25-m-Trommel mit 16 A Nennstrom (3.680 W) darf aufgerollt nur ca. 1.000 W abgeben, sonst schmilzt die Isolierung. Auf der Trommel ist das im Etikett vermerkt. Wir verleihen am Standort Krefeld bevorzugt H07RN-F-Leitungen als lose Ringe – die haben dieses Problem nicht.",
+        },
+        {
+          question: "Welche Verteilergröße brauche ich für mein Event oder meine Baustelle?",
+          answer:
+            "Faustregel über die Anschluss­leistung: kleines Event (DJ + Licht + Catering-Hütte): 32 A rot reicht (22 kW). Mittleres Event (Bühne + PA + Licht + Catering): 63 A rot (43 kW). Großevent mit Tour-Bühne und Foodtruck-Reihe: 125 A rot (86 kW). Baustelle: Anzahl der Stromkreise zählen – Mischer, Tauchsäge, Hubarbeitsbühne, Bauwagen-Heizung. Pro 16-A-Abgang plant man konservativ einen Verbraucher mit Anlauf­strom (z. B. Mischer). Wir konfigurieren am Standort Krefeld den passenden Verteiler­stamm (32 A → 4× 16 A + 2× 32 A o. ä.) und legen die nötigen Verlängerungen passend dazu.",
+        },
+        {
+          question: "Was kostet die Kabel- und Verteiler-Miete in Krefeld?",
+          answer:
+            "Die Tagespreise sind pro Artikel im Buchungs­prozess hinterlegt. Längere Mieten werden überproportional günstiger: Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15 Tagessätzen. Für Baustrom-Anschluss mit Antrag und Schrank-Aufstellung gibt es einen separaten Pauschal­preis je nach Region und Anschluss­leistung. Telefonische Beratung dazu über die Krefelder Standort­nummer.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "DIN VDE 0100-704: warum Baustellen ein eigenes Regelwerk haben",
+          paragraphs: [
+            "Bau- und Montagestellen sind elektrotechnisch besondere Umgebungen: viele wechselnde Nutzer, oft Feuchtigkeit, mechanische Beanspruchung, häufiges Stecken und Trennen, parallele Gewerke. DIN VDE 0100-704 fasst die daraus resultierenden Anforderungen zusammen und ist verbindlich für jede Bau­strom-Verteilung. Kernpunkte: Speisung der Bau­strom­verteilung aus einem TN-S-System mit separatem Schutzleiter (kein PEN auf Bau­stellen ab 32 A), RCD ≤ 30 mA für Steckdosen­kreise bis 32 A, RCD ≤ 500 mA als Vorstufe für größere Abgänge, Schutzart mindestens IP44, mechanische Schutzart IK08.",
+            "Praktisch heißt das für den Mieter: Stecker, Kupplungen und Verteiler müssen das CEE-System nach IEC 60309 erfüllen, Leitungen müssen H07RN-F oder gleichwertig sein (klassisches PVC-Kabel ist auf Bau­stellen unzulässig), und der Verteiler muss eine gültige DGUV-V3-Prüfung haben. Unsere Krefelder Vermietflotte erfüllt diese Anforderungen durchgängig – das spart dir die Diskussion mit dem SiGeKo bzw. der BG BAU auf der Baustelle.",
+          ],
+        },
+        {
+          h3: "Spannungsabfall und Kabelquerschnitt: warum man oft eine Nummer größer wählt",
+          paragraphs: [
+            "Jede Leitung hat einen Widerstand; bei großer Länge oder hoher Stromstärke fällt entlang der Leitung Spannung ab. DIN VDE 0100-520 verlangt für Verbraucher­stromkreise einen Spannungs­abfall von max. 3 % zwischen Einspeisung und Verbraucher. Bei 400 V Drehstrom sind das 12 V – nach 100 m mit 5 × 2,5 mm² und 32 A reicht das nicht mehr aus. Effekt: Motoren laufen mit Untertemperatur, ziehen mehr Strom, werden heiß; Frequenz­umrichter melden „Unterspannung\" und schalten ab; LED-Scheinwerfer flimmern.",
+            "Praxis­regel: pro 50 m Länge bei 32 A eine Querschnitt­stufe größer wählen (statt 5 × 4 mm² besser 5 × 6 mm²). Bei 63 A rechnen wir grundsätzlich mit 5 × 10 mm² für die ersten 50 m und 5 × 16 mm² ab 50 m. Bei Großevents oder lang gezogenen Bau­stellen lohnt sich oft ein zweiter Verteiler näher am Verbraucher – kürzeres Niederlast­kabel statt eines langen Speise­kabels. Wir rechnen den passenden Mix in Krefeld bei der Buchung gemeinsam mit dir durch.",
+          ],
+        },
+        {
+          h3: "FI-Schutz, RCD-Typen und warum „Typ A\" oft nicht reicht",
+          paragraphs: [
+            "FI-Schutzschalter (RCD) erkennen Fehlerströme zum Schutzleiter und schalten bei ≤ 30 mA innerhalb von 40 ms ab – das schützt Personen vor Herzkammer­flimmern. Es gibt vier wichtige Typen: AC (nur sinusförmige Wechselfehler­ströme, in Deutschland seit 1985 nicht mehr zulässig), A (sinusförmige + pulsierende Gleichströme; Standard in Wohn- und Bau­installationen), F (zusätzlich Misch­frequenzen, für einphasige Frequenz­umrichter), B (zusätzlich glatte Gleichfehler­ströme, für drei­phasige Frequenz­umrichter, PV-Wechselrichter und Lade­säulen).",
+            "Auf modernen Baustellen mit Frequenz­umrichter-Maschinen (variable Geschwindigkeit, sanftes Anlaufen) oder mit Ladegeräten für E-Geräte/E-Autos reicht ein Typ-A-FI nicht aus – glatte Gleichfehler­ströme „blenden\" einen Typ-A-FI und verhindern dessen Auslösung. Hier muss Typ B (oder mindestens Typ F) verwendet werden. Unsere großen Verteiler (63/125 A) sind je nach Modell mit Typ B nachrüstbar; bei Frequenz­umrichter-Geräten weisen wir bei der Buchung in Krefeld explizit auf den nötigen FI-Typ hin.",
+          ],
+        },
+        {
+          h3: "Baustromanschluss: vom Antrag beim Netzbetreiber bis zum fertigen Anschlussschrank",
+          paragraphs: [
+            "Ein Bau­strom­anschluss ist kein Mietgerät, sondern ein temporärer Netz­anschluss nach § 8 NAV (Niederspannungs-Anschluss­verordnung). Ablauf: 1) Konzessions­vertrag mit dem örtlichen Netzbetreiber (in Krefeld z. B. SWK Netze, in Mönchen­gladbach NEW Netz, im Umland Westnetz). 2) Antragsformular mit Lageplan, gewünschter Leistung (kW) und Standort des Anschluss­schranks. 3) Netzbetreiber prüft die Anschluss­möglichkeit (Hausanschluss­kasten in der Nähe, Tiefbau­arbeiten nötig?). 4) Schrank-Aufstellung mit Wandler­mess­zählerplatz nach TAB NS Nord. 5) Zähler­setzen durch den Netzbetreiber, Inbetrieb­nahme. 6) Nach Bau­ende: Demontage, Rück­bau, Endabrechnung.",
+            "Wir übernehmen das als Komplettpaket: Antrag, Schrank, Schrank-Stellung, Koordination des Zähler­wechsels, Rückbau. Du erhältst einen Festpreis je nach Region und Anschluss­leistung. Das ist gerade für Bauherren attraktiv, die ohne Elektro-Hintergrund nicht mit dem Netzbetreiber verhandeln wollen – telefonische Beratung über die Krefelder Standort­nummer.",
+          ],
+        },
+        {
+          h3: "Steckverbindersystem CEE und IEC 60309: Farben, Polzahl, Schutzart",
+          paragraphs: [
+            "Das CEE-System nach IEC 60309 ist international standardisiert und über Farbe, Polzahl, Stromstärke und Schutzart eindeutig codiert – Fehlsteckungen sind dadurch praktisch ausgeschlossen. Blau steht für 230 V (50 Hz), Rot für 400 V (50 Hz), Gelb für 110 V (Niedrigvoltsystem, z. B. UK-Bau), Schwarz für 500 V (Industrie), Grün für 24/50 V (Schutzkleinspannung). Die Polzahl gibt Auskunft über die Strom­art: 3-polig (L + N + PE) = einphasig 230 V; 4-polig (L1 + L2 + L3 + PE) = Drehstrom ohne Neutral­leiter; 5-polig (L1 + L2 + L3 + N + PE) = Drehstrom mit Neutral­leiter (Standard im Bau).",
+            "Stromstärken sind durch die Stecker­geometrie unverwechselbar: 16 A, 32 A, 63 A und 125 A haben unterschiedliche Außen­durchmesser und Stiftbilder. Adapter zwischen den Stufen sind erlaubt, wenn sie das jeweilige Schutzkonzept (FI, Überstrom­schutz) nicht aufheben. Wir verleihen am Standort Krefeld den kompletten Adapter­satz (16/32 A blau auf 16 A Schuko, 32 A rot auf 16 A rot, 63 A rot auf 32 A rot etc.) – damit baust du dir die passende Verteiler­kette ohne Fremd­material zusammen.",
+          ],
+        },
+      ],
+    },
   },
 
   // Bonn und Mülheim folgen analog in späteren Tranchen.
