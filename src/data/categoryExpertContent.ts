@@ -589,6 +589,517 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // GARTENPFLEGE (Häcksler, Vertikutierer, Motorhacken,
+    //   Holzspalter, Heckenscheren, Kettensägen, Wurzelfräsen)
+    // Quellen: 32. BImSchV (Geräte-/Maschinenlärm in Wohngebieten),
+    //   DGUV Information 214-059 (Motorsägen), DGUV 112-194 (PSA),
+    //   LärmVibrationsArbSchV, BNatSchG § 39 (Vegetationsperiode
+    //   1. März – 30. September), Baumschutzsatzung der Stadt
+    //   Krefeld (Schutz von Bäumen ab 80 cm Stammumfang).
+    // -------------------------------------------------------------
+    gartenpflege: {
+      faqs: [
+        {
+          question: "Welcher Häcksler passt zu meinem Gartenrückschnitt?",
+          answer:
+            "Faustregel nach Astdurchmesser: Bis ca. 35 mm reichen Walzenhäcksler (leise, sogenannte „Leise-Häcksler“, ideal im Wohngebiet). Bis 45 mm sind Turbinen- bzw. Schneidwalzen-Geräte sinnvoll. Bis 75 mm und für Profi-Heckenrückschnitt greift man zu Benzin-Häckslern mit Hammerwerk. Im Krefelder Mietpark führen wir alle drei Klassen; der maximale Astdurchmesser steht in jedem Produktdatenblatt. Wichtig: Häcksler arbeiten an grünem Schnittgut deutlich besser als an trockenem – planbar nach dem Schnitt einsetzen.",
+        },
+        {
+          question: "Vertikutieren oder Aerifizieren – was brauche ich wann?",
+          answer:
+            "Vertikutierer schneiden senkrecht in die Grasnarbe (3–5 mm tief) und entfernen Rasenfilz und Moos – die Standardpflege im März/April und im September. Aerifizierer stechen 5–10 cm tiefe Hohldorne in den Boden und entlasten verdichtete Rasenflächen (typisch bei Spielrasen, Hundewiese). Auf normalem Hausrasen reicht Vertikutieren plus Nachsaat; Aerifizieren ist nur bei spürbarer Verdichtung nötig. Beide Geräte führen wir in Elektro- und Benzin-Ausführung am Standort Krefeld.",
+        },
+        {
+          question: "Welche Lärmregelung gilt für Gartengeräte in Krefelder Wohngebieten?",
+          answer:
+            "Die 32. BImSchV erlaubt den Einsatz lärmintensiver Geräte (Rasenmäher, Vertikutierer, Häcksler, Motorsensen) in reinen und allgemeinen Wohngebieten werktags 07:00–20:00. Für besonders laute Geräte (z. B. Laubbläser, Freischneider) gilt zusätzlich ein Verbot zwischen 13:00–15:00 in Wohngebieten. Sonntags und an gesetzlichen Feiertagen ist der Betrieb ganztägig untersagt. Elektrische Geräte und Akku-Geräte (mit EU-Lärm-Zeichen unter dem Grenzwert) sind von einigen Einschränkungen ausgenommen.",
+        },
+        {
+          question: "Brauche ich einen Motorsägenschein, um eine Kettensäge bei euch zu mieten?",
+          answer:
+            "Privat im eigenen Garten ist kein Schein gesetzlich vorgeschrieben; wir empfehlen aber dringend, ohne Erfahrung keine Kettensäge zu führen – die Verletzungsschwere ist hoch. Im gewerblichen Einsatz oder im Wald gilt DGUV Information 214-059 plus DGUV Grundsatz 308-009: dort ist ein Motorsägenkurs (z. B. AS Baum I/II) Pflicht. Wir vermieten gewerblich nur an Kunden mit entsprechendem Nachweis. PSA – Schnittschutzhose Klasse 1, Schnittschutzschuhe, Helm mit Visier und Gehörschutz, Schnittschutzhandschuhe – muss der Mieter bzw. Arbeitgeber selbst stellen.",
+        },
+        {
+          question: "Holzspalter: liegend oder stehend, Spaltdruck wie viel?",
+          answer:
+            "Liegende Spalter (5–8 t) sind für Holz bis ca. 1 m Länge und 30 cm Durchmesser ausgelegt – die Standardlösung für Kaminholz aus dem Hausgarten. Stehende Spalter (10–25 t) brauchst du für Meterholz, harte Hölzer (Eiche, Buche, knorriges Obst-Stammholz) und Stammdurchmesser über 30 cm. Der angegebene Spaltdruck (t) ist die maximale Kraft – als Faustregel reicht 1 t Spaltdruck je 10 cm Stammdurchmesser bei weichen Hölzern, das Doppelte bei Hartholz mit Astansätzen. Wir führen am Standort Krefeld liegende und stehende Spalter.",
+        },
+        {
+          question: "Wurzelfräse mieten – wie tief und wie breit komme ich?",
+          answer:
+            "Klassische handgeführte Wurzelfräsen erreichen 25–30 cm Frästiefe bei einer Breite von 25–30 cm. Sie verarbeiten den Wurzelstock in Späne; der Stock muss vor dem Fräsen ebenerdig abgesägt werden. Für sehr große Stöcke (Stammdurchmesser über 60 cm) lohnt sich eher der Bagger mit Wurzelreißer aus der Erdbewegungs-Kategorie. Achtung: Vor jedem Fräseinsatz Lage von Strom-, Gas-, Wasser- und Telekomleitungen über die Sparten-Auskunft prüfen – Wurzeln verlaufen oft entlang von Versorgungstrassen.",
+        },
+        {
+          question: "Was muss ich vor dem Fällen eines Baumes in Krefeld beachten?",
+          answer:
+            "Die Stadt Krefeld hat eine Baumschutzsatzung: Bäume ab 80 cm Stammumfang (gemessen in 1 m Höhe) sind grundsätzlich geschützt – Fällung oder starker Rückschnitt brauchen eine Genehmigung des Fachbereichs Grünflächen. Während der Vegetationsperiode (1. März bis 30. September) untersagt § 39 BNatSchG bundesweit Fällarbeiten und starken Rückschnitt von Hecken und Gehölzen. Form- und Pflegeschnitt bleibt zulässig. Wir vermieten die Geräte – die Genehmigungsfrage musst du als Auftraggeber mit der Stadt klären.",
+        },
+        {
+          question: "Aufsitzmäher oder selbstfahrender Mäher für große Flächen?",
+          answer:
+            "Bis ca. 1.500 m² reicht ein selbstfahrender Hand-Mäher mit 50 cm Schnittbreite. Ab 2.000 m² lohnt sich ein Aufsitzmäher mit 80–110 cm Schnittbreite (Mähleistung 2.500–4.500 m²/h). Bei Steigungen über 15° sind nur hangtaugliche Spezialmäher oder Balkenmäher zugelassen. Wir bevorraten am Standort Krefeld Hand- und Aufsitzmäher; für Sondereinsätze (Hangmahd, Wildwiese) bieten wir Balkenmäher und Schlegelmäher als Anbaugerät.",
+        },
+        {
+          question: "Was kostet die Gartenpflege-Miete in Krefeld?",
+          answer:
+            "Tagessätze sind je Modell tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht typischerweise rund 5 Tagessätzen, ideal für Frühjahrs- oder Herbstpflege übers Wochenende plus Folgetag. Kraftstoff wird nach gefülltem Tank abgerechnet; Akku-Geräte werden geladen zurückgegeben. Für Vereine und Hausverwaltungen kalkulieren wir auf Anfrage Saison- und Rahmenmieten am Hauptsitz Krefeld.",
+        },
+        {
+          question: "Welche PSA brauche ich bei Häcksler, Freischneider, Heckenschere?",
+          answer:
+            "Häcksler: Schutzbrille, Gehörschutz, eng anliegende Kleidung (keine losen Ärmel – Einzugsgefahr), feste Handschuhe. Freischneider bzw. Motorsense: zusätzlich Beinschutz/Schnittschutzhose, Visier, S3-Schuhe. Heckenschere (motorisiert): Schnittfeste Handschuhe, Schutzbrille, Gehörschutz; bei Höhenarbeit zusätzlich Sturzschutz. Kettensäge: vollständige PSA-Kombi (Schnittschutzhose Klasse 1, Helm mit Visier, Schnittschutzschuhe). PSA stellt der Bediener bzw. Arbeitgeber – wir vermieten ausschließlich die Maschine.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Schnittgut, Verdichtung, Vegetationsperiode: Pflege im Jahreszyklus",
+          paragraphs: [
+            "Gartenpflege ist saisonal getaktet. Frühjahr (März/April): Vertikutieren, Aerifizieren bei verdichteten Flächen, Nachsaat, erster Rückschnitt von Sommerblühern. Sommer: regelmäßige Mahd, Heckenformschnitt nur als Form- und Pflegeschnitt (§ 39 BNatSchG). Herbst (September/Oktober): zweiter Vertikutiergang, Laub aufnehmen, Häckseln von Strauchrückschnitt. Winter (1. Oktober – 28. Februar) ist die einzige Phase, in der Bäume und Hecken radikal zurückgeschnitten oder gefällt werden dürfen – Fällgenehmigungen der Stadt Krefeld vorausgesetzt.",
+            "Diese Taktung bestimmt auch die Mietnachfrage: Vertikutierer und Häcksler sind im April und September stark gebucht, Holzspalter und Wurzelfräsen vor allem im Spätherbst und Winter. Eine frühzeitige Reservierung lohnt sich – wir geben am Standort Krefeld telefonisch verbindliche Verfügbarkeits-Auskunft.",
+          ],
+        },
+        {
+          h3: "Lärmschutz und gute Nachbarschaft im Krefelder Wohngebiet",
+          paragraphs: [
+            "Die 32. BImSchV unterscheidet zwei Gerätekategorien. Erste Gruppe (Häcksler, Rasenmäher, Vertikutierer, Heckenscheren) darf in reinen und allgemeinen Wohngebieten werktags 07:00–20:00 betrieben werden. Zweite Gruppe – besonders laute Geräte wie Freischneider, Laubbläser, Laubsammler mit Verbrennungsmotor – unterliegt in Wohngebieten zusätzlich einer Mittagsruhe-Regel und darf werktags von 13:00 bis 15:00 nicht laufen. Sonntags und an gesetzlichen Feiertagen sind beide Gruppen ganztägig untersagt.",
+            "Akku- und Elektrogeräte sind von einem Teil dieser Einschränkungen ausgenommen, sofern sie die EU-Geräuschgrenzwerte unterschreiten und mit dem entsprechenden EU-Umwelt-Symbol gekennzeichnet sind. Wer in dicht bebauten Krefelder Quartieren (Bockum, Cracau, Hülser Berg) arbeitet, fährt mit Akku-Häckslern und elektrischen Rasenmähern deutlich konfliktärmer.",
+          ],
+        },
+        {
+          h3: "Baumschutz: was die Krefelder Baumschutzsatzung wirklich verlangt",
+          paragraphs: [
+            "Die Stadt Krefeld schützt über ihre Baumschutzsatzung Bäume mit einem Stammumfang ab 80 cm in 1 m Höhe (Ausnahme: Obstbäume und einige Nadelgehölze). Fällung, Wurzelschäden ab bestimmter Größe oder ein Rückschnitt, der mehr als 30 % der Krone abnimmt, brauchen eine Ausnahmegenehmigung des Fachbereichs Grünflächen. Bei genehmigter Fällung wird in der Regel eine Ersatzpflanzung verlangt.",
+            "Bundesweit gilt zusätzlich § 39 BNatSchG: vom 1. März bis 30. September ist das Fällen von Bäumen außerhalb des Waldes sowie das radikale Zurückschneiden von Hecken und Gehölzen untersagt – zum Schutz brütender Vögel. Form- und Pflegeschnitt bleibt zulässig. Bei Verstößen drohen Bußgelder bis 50.000 Euro. Wir empfehlen, vor jeder größeren Fäll- oder Rückschnitt-Aktion in Krefeld kurz beim Fachbereich Grünflächen nachzufragen.",
+          ],
+        },
+        {
+          h3: "Häcksler im Detail: Walze, Turbine, Hammerwerk – und warum es leise geht",
+          paragraphs: [
+            "Walzenhäcksler ziehen das Schnittgut langsam zwischen eine konische Walze und eine Druckplatte – leise und ohne Vorschnitt durch Klingen. Vorteil: Sehr leise (typisch 90–95 dB(A) LWA), wenig Schnittgut-Auswurf, Astdurchmesser bis 35–45 mm. Nachteil: langsamer Durchsatz, kein Häckselbild für Mulch.",
+            "Turbinen- und Schneidwalzen-Häcksler arbeiten mit rotierenden Klingen plus Einzugswalze – schneller Durchsatz, feineres Schnittgut, dafür lauter (98–105 dB(A) LWA) und höherer Stromverbrauch. Hammerwerk-Häcksler (typisch Benzin, 100–108 dB(A) LWA) zerschlagen das Holz – maximaler Durchsatz und größte Astdurchmesser, aber definitiv kein Wohngebiet-Gerät. Für die Krefelder Innenstadt-Pflege ist der Walzenhäcksler die einzig nachbarschaftsverträgliche Lösung.",
+          ],
+        },
+        {
+          h3: "Kettensägen-Arbeit: warum Privat-Einsatz die meisten Unfälle erzeugt",
+          paragraphs: [
+            "Statistisch tritt der überwiegende Anteil schwerer Kettensägen-Unfälle nicht beim Forst-Profi auf, sondern bei privaten Brennholz-Aktionen. Ursachen: fehlende PSA, Schnitt auf Hüfthöhe statt Knie, kein Fluchtweg geplant, Schnitt in Spannungsholz ohne Kenntnis der Spannungsverhältnisse. Die DGUV Information 214-059 dokumentiert konkrete Arbeitstechniken (Fällrichtung, Fallkerb, Bruchleiste, Splintschnitt), die im Privatumfeld oft ignoriert werden.",
+            "Unsere Empfehlung für Krefelder Mietkunden: Vor dem ersten Einsatz einen Tageskurs Motorsäge für Brennholz absolvieren – verschiedene Anbieter in NRW. Mindestens aber: nie alleine sägen, immer mit Schnittschutzhose Klasse 1, nie über Schulterhöhe sägen, bei Spannungsholz die Schnittrichtung umkehren (Druckseite anschneiden, Zugseite trennen). Wir liefern die Säge geprüft und scharf – das Sicherheitswissen liegt beim Bediener.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // LEITERN & GERÜSTE
+    // Quellen: DGUV Information 201-011 (Leitern/Tritte),
+    //   DGUV 201-029 (Gerüste), TRBS 2121 Teile 1+2,
+    //   DIN EN 131 (Leitern, Pflicht-Stabilisator ab 3 m
+    //   Anlegeleiterlänge), DIN EN 1004 (fahrbare
+    //   Arbeitsgerüste, max. 8 m Plattformhöhe außen /
+    //   12 m innen), BetrSichV § 14 (Prüfung).
+    // -------------------------------------------------------------
+    "leitern-gerueste": {
+      faqs: [
+        {
+          question: "Leiter oder Fahrgerüst – wo liegt die rechtliche Grenze?",
+          answer:
+            "TRBS 2121 Teil 1 schreibt vor: Anlegeleitern dürfen als Arbeitsplatz nur bis 5 m Standhöhe und nur für kurze Arbeiten (Faustregel: bis 2 Stunden, geringer Kraftaufwand) verwendet werden. Über 5 m oder bei längeren Arbeiten ist ein Gerüst zwingend. Fahrgerüste nach EN 1004 sind in mehreren Höhenklassen verfügbar; sie bieten eine sichere Arbeitsplattform mit Geländer und sind die richtige Wahl für Anstrich, Putz, Trockenbau und Wartung. Wir führen am Standort Krefeld Anlegeleitern bis 7 m und Fahrgerüste bis 12 m Arbeitshöhe.",
+        },
+        {
+          question: "Wie hoch darf ich mit einem Fahrgerüst arbeiten?",
+          answer:
+            "DIN EN 1004 begrenzt fahrbare Arbeitsgerüste auf 8 m Plattformhöhe im Freien und 12 m Plattformhöhe in Innenräumen (Standard-Lastklasse). Höhere Gerüste sind Standgerüste oder erfordern spezielle Statik-Nachweise. Bei Aufbau im Freien sind Verbreiterungen oder Ausleger bei höheren Aufbauten Pflicht, um die Standsicherheit gegen Windlasten zu gewährleisten. Die zulässige Aufbauhöhe inkl. Verbreiterungs-Vorgaben ist in der Aufbauanleitung jedes Gerüsts dokumentiert – wir übergeben sie mit dem Gerüst.",
+        },
+        {
+          question: "Brauche ich für den Gerüstaufbau eine Qualifikation?",
+          answer:
+            "Für fahrbare Arbeitsgerüste nach EN 1004 verlangt TRBS 2121 Teil 2 keinen formalen Gerüstbau-Befähigungsschein, aber eine fachliche Eignung und Unterweisung – der Aufbau muss nach der Aufbau- und Verwendungsanleitung (AuV) erfolgen und kontrolliert werden. Für Standgerüste (System- und Stangengerüste) ist die Befähigung zum Gerüstbauer (Helfer plus Anleitung durch eine geeignete Person) Voraussetzung. Wir vermieten ausschließlich fahrbare Arbeitsgerüste mit klarer AuV; der Aufbau bleibt Sache des Mieters bzw. Arbeitgebers.",
+        },
+        {
+          question: "Was hat sich mit der EN 131 (2018) bei Anlegeleitern geändert?",
+          answer:
+            "Seit der Überarbeitung der EN 131 sind Anlegeleitern ab 3 m Leiterlänge nur noch mit einer fußseitigen Verbreiterung (sogenannter Stabilisator) zulässig. Außerdem wird unterschieden zwischen Leitern für gewerbliche Nutzung (Kennzeichnung Professional) und für Heimwerker (Non-Professional) – im gewerblichen Einsatz ist die Verwendung von Heimwerker-Leitern nicht zulässig. Wir bevorraten am Standort Krefeld ausschließlich EN-131-konforme Profi-Leitern; die Konformitäts-Plakette ist sichtbar angebracht.",
+        },
+        {
+          question: "Welche PSA gegen Absturz ist auf Gerüst oder Leiter Pflicht?",
+          answer:
+            "Auf Fahrgerüsten mit dreiteiligem Seitenschutz (Geländerholm, Zwischenholm, Bordbrett) ist eine PSAgA grundsätzlich nicht zwingend – die Plattform gilt als kollektiv gesicherter Arbeitsplatz. PSAgA wird Pflicht beim Auf- und Umbau oberhalb 3 m, wenn der Seitenschutz noch nicht montiert ist. Auf Leitern ist die Verwendung von PSAgA praktisch nicht möglich (kein geeigneter Anschlagpunkt). Konsequenz: Wenn auf der Leiter gearbeitet wird, muss die Standhöhe und Arbeitsdauer streng nach TRBS 2121 begrenzt werden – oder ein Gerüst eingesetzt werden.",
+        },
+        {
+          question: "Wie weit muss eine Anlegeleiter angestellt werden?",
+          answer:
+            "DGUV Information 201-011 nennt als Faustregel: 1 : 4 (Anstellwinkel ca. 65–75°). Praktische Probe: Bediener stellt sich aufrecht mit den Füßen an die Leitersohle, streckt die Arme waagerecht aus – die Handflächen sollten gerade die Sprossen erreichen. Außerdem muss die Leiter mindestens 1 m über die Austrittsstelle (z. B. Dachrand) hinausragen, der Untergrund muss tragfähig und rutschsicher sein, und die Sprossen müssen waagerecht stehen. Bei nassem oder vereistem Boden ist Rutschsicherung Pflicht.",
+        },
+        {
+          question: "Wer prüft Leitern und Gerüste – und wie oft?",
+          answer:
+            "Nach BetrSichV § 14 und DGUV Information 201-011/201-029 sind Leitern und Gerüste mindestens jährlich von einer befähigten Person zu prüfen (sichtbare Prüfplakette). Wir dokumentieren das für unseren Mietpark in Krefeld; das aktuelle Prüfprotokoll liegt der Maschine bei bzw. ist auf Anforderung verfügbar. Zusätzlich muss der Nutzer vor jeder Schicht eine Sicht- und Funktionsprüfung durchführen (Sprossen, Holme, Beschläge, Rollen, Seitenschutz). Mängel sofort melden – wir tauschen das Gerät kostenfrei.",
+        },
+        {
+          question: "Treppengerüst, wenn die Aufstellfläche schräg ist?",
+          answer:
+            "Bei Aufstellung in Treppenhäusern oder auf abschüssigem Gelände gleicht ein Treppengerüst die Höhenunterschiede über höhenverstellbare Füße einer Seite aus. Standard-Fahrgerüste sind dafür nicht zugelassen, da die maximale Höhendifferenz der Spindelfüße schnell überschritten wird und die Standsicherheit kippt. Wir führen am Standort Krefeld Treppengerüste und beraten zur passenden Bauform – wichtig ist eine kurze Beschreibung der Treppe (Stufenhöhe, Stufentiefe, Breite).",
+        },
+        {
+          question: "Was kostet eine Gerüst- oder Leiter-Miete in Krefeld?",
+          answer:
+            "Tagespreise sind je Modell hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15. Fahrgerüste werden in der Praxis meist wochenweise gemietet – die Auf- und Abbauzeit lohnt sich erst ab mehreren Tagen Einsatz. Für lange Sanierungsprojekte kalkulieren wir auf Anfrage Sondertarife. Lieferung im Niederrhein-Liefergebiet ist optional buchbar.",
+        },
+        {
+          question: "Darf ich ein Fahrgerüst mit Material auf der Plattform verfahren?",
+          answer:
+            "Nein. EN 1004 und TRBS 2121 Teil 2 untersagen das Verfahren des Gerüsts, wenn sich Personen oder loses Material auf der Plattform befinden. Vor jedem Umsetzen müssen Personen absteigen, lose Werkzeuge gesichert oder abgenommen werden, und der Fahrweg muss eben, tragfähig und hindernisfrei sein. Nach dem Umsetzen müssen die Rollen wieder festgestellt und ggf. die Spindelfüße neu nivelliert werden, bevor die Plattform betreten wird.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "TRBS 2121: warum die Leiter heute strenger reguliert ist als das Gerüst",
+          paragraphs: [
+            "Die Technische Regel für Betriebssicherheit 2121 hat in ihrer aktuellen Fassung die Verwendung von Leitern als Arbeitsplatz deutlich eingeschränkt. Anlegeleitern und Stehleitern dürfen nur noch dann als Arbeitsplatz genutzt werden, wenn die Gefährdungsbeurteilung ergibt, dass andere Arbeitsmittel (Gerüst, Hubarbeitsbühne) wegen geringer Standhöhe (< 2 m) oder sehr kurzer Arbeitsdauer (< 2 Stunden) nicht verhältnismäßig sind. Über 5 m Standhöhe sind Leitern als Arbeitsplatz grundsätzlich nicht mehr zugelassen.",
+            "Konsequenz für die Baustellen­praxis in Krefeld: Wer eine Fassade streicht, eine Dachrinne reinigt oder eine Klimaanlage in 4 m Höhe wartet, sollte sich gegen die Leiter und für ein Fahrgerüst entscheiden – nicht nur wegen der Sicherheit, sondern weil ein Unfallereignis bei Leitern-Nutzung über 3 m oder bei Arbeiten über 2 Stunden im gewerblichen Kontext fast immer als Verstoß gegen TRBS 2121 gewertet wird. Das Fahrgerüst kostet in der Miete unwesentlich mehr und löst diese rechtliche Frage komplett.",
+          ],
+        },
+        {
+          h3: "Fahrgerüste aufbauen: Auf- und Verwendungsanleitung sauber lesen",
+          paragraphs: [
+            "Jedes nach EN 1004 zertifizierte Fahrgerüst hat eine projektspezifische Auf- und Verwendungsanleitung (AuV). Sie regelt: maximale Aufbauhöhe je nach Aufstellort (Innen/Außen), Notwendigkeit von Verbreiterungen ab bestimmter Höhe, Position der Ballastgewichte, Vorgehen bei Wind > 6 Bft (Abbau-Pflicht), Lastklasse der Plattform (typisch Klasse 3 = 200 kg/m²).",
+            "Der häufigste Aufbau-Fehler ist das Weglassen der Diagonalstreben oder der Verbreiterungen, weil die Plattform nur kurz gebraucht wird. Beides ist konstruktiv vorgesehen und nicht optional – ohne Diagonale verliert das Gerüst sofort die Längs-Steifigkeit, ohne Verbreiterung bei Aufbau ab ca. 6 m im Freien die Kippsicherheit. Wir geben jedem Mietgerüst die AuV mit; bei Erstmietern erklären wir den Aufbau am Standort Krefeld vor Abholung Schritt für Schritt.",
+          ],
+        },
+        {
+          h3: "Anlegeleiter richtig stellen: 1 : 4, Sicht, Überstand, Rutschsicherung",
+          paragraphs: [
+            "Vier Fehler dominieren bei Anlegeleiter-Unfällen: falscher Anstellwinkel (zu steil rutscht der Fuß weg, zu flach kippt die Leiter), fehlender Überstand über die Austrittsstelle (kein sicheres Übersteigen), nasser/glatter Untergrund ohne Sicherung, sowie Stellung vor Türen, die jederzeit aufschlagen können.",
+            "Korrekt: Anstellwinkel 65–75° (1 : 4, also bei 4 m Leiterhöhe steht der Fuß 1 m von der Wand weg), Überstand am Dach- oder Geländeraustritt mindestens 1 m, Untergrund tragfähig und sauber, bei Glätte mit Bohlen oder Anti-Rutsch-Matten gesichert, bei Türen mit Warnposten oder verschlossen. EN 131-Profi-Leitern haben heute serienmäßig einen fußseitigen Stabilisator ab 3 m Länge – er ist Pflicht und darf nicht entfernt werden.",
+          ],
+        },
+        {
+          h3: "Höhenrettung: warum schon ab 3 m ein Notfall-Konzept gebraucht wird",
+          paragraphs: [
+            "Die BetrSichV verlangt für Arbeitsplätze mit Absturzgefahr ab 3 m Höhe eine Höhenrettungs-Vorhaltung. Das ist nicht zwingend ein Rettungs-Geschirr im Sinne der Feuerwehr – ausreichend ist meist die Verfügbarkeit einer geeigneten Rettungsmaßnahme (PSAgA-System mit Rettungsabseilen, Hubarbeitsbühne im Standby, sofort erreichbare Feuerwehr im urbanen Krefelder Umfeld).",
+            "Für die Praxis im Mietkontext bedeutet das: Wer auf einem Fahrgerüst arbeitet, hat über den dreiteiligen Seitenschutz einen kollektiven Schutz – das Höhenrettungs-Konzept reduziert sich auf den Verfahrweg und den Auf- und Abbau. Wer hingegen mit PSAgA arbeitet (Dacharbeit, Industrie), braucht zwingend ein Rettungskonzept inkl. eingewiesener Helfer – sonst verstößt der Arbeitgeber gegen § 6 ArbSchG. Wir liefern die Geräte; das Rettungskonzept liegt beim Arbeitgeber.",
+          ],
+        },
+        {
+          h3: "Material, Korrosion, Holz vs. Aluminium: was hält wirklich",
+          paragraphs: [
+            "Aluminium-Leitern und -Gerüste sind heute Standard – leicht, korrosionsbeständig, lange Lebensdauer. Holz-Leitern (Sprossenleiter aus Esche oder Akazie) kommen noch in der Elektrotechnik vor, weil Holz nicht leitet – wir halten am Standort Krefeld auf Anfrage Holzleitern für Arbeiten in der Nähe spannungsführender Anlagen vor.",
+            "Aluminium ist nicht spannungsfrei – jede Leiter, jedes Gerüst aus Alu muss bei Arbeiten im Bereich freier Leiter oder Oberleitung mit Schutzabstand zur Spannung verwendet werden (DGUV Vorschrift 3, Tabelle 1: 1 m bei Niederspannung, 3 m bei Mittelspannung, 4 m bei Hochspannung bis 110 kV). Im Niederrhein-Umfeld betrifft das vor allem Bahn-Oberleitungen (Westbahnstrecke, Krefelder Hauptbahnhof) und Hochspannungs-Freileitungen – hier ist vorab die Spannungsfreiheit beim Netzbetreiber zu erfragen.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // HEIZUNG & TROCKNUNG
+    // Quellen: WTA-Merkblatt 6-2 (Bauteiltrocknung),
+    //   DGUV Information 213-056 (CO-Gefahren mobiler
+    //   Gas-/Verbrennungs-Heizungen), TRGI 2018 (mobile
+    //   Gasheizgeräte), DIN VDE 0100-704 (Baustellen-
+    //   Stromversorgung mit RCD), DIN EN 16798-1 (Innen-
+    //   raumluftqualität, rel. Feuchte), CM-Methode (Estrich-
+    //   Belegreife: Zement-Estrich ≤ 2,0 CM-% unbeheizt /
+    //   ≤ 1,8 CM-% beheizt; Anhydrit-Estrich ≤ 0,5 / 0,3 CM-%).
+    // -------------------------------------------------------------
+    "heizung-trocknung": {
+      faqs: [
+        {
+          question: "Wasserschaden – wie viele Bautrockner brauche ich für welchen Raum?",
+          answer:
+            "Faustregel nach WTA: Pro 30–50 m³ Raumvolumen ein Kondenstrockner mittlerer Leistung (ca. 30–50 l/24h Entzugsleistung). Bei stark durchfeuchtetem Estrich und Wänden lohnt der Einsatz eines Adsorptionstrockners, der auch unter 5 °C arbeitet. Trocknungsdauer: rohe Wandtrocknung 2–4 Wochen, Estrichtrocknung über Dämmschicht 4–8 Wochen. Den Trocknungsfortschritt kontrolliert man mit einem CM-Feuchtemessgerät – wir vermieten am Standort Krefeld Trockner-Sets samt Hygrometer.",
+        },
+        {
+          question: "Kondenstrockner oder Adsorptionstrockner – wann was?",
+          answer:
+            "Kondenstrockner arbeiten am wirtschaftlichsten zwischen 15 und 30 °C bei relativer Feuchte > 40 % – die Standardlösung nach Wasserschäden in geheizten Räumen. Adsorptionstrockner (Silikagel- oder Zeolith-Trockner) arbeiten auch bei 5 °C oder darunter und bei niedriger Feuchte; sie sind die richtige Wahl in unbeheizten Rohbauten, Kellern und in der Schlussphase einer Trocknung. Wir bevorraten beide Bauformen am Hauptsitz Krefeld.",
+        },
+        {
+          question: "Wann brauche ich Estrich-Dämmschicht-Trocknung mit Druck oder Vakuum?",
+          answer:
+            "Wenn Wasser unter den Estrich (in die Dämmschicht) eingedrungen ist, reicht reine Raumluft-Trocknung nicht – die Dämmung trocknet nur extrem langsam ab. Standard ist dann das Druck- oder Vakuum-Verfahren: Über Kernbohrungen wird Trocknungs-Luft in die Dämmschicht gepresst oder feuchte Luft abgesaugt. Wir vermieten passende Seitenkanalverdichter, Vakuumpumpen, HEPA-Filter und Schläuche; die Kernbohrungen werden vom Sanierer oder per Mietkernbohrer aus unserer Werkzeug-Kategorie erstellt.",
+        },
+        {
+          question: "Welche Stromversorgung braucht ein Heizgebläse oder Bautrockner?",
+          answer:
+            "Kondenstrockner (typ. 800–1.500 W) laufen an einer regulären Schuko-Steckdose. Adsorptionstrockner (1,5–4 kW) brauchen je nach Leistung 230 V/16 A oder bereits eine CEE-16-A-Versorgung. Elektro-Heizlüfter ab 5 kW und Wärmepumpen-Trockner laufen über CEE 16 A oder CEE 32 A (400 V). Diesel-Heizgebläse brauchen nur eine 230-V-Speisung für Brenner und Gebläse (geringer Verbrauch). Auf Baustellen ist die Einspeisung über einen Baustromverteiler mit 30-mA-RCD nach DIN VDE 0100-704 Pflicht.",
+        },
+        {
+          question: "Gasheizer in Innenräumen – was ist erlaubt?",
+          answer:
+            "Direktbefeuerte Gasheizer (Propan) sind in geschlossenen Räumen nur erlaubt, wenn ausreichende Verbrennungsluft-Zufuhr und Abluft sichergestellt sind (TRGI 2018, DGUV Information 213-056). Die Abgase enthalten CO, CO₂ und Wasserdampf – ohne Frischluftzufuhr besteht akute Lebensgefahr durch CO-Vergiftung. Sicherer ist die Aufstellung der Gasheizung außerhalb mit Warmluft-Schlauch nach innen (indirekt befeuert) oder der Einsatz von Diesel-Indirektheizern mit Abgasführung ins Freie. Wir empfehlen bei jedem Innenraum-Einsatz CO-Warner mit – Standard bei jeder gewerblichen Bautrocknung.",
+        },
+        {
+          question: "Wieviel Diesel, Strom oder Gas verbraucht ein Heizgebläse?",
+          answer:
+            "Faustwerte je 10 kW Heizleistung: Diesel ca. 1 l/h; Strom 10 kWh/h; Propan ca. 0,8 kg/h. Für eine 100-kW-Halle bedeutet das: 10 l Diesel pro Stunde – ein 200-l-Tank reicht knapp einen Tag. Eine elektrische Lösung in der gleichen Größenklasse braucht 100 kWh/h, was eine entsprechende Netz-Anschlussleistung voraussetzt. Im Wintereinsatz auf Rohbau-Baustellen am Niederrhein ist Diesel-Indirekt-Heizung deshalb fast immer wirtschaftlicher als Elektro.",
+        },
+        {
+          question: "Wie warm darf bzw. soll ich beim Trocknen heizen?",
+          answer:
+            "Die Trocknungsgeschwindigkeit steigt mit der Temperatur, da warme Luft mehr Feuchte aufnimmt. WTA empfiehlt 18–25 °C bei Kondens-Trocknern (höhere Temperatur überfordert das Gerät – Vereisung bzw. Abschaltung). Adsorptionstrockner arbeiten auch unter 10 °C. Bei beheizten Räumen mit Wandfliesen, Tapeten oder empfindlichen Bauteilen sollte die Temperatur nicht über 30 °C steigen, sonst entstehen Spannungsrisse. Wir geben mit jedem Trockner eine Bedienungsanleitung mit konkreter Empfehlung pro Gerät.",
+        },
+        {
+          question: "Was kostet eine Trocknungs-Aktion in Krefeld – und übernimmt die Versicherung das?",
+          answer:
+            "Tagespreise je Gerät tagesaktuell im Buchungsprozess; bei längeren Trocknungen (typisch 14–28 Tage) sind Wochen- und Monatsmieten deutlich günstiger. Wasserschäden werden in der Regel von der Wohngebäude- bzw. Hausratversicherung übernommen – die Versicherer haben mit den meisten Sanierungsfirmen Direktabrechnung. Wenn du selbst sanierst, lass den Mietvertrag und die Strom-Messprotokolle aufheben; viele Versicherer erstatten die Mietkosten direkt auf Vorlage des Vertrags.",
+        },
+        {
+          question: "Wie sicher ist der Stromverbrauch eines Trockners im Wohnhaus?",
+          answer:
+            "Wir bauen in jeden Mietvorgang einen kalibrierten Stromzähler ein (Hutschienen- oder Steckdosen-Zähler). So lässt sich der Stromverbrauch sauber dokumentieren und der Versicherung in Rechnung stellen. Faustwert: Ein Kondenstrockner mit 1 kW läuft 14 Tage = 336 Stunden = ca. 250 kWh (Trockner laufen nicht durchgehend, weil sie über Hygrostat geregelt sind). Bei 0,35 €/kWh Hausstrompreis entspricht das ca. 90 € – fast immer ein erstattungsfähiger Posten.",
+        },
+        {
+          question: "Wie laut sind Bautrockner – kann ich nachts schlafen?",
+          answer:
+            "Kondenstrockner liegen typisch bei 50–60 dB(A) in 1 m Abstand – vergleichbar mit einer Spülmaschine. In Schlafräumen empfehlen wir, das Gerät in einen Nebenraum zu stellen (offene Tür; den Türritz mit Handtuch verschließen verbietet sich – die Luft muss zirkulieren). Adsorptionstrockner sind ähnlich laut, Heizgebläse deutlich lauter (70–85 dB(A)). Im Wohngebiet gilt nachts der TA-Lärm-Richtwert 40 dB(A) am offenen Fenster der Nachbarn – Heizgebläse im Außenbereich nachts in Wohngebieten sind faktisch nicht zulässig.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Bauteilfeuchte verstehen: wann ist trocken wirklich trocken?",
+          paragraphs: [
+            "Bauteile haben eine charakteristische Ausgleichsfeuchte, die zur Raumluft passt. Zement-Estrich gilt nach Calciumcarbid-Methode (CM) als belegreif bei ≤ 2,0 CM-% (unbeheizt) bzw. ≤ 1,8 CM-% (beheizt) – das entspricht ca. 4,5–5 Gew.-% Wassergehalt. Anhydrit-Estrich darf maximal 0,5 CM-% (unbeheizt) bzw. 0,3 CM-% (beheizt) haben. Holz: Möbel-Trockenholz 9–12 Gew.-%, frisches Schnittholz bis 80 %. Mauerwerk: Faustregel 5 Vol.-% rel. Feuchte (Darrgewicht-Methode).",
+            "Diese Messwerte sind die einzige verlässliche Belegreife-Aussage – die rein subjektive Einschätzung täuscht regelmäßig, weil die Oberfläche zuerst abtrocknet, das Bauteil aber innen noch Wasser führt. Wir vermieten in Krefeld neben Trocknern auch CM-Messgeräte und Holzfeuchte-Messer; ohne Messung keine Belegreife.",
+          ],
+        },
+        {
+          h3: "Strom, Diesel, Gas: die Heizart entscheidet die Kosten",
+          paragraphs: [
+            "Im Rohbau-Wintereinsatz auf der Krefelder Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh netto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan-Gas bei 0,12 €/kWh – beide brauchen aber Abgasführung bzw. Aufstellung außerhalb des Trocknungs-Raums.",
+            "Praxis-Faustregel: Räume bis 30 m³ und kurze Einsätze (Tage) ⇒ Elektro-Heizgebläse oder Kondenstrockner; Hallen, Rohbauten und mehrwöchige Trocknung ⇒ Diesel-Indirektheizung. Für Innenausbau-Baustellen mit empfindlichen Materialien und hohen Anforderungen an saubere Luft empfehlen wir Wärmepumpentrockner – sie kombinieren Trocknung und milde Heizung in einem Gerät und sind elektrisch genügsam.",
+          ],
+        },
+        {
+          h3: "Estrich-Dämmschicht-Trocknung: warum Druck- oder Vakuum-Verfahren oft Pflicht ist",
+          paragraphs: [
+            "Bei eingedrungener Feuchte in die Estrich-Dämmschicht (Mineralwolle, PUR/PIR, EPS) reicht reine Raumlufttrocknung nicht – die Feuchte sitzt unter einer dampfsperrigen Schicht und kommt nur sehr langsam an die Oberfläche. Standardvorgehen: Über Kernbohrungen (typisch 30–50 mm, Abstände 1,5–2 m) wird mit Seitenkanalverdichtern getrocknete Luft in die Dämmschicht gepresst (Druck-Verfahren) oder feuchte Luft abgesaugt (Vakuum-Verfahren, sauberer im Wohnbau).",
+            "Beim Vakuum-Verfahren ist ein HEPA-Filter zwingend, weil ggf. Schimmelsporen und Mineralfaser-Stäube mit ausgetragen werden. Wir liefern in Krefeld komplette Sets aus Seitenkanalverdichter, HEPA-Filter, Schläuchen, Bohrlochrosetten und Kondensatabscheidern. Vor Beginn muss die Bohrlokation auf elektrische Heizleitungen geprüft werden – Wärmebildkamera oder Bestandsplan.",
+          ],
+        },
+        {
+          h3: "CO-Gefahr: warum Gasheizungen im Innenraum strikt zu sichern sind",
+          paragraphs: [
+            "Direktbefeuerte Gasheizer setzen pro kg verbranntem Propan ca. 1,6 kg Wasser, 3 kg CO₂ und – bei unvollständiger Verbrennung – signifikante Mengen CO frei. CO ist geruchlos, blockiert die Sauerstoffaufnahme im Blut und ist bei Konzentrationen ab ca. 400 ppm akut tödlich. DGUV Information 213-056 fordert deshalb beim Einsatz von Gas-, Diesel- und Holzkohle-Verbrennungs­geräten in geschlossenen Räumen zwingend CO-Warner und ausreichende Frischluftzufuhr.",
+            "Sicherer Standardweg: indirekt befeuerte Heizgebläse (Brennraum außerhalb des Aufenthaltsraums, Wärmetauscher, Abgas ins Freie) oder reine Elektro-Heizung. In Krefelder Wintereinsätzen empfehlen wir grundsätzlich indirekt befeuerte Diesel-Heizgebläse – sie sind wirtschaftlich, sicher und für Hallen, Rohbauten und Baustellen-Trocknung die erprobte Standardlösung.",
+          ],
+        },
+        {
+          h3: "Trocknung mit System: Messen, Heizen, Lüften, Dokumentieren",
+          paragraphs: [
+            "Wirksame Bauteiltrocknung folgt einem viertaktigen Ablauf: (1) Schadensbild aufnehmen – wo steht Wasser, welche Bauteile sind betroffen, wie weit hat es sich verteilt? (2) Trockner und Heizung dimensionieren – Raumvolumen, Schadensumfang, Außentemperatur. (3) Trocknung mit Hygrostat-Steuerung und regelmäßiger Kontrolle der CM-Werte (alle 7 Tage). (4) Dokumentation aller Mess- und Verbrauchswerte für die Versicherung.",
+            "Wir vermieten in Krefeld komplette Trocknungs-Pakete: Trockner, Heizgebläse, Hygro-Datenlogger, CM-Messgerät, Strom-Subzähler und Schläuche/Filter. Für gewerbliche Trocknungsbetriebe bieten wir auf Anfrage Rahmenmieten mit Bevorzugungsverfügbarkeit – das ist im Winter (Heizungsausfall-Saison Januar–März) regelmäßig der Engpass.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // ABSPERR- & VERKEHRSTECHNIK
+    // Quellen: StVO § 45 Abs. 6 (verkehrsrechtliche Anordnung),
+    //   RSA 21 (Richtlinien für die Sicherung von Arbeitsstellen
+    //   an Straßen, Regelpläne A–D), DIN EN 12352 (Warnleuchten
+    //   TL 1/2/7/8/9), DIN EN 13422 (mobile vertikale
+    //   Verkehrszeichen – Stand-/Windsicherheit), StVZO § 53.
+    //   Stadt Krefeld: Halteverbots-Aufstellung in der Regel
+    //   mind. 72 h vor Geltungsbeginn; verkehrsrechtliche
+    //   Anordnung beim Fachbereich Tiefbau/Verkehr.
+    // -------------------------------------------------------------
+    absperrtechnik: {
+      faqs: [
+        {
+          question: "Wie melde ich ein Halteverbot in Krefeld an?",
+          answer:
+            "Im öffentlichen Verkehrsraum (Straße, Bürgersteig, Parkstreifen) brauchst du eine verkehrsrechtliche Anordnung nach StVO § 45 Abs. 6, ausgestellt vom Fachbereich Tiefbau bzw. der Straßenverkehrsbehörde der Stadt Krefeld. Der Antrag erfolgt online oder schriftlich, typische Bearbeitungszeit 7–14 Tage. Die Schilder müssen mindestens 72 Stunden vor Geltungsbeginn aufgestellt werden (sonst ist das parkende Fahrzeug nicht abschleppbar). Wir vermieten Halteverbotsschilder als Set inkl. Fußplatte und übernehmen auf Wunsch Antrag, Aufstellung und Abbau als Komplettpaket nach Aufwand.",
+        },
+        {
+          question: "Reicht ein Halteverbot, oder brauche ich auch eine RSA-konforme Absicherung?",
+          answer:
+            "Sobald in den Verkehrsraum eingegriffen wird (Spurverengung, Bürgersteig­sperrung, Halbsperrung der Fahrbahn), reicht das Halteverbotsschild nicht – die RSA 21 verlangt einen geprüften Regelplan (A–D je nach Straßenklasse und Eingriff) mit konkreter Anordnung von Vorwarnung, Verengung, Leitbaken, Warnleuchten und Absperrung. Die Genehmigung erteilt die Straßenverkehrsbehörde, oft mit Auflage einer fachkundigen Aufsicht (AS-Kurs Arbeitsstellen an Straßen). Wir vermieten alle RSA-Komponenten und vermitteln auf Anfrage Aufstellbetriebe mit AS-Schein.",
+        },
+        {
+          question: "Welche Warnleuchten muss ich abends und nachts setzen?",
+          answer:
+            "DIN EN 12352 unterscheidet Warnleuchten nach Typ: TL 1 (Dauerlicht, geringe Intensität) als Markierungsleuchte, TL 2 (blinkend, mittlere Intensität) zur Hindernis-Warnung, TL 7/8 (hohe Intensität, gerichtet) zur Vorwarnung im Hauptverkehr. Auf innerörtlichen Baustellen mit geringer Geschwindigkeit reicht meist TL 2 gelb-blinkend; auf Hauptstraßen und Bundesstraßen sind höhere Klassen Pflicht. Die RSA gibt den Mindest-Typ je Regelplan vor. Wir bevorraten am Standort Krefeld TL-Warnleuchten als Akku-LED-Variante mit langer Laufzeit.",
+        },
+        {
+          question: "Brauche ich eine mobile Ampelanlage, oder reichen Baken?",
+          answer:
+            "Bei Halbsperrung einer Straße über mehr als 50 m Länge ist nach RSA in der Regel eine mobile Lichtsignalanlage (LSA) Pflicht – bei kurzer Strecke kann auch eine Posten-Regelung oder eine Vorrang-Beschilderung (Z. 308 „Vorrang vor Gegenverkehr“) genehmigt werden. Welche Lösung möglich ist, regelt die verkehrsrechtliche Anordnung. Wir vermieten mobile Ampelanlagen mit Akku- und Solar-Versorgung in Krefeld inkl. Auf- und Abbau auf Wunsch.",
+        },
+        {
+          question: "Wieviel Wind hält ein Verkehrsschild auf Fußplatte aus?",
+          answer:
+            "DIN EN 13422 fordert für mobile Verkehrszeichen eine Standsicherheit gegen Windlasten entsprechend der Windlastzone. Standard-Fußplatten 15 kg sichern Schilder bis ca. 100 km/h Wind in geschützter Lage; auf freier Strecke oder bei Schildgrößen über 600 mm sind 25 kg Fußplatten oder Doppel-Beschwerung Pflicht. Auf Brücken und exponierten Lagen können Ballast-Schwellen oder Verankerung nötig sein. Wir geben am Standort Krefeld zu jedem Schild die passende Beschwerung mit.",
+        },
+        {
+          question: "Wer haftet, wenn jemand über einen Leitkegel fährt oder gegen ein Absperrgitter läuft?",
+          answer:
+            "Grundsätzlich haftet der Verantwortliche der Verkehrssicherung – das ist die natürliche oder juristische Person, die in der verkehrsrechtlichen Anordnung als Verantwortlicher für die Arbeitsstelle benannt ist. Diese Person muss die RSA-Konformität sicherstellen und während der gesamten Geltungsdauer Sicht-/Funktionsprüfungen durchführen (Schilder umgefallen? Warnleuchten erloschen? Absperrgitter verschoben?). Wir vermieten Material; die Verantwortung trägt der Auftraggeber bzw. die ausführende Firma.",
+        },
+        {
+          question: "Veranstaltung in Krefeld absichern – was bietet ihr für Straßenfeste, Märkte, Marathons?",
+          answer:
+            "Für temporäre Veranstaltungs-Absperrungen bieten wir Mojo- und Crowd-Control-Gitter (typ. 2,5 m × 1,1 m, verzinkt), Fußplatten-Schilder, Leitbaken, mobile Ampelanlagen und TL-Warnleuchten. Größere Veranstaltungen (Marathon, Karnevalszug) brauchen zusätzlich Sperr-Pakete mit hunderten Gittern und Logistik vor Ort – das kalkulieren wir am Hauptsitz Krefeld nach Veranstaltungsplan und Strecke individuell.",
+        },
+        {
+          question: "Wie schnell kann ich Halteverbot, Baken und Leitkegel in Krefeld bekommen?",
+          answer:
+            "Bei verfügbarem Material und einfacher Selbstabholung sind Halteverbots-Sets und Standard-Absperr-Material am Standort Krefeld in der Regel taggleich verfügbar (Mo–Fr 08:00–18:00, Sa 10:00–14:30). Für die verkehrsrechtliche Anordnung der Stadt Krefeld musst du jedoch mit 7–14 Tagen Vorlauf rechnen. Bei Komplett-Auftrag (Antrag + Material + Aufstellung) ist die Genehmigung der Engpass; wir empfehlen 3 Wochen Vorlauf.",
+        },
+        {
+          question: "Was kostet ein Halteverbotsschild-Set in Krefeld?",
+          answer:
+            "Das Halteverbotsschild-Set (2 Schilder Z. 283 + Zusatzschilder + Fußplatten) ist im Buchungsprozess mit tagesaktuellem Preis hinterlegt. Komplettpakete inkl. verkehrsrechtlicher Anordnung, Aufstellung 72 h vorab und Abbau kalkulieren wir nach Aufwand – telefonische Anfrage am Standort Krefeld. Faustregel: Eine vollständige Halteverbots-Aktion ist preislich deutlich günstiger als das Abschleppen eines Falschparkers am Umzugstag.",
+        },
+        {
+          question: "Brauche ich beim Aufstellen der Schilder Warnschutzkleidung?",
+          answer:
+            "Ja. Sobald im Verkehrsraum gearbeitet wird, ist Warnschutz Klasse 2 nach EN ISO 20471 Pflicht (innerorts), auf Hauptstraßen und außerorts Klasse 3. Helm ist auf Arbeitsstellen mit Absturz- oder Anprallgefahr Pflicht. Die persönliche Schutzausrüstung muss der Aufsteller bzw. dessen Arbeitgeber stellen – wir vermieten ausschließlich das Verkehrssicherungs-Material.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "RSA 21 verstehen: Regelpläne sind keine Empfehlung, sondern Vorschrift",
+          paragraphs: [
+            "Die Richtlinien für die Sicherung von Arbeitsstellen an Straßen (RSA 21, in NRW eingeführt) sind das verbindliche Regelwerk für jede Verkehrssicherung im öffentlichen Verkehrsraum. Sie unterscheiden vier Hauptkategorien: Innerörtliche Straßen (Teil A), Außerorts auf Landstraßen (Teil B), Autobahnen und ähnlich ausgebaute Straßen (Teil C), Sonderbauformen (Teil D). Für jede Kategorie gibt es Regelpläne (z. B. A I/8 – halbseitige Sperrung innerorts) mit konkreter Vorgabe zu Schildern, Leitkegeln, Warnleuchten und mobilen Ampeln.",
+            "Die Straßenverkehrsbehörde der Stadt Krefeld prüft jede Anordnung gegen die RSA und entscheidet, welcher Regelplan zum Eingriff passt. Vom Aufsteller wird verlangt, dass das Material dem Regelplan entspricht, korrekt platziert ist und während der gesamten Geltungsdauer funktionsfähig bleibt. Bei Großbaustellen ist ein verkehrsrechtlich Verantwortlicher mit AS-Schein (Arbeitsstellen an Straßen) Pflicht.",
+          ],
+        },
+        {
+          h3: "Halteverbot in Krefeld: vom Antrag bis zum Abschleppen",
+          paragraphs: [
+            "Wer in Krefeld eine Umzugs- oder Bauzonen-Parkfläche braucht, durchläuft folgenden Ablauf: (1) Antrag auf verkehrsrechtliche Anordnung bei der Stadt Krefeld (Fachbereich Verkehr) – online oder schriftlich, mit Skizze und Zeitfenster, Bearbeitungszeit 7–14 Tage. (2) Genehmigung mit konkreter Anordnung zur Beschilderung (Anzahl, Position, Geltungszeit). (3) Aufstellung der Schilder mindestens 72 Stunden vor Geltungsbeginn – früher ist erlaubt, später macht das Abschleppen rechtlich angreifbar.",
+            "Im Geltungszeitraum dürfen falsch parkende Fahrzeuge umgesetzt oder abgeschleppt werden – die Stadt Krefeld beauftragt einen ihrer Vertrags-Abschleppdienste. Der Auftraggeber des Halteverbots muss in der Regel das Abschleppen telefonisch beim städtischen Verkehrsaußendienst auslösen. Wir vermieten in Krefeld passende Schilder-Sets; auf Wunsch übernehmen wir auch Antrag, Aufstellung und Abbau als Komplettpaket.",
+          ],
+        },
+        {
+          h3: "Warnleuchten und Beleuchtung: warum die Wahl der TL-Klasse wichtig ist",
+          paragraphs: [
+            "DIN EN 12352 klassifiziert Warnleuchten nach Lichtstärke und Funktion: L1 (Dauerlicht zur Markierung von Verkehrseinrichtungen), L2 (Blinklicht, gelb, mittlere Intensität – Standard auf innerörtlichen Baustellen), L7/L8 (gerichtetes, hochintensives Blinklicht für Hauptverkehrsstraßen und Autobahnen), L9 (Lauflicht-Pfeilanzeige für Spurverengungen). Der Regelplan der RSA gibt den Mindest-Typ pro Verkehrssituation vor.",
+            "Akku-LED-Warnleuchten haben Dauer­leuchtzeiten von 100–400 Stunden und sind heute der Standard – Kerzen- und Gaslampen sind seit Langem unzulässig. Wir bevorraten am Standort Krefeld TL2- und TL7/8-Leuchten mit großem Akku-Pufferspeicher; bei mehrwöchigen Baustellen lohnt die Solar-Variante.",
+          ],
+        },
+        {
+          h3: "Stand- und Windsicherheit: warum Fußplatten kein Detail sind",
+          paragraphs: [
+            "DIN EN 13422 prüft mobile Verkehrszeichen unter definiertem Windkanal – ein Schild 800 × 800 mm auf 15 kg Fußplatte ist für Windlastzonen 1–2 in geschützter Lage zugelassen, in Zone 4 oder auf Brücken nicht ausreichend. Krefeld liegt in Windlastzone 1; in der Innenstadt mit Bebauung um die Schilder herum reichen 15-kg-Platten meist. Auf der Rheinbrücke Uerdingen, auf Krefelder Autobahnzubringern oder bei Schildgrößen ab 900 × 900 mm sind 25-kg-Platten oder Doppel-Beschwerung Pflicht.",
+            "Umgestoßene Schilder sind nicht nur eine Sicherheits­frage, sondern Versicherungs- und Haftungsfrage: Wer im öffentlichen Verkehrsraum ein Schild aufstellt, ist für dessen ordnungsgemäßen Stand verantwortlich – auch nachts, auch bei Wind, auch wenn ein Fahrzeug es umfährt. Mehrfach-tägliche Sichtkontrolle ist im Regelplan oft Auflage. Wir liefern auf Wunsch die richtige Fußplatten-Konfiguration zum konkreten Aufstellort.",
+          ],
+        },
+        {
+          h3: "Veranstaltungs-Absperrung in Krefeld: vom Gitter-Set zur Strecken-Logistik",
+          paragraphs: [
+            "Veranstaltungs-Absperrung unterscheidet sich von Baustellen-Absperrung: Hier geht es um Crowd-Control (Trennung von Zuschauern und Akteuren), Notfall-Fluchtwege (Versammlungsstättenverordnung) und Verkehrslenkung um die Veranstaltung herum. Standard-Komponenten: Mojo-Barrieren (2,5 m × 1,1 m, ineinander gehängt), Bauzaun-Felder mit Vlies-Sichtschutz, Leitbaken zur Verkehrslenkung, Notfall-Tore.",
+            "Für Krefelder Großveranstaltungen kalkulieren wir vom Hauptsitz aus Material und Logistik. Wichtig: die Streckenlogistik (Anlieferung, Aufbau in Zeitfenstern, Abbau direkt nach Veranstaltungsende) ist meist aufwändiger als das Material selbst. Wir beraten am Standort Krefeld telefonisch nach Streckenplan – Vorlauf 4–6 Wochen ist für mittlere und große Veranstaltungen sinnvoll.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // NUTZFAHRZEUGE (Transporter 3,5 t mit Plane, Koffer,
+    //   Pritsche, Möbelkoffer)
+    // Quellen: StVZO § 32/§ 34 (Maße, Achs-/Gesamtlasten),
+    //   FeV Anlage 9 (Klasse B bis 3.500 kg zGG, B96 4.250 kg,
+    //   BE 7.000 kg, C1 ab 3.501 kg), StVO § 22 (Ladungs-
+    //   sicherung) i. V. m. VDI 2700, EU-Verordnung 561/2006
+    //   (Lenk-/Ruhezeiten ab 3,5 t gewerblich), Umweltzonen
+    //   in NRW: grüne Plakette für Krefeld, Düsseldorf, Köln,
+    //   Bonn und das Ruhrgebiet.
+    // -------------------------------------------------------------
+    nutzfahrzeuge: {
+      faqs: [
+        {
+          question: "Welcher Transporter ist der richtige – Kasten, Pritsche, Plane, Koffer?",
+          answer:
+            "Faustregel nach Ladung: Möbel und sperrige Güter ⇒ Kasten mit Mittel- oder Hochdach. Lange Profile, Holz, Baumaterial ⇒ Pritsche mit Plane (Be- und Entladung von drei Seiten, Länge bis 4,3 m). Witterungsempfindliche Ware in genormten Mengen ⇒ Koffer (Kistenladung, Treppensteig-Rolli möglich). Möbel- bzw. Umzugs-Transport ⇒ Möbelkoffer mit Hebebühne. Wir führen am Standort Krefeld alle Bauformen in 3,5-t-Klasse mit Führerschein B.",
+        },
+        {
+          question: "Was darf ich mit Führerschein B fahren?",
+          answer:
+            "Klasse B berechtigt zum Führen von Kraftfahrzeugen bis 3.500 kg zulässige Gesamtmasse (zGG) mit bis zu 9 Sitzplätzen einschließlich Fahrer. Zugkombinationen mit Anhänger sind bis 3.500 kg zGG (Zugfahrzeug + Anhänger) zulässig; mit B96 bis 4.250 kg, mit BE bis 7.000 kg. Alle unsere 3,5-t-Mietfahrzeuge fallen unter Klasse B. Sobald das Mietfahrzeug ein zGG über 3.500 kg hat (7,5-Tonner), ist Klasse C1 erforderlich – die wir vor Übergabe prüfen.",
+        },
+        {
+          question: "Welche Umweltplakette haben eure Transporter – darf ich in Innenstädte?",
+          answer:
+            "Unsere 3,5-t-Mietflotte erfüllt mindestens Schadstoffklasse 6 (Euro 6) und trägt die grüne Umweltplakette – damit ist die Einfahrt in alle Umweltzonen in NRW (Krefeld, Düsseldorf, Köln, Bonn, Ruhrgebiet) zulässig. Diesel-Fahrverbote für ältere Klassen (Euro 4/5) gelten in einzelnen Großstädten – mit unseren Mietfahrzeugen bist du davon nicht betroffen. Bei Umzügen in Hamburger, Berliner oder Stuttgarter Umweltzonen gelten teils strengere Auflagen; bitte vor Anmietung Zielort prüfen.",
+        },
+        {
+          question: "Welche Ladungssicherung ist beim Transporter Pflicht?",
+          answer:
+            "StVO § 22 und VDI 2700 fordern, dass die Ladung nicht verrutschen, umfallen, hin- und herrollen, herabfallen oder vermeidbaren Lärm erzeugen kann. Praktische Umsetzung: Zurrgurte mit ausreichender LC (Lashing Capacity – steht auf jedem Gurt-Label, typisch 1.500 daN bzw. 2.500 daN), Anti-Rutsch-Matten zur Reibungserhöhung (μ = 0,6 nach vorne), formschlüssige Verladung (Stirnwand-Stütze, Ladestäbe). Wir geben mit jedem Fahrzeug ausreichend Zurrgurte und Antirutsch-Matten mit. Bei Kontrollen durch die Polizei oder das BAG sind nicht gesicherte Ladungen ein Bußgeld-Tatbestand.",
+        },
+        {
+          question: "Wie viel Höhe und Länge messen eure Transporter?",
+          answer:
+            "Standard-Kasten L2H2 (mittellang, mittelhoch): ca. 5,4 m × 2,0 m × 2,5 m (L × B × H), Laderaum ca. 3,2 m × 1,7 m × 1,8 m. L3H2 (lang, mittel): ca. 5,9 m × 2,0 m × 2,5 m, Laderaum ca. 3,7 m × 1,8 m. Möbelkoffer 3,5 t: ca. 7,0 m × 2,3 m × 3,2 m, Laderaum ca. 4,3 m × 2,1 m × 2,2 m. Die genauen Maße jedes Fahrzeugs stehen im Datenblatt. Wichtig: Tiefgaragen-Einfahrten haben oft Höhenbegrenzungen unter 2,0 m – Koffer und Hochdach-Kasten passen dort nicht.",
+        },
+        {
+          question: "Wie funktioniert die Tankregelung – Diesel voll abgeben oder nicht?",
+          answer:
+            "Standard: Fahrzeug wird volltank übergeben und volltank zurückgenommen. Bei nicht volltank zurückgegebenen Fahrzeugen berechnen wir die fehlende Diesel-Menge plus Service-Pauschale. AdBlue bei modernen Euro-6-Diesel-Transportern reicht typisch mehrere tausend km – nachfüllen ist nur bei sehr langen Mieten nötig (1-Liter-Flasche an jeder Tankstelle). Wir geben bei Übergabe in Krefeld den Tankstand und Kilometerstand schriftlich aus.",
+        },
+        {
+          question: "Was kostet ein Transporter in Krefeld – Stundenmiete oder Tagesmiete?",
+          answer:
+            "Tagespreise sind je Fahrzeug tagesaktuell im Buchungsprozess hinterlegt. Für kurze Umzüge bieten wir auf Anfrage Stunden- bzw. Halbtagesmiete (4 Stunden + Kilometer). Standard ist die 24-Stunden-Miete inkl. einer Kilometerpauschale (typisch 100–200 km frei, jeder weitere Kilometer Aufpreis). Wochen­miete und Monatsmiete sind für Handwerker- und Gewerbekunden attraktiv – die effektive Tagesmiete sinkt deutlich.",
+        },
+        {
+          question: "Bin ich versichert, wenn etwas passiert?",
+          answer:
+            "Alle unsere Mietfahrzeuge sind haftpflicht- und vollkasko-versichert (mit Selbstbeteiligung in unseren Mietbedingungen ausgewiesen). Auf Wunsch lässt sich die Selbstbeteiligung gegen Aufpreis reduzieren (Premium-Schutz). Nicht versichert sind grobe Fahrlässigkeit (Alkohol, Fahren ohne gültige Fahrerlaubnis, Überschreiten zulässiger Beladung, Höhenschaden durch Kollision mit Garageneinfahrt – Klassiker bei Hochdach-Kastenwagen). Bei Schaden: Polizei rufen (auch bei Selbstunfall ohne Personenschaden), Unfallbericht mit Fotos, sofort am Standort Krefeld melden.",
+        },
+        {
+          question: "Darf ich mit dem Mietfahrzeug ins Ausland fahren?",
+          answer:
+            "EU-Ausland und EWR (Schweiz, Norwegen, Liechtenstein) sind in der Regel ohne Aufpreis abgedeckt; bitte bei Anmietung anzeigen, damit die internationale Versicherungs-Bestätigung (grüne Karte) mitgegeben wird. Fahrten in Länder außerhalb des EWR (Türkei, Russland, Marokko) bedürfen der vorherigen Genehmigung und sind teils ausgeschlossen. Für gewerblichen Güterverkehr (Werkverkehr Ausland) gelten zusätzliche Genehmigungspflichten (CEMT, bilateral) – diese liegen beim Mieter.",
+        },
+        {
+          question: "Was muss ich bei der Rückgabe in Krefeld beachten?",
+          answer:
+            "Fahrzeug volltank, im sauberen Zustand außen und innen (besenrein im Laderaum), inklusive aller Zurrgurte, Sackkarren und Decken, im Rückgabe­zeitfenster zurückbringen. Außerhalb der Öffnungszeiten ist eine Schlüsseleinwurf-Box am Hauptsitz Krefeld verfügbar – die Schaden- und Tankprüfung erfolgt dann am nächsten Werktag mit Foto-Dokumentation. Verspätete Rückgabe wird stundenweise berechnet; wir bitten um kurze Vorabinfo per Telefon, wenn der Zeitplan kippt.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Fahrzeugauswahl: Volumen vs. Nutzlast vs. Beladbarkeit",
+          paragraphs: [
+            "Die richtige Transporter-Wahl folgt drei Größen, die selten gleichzeitig optimal sind. Volumen (m³) ist entscheidend für sperrige, leichte Ladung (Umzug, Verpackungen, Polster). Nutzlast (kg) ist die kritische Größe für schwere Ladung (Fliesen, Estrich, Werkzeug, Eisen). Beladbarkeit (Heckklappe vs. Schiebetür vs. Hebebühne) entscheidet über die Verladegeschwindigkeit.",
+            "Ein 3,5-t-Kastenwagen L3H2 bringt ca. 12 m³ Volumen und 1.000–1.300 kg Nutzlast – ideal für Umzüge mit normalem Hausrat. Ein Möbelkoffer 3,5 t mit Hebebühne bietet 18–22 m³ Volumen, aber nur 700–950 kg Nutzlast (Aufbaugewicht zieht ab) – Vorsicht beim Transport schwerer Möbel (Klaviere, Aktenschränke). Eine 3,5-t-Pritsche mit Plane hat oft die höchste Nutzlast (1.200–1.500 kg), dafür schmaleres Volumen. Wir beraten am Standort Krefeld nach konkretem Beladungsbild.",
+          ],
+        },
+        {
+          h3: "Ladungssicherung in der Praxis: VDI 2700 für Mietkunden",
+          paragraphs: [
+            "VDI 2700 ist die anerkannte Regel der Technik zur Ladungssicherung. Sie verlangt eine Sicherung der Ladung mit 0,8 g nach vorne (Bremsverzögerung), 0,5 g nach hinten und 0,5 g seitlich. Praxis: Eine Palette mit 500 kg auf der Ladefläche kann beim Bremsen mit 400 daN gegen die Stirnwand drücken – Stirnwand-Anschlag plus zwei Zurrgurte (LC 2.500 daN, Niederzurrung) sind Standard.",
+            "Häufige Fehler: zu wenige Gurte, falsche Befestigungspunkte (Trittstufen sind keine Zurrpunkte), keine Anti-Rutsch-Matten unter der Ladung (Reibwert von 0,3 ohne Matte auf 0,6 mit Matte – verdoppelt die Sicherungswirkung), lose Restladung im Laderaum, die zur Stirnwand fliegt. Wir geben in Krefeld zu jedem Transporter mindestens 4 Zurrgurte LC 2.500 daN und Anti-Rutsch-Matten mit; bei Spezial-Ladung beraten wir vor Übergabe.",
+          ],
+        },
+        {
+          h3: "Umweltzonen und Diesel-Politik in NRW: was Mieter wissen müssen",
+          paragraphs: [
+            "Alle Umweltzonen in NRW (Krefeld, Düsseldorf, Köln, Bonn, gesamtes Ruhrgebiet, Wuppertal, Aachen, Münster) verlangen mindestens die grüne Plakette (Schadstoffklasse 4). Diesel-Fahrverbote für Euro 4/5 wurden in einigen Städten zwischenzeitlich geprüft, sind aber zum Stand 2026 in NRW weitgehend aufgehoben. Unsere Mietflotte erfüllt Euro 6/6d und ist damit für alle aktuellen und absehbaren Verschärfungen freigegeben.",
+            "Im benachbarten Ausland (Niederlande, Belgien) gelten teils andere Regelungen: Antwerpen, Gent, Rotterdam und Amsterdam haben Milieu­zone-Systeme mit kfz-spezifischer Registrierung. Bei Fahrten in diese Städte ist eine Vorab-Registrierung des Kennzeichens nötig (kostenlos, online). Wir weisen bei Anmietung darauf hin, wenn das Zielgebiet eine Sonderregelung hat.",
+          ],
+        },
+        {
+          h3: "Eigenmiete oder Speditionsauftrag: wann lohnt sich was?",
+          paragraphs: [
+            "Selbstmiete eines Transporters lohnt sich bei (a) regelmäßigem Bedarf eigener Crew (Handwerksbetrieb), (b) sensiblen Ladungen mit Eigenverantwortung (eigene Möbel, Material-Pendel zwischen Baustelle und Lager), (c) kurzen, eng getakteten Touren in der Region. Spediteur-Beauftragung ist sinnvoll bei (a) Einzeltransporten über lange Strecken, (b) schwerer Ladung mit Kran- oder Hubarbeit am Zielort, (c) Spezial-Transporten (Gefahrgut, Lebensmittel-Kühlung mit ATP-Zulassung).",
+            "Für Krefelder Handwerker und Bauunternehmen ist die Kombination aus eigener Transporter-Miete für Standard-Touren plus Speditions-Bestellung für Sondertransporte oft die wirtschaftlichste Lösung. Wir kalkulieren am Standort Krefeld auf Anfrage Rahmenmieten für regelmäßigen Bedarf.",
+          ],
+        },
+        {
+          h3: "Schadensfälle vermeiden: die fünf häufigsten Mietfahrzeug-Schäden",
+          paragraphs: [
+            "(1) Höhenschaden an Tiefgaragen-, Bahnunterführungs- oder Drive-In-Einfahrten: Klassiker bei Hochdach-Kasten und Möbel­koffer. Vor jeder Einfahrt Höhenbegrenzung lesen – die Höhe steht am Türrahmen des Fahrzeugs.",
+            "(2) Schaden an der Hebebühne durch Überlast oder Schieflast – Hebebühnen-Nennlast und Lastverteilung beachten. (3) Kratzer und Beulen an A- und B-Säulen durch enge Innenstadt-Pollerstrecken (Krefelder Altstadt). (4) Ladungsverschiebung beim Bremsen mit Folge­schaden am Kofferinnenraum – Ladungssicherung ist Selbstschutz. (5) Tankverwechslung Diesel/AdBlue – AdBlue gehört nicht in den Diesel­tank und umgekehrt; bei Verwechslung sofort Motor nicht starten und uns telefonisch in Krefeld informieren. Mit etwas Aufmerksamkeit bei Übergabe und Tour-Planung sind alle fünf Schäden vermeidbar.",
+          ],
+        },
+      ],
+    },
   },
 
   // Bonn und Mülheim folgen analog in späteren Tranchen.
