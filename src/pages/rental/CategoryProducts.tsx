@@ -26,6 +26,7 @@ import { categoryFilterMap, categorySearchPlaceholders, categoryDisplayNames } f
 import { moebelZelteContent } from "@/data/moebelZelteContent";
 import { getArticlesForCategory } from "@/data/blogArticles";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
+import { getCategoryExpertContent } from "@/data/categoryExpertContent";
 
 export default function CategoryProducts() {
   const { t } = useTranslation();
