@@ -271,11 +271,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Lightbulb className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Licht &amp; Effektlicht</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot
                   Zoom 2.0, SLT LED Fluter RGBWAUV, Showtec Sunstrip Active MKII, LED-PAR-
                   Sets &amp; T-Bar-Stative. Wash, Spots und Effekte aus einer Hand.
                 </p>
+                <CategoryLocationDialog categoryId="beleuchtung" categoryLabel="Beleuchtung" triggerLabel="Zur Beleuchtung" />
               </div>
             </Card>
 
