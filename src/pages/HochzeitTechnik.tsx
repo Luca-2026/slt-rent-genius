@@ -250,11 +250,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Music className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">DJ-Beschallung &amp; Mikrofone</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   D.A.S. Audio Action 508A / Vantec / 3500 W RMS-PAs, 2.1 Soundsystem,
                   Soundboks Gen.3 für Outdoor, Pioneer CDJ 2000 NXS / DJM 900 NXS2 und
                   Sennheiser-Funkmikrofone. Für 30 bis 250 Gäste.
                 </p>
+                <CategoryLocationDialog categoryId="beschallung" categoryLabel="Beschallung" triggerLabel="Zur Beschallung" />
               </div>
             </Card>
 
