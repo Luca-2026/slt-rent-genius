@@ -2857,6 +2857,511 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // GARTENPFLEGE (Häcksler, Vertikutierer, Kettensäge,
+    //   Wurzelfräse, Holzspalter, Mäher)
+    // Quellen: 32. BImSchV (Geräte- und Maschinenlärmschutz),
+    //   § 39 BNatSchG (Vegetationsperiode 1.3.–30.9.),
+    //   DGUV Information 214-059 + Grundsatz 308-009 (Motorsäge),
+    //   Baumschutzsatzung Bonn (Schutz ab 80 cm Stammumfang
+    //   in 1 m Höhe, Genehmigung beim Amt für Umwelt und
+    //   Stadtgrün), Schutzgebiete Rheinaue / Siebengebirge.
+    // -------------------------------------------------------------
+    gartenpflege: {
+      faqs: [
+        {
+          question: "Welcher Häcksler passt zu Bonner Gartenrückschnitt im Wohngebiet?",
+          answer:
+            "Für die dicht bewohnten Bonner Quartiere (Südstadt, Poppelsdorf, Bad Godesberg, Beuel-Mitte) sind Walzenhäcksler (Leise-Häcksler) bis ca. 35–45 mm Astdurchmesser klar erste Wahl – sie liegen typisch bei 90–95 dB(A) LWA und arbeiten nachbarschaftsverträglich. Für stärkeres Schnittgut (45–75 mm) gibt es Turbinen- und Hammerwerk-Häcksler, die aber im Wohnumfeld konfliktträchtig sind. Wir bevorraten am Standort Bonn-Mehlem das gängige Walzen- und Turbinensortiment; größere Profi-Häcksler liefern wir bei Bedarf binnen 24 Stunden aus Krefeld nach.",
+        },
+        {
+          question: "Vertikutieren oder Aerifizieren – was brauche ich wann?",
+          answer:
+            "Vertikutierer schneiden senkrecht in die Grasnarbe (3–5 mm tief) und entfernen Rasenfilz und Moos – Standardpflege im März/April und September. Aerifizierer stechen 5–10 cm tiefe Hohldorne in den Boden und entlasten verdichtete Flächen (Spielrasen, Hundewiese, Sportplatz). Auf normalem Hausrasen reicht Vertikutieren plus Nachsaat; Aerifizieren ist nur bei spürbarer Verdichtung nötig. Beide Geräte führen wir in Elektro- und Benzin-Ausführung am Standort Bonn-Mehlem.",
+        },
+        {
+          question: "Welche Lärmregelung gilt für Gartengeräte in Bonner Wohngebieten?",
+          answer:
+            "Die 32. BImSchV erlaubt den Einsatz lärmintensiver Geräte (Rasenmäher, Vertikutierer, Häcksler, Motorsensen) in reinen und allgemeinen Wohngebieten werktags 07:00–20:00. Besonders laute Geräte (Laubbläser, Freischneider mit Verbrennungsmotor) unterliegen in Wohngebieten zusätzlich einer Mittagsruhe-Regel und dürfen werktags 13:00–15:00 nicht laufen. Sonntags und an gesetzlichen Feiertagen ganztägig untersagt. Akku- und Elektrogeräte mit EU-Umwelt-Kennzeichen sind von einem Teil dieser Einschränkungen ausgenommen – im Kurpark-Umfeld Bad Godesberg und in der Bonner Südstadt empfehlen wir konsequent Akku-Geräte.",
+        },
+        {
+          question: "Brauche ich einen Motorsägenschein, um eine Kettensäge in Bonn zu mieten?",
+          answer:
+            "Privat im eigenen Garten ist kein Schein gesetzlich vorgeschrieben; ohne Erfahrung raten wir aber dringend ab – die Verletzungsschwere ist hoch. Im gewerblichen Einsatz oder im Wald gilt DGUV Information 214-059 plus DGUV Grundsatz 308-009: dort ist ein Motorsägenkurs (z. B. AS Baum I/II) Pflicht. Wir vermieten gewerblich nur an Kunden mit entsprechendem Nachweis. PSA – Schnittschutzhose Klasse 1, Schnittschutzschuhe, Helm mit Visier und Gehörschutz, Schnittschutzhandschuhe – muss der Bediener bzw. Arbeitgeber selbst stellen.",
+        },
+        {
+          question: "Holzspalter: liegend oder stehend, welcher Spaltdruck?",
+          answer:
+            "Liegende Spalter (5–8 t) eignen sich für Holz bis ca. 1 m Länge und 30 cm Durchmesser – die Standardlösung für Kaminholz aus dem Hausgarten in Beuel, Bad Godesberg oder Wachtberg. Stehende Spalter (10–25 t) brauchst du für Meterholz, harte Hölzer (Eiche, Buche, knorriges Obstholz) und Stammdurchmesser über 30 cm. Faustregel: 1 t Spaltdruck je 10 cm Stammdurchmesser bei Weichholz, das Doppelte bei Hartholz mit Astansätzen. Wir führen am Standort Bonn-Mehlem liegende Spalter im Kernsortiment; große stehende Spalter kommen bei Bedarf aus Krefeld.",
+        },
+        {
+          question: "Wurzelfräse mieten – wie tief und wie breit komme ich?",
+          answer:
+            "Klassische handgeführte Wurzelfräsen erreichen 25–30 cm Frästiefe bei 25–30 cm Breite. Sie verarbeiten den Wurzelstock in Späne; der Stock muss vorab ebenerdig abgesägt werden. Für sehr große Stöcke (Durchmesser über 60 cm) lohnt sich eher der Bagger mit Wurzelreißer aus unserer Erdbewegungs-Kategorie. Wichtig in Bonn: Vor jedem Fräseinsatz Lage von Strom-, Gas-, Wasser- und Telekomleitungen über die Sparten-Auskunft (u. a. SWB Energie und Wasser) prüfen – Wurzeln verlaufen oft parallel zu Versorgungstrassen.",
+        },
+        {
+          question: "Was muss ich vor dem Fällen eines Baumes in Bonn beachten?",
+          answer:
+            "Die Stadt Bonn hat eine Baumschutzsatzung: Bäume ab 80 cm Stammumfang (gemessen in 1 m Höhe) sind auf öffentlichen und privaten Flächen geschützt – Fällung oder starker Rückschnitt brauchen eine Ausnahmegenehmigung des Amtes für Umwelt und Stadtgrün. Während der Vegetationsperiode (1. März – 30. September) verbietet § 39 BNatSchG bundesweit zusätzlich Fällarbeiten und starken Rückschnitt von Hecken und Gehölzen außerhalb des Waldes; Form- und Pflegeschnitt bleiben zulässig. In der Rheinaue und im Naturpark Siebengebirge gelten verschärfte Schutzregeln. Wir vermieten die Geräte – die Genehmigungsfrage musst du mit der Stadt klären.",
+        },
+        {
+          question: "Aufsitzmäher oder Handmäher für größere Flächen?",
+          answer:
+            "Bis ca. 1.500 m² reicht ein selbstfahrender Handmäher mit 50 cm Schnittbreite. Ab 2.000 m² lohnt sich ein Aufsitzmäher mit 80–110 cm Schnittbreite (Mähleistung 2.500–4.500 m²/h). Bei Steigungen über 15° – relevant in Hanglagen wie Venusberg, Siebengebirge oder Wachtberger Vorhöhen – sind nur hangtaugliche Spezialmäher oder Balkenmäher zugelassen. Standardgeräte führen wir vor Ort in Bonn-Mehlem; Hangmäher und Schlegelmäher koordinieren wir aus Krefeld.",
+        },
+        {
+          question: "Was kostet die Gartenpflege-Miete in Bonn?",
+          answer:
+            "Tagessätze sind je Modell tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht typischerweise rund 5 Tagessätzen – ideal für Frühjahrs- oder Herbstpflege übers Wochenende plus Folgetag. Kraftstoff wird nach gefülltem Tank abgerechnet; Akku-Geräte werden geladen zurückgegeben. Für Vereine, Hausverwaltungen und Friedhofsbetriebe im Bonner Raum kalkulieren wir Saison- und Rahmenmieten – telefonisch unter 0228 504 660 61.",
+        },
+        {
+          question: "Welche PSA brauche ich bei Häcksler, Freischneider, Heckenschere?",
+          answer:
+            "Häcksler: Schutzbrille, Gehörschutz, eng anliegende Kleidung (Einzugsgefahr), feste Handschuhe. Freischneider/Motorsense: zusätzlich Beinschutz/Schnittschutzhose, Visier, S3-Schuhe. Motor-Heckenschere: schnittfeste Handschuhe, Schutzbrille, Gehörschutz; bei Höhenarbeit zusätzlich Sturzschutz. Kettensäge: vollständige PSA-Kombi (Schnittschutzhose Klasse 1, Helm mit Visier, Schnittschutzschuhe). PSA stellt der Bediener bzw. Arbeitgeber – wir vermieten ausschließlich die Maschine.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Saisonzyklus: warum Bonner Gartenpflege im April und September verdichtet ist",
+          paragraphs: [
+            "Gartenpflege folgt einem klaren Jahresrhythmus. Frühjahr (März/April): Vertikutieren, Aerifizieren bei verdichteten Flächen, Nachsaat, erster Rückschnitt von Sommerblühern. Sommer: regelmäßige Mahd, Heckenformschnitt nur als Form- und Pflegeschnitt (§ 39 BNatSchG). Herbst (September/Oktober): zweiter Vertikutiergang, Laub aufnehmen, Häckseln des Strauchrückschnitts. Winter (1. Oktober – 28. Februar) ist die einzige Phase, in der Bäume und Hecken radikal zurückgeschnitten oder gefällt werden dürfen – Bonner Fällgenehmigung vorausgesetzt.",
+            "Diese Taktung bestimmt die Mietnachfrage: Vertikutierer und Häcksler sind im April und September stark gebucht, Holzspalter und Wurzelfräsen vor allem im Spätherbst und Winter. Wir empfehlen, in diesen Zeitfenstern 1–2 Wochen vorab am Standort Bonn-Mehlem zu reservieren – telefonische Bestätigung unter 0228 504 660 61.",
+          ],
+        },
+        {
+          h3: "Lärmschutz und gute Nachbarschaft im Bonner Wohngebiet",
+          paragraphs: [
+            "Die 32. BImSchV unterscheidet zwei Gerätekategorien. Erste Gruppe (Häcksler, Rasenmäher, Vertikutierer, Heckenscheren): werktags 07:00–20:00 in reinen und allgemeinen Wohngebieten. Zweite Gruppe – besonders laute Geräte mit Verbrennungsmotor wie Freischneider, Laubbläser, Laubsammler – unterliegt zusätzlich der Mittagsruhe und darf werktags 13:00–15:00 nicht laufen. Sonntags und an gesetzlichen Feiertagen sind beide Gruppen ganztägig untersagt.",
+            "In Bonn betrifft das vor allem die dicht bebauten Quartiere Südstadt, Poppelsdorf, Endenich, Bad Godesberg sowie das Bundesviertel rund um Tagungs- und Konferenzbetrieb. Akku- und Elektrogeräte mit EU-Lärm-Kennzeichen unterschreiten die Grenzwerte und sind von einem Teil der Einschränkungen ausgenommen – wer in der Bonner Innenstadt oder im Kurparkumfeld arbeitet, fährt mit Akku-Häckslern und elektrischen Rasenmähern deutlich konfliktärmer.",
+          ],
+        },
+        {
+          h3: "Bonner Baumschutzsatzung: was beim Fällen wirklich verlangt wird",
+          paragraphs: [
+            "Die Stadt Bonn schützt über ihre Baumschutzsatzung Bäume mit einem Stammumfang ab 80 cm in 1 m Höhe (Ausnahmen für bestimmte Obstbäume und einige Nadelgehölze). Fällung, größerer Wurzeleingriff oder Rückschnitt, der mehr als 30 % der Krone abnimmt, brauchen eine Ausnahmegenehmigung des Amtes für Umwelt, Verbraucherschutz und Lokale Agenda (Stadtgrün). Bei genehmigter Fällung wird in der Regel eine Ersatzpflanzung verlangt.",
+            "Bundesweit kommt § 39 BNatSchG hinzu: vom 1. März bis 30. September keine Fällarbeiten und kein Radikalschnitt von Hecken und Gehölzen – zum Schutz brütender Vögel. Bußgelder bei Verstößen reichen bis 50.000 Euro. In Schutzgebieten – Rheinaue, Naturpark Siebengebirge, Kottenforst – gelten strengere Auflagen, oft auch außerhalb der Vegetationsperiode. Vor jeder größeren Aktion empfehlen wir eine kurze Vorab-Anfrage beim Stadtgrün-Amt.",
+          ],
+        },
+        {
+          h3: "Häcksler im Detail: Walze, Turbine, Hammerwerk – und warum es im Bundesviertel leise sein muss",
+          paragraphs: [
+            "Walzenhäcksler ziehen das Schnittgut langsam zwischen eine konische Walze und eine Druckplatte – sehr leise (90–95 dB(A) LWA), wenig Auswurf, Astdurchmesser bis 35–45 mm. Standardlösung für Wohngebiet und Bundesviertel mit Tagungsbetrieb. Nachteil: langsamer Durchsatz, kein Häckselbild für Mulch.",
+            "Turbinen- und Schneidwalzen-Häcksler arbeiten mit rotierenden Klingen plus Einzugswalze – schneller Durchsatz, feineres Schnittgut, dafür lauter (98–105 dB(A) LWA) und höherer Stromverbrauch. Hammerwerk-Häcksler (typisch Benzin, 100–108 dB(A) LWA) zerschlagen das Holz – maximaler Durchsatz und größte Astdurchmesser, aber kein Wohngebiets-Gerät. Für die Bonner Innenstadt-Pflege ist der Walzenhäcksler die einzig nachbarschaftsverträgliche Lösung; größere Häckslereinsätze planen wir lieber außerhalb der Mittagsruhe.",
+          ],
+        },
+        {
+          h3: "Kettensägen-Arbeit am Hang: warum Venusberg und Siebengebirge besondere Vorsicht verlangen",
+          paragraphs: [
+            "Statistisch tritt der überwiegende Anteil schwerer Kettensägen-Unfälle nicht beim Forst-Profi auf, sondern bei privaten Brennholz-Aktionen. Ursachen: fehlende PSA, Schnitt auf Hüfthöhe statt Knie, kein Fluchtweg geplant, Schnitt in Spannungsholz ohne Kenntnis der Spannungsverhältnisse. In Bonner Hanglagen (Venusberg, Drachenfels, Wachtberg, Bad Honnef) kommt die Hangneigung dazu – Stamm und Bediener rutschen, Fallrichtung wird unkalkulierbar.",
+            "Unsere Empfehlung für Bonner Mietkunden: Vor dem ersten Einsatz einen Tageskurs Motorsäge für Brennholz absolvieren – Anbieter im Rheinland und in der Eifel. Mindestens aber: nie alleine sägen, immer mit Schnittschutzhose Klasse 1, nie über Schulterhöhe sägen, bei Hang oberhalb des Stammes positionieren, bei Spannungsholz die Schnittrichtung umkehren (Druckseite anschneiden, Zugseite trennen). Wir liefern die Säge geprüft und scharf – das Sicherheitswissen liegt beim Bediener.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // LEITERN & GERÜSTE
+    // Quellen: DGUV Information 201-011 (Leitern/Tritte),
+    //   DGUV 201-029 (Gerüste), TRBS 2121 Teile 1+2,
+    //   DIN EN 131 (Leitern, Pflicht-Stabilisator ab 3 m),
+    //   DIN EN 1004 (fahrbare Arbeitsgerüste, max. 8 m außen /
+    //   12 m innen), BetrSichV § 14, DGUV V3 Schutzabstände.
+    // -------------------------------------------------------------
+    "leitern-gerueste": {
+      faqs: [
+        {
+          question: "Leiter oder Fahrgerüst – wo liegt die rechtliche Grenze?",
+          answer:
+            "TRBS 2121 Teil 1 schreibt vor: Anlegeleitern dürfen als Arbeitsplatz nur bis 5 m Standhöhe und nur für kurze Arbeiten (Faustregel: bis 2 Stunden, geringer Kraftaufwand) genutzt werden. Über 5 m oder bei längeren Arbeiten ist ein Gerüst zwingend. Fahrgerüste nach EN 1004 sind in mehreren Höhenklassen verfügbar und bieten eine sichere Plattform mit Geländer – die richtige Wahl für Anstrich, Putz, Trockenbau und Wartung. Wir führen am Standort Bonn-Mehlem Anlegeleitern und Fahrgerüste bis ca. 8 m Arbeitshöhe vor Ort; höhere Gerüste (bis 12 m) liefern wir aus Krefeld nach.",
+        },
+        {
+          question: "Wie hoch darf ich mit einem Fahrgerüst arbeiten?",
+          answer:
+            "DIN EN 1004 begrenzt fahrbare Arbeitsgerüste auf 8 m Plattformhöhe im Freien und 12 m Plattformhöhe in Innenräumen (Standard-Lastklasse). Höhere Aufbauten sind Standgerüste oder erfordern spezielle Statik-Nachweise. Im Freien sind ab bestimmter Aufbauhöhe Verbreiterungen oder Ausleger Pflicht, um die Standsicherheit gegen Windlasten zu gewährleisten. Die zulässige Aufbauhöhe inklusive Verbreiterungs-Vorgaben steht in der Aufbau- und Verwendungsanleitung (AuV) jedes Gerüsts – wir übergeben sie in Bonn mit jedem Mietgerät.",
+        },
+        {
+          question: "Brauche ich für den Gerüstaufbau eine Qualifikation?",
+          answer:
+            "Für fahrbare Arbeitsgerüste nach EN 1004 verlangt TRBS 2121 Teil 2 keinen formalen Gerüstbau-Befähigungsschein, aber eine fachliche Eignung und Unterweisung – der Aufbau muss nach der AuV erfolgen und kontrolliert werden. Für Standgerüste (System- und Stangengerüste) ist die Befähigung zum Gerüstbauer Voraussetzung. Wir vermieten ausschließlich fahrbare Arbeitsgerüste mit AuV; der Aufbau bleibt Sache des Mieters bzw. Arbeitgebers.",
+        },
+        {
+          question: "Was hat sich mit der EN 131 (2018) bei Anlegeleitern geändert?",
+          answer:
+            "Seit der Überarbeitung der EN 131 sind Anlegeleitern ab 3 m Leiterlänge nur noch mit einer fußseitigen Verbreiterung (Stabilisator) zulässig. Außerdem wird zwischen gewerblicher Nutzung (Kennzeichnung Professional) und Heimwerker (Non-Professional) unterschieden – im gewerblichen Einsatz sind Heimwerker-Leitern nicht zulässig. Wir bevorraten am Standort Bonn-Mehlem ausschließlich EN-131-konforme Profi-Leitern; die Konformitäts-Plakette ist sichtbar angebracht.",
+        },
+        {
+          question: "Welche PSA gegen Absturz ist auf Gerüst oder Leiter Pflicht?",
+          answer:
+            "Auf Fahrgerüsten mit dreiteiligem Seitenschutz (Geländerholm, Zwischenholm, Bordbrett) ist eine PSAgA grundsätzlich nicht zwingend – die Plattform gilt als kollektiv gesicherter Arbeitsplatz. PSAgA wird Pflicht beim Auf- und Umbau oberhalb 3 m, solange der Seitenschutz noch nicht montiert ist. Auf Leitern ist die Verwendung von PSAgA praktisch nicht möglich (kein geeigneter Anschlagpunkt) – deshalb sind Standhöhe und Arbeitsdauer streng nach TRBS 2121 zu begrenzen oder ein Gerüst einzusetzen.",
+        },
+        {
+          question: "Wie weit muss eine Anlegeleiter angestellt werden?",
+          answer:
+            "DGUV Information 201-011 gibt die Faustregel 1 : 4 (Anstellwinkel ca. 65–75°) vor. Praktische Probe: Bediener stellt sich aufrecht an die Leitersohle und streckt die Arme waagerecht aus – die Handflächen sollten die Sprossen erreichen. Außerdem muss die Leiter mindestens 1 m über die Austrittsstelle (z. B. Dachrand) hinausragen, der Untergrund muss tragfähig und rutschsicher sein, die Sprossen waagerecht. Bei nassem oder vereistem Boden ist Rutschsicherung Pflicht.",
+        },
+        {
+          question: "Wer prüft Leitern und Gerüste – und wie oft?",
+          answer:
+            "Nach BetrSichV § 14 und DGUV Information 201-011/201-029 sind Leitern und Gerüste mindestens jährlich von einer befähigten Person zu prüfen (sichtbare Prüfplakette). Wir dokumentieren das für unseren Mietpark in Bonn; das aktuelle Prüfprotokoll liegt der Maschine bei bzw. ist auf Anforderung verfügbar. Zusätzlich muss der Nutzer vor jeder Schicht eine Sicht- und Funktionsprüfung durchführen (Sprossen, Holme, Beschläge, Rollen, Seitenschutz). Mängel sofort melden – wir tauschen das Gerät kostenfrei.",
+        },
+        {
+          question: "Treppengerüst für Bonner Altbauten und schräge Aufstellflächen?",
+          answer:
+            "In Bonner Altbauten (Südstadt, Bad Godesberg) und auf abschüssigem Gelände gleicht ein Treppengerüst Höhenunterschiede über höhenverstellbare Füße einer Seite aus. Standard-Fahrgerüste sind dafür nicht zugelassen, da die Spindelfüße schnell überschritten werden. Wir führen Treppengerüste und beraten zur passenden Bauform – wichtig ist eine kurze Beschreibung der Treppe (Stufenhöhe, Stufentiefe, Breite). Telefonisch unter 0228 504 660 61.",
+        },
+        {
+          question: "Was kostet eine Gerüst- oder Leiter-Miete in Bonn?",
+          answer:
+            "Tagespreise je Modell sind im Buchungsprozess hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Monatsmiete ca. 15. Fahrgerüste werden in der Praxis meist wochenweise gemietet – die Auf- und Abbauzeit lohnt erst ab mehreren Tagen Einsatz. Für lange Sanierungsprojekte kalkulieren wir auf Anfrage Sondertarife. Lieferung im Bonner Raum (Bonn, Köln-Süd, Sankt Augustin, Königswinter, Bad Honnef, Wachtberg) ist optional buchbar.",
+        },
+        {
+          question: "Darf ich ein Fahrgerüst mit Material auf der Plattform verfahren?",
+          answer:
+            "Nein. EN 1004 und TRBS 2121 Teil 2 untersagen das Verfahren des Gerüsts, wenn Personen oder loses Material auf der Plattform sind. Vor jedem Umsetzen müssen Personen absteigen, lose Werkzeuge gesichert oder abgenommen werden, und der Fahrweg muss eben, tragfähig und hindernisfrei sein. Nach dem Umsetzen Rollen wieder feststellen und ggf. Spindelfüße neu nivellieren, bevor die Plattform betreten wird.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "TRBS 2121: warum die Leiter heute strenger reguliert ist als das Gerüst",
+          paragraphs: [
+            "Die Technische Regel für Betriebssicherheit 2121 hat die Verwendung von Leitern als Arbeitsplatz deutlich eingeschränkt. Anlegeleitern und Stehleitern dürfen nur noch genutzt werden, wenn die Gefährdungsbeurteilung ergibt, dass andere Arbeitsmittel (Gerüst, Hubarbeitsbühne) wegen geringer Standhöhe (< 2 m) oder sehr kurzer Arbeitsdauer (< 2 Stunden) nicht verhältnismäßig sind. Über 5 m Standhöhe sind Leitern als Arbeitsplatz grundsätzlich nicht mehr zugelassen.",
+            "Konsequenz für die Bonner Baustellenpraxis: Wer eine Bad Godesberger Villenfassade streicht, eine Dachrinne im Plittersdorf reinigt oder eine Klimaanlage in 4 m Höhe wartet, sollte sich gegen die Leiter und für ein Fahrgerüst entscheiden – nicht nur wegen der Sicherheit, sondern weil ein Unfall bei Leiter-Nutzung über 3 m oder bei Arbeiten über 2 Stunden im gewerblichen Kontext fast immer als TRBS-Verstoß gewertet wird. Das Fahrgerüst kostet in der Miete unwesentlich mehr.",
+          ],
+        },
+        {
+          h3: "Fahrgerüst aufbauen: Auf- und Verwendungsanleitung sauber lesen",
+          paragraphs: [
+            "Jedes nach EN 1004 zertifizierte Fahrgerüst hat eine projektspezifische Auf- und Verwendungsanleitung (AuV). Sie regelt: maximale Aufbauhöhe je Aufstellort (Innen/Außen), Notwendigkeit von Verbreiterungen ab bestimmter Höhe, Position der Ballastgewichte, Vorgehen bei Wind > 6 Bft (Abbau-Pflicht), Lastklasse der Plattform (typisch Klasse 3 = 200 kg/m²).",
+            "Der häufigste Aufbau-Fehler ist das Weglassen der Diagonalstreben oder der Verbreiterungen, weil die Plattform nur kurz gebraucht wird. Beides ist konstruktiv vorgesehen und nicht optional – ohne Diagonale verliert das Gerüst sofort die Längs-Steifigkeit, ohne Verbreiterung bei Aufbau ab ca. 6 m im Freien die Kippsicherheit. Wir geben jedem Mietgerüst die AuV mit; bei Erstmietern erklären wir den Aufbau am Standort Bonn-Mehlem vor Abholung Schritt für Schritt.",
+          ],
+        },
+        {
+          h3: "Anlegeleiter richtig stellen: 1 : 4, Sicht, Überstand, Rutschsicherung",
+          paragraphs: [
+            "Vier Fehler dominieren bei Anlegeleiter-Unfällen: falscher Anstellwinkel (zu steil rutscht der Fuß weg, zu flach kippt die Leiter), fehlender Überstand über die Austrittsstelle, nasser/glatter Untergrund ohne Sicherung, sowie Stellung vor Türen, die aufschlagen können.",
+            "Korrekt: Anstellwinkel 65–75° (1 : 4 – bei 4 m Leiterhöhe steht der Fuß 1 m von der Wand weg), Überstand am Austritt mindestens 1 m, Untergrund tragfähig und sauber, bei Glätte mit Bohlen oder Antirutsch-Matten gesichert, bei Türen mit Warnposten oder verschlossen. EN-131-Profi-Leitern haben serienmäßig einen fußseitigen Stabilisator ab 3 m Länge – Pflicht und nicht entfernbar.",
+          ],
+        },
+        {
+          h3: "Höhenrettung: warum schon ab 3 m ein Notfallkonzept gebraucht wird",
+          paragraphs: [
+            "Die BetrSichV verlangt für Arbeitsplätze mit Absturzgefahr ab 3 m Höhe eine Höhenrettungs-Vorhaltung. Das ist nicht zwingend ein Rettungs-Geschirr im Sinne der Feuerwehr – ausreichend ist meist die Verfügbarkeit einer geeigneten Rettungsmaßnahme (PSAgA-System mit Rettungsabseilen, Hubarbeitsbühne im Standby, sofort erreichbare Feuerwehr im städtischen Bonner Umfeld).",
+            "Praxis im Mietkontext: Wer auf einem Fahrgerüst arbeitet, hat über den dreiteiligen Seitenschutz einen kollektiven Schutz – das Höhenrettungs-Konzept reduziert sich auf Verfahrweg und Auf-/Abbau. Wer mit PSAgA arbeitet (Dacharbeit, Industrie), braucht zwingend ein Rettungskonzept inklusive eingewiesener Helfer – sonst Verstoß gegen § 6 ArbSchG. Wir liefern die Geräte; das Rettungskonzept liegt beim Arbeitgeber.",
+          ],
+        },
+        {
+          h3: "Material, Korrosion, Holz vs. Aluminium: was im Bonner Bahnumfeld zählt",
+          paragraphs: [
+            "Aluminium-Leitern und -Gerüste sind heute Standard – leicht, korrosionsbeständig, lange Lebensdauer. Holz-Leitern (Sprossenleiter aus Esche oder Akazie) kommen noch in der Elektrotechnik vor, weil Holz nicht leitet – wir halten am Standort Bonn auf Anfrage Holzleitern für Arbeiten in der Nähe spannungsführender Anlagen vor.",
+            "Aluminium ist nicht spannungsfrei – jede Leiter, jedes Gerüst aus Alu muss bei Arbeiten im Bereich freier Leiter oder Oberleitung mit Schutzabstand zur Spannung verwendet werden (DGUV V3, Tabelle 1: 1 m bei Niederspannung, 3 m bei Mittelspannung, 4 m bei Hochspannung bis 110 kV). Im Bonner Umfeld betrifft das Stadtbahn-Oberleitungen (Linien 16/63/66), die Bahnstrecke linke und rechte Rheinstrecke sowie Hochspannungs-Freileitungen im Rhein-Sieg-Raum – vorab Spannungsfreiheit beim Netzbetreiber erfragen.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // HEIZUNG & TROCKNUNG
+    // Quellen: WTA-Merkblatt 6-2, DGUV Information 213-056
+    //   (CO-Gefahren), TRGI 2018, DIN VDE 0100-704
+    //   (Baustellenstrom mit RCD), DIN EN 16798-1, CM-Methode
+    //   (Belegreife). Bonn-Spezifika: Hochwasserlagen Rheinaue/
+    //   Ahrtal, Altbau-Sanierung Südstadt/Bad Godesberg.
+    // -------------------------------------------------------------
+    "heizung-trocknung": {
+      faqs: [
+        {
+          question: "Wasserschaden in Bonn – wie viele Bautrockner brauche ich?",
+          answer:
+            "Faustregel nach WTA: Pro 30–50 m³ Raumvolumen ein Kondenstrockner mittlerer Leistung (ca. 30–50 l/24h Entzugsleistung). Bei stark durchfeuchtetem Estrich und Wänden lohnt der Einsatz eines Adsorptionstrockners, der auch unter 5 °C arbeitet. Trocknungsdauer: rohe Wandtrocknung 2–4 Wochen, Estrichtrocknung über Dämmschicht 4–8 Wochen. Den Fortschritt kontrolliert man mit einem CM-Feuchtemessgerät – wir vermieten am Standort Bonn-Mehlem Trockner-Sets samt Hygrometer und können nach Hochwasserlagen (Rheinaue, Ahrtal) auch in größerer Stückzahl liefern.",
+        },
+        {
+          question: "Kondenstrockner oder Adsorptionstrockner – wann was?",
+          answer:
+            "Kondenstrockner arbeiten am wirtschaftlichsten zwischen 15 und 30 °C bei relativer Feuchte > 40 % – Standard nach Wasserschäden in geheizten Räumen. Adsorptionstrockner (Silikagel/Zeolith) arbeiten auch bei 5 °C oder darunter und bei niedriger Feuchte; richtige Wahl in unbeheizten Rohbauten, Kellern und in der Schlussphase einer Trocknung. Wir bevorraten beide Bauformen vor Ort in Bonn; bei großen Schadenslagen liefern wir kurzfristig aus Krefeld nach.",
+        },
+        {
+          question: "Wann brauche ich Estrich-Dämmschicht-Trocknung mit Druck oder Vakuum?",
+          answer:
+            "Wenn Wasser in die Dämmschicht unter dem Estrich eingedrungen ist, reicht Raumluft-Trocknung nicht – die Dämmung trocknet nur extrem langsam ab. Standard ist dann das Druck- oder Vakuum-Verfahren: Über Kernbohrungen wird Trocknungsluft in die Dämmschicht gepresst oder feuchte Luft abgesaugt. Wir vermieten Seitenkanalverdichter, Vakuumpumpen, HEPA-Filter und Schläuche; die Kernbohrungen erstellt der Sanierer oder per Mietkernbohrer aus unserer Werkzeug-Kategorie.",
+        },
+        {
+          question: "Welche Stromversorgung braucht ein Heizgebläse oder Bautrockner?",
+          answer:
+            "Kondenstrockner (800–1.500 W) laufen an einer regulären Schuko-Steckdose. Adsorptionstrockner (1,5–4 kW) brauchen je nach Leistung 230 V/16 A oder bereits CEE 16 A. Elektro-Heizlüfter ab 5 kW und Wärmepumpen-Trockner laufen über CEE 16 A oder CEE 32 A (400 V). Diesel-Heizgebläse brauchen nur eine 230-V-Speisung für Brenner und Gebläse. Auf Baustellen ist die Einspeisung über einen Baustromverteiler mit 30-mA-RCD nach DIN VDE 0100-704 Pflicht – Versorger im Bonner Raum ist u. a. SWB Energie und Wasser.",
+        },
+        {
+          question: "Gasheizer in Innenräumen – was ist erlaubt?",
+          answer:
+            "Direktbefeuerte Gasheizer (Propan) sind in geschlossenen Räumen nur erlaubt, wenn ausreichende Verbrennungsluft-Zufuhr und Abluft sichergestellt sind (TRGI 2018, DGUV Information 213-056). Die Abgase enthalten CO, CO₂ und Wasserdampf – ohne Frischluftzufuhr besteht akute Lebensgefahr durch CO-Vergiftung. Sicherer ist die Aufstellung der Gasheizung außerhalb mit Warmluft-Schlauch (indirekt befeuert) oder der Einsatz von Diesel-Indirektheizern mit Abgasführung ins Freie. Wir empfehlen bei jedem Innenraum-Einsatz CO-Warner mit – Standard bei jeder gewerblichen Bautrocknung in Bonn.",
+        },
+        {
+          question: "Wieviel Diesel, Strom oder Gas verbraucht ein Heizgebläse?",
+          answer:
+            "Faustwerte je 10 kW Heizleistung: Diesel ca. 1 l/h; Strom 10 kWh/h; Propan ca. 0,8 kg/h. Für eine 100-kW-Halle bedeutet das: 10 l Diesel pro Stunde – ein 200-l-Tank reicht knapp einen Tag. Eine Elektrolösung in der gleichen Größe braucht 100 kWh/h und entsprechende Netz-Anschlussleistung. Im Bonner Wintereinsatz auf Rohbau-Baustellen ist Diesel-Indirekt-Heizung deshalb fast immer wirtschaftlicher als Elektro.",
+        },
+        {
+          question: "Wie warm darf bzw. soll ich beim Trocknen heizen?",
+          answer:
+            "Die Trocknungsgeschwindigkeit steigt mit der Temperatur, weil warme Luft mehr Feuchte aufnimmt. WTA empfiehlt 18–25 °C bei Kondens-Trocknern (höhere Temperatur überfordert das Gerät – Vereisung bzw. Abschaltung). Adsorptionstrockner arbeiten auch unter 10 °C. In beheizten Räumen mit Wandfliesen, Tapeten oder empfindlichen Bauteilen (typisch Bonner Altbauten in der Südstadt) sollte die Temperatur nicht über 30 °C steigen, sonst Spannungsrisse. Wir geben mit jedem Trockner eine Bedienungsanleitung mit konkreter Empfehlung mit.",
+        },
+        {
+          question: "Was kostet eine Trocknungsaktion in Bonn – und übernimmt die Versicherung das?",
+          answer:
+            "Tagespreise je Gerät tagesaktuell im Buchungsprozess; bei längeren Trocknungen (typisch 14–28 Tage) sind Wochen- und Monatsmieten deutlich günstiger. Wasserschäden werden in der Regel von der Wohngebäude- bzw. Hausratversicherung übernommen – Versicherer haben mit den meisten Sanierungsfirmen Direktabrechnung. Wenn du selbst sanierst, lass den Mietvertrag und die Strom-Messprotokolle aufheben; viele Versicherer erstatten die Mietkosten auf Vorlage des Vertrags. Bei großflächigen Schadenslagen im Ahrtal arbeiten wir mit lokalen Sanierungsbetrieben zusammen.",
+        },
+        {
+          question: "Wie sicher ist der Stromverbrauch eines Trockners im Wohnhaus?",
+          answer:
+            "Wir bauen auf Wunsch in jeden Mietvorgang einen kalibrierten Stromzähler ein (Hutschienen- oder Steckdosenzähler). So lässt sich der Verbrauch sauber dokumentieren und der Versicherung in Rechnung stellen. Faustwert: Ein Kondenstrockner mit 1 kW läuft 14 Tage = 336 Stunden = ca. 250 kWh (Trockner laufen nicht durchgehend, weil über Hygrostat geregelt). Bei 0,35 €/kWh Hausstrompreis entspricht das ca. 90 € – fast immer erstattungsfähig.",
+        },
+        {
+          question: "Wie laut sind Bautrockner – kann ich nachts schlafen?",
+          answer:
+            "Kondenstrockner liegen typisch bei 50–60 dB(A) in 1 m Abstand – vergleichbar mit einer Spülmaschine. In Schlafräumen empfehlen wir, das Gerät in einen Nebenraum zu stellen (offene Tür; den Türritz mit Handtuch verschließen verbietet sich – die Luft muss zirkulieren). Adsorptionstrockner sind ähnlich laut, Heizgebläse deutlich lauter (70–85 dB(A)). Im Bonner Wohngebiet gilt nachts der TA-Lärm-Richtwert 40 dB(A) am offenen Fenster der Nachbarn – Heizgebläse im Außenbereich nachts in Wohngebieten sind faktisch nicht zulässig.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Bauteilfeuchte verstehen: wann ist trocken wirklich trocken?",
+          paragraphs: [
+            "Bauteile haben eine charakteristische Ausgleichsfeuchte, die zur Raumluft passt. Zement-Estrich gilt nach CM-Methode als belegreif bei ≤ 2,0 CM-% (unbeheizt) bzw. ≤ 1,8 CM-% (beheizt) – ca. 4,5–5 Gew.-% Wassergehalt. Anhydrit-Estrich darf maximal 0,5 CM-% (unbeheizt) bzw. 0,3 CM-% (beheizt) haben. Holz: Möbel-Trockenholz 9–12 Gew.-%, frisches Schnittholz bis 80 %. Mauerwerk: Faustregel 5 Vol.-% rel. Feuchte (Darrgewicht-Methode).",
+            "Diese Messwerte sind die einzige verlässliche Belegreife-Aussage – die subjektive Einschätzung täuscht regelmäßig, weil die Oberfläche zuerst abtrocknet, das Bauteil aber innen noch Wasser führt. Wir vermieten in Bonn neben Trocknern auch CM-Messgeräte und Holzfeuchte-Messer; ohne Messung keine Belegreife.",
+          ],
+        },
+        {
+          h3: "Strom, Diesel, Gas: die Heizart entscheidet die Kosten",
+          paragraphs: [
+            "Im Rohbau-Wintereinsatz auf der Bonner Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh netto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan bei 0,12 €/kWh – beide brauchen Abgasführung bzw. Aufstellung außerhalb des Trocknungsraums.",
+            "Praxisregel: Räume bis 30 m³ und kurze Einsätze ⇒ Elektro-Heizgebläse oder Kondenstrockner; Hallen, Rohbauten und mehrwöchige Trocknung ⇒ Diesel-Indirektheizung. Für Innenausbau-Baustellen mit empfindlichen Materialien (Bonner Villenviertel, denkmalgeschützte Altbauten) empfehlen wir Wärmepumpentrockner – Trocknung und milde Heizung in einem Gerät, elektrisch genügsam.",
+          ],
+        },
+        {
+          h3: "Estrich-Dämmschicht-Trocknung: warum Druck/Vakuum oft Pflicht ist",
+          paragraphs: [
+            "Bei eingedrungener Feuchte in die Estrich-Dämmschicht (Mineralwolle, PUR/PIR, EPS) reicht reine Raumlufttrocknung nicht – die Feuchte sitzt unter einer dampfsperrigen Schicht. Standardvorgehen: Über Kernbohrungen (typisch 30–50 mm, Abstände 1,5–2 m) wird mit Seitenkanalverdichtern getrocknete Luft in die Dämmschicht gepresst (Druck-Verfahren) oder feuchte Luft abgesaugt (Vakuum-Verfahren, sauberer im Wohnbau).",
+            "Beim Vakuum-Verfahren ist ein HEPA-Filter zwingend, weil ggf. Schimmelsporen und Mineralfaser-Stäube mit ausgetragen werden. Wir liefern in Bonn komplette Sets aus Seitenkanalverdichter, HEPA-Filter, Schläuchen, Bohrlochrosetten und Kondensatabscheidern. Vor Beginn ist die Bohrlokation auf elektrische Heizleitungen zu prüfen – Wärmebildkamera oder Bestandsplan.",
+          ],
+        },
+        {
+          h3: "CO-Gefahr: warum Gasheizungen im Innenraum strikt zu sichern sind",
+          paragraphs: [
+            "Direktbefeuerte Gasheizer setzen pro kg verbranntem Propan ca. 1,6 kg Wasser, 3 kg CO₂ und – bei unvollständiger Verbrennung – signifikante Mengen CO frei. CO ist geruchlos, blockiert die Sauerstoffaufnahme im Blut und ist ab ca. 400 ppm akut tödlich. DGUV Information 213-056 fordert beim Einsatz von Gas-, Diesel- und Holzkohle-Verbrennungsgeräten in geschlossenen Räumen zwingend CO-Warner und ausreichende Frischluftzufuhr.",
+            "Sicherer Standardweg: indirekt befeuerte Heizgebläse (Brennraum außerhalb, Wärmetauscher, Abgas ins Freie) oder reine Elektro-Heizung. In Bonner Wintereinsätzen empfehlen wir grundsätzlich indirekt befeuerte Diesel-Heizgebläse – wirtschaftlich, sicher und für Hallen, Rohbauten und Baustellen-Trocknung erprobte Standardlösung.",
+          ],
+        },
+        {
+          h3: "Hochwasser Ahrtal/Rheinaue: was eine professionelle Trocknungslogistik leisten muss",
+          paragraphs: [
+            "Nach den Hochwasserereignissen im Ahrtal 2021 hat sich gezeigt, wie schnell und massiv Trocknungsleistung in der Region nachgefragt wird. Wirksame Bauteiltrocknung folgt einem viertaktigen Ablauf: (1) Schadensbild aufnehmen – wo steht Wasser, welche Bauteile betroffen, wie weit verteilt? (2) Trockner und Heizung dimensionieren – Raumvolumen, Schaden, Außentemperatur. (3) Trocknung mit Hygrostat-Steuerung und regelmäßiger CM-Kontrolle (alle 7 Tage). (4) Dokumentation aller Mess- und Verbrauchswerte für die Versicherung.",
+            "Wir vermieten am Standort Bonn-Mehlem komplette Trocknungspakete: Trockner, Heizgebläse, Hygro-Datenlogger, CM-Messgerät, Strom-Subzähler, Schläuche/Filter. Für gewerbliche Trocknungsbetriebe im Rhein-Sieg-Raum und Ahrtal bieten wir Rahmenmieten mit Bevorzugungsverfügbarkeit – im Winter (Heizungsausfall-Saison Januar–März) und nach Hochwasserlagen regelmäßig der Engpass. Anfragen unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // ABSPERR- & VERKEHRSTECHNIK
+    // Quellen: StVO § 45 Abs. 6, RSA 21, DIN EN 12352 (TL 1/2/7/8/9),
+    //   DIN EN 13422 (Standsicherheit), StVZO § 53.
+    //   Bonn: Halteverbote über das Straßenverkehrsamt der Stadt
+    //   Bonn (Aufstellung in der Regel mind. 72 h vor
+    //   Geltungsbeginn); RSA-konforme Anordnungen über das
+    //   Tiefbauamt; Veranstaltungs-Absperrung u. a. für Rheinaue,
+    //   Münsterplatz, Marktplatz, Beuel.
+    // -------------------------------------------------------------
+    absperrtechnik: {
+      faqs: [
+        {
+          question: "Wie melde ich ein Halteverbot in Bonn an?",
+          answer:
+            "Im öffentlichen Verkehrsraum (Straße, Bürgersteig, Parkstreifen) brauchst du eine verkehrsrechtliche Anordnung nach StVO § 45 Abs. 6, ausgestellt vom Straßenverkehrsamt der Stadt Bonn. Antrag online oder schriftlich, typische Bearbeitungszeit 7–14 Tage. Die Schilder müssen mindestens 72 Stunden vor Geltungsbeginn aufgestellt werden – sonst ist das parkende Fahrzeug nicht abschleppbar. Wir vermieten Halteverbots-Sets inkl. Fußplatte am Standort Bonn-Mehlem und übernehmen auf Wunsch Antrag, Aufstellung und Abbau als Komplettpaket nach Aufwand.",
+        },
+        {
+          question: "Reicht ein Halteverbot, oder brauche ich RSA-konforme Absicherung?",
+          answer:
+            "Sobald in den Verkehrsraum eingegriffen wird (Spurverengung, Bürgersteig­sperrung, Halbsperrung der Fahrbahn), reicht das Halteverbotsschild nicht – die RSA 21 verlangt einen geprüften Regelplan (A–D je nach Straßenklasse und Eingriff) mit Vorwarnung, Verengung, Leitbaken, Warnleuchten und Absperrung. Genehmigung erteilt das Straßenverkehrsamt, oft mit Auflage einer fachkundigen Aufsicht (AS-Schein). Wir vermieten alle RSA-Komponenten und vermitteln auf Anfrage Aufstellbetriebe mit AS-Schein.",
+        },
+        {
+          question: "Welche Warnleuchten muss ich abends und nachts setzen?",
+          answer:
+            "DIN EN 12352 unterscheidet Warnleuchten nach Typ: TL 1 (Dauerlicht, gering) als Markierungsleuchte, TL 2 (blinkend, mittlere Intensität) zur Hindernis-Warnung, TL 7/8 (hohe Intensität, gerichtet) zur Vorwarnung im Hauptverkehr. Auf innerörtlichen Bonner Baustellen mit geringer Geschwindigkeit reicht meist TL 2 gelb-blinkend; auf Hauptstraßen (B9, B56) und Bundesstraßen sind höhere Klassen Pflicht. Die RSA gibt den Mindest-Typ je Regelplan vor. Wir bevorraten in Bonn TL-Warnleuchten als Akku-LED-Variante mit langer Laufzeit.",
+        },
+        {
+          question: "Brauche ich eine mobile Ampelanlage, oder reichen Baken?",
+          answer:
+            "Bei Halbsperrung einer Straße über mehr als 50 m Länge ist nach RSA in der Regel eine mobile Lichtsignalanlage (LSA) Pflicht – bei kurzer Strecke kann auch Posten-Regelung oder Vorrang-Beschilderung (Z. 308) genehmigt werden. Welche Lösung möglich ist, regelt die verkehrsrechtliche Anordnung. Wir vermieten mobile Ampelanlagen mit Akku- und Solar-Versorgung in Bonn inkl. Auf- und Abbau auf Wunsch.",
+        },
+        {
+          question: "Wieviel Wind hält ein Verkehrsschild auf Fußplatte aus?",
+          answer:
+            "DIN EN 13422 fordert für mobile Verkehrszeichen Standsicherheit entsprechend der Windlastzone. Standard-Fußplatten 15 kg sichern Schilder bis ca. 100 km/h Wind in geschützter Lage; auf freier Strecke oder bei Schildgrößen über 600 mm sind 25 kg Fußplatten oder Doppel-Beschwerung Pflicht. Auf Bonner Rheinbrücken (Friedrich-Ebert-Brücke, Konrad-Adenauer-Brücke, Kennedybrücke) und auf der freien B9 an der Rheinaue können Ballast-Schwellen oder Verankerung nötig sein. Wir geben am Standort Bonn die passende Beschwerung mit.",
+        },
+        {
+          question: "Wer haftet, wenn jemand über einen Leitkegel fährt oder gegen ein Absperrgitter läuft?",
+          answer:
+            "Verantwortlich ist die in der verkehrsrechtlichen Anordnung benannte Person für die Arbeitsstelle. Sie muss RSA-Konformität sicherstellen und während der gesamten Geltungsdauer Sicht-/Funktionsprüfungen durchführen (Schilder umgefallen? Warnleuchten erloschen? Absperrgitter verschoben?). Wir vermieten Material; die Verantwortung trägt der Auftraggeber bzw. die ausführende Firma.",
+        },
+        {
+          question: "Veranstaltung in Bonn absichern – was bietet ihr für Rheinaue, Münsterplatz, Marathons?",
+          answer:
+            "Für temporäre Veranstaltungs-Absperrungen bieten wir Mojo- und Crowd-Control-Gitter (typ. 2,5 m × 1,1 m, verzinkt), Fußplatten-Schilder, Leitbaken, mobile Ampelanlagen und TL-Warnleuchten. Größere Veranstaltungen (Rhein in Flammen Rheinaue, Bonn Marathon, Pützchens Markt in Beuel, Beethovenfest) brauchen Sperr-Pakete mit hunderten Gittern und Vor-Ort-Logistik – das kalkulieren wir nach Veranstaltungsplan individuell. Vorlauf 4–6 Wochen ist sinnvoll.",
+        },
+        {
+          question: "Wie schnell kann ich Halteverbot, Baken und Leitkegel in Bonn bekommen?",
+          answer:
+            "Bei verfügbarem Material und Selbstabholung sind Halteverbots-Sets und Standard-Absperrmaterial am Standort Bonn-Mehlem in der Regel taggleich verfügbar (Mo–Fr 07:00–18:00, Sa 08:00–17:30). Für die verkehrsrechtliche Anordnung der Stadt Bonn rechne mit 7–14 Tagen Vorlauf. Bei Komplett-Auftrag (Antrag + Material + Aufstellung) ist die Genehmigung der Engpass; wir empfehlen 3 Wochen Vorlauf.",
+        },
+        {
+          question: "Was kostet ein Halteverbotsschild-Set in Bonn?",
+          answer:
+            "Das Halteverbotsschild-Set (2 Schilder Z. 283 + Zusatzschilder + Fußplatten) ist im Buchungsprozess tagesaktuell hinterlegt. Komplettpakete inkl. verkehrsrechtlicher Anordnung, Aufstellung 72 h vorab und Abbau kalkulieren wir nach Aufwand – telefonisch unter 0228 504 660 61. Faustregel: Eine vollständige Halteverbots-Aktion ist deutlich günstiger als das Abschleppen eines Falschparkers am Umzugstag.",
+        },
+        {
+          question: "Brauche ich beim Aufstellen der Schilder Warnschutzkleidung?",
+          answer:
+            "Ja. Sobald im Verkehrsraum gearbeitet wird, ist Warnschutz Klasse 2 nach EN ISO 20471 Pflicht (innerorts), auf Hauptstraßen und außerorts Klasse 3. Helm ist auf Arbeitsstellen mit Absturz- oder Anprallgefahr Pflicht. Die PSA muss der Aufsteller bzw. dessen Arbeitgeber stellen – wir vermieten ausschließlich das Verkehrssicherungs-Material.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "RSA 21 verstehen: Regelpläne sind keine Empfehlung, sondern Vorschrift",
+          paragraphs: [
+            "Die Richtlinien für die Sicherung von Arbeitsstellen an Straßen (RSA 21, in NRW eingeführt) sind das verbindliche Regelwerk für jede Verkehrssicherung im öffentlichen Raum. Sie unterscheiden vier Hauptkategorien: Innerörtliche Straßen (Teil A), Außerorts auf Landstraßen (Teil B), Autobahnen und ähnlich ausgebaute Straßen (Teil C), Sonderbauformen (Teil D). Für jede Kategorie gibt es Regelpläne (z. B. A I/8 – halbseitige Sperrung innerorts) mit konkreter Vorgabe zu Schildern, Leitkegeln, Warnleuchten und mobilen Ampeln.",
+            "Das Straßenverkehrsamt der Stadt Bonn prüft jede Anordnung gegen die RSA und entscheidet, welcher Regelplan zum Eingriff passt. Vom Aufsteller wird verlangt, dass das Material dem Regelplan entspricht, korrekt platziert ist und während der gesamten Geltungsdauer funktionsfähig bleibt. Bei Großbaustellen ist ein verkehrsrechtlich Verantwortlicher mit AS-Schein Pflicht.",
+          ],
+        },
+        {
+          h3: "Halteverbot in Bonn: vom Antrag bis zum Abschleppen",
+          paragraphs: [
+            "Wer in Bonn eine Umzugs- oder Bauzonen-Parkfläche braucht, durchläuft folgenden Ablauf: (1) Antrag auf verkehrsrechtliche Anordnung beim Straßenverkehrsamt der Stadt Bonn – online oder schriftlich, mit Skizze und Zeitfenster, Bearbeitungszeit 7–14 Tage. (2) Genehmigung mit konkreter Anordnung zur Beschilderung (Anzahl, Position, Geltungszeit). (3) Aufstellung mindestens 72 Stunden vor Geltungsbeginn – früher erlaubt, später macht das Abschleppen rechtlich angreifbar.",
+            "Im Geltungszeitraum dürfen falsch parkende Fahrzeuge umgesetzt oder abgeschleppt werden – die Stadt Bonn beauftragt einen Vertrags-Abschleppdienst. Der Auftraggeber muss in der Regel das Abschleppen telefonisch beim städtischen Verkehrsaußendienst auslösen. Wir vermieten in Bonn passende Schilder-Sets; auf Wunsch übernehmen wir Antrag, Aufstellung und Abbau als Komplettpaket.",
+          ],
+        },
+        {
+          h3: "Warnleuchten und Beleuchtung: warum die Wahl der TL-Klasse wichtig ist",
+          paragraphs: [
+            "DIN EN 12352 klassifiziert Warnleuchten nach Lichtstärke und Funktion: L1 (Dauerlicht zur Markierung), L2 (Blinklicht gelb, mittlere Intensität – Standard auf innerörtlichen Baustellen), L7/L8 (gerichtetes, hochintensives Blinklicht für Hauptstraßen und Autobahnen), L9 (Lauflicht-Pfeilanzeige für Spurverengungen). Der Regelplan der RSA gibt den Mindest-Typ vor.",
+            "Akku-LED-Warnleuchten haben Dauerleuchtzeiten von 100–400 Stunden und sind heute Standard – Kerzen- und Gaslampen seit Langem unzulässig. Wir bevorraten am Standort Bonn-Mehlem TL2- und TL7/8-Leuchten mit großem Akku-Pufferspeicher; bei mehrwöchigen Baustellen lohnt die Solar-Variante.",
+          ],
+        },
+        {
+          h3: "Stand- und Windsicherheit: warum Fußplatten kein Detail sind",
+          paragraphs: [
+            "DIN EN 13422 prüft mobile Verkehrszeichen unter definiertem Windkanal – ein Schild 800 × 800 mm auf 15-kg-Fußplatte ist für Windlastzonen 1–2 in geschützter Lage zugelassen, in Zone 4 oder auf Brücken nicht ausreichend. Bonn liegt in Windlastzone 1; in der Innenstadt mit Bebauung um die Schilder reichen 15-kg-Platten meist. Auf den Bonner Rheinbrücken, auf der Konrad-Adenauer-Brücke oder auf der freien Rheinaue-Promenade sowie bei Schildgrößen ab 900 × 900 mm sind 25-kg-Platten oder Doppel-Beschwerung Pflicht.",
+            "Umgestoßene Schilder sind nicht nur eine Sicherheitsfrage, sondern Versicherungs- und Haftungsfrage: Wer im öffentlichen Verkehrsraum ein Schild aufstellt, ist für dessen ordnungsgemäßen Stand verantwortlich – auch nachts, auch bei Wind. Mehrfach-tägliche Sichtkontrolle ist im Regelplan oft Auflage. Wir liefern auf Wunsch die richtige Fußplatten-Konfiguration zum konkreten Aufstellort.",
+          ],
+        },
+        {
+          h3: "Veranstaltungs-Absperrung in Bonn: von Mojo-Gitter bis Streckenlogistik",
+          paragraphs: [
+            "Veranstaltungs-Absperrung unterscheidet sich von Baustellen-Absperrung: Hier geht es um Crowd-Control (Trennung von Zuschauern und Akteuren), Notfall-Fluchtwege (Versammlungsstättenverordnung) und Verkehrslenkung um die Veranstaltung herum. Standard-Komponenten: Mojo-Barrieren (2,5 m × 1,1 m, ineinander gehängt), Bauzaun-Felder mit Vlies-Sichtschutz, Leitbaken zur Verkehrslenkung, Notfall-Tore.",
+            "Für Bonner Großveranstaltungen – Rhein in Flammen in der Rheinaue, Pützchens Markt in Beuel, Bonn Marathon, Beethovenfest, Stadtteilfeste in Bad Godesberg – kalkulieren wir vom Standort Bonn-Mehlem aus Material und Logistik. Wichtig: die Streckenlogistik (Anlieferung, Aufbau in Zeitfenstern, Abbau direkt nach Veranstaltungsende) ist meist aufwändiger als das Material selbst. Vorlauf 4–6 Wochen ist für mittlere und große Veranstaltungen sinnvoll. Beratung unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // NUTZFAHRZEUGE (Transporter 3,5 t mit Plane, Koffer,
+    //   Pritsche, Möbelkoffer)
+    // Quellen: StVZO § 32/§ 34, FeV Anlage 9 (Klasse B bis
+    //   3.500 kg, B96 4.250 kg, BE 7.000 kg, C1 ab 3.501 kg),
+    //   StVO § 22 + VDI 2700, EU-VO 561/2006 (Lenk-/Ruhezeiten
+    //   ab 3,5 t gewerblich). Umweltzonen NRW: grüne Plakette
+    //   in Bonn, Köln und im gesamten Rhein-Ruhr-Raum.
+    // -------------------------------------------------------------
+    nutzfahrzeuge: {
+      faqs: [
+        {
+          question: "Welcher Transporter ist der richtige – Kasten, Pritsche, Plane, Koffer?",
+          answer:
+            "Faustregel: Möbel und sperrige Güter ⇒ Kasten mit Mittel- oder Hochdach. Lange Profile, Holz, Baumaterial ⇒ Pritsche mit Plane (Be- und Entladung von drei Seiten, Länge bis 4,3 m). Witterungsempfindliche Ware in genormten Mengen ⇒ Koffer (Kistenladung, Treppensteig-Rolli möglich). Umzug ⇒ Möbelkoffer mit Hebebühne. Wir führen am Standort Bonn-Mehlem die gängigen Bauformen in 3,5-t-Klasse mit Führerschein B; spezielle Aufbauten kommen bei Bedarf aus Krefeld.",
+        },
+        {
+          question: "Was darf ich mit Führerschein B fahren?",
+          answer:
+            "Klasse B berechtigt zum Führen von Kraftfahrzeugen bis 3.500 kg zulässige Gesamtmasse (zGG) mit bis zu 9 Sitzplätzen einschließlich Fahrer. Zugkombinationen bis 3.500 kg zGG (Zugfahrzeug + Anhänger); mit B96 bis 4.250 kg, mit BE bis 7.000 kg. Unsere 3,5-t-Mietfahrzeuge fallen unter Klasse B. Sobald das Mietfahrzeug ein zGG über 3.500 kg hat (7,5-Tonner), ist Klasse C1 erforderlich – wir prüfen das vor Übergabe.",
+        },
+        {
+          question: "Welche Umweltplakette haben eure Transporter – darf ich in Bonner Innenstadt und Bad Godesberg?",
+          answer:
+            "Unsere 3,5-t-Mietflotte erfüllt mindestens Schadstoffklasse 6 (Euro 6) und trägt die grüne Umweltplakette – damit ist die Einfahrt in alle Umweltzonen in NRW (Bonn, Köln, Düsseldorf, Ruhrgebiet) zulässig. Diesel-Fahrverbote für ältere Euro-4/5-Klassen gelten in einzelnen Großstädten – mit unseren Mietfahrzeugen bist du davon nicht betroffen. Bei Umzügen in andere deutsche Großstädte (Hamburg, Berlin, Stuttgart) gelten teils strengere Auflagen; bitte Zielort vorab prüfen.",
+        },
+        {
+          question: "Welche Ladungssicherung ist beim Transporter Pflicht?",
+          answer:
+            "StVO § 22 und VDI 2700 fordern, dass die Ladung nicht verrutschen, umfallen, hin- und herrollen, herabfallen oder vermeidbaren Lärm erzeugen kann. Praxis: Zurrgurte mit ausreichender LC (Lashing Capacity – steht auf jedem Gurt-Label, typisch 1.500/2.500 daN), Anti-Rutsch-Matten (μ = 0,6 nach vorne), formschlüssige Verladung (Stirnwand-Stütze, Ladestäbe). Wir geben mit jedem Bonner Mietfahrzeug ausreichend Zurrgurte und Antirutsch-Matten mit. Bei Polizei- oder BAG-Kontrollen sind nicht gesicherte Ladungen ein Bußgeldtatbestand.",
+        },
+        {
+          question: "Wie viel Höhe und Länge messen eure Transporter?",
+          answer:
+            "Standard-Kasten L2H2 (mittellang, mittelhoch): ca. 5,4 m × 2,0 m × 2,5 m (L × B × H), Laderaum ca. 3,2 m × 1,7 m × 1,8 m. L3H2 (lang, mittel): ca. 5,9 m × 2,0 m × 2,5 m, Laderaum ca. 3,7 m × 1,8 m. Möbelkoffer 3,5 t: ca. 7,0 m × 2,3 m × 3,2 m, Laderaum ca. 4,3 m × 2,1 m × 2,2 m. Genaue Maße im Datenblatt. Wichtig in Bonner Innenstadt: Tiefgaragen (z. B. Marktgarage, Münsterplatz, Kaiserplatz) haben oft Höhenbegrenzungen unter 2,0 m – Koffer und Hochdach-Kasten passen dort nicht.",
+        },
+        {
+          question: "Wie funktioniert die Tankregelung – Diesel voll abgeben oder nicht?",
+          answer:
+            "Standard: Fahrzeug wird volltank übergeben und volltank zurückgenommen. Bei nicht volltank zurückgegebenen Fahrzeugen berechnen wir die fehlende Menge plus Service-Pauschale. AdBlue bei modernen Euro-6-Diesel-Transportern reicht typisch mehrere tausend km – Nachfüllen nur bei sehr langen Mieten nötig (1-Liter-Flasche an jeder Tankstelle). Wir geben bei Übergabe in Bonn Tankstand und Kilometerstand schriftlich aus.",
+        },
+        {
+          question: "Was kostet ein Transporter in Bonn – Stundenmiete oder Tagesmiete?",
+          answer:
+            "Tagespreise je Fahrzeug sind tagesaktuell im Buchungsprozess hinterlegt. Für kurze Umzüge bieten wir auf Anfrage Stunden- bzw. Halbtagesmiete (4 Stunden + Kilometer). Standard ist 24-Stunden-Miete inkl. Kilometerpauschale (typisch 100–200 km frei, jeder weitere Kilometer Aufpreis). Wochen- und Monatsmieten sind für Bonner Handwerker- und Gewerbekunden attraktiv – die effektive Tagesmiete sinkt deutlich.",
+        },
+        {
+          question: "Bin ich versichert, wenn etwas passiert?",
+          answer:
+            "Alle Mietfahrzeuge sind haftpflicht- und vollkasko-versichert (Selbstbeteiligung in unseren Mietbedingungen ausgewiesen). Auf Wunsch reduzierte SB gegen Aufpreis (Premium-Schutz). Nicht versichert sind grobe Fahrlässigkeit (Alkohol, Fahren ohne gültige Fahrerlaubnis, Überschreiten zulässiger Beladung, Höhenschaden durch Kollision mit Garageneinfahrt – Klassiker bei Hochdach-Kastenwagen in Bonner Tiefgaragen). Bei Schaden: Polizei rufen (auch bei Selbstunfall ohne Personenschaden), Unfallbericht mit Fotos, sofort am Standort Bonn unter 0228 504 660 61 melden.",
+        },
+        {
+          question: "Darf ich mit dem Mietfahrzeug ins Ausland fahren?",
+          answer:
+            "EU-Ausland und EWR (Schweiz, Norwegen, Liechtenstein) sind in der Regel ohne Aufpreis abgedeckt; bitte bei Anmietung anzeigen, damit die internationale Versicherungs-Bestätigung (grüne Karte) mitgegeben wird. Für die nahegelegenen Bonner Zielmärkte Belgien und Luxemburg gilt das ohne Einschränkung. Fahrten in Länder außerhalb des EWR (Türkei, Russland, Marokko) bedürfen vorheriger Genehmigung und sind teils ausgeschlossen.",
+        },
+        {
+          question: "Was muss ich bei der Rückgabe in Bonn beachten?",
+          answer:
+            "Fahrzeug volltank, sauber außen und innen (besenrein im Laderaum), inklusive aller Zurrgurte, Sackkarren und Decken, im Rückgabezeitfenster zurückbringen. Außerhalb der Öffnungszeiten (Mo–Fr 07:00–18:00, Sa 08:00–17:30) ist eine Schlüsseleinwurf-Box am Standort Bonn-Mehlem verfügbar – Schaden- und Tankprüfung erfolgen dann am nächsten Werktag mit Foto-Dokumentation. Verspätete Rückgabe wird stundenweise berechnet; kurze Vorabinfo per Telefon, wenn der Zeitplan kippt.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Fahrzeugauswahl: Volumen vs. Nutzlast vs. Beladbarkeit",
+          paragraphs: [
+            "Die richtige Transporter-Wahl folgt drei Größen, die selten gleichzeitig optimal sind. Volumen (m³) ist entscheidend für sperrige, leichte Ladung (Umzug, Verpackungen, Polster). Nutzlast (kg) ist die kritische Größe für schwere Ladung (Fliesen, Estrich, Werkzeug, Eisen). Beladbarkeit (Heckklappe vs. Schiebetür vs. Hebebühne) entscheidet über die Verladegeschwindigkeit.",
+            "Ein 3,5-t-Kastenwagen L3H2 bringt ca. 12 m³ Volumen und 1.000–1.300 kg Nutzlast – ideal für Umzüge mit normalem Hausrat in Bonner Quartieren wie Südstadt, Poppelsdorf oder Bad Godesberg. Ein Möbelkoffer 3,5 t mit Hebebühne bietet 18–22 m³, aber nur 700–950 kg Nutzlast – Vorsicht beim Transport schwerer Möbel (Klaviere, Aktenschränke). Eine 3,5-t-Pritsche mit Plane hat oft die höchste Nutzlast (1.200–1.500 kg), dafür schmaleres Volumen. Wir beraten am Standort Bonn-Mehlem nach konkretem Beladungsbild.",
+          ],
+        },
+        {
+          h3: "Ladungssicherung in der Praxis: VDI 2700 für Mietkunden",
+          paragraphs: [
+            "VDI 2700 fordert formschlüssige oder kraftschlüssige Sicherung. Formschlüssig heißt: die Ladung steht direkt an der Stirnwand oder ist mit Sperrbalken/Ladegittern zwischen den Rungen blockiert – die einfachste und sicherste Methode. Kraftschlüssig (Zurrgurte über die Ladung) funktioniert nur, wenn die Reibung zwischen Ladegut und Ladefläche ausreicht – deshalb Antirutsch-Matten unter jede schwere Last.",
+            "Beispiel: Eine Palette mit 800 kg auf glatter Holz-Ladefläche braucht ohne Antirutsch-Matte mindestens 4 Zurrgurte (jeweils LC 2.500 daN) im Niederzurr-Verfahren; mit Antirutsch-Matte (μ = 0,6) reichen 2 Gurte. Schwere, hohe Lasten zusätzlich mit Direktzurrung (diagonal nach unten) sichern, sonst kippt die Last beim Bremsen. Wir geben in Bonn zu jedem Transporter ein VDI-2700-Merkblatt mit – auf Wunsch erläutern wir die Sicherung vor Abfahrt persönlich.",
+          ],
+        },
+        {
+          h3: "Umweltzonen und Innenstadt-Logistik in Bonn",
+          paragraphs: [
+            "Die Bonner Umweltzone deckt im Wesentlichen das Stadtgebiet zwischen Beuel, Bonn-Zentrum, Bad Godesberg und der Rheinaue ab. Einfahrt nur mit grüner Umweltplakette (Schadstoffklasse 4) – unsere Euro-6-Mietflotte erfüllt diese Anforderung selbstverständlich. Diesel-Fahrverbote für ältere Klassen bestehen in Bonn derzeit nicht; in Köln-Süd (Liefergebiet aus Bonn) gilt aber stadtweit eine grüne Zone.",
+            "Im engen Bonner Innenstadtbereich (Altstadt, Münsterplatz, Marktplatz, Bad Godesberger Theaterplatz) gibt es Liefer-Zeitfenster (typisch 06:00–11:00 und 18:00–22:00), Poller und Fußgängerzonen mit Lieferverkehrserlaubnis. Wer hier abladen will, plant die Tour entsprechend. Tiefgaragen-Höhenbegrenzungen sind in der Bonner City fast überall unter 2,0 m – Möbelkoffer und Hochdach-Kasten passen nicht; Standardkasten L2H1 ist die Innenstadt-Lösung.",
+          ],
+        },
+        {
+          h3: "Lenk- und Ruhezeiten: ab wann gilt EU-Verordnung 561/2006?",
+          paragraphs: [
+            "EU-Verordnung 561/2006 (Lenk- und Ruhezeiten plus Tachograph-Pflicht) gilt für Fahrzeuge mit zGG über 3,5 t im gewerblichen Güterverkehr. Unsere 3,5-t-Mietfahrzeuge bleiben unterhalb dieser Grenze – kein digitaler Tachograph, keine Lenkzeitregelung über das StVG hinaus. Für gewerbliche Mieter heißt das: maximale Tagesarbeitszeit nach Arbeitszeitgesetz (8 h, in Ausnahmen 10 h), keine 4,5-h-Lenkzeit-Pause-Pflicht.",
+            "Wer hingegen einen 7,5-Tonner mietet (Klasse C1), fällt unter die Verordnung: Tageslenkzeit 9 h (zweimal pro Woche 10 h), Wochenlenkzeit max. 56 h, alle 4,5 h eine 45-Minuten-Pause, tägliche Ruhezeit 11 h. Außerdem Tachograph-Pflicht (digitale Fahrerkarte) und Berufskraftfahrer-Qualifikation (BKrFQG, Modul 95). Bei Bonner Mietkunden, die zwischen 3,5-t- und 7,5-t-Fahrzeug schwanken, ist das oft das entscheidende Argument für den 3,5-Tonner.",
+          ],
+        },
+        {
+          h3: "Standort Bonn-Mehlem: kurze Wege zur B9, A555, A565 und ins Rheinland",
+          paragraphs: [
+            "Die Filiale Bonn-Mehlem (Drachenburgstraße 8) liegt verkehrsgünstig direkt an der B9 mit kurzer Anbindung an A562, A565, A555 (Köln–Bonn) und A59 (Siebengebirge). Damit sind Köln-Süd, Bad Godesberg, Beuel, Sankt Augustin, Königswinter, Bad Honnef und das Ahrtal aus dem Stand erreichbar. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – eine Stunde früher als andere Standorte beim Start, samstags länger geöffnet.",
+            "Für Bonner Handwerker- und Umzugsbetriebe bieten wir Rahmenmieten mit festen Wochentarifen und Bevorzugungsverfügbarkeit – samstägliche Umzugslogistik und Wochen-Touren in den Köln-Bonn-Raum sind Kernanwendungen. Telefonische Beratung zur richtigen Fahrzeuggröße, Tachograph-Pflicht und Versicherungs-Konstellation unter 0228 504 660 61.",
+          ],
+        },
+      ],
+    },
   },
 
   // Mülheim und weitere Bonn-Tranchen folgen analog.
