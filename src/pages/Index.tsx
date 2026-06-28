@@ -22,6 +22,7 @@ const HeroSearch = lazy(() => import("@/components/home/HeroSearch").then(m => (
 const ProductSearchDialog = lazy(() => import("@/components/home/ProductSearchDialog").then(m => ({ default: m.ProductSearchDialog })));
 const LocationSelectDialog = lazy(() => import("@/components/solutions/LocationSelectDialog").then(m => ({ default: m.LocationSelectDialog })));
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import { useTranslation } from "react-i18next";
 import { 
   Truck, 
