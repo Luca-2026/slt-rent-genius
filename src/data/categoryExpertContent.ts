@@ -1603,6 +1603,524 @@ export const categoryExpertContent: ExpertContentMap = {
         },
       ],
     },
+
+    // -------------------------------------------------------------
+    // MÖBEL & ZELTE (Partyzelte, Pagodenzelte, Bierzeltgarnituren,
+    //   Stehtische, Stühle, Tische, Zubehör)
+    // Quellen: DIN EN 13782 (Fliegende Bauten – Zelte, Sicherheits-
+    //   anforderungen), DIN EN 13814 (Fliegende Bauten und
+    //   Anlagen für Veranstaltungsplätze und Vergnügungsparks),
+    //   SBauVO NRW Teil 5 (Versammlungsstätten), Musterrichtlinie
+    //   über den Bau und Betrieb Fliegender Bauten (MFlBauR 2015),
+    //   DIN EN 1991-1-4 (Windlasten), DIN 4102-1 / EN 13501-1
+    //   (Brandverhalten – B1/Cs3d0), DGUV Information 215-313
+    //   (Veranstaltungs- und Produktionsstätten).
+    // -------------------------------------------------------------
+    "moebel-zelte": {
+      faqs: [
+        {
+          question: "Welche Zeltgröße brauche ich für wie viele Gäste in Krefeld?",
+          answer:
+            "Faustregel: Bei Stehempfang (Stehtische, kein bestuhlter Bereich) rechnet man ca. 0,5–0,8 m² pro Person, beim Sitzdinner an Bierzeltgarnituren ca. 0,8–1,0 m², bei Bankett-Bestuhlung mit runden Tischen ca. 1,2–1,5 m². Für 60 Personen Sitzdinner ist damit ein 5 × 10 m Partyzelt (50 m²) bereits zu klein – realistisch sind 6 × 12 m. Wir beraten am Hauptsitz Krefeld zur passenden Größe inklusive Tanzfläche, Buffet- und Bar-Bereich.",
+        },
+        {
+          question: "Sind Partyzelte ab einer bestimmten Größe genehmigungspflichtig?",
+          answer:
+            "Für reine private Nutzung auf Privatgrund ohne öffentlichen Zugang sind die in Krefeld üblichen Garten-Partyzelte (bis 75 m²) regelmäßig genehmigungsfrei. Sobald die Veranstaltung öffentlich zugänglich ist oder das Zelt eine Grundfläche über 75 m² hat (§ 73 BauO NRW i. V. m. der Musterrichtlinie Fliegende Bauten), ist eine Ausführungsgenehmigung („Prüfbuch nach DIN EN 13782/13814“) erforderlich. Für unsere Mietzelte stellen wir auf Anfrage die Herstellerunterlagen (Standsicherheitsnachweis, Brandschutznachweis) zur Verfügung – die Genehmigung muss der Veranstalter beim Bauordnungsamt der Stadt Krefeld einholen.",
+        },
+        {
+          question: "Wie windstabil sind die Zelte – ab welcher Windgeschwindigkeit muss abgebaut werden?",
+          answer:
+            "Klassische Partyzelte (PE-Plane, Steckgestänge) sind nach Herstellerangabe in der Regel bis Windstärke 5 Bft (ca. 38 km/h / 10,7 m/s) zugelassen. Professionelle Pagoden- und Profizelte mit Aluminium-Tragwerk und PVC-Plane gemäß DIN EN 13782 sind bei korrekter Verankerung deutlich höher belastbar – die exakten Werte stehen im Prüfbuch des jeweiligen Zeltes. Verbindlich für die Auslegung ist DIN EN 1991-1-4 (Eurocode 1). Bei Sturmwarnung des DWD ist der Veranstalter verpflichtet, das Zelt zu räumen und ggf. abzubauen.",
+        },
+        {
+          question: "Wie wird ein Partyzelt fachgerecht verankert?",
+          answer:
+            "Auf Rasen/Erdreich werden Heringe mit mindestens 50 cm Länge je Eckpunkt eingeschlagen, bei größeren Zelten zusätzliche Sturmabspannungen. Auf Pflaster oder Asphalt kann nicht in den Boden geschlagen werden – hier arbeiten wir mit Ballastgewichten (Beton- oder Wassertanks), üblich sind 50–80 kg pro Eckpunkt für Standard-Partyzelte, bei Profizelten nach Standsicherheitsnachweis deutlich mehr (oft 150–300 kg). Wir liefern Heringe standardmäßig mit; Ballastgewichte können auf Anfrage organisiert werden.",
+        },
+        {
+          question: "Welche Brandschutzanforderungen gelten für Zeltplanen und Möbel?",
+          answer:
+            "Bei genehmigungspflichtigen Fliegenden Bauten muss die Plane mindestens schwer entflammbar nach DIN 4102-1 Klasse B1 bzw. EN 13501-1 Klasse C-s3,d0 sein – Nachweis über das Prüfbuch des Herstellers. Für Tischdecken und Dekomaterialien in Versammlungsstätten nach SBauVO NRW Teil 5 gilt dieselbe Anforderung. Unsere vermieteten Profizelte erfüllen B1; klassische Garten-Partyzelte (privat genutzt) sind regelmäßig nicht zertifiziert – das ist bei rein privater Nutzung außerhalb von Versammlungsstätten zulässig.",
+        },
+        {
+          question: "Wie viele Bierzeltgarnituren brauche ich für meine Veranstaltung?",
+          answer:
+            "Eine Standard-Bierzeltgarnitur (Tisch 220 × 50 cm + 2 Bänke à 220 × 25 cm) bietet 8–10 Sitzplätze (4–5 je Bank). Für 60 Gäste sind also 6–8 Garnituren realistisch. Für reine Bewirtungsbereiche (Bier-/Wein-Stehausschank) reichen Stehtische à 4–6 Personen. Wir empfehlen am Standort Krefeld immer 10–15 % Reserveplätze einzuplanen, weil sich Gruppen ungleich verteilen.",
+        },
+        {
+          question: "Welche Stuhl- und Tischformate sind für ein Bankett oder eine Hochzeit üblich?",
+          answer:
+            "Für Bankett werden meist runde Tische mit 160 cm Durchmesser eingesetzt (8–10 Personen pro Tisch) oder rechteckige Bankett-Tische 180/200 × 80 cm (6–8 Personen). Als Bestuhlung sind Bankett-Stühle (gepolstert, stapelbar) oder Chiavari-Stühle (klassisch, holzfarben) Standard. Wir führen am Hauptsitz Krefeld Bankett-Stühle und Tische in haushaltsüblichen Mengen; Sonderformate (Lounge-Möbel, Loungesessel, Theken-Sets) auf Anfrage.",
+        },
+        {
+          question: "Wie ist der Auf- und Abbau organisiert – mit oder ohne Personal?",
+          answer:
+            "Zelte bis 5 × 10 m können geübte Selbstbauer mit 3–4 Personen in 1,5–2 Stunden aufbauen. Ab 6 × 12 m und für alle Pagoden- und Profizelte empfehlen wir den Aufbauservice durch unser Team – aus Sicherheits- und Standsicherheitsgründen (Standsicherheitsnachweis erfordert fachgerechten Aufbau). Möbel werden in der Regel auf Paletten geliefert; Auf- und Abbau der Möbel übernimmt üblicherweise der Veranstalter. Aufbauservice kalkulieren wir nach Aufwand und Anfahrt – Anfrage über unser Buchungsformular am Standort Krefeld.",
+        },
+        {
+          question: "Was ist beim Heizen oder Beleuchten im Zelt zu beachten?",
+          answer:
+            "Heizpilze und Gas-Heizstrahler sind in geschlossenen Zelten nicht zulässig (CO-Gefahr, DGUV 213-056). Für beheizte Zelte gibt es Direktluft-Heizgeräte mit Außenaufstellung und Warmluftschlauch ins Zelt; in unserer Kategorie Heizung & Trocknung verfügbar. Beleuchtung über Niedervolt-LED oder vorschriftsmäßig installierte 230-V-Anlagen nach DIN VDE 0100-711. Offene Flammen (Kerzen, Fackeln) im B1-Zelt nur mit feuersicherer Halterung und Abstand zu Planen – siehe SBauVO NRW Teil 5.",
+        },
+        {
+          question: "Bis wann muss ich Zelt und Möbel reservieren – besonders in der Hochsaison?",
+          answer:
+            "Für die Hauptsaison Mai–September empfehlen wir am Standort Krefeld eine Vorlaufzeit von mindestens 4–6 Wochen, für Großzelte und komplette Hochzeits-Setups 8–12 Wochen. Spontane Termine sind möglich, aber Verfügbarkeit dann eingeschränkt. Tagesaktuelle Verfügbarkeit zeigen wir im Buchungsprozess pro Artikel; verbindliche Reservierung erst nach Auftragsbestätigung.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Fliegende Bauten in NRW: Prüfbuch, Genehmigung und Veranstalterpflichten",
+          paragraphs: [
+            "Ein „Fliegender Bau" im Sinne des § 73 BauO NRW ist ein Bau, der wiederholt aufgestellt und zerlegt wird – dazu zählen Partyzelte ab 75 m² Grundfläche, Bühnen ab 5 m Tiefe und alle Tribünen. Für solche Bauten verlangt die Musterrichtlinie über den Bau und Betrieb Fliegender Bauten (MFlBauR 2015) eine Ausführungsgenehmigung. Diese wird vom Hersteller einmal beantragt, in das Prüfbuch eingetragen und ist bundesweit gültig.",
+            "Der Veranstalter muss das Prüfbuch am Aufstellungsort vorhalten und die jeweilige Gebrauchsabnahme bei der zuständigen Bauaufsicht (in Krefeld: Fachbereich Bauaufsicht) anzeigen bzw. bei größeren Zelten beantragen. Wir stellen für unsere genehmigungspflichtigen Mietzelte das Prüfbuch des Herstellers zur Verfügung – die Anzeige bzw. Genehmigung beim Bauamt Krefeld bleibt Aufgabe des Veranstalters.",
+          ],
+        },
+        {
+          h3: "Standsicherheit und Windlasten nach DIN EN 1991-1-4",
+          paragraphs: [
+            "Krefeld liegt in der Windzone 2 nach DIN EN 1991-1-4/NA mit einer Bezugsgeschwindigkeit von 25 m/s (= 90 km/h) im Binnenland. Die Standsicherheitsnachweise unserer Profizelte berücksichtigen diese Last; klassische Garten-Partyzelte sind hingegen typischerweise nur bis 38 km/h Wind ausgelegt (Herstellerangabe). Für die Praxis bedeutet das: bei aufziehender Schlechtwetterlage rechtzeitig DWD-Warnungen prüfen und im Zweifel das Zelt vorsorglich räumen.",
+            "Verankerung ist ein zweiter sicherheits­relevanter Punkt. Auf Rasen reichen Standard-Heringe; auf versiegelten Flächen müssen Ballaste eingesetzt werden, deren Masse aus dem Standsicherheitsnachweis hervorgeht. Verankerungspunkte und Ballastlasten sind nicht verhandelbar – sie sichern Personen, nicht nur das Zelt.",
+          ],
+        },
+        {
+          h3: "Brandverhalten: B1, Cs3d0 und die SBauVO NRW",
+          paragraphs: [
+            "Bei Versammlungsstätten nach SBauVO NRW Teil 5 (ab 200 Personen in Räumen, ab 1.000 Personen im Freien) müssen Planen, Vorhänge und Dekorationsmaterialien mindestens „schwer entflammbar" sein – das entspricht der alten DIN 4102-1 Klasse B1 bzw. der EU-Brandklasse C-s3,d0 nach DIN EN 13501-1. Maßgeblich ist der Nachweis über das Materialdatenblatt mit Prüfzeugnis.",
+            "Unsere Profi-Pagodenzelte und großen Partyzelte erfüllen diese Klasse und werden mit Datenblatt geliefert. Für Tischdecken und Dekoration empfehlen wir, beim Stoff- oder Dekoanbieter ein B1-Zertifikat einzufordern – der Veranstalter haftet im Brandfall mit.",
+          ],
+        },
+        {
+          h3: "Bestuhlungs- und Flächenplanung: realistische Quadratmeter pro Person",
+          paragraphs: [
+            "Die häufigste Fehleinschätzung bei Eigenplanung von Hochzeiten und Firmenfeiern ist eine zu enge Bestuhlung. Verbindliche Orientierungswerte aus der Versammlungsstätten-Praxis: Stehempfang 0,5 m²/Person, Reihenbestuhlung (Trauung, Vortrag) 0,8 m²/Person, Bankett mit runden Tischen 1,2–1,5 m²/Person, Tanzfläche zusätzlich 0,5–0,8 m²/tanzendem Gast.",
+            "Hinzu kommen Funktionsflächen: Buffet 1,5–2 m² pro lfd. Meter Buffetkante, Bar 4–6 m² je Theke, DJ/Band-Bühne 6–15 m² je nach Setup. Wir kalkulieren das im Beratungsgespräch am Hauptsitz Krefeld konkret für deine Gästezahl und Eventform.",
+          ],
+        },
+        {
+          h3: "Lieferung im Niederrhein-Raum: was wir abdecken",
+          paragraphs: [
+            "Vom Hauptsitz Krefeld-Fichtenhain (Anrather Straße 291) liefern wir Zelte und Eventmöbel im gesamten Niederrhein- und Düsseldorf-Korridor: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Für größere Setups (komplette Hochzeit, Firmenjubiläum, Tagung) kalkulieren wir Anlieferung, Aufbau, Abbau und Rückführung als Paket – das spart dir Logistik und stellt sicher, dass die Standsicherheit gegeben ist.",
+            "Selbstabholung von Bierzeltgarnituren, Stehtischen, Stühlen und Kleinzelten ist möglich; benötigt wird ein passender Anhänger oder Transporter (auf Wunsch auch mietbar, siehe Kategorie Anhänger). Größere Zelte ab 5 × 10 m vermieten wir aus Sicherheitsgründen nur mit Lieferung und Aufbau durch unser Team.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // GESCHIRR, GLÄSER & BESTECK (Porzellan, Trinkgläser, Sektgläser,
+    //   Champagnergläser, Besteck-Sets, Servierplatten)
+    // Quellen: VO (EG) 852/2004 (Lebensmittelhygiene), Lebensmittel-
+    //   hygiene-VO (LMHV), DIN 10510/10512 (gewerbliche Geschirr-
+    //   spülung), DIN 10516 (Reinigung im Lebensmittelbereich),
+    //   BfR-Empfehlung XXXVI (Materialien für Lebensmittelkontakt),
+    //   VO (EG) 1935/2004 (Lebensmittelkontakt), Bedarfsgegenstände-
+    //   verordnung (BedGgstV).
+    // -------------------------------------------------------------
+    "geschirr-glaeser-besteck": {
+      faqs: [
+        {
+          question: "Wie viele Teller, Gläser und Besteck-Sets brauche ich pro Gast?",
+          answer:
+            "Für ein klassisches Drei-Gänge-Menü rechnet man pro Gast: 3 Teller (Vorspeise/flach, Hauptgang, Dessert), 1 Suppentasse, 3 Bestecksätze (Vorspeise, Hauptgang, Dessert) und 3 Gläser (Wasser, Wein, Sekt/Bier). Für Buffet ohne fixe Gänge eher 2–3 Teller pro Gast (Mehrfachnutzung). Für Sektempfang vor dem Essen 1,5–2 Sektgläser pro Gast einplanen. Wir empfehlen am Standort Krefeld eine Reserve von 10–15 % – Gläser gehen statistisch häufiger zu Bruch als Geschirr.",
+        },
+        {
+          question: "Wird das Geschirr gespült geliefert oder muss ich selbst spülen?",
+          answer:
+            "Unser Mietgeschirr wird gewerblich nach DIN 10510/10512 gespült und geliefert – einsatzbereit verpackt in Stiegen. Nach der Veranstaltung gibst du es grob entleert (Speisereste abgeklopft) zurück; das Nachspülen übernehmen wir. Auf Wunsch kannst du gegen Aufpreis selbst nachspülen – dann muss das Geschirr trocken und schmutzfrei zurückkommen. Konditionen pro Artikelgruppe im Buchungsprozess hinterlegt.",
+        },
+        {
+          question: "Welches Glas für welches Getränk – die kurze Eventliste",
+          answer:
+            "Faustregel: Sekt/Champagner → Sektflöte (Tulip) 17–20 cl, Wein weiß → Weißweinkelch 28–35 cl, Wein rot → Burgunderglas 45–60 cl, Wasser → Becher oder Wasserkelch 22–28 cl, Bier → Pils-Tulpe 30 cl (Norddeutsch) bzw. Stange 20 cl (Rheinland), Longdrink → 30–40 cl Tumbler. Für Krefelder Hochzeiten halten wir die Standardformate als Sets vor; spezielle Champagner- und Cocktailgläser auf Anfrage.",
+        },
+        {
+          question: "Aus welchem Material sind die Mietgläser – Echtglas oder Polycarbonat?",
+          answer:
+            "Standardmäßig vermieten wir Echtglas (Kalk-Natron-Glas) – optisch und haptisch das Original und für Hochzeiten/Bankette die richtige Wahl. Für Outdoor-Events ohne befestigte Flächen, in Schwimmbädern oder bei Kinder-Events können Polycarbonat-Gläser sinnvoll sein (bruchsicher, lebensmittelecht, optisch sehr nah an Glas). Wir beraten am Standort Krefeld zur passenden Variante.",
+        },
+        {
+          question: "Was passiert bei Bruch oder Verlust?",
+          answer:
+            "Bruch in haushaltsüblicher Höhe (typisch 1–3 % bei Gläsern) ist in der Mietkalkulation eingerechnet und kostenfrei. Über diesen Anteil hinausgehender Bruch oder Verlust wird zum Wiederbeschaffungspreis abgerechnet – die Stückpreise sind transparent in den AGB hinterlegt. Wir empfehlen, Gläser und Besteck nach dem Event in den Lieferstiegen sortiert zurückzustellen, das vereinfacht die Zählung erheblich.",
+        },
+        {
+          question: "Sind die Materialien für den Lebensmittelkontakt zugelassen?",
+          answer:
+            "Ja. Sämtliches Geschirr, Besteck und alle Gläser entsprechen der EU-Rahmenverordnung (EG) 1935/2004 sowie der deutschen Bedarfsgegenstände-Verordnung (BedGgstV). Edelstahlbesteck ist üblicherweise aus 18/10 (X5CrNi18-10), Porzellan ist hartgebranntes Hotelporzellan, Gläser sind aus Kalk-Natron-Glas. Auf Anfrage stellen wir das Konformitätsdokument des Herstellers bereit.",
+        },
+        {
+          question: "Welche Mengen führen wir am Standort Krefeld vor Ort?",
+          answer:
+            "Am Hauptsitz Krefeld halten wir die gängigen Sortimente für Veranstaltungen bis ca. 200 Personen direkt vor Ort vor (Hotelporzellan, Wein-/Wasser-/Sektgläser, 18/10-Besteck-Sets, Servierplatten, Kannen, Tabletts). Für Großevents über 200 Personen disponieren wir größere Stückzahlen mit ein paar Tagen Vorlauf. Konkrete Verfügbarkeit pro Artikelgruppe im Buchungsprozess.",
+        },
+        {
+          question: "Wie wird Geschirr transportiert und gelagert?",
+          answer:
+            "Wir liefern Geschirr in stapelbaren Profi-Stiegen (Geschirrkörben), Gläser in Glas-Gitterkisten (jedes Glas in eigener Fachzelle, bruchsicher). Diese Behältnisse bleiben während der Mietzeit beim Kunden und werden zur Abholung wieder befüllt. Vorteil: kein Auspacken nötig, direkter Einsatz – nach dem Event einfach grob entleeren und zurück in die Stiege/Kiste stellen.",
+        },
+        {
+          question: "Kann ich Geschirr und Möbel im Paket mieten?",
+          answer:
+            "Ja – wir stellen für Krefelder Veranstaltungen häufig komplette Setups zusammen: Zelt + Bierzeltgarnituren + Geschirr + Gläser + Besteck + Servierware aus einer Hand. Vorteil: ein Liefer-/Abholtermin, eine Rechnung, ein Ansprechpartner. Im Beratungsgespräch kalkulieren wir das Paket für deine konkrete Gästezahl und -form (Stehempfang, Bankett, Buffet, Brunch).",
+        },
+        {
+          question: "Wie früh sollte ich Geschirr für eine Hochzeit reservieren?",
+          answer:
+            "Für Hochzeiten in der Hauptsaison (Mai–September, plus Dezember) empfehlen wir die Reservierung 6–10 Wochen vor dem Termin. Für die genaue Stückzahl reicht eine Vorab-Schätzung – die finale Menge stimmen wir typischerweise 10–14 Tage vor dem Termin ab, wenn die finale Gästezahl steht.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Mengenplanung für Hochzeiten und Bankette – konkrete Beispielrechnung",
+          paragraphs: [
+            "Beispiel 80-Personen-Hochzeit mit Sektempfang, Drei-Gänge-Menü und Abendbuffet: 80 × 2 Sektgläser (Empfang + Reserve) = 160 Sektflöten. 80 × 1 Wasserglas + 80 × 1 Weinglas weiß + 80 × 1 Weinglas rot = 240 Stielgläser. Für das Menü 80 × 3 Teller (Vorspeise, Haupt, Dessert) + 80 × 1 Suppentasse = 320 Teile Porzellan. Besteck: 80 × 3 Sätze (Vorspeise, Haupt, Dessert) à 3 Teile = 720 Besteckteile.",
+            "Plus 10–15 % Reserve, plus Servierware (Salatschüsseln, Platten, Saucieren, Brotkörbe), plus Kaffeegedeck (Tasse, Untertasse, Kaffeelöffel, Kuchenteller, Kuchengabel) für die Tortenphase. Solche Setups stellen wir am Standort Krefeld auf Basis dieser Faustregeln zusammen – inklusive Buffer für Mehrgang-Wechsel ohne Spülpause.",
+          ],
+        },
+        {
+          h3: "Hygiene und Spülstandards: DIN 10510/10512 in der Praxis",
+          paragraphs: [
+            "Gewerbliches Geschirrspülen in Deutschland ist über DIN 10510 (Gläserspülen) und DIN 10512 (Geschirrspülen) geregelt. Beide Normen schreiben Mindesttemperaturen und Wasserhärte-/Reinigerwerte vor: Klarspülung bei 80–85 °C, Reinigung bei 55–65 °C, definierte Dosierung von Reiniger und Klarspüler. Damit wird die mikrobiologische Reinheit nach VO (EG) 852/2004 sichergestellt – verbindlich für jeden gewerblichen Mietkreislauf.",
+            "Unser Spülprozess erfüllt diese Normen. Für dich heißt das praktisch: keine Nachspül-Pflicht vor Rückgabe, kein Risiko hinsichtlich Hygiene gegenüber deinen Gästen. Wer Reste antrocknen lässt, riskiert allerdings Aufpreise für Sonderreinigung – grob entleeren bleibt wichtig.",
+          ],
+        },
+        {
+          h3: "Materialkunde Glas: Kalk-Natron vs. Kristallglas vs. Polycarbonat",
+          paragraphs: [
+            "Kalk-Natron-Glas ist der Standard im Eventbereich: robust, spülmaschinenfest, lebensmittelecht, optisch ansprechend, günstig in der Wiederbeschaffung. Kristallglas (Bleikristall oder bleifreies „Crystal") ist optisch hochwertiger (höherer Brechungsindex, mehr Brillanz), aber empfindlicher und teurer – wird im Mietkreislauf selten eingesetzt. Polycarbonat (PC) ist bruchsicher, optisch sehr nah an Glas, lebensmittelecht – ideal für Pool, Garten, Kinder, Outdoor-Events ohne befestigte Flächen.",
+            "Für klassische Krefelder Hochzeiten setzen wir Kalk-Natron-Echtglas ein – die gewohnte Optik und Haptik. Polycarbonat-Sets bieten wir für Außenbereiche und besondere Anlässe (Open-Air, Familienfeier mit Kindern, Yacht) an.",
+          ],
+        },
+        {
+          h3: "Besteck: 18/10, 18/0 und Stahlsorten im Vergleich",
+          paragraphs: [
+            "„18/10" bezeichnet die Legierung: 18 % Chrom (Korrosionsschutz) und 10 % Nickel (Glanz, Bearbeitbarkeit) – Werkstoff X5CrNi18-10, der Standard für Hotelbesteck. „18/0" ist nickelfrei, magnetisch, etwas matter – günstiger, aber für Bankett-Hochzeiten unüblich. Reine Edelstahlsorten ohne Chrom sind nicht spülmaschinenfest.",
+            "Wir vermieten am Standort Krefeld ausschließlich 18/10-Besteck in Hotelqualität. Vorteil: spülmaschinenfest auch bei härterem Wasser (Krefelder Trinkwasser liegt bei 17–19 °dH), kein Anlaufen, langlebig – auch nach 100 Spülgängen sieht das Besteck noch hochwertig aus.",
+          ],
+        },
+        {
+          h3: "Lagerung, Transport und Bruchquoten in der Mietpraxis",
+          paragraphs: [
+            "Wir liefern Gläser in Glas-Gitterkisten (50er- und 25er-Einsätze, je nach Glasform), Porzellan in Geschirrkörben mit Trennzwischenlagen. Diese Verpackung minimiert Bruch im Transport. Während der Veranstaltung sind die häufigsten Bruchquellen: Servieren auf Schräglage, harte Untergründe (Steinplatten, Stahltische), Kinder und – statistisch nachweisbar – die letzte Stunde nach Mitternacht.",
+            "Statistisch entstehen bei normalen Krefelder Hochzeitsabläufen Bruchquoten von 1–3 % bei Gläsern, < 1 % bei Porzellan, ≈ 0 % bei Besteck. Diese Werte sind in unserem Mietpreis eingerechnet; nur Bruch deutlich darüber wird gesondert berechnet. Tipp: leere Gläser zeitnah einsammeln lassen – das senkt die Bruchquote spürbar.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // SPEZIALEFFEKTE (Nebelmaschinen, Hazer, CO2-Effekte,
+    //   Konfetti-/Streamer-Shooter, Bubble Maker, Pyro-Effekte)
+    // Quellen: 1. BImSchV (Bundesimmissionsschutz – Anlagen),
+    //   DGUV Information 215-313 (Veranstaltungs- und Produktions-
+    //   stätten für szenische Darstellung), DGUV Regel 113-004
+    //   (Behälter, Silos und enge Räume – Sauerstoffmangel CO2),
+    //   ASR A3.6 (Raumlüftung), VStättVO/SBauVO NRW Teil 5,
+    //   1. SprengV i. V. m. SprengG (Pyrotechnik – Befähigungs-
+    //   schein nach § 20 SprengG, Klasse T1/T2), DIN 56950
+    //   (Veranstaltungstechnik – Maschinerie), DIN EN 12198
+    //   (Gefährdungen durch Strahlung), DGUV Information 215-310
+    //   (Laser-Einrichtungen für Show- und Projektionszwecke).
+    // -------------------------------------------------------------
+    spezialeffekte: {
+      faqs: [
+        {
+          question: "Sind Nebelmaschinen und Hazer in geschlossenen Räumen erlaubt?",
+          answer:
+            "Ja, sofern die eingesetzten Nebelfluide herstellerseitig für Veranstaltungseinsatz freigegeben sind (Wasser-Glykol-Basis bzw. Wasser-Glycerin-Basis, lebensmittelechte Komponenten) und die Raumlüftung gemäß ASR A3.6 (Arbeitsstättenregel Lüftung) sichergestellt ist. DGUV Information 215-313 gibt konkrete Hinweise zur szenischen Nebelnutzung. Wichtig: Brandmelder müssen für die Dauer des Nebeleinsatzes durch eine Brandsicherheitswache überbrückt werden – das stimmen wir am Standort Krefeld mit dem Veranstalter ab.",
+        },
+        {
+          question: "Wo liegt der Unterschied zwischen Nebel, Haze und Dunst?",
+          answer:
+            "Nebel (Fog) ist eine dichte, sichtbare Wolke – ideal für Effekt-Cues, Bühnenbilder, Tanzeinlagen. Haze ist ein feiner, langanhaltender Schwebenebel, der Licht- und Laserstrahlen sichtbar macht (Stadium- und Konzert-Standard). Dunst ist Übergang zwischen Haze und sehr feinem Nebel. Wir führen am Standort Krefeld klassische Nebelmaschinen (DMX-gesteuert), Profi-Hazer (Wasserbasis) und kleine Bodennebel-Geräte für die jeweilige Anwendung.",
+        },
+        {
+          question: "Welche Sicherheitsabstände gelten bei CO2-Effekten?",
+          answer:
+            "CO2-Effekte (Jets, Cryo-Guns, Stage-Cooler) arbeiten mit flüssigem Kohlendioxid aus Druckflaschen. Hauptgefahr ist Sauerstoffverdrängung in geschlossenen Räumen (CO2 ist schwerer als Luft) sowie Kälteverbrennungen am Strahlrohr (–78 °C). DGUV Regel 113-004 gibt Grenzwerte vor: ab 4 Vol.-% CO2 Lebensgefahr. Praktisch bedeutet das: CO2-Effekte nur in gut belüfteten Räumen oder Außenbereichen, Sicherheitsabstand 3 m zum Publikum, kein Einsatz in Tiefgaragen, Bühnenkellern und Räumen unter Erdniveau ohne Zwangsbelüftung.",
+        },
+        {
+          question: "Brauche ich für Pyrotechnik auf einer Veranstaltung einen Befähigungsschein?",
+          answer:
+            "Ja. Pyrotechnische Effekte der Kategorie T1 (Bühnenpyrotechnik mit geringer Gefahr) und T2 (für nur fachkundige Personen) dürfen nur von Personen mit Befähigungsschein nach § 20 SprengG abgebrannt werden. Klasse F (Feuerwerk) ist davon getrennt geregelt. Wir vermieten Standard-Eventeffekte (Nebel, Haze, CO2, Konfetti, Streamer, Bubble) ohne Befähigungsschein-Pflicht; klassische Pyrotechnik (Bühnenfontänen, Funkenfontänen, Komet-Effekte) vermieten wir nur an Kunden mit nachgewiesenem Befähigungsschein oder vermitteln einen lizenzierten Pyrotechniker.",
+        },
+        {
+          question: "Wie funktionieren Konfetti- und Streamer-Shooter – Druckluft oder CO2?",
+          answer:
+            "Handgeräte (Party-Popper, Hand-Shooter bis ca. 50 cm Wurfweite) sind mechanisch federgespannt. Stationäre Bühnen-Shooter arbeiten mit Druckluft (Kompressor) oder elektrisch gezündeten Druckkartuschen. Profi-Stadium-Shooter werden über CO2-Druckflaschen versorgt und erreichen Wurfweiten bis 20 m. Wir führen am Standort Krefeld den klassischen Veranstaltungsbedarf (Hand- und Standgeräte für Hochzeit und Firmenfeier); Bühnen-Stadium-Shooter auf Projektbasis.",
+        },
+        {
+          question: "Welche Konfetti- und Streamer-Materialien sind umweltverträglich?",
+          answer:
+            "Klassisches Konfetti ist Papier (FSC-zertifiziert, biologisch abbaubar) oder Metallfolie (Mylar – glänzend, aber nicht biologisch abbaubar). Für Outdoor-Veranstaltungen, Hochzeiten in Naturgebieten und Open-Air-Events empfehlen wir Papierkonfetti aus FSC-Zellstoff – wirft sich gut, regnet schön, ist biologisch abbaubar. Foliekonfetti nur in Innenräumen einsetzen (Aufräumaufwand und Umweltbelastung).",
+        },
+        {
+          question: "Welche Brandmelder-Konsequenzen haben Nebel und Haze?",
+          answer:
+            "Optische Rauchmelder (Standard in Hotels, Sälen, Industriehallen) sprechen auf Nebel und Haze an. Bei Veranstaltungen mit Nebeleinsatz muss die Brandmeldeanlage temporär durch eine Brandsicherheitswache (Feuerwehr-Mitarbeiter oder zertifizierter Sicherheits­wachdienst nach DGUV Vorschrift 17) ersetzt werden. Diese Wache muss vorab beim Betreiber/Bauamt angemeldet werden. Für Krefelder Veranstaltungsstätten ist das Routine; wir geben bei Buchung Hinweise.",
+        },
+        {
+          question: "Wie laut sind CO2-Jets und Konfetti-Shooter – ist Gehörschutz nötig?",
+          answer:
+            "Druckluft-CO2-Jets erzeugen kurzzeitig 110–125 dB(C) Spitzenpegel. Nach DIN 15905-5 sind Spitzenpegel > 137 dB(C) ohne Gehörschutz für das Publikum unzulässig – die typischen Bühnen-CO2-Jets liegen darunter, aber Personen direkt am Effekt sollten Gehörschutz tragen. Konfetti-Shooter mit Druckluft liegen bei 100–110 dB(C), eher unkritisch.",
+        },
+        {
+          question: "Sind Seifenblasen-Maschinen für Innenräume und Kinder geeignet?",
+          answer:
+            "Ja, sofern Profi-Bubble-Fluid auf Wasser-Tensid-Basis ohne reizende Zusatzstoffe verwendet wird (lebensmittelechte Tenside, nach REACH unbedenklich). Achtung: Seifenblasen hinterlassen einen rutschigen Film auf glatten Böden (Parkett, Steinplatten, Fliesen) – Sturzgefahr! Wir empfehlen den Einsatz nur über Teppichflächen oder im Außenbereich, oder mit nachträglicher Wischreinigung. Für Kinder-Events sind Bubbles ein beliebter Effekt; das Fluid ist hautverträglich.",
+        },
+        {
+          question: "Wie steuere ich Effekte zentral – DMX, MIDI oder manuell?",
+          answer:
+            "Profi-Effektgeräte (Nebelmaschine, Hazer, CO2-Jet, Konfetti-Shooter) sind über DMX512 ansteuerbar – derselbe Standard wie Beleuchtung. Damit lassen sich Effekt-Cues zeitgenau mit dem Lichtprogramm synchronisieren. Bei kleineren Hochzeits-Setups reicht oft die mitgelieferte Funkfernbedienung (manueller Trigger durch DJ oder Hochzeitsplaner). Wir konfigurieren am Standort Krefeld auf Wunsch vor und übergeben einsatzbereit.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Nebelfluid-Kunde: Wasser-Glykol, Wasser-Glycerin und die Unterschiede",
+          paragraphs: [
+            "Profi-Nebelfluide bestehen aus deionisiertem Wasser plus einem Trägermedium – meist Propylenglykol (PG), Glycerin oder ein Gemisch. PG-Fluide erzeugen dichten, schnell wieder verschwindenden Nebel (gut für Effekt-Cues), Glycerin-Fluide produzieren feinen, langanhaltenden Haze (gut für Licht- und Lasersichtbarkeit). Wichtig: Nur Fluide einsetzen, die der Maschinenhersteller freigegeben hat – falsche Fluide verstopfen die Heizung und können bei Pyrolyse reizende Aldehyde freisetzen.",
+            "DGUV Information 215-313 enthält Hinweise zu maximalen Konzentrationen und Lüftungsraten bei längerem Nebelbetrieb (mehrere Stunden). Bei Konzert- und Festival-Setups arbeiten Profi-Crews mit Messgeräten und Lüftungsmanagement. Für klassische Krefelder Hochzeitsdiscos bleibt der Nebeleinsatz weit unter den kritischen Grenzwerten.",
+          ],
+        },
+        {
+          h3: "CO2-Effekte: Sauerstoffverdrängung und Lüftungsplanung",
+          paragraphs: [
+            "Flüssiges CO2 expandiert bei Austritt ca. 800-fach. Eine 10-kg-Flasche liefert damit theoretisch 5 m³ gasförmiges CO2 – in einem unbelüfteten 25-m²-Raum (etwa 60 m³ Volumen) entstünde rechnerisch eine Konzentration von ca. 8 Vol.-%, was deutlich über der DGUV-Grenze von 4 Vol.-% liegt. In der Praxis verteilt sich das Gas natürlich; trotzdem gilt: CO2-Effekte nur in Räumen mit nachweislicher Lüftung (Frischluftrate nach ASR A3.6) oder im Außenbereich.",
+            "Konkret nicht geeignet: Tiefgaragen, Bühnenkeller, Räume unter Erdniveau ohne Zwangsbelüftung, kleine Backstage-Bereiche. Geeignet: Säle mit RLT-Anlage, Hallen ab ca. 1.000 m³, Außenbühnen. Wir beraten am Standort Krefeld vor der Buchung anhand der konkreten Location.",
+          ],
+        },
+        {
+          h3: "Pyrotechnik in NRW: Befähigungsschein, Anzeige und Versicherung",
+          paragraphs: [
+            "Bühnenpyrotechnik (Funkenfontänen, Wasserfälle, Bühnenflammen, Knall-/Lichtblitzeffekte der Kategorie T1/T2) unterliegt dem Sprengstoffgesetz. Wer Pyrotechnik abbrennt, braucht einen Befähigungsschein nach § 20 SprengG (Lehrgang + Prüfung bei IHK oder anerkanntem Träger). Zusätzlich ist eine Anzeige beim Ordnungsamt der Stadt Krefeld bzw. der jeweiligen Gemeinde nötig (in der Regel 14 Tage vor dem Termin).",
+            "Wir vermieten Standard-Eventeffekte (Nebel, Haze, CO2, Konfetti, Streamer, Bubble) ohne Befähigungsschein-Pflicht. Für klassische Pyrotechnik vermitteln wir lizenzierte Pyrotechniker in unserem Netzwerk – inklusive Versicherung, Anzeige und Brandsicherheits-Konzept.",
+          ],
+        },
+        {
+          h3: "Effekt-Cueing und DMX: Synchronisation mit Licht und Sound",
+          paragraphs: [
+            "Profi-Effektgeräte haben DMX512-Eingang (XLR 5-polig) und belegen 1–4 DMX-Kanäle (Trigger, Intensität, Dauer, manchmal Pan/Tilt). Damit lassen sie sich nahtlos in ein bestehendes Lichtsteuerpult (z. B. GrandMA, Avolites, Chamsys) integrieren und mit Lichtcues und Musikstellen exakt synchronisieren. Beispiel: Schlusschor einer Hochzeit – auf den letzten Beat zünden 4 Konfetti-Shooter simultan mit Lichtwechsel auf Weiß.",
+            "Für kleinere Setups reicht die DMX-fähige App auf Tablet (z. B. LightKey, MagicQ) oder die mitgelieferte Funkfernbedienung. Wir übergeben am Standort Krefeld auf Wunsch programmiert und mit Bedien-Briefing.",
+          ],
+        },
+        {
+          h3: "Effekt-Wahl nach Anlass: was zu Hochzeit, Firmenfeier und Bühne passt",
+          paragraphs: [
+            "Hochzeit: klassisch Nebel für den ersten Tanz, Bubble-Maker für Sektempfang im Freien, Konfetti-Hand-Shooter beim Ja-Wort oder Tortenanschnitt, Papier-Konfetti-Kanonen beim Brautstrauß-Wurf. Romantisch, gut planbar, niedrige Sicherheits-Hürde. Firmenfeier (Saal, Disco): Haze + bewegtes Licht, ein bis zwei Konfetti-Shooter zu Highlight-Momenten (Mitarbeiter-Award, Auftritt der Geschäftsleitung).",
+            "Live-Konzert/Bühne: Haze als Dauereffekt für Lasersichtbarkeit, CO2-Jets zu Refrain-Endpunkten, Konfetti-Stadium-Shooter zum Encore. Hier arbeiten wir mit Profi-Crew aus unserem Netzwerk. Festival-Outdoor: pyrotechnische Effekte (Befähigungsschein!), große CO2-Anlagen, Stadium-Shooter. Alles aus einem Netzwerk – Anfrage am Standort Krefeld.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // HÜPFBURGEN (Aufblasbare Spielgeräte)
+    // Quellen: DIN EN 14960 (Aufblasbare Spielgeräte – Sicherheits-
+    //   anforderungen und Prüfverfahren – aktuell Teil 1:2019),
+    //   ProdSG (Produktsicherheitsgesetz), 1. ProdSV
+    //   (Erste Produktsicherheitsverordnung), DGUV Information
+    //   202-022 (Sicherheit bei Schul- und Gemeindeveranstaltungen),
+    //   GS-Zeichen nach § 21 ProdSG, BGR/GUV-R für Aufsichts-
+    //   personal.
+    // -------------------------------------------------------------
+    huepfburgen: {
+      faqs: [
+        {
+          question: "Sind unsere Hüpfburgen nach DIN EN 14960 geprüft?",
+          answer:
+            "Ja. Sämtliche von uns vermieteten Hüpfburgen erfüllen die DIN EN 14960 „Aufblasbare Spielgeräte – Sicherheitsanforderungen und Prüfverfahren". Diese Norm regelt u. a. Stoßdämpfung der Aufprallflächen, max. Fallhöhen, Materialfestigkeit, Verankerungspunkte, Anzahl und Größe der Notausgänge sowie das jährliche Prüfintervall. Wir lassen jede Hüpfburg jährlich durch einen Sachkundigen prüfen und führen das Prüfprotokoll mit.",
+        },
+        {
+          question: "Bis zu welcher Windstärke darf eine Hüpfburg betrieben werden?",
+          answer:
+            "DIN EN 14960 schreibt vor, dass aufblasbare Spielgeräte ab Windstärke 5 Beaufort (ca. 38 km/h, 10,8 m/s) außer Betrieb genommen werden müssen. In der Praxis bedeutet das: bei aufziehendem Wind den DWD-Wetterbericht prüfen, im Zweifel rechtzeitig schließen. Bei plötzlich auftretenden Böen über 38 km/h Hüpfburg sofort räumen und Gebläse abschalten (Hüpfburg fällt kontrolliert in sich zusammen) – nicht gegen den Wind aufgeblasen lassen.",
+        },
+        {
+          question: "Wie wird eine Hüpfburg sicher verankert?",
+          answer:
+            "Auf Rasen: Erdnägel mit mindestens 380 mm Länge und 16 mm Durchmesser, eingeschlagen schräg vom Gerät weg, an allen Verankerungspunkten der Hüpfburg (typisch 6–12 Punkte je nach Größe). Auf festem Untergrund (Asphalt, Pflaster): Ballastsäcke oder Wassertanks mit der vom Hersteller im Prüfbuch dokumentierten Mindestlast – je nach Hüpfburggröße 80–300 kg pro Punkt. Wir liefern passende Erdnägel mit; Ballastgewichte können auf Anfrage organisiert werden.",
+        },
+        {
+          question: "Wer haftet während der Veranstaltung – Vermieter oder Veranstalter?",
+          answer:
+            "Während des Betriebs übernimmt der Veranstalter die Verkehrssicherungspflicht. Das bedeutet: Aufsicht durch eine erwachsene Person, Einhaltung der vom Hersteller vorgegebenen Maximalpersonenzahl, Trennung von Kindern unterschiedlicher Altersgruppen (DIN EN 14960 empfiehlt getrennte Slots für 0–3, 3–6, 6–12 Jahre, weil das Verletzungsrisiko bei Mischung steigt). Wir stellen Hüpfburg geprüft, eingewiesen und verankert bereit; die laufende Aufsicht liegt beim Veranstalter.",
+        },
+        {
+          question: "Wie viele Kinder dürfen gleichzeitig in eine Hüpfburg?",
+          answer:
+            "Die Maximalpersonenzahl ist im Prüfbuch und auf einem dauerhaft am Gerät angebrachten Schild ausgewiesen – sie ergibt sich aus DIN EN 14960 und der Größe/Stabilität der Hüpfburg. Klassische 4 × 4 m Hüpfburgen sind typischerweise für 6–8 Kinder gleichzeitig zugelassen, größere Anlagen entsprechend mehr. Wichtig: Personenzahl gilt für eine Altersgruppe – Kinder unterschiedlicher Größe niemals gleichzeitig hineinlassen.",
+        },
+        {
+          question: "Wie ist der Aufbau – kommt das Gebläse mit, brauche ich Strom vor Ort?",
+          answer:
+            "Im Mietumfang enthalten sind: Hüpfburg, Gebläse, Befestigungs-Erdnägel, Sicherheitsanleitung mit Prüfbuch-Auszug. Du brauchst vor Ort: ebene Aufstellfläche (mind. 1 m Sicherheitsabstand rundum, möglichst Rasen), 230-V-Steckdose im Umkreis von ca. 25 m (Gebläse zieht je nach Größe 750–1.500 W, dauerhafter Betrieb über die gesamte Mietzeit). Aufbauzeit für eine klassische Hüpfburg 4 × 4 m: ca. 15–20 Minuten.",
+        },
+        {
+          question: "Kann ich die Hüpfburg auf Asphalt oder Pflaster aufstellen?",
+          answer:
+            "Ja, mit Einschränkungen. Auf festem Untergrund kann der Boden der Hüpfburg durch scharfe Steine oder Splitter beschädigt werden – wir empfehlen das Auslegen einer Schutzplane (kann auf Anfrage mitgeliefert werden). Verankerung erfolgt dann über Ballastgewichte statt Erdnägel. Bitte bei Buchung am Standort Krefeld angeben, dann liefern wir die passende Ausrüstung mit.",
+        },
+        {
+          question: "Sind Schuhe, Brillen und Essen in der Hüpfburg erlaubt?",
+          answer:
+            "Nein. DIN EN 14960 und alle Hüpfburg-Hersteller geben vor: keine Schuhe (beschädigen Springfläche, Sturzgefahr durch Stollen/Sohlen), keine Brillen (Verletzungsgefahr), keine harten Gegenstände, kein Essen und Trinken (Erstickungsgefahr beim Hüpfen), keine Haustiere. Diese Regeln gehören auf ein gut sichtbares Hinweisschild am Eingang – wir liefern entsprechende Hinweise mit.",
+        },
+        {
+          question: "Was passiert bei Regen – darf die Hüpfburg nass werden?",
+          answer:
+            "Hüpfburgen mit Dach sind regenresistent – das Material (PVC-beschichtetes Polyester) verträgt Wasser problemlos. Allerdings wird die Hüpffläche bei Nässe extrem rutschig (Verletzungsgefahr). Wir empfehlen: bei einsetzendem Regen Hüpfburg räumen und ggf. abdecken. Nach dem Trocknen wieder freigeben. Hüpfburgen ohne Dach sollten bei Regen geschlossen werden.",
+        },
+        {
+          question: "Brauche ich für eine private Geburtstagsparty eine Genehmigung?",
+          answer:
+            "Auf eigenem privaten Grundstück nicht. Auf öffentlichen Flächen (Park, Spielplatz, Schulhof) ist eine Sondernutzungsgenehmigung der Stadt Krefeld bzw. der jeweiligen Kommune erforderlich. Bei größeren öffentlichen Veranstaltungen gelten zusätzlich Vorschriften zur Veranstaltungssicherheit (Sanitätsdienst, Brandschutz, Versicherung). Wir beraten am Standort Krefeld zur typischen Vorgehensweise.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "DIN EN 14960 in der Praxis: was eine geprüfte Hüpfburg wirklich auszeichnet",
+          paragraphs: [
+            "Die DIN EN 14960 (in Deutschland verbindlich für aufblasbare Spielgeräte) definiert konkrete Anforderungen: stoßdämpfende Aufprallflächen mit definierter Polsterdicke, Begrenzungswände in Mindesthöhe abhängig von der Spielhöhe, sauber abgesteppte Nähte mit doppelter Naht-Sicherung, Verankerungspunkte mit Mindestlasten, Notausgänge in Mindestbreite (üblich 60 cm bei Tunnel-Modulen), klare Kennzeichnung der zulässigen Personenzahl und Altersgruppe.",
+            "Jede Hüpfburg, die wir am Standort Krefeld vermieten, ist nach dieser Norm gebaut, hat eine jährliche Sachkundigen-Prüfung und ein mitgeführtes Prüfbuch. Auf Wunsch zeigen wir das Prüfprotokoll bei der Übergabe – wichtig für gewerbliche Veranstalter, die das im eigenen Sicherheitskonzept dokumentieren.",
+          ],
+        },
+        {
+          h3: "Verankerung: warum ein vergessener Erdnagel zur Katastrophe führen kann",
+          paragraphs: [
+            "Ein nicht oder unzureichend verankerte Hüpfburg ist bei aufkommendem Wind eine ernste Gefahr. Es gibt dokumentierte Unfälle (siehe BAuA-Unfallstatistik), bei denen Hüpfburgen über mehrere hundert Meter durch die Luft geschleudert wurden – mit teils tödlichen Folgen für die Kinder darin. Ursache war regelmäßig: fehlende oder zu kurze Verankerung, fehlende Ballastlasten auf Asphalt, oder Weiterbetrieb bei zu hohem Wind.",
+            "Wir investieren in vollständige Verankerungssets (alle Erdnägel passend zur Hüpfburg, Spannschlaufen, ggf. Bügel für Ballast) und weisen bei jeder Übergabe in Krefeld auf die Windregel hin. Bitte unbedingt einhalten – die Sicherheit der Kinder ist nicht verhandelbar.",
+          ],
+        },
+        {
+          h3: "Aufsichtspflicht und Altersgruppen-Trennung",
+          paragraphs: [
+            "Während des Betriebs muss eine erwachsene Aufsichtsperson ständig anwesend sein – sie achtet auf Maximalpersonenzahl, Schuh- und Brillenfreiheit, Trennung der Altersgruppen und greift ein, wenn Kinder Quatsch machen. DGUV Information 202-022 empfiehlt eine Aufsichtsperson für maximal eine Hüpfburg gleichzeitig.",
+            "Praktisch: Kinder bis 3 Jahre nur mit Eltern in der Hüpfburg, 3–6 Jahre eigene Zeitfenster, 6–12 Jahre eigene Zeitfenster, Jugendliche/Erwachsene nur in Geräten, die explizit dafür geprüft sind (XXL-Hüpfburgen). Bei Krefelder Kindergeburtstagen mit gemischten Altersgruppen empfehlen wir 15-min-Slots je Altersgruppe – das hält das Verletzungsrisiko niedrig und alle haben Spaß.",
+          ],
+        },
+        {
+          h3: "Gebläse-Technik: warum es dauerhaft laufen muss",
+          paragraphs: [
+            "Klassische Veranstaltungs-Hüpfburgen sind nicht „aufblasen und zumachen" – sie werden über ein kontinuierlich laufendes Gebläse (Radiallüfter oder Axiallüfter) auf Druck gehalten, weil sie kein luftdichtes System sind (Nähte, Reißverschlüsse, Eingangsöffnung lassen ständig etwas Luft entweichen). Stoppt das Gebläse, fällt die Hüpfburg innerhalb von 20–60 Sekunden in sich zusammen – das ist gewollt (sicherer als plötzliches Aufreißen).",
+            "Praktisch heißt das: Stromversorgung muss dauerhaft anliegen. Stromausfall im Mehrfachverteiler vermeiden, Kabel sicher verlegen (Stolperfalle!), bei Open-Air ggf. Generator vorhalten. Wir vermieten bei Bedarf passende Verkabelung und Stromverteiler dazu (Kategorie Kabel & Stromverteiler).",
+          ],
+        },
+        {
+          h3: "Modellauswahl: passende Hüpfburg für Anlass und Altersgruppe",
+          paragraphs: [
+            "Für klassische Kindergeburtstage (4–10 Jahre, 6–10 Kinder): Standard-Hüpfburg 3 × 3 m oder 4 × 4 m mit Dach. Für Stadtfeste, Schulfeste, Vereinsfeste: größere Modelle 5 × 5 m oder Kombigeräte mit Rutsche, Hindernisparcours, Slide. Für Kleinkind-Bereiche (1–4 Jahre): niedrige Hüpfburgen ohne Stufen, mit weicher Polsterung. Für Jugend- und Erwachsenenfeste: XXL-Hindernisparcours, Fußballarena, Bullriding-Matten.",
+            "Wir führen am Standort Krefeld die gängigen Modelle für private Kindergeburtstage und Vereinsfeste; XXL-Geräte und Spezialformate auf Projektbasis und teils über Partner. Bei Buchung Alter und Anzahl der Kinder angeben – wir schlagen die passende Konfiguration vor.",
+          ],
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------
+    // WOHNWAGEN & CAMPING (Wohnwagen, Vorzelte, Camping-Möbel,
+    //   Camping-Zubehör, Vorzelt-Aufbau)
+    // Quellen: StVZO § 32 (Abmessungen), § 34 (Achslast/Gesamt-
+    //   gewicht), FeV Anlage 9 (Klassen B/B96/BE/C1E), 100-km/h-
+    //   Verordnung (Anlage zu § 18 Abs. 5 StVO), DIN EN 1645
+    //   (Wohnwagen – Anforderungen), DIN EN 1949 (Flüssiggas-
+    //   anlagen in Caravans/Motor­caravans), G 607 (DVGW-Arbeits-
+    //   blatt für Flüssiggasanlagen in Freizeitfahrzeugen),
+    //   StVZO § 19 Abs. 3 (ABE/EBE bei Anbauten), Bundesverband
+    //   Caravaning Industrie (CIVD).
+    // -------------------------------------------------------------
+    "wohnwagen-camping": {
+      faqs: [
+        {
+          question: "Welchen Führerschein brauche ich, um einen Wohnwagen zu ziehen?",
+          answer:
+            "Maßgeblich ist FeV Anlage 9 sowie das zulässige Gesamtgewicht von Zugfahrzeug und Wohnwagen zusammen. Klasse B (alt: Klasse 3): bis 3.500 kg Kombi-Gesamtmasse. Klasse B96: bis 4.250 kg Kombi-Gesamtmasse (eine kurze Schulung + theoretische und praktische Übung, keine Prüfung). Klasse BE: bis 7.000 kg Kombi-Gesamtmasse (Theorie- + Praxisprüfung). Konkret: ein klassischer 1.500-kg-Wohnwagen hinter einem 2-Tonnen-PKW liegt in der Regel im B96-Bereich. Wir beraten am Standort Krefeld zum passenden Wohnwagen für deinen Führerschein.",
+        },
+        {
+          question: "Was ist die zulässige Stützlast – und warum wichtig?",
+          answer:
+            "Die Stützlast ist das Gewicht, das die Anhängerdeichsel auf die Anhängerkupplung des Zugfahrzeugs überträgt. Sie steht in den Fahrzeugpapieren des Zugfahrzeugs (Feld O.1) und auf dem Wohnwagen (Typenschild). Faustregel: 4 % des Wohnwagen-Gesamtgewichts (bei 1.500-kg-Wohnwagen also ca. 60 kg), maximal aber die niedrigste der drei Angaben (PKW, Kupplung, Wohnwagen). Falsche Stützlast – egal ob zu hoch oder zu niedrig – führt zu schlechter Fahrstabilität (Schlingern). Wir prüfen die Stützlast bei der Übergabe gemeinsam.",
+        },
+        {
+          question: "Darf ich mit dem Wohnwagen 100 km/h auf der Autobahn fahren?",
+          answer:
+            "Standard ist Tempo 80 km/h auf Autobahn und außerorts. Mit der „Tempo-100-Plakette" nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h zulässig – dafür muss der Wohnwagen bestimmte Bedingungen erfüllen: max. 3,5 t zulässige Gesamtmasse, geeignete Reifen (Geschwindigkeitsindex mindestens L = 120 km/h), hydraulische Stoßdämpfer, Antischlingerkupplung oder ESC, Reifenalter max. 6 Jahre. Außerdem muss das Zugfahrzeug mit mindestens 1,1-facher Leermasse über der Wohnwagen-Gesamtmasse liegen. Wir geben bei der Übergabe den aktuellen Plakettenstatus an.",
+        },
+        {
+          question: "Wie funktioniert die Gasanlage – und muss sie geprüft sein?",
+          answer:
+            "Wohnwagen haben Flüssiggas-Anlagen (Propan/Butan) für Heizung, Kochen und Kühlschrank. Nach DVGW-Arbeitsblatt G 607 ist eine Gasprüfung alle 2 Jahre durch einen Sachkundigen Pflicht. Ohne gültige Prüfplakette ist der Betrieb der Anlage nicht zulässig – auf vielen Campingplätzen wird die Plakette kontrolliert. Unsere Mietwohnwagen sind geprüft, die Plakette klebt am Gaskasten. Bei jeder Anmietung erklären wir Gasflaschenwechsel, Hauptabsperrhahn und Verhalten im Störungsfall.",
+        },
+        {
+          question: "Wie viele Gasflaschen gehen mit – wie lange reichen sie?",
+          answer:
+            "Standard sind 2 × 11-kg-Propanflaschen im Gaskasten (eine in Betrieb, eine als Reserve). Reichweite hängt stark vom Verbrauch ab: Kochen 2 ×/Tag + Kühlschrank 24 h auf Gas + Heizung kalt-saisonal: ca. 7–10 Tage pro Flasche. Im Sommer ohne Heizung: 3–4 Wochen pro Flasche. Wir geben den Wohnwagen mit vollen Flaschen heraus; Verbrauch wird bei Rückgabe nach Gewicht abgerechnet oder die Flaschen werden gegen volle getauscht (DVFG-Flaschenpool deutschlandweit).",
+        },
+        {
+          question: "Brauche ich für den Wohnwagen-Standort eine Genehmigung?",
+          answer:
+            "Auf einem ausgewiesenen Campingplatz natürlich nicht. Auf eigenem privaten Grundstück (z. B. im eigenen Garten) ist ein Wohnwagen rechtlich ein Bauwerk, sobald er länger als 4 Wochen am selben Ort steht – dann gilt BauO NRW. Für kürzere Aufenthalte (Besuch über Wochenende, Hochzeit) ist das in der Regel unproblematisch. Auf öffentlichen Flächen oder am Straßenrand gilt die StVO – mehr als 14 Tage am Stück ist nicht zulässig.",
+        },
+        {
+          question: "Was ist beim Vorzelt-Aufbau zu beachten?",
+          answer:
+            "Vorzelt wird seitlich in die Kederleiste des Wohnwagens eingezogen. Aufbau dauert für ein Standard-Vorzelt mit 2 Personen ca. 60–90 Minuten; für moderne Air-Vorzelte (mit Luftschläuchen statt Gestänge) 20–30 Minuten. Verankerung: Heringe am Boden, bei Sturmprognose zusätzliche Sturmleinen einsetzen. Bei aufgebautem Vorzelt darf der Wohnwagen nicht gefahren werden! Wir beraten am Standort Krefeld zur passenden Vorzelt-Größe für deinen Wohnwagen (Umlaufmaß).",
+        },
+        {
+          question: "Wie wird der Wohnwagen winterfest gemacht – und ist das Mietsache?",
+          answer:
+            "Vor Übernahme im Winter prüfen wir: Frischwasser- und Abwassertanks entleert, Boiler entleert, Toiletten-Spülwasser entleert, Heizung funktionsfähig. Während des Einsatzes im Winter: dauerhaft heizen oder bei Nichtbenutzung wieder vollständig entwässern. Frostschäden am Boiler oder den Wasserleitungen sind teuer und nicht von der normalen Mietkaution gedeckt. Bei Wintermiete erklären wir am Standort Krefeld den Frostschutz im Detail.",
+        },
+        {
+          question: "Brauche ich eine Versicherung für den gemieteten Wohnwagen?",
+          answer:
+            "Während der Miete ist der Wohnwagen im Rahmen unserer Geschäftskonditionen versichert (KFZ-Haftpflicht und Vollkasko gemäß Mietvertrag); die Selbstbeteiligung ist im Mietvertrag ausgewiesen. Inhaltsversicherung für deine eigenen Sachen im Wohnwagen ist ggf. über die private Hausratversicherung abgedeckt (Außenversicherung) – das musst du im Einzelfall mit deinem Versicherer klären. Auf dem Campingplatz greift teils eine zusätzliche Versicherung des Platzbetreibers (haftungsbeschränkt).",
+        },
+        {
+          question: "Was kostet eine Wohnwagen-Miete am Standort Krefeld typischerweise?",
+          answer:
+            "Die Tagespreise sind im Buchungsprozess pro Modell tagesaktuell hinterlegt. Generell sinkt der effektive Tagessatz bei längerer Miete deutlich: Wochenmiete entspricht etwa 5 Tagessätzen, Zwei-Wochen-Miete (Urlaub) etwa 9 Tagessätzen. Hauptsaison (Juni–August, Weihnachten) ist nachgefragt – früh buchen lohnt sich. Konkrete Verfügbarkeit für deinen Wunschzeitraum siehst du im Buchungsformular.",
+        },
+      ],
+      expertSections: [
+        {
+          h3: "Zulässiges Gesamtgewicht: die Mathematik dahinter",
+          paragraphs: [
+            "Bei jedem Gespann ist die zulässige Gesamtmasse der Kombination der zentrale Wert. Beispiel: Zugfahrzeug VW Tiguan mit 2.500 kg zul. Gesamtgewicht, Wohnwagen mit 1.300 kg zul. Gesamtgewicht. Summe: 3.800 kg. Damit ist man mit Klasse B (Grenze 3.500 kg) nicht mehr fahrberechtigt – B96 (bis 4.250 kg) oder BE (bis 7.000 kg) sind nötig. Ein häufiger Fehler: man rechnet mit dem Leergewicht statt dem zulässigen Gesamtgewicht – das ist rechtlich falsch.",
+            "Zusätzlich relevant: Anhängelast des Zugfahrzeugs (Feld O.1 in den Fahrzeugpapieren) muss mindestens dem zul. Gesamtgewicht des Wohnwagens entsprechen. Anhängelast ist herstellerseitig je nach Motorisierung und Getriebe unterschiedlich. Wir prüfen das bei der Buchungsanfrage am Standort Krefeld gemeinsam.",
+          ],
+        },
+        {
+          h3: "Fahrdynamik: Schlingerneigung und wie man sie verhindert",
+          paragraphs: [
+            "Wohnwagen-Gespanne neigen ab ca. 90 km/h zur sogenannten „Pendelschwingung" – der Wohnwagen schaukelt seitlich, das Zugfahrzeug folgt mit. Ursache: ungleiche Beladung (zu viel Heck-Last), zu niedrige Stützlast, schlechte Reifen, Seitenwind. Gegenmaßnahmen: Schwere Last (z. B. Wasserkanister) im Wohnwagen über der Achse platzieren, Stützlast auf 4 % des Gesamtgewichts einstellen, Antischlingerkupplung (AKS) oder ESC nutzen, Geschwindigkeit anpassen.",
+            "Antischlingerkupplungen (z. B. AL-KO AKS 3004) dämpfen die Pendelbewegung mechanisch und sind heute Standard bei modernen Wohnwagen. ESC (Elektronisches Schlingerstabilisierungs-System) erkennt beginnendes Pendeln und bremst gezielt einzelne Räder ab. Unsere Mietwohnwagen sind mit AKS und je nach Modell mit ESC ausgestattet.",
+          ],
+        },
+        {
+          h3: "Tempo 100 in Deutschland: die Plakette und ihre Anforderungen",
+          paragraphs: [
+            "Die „100-km/h-Plakette" wird von einer Prüforganisation (TÜV, DEKRA, GTÜ) ausgestellt, wenn der Wohnwagen alle Voraussetzungen erfüllt: max. 3,5 t zul. Gesamtmasse, Reifen mit Geschwindigkeitsindex L (120 km/h) oder höher und max. 6 Jahre alt, hydraulische Stoßdämpfer in Ordnung, AKS oder ESC vorhanden. Zusätzlich gilt: Leermasse des Zugfahrzeugs ≥ 1,1 × zul. Gesamtmasse des Wohnwagens (bei ESC entfällt diese Bedingung).",
+            "Praktisch: Eine 100-km/h-Plakette spart auf langen Strecken Zeit und macht das Mitschwimmen im Verkehr entspannter. Achtung: Im Ausland (Österreich, Schweiz, Italien, Spanien) gelten unabhängig von der deutschen Plakette die jeweiligen Tempolimits für Gespanne (typisch 80–100 km/h). Wir geben am Standort Krefeld den Plakettenstatus der jeweiligen Mietfahrzeuge an.",
+          ],
+        },
+        {
+          h3: "Gasanlage und G 607: Sicherheit, die nicht verhandelbar ist",
+          paragraphs: [
+            "Die Gasanlage im Wohnwagen wird nach DIN EN 1949 gebaut und nach DVGW-Arbeitsblatt G 607 alle 2 Jahre geprüft (Sachkundigenprüfung mit Druckdichtigkeitstest und Sichtprüfung der Schläuche und Verschraubungen). Eine ungültige Gasprüfung ist nicht nur ein Verstoß – sie ist ein echtes Sicherheitsrisiko (CO-Vergiftung, Gasexplosion). Auf vielen Campingplätzen, vor allem in Frankreich, Italien, Niederlande und Deutschland, wird die Plakette kontrolliert; ohne gültige Plakette wird kein Anschluss freigegeben.",
+            "Unsere Vermietflotte ist geprüft. Bei längerer Miete (mehrere Monate) achten wir auf das Ablaufdatum und tauschen ggf. die Plakette frisch. Bitte bei Übergabe in Krefeld nicht vergessen, den Gasanschluss-Schlüssel und das Manometer kurz erklären zu lassen – falsches Aufdrehen kostet Druck und im schlimmsten Fall Sicherheit.",
+          ],
+        },
+        {
+          h3: "Camping-Strom: 230 V Caravan, CEE-Stecker und FI-Schutz",
+          paragraphs: [
+            "Campingplätze stellen 230-V-Strom über CEE-Außensteckdosen (blau, 3-polig, 16 A) bereit. Im Wohnwagen ist ein Stromverteiler mit FI-Schutzschalter (RCD, 30 mA) verbaut – Pflicht nach DIN VDE 0100-721. Anschluss erfolgt über ein 25-m-CEE-Kabel (im Vermietumfang enthalten). Wichtig: das Kabel vollständig abrollen vor dem Einschalten, sonst kann sich die Trommel überhitzen (Induktion).",
+            "Verbraucher im Wohnwagen: Boiler (1.500–2.000 W), Klimaanlage (800–1.500 W), Kühlschrank (300 W auf Strom), Steckdosen (kombiniert max. 16 A = 3.680 W). Bei Mehrverbraucher-Betrieb kann der FI auslösen oder die Platzsicherung (oft nur 6 A oder 10 A pro Stellplatz). Wir erklären am Standort Krefeld die typischen Stromverbräuche und wie man sie managt.",
+          ],
+        },
+      ],
+    },
   },
 
   // Bonn und Mülheim folgen analog in späteren Tranchen.
