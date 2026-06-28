@@ -199,6 +199,13 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     ].join("\n");
 
     try {
+      const attachments = await Promise.all(
+        photos.map(async (f) => ({
+          filename: f.name,
+          content: await fileToBase64(f),
+        }))
+      );
+
       const { error } = await supabase.functions.invoke("send-inquiry-email", {
         body: {
           productName: "Hochzeit – Technik & Ausstattung",
@@ -220,6 +227,7 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
           deliveryPostalCode: form.deliveryNeeded ? form.postalCode : "",
           deliveryCity: form.deliveryNeeded ? form.city : "",
           setupServiceRequested: form.deliveryNeeded,
+          attachments,
         },
       });
 
