@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, ArrowLeft, Mail, Loader2, CheckCircle2 } from "lucide-react";
+import { MapPin, ArrowLeft, Mail, Loader2, CheckCircle2, ImagePlus, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -88,11 +88,54 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     notes: "",
   });
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]);
+
+  const MAX_PHOTOS = 3;
+  const MAX_BYTES = 5 * 1024 * 1024;
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    const next = [...photos];
+    for (const f of files) {
+      if (next.length >= MAX_PHOTOS) {
+        toast.error(`Maximal ${MAX_PHOTOS} Bilder.`);
+        break;
+      }
+      if (!f.type.startsWith("image/")) {
+        toast.error(`„${f.name}" ist kein Bild.`);
+        continue;
+      }
+      if (f.size > MAX_BYTES) {
+        toast.error(`„${f.name}" ist größer als 5 MB.`);
+        continue;
+      }
+      next.push(f);
+    }
+    setPhotos(next);
+  };
+
+  const removePhoto = (idx: number) => {
+    setPhotos((p) => p.filter((_, i) => i !== idx));
+  };
+
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // strip "data:<mime>;base64,"
+        resolve(result.split(",")[1] || "");
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
 
   const reset = () => {
     setStep(1);
     setLoc(null);
     setSelectedTech([]);
+    setPhotos([]);
     setSubmitting(false);
     setForm({
       name: "",
@@ -156,6 +199,13 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     ].join("\n");
 
     try {
+      const attachments = await Promise.all(
+        photos.map(async (f) => ({
+          filename: f.name,
+          content: await fileToBase64(f),
+        }))
+      );
+
       const { error } = await supabase.functions.invoke("send-inquiry-email", {
         body: {
           productName: "Hochzeit – Technik & Ausstattung",
@@ -177,6 +227,7 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
           deliveryPostalCode: form.deliveryNeeded ? form.postalCode : "",
           deliveryCity: form.deliveryNeeded ? form.city : "",
           setupServiceRequested: form.deliveryNeeded,
+          attachments,
         },
       });
 
@@ -402,6 +453,54 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   placeholder="z. B. Outdoor-Trauung mit Strom über Generator, Indoor-Brandmelder vorhanden, …"
                 />
+              </div>
+
+              <div>
+                <Label className="mb-2 block">
+                  Bilder vom Aufstellort (optional, max. 3 · je 5 MB)
+                </Label>
+                <div className="rounded-md border border-dashed border-border p-3 space-y-3">
+                  {photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {photos.map((f, i) => (
+                        <div key={i} className="relative group">
+                          <img
+                            src={URL.createObjectURL(f)}
+                            alt={f.name}
+                            className="h-24 w-full object-cover rounded border border-border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(i)}
+                            className="absolute -top-2 -right-2 bg-foreground text-background rounded-full p-1 shadow"
+                            aria-label="Entfernen"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                          <div className="text-[10px] text-muted-foreground truncate mt-1">
+                            {(f.size / 1024 / 1024).toFixed(1)} MB
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {photos.length < MAX_PHOTOS && (
+                    <label className="flex items-center gap-2 text-sm cursor-pointer text-primary hover:underline">
+                      <ImagePlus className="h-4 w-4" />
+                      Bilder auswählen ({photos.length}/{MAX_PHOTOS})
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handlePhotoSelect}
+                      />
+                    </label>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Hilft uns enorm bei der Planung von Aufbau, Strom & Sichtachsen.
+                  </p>
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border">
