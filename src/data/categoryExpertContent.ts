@@ -11,13 +11,13 @@
 //    DIN, StVZO/StVO, LAGA, TA-Lärm, BG-BAU, Herstellerangabe,
 //    locationData.ts). Wenn nicht belegbar → weglassen.
 // 2. Quellen werden im Code-Kommentar über jedem Abschnitt
-//    benannt, im Frontend NICHT als „Quelle: …“ gerendert,
+//    benannt, im Frontend NICHT als "Quelle: …" gerendert,
 //    sondern fachlich-natürlich formuliert.
 // 3. Standortspezifika nur, wenn sie in einem anderen Standort
 //    nicht stimmen würden (Liefergebiet, Öffnungszeiten,
 //    Hauptsitz/Filiale/Service-Standort).
 // 4. Keine Preisversprechen, die im Buchungsprozess nicht
-//    hinterlegt sind. „Ab“-Preise nur, wenn sie aus rentalData
+//    hinterlegt sind. "Ab"-Preise nur, wenn sie aus rentalData
 //    bzw. dem Shop belegbar sind.
 
 export interface ExpertFaq {
@@ -52,8 +52,8 @@ export const categoryExpertContent: ExpertContentMap = {
     // ERDBEWEGUNG (Minibagger, Midibagger, Dumper, Anbaugeräte)
     // Quellen für Fakten:
     //   - DGUV Vorschrift 1 (Grundsätze der Prävention)
-    //   - DGUV Grundsatz 308-009 „Ausbildung und Beauftragung
-    //     von Bedienern von Erdbaumaschinen“
+    //   - DGUV Grundsatz 308-009 "Ausbildung und Beauftragung
+    //     von Bedienern von Erdbaumaschinen"
     //   - DGUV Regel 101-004 (Hydraulikschläuche)
     //   - DIN 4124 (Baugruben und Gräben – Böschungen,
     //     Verbau, Arbeitsraumbreiten)
@@ -75,7 +75,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Brauche ich einen Baggerschein, um einen Minibagger zu mieten?",
           answer:
-            "Privat – also auf dem eigenen, nicht öffentlich zugänglichen Grundstück – ist kein formaler Schein vorgeschrieben; eine sorgfältige Geräteeinweisung bekommst du bei der Übergabe in Krefeld. Sobald die Maschine gewerblich oder auf einer fremden Baustelle eingesetzt wird, fordert die DGUV-Regel 100-500 in Verbindung mit DGUV Grundsatz 308-009 einen Befähigungsnachweis („Bedienerausweis Erdbaumaschinen“). Den stellen wir nicht aus – der Auftraggeber bzw. Arbeitgeber muss die Beauftragung dokumentieren. Wir prüfen das bei gewerblicher Vermietung im Buchungsprozess.",
+            "Privat – also auf dem eigenen, nicht öffentlich zugänglichen Grundstück – ist kein formaler Schein vorgeschrieben; eine sorgfältige Geräteeinweisung bekommst du bei der Übergabe in Krefeld. Sobald die Maschine gewerblich oder auf einer fremden Baustelle eingesetzt wird, fordert die DGUV-Regel 100-500 in Verbindung mit DGUV Grundsatz 308-009 einen Befähigungsnachweis ("Bedienerausweis Erdbaumaschinen"). Den stellen wir nicht aus – der Auftraggeber bzw. Arbeitgeber muss die Beauftragung dokumentieren. Wir prüfen das bei gewerblicher Vermietung im Buchungsprozess.",
         },
         {
           question: "Welche Anbaugeräte sind sinnvoll – und welche bekomme ich am Standort Krefeld?",
@@ -85,7 +85,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie schwer darf der Bagger sein, damit ich ihn mit dem PKW transportieren darf?",
           answer:
-            "Maßgeblich sind FeV Anlage 9 und die zulässige Gesamtmasse von Zugfahrzeug + Anhänger. Mit Klasse B (alt: Klasse 3) sind 3.500 kg zulässige Gesamtmasse der Kombination nicht zu überschreiten. Mit B96 erhöht sich das auf 4.250 kg, mit BE auf 7.000 kg. Ein 1-Tonnen-Minibagger plus passender Baumaschinenanhänger liegt in der Regel im BE-Bereich. Wir verleihen am Hauptsitz Krefeld gebremste Baumaschinen- und Plateauanhänger – der jeweilige Eintrag „zulässige Stützlast“ und „Gesamtgewicht“ steht in jedem Anhänger-Datenblatt.",
+            "Maßgeblich sind FeV Anlage 9 und die zulässige Gesamtmasse von Zugfahrzeug + Anhänger. Mit Klasse B (alt: Klasse 3) sind 3.500 kg zulässige Gesamtmasse der Kombination nicht zu überschreiten. Mit B96 erhöht sich das auf 4.250 kg, mit BE auf 7.000 kg. Ein 1-Tonnen-Minibagger plus passender Baumaschinenanhänger liegt in der Regel im BE-Bereich. Wir verleihen am Hauptsitz Krefeld gebremste Baumaschinen- und Plateauanhänger – der jeweilige Eintrag "zulässige Stützlast" und "Gesamtgewicht" steht in jedem Anhänger-Datenblatt.",
         },
         {
           question: "Welche Mindestabstände gelten beim Ausheben von Baugruben und Gräben?",
@@ -183,7 +183,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Rüttelplatte oder Stampfer – wann nehme ich was?",
           answer:
-            "Stampfer (Vibrationsstampfer, „Frosch“, ca. 60–80 kg, schmale Platte) sind für bindige Böden in schmalen Gräben das Mittel der Wahl: hohe Schlagenergie, kleine Aufstandsfläche, Verdichtungstiefe bis ca. 70 cm in einer Schicht. Rüttelplatten verdichten flächig und sind bei rolligen Böden, Schotter und Pflaster überlegen. Für Hausanschluss- und Glasfasergräben mit Sand-Kies-Verfüllung greift man oft zu beiden Geräten: erst Stampfer am Rohr, dann Platte in der oberen Schicht. Beide Geräte führen wir am Hauptsitz Krefeld vor.",
+            "Stampfer (Vibrationsstampfer, "Frosch", ca. 60–80 kg, schmale Platte) sind für bindige Böden in schmalen Gräben das Mittel der Wahl: hohe Schlagenergie, kleine Aufstandsfläche, Verdichtungstiefe bis ca. 70 cm in einer Schicht. Rüttelplatten verdichten flächig und sind bei rolligen Böden, Schotter und Pflaster überlegen. Für Hausanschluss- und Glasfasergräben mit Sand-Kies-Verfüllung greift man oft zu beiden Geräten: erst Stampfer am Rohr, dann Platte in der oberen Schicht. Beide Geräte führen wir am Hauptsitz Krefeld vor.",
         },
         {
           question: "Welche Verdichtungsgrade verlangen Tiefbauämter typischerweise?",
@@ -208,7 +208,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie transportiere ich Rüttelplatten – darf ich sie liegend laden?",
           answer:
-            "Kleinere Vorwärts-Platten (≤ 130 kg) lassen sich zu zweit oder mit der Auffahrrampe in den Transporter heben. Ab ca. 200 kg ist eine Auffahrrampe oder ein Anhänger mit Auffahrbohlen Pflicht. Rüttelplatten dürfen für den Transport hochkant aufgerichtet werden – herstellerabhängig ist die Lage in der Bedienungsanleitung vorgeschrieben (meist „Lufthahn schließen / Kraftstoffhahn schließen“), sonst läuft Motoröl in den Brennraum. Bei Lieferung ab Hauptsitz Krefeld kümmern wir uns um eine ordnungsgemäße Ladungssicherung nach VDI 2700.",
+            "Kleinere Vorwärts-Platten (≤ 130 kg) lassen sich zu zweit oder mit der Auffahrrampe in den Transporter heben. Ab ca. 200 kg ist eine Auffahrrampe oder ein Anhänger mit Auffahrbohlen Pflicht. Rüttelplatten dürfen für den Transport hochkant aufgerichtet werden – herstellerabhängig ist die Lage in der Bedienungsanleitung vorgeschrieben (meist "Lufthahn schließen / Kraftstoffhahn schließen"), sonst läuft Motoröl in den Brennraum. Bei Lieferung ab Hauptsitz Krefeld kümmern wir uns um eine ordnungsgemäße Ladungssicherung nach VDI 2700.",
         },
         {
           question: "Was kostet eine Rüttelplatte in Krefeld – und ab wann lohnt sich Wochenmiete?",
@@ -258,8 +258,8 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Verdichtungsfortschritt messen: vom Augenmaß bis zum Plattendruckversuch",
           paragraphs: [
-            "Im privaten Bereich reicht oft die Faustregel: Wenn die Rüttelplatte nicht mehr einsinkt und der Boden „klingt“, ist die Lage verdichtet. Im gewerblichen Tiefbau ist das nicht ausreichend. Standardverfahren ist der statische Plattendruckversuch nach DIN 18134 (Lastplatte 300 mm Durchmesser, zwei Belastungszyklen, Ergebnis Ev1 und Ev2). Daraus wird das Verformungsmodul Ev2 abgeleitet, das in den ZTV E-StB als Abnahmekriterium dient.",
-            "Schneller, aber weniger normativ, sind dynamische Verfahren wie der leichte Fallgewichtsversuch (Evd, „Zorn-Gerät“). Für die meisten kommunalen Tiefbauarbeiten am Niederrhein wird das Ev2 verlangt. Den Plattendruckversuch führen Tiefbauunternehmen oder Sachverständige durch; wir vermieten ausschließlich die Verdichtungsmaschine. Für eine erfolgreiche Abnahme entscheidet weniger die Maschinengröße als das saubere Lagenweise-Einbauen und der richtige Wassergehalt.",
+            "Im privaten Bereich reicht oft die Faustregel: Wenn die Rüttelplatte nicht mehr einsinkt und der Boden "klingt", ist die Lage verdichtet. Im gewerblichen Tiefbau ist das nicht ausreichend. Standardverfahren ist der statische Plattendruckversuch nach DIN 18134 (Lastplatte 300 mm Durchmesser, zwei Belastungszyklen, Ergebnis Ev1 und Ev2). Daraus wird das Verformungsmodul Ev2 abgeleitet, das in den ZTV E-StB als Abnahmekriterium dient.",
+            "Schneller, aber weniger normativ, sind dynamische Verfahren wie der leichte Fallgewichtsversuch (Evd, "Zorn-Gerät"). Für die meisten kommunalen Tiefbauarbeiten am Niederrhein wird das Ev2 verlangt. Den Plattendruckversuch führen Tiefbauunternehmen oder Sachverständige durch; wir vermieten ausschließlich die Verdichtungsmaschine. Für eine erfolgreiche Abnahme entscheidet weniger die Maschinengröße als das saubere Lagenweise-Einbauen und der richtige Wassergehalt.",
           ],
         },
       ],
@@ -268,7 +268,7 @@ export const categoryExpertContent: ExpertContentMap = {
     // -------------------------------------------------------------
     // ARBEITSBÜHNEN (Scheren-, Gelenkteleskop-, Anhängerbühnen)
     // Quellen:
-    //   - DGUV Grundsatz 308-008 „Ausbildung und Beauftragung
+    //   - DGUV Grundsatz 308-008 "Ausbildung und Beauftragung
     //     von Bedienern von Hubarbeitsbühnen" (IPAF-konform)
     //   - DGUV Information 208-019 (Hubarbeitsbühnen –
     //     Sicherer Einsatz)
@@ -305,7 +305,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welche Persönliche Schutzausrüstung gegen Absturz ist Pflicht?",
           answer:
-            "Auf Gelenkteleskop- und Auslegerbühnen ist die Verwendung eines Auffanggurts (EN 361) mit kurzer Verbindungsleine (EN 354) und Falldämpfer (EN 355) Pflicht – Anschlagpunkt ist der gekennzeichnete Ring im Korb. Grund: Bei plötzlichem Hindernis-Kontakt kann der Bediener aus dem Korb katapultiert werden („Catapult Effect“). Bei Scherenbühnen ist eine PSAgA nicht zwingend vorgeschrieben, wenn die Bühne nicht verlassen wird und das Geländer intakt ist. Zusätzlich Helm mit Kinnriemen, S3-Schuhe, Warnschutz nach EN ISO 20471 im öffentlichen Verkehrsraum. PSAgA stellt der Arbeitgeber.",
+            "Auf Gelenkteleskop- und Auslegerbühnen ist die Verwendung eines Auffanggurts (EN 361) mit kurzer Verbindungsleine (EN 354) und Falldämpfer (EN 355) Pflicht – Anschlagpunkt ist der gekennzeichnete Ring im Korb. Grund: Bei plötzlichem Hindernis-Kontakt kann der Bediener aus dem Korb katapultiert werden ("Catapult Effect"). Bei Scherenbühnen ist eine PSAgA nicht zwingend vorgeschrieben, wenn die Bühne nicht verlassen wird und das Geländer intakt ist. Zusätzlich Helm mit Kinnriemen, S3-Schuhe, Warnschutz nach EN ISO 20471 im öffentlichen Verkehrsraum. PSAgA stellt der Arbeitgeber.",
         },
         {
           question: "Darf ich mit der Bühne aussteigen, um auf ein Dach zu treten?",
@@ -344,14 +344,14 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Hüllkurve und Tragfähigkeit: was die Marketing-Höhe verschweigt",
           paragraphs: [
-            "Die plakative Zahl „14-Meter-Bühne“ ist die maximale Arbeitshöhe und entspricht der Plattformhöhe + 2 m angenommener Greifhöhe. Praktisch nutzbar ist die Plattformhöhe. Wichtiger als die Höhenzahl ist die Hüllkurve (Reichweitendiagramm): Sie zeigt, wie weit die Plattform bei jeder Höhe nach vorne und zur Seite reichen kann.",
+            "Die plakative Zahl "14-Meter-Bühne" ist die maximale Arbeitshöhe und entspricht der Plattformhöhe + 2 m angenommener Greifhöhe. Praktisch nutzbar ist die Plattformhöhe. Wichtiger als die Höhenzahl ist die Hüllkurve (Reichweitendiagramm): Sie zeigt, wie weit die Plattform bei jeder Höhe nach vorne und zur Seite reichen kann.",
             "Typisch: Eine 22-m-Anhängerbühne erreicht bei voller Höhe etwa 9 m seitlich, bei 12 m Höhe dagegen rund 13 m. Außerdem reduziert sich die Korblast mit zunehmender Auslage von z. B. 250 kg auf 120 kg. Wer einen Schornstein über einem 5-m-Anbau erreichen will, muss diese Werte vorher abgleichen – die größte Höhe nützt nichts, wenn die seitliche Reichweite nicht passt. Wir beraten am Standort Krefeld anhand des konkreten Aufgabenbildes (Skizze, Foto) zur passenden Hüllkurve.",
           ],
         },
         {
           h3: "Sicherheit im Korb: Catapult-Effekt, PSAgA und Notabsenkung",
           paragraphs: [
-            "Der mit Abstand häufigste tödliche Unfall mit Hubarbeitsbühnen ist der „Catapult Effect“: Der Korb wird bei plötzlichem Aufprall (Hindernis, Stoß durch Fahrzeug) abrupt abgebremst, der ungesicherte Bediener wird über die Brüstung katapultiert. PSAgA mit kurzer Verbindungsleine (max. so lang, dass ein Fall über die Brüstung mechanisch unmöglich ist) verhindert das. Auf Gelenkteleskop- und Auslegerbühnen ist sie deshalb Pflicht.",
+            "Der mit Abstand häufigste tödliche Unfall mit Hubarbeitsbühnen ist der "Catapult Effect": Der Korb wird bei plötzlichem Aufprall (Hindernis, Stoß durch Fahrzeug) abrupt abgebremst, der ungesicherte Bediener wird über die Brüstung katapultiert. PSAgA mit kurzer Verbindungsleine (max. so lang, dass ein Fall über die Brüstung mechanisch unmöglich ist) verhindert das. Auf Gelenkteleskop- und Auslegerbühnen ist sie deshalb Pflicht.",
             "Jede Bühne hat eine Notabsenkung am Maschinenrumpf (Ausfall des Bedieners im Korb) und Notbedienelemente im Korb (Ausfall der Hauptsteuerung). Beide werden in unserer Einweisung in Krefeld konkret am Modell gezeigt. Bei Stromausfall oder Hydraulik-Notfall darf nur eine zweite, eingewiesene Person die Notabsenkung bedienen – nie der Bediener im Korb selbst (außer bei Vollausstattung mit Notbedienteil im Korb). Ein zweiter Helfer am Boden ist auf Außenbaustellen deshalb dringend empfohlen.",
           ],
         },
@@ -365,7 +365,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Pflicht zur Prüfung: vor jedem Einsatz, einmal jährlich, einmal nach Reparatur",
           paragraphs: [
-            "Drei Prüf-Ebenen sind zu unterscheiden: (1) Arbeitstägliche Sicht- und Funktionsprüfung durch den Bediener (Reifen, Hydraulik-Dichtigkeit, NOT-AUS, Notabsenkung, Sicherungsmittel) – Pflicht vor jeder Schicht. (2) Wiederkehrende Prüfung nach BetrSichV § 14 i. V. m. DGUV Grundsatz 308-002 mindestens jährlich durch eine befähigte Person – das ist die „UVV-Prüfung“, die wir bei jedem Mietgerät dokumentiert mitliefern. (3) Außerordentliche Prüfung nach Reparaturen, Umbauten oder Schäden.",
+            "Drei Prüf-Ebenen sind zu unterscheiden: (1) Arbeitstägliche Sicht- und Funktionsprüfung durch den Bediener (Reifen, Hydraulik-Dichtigkeit, NOT-AUS, Notabsenkung, Sicherungsmittel) – Pflicht vor jeder Schicht. (2) Wiederkehrende Prüfung nach BetrSichV § 14 i. V. m. DGUV Grundsatz 308-002 mindestens jährlich durch eine befähigte Person – das ist die "UVV-Prüfung", die wir bei jedem Mietgerät dokumentiert mitliefern. (3) Außerordentliche Prüfung nach Reparaturen, Umbauten oder Schäden.",
             "Als Mieter trägst du die Verantwortung für (1) und musst Mängel sofort melden – Weiterbenutzung ist nach Auftreten eines sicherheitsrelevanten Defekts ausgeschlossen. Wir sorgen für (2) und (3); die Prüfplakette ist sichtbar an der Maschine, das Prüfprotokoll erhältst du auf Anforderung digital. Damit ist der gesetzliche Rahmen für deinen Einsatz vollständig abgedeckt.",
           ],
         },
@@ -424,7 +424,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was ist beim Baustellenstrom in Krefeld zu beachten?",
           answer:
-            "DIN VDE 0100-704 fordert für Baustellen einen separaten Baustromverteiler mit Fehlerstromschutzschalter (RCD/FI) ≤ 30 mA für alle Steckdosen ≤ 32 A. Hausanschlusssteckdosen erfüllen das in Bestandsbauten oft nicht – dann ist ein mobiler PRCD-S vorgeschaltet Pflicht. Verlängerungskabel müssen für den Außeneinsatz geeignet (H07RN-F oder H05RN-F) und auf Beschädigung geprüft sein. Wir vermieten passende Baustromverteiler und PRCD-S in der Kategorie „Kabel & Stromverteiler“.",
+            "DIN VDE 0100-704 fordert für Baustellen einen separaten Baustromverteiler mit Fehlerstromschutzschalter (RCD/FI) ≤ 30 mA für alle Steckdosen ≤ 32 A. Hausanschlusssteckdosen erfüllen das in Bestandsbauten oft nicht – dann ist ein mobiler PRCD-S vorgeschaltet Pflicht. Verlängerungskabel müssen für den Außeneinsatz geeignet (H07RN-F oder H05RN-F) und auf Beschädigung geprüft sein. Wir vermieten passende Baustromverteiler und PRCD-S in der Kategorie "Kabel & Stromverteiler".",
         },
         {
           question: "Was kostet die Werkzeug-Miete in Krefeld – ab wann lohnt der Kauf?",
@@ -446,7 +446,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Werkzeugauswahl nach Material: nicht die Marke, sondern die Aufgabe entscheidet",
           paragraphs: [
-            "Die wichtigste Frage vor der Werkzeugmiete ist nicht „welche Marke“ – Hilti, Bosch, Makita und Co. liegen technisch eng beieinander – sondern die Werkzeugklasse passend zum Material und zum Energiebedarf. Beton stemmen mit einem normalen Bohrhammer SDS-plus ist mühsam und überlastet das Schlagwerk; umgekehrt ist ein SDS-max-Kombihammer für Dübellöcher überdimensioniert und schwierig zu führen.",
+            "Die wichtigste Frage vor der Werkzeugmiete ist nicht "welche Marke" – Hilti, Bosch, Makita und Co. liegen technisch eng beieinander – sondern die Werkzeugklasse passend zum Material und zum Energiebedarf. Beton stemmen mit einem normalen Bohrhammer SDS-plus ist mühsam und überlastet das Schlagwerk; umgekehrt ist ein SDS-max-Kombihammer für Dübellöcher überdimensioniert und schwierig zu führen.",
             "Pragmatische Auswahl: Dübellöcher ⇒ Akku- oder Netz-Bohrhammer SDS-plus mit 2–3 J Schlagenergie. Mauerdurchbrüche bis 80 mm ⇒ SDS-max-Kombihammer mit 8–12 J. Reines Stemmen großer Flächen ⇒ Elektro-Stemmhammer ohne Drehfunktion mit 15–25 J. Beton-Trennen bis 7 cm Tiefe ⇒ Trennschleifer 230 mm. Tiefere Schnitte oder Kantenarbeit ⇒ Diamant-Mauernutfräse oder Wandsäge. Kernbohrungen 50–300 mm ⇒ Diamant-Kernbohrgerät mit Bohrständer. Wir bevorraten in Krefeld alle Klassen und beraten anhand des konkreten Aufgabenbildes.",
           ],
         },
@@ -528,7 +528,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welche Steckdosen-Belegung hat ein Aggregat – und wie verbinde ich es?",
           answer:
-            "Standard sind je nach Klasse: 230 V / 16 A Schuko (kleine Geräte), CEE 16 A 3-phasig (5-polig, blau für 230 V, rot für 400 V), CEE 32 A 3-phasig (rot, 400 V), CEE 63 A 3-phasig. Bei größeren Aggregaten (>20 kVA) zusätzlich Klemmleisten zum Festanschluss durch Elektrofachkraft. Die Verbindung zum Baustromverteiler oder zur Verteilung im Haus muss DIN-VDE-konform durch eine Elektrofachkraft erfolgen, sobald nicht steckerfertig verbunden wird. Wir vermieten alle gängigen CEE-Kabel und Adapter in der Kategorie „Kabel & Stromverteiler“.",
+            "Standard sind je nach Klasse: 230 V / 16 A Schuko (kleine Geräte), CEE 16 A 3-phasig (5-polig, blau für 230 V, rot für 400 V), CEE 32 A 3-phasig (rot, 400 V), CEE 63 A 3-phasig. Bei größeren Aggregaten (>20 kVA) zusätzlich Klemmleisten zum Festanschluss durch Elektrofachkraft. Die Verbindung zum Baustromverteiler oder zur Verteilung im Haus muss DIN-VDE-konform durch eine Elektrofachkraft erfolgen, sobald nicht steckerfertig verbunden wird. Wir vermieten alle gängigen CEE-Kabel und Adapter in der Kategorie "Kabel & Stromverteiler".",
         },
         {
           question: "Stage V – was bedeutet das für Innenstadt-Einsätze (Köln, Düsseldorf, Bonn)?",
@@ -543,7 +543,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet ein Stromerzeuger in Krefeld – und welche Kosten kommen dazu?",
           answer:
-            "Tagespreis je Modell tagesaktuell im Buchungsprozess. Zusätzlich: Diesel/Benzin (nach Rückgabe nach gefülltem Tank abgerechnet), bei Bedarf CEE-Verlängerungskabel, Adapter und Baustromverteiler aus der Kategorie „Kabel & Stromverteiler“. Wochenmiete entspricht typischerweise rund 5 Tagessätzen, Monatsmiete rund 15 – lohnt sich also bei längeren Baustellen oder Veranstaltungswochen.",
+            "Tagespreis je Modell tagesaktuell im Buchungsprozess. Zusätzlich: Diesel/Benzin (nach Rückgabe nach gefülltem Tank abgerechnet), bei Bedarf CEE-Verlängerungskabel, Adapter und Baustromverteiler aus der Kategorie "Kabel & Stromverteiler". Wochenmiete entspricht typischerweise rund 5 Tagessätzen, Monatsmiete rund 15 – lohnt sich also bei längeren Baustellen oder Veranstaltungswochen.",
         },
         {
           question: "Bietet ihr auch Baustrom-Anträge und temporäre Stromversorgung an?",
@@ -570,7 +570,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Lärmschutz auf Veranstaltungen und in Wohnquartieren",
           paragraphs: [
             "Aggregate sind nach 32. BImSchV mit der garantierten Schallleistung LWA (in dB) zu kennzeichnen. Ein typisches offenes Baustellen-Aggregat 20 kVA liegt bei LWA = 95–100 dB(A); die Immissions­wirkung in 7 m beträgt grob LWA − 20 dB = 75–80 dB(A) – im Wohngebiet (TA Lärm 55 dB(A) tags) deutlich zu laut für nahe Anwohner.",
-            "Schallgedämmte Aggregate („Soundproof“) erreichen LWA = 65–75 dB(A), in 7 m also 45–55 dB(A) – das hält den Richtwert ein. Für Veranstaltungen in Innenstadt-Lagen (Krefelder Burgmarkt, Bonner Rheinaue, Mülheimer MüGa) bevorraten wir bevorzugt schallgedämmte Modelle. Bei mehrtägigem Betrieb kann zusätzlich ein Lärmschutzgehäuse (Schallschutzkabine) sinnvoll sein; das organisieren wir auf Anfrage.",
+            "Schallgedämmte Aggregate ("Soundproof") erreichen LWA = 65–75 dB(A), in 7 m also 45–55 dB(A) – das hält den Richtwert ein. Für Veranstaltungen in Innenstadt-Lagen (Krefelder Burgmarkt, Bonner Rheinaue, Mülheimer MüGa) bevorraten wir bevorzugt schallgedämmte Modelle. Bei mehrtägigem Betrieb kann zusätzlich ein Lärmschutzgehäuse (Schallschutzkabine) sinnvoll sein; das organisieren wir auf Anfrage.",
           ],
         },
         {
@@ -604,7 +604,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welcher Häcksler passt zu meinem Gartenrückschnitt?",
           answer:
-            "Faustregel nach Astdurchmesser: Bis ca. 35 mm reichen Walzenhäcksler (leise, sogenannte „Leise-Häcksler“, ideal im Wohngebiet). Bis 45 mm sind Turbinen- bzw. Schneidwalzen-Geräte sinnvoll. Bis 75 mm und für Profi-Heckenrückschnitt greift man zu Benzin-Häckslern mit Hammerwerk. Im Krefelder Mietpark führen wir alle drei Klassen; der maximale Astdurchmesser steht in jedem Produktdatenblatt. Wichtig: Häcksler arbeiten an grünem Schnittgut deutlich besser als an trockenem – planbar nach dem Schnitt einsetzen.",
+            "Faustregel nach Astdurchmesser: Bis ca. 35 mm reichen Walzenhäcksler (leise, sogenannte "Leise-Häcksler", ideal im Wohngebiet). Bis 45 mm sind Turbinen- bzw. Schneidwalzen-Geräte sinnvoll. Bis 75 mm und für Profi-Heckenrückschnitt greift man zu Benzin-Häckslern mit Hammerwerk. Im Krefelder Mietpark führen wir alle drei Klassen; der maximale Astdurchmesser steht in jedem Produktdatenblatt. Wichtig: Häcksler arbeiten an grünem Schnittgut deutlich besser als an trockenem – planbar nach dem Schnitt einsetzen.",
         },
         {
           question: "Vertikutieren oder Aerifizieren – was brauche ich wann?",
@@ -926,7 +926,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Brauche ich eine mobile Ampelanlage, oder reichen Baken?",
           answer:
-            "Bei Halbsperrung einer Straße über mehr als 50 m Länge ist nach RSA in der Regel eine mobile Lichtsignalanlage (LSA) Pflicht – bei kurzer Strecke kann auch eine Posten-Regelung oder eine Vorrang-Beschilderung (Z. 308 „Vorrang vor Gegenverkehr“) genehmigt werden. Welche Lösung möglich ist, regelt die verkehrsrechtliche Anordnung. Wir vermieten mobile Ampelanlagen mit Akku- und Solar-Versorgung in Krefeld inkl. Auf- und Abbau auf Wunsch.",
+            "Bei Halbsperrung einer Straße über mehr als 50 m Länge ist nach RSA in der Regel eine mobile Lichtsignalanlage (LSA) Pflicht – bei kurzer Strecke kann auch eine Posten-Regelung oder eine Vorrang-Beschilderung (Z. 308 "Vorrang vor Gegenverkehr") genehmigt werden. Welche Lösung möglich ist, regelt die verkehrsrechtliche Anordnung. Wir vermieten mobile Ampelanlagen mit Akku- und Solar-Versorgung in Krefeld inkl. Auf- und Abbau auf Wunsch.",
         },
         {
           question: "Wieviel Wind hält ein Verkehrsschild auf Fußplatte aus?",
@@ -1135,7 +1135,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wer darf Veranstaltungslicht in NRW eigentlich aufbauen und betreiben?",
           answer:
-            "Für nicht-öffentliche Privatfeiern in begrenzter Größe gibt es keinen formalen Befähigungsnachweis – der Vermieter weist in die Geräte ein. Sobald eine Versammlungsstätte nach SBauVO NRW Teil 5 betroffen ist (über 200 Besucher in Räumen, über 1.000 im Freien) oder eine gewerbliche Veranstaltung mit szenischer Darstellung stattfindet, greift die DGUV Vorschrift 17/18 – dann ist eine „Verantwortliche Person für Veranstaltungstechnik“ erforderlich. Bei Firmenevents in Krefelder Locations klären wir gemeinsam mit dem Hausherrn, was nötig ist.",
+            "Für nicht-öffentliche Privatfeiern in begrenzter Größe gibt es keinen formalen Befähigungsnachweis – der Vermieter weist in die Geräte ein. Sobald eine Versammlungsstätte nach SBauVO NRW Teil 5 betroffen ist (über 200 Besucher in Räumen, über 1.000 im Freien) oder eine gewerbliche Veranstaltung mit szenischer Darstellung stattfindet, greift die DGUV Vorschrift 17/18 – dann ist eine "Verantwortliche Person für Veranstaltungstechnik" erforderlich. Bei Firmenevents in Krefelder Locations klären wir gemeinsam mit dem Hausherrn, was nötig ist.",
         },
         {
           question: "Was ist der Unterschied zwischen Wash-, Beam-, Spot- und Effekt-Licht?",
@@ -1155,7 +1155,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Brauche ich für Nebel- oder Hazermaschinen eine Brandmelde-Abschaltung?",
           answer:
-            "In Locations mit Rauchwarnmeldern oder aufgeschalteter Brandmeldeanlage (BMA) muss die Anlage vor Einsatz von Nebel/Haze entweder freigegeben (Hausmeister/Wachdienst informiert) oder im betroffenen Bereich abgeschaltet werden – sonst droht Falschalarm und Feuerwehr-Einsatz auf Kosten des Veranstalters. Wir weisen darauf hin und stellen auf Wunsch Hinweis-Schilder „Künstlicher Nebel im Einsatz“ bereit.",
+            "In Locations mit Rauchwarnmeldern oder aufgeschalteter Brandmeldeanlage (BMA) muss die Anlage vor Einsatz von Nebel/Haze entweder freigegeben (Hausmeister/Wachdienst informiert) oder im betroffenen Bereich abgeschaltet werden – sonst droht Falschalarm und Feuerwehr-Einsatz auf Kosten des Veranstalters. Wir weisen darauf hin und stellen auf Wunsch Hinweis-Schilder "Künstlicher Nebel im Einsatz" bereit.",
         },
         {
           question: "Sind Laser auf Privat- und Firmenevents erlaubt?",
@@ -1168,7 +1168,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Lichtdesign-Grundlagen: drei Ebenen, ein Konzept",
           paragraphs: [
             "Professionelles Veranstaltungslicht arbeitet in drei Ebenen: (1) Funktionslicht – damit Gäste den Raum nutzen können, gemessen in Lux am Boden (DIN EN 12464-1 nennt 100–300 lx für Verkehrsflächen, 50–100 lx für Lounge-Bereiche). (2) Atmosphärenlicht – farbiges Wash über Wände, Dancefloor und Decke, schafft Stimmung und Raumtiefe. (3) Effektlicht – Beams, Moving Heads, Strobe für Akzente in der Show.",
-            "Ein klassischer Fehler ist „zu viel Effekt, zu wenig Funktion“: Wenn die Tanzfläche nur noch von Movings beleuchtet wird, sehen Gäste sich gegenseitig kaum. Faustregel: Funktionslicht macht ca. 60 % des Bedarfs aus, Atmosphäre 30 %, Effekt 10 %. Am Standort Krefeld stellen wir Pakete entsprechend zusammen statt nur Geräte zu zählen.",
+            "Ein klassischer Fehler ist "zu viel Effekt, zu wenig Funktion": Wenn die Tanzfläche nur noch von Movings beleuchtet wird, sehen Gäste sich gegenseitig kaum. Faustregel: Funktionslicht macht ca. 60 % des Bedarfs aus, Atmosphäre 30 %, Effekt 10 %. Am Standort Krefeld stellen wir Pakete entsprechend zusammen statt nur Geräte zu zählen.",
           ],
         },
         {
@@ -1182,7 +1182,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Hängung, Stative und Statik: Sicherheit über Köpfen",
           paragraphs: [
             "Sobald Scheinwerfer über Personen hängen, gilt die DGUV Vorschrift 17/18 sowie DIN EN 17206 (Veranstaltungstechnik – Maschinerie). Punktlasten an Hallendecken benötigen einen Nachweis durch den Hausherrn (Riggingplan, Lastenliste). Auf Stativen darf die Hersteller-Höchstlast nicht überschritten werden – ein klassisches T-Bar-Stativ trägt typisch 30–50 kg bei 3 m Höhe. Jeder hängende Scheinwerfer ist mit einem Safety (Stahlseil) gegen Absturz zu sichern, dimensioniert auf das 6-fache Eigengewicht.",
-            "Wir geben am Standort Krefeld zu jedem Stativ und jedem Truss-Set ein Datenblatt mit max. Last und Aufbauanleitung mit. Bei komplexen Hängungen liefern wir Truss aus dem Sortiment „Traversen & Rigging“ passend dazu – inklusive Stahlseilen, Kettenzügen (manuell oder elektrisch) und Lastverteilung.",
+            "Wir geben am Standort Krefeld zu jedem Stativ und jedem Truss-Set ein Datenblatt mit max. Last und Aufbauanleitung mit. Bei komplexen Hängungen liefern wir Truss aus dem Sortiment "Traversen & Rigging" passend dazu – inklusive Stahlseilen, Kettenzügen (manuell oder elektrisch) und Lastverteilung.",
           ],
         },
         {
@@ -1276,7 +1276,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Lärmschutz in der Praxis: TA Lärm und DIN 15905-5",
           paragraphs: [
             "Für Innenveranstaltungen ist DIN 15905-5 der zentrale Maßstab: maximal LAeq 99 dB(A) über 30 Minuten am lautesten zugänglichen Publikumsplatz. Wer höher fährt, braucht Pegelbegrenzung, Schallpegel-Aufzeichnung und ausgelegten Gehörschutz für Gäste. Für Krefelder Hallen-Veranstaltungen mit reiner Sprache reichen 75–80 dB(A) deutlich – Tanz und Live-Band bewegen sich typisch zwischen 90 und 97 dB(A).",
-            "Für Outdoor in Wohnnähe gilt die TA Lärm: tagsüber 60 dB(A), nachts 45 dB(A) Richtwert in allgemeinen Wohngebieten. Das ist sehr leise – bereits ein normales Gespräch erreicht 60 dB. Für Sommerfeste und Hochzeiten im Freien gibt es die Möglichkeit „seltener Ereignisse“ (max. 10 pro Jahr und Ort). Wir empfehlen, dies frühzeitig mit dem Ordnungsamt Krefeld abzustimmen.",
+            "Für Outdoor in Wohnnähe gilt die TA Lärm: tagsüber 60 dB(A), nachts 45 dB(A) Richtwert in allgemeinen Wohngebieten. Das ist sehr leise – bereits ein normales Gespräch erreicht 60 dB. Für Sommerfeste und Hochzeiten im Freien gibt es die Möglichkeit "seltener Ereignisse" (max. 10 pro Jahr und Ort). Wir empfehlen, dies frühzeitig mit dem Ordnungsamt Krefeld abzustimmen.",
           ],
         },
         {
@@ -1296,7 +1296,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Monitoring und Stagesound: warum kleine Veranstaltungen davon profitieren",
           paragraphs: [
-            "Auch bei kleinen Events ist Monitoring wichtig: Trauredner braucht eigene Lautsprecher Richtung Publikum – nicht in den Rücken; ein Brautpaar mit Funkmikro hört sich selbst nicht, wenn der PA-Hauptklang weit entfernt steht. Lösungen: kleine Aktiv-Monitore (8–10\") als Sidefill, In-Ear-Monitorstrecken für Bands (DECT- oder UHF-basiert), reine Bestätigungs-Lautsprecher („Confidence Speaker“) am Rednerpult.",
+            "Auch bei kleinen Events ist Monitoring wichtig: Trauredner braucht eigene Lautsprecher Richtung Publikum – nicht in den Rücken; ein Brautpaar mit Funkmikro hört sich selbst nicht, wenn der PA-Hauptklang weit entfernt steht. Lösungen: kleine Aktiv-Monitore (8–10\") als Sidefill, In-Ear-Monitorstrecken für Bands (DECT- oder UHF-basiert), reine Bestätigungs-Lautsprecher ("Confidence Speaker") am Rednerpult.",
             "Für Krefelder Hochzeiten und Firmen-Events stellen wir auf Anfrage Monitor-Pakete zusammen, die mit dem Haupt-PA-Setup zusammenarbeiten. Bei reinen Konferenz-Setups setzen wir oft auf Decken- bzw. Wand-Lautsprecher der Location und ergänzen mit mobilen Stativ-Lautsprechern für flexible Bereiche.",
           ],
         },
@@ -1331,12 +1331,12 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Ab welcher Bühnenhöhe brauche ich Absturzsicherung/Geländer?",
           answer:
-            "Ab einer Absturzhöhe von 1 m fordert die DGUV-Vorschrift Geländer mit Höhe mindestens 1,10 m, Mittelholm, Fußleiste. Bei Bühnen mit 80 cm Höhe ist Geländer noch optional, ab 100 cm Pflicht. Im sichtbaren Frontbereich der Bühne (zum Publikum gerichtet) entfällt das Geländer üblicherweise – dort ist die Absturzkante klar erkennbar und Teil der „künstlerischen Nutzung“. Seiten und Rückseite werden mit Geländer abgesichert.",
+            "Ab einer Absturzhöhe von 1 m fordert die DGUV-Vorschrift Geländer mit Höhe mindestens 1,10 m, Mittelholm, Fußleiste. Bei Bühnen mit 80 cm Höhe ist Geländer noch optional, ab 100 cm Pflicht. Im sichtbaren Frontbereich der Bühne (zum Publikum gerichtet) entfällt das Geländer üblicherweise – dort ist die Absturzkante klar erkennbar und Teil der "künstlerischen Nutzung". Seiten und Rückseite werden mit Geländer abgesichert.",
         },
         {
-          question: "Ist eine Modulbühne ein „fliegender Bau“ nach SBauVO NRW?",
+          question: "Ist eine Modulbühne ein "fliegender Bau" nach SBauVO NRW?",
           answer:
-            "„Fliegende Bauten“ sind nach SBauVO NRW Teil 5 bauliche Anlagen, die wiederholt aufgestellt werden und Personenzugang bieten. Unsere Standard-Modulbühnen bis ca. 6 × 4 m mit Höhen bis 80 cm und ohne Überdachung gelten in der Regel als „untergeordnete Aufstellung“ und benötigen keine separate Ausführungsgenehmigung. Sobald Tribünen über 100 m² Fläche, Höhen über 1,5 m oder Überdachungen ins Spiel kommen, ist eine Prüfbuch-Pflicht und Sachverständigen-Abnahme möglich.",
+            ""Fliegende Bauten" sind nach SBauVO NRW Teil 5 bauliche Anlagen, die wiederholt aufgestellt werden und Personenzugang bieten. Unsere Standard-Modulbühnen bis ca. 6 × 4 m mit Höhen bis 80 cm und ohne Überdachung gelten in der Regel als "untergeordnete Aufstellung" und benötigen keine separate Ausführungsgenehmigung. Sobald Tribünen über 100 m² Fläche, Höhen über 1,5 m oder Überdachungen ins Spiel kommen, ist eine Prüfbuch-Pflicht und Sachverständigen-Abnahme möglich.",
         },
         {
           question: "Bühne für Outdoor – wie schütze ich gegen Regen und Wind?",
@@ -1361,7 +1361,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Bühne plus Licht plus Ton – bekomme ich das aus einer Hand in Krefeld?",
           answer:
-            "Ja. Am Hauptsitz Krefeld führen wir Bühne, Beleuchtung, Beschallung, Traversen, Rigging, Stromverteilung und Eventzelte aus einem Lager. Das spart Logistik (eine Anlieferung, ein Ansprechpartner) und stellt sicher, dass technische Schnittstellen passen (Truss-Hängung über Bühne mit korrekter Höhe und Statik, Stromplan abgestimmt, Audio-Hängung außerhalb der Lichtstrahlen). Wir kalkulieren Pakete „Bühne + Technik“ gerne als Komplettangebot.",
+            "Ja. Am Hauptsitz Krefeld führen wir Bühne, Beleuchtung, Beschallung, Traversen, Rigging, Stromverteilung und Eventzelte aus einem Lager. Das spart Logistik (eine Anlieferung, ein Ansprechpartner) und stellt sicher, dass technische Schnittstellen passen (Truss-Hängung über Bühne mit korrekter Höhe und Statik, Stromplan abgestimmt, Audio-Hängung außerhalb der Lichtstrahlen). Wir kalkulieren Pakete "Bühne + Technik" gerne als Komplettangebot.",
         },
       ],
       expertSections: [
@@ -1446,7 +1446,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Darf ich Truss in Eigenaufbau machen?",
           answer:
-            "Privat (nicht-öffentlich, kein gewerblicher Kontext): ja, mit Geräteeinweisung an unserem Standort Krefeld. Gewerblich oder bei öffentlichen Veranstaltungen greift DGUV Vorschrift 17/18: Aufbau über Personenköpfe darf nur durch sachkundige Personen erfolgen („Verantwortlicher für Veranstaltungstechnik“ mit IHK-Abschluss oder vergleichbar). Für Hochzeiten und kleine Firmen-Events bauen wir auf Wunsch selbst auf oder vermitteln einen lokalen IHK-Veranstaltungsmeister im Raum Krefeld.",
+            "Privat (nicht-öffentlich, kein gewerblicher Kontext): ja, mit Geräteeinweisung an unserem Standort Krefeld. Gewerblich oder bei öffentlichen Veranstaltungen greift DGUV Vorschrift 17/18: Aufbau über Personenköpfe darf nur durch sachkundige Personen erfolgen ("Verantwortlicher für Veranstaltungstechnik" mit IHK-Abschluss oder vergleichbar). Für Hochzeiten und kleine Firmen-Events bauen wir auf Wunsch selbst auf oder vermitteln einen lokalen IHK-Veranstaltungsmeister im Raum Krefeld.",
         },
         {
           question: "Welche Kupplungssysteme gibt es – passt alles zusammen?",
@@ -1469,7 +1469,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Truss-Statik verstehen: UDL, CPL und 1/3-Punkt-Regel",
           paragraphs: [
             "Herstellerdatenblätter für Truss geben drei zentrale Werte an: UDL (Uniformly Distributed Load, gleichverteilte Last über die ganze Länge), CPL (Center Point Load, eine Punktlast in der Mitte) und 1/3-Point oder 1/4-Point-Loading (zwei oder drei symmetrische Punkte). Beispiel 290er Box-Truss, 6 m Spannweite: UDL ca. 350 kg, CPL ca. 150 kg, 1/3-Punkt-Lasten 2 × 175 kg. Die Hängung an zwei Punkten im 1/4-Bereich ist statisch deutlich günstiger als ein einziger Punkt mittig.",
-            "Für Krefelder Setups planen wir Hängung in Lastpunkten – nicht „auf gut Glück“. Schwere Geräte (Moving Heads, große Lautsprecher) hängen direkt unter einem Anschlagpunkt, leichte Wash-Lichter dazwischen. Das halbiert die effektive Biegelast und ist die professionelle Vorgehensweise.",
+            "Für Krefelder Setups planen wir Hängung in Lastpunkten – nicht "auf gut Glück". Schwere Geräte (Moving Heads, große Lautsprecher) hängen direkt unter einem Anschlagpunkt, leichte Wash-Lichter dazwischen. Das halbiert die effektive Biegelast und ist die professionelle Vorgehensweise.",
           ],
         },
         {
@@ -1482,7 +1482,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Kettenzüge: manuell vs. elektrisch, D8 und D8+",
           paragraphs: [
-            "Manuelle Kettenzüge (Stirnradflaschenzug) heben mit Handkette – günstig, langsam, max. ca. 250 kg, für Trauerhöhungen und kleine Lasten. Elektro-Kettenzüge sind die Arbeitspferde der Veranstaltungsbranche: 250 kg, 500 kg, 1.000 kg WLL. Im Veranstaltungsbau über Personenköpfen muss der Kettenzug in der Ausführung „D8+“ (mit zusätzlicher Sicherungsbremse, 10-facher Sicherheit) ausgeführt sein – „D8“ reicht nur für Lasten, die nicht über Personen geführt werden.",
+            "Manuelle Kettenzüge (Stirnradflaschenzug) heben mit Handkette – günstig, langsam, max. ca. 250 kg, für Trauerhöhungen und kleine Lasten. Elektro-Kettenzüge sind die Arbeitspferde der Veranstaltungsbranche: 250 kg, 500 kg, 1.000 kg WLL. Im Veranstaltungsbau über Personenköpfen muss der Kettenzug in der Ausführung "D8+" (mit zusätzlicher Sicherungsbremse, 10-facher Sicherheit) ausgeführt sein – "D8" reicht nur für Lasten, die nicht über Personen geführt werden.",
             "Im Krefelder Mietsortiment führen wir je nach Setup-Größe geprüfte D8-Hebezeuge mit aktueller Sachverständigenprüfung. Für gewerbliche Veranstalter mit Personenhängung empfehlen wir D8+-Geräte und Vermittlung eines IHK-Sachkundigen für den Aufbau.",
           ],
         },
@@ -1530,9 +1530,9 @@ export const categoryExpertContent: ExpertContentMap = {
             "Headset (Bügel- oder Nackenbügel) mit PTT-Taste am Kabel ist Standard für Personal mit beiden Händen voll (Sicherheitsdienst, Bühnencrew, Service). Hand-PTT mit Lautsprecher reicht für Veranstaltungsleitung und Außenbereich. Profi-Headsets mit Geräuschunterdrückung (Noise Cancelling) sind für laute Locations (Bühne nahe Lautsprecher) sinnvoll – wir empfehlen je Einsatz und Lärmumgebung am Standort Krefeld.",
         },
         {
-          question: "Reichweite – stimmen die „bis zu 10 km“ auf der Verpackung?",
+          question: "Reichweite – stimmen die "bis zu 10 km" auf der Verpackung?",
           answer:
-            "Die Herstellerangaben „bis zu 10 km Reichweite“ gelten unter Idealbedingungen (freie Sicht, See, Wüste, beide Geräte auf Berggipfeln). In der Praxis erreicht PMR446 in der Stadt 300–800 m, im Freien mit Bebauung 1–2 km, im Wald oder Tal entsprechend weniger. Für größere Reichweiten (Festival mit 1 km Länge, große Baustelle, Industrieanlage) braucht es Einzelzuteilung im Betriebsfunk – aufpreispflichtig, aber bis zu 5 W Sendeleistung erlaubt.",
+            "Die Herstellerangaben "bis zu 10 km Reichweite" gelten unter Idealbedingungen (freie Sicht, See, Wüste, beide Geräte auf Berggipfeln). In der Praxis erreicht PMR446 in der Stadt 300–800 m, im Freien mit Bebauung 1–2 km, im Wald oder Tal entsprechend weniger. Für größere Reichweiten (Festival mit 1 km Länge, große Baustelle, Industrieanlage) braucht es Einzelzuteilung im Betriebsfunk – aufpreispflichtig, aber bis zu 5 W Sendeleistung erlaubt.",
         },
         {
           question: "Was ist der Unterschied zwischen analog und digital (DMR)?",
@@ -1581,7 +1581,7 @@ export const categoryExpertContent: ExpertContentMap = {
           ],
         },
         {
-          h3: "Headset-Qualität: warum „billig“ auf Dauer teuer wird",
+          h3: "Headset-Qualität: warum "billig" auf Dauer teuer wird",
           paragraphs: [
             "Konsumer-Headsets aus dem 10–30-€-Segment haben dünne Kabel, instabile PTT-Mechanik und schlechte Mikrofone. Auf einer Veranstaltung mit 8 Stunden Dauereinsatz fallen sie typischerweise aus (Kabelbruch am Stecker), und das schwache Mikro überträgt Umgebungslärm statt Sprache. Profi-Headsets im 80–200-€-Segment haben verstärkte Kabel, Metall-PTT und Geräuschdämpfung.",
             "Wir vermieten am Standort Krefeld nur Profi-Headsets – die langfristig günstigere Wahl, weil keine Ausfälle während der Veranstaltung. Bei besonders kritischen Setups (TV-Produktion, Konferenz mit Simultandolmetschern) führen wir auch echte Intercom-Systeme mit kabelgebundener oder DECT-Anbindung.",
@@ -1626,7 +1626,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Sind Partyzelte ab einer bestimmten Größe genehmigungspflichtig?",
           answer:
-            "Für reine private Nutzung auf Privatgrund ohne öffentlichen Zugang sind die in Krefeld üblichen Garten-Partyzelte (bis 75 m²) regelmäßig genehmigungsfrei. Sobald die Veranstaltung öffentlich zugänglich ist oder das Zelt eine Grundfläche über 75 m² hat (§ 73 BauO NRW i. V. m. der Musterrichtlinie Fliegende Bauten), ist eine Ausführungsgenehmigung („Prüfbuch nach DIN EN 13782/13814“) erforderlich. Für unsere Mietzelte stellen wir auf Anfrage die Herstellerunterlagen (Standsicherheitsnachweis, Brandschutznachweis) zur Verfügung – die Genehmigung muss der Veranstalter beim Bauordnungsamt der Stadt Krefeld einholen.",
+            "Für reine private Nutzung auf Privatgrund ohne öffentlichen Zugang sind die in Krefeld üblichen Garten-Partyzelte (bis 75 m²) regelmäßig genehmigungsfrei. Sobald die Veranstaltung öffentlich zugänglich ist oder das Zelt eine Grundfläche über 75 m² hat (§ 73 BauO NRW i. V. m. der Musterrichtlinie Fliegende Bauten), ist eine Ausführungsgenehmigung ("Prüfbuch nach DIN EN 13782/13814") erforderlich. Für unsere Mietzelte stellen wir auf Anfrage die Herstellerunterlagen (Standsicherheitsnachweis, Brandschutznachweis) zur Verfügung – die Genehmigung muss der Veranstalter beim Bauordnungsamt der Stadt Krefeld einholen.",
         },
         {
           question: "Wie windstabil sind die Zelte – ab welcher Windgeschwindigkeit muss abgebaut werden?",
@@ -1673,7 +1673,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Fliegende Bauten in NRW: Prüfbuch, Genehmigung und Veranstalterpflichten",
           paragraphs: [
-            "Ein „Fliegender Bau" im Sinne des § 73 BauO NRW ist ein Bau, der wiederholt aufgestellt und zerlegt wird – dazu zählen Partyzelte ab 75 m² Grundfläche, Bühnen ab 5 m Tiefe und alle Tribünen. Für solche Bauten verlangt die Musterrichtlinie über den Bau und Betrieb Fliegender Bauten (MFlBauR 2015) eine Ausführungsgenehmigung. Diese wird vom Hersteller einmal beantragt, in das Prüfbuch eingetragen und ist bundesweit gültig.",
+            "Ein "Fliegender Bau" im Sinne des § 73 BauO NRW ist ein Bau, der wiederholt aufgestellt und zerlegt wird – dazu zählen Partyzelte ab 75 m² Grundfläche, Bühnen ab 5 m Tiefe und alle Tribünen. Für solche Bauten verlangt die Musterrichtlinie über den Bau und Betrieb Fliegender Bauten (MFlBauR 2015) eine Ausführungsgenehmigung. Diese wird vom Hersteller einmal beantragt, in das Prüfbuch eingetragen und ist bundesweit gültig.",
             "Der Veranstalter muss das Prüfbuch am Aufstellungsort vorhalten und die jeweilige Gebrauchsabnahme bei der zuständigen Bauaufsicht (in Krefeld: Fachbereich Bauaufsicht) anzeigen bzw. bei größeren Zelten beantragen. Wir stellen für unsere genehmigungspflichtigen Mietzelte das Prüfbuch des Herstellers zur Verfügung – die Anzeige bzw. Genehmigung beim Bauamt Krefeld bleibt Aufgabe des Veranstalters.",
           ],
         },
@@ -1687,7 +1687,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Brandverhalten: B1, Cs3d0 und die SBauVO NRW",
           paragraphs: [
-            "Bei Versammlungsstätten nach SBauVO NRW Teil 5 (ab 200 Personen in Räumen, ab 1.000 Personen im Freien) müssen Planen, Vorhänge und Dekorationsmaterialien mindestens „schwer entflammbar" sein – das entspricht der alten DIN 4102-1 Klasse B1 bzw. der EU-Brandklasse C-s3,d0 nach DIN EN 13501-1. Maßgeblich ist der Nachweis über das Materialdatenblatt mit Prüfzeugnis.",
+            "Bei Versammlungsstätten nach SBauVO NRW Teil 5 (ab 200 Personen in Räumen, ab 1.000 Personen im Freien) müssen Planen, Vorhänge und Dekorationsmaterialien mindestens "schwer entflammbar" sein – das entspricht der alten DIN 4102-1 Klasse B1 bzw. der EU-Brandklasse C-s3,d0 nach DIN EN 13501-1. Maßgeblich ist der Nachweis über das Materialdatenblatt mit Prüfzeugnis.",
             "Unsere Profi-Pagodenzelte und großen Partyzelte erfüllen diese Klasse und werden mit Datenblatt geliefert. Für Tischdecken und Dekoration empfehlen wir, beim Stoff- oder Dekoanbieter ein B1-Zertifikat einzufordern – der Veranstalter haftet im Brandfall mit.",
           ],
         },
@@ -1789,14 +1789,14 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Materialkunde Glas: Kalk-Natron vs. Kristallglas vs. Polycarbonat",
           paragraphs: [
-            "Kalk-Natron-Glas ist der Standard im Eventbereich: robust, spülmaschinenfest, lebensmittelecht, optisch ansprechend, günstig in der Wiederbeschaffung. Kristallglas (Bleikristall oder bleifreies „Crystal") ist optisch hochwertiger (höherer Brechungsindex, mehr Brillanz), aber empfindlicher und teurer – wird im Mietkreislauf selten eingesetzt. Polycarbonat (PC) ist bruchsicher, optisch sehr nah an Glas, lebensmittelecht – ideal für Pool, Garten, Kinder, Outdoor-Events ohne befestigte Flächen.",
+            "Kalk-Natron-Glas ist der Standard im Eventbereich: robust, spülmaschinenfest, lebensmittelecht, optisch ansprechend, günstig in der Wiederbeschaffung. Kristallglas (Bleikristall oder bleifreies "Crystal") ist optisch hochwertiger (höherer Brechungsindex, mehr Brillanz), aber empfindlicher und teurer – wird im Mietkreislauf selten eingesetzt. Polycarbonat (PC) ist bruchsicher, optisch sehr nah an Glas, lebensmittelecht – ideal für Pool, Garten, Kinder, Outdoor-Events ohne befestigte Flächen.",
             "Für klassische Krefelder Hochzeiten setzen wir Kalk-Natron-Echtglas ein – die gewohnte Optik und Haptik. Polycarbonat-Sets bieten wir für Außenbereiche und besondere Anlässe (Open-Air, Familienfeier mit Kindern, Yacht) an.",
           ],
         },
         {
           h3: "Besteck: 18/10, 18/0 und Stahlsorten im Vergleich",
           paragraphs: [
-            "„18/10" bezeichnet die Legierung: 18 % Chrom (Korrosionsschutz) und 10 % Nickel (Glanz, Bearbeitbarkeit) – Werkstoff X5CrNi18-10, der Standard für Hotelbesteck. „18/0" ist nickelfrei, magnetisch, etwas matter – günstiger, aber für Bankett-Hochzeiten unüblich. Reine Edelstahlsorten ohne Chrom sind nicht spülmaschinenfest.",
+            ""18/10" bezeichnet die Legierung: 18 % Chrom (Korrosionsschutz) und 10 % Nickel (Glanz, Bearbeitbarkeit) – Werkstoff X5CrNi18-10, der Standard für Hotelbesteck. "18/0" ist nickelfrei, magnetisch, etwas matter – günstiger, aber für Bankett-Hochzeiten unüblich. Reine Edelstahlsorten ohne Chrom sind nicht spülmaschinenfest.",
             "Wir vermieten am Standort Krefeld ausschließlich 18/10-Besteck in Hotelqualität. Vorteil: spülmaschinenfest auch bei härterem Wasser (Krefelder Trinkwasser liegt bei 17–19 °dH), kein Anlaufen, langlebig – auch nach 100 Spülgängen sieht das Besteck noch hochwertig aus.",
           ],
         },
@@ -1931,7 +1931,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Sind unsere Hüpfburgen nach DIN EN 14960 geprüft?",
           answer:
-            "Ja. Sämtliche von uns vermieteten Hüpfburgen erfüllen die DIN EN 14960 „Aufblasbare Spielgeräte – Sicherheitsanforderungen und Prüfverfahren". Diese Norm regelt u. a. Stoßdämpfung der Aufprallflächen, max. Fallhöhen, Materialfestigkeit, Verankerungspunkte, Anzahl und Größe der Notausgänge sowie das jährliche Prüfintervall. Wir lassen jede Hüpfburg jährlich durch einen Sachkundigen prüfen und führen das Prüfprotokoll mit.",
+            "Ja. Sämtliche von uns vermieteten Hüpfburgen erfüllen die DIN EN 14960 "Aufblasbare Spielgeräte – Sicherheitsanforderungen und Prüfverfahren". Diese Norm regelt u. a. Stoßdämpfung der Aufprallflächen, max. Fallhöhen, Materialfestigkeit, Verankerungspunkte, Anzahl und Größe der Notausgänge sowie das jährliche Prüfintervall. Wir lassen jede Hüpfburg jährlich durch einen Sachkundigen prüfen und führen das Prüfprotokoll mit.",
         },
         {
           question: "Bis zu welcher Windstärke darf eine Hüpfburg betrieben werden?",
@@ -2004,7 +2004,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Gebläse-Technik: warum es dauerhaft laufen muss",
           paragraphs: [
-            "Klassische Veranstaltungs-Hüpfburgen sind nicht „aufblasen und zumachen" – sie werden über ein kontinuierlich laufendes Gebläse (Radiallüfter oder Axiallüfter) auf Druck gehalten, weil sie kein luftdichtes System sind (Nähte, Reißverschlüsse, Eingangsöffnung lassen ständig etwas Luft entweichen). Stoppt das Gebläse, fällt die Hüpfburg innerhalb von 20–60 Sekunden in sich zusammen – das ist gewollt (sicherer als plötzliches Aufreißen).",
+            "Klassische Veranstaltungs-Hüpfburgen sind nicht "aufblasen und zumachen" – sie werden über ein kontinuierlich laufendes Gebläse (Radiallüfter oder Axiallüfter) auf Druck gehalten, weil sie kein luftdichtes System sind (Nähte, Reißverschlüsse, Eingangsöffnung lassen ständig etwas Luft entweichen). Stoppt das Gebläse, fällt die Hüpfburg innerhalb von 20–60 Sekunden in sich zusammen – das ist gewollt (sicherer als plötzliches Aufreißen).",
             "Praktisch heißt das: Stromversorgung muss dauerhaft anliegen. Stromausfall im Mehrfachverteiler vermeiden, Kabel sicher verlegen (Stolperfalle!), bei Open-Air ggf. Generator vorhalten. Wir vermieten bei Bedarf passende Verkabelung und Stromverteiler dazu (Kategorie Kabel & Stromverteiler).",
           ],
         },
@@ -2045,7 +2045,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Darf ich mit dem Wohnwagen 100 km/h auf der Autobahn fahren?",
           answer:
-            "Standard ist Tempo 80 km/h auf Autobahn und außerorts. Mit der „Tempo-100-Plakette" nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h zulässig – dafür muss der Wohnwagen bestimmte Bedingungen erfüllen: max. 3,5 t zulässige Gesamtmasse, geeignete Reifen (Geschwindigkeitsindex mindestens L = 120 km/h), hydraulische Stoßdämpfer, Antischlingerkupplung oder ESC, Reifenalter max. 6 Jahre. Außerdem muss das Zugfahrzeug mit mindestens 1,1-facher Leermasse über der Wohnwagen-Gesamtmasse liegen. Wir geben bei der Übergabe den aktuellen Plakettenstatus an.",
+            "Standard ist Tempo 80 km/h auf Autobahn und außerorts. Mit der "Tempo-100-Plakette" nach Anlage zu § 18 Abs. 5 StVO sind 100 km/h zulässig – dafür muss der Wohnwagen bestimmte Bedingungen erfüllen: max. 3,5 t zulässige Gesamtmasse, geeignete Reifen (Geschwindigkeitsindex mindestens L = 120 km/h), hydraulische Stoßdämpfer, Antischlingerkupplung oder ESC, Reifenalter max. 6 Jahre. Außerdem muss das Zugfahrzeug mit mindestens 1,1-facher Leermasse über der Wohnwagen-Gesamtmasse liegen. Wir geben bei der Übergabe den aktuellen Plakettenstatus an.",
         },
         {
           question: "Wie funktioniert die Gasanlage – und muss sie geprüft sein?",
@@ -2094,14 +2094,14 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Fahrdynamik: Schlingerneigung und wie man sie verhindert",
           paragraphs: [
-            "Wohnwagen-Gespanne neigen ab ca. 90 km/h zur sogenannten „Pendelschwingung" – der Wohnwagen schaukelt seitlich, das Zugfahrzeug folgt mit. Ursache: ungleiche Beladung (zu viel Heck-Last), zu niedrige Stützlast, schlechte Reifen, Seitenwind. Gegenmaßnahmen: Schwere Last (z. B. Wasserkanister) im Wohnwagen über der Achse platzieren, Stützlast auf 4 % des Gesamtgewichts einstellen, Antischlingerkupplung (AKS) oder ESC nutzen, Geschwindigkeit anpassen.",
+            "Wohnwagen-Gespanne neigen ab ca. 90 km/h zur sogenannten "Pendelschwingung" – der Wohnwagen schaukelt seitlich, das Zugfahrzeug folgt mit. Ursache: ungleiche Beladung (zu viel Heck-Last), zu niedrige Stützlast, schlechte Reifen, Seitenwind. Gegenmaßnahmen: Schwere Last (z. B. Wasserkanister) im Wohnwagen über der Achse platzieren, Stützlast auf 4 % des Gesamtgewichts einstellen, Antischlingerkupplung (AKS) oder ESC nutzen, Geschwindigkeit anpassen.",
             "Antischlingerkupplungen (z. B. AL-KO AKS 3004) dämpfen die Pendelbewegung mechanisch und sind heute Standard bei modernen Wohnwagen. ESC (Elektronisches Schlingerstabilisierungs-System) erkennt beginnendes Pendeln und bremst gezielt einzelne Räder ab. Unsere Mietwohnwagen sind mit AKS und je nach Modell mit ESC ausgestattet.",
           ],
         },
         {
           h3: "Tempo 100 in Deutschland: die Plakette und ihre Anforderungen",
           paragraphs: [
-            "Die „100-km/h-Plakette" wird von einer Prüforganisation (TÜV, DEKRA, GTÜ) ausgestellt, wenn der Wohnwagen alle Voraussetzungen erfüllt: max. 3,5 t zul. Gesamtmasse, Reifen mit Geschwindigkeitsindex L (120 km/h) oder höher und max. 6 Jahre alt, hydraulische Stoßdämpfer in Ordnung, AKS oder ESC vorhanden. Zusätzlich gilt: Leermasse des Zugfahrzeugs ≥ 1,1 × zul. Gesamtmasse des Wohnwagens (bei ESC entfällt diese Bedingung).",
+            "Die "100-km/h-Plakette" wird von einer Prüforganisation (TÜV, DEKRA, GTÜ) ausgestellt, wenn der Wohnwagen alle Voraussetzungen erfüllt: max. 3,5 t zul. Gesamtmasse, Reifen mit Geschwindigkeitsindex L (120 km/h) oder höher und max. 6 Jahre alt, hydraulische Stoßdämpfer in Ordnung, AKS oder ESC vorhanden. Zusätzlich gilt: Leermasse des Zugfahrzeugs ≥ 1,1 × zul. Gesamtmasse des Wohnwagens (bei ESC entfällt diese Bedingung).",
             "Praktisch: Eine 100-km/h-Plakette spart auf langen Strecken Zeit und macht das Mitschwimmen im Verkehr entspannter. Achtung: Im Ausland (Österreich, Schweiz, Italien, Spanien) gelten unabhängig von der deutschen Plakette die jeweiligen Tempolimits für Gespanne (typisch 80–100 km/h). Wir geben am Standort Krefeld den Plakettenstatus der jeweiligen Mietfahrzeuge an.",
           ],
         },
