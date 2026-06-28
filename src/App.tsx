@@ -73,6 +73,7 @@ const Vergleich = lazy(() => import("./pages/Vergleich"));
 const VergleichIndex = lazy(() => import("./pages/VergleichIndex"));
 const BaumaxService = lazy(() => import("./pages/BaumaxService"));
 const GlasfaserMaschinen = lazy(() => import("./pages/GlasfaserMaschinen"));
+const HochzeitTechnik = lazy(() => import("./pages/HochzeitTechnik"));
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
