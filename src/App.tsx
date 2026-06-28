@@ -178,6 +178,13 @@ const App = () => (
               <Route path="/glasfaser" element={<Navigate to="/glasfaserausbau-maschinen-mieten" replace />} />
               <Route path="/glasfaserausbau" element={<Navigate to="/glasfaserausbau-maschinen-mieten" replace />} />
 
+              {/* Hochzeit Technik mieten – Landingpage Bonn & Krefeld */}
+              <Route path="/hochzeit-technik-mieten" element={<HochzeitTechnik />} />
+              <Route path="/hochzeit" element={<Navigate to="/hochzeit-technik-mieten" replace />} />
+              <Route path="/hochzeit-mieten" element={<Navigate to="/hochzeit-technik-mieten" replace />} />
+
+              
+
               
               {/* B2B Portal */}
               <Route path="/b2b/login" element={<B2BLogin />} />
