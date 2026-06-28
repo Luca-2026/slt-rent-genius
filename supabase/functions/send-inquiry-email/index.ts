@@ -46,7 +46,23 @@ serve(async (req) => {
       deliveryPostalCode,
       deliveryCity,
       setupServiceRequested,
+      attachments,
     } = await req.json();
+
+    // Validate attachments: max 3, max 5MB each, images only
+    const safeAttachments: { filename: string; content: string }[] = [];
+    if (Array.isArray(attachments)) {
+      for (const att of attachments.slice(0, 3)) {
+        if (!att?.filename || !att?.content) continue;
+        // base64 size ≈ content.length * 0.75
+        const approxBytes = Math.floor((att.content as string).length * 0.75);
+        if (approxBytes > 5 * 1024 * 1024) continue;
+        safeAttachments.push({
+          filename: String(att.filename).slice(0, 120),
+          content: att.content,
+        });
+      }
+    }
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
@@ -126,6 +142,7 @@ serve(async (req) => {
       ${setupServiceHtml}
     </table>
     ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${e.message}</p>` : ""}
+    ${safeAttachments.length ? `<p style="color: #374151; margin-top: 16px;"><strong>📎 ${safeAttachments.length} Bild(er) vom Aufstellort</strong> sind dieser E-Mail als Anhang beigefügt.</p>` : ""}
     ${footerHtml}
   </div>
 </div>`.trim();
@@ -175,6 +192,7 @@ serve(async (req) => {
           reply_to: email,
           subject: `Mietanfrage: ${productName} – ${locationName}`,
           html: internalHtml,
+          ...(safeAttachments.length ? { attachments: safeAttachments } : {}),
         }),
       });
       if (!res1.ok) console.error("Resend internal error:", await res1.text());
