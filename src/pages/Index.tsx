@@ -337,27 +337,49 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
-        
-        <div className="section-container text-center relative">
+      <section className="py-16 md:py-20 lg:py-28 bg-card border-y border-border relative overflow-hidden">
+        <div className="section-container relative">
           <AnimatedSection>
-            <h2 className="text-3xl lg:text-4xl font-bold text-headline mb-4">
-              {t("cta.title")}
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-10 text-lg">
-              {t("cta.subtitle")}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/mieten">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  {t("cta.rentEquipment")}
-                </Button>
-              </Link>
-              <Link to="/b2b">
-                <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1">
-                  {t("cta.b2bInquiry")}
-                </Button>
-              </Link>
+            <div className="flex flex-col items-center max-w-4xl mx-auto">
+              {/* Personal touch: Benedikt Nöchel */}
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-8">
+                <img
+                  src={imgBenedikt}
+                  alt="Benedikt Nöchel – Geschäftsführer und Inhaber SLT Rental"
+                  className="h-20 w-20 md:h-24 md:w-24 rounded-full object-cover ring-4 ring-primary/20 shadow-lg"
+                  loading="lazy"
+                />
+                <div className="text-center md:text-left">
+                  <p className="text-sm text-accent font-medium uppercase tracking-wide mb-1">
+                    Dein persönlicher Ansprechpartner
+                  </p>
+                  <p className="text-lg md:text-xl font-bold text-headline">
+                    Benedikt Nöchel
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Geschäftsführer & Inhaber · Standortleiter Krefeld
+                  </p>
+                </div>
+              </div>
+
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-headline mb-3 md:mb-4 text-center">
+                {t("cta.title")}
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-8 md:mb-10 text-base md:text-lg text-center">
+                Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. Bei Fragen oder Anregungen melde dich gerne persönlich bei mir oder unserem Team.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full sm:w-auto">
+                <Link to="/mieten">
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto">
+                    {t("cta.rentEquipment")}
+                  </Button>
+                </Link>
+                <Link to="/b2b">
+                  <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto">
+                    {t("cta.b2bInquiry")}
+                  </Button>
+                </Link>
+              </div>
             </div>
           </AnimatedSection>
         </div>
