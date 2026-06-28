@@ -183,7 +183,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Rüttelplatte oder Stampfer – wann nehme ich was?",
           answer:
-            "Stampfer (Vibrationsstampfer, „Frosch", ca. 60–80 kg, schmale Platte) sind für bindige Böden in schmalen Gräben das Mittel der Wahl: hohe Schlagenergie, kleine Aufstandsfläche, Verdichtungstiefe bis ca. 70 cm in einer Schicht. Rüttelplatten verdichten flächig und sind bei rolligen Böden, Schotter und Pflaster überlegen. Für Hausanschluss- und Glasfasergräben mit Sand-Kies-Verfüllung greift man oft zu beiden Geräten: erst Stampfer am Rohr, dann Platte in der oberen Schicht. Beide Geräte führen wir am Hauptsitz Krefeld vor.",
+            "Stampfer (Vibrationsstampfer, „Frosch“, ca. 60–80 kg, schmale Platte) sind für bindige Böden in schmalen Gräben das Mittel der Wahl: hohe Schlagenergie, kleine Aufstandsfläche, Verdichtungstiefe bis ca. 70 cm in einer Schicht. Rüttelplatten verdichten flächig und sind bei rolligen Böden, Schotter und Pflaster überlegen. Für Hausanschluss- und Glasfasergräben mit Sand-Kies-Verfüllung greift man oft zu beiden Geräten: erst Stampfer am Rohr, dann Platte in der oberen Schicht. Beide Geräte führen wir am Hauptsitz Krefeld vor.",
         },
         {
           question: "Welche Verdichtungsgrade verlangen Tiefbauämter typischerweise?",
@@ -208,7 +208,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie transportiere ich Rüttelplatten – darf ich sie liegend laden?",
           answer:
-            "Kleinere Vorwärts-Platten (≤ 130 kg) lassen sich zu zweit oder mit der Auffahrrampe in den Transporter heben. Ab ca. 200 kg ist eine Auffahrrampe oder ein Anhänger mit Auffahrbohlen Pflicht. Rüttelplatten dürfen für den Transport hochkant aufgerichtet werden – herstellerabhängig ist die Lage in der Bedienungsanleitung vorgeschrieben (meist „Lufthahn schließen / Kraftstoffhahn schließen"), sonst läuft Motoröl in den Brennraum. Bei Lieferung ab Hauptsitz Krefeld kümmern wir uns um eine ordnungsgemäße Ladungssicherung nach VDI 2700.",
+            "Kleinere Vorwärts-Platten (≤ 130 kg) lassen sich zu zweit oder mit der Auffahrrampe in den Transporter heben. Ab ca. 200 kg ist eine Auffahrrampe oder ein Anhänger mit Auffahrbohlen Pflicht. Rüttelplatten dürfen für den Transport hochkant aufgerichtet werden – herstellerabhängig ist die Lage in der Bedienungsanleitung vorgeschrieben (meist „Lufthahn schließen / Kraftstoffhahn schließen“), sonst läuft Motoröl in den Brennraum. Bei Lieferung ab Hauptsitz Krefeld kümmern wir uns um eine ordnungsgemäße Ladungssicherung nach VDI 2700.",
         },
         {
           question: "Was kostet eine Rüttelplatte in Krefeld – und ab wann lohnt sich Wochenmiete?",
@@ -258,8 +258,8 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Verdichtungsfortschritt messen: vom Augenmaß bis zum Plattendruckversuch",
           paragraphs: [
-            "Im privaten Bereich reicht oft die Faustregel: Wenn die Rüttelplatte nicht mehr einsinkt und der Boden „klingt", ist die Lage verdichtet. Im gewerblichen Tiefbau ist das nicht ausreichend. Standardverfahren ist der statische Plattendruckversuch nach DIN 18134 (Lastplatte 300 mm Durchmesser, zwei Belastungszyklen, Ergebnis Ev1 und Ev2). Daraus wird das Verformungsmodul Ev2 abgeleitet, das in den ZTV E-StB als Abnahmekriterium dient.",
-            "Schneller, aber weniger normativ, sind dynamische Verfahren wie der leichte Fallgewichtsversuch (Evd, „Zorn-Gerät"). Für die meisten kommunalen Tiefbauarbeiten am Niederrhein wird das Ev2 verlangt. Den Plattendruckversuch führen Tiefbauunternehmen oder Sachverständige durch; wir vermieten ausschließlich die Verdichtungsmaschine. Für eine erfolgreiche Abnahme entscheidet weniger die Maschinengröße als das saubere Lagenweise-Einbauen und der richtige Wassergehalt.",
+            "Im privaten Bereich reicht oft die Faustregel: Wenn die Rüttelplatte nicht mehr einsinkt und der Boden „klingt“, ist die Lage verdichtet. Im gewerblichen Tiefbau ist das nicht ausreichend. Standardverfahren ist der statische Plattendruckversuch nach DIN 18134 (Lastplatte 300 mm Durchmesser, zwei Belastungszyklen, Ergebnis Ev1 und Ev2). Daraus wird das Verformungsmodul Ev2 abgeleitet, das in den ZTV E-StB als Abnahmekriterium dient.",
+            "Schneller, aber weniger normativ, sind dynamische Verfahren wie der leichte Fallgewichtsversuch (Evd, „Zorn-Gerät“). Für die meisten kommunalen Tiefbauarbeiten am Niederrhein wird das Ev2 verlangt. Den Plattendruckversuch führen Tiefbauunternehmen oder Sachverständige durch; wir vermieten ausschließlich die Verdichtungsmaschine. Für eine erfolgreiche Abnahme entscheidet weniger die Maschinengröße als das saubere Lagenweise-Einbauen und der richtige Wassergehalt.",
           ],
         },
       ],
@@ -305,7 +305,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welche Persönliche Schutzausrüstung gegen Absturz ist Pflicht?",
           answer:
-            "Auf Gelenkteleskop- und Auslegerbühnen ist die Verwendung eines Auffanggurts (EN 361) mit kurzer Verbindungsleine (EN 354) und Falldämpfer (EN 355) Pflicht – Anschlagpunkt ist der gekennzeichnete Ring im Korb. Grund: Bei plötzlichem Hindernis-Kontakt kann der Bediener aus dem Korb katapultiert werden („Catapult Effect"). Bei Scherenbühnen ist eine PSAgA nicht zwingend vorgeschrieben, wenn die Bühne nicht verlassen wird und das Geländer intakt ist. Zusätzlich Helm mit Kinnriemen, S3-Schuhe, Warnschutz nach EN ISO 20471 im öffentlichen Verkehrsraum. PSAgA stellt der Arbeitgeber.",
+            "Auf Gelenkteleskop- und Auslegerbühnen ist die Verwendung eines Auffanggurts (EN 361) mit kurzer Verbindungsleine (EN 354) und Falldämpfer (EN 355) Pflicht – Anschlagpunkt ist der gekennzeichnete Ring im Korb. Grund: Bei plötzlichem Hindernis-Kontakt kann der Bediener aus dem Korb katapultiert werden („Catapult Effect“). Bei Scherenbühnen ist eine PSAgA nicht zwingend vorgeschrieben, wenn die Bühne nicht verlassen wird und das Geländer intakt ist. Zusätzlich Helm mit Kinnriemen, S3-Schuhe, Warnschutz nach EN ISO 20471 im öffentlichen Verkehrsraum. PSAgA stellt der Arbeitgeber.",
         },
         {
           question: "Darf ich mit der Bühne aussteigen, um auf ein Dach zu treten?",
@@ -344,14 +344,14 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Hüllkurve und Tragfähigkeit: was die Marketing-Höhe verschweigt",
           paragraphs: [
-            "Die plakative Zahl „14-Meter-Bühne" ist die maximale Arbeitshöhe und entspricht der Plattformhöhe + 2 m angenommener Greifhöhe. Praktisch nutzbar ist die Plattformhöhe. Wichtiger als die Höhenzahl ist die Hüllkurve (Reichweitendiagramm): Sie zeigt, wie weit die Plattform bei jeder Höhe nach vorne und zur Seite reichen kann.",
+            "Die plakative Zahl „14-Meter-Bühne“ ist die maximale Arbeitshöhe und entspricht der Plattformhöhe + 2 m angenommener Greifhöhe. Praktisch nutzbar ist die Plattformhöhe. Wichtiger als die Höhenzahl ist die Hüllkurve (Reichweitendiagramm): Sie zeigt, wie weit die Plattform bei jeder Höhe nach vorne und zur Seite reichen kann.",
             "Typisch: Eine 22-m-Anhängerbühne erreicht bei voller Höhe etwa 9 m seitlich, bei 12 m Höhe dagegen rund 13 m. Außerdem reduziert sich die Korblast mit zunehmender Auslage von z. B. 250 kg auf 120 kg. Wer einen Schornstein über einem 5-m-Anbau erreichen will, muss diese Werte vorher abgleichen – die größte Höhe nützt nichts, wenn die seitliche Reichweite nicht passt. Wir beraten am Standort Krefeld anhand des konkreten Aufgabenbildes (Skizze, Foto) zur passenden Hüllkurve.",
           ],
         },
         {
           h3: "Sicherheit im Korb: Catapult-Effekt, PSAgA und Notabsenkung",
           paragraphs: [
-            "Der mit Abstand häufigste tödliche Unfall mit Hubarbeitsbühnen ist der „Catapult Effect": Der Korb wird bei plötzlichem Aufprall (Hindernis, Stoß durch Fahrzeug) abrupt abgebremst, der ungesicherte Bediener wird über die Brüstung katapultiert. PSAgA mit kurzer Verbindungsleine (max. so lang, dass ein Fall über die Brüstung mechanisch unmöglich ist) verhindert das. Auf Gelenkteleskop- und Auslegerbühnen ist sie deshalb Pflicht.",
+            "Der mit Abstand häufigste tödliche Unfall mit Hubarbeitsbühnen ist der „Catapult Effect“: Der Korb wird bei plötzlichem Aufprall (Hindernis, Stoß durch Fahrzeug) abrupt abgebremst, der ungesicherte Bediener wird über die Brüstung katapultiert. PSAgA mit kurzer Verbindungsleine (max. so lang, dass ein Fall über die Brüstung mechanisch unmöglich ist) verhindert das. Auf Gelenkteleskop- und Auslegerbühnen ist sie deshalb Pflicht.",
             "Jede Bühne hat eine Notabsenkung am Maschinenrumpf (Ausfall des Bedieners im Korb) und Notbedienelemente im Korb (Ausfall der Hauptsteuerung). Beide werden in unserer Einweisung in Krefeld konkret am Modell gezeigt. Bei Stromausfall oder Hydraulik-Notfall darf nur eine zweite, eingewiesene Person die Notabsenkung bedienen – nie der Bediener im Korb selbst (außer bei Vollausstattung mit Notbedienteil im Korb). Ein zweiter Helfer am Boden ist auf Außenbaustellen deshalb dringend empfohlen.",
           ],
         },
@@ -365,7 +365,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Pflicht zur Prüfung: vor jedem Einsatz, einmal jährlich, einmal nach Reparatur",
           paragraphs: [
-            "Drei Prüf-Ebenen sind zu unterscheiden: (1) Arbeitstägliche Sicht- und Funktionsprüfung durch den Bediener (Reifen, Hydraulik-Dichtigkeit, NOT-AUS, Notabsenkung, Sicherungsmittel) – Pflicht vor jeder Schicht. (2) Wiederkehrende Prüfung nach BetrSichV § 14 i. V. m. DGUV Grundsatz 308-002 mindestens jährlich durch eine befähigte Person – das ist die „UVV-Prüfung", die wir bei jedem Mietgerät dokumentiert mitliefern. (3) Außerordentliche Prüfung nach Reparaturen, Umbauten oder Schäden.",
+            "Drei Prüf-Ebenen sind zu unterscheiden: (1) Arbeitstägliche Sicht- und Funktionsprüfung durch den Bediener (Reifen, Hydraulik-Dichtigkeit, NOT-AUS, Notabsenkung, Sicherungsmittel) – Pflicht vor jeder Schicht. (2) Wiederkehrende Prüfung nach BetrSichV § 14 i. V. m. DGUV Grundsatz 308-002 mindestens jährlich durch eine befähigte Person – das ist die „UVV-Prüfung“, die wir bei jedem Mietgerät dokumentiert mitliefern. (3) Außerordentliche Prüfung nach Reparaturen, Umbauten oder Schäden.",
             "Als Mieter trägst du die Verantwortung für (1) und musst Mängel sofort melden – Weiterbenutzung ist nach Auftreten eines sicherheitsrelevanten Defekts ausgeschlossen. Wir sorgen für (2) und (3); die Prüfplakette ist sichtbar an der Maschine, das Prüfprotokoll erhältst du auf Anforderung digital. Damit ist der gesetzliche Rahmen für deinen Einsatz vollständig abgedeckt.",
           ],
         },
@@ -424,7 +424,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was ist beim Baustellenstrom in Krefeld zu beachten?",
           answer:
-            "DIN VDE 0100-704 fordert für Baustellen einen separaten Baustromverteiler mit Fehlerstromschutzschalter (RCD/FI) ≤ 30 mA für alle Steckdosen ≤ 32 A. Hausanschlusssteckdosen erfüllen das in Bestandsbauten oft nicht – dann ist ein mobiler PRCD-S vorgeschaltet Pflicht. Verlängerungskabel müssen für den Außeneinsatz geeignet (H07RN-F oder H05RN-F) und auf Beschädigung geprüft sein. Wir vermieten passende Baustromverteiler und PRCD-S in der Kategorie „Kabel & Stromverteiler".",
+            "DIN VDE 0100-704 fordert für Baustellen einen separaten Baustromverteiler mit Fehlerstromschutzschalter (RCD/FI) ≤ 30 mA für alle Steckdosen ≤ 32 A. Hausanschlusssteckdosen erfüllen das in Bestandsbauten oft nicht – dann ist ein mobiler PRCD-S vorgeschaltet Pflicht. Verlängerungskabel müssen für den Außeneinsatz geeignet (H07RN-F oder H05RN-F) und auf Beschädigung geprüft sein. Wir vermieten passende Baustromverteiler und PRCD-S in der Kategorie „Kabel & Stromverteiler“.",
         },
         {
           question: "Was kostet die Werkzeug-Miete in Krefeld – ab wann lohnt der Kauf?",
@@ -446,7 +446,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Werkzeugauswahl nach Material: nicht die Marke, sondern die Aufgabe entscheidet",
           paragraphs: [
-            "Die wichtigste Frage vor der Werkzeugmiete ist nicht „welche Marke" – Hilti, Bosch, Makita und Co. liegen technisch eng beieinander – sondern die Werkzeugklasse passend zum Material und zum Energiebedarf. Beton stemmen mit einem normalen Bohrhammer SDS-plus ist mühsam und überlastet das Schlagwerk; umgekehrt ist ein SDS-max-Kombihammer für Dübellöcher überdimensioniert und schwierig zu führen.",
+            "Die wichtigste Frage vor der Werkzeugmiete ist nicht „welche Marke“ – Hilti, Bosch, Makita und Co. liegen technisch eng beieinander – sondern die Werkzeugklasse passend zum Material und zum Energiebedarf. Beton stemmen mit einem normalen Bohrhammer SDS-plus ist mühsam und überlastet das Schlagwerk; umgekehrt ist ein SDS-max-Kombihammer für Dübellöcher überdimensioniert und schwierig zu führen.",
             "Pragmatische Auswahl: Dübellöcher ⇒ Akku- oder Netz-Bohrhammer SDS-plus mit 2–3 J Schlagenergie. Mauerdurchbrüche bis 80 mm ⇒ SDS-max-Kombihammer mit 8–12 J. Reines Stemmen großer Flächen ⇒ Elektro-Stemmhammer ohne Drehfunktion mit 15–25 J. Beton-Trennen bis 7 cm Tiefe ⇒ Trennschleifer 230 mm. Tiefere Schnitte oder Kantenarbeit ⇒ Diamant-Mauernutfräse oder Wandsäge. Kernbohrungen 50–300 mm ⇒ Diamant-Kernbohrgerät mit Bohrständer. Wir bevorraten in Krefeld alle Klassen und beraten anhand des konkreten Aufgabenbildes.",
           ],
         },
@@ -528,7 +528,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welche Steckdosen-Belegung hat ein Aggregat – und wie verbinde ich es?",
           answer:
-            "Standard sind je nach Klasse: 230 V / 16 A Schuko (kleine Geräte), CEE 16 A 3-phasig (5-polig, blau für 230 V, rot für 400 V), CEE 32 A 3-phasig (rot, 400 V), CEE 63 A 3-phasig. Bei größeren Aggregaten (>20 kVA) zusätzlich Klemmleisten zum Festanschluss durch Elektrofachkraft. Die Verbindung zum Baustromverteiler oder zur Verteilung im Haus muss DIN-VDE-konform durch eine Elektrofachkraft erfolgen, sobald nicht steckerfertig verbunden wird. Wir vermieten alle gängigen CEE-Kabel und Adapter in der Kategorie „Kabel & Stromverteiler".",
+            "Standard sind je nach Klasse: 230 V / 16 A Schuko (kleine Geräte), CEE 16 A 3-phasig (5-polig, blau für 230 V, rot für 400 V), CEE 32 A 3-phasig (rot, 400 V), CEE 63 A 3-phasig. Bei größeren Aggregaten (>20 kVA) zusätzlich Klemmleisten zum Festanschluss durch Elektrofachkraft. Die Verbindung zum Baustromverteiler oder zur Verteilung im Haus muss DIN-VDE-konform durch eine Elektrofachkraft erfolgen, sobald nicht steckerfertig verbunden wird. Wir vermieten alle gängigen CEE-Kabel und Adapter in der Kategorie „Kabel & Stromverteiler“.",
         },
         {
           question: "Stage V – was bedeutet das für Innenstadt-Einsätze (Köln, Düsseldorf, Bonn)?",
@@ -543,7 +543,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet ein Stromerzeuger in Krefeld – und welche Kosten kommen dazu?",
           answer:
-            "Tagespreis je Modell tagesaktuell im Buchungsprozess. Zusätzlich: Diesel/Benzin (nach Rückgabe nach gefülltem Tank abgerechnet), bei Bedarf CEE-Verlängerungskabel, Adapter und Baustromverteiler aus der Kategorie „Kabel & Stromverteiler". Wochenmiete entspricht typischerweise rund 5 Tagessätzen, Monatsmiete rund 15 – lohnt sich also bei längeren Baustellen oder Veranstaltungswochen.",
+            "Tagespreis je Modell tagesaktuell im Buchungsprozess. Zusätzlich: Diesel/Benzin (nach Rückgabe nach gefülltem Tank abgerechnet), bei Bedarf CEE-Verlängerungskabel, Adapter und Baustromverteiler aus der Kategorie „Kabel & Stromverteiler“. Wochenmiete entspricht typischerweise rund 5 Tagessätzen, Monatsmiete rund 15 – lohnt sich also bei längeren Baustellen oder Veranstaltungswochen.",
         },
         {
           question: "Bietet ihr auch Baustrom-Anträge und temporäre Stromversorgung an?",
@@ -570,7 +570,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Lärmschutz auf Veranstaltungen und in Wohnquartieren",
           paragraphs: [
             "Aggregate sind nach 32. BImSchV mit der garantierten Schallleistung LWA (in dB) zu kennzeichnen. Ein typisches offenes Baustellen-Aggregat 20 kVA liegt bei LWA = 95–100 dB(A); die Immissions­wirkung in 7 m beträgt grob LWA − 20 dB = 75–80 dB(A) – im Wohngebiet (TA Lärm 55 dB(A) tags) deutlich zu laut für nahe Anwohner.",
-            "Schallgedämmte Aggregate („Soundproof") erreichen LWA = 65–75 dB(A), in 7 m also 45–55 dB(A) – das hält den Richtwert ein. Für Veranstaltungen in Innenstadt-Lagen (Krefelder Burgmarkt, Bonner Rheinaue, Mülheimer MüGa) bevorraten wir bevorzugt schallgedämmte Modelle. Bei mehrtägigem Betrieb kann zusätzlich ein Lärmschutzgehäuse (Schallschutzkabine) sinnvoll sein; das organisieren wir auf Anfrage.",
+            "Schallgedämmte Aggregate („Soundproof“) erreichen LWA = 65–75 dB(A), in 7 m also 45–55 dB(A) – das hält den Richtwert ein. Für Veranstaltungen in Innenstadt-Lagen (Krefelder Burgmarkt, Bonner Rheinaue, Mülheimer MüGa) bevorraten wir bevorzugt schallgedämmte Modelle. Bei mehrtägigem Betrieb kann zusätzlich ein Lärmschutzgehäuse (Schallschutzkabine) sinnvoll sein; das organisieren wir auf Anfrage.",
           ],
         },
         {
