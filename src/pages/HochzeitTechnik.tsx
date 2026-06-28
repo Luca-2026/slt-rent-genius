@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { WeddingInquiryDialog } from "@/components/hochzeit/WeddingInquiryDialog";
+import { CategoryLocationDialog } from "@/components/hochzeit/CategoryLocationDialog";
 import {
   Music,
   Lightbulb,
@@ -249,11 +250,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Music className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">DJ-Beschallung &amp; Mikrofone</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   D.A.S. Audio Action 508A / Vantec / 3500 W RMS-PAs, 2.1 Soundsystem,
                   Soundboks Gen.3 für Outdoor, Pioneer CDJ 2000 NXS / DJM 900 NXS2 und
                   Sennheiser-Funkmikrofone. Für 30 bis 250 Gäste.
                 </p>
+                <CategoryLocationDialog categoryId="beschallung" categoryLabel="Beschallung" triggerLabel="Zur Beschallung" />
               </div>
             </Card>
 
@@ -269,11 +271,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Lightbulb className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Licht &amp; Effektlicht</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   LED Outdoorscheinwerfer TourLED 50 XCR, LED Moving Head Vector Spot
                   Zoom 2.0, SLT LED Fluter RGBWAUV, Showtec Sunstrip Active MKII, LED-PAR-
                   Sets &amp; T-Bar-Stative. Wash, Spots und Effekte aus einer Hand.
                 </p>
+                <CategoryLocationDialog categoryId="beleuchtung" categoryLabel="Beleuchtung" triggerLabel="Zur Beleuchtung" />
               </div>
             </Card>
 
@@ -289,11 +292,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Sparkles className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Sparkular &amp; Nebelmaschine</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Kalt-Funkenfontänen (Sparkular) als 2er- und 4er-Set, ADJ Fog Fury
                   Jett PRO Vertikal-Nebelmaschine, TCM FX Turbo CO₂-Jet – BAM-frei und
                   in den meisten NRW-Locations zugelassen.
                 </p>
+                <CategoryLocationDialog categoryId="spezialeffekte" categoryLabel="Special FX" triggerLabel="Zu Special FX" />
               </div>
             </Card>
 
@@ -309,11 +313,12 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Tent className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Stehtische, Hussen &amp; Möbel</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Stehtische mit Stretchhussen (schwarz/weiß), 6er-/8er-/12er-
                   Bierzeltgarnituren, Klappstühle. Schnell auf- und abgebaut – auch
                   Selbstabholung im Pkw möglich.
                 </p>
+                <CategoryLocationDialog categoryId="moebel-zelte" categoryLabel="Möbel &amp; Zelte" triggerLabel="Zu Möbel &amp; Zelte" />
               </div>
             </Card>
 
@@ -329,10 +334,11 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Tent className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Pagoden- &amp; Festzelte</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Pagodenzelte 3 × 3 m für die Bar oder den Sektempfang sowie Partyzelte
                   bis 5 × 12 m für die ganze Feier – inklusive Zeltboden auf Anfrage.
                 </p>
+                <CategoryLocationDialog categoryId="moebel-zelte" categoryLabel="Möbel &amp; Zelte" triggerLabel="Zu Möbel &amp; Zelte" />
               </div>
             </Card>
 
@@ -348,10 +354,11 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Utensils className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Geschirr, Gläser &amp; Spülmaschine</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Darwin-Geschirr, Wein-/Sekt-/Wassergläser im 20er-Set sowie mobile
                   Profi-Spülmaschine für das Catering-Team.
                 </p>
+                <CategoryLocationDialog categoryId="geschirr-glaeser-besteck" categoryLabel="Geschirr &amp; Gläser" triggerLabel="Zu Geschirr &amp; Gläser" />
               </div>
             </Card>
 
