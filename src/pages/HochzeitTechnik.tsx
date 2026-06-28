@@ -278,9 +278,13 @@ export default function HochzeitTechnik() {
             </Card>
 
             <Card className="overflow-hidden">
-              <div className="relative aspect-[16/10] bg-muted overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/85 to-accent/70" />
-                <Sparkles className="relative h-20 w-20 text-white/95" />
+              <div className="relative aspect-[16/10] bg-muted overflow-hidden">
+                <img
+                  src={imgSparkular}
+                  alt="Sparkular Kalt-Funkenfontänen im Einsatz beim Hochzeitstanz – Kaltfunken mieten"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
               <div className="p-5">
                 <Sparkles className="h-6 w-6 text-accent mb-2" />
