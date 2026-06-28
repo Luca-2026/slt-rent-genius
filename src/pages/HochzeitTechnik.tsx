@@ -354,10 +354,11 @@ export default function HochzeitTechnik() {
               <div className="p-5">
                 <Utensils className="h-6 w-6 text-accent mb-2" />
                 <h3 className="font-bold text-lg mb-1">Geschirr, Gläser &amp; Spülmaschine</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   Darwin-Geschirr, Wein-/Sekt-/Wassergläser im 20er-Set sowie mobile
                   Profi-Spülmaschine für das Catering-Team.
                 </p>
+                <CategoryLocationDialog categoryId="geschirr-glaeser-besteck" categoryLabel="Geschirr &amp; Gläser" triggerLabel="Zu Geschirr &amp; Gläser" />
               </div>
             </Card>
 
