@@ -378,7 +378,7 @@ export default function HochzeitTechnik() {
           {/* Zentraler Sammel-CTA */}
           <div className="mt-10 rounded-xl bg-primary text-primary-foreground p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-1">
+              <h3 className="text-xl md:text-2xl font-bold mb-1 text-white">
                 Komplettes Hochzeitspaket – ein Formular, ein Angebot
               </h3>
               <p className="text-white/85 text-sm md:text-base">
