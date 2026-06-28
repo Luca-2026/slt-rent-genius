@@ -11,7 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, ArrowLeft, Mail } from "lucide-react";
+import { MapPin, ArrowLeft, Mail, Loader2, CheckCircle2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -38,7 +40,7 @@ const LOCATIONS: Record<
   },
   muelheim: {
     label: "Mülheim an der Ruhr",
-    address: "Service-Standort Ruhrgebiet",
+    address: "Ruhrorter Str. 122, 45478 Mülheim an der Ruhr",
     email: "muelheim@slt-rental.de",
     phone: "02151 417 99 04",
   },
@@ -67,14 +69,19 @@ const TECH_OPTIONS = [
 ];
 
 export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loc, setLoc] = useState<LocationKey | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     eventDate: "",
-    eventLocation: "",
+    venueName: "",
+    street: "",
+    houseNumber: "",
+    postalCode: "",
+    city: "",
     guests: "",
     deliveryNeeded: false,
     selfPickup: false,
@@ -86,12 +93,17 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     setStep(1);
     setLoc(null);
     setSelectedTech([]);
+    setSubmitting(false);
     setForm({
       name: "",
       email: "",
       phone: "",
       eventDate: "",
-      eventLocation: "",
+      venueName: "",
+      street: "",
+      houseNumber: "",
+      postalCode: "",
+      city: "",
       guests: "",
       deliveryNeeded: false,
       selfPickup: false,
@@ -108,50 +120,75 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     setSelectedTech((s) => (s.includes(item) ? s.filter((x) => x !== item) : [...s, item]));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!loc) return;
     const target = LOCATIONS[loc];
 
-    const lines = [
-      "Hallo SLT-Team,",
-      "",
-      "wir möchten gerne ein unverbindliches Angebot für unsere Hochzeit erhalten.",
-      "",
-      "— Kontaktdaten —",
-      `Name: ${form.name}`,
-      `E-Mail: ${form.email}`,
-      `Telefon: ${form.phone || "—"}`,
-      "",
-      "— Hochzeit —",
+    setSubmitting(true);
+
+    const logistik =
+      form.deliveryNeeded && form.selfPickup
+        ? "Lieferung ODER Selbstabholung – bitte beraten"
+        : form.deliveryNeeded
+          ? "Lieferung & Aufbau gewünscht"
+          : form.selfPickup
+            ? "Selbstabholung"
+            : "noch offen";
+
+    const venueLine = [
+      form.venueName ? `${form.venueName}, ` : "",
+      `${form.street} ${form.houseNumber}, ${form.postalCode} ${form.city}`,
+    ].join("");
+
+    const messageBlock = [
+      "— Hochzeit / Event —",
       `Mietstandort: ${target.label}`,
-      `Hochzeitsdatum: ${form.eventDate || "—"}`,
-      `Eventlocation (Adresse): ${form.eventLocation || "—"}`,
+      `Eventlocation: ${venueLine}`,
       `Gästezahl (ca.): ${form.guests || "—"}`,
-      `Wunschlogistik: ${
-        form.deliveryNeeded && form.selfPickup
-          ? "Lieferung ODER Selbstabholung – bitte beraten"
-          : form.deliveryNeeded
-            ? "Lieferung & Aufbau gewünscht"
-            : form.selfPickup
-              ? "Selbstabholung"
-              : "noch offen"
-      }`,
+      `Wunschlogistik: ${logistik}`,
       "",
       "— Gewünschte Technik / Ausstattung —",
       ...(selectedTech.length ? selectedTech.map((t) => `• ${t}`) : ["(keine Auswahl getroffen)"]),
       "",
       "— Anmerkungen —",
       form.notes || "—",
-      "",
-      "Bitte sendet uns ein passendes Angebot.",
-      "Vielen Dank!",
-    ];
+    ].join("\n");
 
-    const subject = `Hochzeit ${form.eventDate || ""} – Anfrage Technik & Ausstattung (${target.label})`;
-    const body = lines.join("\n");
-    const mailto = `mailto:${target.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+    try {
+      const { error } = await supabase.functions.invoke("send-inquiry-email", {
+        body: {
+          productName: "Hochzeit – Technik & Ausstattung",
+          locationName: target.label,
+          locationEmail: target.email,
+          locationPhone: target.phone,
+          locationAddress: target.address,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          street: `${form.street} ${form.houseNumber}`.trim(),
+          postalCode: form.postalCode,
+          city: form.city,
+          startDate: form.eventDate,
+          endDate: form.eventDate,
+          message: messageBlock,
+          deliveryRequested: form.deliveryNeeded,
+          deliveryStreet: form.deliveryNeeded ? `${form.street} ${form.houseNumber}`.trim() : "",
+          deliveryPostalCode: form.deliveryNeeded ? form.postalCode : "",
+          deliveryCity: form.deliveryNeeded ? form.city : "",
+          setupServiceRequested: form.deliveryNeeded,
+        },
+      });
+
+      if (error) throw error;
+      setStep(3);
+      toast.success("Anfrage erfolgreich gesendet");
+    } catch (err) {
+      console.error("Wedding inquiry error:", err);
+      toast.error("Anfrage konnte nicht gesendet werden. Bitte versucht es kurz später erneut oder ruft uns an.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -199,8 +236,9 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
             <DialogHeader>
               <DialogTitle>Anfrage Hochzeitstechnik – {LOCATIONS[loc].label}</DialogTitle>
               <DialogDescription>
-                Fülle die Felder aus – wir senden euch innerhalb von 24 h ein
-                schriftliches Angebot per E-Mail an die Adresse {LOCATIONS[loc].email}.
+                Fülle die Felder aus – euer SLT-Team aus {LOCATIONS[loc].label} sendet euch
+                innerhalb von 24 h ein individuelles, schriftliches Angebot per E-Mail an
+                die von euch angegebene Adresse.
               </DialogDescription>
             </DialogHeader>
 
@@ -227,12 +265,14 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="w-phone">Telefon</Label>
+                  <Label htmlFor="w-phone">Telefon *</Label>
                   <Input
                     id="w-phone"
                     type="tel"
+                    required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="für kurze Rückfragen"
                   />
                 </div>
                 <div>
@@ -245,15 +285,70 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
                     onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
                   />
                 </div>
-                <div className="sm:col-span-2">
-                  <Label htmlFor="w-loc">Eventlocation (Adresse)</Label>
+              </div>
+
+              <div className="rounded-md border border-border p-3 space-y-3">
+                <Label className="font-semibold">Eventlocation / Veranstaltungsort *</Label>
+                <div className="grid sm:grid-cols-[1fr_120px] gap-3">
+                  <div>
+                    <Label htmlFor="w-street" className="text-xs text-muted-foreground">Straße *</Label>
+                    <Input
+                      id="w-street"
+                      required
+                      value={form.street}
+                      onChange={(e) => setForm({ ...form, street: e.target.value })}
+                      placeholder="z. B. Drachenburgstraße"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="w-hnr" className="text-xs text-muted-foreground">Hausnummer *</Label>
+                    <Input
+                      id="w-hnr"
+                      required
+                      value={form.houseNumber}
+                      onChange={(e) => setForm({ ...form, houseNumber: e.target.value })}
+                      placeholder="8"
+                    />
+                  </div>
+                </div>
+                <div className="grid sm:grid-cols-[140px_1fr] gap-3">
+                  <div>
+                    <Label htmlFor="w-plz" className="text-xs text-muted-foreground">PLZ *</Label>
+                    <Input
+                      id="w-plz"
+                      required
+                      inputMode="numeric"
+                      pattern="[0-9]{4,5}"
+                      value={form.postalCode}
+                      onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+                      placeholder="53179"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="w-city" className="text-xs text-muted-foreground">Stadt *</Label>
+                    <Input
+                      id="w-city"
+                      required
+                      value={form.city}
+                      onChange={(e) => setForm({ ...form, city: e.target.value })}
+                      placeholder="Bonn"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="w-venue" className="text-xs text-muted-foreground">
+                    Name der Location (optional)
+                  </Label>
                   <Input
-                    id="w-loc"
-                    value={form.eventLocation}
-                    onChange={(e) => setForm({ ...form, eventLocation: e.target.value })}
-                    placeholder="z. B. Schloss XYZ, Königswinter"
+                    id="w-venue"
+                    value={form.venueName}
+                    onChange={(e) => setForm({ ...form, venueName: e.target.value })}
+                    placeholder="z. B. Schloss Drachenburg"
                   />
                 </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="w-guests">Gästezahl (ca.)</Label>
                   <Input
@@ -310,19 +405,51 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border">
-                <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)}>
+                <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)} disabled={submitting}>
                   <ArrowLeft className="h-4 w-4 mr-1" /> Standort ändern
                 </Button>
-                <Button type="submit" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover">
-                  <Mail className="h-4 w-4 mr-2" /> Angebot anfordern
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Wird gesendet…
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="h-4 w-4 mr-2" /> Anfrage absenden
+                    </>
+                  )}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Mit Klick auf „Angebot anfordern" öffnet sich euer E-Mail-Programm mit
-                allen Angaben vorausgefüllt – Versand an {LOCATIONS[loc].email}.
+                Eure Anfrage geht direkt an unser Team am Standort {LOCATIONS[loc].label}.
+                Ihr erhaltet zusätzlich eine Eingangsbestätigung per E-Mail.
               </p>
             </form>
           </>
+        )}
+
+        {step === 3 && loc && (
+          <div className="py-6 text-center">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-green-100 mb-4">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Anfrage gesendet!</h3>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              Vielen Dank – unser Team aus <strong>{LOCATIONS[loc].label}</strong> meldet
+              sich innerhalb von 24 h mit einem schriftlichen Angebot. Eine
+              Eingangsbestätigung haben wir bereits an eure E-Mail-Adresse geschickt.
+            </p>
+            <Button
+              className="mt-6"
+              onClick={() => close(false)}
+            >
+              Schließen
+            </Button>
+          </div>
         )}
       </DialogContent>
     </Dialog>
