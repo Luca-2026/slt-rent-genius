@@ -31,6 +31,7 @@ const imgFotoboxProps = "/images/hochzeit/fotobox-props-hochzeit.jpg";
 const imgGeschirrDarwin = "/images/hochzeit/geschirr-darwin-hochzeit.jpg";
 const imgSound = "/product-images/soundsystem-1400w-1.jpeg";
 const imgPartyzelt = "/product-images/partyzelt-5x12-1.avif";
+const imgSparkular = "/images/hochzeit/sparkular-hochzeit.jpeg";
 
 const faqs = [
   {
@@ -277,9 +278,13 @@ export default function HochzeitTechnik() {
             </Card>
 
             <Card className="overflow-hidden">
-              <div className="relative aspect-[16/10] bg-muted overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/85 to-accent/70" />
-                <Sparkles className="relative h-20 w-20 text-white/95" />
+              <div className="relative aspect-[16/10] bg-muted overflow-hidden">
+                <img
+                  src={imgSparkular}
+                  alt="Sparkular Kalt-Funkenfontänen im Einsatz beim Hochzeitstanz – Kaltfunken mieten"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
               <div className="p-5">
                 <Sparkles className="h-6 w-6 text-accent mb-2" />
@@ -373,7 +378,7 @@ export default function HochzeitTechnik() {
           {/* Zentraler Sammel-CTA */}
           <div className="mt-10 rounded-xl bg-primary text-primary-foreground p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-1">
+              <h3 className="text-xl md:text-2xl font-bold mb-1 text-white">
                 Komplettes Hochzeitspaket – ein Formular, ein Angebot
               </h3>
               <p className="text-white/85 text-sm md:text-base">
