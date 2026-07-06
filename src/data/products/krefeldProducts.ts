@@ -2017,7 +2017,14 @@ export const gartenpflegeProducts: Product[] = [
   {
     id: "erdbohrer-benzin",
     name: "Benzin-Erdbohrer",
-    description: "Motorerdbohrer für Zaunpfähle und Pflanzlöcher",
+    description: "Motorerdbohrer für Zaunpfähle und Pflanzlöcher – Bohrschnecken 100, 150 und 200 mm im Buchungsschritt auswählbar",
+    detailedDescription: "Robuster Benzin-Erdbohrer für Zaunpfähle, Pflanzlöcher, Fundamente und Bodenproben. Im Buchungsprozess können Sie die passende Bohrschnecke direkt mit auswählen – verfügbar in den Durchmessern 100 mm, 150 mm und 200 mm. So erhalten Sie exakt den Lochdurchmesser, den Ihr Vorhaben erfordert (z. B. 100 mm für dünne Zaunpfähle/Erdanker, 150 mm für Standard-Zaunpfosten und Sträucher, 200 mm für Fundamentlöcher und größere Pflanzungen).",
+    specifications: {
+      "Bohrschnecken (im Buchungsprozess auswählbar)": "100 mm, 150 mm, 200 mm",
+      "Empfehlung 100 mm": "Erdanker, dünne Zaunpfähle, Bodenproben",
+      "Empfehlung 150 mm": "Standard-Zaunpfosten, Sträucher, kleinere Pflanzlöcher",
+      "Empfehlung 200 mm": "Fundamentlöcher, größere Pflanzungen, Pergolapfosten",
+    },
     image: benzinErdbohrer1,
     images: [benzinErdbohrer1, benzinErdbohrer2],
     category: "erdbohrer",
