@@ -1444,6 +1444,8 @@
     "verkehrszeichen_sub": "Signs RA1/RA2",
     "warnbarken": "Warning Barriers",
     "warnbarken_sub": "Traffic safety",
+    "lichtsignalanlage": "Portable Traffic Light",
+    "lichtsignalanlage_sub": "Mobile signal systems (LZA)",
     "warnleuchten": "Warning Lights",
     "warnleuchten_sub": "TL warning lights",
     "bauzaeune": "Construction Fences",
