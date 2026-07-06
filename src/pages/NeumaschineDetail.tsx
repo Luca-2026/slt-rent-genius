@@ -390,8 +390,8 @@ export default function NeumaschineDetail() {
               </CardContent>
             </Card>
 
-            {/* Konfigurations-Auswahl (Solo / mit Grundausstattung) – für Hercu Erdraketen */}
-            {machine.brand === "Hercu" && options.length > 0 && (
+            {/* Konfigurations-Auswahl (Solo / mit Grundausstattung) – für SLT-Erdraketen */}
+            {machine.brand === "SLT" && options.length > 0 && (
               <Card className="mb-6 border-accent/30 bg-accent/5">
                 <CardContent className="p-5">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Konfiguration wählen</p>

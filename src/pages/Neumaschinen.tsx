@@ -908,6 +908,7 @@ export default function Neumaschinen() {
                         <SelectItem value="Zoomlion">Zoomlion</SelectItem>
                         <SelectItem value="BAUMAX Baumaschinen">BAUMAX Baumaschinen</SelectItem>
                         <SelectItem value="Temared">Temared</SelectItem>
+                        <SelectItem value="SLT">SLT (Erdraketen &amp; Zubehör)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
