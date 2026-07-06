@@ -13,6 +13,7 @@ import {
   calculatePrice,
   type TariffKey,
 } from "@/data/lieferkosten";
+import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
@@ -20,6 +21,8 @@ interface DeliveryCalculatorCompactProps {
   className?: string;
   categoryDisplayName?: string;
   productName?: string;
+  /** SLT location id (krefeld | bonn | muelheim) — enables auto distance via Google Maps */
+  originLocationId?: LocationOriginId;
 }
 
 // Override tariff based on product name (Erdbewegung XE27/2,7t etc → Tarif C)
@@ -41,6 +44,7 @@ export function DeliveryCalculatorCompact({
   className = "",
   categoryDisplayName,
   productName,
+  originLocationId,
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
 
