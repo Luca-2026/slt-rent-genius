@@ -189,8 +189,8 @@ export function AddressDistanceInput({
       </div>
       {error && <p className="text-xs text-destructive">{error}</p>}
       {switchNotice && (
-        <p className="text-xs bg-accent/10 text-accent-foreground border border-accent/30 rounded-md px-2 py-1.5 flex items-start gap-1">
-          <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-accent" />
+        <p className="text-xs bg-accent/10 text-foreground border border-accent/30 rounded-md px-2 py-1.5 flex items-start gap-1">
+          <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-primary" />
           <span>{switchNotice}</span>
         </p>
       )}
