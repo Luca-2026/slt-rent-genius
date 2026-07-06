@@ -299,6 +299,23 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                     <p className="text-xs text-muted-foreground mt-2 ml-6">Sofort lieferbar · 1–2 Werktage · Sonderpreis bis 30.06.2026</p>
                   </div>
                 )}
+
+                {isAnhaengerkupplungProduct && (
+                  <div className="rounded-lg border border-primary/40 bg-primary/5 p-3">
+                    <p className="font-semibold text-foreground text-sm mb-2">Für welchen Dumper wird die Anhängerkupplung benötigt? *</p>
+                    <Select value={kupplungDumperModell} onValueChange={setKupplungDumperModell}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder="Bitte Dumper-Modell wählen" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Baumax KDE 550">Baumax KDE 550</SelectItem>
+                        <SelectItem value="Baumax KDE 550 P">Baumax KDE 550 P</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FieldError field="kupplungDumperModell" />
+                    <p className="text-xs text-muted-foreground mt-2">Damit wir die passende Ausführung für Deinen Raddumper vorbereiten können.</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
