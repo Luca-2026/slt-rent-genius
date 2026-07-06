@@ -496,10 +496,10 @@ export default function Neumaschinen() {
   return (
     <Layout>
       <SEO
-        title="Neumaschinen kaufen – Zoomlion, BAUMAX & Temared | SLT Rental"
-        description="Neue Baumaschinen & Anhänger kaufen in NRW: Zoomlion Bagger, BAUMAX Rüttelplatten und Temared Anhänger vom autorisierten Fachhändler. Mit Garantie, Service und Lieferung."
+        title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
+        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und SLT-Erdraketen vom Fachhändler mit Garantie, Service und Lieferung."
         canonical="/verkauf/neumaschinen"
-        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
+        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
         ogType="website"
         jsonLd={[
           {
@@ -507,11 +507,11 @@ export default function Neumaschinen() {
             "@type": "WebPage",
             "@id": "https://www.slt-rental.de/verkauf/neumaschinen#webpage",
             url: "https://www.slt-rental.de/verkauf/neumaschinen",
-            name: "Neumaschinen kaufen – Zoomlion, BAUMAX & Temared | SLT Rental",
-            description: "Neue Baumaschinen & Anhänger kaufen in NRW: Zoomlion Bagger, BAUMAX Rüttelplatten und Temared Anhänger vom autorisierten Fachhändler. Mit Garantie, Service und Lieferung.",
+            name: "Neue Baumaschinen und Zubehör kaufen | SLT Rental",
+            description: "Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW – vom Fachhändler mit Garantie, Service und Lieferung.",
             inLanguage: "de-DE",
             isPartOf: { "@type": "WebSite", name: "SLT Rental", url: "https://www.slt-rental.de" },
-            about: { "@type": "Thing", name: "Baumaschinen und Anhänger zum Kauf" },
+            about: { "@type": "Thing", name: "Baumaschinen und Zubehör zum Kauf" },
           },
           jsonLdAutoDealer,
           jsonLdFaq,
@@ -573,10 +573,10 @@ export default function Neumaschinen() {
         <div className="section-container">
           <AnimatedSection>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
-              Neumaschinen kaufen – Zoomlion, BAUMAX & Temared
+              Neue Baumaschinen und Zubehör kaufen
             </h1>
             <p className="text-lg text-primary-foreground/80 max-w-3xl mb-8">
-              Neue Baumaschinen und Anhänger direkt vom autorisierten Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.
+              Neue Baumaschinen, Anhänger, Erdraketen und Zubehör direkt vom Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.
             </p>
             <div className="flex flex-wrap gap-4 mb-8">
               <a href="#angebote">
@@ -596,7 +596,7 @@ export default function Neumaschinen() {
               </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              {brandKeys.map((key) => (
+              {externalBrandKeys.map((key) => (
                 <a key={key} href={brandWebsites[key]} target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
                   <img src={brandLogos[key]} alt={brandNames[key]} className="h-7 w-auto" />
                 </a>
@@ -620,9 +620,9 @@ export default function Neumaschinen() {
                 aria-label="Neumaschinen durchsuchen"
               />
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:flex lg:gap-2">
+            <div className={`grid grid-cols-2 sm:grid-cols-${showDiameterFilter && availableDiameters.length > 0 ? 4 : 3} gap-2 lg:flex lg:gap-2`}>
               <Select value={brand} onValueChange={setBrand}>
-                <SelectTrigger className="lg:w-[160px]" aria-label="Marke filtern">
+                <SelectTrigger className="lg:w-[140px]" aria-label="Marke filtern">
                   <SelectValue placeholder="Marke" />
                 </SelectTrigger>
                 <SelectContent>
@@ -633,7 +633,7 @@ export default function Neumaschinen() {
                 </SelectContent>
               </Select>
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="lg:w-[200px]" aria-label="Kategorie filtern">
+                <SelectTrigger className="lg:w-[180px]" aria-label="Kategorie filtern">
                   <SelectValue placeholder="Kategorie" />
                 </SelectTrigger>
                 <SelectContent>
@@ -643,13 +643,26 @@ export default function Neumaschinen() {
                   ))}
                 </SelectContent>
               </Select>
+              {showDiameterFilter && availableDiameters.length > 0 && (
+                <Select value={diameter} onValueChange={setDiameter}>
+                  <SelectTrigger className="lg:w-[170px]" aria-label="Erdrakete: Bohrdurchmesser">
+                    <SelectValue placeholder="Ø Erdrakete" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alle Ø (Erdraketen)</SelectItem>
+                    {availableDiameters.map((d) => (
+                      <SelectItem key={d} value={d}>Erdrakete Ø {d} mm</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
               <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
                 <SelectTrigger className="lg:w-[180px]" aria-label="Sortierung">
                   <SlidersHorizontal className="h-3.5 w-3.5 mr-1" />
                   <SelectValue placeholder="Sortieren" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Empfohlen</SelectItem>
+                  <SelectItem value="featured">Empfohlen (nach Kategorie)</SelectItem>
                   <SelectItem value="price-asc">Preis aufsteigend</SelectItem>
                   <SelectItem value="price-desc">Preis absteigend</SelectItem>
                   <SelectItem value="name">Name (A–Z)</SelectItem>
