@@ -147,7 +147,7 @@ const brandDbNames: Record<string, string> = {
   zoomlion: "Zoomlion",
   baumax: "BAUMAX",
   temared: "Temared",
-  slt: "SLT",
+  slt: "Hercu",
 };
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
