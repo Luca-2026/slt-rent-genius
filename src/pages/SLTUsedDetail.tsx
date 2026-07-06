@@ -256,7 +256,7 @@ export default function SLTUsedDetail() {
               )}
               {isReserved && <Badge variant="secondary">Reserviert</Badge>}
               {isSold && <Badge variant="destructive">Verkauft</Badge>}
-              <Badge variant="outline">SLT Used</Badge>
+              <Badge variant="outline">{`${machine.model || ""} ${machine.manufacturer || ""}`.toLowerCase().includes("eventboden") ? "Gebrauchtartikel" : "SLT Used"}</Badge>
             </div>
 
             <p className="text-sm uppercase tracking-wider text-muted-foreground font-medium mb-1">
