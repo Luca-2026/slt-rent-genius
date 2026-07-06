@@ -721,24 +721,28 @@ for (const loc of locations as LocationData[]) {
       const seo: ProductSEOData | undefined =
         productSEOData[`${seoLocPrefix}-${p.id}`] ?? productSEOData[p.id];
       const hasSEO = !!seo;
+      // Krefeld-zentrierte SEO-Strings (seoTitle, metaDescription, h1) auf
+      // den aktuellen Standort umschreiben. Ohne diesen Replace bekämen
+      // Bonn/Mülheim-URLs identische Title/Description wie Krefeld und
+      // würden von Google als Duplicate Content deindexiert.
+      const localize = (s: string | undefined) =>
+        s ? s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName) : s;
+
       const fallbackTitle = `${p.name} mieten in ${locName} | SLT Rental`;
-      const title = clamp(seo?.seoTitle || fallbackTitle, 60);
+      const title = clamp(localize(seo?.seoTitle) || fallbackTitle, 60);
       const description = clampDesc(
-        seo?.metaDescription ||
+        localize(seo?.metaDescription) ||
           p.description ||
           `${p.name} mieten in ${locName} bei SLT Rental. Faire Mietpreise, Beratung und Lieferung in der Region.`,
       );
-      // seo.h1 ist Krefeld-zentriert (z.B. „... mieten in Krefeld – Jetzt verfügbar bei SLT Rental").
-      // Für Bonn/Mülheim Standortnamen ersetzen, damit jede URL eine eindeutige H1 hat.
-      const h1 = seo?.h1
-        ? seo.h1.replace(/in Krefeld\b/g, `in ${locName}`)
-        : `${p.name} mieten in ${locName}`;
+      const h1 = localize(seo?.h1) || `${p.name} mieten in ${locName}`;
       const intro = [
-        seo?.metaDescription ||
+        localize(seo?.metaDescription) ||
           p.description ||
           `${p.name} mieten am Standort ${locName} – Beratung, Übergabe und Lieferung durch SLT Rental.`,
       ];
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
+
 
       // Plan A: Self-Canonical pro Standort. Jede Standort-Variante ist
       // durch eindeutige H1, Title und lokal-spezifische Intro-Absätze
