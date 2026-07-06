@@ -10,12 +10,19 @@ import { Input } from "@/components/ui/input";
 import { Truck, Calculator, Info, MapPin, Package, Clock, Zap, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 import {
   tariffs,
   categoryConfigs,
   calculatePrice,
   type TariffKey,
 } from "@/data/lieferkosten";
+
+const LOCATION_OPTIONS: { id: LocationOriginId; label: string; address: string }[] = [
+  { id: "krefeld", label: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld" },
+  { id: "bonn", label: "Bonn", address: "Drachenburgstraße 8, 53179 Bonn" },
+  { id: "muelheim", label: "Mülheim an der Ruhr", address: "Ruhrorter Straße 122, 45478 Mülheim" },
+];
 
 const categoryEntries = Object.entries(categoryConfigs);
 
@@ -25,6 +32,8 @@ export default function Lieferung() {
     categoryConfigs["erdbewegung"].defaultSubtype ?? null
   );
   const [distance, setDistance] = useState(20);
+  const [originLocation, setOriginLocation] = useState<LocationOriginId>("krefeld");
+  const [autoDistanceLabel, setAutoDistanceLabel] = useState<string | null>(null);
   const [twoMachines, setTwoMachines] = useState(false);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [express, setExpress] = useState(false);
