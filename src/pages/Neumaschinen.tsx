@@ -252,6 +252,7 @@ export default function Neumaschinen() {
   const [search, setSearch] = useState("");
   const [brand, setBrand] = useState("all");
   const [category, setCategory] = useState("all");
+  const [diameter, setDiameter] = useState("all"); // Erdrakete: Bohrdurchmesser
   const [sort, setSort] = useState<SortKey>("featured");
 
   const { data: machines, isLoading } = useQuery({
@@ -274,11 +275,57 @@ export default function Neumaschinen() {
     return Array.from(set).sort();
   }, [machines]);
 
+  // Kategorie-Reihenfolge für die Anzeige (Wunsch: erst Baumaschinen, dann Erdraketen zum Schluss)
+  const categoryOrder = [
+    "Minidumper",
+    "Raddumper",
+    "Rüttelplatten",
+    "Stampfer",
+    "Steinsägen",
+    "Fugenschneider",
+    "Zubehör Minidumper",
+    "Elektrobagger",
+    "Radlader",
+    "Teleskoplader",
+    "Scherenbühne",
+    "Gelenkteleskopsteiger",
+    "Anhänger",
+    "Erdrakete",
+  ];
+  const categoryRank = (c: string | null | undefined) => {
+    if (!c) return 999;
+    const idx = categoryOrder.indexOf(c);
+    return idx === -1 ? 500 : idx;
+  };
+
   const categories = useMemo(() => {
     const set = new Set<string>();
     (machines || []).forEach((m: any) => m.category && set.add(m.category));
-    return Array.from(set).sort();
+    return Array.from(set).sort((a, b) => categoryRank(a) - categoryRank(b));
   }, [machines]);
+
+  // Bohrdurchmesser aus den technischen Daten der Erdraketen ableiten (z.B. "55 mm" -> "55")
+  const parseDiameter = (m: any): string | null => {
+    const raw = m?.specifications?.Durchmesser;
+    if (!raw || typeof raw !== "string") return null;
+    const match = raw.match(/(\d+)\s*mm/);
+    return match ? match[1] : null;
+  };
+
+  const availableDiameters = useMemo(() => {
+    const set = new Set<string>();
+    (machines || []).forEach((m: any) => {
+      if (m.category === "Erdrakete") {
+        const d = parseDiameter(m);
+        if (d) set.add(d);
+      }
+    });
+    return Array.from(set).sort((a, b) => Number(a) - Number(b));
+  }, [machines]);
+
+  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke SLT)
+  const showDiameterFilter =
+    category === "Erdrakete" || brand === "SLT" || category === "all";
 
   const filtered = useMemo(() => {
     let list = [...(machines || [])];
@@ -292,6 +339,9 @@ export default function Neumaschinen() {
     }
     if (brand !== "all") list = list.filter((m: any) => m.brand === brand);
     if (category !== "all") list = list.filter((m: any) => m.category === category);
+    if (diameter !== "all") {
+      list = list.filter((m: any) => m.category === "Erdrakete" && parseDiameter(m) === diameter);
+    }
 
     switch (sort) {
       case "price-asc":
@@ -305,19 +355,24 @@ export default function Neumaschinen() {
         break;
       case "featured":
       default:
+        // Standard: nach Produktkategorie gruppiert (Dumper → … → Erdraketen), innerhalb featured + sort_order
         list.sort((a: any, b: any) => {
+          const catDiff = categoryRank(a.category) - categoryRank(b.category);
+          if (catDiff !== 0) return catDiff;
           if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
           return (a.sort_order ?? 0) - (b.sort_order ?? 0);
         });
     }
     return list;
-  }, [machines, search, brand, category, sort]);
+  }, [machines, search, brand, category, diameter, sort]);
 
-  const hasActiveFilters = search || brand !== "all" || category !== "all" || sort !== "featured";
+  const hasActiveFilters =
+    search || brand !== "all" || category !== "all" || diameter !== "all" || sort !== "featured";
   const resetFilters = () => {
     setSearch("");
     setBrand("all");
     setCategory("all");
+    setDiameter("all");
     setSort("featured");
   };
 
