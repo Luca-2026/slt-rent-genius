@@ -1619,6 +1619,8 @@
     "verkehrszeichen_sub": "VZ-Schilder RA1/RA2",
     "warnbarken": "Warnbarken",
     "warnbarken_sub": "Verkehrssicherung",
+    "lichtsignalanlage": "Baustellenampel",
+    "lichtsignalanlage_sub": "Mobile Lichtsignalanlagen (LZA)",
     "warnleuchten": "Warnleuchten",
     "warnleuchten_sub": "TL-Leuchten",
     "bauzaeune": "Bauzäune",

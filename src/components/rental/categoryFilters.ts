@@ -344,6 +344,7 @@ export const absperrtechnikFilterSections: FilterSection[] = [
     options: [
       { id: "verkehrszeichen", label: "catFilters.verkehrszeichen", sublabel: "catFilters.verkehrszeichen_sub" },
       { id: "warnbarke", label: "catFilters.warnbarken", sublabel: "catFilters.warnbarken_sub" },
+      { id: "lichtsignalanlage", label: "catFilters.lichtsignalanlage", sublabel: "catFilters.lichtsignalanlage_sub" },
       { id: "warnleuchte", label: "catFilters.warnleuchten", sublabel: "catFilters.warnleuchten_sub" },
       { id: "bauzaun", label: "catFilters.bauzaeune", sublabel: "catFilters.bauzaeune_sub" },
       { id: "absperrgitter", label: "catFilters.absperrgitter", sublabel: "catFilters.absperrgitter_sub" },
