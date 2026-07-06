@@ -700,6 +700,28 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
+      {/* FAQ */}
+      {faqList.length > 0 && (
+        <section className="section-container py-10 md:py-14 border-t border-border">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-headline mb-6">
+              Häufige Fragen zur {machine.brand} {machine.model}
+            </h2>
+            <div className="space-y-3">
+              {faqList.map((f, idx) => (
+                <details key={idx} className="group rounded-lg border border-border bg-card p-4 open:bg-muted/40">
+                  <summary className="cursor-pointer font-semibold text-headline text-sm md:text-base list-none flex items-start justify-between gap-3">
+                    <span>{f.q}</span>
+                    <span className="text-primary text-xl leading-none group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="text-sm text-foreground/80 mt-3 leading-relaxed whitespace-pre-line">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA bottom */}
       <section className="bg-primary py-12">
         <div className="section-container text-center">
@@ -722,6 +744,7 @@ export default function NeumaschineDetail() {
         </div>
       </section>
 
+
       <NewMachineInquiryModal
         open={inquiryOpen}
         onClose={() => setInquiryOpen(false)}
@@ -733,8 +756,11 @@ export default function NeumaschineDetail() {
           category: machine.category,
           priceLabel,
           image: images[0] || absoluteImages[0] || null,
+          configOptions: options.length > 0 ? options.map((o) => ({ name: o.name, price: o.price, note: o.note })) : undefined,
+          initialConfig: selectedConfig || undefined,
         }}
       />
+
     </Layout>
   );
 }
