@@ -141,9 +141,9 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
         body: {
           marke: machine.brand,
           produktkategorie: machine.category || machine.name,
-          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}`,
+          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` [Für Dumper: ${kupplungDumperModell}]` : ""}`,
           anzahl: "1",
-          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}`,
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` · Anhängerkupplung für: ${kupplungDumperModell}` : ""}`,
           lieferOption,
           strasse: lieferStrasse,
           plz: lieferPlz,
