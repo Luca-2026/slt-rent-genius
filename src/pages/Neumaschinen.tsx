@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
 import baumaxLogo from "@/assets/logos/baumax-sm.webp";
-import hercuLogo from "@/assets/logos/hercu-sm.webp";
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
@@ -66,14 +65,12 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
-  Hercu: [
-    "Erdrakete HP55 KRT (Ø 55 mm)",
-    "Erdrakete HP55 RT (Ø 55 mm, Turbo, 1.260 mm)",
-    "Erdrakete HP55 EKO T (Ø 55 mm, Turbo, 800 mm)",
-    "Erdrakete HP55 T (Ø 55 mm, Turbo, 1.130 mm)",
-    "Erdrakete HP45 EKO T (Ø 45 mm, Turbo, 750 mm)",
-    "Sonstige Hercu Erdrakete",
-    "Hercu Zubehör (Schlauch, Öl, Nebelöler)",
+  SLT: [
+    "Erdrakete Ø 45 mm (kompakt)",
+    "Erdrakete Ø 55 mm (Standard)",
+    "Erdrakete Ø 55 mm (Turbo, lang)",
+    "Sonstige SLT-Erdrakete",
+    "Zubehör (Schlauch, Öl, Nebelöler)",
   ],
 };
 
@@ -81,18 +78,19 @@ const brandIcons = {
   zoomlion: [iconBagger, iconBagger, iconBagger, iconHebebuehne, iconHebebuehne],
   baumax: [iconVerdichtung, iconVerdichtung, iconVerdichtung, iconBagger, iconWerkzeug, iconWerkzeug],
   temared: [iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger],
-  hercu: [iconKabel, iconKabel, iconWerkzeug],
+  slt: [iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconWerkzeug],
 };
 
-const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo, hercu: hercuLogo };
+const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo };
 const brandWebsites = {
   zoomlion: "https://www.zoomlion-nrw.de",
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
-  hercu: "https://www.hercu.de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", hercu: "HERCU" };
-const brandKeys = ["zoomlion", "baumax", "temared", "hercu"] as const;
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "SLT" };
+// Marken-Logo-Strip zeigt nur externe Partner. SLT-Erdraketen sind Whitelabel und werden im Marken-Abschnitt separat dargestellt.
+const externalBrandKeys = ["zoomlion", "baumax", "temared"] as const;
+const brandKeys = ["zoomlion", "baumax", "temared", "slt"] as const;
 
 const uspIcons = [Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package];
 const uspKeys = ["dealer", "service", "delivery", "consulting", "rentToBuy", "spareParts"];
@@ -111,7 +109,7 @@ const jsonLdAutoDealer = {
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
-    { "@type": "Brand", name: "Hercu", url: "https://www.hercu.de" },
+    { "@type": "Brand", name: "SLT", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
   ],
   address: [
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
@@ -133,14 +131,14 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
-      { "@type": "OfferCatalog", name: "Hercu Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
+      { "@type": "OfferCatalog", name: "SLT-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
     ],
   },
   makesOffer: [
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu Erdraketen HP-Serie", category: "Erdrakete / Bodendurchschlagsgerät" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "SLT-Erdraketen", category: "Erdrakete / Bodendurchschlagsgerät" } },
   ],
 };
 
@@ -148,7 +146,7 @@ const brandDbNames: Record<string, string> = {
   zoomlion: "Zoomlion",
   baumax: "BAUMAX",
   temared: "Temared",
-  hercu: "Hercu",
+  slt: "SLT",
 };
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
@@ -254,6 +252,7 @@ export default function Neumaschinen() {
   const [search, setSearch] = useState("");
   const [brand, setBrand] = useState("all");
   const [category, setCategory] = useState("all");
+  const [diameter, setDiameter] = useState("all"); // Erdrakete: Bohrdurchmesser
   const [sort, setSort] = useState<SortKey>("featured");
 
   const { data: machines, isLoading } = useQuery({
@@ -276,11 +275,57 @@ export default function Neumaschinen() {
     return Array.from(set).sort();
   }, [machines]);
 
+  // Kategorie-Reihenfolge für die Anzeige (Wunsch: erst Baumaschinen, dann Erdraketen zum Schluss)
+  const categoryOrder = [
+    "Minidumper",
+    "Raddumper",
+    "Rüttelplatten",
+    "Stampfer",
+    "Steinsägen",
+    "Fugenschneider",
+    "Zubehör Minidumper",
+    "Elektrobagger",
+    "Radlader",
+    "Teleskoplader",
+    "Scherenbühne",
+    "Gelenkteleskopsteiger",
+    "Anhänger",
+    "Erdrakete",
+  ];
+  const categoryRank = (c: string | null | undefined) => {
+    if (!c) return 999;
+    const idx = categoryOrder.indexOf(c);
+    return idx === -1 ? 500 : idx;
+  };
+
   const categories = useMemo(() => {
     const set = new Set<string>();
     (machines || []).forEach((m: any) => m.category && set.add(m.category));
-    return Array.from(set).sort();
+    return Array.from(set).sort((a, b) => categoryRank(a) - categoryRank(b));
   }, [machines]);
+
+  // Bohrdurchmesser aus den technischen Daten der Erdraketen ableiten (z.B. "55 mm" -> "55")
+  const parseDiameter = (m: any): string | null => {
+    const raw = m?.specifications?.Durchmesser;
+    if (!raw || typeof raw !== "string") return null;
+    const match = raw.match(/(\d+)\s*mm/);
+    return match ? match[1] : null;
+  };
+
+  const availableDiameters = useMemo(() => {
+    const set = new Set<string>();
+    (machines || []).forEach((m: any) => {
+      if (m.category === "Erdrakete") {
+        const d = parseDiameter(m);
+        if (d) set.add(d);
+      }
+    });
+    return Array.from(set).sort((a, b) => Number(a) - Number(b));
+  }, [machines]);
+
+  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke SLT)
+  const showDiameterFilter =
+    category === "Erdrakete" || brand === "SLT" || category === "all";
 
   const filtered = useMemo(() => {
     let list = [...(machines || [])];
@@ -294,6 +339,9 @@ export default function Neumaschinen() {
     }
     if (brand !== "all") list = list.filter((m: any) => m.brand === brand);
     if (category !== "all") list = list.filter((m: any) => m.category === category);
+    if (diameter !== "all") {
+      list = list.filter((m: any) => m.category === "Erdrakete" && parseDiameter(m) === diameter);
+    }
 
     switch (sort) {
       case "price-asc":
@@ -307,19 +355,24 @@ export default function Neumaschinen() {
         break;
       case "featured":
       default:
+        // Standard: nach Produktkategorie gruppiert (Dumper → … → Erdraketen), innerhalb featured + sort_order
         list.sort((a: any, b: any) => {
+          const catDiff = categoryRank(a.category) - categoryRank(b.category);
+          if (catDiff !== 0) return catDiff;
           if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
           return (a.sort_order ?? 0) - (b.sort_order ?? 0);
         });
     }
     return list;
-  }, [machines, search, brand, category, sort]);
+  }, [machines, search, brand, category, diameter, sort]);
 
-  const hasActiveFilters = search || brand !== "all" || category !== "all" || sort !== "featured";
+  const hasActiveFilters =
+    search || brand !== "all" || category !== "all" || diameter !== "all" || sort !== "featured";
   const resetFilters = () => {
     setSearch("");
     setBrand("all");
     setCategory("all");
+    setDiameter("all");
     setSort("featured");
   };
 
@@ -443,10 +496,10 @@ export default function Neumaschinen() {
   return (
     <Layout>
       <SEO
-        title="Neumaschinen kaufen – Zoomlion, BAUMAX & Temared | SLT Rental"
-        description="Neue Baumaschinen & Anhänger kaufen in NRW: Zoomlion Bagger, BAUMAX Rüttelplatten und Temared Anhänger vom autorisierten Fachhändler. Mit Garantie, Service und Lieferung."
+        title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
+        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und SLT-Erdraketen vom Fachhändler mit Garantie, Service und Lieferung."
         canonical="/verkauf/neumaschinen"
-        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Zoomlion Händler NRW, Zoomlion Bagger kaufen, BAUMAX Rüttelplatte kaufen, Temared Anhänger kaufen, Minibagger kaufen Bonn, Radlader kaufen Krefeld, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen"
+        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
         ogType="website"
         jsonLd={[
           {
@@ -454,11 +507,11 @@ export default function Neumaschinen() {
             "@type": "WebPage",
             "@id": "https://www.slt-rental.de/verkauf/neumaschinen#webpage",
             url: "https://www.slt-rental.de/verkauf/neumaschinen",
-            name: "Neumaschinen kaufen – Zoomlion, BAUMAX & Temared | SLT Rental",
-            description: "Neue Baumaschinen & Anhänger kaufen in NRW: Zoomlion Bagger, BAUMAX Rüttelplatten und Temared Anhänger vom autorisierten Fachhändler. Mit Garantie, Service und Lieferung.",
+            name: "Neue Baumaschinen und Zubehör kaufen | SLT Rental",
+            description: "Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW – vom Fachhändler mit Garantie, Service und Lieferung.",
             inLanguage: "de-DE",
             isPartOf: { "@type": "WebSite", name: "SLT Rental", url: "https://www.slt-rental.de" },
-            about: { "@type": "Thing", name: "Baumaschinen und Anhänger zum Kauf" },
+            about: { "@type": "Thing", name: "Baumaschinen und Zubehör zum Kauf" },
           },
           jsonLdAutoDealer,
           jsonLdFaq,
@@ -520,10 +573,10 @@ export default function Neumaschinen() {
         <div className="section-container">
           <AnimatedSection>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
-              Neumaschinen kaufen – Zoomlion, BAUMAX & Temared
+              Neue Baumaschinen und Zubehör kaufen
             </h1>
             <p className="text-lg text-primary-foreground/80 max-w-3xl mb-8">
-              Neue Baumaschinen und Anhänger direkt vom autorisierten Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.
+              Neue Baumaschinen, Anhänger, Erdraketen und Zubehör direkt vom Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.
             </p>
             <div className="flex flex-wrap gap-4 mb-8">
               <a href="#angebote">
@@ -543,7 +596,7 @@ export default function Neumaschinen() {
               </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              {brandKeys.map((key) => (
+              {externalBrandKeys.map((key) => (
                 <a key={key} href={brandWebsites[key]} target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
                   <img src={brandLogos[key]} alt={brandNames[key]} className="h-7 w-auto" />
                 </a>
@@ -567,9 +620,9 @@ export default function Neumaschinen() {
                 aria-label="Neumaschinen durchsuchen"
               />
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:flex lg:gap-2">
+            <div className={`grid grid-cols-2 sm:grid-cols-${showDiameterFilter && availableDiameters.length > 0 ? 4 : 3} gap-2 lg:flex lg:gap-2`}>
               <Select value={brand} onValueChange={setBrand}>
-                <SelectTrigger className="lg:w-[160px]" aria-label="Marke filtern">
+                <SelectTrigger className="lg:w-[140px]" aria-label="Marke filtern">
                   <SelectValue placeholder="Marke" />
                 </SelectTrigger>
                 <SelectContent>
@@ -580,7 +633,7 @@ export default function Neumaschinen() {
                 </SelectContent>
               </Select>
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="lg:w-[200px]" aria-label="Kategorie filtern">
+                <SelectTrigger className="lg:w-[180px]" aria-label="Kategorie filtern">
                   <SelectValue placeholder="Kategorie" />
                 </SelectTrigger>
                 <SelectContent>
@@ -590,13 +643,26 @@ export default function Neumaschinen() {
                   ))}
                 </SelectContent>
               </Select>
+              {showDiameterFilter && availableDiameters.length > 0 && (
+                <Select value={diameter} onValueChange={setDiameter}>
+                  <SelectTrigger className="lg:w-[170px]" aria-label="Erdrakete: Bohrdurchmesser">
+                    <SelectValue placeholder="Ø Erdrakete" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alle Ø (Erdraketen)</SelectItem>
+                    {availableDiameters.map((d) => (
+                      <SelectItem key={d} value={d}>Erdrakete Ø {d} mm</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
               <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
                 <SelectTrigger className="lg:w-[180px]" aria-label="Sortierung">
                   <SlidersHorizontal className="h-3.5 w-3.5 mr-1" />
                   <SelectValue placeholder="Sortieren" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Empfohlen</SelectItem>
+                  <SelectItem value="featured">Empfohlen (nach Kategorie)</SelectItem>
                   <SelectItem value="price-asc">Preis aufsteigend</SelectItem>
                   <SelectItem value="price-desc">Preis absteigend</SelectItem>
                   <SelectItem value="name">Name (A–Z)</SelectItem>
@@ -728,13 +794,21 @@ export default function Neumaschinen() {
           {brandKeys.map((key, i) => {
             const products = t(`verkauf.products.${key}`, { returnObjects: true }) as string[];
             const icons = brandIcons[key];
+            const logo = (brandLogos as Record<string, string>)[key];
+            const externalUrl = (brandWebsites as Record<string, string>)[key];
             return (
               <AnimatedSection key={key} delay={i * 100}>
                 <div className="bg-background rounded-2xl border border-border overflow-hidden">
                   <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
-                    <div className="bg-white rounded-lg p-1.5">
-                      <img src={brandLogos[key]} alt={brandNames[key]} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
-                    </div>
+                    {logo ? (
+                      <div className="bg-white rounded-lg p-1.5">
+                        <img src={logo} alt={brandNames[key]} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
+                      </div>
+                    ) : (
+                      <div className="bg-white rounded-lg px-4 py-2">
+                        <span className="text-primary font-bold text-lg lg:text-xl tracking-wide">{brandNames[key]}</span>
+                      </div>
+                    )}
                     <p className="text-primary-foreground/70">{t(`verkauf.brands.${key}.tagline`)}</p>
                   </div>
 
@@ -759,12 +833,14 @@ export default function Neumaschinen() {
                       <Button className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={scrollToForm}>
                         {t("verkauf.brands.inquiryBtn")}
                       </Button>
-                      <a href={brandWebsites[key]} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" className="gap-2">
-                          <img src={brandLogos[key]} alt={brandNames[key]} className="h-4 w-auto" />
-                          {t(`verkauf.brands.${key}.websiteLabel`)} <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </a>
+                      {externalUrl && (
+                        <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline" className="gap-2">
+                            {logo && <img src={logo} alt={brandNames[key]} className="h-4 w-auto" />}
+                            {t(`verkauf.brands.${key}.websiteLabel`)} <ExternalLink className="h-4 w-4" />
+                          </Button>
+                        </a>
+                      )}
                     </div>
                   </div>
 
@@ -832,6 +908,7 @@ export default function Neumaschinen() {
                         <SelectItem value="Zoomlion">Zoomlion</SelectItem>
                         <SelectItem value="BAUMAX Baumaschinen">BAUMAX Baumaschinen</SelectItem>
                         <SelectItem value="Temared">Temared</SelectItem>
+                        <SelectItem value="SLT">SLT (Erdraketen &amp; Zubehör)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
