@@ -36,11 +36,16 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Ist die Produktseite selbst die Anhängerkupplung? Dann Dropdown "für welchen Dumper" statt Zubehör-Checkbox
+  const isAnhaengerkupplungProduct = /anhaengerkupplung/i.test(machine.slug);
+
   // Addon visibility: nur KDE550 / KDE550P Raddumper – Anhängerkupplung ist NICHT für RMD800P o. ä. kompatibel
+  // Und NICHT anzeigen, wenn der Kunde ohnehin schon die Anhängerkupplung selbst anfragt
   const isBaumaxDumper =
-    /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug);
+    /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug) && !isAnhaengerkupplungProduct;
 
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+  const [kupplungDumperModell, setKupplungDumperModell] = useState<string>("");
   const [selectedConfig, setSelectedConfig] = useState<string>(machine.initialConfig || machine.configOptions?.[0]?.name || "");
 
   // Block 2 — Lieferung
