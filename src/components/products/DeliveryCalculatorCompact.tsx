@@ -120,6 +120,7 @@ export function DeliveryCalculatorCompact({
   const [distance, setDistance] = useState(20);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [twoMachines, setTwoMachines] = useState(false);
+  const [autoAddress, setAutoAddress] = useState<string | null>(null);
 
   const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
   const activeTarif: TariffKey = activeSubtype?.tarif ?? (config.defaultTarif as TariffKey ?? "A");
