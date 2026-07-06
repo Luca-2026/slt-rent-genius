@@ -78,6 +78,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    mcpPlugin(),
     mode === "development" && componentTagger(),
     // Build-time image compression — runs only on `vite build`.
     // Source files are NOT modified; only the dist/ output is compressed.
