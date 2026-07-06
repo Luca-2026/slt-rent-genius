@@ -75,6 +75,17 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    // Proxy Lovable CDN asset paths to the project's static preview origin
+    // during local dev — otherwise Vite's SPA fallback serves index.html for
+    // /__l5e/* and binary assets (videos, fonts, large images) fail to load.
+    proxy: {
+      "/__l5e": {
+        target:
+          "https://id-preview--c9a26e89-cf04-49b4-979b-2963f0a95cb1.lovable.app",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
   },
   plugins: [
     react(),
