@@ -69,6 +69,7 @@ const kategorienByMarke: Record<string, string[]> = {
     "Erdrakete Ø 45 mm (kompakt)",
     "Erdrakete Ø 55 mm (Standard)",
     "Erdrakete Ø 55 mm (Turbo, lang)",
+    "Erdrakete Ø 65 mm (Turbo, groß)",
     "Sonstige SLT-Erdrakete",
     "Zubehör (Schlauch, Öl, Nebelöler)",
   ],
