@@ -28,6 +28,71 @@ function formatPriceGross(price: number | null, onRequest: boolean) {
   }).format(price);
 }
 
+function AutoplayVideoSection({
+  url,
+  title,
+  caption,
+  poster,
+  ariaLabel,
+}: {
+  url: string;
+  title: string;
+  caption?: string;
+  poster?: string;
+  ariaLabel: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasStartedRef = useRef(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            if (!hasStartedRef.current) {
+              hasStartedRef.current = true;
+              video.play().catch(() => {});
+            }
+          } else if (!entry.isIntersecting) {
+            if (!video.paused) video.pause();
+          }
+        });
+      },
+      { threshold: [0, 0.5, 1] }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="section-container py-8 md:py-12 border-t border-border">
+      <div className="max-w-2xl mx-auto md:mx-0">
+        <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">{title}</h2>
+        {caption && (
+          <p className="text-sm text-muted-foreground mb-4 max-w-xl">{caption}</p>
+        )}
+        <div className="relative w-full overflow-hidden rounded-lg bg-muted border border-border" style={{ aspectRatio: "16 / 9" }}>
+          <video
+            ref={videoRef}
+            src={url}
+            poster={poster || undefined}
+            controls
+            muted
+            playsInline
+            preload="metadata"
+            aria-label={ariaLabel}
+            className="absolute inset-0 w-full h-full object-contain bg-black"
+          >
+            Dein Browser unterstützt kein HTML5-Video.
+          </video>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function NeumaschineDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [activeImage, setActiveImage] = useState(0);
