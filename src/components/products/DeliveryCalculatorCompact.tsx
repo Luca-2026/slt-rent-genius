@@ -13,6 +13,7 @@ import {
   calculatePrice,
   type TariffKey,
 } from "@/data/lieferkosten";
+import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
@@ -20,6 +21,8 @@ interface DeliveryCalculatorCompactProps {
   className?: string;
   categoryDisplayName?: string;
   productName?: string;
+  /** SLT location id (krefeld | bonn | muelheim) — enables auto distance via Google Maps */
+  originLocationId?: LocationOriginId;
 }
 
 // Override tariff based on product name (Erdbewegung XE27/2,7t etc → Tarif C)
@@ -41,6 +44,7 @@ export function DeliveryCalculatorCompact({
   className = "",
   categoryDisplayName,
   productName,
+  originLocationId,
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
 
@@ -116,6 +120,7 @@ export function DeliveryCalculatorCompact({
   const [distance, setDistance] = useState(20);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [twoMachines, setTwoMachines] = useState(false);
+  const [autoAddress, setAutoAddress] = useState<string | null>(null);
 
   const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
   const activeTarif: TariffKey = activeSubtype?.tarif ?? (config.defaultTarif as TariffKey ?? "A");
@@ -198,17 +203,31 @@ export function DeliveryCalculatorCompact({
           <span>{t("rental.deliveryHint")}</span>
         </p>
 
+        {originLocationId && (
+          <AddressDistanceInput
+            locationId={originLocationId}
+            label="Lieferadresse"
+            onDistance={(roundedKm, _exact, label) => {
+              setDistance(Math.min(roundedKm, 50));
+              setAutoAddress(label);
+            }}
+          />
+        )}
+
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="flex items-center gap-2 text-sm">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              {t("rental.distance")}
+              {autoAddress ? "Berechnete Entfernung" : t("rental.distance")}
             </Label>
             <span className="font-semibold text-primary">{distance} km</span>
           </div>
           <Slider
             value={[distance]}
-            onValueChange={(v) => setDistance(v[0])}
+            onValueChange={(v) => {
+              setDistance(v[0]);
+              setAutoAddress(null);
+            }}
             min={5}
             max={50}
             step={5}

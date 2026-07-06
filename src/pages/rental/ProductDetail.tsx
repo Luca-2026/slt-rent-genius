@@ -1380,7 +1380,7 @@ export default function ProductDetail() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} />
+                  <DeliveryCalculatorCompact productCategoryId={categoryId || ""} showAllCategories={false} productName={product?.name} originLocationId={location?.id as any} />
                 )}
               </div>
             </div>

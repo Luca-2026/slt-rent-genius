@@ -1901,11 +1901,12 @@ export default function CategoryProducts() {
                     {category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" && (
                       <div className="hidden lg:block">
                         {category.id === "alle" ? (
-                          <DeliveryCalculatorCompact showAllCategories />
+                          <DeliveryCalculatorCompact showAllCategories originLocationId={location.id as any} />
                         ) : (
                           <DeliveryCalculatorCompact 
                             productCategoryId={category.id}
                             categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                            originLocationId={location.id as any}
                           />
                         )}
                       </div>
@@ -1949,11 +1950,12 @@ export default function CategoryProducts() {
               {/* Delivery Calculator - mobile only, after products */}
               <div className="lg:hidden order-3 col-span-1">
                 {category.id === "alle" ? (
-                  <DeliveryCalculatorCompact showAllCategories />
+                  <DeliveryCalculatorCompact showAllCategories originLocationId={location.id as any} />
                 ) : category.id !== "anhaenger" && category.id !== "wohnwagen-camping" && category.id !== "nutzfahrzeuge" ? (
                   <DeliveryCalculatorCompact 
                     productCategoryId={category.id}
                     categoryDisplayName={t(categoryDisplayNames[category.id] || "catDisplay.werkzeuge")}
+                    originLocationId={location.id as any}
                   />
                 ) : null}
               </div>

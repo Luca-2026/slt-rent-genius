@@ -10,12 +10,19 @@ import { Input } from "@/components/ui/input";
 import { Truck, Calculator, Info, MapPin, Package, Clock, Zap, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 import {
   tariffs,
   categoryConfigs,
   calculatePrice,
   type TariffKey,
 } from "@/data/lieferkosten";
+
+const LOCATION_OPTIONS: { id: LocationOriginId; label: string; address: string }[] = [
+  { id: "krefeld", label: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld" },
+  { id: "bonn", label: "Bonn", address: "Drachenburgstraße 8, 53179 Bonn" },
+  { id: "muelheim", label: "Mülheim an der Ruhr", address: "Ruhrorter Straße 122, 45478 Mülheim" },
+];
 
 const categoryEntries = Object.entries(categoryConfigs);
 
@@ -25,6 +32,8 @@ export default function Lieferung() {
     categoryConfigs["erdbewegung"].defaultSubtype ?? null
   );
   const [distance, setDistance] = useState(20);
+  const [originLocation, setOriginLocation] = useState<LocationOriginId>("krefeld");
+  const [autoDistanceLabel, setAutoDistanceLabel] = useState<string | null>(null);
   const [twoMachines, setTwoMachines] = useState(false);
   const [includeReturn, setIncludeReturn] = useState(false);
   const [express, setExpress] = useState(false);
@@ -159,27 +168,61 @@ export default function Lieferung() {
                       2. Entfernung zum Standort
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Entfernung (einfache Strecke)</span>
-                      <span className="text-2xl font-bold text-primary">{distance} km</span>
+                  <CardContent className="space-y-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Ab welchem Standort?</Label>
+                      <select
+                        value={originLocation}
+                        onChange={(e) => {
+                          setOriginLocation(e.target.value as LocationOriginId);
+                          setAutoDistanceLabel(null);
+                        }}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        aria-label="Startstandort wählen"
+                      >
+                        {LOCATION_OPTIONS.map((o) => (
+                          <option key={o.id} value={o.id}>
+                            {o.label} – {o.address}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <Slider
-                      value={[distance]}
-                      onValueChange={(v) => setDistance(v[0])}
-                      min={5}
-                      max={50}
-                      step={5}
-                      className="w-full"
+
+                    <AddressDistanceInput
+                      locationId={originLocation}
+                      onDistance={(roundedKm, _exact, label) => {
+                        setDistance(Math.min(roundedKm, 50));
+                        setAutoDistanceLabel(label);
+                      }}
                     />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>5 km</span>
-                      <span>50 km</span>
+
+                    <div className="border-t pt-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          {autoDistanceLabel ? "Berechnete Entfernung" : "Entfernung (einfache Strecke)"}
+                        </span>
+                        <span className="text-2xl font-bold text-primary">{distance} km</span>
+                      </div>
+                      <Slider
+                        value={[distance]}
+                        onValueChange={(v) => {
+                          setDistance(v[0]);
+                          setAutoDistanceLabel(null);
+                        }}
+                        min={5}
+                        max={50}
+                        step={5}
+                        className="w-full"
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>5 km</span>
+                        <span>50+ km</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground bg-muted p-3 rounded-lg">
+                        <Info className="h-3.5 w-3.5 inline mr-1" />
+                        Gib oben deine Lieferadresse ein für eine automatische Berechnung, oder nutze den Slider für eine manuelle Schätzung. Für Distanzen über 50 km melde dich bitte direkt bei uns.
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground bg-muted p-3 rounded-lg">
-                      <Info className="h-3.5 w-3.5 inline mr-1" />
-                      Die Entfernung wird vom nächsten Standort (Krefeld, Bonn oder Mülheim an der Ruhr) berechnet.
-                    </p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
