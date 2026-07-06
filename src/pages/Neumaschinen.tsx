@@ -261,7 +261,7 @@ export default function Neumaschinen() {
   useEffect(() => {
     if (searchParams.get("category") || searchParams.get("brand") || searchParams.get("diameter")) {
       requestAnimationFrame(() => {
-        document.getElementById("neumaschinen-katalog")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("angebote")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
