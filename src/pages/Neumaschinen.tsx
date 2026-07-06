@@ -249,12 +249,39 @@ export default function Neumaschinen() {
   const [selectedSource, setSelectedSource] = useState("");
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
 
-  // Filter state for the machine grid
+  // Filter state for the machine grid – init aus URL-Query (?category=…&brand=…&diameter=…)
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
-  const [brand, setBrand] = useState("all");
-  const [category, setCategory] = useState("all");
-  const [diameter, setDiameter] = useState("all"); // Erdrakete: Bohrdurchmesser
+  const [brand, setBrand] = useState(searchParams.get("brand") || "all");
+  const [category, setCategory] = useState(searchParams.get("category") || "all");
+  const [diameter, setDiameter] = useState(searchParams.get("diameter") || "all"); // Erdrakete: Bohrdurchmesser
   const [sort, setSort] = useState<SortKey>("featured");
+
+  // Wenn Query-Params im Link enthalten sind, direkt zum Katalog-Bereich scrollen
+  useEffect(() => {
+    if (searchParams.get("category") || searchParams.get("brand") || searchParams.get("diameter")) {
+      requestAnimationFrame(() => {
+        document.getElementById("neumaschinen-katalog")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // URL synchron zu Filtern halten (damit Links teilbar bleiben)
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    const setOrDelete = (key: string, val: string) => {
+      if (val && val !== "all") next.set(key, val);
+      else next.delete(key);
+    };
+    setOrDelete("category", category);
+    setOrDelete("brand", brand);
+    setOrDelete("diameter", diameter);
+    if (next.toString() !== searchParams.toString()) {
+      setSearchParams(next, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, brand, diameter]);
 
   const { data: machines, isLoading } = useQuery({
     queryKey: ["new-machines-all"],
