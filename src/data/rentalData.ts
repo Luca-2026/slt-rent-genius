@@ -1636,7 +1636,7 @@ const pritschenkipper35t: Product = {
   name: "3,5t Pritschenwagen Dreiseitenkipper",
   modelName: "Opel Movano (oder vergleichbar) · Doppelkabine",
   description:
-    "Opel Movano 3,5-Tonner Pritschenwagen mit Doppelkabine und Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio, bis zu 7 Sitzplätze. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
+    "Opel Movano 3,5-Tonner Pritschenwagen mit Doppelkabine und Dreiseiten-Kippvorrichtung zum Mieten. Fahrbar mit Führerscheinklasse B, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängerkupplung bis 2.500 kg, Klimaanlage und DAB-Radio, 3 Sitzplätze. Ideal für Bau, Garten- und Landschaftsbau, Umzüge und Schüttguttransport. Auf Anfrage in Krefeld, Bonn und Mülheim an der Ruhr.",
   category: "kipper",
   image: "/product-images/opel-movano-pritschenkipper-1.jpg",
   images: [
@@ -1656,7 +1656,7 @@ const pritschenkipper35t: Product = {
     "Nutzlast": "1.135 kg",
     "Fahrzeughöhe": "2.500 mm",
     "Fahrzeuglänge": "6.225 mm",
-    "Sitzplätze": "7",
+    "Sitzplätze": "3",
     "Zul. Anhängelast": "2.500 kg",
     // Ladefläche
     "Ladefläche Länge": "3.600 mm",
