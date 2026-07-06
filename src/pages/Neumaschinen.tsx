@@ -292,6 +292,7 @@ export default function Neumaschinen() {
     "Gelenkteleskopsteiger",
     "Anhänger",
     "Erdrakete",
+    "Eventboden",
   ];
   const categoryRank = (c: string | null | undefined) => {
     if (!c) return 999;

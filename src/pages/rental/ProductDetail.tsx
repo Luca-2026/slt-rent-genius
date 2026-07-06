@@ -31,6 +31,7 @@ import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerA
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
+import { SalesPagesBanner } from "@/components/rental/SalesPagesBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
@@ -1231,6 +1232,31 @@ export default function ProductDetail() {
                     </div>
                   </Link>
                 </div>
+              )}
+
+              {/* Direkt-Kauf-Banner für Artikel mit eigener Verkaufsseite (Eventboden / Bodenschutzmatten) */}
+              {(product.id === "zeltboden-anthrazit" ||
+                product.id === "bonn-zeltboden-anthrazit" ||
+                product.id === "bodenschutz-fahrmatten" ||
+                product.id === "bonn-bodenschutz-fahrmatten") && (
+                <SalesPagesBanner
+                  title="Diese Matten können Sie auch kaufen"
+                  intro="Recycelter Kunststoff-Mix, extrem robust, ineinander verhakbar – ideal für dauerhafte Event-, Zelt- und Fahrflächen. Neu oder als Top-Used-Angebot ab Lager."
+                  entries={[
+                    {
+                      label: "SLT Easy-Floor Eventboden – NEU",
+                      price: "ab 19,99 € brutto / Stück · Mengenrabatt ab 21 Stück",
+                      href: "/verkauf/neumaschinen/slt-easyfloor-eventboden",
+                      badge: "Neu",
+                    },
+                    {
+                      label: "SLT Easy-Floor – Top-Used (einmal genutzt)",
+                      price: "ab 16 € brutto / Stück · solange Vorrat",
+                      href: "/verkauf/gebrauchtmaschinen/slt-easyfloor-eventboden-used",
+                      badge: "Used",
+                    },
+                  ]}
+                />
               )}
 
               {/* Kaufanfrage-Banner (nicht für Wohnwagen, Camping & Nutzfahrzeuge) */}

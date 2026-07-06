@@ -34,6 +34,7 @@ const usedCategories = [
   { id: "anhaenger", label: "Anhänger", icon: iconAnhaenger },
   { id: "aggregate", label: "Aggregate", icon: iconAggregat },
   { id: "werkzeuge", label: "Werkzeuge", icon: iconWerkzeug },
+  { id: "eventboden", label: "Eventboden", icon: null },
   { id: "sonstiges", label: "Sonstiges", icon: null },
 ];
 
