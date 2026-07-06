@@ -1013,10 +1013,9 @@ export const bonnVerdichtungProducts = [
   {
     id: "bonn-ruettelplatte-vp1550w",
     name: "Rüttelplatte VP 15/50W 97kg",
-    description: "Vorwärtslaufende Baumax Rüttelplatte mit 97 kg Gewicht, 14 kN Zentrifugalkraft und integriertem Wassertank mit Sprinkleranlage zur Staubbindung – auf Anfrage in Bonn.",
+    description: "Vorwärtslaufende Baumax Rüttelplatte mit 97 kg Gewicht, 14 kN Zentrifugalkraft und integriertem Wassertank mit Sprinkleranlage zur Staubbindung.",
     image: "/placeholder.svg",
-    onRequest: true,
-    pricePerDay: "ab 29 €",
+    rentwareCode: { bonn: "IHTL3N" },
   },
   {
     id: "bonn-ruettelplatte-vp16",
