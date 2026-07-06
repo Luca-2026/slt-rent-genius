@@ -1244,13 +1244,13 @@ export default function ProductDetail() {
                   intro="Recycelter Kunststoff-Mix, extrem robust, ineinander verhakbar – ideal für dauerhafte Event-, Zelt- und Fahrflächen. Neu oder als Top-Used-Angebot ab Lager."
                   entries={[
                     {
-                      label: "SLT Easy-Floor Eventboden – NEU",
+                      label: "SLT Eventboden – NEU",
                       price: "ab 19,99 € brutto / Stück · Mengenrabatt ab 21 Stück",
                       href: "/verkauf/neumaschinen/slt-easyfloor-eventboden",
                       badge: "Neu",
                     },
                     {
-                      label: "SLT Easy-Floor – Top-Used (einmal genutzt)",
+                      label: "SLT Eventboden – Top-Used (einmal genutzt)",
                       price: "ab 16 € brutto / Stück · solange Vorrat",
                       href: "/verkauf/gebrauchtmaschinen/slt-easyfloor-eventboden-used",
                       badge: "Used",
