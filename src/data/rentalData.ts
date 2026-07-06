@@ -498,8 +498,8 @@ const trailerProducts: Product[] = [
     id: "planen-xxl-3500", 
     name: "3500 kg Planenanhänger XXL", 
     description: "Ladefläche: 600 x 250 x 250 cm",
-    image: imgPlanen3500_1, 
-    images: [imgPlanen3500_1, imgPlanen3500_2, imgPlanen3500_3, imgPlanen3500_4], 
+    image: "/product-images/anhaenger/planen-xxl-3500-1.jpg", 
+    images: ["/product-images/anhaenger/planen-xxl-3500-1.jpg", imgPlanen3500_4], 
     weightKg: 3500, 
     sortOrder: 8,
     category: "planen",
@@ -507,6 +507,7 @@ const trailerProducts: Product[] = [
     specifications: { "Eigengewicht": "ca. 750 kg", "Nutzlast": "ca. 2.750 kg" },
     rentwareCode: { krefeld: "SHR5LA" } 
   },
+
   
   // === KOFFER ===
   { 
