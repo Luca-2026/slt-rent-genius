@@ -1839,6 +1839,15 @@
         "ctaText": "Temared Purchase Inquiry",
         "ctaDesc": "Would you like a quote for a Temared trailer? We'll configure it with you."
       },
+      "hercu": {
+        "tagline": "Earth Rockets · Pneumatic Moles · Trenchless Cable & Pipe Installation",
+        "h2": "Buy Hercu Earth Rockets – Authorized Hercu Dealer in NRW",
+        "intro": "Hercu stands for durable, low-maintenance earth rockets with patented guide-stone control and a movable stepped head. The Turbo T-models work up to 50% faster than conventional pneumatic moles and are reliably reversible. SLT Rental is your authorized point of contact for Hercu earth rockets and matching accessories in North Rhine-Westphalia – with consultation, demonstration and on-site service.",
+        "h3": "Hercu Product Categories at SLT Rental",
+        "websiteLabel": "Visit Official Hercu Website",
+        "ctaText": "Hercu Purchase Inquiry",
+        "ctaDesc": "Need an earth rocket for trenchless cable or pipe installation? We advise you on the right size."
+      },
       "inquiryBtn": "Submit Purchase Inquiry",
       "submitInquiry": "Submit Inquiry Now"
     },
@@ -1866,6 +1875,11 @@
         "Machine Trailers: 1,800 kg – 3,500 kg, for excavators & compact machines",
         "Motorcycle & Quad Trailers: 750 kg, 2- and 3-position loading",
         "Tipping Trailers: 1,500 kg – 2,700 kg, rear tipping"
+      ],
+      "hercu": [
+        "Hercu HP55 KRT Earth Rocket – Turbo, Ø 55 mm, stepped head, reversible",
+        "Additional Hercu earth rocket sizes on request (Ø 45–145 mm)",
+        "Accessories: Air hoses, bio earth rocket oil, mist lubricator 1.3 L"
       ]
     },
     "faq": {
