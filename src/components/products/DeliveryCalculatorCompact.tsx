@@ -207,6 +207,7 @@ export function DeliveryCalculatorCompact({
           <AddressDistanceInput
             locationId={originLocationId}
             label="Lieferadresse"
+            autoPickNearest
             onDistance={(roundedKm, _exact, label) => {
               setDistance(Math.min(roundedKm, 50));
               setAutoAddress(label);
