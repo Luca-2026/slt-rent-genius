@@ -1528,12 +1528,23 @@ export default function CategoryProducts() {
                 <span>{location.name}</span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
+                {category.id === "alle"
+                  ? category.title
+                  : category.id === "erdbewegung"
+                    ? `Bagger, Minibagger & Radlader mieten in ${location.name}`
+                    : category.id === "arbeitsbuehnen"
+                      ? `Arbeitsbühne & Hebebühne mieten in ${location.name}`
+                      : category.id === "absperrtechnik"
+                        ? `Halteverbotsschilder & Bauzaun mieten in ${location.name}`
+                        : category.id === "moebel-zelte"
+                          ? `Zelt & Eventmöbel mieten in ${location.name}`
+                          : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
                 {moebelOverride?.heroLead || category.description}
               </p>
             </div>
+
           </div>
         </div>
       </section>
