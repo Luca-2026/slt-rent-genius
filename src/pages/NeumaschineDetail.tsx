@@ -589,32 +589,13 @@ export default function NeumaschineDetail() {
 
       {/* Product video (self-hosted MP4, e.g. Hercu Animation) */}
       {(content as any).productVideoUrl && (
-        <section className="section-container py-8 md:py-12 border-t border-border">
-          <div className="max-w-2xl mx-auto md:mx-0">
-            <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">
-              {(content as any).productVideoTitle || "So funktioniert die Erdrakete"}
-            </h2>
-            {(content as any).productVideoCaption && (
-              <p className="text-sm text-muted-foreground mb-4 max-w-xl">
-                {(content as any).productVideoCaption}
-              </p>
-            )}
-            <div className="relative w-full overflow-hidden rounded-lg bg-muted border border-border" style={{ aspectRatio: "16 / 9" }}>
-              <video
-                src={(content as any).productVideoUrl}
-                poster={(content as any).productVideoPoster || undefined}
-                controls
-                muted
-                playsInline
-                preload="metadata"
-                aria-label={`${machine.brand} ${machine.model} – Funktionsprinzip Animation`}
-                className="absolute inset-0 w-full h-full object-contain bg-black"
-              >
-                Dein Browser unterstützt kein HTML5-Video.
-              </video>
-            </div>
-          </div>
-        </section>
+        <AutoplayVideoSection
+          url={(content as any).productVideoUrl}
+          title={(content as any).productVideoTitle || "So funktioniert die Erdrakete"}
+          caption={(content as any).productVideoCaption}
+          poster={(content as any).productVideoPoster}
+          ariaLabel={`${machine.brand} ${machine.model} – Funktionsprinzip Animation`}
+        />
       )}
 
       {/* Highlights */}
