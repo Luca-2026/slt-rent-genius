@@ -352,9 +352,9 @@ export default function Neumaschinen() {
     return Array.from(set).sort((a, b) => Number(a) - Number(b));
   }, [machines]);
 
-  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke SLT)
+  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke Hercu)
   const showDiameterFilter =
-    category === "Erdrakete" || brand === "SLT" || category === "all";
+    category === "Erdrakete" || brand === "Hercu" || category === "all";
 
   const filtered = useMemo(() => {
     let list = [...(machines || [])];
