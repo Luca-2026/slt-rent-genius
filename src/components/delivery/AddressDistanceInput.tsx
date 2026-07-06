@@ -18,7 +18,15 @@ interface Props {
   onDistance: (roundedKm: number, exactKm: number, addressLabel: string) => void;
   label?: string;
   placeholder?: string;
+  /** If true, compute distances from all 3 SLT locations and pick the closest one. */
+  autoPickNearest?: boolean;
 }
+
+const LOCATION_LABELS: Record<string, string> = {
+  krefeld: "Krefeld",
+  bonn: "Bonn",
+  muelheim: "Mülheim an der Ruhr",
+};
 
 // Simple session token (used by Google Places for billing grouping).
 function makeSessionToken() {
@@ -30,6 +38,7 @@ export function AddressDistanceInput({
   onDistance,
   label = "Lieferadresse",
   placeholder = "Straße Hausnummer, PLZ Ort",
+  autoPickNearest = false,
 }: Props) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -38,6 +47,7 @@ export function AddressDistanceInput({
   const [selected, setSelected] = useState<Suggestion | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [switchNotice, setSwitchNotice] = useState<string | null>(null);
   const sessionTokenRef = useRef<string>(makeSessionToken());
   const debounceRef = useRef<number | null>(null);
 
@@ -45,6 +55,7 @@ export function AddressDistanceInput({
     // Reset when location changes
     setSelected(null);
     setSuggestions([]);
+    setSwitchNotice(null);
   }, [locationId]);
 
   useEffect(() => {
@@ -69,7 +80,7 @@ export function AddressDistanceInput({
         setSuggestions(data?.suggestions ?? []);
         setOpen(true);
       } catch (e) {
-        setError("Adresssuche derzeit nicht verfügbar.");
+        setError("Adresssuche gerade nicht verfügbar – bitte Slider unten nutzen.");
         setSuggestions([]);
       } finally {
         setLoading(false);
@@ -88,24 +99,46 @@ export function AddressDistanceInput({
     setOpen(false);
     setCalcLoading(true);
     setError(null);
+    setSwitchNotice(null);
     try {
       const { data, error } = await supabase.functions.invoke("geo-address", {
         body: {
-          action: "distance",
+          action: autoPickNearest ? "distanceAll" : "distance",
           locationId,
           placeId: s.placeId,
         },
       });
       if (error) throw error;
-      if (data?.roundedKm) {
+
+      if (autoPickNearest && data?.results) {
+        const best = data.best;
+        const preferred = data.results.find(
+          (r: any) => r.locationId === locationId,
+        );
+        if (best && preferred && best.locationId !== preferred.locationId) {
+          // Only switch if meaningfully closer (>=5 km shorter driving distance)
+          if (preferred.distanceKm - best.distanceKm >= 5) {
+            setSwitchNotice(
+              `Näher von ${LOCATION_LABELS[best.locationId]} (${Math.round(best.distanceKm)} km) statt ${LOCATION_LABELS[preferred.locationId]} (${Math.round(preferred.distanceKm)} km) – wir berechnen ab ${LOCATION_LABELS[best.locationId]}.`,
+            );
+            onDistance(best.roundedKm, best.distanceKm, s.text);
+          } else {
+            onDistance(preferred.roundedKm, preferred.distanceKm, s.text);
+          }
+        } else if (preferred) {
+          onDistance(preferred.roundedKm, preferred.distanceKm, s.text);
+        } else if (best) {
+          onDistance(best.roundedKm, best.distanceKm, s.text);
+        }
+      } else if (data?.roundedKm) {
         onDistance(data.roundedKm, data.distanceKm, s.text);
       } else {
-        setError("Route konnte nicht berechnet werden.");
+        setError("Route konnte nicht berechnet werden – bitte Slider unten nutzen.");
       }
       // Start new session for next lookup
       sessionTokenRef.current = makeSessionToken();
     } catch (e) {
-      setError("Entfernung konnte nicht berechnet werden.");
+      setError("Entfernung konnte nicht berechnet werden – bitte Slider unten nutzen.");
     } finally {
       setCalcLoading(false);
     }
@@ -155,6 +188,12 @@ export function AddressDistanceInput({
         )}
       </div>
       {error && <p className="text-xs text-destructive">{error}</p>}
+      {switchNotice && (
+        <p className="text-xs bg-accent/10 text-accent-foreground border border-accent/30 rounded-md px-2 py-1.5 flex items-start gap-1">
+          <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-accent" />
+          <span>{switchNotice}</span>
+        </p>
+      )}
       <p className="text-xs text-muted-foreground">
         Powered by Google Maps – wir berechnen die tatsächliche Fahrstrecke.
       </p>
