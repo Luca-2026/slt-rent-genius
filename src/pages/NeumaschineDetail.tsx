@@ -41,52 +41,96 @@ function AutoplayVideoSection({
   poster?: string;
   ariaLabel: string;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
   const hasStartedRef = useRef(false);
 
+  // Lazy-load: attach src only when the section is close to the viewport.
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setShouldLoad(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Autoplay when the video itself is >=40% visible; pause when it leaves.
+  useEffect(() => {
+    if (!shouldLoad) return;
     const video = videoRef.current;
     if (!video) return;
-    const observer = new IntersectionObserver(
+    if (typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
             if (!hasStartedRef.current) {
               hasStartedRef.current = true;
-              video.play().catch(() => {});
+              const p = video.play();
+              if (p && typeof p.catch === "function") p.catch(() => {});
             }
           } else if (!entry.isIntersecting) {
             if (!video.paused) video.pause();
           }
         });
       },
-      { threshold: [0, 0.5, 1] }
+      { threshold: [0, 0.4, 0.75] }
     );
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
+    io.observe(video);
+    return () => io.disconnect();
+  }, [shouldLoad]);
 
   return (
     <section className="section-container py-8 md:py-12 border-t border-border">
-      <div className="max-w-2xl mx-auto md:mx-0">
+      <div ref={containerRef} className="max-w-2xl mx-auto md:mx-0">
         <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">{title}</h2>
         {caption && (
           <p className="text-sm text-muted-foreground mb-4 max-w-xl">{caption}</p>
         )}
         <div className="relative w-full overflow-hidden rounded-lg bg-muted border border-border" style={{ aspectRatio: "16 / 9" }}>
-          <video
-            ref={videoRef}
-            src={url}
-            poster={poster || undefined}
-            controls
-            muted
-            playsInline
-            preload="metadata"
-            aria-label={ariaLabel}
-            className="absolute inset-0 w-full h-full object-contain bg-black"
-          >
-            Dein Browser unterstützt kein HTML5-Video.
-          </video>
+          {shouldLoad ? (
+            <video
+              ref={videoRef}
+              src={url}
+              poster={poster || undefined}
+              controls
+              muted
+              playsInline
+              {...({ "webkit-playsinline": "true" } as Record<string, string>)}
+              preload="metadata"
+              aria-label={ariaLabel}
+              className="absolute inset-0 w-full h-full object-contain bg-black"
+            >
+              Dein Browser unterstützt kein HTML5-Video.
+            </video>
+          ) : (
+            poster ? (
+              <img
+                src={poster}
+                alt={ariaLabel}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-contain bg-black"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/90 text-xs text-white/60">
+                Video wird geladen, sobald es sichtbar wird…
+              </div>
+            )
+          )}
         </div>
       </div>
     </section>
