@@ -65,12 +65,12 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
-  SLT: [
+  Hercu: [
     "Erdrakete Ø 45 mm (kompakt)",
     "Erdrakete Ø 55 mm (Standard)",
     "Erdrakete Ø 55 mm (Turbo, lang)",
     "Erdrakete Ø 65 mm (Turbo, groß)",
-    "Sonstige SLT-Erdrakete",
+    "Sonstige Hercu-Erdrakete",
     "Zubehör (Schlauch, Öl, Nebelöler)",
   ],
 };
@@ -88,8 +88,8 @@ const brandWebsites = {
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "SLT" };
-// Marken-Logo-Strip zeigt nur externe Partner. SLT-Erdraketen sind Whitelabel und werden im Marken-Abschnitt separat dargestellt.
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "Hercu" };
+// Marken-Logo-Strip zeigt nur externe Partner. Hercu-Erdraketen werden im Marken-Abschnitt separat dargestellt (Direktimport, Vertrieb & Service über SLT Rental in NRW).
 const externalBrandKeys = ["zoomlion", "baumax", "temared"] as const;
 const brandKeys = ["zoomlion", "baumax", "temared", "slt"] as const;
 
@@ -110,7 +110,7 @@ const jsonLdAutoDealer = {
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
-    { "@type": "Brand", name: "SLT", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
+    { "@type": "Brand", name: "Hercu", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
   ],
   address: [
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
@@ -132,14 +132,14 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
-      { "@type": "OfferCatalog", name: "SLT-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
+      { "@type": "OfferCatalog", name: "Hercu-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte (Erdraketen) von Hercu Pneumatic – SLT Rental ist autorisierter Vertriebs- und Servicepartner in NRW" },
     ],
   },
   makesOffer: [
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "SLT-Erdraketen", category: "Erdrakete / Bodendurchschlagsgerät" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu-Erdraketen", brand: "Hercu", category: "Erdrakete / Bodendurchschlagsgerät" } },
   ],
 };
 
@@ -147,7 +147,7 @@ const brandDbNames: Record<string, string> = {
   zoomlion: "Zoomlion",
   baumax: "BAUMAX",
   temared: "Temared",
-  slt: "SLT",
+  slt: "Hercu",
 };
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
@@ -352,9 +352,9 @@ export default function Neumaschinen() {
     return Array.from(set).sort((a, b) => Number(a) - Number(b));
   }, [machines]);
 
-  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke SLT)
+  // Zeigt Ø-Filter nur, wenn der Kunde bereits auf Erdraketen filtert (Kategorie oder Marke Hercu)
   const showDiameterFilter =
-    category === "Erdrakete" || brand === "SLT" || category === "all";
+    category === "Erdrakete" || brand === "Hercu" || category === "all";
 
   const filtered = useMemo(() => {
     let list = [...(machines || [])];
@@ -526,9 +526,9 @@ export default function Neumaschinen() {
     <Layout>
       <SEO
         title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
-        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und SLT-Erdraketen vom Fachhändler mit Garantie, Service und Lieferung."
+        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und Hercu-Erdraketen (Bodendurchschlagsgeräte) vom autorisierten Fachhändler mit Garantie, Service und Lieferung."
         canonical="/verkauf/neumaschinen"
-        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
+        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Hercu Erdrakete kaufen, Bodendurchschlagsgerät kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
         ogType="website"
         jsonLd={[
           {
@@ -937,7 +937,7 @@ export default function Neumaschinen() {
                         <SelectItem value="Zoomlion">Zoomlion</SelectItem>
                         <SelectItem value="BAUMAX Baumaschinen">BAUMAX Baumaschinen</SelectItem>
                         <SelectItem value="Temared">Temared</SelectItem>
-                        <SelectItem value="SLT">SLT (Erdraketen &amp; Zubehör)</SelectItem>
+                        <SelectItem value="Hercu">Hercu (Erdraketen &amp; Zubehör)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
