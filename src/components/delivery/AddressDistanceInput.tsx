@@ -38,6 +38,7 @@ export function AddressDistanceInput({
   onDistance,
   label = "Lieferadresse",
   placeholder = "Straße Hausnummer, PLZ Ort",
+  autoPickNearest = false,
 }: Props) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -46,6 +47,7 @@ export function AddressDistanceInput({
   const [selected, setSelected] = useState<Suggestion | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [switchNotice, setSwitchNotice] = useState<string | null>(null);
   const sessionTokenRef = useRef<string>(makeSessionToken());
   const debounceRef = useRef<number | null>(null);
 
@@ -53,6 +55,7 @@ export function AddressDistanceInput({
     // Reset when location changes
     setSelected(null);
     setSuggestions([]);
+    setSwitchNotice(null);
   }, [locationId]);
 
   useEffect(() => {
@@ -77,7 +80,7 @@ export function AddressDistanceInput({
         setSuggestions(data?.suggestions ?? []);
         setOpen(true);
       } catch (e) {
-        setError("Adresssuche derzeit nicht verfügbar.");
+        setError("Adresssuche gerade nicht verfügbar – bitte Slider unten nutzen.");
         setSuggestions([]);
       } finally {
         setLoading(false);
@@ -96,24 +99,46 @@ export function AddressDistanceInput({
     setOpen(false);
     setCalcLoading(true);
     setError(null);
+    setSwitchNotice(null);
     try {
       const { data, error } = await supabase.functions.invoke("geo-address", {
         body: {
-          action: "distance",
+          action: autoPickNearest ? "distanceAll" : "distance",
           locationId,
           placeId: s.placeId,
         },
       });
       if (error) throw error;
-      if (data?.roundedKm) {
+
+      if (autoPickNearest && data?.results) {
+        const best = data.best;
+        const preferred = data.results.find(
+          (r: any) => r.locationId === locationId,
+        );
+        if (best && preferred && best.locationId !== preferred.locationId) {
+          // Only switch if meaningfully closer (>=5 km shorter driving distance)
+          if (preferred.distanceKm - best.distanceKm >= 5) {
+            setSwitchNotice(
+              `Näher von ${LOCATION_LABELS[best.locationId]} (${Math.round(best.distanceKm)} km) statt ${LOCATION_LABELS[preferred.locationId]} (${Math.round(preferred.distanceKm)} km) – wir berechnen ab ${LOCATION_LABELS[best.locationId]}.`,
+            );
+            onDistance(best.roundedKm, best.distanceKm, s.text);
+          } else {
+            onDistance(preferred.roundedKm, preferred.distanceKm, s.text);
+          }
+        } else if (preferred) {
+          onDistance(preferred.roundedKm, preferred.distanceKm, s.text);
+        } else if (best) {
+          onDistance(best.roundedKm, best.distanceKm, s.text);
+        }
+      } else if (data?.roundedKm) {
         onDistance(data.roundedKm, data.distanceKm, s.text);
       } else {
-        setError("Route konnte nicht berechnet werden.");
+        setError("Route konnte nicht berechnet werden – bitte Slider unten nutzen.");
       }
       // Start new session for next lookup
       sessionTokenRef.current = makeSessionToken();
     } catch (e) {
-      setError("Entfernung konnte nicht berechnet werden.");
+      setError("Entfernung konnte nicht berechnet werden – bitte Slider unten nutzen.");
     } finally {
       setCalcLoading(false);
     }
