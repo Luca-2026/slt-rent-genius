@@ -667,7 +667,30 @@ export const localCategoryContent: LocalContentMap = {
         },
       ],
     },
+
+    beschallung: {
+      hookline:
+        "Musikanlagen, PA-Systeme, Funkmikrofone und DJ-Equipment mietest du am Hauptsitz Krefeld – vom kompakten 2.1-Set bis zur großen D.A.S. PA-Anlage 3500W RMS mit 18\" Subwoofer, alles vom selben Standort und für den gesamten Niederrhein disponierbar.",
+      standortFakten:
+        "Abholung am Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach Voranmeldung möglich). Anfahrt über A57 (Krefeld–Düsseldorf) und A40 (Ruhrschnellweg). Als Hauptsitz mit dem größten Beschallungs-Mietpark führen wir Soundboks Gen.3 (126 dB, Bluetooth 5.0), das 2.1 Soundsystem 1400W RMS mit integriertem 4-Kanal-Mischpult (bis 75 Personen), das D.A.S. Soundsystem 3500W RMS mit 2× 18\"-Subwoofer und 2× 12\"-Topteil (bis 250 Personen), einzelne D.A.S. Audio Vantec 12A/18A, D.A.S. Action 508A sowie Funkmikrofon-Sets direkt vor Ort. Liefergebiet: Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd – geliefert wird in der Regel am nächsten Werktag, bei größeren Anlagen inklusive Auf- und Abbau auf Wunsch.",
+      faqs: [
+        {
+          q: "Welche Musikanlagen und PA-Systeme habt ihr am Hauptsitz Krefeld direkt vor Ort?",
+          a: "Am Hauptsitz Krefeld ist unser komplettes Beschallungs-Sortiment stationiert: Soundboks Gen.3 mit TeamUP-Modus, das 2.1 Soundsystem 1400W RMS mit integriertem Mischpult (bis 75 Personen), das D.A.S. Soundsystem 3500W RMS (bis 250 Personen) samt 18\"-Subwoofern und 12\"-Topteilen, einzelne Vantec 12A/18A, D.A.S. Action 508A sowie Funkmikrofon-Sets. Den konkreten Verfügbarkeits-Status siehst du an jedem Produkt direkt. Selbst-Abholung samstags von 10:00–14:30 Uhr ohne Voranmeldung möglich.",
+        },
+        {
+          q: "Liefert ihr PA-Anlagen und Musikanlagen nach Mönchengladbach, Neuss oder Düsseldorf-Linksrheinisch?",
+          a: "Ja. Ab Krefeld liefern wir Musikanlagen, PA-Systeme und Funkmikrofon-Sets ins gesamte Niederrhein-Gebiet – Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über A57 und A40, in der Regel am nächsten Werktag. Für die große D.A.S. PA-Anlage 3500W (ca. 130 kg) empfehlen wir Lieferung statt Selbstabholung.",
+        },
+        {
+          q: "Kann ich die Musikanlage für eine Wochenend-Hochzeit direkt am Freitagabend abholen?",
+          a: "Ja. Kompakte Anlagen wie Soundboks oder das 2.1 Soundsystem 1400W RMS kannst du freitags bis 18:00 Uhr am Hauptsitz Krefeld abholen und montags bis 18:00 Uhr zurückbringen – berechnet wird nur die Tagesmiete. Für die große D.A.S. PA-Anlage 3500W empfehlen wir bei Wochenend-Terminen im Niederrhein-Raum die Lieferung direkt zur Location, damit du dich am Eventtag auf die Feier konzentrieren kannst.",
+        },
+      ],
+    },
   },
+
+
 
 
   // =================================================================
