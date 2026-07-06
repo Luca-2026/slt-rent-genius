@@ -240,6 +240,29 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+    erdbohrer: {
+      hookline:
+        "Benzin-Erdbohrer mit 100, 150 und 200 mm Bohrschnecke – an der Filiale Bonn samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Benzin-Erdbohrer inklusive aller drei Schnecken-Durchmesser (100 mm, 150 mm, 200 mm) ist Bestandteil des Bonner Stamm-Sortiments und passt komplett in jeden Pkw-Kofferraum. Passend für Zaunfundamente, Pergola- und Carport-Pfosten, Pflanzlöcher und Erdanker im Bonner Stadtgebiet, in Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, im Rhein-Sieg-Kreis sowie im Ahrtal.",
+      faqs: [
+        {
+          q: "Kann ich den Benzin-Erdbohrer in Bonn auch samstags oder früh morgens abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 öffnet werktags bereits um 07:00 Uhr – eine Stunde früher als der Hauptsitz Krefeld – und samstags durchgehend von 08:00 bis 17:30 Uhr. Der Erdbohrer inklusive aller drei Schnecken (100/150/200 mm) ist Stammsortiment und in der Regel ohne Voranmeldung mitnehmbar. Perfekt für Wochenend-Projekte im Rhein-Sieg-Kreis und im Ahrtal.",
+        },
+        {
+          q: "Sind an der Filiale Bonn alle drei Bohrschnecken-Größen vorrätig?",
+          a: "Ja. Wir halten an der Filiale Bonn die 100 mm, 150 mm und 200 mm Schnecke gemeinsam mit dem Motor-Erdbohrer vor. Du wählst im Buchungsprozess, welche Größe(n) mitgeliefert wird – bei gemischten Projekten (z. B. Zaunpfähle + Torfundament) kannst du auch mehrere Schnecken kombinieren.",
+        },
+        {
+          q: "Liefert ihr den Erdbohrer ins Ahrtal oder in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab der Filiale Bonn liefern wir den Benzin-Erdbohrer ins gesamte Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9, Lieferung in der Regel am nächsten Werktag. Für Selbstabholer passt der Erdbohrer mit Schnecken in jeden Pkw-Kofferraum.",
+        },
+      ],
+    },
+
+
+
     absperrtechnik: {
       hookline:
         "TL-Warnleuchten, Schrankenzäune, Warnbarken, Fußplatten und das 18-teilige Halteverbotsschilder-Set mietest du an unserer Filiale Bonn – kompakte Artikel wie Warnleuchten und Klemmschellen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
@@ -624,8 +647,28 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
-    // Weitere Kategorien folgen in den nächsten Sprints.
+    erdbohrer: {
+      hookline:
+        "Benzin-Erdbohrer mit 100, 150 und 200 mm Bohrschnecke – am Hauptsitz Krefeld direkt vor Ort und samstags ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung am Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr. Anfahrt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Der Benzin-Erdbohrer inklusive aller drei Schnecken-Durchmesser (100 mm, 150 mm, 200 mm) ist Bestandteil des Krefelder Stamm-Sortiments und passt komplett in jeden Pkw-Kofferraum. Ideal für Zaunfundamente, Pergola- und Carport-Pfosten, Pflanzlöcher und Erdanker im Raum Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd.",
+      faqs: [
+        {
+          q: "Kann ich den Benzin-Erdbohrer in Krefeld auch samstags abholen?",
+          a: "Ja. Der Hauptsitz Krefeld in der Anrather Straße 291 ist samstags von 10:00 bis 14:30 Uhr geöffnet – Erdbohrer plus alle drei Schnecken (100/150/200 mm) sind Stammsortiment und in der Regel ohne Voranmeldung mitnehmbar. Ideal für Zaun- oder Pergola-Projekte am Wochenende im Raum Krefeld, Meerbusch und Willich.",
+        },
+        {
+          q: "Sind am Standort Krefeld alle drei Bohrschnecken-Größen vorrätig?",
+          a: "Ja. Wir halten am Hauptsitz Krefeld die 100 mm, 150 mm und 200 mm Schnecke gemeinsam mit dem Motor-Erdbohrer vor. Du entscheidest im Buchungsprozess, welche Größe(n) mitgeliefert werden – bei gemischten Projekten (z. B. Zaunpfähle + Torfundament) kannst du auch mehrere Schnecken kombinieren.",
+        },
+        {
+          q: "Liefert ihr den Erdbohrer nach Meerbusch, Mönchengladbach oder Düsseldorf-Linksrheinisch?",
+          a: "Ja. Ab Krefeld liefern wir den Benzin-Erdbohrer ins gesamte Niederrhein-Gebiet – Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über A57 und A40, Lieferung in der Regel am nächsten Werktag. Für Selbstabholer passt das Gerät samt Schnecken in jeden Pkw-Kofferraum.",
+        },
+      ],
+    },
   },
+
 
   // =================================================================
   // MÜLHEIM AN DER RUHR – Service-Standort Ruhrorter Str. 122
