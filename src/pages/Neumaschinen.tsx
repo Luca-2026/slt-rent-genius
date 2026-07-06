@@ -65,12 +65,12 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
-  SLT: [
+  Hercu: [
     "Erdrakete Ø 45 mm (kompakt)",
     "Erdrakete Ø 55 mm (Standard)",
     "Erdrakete Ø 55 mm (Turbo, lang)",
     "Erdrakete Ø 65 mm (Turbo, groß)",
-    "Sonstige SLT-Erdrakete",
+    "Sonstige Hercu-Erdrakete",
     "Zubehör (Schlauch, Öl, Nebelöler)",
   ],
 };
