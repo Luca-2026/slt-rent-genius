@@ -1093,7 +1093,7 @@ export default function CategoryProducts() {
     "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${cityName}: CEE-Kabel, Schukokabel, Verteiler, Kabelbrücken – geprüft, sicher, für Event & Baustelle.`,
     "leitern-gerueste": `Leitern & Rollgerüste mieten in ${cityName}: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.`,
     "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${cityName}: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.`,
-    absperrtechnik: `Absperrtechnik & Verkehrszeichen mieten in ${cityName}: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.`,
+    absperrtechnik: `Halteverbotsschilder & Bauzaun mieten in ${cityName} – StVO-konform, online bestellen. Verkehrsschilder, Warnbarken & Absperrgitter kurzfristig verfügbar.`,
     beschallung: location.id === "krefeld"
       ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Krefeld. Inkl. Aufbau, Abbau & Betreuung durch erfahrene Tontechniker – seit über 10 Jahren.`
       : location.id === "bonn"
