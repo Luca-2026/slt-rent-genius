@@ -135,6 +135,39 @@ export default function Locations() {
         </section>
       )}
 
+      {/* Interne Verlinkung – Top-Mietkategorien je Standort (nur auf /standorte/:id) */}
+      {id && (
+        <section className="py-6 md:py-8 bg-surface-light border-b border-border">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-base md:text-lg font-semibold text-headline mb-3 md:mb-4">
+                Beliebte Mietkategorien in {id === "muelheim" ? "Mülheim an der Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                {[
+                  { slug: "anhaenger", label: `Anhänger mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "erdbewegung", label: `Bagger & Minibagger mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "arbeitsbuehnen", label: `Arbeitsbühne mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "moebel-zelte", label: `Zelt & Eventmöbel mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "absperrtechnik", label: `Halteverbotsschilder in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "verdichtung", label: `Rüttelplatte mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "gartenpflege", label: `Gartengeräte mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                  { slug: "aggregate", label: `Stromerzeuger mieten in ${id === "muelheim" ? "Mülheim a. d. Ruhr" : id === "bonn" ? "Bonn" : "Krefeld"}` },
+                ].map((c) => (
+                  <Link
+                    key={c.slug}
+                    to={`/mieten/${id}/${c.slug}`}
+                    className="text-xs md:text-sm text-primary hover:text-accent hover:underline bg-background border border-border rounded-md px-3 py-2 transition-colors"
+                  >
+                    {c.label}
+                  </Link>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Locations Grid – always 3 side by side */}
       <section className="py-6 md:py-10 lg:py-20">
         <div className="section-container">

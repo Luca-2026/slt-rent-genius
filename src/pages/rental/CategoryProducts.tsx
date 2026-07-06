@@ -1083,7 +1083,7 @@ export default function CategoryProducts() {
 
   // Category-specific meta descriptions with dynamic city name
   const categorySeoDescriptions: Record<string, string> = {
-    anhaenger: `Anhänger mieten in ${cityName} – 24/7 per SMS-Code: Planenanhänger, Autotransporter, Kastenanhänger & mehr. Online buchbar, Tiefpreisgarantie.`,
+    anhaenger: `Anhänger mieten in ${cityName} – Anhängerverleih 24/7 per SMS-Code: Planenanhänger, Autotransporter, Baumaschinen- & Kastenanhänger. Online buchbar, Tiefpreisgarantie.`,
     erdbewegung: `Bagger & Erdbewegungsmaschinen mieten in ${cityName}: Bobcat, Minibagger, Radlader, Dumper + Anbaugeräte. Tiefpreisgarantie, sofort verfügbar.`,
     werkzeuge: `Elektro- & Handwerkzeuge mieten in ${cityName}: Bohrmaschinen, Flex, Sägen, Rotationslaser & mehr. Kurzfristig verfügbar – SLT Rental Tiefpreisgarantie.`,
     gartenpflege: `Gartengeräte mieten in ${cityName}: Kettensäge, Heckenschere, Häcksler, Vertikutierer & Hochdruckreiniger. Online buchbar bei SLT Rental.`,
@@ -1093,7 +1093,7 @@ export default function CategoryProducts() {
     "kabel-stromverteiler": `Kabel & Stromverteiler mieten in ${cityName}: CEE-Kabel, Schukokabel, Verteiler, Kabelbrücken – geprüft, sicher, für Event & Baustelle.`,
     "leitern-gerueste": `Leitern & Rollgerüste mieten in ${cityName}: Steh-, Mehrzweckleitern, Krause-Rollgerüste 3–11 m, Breitaufbau. SLT Rental.`,
     "heizung-trocknung": `Bautrockner & Heizlüfter mieten in ${cityName}: KT200, KT553, Heizlüfter 2–9 kW. Schnelle Trocknung – SLT Rental.`,
-    absperrtechnik: `Absperrtechnik & Verkehrszeichen mieten in ${cityName}: Bauzäune, VZ-Schilder, Warnbarken, Halteverbotsschilder. SLT Rental.`,
+    absperrtechnik: `Halteverbotsschilder & Bauzaun mieten in ${cityName} – StVO-konform, online bestellen. Verkehrsschilder, Warnbarken & Absperrgitter kurzfristig verfügbar.`,
     beschallung: location.id === "krefeld"
       ? `PA-Anlage, Mischpult, CDJ, Funkmikrofon & DJ-Equipment mieten in Krefeld. Inkl. Aufbau, Abbau & Betreuung durch erfahrene Tontechniker – seit über 10 Jahren.`
       : location.id === "bonn"
@@ -1528,12 +1528,23 @@ export default function CategoryProducts() {
                 <span>{location.name}</span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                {category.id === "alle" ? category.title : `${category.title} mieten in ${location.name}`}
+                {category.id === "alle"
+                  ? category.title
+                  : category.id === "erdbewegung"
+                    ? `Bagger, Minibagger & Radlader mieten in ${location.name}`
+                    : category.id === "arbeitsbuehnen"
+                      ? `Arbeitsbühne & Hebebühne mieten in ${location.name}`
+                      : category.id === "absperrtechnik"
+                        ? `Halteverbotsschilder & Bauzaun mieten in ${location.name}`
+                        : category.id === "moebel-zelte"
+                          ? `Zelt & Eventmöbel mieten in ${location.name}`
+                          : `${category.title} mieten in ${location.name}`}
               </h1>
               <p className="text-primary-foreground/80 mt-1">
                 {moebelOverride?.heroLead || category.description}
               </p>
             </div>
+
           </div>
         </div>
       </section>
