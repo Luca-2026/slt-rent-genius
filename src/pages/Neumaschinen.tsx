@@ -139,7 +139,7 @@ const jsonLdAutoDealer = {
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "SLT-Erdraketen", category: "Erdrakete / Bodendurchschlagsgerät" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu-Erdraketen", brand: "Hercu", category: "Erdrakete / Bodendurchschlagsgerät" } },
   ],
 };
 
