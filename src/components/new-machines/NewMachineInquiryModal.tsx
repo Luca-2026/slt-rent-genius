@@ -113,6 +113,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
       if (!lieferPlz.trim()) errs.lieferPlz = "Pflichtfeld";
       if (!lieferOrt.trim()) errs.lieferOrt = "Pflichtfeld";
     }
+    if (isAnhaengerkupplungProduct && !kupplungDumperModell) errs.kupplungDumperModell = "Bitte Dumper-Modell wählen";
     if (!kundentyp) errs.kundentyp = "Bitte Kundentyp wählen";
     if (kundentyp === "Gewerblicher Kunde" && !firmenname.trim()) errs.firmenname = "Pflichtfeld";
     if (!anrede) errs.anrede = "Pflichtfeld";
