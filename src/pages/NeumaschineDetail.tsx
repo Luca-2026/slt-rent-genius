@@ -390,6 +390,44 @@ export default function NeumaschineDetail() {
               </CardContent>
             </Card>
 
+            {/* Konfigurations-Auswahl (Solo / mit Grundausstattung) – für Hercu Erdraketen */}
+            {machine.brand === "Hercu" && options.length > 0 && (
+              <Card className="mb-6 border-accent/30 bg-accent/5">
+                <CardContent className="p-5">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Konfiguration wählen</p>
+                  <div className="space-y-2">
+                    {options.map((opt) => (
+                      <label
+                        key={opt.name}
+                        className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                          selectedConfig === opt.name ? "border-primary bg-primary/5" : "border-border hover:border-primary/30 bg-background"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="hercu-config"
+                          value={opt.name}
+                          checked={selectedConfig === opt.name}
+                          onChange={() => setSelectedConfig(opt.name)}
+                          className="mt-1 accent-primary"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                            <span className="font-semibold text-foreground text-sm">{opt.name}</span>
+                            <span className="text-sm font-bold text-primary">{opt.price}</span>
+                          </div>
+                          {opt.note && <p className="text-xs text-muted-foreground mt-1 leading-snug">{opt.note}</p>}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-3">
+                    Deine Auswahl übernehmen wir automatisch in das Anfrageformular.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Button size="lg" className="w-full sm:flex-1" onClick={() => setInquiryOpen(true)}>
                 Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
@@ -400,6 +438,7 @@ export default function NeumaschineDetail() {
                 </a>
               </Button>
             </div>
+
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
