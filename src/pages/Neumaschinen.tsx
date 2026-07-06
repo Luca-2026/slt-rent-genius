@@ -132,7 +132,7 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
-      { "@type": "OfferCatalog", name: "SLT-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
+      { "@type": "OfferCatalog", name: "Hercu-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte (Erdraketen) von Hercu Pneumatic – SLT Rental ist autorisierter Vertriebs- und Servicepartner in NRW" },
     ],
   },
   makesOffer: [
