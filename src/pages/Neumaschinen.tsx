@@ -794,13 +794,21 @@ export default function Neumaschinen() {
           {brandKeys.map((key, i) => {
             const products = t(`verkauf.products.${key}`, { returnObjects: true }) as string[];
             const icons = brandIcons[key];
+            const logo = (brandLogos as Record<string, string>)[key];
+            const externalUrl = (brandWebsites as Record<string, string>)[key];
             return (
               <AnimatedSection key={key} delay={i * 100}>
                 <div className="bg-background rounded-2xl border border-border overflow-hidden">
                   <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
-                    <div className="bg-white rounded-lg p-1.5">
-                      <img src={brandLogos[key]} alt={brandNames[key]} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
-                    </div>
+                    {logo ? (
+                      <div className="bg-white rounded-lg p-1.5">
+                        <img src={logo} alt={brandNames[key]} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
+                      </div>
+                    ) : (
+                      <div className="bg-white rounded-lg px-4 py-2">
+                        <span className="text-primary font-bold text-lg lg:text-xl tracking-wide">{brandNames[key]}</span>
+                      </div>
+                    )}
                     <p className="text-primary-foreground/70">{t(`verkauf.brands.${key}.tagline`)}</p>
                   </div>
 
@@ -825,12 +833,14 @@ export default function Neumaschinen() {
                       <Button className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={scrollToForm}>
                         {t("verkauf.brands.inquiryBtn")}
                       </Button>
-                      <a href={brandWebsites[key]} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" className="gap-2">
-                          <img src={brandLogos[key]} alt={brandNames[key]} className="h-4 w-auto" />
-                          {t(`verkauf.brands.${key}.websiteLabel`)} <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </a>
+                      {externalUrl && (
+                        <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline" className="gap-2">
+                            {logo && <img src={logo} alt={brandNames[key]} className="h-4 w-auto" />}
+                            {t(`verkauf.brands.${key}.websiteLabel`)} <ExternalLink className="h-4 w-4" />
+                          </Button>
+                        </a>
+                      )}
                     </div>
                   </div>
 
