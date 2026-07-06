@@ -417,7 +417,7 @@ export default function NeumaschineDetail() {
           {/* Info */}
           <div>
             <div className="flex flex-wrap gap-2 mb-3">
-              <Badge variant="outline">Neumaschine</Badge>
+              <Badge variant="outline">{machine.category?.toLowerCase().includes("eventboden") ? "Neuartikel" : "Neumaschine"}</Badge>
               <Badge variant="outline">{machine.brand}</Badge>
               {machine.is_featured && (
                 <Badge className="bg-accent text-accent-foreground">Top-Angebot</Badge>
