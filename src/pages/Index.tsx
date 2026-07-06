@@ -374,14 +374,14 @@ export default function Index() {
               <p className="text-muted-foreground max-w-2xl mx-auto mb-8 md:mb-10 text-base md:text-lg text-center">
                 Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. Bei Fragen oder Anregungen melde dich gerne persönlich bei mir oder unserem Team.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full sm:w-auto">
-                <Link to="/mieten">
-                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full">
+                <Link to="/mieten" className="sm:flex-1">
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-full">
                     {t("cta.rentEquipment")}
                   </Button>
                 </Link>
-                <Link to="/b2b">
-                  <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto">
+                <Link to="/b2b" className="sm:flex-1">
+                  <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg transition-all duration-300 hover:-translate-y-1 w-full">
                     {t("cta.b2bInquiry")}
                   </Button>
                 </Link>
