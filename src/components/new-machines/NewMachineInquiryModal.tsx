@@ -22,6 +22,8 @@ interface Props {
     category?: string | null;
     priceLabel: string;
     image?: string | null;
+    configOptions?: { name: string; price: string; note?: string }[];
+    initialConfig?: string;
   };
 }
 
@@ -39,6 +41,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
     /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug);
 
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+  const [selectedConfig, setSelectedConfig] = useState<string>(machine.initialConfig || machine.configOptions?.[0]?.name || "");
 
   // Block 2 — Lieferung
   const [lieferOption, setLieferOption] = useState("");
