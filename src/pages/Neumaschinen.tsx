@@ -110,7 +110,7 @@ const jsonLdAutoDealer = {
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
-    { "@type": "Brand", name: "SLT", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
+    { "@type": "Brand", name: "Hercu", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
   ],
   address: [
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
