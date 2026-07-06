@@ -2820,6 +2820,33 @@ export const absperrtechnikProducts: Product[] = [
     },
     rentwareCode: { krefeld: "U9BFGZ" }
   },
+  // ============= LICHTSIGNALANLAGE / BAUSTELLENAMPEL =============
+  {
+    id: "lichtsignalanlage-lza-500-led",
+    name: "Lichtsignalanlage LZA 500 LED",
+    modelName: "LZA 500 LED",
+    description: "Mobile Baustellenampel mit 2 LED-Signalgebern, 12 V Akkubetrieb, Quarz- oder Funksteuerung, klappbare Standrohre – inkl. 2 Akkus und Ladegerät.",
+    detailedDescription: "Die Lichtsignalanlage LZA 500 LED besteht aus 2 Signalgebern mit LED-Leuchten im 12-Volt-Akkubetrieb, Sonnenblenden, Quarzsteuerung und klappbaren Standrohren. Inklusive 2 Akkus und Ladegerät.\n\nIm Funkbetrieb lassen sich bis zu 4 Signalgeber koppeln, im Kabelbetrieb bis zu 16 Signalgeber. Laufzeit mit Batterie 12 V / 180 Ah: 550 Std., mit Batterie 12 V / 230 Ah: 700 Std.",
+    image: "/product-images/absperrtechnik/lza-500-led-1.jpeg",
+    images: [
+      "/product-images/absperrtechnik/lza-500-led-1.jpeg",
+      "/product-images/absperrtechnik/lza-500-led-2.png",
+    ],
+    category: "lichtsignalanlage",
+    pricePerDay: "ab 69 €",
+    specifications: {
+      "Signalgeber": "2 Stück, LED",
+      "Stromversorgung": "12 V Akkubetrieb",
+      "Ausstattung": "Sonnenblenden, klappbare Standrohre",
+      "Steuerung": "Quarzsteuerung",
+      "Funkbetrieb": "Bis zu 4 Signalgeber",
+      "Kabelbetrieb": "Bis zu 16 Signalgeber",
+      "Laufzeit (180 Ah)": "550 Std.",
+      "Laufzeit (230 Ah)": "700 Std.",
+      "Lieferumfang": "2 Signalgeber, 2 Akkus, Ladegerät",
+    },
+    rentwareCode: { krefeld: "1AAK8N" },
+  },
 ];
 
 // ============= BESCHALLUNG =============
