@@ -262,7 +262,7 @@ export default function NeumaschineDetail() {
       <section className="section-container py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Images */}
-          <div>
+          <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3 flex items-center justify-center">
               {images.length > 0 ? (
                 <img
