@@ -624,8 +624,28 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
-    // Weitere Kategorien folgen in den nächsten Sprints.
+    erdbohrer: {
+      hookline:
+        "Benzin-Erdbohrer mit 100, 150 und 200 mm Bohrschnecke – am Hauptsitz Krefeld direkt vor Ort und samstags ohne Voranmeldung abholbar.",
+      standortFakten:
+        "Abholung am Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr. Anfahrt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Der Benzin-Erdbohrer inklusive aller drei Schnecken-Durchmesser (100 mm, 150 mm, 200 mm) ist Bestandteil des Krefelder Stamm-Sortiments und passt komplett in jeden Pkw-Kofferraum. Ideal für Zaunfundamente, Pergola- und Carport-Pfosten, Pflanzlöcher und Erdanker im Raum Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd.",
+      faqs: [
+        {
+          q: "Kann ich den Benzin-Erdbohrer in Krefeld auch samstags abholen?",
+          a: "Ja. Der Hauptsitz Krefeld in der Anrather Straße 291 ist samstags von 10:00 bis 14:30 Uhr geöffnet – Erdbohrer plus alle drei Schnecken (100/150/200 mm) sind Stammsortiment und in der Regel ohne Voranmeldung mitnehmbar. Ideal für Zaun- oder Pergola-Projekte am Wochenende im Raum Krefeld, Meerbusch und Willich.",
+        },
+        {
+          q: "Sind am Standort Krefeld alle drei Bohrschnecken-Größen vorrätig?",
+          a: "Ja. Wir halten am Hauptsitz Krefeld die 100 mm, 150 mm und 200 mm Schnecke gemeinsam mit dem Motor-Erdbohrer vor. Du entscheidest im Buchungsprozess, welche Größe(n) mitgeliefert werden – bei gemischten Projekten (z. B. Zaunpfähle + Torfundament) kannst du auch mehrere Schnecken kombinieren.",
+        },
+        {
+          q: "Liefert ihr den Erdbohrer nach Meerbusch, Mönchengladbach oder Düsseldorf-Linksrheinisch?",
+          a: "Ja. Ab Krefeld liefern wir den Benzin-Erdbohrer ins gesamte Niederrhein-Gebiet – Krefeld, Meerbusch, Willich, Tönisvorst, Kempen, Viersen, Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Anfahrt über A57 und A40, Lieferung in der Regel am nächsten Werktag. Für Selbstabholer passt das Gerät samt Schnecken in jeden Pkw-Kofferraum.",
+        },
+      ],
+    },
   },
+
 
   // =================================================================
   // MÜLHEIM AN DER RUHR – Service-Standort Ruhrorter Str. 122
