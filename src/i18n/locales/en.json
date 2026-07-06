@@ -70,7 +70,13 @@
     "popular": "Popular:",
     "articlesFound": "{{count}} items found",
     "noArticlesFound": "No items found for \"{{query}}\"",
-    "popularTerms": ["Excavator", "Trailer", "Tableware", "Construction dryer", "Aerial platforms"],
+    "popularTerms": [
+      "Excavator",
+      "Trailer",
+      "Tableware",
+      "Construction dryer",
+      "Aerial platforms"
+    ],
     "browseAll": "Browse all products",
     "selectLocation": "Select Location",
     "selectLocationHint": "Choose a location for pickup",
@@ -375,22 +381,70 @@
     "moreAboutWeekend": "More about Weekend Rates",
     "filterBySize": "Filter by size:",
     "cat": {
-      "bagger-radlader": { "title": "Excavators & Wheel Loaders", "desc": "Mini excavators, wheel loaders and earthmoving machines for every construction project." },
-      "verdichtung": { "title": "Compaction", "desc": "Plate compactors, rammers and rollers for professional soil compaction." },
-      "anhaenger": { "title": "Trailers", "desc": "Car trailers, tippers, machine transporters and cargo trailers." },
-      "hebebuehnen": { "title": "Aerial Work Platforms", "desc": "Scissor lifts, telescopic booms and articulated booms for working at height." },
-      "buehnen-podeste": { "title": "Stages & Platforms", "desc": "Event stages, platforms and catwalks for events." },
-      "moebel-zelte": { "title": "Furniture & Tents", "desc": "Party tents, beer garden sets, standing tables and event furniture." },
-      "geschirr": { "title": "Tableware", "desc": "Plates, bowls, glasses and cups for your event." },
-      "besteck": { "title": "Cutlery", "desc": "Knives, forks and spoons for events and celebrations." },
-      "huepfburgen": { "title": "Bouncy Castles", "desc": "Inflatable bouncy castles and games for children's events." },
-      "spezialeffekte": { "title": "Special Effects", "desc": "Fog machines, bubble machines, spark effects and photo booths." },
-      "led-spots": { "title": "LED Spots & Effect Lighting", "desc": "Moving heads, PAR spotlights and stage lighting for events." },
-      "beleuchtung": { "title": "Lighting & Floodlights", "desc": "Construction site spotlights, floodlight masts and mobile lighting." },
-      "stromerzeuger": { "title": "Generators", "desc": "Power generators and emergency power units for construction sites and events." },
-      "heizung-klima": { "title": "Heating & Climate", "desc": "Fan heaters, patio heaters and air conditioning units for every situation." },
-      "kabel-leitungen": { "title": "Cables & Wiring", "desc": "Extension cables, cable bridges and power distributors." },
-      "absperrung-sicherheit": { "title": "Barriers & Safety", "desc": "Barrier fences, construction fences, warning beacons and safety equipment." }
+      "bagger-radlader": {
+        "title": "Excavators & Wheel Loaders",
+        "desc": "Mini excavators, wheel loaders and earthmoving machines for every construction project."
+      },
+      "verdichtung": {
+        "title": "Compaction",
+        "desc": "Plate compactors, rammers and rollers for professional soil compaction."
+      },
+      "anhaenger": {
+        "title": "Trailers",
+        "desc": "Car trailers, tippers, machine transporters and cargo trailers."
+      },
+      "hebebuehnen": {
+        "title": "Aerial Work Platforms",
+        "desc": "Scissor lifts, telescopic booms and articulated booms for working at height."
+      },
+      "buehnen-podeste": {
+        "title": "Stages & Platforms",
+        "desc": "Event stages, platforms and catwalks for events."
+      },
+      "moebel-zelte": {
+        "title": "Furniture & Tents",
+        "desc": "Party tents, beer garden sets, standing tables and event furniture."
+      },
+      "geschirr": {
+        "title": "Tableware",
+        "desc": "Plates, bowls, glasses and cups for your event."
+      },
+      "besteck": {
+        "title": "Cutlery",
+        "desc": "Knives, forks and spoons for events and celebrations."
+      },
+      "huepfburgen": {
+        "title": "Bouncy Castles",
+        "desc": "Inflatable bouncy castles and games for children's events."
+      },
+      "spezialeffekte": {
+        "title": "Special Effects",
+        "desc": "Fog machines, bubble machines, spark effects and photo booths."
+      },
+      "led-spots": {
+        "title": "LED Spots & Effect Lighting",
+        "desc": "Moving heads, PAR spotlights and stage lighting for events."
+      },
+      "beleuchtung": {
+        "title": "Lighting & Floodlights",
+        "desc": "Construction site spotlights, floodlight masts and mobile lighting."
+      },
+      "stromerzeuger": {
+        "title": "Generators",
+        "desc": "Power generators and emergency power units for construction sites and events."
+      },
+      "heizung-klima": {
+        "title": "Heating & Climate",
+        "desc": "Fan heaters, patio heaters and air conditioning units for every situation."
+      },
+      "kabel-leitungen": {
+        "title": "Cables & Wiring",
+        "desc": "Extension cables, cable bridges and power distributors."
+      },
+      "absperrung-sicherheit": {
+        "title": "Barriers & Safety",
+        "desc": "Barrier fences, construction fences, warning beacons and safety equipment."
+      }
     }
   },
   "solutions": {
@@ -418,49 +472,90 @@
         "title": "Garden & Landscaping",
         "subtitle": "From private gardens to parks",
         "description": "Complete equipment for landscaping companies and ambitious hobby gardeners. From stump grinders to mini excavators – everything for professional garden design.",
-        "highlights": ["Mini excavators 1t - 2.7t (Diesel)", "Stump grinder & chipper", "Plate compactors & rammers", "Trailers for green waste & materials"]
+        "highlights": [
+          "Mini excavators 1t - 2.7t (Diesel)",
+          "Stump grinder & chipper",
+          "Plate compactors & rammers",
+          "Trailers for green waste & materials"
+        ]
       },
       "tiefbau-erdbewegung": {
         "title": "Civil Engineering & Earthmoving",
         "subtitle": "Pipeline construction, house connections, earthworks",
         "description": "Professional construction machines for demanding civil engineering projects. With our mini excavators, dumpers and the right accessories, you'll master any earthwork.",
-        "highlights": ["Mini excavators 1t - 2.7t with attachments", "Electric dumper for quiet material transport", "Trench cleaning buckets & digging buckets", "Machine trailers 1.8t - 3.5t", "Traffic safety & barriers"]
+        "highlights": [
+          "Mini excavators 1t - 2.7t with attachments",
+          "Electric dumper for quiet material transport",
+          "Trench cleaning buckets & digging buckets",
+          "Machine trailers 1.8t - 3.5t",
+          "Traffic safety & barriers"
+        ]
       },
       "hochbau-renovierung": {
         "title": "Building Construction & Renovation",
         "subtitle": "New builds, refurbishment, interior work",
         "description": "From shell construction to finishing: tools, aerial platforms and scaffolding for every construction phase. Our professional equipment makes even demanding projects easy.",
-        "highlights": ["Scissor lifts up to 12m height", "Mobile scaffolding up to 11m", "Demolition hammer & rotary hammer", "Construction dryers for drying"]
+        "highlights": [
+          "Scissor lifts up to 12m height",
+          "Mobile scaffolding up to 11m",
+          "Demolition hammer & rotary hammer",
+          "Construction dryers for drying"
+        ]
       },
       "events-veranstaltungen": {
         "title": "Events & Functions",
         "subtitle": "Corporate events, weddings, festivals",
         "description": "Everything for unforgettable events: From sound systems to lighting, tents and furniture. We professionally equip events of every size.",
-        "highlights": ["PA systems & Soundboks", "LED lighting & moving heads", "Party tents 3x3m to 6x12m", "Tableware, glasses & cutlery"]
+        "highlights": [
+          "PA systems & Soundboks",
+          "LED lighting & moving heads",
+          "Party tents 3x3m to 6x12m",
+          "Tableware, glasses & cutlery"
+        ]
       },
       "umzug-transport": {
         "title": "Moving & Transport",
         "subtitle": "Private and business moves",
         "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup via SMS code – even at night and on weekends. The right trailer for every transport.",
-        "highlights": ["Tarpaulin trailers S to XXL", "Lockable box trailers", "24/7 self-service rental", "Weekend rate: 3 days, pay 1 day price"]
+        "highlights": [
+          "Tarpaulin trailers S to XXL",
+          "Lockable box trailers",
+          "24/7 self-service rental",
+          "Weekend rate: 3 days, pay 1 day price"
+        ]
       },
       "handwerk-gewerbe": {
         "title": "Trades & Business",
         "subtitle": "Electricians, painters, installers",
         "description": "Specialist tools and equipment for trade businesses. From wall chasers to cordless tools – professional equipment for professional work.",
-        "highlights": ["Wall chaser & diamond drill", "Bosch professional cordless tools", "Generators 2.8 - 100 kVA", "Mobile scaffolding & ladders"]
+        "highlights": [
+          "Wall chaser & diamond drill",
+          "Bosch professional cordless tools",
+          "Generators 2.8 - 100 kVA",
+          "Mobile scaffolding & ladders"
+        ]
       },
       "private-projekte": {
         "title": "Private Projects",
         "subtitle": "DIY, garden, renovation",
         "description": "Got a project? We've got the equipment. Whether patio construction, garden redesign or renovation – our rental equipment will make your project a success.",
-        "highlights": ["Scarifiers & chippers", "Plate compactors for paving", "Trailers for green waste", "Power tools for renovation"]
+        "highlights": [
+          "Scarifiers & chippers",
+          "Plate compactors for paving",
+          "Trailers for green waste",
+          "Power tools for renovation"
+        ]
       },
       "kindergeburtstage": {
         "title": "Kids' Parties & Celebrations",
         "subtitle": "Bouncy castles, games, entertainment",
         "description": "Make the birthday party an unforgettable experience! Our bouncy castles, special effects and sound systems will make children's eyes light up.",
-        "highlights": ["Bouncy castles 2.8m to 6m", "Bouncy castle with water slide", "Fog machine & bubble machine", "Mobile Soundboks speakers"]
+        "highlights": [
+          "Bouncy castles 2.8m to 6m",
+          "Bouncy castle with water slide",
+          "Fog machine & bubble machine",
+          "Mobile Soundboks speakers"
+        ]
       }
     }
   },
@@ -751,14 +846,34 @@
     "s3Item3": "enter into a rental agreement via our online shop",
     "s3Item4": "contact us by email, phone or post",
     "s3DataTitle": "Types of data processed:",
-    "s3Data": ["Name, first name", "Address, company if applicable", "Phone number, email address", "Contract data (e.g. rental item, period, price)", "Payment information (for online booking)", "Usage data (IP address, time, pages accessed)", "Communication content"],
+    "s3Data": [
+      "Name, first name",
+      "Address, company if applicable",
+      "Phone number, email address",
+      "Contract data (e.g. rental item, period, price)",
+      "Payment information (for online booking)",
+      "Usage data (IP address, time, pages accessed)",
+      "Communication content"
+    ],
     "s4Title": "Purposes and Legal Bases of Processing",
     "s4Intro": "We process your data:",
     "s4Items": [
-      {"basis": "Art. 6(1)(b) GDPR", "purpose": "For contract fulfillment and initiation"},
-      {"basis": "Art. 6(1)(c) GDPR", "purpose": "To fulfill legal obligations"},
-      {"basis": "Art. 6(1)(a) GDPR", "purpose": "Based on your consent, e.g. for cookies/tracking"},
-      {"basis": "Art. 6(1)(f) GDPR", "purpose": "To protect our legitimate interests, e.g. for IT security, web statistics, marketing"}
+      {
+        "basis": "Art. 6(1)(b) GDPR",
+        "purpose": "For contract fulfillment and initiation"
+      },
+      {
+        "basis": "Art. 6(1)(c) GDPR",
+        "purpose": "To fulfill legal obligations"
+      },
+      {
+        "basis": "Art. 6(1)(a) GDPR",
+        "purpose": "Based on your consent, e.g. for cookies/tracking"
+      },
+      {
+        "basis": "Art. 6(1)(f) GDPR",
+        "purpose": "To protect our legitimate interests, e.g. for IT security, web statistics, marketing"
+      }
     ],
     "s5Title": "Cookies & Tracking Technologies",
     "s5Desc": "We use cookies and comparable technologies on our website. Cookies are small text files stored on your device that contain certain information about you (e.g. for the functionality of the online shop, for analysis purposes or for marketing).",
@@ -782,13 +897,34 @@
     "s11Title": "Your Rights",
     "s11Intro": "You have the right at any time to:",
     "s11Rights": [
-      {"article": "Art. 15 GDPR", "right": "access information about your personal data stored by us"},
-      {"article": "Art. 16 GDPR", "right": "correction of inaccurate data"},
-      {"article": "Art. 17 GDPR", "right": "deletion (\"right to be forgotten\")"},
-      {"article": "Art. 18 GDPR", "right": "restriction of processing"},
-      {"article": "Art. 20 GDPR", "right": "data portability"},
-      {"article": "Art. 21 GDPR", "right": "object to processing"},
-      {"article": "Art. 7(3) GDPR", "right": "revoke your consent (with effect for the future)"}
+      {
+        "article": "Art. 15 GDPR",
+        "right": "access information about your personal data stored by us"
+      },
+      {
+        "article": "Art. 16 GDPR",
+        "right": "correction of inaccurate data"
+      },
+      {
+        "article": "Art. 17 GDPR",
+        "right": "deletion (\"right to be forgotten\")"
+      },
+      {
+        "article": "Art. 18 GDPR",
+        "right": "restriction of processing"
+      },
+      {
+        "article": "Art. 20 GDPR",
+        "right": "data portability"
+      },
+      {
+        "article": "Art. 21 GDPR",
+        "right": "object to processing"
+      },
+      {
+        "article": "Art. 7(3) GDPR",
+        "right": "revoke your consent (with effect for the future)"
+      }
     ],
     "s11Contact": "Please direct your request to the contact address mentioned above. You also have the right to file a complaint with a data protection supervisory authority.",
     "s12Title": "Security",
@@ -1005,7 +1141,13 @@
       "3_5b": "Returns outside business hours are only possible by written agreement. The risk of loss and damage remains with the lessee until actual acceptance by SLT.",
       "3_6_title": "3.6 Return Requirements and Cleaning",
       "3_6_intro": "The rental item must be returned as follows:",
-      "3_6_items": ["<strong>Trailers:</strong> swept clean", "<strong>Construction machinery, generators, aerial platforms:</strong> fully fuelled or fully charged, free of heavy dirt", "<strong>Tents and textiles:</strong> dry, sorted, folded", "<strong>Battery-powered equipment:</strong> fully charged", "<strong>Motor vehicles:</strong> fully fuelled, cleaned"],
+      "3_6_items": [
+        "<strong>Trailers:</strong> swept clean",
+        "<strong>Construction machinery, generators, aerial platforms:</strong> fully fuelled or fully charged, free of heavy dirt",
+        "<strong>Tents and textiles:</strong> dry, sorted, folded",
+        "<strong>Battery-powered equipment:</strong> fully charged",
+        "<strong>Motor vehicles:</strong> fully fuelled, cleaned"
+      ],
       "3_6b": "If the rental item is returned late, incomplete or dirty, SLT is entitled to charge for the additional effort (in particular cleaning, disinfection and additional rental fees).",
       "3_6c": "Cleaning, disposal and transport are charged based on actual effort unless a flat rate has been agreed. Repairs attributable to damage caused by the lessee are at the lessee's expense.",
       "3_7_title": "3.7 Return Confirmation",
@@ -1027,7 +1169,12 @@
       "4_4": "In case of late return, SLT is entitled to charge a surcharge of 50% of the gross rental price per late day. SLT reserves the right to claim higher, specifically incurred damages; the lessee may provide evidence of lesser damage.",
       "4_5_title": "4.5 Additional Fees and Cost Reimbursements",
       "4_5_intro": "In addition to the rent, the following items are charged:",
-      "4_5_items": ["Fees, fines and toll costs incurred during the rental period;", "a processing fee of EUR 15.00 per instance for fines/tolls;", "a processing fee of EUR 40.00 per damage case;", "cleaning costs from EUR 50.00 net if the return requirements (see III.6) are not met."],
+      "4_5_items": [
+        "Fees, fines and toll costs incurred during the rental period;",
+        "a processing fee of EUR 15.00 per instance for fines/tolls;",
+        "a processing fee of EUR 40.00 per damage case;",
+        "cleaning costs from EUR 50.00 net if the return requirements (see III.6) are not met."
+      ],
       "4_5_outro": "The lessee retains the right to prove lesser costs."
     },
     "v": {
@@ -1046,7 +1193,13 @@
       "6_1": "The lessee may cancel the rental agreement at any time before the start of rental by written declaration (text form suffices) to SLT ('Cancellation').",
       "6_2_title": "6.2 Cancellation Fees (Liquidated Damages)",
       "6_2_intro": "In the event of cancellation, SLT may claim liquidated damages calculated as follows (as a percentage of the agreed total rental price), subject to evidence of lesser or greater damage under Section 6.3:",
-      "6_2_items": ["up to 20 days before rental start: 30%", "up to 7 days before rental start: 50%", "up to 3 days before rental start: 70%", "up to 48 hours before rental start: 90%", "later cancellation: 100%"],
+      "6_2_items": [
+        "up to 20 days before rental start: 30%",
+        "up to 7 days before rental start: 50%",
+        "up to 3 days before rental start: 70%",
+        "up to 48 hours before rental start: 90%",
+        "later cancellation: 100%"
+      ],
       "6_3_title": "6.3 Proof Reservation",
       "6_3": "The lessee expressly retains the right to prove that SLT has suffered no or significantly less damage (e.g. through alternative rental, saved setup/dismantling, transport or personnel costs). Conversely, SLT retains the right to prove higher, specifically incurred damage.",
       "6_4_title": "6.4 Free Cancellation Option",
@@ -1374,17 +1527,14 @@
     "tischeStühle_sub": "Beer garden set, standing table, chair",
     "stuehle": "Chairs",
     "stuehle_sub": "Stacking chair, folding chair",
-
     "hussen": "Covers",
     "hussen_sub": "Table & bench covers",
     "schirme": "Umbrellas",
     "schirme_sub": "Sun umbrellas",
-
     "kuehlgeraete": "Refrigerators",
     "kuehlgeraete_sub": "Beverage coolers",
     "garderobe": "Wardrobe",
     "garderobe_sub": "Clothing racks & accessories",
-    "zeltgroesse": "Tent Size",
     "bis16m2": "Up to 16 m²",
     "bis16m2_sub": "3×3m, 4×4m",
     "17bis40m2": "17 – 40 m²",
@@ -1455,7 +1605,6 @@
     "schrankenzaeune": "Gate Fences",
     "schrankenzaeune_sub": "Traffic guidance",
     "zubehoer_absperr_sub": "Base plates, pipes, clamps",
-    "reflektionsklasse": "Reflection Class",
     "ra1": "RA1",
     "ra1_sub": "Standard",
     "ra2": "RA2",
@@ -1641,117 +1790,171 @@
   "infoBanner": {
     "werkzeuge": {
       "desc": "Professional cordless and electric tools from Bosch, Eibenstock and Einhell for construction, renovation and trades. All cordless tools include battery and charger.",
-      "item1": "Brand Quality", "item1sub": "Bosch Professional & more",
-      "item2": "Incl. Battery & Charger", "item2sub": "Ready to use immediately",
-      "item3": "Tested & Maintained", "item3sub": "Top condition guaranteed"
+      "item1": "Brand Quality",
+      "item1sub": "Bosch Professional & more",
+      "item2": "Incl. Battery & Charger",
+      "item2sub": "Ready to use immediately",
+      "item3": "Tested & Maintained",
+      "item3sub": "Top condition guaranteed"
     },
     "gartenpflege": {
       "desc": "Garden equipment for professionals and DIY enthusiasts. From chainsaws to earth augers – everything for your garden.",
-      "item1": "Cutting & Trimming", "item1sub": "Chainsaws, hedge trimmers",
-      "item2": "Soil Cultivation", "item2sub": "Earth auger, tiller, hoe",
-      "item3": "Battery & Petrol", "item3sub": "Various drive types"
+      "item1": "Cutting & Trimming",
+      "item1sub": "Chainsaws, hedge trimmers",
+      "item2": "Soil Cultivation",
+      "item2sub": "Earth auger, tiller, hoe",
+      "item3": "Battery & Petrol",
+      "item3sub": "Various drive types"
     },
     "aggregate": {
       "desc": "Reliable power supply for construction sites, events or emergencies. From small battery packs to powerful industrial generators.",
-      "item1": "2.8 to 100 kVA", "item1sub": "For every requirement",
-      "item2": "Battery Packs", "item2sub": "Portable & quiet",
-      "item3": "Compressors", "item3sub": "Compressed air on site"
+      "item1": "2.8 to 100 kVA",
+      "item1sub": "For every requirement",
+      "item2": "Battery Packs",
+      "item2sub": "Portable & quiet",
+      "item3": "Compressors",
+      "item3sub": "Compressed air on site"
     },
     "arbeitsbuehnen": {
       "desc": "Safe work at height with our electric aerial platforms. All platforms are instructed and suitable for indoor and outdoor use.",
-      "item1": "8m to 12m+", "item1sub": "Various working heights",
-      "item2": "Electric", "item2sub": "Emission-free & quiet",
-      "item3": "Training Included", "item3sub": "Safe operation",
+      "item1": "8m to 12m+",
+      "item1sub": "Various working heights",
+      "item2": "Electric",
+      "item2sub": "Emission-free & quiet",
+      "item3": "Training Included",
+      "item3sub": "Safe operation",
       "highlightTitle": "Zoomlion Authorised Dealer",
       "highlightText": "As an official Zoomlion authorised dealer, we offer first-class aerial platforms with full service.",
       "highlightLink": "Visit sales site zoomlion-nrw.de"
     },
     "verdichtung": {
       "desc": "Professional soil compaction with rammers and plate compactors for paving, trenches and foundation preparation.",
-      "item1": "70 to 250 kg", "item1sub": "Various weight classes",
-      "item2": "Rammers & Plates", "item2sub": "For every application",
-      "item3": "Ready to Use", "item3sub": "Fuelled & tested"
+      "item1": "70 to 250 kg",
+      "item1sub": "Various weight classes",
+      "item2": "Rammers & Plates",
+      "item2sub": "For every application",
+      "item3": "Ready to Use",
+      "item3sub": "Fuelled & tested"
     },
     "heizung": {
       "desc": "Heaters and construction dryers for shell construction, renovation and events. Efficient solutions for warmth and dehumidification.",
-      "item1": "Heaters", "item1sub": "Electric & gas",
-      "item2": "Construction Dryers", "item2sub": "Fast dehumidification",
-      "item3": "Fans", "item3sub": "Air circulation"
+      "item1": "Heaters",
+      "item1sub": "Electric & gas",
+      "item2": "Construction Dryers",
+      "item2sub": "Fast dehumidification",
+      "item3": "Fans",
+      "item3sub": "Air circulation"
     },
     "leitern": {
       "desc": "Safe ladders and mobile scaffolding for working at height. TÜV-tested and regularly maintained.",
-      "item1": "Various Heights", "item1sub": "Up to 12m working height",
-      "item2": "Mobile Scaffolding", "item2sub": "Mobile & stable",
-      "item3": "TÜV-Tested", "item3sub": "Maximum safety"
+      "item1": "Various Heights",
+      "item1sub": "Up to 12m working height",
+      "item2": "Mobile Scaffolding",
+      "item2sub": "Mobile & stable",
+      "item3": "TÜV-Tested",
+      "item3sub": "Maximum safety"
     },
     "beleuchtung": {
       "desc": "Professional lighting for events, construction sites and venues. From LED floodlights to stage lighting.",
-      "item1": "LED Technology", "item1sub": "Energy-efficient",
-      "item2": "Stage Lighting", "item2sub": "Moving heads, PAR",
-      "item3": "Battery & Mains", "item3sub": "Flexible solutions"
+      "item1": "LED Technology",
+      "item1sub": "Energy-efficient",
+      "item2": "Stage Lighting",
+      "item2sub": "Moving heads, PAR",
+      "item3": "Battery & Mains",
+      "item3sub": "Flexible solutions"
     },
     "beschallung": {
       "desc": "PA systems and sound equipment for events, conferences and celebrations – from complete setups to individual microphones.",
-      "item1": "PA Systems", "item1sub": "Up to 250 persons",
-      "item2": "Wireless Microphones", "item2sub": "Cable-free freedom",
-      "item3": "Setup & Support", "item3sub": "On-site by our team"
+      "item1": "PA Systems",
+      "item1sub": "Up to 250 persons",
+      "item2": "Wireless Microphones",
+      "item2sub": "Cable-free freedom",
+      "item3": "Setup & Support",
+      "item3sub": "On-site by our team"
     },
     "moebelZelte": {
       "desc": "Event furniture and tents for your event. Beer garden sets, standing tables, party tents and lounge furniture.",
-      "item1": "Party Tents", "item1sub": "Various sizes",
-      "item2": "Tables & Chairs", "item2sub": "For every occasion",
-      "item3": "Clean & Well-Kept", "item3sub": "Event-ready"
+      "item1": "Party Tents",
+      "item1sub": "Various sizes",
+      "item2": "Tables & Chairs",
+      "item2sub": "For every occasion",
+      "item3": "Clean & Well-Kept",
+      "item3sub": "Event-ready"
     },
     "geschirr": {
       "desc": "Tableware, glasses and cutlery for your event. High-quality, washed and packed transport-ready in crates.",
-      "item1": "Complete Sets", "item1sub": "Tableware, cutlery, glasses",
-      "item2": "Delivered Washed", "item2sub": "Ready to use immediately",
-      "item3": "Packed in Crates", "item3sub": "Easy transport"
+      "item1": "Complete Sets",
+      "item1sub": "Tableware, cutlery, glasses",
+      "item2": "Delivered Washed",
+      "item2sub": "Ready to use immediately",
+      "item3": "Packed in Crates",
+      "item3sub": "Easy transport"
     },
     "huepfburgen": {
       "desc": "Inflatable bouncy castles and games for children's parties, corporate events and celebrations.",
-      "item1": "Various Models", "item1sub": "For every age",
-      "item2": "Incl. Blower", "item2sub": "Complete set",
-      "item3": "TÜV-Tested", "item3sub": "Maximum safety"
+      "item1": "Various Models",
+      "item1sub": "For every age",
+      "item2": "Incl. Blower",
+      "item2sub": "Complete set",
+      "item3": "TÜV-Tested",
+      "item3sub": "Maximum safety"
     },
     "absperrtechnik": {
       "desc": "Traffic signs, construction fences, warning barriers and complete traffic safety – incl. planning and applications for no-parking zones.",
-      "item1": "Traffic Signs", "item1sub": "RA1 & RA2, all types",
-      "item2": "Fences & Barriers", "item2sub": "Construction sites & events",
-      "item3": "Full Service Available", "item3sub": "Planning & applications",
+      "item1": "Traffic Signs",
+      "item1sub": "RA1 & RA2, all types",
+      "item2": "Fences & Barriers",
+      "item2sub": "Construction sites & events",
+      "item3": "Full Service Available",
+      "item3sub": "Planning & applications",
       "highlightTitle": "Traffic Safety from One Source",
       "highlightText": "We handle complete planning of your traffic safety – incl. no-parking zones, authority applications and setup.",
       "highlightLink": "More info at slt-infra.de"
     },
     "spezialeffekte": {
       "desc": "Impressive special effects for unforgettable events. Fog, bubbles, sparks and more.",
-      "item1": "Fog Machines", "item1sub": "Create atmosphere",
-      "item2": "Cold Sparks", "item2sub": "Safe pyrotechnics",
-      "item3": "Training Included", "item3sub": "Safe operation"
+      "item1": "Fog Machines",
+      "item1sub": "Create atmosphere",
+      "item2": "Cold Sparks",
+      "item2sub": "Safe pyrotechnics",
+      "item3": "Training Included",
+      "item3sub": "Safe operation"
     },
     "kabel": {
       "desc": "Extension cables, power distributors and cable bridges for safe power supply at your event.",
-      "item1": "Cables", "item1sub": "Various lengths",
-      "item2": "Distributors", "item2sub": "CEE & Schuko",
-      "item3": "Tested", "item3sub": "Safety first"
+      "item1": "Cables",
+      "item1sub": "Various lengths",
+      "item2": "Distributors",
+      "item2sub": "CEE & Schuko",
+      "item3": "Tested",
+      "item3sub": "Safety first"
     },
     "buehne": {
       "desc": "Stage elements and platforms for professional performances. Nivtec systems for flexible stage design.",
-      "item1": "Nivtec System", "item1sub": "Modular stage",
-      "item2": "Various Heights", "item2sub": "20cm to 100cm",
-      "item3": "Setup Service", "item3sub": "Available on request"
+      "item1": "Nivtec System",
+      "item1sub": "Modular stage",
+      "item2": "Various Heights",
+      "item2sub": "20cm to 100cm",
+      "item3": "Setup Service",
+      "item3sub": "Available on request"
     },
     "traversen": {
       "desc": "Trusses and rigging equipment for professional stage constructions. Milos trusses in black.",
-      "item1": "Milos Trusses", "item1sub": "High quality & stable",
-      "item2": "Various Lengths", "item2sub": "0.5m to 3m",
-      "item3": "Black Anodised", "item3sub": "Subtle & elegant"
+      "item1": "Milos Trusses",
+      "item1sub": "High quality & stable",
+      "item2": "Various Lengths",
+      "item2sub": "0.5m to 3m",
+      "item3": "Black Anodised",
+      "item3sub": "Subtle & elegant"
     },
     "kommunikation": {
       "desc": "Walkie-talkies for events, construction sites and venues. Reliable communication for your team.",
-      "item1": "UHF Radios", "item1sub": "Long range",
-      "item2": "Incl. Batteries", "item2sub": "Ready to use immediately",
-      "item3": "Multiple Sets", "item3sub": "For large teams"
+      "item1": "UHF Radios",
+      "item1sub": "Long range",
+      "item2": "Incl. Batteries",
+      "item2sub": "Ready to use immediately",
+      "item3": "Multiple Sets",
+      "item3sub": "For large teams"
     }
   },
   "services": {
@@ -1803,12 +2006,30 @@
     "usps": {
       "title": "Why Buy from SLT Rental?",
       "subtitle": "Six good reasons to buy your next machine or trailer from us.",
-      "dealer": { "title": "Authorized Dealer", "desc": "Buy directly from a certified dealer – with manufacturer warranty and official service network." },
-      "service": { "title": "On-Site Service & Maintenance", "desc": "As a service center, we handle maintenance, repairs and spare parts supply for all brands." },
-      "delivery": { "title": "Delivery Across NRW", "desc": "We deliver your new machine directly to the construction site, your business or home – reliably and on time." },
-      "consulting": { "title": "Personal Consultation", "desc": "No call center – you speak directly with our machine experts at the Bonn and Krefeld locations." },
-      "rentToBuy": { "title": "Rent First, Buy Later", "desc": "Test the machine in rental operation and credit the rental costs towards the purchase price – just ask us." },
-      "spareParts": { "title": "Spare Parts in Stock", "desc": "We stock original spare parts for all brands and deliver nationwide within 1–2 business days." }
+      "dealer": {
+        "title": "Authorized Dealer",
+        "desc": "Buy directly from a certified dealer – with manufacturer warranty and official service network."
+      },
+      "service": {
+        "title": "On-Site Service & Maintenance",
+        "desc": "As a service center, we handle maintenance, repairs and spare parts supply for all brands."
+      },
+      "delivery": {
+        "title": "Delivery Across NRW",
+        "desc": "We deliver your new machine directly to the construction site, your business or home – reliably and on time."
+      },
+      "consulting": {
+        "title": "Personal Consultation",
+        "desc": "No call center – you speak directly with our machine experts at the Bonn and Krefeld locations."
+      },
+      "rentToBuy": {
+        "title": "Rent First, Buy Later",
+        "desc": "Test the machine in rental operation and credit the rental costs towards the purchase price – just ask us."
+      },
+      "spareParts": {
+        "title": "Spare Parts in Stock",
+        "desc": "We stock original spare parts for all brands and deliver nationwide within 1–2 business days."
+      }
     },
     "brands": {
       "zoomlion": {
@@ -1840,12 +2061,12 @@
         "ctaDesc": "Would you like a quote for a Temared trailer? We'll configure it with you."
       },
       "slt": {
-        "tagline": "SLT Earth Rockets · Pneumatic Moles · Trenchless Cable & Pipe Installation",
-        "h2": "Buy SLT Earth Rockets – Whitelabel Pneumatic Moles from NRW",
-        "intro": "Our SLT earth rockets are durable, low-maintenance turbo pneumatic moles with guide-stone control and reversible operation. Available in multiple sizes from Ø 45 mm (compact) to Ø 65 mm (standard, long and compact with stepped head). We advise you personally in Krefeld and Bonn on the right size for your job – from fiber-optic house connections to longer cable routes under paths and driveways.",
-        "h3": "SLT Earth Rockets at a Glance",
+        "tagline": "Hercu Earth Rockets · Pneumatic Moles · Trenchless Cable & Pipe Installation",
+        "h2": "Buy Hercu Earth Rockets – Turbo Pneumatic Moles from the Authorized Dealer in NRW",
+        "intro": "The Hercu HP series is a range of durable, low-maintenance turbo pneumatic moles with guide-stone control and reversible operation – manufactured for over 25 years by Poland's market leader Hercu Pneumatic. Available in multiple sizes from Ø 45 mm (compact) to Ø 65 mm (standard, long and compact with stepped head). SLT Rental is the authorized sales and service partner in NRW and advises you personally in Krefeld and Bonn on the right size for your job – from fiber-optic house connections to longer cable routes under paths and driveways.",
+        "h3": "Hercu Earth Rockets at a Glance",
         "websiteLabel": "View overview",
-        "ctaText": "SLT Earth Rocket Inquiry",
+        "ctaText": "Hercu Earth Rocket Inquiry",
         "ctaDesc": "Need an earth rocket for trenchless cable or pipe installation? We advise you on the right size."
       },
       "inquiryBtn": "Submit Purchase Inquiry",
@@ -1877,16 +2098,16 @@
         "Tipping Trailers: 1,500 kg – 2,700 kg, rear tipping"
       ],
       "slt": [
-        "SLT Earth Rocket HP45 EKO T – Turbo, Ø 45 mm, 750 mm, 6.5 kg – for fiber & thin cables",
-        "SLT Earth Rocket HP45 T – Turbo, Ø 45 mm, 955 mm, 7.8 kg – mid-size with smooth straight run",
-        "SLT Earth Rocket HP55 EKO T – Turbo, Ø 55 mm, 800 mm, 10 kg – compact for tight job sites",
-        "SLT Earth Rocket HP55 KRT – Turbo, Ø 55 mm, 860 mm, 12 kg – with movable stepped head",
-        "SLT Earth Rocket HP55 T – Turbo, Ø 55 mm, 1,130 mm, 14 kg – smooth straight run",
-        "SLT Earth Rocket HP55 RT – Turbo, Ø 55 mm, 1,260 mm, 16 kg – long body for long distances",
-        "SLT Earth Rocket HP65 T – Turbo, Ø 65 mm, 1,350 mm, 28 kg – for larger conduits & protective pipes",
-        "SLT Earth Rocket HP65 EKO T – Turbo, Ø 65 mm, 920 mm, 15.5 kg – compact for tight job sites",
-        "SLT Earth Rocket HP65 RT – Turbo, Ø 65 mm, 1,350 mm, 28 kg – with movable stepped head",
-        "SLT Earth Rocket HP65 KRT – Turbo, Ø 65 mm, 920 mm, 15.5 kg – compact with movable stepped head",
+        "Hercu Earth Rocket HP45 EKO T – Turbo, Ø 45 mm, 750 mm, 6.5 kg – for fiber & thin cables",
+        "Hercu Earth Rocket HP45 T – Turbo, Ø 45 mm, 955 mm, 7.8 kg – mid-size with smooth straight run",
+        "Hercu Earth Rocket HP55 EKO T – Turbo, Ø 55 mm, 800 mm, 10 kg – compact for tight job sites",
+        "Hercu Earth Rocket HP55 KRT – Turbo, Ø 55 mm, 860 mm, 12 kg – with movable stepped head",
+        "Hercu Earth Rocket HP55 T – Turbo, Ø 55 mm, 1,130 mm, 14 kg – smooth straight run",
+        "Hercu Earth Rocket HP55 RT – Turbo, Ø 55 mm, 1,260 mm, 16 kg – long body for long distances",
+        "Hercu Earth Rocket HP65 T – Turbo, Ø 65 mm, 1,350 mm, 28 kg – for larger conduits & protective pipes",
+        "Hercu Earth Rocket HP65 EKO T – Turbo, Ø 65 mm, 920 mm, 15.5 kg – compact for tight job sites",
+        "Hercu Earth Rocket HP65 RT – Turbo, Ø 65 mm, 1,350 mm, 28 kg – with movable stepped head",
+        "Hercu Earth Rocket HP65 KRT – Turbo, Ø 65 mm, 920 mm, 15.5 kg – compact with movable stepped head",
         "Additional sizes on request (Ø 45–145 mm)",
         "Accessories: air hoses, bio earth rocket oil, mist lubricator 1.3 L"
       ]
@@ -1894,13 +2115,34 @@
     "faq": {
       "title": "Frequently Asked Questions About Purchasing",
       "items": [
-        { "q": "Where can I find a Zoomlion dealer in NRW?", "a": "SLT Rental in Bonn and Krefeld is an authorized Zoomlion dealer and service center for North Rhine-Westphalia. We carry excavators, wheel loaders, telehandlers and aerial work platforms from the Zoomlion line and offer personal consultation, demonstrations and factory service." },
-        { "q": "Where can I buy BAUMAX construction equipment?", "a": "SLT Rental is an authorized BAUMAX dealer in NRW. We carry the complete BAUMAX range: plate compactors (VP, HVP, RVP series), vibratory rammers, mini dumpers, stone saws and concrete vibrators – with spare parts service and on-site customer service." },
-        { "q": "Can I buy Temared trailers in Bonn or Krefeld?", "a": "Yes – SLT Rental is an authorized Temared dealer in NRW with display models in Bonn and Krefeld. We carry the complete Temared range from 750 kg to 3,500 kg and handle registration, delivery and service." },
-        { "q": "Does SLT Rental also offer service and repairs for purchased machines?", "a": "Yes – as a certified service center for Zoomlion, BAUMAX and Temared, we handle maintenance, inspection, repair and spare parts supply for all machines and trailers sold by us." },
-        { "q": "Can I rent a construction machine first and then buy it?", "a": "Yes, at SLT Rental we offer a rent-to-buy model: Test the machine in rental operation and credit the rental costs proportionally towards the purchase price. Just ask us – we provide individual consultation." },
-        { "q": "Does SLT Rental also deliver construction machines and trailers?", "a": "Yes, we deliver all machines and trailers purchased from us directly to the construction site, your business or home – throughout NRW and beyond. We transparently communicate delivery costs in the quote." },
-        { "q": "What financing options are available for purchasing?", "a": "We are happy to advise you on individual financing and leasing options for construction equipment and trailers. Contact us for a personal quote – as a business customer, you benefit from attractive terms." }
+        {
+          "q": "Where can I find a Zoomlion dealer in NRW?",
+          "a": "SLT Rental in Bonn and Krefeld is an authorized Zoomlion dealer and service center for North Rhine-Westphalia. We carry excavators, wheel loaders, telehandlers and aerial work platforms from the Zoomlion line and offer personal consultation, demonstrations and factory service."
+        },
+        {
+          "q": "Where can I buy BAUMAX construction equipment?",
+          "a": "SLT Rental is an authorized BAUMAX dealer in NRW. We carry the complete BAUMAX range: plate compactors (VP, HVP, RVP series), vibratory rammers, mini dumpers, stone saws and concrete vibrators – with spare parts service and on-site customer service."
+        },
+        {
+          "q": "Can I buy Temared trailers in Bonn or Krefeld?",
+          "a": "Yes – SLT Rental is an authorized Temared dealer in NRW with display models in Bonn and Krefeld. We carry the complete Temared range from 750 kg to 3,500 kg and handle registration, delivery and service."
+        },
+        {
+          "q": "Does SLT Rental also offer service and repairs for purchased machines?",
+          "a": "Yes – as a certified service center for Zoomlion, BAUMAX and Temared, we handle maintenance, inspection, repair and spare parts supply for all machines and trailers sold by us."
+        },
+        {
+          "q": "Can I rent a construction machine first and then buy it?",
+          "a": "Yes, at SLT Rental we offer a rent-to-buy model: Test the machine in rental operation and credit the rental costs proportionally towards the purchase price. Just ask us – we provide individual consultation."
+        },
+        {
+          "q": "Does SLT Rental also deliver construction machines and trailers?",
+          "a": "Yes, we deliver all machines and trailers purchased from us directly to the construction site, your business or home – throughout NRW and beyond. We transparently communicate delivery costs in the quote."
+        },
+        {
+          "q": "What financing options are available for purchasing?",
+          "a": "We are happy to advise you on individual financing and leasing options for construction equipment and trailers. Contact us for a personal quote – as a business customer, you benefit from attractive terms."
+        }
       ]
     },
     "form": {
@@ -1949,7 +2191,14 @@
       "message": "Your Message / Additional Information",
       "howFound": "How did you find us?",
       "howFoundOptional": "– optional –",
-      "howFoundOptions": ["Google Search", "Recommendation", "I am already a regular customer", "Trade Fair / Event", "Social Media", "Other"],
+      "howFoundOptions": [
+        "Google Search",
+        "Recommendation",
+        "I am already a regular customer",
+        "Trade Fair / Event",
+        "Social Media",
+        "Other"
+      ],
       "privacyConsent": "I have read the <link>Privacy Policy</link> and agree that my data will be stored and used for processing this purchase inquiry.",
       "sslSecured": "SSL Secured",
       "callbackPossible": "Callback Available",
