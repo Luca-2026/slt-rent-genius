@@ -94,8 +94,11 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
     if (open) {
       setView("form");
       setErrors({});
+      setSelectedConfig(machine.initialConfig || machine.configOptions?.[0]?.name || "");
     }
-  }, [open]);
+  }, [open, machine.initialConfig, machine.configOptions]);
+
+  const hasConfig = Array.isArray(machine.configOptions) && machine.configOptions.length > 0;
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -132,9 +135,9 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
         body: {
           marke: machine.brand,
           produktkategorie: machine.category || machine.name,
-          modell: `${machine.brand} ${machine.model} – ${machine.name}`,
+          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}`,
           anzahl: "1",
-          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}`,
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}`,
           lieferOption,
           strasse: lieferStrasse,
           plz: lieferPlz,
@@ -158,7 +161,10 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
           rechnungLand,
           nachricht,
           wieGefunden: "Produktseite Neumaschine",
-          addons: isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : [],
+          addons: [
+            ...(isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : []),
+            ...(hasConfig && selectedConfig ? [`Konfiguration: ${selectedConfig}`] : []),
+          ],
         },
       });
       if (error) throw error;
