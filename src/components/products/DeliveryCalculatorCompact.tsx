@@ -203,17 +203,31 @@ export function DeliveryCalculatorCompact({
           <span>{t("rental.deliveryHint")}</span>
         </p>
 
+        {originLocationId && (
+          <AddressDistanceInput
+            locationId={originLocationId}
+            label="Lieferadresse"
+            onDistance={(roundedKm, _exact, label) => {
+              setDistance(Math.min(roundedKm, 50));
+              setAutoAddress(label);
+            }}
+          />
+        )}
+
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="flex items-center gap-2 text-sm">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              {t("rental.distance")}
+              {autoAddress ? "Berechnete Entfernung" : t("rental.distance")}
             </Label>
             <span className="font-semibold text-primary">{distance} km</span>
           </div>
           <Slider
             value={[distance]}
-            onValueChange={(v) => setDistance(v[0])}
+            onValueChange={(v) => {
+              setDistance(v[0]);
+              setAutoAddress(null);
+            }}
             min={5}
             max={50}
             step={5}
