@@ -2013,13 +2013,13 @@
         "ctaText": "Kaufanfrage Temared",
         "ctaDesc": "Wünschen Sie ein Angebot für einen Temared-Anhänger? Wir konfigurieren mit Ihnen."
       },
-      "hercu": {
-        "tagline": "Erdraketen · Bodendurchschlagsgeräte · grabenlose Kabel- & Rohrverlegung",
-        "h2": "Hercu Erdraketen kaufen – Autorisierter Hercu-Händler in NRW",
-        "intro": "Hercu steht für langlebige, wartungsarme Erdraketen mit patentierten Kulissensteinen und beweglichem Stufenkopf. Die Turbo-T-Modelle arbeiten bis zu 50 % schneller als konventionelle Bodendurchschlagsgeräte und sind zuverlässig reversierbar. SLT Rental ist Deine autorisierte Anlaufstelle für Hercu Erdraketen und passendes Zubehör in Nordrhein-Westfalen – mit Beratung, Vorführung und Service vor Ort.",
-        "h3": "Hercu Produktkategorien bei SLT Rental",
-        "websiteLabel": "Zur offiziellen Hercu-Website",
-        "ctaText": "Kaufanfrage Hercu",
+      "slt": {
+        "tagline": "SLT-Erdraketen · Bodendurchschlagsgeräte · grabenlose Kabel- & Rohrverlegung",
+        "h2": "SLT-Erdraketen kaufen – Whitelabel-Bodendurchschlagsgeräte aus NRW",
+        "intro": "Unsere SLT-Erdraketen sind langlebige, wartungsarme Turbo-Bodendurchschlagsgeräte mit Kulissensteinen und reversierbarem Rückwärtsgang. Erhältlich in mehreren Baugrößen von Ø 45 mm (kompakt) bis Ø 55 mm (Standard und lang). Wir beraten Dich in Krefeld und Bonn persönlich zur passenden Größe für Deine Baustelle – von der Glasfaser-Hausanschlussleitung bis zum längeren Stromkabel unter Wegen und Einfahrten.",
+        "h3": "SLT-Erdraketen im Überblick",
+        "websiteLabel": "Zur Übersicht",
+        "ctaText": "Kaufanfrage SLT-Erdrakete",
         "ctaDesc": "Du benötigst eine Erdrakete für grabenlose Kabel- oder Rohrverlegung? Wir beraten Dich zur passenden Baugröße."
       },
       "inquiryBtn": "Kaufanfrage stellen",
@@ -2050,13 +2050,13 @@
         "Motorrad- & Quadanhänger: 750 kg, 2- und 3-fach-Belegung",
         "Kippanhänger: 1.500 kg – 2.700 kg, rückwärtskippend"
       ],
-      "hercu": [
-        "Erdrakete Hercu HP55 KRT – Turbo, Ø 55 mm, Stufenkopf, reversierbar",
-        "Erdrakete Hercu HP55 RT – Turbo, Ø 55 mm, 1.260 mm Länge, reversierbar",
-        "Erdrakete Hercu HP55 EKO T – Turbo, Ø 55 mm, 800 mm Länge, reversierbar",
-        "Erdrakete Hercu HP55 T – Turbo, Ø 55 mm, 1.130 mm Länge, reversierbar",
-        "Erdrakete Hercu HP45 EKO T – Turbo, Ø 45 mm, 750 mm Länge, reversierbar",
-        "Weitere Hercu Erdraketen-Baugrößen auf Anfrage (Ø 45–145 mm)",
+      "slt": [
+        "SLT-Erdrakete HP45 EKO T – Turbo, Ø 45 mm, 750 mm, 6,5 kg – für Glasfaser & dünne Kabel",
+        "SLT-Erdrakete HP55 EKO T – Turbo, Ø 55 mm, 800 mm, 10 kg – kompakt für beengte Baustellen",
+        "SLT-Erdrakete HP55 KRT – Turbo, Ø 55 mm, 860 mm, 12 kg – mit beweglichem Stufenkopf",
+        "SLT-Erdrakete HP55 T – Turbo, Ø 55 mm, 1.130 mm, 14 kg – ruhiger Geradeauslauf",
+        "SLT-Erdrakete HP55 RT – Turbo, Ø 55 mm, 1.260 mm, 16 kg – lange Bauform für lange Distanzen",
+        "Weitere Baugrößen auf Anfrage (Ø 45–145 mm)",
         "Zubehör: Druckluftschläuche, Bio-Erdraketenöl, Nebelöler 1,3 L"
       ]
     },
