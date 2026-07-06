@@ -18,7 +18,15 @@ interface Props {
   onDistance: (roundedKm: number, exactKm: number, addressLabel: string) => void;
   label?: string;
   placeholder?: string;
+  /** If true, compute distances from all 3 SLT locations and pick the closest one. */
+  autoPickNearest?: boolean;
 }
+
+const LOCATION_LABELS: Record<string, string> = {
+  krefeld: "Krefeld",
+  bonn: "Bonn",
+  muelheim: "Mülheim an der Ruhr",
+};
 
 // Simple session token (used by Google Places for billing grouping).
 function makeSessionToken() {
