@@ -752,6 +752,37 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
+      {/* Manufacturer info (Hercu / Original-Hersteller hinter Whitelabel) */}
+      {(content as any).manufacturer && (
+        <section className="section-container py-8 md:py-12 border-t border-border">
+          <Card className="p-6 border-border bg-muted/30 max-w-4xl">
+            <div className="flex items-start gap-3">
+              <Package className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-1">Original-Hersteller</p>
+                <h3 className="text-lg font-bold text-headline mb-2">
+                  {(content as any).manufacturer.name}
+                </h3>
+                <p className="text-foreground/90 leading-relaxed mb-3 whitespace-pre-line">
+                  {(content as any).manufacturer.text}
+                </p>
+                {(content as any).manufacturer.linkUrl && (
+                  <a
+                    href={(content as any).manufacturer.linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium underline underline-offset-2"
+                  >
+                    {(content as any).manufacturer.linkText || "Zur Herstellerseite"}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </Card>
+        </section>
+      )}
+
       {/* CTA bottom */}
       <section className="bg-primary py-12">
         <div className="section-container text-center">
