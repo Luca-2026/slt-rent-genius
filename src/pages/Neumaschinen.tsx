@@ -66,22 +66,29 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
+  Hercu: [
+    "Erdrakete HP55 KRT (Ø 55 mm)",
+    "Sonstige Hercu Erdrakete",
+    "Hercu Zubehör (Schlauch, Öl, Nebelöler)",
+  ],
 };
 
 const brandIcons = {
   zoomlion: [iconBagger, iconBagger, iconBagger, iconHebebuehne, iconHebebuehne],
   baumax: [iconVerdichtung, iconVerdichtung, iconVerdichtung, iconBagger, iconWerkzeug, iconWerkzeug],
   temared: [iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger],
+  hercu: [iconKabel, iconKabel, iconWerkzeug],
 };
 
-const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo };
+const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo, hercu: hercuLogo };
 const brandWebsites = {
   zoomlion: "https://www.zoomlion-nrw.de",
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
+  hercu: "https://www.hercu.de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED" };
-const brandKeys = ["zoomlion", "baumax", "temared"] as const;
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", hercu: "HERCU" };
+const brandKeys = ["zoomlion", "baumax", "temared", "hercu"] as const;
 
 const uspIcons = [Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package];
 const uspKeys = ["dealer", "service", "delivery", "consulting", "rentToBuy", "spareParts"];
