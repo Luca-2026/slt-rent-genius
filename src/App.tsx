@@ -159,6 +159,12 @@ const App = () => (
               <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
               <Route path="/verkauf/neumaschinen" element={<Neumaschinen />} />
               <Route path="/verkauf/neumaschinen/:slug" element={<NeumaschineDetail />} />
+              {/* 301: legacy Hercu-Erdrakete slugs (formerly slt-*) */}
+              <Route path="/verkauf/neumaschinen/slt-hp45-t-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp45-t-erdrakete" replace />} />
+              <Route path="/verkauf/neumaschinen/slt-hp65-t-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp65-t-erdrakete" replace />} />
+              <Route path="/verkauf/neumaschinen/slt-hp65-eko-t-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp65-eko-t-erdrakete" replace />} />
+              <Route path="/verkauf/neumaschinen/slt-hp65-rt-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp65-rt-erdrakete" replace />} />
+              <Route path="/verkauf/neumaschinen/slt-hp65-krt-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp65-krt-erdrakete" replace />} />
               
               {/* Ratgeber / Blog */}
               <Route path="/ratgeber" element={<Ratgeber />} />
