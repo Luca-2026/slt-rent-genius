@@ -36,11 +36,16 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Ist die Produktseite selbst die Anhängerkupplung? Dann Dropdown "für welchen Dumper" statt Zubehör-Checkbox
+  const isAnhaengerkupplungProduct = /anhaengerkupplung/i.test(machine.slug);
+
   // Addon visibility: nur KDE550 / KDE550P Raddumper – Anhängerkupplung ist NICHT für RMD800P o. ä. kompatibel
+  // Und NICHT anzeigen, wenn der Kunde ohnehin schon die Anhängerkupplung selbst anfragt
   const isBaumaxDumper =
-    /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug);
+    /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug) && !isAnhaengerkupplungProduct;
 
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+  const [kupplungDumperModell, setKupplungDumperModell] = useState<string>("");
   const [selectedConfig, setSelectedConfig] = useState<string>(machine.initialConfig || machine.configOptions?.[0]?.name || "");
 
   // Block 2 — Lieferung
@@ -108,6 +113,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
       if (!lieferPlz.trim()) errs.lieferPlz = "Pflichtfeld";
       if (!lieferOrt.trim()) errs.lieferOrt = "Pflichtfeld";
     }
+    if (isAnhaengerkupplungProduct && !kupplungDumperModell) errs.kupplungDumperModell = "Bitte Dumper-Modell wählen";
     if (!kundentyp) errs.kundentyp = "Bitte Kundentyp wählen";
     if (kundentyp === "Gewerblicher Kunde" && !firmenname.trim()) errs.firmenname = "Pflichtfeld";
     if (!anrede) errs.anrede = "Pflichtfeld";
@@ -135,9 +141,9 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
         body: {
           marke: machine.brand,
           produktkategorie: machine.category || machine.name,
-          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}`,
+          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` [Für Dumper: ${kupplungDumperModell}]` : ""}`,
           anzahl: "1",
-          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}`,
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` · Anhängerkupplung für: ${kupplungDumperModell}` : ""}`,
           lieferOption,
           strasse: lieferStrasse,
           plz: lieferPlz,
@@ -163,6 +169,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
           wieGefunden: "Produktseite Neumaschine",
           addons: [
             ...(isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : []),
+            ...(isAnhaengerkupplungProduct && kupplungDumperModell ? [`Für Dumper: ${kupplungDumperModell}`] : []),
             ...(hasConfig && selectedConfig ? [`Konfiguration: ${selectedConfig}`] : []),
           ],
         },
@@ -290,6 +297,23 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                       </span>
                     </label>
                     <p className="text-xs text-muted-foreground mt-2 ml-6">Sofort lieferbar · 1–2 Werktage · Sonderpreis bis 30.06.2026</p>
+                  </div>
+                )}
+
+                {isAnhaengerkupplungProduct && (
+                  <div className="rounded-lg border border-primary/40 bg-primary/5 p-3">
+                    <p className="font-semibold text-foreground text-sm mb-2">Für welchen Dumper wird die Anhängerkupplung benötigt? *</p>
+                    <Select value={kupplungDumperModell} onValueChange={setKupplungDumperModell}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder="Bitte Dumper-Modell wählen" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Baumax KDE 550">Baumax KDE 550</SelectItem>
+                        <SelectItem value="Baumax KDE 550 P">Baumax KDE 550 P</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FieldError field="kupplungDumperModell" />
+                    <p className="text-xs text-muted-foreground mt-2">Damit wir die passende Ausführung für Deinen Raddumper vorbereiten können.</p>
                   </div>
                 )}
               </CardContent>
