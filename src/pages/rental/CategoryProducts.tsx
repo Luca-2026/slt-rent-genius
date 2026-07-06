@@ -1083,7 +1083,7 @@ export default function CategoryProducts() {
 
   // Category-specific meta descriptions with dynamic city name
   const categorySeoDescriptions: Record<string, string> = {
-    anhaenger: `Anhänger mieten in ${cityName} – 24/7 per SMS-Code: Planenanhänger, Autotransporter, Kastenanhänger & mehr. Online buchbar, Tiefpreisgarantie.`,
+    anhaenger: `Anhänger mieten in ${cityName} – Anhängerverleih 24/7 per SMS-Code: Planenanhänger, Autotransporter, Baumaschinen- & Kastenanhänger. Online buchbar, Tiefpreisgarantie.`,
     erdbewegung: `Bagger & Erdbewegungsmaschinen mieten in ${cityName}: Bobcat, Minibagger, Radlader, Dumper + Anbaugeräte. Tiefpreisgarantie, sofort verfügbar.`,
     werkzeuge: `Elektro- & Handwerkzeuge mieten in ${cityName}: Bohrmaschinen, Flex, Sägen, Rotationslaser & mehr. Kurzfristig verfügbar – SLT Rental Tiefpreisgarantie.`,
     gartenpflege: `Gartengeräte mieten in ${cityName}: Kettensäge, Heckenschere, Häcksler, Vertikutierer & Hochdruckreiniger. Online buchbar bei SLT Rental.`,
