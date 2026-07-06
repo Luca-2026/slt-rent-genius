@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 
 // Injects <link rel="preload" as="image" fetchpriority="high"> for the LCP
 // hero image (hero-krefeld) into index.html AFTER the build, so the browser
@@ -77,6 +78,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    mcpPlugin(),
     mode === "development" && componentTagger(),
     // Build-time image compression — runs only on `vite build`.
     // Source files are NOT modified; only the dist/ output is compressed.

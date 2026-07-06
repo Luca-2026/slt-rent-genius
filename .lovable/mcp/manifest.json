@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "slt-rental-mcp",
+      "version": "0.1.0",
+      "title": "SLT Rental"
+    },
+    "tools": [
+      {
+        "name": "list_locations",
+        "title": "Standorte auflisten",
+        "description": "Liefert alle SLT Rental Standorte (Krefeld, Bonn, Mülheim an der Ruhr) mit Adresse, Telefon, E-Mail und Öffnungszeiten.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_categories",
+        "title": "Mietkategorien auflisten",
+        "description": "Liefert die Hauptkategorien des SLT Rental Mietportfolios (Bau, Event, Transport) mit Slug und Anzeigename.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_category_url",
+        "title": "Kategorie-URL für Standort erzeugen",
+        "description": "Baut die kanonische URL für eine Kategorie an einem Standort, z. B. /mieten/krefeld/anhaenger/. Nutze list_locations und list_categories, um gültige Slugs zu finden.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "locationId": {
+              "type": "string",
+              "enum": [
+                "krefeld",
+                "bonn",
+                "muelheim"
+              ],
+              "description": "Standort-Slug: krefeld, bonn oder muelheim."
+            },
+            "categoryId": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Kategorie-Slug, z. B. 'anhaenger', 'beschallung', 'moebel-zelte'."
+            }
+          },
+          "required": [
+            "locationId",
+            "categoryId"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_website",
+        "title": "SLT Rental Website durchsuchen",
+        "description": "Führt eine Google-Site-Suche auf slt-rental.de aus und liefert die Ergebnis-URL. Nutze dies, um Produkte, Ratgeber oder Landingpages zu finden.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Suchbegriff, z. B. 'Minibagger 1.8t Krefeld'."
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
