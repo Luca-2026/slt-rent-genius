@@ -2720,7 +2720,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     metaDescription: "2.1 PA-Anlage 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger in Krefeld mieten. 126 dB, bis 75 Personen – ideal für Hochzeit & Event am Niederrhein.",
     h1: "2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger mieten in Krefeld",
     h2s: [
-      "Komplett-PA mit Bluetooth-Empfänger & 4-Kanal-Mischpult",
+      "1400 W RMS Aktiv-PA mit 4-Kanal-Mischpult – plug-and-play am Niederrhein",
       "Abholung Anrather Straße 291 – passt in jeden Kombi",
       "Für Hochzeiten & DJ-Sets in Krefeld, Meerbusch, Willich & Tönisvorst",
     ],
@@ -2747,7 +2747,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     metaDescription: "2.1 PA-Anlage 1400W RMS mit 4-Kanal-Mischpult und Bluetooth-Empfänger in Bonn mieten. 126 dB, bis 75 Personen – für Hochzeit, Winzerhof-Feier & Firmenevent im Rhein-Sieg-Kreis.",
     h1: "2.1 Soundsystem 1400W RMS – Bluetooth-PA mieten in Bonn",
     h2s: [
-      "Komplett-PA mit Bluetooth-Empfänger & 4-Kanal-Mischpult",
+      "Bluetooth-PA mit Mischpult – Hochzeits-Sound für Bonn & Ahrtal",
       "Samstags spontan abholbar – Filiale Drachenburgstraße 8",
       "Ideal für Winzerhof-Hochzeiten im Ahrtal & Vereinsfeste im Rhein-Sieg-Kreis",
     ],
@@ -2760,10 +2760,10 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       { q: "Wo kann ich das 2.1 Soundsystem in Bonn abholen?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr, samstags auch ohne Voranmeldung." },
       { q: "Liefert ihr die Anlage ins Ahrtal oder ins Siebengebirge?", a: "Ja. Wir liefern auf Anfrage ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis und ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anfahrt über A555, A565 und B9 – gerade für Winzerhof-Hochzeiten ideal." },
-      { q: "Ist ein Bluetooth-Empfänger im Set enthalten?", a: "Ja, der Bluetooth-Empfänger ist im Lieferumfang enthalten. Du kannst direkt vom Smartphone oder Tablet kabellos Musik streamen – ohne zusätzliches Equipment." },
+      { q: "Kann ich die Playlist per Bluetooth vom iPhone streamen?", a: "Ja – der mitgelieferte Bluetooth-Empfänger koppelt sich in Sekunden mit iPhone, Android-Smartphone oder Laptop. Für Hochzeits-Playlists rund um Bonn und ins Ahrtal reicht Bluetooth-Reichweite von ca. 10 m ohne Sichtverbindung problemlos." },
       { q: "Reicht die Anlage für eine Hochzeit mit 70 Gästen im Winzerhof?", a: "Ja. Mit 1400 W RMS und bis zu 126 dB ist die Anlage auf Feiern bis ca. 75 Personen ausgelegt – indoor wie outdoor. Für kleinere, intime Locations im Ahrtal völlig ausreichend; für Feste ab 100 Gästen empfehlen wir das D.A.S. 3500W (Disposition ab Krefeld, 24 h)." },
       { q: "Welche Anschlüsse bietet das integrierte Mischpult für Trauzeugen-Reden?", a: "Das 4-Kanal-Mischpult hat XLR-, AUX- und Klinken-Eingänge. Für Reden empfehlen wir ein Kabel- oder Funkmikrofon (letzteres disponieren wir aus Krefeld dazu), das direkt am XLR-Eingang angeschlossen wird – die Musik läuft parallel per Bluetooth." },
-      { q: "Brauche ich eine externe Endstufe?", a: "Nein, die Anlage ist vollständig aktiv – die Endstufe ist bereits integriert. Du brauchst nur 230 V Strom und eine Signalquelle." },
+      { q: "Brauche ich eine externe Endstufe für die Winzerhof-Hochzeit?", a: "Nein. Die Anlage ist vollständig aktiv – Endstufe ist bereits integriert. Am Winzerhof im Ahrtal reicht eine einzelne 230-V-Schuko-Steckdose (max. Aufnahme ca. 700 W); ein Verlängerungskabel ist bei Bedarf auf Anfrage dazubuchbar." },
       { q: "Wie schwer ist die Anlage und passt sie ins Auto?", a: "Das Gesamtgewicht liegt bei ca. 55 kg. Die Anlage passt in jeden Kombi oder Transporter – Selbstabholung an der Drachenburgstraße ist mit zwei Personen problemlos machbar." },
     ],
   },
@@ -2773,7 +2773,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     metaDescription: "2.1 PA-Anlage 1400W RMS mit 4-Kanal-Mischpult und Bluetooth-Empfänger in Mülheim an der Ruhr mieten. 126 dB, bis 75 Personen – für Hochzeiten & Firmenfeiern im Ruhrgebiet.",
     h1: "2.1 Soundsystem 1400W RMS – Bluetooth-PA mieten in Mülheim an der Ruhr",
     h2s: [
-      "Komplett-PA mit Bluetooth-Empfänger & 4-Kanal-Mischpult",
+      "Aktiv-PA mit 4-Kanal-Mischpult – Event-Sound fürs Ruhrgebiet",
       "Übergabe am SLT × Bobcat-Standort Ruhrorter Straße",
       "Für Hochzeiten & Firmenevents in Essen, Duisburg, Oberhausen & Bochum",
     ],
@@ -2786,10 +2786,10 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       { q: "Wo kann ich das 2.1 Soundsystem in Mülheim an der Ruhr übernehmen?", a: "Die Übergabe erfolgt nach Terminvereinbarung an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (Speldorf/Broich) – eingebettet in die Bobcat-Filiale vor Ort. Anfahrt über A40 und A52." },
       { q: "Liefert ihr die Anlage auch nach Essen, Duisburg oder Oberhausen?", a: "Ja. Wir liefern auf Anfrage nach Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Disposition erfolgt aus unserem Hauptsitz Krefeld, in der Regel am nächsten Werktag – ideal auch für Events auf Zeche Zollverein oder im Landschaftspark Duisburg-Nord." },
-      { q: "Ist ein Bluetooth-Empfänger im Set enthalten?", a: "Ja, der Bluetooth-Empfänger ist im Lieferumfang enthalten. Du kannst direkt vom Smartphone, Tablet oder Laptop kabellos Musik streamen." },
+      { q: "Streamt die Anlage per Bluetooth vom Smartphone?", a: "Ja – der Bluetooth-Empfänger ist im Set enthalten und in Sekunden mit dem Smartphone gekoppelt. Für Firmenfeiern in Zeche Zollverein oder DJ-Sets im Landschaftspark Duisburg-Nord ist das die schnellste Zuspiel-Variante." },
       { q: "Für wie viele Personen reicht die Anlage bei einer Firmenfeier im Revier?", a: "Mit 1400 W RMS und bis zu 126 dB ist die Anlage für Veranstaltungen mit bis zu ca. 75 Personen ausgelegt – indoor wie outdoor. Für größere Firmenevents in Industrie-Hallen empfehlen wir das D.A.S. 3500W (bis 250 Personen, aus Krefeld disponierbar)." },
       { q: "Welche Anschlüsse bietet das integrierte Mischpult?", a: "Das integrierte 4-Kanal-Mischpult verfügt über XLR-, AUX- und Klinken-Eingänge für Mikrofone, Instrumente, Laptops oder DJ-Pult – flexibel einsetzbar für Live-Bands auf Vereinsfesten oder Ansprachen auf Firmenevents." },
-      { q: "Brauche ich eine externe Endstufe?", a: "Nein, die Anlage ist vollständig aktiv – die Endstufe ist bereits integriert. Du brauchst nur 230 V Strom und eine Signalquelle." },
+      { q: "Reicht eine normale Steckdose in der Industrie-Location?", a: "Ja. Die Anlage ist vollständig aktiv, Endstufe ist integriert – eine 230-V-Schuko reicht (Aufnahme ca. 700 W). In Backstein-Hallen im Revier oder auf Zeche Zollverein bringst du im Zweifel eine Kabeltrommel mit, da Steckdosen dort oft weit auseinander liegen." },
       { q: "Wie schwer ist die Anlage?", a: "Das Gesamtgewicht liegt bei ca. 55 kg. Die Anlage passt in jeden Kombi oder Transporter – Selbstabholung in Mülheim mit zwei Personen problemlos machbar." },
     ],
   },
