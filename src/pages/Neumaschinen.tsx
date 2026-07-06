@@ -70,6 +70,7 @@ const kategorienByMarke: Record<string, string[]> = {
     "Erdrakete HP55 KRT (Ø 55 mm)",
     "Erdrakete HP55 RT (Ø 55 mm, Turbo, 1.260 mm)",
     "Erdrakete HP55 EKO T (Ø 55 mm, Turbo, 800 mm)",
+    "Erdrakete HP55 T (Ø 55 mm, Turbo, 1.130 mm)",
     "Sonstige Hercu Erdrakete",
     "Hercu Zubehör (Schlauch, Öl, Nebelöler)",
   ],
