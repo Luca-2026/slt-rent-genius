@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
 import baumaxLogo from "@/assets/logos/baumax-sm.webp";
-import hercuLogo from "@/assets/logos/hercu-sm.webp";
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
@@ -66,14 +65,12 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
-  Hercu: [
-    "Erdrakete HP55 KRT (Ø 55 mm)",
-    "Erdrakete HP55 RT (Ø 55 mm, Turbo, 1.260 mm)",
-    "Erdrakete HP55 EKO T (Ø 55 mm, Turbo, 800 mm)",
-    "Erdrakete HP55 T (Ø 55 mm, Turbo, 1.130 mm)",
-    "Erdrakete HP45 EKO T (Ø 45 mm, Turbo, 750 mm)",
-    "Sonstige Hercu Erdrakete",
-    "Hercu Zubehör (Schlauch, Öl, Nebelöler)",
+  SLT: [
+    "Erdrakete Ø 45 mm (kompakt)",
+    "Erdrakete Ø 55 mm (Standard)",
+    "Erdrakete Ø 55 mm (Turbo, lang)",
+    "Sonstige SLT-Erdrakete",
+    "Zubehör (Schlauch, Öl, Nebelöler)",
   ],
 };
 
@@ -81,18 +78,19 @@ const brandIcons = {
   zoomlion: [iconBagger, iconBagger, iconBagger, iconHebebuehne, iconHebebuehne],
   baumax: [iconVerdichtung, iconVerdichtung, iconVerdichtung, iconBagger, iconWerkzeug, iconWerkzeug],
   temared: [iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger],
-  hercu: [iconKabel, iconKabel, iconWerkzeug],
+  slt: [iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconWerkzeug],
 };
 
-const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo, hercu: hercuLogo };
+const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo };
 const brandWebsites = {
   zoomlion: "https://www.zoomlion-nrw.de",
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
-  hercu: "https://www.hercu.de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", hercu: "HERCU" };
-const brandKeys = ["zoomlion", "baumax", "temared", "hercu"] as const;
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "SLT" };
+// Marken-Logo-Strip zeigt nur externe Partner. SLT-Erdraketen sind Whitelabel und werden im Marken-Abschnitt separat dargestellt.
+const externalBrandKeys = ["zoomlion", "baumax", "temared"] as const;
+const brandKeys = ["zoomlion", "baumax", "temared", "slt"] as const;
 
 const uspIcons = [Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package];
 const uspKeys = ["dealer", "service", "delivery", "consulting", "rentToBuy", "spareParts"];
