@@ -70,65 +70,78 @@ serve(async (req) => {
       return json({ suggestions });
     }
 
-    if (action === "distance") {
-      const locationId = String(body.locationId ?? "");
-      const origin = LOCATION_ORIGINS[locationId];
-      if (!origin) return json({ error: "Unknown locationId" }, 400);
-
+    if (action === "distance" || action === "distanceAll") {
       const placeId = body.placeId ? String(body.placeId) : undefined;
       const address = body.address ? String(body.address).trim() : undefined;
       if (!placeId && !address) {
         return json({ error: "placeId or address is required" }, 400);
       }
+      const destination = placeId ? { placeId } : { address };
 
-      const destination = placeId
-        ? { placeId }
-        : { address };
-
-      const res = await fetch(
-        "https://routes.googleapis.com/directions/v2:computeRoutes",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Goog-Api-Key": apiKey,
-            "X-Goog-FieldMask": "routes.distanceMeters,routes.duration",
+      async function computeFor(locationId: string) {
+        const origin = LOCATION_ORIGINS[locationId];
+        if (!origin) return null;
+        const res = await fetch(
+          "https://routes.googleapis.com/directions/v2:computeRoutes",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": apiKey,
+              "X-Goog-FieldMask": "routes.distanceMeters,routes.duration",
+            },
+            body: JSON.stringify({
+              origin: { address: origin },
+              destination,
+              travelMode: "DRIVE",
+              routingPreference: "TRAFFIC_UNAWARE",
+              regionCode: "DE",
+              languageCode: "de",
+            }),
           },
-          body: JSON.stringify({
-            origin: { address: origin },
-            destination,
-            travelMode: "DRIVE",
-            routingPreference: "TRAFFIC_UNAWARE",
-            regionCode: "DE",
-            languageCode: "de",
-          }),
-        },
-      );
-
-      if (!res.ok) {
-        const t = await res.text();
-        console.error("Routes failed", res.status, t);
-        return json({ error: "Routes failed", details: t }, 502);
+        );
+        if (!res.ok) {
+          const t = await res.text();
+          console.error(`Routes failed for ${locationId}`, res.status, t);
+          return null;
+        }
+        const data = await res.json();
+        const route = data?.routes?.[0];
+        if (!route?.distanceMeters) return null;
+        const meters = Number(route.distanceMeters);
+        const km = meters / 1000;
+        const roundedKm = Math.max(5, Math.ceil(km / 5) * 5);
+        return {
+          locationId,
+          origin,
+          distanceMeters: meters,
+          distanceKm: km,
+          roundedKm,
+          durationSeconds:
+            Number(String(route.duration ?? "0s").replace(/\D/g, "")) || null,
+        };
       }
 
-      const data = await res.json();
-      const route = data?.routes?.[0];
-      if (!route?.distanceMeters) {
-        return json({ error: "No route found" }, 404);
+      if (action === "distance") {
+        const locationId = String(body.locationId ?? "");
+        if (!LOCATION_ORIGINS[locationId]) {
+          return json({ error: "Unknown locationId" }, 400);
+        }
+        const result = await computeFor(locationId);
+        if (!result) return json({ error: "No route found" }, 404);
+        return json(result);
       }
 
-      const meters = Number(route.distanceMeters);
-      const km = meters / 1000;
-      // Round UP to nearest 5km to match tariff slider grid, min 5.
-      const roundedKm = Math.max(5, Math.ceil(km / 5) * 5);
-
-      return json({
-        distanceMeters: meters,
-        distanceKm: km,
-        roundedKm,
-        durationSeconds: Number(String(route.duration ?? "0s").replace(/\D/g, "")) || null,
-        origin,
-      });
+      // distanceAll: compute for all origins in parallel, return sorted list + best
+      const ids = Object.keys(LOCATION_ORIGINS);
+      const results = (await Promise.all(ids.map(computeFor))).filter(Boolean) as Array<{
+        locationId: string;
+        distanceKm: number;
+        roundedKm: number;
+      }>;
+      if (results.length === 0) return json({ error: "No route found" }, 404);
+      results.sort((a, b) => a.distanceKm - b.distanceKm);
+      return json({ best: results[0], results });
     }
 
     return json({ error: "Unknown action" }, 400);
