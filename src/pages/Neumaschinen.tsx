@@ -109,7 +109,7 @@ const jsonLdAutoDealer = {
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
-    { "@type": "Brand", name: "Hercu", url: "https://www.hercu.de" },
+    { "@type": "Brand", name: "SLT", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
   ],
   address: [
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
@@ -131,14 +131,14 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
-      { "@type": "OfferCatalog", name: "Hercu Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
+      { "@type": "OfferCatalog", name: "SLT-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
     ],
   },
   makesOffer: [
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu Erdraketen HP-Serie", category: "Erdrakete / Bodendurchschlagsgerät" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "SLT-Erdraketen", category: "Erdrakete / Bodendurchschlagsgerät" } },
   ],
 };
 
@@ -146,7 +146,7 @@ const brandDbNames: Record<string, string> = {
   zoomlion: "Zoomlion",
   baumax: "BAUMAX",
   temared: "Temared",
-  hercu: "Hercu",
+  slt: "SLT",
 };
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
