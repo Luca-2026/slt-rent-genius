@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
@@ -26,6 +26,71 @@ function formatPriceGross(price: number | null, onRequest: boolean) {
     currency: "EUR",
     minimumFractionDigits: 0,
   }).format(price);
+}
+
+function AutoplayVideoSection({
+  url,
+  title,
+  caption,
+  poster,
+  ariaLabel,
+}: {
+  url: string;
+  title: string;
+  caption?: string;
+  poster?: string;
+  ariaLabel: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasStartedRef = useRef(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            if (!hasStartedRef.current) {
+              hasStartedRef.current = true;
+              video.play().catch(() => {});
+            }
+          } else if (!entry.isIntersecting) {
+            if (!video.paused) video.pause();
+          }
+        });
+      },
+      { threshold: [0, 0.5, 1] }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="section-container py-8 md:py-12 border-t border-border">
+      <div className="max-w-2xl mx-auto md:mx-0">
+        <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">{title}</h2>
+        {caption && (
+          <p className="text-sm text-muted-foreground mb-4 max-w-xl">{caption}</p>
+        )}
+        <div className="relative w-full overflow-hidden rounded-lg bg-muted border border-border" style={{ aspectRatio: "16 / 9" }}>
+          <video
+            ref={videoRef}
+            src={url}
+            poster={poster || undefined}
+            controls
+            muted
+            playsInline
+            preload="metadata"
+            aria-label={ariaLabel}
+            className="absolute inset-0 w-full h-full object-contain bg-black"
+          >
+            Dein Browser unterstützt kein HTML5-Video.
+          </video>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default function NeumaschineDetail() {
@@ -262,7 +327,7 @@ export default function NeumaschineDetail() {
       <section className="section-container py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Images */}
-          <div>
+          <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden mb-3 flex items-center justify-center">
               {images.length > 0 ? (
                 <img
@@ -589,32 +654,13 @@ export default function NeumaschineDetail() {
 
       {/* Product video (self-hosted MP4, e.g. Hercu Animation) */}
       {(content as any).productVideoUrl && (
-        <section className="section-container py-8 md:py-12 border-t border-border">
-          <div className="max-w-2xl mx-auto md:mx-0">
-            <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">
-              {(content as any).productVideoTitle || "So funktioniert die Erdrakete"}
-            </h2>
-            {(content as any).productVideoCaption && (
-              <p className="text-sm text-muted-foreground mb-4 max-w-xl">
-                {(content as any).productVideoCaption}
-              </p>
-            )}
-            <div className="relative w-full overflow-hidden rounded-lg bg-muted border border-border" style={{ aspectRatio: "16 / 9" }}>
-              <video
-                src={(content as any).productVideoUrl}
-                poster={(content as any).productVideoPoster || undefined}
-                controls
-                muted
-                playsInline
-                preload="metadata"
-                aria-label={`${machine.brand} ${machine.model} – Funktionsprinzip Animation`}
-                className="absolute inset-0 w-full h-full object-contain bg-black"
-              >
-                Dein Browser unterstützt kein HTML5-Video.
-              </video>
-            </div>
-          </div>
-        </section>
+        <AutoplayVideoSection
+          url={(content as any).productVideoUrl}
+          title={(content as any).productVideoTitle || "So funktioniert die Erdrakete"}
+          caption={(content as any).productVideoCaption}
+          poster={(content as any).productVideoPoster}
+          ariaLabel={`${machine.brand} ${machine.model} – Funktionsprinzip Animation`}
+        />
       )}
 
       {/* Highlights */}
