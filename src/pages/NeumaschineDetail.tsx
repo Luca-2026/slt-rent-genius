@@ -108,10 +108,8 @@ function AutoplayVideoSection({
               poster={poster || undefined}
               controls
               muted
-              defaultMuted
               playsInline
-              // @ts-expect-error legacy iOS attribute
-              webkit-playsinline="true"
+              {...({ "webkit-playsinline": "true" } as Record<string, string>)}
               preload="metadata"
               aria-label={ariaLabel}
               className="absolute inset-0 w-full h-full object-contain bg-black"
