@@ -88,8 +88,8 @@ const brandWebsites = {
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "SLT" };
-// Marken-Logo-Strip zeigt nur externe Partner. SLT-Erdraketen sind Whitelabel und werden im Marken-Abschnitt separat dargestellt.
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "Hercu" };
+// Marken-Logo-Strip zeigt nur externe Partner. Hercu-Erdraketen werden im Marken-Abschnitt separat dargestellt (Direktimport, Vertrieb & Service über SLT Rental in NRW).
 const externalBrandKeys = ["zoomlion", "baumax", "temared"] as const;
 const brandKeys = ["zoomlion", "baumax", "temared", "slt"] as const;
 
