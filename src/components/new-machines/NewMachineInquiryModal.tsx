@@ -169,6 +169,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
           wieGefunden: "Produktseite Neumaschine",
           addons: [
             ...(isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : []),
+            ...(isAnhaengerkupplungProduct && kupplungDumperModell ? [`Für Dumper: ${kupplungDumperModell}`] : []),
             ...(hasConfig && selectedConfig ? [`Konfiguration: ${selectedConfig}`] : []),
           ],
         },
