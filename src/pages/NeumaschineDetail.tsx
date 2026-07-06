@@ -220,6 +220,22 @@ export default function NeumaschineDetail() {
       }
     : null;
 
+  const faqList: { q: string; a: string }[] = Array.isArray((content as any).faq) ? (content as any).faq : [];
+  const faqJsonLd = faqList.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqList.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  } : null;
+
+  const jsonLdArray = [productJsonLd, breadcrumbJsonLd];
+  if (videoJsonLd) jsonLdArray.push(videoJsonLd);
+  if (faqJsonLd) jsonLdArray.push(faqJsonLd);
+
+
   const priceLabel = priceGross ? `${formatPriceGross(priceGross, false)} brutto` : "Preis auf Anfrage";
 
   return (
