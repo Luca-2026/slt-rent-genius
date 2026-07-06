@@ -32,6 +32,7 @@ export default function NeumaschineDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [activeImage, setActiveImage] = useState(0);
   const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [selectedConfig, setSelectedConfig] = useState<string | null>(null);
 
   const { data: machine, isLoading } = useQuery({
     queryKey: ["new-machine", slug],
@@ -219,6 +220,22 @@ export default function NeumaschineDetail() {
       }
     : null;
 
+  const faqList: { q: string; a: string }[] = Array.isArray((content as any).faq) ? (content as any).faq : [];
+  const faqJsonLd = faqList.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqList.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  } : null;
+
+  const jsonLdArray = [productJsonLd, breadcrumbJsonLd];
+  if (videoJsonLd) jsonLdArray.push(videoJsonLd);
+  if (faqJsonLd) jsonLdArray.push(faqJsonLd);
+
+
   const priceLabel = priceGross ? `${formatPriceGross(priceGross, false)} brutto` : "Preis auf Anfrage";
 
   return (
@@ -230,7 +247,7 @@ export default function NeumaschineDetail() {
         canonical={canonicalPath}
         ogImage={absoluteImages[0]}
         ogType="product"
-        jsonLd={videoJsonLd ? [productJsonLd, breadcrumbJsonLd, videoJsonLd] : [productJsonLd, breadcrumbJsonLd]}
+        jsonLd={jsonLdArray}
       />
 
       <div className="bg-muted/30 border-b border-border">
@@ -373,6 +390,44 @@ export default function NeumaschineDetail() {
               </CardContent>
             </Card>
 
+            {/* Konfigurations-Auswahl (Solo / mit Grundausstattung) – für Hercu Erdraketen */}
+            {machine.brand === "Hercu" && options.length > 0 && (
+              <Card className="mb-6 border-accent/30 bg-accent/5">
+                <CardContent className="p-5">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Konfiguration wählen</p>
+                  <div className="space-y-2">
+                    {options.map((opt) => (
+                      <label
+                        key={opt.name}
+                        className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                          selectedConfig === opt.name ? "border-primary bg-primary/5" : "border-border hover:border-primary/30 bg-background"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="hercu-config"
+                          value={opt.name}
+                          checked={selectedConfig === opt.name}
+                          onChange={() => setSelectedConfig(opt.name)}
+                          className="mt-1 accent-primary"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                            <span className="font-semibold text-foreground text-sm">{opt.name}</span>
+                            <span className="text-sm font-bold text-primary">{opt.price}</span>
+                          </div>
+                          {opt.note && <p className="text-xs text-muted-foreground mt-1 leading-snug">{opt.note}</p>}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-3">
+                    Deine Auswahl übernehmen wir automatisch in das Anfrageformular.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Button size="lg" className="w-full sm:flex-1" onClick={() => setInquiryOpen(true)}>
                 Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
@@ -383,6 +438,7 @@ export default function NeumaschineDetail() {
                 </a>
               </Button>
             </div>
+
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
@@ -644,6 +700,28 @@ export default function NeumaschineDetail() {
         </section>
       )}
 
+      {/* FAQ */}
+      {faqList.length > 0 && (
+        <section className="section-container py-10 md:py-14 border-t border-border">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-headline mb-6">
+              Häufige Fragen zur {machine.brand} {machine.model}
+            </h2>
+            <div className="space-y-3">
+              {faqList.map((f, idx) => (
+                <details key={idx} className="group rounded-lg border border-border bg-card p-4 open:bg-muted/40">
+                  <summary className="cursor-pointer font-semibold text-headline text-sm md:text-base list-none flex items-start justify-between gap-3">
+                    <span>{f.q}</span>
+                    <span className="text-primary text-xl leading-none group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="text-sm text-foreground/80 mt-3 leading-relaxed whitespace-pre-line">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA bottom */}
       <section className="bg-primary py-12">
         <div className="section-container text-center">
@@ -666,6 +744,7 @@ export default function NeumaschineDetail() {
         </div>
       </section>
 
+
       <NewMachineInquiryModal
         open={inquiryOpen}
         onClose={() => setInquiryOpen(false)}
@@ -677,8 +756,11 @@ export default function NeumaschineDetail() {
           category: machine.category,
           priceLabel,
           image: images[0] || absoluteImages[0] || null,
+          configOptions: options.length > 0 ? options.map((o) => ({ name: o.name, price: o.price, note: o.note })) : undefined,
+          initialConfig: selectedConfig || undefined,
         }}
       />
+
     </Layout>
   );
 }

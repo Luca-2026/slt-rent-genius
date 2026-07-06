@@ -22,6 +22,8 @@ interface Props {
     category?: string | null;
     priceLabel: string;
     image?: string | null;
+    configOptions?: { name: string; price: string; note?: string }[];
+    initialConfig?: string;
   };
 }
 
@@ -39,6 +41,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
     /baumax/i.test(machine.brand) && /kde550/i.test(machine.slug);
 
   const [addonAnhaengerkupplung, setAddonAnhaengerkupplung] = useState(false);
+  const [selectedConfig, setSelectedConfig] = useState<string>(machine.initialConfig || machine.configOptions?.[0]?.name || "");
 
   // Block 2 — Lieferung
   const [lieferOption, setLieferOption] = useState("");
@@ -91,8 +94,11 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
     if (open) {
       setView("form");
       setErrors({});
+      setSelectedConfig(machine.initialConfig || machine.configOptions?.[0]?.name || "");
     }
-  }, [open]);
+  }, [open, machine.initialConfig, machine.configOptions]);
+
+  const hasConfig = Array.isArray(machine.configOptions) && machine.configOptions.length > 0;
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -129,9 +135,9 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
         body: {
           marke: machine.brand,
           produktkategorie: machine.category || machine.name,
-          modell: `${machine.brand} ${machine.model} – ${machine.name}`,
+          modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}`,
           anzahl: "1",
-          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}`,
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}`,
           lieferOption,
           strasse: lieferStrasse,
           plz: lieferPlz,
@@ -155,7 +161,10 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
           rechnungLand,
           nachricht,
           wieGefunden: "Produktseite Neumaschine",
-          addons: isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : [],
+          addons: [
+            ...(isBaumaxDumper && addonAnhaengerkupplung ? ["Anhängerkupplung"] : []),
+            ...(hasConfig && selectedConfig ? [`Konfiguration: ${selectedConfig}`] : []),
+          ],
         },
       });
       if (error) throw error;
@@ -224,6 +233,39 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                     <p className="text-xs text-primary font-semibold mt-0.5">{machine.priceLabel}</p>
                   </div>
                 </div>
+
+                {hasConfig && (
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <p className="font-semibold text-foreground text-sm mb-2">Konfiguration wählen *</p>
+                    <div className="space-y-2">
+                      {machine.configOptions!.map((opt) => (
+                        <label
+                          key={opt.name}
+                          className={`flex items-start gap-3 p-2.5 rounded-md border cursor-pointer transition-colors ${
+                            selectedConfig === opt.name ? "border-primary bg-background" : "border-border bg-background/60 hover:border-primary/40"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="hercu-config-modal"
+                            checked={selectedConfig === opt.name}
+                            onChange={() => setSelectedConfig(opt.name)}
+                            className="mt-1 accent-primary"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                              <span className="font-semibold text-foreground text-sm">{opt.name}</span>
+                              <span className="text-sm font-bold text-primary">{opt.price}</span>
+                            </div>
+                            {opt.note && <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{opt.note}</p>}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+
 
                 {isBaumaxDumper && (
                   <div className="rounded-lg border border-accent/40 bg-accent/5 p-3">

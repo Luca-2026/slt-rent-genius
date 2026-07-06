@@ -5,11 +5,13 @@ import { useTranslation } from "react-i18next";
 import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
 import baumaxLogo from "@/assets/logos/baumax-sm.webp";
+import hercuLogo from "@/assets/logos/hercu-sm.webp";
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconHebebuehne from "@/assets/icons/category-hebebuehne.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
 import iconAnhaenger from "@/assets/icons/category-anhaenger.png";
 import iconWerkzeug from "@/assets/icons/werkzeug.png";
+import iconKabel from "@/assets/icons/category-kabel.png";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -64,22 +66,29 @@ const kategorienByMarke: Record<string, string[]> = {
     "Pferdeanhänger",
     "Sonstiger Temared-Anhänger",
   ],
+  Hercu: [
+    "Erdrakete HP55 KRT (Ø 55 mm)",
+    "Sonstige Hercu Erdrakete",
+    "Hercu Zubehör (Schlauch, Öl, Nebelöler)",
+  ],
 };
 
 const brandIcons = {
   zoomlion: [iconBagger, iconBagger, iconBagger, iconHebebuehne, iconHebebuehne],
   baumax: [iconVerdichtung, iconVerdichtung, iconVerdichtung, iconBagger, iconWerkzeug, iconWerkzeug],
   temared: [iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger],
+  hercu: [iconKabel, iconKabel, iconWerkzeug],
 };
 
-const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo };
+const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo, hercu: hercuLogo };
 const brandWebsites = {
   zoomlion: "https://www.zoomlion-nrw.de",
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
+  hercu: "https://www.hercu.de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED" };
-const brandKeys = ["zoomlion", "baumax", "temared"] as const;
+const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", hercu: "HERCU" };
+const brandKeys = ["zoomlion", "baumax", "temared", "hercu"] as const;
 
 const uspIcons = [Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package];
 const uspKeys = ["dealer", "service", "delivery", "consulting", "rentToBuy", "spareParts"];
@@ -98,6 +107,7 @@ const jsonLdAutoDealer = {
     { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
+    { "@type": "Brand", name: "Hercu", url: "https://www.hercu.de" },
   ],
   address: [
     { "@type": "PostalAddress", streetAddress: "Drachenburgstraße 8", addressLocality: "Bonn", addressRegion: "NRW", postalCode: "53179", addressCountry: "DE" },
@@ -119,12 +129,14 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
+      { "@type": "OfferCatalog", name: "Hercu Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte für grabenlose Kabel- und Rohrverlegung" },
     ],
   },
   makesOffer: [
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu Erdraketen HP-Serie", category: "Erdrakete / Bodendurchschlagsgerät" } },
   ],
 };
 
@@ -132,6 +144,7 @@ const brandDbNames: Record<string, string> = {
   zoomlion: "Zoomlion",
   baumax: "BAUMAX",
   temared: "Temared",
+  hercu: "Hercu",
 };
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
