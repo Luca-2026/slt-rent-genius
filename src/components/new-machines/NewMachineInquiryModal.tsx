@@ -234,6 +234,39 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                   </div>
                 </div>
 
+                {hasConfig && (
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <p className="font-semibold text-foreground text-sm mb-2">Konfiguration wählen *</p>
+                    <div className="space-y-2">
+                      {machine.configOptions!.map((opt) => (
+                        <label
+                          key={opt.name}
+                          className={`flex items-start gap-3 p-2.5 rounded-md border cursor-pointer transition-colors ${
+                            selectedConfig === opt.name ? "border-primary bg-background" : "border-border bg-background/60 hover:border-primary/40"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="hercu-config-modal"
+                            checked={selectedConfig === opt.name}
+                            onChange={() => setSelectedConfig(opt.name)}
+                            className="mt-1 accent-primary"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                              <span className="font-semibold text-foreground text-sm">{opt.name}</span>
+                              <span className="text-sm font-bold text-primary">{opt.price}</span>
+                            </div>
+                            {opt.note && <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{opt.note}</p>}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+
+
                 {isBaumaxDumper && (
                   <div className="rounded-lg border border-accent/40 bg-accent/5 p-3">
                     <p className="font-semibold text-foreground text-sm mb-2">Optionales Zubehör</p>
