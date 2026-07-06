@@ -526,9 +526,9 @@ export default function Neumaschinen() {
     <Layout>
       <SEO
         title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
-        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und SLT-Erdraketen vom Fachhändler mit Garantie, Service und Lieferung."
+        description="Neue Baumaschinen, Anhänger, Erdraketen und Zubehör kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Steinsägen, Fugenschneider, PKW-Anhänger und Hercu-Erdraketen (Bodendurchschlagsgeräte) vom autorisierten Fachhändler mit Garantie, Service und Lieferung."
         canonical="/verkauf/neumaschinen"
-        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
+        keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Hercu Erdrakete kaufen, Bodendurchschlagsgerät kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
         ogType="website"
         jsonLd={[
           {
