@@ -4434,7 +4434,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     description: "Kompakte Eiswürfelmaschine für Events, Bar und Zuhause. Vollautomatisch, mit integriertem Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel in wenigen Minuten.",
     image: sltEiswuerfelbereiter1,
     images: [sltEiswuerfelbereiter1],
-    category: "geschirr",
+    category: "kuechengeraet",
     detailedDescription:
       "Kompakter SLT Eiswürfelbereiter zum Mieten – die praktische Eiswürfelmaschine für Hochzeiten, Firmenfeiern, Gartenpartys, Foodtrucks, Messestände und den privaten Haushalt. Das freistehende Tischgerät produziert Eiswürfel vollautomatisch aus dem integrierten Wassertank, ohne festen Wasseranschluss. So lässt es sich flexibel überall dort aufstellen, wo Strom vorhanden ist – auf der Theke, im Cateringzelt oder im Getränkeausschank.\n\nDie Bedienung erfolgt über ein übersichtliches Tastenfeld: Wasser einfüllen, Knopf drücken – nach wenigen Minuten sind die ersten Eiswürfel fertig. Sensoren stoppen die Produktion automatisch, wenn der Wassertank leer oder der Eiswürfelkorb voll ist. Ein Sichtfenster im Deckel zeigt jederzeit den Füllstand. Der entnehmbare Eiskorb und das Ablaufventil erleichtern Entnahme, Umfüllen in einen Getränkekühler und Reinigung.\n\nDas Gerät ist an unserem Hauptsitz Krefeld und an unserer Filiale Bonn direkt buchbar. Für Mülheim an der Ruhr disponieren wir es kurzfristig aus dem Hauptsitz Krefeld.",
     specifications: {
