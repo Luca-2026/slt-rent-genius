@@ -5086,23 +5086,6 @@ export const leiternGeruesteProducts: Product[] = [
 export const kabelStromverteilerProducts: Product[] = [
   // Stromverteiler
   {
-    id: "cee-16a-uv-5xschuko",
-    name: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko",
-    description: "Verteiler CEE 16A auf 5x Schuko",
-    image: cee16aUv5xSchuko1,
-    images: [cee16aUv5xSchuko1],
-    category: "stromverteiler",
-    specifications: {
-      "Produktmaße": "120 x 47 x 44 mm",
-      "Input": "CEE 16A männlich 5-pol",
-      "Max. Ladung": "3 x 16A",
-      "Output": "5x Schutzkontakt",
-      "IP-Klassifizierung": "IP-44",
-      "Kabellänge": "1,5 m",
-    },
-    rentwareCode: { krefeld: "7C1I5T" }
-  },
-  {
     id: "cee-16a-uv-3xschuko",
     name: "CEE 16A UV auf 3x 16A Schuko",
     description: "mit 16 A CEE-Eingang und 3 Schutzkontakt-Ausgängen",
