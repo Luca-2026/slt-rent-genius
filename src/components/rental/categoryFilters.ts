@@ -298,6 +298,7 @@ export const geschirrFilterSections: FilterSection[] = [
       { id: "geschirr", label: "catFilters.geschirr", sublabel: "catFilters.geschirr_sub" },
       { id: "glaeser", label: "catFilters.glaeser", sublabel: "catFilters.glaeser_sub" },
       { id: "besteck", label: "catFilters.besteck", sublabel: "catFilters.besteck_sub" },
+      { id: "kuechengeraet", label: "catFilters.kuechengeraet", sublabel: "catFilters.kuechengeraet_sub" },
       { id: "zubehoer", label: "catFilters.zubehoer_geschirr", sublabel: "catFilters.zubehoer_geschirr_sub" },
     ],
   },

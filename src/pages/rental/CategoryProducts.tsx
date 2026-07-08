@@ -554,7 +554,8 @@ export default function CategoryProducts() {
                   "geschirr": ["geschirr", "teller", "schuessel", "tassen"],
                   "glaeser": ["glaeser", "glas"],
                   "besteck": ["besteck"],
-                  "zubehoer": ["spuelmaschine", "warmhaltegeraet", "zubehoer"],
+                  "kuechengeraet": ["kuechengeraet", "eiswuerfelmaschine", "spuelmaschine", "warmhaltegeraet"],
+                  "zubehoer": ["zubehoer"],
                 };
                 const aggregateTypeGroups: Record<string, string[]> = {
                   "aggregat": ["aggregat"],
@@ -598,10 +599,12 @@ export default function CategoryProducts() {
                   // Fallback: name-based matching for geschirr/glaeser/besteck products
                   if (category?.id === "geschirr-glaeser-besteck") {
                     const nameLower = p.name.toLowerCase();
-                    if (value === "glaeser") return !nameLower.includes("aschenbecher") && (nameLower.includes("glas") || nameLower.includes("gläser") || nameLower.includes("weißwein") || nameLower.includes("weisswein") || nameLower.includes("rotwein") || nameLower.includes("champagner") || nameLower.includes("longdrink") || nameLower.includes("wasser") || nameLower.includes("bier"));
-                    if (value === "geschirr") return nameLower.includes("teller") || nameLower.includes("schüssel") || nameLower.includes("schuessel") || nameLower.includes("tasse") || nameLower.includes("untertasse") || nameLower.includes("suppenteller");
+                    const isKuechengeraet = nameLower.includes("eiswürfel") || nameLower.includes("eiswuerfel") || nameLower.includes("ice maker") || nameLower.includes("spülmaschine") || nameLower.includes("spuelmaschine") || nameLower.includes("warmhalte") || nameLower.includes("tellerwärmer") || nameLower.includes("tellerwaermer") || nameLower.includes("buffet");
+                    if (value === "kuechengeraet") return isKuechengeraet;
+                    if (value === "glaeser") return !isKuechengeraet && !nameLower.includes("aschenbecher") && (nameLower.includes("glas") || nameLower.includes("gläser") || nameLower.includes("weißwein") || nameLower.includes("weisswein") || nameLower.includes("rotwein") || nameLower.includes("champagner") || nameLower.includes("longdrink") || nameLower.includes("wasser") || nameLower.includes("bier"));
+                    if (value === "geschirr") return !isKuechengeraet && (nameLower.includes("teller") || nameLower.includes("schüssel") || nameLower.includes("schuessel") || nameLower.includes("tasse") || nameLower.includes("untertasse") || nameLower.includes("suppenteller"));
                     if (value === "besteck") return nameLower.includes("messer") || nameLower.includes("gabel") || nameLower.includes("löffel") || nameLower.includes("loeffel") || nameLower.includes("besteck");
-                    if (value === "zubehoer") return nameLower.includes("spülmaschine") || nameLower.includes("spuelmaschine") || nameLower.includes("warmhalte") || nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
+                    if (value === "zubehoer") return nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
                   }
                   return false;
                 }
