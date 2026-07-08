@@ -1,5 +1,8 @@
 // Krefeld location products - organized by category
 import sltEiswuerfelbereiter1 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-1.jpeg";
+import sltEiswuerfelmaschineProfi1 from "@/assets/products/geschirr/slt-frostmaster-1.jpg";
+import sltEiswuerfelmaschineProfi2 from "@/assets/products/geschirr/slt-frostmaster-2.jpg";
+import sltEiswuerfelmaschineProfi3 from "@/assets/products/geschirr/slt-frostmaster-3.jpg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
