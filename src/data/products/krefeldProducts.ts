@@ -4425,8 +4425,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   },
   {
     id: "slt-eiswuerfelbereiter",
-    name: "SLT Eiswürfelbereiter – Kompakte Eiswürfelmaschine",
-    modelName: "Eiswürfelbereiter kompakt (ca. 150 W)",
+    name: "SLT Eiswürfelbereiter kompakt – kleine Eiswürfelmaschine",
+    modelName: "Kompakt-Modell (ca. 150 W) – ideal für Bar, Hausbar & kleinere Feiern",
     description: "Kompakte Eiswürfelmaschine für Events, Bar und Zuhause. Vollautomatisch, mit integriertem Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel in wenigen Minuten.",
     image: sltEiswuerfelbereiter1,
     images: [sltEiswuerfelbereiter1],
