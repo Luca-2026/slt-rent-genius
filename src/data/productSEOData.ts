@@ -70,7 +70,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "slt-eiswuerfelbereiter": {
     excelName: "SLT Eiswürfelbereiter kompakt",
     seoTitle: "Eiswürfelmaschine mieten Krefeld – kompakt | SLT Rental",
-    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, faire Mietpreise, Beratung & Abholung. Auf Anfrage.",
+    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, direkt buchbar in Krefeld & Bonn, Mülheim auf Anfrage.",
     h1: "Kompakte Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
     h2s: [
       "Technische Daten & Ausstattung",
@@ -107,7 +107,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Ist der SLT Eiswürfelbereiter an allen drei Standorten verfügbar?",
-        a: "Ja, das Gerät ist über die Standorte Krefeld, Bonn und Mülheim an der Ruhr buchbar. Da die Buchung aktuell auf Anfrage läuft, prüfen wir Verfügbarkeit und Bereitstellung für Ihren Zeitraum kurzfristig und melden uns per E-Mail oder Telefon zurück.",
+        a: "Ja. An unserem Hauptsitz Krefeld und an unserer Filiale Bonn ist das Gerät direkt buchbar. Für Mülheim an der Ruhr disponieren wir es kurzfristig aus dem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden.",
       },
     ],
   },
