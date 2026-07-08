@@ -70,7 +70,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "slt-eiswuerfelbereiter": {
     excelName: "SLT Eiswürfelbereiter kompakt",
     seoTitle: "Eiswürfelmaschine mieten Krefeld – kompakt | SLT Rental",
-    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, faire Mietpreise, Beratung & Abholung. Auf Anfrage.",
+    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, direkt buchbar in Krefeld & Bonn, Mülheim auf Anfrage.",
     h1: "Kompakte Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
     h2s: [
       "Technische Daten & Ausstattung",
