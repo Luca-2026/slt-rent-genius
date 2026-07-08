@@ -2024,20 +2024,6 @@ $productSEOLookup = [
       ['q' => 'Wie viele Verbraucher kann ich gleichzeitig anschließen?', 'a' => 'Die maximale Gesamtlast entnehmen Sie bitte dem Produktnamen. Bitte addieren Sie die Leistungsaufnahme aller Verbraucher und bleiben Sie unter der angegebenen Nennleistung.'],
     ],
   ],
-  'cee-16a-uv-5xschuko' => [
-    'name' => 'CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko',
-    'h1' => 'CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
-    'h2s' => ['Anschlüsse & Absicherung', 'Einsatz auf Baustellen & Events', 'VDE-Konformität', 'Kombination mit Aggregaten'],
-    'useCaseBau' => 'Bauhauptverteilung, temporäre Stromversorgung, Übergabepunkt für Maschinen',
-    'useCaseEvent' => 'Festival-/Konzert-Powerdistribution, Messestände, Bühnen-Stromverteilung',
-    'useCasePrivat' => 'Großes Gartenfest, provisorische Hausinstallation bei Umbau',
-    'faqs' => [
-      ['q' => 'Welche Anschlüsse hat der Verteiler?', 'a' => 'Anschlüsse: 16 A männlich 5 pol Anschluss. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne.'],
-      ['q' => 'Muss ein Elektrofachmann den Anschluss vornehmen?', 'a' => 'Der Anschluss an das Netz (z. B. Baustromverteiler, Generator) sollte von einer Elektrofachkraft vorgenommen werden. Das Einstecken von Verbrauchern in die Ausgangssteckdosen ist für jeden Nutzer möglich.'],
-      ['q' => 'Ist ein FI-Schutzschalter verbaut?', 'a' => 'Ja – alle unsere Verteiler sind mit einem FI-Schutzschalter (RCD) nach VDE 0100 ausgestattet. Bei Auslösung des FI einfach die Last reduzieren und den Schutzschalter wieder einschalten.'],
-      ['q' => 'Wie viele Verbraucher kann ich gleichzeitig anschließen?', 'a' => 'Die maximale Gesamtlast entnehmen Sie bitte dem Produktnamen. Bitte addieren Sie die Leistungsaufnahme aller Verbraucher und bleiben Sie unter der angegebenen Nennleistung.'],
-    ],
-  ],
   'cee-32a-uv-6xschuko' => [
     'name' => 'CEE 32A UV auf 6x 16A Schuko',
     'h1' => 'CEE 32A UV auf 6x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental',
@@ -10328,18 +10314,6 @@ $productDetails = [
       'Höhe' => '1,50 m',
       'Passend für' => 'Krause STABILO Serie 10',
       'Material' => 'Aluminium',
-    ],
-  ],
-  'cee-16a-uv-5xschuko' => [
-    'name' => 'CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko',
-    'description' => 'Verteiler CEE 16A auf 5x Schuko',
-    'specs' => [
-      'Produktmaße' => '120 x 47 x 44 mm',
-      'Input' => 'CEE 16A männlich 5-pol',
-      'Max. Ladung' => '3 x 16A',
-      'Output' => '5x Schutzkontakt',
-      'IP-Klassifizierung' => 'IP-44',
-      'Kabellänge' => '1,5 m',
     ],
   ],
   'cee-16a-uv-3xschuko' => [
