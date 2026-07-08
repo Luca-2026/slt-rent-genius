@@ -666,7 +666,7 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "krause-vertikalrahmen-2x1-5m": { name: "Krause Vertical Frame 2.00 x 1.50 m", description: "Extension frame 2m" },
 
   // ===== CABLES & POWER DISTRIBUTION =====
-  "cee-16a-uv-5xschuko": { description: "Distributor CEE 16A to 5x Schuko" },
+  
   "cee-16a-uv-3xschuko": { description: "With 16A CEE input and 3 Schuko outputs" },
   "cee-32a-uv-6xschuko": { description: "Distributor CEE 32A to 6x Schuko" },
   "cee-63a-uv-2x32a-1x16a-6xschuko": { description: "Solid rubber distributor with CEE 63A input, 2x CEE 32A, 1x CEE 16A and 6x Schuko outputs" },

@@ -2444,23 +2444,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie groß ist der CEE 16A UV?", a: "Die Produktmaße betragen 165 x 190 x 85 mm." },
     ],
   },
-  "cee-16a-uv-5xschuko": {
-    excelName: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko",
-    seoTitle: "CEE 16A UV auf 5x 16A Schuko Stromverteiler",
-    metaDescription: "Mobiler Stromverteiler CEE 16A auf 5x Schuko mit 1,5 m Kabel und IP-44 Schutz für Baustellen und Events. Kompakte Maße: 120 x 47 x 44 mm.",
-    h1: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Technische Spezifikationen und Anschlusswerte", "Widerstandsfähige Bauweise für den Außeneinsatz", "Anwendungsbereiche des CEE-Verteilers"],
-    useCaseBau: "Der Verteiler ermöglicht die Stromverteilung auf Großbaustellen sowie die sichere Mehrfach-Abnahme von Aggregaten.",
-    useCaseEvent: "Dieses Modell wird zur Stromverteilung bei Outdoor-Events sowie zur Versorgung von Bühnen, Foodtrucks und Ständen eingesetzt.",
-    useCasePrivat: "",
-    primaryKeywords: "CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten in Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko leihen in Krefeld, CEE 16A UV (mit Anschlusskabel) auf 5x 16A Schuko mieten NRW",
-    is247: false,
-    faqs: [
-      { q: "Welche Schutzart bietet der Stromverteiler?", a: "Der CEE 16A UV Verteiler ist nach IP-44 klassifiziert und somit gegen Fremdkörper und Spritzwasser geschützt." },
-      { q: "Wie lang ist die integrierte Zuleitung?", a: "Das Gerät verfügt über ein fest angeschlossenes Anschlusskabel mit einer Länge von 1,5 Metern." },
-      { q: "Wie viele Ausgänge stehen zur Verfügung?", a: "Der Verteiler bietet fünf Schutzkontakt-Steckdosen bei einer maximalen Ladung von 3 x 16A." },
-    ],
-  },
   "cee-32a-uv-6xschuko": {
     excelName: "CEE 32A UV auf 6x 16A Schuko",
     seoTitle: "CEE 32A UV auf 6x 16A Schuko | Mietkatalog",
