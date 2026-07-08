@@ -35,6 +35,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Große Gartenpartys, Familienfeiern, Vereinsfeste – überall dort, wo herkömmliche Kompaktgeräte nicht mehr ausreichen.",
     primaryKeywords: "Profi Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter Gastronomie mieten, Eiswürfelmaschine 35 kg mieten NRW",
     is247: false,
+    dailyPriceFrom: 19,
     faqs: [
       {
         q: "Wie viel Eis produziert die Profi-Eiswürfelmaschine pro Tag?",
@@ -82,6 +83,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Gartenparty, Geburtstag, Grillabend, Silvester oder Hausbar – frische Eiswürfel ohne verstopftes Gefrierfach oder Plastikbeutel.",
     primaryKeywords: "Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter mieten in Krefeld, Eiswürfelmaschine leihen NRW",
     is247: false,
+    dailyPriceFrom: 9,
     faqs: [
       {
         q: "Wird ein fester Wasseranschluss benötigt?",
