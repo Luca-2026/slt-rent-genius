@@ -5115,7 +5115,7 @@ export const kabelStromverteilerProducts: Product[] = [
       "Max. Strom": "3 x 16 A",
       "Schutzart": "IP44",
     },
-    rentwareCode: { krefeld: "69PG1T" }
+    rentwareCode: { krefeld: "69PG1T", bonn: "7LPFYE" }
   },
   {
     id: "cee-32a-uv-6xschuko",
