@@ -19,6 +19,49 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
+  "slt-eiswuerfelbereiter": {
+    excelName: "SLT Eiswürfelbereiter",
+    seoTitle: "Eiswürfelmaschine mieten in Krefeld | SLT Rental",
+    metaDescription: "SLT Eiswürfelbereiter mieten in Krefeld – kompakte Eiswürfelmaschine für Hochzeit, Party & Event. Ohne Wasseranschluss, faire Mietpreise, Beratung & Abholung.",
+    h1: "Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
+    h2s: [
+      "Technische Daten & Ausstattung",
+      "Einsatzgebiete: Hochzeit, Party, Gastronomie",
+      "Aufstellung & Bedienung",
+      "Reinigung & Rückgabe",
+    ],
+    useCaseBau: "Kühle Getränke bei Richtfest, Baustellenübergabe oder Firmenfeier – überall, wo ein Stromanschluss vorhanden ist.",
+    useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Foodtrucks, Messeauftritte, Barbetrieb und Cateringzelte – schneller Nachschub an Eiswürfeln für Cocktails, Longdrinks, Softdrinks und Sekt-Kübel.",
+    useCasePrivat: "Gartenparty, Geburtstag, Grillabend, Silvester oder Hausbar – frische Eiswürfel ohne verstopftes Gefrierfach oder Plastikbeutel.",
+    primaryKeywords: "Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter mieten in Krefeld, Eiswürfelmaschine leihen NRW",
+    is247: false,
+    faqs: [
+      {
+        q: "Wird ein fester Wasseranschluss benötigt?",
+        a: "Nein. Der SLT Eiswürfelbereiter arbeitet mit einem integrierten Wassertank, den Sie manuell mit Leitungswasser befüllen. Sie brauchen nur eine Schuko-Steckdose (230 V) am Aufstellort.",
+      },
+      {
+        q: "Wie lange dauert es, bis die ersten Eiswürfel fertig sind?",
+        a: "Nach dem Einschalten produziert das Gerät die ersten Eiswürfel innerhalb weniger Minuten. Danach läuft die Produktion vollautomatisch weiter, solange Wasser im Tank ist und der Eiskorb nicht voll ist.",
+      },
+      {
+        q: "Wie viele Eiswürfel schafft die Maschine pro Stunde?",
+        a: "Die genaue Ausbringungsmenge hängt von Umgebungstemperatur und gewählter Würfelgröße ab. Für größere Events (mehrere Hundert Gäste, viele Cocktails parallel) beraten wir Sie gerne zur Kombination mit einem zusätzlichen Getränkekühler oder Eisvorrat – rufen Sie uns dazu einfach kurz an.",
+      },
+      {
+        q: "Für welche Einsatzorte ist der Eiswürfelbereiter geeignet?",
+        a: "Innenräume, überdachte Außenbereiche, Cateringzelte, Foodtrucks, Hausbar, Büro oder Vereinsheim. Wichtig ist ein trockener, ebener Aufstellort mit Stromanschluss und ausreichend Belüftung, da das Gerät seitlich warme Abluft abgibt.",
+      },
+      {
+        q: "Wie muss das Gerät zurückgegeben werden?",
+        a: "Bitte geben Sie den Eiswürfelbereiter gereinigt und mit vollständig entleertem Wassertank zurück. Innenraum und Eiskorb einfach mit klarem Wasser ausspülen und trocken wischen. Bei stark verschmutzter Rückgabe berechnen wir eine Reinigungspauschale.",
+      },
+      {
+        q: "Ist der SLT Eiswürfelbereiter an allen drei Standorten verfügbar?",
+        a: "Ja, das Gerät ist über die Standorte Krefeld, Bonn und Mülheim an der Ruhr buchbar. Da die Buchung aktuell auf Anfrage läuft, prüfen wir Verfügbarkeit und Bereitstellung für Ihren Zeitraum kurzfristig und melden uns per E-Mail oder Telefon zurück.",
+      },
+    ],
+  },
   "adj-fog-fury-jett-pro": {
     excelName: "ADJ Fog Fury Jett PRO",
     seoTitle: "ADJ Fog Fury Jett PRO mieten in Krefeld | SLT Rental",
