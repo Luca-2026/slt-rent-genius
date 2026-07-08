@@ -1767,6 +1767,16 @@ export const bonnStromProducts = [
     image: "/placeholder.svg",
     rentwareCode: { bonn: "G9R37U" },
   },
+  {
+    // Explizite Bonn-Entry mit Krefeld-ID: erzwingt exakten ID-Match in
+    // mergeWithFallback und verhindert, dass das Produkt vom Fuzzy-Modell
+    // "x16a" (aus "…6x 16A Schuko") fälschlich verdrängt wird.
+    id: "cee-16a-uv-3xschuko",
+    name: "CEE 16A UV auf 3x 16A Schuko",
+    description: "mit 16 A CEE-Eingang und 3 Schutzkontakt-Ausgängen",
+    image: "/placeholder.svg",
+    rentwareCode: { bonn: "7LPFYE" },
+  },
 ];
 
 // ==================== LEITERN & GERÜSTE ====================
