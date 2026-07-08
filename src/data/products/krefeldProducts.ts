@@ -4423,6 +4423,40 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
     },
     rentwareCode: { krefeld: "LKA1DW" }
   },
+  {
+    id: "slt-eiswuerfelbereiter",
+    name: "SLT Eiswürfelbereiter – Kompakte Eiswürfelmaschine",
+    modelName: "Eiswürfelbereiter kompakt (ca. 150 W)",
+    description: "Kompakte Eiswürfelmaschine für Events, Bar und Zuhause. Vollautomatisch, mit integriertem Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel in wenigen Minuten.",
+    image: sltEiswuerfelbereiter1,
+    images: [sltEiswuerfelbereiter1],
+    category: "geschirr",
+    onRequest: true,
+    detailedDescription:
+      "Kompakter SLT Eiswürfelbereiter zum Mieten – die praktische Eiswürfelmaschine für Hochzeiten, Firmenfeiern, Gartenpartys, Foodtrucks, Messestände und den privaten Haushalt. Das freistehende Tischgerät produziert Eiswürfel vollautomatisch aus dem integrierten Wassertank, ohne festen Wasseranschluss. So lässt es sich flexibel überall dort aufstellen, wo Strom vorhanden ist – auf der Theke, im Cateringzelt oder im Getränkeausschank.\n\nDie Bedienung erfolgt über ein übersichtliches Tastenfeld: Wasser einfüllen, Knopf drücken – nach wenigen Minuten sind die ersten Eiswürfel fertig. Sensoren stoppen die Produktion automatisch, wenn der Wassertank leer oder der Eiswürfelkorb voll ist. Ein Sichtfenster im Deckel zeigt jederzeit den Füllstand. Der entnehmbare Eiskorb und das Ablaufventil erleichtern Entnahme, Umfüllen in einen Getränkekühler und Reinigung.\n\nDas Gerät ist über alle drei SLT-Standorte Krefeld, Bonn und Mülheim an der Ruhr buchbar. Aktuell auf Anfrage verfügbar – wir prüfen die Verfügbarkeit für Ihren Mietzeitraum und melden uns kurzfristig zurück.",
+    specifications: {
+      "Geräteart": "Freistehende Eiswürfelmaschine (Ice Maker), Tischgerät",
+      "Gehäusefarbe": "Schwarz",
+      "Material": "Kunststoff / Edelstahl",
+      "Abmessungen (B×H×T)": "ca. 27 × 29,5 × 33,5 cm",
+      "Leistung": "ca. 150 W",
+      "Spannung": "230 V (Schuko-Steckdose)",
+      "Wasserversorgung": "Integrierter Wassertank – kein Festwasseranschluss nötig",
+      "Ausstattung": "Entnehmbarer Eiswürfelkorb, transparentes Sichtfenster im Deckel, Kontrollanzeigen (Wasser leer / Eis voll)",
+      "Automatik": "Automatische Abschaltung bei leerem Tank oder vollem Korb",
+      "Aufstellort": "Bar-/Küchentheke, Cateringzelt, Foodtruck, Büro, Hausbar",
+      "Verfügbarkeit": "Auf Anfrage an den Standorten Krefeld, Bonn und Mülheim an der Ruhr",
+    },
+    features: [
+      "Vollautomatische Eiswürfelproduktion",
+      "Erste Eiswürfel nach wenigen Minuten",
+      "Kein Wasseranschluss nötig – flexibler Aufstellort",
+      "Automatische Abschaltung bei vollem Korb / leerem Tank",
+      "Sichtfenster im Deckel zur Füllstandskontrolle",
+      "Entnehmbarer Eiskorb, einfach zu reinigen",
+    ],
+    tags: ["event", "hochzeit", "gastronomie", "bar"],
+  },
 ];
 
 // ============= HÜPFBURGEN =============
