@@ -19,11 +19,58 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
+  "slt-eiswuerfelmaschine-profi-35kg": {
+    excelName: "SLT Eiswürfelmaschine Profi 35 kg/24 h",
+    seoTitle: "Profi-Eiswürfelmaschine mieten Krefeld – 35 kg/Tag | SLT",
+    metaDescription: "Profi-Eiswürfelmaschine mieten in Krefeld: 35 kg Eis pro Tag, Edelstahl, mit oder ohne Wasseranschluss. Ideal für Gastronomie, Catering & Hochzeit. Auf Anfrage buchbar.",
+    h1: "Profi-Eiswürfelmaschine mieten in Krefeld – 35 kg Eis pro Tag",
+    h2s: [
+      "Leistung & Kapazität für den Profi-Einsatz",
+      "Mit oder ohne Festwasseranschluss betreiben",
+      "Einsatz in Gastronomie, Catering und auf Events",
+      "Bedienung, Reinigung & Hygiene",
+    ],
+    useCaseBau: "Kaltgetränke-Versorgung für Baustelleneröffnungen, Richtfeste und Mitarbeiter-Events im Sommer – auch bei mehreren Hundert Gästen.",
+    useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Cateringbetriebe, Bars, Restaurants, Cafés und Hotels. Ein Gerät versorgt mehrere Cocktail-Stationen gleichzeitig mit klaren Würfeln in wählbarer Größe.",
+    useCasePrivat: "Große Gartenpartys, Familienfeiern, Vereinsfeste – überall dort, wo herkömmliche Kompaktgeräte nicht mehr ausreichen.",
+    primaryKeywords: "Profi Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter Gastronomie mieten, Eiswürfelmaschine 35 kg mieten NRW",
+    is247: false,
+    faqs: [
+      {
+        q: "Wie viel Eis produziert die Profi-Eiswürfelmaschine pro Tag?",
+        a: "Die Maschine schafft bis zu 35 kg Eiswürfel pro 24 Stunden. Pro Zyklus (ca. 15 Minuten) entstehen bis zu 34 Würfel. Damit reicht ein Gerät auch für größere Hochzeiten oder eine Bar mit hohem Cocktail-Aufkommen.",
+      },
+      {
+        q: "Muss ich das Gerät an die Wasserleitung anschließen?",
+        a: "Nein, beides ist möglich. Wenn ein Wasseranschluss vorhanden ist, wird der mitgelieferte Zu- und Ablaufschlauch angeschlossen und die Maschine läuft dank Automatik-Wassernachfüller im Dauerbetrieb. Ist kein Festwasseranschluss vorhanden (z. B. im Zelt, Foodtruck oder auf einer Freifläche), kann sie über den integrierten Wassertank auch manuell befüllt und betrieben werden.",
+      },
+      {
+        q: "Welche Eiswürfelgrößen kann ich einstellen?",
+        a: "Die Größe ist am LED-Bedienfeld in drei Stufen wählbar: klein, mittel und groß. So passt das Eis zum Getränk – kleine Würfel für Softdrinks und Smoothies, mittlere für Longdrinks, große für Cocktails, Sekt-Kübel und Whiskey.",
+      },
+      {
+        q: "Ist das Gerät für den gewerblichen Einsatz zugelassen?",
+        a: "Das Gehäuse besteht aus lebensmittelechtem Edelstahl, alle wasserführenden Oberflächen sind geschmacks- und geruchsneutral und leicht zu reinigen. Als Kältemittel kommt umweltfreundliches R290 zum Einsatz. Damit eignet sich die Maschine für Gastronomie, Catering, Hotellerie und den Barbetrieb.",
+      },
+      {
+        q: "Welche Stromversorgung benötigt die Maschine?",
+        a: "Der Anschluss erfolgt über eine normale Schuko-Steckdose (230 V). Ein zusätzliches Aggregat oder ein CEE-Anschluss ist nicht erforderlich.",
+      },
+      {
+        q: "Wie unterscheidet sich das Profi-Modell vom kompakten Eiswürfelbereiter?",
+        a: "Das Profi-Modell mit 35 kg/Tag ist für den gewerblichen Dauerbetrieb ausgelegt: Edelstahlgehäuse, Automatik-Nachfüller, optionaler Wasseranschluss und drei wählbare Würfelgrößen. Der kompakte SLT Eiswürfelbereiter ist die kleinere Variante für Hausbar, Büro und kleinere Feiern – ohne Anschluss an die Wasserleitung, aber mit geringerer Tageskapazität.",
+      },
+      {
+        q: "Ist die Profi-Eiswürfelmaschine an allen SLT-Standorten verfügbar?",
+        a: "Ja, das Gerät ist über die Standorte Krefeld, Bonn und Mülheim an der Ruhr buchbar. Da die Vermietung aktuell auf Anfrage läuft, prüfen wir Verfügbarkeit und Bereitstellung für Ihren Zeitraum kurzfristig und melden uns per E-Mail oder Telefon zurück.",
+      },
+    ],
+  },
   "slt-eiswuerfelbereiter": {
-    excelName: "SLT Eiswürfelbereiter",
-    seoTitle: "Eiswürfelmaschine mieten in Krefeld | SLT Rental",
-    metaDescription: "SLT Eiswürfelbereiter mieten in Krefeld – kompakte Eiswürfelmaschine für Hochzeit, Party & Event. Ohne Wasseranschluss, faire Mietpreise, Beratung & Abholung.",
-    h1: "Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
+    excelName: "SLT Eiswürfelbereiter kompakt",
+    seoTitle: "Eiswürfelmaschine mieten Krefeld – kompakt | SLT Rental",
+    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, faire Mietpreise, Beratung & Abholung. Auf Anfrage.",
+    h1: "Kompakte Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
     h2s: [
       "Technische Daten & Ausstattung",
       "Einsatzgebiete: Hochzeit, Party, Gastronomie",
