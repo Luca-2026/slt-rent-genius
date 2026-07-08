@@ -1,5 +1,8 @@
 // Krefeld location products - organized by category
 import sltEiswuerfelbereiter1 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-1.jpeg";
+import sltEiswuerfelmaschineProfi1 from "@/assets/products/geschirr/slt-frostmaster-1.jpg";
+import sltEiswuerfelmaschineProfi2 from "@/assets/products/geschirr/slt-frostmaster-2.jpg";
+import sltEiswuerfelmaschineProfi3 from "@/assets/products/geschirr/slt-frostmaster-3.jpg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
 import bierglas02_1 from "@/assets/products/geschirr/bierglas-02-1.jpeg";
 import champagnerBrunelli1 from "@/assets/products/geschirr/champagnerglas-brunelli-1.jpeg";
@@ -4425,8 +4428,8 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
   },
   {
     id: "slt-eiswuerfelbereiter",
-    name: "SLT Eiswürfelbereiter – Kompakte Eiswürfelmaschine",
-    modelName: "Eiswürfelbereiter kompakt (ca. 150 W)",
+    name: "SLT Eiswürfelbereiter kompakt – kleine Eiswürfelmaschine",
+    modelName: "Kompakt-Modell (ca. 150 W) – ideal für Bar, Hausbar & kleinere Feiern",
     description: "Kompakte Eiswürfelmaschine für Events, Bar und Zuhause. Vollautomatisch, mit integriertem Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel in wenigen Minuten.",
     image: sltEiswuerfelbereiter1,
     images: [sltEiswuerfelbereiter1],
@@ -4456,6 +4459,49 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Entnehmbarer Eiskorb, einfach zu reinigen",
     ],
     tags: ["event", "hochzeit", "gastronomie", "bar"],
+  },
+  {
+    id: "slt-eiswuerfelmaschine-profi-35kg",
+    name: "SLT Eiswürfelmaschine Profi – 35 kg/24 h Edelstahl",
+    modelName: "Profi-Modell 35 kg/Tag – für Gastronomie, Bar & Großevents",
+    description: "Professionelle Eiswürfelmaschine mit bis zu 35 kg Eis pro Tag – 34 Eiswürfel in nur 15 Minuten. Edelstahlgehäuse, LED-Bedienfeld, drei Würfelgrößen. Auch ohne Festwasseranschluss betreibbar.",
+    image: sltEiswuerfelmaschineProfi1,
+    images: [sltEiswuerfelmaschineProfi1, sltEiswuerfelmaschineProfi2, sltEiswuerfelmaschineProfi3],
+    category: "geschirr",
+    onRequest: true,
+    detailedDescription:
+      "Die große Profi-Variante unserer Eiswürfelmaschinen zum Mieten – konzipiert für den professionellen Dauereinsatz in Gastronomie, Catering, Bar- und Eventbetrieb. Mit einer Tageskapazität von bis zu 35 kg Eiswürfeln pro 24 Stunden versorgt ein einziges Gerät mehrere Zapfstellen und Cocktail-Stationen gleichzeitig – ohne Abhängigkeit vom Packeis-Lieferanten.\n\nDer eingebaute Kompressor mit Kältemittel R290 arbeitet kontinuierlich und ohne Vorkühlzeit. Pro Zyklus entstehen in nur 15 Minuten bis zu 34 klare Eiswürfel. Über das beleuchtete LED-Bedienfeld lässt sich die Würfelgröße in drei Stufen (klein / mittel / groß) wählen – passend für Softdrinks, Longdrinks, Cocktails oder Smoothies. Alle wasserführenden Oberflächen sind geschmacks- und geruchsneutral, das Edelstahlgehäuse entspricht den Hygieneanforderungen der Lebensmittelindustrie und lässt sich einfach reinigen.\n\nBesonders praktisch für den mobilen Einsatz: Das Gerät kann direkt über den mitgelieferten Zu- und Ablaufschlauch an eine Wasserleitung angeschlossen werden – dank Automatik-Wassernachfüller läuft es dann unterbrechungsfrei im Dauerbetrieb. Genauso funktioniert es aber auch ohne Festwasseranschluss über die manuelle Wasserbefüllung, ideal für Locations, an denen kein Wasseranschluss verfügbar ist (Zelt, Foodtruck, Freifläche).\n\nHöhenverstellbare Standfüße gleichen unebene Untergründe aus, der geräuscharme Betrieb ist auch in Gasträumen und offenen Küchen komfortabel. Verfügbar auf Anfrage über alle drei SLT-Standorte Krefeld, Bonn und Mülheim an der Ruhr – wir prüfen die Verfügbarkeit für Ihren Zeitraum und melden uns kurzfristig mit einem Angebot zurück.",
+    specifications: {
+      "Geräteart": "Freistehende Profi-Eiswürfelmaschine, Tischgerät",
+      "Gehäusefarbe": "Silber / Edelstahl",
+      "Material": "Lebensmittelechter Edelstahl",
+      "Tageskapazität": "ca. 35 kg Eiswürfel pro 24 Stunden",
+      "Zyklusleistung": "Bis zu 34 Eiswürfel je Zyklus",
+      "Zyklusdauer": "ca. 15 Minuten",
+      "Wassertank": "3 Liter",
+      "Würfelgrößen": "Klein / Mittel / Groß wählbar",
+      "Kältemittel": "R290 (natürliches, umweltfreundliches Kältemittel)",
+      "Bedienung": "LED-Bedienfeld mit Timer, Clean- und Deice-Funktion",
+      "Wasserversorgung": "Direkter Festwasseranschluss (Zu-/Ablaufschlauch im Lieferumfang) ODER manueller Betrieb ohne Wasseranschluss",
+      "Automatik": "Automatischer Wassernachfüller für unterbrechungsfreien Dauerbetrieb",
+      "Standfüße": "Höhenverstellbar für sicheren Stand auf unebenem Untergrund",
+      "Anschluss": "230 V (Schuko-Steckdose)",
+      "Einsatzbereich": "Gastronomie, Catering, Bar, Hotel, Event, Hochzeit, Firmenfeier",
+      "Verfügbarkeit": "Auf Anfrage an den Standorten Krefeld, Bonn und Mülheim an der Ruhr",
+    },
+    features: [
+      "Bis zu 35 kg Eiswürfel pro Tag – für Profi-Bedarf",
+      "34 Eiswürfel in nur 15 Minuten je Zyklus",
+      "Drei Würfelgrößen wählbar – passend für jeden Drink",
+      "Edelstahlgehäuse, lebensmittelecht und leicht zu reinigen",
+      "Wahlweise mit oder ohne Festwasseranschluss betreibbar",
+      "Automatischer Wassernachfüller für Dauerbetrieb",
+      "LED-Bedienfeld mit Timer und Clean-Funktion",
+      "Kältemittel R290 – umweltfreundlich",
+      "Geräuscharmer Betrieb auch im Gastraum",
+      "Höhenverstellbare Standfüße",
+    ],
+    tags: ["event", "hochzeit", "gastronomie", "bar", "catering", "profi"],
   },
 ];
 
