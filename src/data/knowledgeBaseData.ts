@@ -709,6 +709,19 @@ export const kbArticles: KBArticle[] = [
     tags: ["soundboks", "gen3", "anleitung", "pdf", "bedienungsanleitung", "beschallung"],
     updatedAt: "2026-04-04",
   },
+  {
+    id: "popcornmaschine-xl-profi-anleitung",
+    title: "XL Profi Popcornmaschine – Bedienungsanleitung (PDF)",
+    description: "Bedienungsanleitung für die XL Profi Popcornmaschine auf Nostalgiewagen: Inbetriebnahme, Zubereitung, empfohlene Mengen (Mais, Zucker, Öl), Reinigung und Sicherheitshinweise.",
+    categoryId: "event-technik",
+    productIds: ["popcornmaschine-xl-profi"],
+    type: "anleitung",
+    pdfUrl: "/manuals/popcornmaschine-bedienungsanleitung.pdf",
+    tags: ["popcorn", "popcornmaschine", "anleitung", "pdf", "bedienungsanleitung", "event"],
+    updatedAt: "2026-07-08",
+  },
+
+
 
   // Arbeitsbühnen
   {
