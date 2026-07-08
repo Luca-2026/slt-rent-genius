@@ -4460,6 +4460,7 @@ export const geschirrGlaeserBesteckProducts: Product[] = [
       "Entnehmbarer Eiskorb, einfach zu reinigen",
     ],
     tags: ["event", "hochzeit", "gastronomie", "bar"],
+    rentwareCode: { krefeld: "7GGNJB", bonn: "5ZOOLD" }
   },
   {
     id: "slt-eiswuerfelmaschine-profi-35kg",
