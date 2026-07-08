@@ -3459,6 +3459,7 @@ export const spezialeffekteProducts: Product[] = [
       "Lieferumfang": "Popcornmaschine, Nostalgiewagen, Maiseinsatz",
       "Besonderheit": "Maschine vom Wagen abnehmbar",
     },
+    pdfUrl: "/manuals/popcornmaschine-bedienungsanleitung.pdf",
     rentwareCode: { krefeld: "SPA843" }
   },
 ];
