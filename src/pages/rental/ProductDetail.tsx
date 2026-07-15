@@ -468,9 +468,9 @@ export default function ProductDetail() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.slt-rental.de" },
-          { "@type": "ListItem", "position": 2, "name": `Mieten ${location.name}`, "item": `https://www.slt-rental.de/mieten/${location.id}` },
-          { "@type": "ListItem", "position": 3, "name": category.title, "item": `https://www.slt-rental.de/mieten/${location.id}/${categoryId}` },
+          { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.slt-rental.de/" },
+          { "@type": "ListItem", "position": 2, "name": `Mieten ${location.name}`, "item": `https://www.slt-rental.de/mieten/${location.id}/` },
+          { "@type": "ListItem", "position": 3, "name": category.title, "item": `https://www.slt-rental.de/mieten/${location.id}/${categoryId}/` },
           { "@type": "ListItem", "position": 4, "name": product.name, "item": canonicalUrl },
         ],
       });
