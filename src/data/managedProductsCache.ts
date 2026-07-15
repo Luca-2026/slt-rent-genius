@@ -15,7 +15,18 @@ export interface ManagedProductCacheEntry {
 }
 
 let cache: ManagedProductCacheEntry[] = [];
+let version = 0;
 const listeners = new Set<() => void>();
+
+/** React-Hook: liefert eine Zahl, die sich bei jeder Cache-Änderung erhöht. */
+export function useManagedProductsVersion(): number {
+  return useSyncExternalStore(
+    (cb) => subscribeManagedProducts(cb),
+    () => version,
+    () => version,
+  );
+}
+
 
 export function setManagedProductsCache(entries: ManagedProductCacheEntry[]) {
   cache = entries;
