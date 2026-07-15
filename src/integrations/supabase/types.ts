@@ -529,6 +529,123 @@ export type Database = {
           },
         ]
       }
+      b2b_managed_products: {
+        Row: {
+          available_locations: string[]
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          detailed_description: string | null
+          drive_type: string | null
+          external_manual_url: string | null
+          features: string[]
+          id: string
+          images: string[]
+          is_published: boolean
+          min_rental_months: number | null
+          model_name: string | null
+          name: string
+          on_request: boolean
+          pdf_url: string | null
+          price_per_day: string | null
+          price_per_month: string | null
+          price_weekend: string | null
+          quantities: Json
+          quantity_notes: Json
+          rental_notes: string[]
+          rentware_code: Json
+          seo_faqs: Json
+          seo_local_content: Json
+          seo_meta_description: string | null
+          slug: string
+          sort_order: number | null
+          specifications: Json
+          tags: string[]
+          updated_at: string
+          updated_by: string | null
+          video_url: string | null
+          video_urls: string[]
+          weight_kg: number | null
+        }
+        Insert: {
+          available_locations?: string[]
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          detailed_description?: string | null
+          drive_type?: string | null
+          external_manual_url?: string | null
+          features?: string[]
+          id?: string
+          images?: string[]
+          is_published?: boolean
+          min_rental_months?: number | null
+          model_name?: string | null
+          name: string
+          on_request?: boolean
+          pdf_url?: string | null
+          price_per_day?: string | null
+          price_per_month?: string | null
+          price_weekend?: string | null
+          quantities?: Json
+          quantity_notes?: Json
+          rental_notes?: string[]
+          rentware_code?: Json
+          seo_faqs?: Json
+          seo_local_content?: Json
+          seo_meta_description?: string | null
+          slug: string
+          sort_order?: number | null
+          specifications?: Json
+          tags?: string[]
+          updated_at?: string
+          updated_by?: string | null
+          video_url?: string | null
+          video_urls?: string[]
+          weight_kg?: number | null
+        }
+        Update: {
+          available_locations?: string[]
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          detailed_description?: string | null
+          drive_type?: string | null
+          external_manual_url?: string | null
+          features?: string[]
+          id?: string
+          images?: string[]
+          is_published?: boolean
+          min_rental_months?: number | null
+          model_name?: string | null
+          name?: string
+          on_request?: boolean
+          pdf_url?: string | null
+          price_per_day?: string | null
+          price_per_month?: string | null
+          price_weekend?: string | null
+          quantities?: Json
+          quantity_notes?: Json
+          rental_notes?: string[]
+          rentware_code?: Json
+          seo_faqs?: Json
+          seo_local_content?: Json
+          seo_meta_description?: string | null
+          slug?: string
+          sort_order?: number | null
+          specifications?: Json
+          tags?: string[]
+          updated_at?: string
+          updated_by?: string | null
+          video_url?: string | null
+          video_urls?: string[]
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
       b2b_offer_items: {
         Row: {
           created_at: string
@@ -1680,6 +1797,108 @@ export type Database = {
           used_credit?: number | null
           user_id?: string | null
           vat_id_verified?: boolean | null
+        }
+        Relationships: []
+      }
+      managed_products_public: {
+        Row: {
+          available_locations: string[] | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          detailed_description: string | null
+          drive_type: string | null
+          external_manual_url: string | null
+          features: string[] | null
+          id: string | null
+          images: string[] | null
+          min_rental_months: number | null
+          model_name: string | null
+          name: string | null
+          on_request: boolean | null
+          pdf_url: string | null
+          price_per_day: string | null
+          price_per_month: string | null
+          price_weekend: string | null
+          rental_notes: string[] | null
+          rentware_code: Json | null
+          seo_faqs: Json | null
+          seo_local_content: Json | null
+          seo_meta_description: string | null
+          slug: string | null
+          sort_order: number | null
+          specifications: Json | null
+          tags: string[] | null
+          updated_at: string | null
+          video_url: string | null
+          video_urls: string[] | null
+          weight_kg: number | null
+        }
+        Insert: {
+          available_locations?: string[] | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          detailed_description?: string | null
+          drive_type?: string | null
+          external_manual_url?: string | null
+          features?: string[] | null
+          id?: string | null
+          images?: string[] | null
+          min_rental_months?: number | null
+          model_name?: string | null
+          name?: string | null
+          on_request?: boolean | null
+          pdf_url?: string | null
+          price_per_day?: string | null
+          price_per_month?: string | null
+          price_weekend?: string | null
+          rental_notes?: string[] | null
+          rentware_code?: Json | null
+          seo_faqs?: Json | null
+          seo_local_content?: Json | null
+          seo_meta_description?: string | null
+          slug?: string | null
+          sort_order?: number | null
+          specifications?: Json | null
+          tags?: string[] | null
+          updated_at?: string | null
+          video_url?: string | null
+          video_urls?: string[] | null
+          weight_kg?: number | null
+        }
+        Update: {
+          available_locations?: string[] | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          detailed_description?: string | null
+          drive_type?: string | null
+          external_manual_url?: string | null
+          features?: string[] | null
+          id?: string | null
+          images?: string[] | null
+          min_rental_months?: number | null
+          model_name?: string | null
+          name?: string | null
+          on_request?: boolean | null
+          pdf_url?: string | null
+          price_per_day?: string | null
+          price_per_month?: string | null
+          price_weekend?: string | null
+          rental_notes?: string[] | null
+          rentware_code?: Json | null
+          seo_faqs?: Json | null
+          seo_local_content?: Json | null
+          seo_meta_description?: string | null
+          slug?: string | null
+          sort_order?: number | null
+          specifications?: Json | null
+          tags?: string[] | null
+          updated_at?: string | null
+          video_url?: string | null
+          video_urls?: string[] | null
+          weight_kg?: number | null
         }
         Relationships: []
       }
