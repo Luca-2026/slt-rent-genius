@@ -333,17 +333,16 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       };
 
       if (initial) {
-        const { error } = await supabase
-          .from("b2b_managed_products" as never)
+        const { error } = await (supabase.from("b2b_managed_products" as never) as any)
           .update(payload)
           .eq("id", initial.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase
-          .from("b2b_managed_products" as never)
-          .insert({ ...payload, created_by: user?.id ?? null } as never);
+        const { error } = await (supabase.from("b2b_managed_products" as never) as any)
+          .insert({ ...payload, created_by: user?.id ?? null });
         if (error) throw error;
       }
+
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
       onSaved();
       onOpenChange(false);
