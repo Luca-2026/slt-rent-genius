@@ -86,11 +86,105 @@ async function fetchNewMachineRoutes(): Promise<SeoRoute[]> {
   }
 }
 
-const [usedMachineRoutes, newMachineRoutes] = await Promise.all([
+// ---------------------------------------------------------------
+// Fetch published CMS-managed rental products so prerendered HTML
+// (title, H1, description, breadcrumbs, product image) always reflects
+// the latest editor-published state. Without this override, the static
+// build freezes names/descriptions from src/data/**/*Products.ts.
+// ---------------------------------------------------------------
+interface ManagedProductRoutePayload {
+  slug: string;
+  name: string;
+  description: string | null;
+  category: string;
+  available_locations: string[];
+  images: string[] | null;
+  model_name: string | null;
+}
+
+async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
+  const url = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    console.warn("[exportRoutes] No Supabase env – skipping managed-product overrides");
+    return [];
+  }
+  try {
+    const endpoint =
+      `${url}/rest/v1/managed_products_public` +
+      `?select=slug,name,description,category,available_locations,images,model_name`;
+    const res = await fetch(endpoint, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) {
+      console.warn(`[exportRoutes] managed_products fetch failed: ${res.status}`);
+      return [];
+    }
+    return (await res.json()) as ManagedProductRoutePayload[];
+  } catch (err) {
+    console.warn(`[exportRoutes] managed_products fetch error: ${(err as Error).message}`);
+    return [];
+  }
+}
+
+const LOCATION_DISPLAY_FOR_OVERRIDE: Record<string, string> = {
+  krefeld: "Krefeld",
+  bonn: "Bonn",
+  muelheim: "Mülheim an der Ruhr",
+};
+function clampTitle(s: string, max = 60) {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const last = cut.lastIndexOf(" ");
+  return (last > 30 ? cut.slice(0, last) : cut).trim();
+}
+function clampDescription(s: string, max = 158) {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const last = cut.lastIndexOf(" ");
+  return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
+}
+
+const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all([
   fetchUsedMachineRoutes(),
   fetchNewMachineRoutes(),
+  fetchManagedProducts(),
 ]);
 const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes];
+
+// Apply CMS overrides on matching product routes (by path).
+if (managedProducts.length) {
+  const routeByPath = new Map<string, SeoRoute>();
+  for (const r of allRoutes) if (r.routeType === "product") routeByPath.set(r.path, r);
+  let overridden = 0;
+  for (const m of managedProducts) {
+    const image = m.images && m.images.length ? m.images[0] : undefined;
+    for (const loc of m.available_locations || []) {
+      const path = `/mieten/${loc}/${m.category}/${m.slug}`;
+      const route = routeByPath.get(path);
+      if (!route) continue;
+      const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
+      route.title = clampTitle(`${m.name} mieten in ${locName} | SLT Rental`);
+      route.h1 = `${m.name} mieten in ${locName}`;
+      if (m.description) route.description = clampDescription(m.description);
+      if (route.breadcrumbs && route.breadcrumbs.length) {
+        route.breadcrumbs[route.breadcrumbs.length - 1] = {
+          name: m.name,
+          path: route.path,
+        };
+      }
+      if (route.productData) {
+        route.productData.name = m.name;
+        if (m.description) route.productData.description = m.description;
+        if (image) route.productData.image = image;
+        if (m.model_name) route.productData.modelName = m.model_name;
+      }
+      overridden++;
+    }
+  }
+  console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows).`);
+}
+
 
 const enriched = allRoutes.map((route) => {
   // image fields from data-files may be webpack-resolved objects under
