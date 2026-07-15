@@ -158,8 +158,17 @@ export function AdminInventoryTab() {
                       <TableCell className="text-xs">
                         {["krefeld", "bonn", "muelheim"].map((l) => row.quantities?.[l] ?? "–").join(" / ")}
                       </TableCell>
-                      <TableCell className="text-xs">
-                        {["krefeld", "bonn", "muelheim"].filter((l) => row.rentware_code?.[l]).map((l) => l.slice(0, 1).toUpperCase()).join("") || "—"}
+                      <TableCell className="text-xs font-mono">
+                        {(() => {
+                          const codes = ["krefeld", "bonn", "muelheim"]
+                            .filter((l) => row.rentware_code?.[l])
+                            .map((l) => `${l.slice(0, 1).toUpperCase()}:${row.rentware_code?.[l]}`);
+                          return codes.length ? (
+                            <div className="flex flex-col gap-0.5">
+                              {codes.map((c) => <span key={c}>{c}</span>)}
+                            </div>
+                          ) : "—";
+                        })()}
                       </TableCell>
                       <TableCell>
                         {row.is_published
