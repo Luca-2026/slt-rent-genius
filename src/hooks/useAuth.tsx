@@ -38,7 +38,7 @@ interface AuthContextType {
   isAuthorizedPerson: boolean;
   authorizedPersonInfo: AuthorizedPersonInfo | null;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null; data: any }>;
+  signUp: (email: string, password: string, metadata?: Record<string, any>) => Promise<{ error: Error | null; data: any }>;
   signOut: () => Promise<void>;
   refreshB2BProfile: () => Promise<void>;
 }
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, metadata?: Record<string, any>) => {
     const redirectUrl = "https://www.slt-rental.de/";
     
     const { data, error } = await supabase.auth.signUp({
@@ -157,6 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password,
       options: {
         emailRedirectTo: redirectUrl,
+        data: metadata,
       },
     });
     return { error, data };
