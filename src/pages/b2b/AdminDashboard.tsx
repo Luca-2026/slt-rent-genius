@@ -1019,7 +1019,12 @@ export default function AdminDashboard() {
             <UserCog className="h-4 w-4" />
             <span className="hidden sm:inline">Mitarbeiter</span>
           </TabsTrigger>
+          <TabsTrigger value="inventory" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <Boxes className="h-4 w-4" />
+            <span className="hidden sm:inline">Inventar</span>
+          </TabsTrigger>
         </TabsList>
+
 
         {/* Tabs Content */}
          <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
