@@ -127,6 +127,24 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
   }
 }
 
+const LOCATION_DISPLAY_FOR_OVERRIDE: Record<string, string> = {
+  krefeld: "Krefeld",
+  bonn: "Bonn",
+  muelheim: "Mülheim an der Ruhr",
+};
+function clampTitle(s: string, max = 60) {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const last = cut.lastIndexOf(" ");
+  return (last > 30 ? cut.slice(0, last) : cut).trim();
+}
+function clampDescription(s: string, max = 158) {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const last = cut.lastIndexOf(" ");
+  return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
+}
+
 const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all([
   fetchUsedMachineRoutes(),
   fetchNewMachineRoutes(),
@@ -167,23 +185,6 @@ if (managedProducts.length) {
   console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows).`);
 }
 
-const LOCATION_DISPLAY_FOR_OVERRIDE: Record<string, string> = {
-  krefeld: "Krefeld",
-  bonn: "Bonn",
-  muelheim: "Mülheim an der Ruhr",
-};
-function clampTitle(s: string, max = 60) {
-  if (s.length <= max) return s;
-  const cut = s.slice(0, max);
-  const last = cut.lastIndexOf(" ");
-  return (last > 30 ? cut.slice(0, last) : cut).trim();
-}
-function clampDescription(s: string, max = 158) {
-  if (s.length <= max) return s;
-  const cut = s.slice(0, max);
-  const last = cut.lastIndexOf(" ");
-  return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
-}
 
 const enriched = allRoutes.map((route) => {
   // image fields from data-files may be webpack-resolved objects under
