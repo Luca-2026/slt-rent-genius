@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Sparkles, PartyPopper, Copy, Check } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import {
+  hasCookieDecision,
+  isBookingRoute,
+  isAnyOverlayOpen,
+  notifyOverlayOpen,
+  notifyOverlayClosed,
+  waitForCookieDecision,
+} from "@/lib/overlayManager";
 
 const PROMO_CODE = "EVENT10";
 const PROMO_VALID_UNTIL = "31.08.2026";
@@ -12,7 +20,9 @@ const PROMO_SUBLINE =
   "Sichere dir jetzt 10% Rabatt auf alle Mietartikel aus dem Bereich Event!";
 const PROMO_DETAILS =
   "Gültig an allen Standorten (Krefeld, Bonn, Mülheim an der Ruhr) auf alle Event-Kategorien: Möbel & Zelte, Beleuchtung, Beschallung, Bühne, Traversen & Rigging, Geschirr, Hüpfburgen und mehr.";
-const POPUP_STORAGE_KEY = "slt_summer_promo_popup_seen_v1";
+const POPUP_STORAGE_KEY = "slt_summer_promo_popup_seen_v2";
+const POPUP_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 Tage
+const POPUP_DELAY_MS = 4500;
 const EVENT_LINK = "/mietartikel#event";
 
 function CodeChip({ code }: { code: string }) {
