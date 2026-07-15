@@ -60,7 +60,10 @@ export function AdminInventoryTab() {
   }
 
   async function duplicate(row: AdminManagedProductRow) {
-    const { id, created_at, updated_at, created_by, updated_by, slug, name, ...rest } = row;
+    const { id, created_at, updated_at, slug, name, ...rest } = row as AdminManagedProductRow & { created_by?: string; updated_by?: string };
+    delete (rest as Record<string, unknown>).created_by;
+    delete (rest as Record<string, unknown>).updated_by;
+
     const suffix = "-kopie-" + Math.random().toString(36).slice(2, 6);
     const { data: { user } } = await supabase.auth.getUser();
     const { error } = await (supabase.from("b2b_managed_products" as never) as any)
