@@ -93,7 +93,7 @@ export default function ProductDetail() {
       if (found) return found;
     }
     return getProductById(productId || "");
-  }, [productId, location, categoryId]);
+  }, [productId, location, categoryId, cmsVersion]);
   const product = useTranslatedProduct(rawProduct);
 
   const rawRelatedProducts = useMemo(() => {
