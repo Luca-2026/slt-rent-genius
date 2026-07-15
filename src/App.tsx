@@ -88,7 +88,9 @@ const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <ManagedProductsProvider>
       <TooltipProvider>
+
         <Toaster />
         <Sonner />
         <BrowserRouter>
