@@ -149,7 +149,7 @@ export default function B2BRegister() {
 
       // 1. Create user account
       const { error: signUpError, data: signUpData } = await withTimeout(
-        signUp(email, password),
+        signUp(email, password, { first_name: firstName, last_name: lastName, company_name: companyName }),
         30_000,
         "Account anlegen",
       );
