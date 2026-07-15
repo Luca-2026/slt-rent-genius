@@ -225,7 +225,9 @@ const App = () => (
           </ChunkLoadErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
+      </ManagedProductsProvider>
     </AuthProvider>
+
   </QueryClientProvider>
   </HelmetProvider>
 );
