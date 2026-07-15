@@ -2139,28 +2139,34 @@ export function getCategoriesForLocation(locationId: string): ProductCategory[] 
   return alleCategory ? [alleCategory, ...availableCategories] : availableCategories;
 }
 
+import { mergeWithCache, findInCache } from "@/data/managedProductsCache";
+
 export function getProductsForLocationCategory(
   locationId: string,
   categoryId: string
 ): Product[] {
   const location = getLocationById(locationId);
   if (!location) return [];
-  
-  if (categoryId === "alle") {
-    return Object.values(location.products).flat();
-  }
-  
-  return location.products[categoryId] || [];
+
+  const staticList =
+    categoryId === "alle"
+      ? Object.values(location.products).flat()
+      : location.products[categoryId] || [];
+
+  return mergeWithCache(locationId, categoryId, staticList);
 }
 
 export function getAllProductsForLocation(locationId: string): Product[] {
   const location = getLocationById(locationId);
   if (!location) return [];
-  return Object.values(location.products).flat();
+  const staticList = Object.values(location.products).flat();
+  return mergeWithCache(locationId, "alle", staticList);
 }
 
 // Get a single product by ID across all locations
 export function getProductById(productId: string): Product | undefined {
+  const managed = findInCache(productId);
+  if (managed) return managed.product;
   for (const location of locations) {
     for (const products of Object.values(location.products)) {
       const found = products.find((p) => p.id === productId);
@@ -2176,6 +2182,14 @@ export function getProductWithContext(productId: string): {
   locationId: string;
   categoryId: string;
 } | undefined {
+  const managed = findInCache(productId);
+  if (managed) {
+    return {
+      product: managed.product,
+      locationId: managed.locationIds[0] ?? "krefeld",
+      categoryId: managed.categoryId,
+    };
+  }
   for (const location of locations) {
     for (const [categoryId, products] of Object.entries(location.products)) {
       const found = products.find((p) => p.id === productId);
@@ -2190,6 +2204,7 @@ export function getProductWithContext(productId: string): {
   }
   return undefined;
 }
+
 
 // Get compatible accessories for a machine (by product ID)
 export function getCompatibleAccessories(machineId: string, locationId: string): Product[] {

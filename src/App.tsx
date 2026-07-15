@@ -11,6 +11,8 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { ChunkLoadErrorBoundary } from "@/components/ChunkLoadErrorBoundary";
 import { Loader2 } from "lucide-react";
 import { HelmetProvider } from "react-helmet-async";
+import { ManagedProductsProvider } from "@/components/ManagedProductsProvider";
+
 
 // Eagerly loaded: landing page and lightweight pages
 import Index from "./pages/Index";
@@ -86,7 +88,9 @@ const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <ManagedProductsProvider>
       <TooltipProvider>
+
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -221,7 +225,9 @@ const App = () => (
           </ChunkLoadErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
+      </ManagedProductsProvider>
     </AuthProvider>
+
   </QueryClientProvider>
   </HelmetProvider>
 );

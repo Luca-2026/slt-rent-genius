@@ -18,6 +18,8 @@ import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotes
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
+import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
+
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
@@ -39,7 +41,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye,
+  Users, Receipt, FileText, Package, Boxes, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -942,6 +944,8 @@ export default function AdminDashboard() {
               { value: "customers", label: "Kunden", icon: Users },
               { value: "damages", label: "Schäden", icon: AlertTriangle },
               { value: "staff", label: "Mitarbeiter", icon: UserCog },
+              { value: "inventory", label: "Inventar", icon: Boxes },
+
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.value;
@@ -968,7 +972,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className="hidden sm:grid w-full grid-cols-9 h-12">
+        <TabsList className="hidden sm:grid w-full grid-cols-10 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
@@ -1015,7 +1019,12 @@ export default function AdminDashboard() {
             <UserCog className="h-4 w-4" />
             <span className="hidden sm:inline">Mitarbeiter</span>
           </TabsTrigger>
+          <TabsTrigger value="inventory" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <Boxes className="h-4 w-4" />
+            <span className="hidden sm:inline">Inventar</span>
+          </TabsTrigger>
         </TabsList>
+
 
         {/* Tabs Content */}
          <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
@@ -1200,7 +1209,12 @@ export default function AdminDashboard() {
         <TabsContent value="staff" forceMount className="data-[state=inactive]:hidden">
           <AdminStaffTab />
         </TabsContent>
+
+        <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
+          <AdminInventoryTab />
+        </TabsContent>
       </Tabs>
+
 
       {/* ─── Dialogs ─────────────────────────────────────── */}
 
