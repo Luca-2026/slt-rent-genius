@@ -65,6 +65,8 @@ export default function ProductDetail() {
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
+  const cmsVersion = useManagedProductsVersion();
+
 
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
