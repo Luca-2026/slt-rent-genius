@@ -71,9 +71,6 @@ AddDefaultCharset UTF-8
   # Legacy "/kategorie/{loc}-{cat}" (Singular, Webflow) -> neue Struktur
   RewriteRule ^kategorie/(bonn|krefeld|muelheim)-([a-z0-9-]+)/?$ /mieten/$1/$2/ [L,R=301]
 
-  # Legacy "/hochzeit-technik-mieten" -> aktuelle Hochzeit-Seite
-  RewriteRule ^hochzeit-technik-mieten/?$ /hochzeit/ [L,R=301]
-
   # --- Generische Kategorie-Pfade (Slug stimmt 1:1 mit neuer Kategorie überein) ---
   # /kategorien-{loc}/{cat} -> /mieten/{loc}/{cat}/
   RewriteRule ^kategorien-(bonn|krefeld|muelheim)/([a-z0-9-]+)/?$ /mieten/$1/$2/ [L,R=301]
