@@ -61,6 +61,19 @@ AddDefaultCharset UTF-8
   # gutscheine: keine Kategorie mehr -> Standortseite
   RewriteRule ^kategorien-(bonn|krefeld|muelheim)/gutscheine/?$ /mieten/$1/ [L,R=301]
 
+  # Alte Umlaut-lose Kategorie "anhanger" -> "anhaenger" (Google hat historische URLs indexiert)
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/anhanger/?$ /mieten/$1/anhaenger/ [L,R=301]
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/anhanger/(.+)$ /mieten/$1/anhaenger/$2 [L,R=301]
+
+  # Legacy "/mieten/{loc}/alle" existiert nicht mehr -> Standortseite
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/alle/?$ /mieten/$1/ [L,R=301]
+
+  # Legacy "/kategorie/{loc}-{cat}" (Singular, Webflow) -> neue Struktur
+  RewriteRule ^kategorie/(bonn|krefeld|muelheim)-([a-z0-9-]+)/?$ /mieten/$1/$2/ [L,R=301]
+
+  # Legacy "/hochzeit-technik-mieten" -> aktuelle Hochzeit-Seite
+  RewriteRule ^hochzeit-technik-mieten/?$ /hochzeit/ [L,R=301]
+
   # --- Generische Kategorie-Pfade (Slug stimmt 1:1 mit neuer Kategorie überein) ---
   # /kategorien-{loc}/{cat} -> /mieten/{loc}/{cat}/
   RewriteRule ^kategorien-(bonn|krefeld|muelheim)/([a-z0-9-]+)/?$ /mieten/$1/$2/ [L,R=301]
