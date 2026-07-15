@@ -30,6 +30,7 @@ export function useManagedProductsVersion(): number {
 
 export function setManagedProductsCache(entries: ManagedProductCacheEntry[]) {
   cache = entries;
+  version++;
   for (const l of listeners) l();
 }
 
