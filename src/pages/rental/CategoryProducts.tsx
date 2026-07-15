@@ -1466,7 +1466,7 @@ export default function CategoryProducts() {
       "@type": "ListItem",
       "position": i + 1,
       "name": p.name,
-      "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}`,
+      "url": `https://www.slt-rental.de/mieten/${location.id}/${productCategoryMap.get(p.id) || category.id}/${p.id}/`,
     })),
   };
 
