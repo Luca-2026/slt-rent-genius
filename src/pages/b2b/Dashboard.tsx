@@ -43,7 +43,7 @@ import {
 } from "lucide-react";
 
 export default function B2BDashboard() {
-  const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile } = useAuth();
+  const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile, authorizedPersonInfo } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
