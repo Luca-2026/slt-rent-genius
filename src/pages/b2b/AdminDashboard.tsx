@@ -1209,7 +1209,12 @@ export default function AdminDashboard() {
         <TabsContent value="staff" forceMount className="data-[state=inactive]:hidden">
           <AdminStaffTab />
         </TabsContent>
+
+        <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
+          <AdminInventoryTab />
+        </TabsContent>
       </Tabs>
+
 
       {/* ─── Dialogs ─────────────────────────────────────── */}
 
