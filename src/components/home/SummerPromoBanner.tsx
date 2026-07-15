@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const PROMO_CODE = "EVENT10";
-const PROMO_VALID_UNTIL = "31.07.2026";
+const PROMO_VALID_UNTIL = "31.08.2026";
 const PROMO_HEADLINE = "Wir feiern den Sommer";
 const PROMO_SUBLINE =
   "Sichere dir jetzt 10% Rabatt auf alle Mietartikel aus dem Bereich Event!";
