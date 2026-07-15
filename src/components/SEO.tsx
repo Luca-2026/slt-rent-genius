@@ -143,7 +143,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
       "@id": "https://www.slt-rental.de/mieten/krefeld#localbusiness",
       name: "SLT Rental – Krefeld (Hauptsitz)",
       legalName: "SLT Technology Group GmbH & Co. KG",
-      url: "https://www.slt-rental.de/mieten/krefeld",
+      url: "https://www.slt-rental.de/mieten/krefeld/",
       logo: DEFAULT_OG_IMAGE,
       image: DEFAULT_OG_IMAGE,
       description: "Baumaschinen, Anhänger und Equipment mieten in Krefeld. Hauptsitz der SLT Rental am Niederrhein.",
@@ -175,7 +175,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
       "@id": "https://www.slt-rental.de/mieten/bonn#localbusiness",
       name: "SLT Rental Bonn | Anhänger - Arbeitsbühnen - Baumaschinen - Eventausstattung | Zoomlion Händler NRW",
       legalName: "SLT Technology Group GmbH & Co. KG",
-      url: "https://www.slt-rental.de/mieten/bonn",
+      url: "https://www.slt-rental.de/mieten/bonn/",
       logo: DEFAULT_OG_IMAGE,
       image: DEFAULT_OG_IMAGE,
       description: "Baumaschinen, Anhänger und Event-Equipment mieten in Bonn. SLT Rental Filiale im Rheinland.",
@@ -207,7 +207,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
       "@id": "https://www.slt-rental.de/mieten/muelheim#localbusiness",
       name: "SLT Rental – Mülheim an der Ruhr",
       legalName: "SLT Technology Group GmbH & Co. KG",
-      url: "https://www.slt-rental.de/mieten/muelheim",
+      url: "https://www.slt-rental.de/mieten/muelheim/",
       logo: DEFAULT_OG_IMAGE,
       image: DEFAULT_OG_IMAGE,
       description: "Baumaschinen und Anhänger mieten in Mülheim an der Ruhr. Corporate Filiale SLT x Bobcat im Ruhrgebiet.",
@@ -245,16 +245,29 @@ export const SLT_FAQ_JSONLD = (faqs: { question: string; answer: string }[]) => 
   })),
 });
 
-export const SLT_BREADCRUMB_JSONLD = (items: { name: string; url: string }[]) => ({
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: items.map((item, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    name: item.name,
-    item: `https://www.slt-rental.de${item.url}`,
-  })),
-});
+export const SLT_BREADCRUMB_JSONLD = (items: { name: string; url: string }[]) => {
+  // Server (Serverprofis) erzwingt Trailing-Slash via 301. Breadcrumb-`item`
+  // MUSS deshalb ebenfalls mit "/" enden, sonst widerspricht sich JSON-LD
+  // vs. `<link rel="canonical">` → Google indexiert die Seite nicht
+  // ("Duplicate, Google chose different canonical than user").
+  const normalize = (path: string): string => {
+    if (!path || path === "/") return "/";
+    const [pathOnly, query] = path.split("?");
+    if (/\.[a-zA-Z0-9]{2,5}$/.test(pathOnly)) return path;
+    const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+    return query ? `${normalized}?${query}` : normalized;
+  };
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `https://www.slt-rental.de${normalize(item.url)}`,
+    })),
+  };
+};
 
 // JobPosting JSON-LD for Google Jobs / Stepstone / Indeed aggregators
 interface JobPostingInput {
