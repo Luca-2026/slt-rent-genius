@@ -170,7 +170,7 @@ export default function CategoryProducts() {
   const allProducts = useMemo(() => {
     if (!location || !category) return [];
     return getProductsForLocationCategory(location.id, category.id);
-  }, [location, category]);
+  }, [location, category, cmsVersion]);
 
   // Use translated versions
   const availableCategories = translatedAvailableCategories;
