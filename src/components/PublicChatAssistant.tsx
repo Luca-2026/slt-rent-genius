@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, X, Send, Loader2, Bot, User, Phone, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "react-router-dom";
+import { isBookingRoute, isAnyOverlayOpen, waitForCookieDecision } from "@/lib/overlayManager";
 
 type Message = { role: "user" | "assistant"; content: string };
 
