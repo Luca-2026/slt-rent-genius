@@ -26,6 +26,7 @@ import {
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
