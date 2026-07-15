@@ -18,6 +18,8 @@ import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotes
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
+import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
+
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminExtendReservationDialog } from "@/components/b2b/admin/AdminExtendReservationDialog";
