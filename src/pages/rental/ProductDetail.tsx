@@ -26,6 +26,7 @@ import {
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
@@ -64,6 +65,8 @@ export default function ProductDetail() {
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
+  const cmsVersion = useManagedProductsVersion();
+
 
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const rawCategory = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
@@ -90,7 +93,7 @@ export default function ProductDetail() {
       if (found) return found;
     }
     return getProductById(productId || "");
-  }, [productId, location, categoryId]);
+  }, [productId, location, categoryId, cmsVersion]);
   const product = useTranslatedProduct(rawProduct);
 
   const rawRelatedProducts = useMemo(() => {

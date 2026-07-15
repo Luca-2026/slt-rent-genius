@@ -3,7 +3,9 @@
  * Wird beim App-Start einmal aus DB gefüllt (via useManagedProducts + ManagedProductsProvider)
  * und von den Helpers in rentalData.ts konsultiert. So bleiben die Helpers synchron.
  */
+import { useSyncExternalStore } from "react";
 import type { Product } from "@/data/rentalData";
+
 
 export interface ManagedProductCacheEntry {
   slug: string;
@@ -13,10 +15,22 @@ export interface ManagedProductCacheEntry {
 }
 
 let cache: ManagedProductCacheEntry[] = [];
+let version = 0;
 const listeners = new Set<() => void>();
+
+/** React-Hook: liefert eine Zahl, die sich bei jeder Cache-Änderung erhöht. */
+export function useManagedProductsVersion(): number {
+  return useSyncExternalStore(
+    (cb) => subscribeManagedProducts(cb),
+    () => version,
+    () => version,
+  );
+}
+
 
 export function setManagedProductsCache(entries: ManagedProductCacheEntry[]) {
   cache = entries;
+  version++;
   for (const l of listeners) l();
 }
 

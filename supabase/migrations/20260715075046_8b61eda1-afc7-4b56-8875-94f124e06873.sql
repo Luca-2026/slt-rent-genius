@@ -1,0 +1,1 @@
+UPDATE public.b2b_managed_products SET description = 'Ladefläche: 600 x 250 x 250 cm — CMS-E2E-MARKER-TEST', updated_at = now() WHERE slug = 'planen-xxl-3500';

@@ -14,6 +14,7 @@ import {
   getProductsForLocationCategory,
   type Product
 } from "@/data/rentalData";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
@@ -144,6 +145,7 @@ export default function CategoryProducts() {
   const location = locationId ? getLocationById(locationId) : undefined;
   const rawCategory = categoryId ? getCategoryById(categoryId) : undefined;
   const category = useTranslatedCategory(rawCategory) || rawCategory;
+  const cmsVersion = useManagedProductsVersion();
 
   // Translated categories for sidebar
   const rawOtherCategories = useMemo(() => {
@@ -162,13 +164,13 @@ export default function CategoryProducts() {
       const products = getProductsForLocationCategory(location.id, c.id);
       return products.length > 0;
     });
-  }, [location]);
+  }, [location, cmsVersion]);
   const translatedAvailableCategories = useTranslatedCategories(rawAvailableCategories);
 
   const allProducts = useMemo(() => {
     if (!location || !category) return [];
     return getProductsForLocationCategory(location.id, category.id);
-  }, [location, category]);
+  }, [location, category, cmsVersion]);
 
   // Use translated versions
   const availableCategories = translatedAvailableCategories;
