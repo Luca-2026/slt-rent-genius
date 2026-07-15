@@ -160,7 +160,7 @@ export default function B2BDashboard() {
             <div>
               <div className="flex items-center gap-3 mb-1">
                 <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground">
-                  Willkommen, {b2bProfile?.contact_first_name || "Benutzer"}!
+                  Willkommen, {b2bProfile?.contact_first_name || authorizedPersonInfo?.first_name || (user?.user_metadata as any)?.first_name || user?.email?.split("@")[0] || "Benutzer"}!
                 </h1>
                 {b2bProfile && (
                   <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
