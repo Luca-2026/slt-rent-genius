@@ -3,7 +3,9 @@
  * Wird beim App-Start einmal aus DB gefüllt (via useManagedProducts + ManagedProductsProvider)
  * und von den Helpers in rentalData.ts konsultiert. So bleiben die Helpers synchron.
  */
+import { useSyncExternalStore } from "react";
 import type { Product } from "@/data/rentalData";
+
 
 export interface ManagedProductCacheEntry {
   slug: string;
