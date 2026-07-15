@@ -232,20 +232,32 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     try {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) {
-        const ext = file.name.split(".").pop();
-        const path = `${form.slug || slugify(form.name) || "neu"}/${crypto.randomUUID()}.${ext}`;
-        const { error } = await supabase.storage.from("product-images").upload(path, file, {
+        const rawExt = file.name.includes(".") ? file.name.split(".").pop()! : "";
+        const ext = (rawExt || (file.type.split("/")[1] ?? "bin")).toLowerCase().replace(/[^a-z0-9]/g, "");
+        const folder = form.slug || slugify(form.name) || "neu";
+        // Hochladen in den öffentlichen Bucket `brand-assets` unter product-images/,
+        // damit die URLs ohne Signierung im Frontend geladen werden können.
+        const path = `product-images/${folder}/${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage.from("brand-assets").upload(path, file, {
           cacheControl: "3600",
           upsert: false,
+          contentType: file.type || undefined,
         });
         if (error) throw error;
-        const { data: pub } = supabase.storage.from("product-images").getPublicUrl(path);
+        const { data: pub } = supabase.storage.from("brand-assets").getPublicUrl(path);
         uploaded.push(pub.publicUrl);
       }
       setForm((f) => ({ ...f, images: [...f.images, ...uploaded] }));
       toast.success(`${uploaded.length} Bild(er) hochgeladen`);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload fehlgeschlagen");
+      const msg =
+        e instanceof Error
+          ? e.message
+          : typeof e === "object" && e && "message" in e
+          ? String((e as { message: unknown }).message)
+          : "Upload fehlgeschlagen";
+      toast.error(msg);
+      console.error("[InventoryEditorDialog] upload error", e);
     } finally {
       setUploading(false);
     }
