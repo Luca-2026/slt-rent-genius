@@ -164,7 +164,7 @@ export default function CategoryProducts() {
       const products = getProductsForLocationCategory(location.id, c.id);
       return products.length > 0;
     });
-  }, [location]);
+  }, [location, cmsVersion]);
   const translatedAvailableCategories = useTranslatedCategories(rawAvailableCategories);
 
   const allProducts = useMemo(() => {
