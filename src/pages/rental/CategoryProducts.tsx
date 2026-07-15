@@ -145,6 +145,7 @@ export default function CategoryProducts() {
   const location = locationId ? getLocationById(locationId) : undefined;
   const rawCategory = categoryId ? getCategoryById(categoryId) : undefined;
   const category = useTranslatedCategory(rawCategory) || rawCategory;
+  const cmsVersion = useManagedProductsVersion();
 
   // Translated categories for sidebar
   const rawOtherCategories = useMemo(() => {
