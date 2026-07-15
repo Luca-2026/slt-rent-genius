@@ -944,6 +944,8 @@ export default function AdminDashboard() {
               { value: "customers", label: "Kunden", icon: Users },
               { value: "damages", label: "Schäden", icon: AlertTriangle },
               { value: "staff", label: "Mitarbeiter", icon: UserCog },
+              { value: "inventory", label: "Inventar", icon: Boxes },
+
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.value;
