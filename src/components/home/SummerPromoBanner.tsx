@@ -102,25 +102,63 @@ export function SummerPromoBanner() {
 
 export function SummerPromoDialog() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Nicht auf Buchungs-/Produkt-Flows anzeigen
+    if (isBookingRoute(location.pathname)) return;
+
+    // TTL: 7 Tage nicht erneut zeigen
     try {
-      if (sessionStorage.getItem(POPUP_STORAGE_KEY)) return;
+      const raw = localStorage.getItem(POPUP_STORAGE_KEY);
+      if (raw) {
+        const ts = parseInt(raw, 10);
+        if (!Number.isNaN(ts) && Date.now() - ts < POPUP_TTL_MS) return;
+      }
     } catch {}
-    const t = setTimeout(() => setOpen(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
+
+    let cancelled = false;
+    let timer: number | undefined;
+
+    const schedule = () => {
+      timer = window.setTimeout(() => {
+        if (cancelled) return;
+        // Wenn ein anderes Overlay (Cookie-Banner, Buchungsdialog, …) offen ist,
+        // verschieben statt überlagern.
+        if (isAnyOverlayOpen() || document.querySelector('[role="dialog"][data-state="open"]')) {
+          timer = window.setTimeout(schedule, 2000);
+          return;
+        }
+        setOpen(true);
+        notifyOverlayOpen();
+      }, POPUP_DELAY_MS);
+    };
+
+    // Auf Cookie-Entscheidung warten, dann erst planen
+    waitForCookieDecision().then((decided) => {
+      if (cancelled || !decided) return;
+      schedule();
+    });
+
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
   const close = () => {
     setOpen(false);
+    notifyOverlayClosed();
     try {
-      sessionStorage.setItem(POPUP_STORAGE_KEY, "1");
+      localStorage.setItem(POPUP_STORAGE_KEY, String(Date.now()));
     } catch {}
   };
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
+
       <DialogContent
         className="w-[calc(100vw-2rem)] max-w-lg p-0 overflow-hidden border-0 bg-transparent shadow-2xl [&>button]:text-white [&>button]:bg-white/20 [&>button]:hover:bg-white/30 [&>button]:rounded-full [&>button]:p-1.5 [&>button]:opacity-100 [&>button]:ring-0 [&>button]:top-3 [&>button]:right-3"
       >
