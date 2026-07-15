@@ -128,7 +128,7 @@ export default function AdminDashboard() {
   // deep-link, share, and reload without losing their place. The default tab
   // stays "reservations" for backward compatibility.
   const [searchParams, setSearchParams] = useSearchParams();
-  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "staff"] as const;
+  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "staff", "inventory"] as const;
   const urlTab = searchParams.get("tab") ?? "";
   const activeTab = (VALID_TABS as readonly string[]).includes(urlTab) ? urlTab : "reservations";
   const setActiveTab = (next: string) => {
