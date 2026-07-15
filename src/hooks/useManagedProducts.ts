@@ -1,0 +1,112 @@
+/**
+ * Hook: veröffentlichte CMS-Mietartikel aus DB laden (via View ohne interne Felder).
+ * Der Merge-Layer in `mergeManagedProducts.ts` verschmilzt sie mit den statischen TS-Daten.
+ */
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import type { Product } from "@/data/rentalData";
+
+export interface ManagedProductRow {
+  id: string;
+  slug: string;
+  name: string;
+  model_name: string | null;
+  description: string | null;
+  detailed_description: string | null;
+  category: string;
+  available_locations: string[];
+  images: string[];
+  specifications: Record<string, string>;
+  features: string[];
+  tags: string[];
+  rental_notes: string[];
+  price_per_day: string | null;
+  price_weekend: string | null;
+  price_per_month: string | null;
+  min_rental_months: number | null;
+  weight_kg: number | null;
+  drive_type: string | null;
+  rentware_code: Record<string, string>;
+  on_request: boolean;
+  pdf_url: string | null;
+  external_manual_url: string | null;
+  video_url: string | null;
+  video_urls: string[];
+  sort_order: number | null;
+  seo_meta_description: string | null;
+  seo_faqs: Array<{ question: string; answer: string }>;
+  seo_local_content: Record<string, string>;
+}
+
+export function managedRowToProduct(row: ManagedProductRow): Product {
+  return {
+    id: row.slug, // id im Frontend = slug für stabile URLs
+    name: row.name,
+    modelName: row.model_name ?? undefined,
+    description: row.description ?? undefined,
+    detailedDescription: row.detailed_description ?? undefined,
+    image: row.images[0],
+    images: row.images.length ? row.images : undefined,
+    videoUrl: row.video_url ?? undefined,
+    videoUrls: row.video_urls?.length ? row.video_urls : undefined,
+    pricePerDay: row.price_per_day ?? undefined,
+    priceWeekend: row.price_weekend ?? undefined,
+    pricePerMonth: row.price_per_month ?? undefined,
+    minRentalMonths: row.min_rental_months ?? undefined,
+    features: row.features?.length ? row.features : undefined,
+    specifications: row.specifications && Object.keys(row.specifications).length
+      ? row.specifications
+      : undefined,
+    pdfUrl: row.pdf_url ?? undefined,
+    externalManualUrl: row.external_manual_url ?? undefined,
+    tags: row.tags?.length ? row.tags : undefined,
+    category: row.category,
+    weightKg: row.weight_kg ?? undefined,
+    sortOrder: row.sort_order ?? undefined,
+    rentwareCode: row.rentware_code && Object.keys(row.rentware_code).length
+      ? row.rentware_code
+      : undefined,
+    onRequest: row.on_request,
+    driveType: row.drive_type ?? undefined,
+    rentalNotes: row.rental_notes?.length ? row.rental_notes : undefined,
+  };
+}
+
+/** Alle veröffentlichten Managed-Artikel (Public-View). */
+export function useManagedProducts() {
+  return useQuery({
+    queryKey: ["managed-products-public"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("managed_products_public" as never)
+        .select("*");
+      if (error) throw error;
+      return (data as unknown as ManagedProductRow[]) ?? [];
+    },
+    staleTime: 60_000,
+  });
+}
+
+/** Für Admins: alle Artikel inkl. Entwürfe und interner Bestandsdaten. */
+export interface AdminManagedProductRow extends ManagedProductRow {
+  is_published: boolean;
+  quantities: Record<string, number>;
+  quantity_notes: Record<string, string>;
+  created_at: string;
+  updated_at: string;
+}
+
+export function useAdminManagedProducts() {
+  return useQuery({
+    queryKey: ["managed-products-admin"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("b2b_managed_products" as never)
+        .select("*")
+        .order("updated_at", { ascending: false });
+      if (error) throw error;
+      return (data as unknown as AdminManagedProductRow[]) ?? [];
+    },
+    staleTime: 15_000,
+  });
+}
