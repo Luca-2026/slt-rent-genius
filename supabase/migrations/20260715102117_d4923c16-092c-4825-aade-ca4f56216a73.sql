@@ -1,0 +1,1 @@
+DELETE FROM auth.users WHERE id = 'dfaf631d-808b-41bf-832d-4aba7dc4e07c' AND NOT EXISTS (SELECT 1 FROM public.b2b_profiles p WHERE p.user_id = auth.users.id);
