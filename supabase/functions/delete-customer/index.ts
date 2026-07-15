@@ -254,11 +254,21 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 10. Delete auth user
+    // 10. Delete auth user (critical — otherwise the email is blocked for re-registration)
     const { error: authDelErr } = await serviceClient.auth.admin.deleteUser(userId);
     if (authDelErr) {
       console.error("Error deleting auth user:", authDelErr);
-      // Non-critical: profile is already gone
+      return new Response(
+        JSON.stringify({
+          error:
+            "Kundenprofil wurde gelöscht, aber der Benutzer-Account konnte nicht entfernt werden. Bitte erneut versuchen oder Support kontaktieren.",
+          detail: authDelErr.message,
+        }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
     console.log("Customer deleted successfully:", companyName);
