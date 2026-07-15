@@ -38,7 +38,7 @@ interface AuthContextType {
   isAuthorizedPerson: boolean;
   authorizedPersonInfo: AuthorizedPersonInfo | null;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null; data: any }>;
+  signUp: (email: string, password: string, metadata?: Record<string, any>) => Promise<{ error: Error | null; data: any }>;
   signOut: () => Promise<void>;
   refreshB2BProfile: () => Promise<void>;
 }
