@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Sparkles, PartyPopper, Copy, Check } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import {
+  hasCookieDecision,
+  isBookingRoute,
+  isAnyOverlayOpen,
+  notifyOverlayOpen,
+  notifyOverlayClosed,
+  waitForCookieDecision,
+} from "@/lib/overlayManager";
 
 const PROMO_CODE = "EVENT10";
 const PROMO_VALID_UNTIL = "31.08.2026";
@@ -12,7 +20,9 @@ const PROMO_SUBLINE =
   "Sichere dir jetzt 10% Rabatt auf alle Mietartikel aus dem Bereich Event!";
 const PROMO_DETAILS =
   "Gültig an allen Standorten (Krefeld, Bonn, Mülheim an der Ruhr) auf alle Event-Kategorien: Möbel & Zelte, Beleuchtung, Beschallung, Bühne, Traversen & Rigging, Geschirr, Hüpfburgen und mehr.";
-const POPUP_STORAGE_KEY = "slt_summer_promo_popup_seen_v1";
+const POPUP_STORAGE_KEY = "slt_summer_promo_popup_seen_v2";
+const POPUP_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 Tage
+const POPUP_DELAY_MS = 4500;
 const EVENT_LINK = "/mietartikel#event";
 
 function CodeChip({ code }: { code: string }) {
@@ -92,25 +102,63 @@ export function SummerPromoBanner() {
 
 export function SummerPromoDialog() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Nicht auf Buchungs-/Produkt-Flows anzeigen
+    if (isBookingRoute(location.pathname)) return;
+
+    // TTL: 7 Tage nicht erneut zeigen
     try {
-      if (sessionStorage.getItem(POPUP_STORAGE_KEY)) return;
+      const raw = localStorage.getItem(POPUP_STORAGE_KEY);
+      if (raw) {
+        const ts = parseInt(raw, 10);
+        if (!Number.isNaN(ts) && Date.now() - ts < POPUP_TTL_MS) return;
+      }
     } catch {}
-    const t = setTimeout(() => setOpen(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
+
+    let cancelled = false;
+    let timer: number | undefined;
+
+    const schedule = () => {
+      timer = window.setTimeout(() => {
+        if (cancelled) return;
+        // Wenn ein anderes Overlay (Cookie-Banner, Buchungsdialog, …) offen ist,
+        // verschieben statt überlagern.
+        if (isAnyOverlayOpen() || document.querySelector('[role="dialog"][data-state="open"]')) {
+          timer = window.setTimeout(schedule, 2000);
+          return;
+        }
+        setOpen(true);
+        notifyOverlayOpen();
+      }, POPUP_DELAY_MS);
+    };
+
+    // Auf Cookie-Entscheidung warten, dann erst planen
+    waitForCookieDecision().then((decided) => {
+      if (cancelled || !decided) return;
+      schedule();
+    });
+
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
   const close = () => {
     setOpen(false);
+    notifyOverlayClosed();
     try {
-      sessionStorage.setItem(POPUP_STORAGE_KEY, "1");
+      localStorage.setItem(POPUP_STORAGE_KEY, String(Date.now()));
     } catch {}
   };
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
+
       <DialogContent
         className="w-[calc(100vw-2rem)] max-w-lg p-0 overflow-hidden border-0 bg-transparent shadow-2xl [&>button]:text-white [&>button]:bg-white/20 [&>button]:hover:bg-white/30 [&>button]:rounded-full [&>button]:p-1.5 [&>button]:opacity-100 [&>button]:ring-0 [&>button]:top-3 [&>button]:right-3"
       >

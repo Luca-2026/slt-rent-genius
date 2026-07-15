@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, X, Send, Loader2, Bot, User, Phone, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "react-router-dom";
+import { isBookingRoute, isAnyOverlayOpen, waitForCookieDecision } from "@/lib/overlayManager";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -71,21 +72,42 @@ export function PublicChatAssistant() {
   const isInHero = scrollY < HERO_SCROLL_THRESHOLD;
   const pulseOrange = isMobile && isHomePage && isInHero;
 
-  // Teaser pop-up: appears after a short delay on first visit (per session)
+  // Teaser pop-up: appears after a short delay on first visit (per session).
+  // Wartet auf Cookie-Entscheidung, überspringt Buchungs-Flows und wartet,
+  // wenn gerade ein anderes Overlay (z.B. Promo-Dialog) offen ist.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (isBookingRoute(location.pathname)) return;
     let dismissed = false;
     try {
       dismissed = sessionStorage.getItem(TEASER_DISMISSED_KEY) === "1";
-    } catch {
-      // ignore
-    }
+    } catch {}
     if (dismissed) return;
-    const t = setTimeout(() => {
-      setShowTeaser(true);
-    }, 3500);
-    return () => clearTimeout(t);
-  }, []);
+
+    let cancelled = false;
+    let timer: number | undefined;
+
+    const schedule = (delay: number) => {
+      timer = window.setTimeout(() => {
+        if (cancelled) return;
+        if (isAnyOverlayOpen() || document.querySelector('[role="dialog"][data-state="open"]')) {
+          schedule(2500);
+          return;
+        }
+        setShowTeaser(true);
+      }, delay);
+    };
+
+    waitForCookieDecision().then((decided) => {
+      if (cancelled || !decided) return;
+      schedule(6000);
+    });
+
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
   const dismissTeaser = () => {
     setShowTeaser(false);

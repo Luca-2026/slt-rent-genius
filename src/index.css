@@ -269,3 +269,13 @@ rtr-checkout {
     pointer-events: auto !important;
   }
 }
+
+/* Overlay coordination: on mobile hide the floating Rentware cart when a
+   modal/dialog or promotional overlay is open, so the user isn't stacked
+   with multiple floating UI elements during a booking flow. */
+@media (max-width: 767px) {
+  html[data-slt-overlay="1"] rtr-checkout {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
