@@ -20,6 +20,7 @@ import {
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 
 export default function B2BProductDetail() {
   const { locationId, categoryId, productId } = useParams<{
