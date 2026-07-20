@@ -124,6 +124,7 @@ export function AdminInventoryTab() {
                 <SelectItem value="all">Alle</SelectItem>
                 <SelectItem value="published">Veröffentlicht</SelectItem>
                 <SelectItem value="draft">Entwurf</SelectItem>
+                <SelectItem value="seo-draft">SEO-Entwurf vorhanden{draftCount ? ` (${draftCount})` : ""}</SelectItem>
               </SelectContent>
             </Select>
           </div>
