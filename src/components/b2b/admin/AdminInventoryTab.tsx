@@ -223,6 +223,17 @@ export function AdminInventoryTab() {
         onSaved={refetch}
       />
 
+      <ProductInstancesDialog
+        open={!!instancesFor}
+        onOpenChange={(v) => { if (!v) setInstancesFor(null); }}
+        productId={instancesFor?.id ?? null}
+        productName={instancesFor?.name ?? ""}
+        productCategory={instancesFor?.category ?? ""}
+        availableLocations={instancesFor?.available_locations ?? []}
+      />
+
+
+
       <AlertDialog open={!!confirmDelete} onOpenChange={(v) => !v && setConfirmDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
