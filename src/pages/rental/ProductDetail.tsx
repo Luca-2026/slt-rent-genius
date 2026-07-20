@@ -148,8 +148,21 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
-  // Get product-specific SEO data from Excel
-  const productSEO = useMemo(() => product ? getProductSEO(product.id, location?.id) : undefined, [product, location]);
+  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win
+  const productSEO = useMemo(() => {
+    if (!product) return undefined;
+    const base = getProductSEO(product.id, location?.id);
+    const cmsFaqs = product.seoFaqs?.length
+      ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
+      : null;
+    if (!cmsFaqs && !product.seoMetaDescription) return base;
+    return {
+      ...(base ?? {}),
+      ...(cmsFaqs ? { faqs: cmsFaqs } : {}),
+      ...(product.seoMetaDescription ? { metaDescription: product.seoMetaDescription } : {}),
+    } as typeof base;
+  }, [product, location]);
+
 
   const displaySpecifications = useMemo(() => {
     if (!product?.specifications || !location) return product?.specifications;
