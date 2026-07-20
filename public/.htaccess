@@ -168,7 +168,11 @@ AddDefaultCharset UTF-8
 
   # Security Headers
   Header always set X-Content-Type-Options "nosniff"
-  Header always set X-Frame-Options "SAMEORIGIN"
+  # Framing: sandhoff.digital darf slt-rental.de als Referenz-iFrame einbetten.
+  # X-Frame-Options unterstützt keine Multi-Origin-Liste -> entfernen und via
+  # CSP frame-ancestors regeln (moderne Browser respektieren CSP vor XFO).
+  Header always unset X-Frame-Options
+  Header always set Content-Security-Policy "frame-ancestors 'self' https://sandhoff.digital https://www.sandhoff.digital;"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
