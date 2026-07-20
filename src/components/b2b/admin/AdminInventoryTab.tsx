@@ -168,7 +168,11 @@ export function AdminInventoryTab() {
                         </div>
                       </TableCell>
                       <TableCell className="text-xs">
-                        {["krefeld", "bonn", "muelheim"].map((l) => row.quantities?.[l] ?? "–").join(" / ")}
+                        {(() => {
+                          const c = instanceCounts[row.id];
+                          if (!c || c.total === 0) return <span className="text-muted-foreground">—</span>;
+                          return ["krefeld", "bonn", "muelheim"].map((l) => c.byLocation[l] ?? 0).join(" / ");
+                        })()}
                       </TableCell>
                       <TableCell className="text-xs font-mono">
                         {(() => {
