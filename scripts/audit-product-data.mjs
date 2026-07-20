@@ -89,6 +89,22 @@ const onlyStatic = [];
 const onlyDb = [];
 const diffs = []; // { slug, field, static, db }
 
+// Normalize a rentware_code map: lowercase keys, drop empty/null values, sort keys.
+function normRentware(raw) {
+  if (!raw || typeof raw !== "object") return {};
+  const out = {};
+  for (const k of Object.keys(raw)) {
+    const v = raw[k];
+    if (v == null) continue;
+    const s = String(v).trim();
+    if (!s) continue;
+    out[k.toLowerCase()] = s;
+  }
+  const sorted = {};
+  for (const k of Object.keys(out).sort()) sorted[k] = out[k];
+  return sorted;
+}
+
 for (const [slug, s] of staticBySlug) {
   const d = dbBySlug.get(slug);
   if (!d) { onlyStatic.push(s); continue; }
@@ -108,7 +124,7 @@ for (const [slug, s] of staticBySlug) {
   check("price_per_day", s.price_per_day, d.price_per_day);
   check("price_weekend", s.price_weekend, d.price_weekend);
   check("price_per_month", s.price_per_month, d.price_per_month);
-  check("rentware_code", s.rentware_code || {}, d.rentware_code || {});
+  check("rentware_code", normRentware(s.rentware_code), normRentware(d.rentware_code));
   check("on_request", s.on_request, d.on_request);
   // SEO
   const seo = productSEOData[slug];
@@ -119,6 +135,16 @@ for (const [slug, s] of staticBySlug) {
 }
 for (const [slug, d] of dbBySlug) {
   if (!staticBySlug.has(slug)) onlyDb.push(d);
+}
+
+// ---------- Neue Prüfung: on_request=false ohne rentware_code an mind. einem Standort ----------
+const bookableWithoutCode = [];
+for (const d of dbRows) {
+  if (d.on_request) continue;
+  const rc = normRentware(d.rentware_code);
+  if (Object.keys(rc).length === 0) {
+    bookableWithoutCode.push({ slug: d.slug, name: d.name, locations: (d.available_locations || []).join(", ") });
+  }
 }
 
 // ---------- Bild-URLs prüfen (Existenz auf Disk unter public/) ----------
