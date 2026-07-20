@@ -34,12 +34,19 @@ export function AdminInventoryTab() {
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
 
+  const hasDraft = (p: AdminManagedProductRow) =>
+    !!(p.seo_draft_meta_description && p.seo_draft_meta_description.trim()) ||
+    !!(p.seo_draft_faqs && Array.isArray(p.seo_draft_faqs) && p.seo_draft_faqs.length > 0);
+
+  const draftCount = useMemo(() => products.filter(hasDraft).length, [products]);
+
   const filtered = useMemo(() => {
     return products.filter((p) => {
       if (locFilter !== "all" && !p.available_locations?.includes(locFilter)) return false;
       if (catFilter !== "all" && p.category !== catFilter) return false;
       if (statusFilter === "published" && !p.is_published) return false;
       if (statusFilter === "draft" && p.is_published) return false;
+      if (statusFilter === "seo-draft" && !hasDraft(p)) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         if (!p.name.toLowerCase().includes(q) && !p.slug.toLowerCase().includes(q)) return false;
@@ -117,6 +124,7 @@ export function AdminInventoryTab() {
                 <SelectItem value="all">Alle</SelectItem>
                 <SelectItem value="published">Veröffentlicht</SelectItem>
                 <SelectItem value="draft">Entwurf</SelectItem>
+                <SelectItem value="seo-draft">SEO-Entwurf vorhanden{draftCount ? ` (${draftCount})` : ""}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -171,9 +179,14 @@ export function AdminInventoryTab() {
                         })()}
                       </TableCell>
                       <TableCell>
-                        {row.is_published
-                          ? <Badge className="bg-green-600 hover:bg-green-700">Live</Badge>
-                          : <Badge variant="outline">Entwurf</Badge>}
+                        <div className="flex flex-col gap-1 items-start">
+                          {row.is_published
+                            ? <Badge className="bg-green-600 hover:bg-green-700">Live</Badge>
+                            : <Badge variant="outline">Entwurf</Badge>}
+                          {hasDraft(row) && (
+                            <Badge className="bg-amber-500 hover:bg-amber-600 text-white">SEO-Entwurf</Badge>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
