@@ -148,8 +148,21 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
-  // Get product-specific SEO data from Excel
-  const productSEO = useMemo(() => product ? getProductSEO(product.id, location?.id) : undefined, [product, location]);
+  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win
+  const productSEO = useMemo(() => {
+    if (!product) return undefined;
+    const base = getProductSEO(product.id, location?.id);
+    const cmsFaqs = product.seoFaqs?.length
+      ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
+      : null;
+    if (!cmsFaqs && !product.seoMetaDescription) return base;
+    return {
+      ...(base ?? {}),
+      ...(cmsFaqs ? { faqs: cmsFaqs } : {}),
+      ...(product.seoMetaDescription ? { metaDescription: product.seoMetaDescription } : {}),
+    } as typeof base;
+  }, [product, location]);
+
 
   const displaySpecifications = useMemo(() => {
     if (!product?.specifications || !location) return product?.specifications;
@@ -226,10 +239,12 @@ export default function ProductDetail() {
       }
       document.title = seoTitle;
 
-      // SEO: Meta description - generic name + model for CTR
+      // SEO: Meta description - CMS override wins, else generated
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (product.description) {
+      if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
+        descText = product.seoMetaDescription.trim();
+      } else if (product.description) {
         const localizedDesc = localizeText(product.description);
         const descSnippet = localizedDesc.length > 80 
           ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
@@ -240,6 +255,7 @@ export default function ProductDetail() {
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
+
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
@@ -444,13 +460,17 @@ export default function ProductDetail() {
       // Also expose duplicate types removal for LocalBusiness below
       // (kept here so dupTypes list stays in one place)
 
-      // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
-      const productFaqs = productSEO?.faqs;
+      // FAQ JSON-LD: CMS-FAQs gewinnen, sonst produktspezifische, sonst kategoriebasierte
+      const cmsFaqs = product.seoFaqs?.length
+        ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
+        : null;
+      const productFaqs = cmsFaqs ?? productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
       const localContent = getLocalCategoryContent(locationId, categoryId);
       const localFaqs = localContent?.faqs ?? [];
       const baseFaqs = productFaqs?.length ? productFaqs : (categoryFaqs ?? []);
       const faqItems = [...baseFaqs, ...localFaqs];
+
       if (faqItems.length) {
         jsonLdArray.push({
           "@context": "https://schema.org",

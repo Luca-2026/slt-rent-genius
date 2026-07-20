@@ -217,6 +217,9 @@ export interface Product {
   onRequest?: boolean; // Product available on request only (no direct booking)
   driveType?: string; // Drive type: diesel, elektro, benzin
   rentalNotes?: string[]; // Additional rental condition notes (e.g. operating hours, fuel)
+  seoMetaDescription?: string; // CMS override for meta description
+  seoFaqs?: { question: string; answer: string }[]; // CMS override for product FAQs
+
 }
 
 export interface ProductCategory {

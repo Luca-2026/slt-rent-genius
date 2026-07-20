@@ -69,7 +69,10 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     onRequest: row.on_request,
     driveType: row.drive_type ?? undefined,
     rentalNotes: row.rental_notes?.length ? row.rental_notes : undefined,
+    seoMetaDescription: row.seo_meta_description ?? undefined,
+    seoFaqs: row.seo_faqs?.length ? row.seo_faqs : undefined,
   };
+
 }
 
 /** Alle veröffentlichten Managed-Artikel (Public-View). */
