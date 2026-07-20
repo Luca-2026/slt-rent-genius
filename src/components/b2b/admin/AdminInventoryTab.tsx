@@ -199,6 +199,7 @@ export function AdminInventoryTab() {
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
                           <Button size="icon" variant="ghost" title="Bearbeiten" onClick={() => setEditing(row)}><Pencil className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" title="Einzelartikel & Wartungen" onClick={() => setInstancesFor(row)}><Wrench className="h-4 w-4" /></Button>
                           <Button size="icon" variant="ghost" title="Duplizieren" onClick={() => duplicate(row)}><Copy className="h-4 w-4" /></Button>
                           <Button size="icon" variant="ghost" title={row.is_published ? "Verstecken" : "Veröffentlichen"} onClick={() => togglePublish(row)}>
                             {row.is_published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
