@@ -37,6 +37,29 @@ const LOCATION_LABELS = {
   muelheim: "Mülheim an der Ruhr",
 } as const;
 
+async function getUserIdFromAuthHeader(authHeader: string): Promise<string | null> {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  if (!supabaseUrl || !anonKey) throw new Error("Backend auth configuration missing");
+
+  const authResp = await fetch(`${supabaseUrl}/auth/v1/user`, {
+    method: "GET",
+    headers: {
+      Authorization: authHeader,
+      apikey: anonKey,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!authResp.ok) {
+    console.error("Auth validation failed", authResp.status, await authResp.text());
+    return null;
+  }
+
+  const user = await authResp.json();
+  return typeof user?.id === "string" ? user.id : null;
+}
+
 function buildContext(product: Body["product"], location?: Body["location"]) {
   const specs = product.specifications
     ? Object.entries(product.specifications)
@@ -135,24 +158,20 @@ Deno.serve(async (req: Request) => {
       { global: { headers: { Authorization: authHeader } } },
     );
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: authErr } = await supabase.auth.getClaims(token);
-    const user = claimsData?.claims ? { id: claimsData.claims.sub as string } : null;
-    if (authErr || !user) {
-      console.error("Auth failed", authErr);
+    const userId = await getUserIdFromAuthHeader(authHeader);
+    if (!userId) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const { data: role } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (!role) {
+    const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", {
+      _user_id: userId,
+      _role: "admin",
+    });
+    if (roleError) console.error("Admin role check failed", roleError);
+    if (roleError || !isAdmin) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
