@@ -190,6 +190,35 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     }
   }, [open, initial]);
 
+  // Dirty-Tracking: erste form-Zuweisung nach dem Öffnen zählt nicht als Änderung
+  const dirtyBaselineRef = useRef<string>("");
+  useEffect(() => {
+    if (!open) return;
+    const snap = JSON.stringify(form);
+    if (loadedIdRef.current && dirtyBaselineRef.current === "") {
+      dirtyBaselineRef.current = snap;
+      return;
+    }
+    if (dirtyBaselineRef.current && snap !== dirtyBaselineRef.current) {
+      setDirty(true);
+    }
+  }, [form, open]);
+  useEffect(() => {
+    if (!open) dirtyBaselineRef.current = "";
+  }, [open]);
+
+  const requestClose = () => {
+    if (dirty) {
+      const ok = window.confirm(
+        "Es gibt ungespeicherte Änderungen. Wirklich schließen und Änderungen verwerfen?",
+      );
+      if (!ok) return;
+    }
+    setDirty(false);
+    onOpenChange(false);
+  };
+
+
 
   // Auto-slug: solange nicht manuell überschrieben und noch keine ID existiert
   useEffect(() => {
