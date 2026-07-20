@@ -555,6 +555,9 @@ export type Database = {
           quantity_notes: Json
           rental_notes: string[]
           rentware_code: Json
+          seo_draft_faqs: Json | null
+          seo_draft_generated_at: string | null
+          seo_draft_meta_description: string | null
           seo_faqs: Json
           seo_local_content: Json
           seo_meta_description: string | null
@@ -593,6 +596,9 @@ export type Database = {
           quantity_notes?: Json
           rental_notes?: string[]
           rentware_code?: Json
+          seo_draft_faqs?: Json | null
+          seo_draft_generated_at?: string | null
+          seo_draft_meta_description?: string | null
           seo_faqs?: Json
           seo_local_content?: Json
           seo_meta_description?: string | null
@@ -631,6 +637,9 @@ export type Database = {
           quantity_notes?: Json
           rental_notes?: string[]
           rentware_code?: Json
+          seo_draft_faqs?: Json | null
+          seo_draft_generated_at?: string | null
+          seo_draft_meta_description?: string | null
           seo_faqs?: Json
           seo_local_content?: Json
           seo_meta_description?: string | null
