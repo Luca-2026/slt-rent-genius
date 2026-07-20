@@ -80,10 +80,14 @@ export default function B2BProducts() {
     [selectedCategory]
   );
 
+  // Realtime-Trigger: erzwingt Neuberechnung, wenn der CMS-Cache aktualisiert wurde
+  const cmsVersion = useManagedProductsVersion();
+
   // Total product count before dedup (for display)
   const totalProductCount = useMemo(() => {
     return getProductsForLocationCategory(selectedLocation, "alle").length;
-  }, [selectedLocation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocation, cmsVersion]);
 
   // Products filtered by location, category, search, and category-specific filters
   const filteredProducts = useMemo(() => {
