@@ -179,9 +179,14 @@ export function AdminInventoryTab() {
                         })()}
                       </TableCell>
                       <TableCell>
-                        {row.is_published
-                          ? <Badge className="bg-green-600 hover:bg-green-700">Live</Badge>
-                          : <Badge variant="outline">Entwurf</Badge>}
+                        <div className="flex flex-col gap-1 items-start">
+                          {row.is_published
+                            ? <Badge className="bg-green-600 hover:bg-green-700">Live</Badge>
+                            : <Badge variant="outline">Entwurf</Badge>}
+                          {hasDraft(row) && (
+                            <Badge className="bg-amber-500 hover:bg-amber-600 text-white">SEO-Entwurf</Badge>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
