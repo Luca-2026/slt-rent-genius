@@ -261,6 +261,15 @@ if (seoOrphans.length === 0) add(`_Keine._`);
 else for (const s of seoOrphans) add(`- \`${s}\``);
 add("");
 
+add(`## Buchbar ohne rentware_code — GEFAHR: Buchen-Button ohne Ziel (${bookableWithoutCode.length})`);
+if (bookableWithoutCode.length === 0) add(`_Keine._`);
+else {
+  add(`| Slug | Name | Standorte |`);
+  add(`|---|---|---|`);
+  for (const b of bookableWithoutCode) add(`| \`${b.slug}\` | ${b.name} | ${b.locations} |`);
+}
+add("");
+
 add(`---`);
 add(`_Erzeugt von \`scripts/audit-product-data.mjs\`. Etappe 1: nur Lesen, keine Änderungen._`);
 
