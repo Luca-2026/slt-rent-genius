@@ -2,7 +2,7 @@
  * Editor-Dialog für CMS-Mietartikel. 6 Tabs: Basis, Bilder, Technik, Preise & Buchung,
  * SEO & Content, Intern (Bestand). KI-Buttons rufen `admin-generate-product-content`.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
