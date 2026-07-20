@@ -377,8 +377,10 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const locationEmail = location.email;
 
   // Helper: replace multi-location strings with current location only
-  const loc = (text: string): string => {
+  const loc = (text: string | undefined | null): string => {
+    if (!text) return "";
     let result = text
+
       .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
       .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
       .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
