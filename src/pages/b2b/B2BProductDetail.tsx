@@ -20,6 +20,7 @@ import {
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 
 export default function B2BProductDetail() {
   const { locationId, categoryId, productId } = useParams<{
@@ -34,9 +35,11 @@ export default function B2BProductDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [inquiryProduct, setInquiryProduct] = useState<Product | null>(null);
 
+  const cmsVersion = useManagedProductsVersion();
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const category = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
-  const product = useMemo(() => getProductById(productId || ""), [productId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const product = useMemo(() => getProductById(productId || ""), [productId, cmsVersion]);
 
   const discount = useMemo(
     () => (categoryId ? getDiscountForCategory(categoryId) : 0),
@@ -50,7 +53,8 @@ export default function B2BProductDetail() {
       .filter((p) => p.id !== product.id && !p.compatibleMachines)
       .filter((p) => p.image && p.image !== "/placeholder.svg")
       .slice(0, 4);
-  }, [location, categoryId, product]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, categoryId, product, cmsVersion]);
 
   const accessories = useMemo(() => {
     if (!location || !product || categoryId !== "erdbewegung") return [];

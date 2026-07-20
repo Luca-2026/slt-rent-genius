@@ -2139,7 +2139,11 @@ export function getCategoriesForLocation(locationId: string): ProductCategory[] 
   return alleCategory ? [alleCategory, ...availableCategories] : availableCategories;
 }
 
-import { mergeWithCache, findInCache } from "@/data/managedProductsCache";
+import {
+  mergeWithCache,
+  findInCache,
+  shouldUseStaticFallbackForLookup,
+} from "@/data/managedProductsCache";
 
 export function getProductsForLocationCategory(
   locationId: string,
@@ -2167,6 +2171,7 @@ export function getAllProductsForLocation(locationId: string): Product[] {
 export function getProductById(productId: string): Product | undefined {
   const managed = findInCache(productId);
   if (managed) return managed.product;
+  if (!shouldUseStaticFallbackForLookup()) return undefined;
   for (const location of locations) {
     for (const products of Object.values(location.products)) {
       const found = products.find((p) => p.id === productId);
@@ -2190,6 +2195,7 @@ export function getProductWithContext(productId: string): {
       categoryId: managed.categoryId,
     };
   }
+  if (!shouldUseStaticFallbackForLookup()) return undefined;
   for (const location of locations) {
     for (const [categoryId, products] of Object.entries(location.products)) {
       const found = products.find((p) => p.id === productId);

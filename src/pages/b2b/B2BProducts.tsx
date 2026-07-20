@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { B2BProductCard } from "@/components/b2b/B2BProductCard";
 import { B2BReservationDialog } from "@/components/b2b/B2BReservationDialog";
@@ -79,10 +80,14 @@ export default function B2BProducts() {
     [selectedCategory]
   );
 
+  // Realtime-Trigger: erzwingt Neuberechnung, wenn der CMS-Cache aktualisiert wurde
+  const cmsVersion = useManagedProductsVersion();
+
   // Total product count before dedup (for display)
   const totalProductCount = useMemo(() => {
     return getProductsForLocationCategory(selectedLocation, "alle").length;
-  }, [selectedLocation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocation, cmsVersion]);
 
   // Products filtered by location, category, search, and category-specific filters
   const filteredProducts = useMemo(() => {
@@ -304,7 +309,8 @@ export default function B2BProducts() {
     }
 
     return products;
-  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections, trailerFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections, trailerFilters, cmsVersion]);
 
   // Find category slug for a product (for discount lookup)
   const getCategoryForProduct = useCallback((product: Product): string => {
