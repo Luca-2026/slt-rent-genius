@@ -226,10 +226,12 @@ export default function ProductDetail() {
       }
       document.title = seoTitle;
 
-      // SEO: Meta description - generic name + model for CTR
+      // SEO: Meta description - CMS override wins, else generated
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (product.description) {
+      if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
+        descText = product.seoMetaDescription.trim();
+      } else if (product.description) {
         const localizedDesc = localizeText(product.description);
         const descSnippet = localizedDesc.length > 80 
           ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
@@ -240,6 +242,7 @@ export default function ProductDetail() {
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
+
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
