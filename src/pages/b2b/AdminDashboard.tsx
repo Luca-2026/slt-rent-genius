@@ -854,6 +854,8 @@ export default function AdminDashboard() {
         newRegistrationsLast30Days={newRegistrationsLast30Days}
         pendingCustomers={pendingCustomers.length}
       />
+      <MaintenanceDueWidget />
+
 
 
       {/* Phase B3 — Global search across loaded customers / invoices / offers / reservations */}
