@@ -422,8 +422,14 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col">
+    <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
+      <DialogContent
+        className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
+      >
+
         <DialogHeader>
           <DialogTitle>
             {initial ? `Artikel bearbeiten: ${initial.name}` : "Neuen Mietartikel anlegen"}
