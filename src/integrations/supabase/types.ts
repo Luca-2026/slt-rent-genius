@@ -14,27 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      _tmp_seo_draft_load: {
-        Row: {
-          faqs: Json | null
-          gen_at: string | null
-          meta: string | null
-          slug: string
-        }
-        Insert: {
-          faqs?: Json | null
-          gen_at?: string | null
-          meta?: string | null
-          slug: string
-        }
-        Update: {
-          faqs?: Json | null
-          gen_at?: string | null
-          meta?: string | null
-          slug?: string
-        }
-        Relationships: []
-      }
       b2b_admin_messages: {
         Row: {
           b2b_profile_id: string
