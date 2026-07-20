@@ -34,12 +34,19 @@ export function AdminInventoryTab() {
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
 
+  const hasDraft = (p: AdminManagedProductRow) =>
+    !!(p.seo_draft_meta_description && p.seo_draft_meta_description.trim()) ||
+    !!(p.seo_draft_faqs && Array.isArray(p.seo_draft_faqs) && p.seo_draft_faqs.length > 0);
+
+  const draftCount = useMemo(() => products.filter(hasDraft).length, [products]);
+
   const filtered = useMemo(() => {
     return products.filter((p) => {
       if (locFilter !== "all" && !p.available_locations?.includes(locFilter)) return false;
       if (catFilter !== "all" && p.category !== catFilter) return false;
       if (statusFilter === "published" && !p.is_published) return false;
       if (statusFilter === "draft" && p.is_published) return false;
+      if (statusFilter === "seo-draft" && !hasDraft(p)) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         if (!p.name.toLowerCase().includes(q) && !p.slug.toLowerCase().includes(q)) return false;
