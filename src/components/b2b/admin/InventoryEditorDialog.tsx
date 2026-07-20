@@ -381,8 +381,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       }
 
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
+      setDirty(false);
       onSaved();
       onOpenChange(false);
+
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen");
     } finally {
