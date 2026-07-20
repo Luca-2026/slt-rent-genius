@@ -141,7 +141,7 @@ export function AdminInventoryTab() {
                   <TableHead>Name / Slug</TableHead>
                   <TableHead>Kategorie</TableHead>
                   <TableHead>Standorte</TableHead>
-                  <TableHead>Bestand K / B / M</TableHead>
+                  <TableHead>Einzelartikel K / B / M</TableHead>
                   <TableHead>Rentware</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Aktionen</TableHead>
