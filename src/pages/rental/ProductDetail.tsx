@@ -447,13 +447,17 @@ export default function ProductDetail() {
       // Also expose duplicate types removal for LocalBusiness below
       // (kept here so dupTypes list stays in one place)
 
-      // FAQ JSON-LD: produktspezifische + standortspezifische FAQs zusammenführen
-      const productFaqs = productSEO?.faqs;
+      // FAQ JSON-LD: CMS-FAQs gewinnen, sonst produktspezifische, sonst kategoriebasierte
+      const cmsFaqs = product.seoFaqs?.length
+        ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
+        : null;
+      const productFaqs = cmsFaqs ?? productSEO?.faqs;
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
       const localContent = getLocalCategoryContent(locationId, categoryId);
       const localFaqs = localContent?.faqs ?? [];
       const baseFaqs = productFaqs?.length ? productFaqs : (categoryFaqs ?? []);
       const faqItems = [...baseFaqs, ...localFaqs];
+
       if (faqItems.length) {
         jsonLdArray.push({
           "@context": "https://schema.org",
