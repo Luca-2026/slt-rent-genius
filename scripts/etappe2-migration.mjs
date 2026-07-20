@@ -55,7 +55,10 @@ for (const d of dbRows) {
   if (d.images && d.images.length) continue;
   const s = staticBySlug.get(d.slug);
   if (!s || !s.images.length) continue;
-  imgUpdates.push({ slug: d.slug, images: s.images });
+  // Filter out placeholder.svg — no real image source
+  const real = s.images.filter(u => !/placeholder\.svg$/i.test(u));
+  if (!real.length) continue;
+  imgUpdates.push({ slug: d.slug, images: real });
 }
 
 // ---------- C.2: SEO für 304 Produkte ----------
