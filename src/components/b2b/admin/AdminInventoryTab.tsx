@@ -34,7 +34,9 @@ export function AdminInventoryTab() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [editing, setEditing] = useState<AdminManagedProductRow | null>(null);
   const [creating, setCreating] = useState(false);
+  const [instancesFor, setInstancesFor] = useState<AdminManagedProductRow | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
+  const { data: instanceCounts = {} } = useInstanceCounts();
 
   const hasDraft = (p: AdminManagedProductRow) =>
     !!(p.seo_draft_meta_description && p.seo_draft_meta_description.trim()) ||
