@@ -147,6 +147,9 @@ function fromRow(row: AdminManagedProductRow): FormState {
       bonn: row.seo_local_content?.bonn ?? "",
       muelheim: row.seo_local_content?.muelheim ?? "",
     },
+    seo_draft_meta_description: row.seo_draft_meta_description ?? "",
+    seo_draft_faqs: row.seo_draft_faqs ?? [],
+    seo_draft_generated_at: row.seo_draft_generated_at ?? null,
     quantities: {
       krefeld: row.quantities?.krefeld != null ? String(row.quantities.krefeld) : "",
       bonn: row.quantities?.bonn != null ? String(row.quantities.bonn) : "",
