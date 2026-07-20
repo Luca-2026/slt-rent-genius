@@ -309,7 +309,8 @@ export default function B2BProducts() {
     }
 
     return products;
-  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections, trailerFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocation, selectedCategory, searchQuery, categoryFilters, filterSections, trailerFilters, cmsVersion]);
 
   // Find category slug for a product (for discount lookup)
   const getCategoryForProduct = useCallback((product: Product): string => {
