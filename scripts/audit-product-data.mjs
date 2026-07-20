@@ -194,6 +194,7 @@ add(`| Felddifferenzen gesamt | ${diffs.length} |`);
 add(`| DB-Produkte ohne Bilder | ${missingImages.length} |`);
 add(`| Kaputte Bild-URLs (Datei fehlt in public/) | ${brokenImages.length} |`);
 add(`| SEO-Waisen (in productSEOData, weder statisch noch DB) | ${seoOrphans.length} |`);
+add(`| Buchbar (on_request=false) ohne rentware_code | ${bookableWithoutCode.length} |`);
 add("");
 
 add(`## Nur statisch — fehlen komplett in DB (${onlyStatic.length})`);
