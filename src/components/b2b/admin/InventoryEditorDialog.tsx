@@ -69,6 +69,9 @@ interface FormState {
   seo_meta_description: string;
   seo_faqs: Faq[];
   seo_local_content: Record<LocId, string>;
+  seo_draft_meta_description: string;
+  seo_draft_faqs: Faq[];
+  seo_draft_generated_at: string | null;
   quantities: Record<LocId, string>;
   quantity_notes: Record<LocId, string>;
   is_published: boolean;
