@@ -780,7 +780,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         </Tabs>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Abbrechen</Button>
+          <Button variant="outline" onClick={requestClose}>Abbrechen</Button>
           <Button onClick={handleSave} disabled={saving}>
             {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {initial ? "Speichern" : "Anlegen"}
