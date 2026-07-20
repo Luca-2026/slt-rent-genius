@@ -170,13 +170,26 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [tab, setTab] = useState("basis");
   const [uploading, setUploading] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const loadedIdRef = useRef<string | null>(null);
 
+  // Nur beim Öffnen oder beim Wechsel auf einen ANDEREN Artikel neu befüllen.
+  // Kein Reset bei Realtime-Refetch (identity-change von `initial`), sonst
+  // gehen ungespeicherte Eingaben verloren, wenn der Tab kurz den Fokus verliert.
   useEffect(() => {
-    if (open) {
+    if (!open) {
+      loadedIdRef.current = null;
+      return;
+    }
+    const nextId = initial?.id ?? "__new__";
+    if (loadedIdRef.current !== nextId) {
       setForm(initial ? fromRow(initial) : emptyForm());
       setTab("basis");
+      setDirty(false);
+      loadedIdRef.current = nextId;
     }
   }, [open, initial]);
+
 
   // Auto-slug: solange nicht manuell überschrieben und noch keine ID existiert
   useEffect(() => {
