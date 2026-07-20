@@ -567,6 +567,77 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="seo" className="space-y-6">
+              {(form.seo_draft_meta_description.trim() || form.seo_draft_faqs.length > 0) && (
+                <div className="rounded-lg border border-amber-500/50 bg-amber-50 dark:bg-amber-950/20 p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <div className="font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                        <Sparkles className="h-4 w-4" /> KI-Entwurf vorhanden
+                      </div>
+                      {form.seo_draft_generated_at && (
+                        <div className="text-xs text-amber-800 dark:text-amber-300 mt-0.5">
+                          Generiert am {new Date(form.seo_draft_generated_at).toLocaleString("de-DE")}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        onClick={() => {
+                          if (!window.confirm("Entwurf übernehmen? Die vorhandenen Live-Felder (Meta-Description und FAQs) werden überschrieben.")) return;
+                          setForm((f) => ({
+                            ...f,
+                            seo_meta_description: f.seo_draft_meta_description || f.seo_meta_description,
+                            seo_faqs: f.seo_draft_faqs.length > 0 ? f.seo_draft_faqs : f.seo_faqs,
+                            seo_draft_meta_description: "",
+                            seo_draft_faqs: [],
+                            seo_draft_generated_at: null,
+                          }));
+                          toast.success("Entwurf übernommen – bitte speichern, um live zu schalten");
+                        }}
+                      >
+                        Entwurf übernehmen
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          if (!window.confirm("Entwurf verwerfen? Die generierten Vorschläge gehen verloren.")) return;
+                          setForm((f) => ({
+                            ...f,
+                            seo_draft_meta_description: "",
+                            seo_draft_faqs: [],
+                            seo_draft_generated_at: null,
+                          }));
+                          toast.success("Entwurf verworfen – bitte speichern");
+                        }}
+                      >
+                        Verwerfen
+                      </Button>
+                    </div>
+                  </div>
+                  {form.seo_draft_meta_description.trim() && (
+                    <div className="mt-3">
+                      <div className="text-xs font-medium text-amber-900 dark:text-amber-200 mb-1">Meta-Description (Entwurf)</div>
+                      <div className="text-sm bg-background/60 rounded border border-amber-200 p-2 whitespace-pre-wrap">{form.seo_draft_meta_description}</div>
+                    </div>
+                  )}
+                  {form.seo_draft_faqs.length > 0 && (
+                    <div className="mt-3">
+                      <div className="text-xs font-medium text-amber-900 dark:text-amber-200 mb-1">FAQs (Entwurf, {form.seo_draft_faqs.length})</div>
+                      <div className="space-y-1">
+                        {form.seo_draft_faqs.map((f, i) => (
+                          <details key={i} className="text-sm bg-background/60 rounded border border-amber-200 p-2">
+                            <summary className="cursor-pointer font-medium">{f.question}</summary>
+                            <div className="mt-1 text-muted-foreground whitespace-pre-wrap">{f.answer}</div>
+                          </details>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <Label>Meta-Description</Label>
