@@ -92,6 +92,9 @@ export interface AdminManagedProductRow extends ManagedProductRow {
   is_published: boolean;
   quantities: Record<string, number>;
   quantity_notes: Record<string, string>;
+  seo_draft_meta_description: string | null;
+  seo_draft_faqs: Array<{ question: string; answer: string }> | null;
+  seo_draft_generated_at: string | null;
   created_at: string;
   updated_at: string;
 }
