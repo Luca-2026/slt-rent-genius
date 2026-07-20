@@ -2,7 +2,7 @@
  * Editor-Dialog für CMS-Mietartikel. 6 Tabs: Basis, Bilder, Technik, Preise & Buchung,
  * SEO & Content, Intern (Bestand). KI-Buttons rufen `admin-generate-product-content`.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -170,13 +170,55 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [tab, setTab] = useState("basis");
   const [uploading, setUploading] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const loadedIdRef = useRef<string | null>(null);
 
+  // Nur beim Öffnen oder beim Wechsel auf einen ANDEREN Artikel neu befüllen.
+  // Kein Reset bei Realtime-Refetch (identity-change von `initial`), sonst
+  // gehen ungespeicherte Eingaben verloren, wenn der Tab kurz den Fokus verliert.
   useEffect(() => {
-    if (open) {
+    if (!open) {
+      loadedIdRef.current = null;
+      return;
+    }
+    const nextId = initial?.id ?? "__new__";
+    if (loadedIdRef.current !== nextId) {
       setForm(initial ? fromRow(initial) : emptyForm());
       setTab("basis");
+      setDirty(false);
+      loadedIdRef.current = nextId;
     }
   }, [open, initial]);
+
+  // Dirty-Tracking: erste form-Zuweisung nach dem Öffnen zählt nicht als Änderung
+  const dirtyBaselineRef = useRef<string>("");
+  useEffect(() => {
+    if (!open) return;
+    const snap = JSON.stringify(form);
+    if (loadedIdRef.current && dirtyBaselineRef.current === "") {
+      dirtyBaselineRef.current = snap;
+      return;
+    }
+    if (dirtyBaselineRef.current && snap !== dirtyBaselineRef.current) {
+      setDirty(true);
+    }
+  }, [form, open]);
+  useEffect(() => {
+    if (!open) dirtyBaselineRef.current = "";
+  }, [open]);
+
+  const requestClose = () => {
+    if (dirty) {
+      const ok = window.confirm(
+        "Es gibt ungespeicherte Änderungen. Wirklich schließen und Änderungen verwerfen?",
+      );
+      if (!ok) return;
+    }
+    setDirty(false);
+    onOpenChange(false);
+  };
+
+
 
   // Auto-slug: solange nicht manuell überschrieben und noch keine ID existiert
   useEffect(() => {
@@ -368,8 +410,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       }
 
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
+      setDirty(false);
       onSaved();
       onOpenChange(false);
+
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen");
     } finally {
@@ -378,8 +422,14 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col">
+    <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
+      <DialogContent
+        className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
+      >
+
         <DialogHeader>
           <DialogTitle>
             {initial ? `Artikel bearbeiten: ${initial.name}` : "Neuen Mietartikel anlegen"}
@@ -730,7 +780,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         </Tabs>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Abbrechen</Button>
+          <Button variant="outline" onClick={requestClose}>Abbrechen</Button>
           <Button onClick={handleSave} disabled={saving}>
             {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {initial ? "Speichern" : "Anlegen"}
