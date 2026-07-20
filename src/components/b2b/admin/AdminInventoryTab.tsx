@@ -11,9 +11,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package, Wrench } from "lucide-react";
 import { useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { InventoryEditorDialog } from "./InventoryEditorDialog";
+import { ProductInstancesDialog } from "./ProductInstancesDialog";
+import { useInstanceCounts } from "@/hooks/useProductInstances";
 import { productCategories } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
