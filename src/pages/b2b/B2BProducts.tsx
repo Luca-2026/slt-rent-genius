@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { B2BProductCard } from "@/components/b2b/B2BProductCard";
 import { B2BReservationDialog } from "@/components/b2b/B2BReservationDialog";
