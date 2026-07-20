@@ -11,9 +11,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package, Wrench } from "lucide-react";
 import { useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { InventoryEditorDialog } from "./InventoryEditorDialog";
+import { ProductInstancesDialog } from "./ProductInstancesDialog";
+import { useInstanceCounts } from "@/hooks/useProductInstances";
 import { productCategories } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -32,7 +34,9 @@ export function AdminInventoryTab() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [editing, setEditing] = useState<AdminManagedProductRow | null>(null);
   const [creating, setCreating] = useState(false);
+  const [instancesFor, setInstancesFor] = useState<AdminManagedProductRow | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
+  const { data: instanceCounts = {} } = useInstanceCounts();
 
   const hasDraft = (p: AdminManagedProductRow) =>
     !!(p.seo_draft_meta_description && p.seo_draft_meta_description.trim()) ||
@@ -137,7 +141,7 @@ export function AdminInventoryTab() {
                   <TableHead>Name / Slug</TableHead>
                   <TableHead>Kategorie</TableHead>
                   <TableHead>Standorte</TableHead>
-                  <TableHead>Bestand K / B / M</TableHead>
+                  <TableHead>Einzelartikel K / B / M</TableHead>
                   <TableHead>Rentware</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Aktionen</TableHead>
@@ -164,7 +168,11 @@ export function AdminInventoryTab() {
                         </div>
                       </TableCell>
                       <TableCell className="text-xs">
-                        {["krefeld", "bonn", "muelheim"].map((l) => row.quantities?.[l] ?? "–").join(" / ")}
+                        {(() => {
+                          const c = instanceCounts[row.id];
+                          if (!c || c.total === 0) return <span className="text-muted-foreground">—</span>;
+                          return ["krefeld", "bonn", "muelheim"].map((l) => c.byLocation[l] ?? 0).join(" / ");
+                        })()}
                       </TableCell>
                       <TableCell className="text-xs font-mono">
                         {(() => {
@@ -191,6 +199,7 @@ export function AdminInventoryTab() {
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
                           <Button size="icon" variant="ghost" title="Bearbeiten" onClick={() => setEditing(row)}><Pencil className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" title="Einzelartikel & Wartungen" onClick={() => setInstancesFor(row)}><Wrench className="h-4 w-4" /></Button>
                           <Button size="icon" variant="ghost" title="Duplizieren" onClick={() => duplicate(row)}><Copy className="h-4 w-4" /></Button>
                           <Button size="icon" variant="ghost" title={row.is_published ? "Verstecken" : "Veröffentlichen"} onClick={() => togglePublish(row)}>
                             {row.is_published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -213,6 +222,17 @@ export function AdminInventoryTab() {
         initial={editing}
         onSaved={refetch}
       />
+
+      <ProductInstancesDialog
+        open={!!instancesFor}
+        onOpenChange={(v) => { if (!v) setInstancesFor(null); }}
+        productId={instancesFor?.id ?? null}
+        productName={instancesFor?.name ?? ""}
+        productCategory={instancesFor?.category ?? ""}
+        availableLocations={instancesFor?.available_locations ?? []}
+      />
+
+
 
       <AlertDialog open={!!confirmDelete} onOpenChange={(v) => !v && setConfirmDelete(null)}>
         <AlertDialogContent>

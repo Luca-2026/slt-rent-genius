@@ -364,6 +364,51 @@ export type Database = {
           },
         ]
       }
+      b2b_instance_hours_log: {
+        Row: {
+          created_at: string
+          hours: number
+          id: string
+          instance_id: string
+          note: string | null
+          recorded_at: string
+          recorded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          hours: number
+          id?: string
+          instance_id: string
+          note?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          hours?: number
+          id?: string
+          instance_id?: string
+          note?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_instance_hours_log_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_instance_hours_log_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+        ]
+      }
       b2b_invoice_items: {
         Row: {
           created_at: string
@@ -526,6 +571,149 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "b2b_reservations"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_maintenance_intervals: {
+        Row: {
+          created_at: string
+          id: string
+          instance_id: string
+          interval_type: Database["public"]["Enums"]["maintenance_interval_type"]
+          interval_value: number | null
+          is_active: boolean
+          last_done_at: string | null
+          last_done_hours: number | null
+          next_due_at: string | null
+          next_due_hours: number | null
+          notes: string | null
+          title: string
+          updated_at: string
+          warn_days_before: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          instance_id: string
+          interval_type: Database["public"]["Enums"]["maintenance_interval_type"]
+          interval_value?: number | null
+          is_active?: boolean
+          last_done_at?: string | null
+          last_done_hours?: number | null
+          next_due_at?: string | null
+          next_due_hours?: number | null
+          notes?: string | null
+          title: string
+          updated_at?: string
+          warn_days_before?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          instance_id?: string
+          interval_type?: Database["public"]["Enums"]["maintenance_interval_type"]
+          interval_value?: number | null
+          is_active?: boolean
+          last_done_at?: string | null
+          last_done_hours?: number | null
+          next_due_at?: string | null
+          next_due_hours?: number | null
+          notes?: string | null
+          title?: string
+          updated_at?: string
+          warn_days_before?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_maintenance_intervals_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_maintenance_intervals_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+        ]
+      }
+      b2b_maintenance_log: {
+        Row: {
+          attachments: Json | null
+          cost: number | null
+          created_at: string
+          description: string | null
+          hours_at_service: number | null
+          id: string
+          instance_id: string
+          interval_id: string | null
+          parts_replaced: string | null
+          performed_at: string
+          performed_by: string | null
+          performed_by_name: string | null
+          title: string
+        }
+        Insert: {
+          attachments?: Json | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          hours_at_service?: number | null
+          id?: string
+          instance_id: string
+          interval_id?: string | null
+          parts_replaced?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          performed_by_name?: string | null
+          title: string
+        }
+        Update: {
+          attachments?: Json | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          hours_at_service?: number | null
+          id?: string
+          instance_id?: string
+          interval_id?: string | null
+          parts_replaced?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          performed_by_name?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_maintenance_log_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_maintenance_log_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+          {
+            foreignKeyName: "b2b_maintenance_log_interval_id_fkey"
+            columns: ["interval_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_maintenance_intervals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_maintenance_log_interval_id_fkey"
+            columns: ["interval_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["interval_id"]
           },
         ]
       }
@@ -816,6 +1004,82 @@ export type Database = {
             columns: ["reservation_id"]
             isOneToOne: false
             referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_product_instances: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          current_operating_hours: number | null
+          id: string
+          internal_inventory_number: string | null
+          location: string
+          managed_product_id: string
+          notes: string | null
+          purchase_date: string | null
+          purchase_price: number | null
+          serial_number: string | null
+          status: Database["public"]["Enums"]["instance_status"]
+          supplier: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          current_operating_hours?: number | null
+          id?: string
+          internal_inventory_number?: string | null
+          location: string
+          managed_product_id: string
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["instance_status"]
+          supplier?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          current_operating_hours?: number | null
+          id?: string
+          internal_inventory_number?: string | null
+          location?: string
+          managed_product_id?: string
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["instance_status"]
+          supplier?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_product_instances_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_managed_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_product_instances_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["managed_product_id"]
+          },
+          {
+            foreignKeyName: "b2b_product_instances_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "managed_products_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1809,6 +2073,28 @@ export type Database = {
         }
         Relationships: []
       }
+      maintenance_due_overview: {
+        Row: {
+          current_operating_hours: number | null
+          due_status: string | null
+          instance_id: string | null
+          internal_inventory_number: string | null
+          interval_id: string | null
+          interval_type:
+            | Database["public"]["Enums"]["maintenance_interval_type"]
+            | null
+          location: string | null
+          managed_product_id: string | null
+          next_due_at: string | null
+          next_due_hours: number | null
+          product_name: string | null
+          product_slug: string | null
+          serial_number: string | null
+          title: string | null
+          warn_days_before: number | null
+        }
+        Relationships: []
+      }
       managed_products_public: {
         Row: {
           available_locations: string[] | null
@@ -1913,6 +2199,18 @@ export type Database = {
       }
     }
     Functions: {
+      complete_maintenance: {
+        Args: {
+          _cost: number
+          _description: string
+          _hours_at_service: number
+          _interval_id: string
+          _parts_replaced: string
+          _performed_at: string
+          _performed_by_name: string
+        }
+        Returns: string
+      }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
@@ -1993,6 +2291,19 @@ export type Database = {
         | "buchhaltung"
         | "readonly"
       b2b_status: "pending" | "approved" | "rejected"
+      instance_status:
+        | "available"
+        | "rented"
+        | "maintenance"
+        | "repair"
+        | "retired"
+        | "lost"
+      maintenance_interval_type:
+        | "hours"
+        | "days"
+        | "months"
+        | "years"
+        | "one_time"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2128,6 +2439,21 @@ export const Constants = {
         "readonly",
       ],
       b2b_status: ["pending", "approved", "rejected"],
+      instance_status: [
+        "available",
+        "rented",
+        "maintenance",
+        "repair",
+        "retired",
+        "lost",
+      ],
+      maintenance_interval_type: [
+        "hours",
+        "days",
+        "months",
+        "years",
+        "one_time",
+      ],
     },
   },
 } as const

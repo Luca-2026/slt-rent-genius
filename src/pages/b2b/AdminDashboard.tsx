@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Admin components
 import { AdminStatsOverview } from "@/components/b2b/admin/AdminStatsOverview";
+import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 import { AdminGlobalSearch } from "@/components/b2b/admin/AdminGlobalSearch";
 import { AdminReservationsTab } from "@/components/b2b/admin/AdminReservationsTab";
 import { AdminRentalsTab } from "@/components/b2b/admin/AdminRentalsTab";
@@ -853,6 +854,8 @@ export default function AdminDashboard() {
         newRegistrationsLast30Days={newRegistrationsLast30Days}
         pendingCustomers={pendingCustomers.length}
       />
+      <MaintenanceDueWidget />
+
 
 
       {/* Phase B3 — Global search across loaded customers / invoices / offers / reservations */}
