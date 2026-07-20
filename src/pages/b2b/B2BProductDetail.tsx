@@ -35,7 +35,6 @@ export default function B2BProductDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [inquiryProduct, setInquiryProduct] = useState<Product | null>(null);
 
-  const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const cmsVersion = useManagedProductsVersion();
   const location = useMemo(() => getLocationById(locationId || ""), [locationId]);
   const category = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
