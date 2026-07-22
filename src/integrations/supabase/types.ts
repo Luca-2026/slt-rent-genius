@@ -749,6 +749,7 @@ export type Database = {
           seo_faqs: Json
           seo_local_content: Json
           seo_meta_description: string | null
+          seo_title: string | null
           slug: string
           sort_order: number | null
           specifications: Json
@@ -790,6 +791,7 @@ export type Database = {
           seo_faqs?: Json
           seo_local_content?: Json
           seo_meta_description?: string | null
+          seo_title?: string | null
           slug: string
           sort_order?: number | null
           specifications?: Json
@@ -831,6 +833,7 @@ export type Database = {
           seo_faqs?: Json
           seo_local_content?: Json
           seo_meta_description?: string | null
+          seo_title?: string | null
           slug?: string
           sort_order?: number | null
           specifications?: Json
