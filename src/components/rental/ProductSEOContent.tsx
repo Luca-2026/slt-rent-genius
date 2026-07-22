@@ -372,7 +372,7 @@ export const categoryContent: Record<string, {
 
 export function ProductSEOContent({ product, location, categoryId, categoryTitle, productSEO, additionalFaqs }: ProductSEOContentProps) {
   const categoryData = useMemo(() => categoryContent[categoryId], [categoryId]);
-  const productName = productSEO?.excelName || product.name;
+  const productName = product.name;
   const locationName = location.name;
   const locationEmail = location.email;
 
