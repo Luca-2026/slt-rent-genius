@@ -750,6 +750,9 @@ export type Database = {
           seo_local_content: Json
           seo_meta_description: string | null
           seo_title: string | null
+          seo_use_case_bau: string | null
+          seo_use_case_event: string | null
+          seo_use_case_privat: string | null
           slug: string
           sort_order: number | null
           specifications: Json
@@ -792,6 +795,9 @@ export type Database = {
           seo_local_content?: Json
           seo_meta_description?: string | null
           seo_title?: string | null
+          seo_use_case_bau?: string | null
+          seo_use_case_event?: string | null
+          seo_use_case_privat?: string | null
           slug: string
           sort_order?: number | null
           specifications?: Json
@@ -834,6 +840,9 @@ export type Database = {
           seo_local_content?: Json
           seo_meta_description?: string | null
           seo_title?: string | null
+          seo_use_case_bau?: string | null
+          seo_use_case_event?: string | null
+          seo_use_case_privat?: string | null
           slug?: string
           sort_order?: number | null
           specifications?: Json
