@@ -710,11 +710,13 @@ for (const loc of locations as LocationData[]) {
       lastmod: TODAY,
     });
 
-    // (Etappe 5b.2) `mh-`-Prefix-Lookup entfernt. Nach der Mülheim-Entkopplung
-    // (Etappe 3) liefert die DB eigene SEO-Datensätze; die statischen `mh-…`-
-    // Einträge wurden ersatzlos gelöscht. Fallback ist der kanonische Slug.
+    // Standort-Präfix für SEO-Lookup (bonn-/krefeld-/muelheim-…). Überschreibt
+    // standortspezifische Varianten den kanonischen Slug. (Etappe 5b.2) Der
+    // historische `mh-`-Prefix ist nach der Mülheim-Entkopplung entfernt;
+    // Mülheim nutzt jetzt `muelheim-` bzw. den kanonischen Slug.
     for (const p of products) {
-      const seo: ProductSEOData | undefined = productSEOData[p.id];
+      const seo: ProductSEOData | undefined =
+        productSEOData[`${loc.id}-${p.id}`] ?? productSEOData[p.id];
       const hasSEO = !!seo;
       // Krefeld-zentrierte SEO-Strings (seoTitle, metaDescription, h1) auf
       // den aktuellen Standort umschreiben. Ohne diesen Replace bekämen
