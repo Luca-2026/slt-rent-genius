@@ -266,16 +266,7 @@ export default function ProductDetail() {
         document.head.appendChild(metaDescription);
       }
 
-      // SEO: Keywords meta tag
-      if (productSEO?.primaryKeywords) {
-        let keywordsMeta = document.querySelector('meta[name="keywords"]');
-        if (!keywordsMeta) {
-          keywordsMeta = document.createElement("meta");
-          keywordsMeta.setAttribute("name", "keywords");
-          document.head.appendChild(keywordsMeta);
-        }
-        keywordsMeta.setAttribute("content", localizeText(productSEO.primaryKeywords));
-      }
+      // (Etappe 5b.2) primaryKeywords/<meta name="keywords"> entfernt – von Google ignoriert.
 
       // SEO: Canonical URL
       const canonicalUrl = `https://www.slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}/`;
