@@ -11,22 +11,16 @@ const corsHeaders = {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  const authHeader = req.headers.get("Authorization") ?? "";
-  const jwt = authHeader.replace(/^Bearer\s+/i, "");
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-  const ANON = Deno.env.get("SUPABASE_ANON_KEY")!;
   const SERVICE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const SECRET = Deno.env.get("UC_MIGRATION_SECRET")!;
 
-  // Admin check
-  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: ANON, Authorization: `Bearer ${jwt}` },
-  });
-  if (!userRes.ok) return new Response("unauthorized", { status: 401, headers: corsHeaders });
-  const user = await userRes.json();
+  const provided = req.headers.get("x-migration-secret") ?? "";
+  if (!SECRET || provided !== SECRET) {
+    return new Response("unauthorized", { status: 401, headers: corsHeaders });
+  }
 
   const admin = createClient(SUPABASE_URL, SERVICE);
-  const { data: isAdmin, error: rErr } = await admin.rpc("has_role", { _user_id: user.id, _role: "admin" });
-  if (rErr || !isAdmin) return new Response("forbidden", { status: 403, headers: corsHeaders });
 
   const rows = data as [string, string, string, string][];
   const stats = { total: rows.length, updated: 0, skipped: 0, missing: 0, errors: [] as string[] };
