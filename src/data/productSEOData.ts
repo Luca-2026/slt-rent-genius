@@ -2,7 +2,6 @@
 // DO NOT EDIT MANUALLY - regenerate from Excel source
 
 export interface ProductSEOData {
-  excelName: string;
   seoTitle: string;
   metaDescription: string;
   h1: string;
@@ -10,8 +9,6 @@ export interface ProductSEOData {
   useCaseBau: string;
   useCaseEvent: string;
   useCasePrivat: string;
-  primaryKeywords: string;
-  is247: boolean;
   faqs: { q: string; a: string }[];
   /** Tagespreis ab (EUR netto) für JSON-LD Offer.priceSpecification */
   dailyPriceFrom?: number;
@@ -20,7 +17,6 @@ export interface ProductSEOData {
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
   "slt-eiswuerfelmaschine-profi-35kg": {
-    excelName: "SLT Eiswürfelmaschine Profi 35 kg/24 h",
     seoTitle: "Profi-Eiswürfelmaschine mieten Krefeld – 35 kg/Tag | SLT",
     metaDescription: "Profi-Eiswürfelmaschine mieten in Krefeld: 35 kg Eis pro Tag, Edelstahl, mit oder ohne Wasseranschluss. Ideal für Gastronomie, Catering & Hochzeit. Auf Anfrage buchbar.",
     h1: "Profi-Eiswürfelmaschine mieten in Krefeld – 35 kg Eis pro Tag",
@@ -33,8 +29,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kaltgetränke-Versorgung für Baustelleneröffnungen, Richtfeste und Mitarbeiter-Events im Sommer – auch bei mehreren Hundert Gästen.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Cateringbetriebe, Bars, Restaurants, Cafés und Hotels. Ein Gerät versorgt mehrere Cocktail-Stationen gleichzeitig mit klaren Würfeln in wählbarer Größe.",
     useCasePrivat: "Große Gartenpartys, Familienfeiern, Vereinsfeste – überall dort, wo herkömmliche Kompaktgeräte nicht mehr ausreichen.",
-    primaryKeywords: "Profi Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter Gastronomie mieten, Eiswürfelmaschine 35 kg mieten NRW",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       {
@@ -68,7 +62,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "slt-eiswuerfelbereiter": {
-    excelName: "SLT Eiswürfelbereiter kompakt",
     seoTitle: "Eiswürfelmaschine mieten Krefeld – kompakt | SLT Rental",
     metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, direkt buchbar in Krefeld & Bonn, Mülheim auf Anfrage.",
     h1: "Kompakte Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
@@ -81,8 +74,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kühle Getränke bei Richtfest, Baustellenübergabe oder Firmenfeier – überall, wo ein Stromanschluss vorhanden ist.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Foodtrucks, Messeauftritte, Barbetrieb und Cateringzelte – schneller Nachschub an Eiswürfeln für Cocktails, Longdrinks, Softdrinks und Sekt-Kübel.",
     useCasePrivat: "Gartenparty, Geburtstag, Grillabend, Silvester oder Hausbar – frische Eiswürfel ohne verstopftes Gefrierfach oder Plastikbeutel.",
-    primaryKeywords: "Eiswürfelmaschine mieten in Krefeld, Eiswürfelbereiter mieten in Krefeld, Eiswürfelmaschine leihen NRW",
-    is247: false,
     dailyPriceFrom: 9,
     faqs: [
       {
@@ -112,7 +103,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "adj-fog-fury-jett-pro": {
-    excelName: "ADJ Fog Fury Jett PRO",
     seoTitle: "ADJ Fog Fury Jett PRO mieten in Krefeld | SLT Rental",
     metaDescription: "ADJ Fog Fury Jett PRO mieten in Krefeld. Senkrecht- Nebelmaschine   inkl. LED Beleuchtung mit 2,5l Nebelfluid    weiteres Nebelflui. Tagesmiete, fairer Pre",
     h1: "ADJ Fog Fury Jett PRO mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -120,8 +110,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Brandschutzübungen, Rauchmelder-Tests (Nebelmaschinen)",
     useCaseEvent: "Konzerte, Hochzeiten, Clubevents, Geburtstage, Stadtfeste",
     useCasePrivat: "Geburtstagsparty, Silvesterfeier, Familienfest, Kindergeburtstag",
-    primaryKeywords: "ADJ Fog Fury Jett PRO mieten in Krefeld, ADJ Fog Fury Jett PRO leihen in Krefeld, ADJ Fog Fury Jett PRO mieten NRW",
-    is247: false,
     faqs: [
       { q: "Sind Genehmigungen für den Betrieb erforderlich?", a: "Nebelmaschinen können in Gebäuden mit Brandmeldeanlage Fehlalarme auslösen – vorher die Anlage abkoppeln oder das Ordnungsamt informieren. CO2-Jets benötigen in der Regel keine gesonderte Genehmigung, aber das Veranstaltungsgelände / die Location muss informiert werden." },
       { q: "Ist Verbrauchsmaterial (Fluid, CO2 etc.) im Mietpreis enthalten?", a: "Das benötigte Material: weiteres Nebelfluid kann im nächsten Schritt dazu gebucht werden. Verbrauchsmaterial ist in der Regel nicht im Mietpreis enthalten. Bitte bei der Buchung angeben, welche Menge Sie benötigen – wir beraten Sie zur richtigen Menge für Ihr Event." },
@@ -130,7 +118,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-100kva": {
-    excelName: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger",
     seoTitle: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger",
     metaDescription: "Leistungsstarkes Diesel-Stromaggregat mit 120 kVA Spitzenleistung und EU Stage V. Schallgedämmt auf PKW-Anhänger für Baustellen und Events.",
     h1: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -138,8 +125,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss und fungiert als Notstrom in der Bauphase oder Sanierung. Es eignet sich zum Antrieb leistungsstarker Werkzeuge und Pumpen.",
     useCaseEvent: "Das Aggregat gewährleistet die Stromversorgung bei Outdoor-Veranstaltungen und dient als Backup-Strom bei Festen sowie zur Versorgung von Foodtrucks.",
     useCasePrivat: "Dieses Modell kommt zur Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe zum Einsatz.",
-    primaryKeywords: "100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger leihen in Krefeld, 100 kVA Aggregat Doosan G100 auf PKW-Anhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 75,
     faqs: [
       { q: "Welche Anschlüsse stehen am Doosan G100 zur Verfügung?", a: "Das Aggregat verfügt über 2x Schuko 16A, 1x CEE 32A 5-Pol, 1x CEE 63A 5-Pol und 1x CEE 125A 5-Pol." },
@@ -148,7 +133,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-2-8kva": {
-    excelName: "2,8 kVA Aggregat Ford FG4050",
     seoTitle: "2,8 kVA Aggregat Ford FG4050 | Kompakter Benziner",
     metaDescription: "Mieten Sie das Ford FG4050 Benzin-Stromaggregat mit 2.500 W Dauerleistung. Fahrbar auf Rollen, 15 l Tank für ca. 5,5 h Laufzeit. Ideal für kleine Verbraucher.",
     h1: "2,8 kVA Aggregat Ford FG4050 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -156,8 +140,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss sowie als Notstromquelle in der Bauphase und Sanierung.",
     useCaseEvent: "Das Gerät ermöglicht die Stromversorgung bei Outdoor-Veranstaltungen und dient als Backup-Strom bei Festen und Märkten.",
     useCasePrivat: "Es eignet sich zur Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe.",
-    primaryKeywords: "2,8 kVA Aggregat Ford FG4050 mieten in Krefeld, 2,8 kVA Aggregat Ford FG4050 leihen in Krefeld, 2,8 kVA Aggregat Ford FG4050 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lange kann das Aggregat mit einer Tankfüllung betrieben werden?", a: "Bei Nennleistung erreicht das Gerät mit seinem 15 Liter fassenden Benzintank eine Autonomie von ca. 5,5 Stunden." },
       { q: "Welche Anschlüsse stehen am Ford FG4050 zur Verfügung?", a: "Das Aggregat verfügt über zwei Schuko 16A Anschlüsse für eine Spannung von 230 V." },
@@ -165,7 +147,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-20kva": {
-    excelName: "20 kVA Aggregat Doosan G20",
     seoTitle: "20 kVA Aggregat Doosan G20 | Stromaggregat mieten",
     metaDescription: "Schallgedämmtes Diesel-Stromaggregat Doosan G20 mit 20 kVA Spitzenleistung und EU Stage V. 181 Liter Tank für hohe Autonomie. Optional mit Anhänger.",
     h1: "20 kVA Aggregat Doosan G20 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -173,8 +154,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss sowie als Notstromquelle in der Bauphase und bei Sanierungen. Es eignet sich zudem für den Antrieb leistungsstarker Werkzeuge und Pumpen.",
     useCaseEvent: "Das Aggregat gewährleistet die Stromversorgung bei Outdoor-Veranstaltungen, versorgt Foodtrucks sowie Event-Infrastruktur und dient als Backup-Strom bei Festen und Märkten.",
     useCasePrivat: "Das Gerät ermöglicht die Stromversorgung bei Garten- und Außenarbeiten und fungiert als Notstromlösung für temporäre Anlässe.",
-    primaryKeywords: "20 kVA Aggregat Doosan G20 mieten in Krefeld, 20 kVA Aggregat Doosan G20 leihen in Krefeld, 20 kVA Aggregat Doosan G20 mieten NRW",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Wie lange kann das Doosan G20 ohne Nachanken betrieben werden?", a: "Das Aggregat verfügt über einen 181 Liter fassenden Tank und erreicht damit eine Autonomie von circa 47 Stunden bei Nennleistung." },
@@ -183,7 +162,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-50kva": {
-    excelName: "50 kVA Aggregat Doosan G50",
     seoTitle: "50 kVA Aggregat Doosan G50 | Diesel-Stromerzeuger",
     metaDescription: "Schallgedämmtes 50 kVA Diesel-Stromaggregat mit EU Stage V Emissionsklasse, 176 l Tank und verschiedenen CEE-Anschlüssen für Baustellen und Events.",
     h1: "50 kVA Aggregat Doosan G50 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -191,8 +169,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss sowie als Notstromquelle in der Bauphase und Sanierung. Es eignet sich zum Antrieb leistungsstarker Werkzeuge und Pumpen.",
     useCaseEvent: "Das Gerät unterstützt die Stromversorgung bei Outdoor-Veranstaltungen, dient als Backup-Strom bei Festen und versorgt die Event-Infrastruktur sowie Foodtrucks.",
     useCasePrivat: "Einsetzbar zur Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe im privaten Bereich.",
-    primaryKeywords: "50 kVA Aggregat Doosan G50 mieten in Krefeld, 50 kVA Aggregat Doosan G50 leihen in Krefeld, 50 kVA Aggregat Doosan G50 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lange kann das Aggregat ohne Unterbrechung betrieben werden?", a: "Der 176-Liter-Tank ermöglicht bei einer Last von 75 % eine Autonomie von circa 35 Stunden." },
       { q: "Welche Anschlüsse stehen für den Betrieb zur Verfügung?", a: "Das Aggregat verfügt über zwei Schuko 16A Anschlüsse, einen CEE 16A 5-Pol Anschluss sowie einen CEE 32A 5-Pol Anschluss." },
@@ -200,7 +176,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-7-5kva": {
-    excelName: "7,5 kVA Aggregat Kärcher PGG 8/3",
     seoTitle: "7,5 kVA Aggregat Kärcher PGG 8/3 mieten",
     metaDescription: "Leistungsstarkes Stromaggregat mit 7,5 kVA Drehstrom und 2,5 kVA Wechselstrom. 25-Liter-Tank für bis zu 7 Stunden Laufzeit. Jetzt für NRW mieten.",
     h1: "7,5 kVA Aggregat Kärcher PGG 8/3 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -208,8 +183,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss sowie als Notstromquelle in der Bau- und Sanierungsphase. Es ermöglicht den Antrieb leistungsstarker Werkzeuge und Pumpen.",
     useCaseEvent: "Es wird zur Stromversorgung bei Outdoor-Veranstaltungen, Märkten und Festen eingesetzt. Zudem dient es der Versorgung von Foodtrucks und Event-Infrastruktur.",
     useCasePrivat: "Das Gerät eignet sich für die Stromversorgung bei Garten- und Außenarbeiten sowie als Notstrom für temporäre Anlässe.",
-    primaryKeywords: "7,5 kVA Aggregat Kärcher PGG 8/3 mieten in Krefeld, 7,5 kVA Aggregat Kärcher PGG 8/3 leihen in Krefeld, 7,5 kVA Aggregat Kärcher PGG 8/3 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse bietet das Kärcher PGG 8/3?", a: "Das Aggregat verfügt über zwei Schuko-Steckdosen (16A) für Wechselstrom und einen CEE-Anschluss (16A, 5-polig) für Drehstrom." },
       { q: "Wie lange ist die Laufzeit mit einer Tankfüllung?", a: "Mit einem Tankinhalt von 25 Litern Benzin erreicht das Gerät eine Autonomie von circa 7 Stunden bei Nennleistung." },
@@ -217,7 +190,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregat-80kva": {
-    excelName: "80 kVA Aggregat Doosan G80",
     seoTitle: "80 kVA Aggregat Doosan G80 mieten | Baustellen & Events",
     metaDescription: "Leistungsstarkes schallgedämmtes Diesel-Stromaggregat mit 80 kVA Dauerleistung und EU Stage V. Inklusive 176 l Tank für ca. 11 Stunden Autonomie. Jetzt mieten.",
     h1: "80 kVA Aggregat Doosan G80 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -225,8 +197,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Aggregat dient der Stromversorgung auf Baustellen ohne Netzanschluss sowie als Notstromlösung in der Bauphase und Sanierung. Es eignet sich zudem zum Antrieb leistungsstarker Werkzeuge und Pumpen.",
     useCaseEvent: "Das System unterstützt die Stromversorgung bei Outdoor-Veranstaltungen und dient als Backup-Strom bei Festen und Märkten. Es versorgt Foodtrucks und die notwendige Event-Infrastruktur.",
     useCasePrivat: "Dieses Aggregat ermöglicht die Stromversorgung bei Garten- und Außenarbeiten sowie die Bereitstellung von Notstrom für temporäre Anlässe.",
-    primaryKeywords: "80 kVA Aggregat Doosan G80 mieten in Krefeld, 80 kVA Aggregat Doosan G80 leihen in Krefeld, 80 kVA Aggregat Doosan G80 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse bietet das Doosan G80 Aggregat?", a: "Das Aggregat verfügt über zwei Schuko 16A Anschlüsse sowie jeweils einen CEE 32A 5-Pol, einen CEE 63A 5-Pol und einen CEE 125A 5-Pol Anschluss." },
       { q: "Wie lange reicht eine Tankfüllung im Betrieb?", a: "Der integrierte 176-Liter-Tank ermöglicht bei einer Last von 75 % eine Autonomie von circa 11 Stunden." },
@@ -234,7 +204,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "aggregatanhaenger-1300kg": {
-    excelName: "1300 kg Aggregatanhänger",
     seoTitle: "1300 kg Aggregatanhänger mieten | Temared",
     metaDescription: "Aggregatanhänger von Temared mit 1050 kg Nutzlast und 260 x 120 cm Ladefläche. Führerscheinklasse BE, B oder 3 erforderlich.",
     h1: "1300 kg Aggregatanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -242,8 +211,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Anhänger dient der mobilen Stromversorgung auf Baustellen ohne Netzanschluss sowie zur Bereitstellung von Notstrom während der Bauphase oder Sanierung.",
     useCaseEvent: "Zur Versorgung von Outdoor-Veranstaltungen, Foodtrucks und Event-Infrastruktur steht dieses Modell als mobile Lösung zur Verfügung.",
     useCasePrivat: "Der Anhänger ermöglicht die Stromversorgung bei Garten- und Außenarbeiten sowie die Bereitstellung von Notstrom für temporäre Anlässe.",
-    primaryKeywords: "1300 kg Aggregatanhänger mieten in Krefeld, 1300 kg Aggregatanhänger leihen in Krefeld, 1300 kg Aggregatanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Fahrerlaubnis wird zum Führen des Anhängers benötigt?", a: "Es ist die Klasse 3 oder BE erforderlich. Die Klasse B ist ausreichend, sofern das zulässige Gesamtgewicht des Zugfahrzeugs maximal 2150 kg beträgt." },
       { q: "Welche Voraussetzungen gelten für die 100 km/h Zulassung?", a: "Das Zugfahrzeug muss ein eingetragenes Leergewicht von mindestens 1228 kg aufweisen." },
@@ -251,7 +218,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "akku-heckenschere-ghe18v-60": {
-    excelName: "Akku Heckenschere GHE 18V-60",
     seoTitle: "Akku Heckenschere GHE 18V-60 mieten",
     metaDescription: "Bosch Professional Akku-Heckenschere mit 60 cm Schwertlänge, bürstenlosem Motor und Anti-Blocking System für kraftvolle Heckenschnitte.",
     h1: "Akku Heckenschere GHE 18V-60 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -259,8 +225,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät eignet sich für den Heckenschnitt im Rahmen der fachgerechten Landschaftspflege.",
     useCaseEvent: "",
     useCasePrivat: "Die Heckenschere unterstützt beim saisonalen Heckenschnitt am Eigenheim.",
-    primaryKeywords: "Akku Heckenschere GHE 18V-60 mieten in Krefeld, Akku Heckenschere GHE 18V-60 leihen in Krefeld, Akku Heckenschere GHE 18V-60 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Verfügt die GHE 18V-60 über einen Schutz vor Verklemmungen?", a: "Ja, die Heckenschere ist mit dem patentierten Bosch Anti-Blocking System ausgestattet, das ein Verklemmen beim Schneiden dickerer Äste verhindert." },
       { q: "Welche Schwertlänge bietet dieses Modell?", a: "Die Akku Heckenschere GHE 18V-60 verfügt über eine Schwertlänge von 60 cm." },
@@ -268,7 +232,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "akkupack-bluetti": {
-    excelName: "Bluetti Akkupack 1152 Wh",
     seoTitle: "Bluetti Akkupack 1152 Wh mieten in Krefeld | SLT Rental",
     metaDescription: "Bluetti Akkupack 1152 Wh mieten in Krefeld. Akkupack mit 1152 Wh  Leistung max.: 1800w  Anschlüsse: 2x Schuko, 4x USB-A, 1x USB-C, 1x. Tagesmiete, fairer P",
     h1: "Bluetti Akkupack 1152 Wh mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -276,8 +239,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Stromversorgung auf Baustellen ohne Netzanschluss, Laden von Akkuwerkzeugen",
     useCaseEvent: "Strom für Outdoor-Events, Beleuchtung, mobile Beschallung, Handyladestation",
     useCasePrivat: "Camping, Gartenfest, Notstrom bei Stromausfall, mobiles Büro",
-    primaryKeywords: "Bluetti Akkupack 1152 Wh mieten in Krefeld, Bluetti Akkupack 1152 Wh leihen in Krefeld, Bluetti Akkupack 1152 Wh mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Geräte kann ich mit dem Akkupack betreiben?", a: "Der Akkupack verfügt über Schuko-Steckdosen und USB-Anschlüsse. Er eignet sich für Laptops, Handys, LED-Beleuchtung, kleine Kühlboxen und Akkuwerkzeuge. Die maximale Dauerleistung entnehmen Sie den technischen Daten." },
       { q: "Wie lange hält eine Ladung?", a: "Die Laufzeit hängt vom Verbrauch der angeschlossenen Geräte ab. Bei typischer Nutzung (Handy laden, LED-Licht) hält der Akkupack mehrere Stunden bis Tage. Die genaue Kapazität finden Sie in den technischen Daten." },
@@ -287,7 +248,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "anhaengerbuehne-18m": {
     dailyPriceFrom: 130,
-    excelName: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     seoTitle: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     metaDescription: "Mieten Sie die EuropeLIFT TM18GTi Anhängerbühne mit 18 m Arbeitshöhe, 10,50 m Reichweite und Benzinantrieb für Höhenarbeiten an Fassaden oder Bäumen.",
     h1: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -295,8 +255,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Arbeitsbühne für Wartung und Montage sowie Höhenarbeiten ohne LKW-Aufbau – einfach mit dem PKW ziehen.",
     useCaseEvent: "",
     useCasePrivat: "Geeignet für die Baumpflege oder Fassadenarbeiten am Eigenheim.",
-    primaryKeywords: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten in Krefeld, 18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin leihen in Krefeld, 18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast im Arbeitskorb?", a: "Die maximale Korblast beträgt 220 kg bei einer Reichweite von 8 m und reduziert sich auf 100 kg bei einer Reichweite von 11 m." },
       { q: "Welche Anschlüsse stehen im Korb zur Verfügung?", a: "Der Arbeitskorb ist mit einem 230 V Anschluss sowie einem Druckluft-Anschluss ausgestattet." },
@@ -304,7 +262,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "anschlussverteilerschrank-44kva": {
-    excelName: "Anschlussverteilerschrank 44kVA",
     seoTitle: "Anschlussverteilerschrank 44 kVA mieten ab 39 €/Tag | SLT Rental",
     metaDescription: "Anschlussverteilerschrank 44 kVA mit Zählerfeld mieten – ab 39 €/Tag netto. Verzinktes Stahlblechgehäuse, 49 kg, stückgeprüft. Ideal für Baustromanschluss in NRW.",
     h1: "Anschlussverteilerschrank 44 kVA mieten in Krefeld – ab 39 €/Tag bei SLT Rental",
@@ -312,8 +269,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Zentraler Anschlussschrank mit Zählerfeld für Baustromanschlüsse über den Netzbetreiber – versorgt Baustellen, Container, Krane und Verbraucher mit bis zu 44 kVA (≈ 63 A 400 V).",
     useCaseEvent: "Anschlusspunkt mit Zähler für Festivals, Stadtfeste und Veranstaltungen mit temporärem Netzanschluss – exakte Verbrauchsabrechnung gegenüber dem Netzbetreiber möglich.",
     useCasePrivat: "",
-    primaryKeywords: "Anschlussverteilerschrank 44 kVA mieten, Baustromanschlussschrank 63 A mieten, Anschlussschrank mit Zähler mieten Krefeld, Baustromkasten mit Zählerfeld mieten NRW",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Was kostet der Anschlussverteilerschrank 44 kVA pro Tag?", a: "Die Tagesmiete für den Anschlussverteilerschrank 44 kVA startet bei 39 €/Tag netto. Wochen- und Langzeit-Tarife reduzieren den Tagessatz zusätzlich – den finalen Preis siehst du im Buchungsprozess." },
@@ -325,7 +280,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "endverteilerschrank-22kva-ev32": {
-    excelName: "Endverteilerschrank 22 kVA EV32 Typ B",
     seoTitle: "Endverteilerschrank 22 kVA EV32 mieten ab 19 €/Tag | Baustromverteiler 32 A",
     metaDescription: "Endverteilerschrank EV32 Typ B mit 22 kVA Anschlussleistung mieten ab 19 €/Tag – mobiler Baustromverteiler mit CEE 32 A & 16 A, 6× Schuko und FI Typ B. Krefeld & Bonn.",
     h1: "Endverteilerschrank 22 kVA – EV32 Typ B mieten in Krefeld – ab 19 €/Tag bei SLT Rental",
@@ -333,8 +287,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobiler Baustromverteiler für die zuverlässige Stromversorgung von Baumaschinen, Werkzeugen und Baustelleneinrichtungen – allstromsensitiver FI Typ B schützt auch frequenzgesteuerte Antriebe.",
     useCaseEvent: "Zentrale Stromverteilung auf Veranstaltungen, Festivals, Märkten und Messen mit gemischtem 400 V / 230 V Bedarf – 32 A CEE für Bühnen-/Kühltechnik, 6× Schuko für Standbetrieb.",
     useCasePrivat: "Sicherer Endverteiler für größere Privatbaustellen, Umbauten und Gartenarbeiten mit Hochleistungsmaschinen.",
-    primaryKeywords: "Endverteilerschrank EV32 mieten Krefeld, Baustromverteiler 22 kVA mieten, Baustromkasten 32A mieten NRW, Stromverteiler FI Typ B mieten, mobiler Stromverteilerschrank 22 kVA leihen",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Was kostet der Endverteilerschrank EV32 mit 22 kVA pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 19 €/Tag netto. Bei mehrtägiger oder wöchentlicher Miete reduziert sich der Tagessatz – den finalen Preis siehst du im Buchungsprozess." },
@@ -346,7 +298,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-endverteilerschrank-22kva-ev32": {
-    excelName: "Endverteilerschrank 22 kVA EV32 Typ B",
     seoTitle: "Endverteilerschrank 22 kVA EV32 mieten in Bonn ab 19 €/Tag",
     metaDescription: "Mobiler Baustromverteiler EV32 Typ B mit 22 kVA in Bonn mieten ab 19 €/Tag – CEE 32 A, 2× CEE 16 A, 6× Schuko, allstromsensitiver FI Typ B. Lieferung im Großraum Bonn.",
     h1: "Endverteilerschrank 22 kVA – EV32 Typ B mieten in Bonn – ab 19 €/Tag bei SLT Rental",
@@ -354,8 +305,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustromverteilung für Bauvorhaben in Bonn, Bornheim, Sankt Augustin, Siegburg und Königswinter – sicher abgesichert mit allstromsensitivem FI Typ B.",
     useCaseEvent: "Zentrale Stromverteilung bei Stadtfesten, Schützenfesten und Messen in Bonn und im Rhein-Sieg-Kreis.",
     useCasePrivat: "Temporärer Baustromkasten für größere Privatbaustellen und Sanierungen im Bonner Raum.",
-    primaryKeywords: "Endverteilerschrank EV32 mieten Bonn, Baustromverteiler 22 kVA Bonn, Baustromkasten 32A mieten Bonn, mobiler Stromverteiler Bonn",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Was kostet der EV32 mit 22 kVA in Bonn pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 19 €/Tag netto – zzgl. optionaler Lieferung in den Großraum Bonn." },
@@ -364,27 +313,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Welche Absicherung bringt der EV32 mit?", a: "Der Verteiler ist mit 2× allstromsensitiven FI-Schutzschaltern Typ B (40 A / 0,03 A) ausgestattet und damit auch für moderne Verbraucher mit Frequenzumrichtern (z. B. E-Ladegeräte, Wechselrichter) geeignet." },
     ],
   },
-  "mh-endverteilerschrank-22kva-ev32": {
-    excelName: "Endverteilerschrank 22 kVA EV32 Typ B",
-    seoTitle: "Endverteilerschrank 22 kVA EV32 mieten in Mülheim an der Ruhr",
-    metaDescription: "Mobiler Baustromverteiler EV32 Typ B 22 kVA für Mülheim an der Ruhr ab 19 €/Tag (auf Anfrage) – CEE 32 A, 16 A, 6× Schuko, FI Typ B. Lieferung im westlichen Ruhrgebiet.",
-    h1: "Endverteilerschrank 22 kVA – EV32 Typ B mieten in Mülheim an der Ruhr – ab 19 €/Tag bei SLT Rental",
-    h2s: ["EV32 Baustromverteiler im Ruhrgebiet", "Steckdosen, Zuleitung & Absicherung", "Verfügbarkeit & Lieferung in Mülheim an der Ruhr"],
-    useCaseBau: "Baustromverteilung für Bauvorhaben in Mülheim an der Ruhr, Duisburg, Oberhausen und Essen – mit FI Typ B für umrichtergesteuerte Antriebe und Ladegeräte.",
-    useCaseEvent: "Mobile Stromverteilung für Stadtfeste, Märkte und Outdoor-Events im westlichen Ruhrgebiet.",
-    useCasePrivat: "Endverteiler für größere private Bauvorhaben, Umbauten oder Garten- und Hofarbeiten im Raum Mülheim an der Ruhr.",
-    primaryKeywords: "Endverteilerschrank EV32 mieten Mülheim an der Ruhr, Baustromverteiler 22 kVA Ruhrgebiet, Baustromkasten 32A mieten Mülheim, mobiler Stromverteiler Ruhrgebiet",
-    is247: false,
-    dailyPriceFrom: 19,
-    faqs: [
-      { q: "Was kostet der EV32 mit 22 kVA in Mülheim an der Ruhr pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 19 €/Tag netto – Lieferung ins westliche Ruhrgebiet kalkulieren wir auf Basis der Entfernung." },
-      { q: "Ist der EV32 in Mülheim an der Ruhr verfügbar?", a: "In Mülheim an der Ruhr stellen wir den EV32 Endverteilerschrank auf Anfrage bereit – wir disponieren ihn aus unserem Standortverbund. Sende uns Mietzeitraum und Lieferadresse, und wir bestätigen die Verfügbarkeit." },
-      { q: "Liefert SLT Rental den Baustromverteiler ins Ruhrgebiet?", a: "Ja, wir liefern Mülheim an der Ruhr und das gesamte westliche Ruhrgebiet inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Lieferkosten kalkulieren wir individuell." },
-      { q: "Eignet sich der EV32 auch für Ladegeräte und Wechselrichter?", a: "Ja. Durch die allstromsensitiven FI-Schutzschalter Typ B (2× 40 A / 0,03 A) ist der Verteiler ausdrücklich für moderne Verbraucher mit Frequenzumrichtern, E-Ladegeräten und Wechselrichtern freigegeben." },
-    ],
-  },
   "endverteilerschrank-44kva-ev63": {
-    excelName: "Endverteilerschrank 44 kVA EV63 Typ B",
     seoTitle: "Endverteilerschrank 44 kVA EV63 mieten | Baustromverteiler 63 A",
     metaDescription: "Endverteilerschrank EV63 Typ B mit 44 kVA Anschlussleistung mieten – mobiler Baustromverteiler mit CEE 63 A Zuleitung, 2× CEE 32 A, 2× CEE 16 A, 6× Schuko und FI Typ B. Krefeld.",
     h1: "Endverteilerschrank 44 kVA – EV63 Typ B mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -392,8 +321,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leistungsstarker Baustromverteiler für mittlere und große Baustellen, Anschluss von Kränen, Turmdrehkranen, Mischanlagen, Bautrocknern und Ladeinfrastruktur – allstromsensitiver FI Typ B schützt auch frequenzgesteuerte Antriebe und Wechselrichter.",
     useCaseEvent: "Zentrale Eventstromverteilung für Festivals, Stadtfeste und Messen mit hohem Leistungsbedarf – 63 A CEE Zuleitung, 32 A CEE für Bühne, Licht- und Tontechnik sowie Kühlcontainer, 6× Schuko für Catering und Stände.",
     useCasePrivat: "Endverteiler für sehr große Privatbaustellen, Neubau, Sanierung und Hofprojekte mit mehreren Hochleistungsmaschinen gleichzeitig.",
-    primaryKeywords: "Endverteilerschrank EV63 mieten Krefeld, Baustromverteiler 44 kVA mieten, Baustromkasten 63A mieten NRW, Stromverteiler FI Typ B mieten, mobiler Stromverteilerschrank 44 kVA leihen",
-    is247: false,
     faqs: [
       { q: "Wofür wird der Endverteilerschrank EV63 mit 44 kVA eingesetzt?", a: "Der EV63 ist ein leistungsstarker mobiler Baustromverteiler / Endverteiler. Er wird als Unterverteilung hinter dem Hauptanschluss auf größeren Baustellen, als zentrale Eventstromverteilung für Festivals und Messen sowie in Industrie und Handwerk für die temporäre Versorgung mit 400 V und 230 V eingesetzt." },
       { q: "Welche Steckdosen stehen am EV63 zur Verfügung?", a: "Der Verteiler bietet 2× CEE 32 A und 2× CEE 16 A (jeweils 5-polig, 400 V/6h) sowie 6× Schutzkontakt-Steckdosen mit 230 V/16 A. Die Zuleitung erfolgt über einen 63 A CEE-Phasenwender." },
@@ -404,7 +331,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-endverteilerschrank-44kva-ev63": {
-    excelName: "Endverteilerschrank 44 kVA EV63 Typ B",
     seoTitle: "Endverteilerschrank 44 kVA EV63 mieten in Bonn | Baustromverteiler",
     metaDescription: "Mobiler Baustromverteiler EV63 Typ B mit 44 kVA in Bonn auf Anfrage – CEE 63 A Zuleitung, 2× CEE 32 A, 2× CEE 16 A, 6× Schuko, FI Typ B. Lieferung im Großraum Bonn.",
     h1: "Endverteilerschrank 44 kVA – EV63 Typ B mieten in Bonn – Auf Anfrage bei SLT Rental",
@@ -412,33 +338,13 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustromverteilung für größere Bauvorhaben in Bonn, Bornheim, Sankt Augustin, Siegburg und Königswinter – mit FI Typ B für moderne Verbraucher mit Frequenzumrichtern.",
     useCaseEvent: "Eventstromverteilung mit hoher Leistung für Stadtfeste, Schützenfeste, Open-Air-Konzerte und Messen in Bonn und im Rhein-Sieg-Kreis.",
     useCasePrivat: "Temporärer Baustromkasten für sehr große Privatbaustellen, Neubau und Sanierungen im Bonner Raum.",
-    primaryKeywords: "Endverteilerschrank EV63 mieten Bonn, Baustromverteiler 44 kVA Bonn, Baustromkasten 63A mieten Bonn, mobiler Stromverteiler Bonn",
-    is247: false,
     faqs: [
       { q: "Ist der EV63 Endverteilerschrank in Bonn verfügbar?", a: "Den EV63 mit 44 kVA stellen wir in Bonn auf Anfrage bereit. Sende uns Mietzeitraum und Lieferort, damit wir die Verfügbarkeit aus unserem Standortverbund bestätigen können." },
       { q: "Liefert SLT Rental den Baustromverteiler nach Bonn und Umgebung?", a: "Ja, wir liefern in den gesamten Großraum Bonn inklusive Bornheim, Meckenheim, Sankt Augustin, Siegburg, Troisdorf und Königswinter. Die Lieferkosten kalkulieren wir individuell anhand der Entfernung." },
       { q: "Welche Absicherung bringt der EV63 mit?", a: "Der Verteiler ist mit einem allstromsensitiven FI-Schutzschalter Typ B (63 A / 0,03 A) sowie einem zusätzlichen FI 40 A ausgestattet und damit auch für moderne Verbraucher mit Frequenzumrichtern (z. B. E-Ladegeräte, Wechselrichter) geeignet." },
     ],
   },
-  "mh-endverteilerschrank-44kva-ev63": {
-    excelName: "Endverteilerschrank 44 kVA EV63 Typ B",
-    seoTitle: "Endverteilerschrank 44 kVA EV63 mieten in Mülheim an der Ruhr",
-    metaDescription: "Mobiler Baustromverteiler EV63 Typ B 44 kVA für Mülheim an der Ruhr auf Anfrage – CEE 63 A, 32 A, 16 A, 6× Schuko, FI Typ B. Lieferung im westlichen Ruhrgebiet.",
-    h1: "Endverteilerschrank 44 kVA – EV63 Typ B mieten in Mülheim an der Ruhr – Auf Anfrage bei SLT Rental",
-    h2s: ["EV63 Baustromverteiler im Ruhrgebiet", "Steckdosen, Zuleitung & Absicherung", "Verfügbarkeit & Lieferung in Mülheim an der Ruhr"],
-    useCaseBau: "Baustromverteilung für größere Bauvorhaben in Mülheim an der Ruhr, Duisburg, Oberhausen und Essen – mit FI Typ B für umrichtergesteuerte Antriebe, Ladegeräte und Kräne.",
-    useCaseEvent: "Mobile Eventstromverteilung mit hoher Leistung für Stadtfeste, Festivals, Märkte und Open-Air-Events im westlichen Ruhrgebiet.",
-    useCasePrivat: "Endverteiler für sehr große private Bauvorhaben, Neubau und Sanierungen im Raum Mülheim an der Ruhr.",
-    primaryKeywords: "Endverteilerschrank EV63 mieten Mülheim an der Ruhr, Baustromverteiler 44 kVA Ruhrgebiet, Baustromkasten 63A mieten Mülheim, mobiler Stromverteiler Ruhrgebiet",
-    is247: false,
-    faqs: [
-      { q: "Ist der EV63 in Mülheim an der Ruhr verfügbar?", a: "In Mülheim an der Ruhr stellen wir den EV63 Endverteilerschrank auf Anfrage bereit – wir disponieren ihn aus unserem Standortverbund. Sende uns Mietzeitraum und Lieferadresse, und wir bestätigen die Verfügbarkeit." },
-      { q: "Liefert SLT Rental den Baustromverteiler ins Ruhrgebiet?", a: "Ja, wir liefern Mülheim an der Ruhr und das gesamte westliche Ruhrgebiet inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Lieferkosten kalkulieren wir individuell." },
-      { q: "Eignet sich der EV63 auch für Ladegeräte und Wechselrichter?", a: "Ja. Durch den allstromsensitiven FI-Schutzschalter Typ B (63 A / 0,03 A) plus zusätzlichem FI 40 A ist der Verteiler ausdrücklich für moderne Verbraucher mit Frequenzumrichtern, E-Ladegeräten und Wechselrichtern freigegeben." },
-    ],
-  },
   "hauptverteilerschrank-86kva-hv125": {
-    excelName: "Hauptverteilerschrank 86 kVA HV125 Typ B",
     seoTitle: "Hauptverteilerschrank 86 kVA HV125 mieten | Baustromverteiler 125 A",
     metaDescription: "Hauptverteilerschrank HV125 Typ B mit 86 kVA mieten – mobiler Baustromverteiler mit 125 A CEE/Kabelschuh-Zuleitung, 1× CEE 63 A, 3× CEE 32 A, 3× CEE 16 A, 6× Schuko und FI Typ B. Krefeld.",
     h1: "Hauptverteilerschrank 86 kVA – HV125 Typ B mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -446,8 +352,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Hauptverteilung für Großbaustellen, Tiefbau, Hochbau und Sanierungen mit hoher Gleichzeitigkeit – Anschluss von Turmdrehkränen, Mischanlagen, Schweißgeräten, Bautrocknern und Ladeinfrastruktur. Der allstromsensitive FI Typ B schützt frequenzgesteuerte Antriebe, E-Ladestationen und Wechselrichter.",
     useCaseEvent: "Zentrale Eventstromverteilung für Festivals, Stadtfeste, Open-Air-Konzerte und Großveranstaltungen – 125 A CEE bzw. Direktanschluss über Kabelschuhe vom Trafo oder Stromaggregat, 63 A & 32 A CEE für Bühne, FOH, Licht- und Tontechnik sowie Kühlcontainer, 16 A CEE und Schuko für Catering und Stände.",
     useCasePrivat: "Hauptverteiler für sehr große Privatbaustellen, Neubau, Sanierung und Hofprojekte mit mehreren Hochleistungsmaschinen gleichzeitig.",
-    primaryKeywords: "Hauptverteilerschrank HV125 mieten Krefeld, Baustromverteiler 86 kVA mieten, Baustromkasten 125A mieten NRW, Stromverteiler FI Typ B mieten, mobiler Hauptverteiler 86 kVA leihen, Festivalverteiler 125A mieten",
-    is247: false,
     faqs: [
       { q: "Wofür wird der Hauptverteilerschrank HV125 mit 86 kVA eingesetzt?", a: "Der HV125 ist ein leistungsstarker mobiler Hauptverteiler / Baustromverteiler. Er wird direkt hinter dem Netzanschluss, Trafo oder Stromaggregat eingesetzt und versorgt nachgeschaltete Endverteiler, Maschinen und 230-V-Verbraucher auf Großbaustellen, Festivals, Industrieanlagen und bei der temporären Eventstromversorgung." },
       { q: "Welche Zuleitung benötigt der HV125?", a: "Die Einspeisung erfolgt wahlweise über eine 125 A CEE-Steckverbindung (5-polig, 400 V) oder über 10 mm² Kabelschuhe für den Direktanschluss an Trafo, Generator oder Hausanschluss. Passende 125 A CEE-Kabel und Adapter können ergänzend gemietet werden." },
@@ -459,7 +363,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-hauptverteilerschrank-86kva-hv125": {
-    excelName: "Hauptverteilerschrank 86 kVA HV125 Typ B",
     seoTitle: "Hauptverteilerschrank 86 kVA HV125 mieten in Bonn | Baustromverteiler",
     metaDescription: "Mobiler Hauptverteiler HV125 Typ B mit 86 kVA in Bonn auf Anfrage – 125 A CEE oder Kabelschuh-Zuleitung, 1× CEE 63 A, 3× CEE 32 A, 3× CEE 16 A, 6× Schuko, FI Typ B. Lieferung im Großraum Bonn.",
     h1: "Hauptverteilerschrank 86 kVA – HV125 Typ B mieten in Bonn – Auf Anfrage bei SLT Rental",
@@ -467,8 +370,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Hauptverteilung für Großbaustellen in Bonn, Bornheim, Sankt Augustin, Siegburg, Troisdorf und Königswinter – versorgt Endverteiler, Kräne, Mischanlagen und Bautrockner mit FI Typ B für moderne Verbraucher.",
     useCaseEvent: "Zentrale Eventstromverteilung mit hoher Leistung für Stadtfeste, Schützenfeste, Open-Air-Konzerte und Großveranstaltungen in Bonn und im Rhein-Sieg-Kreis – Anschluss an Trafo, Generator oder Hausanschluss über 125 A CEE oder Kabelschuhe.",
     useCasePrivat: "Hauptverteiler für sehr große private Bauvorhaben, Neubau und Sanierungen mit mehreren Hochleistungsmaschinen im Bonner Raum.",
-    primaryKeywords: "Hauptverteilerschrank HV125 mieten Bonn, Baustromverteiler 86 kVA Bonn, Baustromkasten 125A mieten Bonn, mobiler Hauptverteiler Bonn, Festivalverteiler 125A Bonn",
-    is247: false,
     faqs: [
       { q: "Ist der HV125 Hauptverteilerschrank in Bonn verfügbar?", a: "Den HV125 mit 86 kVA stellen wir in Bonn auf Anfrage bereit. Sende uns Mietzeitraum und Lieferort, damit wir die Verfügbarkeit aus unserem Standortverbund bestätigen können." },
       { q: "Liefert SLT Rental den Hauptverteiler nach Bonn und Umgebung?", a: "Ja, wir liefern in den gesamten Großraum Bonn inklusive Bornheim, Meckenheim, Sankt Augustin, Siegburg, Troisdorf und Königswinter. Die Lieferkosten kalkulieren wir individuell anhand der Entfernung." },
@@ -476,25 +377,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Welche Absicherung bringt der HV125 mit?", a: "Der Verteiler ist mit einem allstromsensitiven FI-Schutzschalter Typ B (63 A / 0,03 A) sowie einem zusätzlichen FI 40 A ausgestattet und damit auch für moderne Verbraucher mit Frequenzumrichtern, E-Ladestationen und Wechselrichtern geeignet." },
     ],
   },
-  "mh-hauptverteilerschrank-86kva-hv125": {
-    excelName: "Hauptverteilerschrank 86 kVA HV125 Typ B",
-    seoTitle: "Hauptverteilerschrank 86 kVA HV125 mieten in Mülheim an der Ruhr",
-    metaDescription: "Mobiler Hauptverteiler HV125 Typ B 86 kVA für Mülheim an der Ruhr auf Anfrage – 125 A CEE oder Kabelschuh-Zuleitung, 63/32/16 A CEE, 6× Schuko, FI Typ B. Lieferung im westlichen Ruhrgebiet.",
-    h1: "Hauptverteilerschrank 86 kVA – HV125 Typ B mieten in Mülheim an der Ruhr – Auf Anfrage bei SLT Rental",
-    h2s: ["HV125 Hauptverteiler im Ruhrgebiet", "Steckdosen, Zuleitung & Absicherung", "Verfügbarkeit & Lieferung in Mülheim an der Ruhr"],
-    useCaseBau: "Hauptverteilung für Großbaustellen in Mülheim an der Ruhr, Duisburg, Oberhausen, Essen und Bottrop – versorgt Endverteiler, Kräne, Mischanlagen und Bautrockner. FI Typ B für umrichtergesteuerte Antriebe, Ladegeräte und Schweißinverter.",
-    useCaseEvent: "Mobile Eventstromverteilung mit hoher Leistung für Stadtfeste, Festivals, Märkte und Open-Air-Events im westlichen Ruhrgebiet – Anschluss an Trafo, Generator oder Hausanschluss über 125 A CEE oder Kabelschuhe.",
-    useCasePrivat: "Hauptverteiler für sehr große private Bauvorhaben, Neubau und Sanierungen im Raum Mülheim an der Ruhr.",
-    primaryKeywords: "Hauptverteilerschrank HV125 mieten Mülheim an der Ruhr, Baustromverteiler 86 kVA Ruhrgebiet, Baustromkasten 125A mieten Mülheim, mobiler Hauptverteiler Ruhrgebiet, Festivalverteiler 125A Mülheim",
-    is247: false,
-    faqs: [
-      { q: "Ist der HV125 in Mülheim an der Ruhr verfügbar?", a: "In Mülheim an der Ruhr stellen wir den HV125 Hauptverteilerschrank auf Anfrage bereit – wir disponieren ihn aus unserem Standortverbund. Sende uns Mietzeitraum und Lieferadresse, und wir bestätigen die Verfügbarkeit." },
-      { q: "Liefert SLT Rental den Hauptverteiler ins Ruhrgebiet?", a: "Ja, wir liefern Mülheim an der Ruhr und das gesamte westliche Ruhrgebiet inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Lieferkosten kalkulieren wir individuell." },
-      { q: "Eignet sich der HV125 auch für Ladegeräte, Wechselrichter und Schweißinverter?", a: "Ja. Durch den allstromsensitiven FI-Schutzschalter Typ B (63 A / 0,03 A) plus zusätzlichem FI 40 A ist der Verteiler ausdrücklich für moderne Verbraucher mit Frequenzumrichtern, E-Ladegeräten, PV-Wechselrichtern und Schweißinvertern freigegeben." },
-    ],
-  },
   "aschenbecher-glas": {
-    excelName: "Aschenbecher Glas",
     seoTitle: "Aschenbecher Glas Ø 10,7 cm stapelbar",
     metaDescription: "Klassischer Glas-Aschenbecher in klarem Design. Durchmesser 10,7 cm, Höhe 3,5 cm und stapelbar. Ideal für Gastronomie und Veranstaltungen.",
     h1: "Aschenbecher Glas mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -502,8 +385,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze.",
     useCaseEvent: "",
     useCasePrivat: "Erweiterung der Heimwerker-Ausstattung.",
-    primaryKeywords: "Aschenbecher Glas mieten in Krefeld, Aschenbecher Glas leihen in Krefeld, Aschenbecher Glas mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat der Glas-Aschenbecher?", a: "Der Aschenbecher hat einen Durchmesser von 10,7 cm und eine Höhe von 3,5 cm." },
       { q: "Ist das Produkt platzsparend zu lagern?", a: "Ja, die Aschenbecher sind stapelbar konzipiert." },
@@ -511,7 +392,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "autotransport-1500": {
-    excelName: "1500 kg Autotransportanhänger",
     seoTitle: "1500 kg Autotransportanhänger mieten",
     metaDescription: "Autotransporter der 1500 kg Klasse für Kleinwagen und leichte Klassiker. Nutzlast ca. 1.140 kg, Ladefläche 301 x 165 cm.",
     h1: "1500 kg Autotransportanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -519,8 +399,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Transport von Show-Fahrzeugen, Rallye-Kleinwagen oder Ausstellungsstücken zu Veranstaltungen und PKW-Treffen.",
     useCasePrivat: "Ideal für die Überführung von Kleinwagen, kompakten Cabrios oder leichten Oldtimern nach einem Privatkauf oder für Fahrten zur Werkstatt.",
-    primaryKeywords: "1500 kg Autotransportanhänger mieten in Krefeld, 1500 kg Autotransportanhänger leihen in Krefeld, 1500 kg Autotransportanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Fahrzeuge können mit diesem 1500 kg Anhänger transportiert werden?", a: "Aufgrund der Nutzlast von ca. 1.140 kg ist dieser Anhänger speziell für Kleinwagen, leichte Roadster und kompakte Klassiker ausgelegt." },
       { q: "Wie groß ist die effektive Ladefläche?", a: "Die Ladefläche des Anhängers beträgt 301 cm in der Länge und 165 cm in der Breite." },
@@ -528,7 +406,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "autotransport-2700": {
-    excelName: "2700 kg Autotransportanhänger",
     seoTitle: "2700 kg Autotransportanhänger mieten | Mittelklasse & SUV",
     metaDescription: "Autotransporter der Mittelklasse mit 2.047 kg Nutzlast für den Transport von SUVs und schweren Limousinen. Ladefläche: 452 x 205 cm.",
     h1: "2700 kg Autotransportanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -536,8 +413,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Logistik für Auto-Treffen oder Track-Events zum Transport von Fahrzeugen mit höherem Eigengewicht auf der 452 x 205 cm großen Ladefläche.",
     useCasePrivat: "Sicherer Transport und Überführung von Mittelklassewagen, kompakten SUVs oder schwereren Pannenfahrzeugen bis zu einer Last von ca. 2.047 kg.",
-    primaryKeywords: "2700 kg Autotransportanhänger mieten in Krefeld, 2700 kg Autotransportanhänger leihen in Krefeld, 2700 kg Autotransportanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Welche Fahrzeuge können mit diesem 2700 kg Modell transportiert werden?", a: "Dieser Anhänger ist für die Mittelklasse ausgelegt und eignet sich aufgrund der Nutzlast von ca. 2.047 kg für kompakte SUVs, schwerere Limousinen und gängige PKW." },
@@ -546,7 +421,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "autotransportkipp-2700": {
-    excelName: "2700 kg Autotransportkippanhänger",
     seoTitle: "2700 kg Autotransportkippanhänger mieten",
     metaDescription: "Autotransporter mit 2000 kg Nutzlast. Die kippbare Ladefläche ermöglicht ein Aufladen tiefergelegter Fahrzeuge ohne klassische Auffahrrampen.",
     h1: "2700 kg Autotransportkippanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -554,8 +428,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Sicherer Transport von Show-Cars zu Tuning-Treffen oder Messen, wobei die Kippfunktion das Risiko des Aufsetzens beim Beladevorgang minimiert.",
     useCasePrivat: "Überführung tiefergelegter Sportwagen oder Tuning-Fahrzeuge, die aufgrund ihrer geringen Bodenfreiheit nicht über klassische Rampen geladen werden können.",
-    primaryKeywords: "2700 kg Autotransportkippanhänger mieten in Krefeld, 2700 kg Autotransportkippanhänger leihen in Krefeld, 2700 kg Autotransportkippanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 49,
     faqs: [
       { q: "Wie funktioniert das Beladen ohne separate Rampen?", a: "Die Ladefläche dieses Anhängers lässt sich kippen, sodass das Heck direkt auf den Boden absinkt und ein flaches Auffahren ermöglicht wird." },
@@ -564,7 +436,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "baumaschinen-1800": {
-    excelName: "1800 kg Baumaschinenanhänger",
     seoTitle: "1800 kg Baumaschinenanhänger | Mieten in NRW",
     metaDescription: "Mieten Sie einen Baumaschinenanhänger mit 1155 kg Nutzlast und 260 x 150 cm Ladefläche für den Transport von kompakten Baumaschinen.",
     h1: "1800 kg Baumaschinenanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -572,8 +443,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Anhänger dient dem sicheren Transport von Minibaggern und Kompaktgeräten. Er ermöglicht die Verlastung von Baumaschinen zur nächsten Einsatzstelle.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen nutzen das Fahrzeug für den Transport gemieteter Baumaschinen zu ihrem jeweiligen Privatprojekt.",
-    primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Krefeld, 1800 kg Baumaschinenanhänger leihen in Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die maximale Nutzlast beträgt ca. 1.155 kg bei einem Eigengewicht von ca. 645 kg." },
@@ -582,7 +451,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "baumaschinen-3500": {
-    excelName: "3500 kg Baumaschinenanhänger (Temared)",
     seoTitle: "3500 kg Baumaschinenanhänger mieten in Krefeld | Temared ab 39 €/Tag",
     metaDescription: "Temared 3.500 kg Baumaschinenanhänger mit 350 x 168 x 25 cm Ladefläche, 2.785 kg Nutzlast und durchgehender Auffahrrampe in Krefeld mieten. 13-Pol-Anschluss, 100 km/h-Zulassung möglich. Ab 39 € / Tag.",
     h1: "3500 kg Baumaschinenanhänger mieten in Krefeld – Temared mit Auffahrrampe",
@@ -595,8 +463,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Minibaggern, Radladern, Rüttelplatten und Stampfern bis 2.785 kg Nutzlast zu Baustellen in Krefeld und am Niederrhein. Die durchgehende Auffahrrampe ermöglicht ein sicheres Verladen ohne separate Rampenkonstruktion.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen nutzen den Anhänger für den Transport gemieteter Baumaschinen zum eigenen Bau- oder Gartenprojekt.",
-    primaryKeywords: "3500 kg Baumaschinenanhänger mieten Krefeld, Temared Baumaschinenanhänger leihen Krefeld, Baumaschinenanhänger mit Auffahrrampe mieten NRW",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die Nutzlast beträgt 2.785 kg bei einem zulässigen Gesamtgewicht von 3.500 kg." },
@@ -609,7 +475,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-baumaschinen-3500": {
-    excelName: "3500 kg Baumaschinenanhänger (Temared) – Bonn",
     seoTitle: "3500 kg Baumaschinenanhänger mieten in Bonn | Temared ab 39 €/Tag",
     metaDescription: "Temared 3.500 kg Baumaschinenanhänger mit 350 x 168 x 25 cm Ladefläche, 2.785 kg Nutzlast und durchgehender Auffahrrampe in Bonn mieten. 13-Pol-Anschluss, 100 km/h-Zulassung möglich. Ab 39 € / Tag.",
     h1: "3500 kg Baumaschinenanhänger mieten in Bonn – Temared mit Auffahrrampe",
@@ -622,8 +487,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Minibaggern, Radladern, Rüttelplatten und Stampfern zu Baustellen in Bonn, Bad Godesberg, Beuel und im Rhein-Sieg-Kreis. Die durchgehende Auffahrrampe vereinfacht das Verladen direkt an der Baustelle.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen im Großraum Bonn transportieren gemietete Baumaschinen für Haus-, Garten- und Hofprojekte sicher zu ihrem Einsatzort.",
-    primaryKeywords: "3500 kg Baumaschinenanhänger mieten Bonn, Temared Baumaschinenanhänger leihen Bonn, Baumaschinenanhänger mit Auffahrrampe Rhein-Sieg",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wo hole ich den Baumaschinenanhänger in Bonn ab?", a: "Übergabe und Rückgabe erfolgen an unserer Filiale Bonn (Drachenburgstraße 8, 53179 Bonn)." },
@@ -636,7 +499,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-baumaschinen-3500": {
-    excelName: "3500 kg Baumaschinenanhänger (Temared) – Mülheim an der Ruhr",
     seoTitle: "3500 kg Baumaschinenanhänger mieten in Mülheim a. d. Ruhr | Temared ab 39 €/Tag",
     metaDescription: "Temared 3.500 kg Baumaschinenanhänger mit 350 x 168 x 25 cm Ladefläche, 2.785 kg Nutzlast und durchgehender Auffahrrampe in Mülheim an der Ruhr mieten. 13-Pol-Anschluss, 100 km/h-Zulassung möglich. Ab 39 € / Tag.",
     h1: "3500 kg Baumaschinenanhänger mieten in Mülheim an der Ruhr – Temared mit Auffahrrampe",
@@ -649,8 +511,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Minibaggern, Radladern, Rüttelplatten und Stampfern zu Baustellen in Mülheim an der Ruhr, Essen, Duisburg und Oberhausen. Die durchgehende Auffahrrampe spart Zeit beim Beladen ohne zusätzliche Rampenkonstruktion.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen im Ruhrgebiet transportieren gemietete Baumaschinen für Haus-, Hof- und Gartenprojekte sicher zum eigenen Einsatzort.",
-    primaryKeywords: "3500 kg Baumaschinenanhänger mieten Mülheim an der Ruhr, Temared Baumaschinenanhänger leihen Ruhrgebiet, Baumaschinenanhänger mit Auffahrrampe Essen",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wo hole ich den Baumaschinenanhänger in Mülheim an der Ruhr ab?", a: "Übergabe und Rückgabe erfolgen an unserem Service-Standort in Mülheim an der Ruhr. Von hier erreichst Du Essen, Duisburg, Oberhausen und Bottrop schnell." },
@@ -663,7 +523,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "baumstumpffraese-f360": {
-    excelName: "Baumstumpffräse F-360",
     seoTitle: "Baumstumpffräse F-360 mieten | Einachsige Fräse 8,2 kW",
     metaDescription: "Mieten Sie die Baumstumpffräse F-360 mit Honda GX-390 Motor (11 PS). 650 mm Breite, 60° Schwenkbereich und 8 DoublePro-Fräsmesser für präzises Arbeiten.",
     h1: "Baumstumpffräse F-360 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -671,8 +530,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Baumstumpffräse F-360 eignet sich für die professionelle Entfernung von Baumstümpfen im Bereich Garten- und Landschaftsbau.",
     useCaseEvent: "",
     useCasePrivat: "Dieses Modell unterstützt die Beseitigung störender Baumstümpfe im Privatgarten.",
-    primaryKeywords: "Baumstumpffräse F-360 mieten in Krefeld, Baumstumpffräse F-360 leihen in Krefeld, Baumstumpffräse F-360 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird das Schneidrad der Baumstumpffräse angetrieben?", a: "Das Schneidrad mit acht DoublePro-Fräsmessern wird über einen speziellen dreifachen Keilriementrieb direkt vom Motor angetrieben." },
       { q: "Welche Vorteile bietet der integrierte Drehkranz?", a: "Durch das auf einem Drehkranz gelagerte Oberteil verfügt die Maschine über einen Schwenkbereich von 60 Grad." },
@@ -680,7 +537,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bautrockner-kt200": {
-    excelName: "Bautrockner 20L/Tag",
     seoTitle: "Bautrockner 20L/Tag mieten in Krefeld | Allegra KT200 ab 9 €/Tag",
     metaDescription: "Kompakter Kondensations-Bautrockner Allegra KT200 mit 20 l/Tag Entfeuchtungsleistung, 4 l Wassertank und geeichtem MID-Stromzähler für Räume bis 20 m². Ab 9 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 20L/Tag mieten in Krefeld – Allegra KT200 bei SLT Rental",
@@ -688,8 +544,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Allegra KT200 eignet sich für die Bautrocknung nach Wasserschäden sowie für die Estrichtrocknung bei Neubauten und Renovierungen im Raum Krefeld und am Niederrhein.",
     useCaseEvent: "",
     useCasePrivat: "Im Eigenheim unterstützt der KT200 die Trocknung nach Wasserschäden, Rohrbrüchen oder Überschwemmungen in Kellern, Wohnräumen und Werkstätten bis ca. 20 m².",
-    primaryKeywords: "Bautrockner 20L/Tag mieten Krefeld, Bautrockner 20L/Tag leihen Krefeld, Bautrockner mieten NRW, Allegra KT200 mieten",
-    is247: false,
     dailyPriceFrom: 9,
     faqs: [
       { q: "Wie hoch ist die Tagesmiete des Bautrockners in Krefeld?", a: "Die Tagesmiete startet bei 9 € (brutto inkl. 19 % USt.). Den tagesaktuellen Preis und die Verfügbarkeit findest Du im Buchungsbereich oben auf dieser Seite." },
@@ -699,7 +553,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bautrockner-kt200": {
-    excelName: "Bautrockner 20L/Tag",
     seoTitle: "Bautrockner 20L/Tag mieten in Bonn | Allegra KT200 ab 9 €/Tag",
     metaDescription: "Kompakter Kondensations-Bautrockner Allegra KT200 mit 20 l/Tag Entfeuchtungsleistung und 4 l Wassertank mieten in Bonn. Ideal für Wasserschäden und Estrichtrocknung. Ab 9 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 20L/Tag mieten in Bonn – Allegra KT200 bei SLT Rental",
@@ -707,8 +560,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Im Rhein-Sieg-Kreis und im Großraum Bonn wird der KT200 für Bautrocknung nach Wasserschäden, Estrichtrocknung bei Sanierungen und Neubauten sowie zur Trocknung nach Rohrbrüchen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Für Heimwerker in Bonn, Bad Godesberg, Beuel oder Bornheim eignet sich der KT200 zur Trocknung nach Wasserschäden, Überschwemmungen oder Rohrbrüchen in Kellern, Wohnräumen und Werkstätten bis ca. 20 m².",
-    primaryKeywords: "Bautrockner 20L/Tag mieten Bonn, Bautrockner 20L/Tag leihen Bonn, Bautrockner mieten Rhein-Sieg, Allegra KT200 mieten Bonn",
-    is247: false,
     dailyPriceFrom: 9,
     faqs: [
       { q: "Wo hole ich den Bautrockner KT200 in Bonn ab?", a: "Die Abholung erfolgt am SLT Rental Standort Bonn. Der kompakte KT200 ist leicht transportierbar und passt in einen Pkw-Kofferraum." },
@@ -719,7 +570,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-bautrockner-kt200": {
-    excelName: "Bautrockner 20L/Tag",
     seoTitle: "Bautrockner 20L/Tag mieten in Mülheim a. d. Ruhr | Allegra KT200 ab 9 €/Tag",
     metaDescription: "Kompakter Kondensations-Bautrockner Allegra KT200 mit 20 l/Tag Entfeuchtungsleistung und 4 l Wassertank mieten in Mülheim an der Ruhr. Ab 9 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 20L/Tag mieten in Mülheim an der Ruhr – Allegra KT200 bei SLT Rental",
@@ -727,8 +577,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Rund um Mülheim, Essen, Duisburg und Oberhausen wird der KT200 für Bautrocknung nach Wasserschäden, Estrichtrocknung bei Sanierungen und die Trocknung nach Rohrbrüchen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "In Mülheim an der Ruhr und den umliegenden Städten eignet sich der KT200 für die Trocknung nach Wasserschäden, Überschwemmungen oder Rohrbrüchen in Kellern, Wohnräumen und Werkstätten bis ca. 20 m².",
-    primaryKeywords: "Bautrockner 20L/Tag mieten Mülheim, Bautrockner 20L/Tag leihen Mülheim an der Ruhr, Bautrockner mieten Ruhrgebiet, Allegra KT200 mieten Mülheim",
-    is247: false,
     dailyPriceFrom: 9,
     faqs: [
       { q: "Wo kann ich den Bautrockner KT200 in Mülheim an der Ruhr abholen?", a: "Die Abholung erfolgt am SLT Rental Standort Mülheim an der Ruhr. Von hier erreichst Du bequem auch Essen, Duisburg, Oberhausen und Bottrop." },
@@ -739,7 +587,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bautrockner-kt553": {
-    excelName: "Bautrockner 50L/Tag",
     seoTitle: "Bautrockner 50L/Tag mieten in Krefeld | Allegra KT553/KT554 ab 13 €/Tag",
     metaDescription: "Professioneller Kondensations-Bautrockner Allegra KT553/KT554 mit 50 l/Tag Entfeuchtungsleistung, 4 l Wassertank und geeichtem MID-Stromzähler für 50–60 m². Ab 13 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 50L/Tag mieten in Krefeld – Allegra KT553/KT554 bei SLT Rental",
@@ -747,8 +594,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Allegra KT553/KT554 eignet sich für die professionelle Bautrocknung nach Wasserschäden, die Estrichtrocknung bei Neubauten und Renovierungen sowie für die Trocknung nach Rohrbrüchen auf Flächen von 50–60 m² im Raum Krefeld und am Niederrhein.",
     useCaseEvent: "",
     useCasePrivat: "Im Eigenheim unterstützt der KT553/KT554 die Trocknung nach Wasserschäden, Rohrbrüchen oder Überschwemmungen in Kellern, Wohnräumen und Werkstätten mit bis zu 60 m² Fläche.",
-    primaryKeywords: "Bautrockner 50L/Tag mieten Krefeld, Bautrockner 50L/Tag leihen Krefeld, Bautrockner mieten NRW, Allegra KT553 mieten",
-    is247: false,
     dailyPriceFrom: 13,
     faqs: [
       { q: "Wie hoch ist die Tagesmiete des Bautrockners 50L in Krefeld?", a: "Die Tagesmiete startet bei 13 € (brutto inkl. 19 % USt.). Den tagesaktuellen Preis und die Verfügbarkeit findest Du im Buchungsbereich oben auf dieser Seite." },
@@ -758,7 +603,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bautrockner-kt553": {
-    excelName: "Bautrockner 50L/Tag",
     seoTitle: "Bautrockner 50L/Tag mieten in Bonn | Allegra KT553/KT554 ab 13 €/Tag",
     metaDescription: "Professioneller Kondensations-Bautrockner Allegra KT553/KT554 mit 50 l/Tag Entfeuchtungsleistung und 4 l Wassertank mieten in Bonn. Ideal für Wasserschäden und Estrichtrocknung. Ab 13 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 50L/Tag mieten in Bonn – Allegra KT553/KT554 bei SLT Rental",
@@ -766,8 +610,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Im Rhein-Sieg-Kreis und im Großraum Bonn wird der KT553/KT554 für Bautrocknung nach Wasserschäden, Estrichtrocknung bei Sanierungen und Neubauten sowie zur Trocknung nach Rohrbrüchen auf Flächen von 50–60 m² eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Für Heimwerker in Bonn, Bad Godesberg, Beuel oder Bornheim eignet sich der KT553/KT554 zur Trocknung nach Wasserschäden, Überschwemmungen oder Rohrbrüchen in Kellern, Wohnräumen und Werkstätten mit bis zu 60 m².",
-    primaryKeywords: "Bautrockner 50L/Tag mieten Bonn, Bautrockner 50L/Tag leihen Bonn, Bautrockner mieten Rhein-Sieg, Allegra KT553 mieten Bonn",
-    is247: false,
     dailyPriceFrom: 13,
     faqs: [
       { q: "Wo hole ich den Bautrockner KT553/KT554 in Bonn ab?", a: "Die Abholung erfolgt am SLT Rental Standort Bonn. Das Gerät wiegt 30 kg – bei Bedarf unterstützen wir beim Verladen." },
@@ -779,7 +621,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-bautrockner-kt553": {
-    excelName: "Bautrockner 50L/Tag",
     seoTitle: "Bautrockner 50L/Tag mieten in Mülheim a. d. Ruhr | Allegra KT553/KT554 ab 13 €/Tag",
     metaDescription: "Professioneller Kondensations-Bautrockner Allegra KT553/KT554 mit 50 l/Tag Entfeuchtungsleistung und 4 l Wassertank mieten in Mülheim an der Ruhr. Ab 13 €/Tag brutto inkl. 19 % USt.",
     h1: "Bautrockner 50L/Tag mieten in Mülheim an der Ruhr – Allegra KT553/KT554 bei SLT Rental",
@@ -787,8 +628,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Rund um Mülheim, Essen, Duisburg und Oberhausen wird der KT553/KT554 für Bautrocknung nach Wasserschäden, Estrichtrocknung bei Sanierungen und die Trocknung nach Rohrbrüchen auf Flächen von 50–60 m² eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "In Mülheim an der Ruhr und den umliegenden Städten eignet sich der KT553/KT554 für die Trocknung nach Wasserschäden, Überschwemmungen oder Rohrbrüchen in Kellern, Wohnräumen und Werkstätten mit bis zu 60 m².",
-    primaryKeywords: "Bautrockner 50L/Tag mieten Mülheim, Bautrockner 50L/Tag leihen Mülheim an der Ruhr, Bautrockner mieten Ruhrgebiet, Allegra KT553 mieten Mülheim",
-    is247: false,
     dailyPriceFrom: 13,
     faqs: [
       { q: "Wo kann ich den Bautrockner KT553/KT554 in Mülheim an der Ruhr abholen?", a: "Die Abholung erfolgt am SLT Rental Standort Mülheim an der Ruhr. Von hier erreichst Du bequem auch Essen, Duisburg, Oberhausen und Bottrop." },
@@ -800,7 +639,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bauzaun": {
-    excelName: "Bauzaun",
     seoTitle: "Bauzaun mieten | 3,5 m × 2,0 m verzinkt",
     metaDescription: "Mobiler Bauzaun zur Absperrung. Maße ca. 3,5 m × 2,0 m, Gewicht ca. 13 kg, verzinkte Ausführung. Ideal für Baustellen und Veranstaltungen.",
     h1: "Bauzaun mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -808,8 +646,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Bauzaun dient der Absperrung von Baustellen und der Sicherung gegen unbefugten Zugang.",
     useCaseEvent: "Die mobilen Zäune werden zur Abgrenzung von Veranstaltungsbereichen eingesetzt.",
     useCasePrivat: "Das Zaunelement ermöglicht eine temporäre Absicherung bei privaten Bauprojekten.",
-    primaryKeywords: "Bauzaun mieten in Krefeld, Bauzaun leihen in Krefeld, Bauzaun mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Abmessungen hat ein Bauzaunelement?", a: "Ein Element hat die Abmessungen von ca. 3,5 m in der Länge und 2,0 m in der Höhe." },
       { q: "Wie schwer ist ein einzelnes Zaunelement?", a: "Das Gewicht pro Bauzaun beträgt ca. 13 kg." },
@@ -817,7 +653,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bauzaunfuss-kunststoff": {
-    excelName: "Bauzaunfuß aus Kunststoffrecycling",
     seoTitle: "Bauzaunfuß aus Kunststoffrecycling | Mietkatalog",
     metaDescription: "Standsicherer Bauzaunfuß aus Kunststoffrecycling mit 5 Aufnahmen und ca. 20 kg Gewicht für die professionelle Absicherung von Bereichen.",
     h1: "Bauzaunfuß aus Kunststoffrecycling mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -825,8 +660,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Bauzaunfuß wird zur Absperrung von Baustellen und zur Sicherung gegen unbefugten Zugang eingesetzt.",
     useCaseEvent: "Der Fuß ermöglicht die Abgrenzung von Veranstaltungsbereichen.",
     useCasePrivat: "Dieses Produkt dient der temporären Absicherung bei privaten Bauprojekten.",
-    primaryKeywords: "Bauzaunfuß aus Kunststoffrecycling mieten in Krefeld, Bauzaunfuß aus Kunststoffrecycling leihen in Krefeld, Bauzaunfuß aus Kunststoffrecycling mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus welchem Material besteht der Bauzaunfuß?", a: "Der Fuß wird aus Kunststoffrecycling gefertigt." },
       { q: "Wie schwer ist eine Fußplatte?", a: "Das Gewicht beträgt circa 20 kg." },
@@ -834,7 +667,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "betonruettler-ir1000": {
-    excelName: "Beton Rüttler 2m",
     seoTitle: "Beton Rüttler 2m IR 1000 - Innenrüttler zur Verdichtung",
     metaDescription: "Mieten Sie den Beton Rüttler IR 1000 mit 35 mm Vibrationsflasche und 1000 W Leistung für die fachgerechte Verdichtung von Frischbeton.",
     h1: "Beton Rüttler 2m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -842,8 +674,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät wird zur Verdichtung von Frischbeton in Schalungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Modell eignet sich für die Beton-Verdichtung bei Eigenheim-Fundamenten.",
-    primaryKeywords: "Beton Rüttler 2m mieten in Krefeld, Beton Rüttler 2m leihen in Krefeld, Beton Rüttler 2m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Durchmesser hat die Vibrationsflasche?", a: "Der Durchmesser der Vibrationsflasche beträgt 35 mm." },
       { q: "Welche Leistung weist der Beton Rüttler auf?", a: "Das Gerät hat eine Leistung von 1000 W und wird über einen 230V-Anschluss betrieben." },
@@ -851,7 +681,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bierzeltgarnitur-hussen-set-weiss": {
-    excelName: "Bierzeltgarnitur Hussen-Set weiß",
     seoTitle: "Bierzeltgarnitur Hussen-Set weiß mieten",
     metaDescription: "Elegantes weißes Hussen-Set bestehend aus Tisch- und Bankhussen für Standard-Bierzeltgarnituren. Maße: Tisch 50x220 cm, Bänke 25x220 cm.",
     h1: "Bierzeltgarnitur Hussen-Set weiß mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -859,8 +688,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Geeignet für die Bestuhlung von Festzelten und Veranstaltungsflächen sowie für Stehtische und Lounge-Möbel bei Events.",
     useCasePrivat: "Das Set dient als optische Aufwertung für Sitzgelegenheiten bei privaten Festen oder für Stehtische bei Gartenpartys.",
-    primaryKeywords: "Bierzeltgarnitur Hussen-Set weiß mieten in Krefeld, Bierzeltgarnitur Hussen-Set weiß leihen in Krefeld, Bierzeltgarnitur Hussen-Set weiß mieten NRW",
-    is247: false,
     faqs: [
       { q: "Was ist im Set enthalten?", a: "Ein Set besteht aus einer Tischhusse und zwei Bankhussen." },
       { q: "Welche Maße haben die Hussen?", a: "Die Tischhusse misst 50 x 220 cm und die Bankhussen messen jeweils 25 x 220 cm." },
@@ -868,7 +695,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bierzeltgarnitur-set": {
-    excelName: "Bierzeltgarnitur-Set",
     seoTitle: "Bierzeltgarnitur-Set mieten | Tisch & Bänke",
     metaDescription: "Mieten Sie ein klassisches Bierzeltgarnitur-Set bestehend aus einem Tisch (50x220 cm) und zwei Bänken (25x220 cm). Optionale weiße Hussen sind verfügbar.",
     h1: "Bierzeltgarnitur-Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -876,8 +702,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Garnituren eignen sich für die Bestuhlung von Festzelten und Veranstaltungsflächen sowie als Stehtische bei Events.",
     useCasePrivat: "Das Set dient als Sitzgelegenheit bei privaten Festen oder als Stehtisch bei Gartenpartys.",
-    primaryKeywords: "Bierzeltgarnitur-Set mieten in Krefeld, Bierzeltgarnitur-Set leihen in Krefeld, Bierzeltgarnitur-Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße haben der Tisch und die Bänke?", a: "Der Tisch misst 50 x 220 cm, während die beiden Bänke jeweils eine Abmessung von 25 x 220 cm aufweisen." },
       { q: "Was ist im Set enthalten?", a: "Ein Set besteht aus einem Tisch und zwei dazugehörigen Bänken." },
@@ -885,7 +709,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "blockbatterie-6v": {
-    excelName: "6V Blockbatterie (Verkauf)",
     seoTitle: "6V Blockbatterie (7,5 Ah) für Warnleuchten kaufen",
     metaDescription: "6V Blockbatterie mit 7,5 Ah Kapazität. Passend für Warnleuchten und Absperrtechnik. Erhältlich als Verkaufsartikel im Packungsinhalt von 1 Stück.",
     h1: "6V Blockbatterie (Verkauf) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -893,8 +716,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Blockbatterie dient der Stromversorgung von Warnleuchten bei der Verkehrssicherung im Baustellenbereich.",
     useCaseEvent: "Dieses Produkt wird für die Energieversorgung von Absperrungen und Systemen zur Besucherführung bei Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "6V Blockbatterie (Verkauf) mieten in Krefeld, 6V Blockbatterie (Verkauf) leihen in Krefeld, 6V Blockbatterie (Verkauf) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Kapazität hat die Blockbatterie?", a: "Die Batterie verfügt über eine Kapazität von 7,5 Ah." },
       { q: "Wieviel Volt liefert die Batterie?", a: "Die Spannung der Blockbatterie beträgt 6 Volt." },
@@ -902,7 +723,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bobcat-e10z": {
-    excelName: "1t Minibagger",
     seoTitle: "1t Minibagger mieten Krefeld – Bobcat E10Z (710 mm Breite)",
     metaDescription: "1t Minibagger Bobcat E10Z in Krefeld mieten – ab 65 €/Tag. Nur 710 mm einfahrbare Breite, 1.820 mm Grabtiefe, MS01-Aufnahme. Abholung Anrather Straße 291.",
     h1: "1t Minibagger mieten in Krefeld – Bobcat E10Z ab 65 €/Tag",
@@ -914,8 +734,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Aushub von Streifen- und Punktfundamenten, Rohr- und Kabelgräben sowie Rückbau- und Modellierarbeiten auf beengten Baustellen in Krefeld, Meerbusch, Willich, Tönisvorst und Kempen. Dank 710 mm eingefahrener Breite passt der Bagger durch Standard-Gartentore und schmale Hausdurchgänge.",
     useCaseEvent: "",
     useCasePrivat: "Für Terrassen-Aushub, Pflaster- und Wegebau, Teichbau, Wurzelentfernung nach Baumfällungen und kleinere Erdarbeiten im Privatgarten – bewusst schmal gehalten für Zugang zum Hinterhof ohne Zaunabbau.",
-    primaryKeywords: "1t Minibagger mieten Krefeld, Bobcat E10Z mieten Krefeld, Minibagger mieten Krefeld, Kleinbagger mieten Niederrhein, Mini Bagger mieten Krefeld, Minibagger leihen Krefeld, Baggerverleih Krefeld",
-    is247: false,
     dailyPriceFrom: 65,
     faqs: [
       { q: "Was kostet der 1t Minibagger Bobcat E10Z in Krefeld pro Tag?", a: "Der Tagespreis startet bei 65 € netto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
@@ -928,7 +746,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "xcmg-xe20e": {
-    excelName: "2t Minibagger",
     seoTitle: "2t Minibagger mieten Krefeld – XCMG XE20E (990 mm Breite)",
     metaDescription: "2t Minibagger XCMG XE20E in Krefeld mieten: 2.050 kg, 990 mm einfahrbare Breite, 2.385 mm Grabtiefe, MS01. Abholung Anrather Straße 291, Lieferung am Niederrhein.",
     h1: "2t Minibagger XCMG XE20E mieten in Krefeld",
@@ -940,8 +757,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Aushub von Kellern kleiner Anbauten, Streifenfundamenten, Rohr- und Versorgungsleitungsgräben, Rückbauarbeiten und Geländemodellierung auf mittelgroßen Baustellen in Krefeld, am Niederrhein und im westlichen Ruhrgebiet. Mit 2.385 mm Grabtiefe deutlich tiefer als der 1t Bobcat E10Z – gute Zwischenklasse zwischen 1t und 2,7t.",
     useCaseEvent: "",
     useCasePrivat: "Für Aushub eines Gartenpools oder Teichs, Pflaster- und Wegebau mit tieferem Frostschutzaufbau, Wurzelentfernung großer Bäume sowie Erdarbeiten am Ein- und Zweifamilienhaus in Krefeld, Meerbusch und Umgebung – auf 990 mm einfahrbar für schmale Zufahrten.",
-    primaryKeywords: "2t Minibagger mieten Krefeld, XCMG XE20E mieten, XCMG Minibagger mieten Krefeld, 2 Tonnen Bagger mieten Niederrhein, Kleinbagger mieten Krefeld, Bagger mieten Krefeld, Minibagger leihen Niederrhein",
-    is247: false,
     faqs: [
       { q: "Was unterscheidet den 2t XCMG XE20E vom 1t Bobcat E10Z?", a: "Der XE20E hat mit 2.385 mm eine um rund 565 mm größere Grabtiefe, 25 l statt 16 l Tank und mit 15,8 PS mehr Leistung – ideal, wenn du tiefer als 1,80 m graben willst (z. B. für frostfreie Fundamente oder Kellerlichtschächte). Der E10Z ist mit 710 mm eingefahrener Breite dafür deutlich schmaler." },
       { q: "Wie schmal fährt der XE20E durch schmale Zufahrten?", a: "Die Gesamtbreite von 1.300 mm lässt sich auf 990 mm einfahren – passt durch die meisten Zufahrten und breitere Gartentore, aber nicht durch schmale 80-cm-Türen. Für sehr enge Zugänge ist der 1t Bobcat E10Z (710 mm) die richtige Wahl." },
@@ -953,7 +768,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bobcat-e35z": {
-    excelName: "3,5t Minibagger",
     seoTitle: "Miete Bobcat E35z: 3,5t Minibagger mit Nullheck",
     metaDescription: "Mieten Sie den Bobcat E35z Minibagger mit 3,5t Einsatzgewicht, 3,12m Grabtiefe und Stage V Motor. Ideal für beengte Baustellen durch Nullheck-Design.",
     h1: "3,5t Minibagger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -961,8 +775,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Professionelle Anwender nutzen den Bagger für den Aushub von Streifenfundamenten, das Anlegen von Versorgungsleitungsgräben sowie für den Rückbau auf engen Baustellen. Zudem eignet er sich für die Vorbereitung von Pflasterarbeiten und den Kanalbau.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich unterstützt die Maschine beim Anlegen eines Gartenteichs, der Wurzelentfernung sowie bei Erdarbeiten für Terrassen- und Pflasterarbeiten.",
-    primaryKeywords: "3,5t Minibagger mieten in Krefeld, 3,5t Minibagger leihen in Krefeld, 3,5t Minibagger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie tief kann der Bobcat E35z graben?", a: "Die maximale Grabtiefe des 3,5t Minibaggers beträgt 3.120 mm bei einer Reichweite von 5,26 m am Boden." },
       { q: "Welche Vorteile bietet das Nullheck-Design?", a: "Durch das Nullheck-Design schwenkt das Heck innerhalb der Kettenbreite, was den Einsatz an besonders beengten Orten ermöglicht." },
@@ -970,7 +782,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bobcat-e50z": {
-    excelName: "5t Minibagger",
     seoTitle: "5t Minibagger mieten | Bobcat E50z | Technische Daten",
     metaDescription: "Mieten Sie den Bobcat E50z Minibagger mit 4,8 t Gewicht, 3,52 m Grabtiefe und Nullheck-Design für Erd-, Kanal- und Abbrucharbeiten.",
     h1: "5t Minibagger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -978,8 +789,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Minibagger eignet sich für den Aushub von Streifenfundamenten, das Anlegen von Versorgungsleitungsgräben sowie für den Rückbau auf engen Baustellen. Zudem unterstützt er die Geländemodellierung und die Vorbereitung von Pflasterarbeiten im Wegebau.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich ermöglicht die Maschine den Aushub für Terrassen, das Anlegen eines Gartenteichs sowie die Wurzelentfernung nach Baumfällarbeiten.",
-    primaryKeywords: "5t Minibagger mieten in Krefeld, 5t Minibagger leihen in Krefeld, 5t Minibagger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Grabtiefe erreicht der Bobcat E50z?", a: "Der Minibagger erzielt eine maximale Grabtiefe von 3.520 mm bei einer Reichweite von 5,98 m." },
       { q: "Verfügt der 5t Minibagger über einen Überstand beim Schwenken?", a: "Nein, der Bobcat E50z ist als Nullheck-Bagger konstruiert, was den Einsatz auf engem Raum ermöglicht." },
@@ -987,7 +796,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bobcat-l28-knicklader": {
-    excelName: "Knicklader",
     seoTitle: "Bobcat L28 Knicklader mieten | Teleskoparm & 1085 kg Hubkraft",
     metaDescription: "Mieten Sie den kompakten Knicklader Bobcat L28 mit 1,9 t Betriebsgewicht, teleskopierbarem Arm und Palettengabel für Materialhandling auf engen Baustellen.",
     h1: "Knicklader mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -995,8 +803,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Knicklader eignet sich für das Materialhandling auf engen Baustellen sowie für die wendige Beladung in Hofstellen und Reithallen. Zudem unterstützt er Stapelarbeiten in landwirtschaftlichen Betrieben.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät ermöglicht eine wendige Materialbewegung im privaten Hofbereich.",
-    primaryKeywords: "Knicklader mieten in Krefeld, Knicklader leihen in Krefeld, Knicklader mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Hubkraft bietet der Bobcat L28?", a: "Der Knicklader hat eine Hubkraft von 1085 kg, wobei bei Knickstellung die spezifische Lasttabelle beachtet werden muss." },
       { q: "Wie breit ist die Maschine für schmale Durchfahrten?", a: "Die Gesamtbreite des Bobcat L28 beträgt 1270 mm bei einer Gesamthöhe von 1980 mm." },
@@ -1004,7 +810,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bodenhacke-af1212": {
-    excelName: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212",
     seoTitle: "Benzin Bodenhacke Gartenfräse 6 PS AF1212 mieten",
     metaDescription: "Benzin-Bodenhacke mit 4 kW (212 ccm) Motor. Einstellbare Arbeitsbreite von 360 bis 850 mm mit bis zu 6 Fräswerkzeugen für die Bodenbearbeitung.",
     h1: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1012,8 +817,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "Dieses Gerät eignet sich für die Boden-Vorbereitung bei Neubepflanzungen sowie zum Auflockern bereits verdichteter Gartenflächen.",
-    primaryKeywords: "Benzin Bodenhacke / Gartenfräse 6 PS AF1212 mieten in Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS AF1212 leihen in Krefeld, Benzin Bodenhacke / Gartenfräse 6 PS AF1212 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Motorleistung bietet die Bodenhacke?", a: "Die Gartenfräse verfügt über einen 4-Takt-Benzinmotor mit 212 ccm Hubraum, der eine Leistung von 4 kW bei 3600 U/min erbringt." },
       { q: "Wie breit kann die Bodenbearbeitung durchgeführt werden?", a: "Die Arbeitsbreite ist flexibel einstellbar und deckt einen Bereich von 360 mm bis zu 850 mm ab." },
@@ -1021,7 +824,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bodenschutz-fahrmatten": {
-    excelName: "Bodenschutz- / Fahrmatten",
     seoTitle: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld. Maße: 100 cm x 86 cm x 0,23 cm  Material: Recycelter Kunststoff-Mix  Belastbarkeit: ca 15t. Tagesmiete,",
     h1: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1029,8 +831,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Malerarbeiten, Deckenarbeiten, Elektroinstallationen, Fassadenarbeiten",
     useCaseEvent: "Eventaufbau in Hallen, Traversenmontage, Aufhängearbeiten",
     useCasePrivat: "Dachrinne reinigen, Fassade streichen, Weihnachtsbeleuchtung montieren",
-    primaryKeywords: "Bodenschutz- / Fahrmatten mieten in Bonn & Krefeld, Bodenschutz- / Fahrmatten leihen in Bonn & Krefeld, Bodenschutz- / Fahrmatten mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Traglast hat das Gerät?", a: "Traglast: Die Matten sind besenrein zurückzugeben. Die Traglast gilt für gleichmäßig verteilte Last. Werkzeug und Materialien auf dem Gerät dürfen die Gesamttraglast nicht überschreiten." },
       { q: "Welche Arbeitshöhe ist maximal erreichbar?", a: "Die maximale Arbeitshöhe entnehmen Sie dem Produktnamen und den technischen Daten. Bitte beachten: Die Arbeitshöhe bezieht sich auf die Standhöhe der arbeitenden Person, nicht auf die Gerüst-Gesamthöhe." },
@@ -1039,7 +839,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bohrschrauber-gsr18v55": {
-    excelName: "Akku Bohrschrauber",
     seoTitle: "Bosch GSR 18V-55 Akku Bohrschrauber mieten",
     metaDescription: "Leistungsstarker Akku-Bohrschrauber Bosch GSR 18V-55 mit 55 Nm Drehmoment und bürstenlosem EC-Motor für Bohr- und Schraubarbeiten.",
     h1: "Akku Bohrschrauber mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1047,8 +846,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Bohrschrauber eignet sich für professionelle Schraub- und Bohrarbeiten auf der Baustelle.",
     useCaseEvent: "Das Modell kann für den Auf- und Abbau von Bühnen- und Eventtechnik eingesetzt werden.",
     useCasePrivat: "Dieses Gerät unterstützt bei Heimwerker-Arbeiten sowie bei der Möbelmontage.",
-    primaryKeywords: "Akku Bohrschrauber mieten in Krefeld, Akku Bohrschrauber leihen in Krefeld, Akku Bohrschrauber mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Materialien können mit dem GSR 18V-55 bearbeitet werden?", a: "Das Gerät ist für Bohr- und Schraubarbeiten in Holz, Stahl und anderen Materialien ausgelegt." },
       { q: "Wie hoch ist der maximale Bohrdurchmesser?", a: "Der maximale Bohrdurchmesser beträgt 35 mm in Holz und 13 mm in Stahl." },
@@ -1056,7 +853,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-abbruchhammer-hm1812": {
-    excelName: "Abbruchhammer",
     seoTitle: "Makita HM1812 Abbruchhammer | 72,8 J Schlagenergie",
     metaDescription: "Schwerer Abbruchhammer Makita HM1812 mit 2.000 W, AVT-Technologie und HEX-28 Aufnahme für den Abbruch von Beton und Mauerwerk.",
     h1: "Abbruchhammer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1064,8 +860,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät eignet sich für den professionellen Abbruch von Mauerwerk und Beton sowie für das Aufbrechen von Estrich und Fliesen.",
     useCaseEvent: "",
     useCasePrivat: "Bei Renovierungsarbeiten unterstützt der Abbruchhammer private Anwender beim Abbruch alter Wände und Bodenbeläge.",
-    primaryKeywords: "Abbruchhammer mieten in Krefeld, Abbruchhammer leihen in Krefeld, Abbruchhammer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Schlagenergie des Makita HM1812?", a: "Der Abbruchhammer erreicht eine Schlagenergie von 72,8 Joule bei einer Nenneingangsleistung von 2.000 Watt." },
       { q: "Welche Werkzeugaufnahme besitzt die Maschine?", a: "Das Modell verfügt über eine HEX-28 Werkzeugaufnahme." },
@@ -1073,7 +867,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-aggregatanhaenger-1300": {
-    excelName: "1300 kg Aggregatanhänger",
     seoTitle: "1300 kg Aggregatanhänger mieten | Temared 260x120 cm",
     metaDescription: "Mieten Sie den Temared Aggregatanhänger mit 1300 kg Gesamtgewicht und ca. 1050 kg Nutzlast. Ladefläche ca. 260 x 120 cm. 100 km/h Zulassung möglich.",
     h1: "1300 kg Aggregatanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1081,8 +874,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "1300 kg Aggregatanhänger mieten in Krefeld, 1300 kg Aggregatanhänger leihen in Krefeld, 1300 kg Aggregatanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Führerschein wird für diesen Anhänger benötigt?", a: "Erforderlich ist die Klasse 3, BE oder alternativ die Klasse B, sofern das zulässige Gesamtgewicht des Zugfahrzeugs 2150 kg nicht überschreitet." },
       { q: "Unter welchen Bedingungen ist die 100 km/h Zulassung nutzbar?", a: "Für die Nutzung der 100 km/h Zulassung muss das eingetragene Leergewicht des Zugfahrzeugs mindestens 1228 kg betragen." },
@@ -1090,7 +881,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-akku-heckenschere": {
-    excelName: "Akku Heckenschere GHE 18V-60",
     seoTitle: "Akku Heckenschere GHE 18V-60 mieten",
     metaDescription: "Bosch Professional Akku-Heckenschere mit 60 cm Schwertlänge, bürstenlosem Motor und Anti-Blocking System für effizienten Heckenschnitt.",
     h1: "Akku Heckenschere GHE 18V-60 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1098,8 +888,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "Die Heckenschere eignet sich für private Gartenarbeiten, bei denen ein kraftvoller Rückschnitt ohne Kabelverbindung erforderlich ist.",
-    primaryKeywords: "Akku Heckenschere GHE 18V-60 mieten in Krefeld, Akku Heckenschere GHE 18V-60 leihen in Krefeld, Akku Heckenschere GHE 18V-60 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird ein Festfahren bei dicken Ästen verhindert?", a: "Das Gerät verfügt über das patentierte Bosch Anti-Blocking System, welches ein Verklemmen beim Schneiden dickerer Äste verhindert." },
       { q: "Welche Schwertlänge bietet das Modell?", a: "Die GHE 18V-60 ist mit einem 60 cm langen Schwert ausgestattet." },
@@ -1107,7 +895,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-akku-kettensaege": {
-    excelName: "Akku Kettensäge",
     seoTitle: "Akku Kettensäge mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Akku Kettensäge mieten in Bonn & Krefeld. Hersteller: Bosch  Typ: GKE 18V-40  Schwerdlänge: 40 cm  Gewicht: 4,6 kg inkl. Akku!    Es. Tagesmiete, fairer Pr",
     h1: "Akku Kettensäge mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1115,8 +902,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Akku Kettensäge mieten in Bonn & Krefeld, Akku Kettensäge leihen in Bonn & Krefeld, Akku Kettensäge mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
       { q: "Ist Kraftstoff / Betriebsmittel im Mietpreis enthalten?", a: "Nein – der Kraftstoff ist nicht im Mietpreis enthalten. Bitte das Gerät mit vollem Tank zurückgeben. Beim Benzin-Modell: handelsübliches Super-Benzin ohne Ethanol-Zusatz (E5) verwenden." },
@@ -1125,7 +910,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-anhaenger-arbeitsbuehne-18m": {
-    excelName: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin",
     seoTitle: "18m Gelenk-Teleskop-Anhängerarbeitsbühne elektro/benzin",
     metaDescription: "Gelenkteleskop-Anhängerbühne mit 18 m Arbeitshöhe und 10,50 m Reichweite. Flexibler Antrieb durch Elektro- oder Benzinmotor für verschiedene Einsatzorte.",
     h1: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1133,8 +917,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese mobile Arbeitsbühne eignet sich für Wartungs- und Montagearbeiten sowie für Höhenarbeiten ohne LKW-Aufbau, da sie mit einem PKW gezogen werden kann.",
     useCaseEvent: "",
     useCasePrivat: "Privatanwender nutzen das Gerät für die Baumpflege oder für Fassadenarbeiten am Eigenheim.",
-    primaryKeywords: "18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten in Krefeld, 18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin leihen in Krefeld, 18m Gelenk- Teleskop-Anhängerarbeitsbühne elektro/benzin mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitshöhe erreicht die Bühne?", a: "Das Gerät erreicht eine maximale Arbeitshöhe von 18 Metern." },
       { q: "Wie groß ist die seitliche Reichweite?", a: "Die maximale seitliche Reichweite der Gelenkteleskop-Anhängerbühne beträgt 10,50 Meter." },
@@ -1142,7 +924,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-baumaschinenanhanger-1800": {
-    excelName: "1800 kg Baumaschinenanhänger",
     seoTitle: "1800 kg Baumaschinenanhänger mieten - Ladefläche 260x150 cm",
     metaDescription: "Baumaschinenanhänger von Temared mit 1349 kg Nutzlast und durchgehender Auffahrrampe. Maße: 260 x 150 x 25 cm. Führerscheinklasse BE oder 3 erforderlich.",
     h1: "1800 kg Baumaschinenanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1150,8 +931,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "1800 kg Baumaschinenanhänger mieten in Krefeld, 1800 kg Baumaschinenanhänger leihen in Krefeld, 1800 kg Baumaschinenanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Nutzlast bietet der Anhänger?", a: "Der Anhänger verfügt über ein Gesamtgewicht von 1800 kg und eine maximale Nutzlast von 1349 kg." },
       { q: "Welche Anforderungen gelten für die 100 km/h Zulassung?", a: "Für die Nutzung der 100 km/h Zulassung muss das eingesetzte Zugfahrzeug ein eingetragenes Leergewicht von mindestens 1637 kg aufweisen." },
@@ -1159,7 +938,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bautrockner-kt554": {
-    excelName: "Bautrockner 50L/Tag",
     seoTitle: "Bautrockner 50L/Tag Allegra KT553/KT554 mieten",
     metaDescription: "Professioneller Kondensationstrockner Allegra KT553/KT554 mit 50 l/24h Entfeuchtungsleistung, MID-Stromzähler und 4l-Wassertank für Flächen von 50–60 m².",
     h1: "Bautrockner 50L/Tag mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1167,8 +945,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Bautrockner unterstützt die Bauaustrocknung nach Wasserschäden sowie die Estrichtrocknung bei Neubauten.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät dient der Trocknung nach Wasserschäden im Eigenheim.",
-    primaryKeywords: "Bautrockner 50L/Tag mieten in Krefeld, Bautrockner 50L/Tag leihen in Krefeld, Bautrockner 50L/Tag mieten NRW",
-    is247: false,
     faqs: [
       { q: "Verfügt das Gerät über einen Stromzähler?", a: "Ja, der Bautrockner ist mit einem geeichten MID-Stromzähler (PH10) und einem Betriebsstundenzähler ausgestattet." },
       { q: "Was passiert, wenn der Wassertank voll ist?", a: "Der 4-Liter-Wassertank verfügt über eine automatische Abschaltfunktion. Alternativ ist ein Schlauchanschluss für den Dauerbetrieb möglich." },
@@ -1176,7 +952,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bierglas-0-2l-40er": {
-    excelName: "Wasserglas Willi 200ml, 40er Set",
     seoTitle: "Wasserglas Willi 200ml, 40er Set - VAN WELL",
     metaDescription: "Wasserglas Willi von VAN WELL im 40er Set für Veranstaltungen. 200 ml Volumen (geeicht), spülmaschinenfest, Höhe 13,5 cm, Durchmesser 6 cm.",
     h1: "Wasserglas Willi 200ml, 40er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1184,8 +959,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set eignet sich für die Bewirtung bei Veranstaltungen, Caterings und privaten Feiern.",
     useCasePrivat: "",
-    primaryKeywords: "Wasserglas Willi 200ml, 40er Set mieten in Krefeld, Wasserglas Willi 200ml, 40er Set leihen in Krefeld, Wasserglas Willi 200ml, 40er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Abmessungen haben die Gläser?", a: "Ein Glas hat eine Höhe von 13,5 cm und einen Durchmesser von 6 cm." },
       { q: "Sind die Gläser für die Reinigung in der Spülmaschine geeignet?", a: "Ja, die Wassergläser sind spülmaschinenfest." },
@@ -1193,7 +966,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bierzeltgarnitur-hussen-weiss": {
-    excelName: "Bierzeltgarnitur Hussen-Set weiß",
     seoTitle: "Bierzeltgarnitur Hussen-Set weiß mieten",
     metaDescription: "Elegantes Hussen-Set für Bierzeltgarnituren in Weiß. Das Set besteht aus zwei Bankhussen und einer Tischhusse. Rückgabe erfolgt in gewaschenem Zustand.",
     h1: "Bierzeltgarnitur Hussen-Set weiß mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1201,8 +973,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Bierzeltgarnitur Hussen-Set weiß mieten in Krefeld, Bierzeltgarnitur Hussen-Set weiß leihen in Krefeld, Bierzeltgarnitur Hussen-Set weiß mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus wie vielen Teilen besteht das Set?", a: "Ein Set umfasst insgesamt drei Teile: zwei Bankhussen und eine Tischhusse." },
       { q: "In welchem Zustand müssen die Hussen zurückgegeben werden?", a: "Die Textilien sind in gewaschenem Zustand an den Vermieter zurückzugeben." },
@@ -1210,7 +980,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bobcat-e10": {
-    excelName: "1t Bobcat E10Z",
     seoTitle: "1t Bobcat E10Z mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "1t Bobcat E10Z mieten in Bonn & Krefeld. Betriebsgewicht: 1176 kg  Gesamtbreite: 1100 mm einfahrbar auf 710 mm  Gesamthöhe: 2209 mm. Tagesmiete, fairer Pre",
     h1: "1t Bobcat E10Z mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1218,8 +987,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Leitungsgraben, Fundamentaushub, Abbruch, Tiefbau, Hangbegradigung",
     useCaseEvent: "Geländegestaltung vor Events, Fundamente für temporäre Strukturen",
     useCasePrivat: "Gartenteich anlegen, Terrasse unterbauen, Baumstumpf entfernen",
-    primaryKeywords: "1t Bobcat E10Z mieten in Bonn & Krefeld, 1t Bobcat E10Z leihen in Bonn & Krefeld, 1t Bobcat E10Z mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie transportiere ich die Maschine zur Baustelle?", a: "Das Betriebsgewicht beträgt ca. 1176 kg. Für den Transport reicht ein PKW-Anhänger mit 1.800–2.000 kg Nutzlast (Führerschein BE). Wir bieten auch einen Lieferservice direkt zu Ihrem Einsatzort in NRW an." },
       { q: "Ist eine Einweisung im Mietpreis enthalten?", a: "Ja – bei Abholung führen wir eine kostenlose Einweisung in die Bedienung durch. Für gewerbliche Kunden empfehlen wir zusätzlich die Teilnahme an einem zertifizierten Maschinenkurs." },
@@ -1228,7 +995,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-cee32a-uv": {
-    excelName: "CEE 32A UV auf 2x 16A CEE, 6x 16A Schuko",
     seoTitle: "CEE 32A Stromverteiler auf 2x 16A CEE & 6x Schuko",
     metaDescription: "Professioneller Stromverteiler mit 32A CEE Eingang auf 2x 16A CEE und 6x Schuko Ausgänge für die zuverlässige Stromverteilung.",
     h1: "CEE 32A UV auf 2x 16A CEE, 6x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1236,8 +1002,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "CEE 32A UV auf 2x 16A CEE, 6x 16A Schuko mieten in Krefeld, CEE 32A UV auf 2x 16A CEE, 6x 16A Schuko leihen in Krefeld, CEE 32A UV auf 2x 16A CEE, 6x 16A Schuko mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Eingangsabsicherung benötigt der Verteiler?", a: "Der Stromverteiler verfügt über einen 5-poligen CEE 32A Eingang." },
       { q: "Wie viele Anschlüsse stehen insgesamt zur Verfügung?", a: "Es sind zwei 16A 400V CEE-Ausgänge und sechs 230V Schuko-Steckdosen vorhanden." },
@@ -1245,7 +1009,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-champagnerglas-passionata-10er": {
-    excelName: "Champagnerglas Passionata, 10er Set",
     seoTitle: "Champagnerglas Passionata (10er Set) | Schott Zwiesel",
     metaDescription: "Schott Zwiesel Passionata Champagnerglas aus Tritan®-Kristallglas. 325 ml Fassungsvermögen, bruchfest und spülmaschinenfest im praktischen 10er Set.",
     h1: "Champagnerglas Passionata, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1253,8 +1016,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das 10er Set eignet sich für den Einsatz in der Eventgastronomie zum Servieren von Champagner und Sekt.",
     useCasePrivat: "",
-    primaryKeywords: "Champagnerglas Passionata, 10er Set mieten in Krefeld, Champagnerglas Passionata, 10er Set leihen in Krefeld, Champagnerglas Passionata, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus welchem Material bestehen die Gläser?", a: "Die Gläser der Serie Passionata sind aus bleifreiem Tritan®-Kristallglas gefertigt, das als bruch- und kratzfest gilt." },
       { q: "Wie hoch ist das Fassungsvermögen eines Glases?", a: "Ein Champagnerglas verfügt über ein Fassungsvermögen von 325 ml." },
@@ -1262,7 +1023,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-cormidi-c60": {
-    excelName: "Dumper mit Hochauskippfunktion",
     seoTitle: "Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
     metaDescription: "Mieten Sie den Cormidi C60 HI TIP Dumper mit 600 kg Nutzlast, Dieselmotor und Raupenlaufwerk. Kompakter Raupendumper mit praktischer Hochauskippfunktion.",
     h1: "Dumper mit Hochauskippfunktion mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1270,8 +1030,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Dumper mit Hochauskippfunktion mieten in Krefeld, Dumper mit Hochauskippfunktion leihen in Krefeld, Dumper mit Hochauskippfunktion mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Nutzlast bietet der Cormidi C60 HI TIP?", a: "Der Dumper verfügt über eine maximale Nutzlast von 600 kg." },
       { q: "Über welche Antriebsart verfügt das Gerät?", a: "Der Dumper wird mit einem Dieselmotor betrieben und ist mit einem Raupenlaufwerk ausgestattet." },
@@ -1279,7 +1037,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-diamantbohrer-gdb180": {
-    excelName: "Diamantbohrer",
     seoTitle: "Bosch GDB 180 WE Diamantbohrer bis 180 mm",
     metaDescription: "Kernbohrmaschine mit 2.000 W für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Kompakter Diamantbohrer mit 5,2 kg Gewicht.",
     h1: "Diamantbohrer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1287,8 +1044,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät wird für Kernbohrungen für Rohr- und Leitungsdurchführungen sowie für Diamantbohrungen in Beton und Mauerwerk eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Die Maschine eignet sich für Durchbrüche für Lüftungs- oder Abwasserrohre.",
-    primaryKeywords: "Diamantbohrer mieten in Krefeld, Diamantbohrer leihen in Krefeld, Diamantbohrer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen maximalen Bohrdurchmesser deckt die Bosch GDB 180 WE ab?", a: "Die Maschine ist für Bohrungen in Beton und Mauerwerk bis zu einem Durchmesser von 180 mm ausgelegt." },
       { q: "Über welches Anschlussgewinde verfügt die Bohrspindel?", a: "Der Diamantbohrer besitzt ein 1 1/4\" UNC Bohrspindelanschlussgewinde." },
@@ -1296,7 +1051,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-fussplatte-k1": {
-    excelName: "Fußplatte K1 TL",
     seoTitle: "Fußplatte K1 TL - ca. 28 kg",
     metaDescription: "Stabile Fußplatte K1 TL mit einem Gewicht von circa 28 kg zur Aufstellung von Verkehrsschildern, Warnbarken oder Schrankenzäunen.",
     h1: "Fußplatte K1 TL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1304,8 +1058,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Fußplatte K1 TL mieten in Krefeld, Fußplatte K1 TL leihen in Krefeld, Fußplatte K1 TL mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie schwer ist die Fußplatte K1 TL?", a: "Das Gewicht der Fußplatte beträgt circa 28 kg." },
       { q: "Wofür kann die Fußplatte verwendet werden?", a: "Die Platte dient als Standvorrichtung für Verkehrsschilder, Warnbarken oder Schrankenzäune." },
@@ -1313,7 +1065,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-graben-abdeckung-150x100": {
-    excelName: "Graben Abdeckung 150x100cm",
     seoTitle: "Graben Abdeckung 150x100cm mieten in Bonn | SLT Rental",
     metaDescription: "Graben Abdeckung 150x100cm mieten in Bonn. Leichte Grabenbrücke aus Verbundwerkstoff für Fußgänger und 3,5 t schwere Fahrzeuge über e. Tagesmiete, fairer P",
     h1: "Graben Abdeckung 150x100cm mieten in Bonn – Jetzt verfügbar bei SLT Rental",
@@ -1321,8 +1072,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "Graben Abdeckung 150x100cm mieten in Bonn, Graben Abdeckung 150x100cm leihen in Bonn, Graben Abdeckung 150x100cm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
       { q: "Welche gesetzlichen Vorschriften gelten für die Aufstellung?", a: "Für Baustellenabsicherungen gelten die RSA (Richtlinien für die Sicherung von Arbeitsstellen an Straßen) und die DGUV Vorschrift 38. Für Veranstaltungsabsperrungen gilt die MVStättV (Musterversammlungsstättenverordnung). Wir beraten Sie gerne zur normenkonformen Aufstellung." },
@@ -1331,7 +1080,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-haecksler-ls95gx": {
-    excelName: "Benzin-Häcksler",
     seoTitle: "Benzin-Häcksler Eliet LS-95 GX mieten",
     metaDescription: "Leistungsstarker Benzin-Häcksler Eliet LS-95 GX für Äste bis 7,5 cm Durchmesser. Automatischer Einzug und einfache Wartung für effizientes Häckseln.",
     h1: "Benzin-Häcksler mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1339,8 +1087,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Benzin-Häcksler mieten in Krefeld, Benzin-Häcksler leihen in Krefeld, Benzin-Häcksler mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher maximale Astdurchmesser kann verarbeitet werden?", a: "Der Eliet LS-95 GX zerkleinert Äste mit einem Durchmesser von bis zu 7,5 cm." },
       { q: "Wie funktioniert der Materialeinzug bei diesem Häcksler?", a: "Der Einzug erfolgt automatisch durch das Eigengewicht des eingefüllten Materials." },
@@ -1348,7 +1094,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-hailo-l60-6": {
-    excelName: "Hailo L60 – 6 Stufen",
     seoTitle: "Alu-Stehleiter Hailo L60 – 6 Stufen | Mietkatalog",
     metaDescription: "Leichte Alu-Stehleiter mit 5 Stufen und einer Plattformhöhe von 1,28 m. Max. Belastung 150 kg. Geeignet für Innen- und Außenarbeiten.",
     h1: "Hailo L60 – 6 Stufen mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1356,8 +1101,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Stehleiter dient dem Universal-Einsatz auf der Baustelle.",
     useCaseEvent: "Die Leiter kann für den Auf- und Abbau bei Veranstaltungen genutzt werden.",
     useCasePrivat: "Das Modell unterstützt bei Renovierungs- und Wartungsarbeiten am Eigenheim.",
-    primaryKeywords: "Hailo L60 – 6 Stufen mieten in Krefeld, Hailo L60 – 6 Stufen leihen in Krefeld, Hailo L60 – 6 Stufen mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Plattform der Hailo L60?", a: "Die Plattformhöhe dieser Stehleiter beträgt 1,28 m." },
       { q: "Wie hoch ist die maximale Tragkraft der Leiter?", a: "Die maximale Belastung ist mit 150 kg angegeben." },
@@ -1365,7 +1108,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-handkreissaege-gks18v": {
-    excelName: "Akku Hand-Kreissäge",
     seoTitle: "Akku Hand-Kreissäge Bosch GKS 18V-57G mieten",
     metaDescription: "Mieten Sie die Bosch GKS 18V-57G Akku-Handkreissäge. 165 mm Sägeblatt, 57 mm Schnitttiefe und führungsschienenkompatibel für präzise Schnitte in Holz.",
     h1: "Akku Hand-Kreissäge mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1373,8 +1115,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Akku-Handkreissäge ermöglicht den mobilen Zuschnitt von Holz und Plattenmaterial direkt auf der Baustelle.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät eignet sich für Heimwerker-Zuschnitte im Garten und in der heimischen Werkstatt.",
-    primaryKeywords: "Akku Hand-Kreissäge mieten in Krefeld, Akku Hand-Kreissäge leihen in Krefeld, Akku Hand-Kreissäge mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Schnitttiefe erreicht die Bosch GKS 18V-57G?", a: "Die maximale Schnitttiefe beträgt 57 mm bei einem 90°-Winkel und 42 mm bei einem 45°-Winkel." },
       { q: "Ist die Nutzung einer Führungsschiene möglich?", a: "Ja, das Modell GKS 18V-57G ist führungsschienenkompatibel, was präzise und gerade Schnitte unterstützt." },
@@ -1382,7 +1122,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-kaiserthal-l50-5": {
-    excelName: "Kaiserthal L50 – 5 Stufen",
     seoTitle: "Kaiserthal L50 – 5 Stufen Alu-Stehleiter",
     metaDescription: "Kompakte Aluminium-Stehleiter Kaiserthal L50 mit 5 Stufen und einer Arbeitshöhe von ca. 2,4 m. Maximale Belastung 150 kg für Profis und Privat.",
     h1: "Kaiserthal L50 – 5 Stufen mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1390,8 +1129,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Leiter eignet sich für den Universal-Einsatz auf der Baustelle.",
     useCaseEvent: "Die Stehleiter wird für den Auf- und Abbau bei Veranstaltungen verwendet.",
     useCasePrivat: "Das Modell unterstützt bei Renovierungs- und Wartungsarbeiten am Eigenheim.",
-    primaryKeywords: "Kaiserthal L50 – 5 Stufen mieten in Krefeld, Kaiserthal L50 – 5 Stufen leihen in Krefeld, Kaiserthal L50 – 5 Stufen mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Arbeitshöhe der Kaiserthal L50?", a: "Die Arbeitshöhe beträgt circa 2,4 m." },
       { q: "Wie hoch darf die Leiter belastet werden?", a: "Die maximale Belastung liegt bei 150 kg." },
@@ -1399,7 +1136,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-kettendumper-rmd650": {
-    excelName: "Ketten-Dumper",
     seoTitle: "Ketten-Dumper RMD-650 mieten",
     metaDescription: "Mieten Sie den Ketten-Dumper RMD-650 mit 650 kg Nutzlast für Arbeiten auf beengten Baustellen.",
     h1: "Ketten-Dumper mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1407,8 +1143,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Ketten-Dumper mieten in Krefeld, Ketten-Dumper leihen in Krefeld, Ketten-Dumper mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Nutzlast bietet der Ketten-Dumper RMD-650?", a: "Das Modell RMD-650 ist für eine Nutzlast von bis wir 650 kg ausgelegt." },
       { q: "Für welche Arbeitsumgebungen eignet sich das Gerät?", a: "Aufgrund seiner kompakten Bauweise ist dieser Kettendumper für den Einsatz auf beengten Baustellen vorgesehen." },
@@ -1416,7 +1150,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-belagbuehne-durchstieg-2m": {
-    excelName: "Krause Belagbühne mit Durchstieg – 2,00 m",
     seoTitle: "Krause Belagbühne mit Durchstieg – 2,00 m mieten",
     metaDescription: "Belagbühne für Krause Rollgerüste mit integriertem Durchstieg. Breite: 2,00 m. Erhältlich zur Miete für Höhenarbeiten.",
     h1: "Krause Belagbühne mit Durchstieg – 2,00 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1424,8 +1157,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Eignet sich für den Aufbau von Rollgerüsten sowie für Maler-, Putz- und Montagearbeiten in der Höhe.",
     useCaseEvent: "",
     useCasePrivat: "Unterstützt Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Belagbühne mit Durchstieg – 2,00 m mieten in Krefeld, Krause Belagbühne mit Durchstieg – 2,00 m leihen in Krefeld, Krause Belagbühne mit Durchstieg – 2,00 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Breite hat die Krause Belagbühne?", a: "Die Belagbühne verfügt über eine Breite von 2,00 m." },
       { q: "Verfügt die Bühne über eine Einstiegsöffnung?", a: "Ja, dieses Modell besitzt einen integrierten Durchstieg." },
@@ -1433,7 +1164,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-bordbrettset-75cm": {
-    excelName: "Krause Bordbrettset – 75 cm Breite",
     seoTitle: "Krause Bordbrettset – 75 cm Breite mieten",
     metaDescription: "Sicherheitsbordbretter für Krause Rollgerüste mit 75 cm Breite. Erhöhen Sie die Sicherheit bei Höhenarbeiten auf Ihrem Gerüst.",
     h1: "Krause Bordbrettset – 75 cm Breite mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1441,8 +1171,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Set wird beim Aufbau von Rollgerüsten für Innen- und Außenarbeiten eingesetzt. Es dient der Sicherheit bei Höhenarbeiten während Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Bordbrettset unterstützt Privatpersonen bei Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Bordbrettset – 75 cm Breite mieten in Krefeld, Krause Bordbrettset – 75 cm Breite leihen in Krefeld, Krause Bordbrettset – 75 cm Breite mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Breite hat das Krause Bordbrettset?", a: "Das Bordbrettset hat eine Breite von 75 cm." },
       { q: "Für welche Gerüsttypen ist das Set geeignet?", a: "Das Set ist als Zubehör für Krause Rollgerüste vorgesehen." },
@@ -1450,7 +1178,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-fahrbase-75": {
-    excelName: "Krause Fahrbase 75",
     seoTitle: "Krause Fahrbase 75 - Fahrwerk-Set für Rollgerüste",
     metaDescription: "Krause Fahrbase 75: Fahrwerk-Set für Krause Rollgerüste mit einer Breite von 75 cm. Geeignet für Bauprojekte und Renovierungen in der Höhe.",
     h1: "Krause Fahrbase 75 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1458,8 +1185,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Fahrwerk-Set dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Produkt unterstützt private Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Fahrbase 75 mieten in Krefeld, Krause Fahrbase 75 leihen in Krefeld, Krause Fahrbase 75 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Breite hat die Krause Fahrbase 75?", a: "Die Krause Fahrbase 75 weist eine Breite von 75 cm auf." },
       { q: "Für welche Gerüsttypen ist das Set geeignet?", a: "Es handelt sich um ein Fahrwerk-Set, das für Krause Rollgerüste konzipiert ist." },
@@ -1467,7 +1192,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-guardmatic-2m": {
-    excelName: "Krause GuardMatic-System – Feldlänge 2,00 m",
     seoTitle: "Krause GuardMatic-System – Feldlänge 2,00 m",
     metaDescription: "Geländerschutzsystem für Krause Rollgerüste mit 2,00 m Feldlänge. Ermöglicht die Vorab-Montage vor dem Aufstieg zur Absicherung bei Höhenarbeiten.",
     h1: "Krause GuardMatic-System – Feldlänge 2,00 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1475,8 +1199,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses System dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Anwendung findet das System bei Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause GuardMatic-System – Feldlänge 2,00 m mieten in Krefeld, Krause GuardMatic-System – Feldlänge 2,00 m leihen in Krefeld, Krause GuardMatic-System – Feldlänge 2,00 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Feldlänge ist dieses GuardMatic-System geeignet?", a: "Das System ist für Rollgerüst-Komponenten mit einer Feldlänge von 2,00 m ausgelegt." },
       { q: "Wann erfolgt die Montage des Geländerschutzes?", a: "Die Montage des Systems ist vor dem Aufstieg auf die nächste Gerüstebene möglich." },
@@ -1484,7 +1206,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-vertikalrahmen-1x075": {
-    excelName: "Krause Vertikalrahmen – 1,00 × 0,75 m",
     seoTitle: "Krause Vertikalrahmen – 1,00 × 0,75 m",
     metaDescription: "Aufstockrahmen für Krause Rollgerüste mit den Maßen 1,00 m Breite und 0,75 m Höhe. Geeignet für Höhenarbeiten an Fassaden und im Innenbereich.",
     h1: "Krause Vertikalrahmen – 1,00 × 0,75 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1492,8 +1213,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Rahmen dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Der Vertikalrahmen wird für Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt.",
-    primaryKeywords: "Krause Vertikalrahmen – 1,00 × 0,75 m mieten in Krefeld, Krause Vertikalrahmen – 1,00 × 0,75 m leihen in Krefeld, Krause Vertikalrahmen – 1,00 × 0,75 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat der Krause Vertikalrahmen?", a: "Der Rahmen hat eine Breite von 1,00 m und eine Höhe von 0,75 m." },
       { q: "Wofür wird dieses Bauteil verwendet?", a: "Es handelt sich um einen Aufstockrahmen für Krause Rollgerüste." },
@@ -1501,7 +1220,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-krause-vertikalrahmen-2x075": {
-    excelName: "Krause Vertikalrahmen – 2,00 × 0,75 m",
     seoTitle: "Krause Vertikalrahmen – 2,00 × 0,75 m",
     metaDescription: "Vertikalrahmen für Krause Rollgerüste mit den Maßen 2,00 m x 0,75 m. Geeignet als Aufstockrahmen für Höhenarbeiten im Bau- und Privatbereich.",
     h1: "Krause Vertikalrahmen – 2,00 × 0,75 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1509,8 +1227,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Vertikalrahmen dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerüstteil wird für Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt.",
-    primaryKeywords: "Krause Vertikalrahmen – 2,00 × 0,75 m mieten in Krefeld, Krause Vertikalrahmen – 2,00 × 0,75 m leihen in Krefeld, Krause Vertikalrahmen – 2,00 × 0,75 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat der Krause Vertikalrahmen?", a: "Der Rahmen hat eine Breite von 2,00 m und eine Höhe von 0,75 m." },
       { q: "Wofür wird das Bauteil verwendet?", a: "Es handelt sich um einen Aufstockrahmen für Krause Rollgerüste." },
@@ -1518,7 +1234,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-led-moving-head": {
-    excelName: "LED Moving Head",
     seoTitle: "LED Moving Head mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "LED Moving Head mieten in Bonn & Krefeld. 230 Watt LED Moving Head  motorisierter Zoom  Farbrad mit 7 Farben plus Weiß  rotierende 5. Tagesmiete, fairer Pr",
     h1: "LED Moving Head mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1526,8 +1241,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung für Abend-/Nachtarbeit, dunkle Bereiche",
     useCaseEvent: "Hochzeiten, Partys, Konzerte, Bühnenbeleuchtung, Firmenfeiern",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Weihnachtsfeier, Vereinsfest",
-    primaryKeywords: "LED Moving Head mieten in Bonn & Krefeld, LED Moving Head leihen in Bonn & Krefeld, LED Moving Head mieten NRW",
-    is247: false,
     faqs: [
       { q: "Benötige ich ein DMX-Pult für die Steuerung?", a: "Nein – das Gerät kann auch im Stand-Alone-Modus oder Sound-Aktiv-Modus ohne DMX-Pult betrieben werden. DMX-Steuerung ist optional für erweiterte Programmierung. Wir beraten Sie gerne zur passenden Steuerung." },
       { q: "Ist das Gerät für den Außenbereich geeignet?", a: "Bitte beachten Sie den IP-Schutzgrad des Geräts (entnehmen Sie der Produktbeschreibung). IP20 = nur Innenbereich, IP44 = spritzwassergeschützt, IP65+ = vollständig witterungsbeständig für den Außeneinsatz." },
@@ -1536,7 +1249,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms01-grabenraeumloffel-100cm": {
-    excelName: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
     seoTitle: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
     metaDescription: "Hydraulischer Grabenräumlöffel für MS01 Symlock Aufnahme. 1000 mm Arbeitsbreite, 80 l Volumen, Gewicht 104 kg. Geeignet für Minibagger von 1 - 2 t.",
     h1: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1544,8 +1256,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock leihen in Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggerklassen ist der Grabenräumlöffel geeignet?", a: "Der Löffel ist für die Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Welches Volumen bietet der Grabenräumlöffel?", a: "Das Fassungsvermögen des Löffels beträgt 80 Liter bei einer Arbeitsbreite von 1000 mm." },
@@ -1553,7 +1263,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms01-kabelloffel-15cm": {
-    excelName: "MS01 Kabellöffel 15cm Symlock",
     seoTitle: "MS01 Kabellöffel 15cm Symlock für 1–2 t Bagger",
     metaDescription: "Mieten Sie den MS01 Kabellöffel mit 150 mm Arbeitsbreite. Geeignet für Minibagger der Gewichtsklasse 1 bis 2 t. Gewicht: 36 kg, Aufnahme: MS01 Symlock.",
     h1: "MS01 Kabellöffel 15cm Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1561,8 +1270,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS01 Kabellöffel 15cm Symlock mieten in Krefeld, MS01 Kabellöffel 15cm Symlock leihen in Krefeld, MS01 Kabellöffel 15cm Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitsbreite hat dieser Kabellöffel?", a: "Der Kabellöffel hat eine Arbeitsbreite von 150 mm." },
       { q: "Für welche Baggerklassen ist der Löffel geeignet?", a: "Dieser Löffel ist für Bagger der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
@@ -1570,7 +1277,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms01-ms03-sortiergreifer": {
-    excelName: "MS01/MS03 Sortiergreifer SSG 150",
     seoTitle: "MS01/MS03 Sortiergreifer SSG 150 | 2–3 t Gewichtsklasse",
     metaDescription: "Kompakter Greifer SSG 150 für 2–3 t Bagger. 6,75 kN Schließkraft, 150 kg Eigengewicht, 400 mm Schalenbreite und endlos 360° Rotation.",
     h1: "MS01/MS03 Sortiergreifer SSG 150 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1578,8 +1284,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Greifer eignet sich für das Sortieren und Verladen von Bauschutt sowie für das Handling von Steinen, Wurzeln oder Baumstämmen.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbaugerät kann zum Räumen und Verladen von Garten-Aushub eingesetzt werden.",
-    primaryKeywords: "MS01/MS03 Sortiergreifer SSG 150 mieten in Krefeld, MS01/MS03 Sortiergreifer SSG 150 leihen in Krefeld, MS01/MS03 Sortiergreifer SSG 150 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Schließkraft des SSG 150?", a: "Der Sortiergreifer erzielt eine maximale Schließkraft von 6,75 kN." },
       { q: "Über welche Rotationsmöglichkeit verfügt der Greifer?", a: "Der SSG 150 besitzt eine endlose 360°-Rotation bei einem Betriebsdruck von 20 MPa." },
@@ -1587,7 +1291,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms01-roderechen": {
-    excelName: "MS01 Roderechen Symlock",
     seoTitle: "MS01 Roderechen Symlock | 800 mm Arbeitsbreite",
     metaDescription: "MS01 Roderechen Symlock für Bagger der 1 bis 2 t Klasse. 800 mm Arbeitsbreite, 9 Zähne und 36 kg Eigengewicht. Jetzt technische Details einsehen.",
     h1: "MS01 Roderechen Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1595,8 +1298,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS01 Roderechen Symlock mieten in Krefeld, MS01 Roderechen Symlock leihen in Krefeld, MS01 Roderechen Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bagger-Gewichtsklassen ist der Roderechen geeignet?", a: "Der Roderechen ist für Maschinen in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Wie breit ist das Anbaugerät und wie viele Zähne besitzt es?", a: "Die Arbeitsbreite beträgt 800 mm und das Gerät verfügt über insgesamt 9 Zähne." },
@@ -1604,7 +1305,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms01-tiefloffel-20cm": {
-    excelName: "MS01 Tieflöffel 20cm/14l",
     seoTitle: "MS01 Tieflöffel 20cm/14l | Mietkatalog NRW",
     metaDescription: "MS01 Tieflöffel für Bagger von 0,5 bis 2 t. Arbeitsbreite 300 mm, 14 l Volumen, 2 geschraubte Zähne. Jetzt technische Details einsehen.",
     h1: "MS01 Tieflöffel 20cm/14l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1612,8 +1312,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS01 Tieflöffel 20cm/14l mieten in Krefeld, MS01 Tieflöffel 20cm/14l leihen in Krefeld, MS01 Tieflöffel 20cm/14l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Aufnahme besitzt der Tieflöffel?", a: "Der Tieflöffel ist mit einer MS01 Aufnahme ausgestattet." },
       { q: "Wie hoch ist das Fassungsvolumen des Löffels?", a: "Das Löffelvolumen beträgt 14 Liter bei einer Arbeitsbreite von 300 mm." },
@@ -1621,7 +1319,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms03-grabenraeumloffel-120cm": {
-    excelName: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
     seoTitle: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
     metaDescription: "Hydraulischer Grabenräumlöffel mit MS03 Symlock-Aufnahme, 1200 mm Arbeitsbreite und 120 l Volumen für Bagger der Klasse 2,5 bis 4 Tonnen.",
     h1: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1629,8 +1326,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock leihen in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Baggergröße ist für diesen Grabenräumlöffel geeignet?", a: "Das Anbauteil ist für die Gewichtsklasse von 2,5 bis 4 Tonnen ausgelegt." },
       { q: "Welches Fassungsvermögen und welche Breite hat der Löffel?", a: "Der Grabenräumlöffel hat ein Volumen von 120 Litern und eine Arbeitsbreite von 1200 mm." },
@@ -1638,7 +1333,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms03-kabelloffel-20cm": {
-    excelName: "MS03 Kabellöffel 20cm Symlock",
     seoTitle: "MS03 Kabellöffel 20cm Symlock | Mietkatalog",
     metaDescription: "Kabellöffel für MS03 Symlock Aufnahme. Arbeitsbreite 200 mm, Gewicht 46 kg, passend für Bagger von 2,5 bis 4 t.",
     h1: "MS03 Kabellöffel 20cm Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1646,8 +1340,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS03 Kabellöffel 20cm Symlock mieten in Krefeld, MS03 Kabellöffel 20cm Symlock leihen in Krefeld, MS03 Kabellöffel 20cm Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitsbreite hat der Kabellöffel?", a: "Der Kabellöffel besitzt eine Arbeitsbreite von 200 mm." },
       { q: "Für welche Baggerklassen ist dieses Anbaugerät geeignet?", a: "Der Löffel ist für Maschinen in der Gewichtsklasse von 2,5 bis 4 Tonnen ausgelegt." },
@@ -1655,7 +1347,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ms03-tiefloffel-30cm": {
-    excelName: "MS03 Tieflöffel 30cm/41l Symlock",
     seoTitle: "MS03 Tieflöffel 30cm/41l Symlock mieten",
     metaDescription: "Tieflöffel mit MS03 Symlock Aufnahme. Arbeitsbreite 300 mm, Volumen 41 l, Gewicht 36 kg. Geeignet für Bagger der Gewichtsklasse 1 bis 2 Tonnen.",
     h1: "MS03 Tieflöffel 30cm/41l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1663,8 +1354,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "MS03 Tieflöffel 30cm/41l Symlock mieten in Krefeld, MS03 Tieflöffel 30cm/41l Symlock leihen in Krefeld, MS03 Tieflöffel 30cm/41l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über wie viele Zähne verfügt dieser Tieflöffel?", a: "Der Tieflöffel ist mit 3 geschraubten Zähnen ausgestattet." },
       { q: "Wie hoch ist das Fassungsvermögen des Löffels?", a: "Das Volumen des MS03 Tieflöffels beträgt 41 Liter." },
@@ -1672,7 +1361,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-nasstrockensauger-gas35": {
-    excelName: "Nass-/Trockensauger",
     seoTitle: "Bosch GAS 35 M AFC Nass-/Trockensauger mieten",
     metaDescription: "Professioneller Industriesauger mit 1.200 W, 35 l Behälter und Staubklasse M. Inklusive Filterreinigung und 5 m Schlauch für Nass- und Trockeneinsätze.",
     h1: "Nass-/Trockensauger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1680,8 +1368,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Nass-/Trockensauger mieten in Krefeld, Nass-/Trockensauger leihen in Krefeld, Nass-/Trockensauger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Staubklasse deckt der Sauger ab?", a: "Der Bosch GAS 35 M AFC entspricht der Staubklasse M." },
       { q: "Wie groß ist das Fassungsvermögen bei Flüssigkeiten?", a: "Das Netto-Behältervolumen für Wasser beträgt 19,2 Liter bei einem Bruttovolumen von 35 Litern." },
@@ -1689,7 +1375,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-partyzelt-3x3": {
-    excelName: "Party- / Eventzelt 3x3m",
     seoTitle: "Party- / Eventzelt 3x3m mieten | 9 m² Grundfläche",
     metaDescription: "Party- / Eventzelt 3x3m mit 500 g/m² PVC-Plane und Dachspannern. 9 m² Fläche für Reihenbestuhlung oder Stehempfänge. Jetzt für Ihr Projekt in NRW anfragen.",
     h1: "Party- / Eventzelt 3x3m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1697,8 +1382,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für die Eventgastronomie zur Erweiterung der Außenfläche, wahlweise für Stehempfänge oder Bestuhlung.",
     useCasePrivat: "Das Party- / Eventzelt bietet eine überdachte Fläche von 9 m² für private Veranstaltungen im Außenbereich.",
-    primaryKeywords: "Party- / Eventzelt 3x3m mieten in Krefeld, Party- / Eventzelt 3x3m leihen in Krefeld, Party- / Eventzelt 3x3m mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie wird die Bildung von Wassersäcken auf dem Dach verhindert?", a: "Das Party- / Eventzelt ist mit Dachspannern ausgestattet, die der Bildung von Wassersäcken entgegenwirken." },
@@ -1707,7 +1390,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-partyzelt-4x6": {
-    excelName: "Party- / Eventzelt 4x6m",
     seoTitle: "Party- / Eventzelt 4x6m mieten – 24 m² Grundfläche",
     metaDescription: "Weißes Party- / Eventzelt 4x6m mit 500 g/m² PVC-Plane und Dachspannern. Kapazitätsplanung für Bierzeltgarnituren oder Stehplätze inkludiert.",
     h1: "Party- / Eventzelt 4x6m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1715,8 +1397,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Party- / Eventzelt 4x6m mieten in Krefeld, Party- / Eventzelt 4x6m leihen in Krefeld, Party- / Eventzelt 4x6m mieten NRW",
-    is247: false,
     dailyPriceFrom: 45,
     faqs: [
       { q: "Wie viele Personen finden im Party- / Eventzelt 4x6m Platz?", a: "Bei einer Fläche von 24 m² können ohne Bestuhlung ca. 0,6 m² pro Person (insgesamt ca. 40 Personen) und bei Reihenbestuhlung oder Bierzeltgarnituren ca. 0,71 m² pro Person (insgesamt ca. 33 Personen) kalkuliert werden." },
@@ -1725,7 +1405,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-xcmg-xe20e": {
-    excelName: "2t Minibagger",
     seoTitle: "2t Minibagger mieten Bonn – XCMG XE20E (990 mm Breite)",
     metaDescription: "2t Minibagger XCMG XE20E in Bonn mieten: 2.050 kg, 990 mm einfahrbare Breite, 2.385 mm Grabtiefe, MS01. Abholung Drachenburgstraße 8 – Lieferung ins Ahrtal & Siebengebirge.",
     h1: "2t Minibagger XCMG XE20E mieten in Bonn",
@@ -1737,8 +1416,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Aushub kleinerer Keller-Anbauten, Streifenfundamenten, Rohr- und Versorgungsleitungsgräben sowie Rückbau- und Modellierarbeiten in Bonn, Bad Godesberg, Beuel, im Rhein-Sieg-Kreis und im Ahrtal. Nach dem Ahrtal-Hochwasser häufig eingesetzt für Wiederaufbau und Geländekorrekturen an Ufergrundstücken.",
     useCaseEvent: "",
     useCasePrivat: "Für Aushub eines Gartenpools oder Teichs, Pflaster- und Terrassenbau mit tieferem Frostschutzaufbau, Wurzelentfernung großer Bäume sowie Erdarbeiten am Ein- und Zweifamilienhaus in Bonn, Wachtberg, Königswinter, Bad Honnef und Sankt Augustin.",
-    primaryKeywords: "2t Minibagger mieten Bonn, XCMG XE20E mieten Bonn, XCMG Minibagger mieten Bonn, Bagger mieten Bonn, Kleinbagger mieten Rhein-Sieg-Kreis, Minibagger leihen Bonn, Minibagger mieten Ahrtal, Bagger mieten Rhein-Sieg-Kreis",
-    is247: false,
     faqs: [
       { q: "Wo hole ich den 2t Minibagger in Bonn ab?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr 07:00–18:00 Uhr und Sa 08:00–17:30 Uhr, samstags ohne Voranmeldung. Auf Anfrage liefern wir ins gesamte Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis und ins Ahrtal bis Bad Neuenahr-Ahrweiler." },
       { q: "Wie tief kann der XCMG XE20E graben?", a: "Die maximale Grabtiefe beträgt 2.385 mm – ausreichend für frostfreie Streifenfundamente, Kellerlichtschächte und Standardtiefen bei Wasser-, Strom- und Glasfaserleitungen im Rhein-Sieg-Kreis." },
@@ -1750,7 +1427,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-radlader-kramer-5050": {
-    excelName: "3t Radlader",
     seoTitle: "Kramer 5050 mieten Bonn – 3t Radlader für Rhein-Sieg-Kreis",
     metaDescription: "3t Radlader Kramer 5050 in Bonn mieten – ab 75 €/Tag. 3.000 kg, Diesel, Schaufel inkl. Abholung Drachenburgstraße 8 – Lieferung Rhein-Sieg-Kreis & Ahrtal.",
     h1: "3t Radlader Kramer 5050 mieten in Bonn – ab 75 €/Tag",
@@ -1762,8 +1438,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Materialhandling von Kies, Sand, Mutterboden und Recyclingschotter, Beladung von LKW und Containern, Beschickung von Mörtelmischern sowie Hof- und Wegebau in Bonn, Bad Godesberg, Beuel, im Rhein-Sieg-Kreis und im Ahrtal. Nach dem Ahrtal-Hochwasser häufig eingesetzt für Aufräum- und Wiederaufbauarbeiten auf Ufergrundstücken.",
     useCaseEvent: "",
     useCasePrivat: "Für großflächige Hofumgestaltung, Verteilen von Mutterboden vor Rasenneuanlage, Nivellieren von Grundstücken sowie den saisonalen Winterdienst am Privatgrundstück in Bonn und im Rhein-Sieg-Kreis.",
-    primaryKeywords: "Kramer 5050 mieten Bonn, 3t Radlader mieten Bonn, Kramer Radlader mieten Bonn, Radlader mieten Rhein-Sieg-Kreis, Hoflader mieten Bonn, Kompaktlader mieten Bonn, Baumaschinen mieten Bonn, Radlader leihen Bonn",
-    is247: false,
     dailyPriceFrom: 75,
     faqs: [
       { q: "Was kostet der Kramer 5050 in Bonn pro Tag?", a: "Der Tagespreis startet bei 75 € netto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
@@ -1775,7 +1449,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-hvp30": {
-    excelName: "Rüttelplatte HVP 30/50 175kg reversierbar",
     seoTitle: "Rüttelplatte HVP 30/50 175kg reversierbar mieten",
     metaDescription: "Reversierbare Rüttelplatte HVP 30/50 mit 175 kg Betriebsgewicht und 30 kN Verdichtungsdruck. Inklusive 8 Betriebsstunden pro Tag für Ihr Projekt in NRW.",
     h1: "Rüttelplatte HVP 30/50 175kg reversierbar mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1783,8 +1456,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Rüttelplatte HVP 30/50 175kg reversierbar mieten in Krefeld, Rüttelplatte HVP 30/50 175kg reversierbar leihen in Krefeld, Rüttelplatte HVP 30/50 175kg reversierbar mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist der Verdichtungsdruck der Rüttelplatte HVP 30/50?", a: "Die Rüttelplatte erreicht einen Verdichtungsdruck von 30 kN." },
       { q: "Welches Gewicht weist das Gerät auf?", a: "Das Betriebsgewicht der HVP 30/50 beträgt 175 kg." },
@@ -1792,7 +1463,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-hvp38": {
-    excelName: "Rüttelplatte HVP 38/60 247kg reversierbar",
     seoTitle: "Rüttelplatte HVP 38/60 247kg reversierbar mieten",
     metaDescription: "Hydraulisch reversierbare Rüttelplatte HVP 38/60 mit 247 kg Betriebsgewicht und 38 kN Verdichtungsdruck. Inklusive 8 Betriebsstunden pro Tag.",
     h1: "Rüttelplatte HVP 38/60 247kg reversierbar mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1800,8 +1470,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Rüttelplatte HVP 38/60 247kg reversierbar mieten in Krefeld, Rüttelplatte HVP 38/60 247kg reversierbar leihen in Krefeld, Rüttelplatte HVP 38/60 247kg reversierbar mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist der Verdichtungsdruck der Rüttelplatte HVP 38/60?", a: "Die Rüttelplatte erzeugt einen Verdichtungsdruck von 38 kN." },
       { q: "Welches Gewicht weist das Gerät auf?", a: "Das Betriebsgewicht der Rüttelplatte beträgt 247 kg." },
@@ -1809,7 +1477,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-hvp50": {
-    excelName: "Rüttelplatte HVP 50/60",
     seoTitle: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld. 420 kg, 50 kN Verdichtungsdruck, reversierbar, Verdichtungstiefe 45 cm. Tagesmiete, faire Preise.",
     h1: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1817,8 +1484,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Schwere Erdarbeiten, Kanalbau, Straßenbau, Leitungsgräben verfüllen, Fundamentverdichtung",
     useCaseEvent: "Schwere Untergründe für temporäre Zufahrten und Stellflächen verdichten",
     useCasePrivat: "Einfahrt pflastern, Fundament für Garagen und Gartenhäuser, Hofbefestigung",
-    primaryKeywords: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld, Rüttelplatte 420 kg mieten, schwere Rüttelplatte leihen NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist die HVP 50/60 geeignet?", a: "Mit 420 kg Gewicht und 50 kN Verdichtungsdruck eignet sich die HVP 50/60 für Sand, Kies, Schotter, Frostschutzschichten und bituminöse Schichten. Die maximale Verdichtungstiefe beträgt ca. 45 cm pro Lage – ideal für schwere Erdarbeiten und Kanalbau." },
       { q: "Wie breit ist die Verdichtungsplatte?", a: "Die Plattengröße beträgt ca. 90 × 60 cm (L × B). Bei größeren Flächen planen Sie eine Überdeckung von ca. 10–15 cm zwischen den Bahnen ein." },
@@ -1827,7 +1492,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-vp16": {
-    excelName: "Rüttelplatte VP 16/44 105kg",
     seoTitle: "Rüttelplatte VP 16/44 (105 kg) mieten",
     metaDescription: "Vorwärtslaufende Rüttelplatte VP 16/44 mit 105 kg Eigengewicht und 20 kN Verdichtungsdruck. Inklusive Rollgestell für den einfachen Transport.",
     h1: "Rüttelplatte VP 16/44 105kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1835,8 +1499,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Rüttelplatte VP 16/44 105kg mieten in Krefeld, Rüttelplatte VP 16/44 105kg leihen in Krefeld, Rüttelplatte VP 16/44 105kg mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist der Verdichtungsdruck der VP 16/44?", a: "Die Rüttelplatte arbeitet mit einem Verdichtungsdruck von 20 kN." },
       { q: "Wie schwer ist dieses Modell?", a: "Das Gewicht der Rüttelplatte VP 16/44 beträgt 105 kg." },
@@ -1844,7 +1506,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-vp25": {
-    excelName: "Rüttelplatte VP 25/50 130kg",
     seoTitle: "Rüttelplatte VP 25/50 130kg mieten",
     metaDescription: "Vorwärts-Rüttelplatte VP 25/50 mit 130 kg Gewicht und 25 kN Verdichtungsdruck inklusive Rollgestell für Bauvorhaben in NRW mieten.",
     h1: "Rüttelplatte VP 25/50 130kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1852,8 +1513,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Rüttelplatte VP 25/50 130kg mieten in Krefeld, Rüttelplatte VP 25/50 130kg leihen in Krefeld, Rüttelplatte VP 25/50 130kg mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist der Verdichtungsdruck dieser Rüttelplatte?", a: "Die Rüttelplatte VP 25/50 weist einen Verdichtungsdruck von 25 kN auf." },
       { q: "Welches Zubehör ist im Mietumfang enthalten?", a: "Ein Rollgestell für den Transport der 130 kg schweren Rüttelplatte ist inklusive." },
@@ -1861,7 +1520,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-vp1550w": {
-    excelName: "Rüttelplatte VP 15/50W 97kg (Baumax) mit Sprinkleranlage",
     seoTitle: "Rüttelplatte VP 15/50W mieten Krefeld | auf Anfrage ab 29 €/Tag",
     metaDescription: "Baumax VP 15/50W mit Wassertank und Sprinkleranlage in Krefeld auf Anfrage mieten: 97 kg, 14 kN, 500×500 mm Platte. Ab 29 €/Tag inkl. 19 % USt. – Disposition i. d. R. innerhalb 24 h.",
     h1: "Rüttelplatte VP 15/50W (97 kg, Wassertank) mieten in Krefeld – Auf Anfrage bei SLT Rental",
@@ -1869,8 +1527,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Verdichtung von Trag-, Frostschutz- und Pflasterbettungsschichten im Tief-, Garten- und Landschaftsbau sowie auf kleineren Asphaltflächen, bei denen die Sprinkleranlage ein Anhaften des Materials an der Grundplatte verhindert.",
     useCaseEvent: "",
     useCasePrivat: "Verdichtung von Splitt, Kies und Pflasterbett bei privaten Garten-, Hof- und Terrassenarbeiten.",
-    primaryKeywords: "Rüttelplatte VP 15/50W mieten Krefeld, Baumax Rüttelplatte mit Wassertank mieten, Rüttelplatte Sprinkleranlage Krefeld",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Wofür dient der Wassertank an der VP 15/50W?", a: "Der Wassertank versorgt die integrierte Sprinkleranlage, die die Grundplatte während des Verdichtens befeuchtet. Das verhindert vor allem bei Asphalt- und Pflasterarbeiten ein Anhaften des Materials an der Platte. Der Motor selbst ist luftgekühlt – es handelt sich nicht um eine Wasserkühlung." },
@@ -1881,7 +1537,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-ruettelplatte-vp1550w": {
-    excelName: "Rüttelplatte VP 15/50W 97kg (Baumax) mit Sprinkleranlage – Bonn",
     seoTitle: "Rüttelplatte VP 15/50W mieten Bonn | auf Anfrage",
     metaDescription: "Baumax VP 15/50W mit Wassertank und Sprinkleranlage in Bonn auf Anfrage mieten: 97 kg, 14 kN, 500×500 mm Platte. Lieferung aus Krefeld – in der Regel innerhalb 24 h.",
     h1: "Rüttelplatte VP 15/50W (97 kg, Wassertank) mieten in Bonn – Auf Anfrage bei SLT Rental",
@@ -1889,8 +1544,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Verdichtung von Tragschichten, Frostschutzschichten und Pflasterbettungen im Tief- und GaLaBau in Bonn und Umgebung – die Sprinkleranlage verhindert das Anhaften von Material auf Asphalt- und Pflasterflächen.",
     useCaseEvent: "",
     useCasePrivat: "Privat-Projekte rund um Bonn: Verdichtung von Splitt, Kies und Pflasterbett bei Hof- und Terrassenarbeiten.",
-    primaryKeywords: "Rüttelplatte VP 15/50W mieten Bonn, Baumax Rüttelplatte mit Wassertank Bonn, Rüttelplatte Sprinkleranlage Bonn",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Ist die VP 15/50W in Bonn vor Ort verfügbar?", a: "Diesen Artikel halten wir in Bonn nicht als Stamm-Sortiment vor. Wir disponieren ihn auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig taggleich." },
@@ -1900,28 +1553,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie läuft die Übergabe in Bonn ab?", a: "Nach deiner Anfrage prüfen wir die Verfügbarkeit, transportieren das Gerät aus Krefeld nach Bonn und übergeben es an unserer Filiale oder liefern es direkt an deine Baustelle in der Region." },
     ],
   },
-  "mh-ruettelplatte-vp1550w": {
-    excelName: "Rüttelplatte VP 15/50W 97kg (Baumax) mit Sprinkleranlage – Mülheim an der Ruhr",
-    seoTitle: "Rüttelplatte VP 15/50W mieten Mülheim | auf Anfrage",
-    metaDescription: "Baumax VP 15/50W mit Wassertank und Sprinkleranlage in Mülheim an der Ruhr auf Anfrage mieten: 97 kg, 14 kN, 500×500 mm Platte. Übergabe vor Ort, Lieferung aus Krefeld.",
-    h1: "Rüttelplatte VP 15/50W (97 kg, Wassertank) mieten in Mülheim an der Ruhr – Auf Anfrage bei SLT Rental",
-    h2s: ["Technische Daten der Baumax VP 15/50W", "Sprinkleranlage & Wassertank für sauberes Verdichten", "Bereitstellung am Service-Standort Mülheim an der Ruhr", "Einsatzgebiete im Ruhrgebiet"],
-    useCaseBau: "Verdichtung von Tragschichten, Pflasterbettungen und kleineren Asphaltflächen im Tief-, Garten- und Landschaftsbau in Mülheim an der Ruhr und im Ruhrgebiet – die Sprinkleranlage hält die Grundplatte sauber.",
-    useCaseEvent: "",
-    useCasePrivat: "Hof-, Terrassen- und Wegebau bei privaten Bauprojekten in Mülheim an der Ruhr und Umgebung.",
-    primaryKeywords: "Rüttelplatte VP 15/50W mieten Mülheim an der Ruhr, Baumax Rüttelplatte mit Wassertank Mülheim, Rüttelplatte Sprinkleranlage Ruhrgebiet",
-    is247: false,
-    dailyPriceFrom: 29,
-    faqs: [
-      { q: "Ist die VP 15/50W in Mülheim an der Ruhr direkt verfügbar?", a: "Diesen Artikel führen wir am Service-Standort Mülheim an der Ruhr nicht als Stamm-Gerät. Wir disponieren ihn auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden – und stellen ihn zur Übergabe in Mülheim bereit." },
-      { q: "Hat die Rüttelplatte eine Wasserkühlung?", a: "Nein. Der gelbe Tank speist eine Sprinkleranlage, die die Grundplatte beim Verdichten von Asphalt oder Pflaster befeuchtet, damit nichts anhaftet. Der Loncin Motor ist luftgekühlt." },
-      { q: "Welche Verdichtungsleistung erreicht die Baumax VP 15/50W?", a: "14 kN Zentrifugalkraft, 105 Hz Frequenz und bis zu 600 m²/h Flächenleistung – bei einer Arbeitsgeschwindigkeit von bis zu 20 m/min." },
-      { q: "Wie groß und schwer ist die Maschine?", a: "Grundplatte 500 × 500 mm, Betriebsgewicht 97 kg. Damit ist sie noch handhabbar und passt durch normale Hoftore." },
-      { q: "Wie läuft die Übergabe in Mülheim an der Ruhr ab?", a: "Nach deiner Anfrage prüfen wir die Verfügbarkeit, holen das Gerät aus Krefeld und übergeben es an unserem Service-Standort Mülheim an der Ruhr – inklusive Einweisung vor Ort." },
-    ],
-  },
   "bonn-spuelmaschine-gastro": {
-    excelName: "Gastro-Spülmaschine Frontlader",
     seoTitle: "Gastro-Spülmaschine Frontlader Stalgast 50x50 cm",
     metaDescription: "Gewerbespülmaschine von Stalgast für 50x50 Spülkörbe und GN1/1. 32 cm Einschubhöhe, inkl. Wasserenthärter und Dosierpumpen. 400V oder 230V Anschluss.",
     h1: "Gastro-Spülmaschine Frontlader mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1929,8 +1561,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Spülmaschine unterstützt die EventGastronomie bei der Reinigung von 50x50 cm Spülkörben, GN1/1-Behältern oder hohen Weizengläsern.",
     useCasePrivat: "",
-    primaryKeywords: "Gastro-Spülmaschine Frontlader mieten in Krefeld, Gastro-Spülmaschine Frontlader leihen in Krefeld, Gastro-Spülmaschine Frontlader mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Stromanschlüsse sind für die Spülmaschine verfügbar?", a: "Die Maschine hat eine Anschlussleistung von 4,9 kW und ist standardmäßig in 400V oder optional in 230V verfügbar." },
       { q: "Welches Zubehör ist im Lieferumfang enthalten?", a: "Im Lieferumfang sind ein Spülkorb sowie ein externer Wasserenthärter enthalten." },
@@ -1938,7 +1568,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-unkrautbrenner-gloria": {
-    excelName: "Unkrautbrenner",
     seoTitle: "GLORIA Thermoflamm bio Professional PLUS Unkrautbrenner",
     metaDescription: "Gas-Abflammgerät zur thermischen, chemiefreien Unkrautbeseitigung mit 5 m Schlauch. Modell GLORIA Thermoflamm bio Professional PLUS für Gasbetrieb.",
     h1: "Unkrautbrenner mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1946,8 +1575,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Unkrautbrenner mieten in Krefeld, Unkrautbrenner leihen in Krefeld, Unkrautbrenner mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Energiequelle wird für den Betrieb benötigt?", a: "Das Gerät wird mit Gas (Propan oder Butan) betrieben." },
       { q: "Wie lang ist der im Lieferumfang enthaltene Gasschlauch?", a: "Der zum Gerät gehörende Schlauch hat eine Länge von 5 Metern." },
@@ -1955,7 +1582,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-vertikutierer-sa35v": {
-    excelName: "Vertikutierer SA35-V EL",
     seoTitle: "Sabo Vertikutierer SA35-V EL | 35 cm Arbeitsbreite",
     metaDescription: "Elektro-Vertikutierer Sabo SA35-V EL zur Rasenpflege. 1.600 W Motorleistung, 35 cm Arbeitsbreite und 15 Messerscheiben. Jetzt für Ihr Projekt mieten.",
     h1: "Vertikutierer SA35-V EL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1963,8 +1589,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "Der Elektro-Vertikutierer eignet sich für die Pflege von Rasenflächen im privaten Gartenbereich. Durch den 230V Schuko-Anschluss ist ein Betrieb an haushaltsüblichen Steckdosen möglich.",
-    primaryKeywords: "Vertikutierer SA35-V EL mieten in Krefeld, Vertikutierer SA35-V EL leihen in Krefeld, Vertikutierer SA35-V EL mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitsbreite hat der Vertikutierer SA35-V EL?", a: "Das Gerät verfügt über eine Arbeitsbreite von 35 cm." },
       { q: "Wie hoch ist die Motorleistung des Geräts?", a: "Der Elektro-Vertikutierer hat eine Motorleistung von 1.600 W." },
@@ -1972,7 +1596,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-vertikutierer-sa38bv": {
-    excelName: "Benzin-Vertikutierer",
     seoTitle: "Benzin-Vertikutierer Grizzly BV240 mieten",
     metaDescription: "Benzin-Vertikutierer Grizzly BV240 für große Flächen. 38 cm Arbeitsbreite, 2.300 W Motorleistung und 37 kg Gewicht. Jetzt technische Details einsehen.",
     h1: "Benzin-Vertikutierer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1980,8 +1603,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "Der Benzin-Vertikutierer eignet sich für die Bearbeitung von großen Rasenflächen im privaten Gartenbereich.",
-    primaryKeywords: "Benzin-Vertikutierer mieten in Krefeld, Benzin-Vertikutierer leihen in Krefeld, Benzin-Vertikutierer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Messersystem ist im Grizzly BV240 verbaut?", a: "Das Gerät verfügt über ein Messersystem mit 15 Scheiben und jeweils drei Zähnen." },
       { q: "Wie hoch ist die Motorleistung des Vertikutierers?", a: "Der Benzinmotor des Modells BV240 erbringt eine Leistung von 2.300 W beziehungsweise 3,1 PS." },
@@ -1989,7 +1610,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-warnleuchte-gelb": {
-    excelName: "TL-Warnleuchte, gelb",
     seoTitle: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld. LED Warnleuchte  Entspricht EN 12352  Streuscheibe: gelb, doppelseitig  effektiver Lichtau. Tagesmiete, fair",
     h1: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -1997,8 +1617,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenabsicherung nach StVO, Grubensicherung, Maschinenabgrenzung",
     useCaseEvent: "Besucherführung, VIP-Bereiche, Bühnenabsperrung, Märkte, Stadtläufe",
     useCasePrivat: "Poolabsicherung bei Festen, Grundstücksabgrenzung, Kindersicherung",
-    primaryKeywords: "TL-Warnleuchte, gelb mieten in Bonn & Krefeld, TL-Warnleuchte, gelb leihen in Bonn & Krefeld, TL-Warnleuchte, gelb mieten NRW",
-    is247: false,
     faqs: [
       { q: "Sind Fußplatten / Verbinder im Mietpreis enthalten?", a: "Ja – bei Bauzaun-Elementen sind passende Betongewichtsfußplatten oder Kunststoff-Fußplatten und Verbindungsklemmen im Mietpreis enthalten. Bitte prüfen Sie bei der Abholung den vollständigen Lieferumfang." },
       { q: "Welche gesetzlichen Vorschriften gelten für die Aufstellung?", a: "Für Baustellenabsicherungen gelten die RSA (Richtlinien für die Sicherung von Arbeitsstellen an Straßen) und die DGUV Vorschrift 38. Für Veranstaltungsabsperrungen gilt die MVStättV (Musterversammlungsstättenverordnung). Wir beraten Sie gerne zur normenkonformen Aufstellung." },
@@ -2007,7 +1625,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-wemas-klemmschelle": {
-    excelName: "Wemas Klemmschelle K1",
     seoTitle: "Wemas Klemmschelle K1 für Rohrpfosten",
     metaDescription: "Kunststoff-Klemmschelle K1 zur Befestigung von Verkehrsschildern an Vierkantrohren 40x40 mm und Rundrohren Ø 42 mm.",
     h1: "Wemas Klemmschelle K1 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2015,8 +1632,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Wemas Klemmschelle K1 mieten in Krefeld, Wemas Klemmschelle K1 leihen in Krefeld, Wemas Klemmschelle K1 mieten NRW",
-    is247: false,
     faqs: [
       { q: "An welchen Rohrtypen kann die Wemas Klemmschelle K1 montiert werden?", a: "Die Klemmschelle eignet sich für Vierkantrohre mit den Maßen 40×40 mm sowie für Rundrohre mit einem Durchmesser von 42 mm." },
       { q: "Aus welchem Material besteht die Klemmschelle?", a: "Die Klemmschelle K1 ist aus Kunststoff gefertigt." },
@@ -2024,7 +1639,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-winkelschleifer-gws18v": {
-    excelName: "Akku Winkelschleifer",
     seoTitle: "Akku Winkelschleifer Bosch GWS 18V-10 mieten",
     metaDescription: "Mieten Sie den Bosch GWS 18V-10 Akku-Winkelschleifer mit 125mm Scheibendurchmesser für Ihre Projekte in NRW. Sachliche Details und technische Fakten.",
     h1: "Akku Winkelschleifer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2032,8 +1646,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Akku Winkelschleifer mieten in Krefeld, Akku Winkelschleifer leihen in Krefeld, Akku Winkelschleifer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Scheibendurchmesser nutzt der Bosch GWS 18V-10?", a: "Das Gerät ist für Scheiben mit einem Durchmesser von 125 mm ausgelegt." },
       { q: "Wie wird der Winkelschleifer betrieben?", a: "Der Bosch GWS 18V-10 ist ein akkubetriebenes Werkzeug aus dem 18V-System." },
@@ -2041,7 +1653,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-abbruchhammer-gsh16-28": {
-    excelName: "Abbruchhammer 41J / 18kg",
     seoTitle: "Abbruchhammer 41J / 18kg mieten in Krefeld | Bosch GSH 16-28",
     metaDescription: "Bosch GSH 16-28 Abbruchhammer mieten in Krefeld – 41 J Schlagenergie, 1.750 W, 18,3 kg, Vibration Control, HEX-28. Inkl. Spitz- & Flachmeißel.",
     h1: "Abbruchhammer 41J / 18kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2049,8 +1660,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mit 41 J Schlagenergie und 18,3 kg Eigengewicht liegt der GSH 16-28 in der mittleren Abbruchhammer-Klasse und ist auf vertikale Stemmarbeiten in Beton und Mauerwerk ausgelegt: Aufbruch von Estrich und Industrieboden bis ca. 10 cm Stärke, Aufstemmen von Schlitzen und Durchbrüchen für Elektro- und Sanitärinstallationen, Abbruch nicht-tragender Wände in Ziegel- und Kalksandstein, Entfernen von Fliesenbelägen und alten Putzschichten, Aufbrechen von Betonsockeln und Streifenfundamenten im Innenausbau sowie Asphaltflickarbeiten. Für massiven Boden- bzw. Fundamentabbruch im Horizontalbetrieb ist ein schwererer 30-kg-Hammer (z. B. Makita HM1812) wirtschaftlicher.",
     useCaseEvent: "",
     useCasePrivat: "Bei Sanierungen im Eigenheim ist der GSH 16-28 das richtige Werkzeug, sobald ein SDS-Max-Bohrhammer nicht mehr ausreicht: Aufbruch alter Fliesen- und Estrichflächen im Bad, Entfernen verklebter Bodenbeläge, Abbruch alter Kaminsockel und Betonpodeste, Demontage gemauerter Duschtassen, Aufbruch von Pflaster-Tragschichten und Betonplatten in Hof, Garten oder Terrasse, sowie Aufstemmen für Sanitär-Schlitze. Wegen 18,3 kg Eigengewicht und 12,3 m/s² Vibration nur stundenweise im Wechselbetrieb einsetzen.",
-    primaryKeywords: "Abbruchhammer 41J mieten in Krefeld, Bosch GSH 16-28 mieten Krefeld, Abbruchhammer 18 kg leihen NRW",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Wie setze ich den Abbruchhammer richtig an? (Kurzanleitung)", a: "1. PSA anlegen: Schutzbrille, Gehörschutz (≥ 104 dB(A)), Staubmaske, vibrationsdämpfende Handschuhe und Sicherheitsschuhe. 2. Passenden HEX-28-Meißel wählen – Spitzmeißel zum Lochen/Aufbrechen, Flachmeißel zum Abtragen von Flächen und Putz. 3. Werkzeugaufnahme einfetten, Meißel einsetzen und Verriegelung prüfen (Meißel muss sich axial bewegen, aber nicht herausfallen). 4. Hammer senkrecht aufsetzen und nur mit dem Eigengewicht arbeiten – nicht drücken, sonst sinkt die Schlagleistung und die Vibration steigt. 5. In kurzen Intervallen arbeiten, alle 10–15 Minuten Pause zum Schutz vor Hand-Arm-Vibrationen." },
@@ -2064,7 +1673,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-bosch-abbruchhammer-gsh16-28": {
-    excelName: "Abbruchhammer 41J / 18kg",
     seoTitle: "Abbruchhammer 41J / 18kg mieten in Bonn | Bosch GSH 16-28 ab 29 €",
     metaDescription: "Bosch GSH 16-28 Abbruchhammer mieten in Bonn – 41 J Schlagenergie, 1.750 W, HEX-28. Ideal für Estrich, Beton, Mauerwerk. Ab 29 €/Tag inkl. 19 % USt.",
     h1: "Abbruchhammer 41J / 18kg mieten in Bonn – Bosch GSH 16-28 bei SLT Rental",
@@ -2072,8 +1680,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Im Rhein-Sieg-Kreis und im Großraum Bonn mischt der GSH 16-28 Estrich- und Betonabbruch bei Sanierungsbaustellen, Aufstemmen von Schlitzen für Elektro- und Heizungsinstallationen, Abbruch von Trennwänden in Altbau-Ziegelsubstanz sowie Fliesen- und Putzentfernung. Mit 41 J liegt er im vertikalen Betrieb optimal für Durchbrüche und Aufbrucharbeiten im Innenausbau.",
     useCaseEvent: "",
     useCasePrivat: "Für private Renovierungsprojekte in Bonn, Bad Godesberg, Beuel oder Bornheim: Aufbruch alter Fliesen- und Estrichflächen im Bad, Entfernen verklebter Bodenbeläge, Abbruch gemauerter Duschtassen und Betonpodeste, Aufstemmen von Sanitär-Schlitzen in Bestandswänden, Freilegen von Pflaster-Tragschichten auf Hof oder Terrasse. Wegen 18,3 kg Gewicht und 12,3 m/s² Vibration im Wechselbetrieb mit Pausen verwenden.",
-    primaryKeywords: "Abbruchhammer 41J mieten Bonn, Bosch GSH 16-28 mieten Bonn, Abbruchhammer leihen Bonn Rhein-Sieg, Abbruchhammer mieten Bad Godesberg",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Wie hole ich den Abbruchhammer in Bonn ab?", a: "Die Abholung erfolgt am SLT Rental Standort Bonn. Das Gerät wiegt 18,3 kg und lässt sich im Kombi-Transporter sicher transportieren." },
@@ -2088,7 +1694,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-bosch-abbruchhammer-gsh16-28": {
-    excelName: "Abbruchhammer 41J / 18kg",
     seoTitle: "Abbruchhammer 41J / 18kg mieten in Mülheim a. d. Ruhr | Bosch GSH 16-28 ab 29 €",
     metaDescription: "Bosch GSH 16-28 Abbruchhammer mieten in Mülheim an der Ruhr – 41 J Schlagenergie, 1.750 W, HEX-28. Für Beton, Mauerwerk, Estrich. Ab 29 €/Tag inkl. 19 % USt.",
     h1: "Abbruchhammer 41J / 18kg mieten in Mülheim an der Ruhr – Bosch GSH 16-28 bei SLT Rental",
@@ -2096,8 +1701,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Rund um Mülheim, Essen, Duisburg und Oberhausen setzen Bauunternehmen den GSH 16-28 für Estrich- und Betonabbruch in Altbauten, Aufstemmen von Elektro- und Sanitär-Schlitzen, Abbruch nicht-tragender Ziegel- und KS-Trennwände, Fliesen- und Putzentfernung sowie Beton- und Asphaltflickarbeiten ein. Für horizontale Fundamentabbrüche empfiehlt sich ein 30-kg-Hammer.",
     useCaseEvent: "",
     useCasePrivat: "In Mülheim und den umliegenden Städten ist der GSH 16-28 ideal für private Sanierungen: Bad-Estrich und alte Fliesen aufbrechen, verklebte Bodenbeläge entfernen, Hofeinfahrt und Terrasse freilegen, Pflaster-Tragschichten aufstemmen, gemauerte Duschtassen und Betonpodeste demontieren. 18,3 kg und 12,3 m/s² Vibration erfordern regelmäßige Pausen.",
-    primaryKeywords: "Abbruchhammer 41J mieten Mülheim, Bosch GSH 16-28 mieten Mülheim an der Ruhr, Abbruchhammer mieten Ruhrgebiet, Abbruchhammer leihen Essen Duisburg",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Wo kann ich den Abbruchhammer in Mülheim an der Ruhr abholen?", a: "Die Abholung erfolgt am SLT Rental Standort Mülheim an der Ruhr. Von hier erreichst Du bequem auch Essen, Duisburg, Oberhausen und Bottrop." },
@@ -2112,7 +1715,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-bauleuchte-gli18v-2200c": {
-    excelName: "Akku Bauleuchte",
     seoTitle: "Akku Bauleuchte Bosch GLI 18V-2200 C mieten",
     metaDescription: "Mieten Sie die Bosch GLI 18V-2200 C Akku-Bauleuchte mit 2200 Lumen. Betrieb mit 14,4 V oder 18 V Akkus. Zwei Helligkeitsstufen, 1,9 kg Eigengewicht.",
     h1: "Akku Bauleuchte mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2120,8 +1722,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Akku-Bauleuchte dient der Baustellenbeleuchtung bei verlängerten Arbeitszeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät ermöglicht die Außenbeleuchtung bei Garten- und Heimwerker-Arbeiten.",
-    primaryKeywords: "Akku Bauleuchte mieten in Krefeld, Akku Bauleuchte leihen in Krefeld, Akku Bauleuchte mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist der Lichtstrom der Bosch GLI 18V-2200 C?", a: "Die Bauleuchte erreicht einen Lichtstrom von maximal 2.200 Lumen und verfügt über zwei Helligkeitsstufen." },
       { q: "Welche Akkumulatoren können für die Leuchte verwendet werden?", a: "Das Gerät ist mit Akkus der Spannungsklassen 14,4 V und 18 V kompatibel." },
@@ -2129,7 +1729,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-bohrhammer-gbh18v-26f": {
-    excelName: "Akku Bohrhammer",
     seoTitle: "Akku Bohrhammer Bosch GBH 18V-26 F mieten",
     metaDescription: "Bosch GBH 18V-26 F Akku-Bohrhammer mit SDS-Plus Aufnahme, 2,6 J Schlagenergie und bis zu 26 mm Bohr-Ø in Beton für Ihre Projekte.",
     h1: "Akku Bohrhammer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2137,8 +1736,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Bohrhammer eignet sich für Bohrarbeiten in Beton und Mauerwerk sowie für Befestigungsarbeiten im Hochbau.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät unterstützt bei Renovierungsarbeiten am Eigenheim und bei der Befestigung größerer Wandhalterungen.",
-    primaryKeywords: "Akku Bohrhammer mieten in Krefeld, Akku Bohrhammer leihen in Krefeld, Akku Bohrhammer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Schlagenergie des GBH 18V-26 F?", a: "Die Schlagenergie beträgt gemäß EPTA 05/2016 2,6 Joule." },
       { q: "Welche Bohrdurchmesser sind in Beton möglich?", a: "Der Bohr-Ø in Beton mit Hammerbohrern liegt zwischen 4 und 26 mm, wobei der optimale Einsatzbereich bei 8 bis 16 mm liegt." },
@@ -2146,7 +1743,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-bohrhammer-gbh18v-45c": {
-    excelName: "Akku Bohrhammer",
     seoTitle: "Bosch Akku Bohrhammer GBH 18V-45C mieten",
     metaDescription: "Mieten Sie den Bosch GBH 18V-45C Akku-Bohrhammer für Bohrungen in Beton (4–26 mm). 18V System, 2,6 Joule Schlagenergie und Bluetooth-Funktion.",
     h1: "Akku Bohrhammer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2154,8 +1750,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für professionelle Bohrarbeiten in Beton und Mauerwerk sowie Befestigungsarbeiten im Hochbau geeignet.",
     useCaseEvent: "",
     useCasePrivat: "Unterstützt Renovierungsarbeiten am Eigenheim und die Befestigung größerer Wandhalterungen.",
-    primaryKeywords: "Akku Bohrhammer mieten in Krefeld, Akku Bohrhammer leihen in Krefeld, Akku Bohrhammer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Schlagenergie des Bohrhammers?", a: "Die Schlagenergie beträgt gemäß EPTA 05/2016 2,6 Joule." },
       { q: "Welche Bohrdurchmesser sind in Beton möglich?", a: "Der Bohr-Ø in Beton mit Hammerbohrern liegt zwischen 4 und 26 mm, wobei der optimale Bereich zwischen 8 und 16 mm liegt." },
@@ -2163,7 +1757,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-bohrschrauber-gsr12v-15": {
-    excelName: "Bosch Akku Bohrschrauber GSR 12V-15",
     seoTitle: "Bosch Akku Bohrschrauber GSR 12V-15 mieten | SLT Rental",
     metaDescription: "Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld. Hersteller: Bosch  Drehmoment (weich/hart/max.): 15/30/- Nm  Leerlaufdrehzahl (1. Gang / 2. Tagesmie",
     h1: "Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2171,8 +1764,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Bohrschrauber GSR 12V-15 mieten in Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 leihen in Krefeld, Bosch Akku Bohrschrauber GSR 12V-15 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: Akku: 0,95 kg. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: spegel: 80 dB(A). Das Gerät ist für Beton, Mauerwerk und Naturstein geeignet. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2181,7 +1772,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-bohrschrauber-gsr18v-60c": {
-    excelName: "Bosch Akku Bohrschrauber GSR 18V-60C",
     seoTitle: "Bosch Akku Bohrschrauber GSR 18V-60C mieten | SLT Rental",
     metaDescription: "Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld. Hersteller: Bosch  Drehmoment (weich/hart/max.): 28/55/- Nm  Leerlaufdrehzahl (1. Gang / 2. Tagesmi",
     h1: "Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2189,8 +1779,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Bohrschrauber GSR 18V-60C mieten in Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C leihen in Krefeld, Bosch Akku Bohrschrauber GSR 18V-60C mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: eich/hart/max.): 28/55/- Nm. Das Gerät ist für Beton, Mauerwerk und Naturstein geeignet. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2199,7 +1787,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-diamantbohrer-gdb180we": {
-    excelName: "Diamantbohrer",
     seoTitle: "Bosch GDB 180 WE Diamantbohrer bis 180 mm mieten",
     metaDescription: "Mieten Sie die Bosch GDB 180 WE Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk. 2.000 W Leistung, Nassbohr-geeignet.",
     h1: "Diamantbohrer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2207,8 +1794,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Bauprofis nutzen die Maschine für Kernbohrungen für Rohr- und Leitungsdurchführungen sowie für Diamantbohrungen in Beton und Mauerwerk.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich eignet sich das Gerät für die Erstellung von Durchbrüchen für Lüftungs- oder Abwasserrohre.",
-    primaryKeywords: "Diamantbohrer mieten in Krefeld, Diamantbohrer leihen in Krefeld, Diamantbohrer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen maximalen Bohrdurchmesser unterstützt die GDB 180 WE?", a: "Die Maschine ist für Bohrungen bis zu einem Durchmesser von 180 mm in Beton und Mauerwerk ausgelegt." },
       { q: "Wie hoch ist das Gewicht und die Leistung des Geräts?", a: "Die Bosch GDB 180 WE verfügt über eine Nenneingangsleistung von 2.000 W bei einem Gewicht von 5,2 kg." },
@@ -2216,7 +1801,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-drehschlagschrauber-gds18v-1050h": {
-    excelName: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H",
     seoTitle: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten | SLT R",
     metaDescription: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld. Drehmomenteinstellbereich, min./max., 1. Stufe: 0/350 Nm  Drehmomenteinstellbereich, min./",
     h1: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2224,8 +1808,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten in Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H leihen in Krefeld, Bosch Akku Drehschlagschrauber GDS 18V-1050 H mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ausgewählt werden. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: icht exkl. Akku: 2,9 kg. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2234,7 +1816,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-handkreissaege-gks18v-57g": {
-    excelName: "Akku Hand-Kreissäge",
     seoTitle: "Akku-Handkreissäge Bosch GKS 18V-57G mieten",
     metaDescription: "Mieten Sie die Bosch GKS 18V-57G Akku-Handkreissäge. 57 mm Schnitttiefe, 165 mm Sägeblatt und führungsschienenkompatibel für präzise Schnitte in Holz.",
     h1: "Akku Hand-Kreissäge mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2242,8 +1823,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Säge eignet sich für den Zuschnitt von Holz und Plattenmaterial direkt auf der Baustelle.",
     useCaseEvent: "",
     useCasePrivat: "Heimwerker nutzen das Gerät für Zuschnitte im Garten und in der heimischen Werkstatt.",
-    primaryKeywords: "Akku Hand-Kreissäge mieten in Krefeld, Akku Hand-Kreissäge leihen in Krefeld, Akku Hand-Kreissäge mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Schnitttiefe erreicht die Säge bei einem 90°-Winkel?", a: "Die maximale Schnitttiefe der Bosch GKS 18V-57G beträgt bei einem Winkel von 90° genau 57 mm." },
       { q: "Ist die Nutzung einer Führungsschiene mit diesem Modell möglich?", a: "Ja, die Bosch GKS 18V-57G ist führungsschienenkompatibel und ermöglicht somit präzise, gerade Schnitte." },
@@ -2251,7 +1830,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-ladegeraet-gal18v6-80": {
-    excelName: "Bosch 6-fach Ladegerät GAL 18V6-80",
     seoTitle: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten | SLT Rental",
     metaDescription: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld. mit mehreren Fächern ausgestattetes Ladegerät mit 6 Akkuschnittstellen  Kontinuierliches A. Tagesmiet",
     h1: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2259,8 +1837,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Laden von Bosch Professional Akkus auf der Baustelle, schnelles Wechselladen",
     useCaseEvent: "Aufladen von Akku-Werkzeugen beim Auf- und Abbau von Veranstaltungen",
     useCasePrivat: "Laden mehrerer Akkus gleichzeitig für Heimwerkerprojekte",
-    primaryKeywords: "Bosch 6-fach Ladegerät GAL 18V6-80 mieten in Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 leihen in Krefeld, Bosch 6-fach Ladegerät GAL 18V6-80 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Akkus sind kompatibel?", a: "Das Ladegerät ist kompatibel mit allen Bosch Professional 18V Akkus. Es können bis zu 6 Akkus gleichzeitig geladen werden." },
       { q: "Wie schnell werden die Akkus geladen?", a: "Die Ladezeit hängt von der Akkukapazität ab. Ein 5,0 Ah Akku wird in ca. 45–60 Minuten vollständig geladen. Die genauen Ladezeiten finden Sie in den technischen Daten." },
@@ -2269,7 +1845,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-linienlaser-gll3-80": {
-    excelName: "Linienlaser",
     seoTitle: "Bosch GLL 3-80 Linienlaser – 3 x 360° Projektion",
     metaDescription: "Präziser 360° Linienlaser Bosch GLL 3-80 für Nivellierarbeiten. Arbeitsbereich bis 120 m mit Empfänger, ± 0,3 mm/m Genauigkeit und IP 54 Schutz.",
     h1: "Linienlaser mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2277,8 +1852,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Linienlaser unterstützt die Nivellierung und Ausrichtung auf der Baustelle sowie die Linien- und Punktübertragung im Innenausbau.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät dient der präzisen Ausrichtung bei Renovierungs- und Umbauarbeiten.",
-    primaryKeywords: "Linienlaser mieten in Krefeld, Linienlaser leihen in Krefeld, Linienlaser mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die Reichweite des Bosch GLL 3-80?", a: "Der Arbeitsbereich beträgt bis zu 30 m, kann aber unter Verwendung der Laser-Empfänger LR 6 oder LR 7 auf bis zu 120 m erweitert werden." },
       { q: "Wie genau arbeitet die Selbstnivellierung?", a: "Das Gerät nivelliert sich innerhalb von 4 Sekunden in einem Bereich von ± 4° selbst und erreicht eine Genauigkeit von ± 0,3 mm/m." },
@@ -2286,7 +1859,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-multicutter-gop18v-28": {
-    excelName: "Bosch Akku- Multicutter GOP 18V-28",
     seoTitle: "Bosch Akku- Multicutter GOP 18V-28 mieten | SLT Rental",
     metaDescription: "Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld. Tagesmiete, fairer Preis, Lieferservice NRW.",
     h1: "Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2294,8 +1866,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku- Multicutter GOP 18V-28 mieten in Krefeld, Bosch Akku- Multicutter GOP 18V-28 leihen in Krefeld, Bosch Akku- Multicutter GOP 18V-28 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2304,7 +1874,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-ortungsgeraet-dtect200c": {
-    excelName: "Bosch Ortungsgerät D-TECT 200 C",
     seoTitle: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld | SLT Rental",
     metaDescription: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld. Hersteller: Bosch  Akkuspannung: 12V  Bosch Radartechnologie: ja  Erfassbare Objekte: magn. Tagesmiete,",
     h1: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2312,8 +1881,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Ortungsgerät D-TECT 200 C mieten in Krefeld, Bosch Ortungsgerät D-TECT 200 C leihen in Krefeld, Bosch Ortungsgerät D-TECT 200 C mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ausgewählt werden. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: asserführende Kunststoffrohre, Holzunterkonstruktionen. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2322,7 +1889,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-ortungsgeraet-gms120": {
-    excelName: "Bosch Ortungsgerät GMS 120",
     seoTitle: "Bosch Ortungsgerät GMS 120 mieten in Krefeld | SLT Rental",
     metaDescription: "Bosch Ortungsgerät GMS 120 mieten in Krefeld. Hersteller: Bosch Bosch Radartechnologie: nein Erfassbare Objekte: magnetische Metalle (z. Tagesmiete, fairer",
     h1: "Bosch Ortungsgerät GMS 120 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2330,8 +1896,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Ortungsgerät GMS 120 mieten in Krefeld, Bosch Ortungsgerät GMS 120 leihen in Krefeld, Bosch Ortungsgerät GMS 120 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: andarten: Trockenbau, Universal. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2340,7 +1904,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-saebelsaege-gsa18v-li-c": {
-    excelName: "Bosch Akku Säbelsäge GSA 18V-LI C",
     seoTitle: "Bosch Akku Säbelsäge GSA 18V-LI C mieten | SLT Rental",
     metaDescription: "Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld. Hersteller: Bosch  Schnitttiefe in Holz: 200 mm  Schnitttiefe in Metallprofilen und Metall. Tagesmiete",
     h1: "Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2348,8 +1911,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Akku Säbelsäge GSA 18V-LI C mieten in Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C leihen in Krefeld, Bosch Akku Säbelsäge GSA 18V-LI C mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: ). Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: icht exkl. Akku: 2 kg. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2358,7 +1919,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-staubsauger-gas18v-10l": {
-    excelName: "Bosch Staubsauger GAS 18V-10 L",
     seoTitle: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld | SLT Rental",
     metaDescription: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld. Hersteller: Bosch Akkuspannung: 18,0 V Gewicht exkl. Akku: 4,7 kg Saugschlauch-Nennbreite:. Tagesmiete, f",
     h1: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2366,8 +1926,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Staubsauger GAS 18V-10 L mieten in Krefeld, Bosch Staubsauger GAS 18V-10 L leihen in Krefeld, Bosch Staubsauger GAS 18V-10 L mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: icht exkl. Akku: 4,7 kg. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2376,7 +1934,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-staubsaugeraufsatz-gde18v-16": {
-    excelName: "Bosch Staubsaugeraufsatz GDE 18V-16",
     seoTitle: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten | SLT Rental",
     metaDescription: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld. Hersteller: Bosch Kompatibel mit: GBH 18V-26 und GBH 18V-26 F Max. Bohrdurchmesser: 16 mm . Tagesmie",
     h1: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2384,8 +1941,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Bosch Staubsaugeraufsatz GDE 18V-16 mieten in Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 leihen in Krefeld, Bosch Staubsaugeraufsatz GDE 18V-16 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: icht: 1,2 kg. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -2394,7 +1949,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bosch-winkelschleifer-gws18v-10": {
-    excelName: "Akku Winkelschleifer",
     seoTitle: "Akku Winkelschleifer Bosch GWS 18V-10 mieten",
     metaDescription: "Akku-Winkelschleifer mit 125mm Scheibe. Bosch GWS 18V-10 für Trenn- und Schleifarbeiten in NRW mieten. Sachliche Produktinformationen.",
     h1: "Akku Winkelschleifer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2402,8 +1956,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Winkelschleifer wird für Trenn- und Schleifarbeiten auf der Baustelle eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät eignet sich für die Metall- und Steinbearbeitung in der heimischen Werkstatt.",
-    primaryKeywords: "Akku Winkelschleifer mieten in Krefeld, Akku Winkelschleifer leihen in Krefeld, Akku Winkelschleifer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Scheibendurchmesser hat der Bosch GWS 18V-10?", a: "Der Akku-Winkelschleifer ist für Scheiben mit einem Durchmesser von 125mm ausgelegt." },
       { q: "Wie wird das Gerät betrieben?", a: "Es handelt sich um ein akkubetriebenes Gerät aus dem 18V-System von Bosch." },
@@ -2411,7 +1963,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "buffet-tellerwaermer": {
-    excelName: "2-in-1-Buffet- und Tellerwärmer, elektrisch",
     seoTitle: "2-in-1-Buffet- und Tellerwärmer, elektrisch",
     metaDescription: "Elektrischer Speisenwärmer mit 300 Watt Leistung. 4 Edelstahlbehälter, stufenlos regelbare Temperatur (40°–75°C) und bis zu 8 Stunden Betriebszeit.",
     h1: "2-in-1-Buffet- und Tellerwärmer, elektrisch mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2419,8 +1970,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der elektrische Speisenwärmer wird für die Speisen-Warmhaltung bei Catering-Einsätzen und Buffets verwendet.",
     useCasePrivat: "Dieses Gerät eignet sich zum zuverlässigen Warmhalten von Speisen bei Familienfesten.",
-    primaryKeywords: "2-in-1-Buffet- und Tellerwärmer, elektrisch mieten in Krefeld, 2-in-1-Buffet- und Tellerwärmer, elektrisch leihen in Krefeld, 2-in-1-Buffet- und Tellerwärmer, elektrisch mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Kapazität bieten die Behälter des Buffetwärmers?", a: "Das Gerät verfügt über insgesamt vier Edelstahlbehälter: zwei Behälter mit jeweils 2,4 Litern und zwei Behälter mit jeweils 1,15 Litern Volumen." },
       { q: "In welchem Temperaturbereich arbeitet das Gerät?", a: "Die Betriebstemperatur ist stufenlos von 40° bis 75°C regelbar." },
@@ -2428,7 +1977,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-16a-uv-3xschuko": {
-    excelName: "CEE 16A UV auf 3x 16A Schuko",
     seoTitle: "CEE 16A UV auf 3x 16A Schuko Stromverteiler",
     metaDescription: "Kompakter Stromverteiler mit CEE 16A Eingang und 3x 16A Schuko-Ausgängen. Schutzart IP44 für den Einsatz im Außenbereich.",
     h1: "CEE 16A UV auf 3x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2436,8 +1984,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Verteiler ermöglicht die Stromverteilung auf Großbaustellen sowie die sichere Mehrfach-Abnahme von Aggregaten.",
     useCaseEvent: "Das Gerät dient der Stromverteilung bei Outdoor-Events und der Versorgung von Bühnen, Foodtrucks und Ständen.",
     useCasePrivat: "",
-    primaryKeywords: "CEE 16A UV auf 3x 16A Schuko mieten in Krefeld, CEE 16A UV auf 3x 16A Schuko leihen in Krefeld, CEE 16A UV auf 3x 16A Schuko mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Ausgänge bietet der Stromverteiler?", a: "Der Verteiler verfügt über drei Schutzkontakt-Ausgänge mit jeweils 16 A." },
       { q: "Wie hoch ist die Schutzart des Geräts?", a: "Das Produkt ist nach Schutzart IP44 klassifiziert." },
@@ -2445,7 +1991,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-32a-uv-6xschuko": {
-    excelName: "CEE 32A UV auf 6x 16A Schuko",
     seoTitle: "CEE 32A UV auf 6x 16A Schuko | Mietkatalog",
     metaDescription: "Sachlicher Stromverteiler von CEE 32A (5-polig) auf 6x Schuko-Steckdosen. 465 x 165 x 125 mm, Gewicht 4,5 kg, Sicherungen: 6 x C-16.",
     h1: "CEE 32A UV auf 6x 16A Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2453,8 +1998,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Verteiler ermöglicht die Stromverteilung auf Großbaustellen sowie die sichere Mehrfach-Abnahme von Aggregaten.",
     useCaseEvent: "Das Gerät wird zur Stromverteilung bei Outdoor-Events sowie zur Versorgung von Bühnen, Foodtrucks und Ständen eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE 32A UV auf 6x 16A Schuko mieten in Krefeld, CEE 32A UV auf 6x 16A Schuko leihen in Krefeld, CEE 32A UV auf 6x 16A Schuko mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird der Verteiler abgesichert?", a: "Der Stromverteiler verfügt über sechs Sicherungen des Typs C-16." },
       { q: "Welche Eingangsspannung benötigt das Gerät?", a: "Die Eingangsspannung beträgt 380V bei einer Stromstärke von 32A." },
@@ -2462,7 +2005,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-63a-uv-2x32a-1x16a-6xschuko": {
-    excelName: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko",
     seoTitle: "CEE 63A UV auf 2x 32A, 1x 16A, 6x Schuko",
     metaDescription: "Vollgummi-Stromverteiler mit CEE 63A Eingang und diversen Ausgängen (32A, 16A, Schuko). Inklusive FI-Schutzschalter Typ A. Kompakte Bauweise für 400V AC.",
     h1: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2470,8 +2012,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Vollgummiverteiler dient der Stromverteilung auf Großbaustellen sowie der sicheren Mehrfach-Abnahme von Aggregaten.",
     useCaseEvent: "Das Gerät ermöglicht die Stromverteilung bei Outdoor-Events und die Versorgung von Bühnen, Foodtrucks und Ständen.",
     useCasePrivat: "",
-    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko leihen in Krefeld, CEE 63A UV auf 2x CEE 32A, 1x CEE 16A, 6x Schuko mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Ausgänge stellt der Stromverteiler bereit?", a: "Der Verteiler verfügt über zwei CEE 32A Anschlüsse, einen CEE 16A Anschluss und sechs Schuko 16A Steckdosen." },
       { q: "Wie ist das Gerät abgesichert?", a: "Der Vollgummiverteiler ist mit einem FI-Schutzschalter Typ A 63A/0,03A 4-pol ausgestattet." },
@@ -2479,7 +2019,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-63a-uv-2x32a-2x16a": {
-    excelName: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A",
     seoTitle: "CEE 63A UV auf 2x 32A und 2x 16A Stromverteiler",
     metaDescription: "19-Zoll Stromverteiler (3 HE) mit CEE 63A Eingang, FI Typ B Absicherung sowie 2x CEE 32A und 2x CEE 16A Ausgängen für 400V Anwendungen.",
     h1: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2487,8 +2026,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Stromverteiler eignet sich für die Stromverteilung auf Großbaustellen sowie für die sichere Mehrfach-Abnahme von Aggregaten.",
     useCaseEvent: "Das Gerät dient der Stromverteilung bei Outdoor-Events und der Versorgung von Bühnen, Foodtrucks und Ständen.",
     useCasePrivat: "",
-    primaryKeywords: "CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten in Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A leihen in Krefeld, CEE 63A UV auf 2x CEE 32A, 2x CEE 16A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Schutzorgane sind im Stromverteiler verbaut?", a: "Der Verteiler verfügt über einen FI-Schutzschalter Typ B (63A/0,03A) sowie zwei C16A und zwei C32A 3-polige Leitungsschutzschalter." },
       { q: "Wie wird der Anschluss an das Stromnetz vorgenommen?", a: "Der Anschluss erfolgt über ein integriertes, 1 Meter langes H07RN-F 5x16mm² Kabel mit einem CEE 63A 5-pol Stecker." },
@@ -2496,7 +2033,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-adapter-16a-32a": {
-    excelName: "Mennekes CEE Adapter 16A < > 32A",
     seoTitle: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld | SLT Rental",
     metaDescription: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld. CEE Adapter 16A Stecker rot auf 32A Kupplung rot. Tagesmiete, fairer Preis, Lieferservice NRW.",
     h1: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2504,8 +2040,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter 16A < > 32A mieten in Krefeld, Mennekes CEE Adapter 16A < > 32A leihen in Krefeld, Mennekes CEE Adapter 16A < > 32A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter 16A Stecker rot auf 32A Kupplung rot. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
       { q: "Muss ein Elektrofachmann den Anschluss vornehmen?", a: "Der Anschluss an das Netz (z. B. Baustromverteiler, Generator) sollte von einer Elektrofachkraft vorgenommen werden. Das Einstecken von Verbrauchern in die Ausgangssteckdosen ist für jeden Nutzer möglich." },
@@ -2514,7 +2048,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-adapter-32a-16a": {
-    excelName: "CEE Adapter 32A < > 16A",
     seoTitle: "CEE Adapter 32A auf 16A mieten",
     metaDescription: "Sachlicher CEE Adapter zur Anpassung von 32A Steckern auf 16A Kupplungen. Geeignet für Bau und Event-Infrastruktur.",
     h1: "CEE Adapter 32A < > 16A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2522,8 +2055,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Adapter ermöglicht die Anpassung unterschiedlicher Stromanschlüsse auf der Baustelle.",
     useCaseEvent: "Der Adapter dient der Anschluss-Anpassung bei wechselnder Event-Infrastruktur.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Adapter 32A < > 16A mieten in Krefeld, CEE Adapter 32A < > 16A leihen in Krefeld, CEE Adapter 32A < > 16A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Eingangsseite hat der Adapter?", a: "Der Adapter ist mit einem roten CEE 32A Stecker als Input ausgestattet." },
       { q: "Welche Ausgangsseite hat der Adapter?", a: "Der Adapter verfügt über eine rote CEE 16A Kupplung als Output." },
@@ -2531,7 +2062,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-adapter-32a-63a": {
-    excelName: "Mennekes CEE Adapter 32A < > 63A",
     seoTitle: "Mennekes CEE Adapter 32A auf 63A",
     metaDescription: "Sachlicher CEE Adapter von Mennekes. Eingang CEE 32A Stecker rot auf Ausgang CEE 63A Kupplung rot. Ideal für Bau und Event-Infrastruktur.",
     h1: "Mennekes CEE Adapter 32A < > 63A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2539,8 +2069,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Anpassung unterschiedlicher Stromanschlüsse auf der Baustelle.",
     useCaseEvent: "Anschluss-Anpassung bei wechselnder Event-Infrastruktur.",
     useCasePrivat: "",
-    primaryKeywords: "Mennekes CEE Adapter 32A < > 63A mieten in Krefeld, Mennekes CEE Adapter 32A < > 63A leihen in Krefeld, Mennekes CEE Adapter 32A < > 63A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Steckerart besitzt dieser Adapter?", a: "Der Adapter ist eingangsseitig mit einem roten CEE 32A Stecker ausgestattet." },
       { q: "Über welchen Ausgang verfügt das Produkt?", a: "Der Ausgang besteht aus einer roten CEE 63A Kupplung." },
@@ -2548,7 +2076,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-adapter-63a-32a-sicherung": {
-    excelName: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung",
     seoTitle: "Mennekes CEE Adapter 63A auf 32A – inkl. Sicherung",
     metaDescription: "CEE Adapter von 63A Stecker auf 32A Kupplung (rot). Mit integriertem 3-poligem Leitungsschutzschalter C-32A, 6kA. Marke: Mennekes.",
     h1: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2556,8 +2083,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Adapter ermöglicht die Anpassung unterschiedlicher Stromanschlüsse auf der Baustelle, um 32A-Endgeräte an 63A-Anschlüssen zu betreiben.",
     useCaseEvent: "Das Produkt dient zur Anschluss-Anpassung bei wechselnder Event-Infrastruktur.",
     useCasePrivat: "",
-    primaryKeywords: "Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten in Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung leihen in Krefeld, Mennekes CEE Adapter 63A < > 32A inkl. Sicherung mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse besitzt der Adapter?", a: "Der Adapter verfügt über einen CEE 63A Stecker (rot) als Eingang und eine CEE 32A Kupplung (rot) als Ausgang." },
       { q: "Ist eine interne Absicherung vorhanden?", a: "Ja, der Adapter ist mit einem 3-poligen Leitungsschutzschalter (C-32A, 6kA) ausgestattet." },
@@ -2565,7 +2090,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-adapter-schuko-16a": {
-    excelName: "Mennekes CEE Adapter Schuko < > 16A (b)",
     seoTitle: "Mennekes CEE Adapter Schuko < > 16A (b) mieten | SLT Rental",
     metaDescription: "Mennekes CEE Adapter Schuko < > 16A (b) mieten in Krefeld. Schuko Adapter Schuko 16A Stecker auf 16A Kupplung blau. Tagesmiete, fairer Preis, Lieferservice",
     h1: "Mennekes CEE Adapter Schuko < > 16A (b) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2573,8 +2097,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Stromzuführung auf Baustellen, Druckluftzuleitung, Netzwerkverkabelung",
     useCaseEvent: "Bühnen-/Messestromverteilung, AV-Verkabelung, Netzwerkinfrastruktur",
     useCasePrivat: "Gartenfest-Stromversorgung, provisorische Verkabelung",
-    primaryKeywords: "Mennekes CEE Adapter Schuko < > 16A (b) mieten in Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) leihen in Krefeld, Mennekes CEE Adapter Schuko < > 16A (b) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse hat der Verteiler?", a: "Anschlüsse: Adapter Schuko 16A Stecker auf 16A Kupplung blau. Bei Fragen zur Lastverteilung helfen wir Ihnen gerne." },
       { q: "Muss ein Elektrofachmann den Anschluss vornehmen?", a: "Der Anschluss an das Netz (z. B. Baustromverteiler, Generator) sollte von einer Elektrofachkraft vorgenommen werden. Das Einstecken von Verbrauchern in die Ausgangssteckdosen ist für jeden Nutzer möglich." },
@@ -2583,7 +2105,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-16a-10m": {
-    excelName: "CEE Kabel 16A rot 10 m",
     seoTitle: "CEE Kabel 16A rot 10 m – Mietkatalog",
     metaDescription: "CEE Verlängerungskabel 10 m mit H07RN-F5G2,5 Leitung und 16A Steckverbindungen. Komponenten von Mennekes und Titanex. Gewicht 3,9 kg.",
     h1: "CEE Kabel 16A rot 10 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2591,8 +2112,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Verlängerungskabel wird für die Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events genutzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 16A rot 10 m mieten in Krefeld, CEE Kabel 16A rot 10 m leihen in Krefeld, CEE Kabel 16A rot 10 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Spezifikationen hat die verwendete Leitung?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F5G2,5." },
       { q: "Welche Steckverbindungen sind verbaut?", a: "Das 10 m lange Kabel verfügt über einen 16A roten CEE-Stecker und eine entsprechende Kupplung." },
@@ -2600,7 +2119,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-16a-20m": {
-    excelName: "CEE Kabel 16A rot 20 m",
     seoTitle: "CEE Kabel 16A rot 20 m mieten",
     metaDescription: "Mieten Sie das CEE Verlängerungskabel 16A rot mit einer Länge von 20 m. Kabel-Typ H07RN-F5G2,5 von Mennekes / Titanex für Baugewerbe und Events.",
     h1: "CEE Kabel 16A rot 20 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2608,8 +2126,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient der Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Verlängerungskabel eignet sich zur Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 16A rot 20 m mieten in Krefeld, CEE Kabel 16A rot 20 m leihen in Krefeld, CEE Kabel 16A rot 20 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Kabel-Typ hat dieses CEE Kabel?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G2,5." },
       { q: "Welches Gewicht weist das 20 m lange Kabel auf?", a: "Das Gewicht des Kabels liegt bei 7,3 kg." },
@@ -2617,7 +2133,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-16a-3m": {
-    excelName: "CEE Kabel 16A rot 3 m",
     seoTitle: "CEE Kabel 16A rot 3 m – Technische Daten & Miete",
     metaDescription: "Verlängerungskabel 3 m, Typ H07RN-F5G2,5 mit CEE 16A rot Stecker und Kupplung. Robustes Gummikabel mit 1,5 kg Gewicht für Drehstrom-Verbindungen.",
     h1: "CEE Kabel 16A rot 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2625,8 +2140,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf Baustellen und zur Herstellung sicherer Drehstrom-Verbindungen.",
     useCaseEvent: "Es wird zur Verbindung von Aggregaten mit Stromverteilern bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 16A rot 3 m mieten in Krefeld, CEE Kabel 16A rot 3 m leihen in Krefeld, CEE Kabel 16A rot 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird bei dieser Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G2,5." },
       { q: "Über welche Anschlüsse verfügt das Kabel?", a: "Das 3 m lange Kabel ist mit einem CEE 16A rot Stecker und einer entsprechenden Kupplung ausgestattet." },
@@ -2634,7 +2147,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-16a-5m": {
-    excelName: "CEE Kabel 16A rot 5 m",
     seoTitle: "CEE Kabel 16A rot 5 m - Verlängerungskabel H07RN-F5G2,5",
     metaDescription: "CEE Verlängerungskabel 16A rot, 5 Meter Länge. Kabel-Typ H07RN-F5G2,5 von Mennekes / Titanex. Gewicht 2,2 kg. Ausgestattet mit Stecker und Kupplung.",
     h1: "CEE Kabel 16A rot 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2642,8 +2154,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das CEE Kabel wird zur Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 16A rot 5 m mieten in Krefeld, CEE Kabel 16A rot 5 m leihen in Krefeld, CEE Kabel 16A rot 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird hier verwendet?", a: "Es handelt sich um ein H07RN-F5G2,5 Kabel." },
       { q: "Wie lang ist das CEE Kabel und wie viel wiegt es?", a: "Das Kabel hat eine Länge von 5 Metern und ein Gewicht von 2,2 kg." },
@@ -2651,7 +2161,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-32a-10m": {
-    excelName: "CEE Kabel 32A rot 10 m",
     seoTitle: "CEE Kabel 32A rot 10 m – Verlängerungskabel H07RN-F5G6",
     metaDescription: "10 m CEE Verlängerungskabel 32A rot mit Mennekes Stecker und Titanex Kabel H07RN-F5G6. Gewicht 6,8 kg. Ideal für Baustellen und Outdoor-Events.",
     h1: "CEE Kabel 32A rot 10 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2659,8 +2168,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient der Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Kabel wird zur Verbindung von Aggregaten zu Stromverteilern bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 32A rot 10 m mieten in Krefeld, CEE Kabel 32A rot 10 m leihen in Krefeld, CEE Kabel 32A rot 10 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird bei dieser Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G6." },
       { q: "Wie hoch ist das Gewicht des 10 m langen Kabels?", a: "Das Gewicht beträgt 6,8 kg." },
@@ -2668,7 +2175,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-32a-20m": {
-    excelName: "CEE Kabel 32A rot 20 m",
     seoTitle: "CEE Kabel 32A rot 20 m – Verlängerungskabel H07RN-F5G6",
     metaDescription: "20 m CEE Verlängerungskabel mit Mennekes Stecker und Kupplung. Kabeltyp H07RN-F5G6, 32A rot, Gewicht 13,1 kg. Geeignet für Bau und Events.",
     h1: "CEE Kabel 32A rot 20 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2676,8 +2182,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Verlängerungskabel wird zur Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 32A rot 20 m mieten in Krefeld, CEE Kabel 32A rot 20 m leihen in Krefeld, CEE Kabel 32A rot 20 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird hier verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G6." },
       { q: "Wie schwer ist das 20 m CEE Kabel?", a: "Das Gewicht des Kabels beträgt 13,1 kg." },
@@ -2685,7 +2189,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-32a-3m": {
-    excelName: "CEE Kabel 32A rot 3 m",
     seoTitle: "CEE Kabel 32A rot 3 m – Verlängerungskabel H07RN-F5G6",
     metaDescription: "3 m CEE Verlängerungskabel 32A rot mit Mennekes/Titanex Komponenten. Kabel-Typ H07RN-F5G6, Gewicht 2,4 kg. Für Baustellen und Outdoor-Events geeignet.",
     h1: "CEE Kabel 32A rot 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2693,8 +2196,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Kabel wird zur Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 32A rot 3 m mieten in Krefeld, CEE Kabel 32A rot 3 m leihen in Krefeld, CEE Kabel 32A rot 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird für diese Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G6." },
       { q: "Wie schwer ist das 3 m lange CEE Kabel?", a: "Das Gewicht des Kabels beträgt 2,4 kg." },
@@ -2702,7 +2203,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-32a-50m": {
-    excelName: "CEE Kabel 32A rot 50 m",
     seoTitle: "CEE Kabel 32A rot 50 m mieten",
     metaDescription: "50 m CEE Verlängerungskabel (32A) mit H07RN-F5G6 Leitung für Baustellen und Events. Jetzt im Mietkatalog für NRW ansehen.",
     h1: "CEE Kabel 32A rot 50 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2710,8 +2210,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient der Verlängerung der Stromversorgung auf Baustellen und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Verlängerungskabel eignet sich zur Verbindung von einem Aggregat zum Stromverteiler bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 32A rot 50 m mieten in Krefeld, CEE Kabel 32A rot 50 m leihen in Krefeld, CEE Kabel 32A rot 50 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird hier verwendet?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F5G6." },
       { q: "Wie schwer ist das 50 m lange CEE Kabel?", a: "Das Gewicht des Kabels beträgt 7,3 kg." },
@@ -2719,7 +2217,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-32a-5m": {
-    excelName: "CEE Kabel 32A rot 5 m",
     seoTitle: "CEE Kabel 32A rot 5 m - Mietkatalog",
     metaDescription: "Mieten Sie das 5 m CEE Verlängerungskabel 32A rot (H07RN-F5G6) für Drehstrom-Verbindungen auf Baustellen und bei Events.",
     h1: "CEE Kabel 32A rot 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2727,8 +2224,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient der Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Verlängerungskabel wird zur Verbindung von Aggregaten zu Stromverteilern bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 32A rot 5 m mieten in Krefeld, CEE Kabel 32A rot 5 m leihen in Krefeld, CEE Kabel 32A rot 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Spezifikation hat das verwendete Kabel?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G6." },
       { q: "Wie schwer ist das 5 m CEE Kabel?", a: "Das Gewicht des Kabels beträgt 3,6 kg." },
@@ -2736,7 +2231,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-63a-10m": {
-    excelName: "CEE Kabel 63A rot 10 m",
     seoTitle: "CEE Kabel 63A rot 10 m – Mietkatalog",
     metaDescription: "CEE Verlängerungskabel 10 m, 63A rot, Kabel-Typ H07RN-F5G16. Komponenten von Mennekes und Titanex. Gewicht 14,5 kg. Jetzt für B2B und B2C verfügbar.",
     h1: "CEE Kabel 63A rot 10 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2744,8 +2238,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Kabel dient der Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Bei Outdoor-Events wird das Kabel zur Verbindung von Aggregat zu Stromverteiler eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 63A rot 10 m mieten in Krefeld, CEE Kabel 63A rot 10 m leihen in Krefeld, CEE Kabel 63A rot 10 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird verwendet?", a: "Das Produkt verwendet ein Kabel vom Typ H07RN-F5G16." },
       { q: "Wie schwer ist das 10 m lange Verlängerungskabel?", a: "Das Gewicht des Kabels beträgt 14,5 kg." },
@@ -2753,7 +2245,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-63a-20m": {
-    excelName: "CEE Kabel 63A rot 20 m",
     seoTitle: "CEE Kabel 63A rot 20 m – Daten und Anwendung",
     metaDescription: "20 m CEE Verlängerungskabel 63A rot (H07RN-F5G16) mit Mennekes / Titanex Komponenten. Gewicht: 29 kg. Ideal für Baustellen und Events.",
     h1: "CEE Kabel 63A rot 20 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2761,8 +2252,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Zur Verlängerung der Stromversorgung auf Baustellen sowie zur Herstellung sicherer Drehstrom-Verbindungen.",
     useCaseEvent: "Dient der Verbindung von Aggregaten zu Stromverteilern bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 63A rot 20 m mieten in Krefeld, CEE Kabel 63A rot 20 m leihen in Krefeld, CEE Kabel 63A rot 20 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird bei dieser Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G16." },
       { q: "Wie schwer ist das 20 m lange CEE Kabel?", a: "Das Gewicht des Kabels beträgt 29 kg." },
@@ -2770,7 +2259,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-63a-3m": {
-    excelName: "CEE Kabel 63A rot 3 m",
     seoTitle: "CEE Kabel 63A rot 3 m – Verlängerungskabel",
     metaDescription: "3 m CEE-Verlängerungskabel (63A) mit H07RN-F5G16 Leitung und Mennekes/Titanex Komponenten. Gewicht: 4,5 kg. Geeignet für Baustellen und Events.",
     h1: "CEE Kabel 63A rot 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2778,8 +2266,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Kabel dient der Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Produkt wird zur Verbindung von Aggregaten zu Stromverteilern bei Outdoor-Events eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 63A rot 3 m mieten in Krefeld, CEE Kabel 63A rot 3 m leihen in Krefeld, CEE Kabel 63A rot 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird für diese Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F5G16." },
       { q: "Wie schwer ist das 3 m lange CEE-Kabel?", a: "Das Gewicht des Kabels beträgt 4,5 kg." },
@@ -2787,7 +2273,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cee-kabel-63a-5m": {
-    excelName: "CEE Kabel 63A rot 5 m",
     seoTitle: "CEE Kabel 63A rot 5 m – H07RN-F5G16 Verlängerung",
     metaDescription: "5 Meter CEE Verlängerungskabel 63A rot mit H07RN-F5G16 Kabel. Ausstattung mit Mennekes und Titanex Komponenten. Gewicht 7 kg.",
     h1: "CEE Kabel 63A rot 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2795,8 +2280,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung der Stromversorgung auf der Baustelle und ermöglicht sichere Drehstrom-Verbindungen.",
     useCaseEvent: "Das Kabel wird zur Verbindung von Aggregat zu Stromverteiler bei Outdoor-Events genutzt.",
     useCasePrivat: "",
-    primaryKeywords: "CEE Kabel 63A rot 5 m mieten in Krefeld, CEE Kabel 63A rot 5 m leihen in Krefeld, CEE Kabel 63A rot 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird für diese Verlängerung verwendet?", a: "Es handelt sich um den Kabel-Typ H07RN-F5G16." },
       { q: "Wie lang ist das CEE Kabel 63A?", a: "Die Gesamtlänge des Kabels beträgt 5 Meter." },
@@ -2804,7 +2287,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "champagnerglas-brunelli-36er": {
-    excelName: "Champagnerglas Brunelli, 36er Set",
     seoTitle: "Champagnerglas Brunelli 36er Set – Leonardo",
     metaDescription: "Elegante Champagnergläser Brunelli von Leonardo im 36er Set. 25,4 cm hoch, spülmaschinenfest und stoßfest für Events und private Feiern.",
     h1: "Champagnerglas Brunelli, 36er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2812,8 +2294,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Stilvolle Bewirtung bei Hochzeiten und Galas sowie im Tagungs- und Konferenz-Service.",
     useCasePrivat: "Einsatz als Sektgläser bei privaten Feiern im Garten oder Haus.",
-    primaryKeywords: "Champagnerglas Brunelli, 36er Set mieten in Krefeld, Champagnerglas Brunelli, 36er Set leihen in Krefeld, Champagnerglas Brunelli, 36er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße haben die Brunelli Champagnergläser?", a: "Die Gläser haben eine Höhe von 25,4 cm und einen Durchmesser von 7,8 cm." },
       { q: "Sind die Gläser für die Reinigung in der Spülmaschine geeignet?", a: "Ja, die Gläser von Leonardo sind spülmaschinenfest, klar und stoßfest." },
@@ -2821,7 +2301,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "cormidi-c60-hitip": {
-    excelName: "Dumper mit Hochauskippfunktion",
     seoTitle: "Mieten: Cormidi C60 HI TIP Dumper mit Hochauskippfunktion",
     metaDescription: "Kompakter Raupendumper Cormidi C60 HI TIP mit 600 kg Nutzlast, Dieselmotor und Hochauskippfunktion für Baugewerbe und Gartenbau.",
     h1: "Dumper mit Hochauskippfunktion mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2829,8 +2308,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Dumper eignet sich für den Materialtransport auf weitläufigen Baustellen sowie zur Bauschuttabfuhr in beengten Innenstadtbaustellen.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen nutzen das Gerät für den Transport von Mutterboden, Kies oder Schotter im Garten bei größeren Projekten.",
-    primaryKeywords: "Dumper mit Hochauskippfunktion mieten in Krefeld, Dumper mit Hochauskippfunktion leihen in Krefeld, Dumper mit Hochauskippfunktion mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Cormidi C60 HI TIP?", a: "Der Dumper verfügt über eine maximale Nutzlast von 600 kg." },
       { q: "Welche Antriebsart besitzt dieses Modell?", a: "Der Cormidi C60 HI TIP wird durch einen Dieselmotor angetrieben und ist mit einem Raupenlaufwerk ausgestattet." },
@@ -2838,7 +2315,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "das-action-508a": {
-    excelName: "D.A.S. Audio Action 508A",
     seoTitle: "D.A.S. Audio Action 508A Aktivlautsprecher mieten",
     metaDescription: "Aktiver 8\" 2-Wege Lautsprecher mit 720 W Peak-Leistung und 122 dB SPL. Ideal für Sprachbeschallung, kleine Events und als Monitor. Optional mit Stativen.",
     h1: "D.A.S. Audio Action 508A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -2846,8 +2322,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Action 508A wird für die Beschallung von Konzerten und Bühnenshows sowie für die Sprachbeschallung bei Tagungen eingesetzt.",
     useCasePrivat: "Dieser Lautsprecher eignet sich zur Hintergrundbeschallung bei Gartenpartys.",
-    primaryKeywords: "D.A.S. Audio Action 508A mieten in Krefeld, D.A.S. Audio Action 508A leihen in Krefeld, D.A.S. Audio Action 508A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Leistung erbringt die D.A.S. Audio Action 508A?", a: "Das aktive 2-Wege-System verfügt über eine Peak-Leistung von 720 Watt." },
       { q: "Wie hoch ist der maximale Schalldruckpegel?", a: "Der Lautsprecher erreicht einen maximalen Schalldruckpegel von 122 dB SPL (Peak, 1 m)." },
@@ -2855,7 +2329,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "soundsystem-2-1-1400w": {
-    excelName: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult und Bluetooth-Empfänger – bis zu 75 Personen",
     seoTitle: "2.1 PA-Anlage 1400W mit Bluetooth & Mischpult mieten Krefeld",
     metaDescription: "2.1 PA-Anlage 1400W RMS mit integriertem 4-Kanal-Mischpult und Bluetooth-Empfänger in Krefeld mieten. 126 dB, bis 75 Personen – ideal für Hochzeit & Event am Niederrhein.",
     h1: "2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger mieten in Krefeld",
@@ -2867,8 +2340,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Mobile DJ-Anlage für Hochzeiten, Geburtstage, Firmenfeiern, Konfirmationen, Schul- und Vereinsfeste in Krefeld und am Niederrhein – einfach per Bluetooth vom Smartphone bespielbar oder über das integrierte 4-Kanal-Mischpult mit Mikrofon, Instrument und Zuspieler kombinierbar.",
     useCasePrivat: "Auch für private Garten- und Hochzeitspartys in Krefeld, Meerbusch, Tönisvorst, Willich und Kempen geeignet – kompakt, in 15 Minuten aufgebaut und mit ordentlich Druck für bis zu 75 Gäste.",
-    primaryKeywords: "2.1 Soundsystem mieten Krefeld, PA-Anlage mit Mischpult mieten Krefeld, Bluetooth PA-Anlage mieten Krefeld, Musikanlage mieten Krefeld, DJ-Anlage mieten Krefeld, Soundanlage mieten Niederrhein, Hochzeits-PA mieten Krefeld",
-    is247: false,
     dailyPriceFrom: 49,
     faqs: [
       { q: "Wo kann ich die 2.1 PA-Anlage in Krefeld abholen?", a: "Am SLT-Hauptsitz, Anrather Straße 291, 47807 Krefeld – Mo–Fr 08:00–18:00 Uhr und Sa 10:00–14:30 Uhr. Auf Wunsch liefern wir auch nach Meerbusch, Willich, Tönisvorst, Kempen, Uerdingen und ins übrige Niederrhein-Gebiet." },
@@ -2882,7 +2353,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-soundsystem-2-1-1400w": {
-    excelName: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult und Bluetooth-Empfänger – bis zu 75 Personen – Bonn",
     seoTitle: "2.1 PA-Anlage 1400W mit Bluetooth & Mischpult mieten Bonn",
     metaDescription: "2.1 PA-Anlage 1400W RMS mit 4-Kanal-Mischpult und Bluetooth-Empfänger in Bonn mieten. 126 dB, bis 75 Personen – für Hochzeit, Winzerhof-Feier & Firmenevent im Rhein-Sieg-Kreis.",
     h1: "2.1 Soundsystem 1400W RMS – Bluetooth-PA mieten in Bonn",
@@ -2894,8 +2364,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Mobile PA-Anlage für Hochzeiten, Geburtstage, Firmenevents, Vereinsfeste und Outdoor-Partys im Bonner Stadtgebiet, in Bad Godesberg, Beuel, Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und im Ahrtal. Per Bluetooth direkt vom Smartphone bespielbar, mit integriertem 4-Kanal-Mischpult für Trauzeugen-Reden und Live-Musik.",
     useCasePrivat: "Ideal für private Garten- und Hochzeitspartys rund um Bonn – kompakt, in 15 Minuten aufgebaut und mit integriertem Bluetooth-Empfänger für sofortiges Musik-Streaming. Beliebt für Winzerhof-Feiern in Bad Neuenahr-Ahrweiler und Familienfeste am Rheinufer.",
-    primaryKeywords: "2.1 Soundsystem mieten Bonn, PA-Anlage mit Mischpult mieten Bonn, Bluetooth PA-Anlage mieten Bonn, Musikanlage mieten Bonn, DJ-Anlage mieten Bonn, PA-Anlage Rhein-Sieg-Kreis mieten, Hochzeits-PA mieten Ahrtal, Soundanlage mieten Bonn",
-    is247: false,
     dailyPriceFrom: 49,
     faqs: [
       { q: "Wo kann ich das 2.1 Soundsystem in Bonn abholen?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr, samstags auch ohne Voranmeldung." },
@@ -2907,34 +2375,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Wie schwer ist die Anlage und passt sie ins Auto?", a: "Das Gesamtgewicht liegt bei ca. 55 kg. Die Anlage passt in jeden Kombi oder Transporter – Selbstabholung an der Drachenburgstraße ist mit zwei Personen problemlos machbar." },
     ],
   },
-  "mh-soundsystem-2-1-1400w": {
-    excelName: "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult und Bluetooth-Empfänger – bis zu 75 Personen – Mülheim an der Ruhr",
-    seoTitle: "2.1 PA-Anlage 1400W mit Bluetooth mieten Mülheim a. d. Ruhr",
-    metaDescription: "2.1 PA-Anlage 1400W RMS mit 4-Kanal-Mischpult und Bluetooth-Empfänger in Mülheim an der Ruhr mieten. 126 dB, bis 75 Personen – für Hochzeiten & Firmenfeiern im Ruhrgebiet.",
-    h1: "2.1 Soundsystem 1400W RMS – Bluetooth-PA mieten in Mülheim an der Ruhr",
-    h2s: [
-      "Aktiv-PA mit 4-Kanal-Mischpult – Event-Sound fürs Ruhrgebiet",
-      "Übergabe am SLT × Bobcat-Standort Ruhrorter Straße",
-      "Für Hochzeiten & Firmenevents in Essen, Duisburg, Oberhausen & Bochum",
-    ],
-    useCaseBau: "",
-    useCaseEvent: "Mobile PA-Anlage für Hochzeiten, Firmenfeiern in Industrie-Locations (Zeche Zollverein, Landschaftspark Duisburg-Nord), Vereinsfeste, Geburtstage und Outdoor-Partys in Mülheim an der Ruhr, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen und Hattingen. Bluetooth-Empfänger inklusive – Musik direkt vom Smartphone streamen.",
-    useCasePrivat: "Auch für private Gartenpartys, Grillabende am Ruhrufer und Hochzeiten im Ruhrgebiet geeignet – einsatzfertig, mit integriertem 4-Kanal-Mischpult für Mikrofon, Instrument und Zuspieler.",
-    primaryKeywords: "2.1 Soundsystem mieten Mülheim an der Ruhr, PA-Anlage mit Mischpult mieten Ruhrgebiet, Bluetooth PA-Anlage mieten Essen, Musikanlage mieten Mülheim, DJ-Anlage mieten Duisburg, Soundanlage mieten Ruhrgebiet, Hochzeits-PA mieten Oberhausen",
-    is247: false,
-    dailyPriceFrom: 49,
-    faqs: [
-      { q: "Wo kann ich das 2.1 Soundsystem in Mülheim an der Ruhr übernehmen?", a: "Die Übergabe erfolgt nach Terminvereinbarung an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (Speldorf/Broich) – eingebettet in die Bobcat-Filiale vor Ort. Anfahrt über A40 und A52." },
-      { q: "Liefert ihr die Anlage auch nach Essen, Duisburg oder Oberhausen?", a: "Ja. Wir liefern auf Anfrage nach Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Die Disposition erfolgt aus unserem Hauptsitz Krefeld, in der Regel am nächsten Werktag – ideal auch für Events auf Zeche Zollverein oder im Landschaftspark Duisburg-Nord." },
-      { q: "Streamt die Anlage per Bluetooth vom Smartphone?", a: "Ja – der Bluetooth-Empfänger ist im Set enthalten und in Sekunden mit dem Smartphone gekoppelt. Für Firmenfeiern in Zeche Zollverein oder DJ-Sets im Landschaftspark Duisburg-Nord ist das die schnellste Zuspiel-Variante." },
-      { q: "Für wie viele Personen reicht die Anlage bei einer Firmenfeier im Revier?", a: "Mit 1400 W RMS und bis zu 126 dB ist die Anlage für Veranstaltungen mit bis zu ca. 75 Personen ausgelegt – indoor wie outdoor. Für größere Firmenevents in Industrie-Hallen empfehlen wir das D.A.S. 3500W (bis 250 Personen, aus Krefeld disponierbar)." },
-      { q: "Welche Anschlüsse bietet das integrierte Mischpult?", a: "Das integrierte 4-Kanal-Mischpult verfügt über XLR-, AUX- und Klinken-Eingänge für Mikrofone, Instrumente, Laptops oder DJ-Pult – flexibel einsetzbar für Live-Bands auf Vereinsfesten oder Ansprachen auf Firmenevents." },
-      { q: "Reicht eine normale Steckdose in der Industrie-Location?", a: "Ja. Die Anlage ist vollständig aktiv, Endstufe ist integriert – eine 230-V-Schuko reicht (Aufnahme ca. 700 W). In Backstein-Hallen im Revier oder auf Zeche Zollverein bringst du im Zweifel eine Kabeltrommel mit, da Steckdosen dort oft weit auseinander liegen." },
-      { q: "Wie schwer ist die Anlage?", a: "Das Gesamtgewicht liegt bei ca. 55 kg. Die Anlage passt in jeden Kombi oder Transporter – Selbstabholung in Mülheim mit zwei Personen problemlos machbar." },
-    ],
-  },
   "das-soundsystem-3500w": {
-    excelName: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen",
     seoTitle: "Musikanlage mieten Krefeld – D.A.S. PA-Anlage 3500W (bis 250 Personen)",
     metaDescription: "Musikanlage & PA-Anlage in Krefeld mieten: D.A.S. Soundsystem 3500W RMS mit 2× 18\" Subwoofer, 2× 12\" Top, Bluetooth. Für Hochzeit, DJ & Open-Air bis 250 Personen.",
     h1: "Musikanlage mieten in Krefeld – D.A.S. Soundsystem 3500W RMS für bis zu 250 Personen",
@@ -2947,8 +2388,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Komplett-Beschallung für Hochzeiten, Firmenevents, Vereinsfeste, DJ-Sets und Open-Air-Partys am Niederrhein – von Krefeld über Meerbusch, Willich, Tönisvorst, Kempen und Viersen bis nach Mönchengladbach, Neuss, Düsseldorf-Linksrheinisch und Duisburg-Süd. Zwei 18\"-Subwoofer und 12\"-Topteile mit 3500 W RMS liefern druckvollen Sound für bis zu 250 Personen, per Bluetooth direkt vom Smartphone bespielbar.",
     useCasePrivat: "Für private Hochzeiten, große Geburtstage und Gartenpartys am Niederrhein – als Musikanlage, DJ-Set-Alternative oder Party-Anlage einsetzbar, komplett mit Kabeln, Distanzstangen und App-Steuerung.",
-    primaryKeywords: "Musikanlage mieten Krefeld, PA-Anlage mieten Krefeld, Beschallungsanlage mieten Krefeld, DJ Equipment mieten Krefeld, Soundanlage Hochzeit mieten Niederrhein, PA-Anlage 250 Personen mieten, Bluetooth PA-Anlage mieten, DAS Audio Vantec mieten",
-    is247: false,
     dailyPriceFrom: 90,
     faqs: [
       { q: "Aus welchen Komponenten besteht das D.A.S. Soundsystem 3500W?", a: "Das Set besteht aus 2× DAS Audio VANTEC-18A Aktiv-Subwoofern (18 Zoll), 2× DAS Audio VANTEC-12A Aktiv-Topteilen (12 Zoll), 2× Distanzstangen zwischen Subwoofer und Topteil, 2× Hybrid-Powercon-Linkkabeln (3 m) zur einfachen Verkabelung sowie 2× XLR-Signalkabeln (10 m). Alles, was du für eine professionelle Stereo-Beschallung brauchst, ist enthalten." },
@@ -2965,7 +2404,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
 
   "bonn-das-soundsystem-3500w": {
-    excelName: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen – Bonn",
     seoTitle: "PA-Anlage mieten Bonn – D.A.S. Musikanlage 3500W für Hochzeit & Event",
     metaDescription: "PA-Anlage in Bonn mieten: D.A.S. Soundsystem 3500W RMS mit 2× 18\" Subwoofer, Bluetooth & App. Für Hochzeit, Firmenevent & Open-Air bis 250 Personen – Lieferung Bad Godesberg, Rhein-Sieg, Ahrtal.",
     h1: "PA-Anlage mieten in Bonn – D.A.S. Musikanlage 3500W RMS für bis zu 250 Personen",
@@ -2978,8 +2416,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Beschallungsanlage für Hochzeiten im Ahrtal und im Rhein-Sieg-Kreis, Firmenevents in Bonn und Bad Godesberg, DJ-Sets in Beuel und Poppelsdorf sowie Open-Air-Partys in Wachtberg, Königswinter, Bad Honnef und Sankt Augustin. Zwei 18\"-Subwoofer und 12\"-Topteile mit 3500 W RMS bieten druckvollen Sound für bis zu 250 Personen, Bluetooth-Streaming direkt vom Smartphone.",
     useCasePrivat: "Ideal für private Hochzeiten in Weinbergen, Winzerhöfen und Locations rund um Bad Neuenahr-Ahrweiler sowie größere Gartenfeste im Bonner Süden – Bluetooth-Streaming und App-Steuerung inklusive.",
-    primaryKeywords: "PA-Anlage mieten Bonn, Musikanlage mieten Bonn, Beschallungsanlage mieten Bonn, DJ Equipment mieten Bonn, Soundanlage Hochzeit mieten Rhein-Sieg, PA-Anlage mieten Ahrtal, PA-Anlage 250 Personen mieten, DAS Audio Vantec mieten Bonn",
-    is247: false,
     dailyPriceFrom: 90,
     faqs: [
       { q: "Wo wird das D.A.S. Soundsystem in Bonn übergeben oder geliefert?", a: "Die Anlage disponieren wir aus unserem Hauptsitz Krefeld und liefern sie direkt ins Bonner Stadtgebiet, nach Bad Godesberg, Beuel, Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis oder ins Ahrtal (bis Bad Neuenahr-Ahrweiler). Anfahrt über A555, A565 und B9. Abstimmung und Beratung läuft über die Filiale Bonn, Drachenburgstraße 8." },
@@ -2995,32 +2431,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
 
-  "mh-das-soundsystem-3500w": {
-    excelName: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen – Mülheim an der Ruhr",
-    seoTitle: "D.A.S. PA-Anlage 3500W mieten Mülheim a. d. Ruhr",
-    metaDescription: "Große PA-Anlage 3500W RMS mit 2× 18\" Subwoofer & 2× 12\" Top in Mülheim an der Ruhr mieten. Bluetooth & App-Steuerung, bis 250 Personen – Hochzeit, Open-Air.",
-    h1: "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen mieten in Mülheim an der Ruhr – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Große PA-Anlage für das Ruhrgebiet", "Lieferumfang: Subwoofer, Tops, Distanzstangen & Powercon-Kabel", "Bluetooth-Streaming & Steuerung per DAS Audio App"],
-    useCaseBau: "",
-    useCaseEvent: "Komplett-Beschallung für Hochzeiten, Firmenevents, Festivals und DJ-Sets in Mülheim an der Ruhr, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen und Hattingen. Druckvoller Tiefbass durch zwei 18\"-Subwoofer, klare Höhen über die 12\"-Topteile.",
-    useCasePrivat: "Auch für große private Hochzeiten und Gartenfeste im Ruhrgebiet geeignet – Bluetooth-Streaming und App-Steuerung inklusive.",
-    primaryKeywords: "D.A.S. Soundsystem mieten Mülheim an der Ruhr, große PA-Anlage mieten Ruhrgebiet, Soundanlage Hochzeit mieten Essen, PA-Anlage 250 Personen mieten Ruhrgebiet, DJ Anlage mit Subwoofer mieten Mülheim, DAS Audio Vantec mieten Ruhrgebiet",
-    is247: false,
-    dailyPriceFrom: 90,
-    faqs: [
-      { q: "Wo wird das D.A.S. Soundsystem in Mülheim übergeben?", a: "Die Anlage wird aus unserem Hauptsitz Krefeld disponiert und ins Ruhrgebiet geliefert – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, in der Regel am nächsten Werktag." },
-      { q: "Aus welchen Komponenten besteht das Set?", a: "2× DAS Audio VANTEC-18A Aktiv-Subwoofer (18 Zoll), 2× DAS Audio VANTEC-12A Aktiv-Topteile (12 Zoll), 2× Distanzstangen, 2× Hybrid-Powercon-Linkkabel (3 m) und 2× XLR-Signalkabel (10 m)." },
-      { q: "Für wie viele Personen reicht die Anlage?", a: "Die 3500W RMS Systemleistung ist auf Veranstaltungen mit bis zu ca. 250 Personen ausgelegt – ideal für Hochzeiten und Open-Air-Events im Ruhrgebiet." },
-      { q: "Sind die Lautsprecher aktiv oder brauche ich eine Endstufe?", a: "Alle Komponenten sind aktiv – Subwoofer und Topteile haben eingebaute Endstufen samt DSP. Eine externe Endstufe ist nicht nötig." },
-      { q: "Kann ich Musik per Bluetooth abspielen?", a: "Ja, die VANTEC-12A Topteile haben einen integrierten Bluetooth-Empfänger. Streaming direkt vom Smartphone, Tablet oder Laptop ist möglich." },
-      { q: "Lässt sich die Anlage per App steuern?", a: "Ja. Über die DAS Audio Aliante App (iOS/Android) lassen sich EQ, Lautstärke, Crossover, Delay und Presets der VANTEC-Serie steuern." },
-      { q: "Welche Presets stehen zur Verfügung?", a: "Werkseitige DSP-Presets der VANTEC-Serie, u.a. für Live-Musik, DJ/Playback und Sprache sowie verschiedene Crossover-Einstellungen für Sub/Top-Betrieb." },
-      { q: "Sind Distanzstangen und Verbindungskabel enthalten?", a: "Ja, 2× Distanzstangen und 2× Hybrid-Powercon-Linkkabel (Strom + Signal kombiniert) sind im Lieferumfang enthalten." },
-      { q: "Wie hoch ist das Gesamtgewicht?", a: "Das komplette System wiegt ca. 130 kg inkl. Zubehör. Auf Wunsch liefern wir die Anlage direkt zur Veranstaltung ins Ruhrgebiet." },
-    ],
-  },
   "das-vantec-12a": {
-    excelName: "D.A.S. Audio Vantec 12A",
     seoTitle: "D.A.S. Audio Vantec 12A – Aktiver 12\" Lautsprecher",
     metaDescription: "Aktiver 2-Wege-Lautsprecher D.A.S. Audio Vantec 12A mit 1500 W Peak, Bluetooth und 135 dB SPL. Ideal für Veranstaltungen, Partys und Sprachbeschallungen.",
     h1: "D.A.S. Audio Vantec 12A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3028,8 +2439,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das System unterstützt die Beschallung von Konzerten und Bühnenshows sowie die Sprachbeschallung bei Tagungen.",
     useCasePrivat: "Dieser Lautsprecher eignet sich zur Hintergrundbeschallung bei Gartenpartys im privaten Bereich.",
-    primaryKeywords: "D.A.S. Audio Vantec 12A mieten in Krefeld, D.A.S. Audio Vantec 12A leihen in Krefeld, D.A.S. Audio Vantec 12A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Leistung des Lautsprechers?", a: "Der D.A.S. Audio Vantec 12A verfügt über eine Peak-Leistung von 1500 Watt." },
       { q: "Verfügt das Gerät über eine Bluetooth-Schnittstelle?", a: "Ja, der Lautsprecher ist mit einer Bluetooth-Funktion ausgestattet." },
@@ -3037,7 +2446,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "das-vantec-18a": {
-    excelName: "D.A.S. Audio Vantec 18A",
     seoTitle: "D.A.S. Audio Vantec 18A Aktiver 18\" Subwoofer",
     metaDescription: "Aktiver 18-Zoll-Subwoofer mit 2000 W Peak-Leistung und 134 dB max. SPL. Jetzt für Veranstaltungen in NRW mieten. Optional mit Distanzstangen.",
     h1: "D.A.S. Audio Vantec 18A mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3045,8 +2453,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Subwoofer ermöglicht die Bassverstärkung bei DJ-Sets und Konzerten sowie die Vollbereichs-Beschallung bei Festen.",
     useCasePrivat: "",
-    primaryKeywords: "D.A.S. Audio Vantec 18A mieten in Krefeld, D.A.S. Audio Vantec 18A leihen in Krefeld, D.A.S. Audio Vantec 18A mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Spitzenleistung erreicht der Vantec 18A?", a: "Der aktive Subwoofer verfügt über eine Peak-Leistung von 2000 W." },
       { q: "Wie hoch ist der maximale Schalldruckpegel?", a: "Das Gerät erreicht einen maximalen Schalldruckpegel von 134 dB SPL (Peak, 1 m)." },
@@ -3054,7 +2460,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "defender-micro-2": {
-    excelName: "Defender Micro 2 Kabelbrücke",
     seoTitle: "Defender Micro 2 Kabelbrücke | Mietkatalog",
     metaDescription: "Defender Micro 2 Kabelbrücke mit 2 Kanälen, 100 cm Länge und 2 t Achslast für Event und Bau. Jetzt technische Daten einsehen.",
     h1: "Defender Micro 2 Kabelbrücke mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3062,8 +2467,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Ermöglicht eine sichere Kabelführung über befahrene Baustellenbereiche.",
     useCaseEvent: "Dient der sicheren Kabelführung über Besucherwege und dem Schutz von Kabeln bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "Defender Micro 2 Kabelbrücke mieten in Krefeld, Defender Micro 2 Kabelbrücke leihen in Krefeld, Defender Micro 2 Kabelbrücke mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Belastbarkeit der Defender Micro 2?", a: "Die Kabelbrücke verfügt über eine maximale Achslast von 2 Tonnen." },
       { q: "Wie viele Kabel können in der Brücke geführt werden?", a: "Das Modell Typ 535-5 ist mit 2 Kabelkanälen ausgestattet." },
@@ -3071,7 +2474,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "defender-midi-5": {
-    excelName: "Defender Midi 5 Kabelbrücke",
     seoTitle: "Defender Midi 5 Kabelbrücke – 5 Kanäle",
     metaDescription: "Miete die Defender Midi 5 Kabelbrücke Typ 535-5. 5 Kabelkanäle, 5 t max. Achslast und Brandschutzklasse B2 für Baustellen und Events.",
     h1: "Defender Midi 5 Kabelbrücke mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3079,8 +2481,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Kabelbrücke ermöglicht eine sichere Kabelführung über befahrene Baustellenbereiche.",
     useCaseEvent: "Dieses Modell dient der sicheren Kabelführung über Besucherwege und dem Schutz von Kabeln bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "Defender Midi 5 Kabelbrücke mieten in Krefeld, Defender Midi 5 Kabelbrücke leihen in Krefeld, Defender Midi 5 Kabelbrücke mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Belastbarkeit der Defender Midi 5?", a: "Die Kabelbrücke ist für eine maximale Achslast von 5 Tonnen ausgelegt." },
       { q: "Wie viele Kabelkanäle stehen zur Verfügung?", a: "Das Modell Typ 535-5 verfügt über insgesamt 5 separate Kabelkanäle." },
@@ -3088,7 +2488,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "dessertteller-deluxe-21-10er": {
-    excelName: "Dessertteller Deluxe 21, 10er Set",
     seoTitle: "Dessertteller Deluxe 21, 10er Set | Sänger Darwin",
     metaDescription: "Dessertteller-Set der Serie Darwin von Sänger. Durchmesser 21,8 cm, spülmaschinenfest. 10 Stück pro Set für Gastronomie und private Feiern mieten.",
     h1: "Dessertteller Deluxe 21, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3096,8 +2495,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Geschirr ist für den Einsatz bei Hochzeiten, Festveranstaltungen sowie für Caterpillar-Einsätze und Tagungen konzipiert.",
     useCasePrivat: "Die Dessertteller eignen sich für die Bewirtung bei Familienfeiern und Geburtstagen.",
-    primaryKeywords: "Dessertteller Deluxe 21, 10er Set mieten in Krefeld, Dessertteller Deluxe 21, 10er Set leihen in Krefeld, Dessertteller Deluxe 21, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße haben die Dessertteller?", a: "Ein Teller hat einen Durchmesser von 21,8 cm und eine Höhe von 2,3 cm." },
       { q: "Ist das Geschirr spülmaschinenfest?", a: "Ja, die Dessertteller der Serie Darwin sind spülmaschinenfest." },
@@ -3105,7 +2502,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "dessertteller-simply-19-10er": {
-    excelName: "Dessertteller SIMPLY 19, 10er Set",
     seoTitle: "Dessertteller SIMPLY 19, 10er Set - Mietkatalog NRW",
     metaDescription: "Dessertteller SIMPLY 19 im 10er Set aus weißem Porzellan mit 19 cm Durchmesser. Ideal für Desserts, Vorspeisen und Kuchen bei Veranstaltungen.",
     h1: "Dessertteller SIMPLY 19, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3113,8 +2509,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Teller sind für Hochzeiten, Festveranstaltungen sowie Catering-Einsätze und Tagungen konzipiert.",
     useCasePrivat: "Dieses Geschirr-Set eignet sich für private Familienfeiern und Geburtstagsfeiern.",
-    primaryKeywords: "Dessertteller SIMPLY 19, 10er Set mieten in Krefeld, Dessertteller SIMPLY 19, 10er Set leihen in Krefeld, Dessertteller SIMPLY 19, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Durchmesser haben die Dessertteller?", a: "Die Dessertteller haben einen Durchmesser von 19 cm." },
       { q: "In welcher Stückzahl wird das Set vermietet?", a: "Das Set besteht aus insgesamt 10 Desserttellern." },
@@ -3122,7 +2516,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "diesel-kanister-10l": {
-    excelName: "Diesel Kanister 10 l",
     seoTitle: "Diesel Kanister 10 l - Zubehör für Mietgeräte",
     metaDescription: "10-Liter-Dieselkanister zum Nachtanken von Mietgeräten wie Minibaggern und Radladern. Die Übergabe erfolgt in leerem Zustand.",
     h1: "Diesel Kanister 10 l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3130,8 +2523,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dient als Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze, um Minibagger oder Radlader auf der Baustelle nachzutanken.",
     useCaseEvent: "",
     useCasePrivat: "Eignet sich als Erweiterung der Heimwerker-Ausstattung für den Betrieb dieselbetriebener Mietgeräte.",
-    primaryKeywords: "Diesel Kanister 10 l mieten in Krefeld, Diesel Kanister 10 l leihen in Krefeld, Diesel Kanister 10 l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wird der Kanister befüllt übergeben?", a: "Nein, der Kanister wird leer an den Mieter übergeben." },
       { q: "Welches Fassungsvermögen hat der Kanister?", a: "Das Volumen des Kanisters beträgt 10 Liter." },
@@ -3139,7 +2530,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "diesel-kanister-20l": {
-    excelName: "Diesel Kanister 20 l",
     seoTitle: "Diesel Kanister 20 l für Mietgeräte",
     metaDescription: "Leerer 20-Liter-Dieselkanister zum Nachtanken von Minibaggern und Radladern. Einfache Befüllung an Tankstellen für längere Einsätze.",
     h1: "Diesel Kanister 20 l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3147,8 +2537,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Kanister dient als Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze auf Baustellen.",
     useCaseEvent: "",
     useCasePrivat: "Dieses Zubehör fungiert als Erweiterung der Heimwerker-Ausstattung bei der Nutzung von Mietgeräten.",
-    primaryKeywords: "Diesel Kanister 20 l mieten in Krefeld, Diesel Kanister 20 l leihen in Krefeld, Diesel Kanister 20 l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wird der Kanister befüllt übergeben?", a: "Nein, der Dieselkanister wird im leeren Zustand an den Mieter übergeben." },
       { q: "Welches Fassungsvermögen hat der Kanister?", a: "Der Kanister verfügt über ein Volumen von 20 Litern." },
@@ -3156,7 +2544,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "dieseltankstelle-400l": {
-    excelName: "Sirocco Mobile Dieseltankstelle 400L/50L",
     seoTitle: "Sirocco Mobile Dieseltankstelle 400L/50L mieten | SLT Rental",
     metaDescription: "Sirocco Mobile Dieseltankstelle 400L/50L mieten in Krefeld. Dieseltank 400L  AdBluetank: 50L  jeweils eigene 12V Pumpe  Maße: 120 x 80 x 78,5 cm  Leer. Tag",
     h1: "Sirocco Mobile Dieseltankstelle 400L/50L mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3164,8 +2551,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Kraftstoffversorgung auf Baustellen, Betankung von Baggern, Radladern, Dumpern",
     useCaseEvent: "Dieselversorgung für Stromaggregate bei Open-Air-Events und Festivals",
     useCasePrivat: "Betankung von landwirtschaftlichen Geräten, Eigenverbrauch auf dem Grundstück",
-    primaryKeywords: "Sirocco Mobile Dieseltankstelle 400L/50L mieten in Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L leihen in Krefeld, Sirocco Mobile Dieseltankstelle 400L/50L mieten NRW",
-    is247: false,
     faqs: [
       { q: "Ist Diesel im Mietpreis enthalten?", a: "Nein – der Diesel ist nicht im Mietpreis enthalten. Die Tankstelle wird leer geliefert. Sie können den Diesel selbst befüllen oder über uns beziehen." },
       { q: "Welche Sicherheitsvorschriften gelten?", a: "Die mobile Dieseltankstelle ist ADR-konform und verfügt über eine Auffangwanne. Aufstellung nur auf ebenem, befestigtem Untergrund. Rauchen und offenes Feuer im Umkreis von 5 Metern verboten." },
@@ -3174,7 +2559,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "eibenstock-diamantbohrer-ehd1500": {
-    excelName: "Dosensenker Diamantbohrer",
     seoTitle: "Dosensenker Diamantbohrer mieten in Krefeld | SLT Rental",
     metaDescription: "Dosensenker Diamantbohrer mieten in Krefeld. Hersteller: Eibenstock  Leistungsaufnahme: 1.500 W  Nennspannung: 230 V  Nenndrehzahl: 0 -. Tagesmiete, fairer",
     h1: "Dosensenker Diamantbohrer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3182,8 +2566,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Dosensenker Diamantbohrer mieten in Krefeld, Dosensenker Diamantbohrer leihen in Krefeld, Dosensenker Diamantbohrer mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: saufnahme: 1.500 W. Das Gerät ist für Beton, Mauerwerk und Naturstein geeignet. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -3192,7 +2574,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "einhell-bauleuchte-te-cl18-2000": {
-    excelName: "Akku Bauleuchte",
     seoTitle: "Akku Bauleuchte Bosch 2.200 lm mieten",
     metaDescription: "LED-Bauleuchte mit 2.200 Lumen und zwei Helligkeitsstufen. Betrieb mit 14,4 V oder 18 V Akkus. Gewicht 1,9 kg ohne Akku.",
     h1: "Akku Bauleuchte mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3200,8 +2581,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Einsatz als Baustellenbeleuchtung bei verlängerten Arbeitszeiten.",
     useCaseEvent: "",
     useCasePrivat: "Verwendung als Außenbeleuchtung bei Garten- und Heimwerker-Arbeiten.",
-    primaryKeywords: "Akku Bauleuchte mieten in Krefeld, Akku Bauleuchte leihen in Krefeld, Akku Bauleuchte mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Leuchtkraft der Bauleuchte?", a: "Die Leuchte erreicht einen Lichtstrom von 2.200 Lumen und verfügt über zwei Helligkeitsstufen." },
       { q: "Wie lange ist die Betriebszeit pro Amperestunde (Ah)?", a: "Die Betriebszeit beträgt bei 18 V Akkus 100 min/Ah und bei 14,4 V Akkus 80 min/Ah." },
@@ -3209,7 +2588,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "einhell-laubbläser-gp-lb": {
-    excelName: "Akku- Laubbläser",
     seoTitle: "Akku- Laubbläser mieten in Krefeld | SLT Rental",
     metaDescription: "Akku- Laubbläser mieten in Krefeld. Hersteller: Einhell  neue Technologie, Bürstenloser Motor  Turbo Funktion  Sicherer Betrie. Tagesmiete, fairer Preis, L",
     h1: "Akku- Laubbläser mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3217,8 +2595,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Akku- Laubbläser mieten in Krefeld, Akku- Laubbläser leihen in Krefeld, Akku- Laubbläser mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
       { q: "Ist Kraftstoff / Betriebsmittel im Mietpreis enthalten?", a: "Nein – der Kraftstoff ist nicht im Mietpreis enthalten. Bitte das Gerät mit vollem Tank zurückgeben. Beim Benzin-Modell: handelsübliches Super-Benzin ohne Ethanol-Zusatz (E5) verwenden." },
@@ -3227,7 +2603,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "einhell-nageler-te-cn": {
-    excelName: "Akku- Nageler",
     seoTitle: "Akku- Nageler mieten in Krefeld | SLT Rental",
     metaDescription: "Akku- Nageler mieten in Krefeld. Hersteller: Einhell  Klammernbreite: 5.7 mm  Klammernlänge max.: 22 mm  Klammernlänge min. Tagesmiete, fairer Preis, Liefe",
     h1: "Akku- Nageler mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3235,8 +2610,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "Akku- Nageler mieten in Krefeld, Akku- Nageler leihen in Krefeld, Akku- Nageler mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Lieferumfang: auswählen. Akkus und Ladegerät sind bei Akku-Werkzeugen inklusive. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Leistung: ählen. Das Gerät ist für den professionellen Handwerkseinsatz ausgelegt – Details finden Sie in den technischen Daten. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -3245,7 +2618,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdbohrer-benzin": {
-    excelName: "Benzin-Erdbohrer",
     seoTitle: "Benzin-Erdbohrer mieten – 100/150/200 mm Bohrschnecken | SLT Rental",
     metaDescription: "Benzin-Erdbohrer mieten mit 100, 150 oder 200 mm Bohrschnecke. Ideal für Zaunpfähle, Pflanzlöcher & Fundamente. Ab Krefeld, Bonn und Mülheim.",
     h1: "Benzin-Erdbohrer mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3258,8 +2630,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Fundamentlöcher für Pergolen, Carports, Terrassenüberdachungen und Zaunanlagen im GaLaBau sowie Bodenproben und Erdankersetzen.",
     useCaseEvent: "Setzen von Absperrpfosten, temporären Zaunfundamenten und Bodenankern für Event-Aufbauten (Zelte, Bühnen).",
     useCasePrivat: "Zaunpfähle, Wäschespinnen-Fundamente, Pflanzlöcher für Bäume/Sträucher, Rankgerüste und Erdanker im eigenen Garten.",
-    primaryKeywords: "Benzin-Erdbohrer mieten in Krefeld, Erdbohrer mieten Krefeld, Erdlochbohrer leihen NRW, Motorerdbohrer mit Bohrschnecke mieten",
-    is247: false,
     faqs: [
       { q: "Welche Bohrschnecken-Größen kann ich beim Benzin-Erdbohrer auswählen?", a: "Du kannst im Buchungsprozess zwischen drei Schnecken-Durchmessern wählen: 100 mm (Erdanker, dünne Zaunpfähle, Bodenproben), 150 mm (Standard-Zaunpfosten, Sträucher, kleinere Pflanzlöcher) und 200 mm (Fundamentlöcher, Pergola- und Carport-Pfosten, größere Pflanzungen). Alle drei Größen sind an jedem Standort verfügbar." },
       { q: "Welche Schnecke brauche ich für einen Standard-Zaunpfahl?", a: "Für einen Standard-Holzpfosten von 7×7 bis 9×9 cm passt eine 150 mm Schnecke – so bleibt genug Platz für Punktfundament oder Beton rund um den Pfahl. Für dünne Metall- oder Wildzaunpfähle reichen 100 mm, für Doppelstab-Torpfosten oder betonierte Fundamente lieber 200 mm nehmen." },
@@ -3274,7 +2644,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "erdrakete-45mm": {
 
-    excelName: "Erdrakete 45 mm",
     seoTitle: "Erdrakete 45 mm mieten Krefeld | Glasfaser & Kabel grabenlos",
     metaDescription: "Erdrakete 45 mm mieten in Krefeld – die kompakte Lösung für Glasfaser, Bewässerung und einzelne Kabel ohne Aufgrabung. Nur 9 kg, 0,35 m³/min Luftbedarf.",
     h1: "Erdrakete 45 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3282,8 +2651,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "FTTH-Glasfaserhausanschlüsse, Verlegung einzelner Stromkabel und Leerrohre unter Gehwegen, Einfahrten und Hofflächen ohne Aufbruch von Pflaster, Asphalt oder Rasen.",
     useCaseEvent: "",
     useCasePrivat: "Stromkabel zum Gartenhaus, Bewässerungsleitungen unter Wegen, Beleuchtung im Vorgarten – sauber verlegt ohne aufzugraben.",
-    primaryKeywords: "Erdrakete 45 mm mieten Krefeld, Bodenrakete 45mm leihen, FTTH Glasfaser Erdrakete mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wofür ist die 45 mm Erdrakete besonders geeignet?", a: "Sie ist die kompakteste unserer Erdraketen und ideal für FTTH-Glasfaser, Bewässerungsleitungen, einzelne Stromkabel und kleine Leerrohre bis ca. DN 40. Für größere Querschnitte sind die 65 mm oder 75 mm besser geeignet." },
       { q: "Welchen Kompressor brauche ich?", a: "Mit nur 0,35 m³/min Luftbedarf reicht bereits ein kleiner mobiler Baukompressor – ideal für beengte Hofeinfahrten oder Gärten ohne Platz für ein großes Aggregat." },
@@ -3293,7 +2660,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdrakete-45mm-aggregat": {
-    excelName: "Erdrakete 45 mm",
     seoTitle: "Erdrakete 45 mm mieten Krefeld | Glasfaser & Kabel grabenlos",
     metaDescription: "Erdrakete 45 mm mieten in Krefeld – kompakte Variante für Glasfaser, Bewässerung und kleine Leerrohre. Geringer Luftbedarf, einfaches Handling.",
     h1: "Erdrakete 45 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3301,8 +2667,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "FTTH-Glasfaserhausanschlüsse, einzelne Strom- und Leerrohre unter Gehwegen und Einfahrten – grabenlos und ohne Pflasterschäden.",
     useCaseEvent: "",
     useCasePrivat: "Stromkabel zum Gartenhaus, Bewässerungsleitungen, Vorgartenbeleuchtung – sauber unter Wegen verlegen.",
-    primaryKeywords: "Erdrakete 45 mm mieten Krefeld, FTTH Erdrakete leihen, kleine Bodenrakete mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wofür ist die 45 mm besonders gut?", a: "Für FTTH-Glasfaser, Bewässerung und einzelne Kabel bis ca. DN 40. Sehr kompakt, ideal in beengten Lagen." },
       { q: "Welcher Kompressor genügt?", a: "Schon ein kleiner Baukompressor mit 0,35 m³/min reicht aus." },
@@ -3311,7 +2675,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdrakete-65mm": {
-    excelName: "Erdrakete 65 mm",
     seoTitle: "Erdrakete 65 mm mieten Krefeld | Hausanschluss Wasser & Strom",
     metaDescription: "Erdrakete 65 mm mieten in Krefeld – die Allrounderin für Wasser-, Strom- und Mehrfach-Glasfaserhausanschlüsse. 100 J Schlagenergie, 22,5 kg.",
     h1: "Erdrakete 65 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3319,8 +2682,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Klassische Hausanschlüsse für Wasser, Strom und Gas, Bündelung mehrerer Glasfaserrohre, Querung schmaler Straßen, Verlegung von Wasserleitungen DN 25–DN 50.",
     useCaseEvent: "",
     useCasePrivat: "Wasserleitung zum Gartenhaus, Stromanschluss für Carport oder Sauna, Verlegung mehrerer Leerrohre in einem Zug.",
-    primaryKeywords: "Erdrakete 65 mm mieten Krefeld, Hausanschluss Erdrakete leihen, Bodenrakete 65mm NRW",
-    is247: false,
     faqs: [
       { q: "Wann nehme ich die 65 mm statt der 45 mm?", a: "Sobald du Wasser-, Strom- oder Gashausanschlüsse setzen möchtest oder mehrere Leerrohre gebündelt verlegst. Mit 100 J Schlagenergie kommt sie auch in festeren Böden besser durch." },
       { q: "Welche Kompressorleistung ist nötig?", a: "Empfohlen 1,20 m³/min bei 7 bar Arbeitsdruck. Mit unseren mobilen Kompressoren (z. B. 4 m³) bist du hier auf der sicheren Seite – die Kombi kannst du gleich mitbuchen." },
@@ -3330,7 +2691,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdrakete-65mm-aggregat": {
-    excelName: "Erdrakete 65 mm",
     seoTitle: "Erdrakete 65 mm mieten Krefeld | Hausanschluss Wasser & Strom",
     metaDescription: "Erdrakete 65 mm mieten in Krefeld – Allrounderin für Wasser-, Strom- und Glasfaser-Hausanschlüsse. 100 J Schlagenergie, ideal in Kombi mit Kompressor.",
     h1: "Erdrakete 65 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3338,8 +2698,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Hausanschlüsse für Wasser, Strom und Gas, Bündelung mehrerer Leerrohre, Straßenquerung – grabenlos und schnell.",
     useCaseEvent: "",
     useCasePrivat: "Wasser zum Gartenhaus, Strom zum Carport, mehrere Leerrohre auf einmal verlegen.",
-    primaryKeywords: "Erdrakete 65 mm mieten Krefeld, Hausanschluss Erdrakete leihen, Bodenrakete 65mm NRW",
-    is247: false,
     faqs: [
       { q: "Wann lohnt sich die 65 mm?", a: "Bei Wasser-, Strom-, Gashausanschlüssen und gebündelten Leerrohren. 100 J Schlagenergie für mittelfeste bis festere Böden." },
       { q: "Kompressor?", a: "Empfohlen 1,20 m³/min bei 7 bar – z. B. mit unserem 4 m³ Kompressor in Kombi buchbar." },
@@ -3348,7 +2706,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdrakete-75mm": {
-    excelName: "Erdrakete 75 mm",
     seoTitle: "Erdrakete 75 mm mieten Krefeld | Straßenquerung & FTTH | Auf Anfrage",
     metaDescription: "Erdrakete 75 mm mieten in Krefeld – die kraftvollste Variante für Straßenquerungen, größere Hausanschlüsse und vertikale Pfahlgründungen. Auf Anfrage.",
     h1: "Erdrakete 75 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3356,8 +2713,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Unterquerung von Straßen, Gleisanlagen und Gebäuden, Hausanschlüsse für Gas, Wasser und Glasfaser (FTTH), Bündelverlegung mehrerer Schutzrohre sowie vertikale Pfahlgründungen für Schilder, Pfosten und Geländer.",
     useCaseEvent: "",
     useCasePrivat: "Größere Wasser- oder Stromanschlüsse zum Anbau, Pool oder Gartenhaus – grabenlos auch unter Asphalt und Pflaster.",
-    primaryKeywords: "Erdrakete 75 mm mieten Krefeld, Straßenquerung Erdrakete leihen, FTTH 75mm Bodenrakete NRW",
-    is247: false,
     faqs: [
       { q: "Was kann die 75 mm besser als die 65 mm?", a: "Mit 34 kg Eigengewicht und 1.465 mm Länge erzeugt die 75 mm noch mehr Vortriebsimpuls und schafft längere und tiefere Strecken – ideal für Straßenquerungen und größere Hausanschlüsse." },
       { q: "Wieviel Druckluft brauche ich?", a: "Der Luftverbrauch liegt bei ca. 1 m³/min. Wir empfehlen die Kombi mit unserem 4 m³ Kompressor – damit hast du genug Reserve auch bei längeren Schüssen." },
@@ -3367,7 +2722,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdrakete-75mm-aggregat": {
-    excelName: "Erdrakete 75 mm",
     seoTitle: "Erdrakete 75 mm mieten Krefeld | Straßenquerung & FTTH | Auf Anfrage",
     metaDescription: "Erdrakete 75 mm mieten in Krefeld – kraftvollste Variante für Straßenquerungen, Hausanschlüsse und Pfahlgründungen. Kombi mit Kompressor möglich.",
     h1: "Erdrakete 75 mm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3375,8 +2729,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Unterquerung von Straßen, Gleisen und Gebäuden, große Hausanschlüsse Gas/Wasser/FTTH, vertikale Pfahlgründungen für Schilder und Pfosten.",
     useCaseEvent: "",
     useCasePrivat: "Größere Strom- oder Wasseranschlüsse zum Anbau oder Gartenhaus – auch unter Asphalt und Pflaster.",
-    primaryKeywords: "Erdrakete 75 mm mieten Krefeld, Straßenquerung Bodenrakete leihen, FTTH 75mm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wann brauche ich die 75 mm?", a: "Für lange Strecken, Straßenquerungen, größere Hausanschlüsse und Pfahlgründungen." },
       { q: "Luftbedarf?", a: "Ca. 1 m³/min – ideal mit dem 4 m³ Kompressor in Kombi-Buchung." },
@@ -3385,7 +2737,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "erdungsspiess-1-5m": {
-    excelName: "Erdungsspieß 1,5m mit 3m Leitung",
     seoTitle: "Erdungsspieß 1,5m mit 3m Leitung | Mietkatalog",
     metaDescription: "Erdungs-Anschlussleitung 16mm² mit 1,5m Erdungsspieß und 3m H07V-K Leitung zur Erdung von Baustromverteilern und Aggregaten.",
     h1: "Erdungsspieß 1,5m mit 3m Leitung mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3393,8 +2744,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Zur Schutzerdung von temporären Stromanlagen auf Baustellen steht dieses Set zur Verfügung.",
     useCaseEvent: "Das Produkt dient der Erdung von Aggregaten bei Outdoor-Events, um ortveränderliche Einrichtungen abzusichern.",
     useCasePrivat: "",
-    primaryKeywords: "Erdungsspieß 1,5m mit 3m Leitung mieten in Krefeld, Erdungsspieß 1,5m mit 3m Leitung leihen in Krefeld, Erdungsspieß 1,5m mit 3m Leitung mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Querschnitt hat die Anschlussleitung?", a: "Die flexible H07V-K Verbindungsleitung verfügt über einen Querschnitt von 16 mm²." },
       { q: "Wie lang sind der Spieß und das Kabel?", a: "Der Erdungsspieß hat eine Länge von 1,5 m, während die grün-gelbe Leitung 3 m lang ist." },
@@ -3402,7 +2751,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ethercon-kabel-20m-cat5e": {
-    excelName: "Major EtherCon Kabel Cat-5e 20m",
     seoTitle: "Major EtherCon Kabel Cat-5e 20m",
     metaDescription: "Major EtherCon Netzwerkkabel mit 20 m Länge in der Kategorie Cat-5e für die Datenübertragung.",
     h1: "Major EtherCon Kabel Cat-5e 20m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3410,8 +2758,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Cat-5e Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major EtherCon Kabel Cat-5e 20m mieten in Krefeld, Major EtherCon Kabel Cat-5e 20m leihen in Krefeld, Major EtherCon Kabel Cat-5e 20m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major EtherCon Kabel?", a: "Das Kabel hat eine Gesamtlänge von 20 Metern." },
       { q: "Welcher Netzwerkkategorie entspricht dieses Produkt?", a: "Es handelt sich um ein Netzwerkkabel der Kategorie Cat-5e." },
@@ -3419,7 +2765,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ethercon-kabel-25m-cat5e": {
-    excelName: "Major EtherCon Kabel Cat-5e 25m",
     seoTitle: "Major EtherCon Kabel Cat-5e 25m - Netzwerkkabel",
     metaDescription: "Major EtherCon Kabel für die Datenübertragung. Länge: 25 Meter, Kategorie: Cat-5e. Geeignet für Event- und Bühnentechnik.",
     h1: "Major EtherCon Kabel Cat-5e 25m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3427,8 +2772,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major EtherCon Kabel Cat-5e 25m mieten in Krefeld, Major EtherCon Kabel Cat-5e 25m leihen in Krefeld, Major EtherCon Kabel Cat-5e 25m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major EtherCon Kabel?", a: "Das Kabel verfügt über eine Gesamtlänge von 25 Metern." },
       { q: "Welcher Netzwerkkategorie entspricht das Kabel?", a: "Dieses Modell entspricht der Kategorie Cat-5e." },
@@ -3436,7 +2779,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ethercon-kabel-3m-cat7": {
-    excelName: "Major EtherCon Kabel 3 m, Cat 7",
     seoTitle: "Major EtherCon Kabel 3 m, Cat 7 bei Ihrem Vermieter",
     metaDescription: "3 m Cat. 7 Netzwerkkabel der Marke Major. Geeignet für die Datenübertragung im Veranstaltungsbereich. Jetzt Mietkatalog für NRW einsehen.",
     h1: "Major EtherCon Kabel 3 m, Cat 7 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3444,8 +2786,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel dient der Datenübertragung zwischen Bühnen-Equipment und der Verbindung von Lichtsteuerungen mit Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major EtherCon Kabel 3 m, Cat 7 mieten in Krefeld, Major EtherCon Kabel 3 m, Cat 7 leihen in Krefeld, Major EtherCon Kabel 3 m, Cat 7 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major EtherCon Kabel?", a: "Das Kabel hat eine Gesamtlänge von 3 Metern." },
       { q: "Welcher Kategorie entspricht das Netzwerkkabel?", a: "Es handelt sich um ein Cat 7 Kabel." },
@@ -3453,7 +2793,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ethercon-kabel-50m-cat5e": {
-    excelName: "Major EtherCon Kabeltrommel Cat-5e 50m",
     seoTitle: "Major EtherCon Kabeltrommel Cat-5e 50m",
     metaDescription: "50m Major EtherCon Cat-5e Netzwerkkabel auf einer Schill GT310 Trommel. Zur Datenübertragung zwischen Bühnen-Equipment und Steuerungssystemen.",
     h1: "Major EtherCon Kabeltrommel Cat-5e 50m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3461,8 +2800,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel ermöglicht die Datenübertragung zwischen Bühnen-Equipment sowie die Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major EtherCon Kabeltrommel Cat-5e 50m mieten in Krefeld, Major EtherCon Kabeltrommel Cat-5e 50m leihen in Krefeld, Major EtherCon Kabeltrommel Cat-5e 50m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Kabellänge bietet diese Major EtherCon Trommel?", a: "Die Kabellänge beträgt 50 Meter." },
       { q: "Welcher Trommeltyp wird für das Major EtherCon Kabel verwendet?", a: "Das Netzwerkkabel ist auf einer Schill GT310 Trommel aufgewickelt." },
@@ -3470,7 +2807,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-5x12m": {
-    excelName: "Party- / Eventzelt 5x12m extra hoch",
     seoTitle: "Party- / Eventzelt 5x12m extra hoch mieten | 60 m² feuerfest",
     metaDescription: "Party- / Eventzelt 5x12m extra hoch (2,3 m) mit 60 m² Grundfläche, feuerfest nach EN-13501-1. 500 g/m² PVC-Plane. Kapazität bis ca. 100 Personen.",
     h1: "Party- / Eventzelt 5x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3478,8 +2814,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Witterungsschutz für temporäre Baustelleneinrichtungen und Materiallager mit Brandschutzanforderung.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen, Stadtfeste sowie Märkte und Outdoor-Events mit erhöhtem Brandschutzbedarf.",
     useCasePrivat: "Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste mit größerem Gästekreis.",
-    primaryKeywords: "Party- / Eventzelt 5x12m extra hoch mieten in Krefeld, Eventzelt 5x12m leihen in Krefeld, feuerfestes Festzelt 60 m² mieten NRW",
-    is247: false,
     faqs: [
       { q: "Ist das 5x12m Zelt feuerfest?", a: "Ja, die rasterfaserverstärkte 500 g/m² PVC-Plane ist feuerfest nach der Norm EN-13501-1 und damit für Veranstaltungen mit Brandschutzauflagen geeignet." },
       { q: "Wie viele Personen finden im 5x12m Zelt Platz?", a: "Bei 60 m² Grundfläche bietet das Zelt stehend Platz für ca. 100 Personen (0,6 m²/Person) und bei Reihenbestuhlung oder Bierzeltgarnituren ca. 84 Personen (0,71 m²/Person)." },
@@ -3487,7 +2821,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-partyzelt-5x12m": {
-    excelName: "Party- / Eventzelt 5x12m extra hoch",
     seoTitle: "Party- / Eventzelt 5x12m extra hoch mieten in Bonn | 60 m²",
     metaDescription: "Feuerfestes Eventzelt 5x12m (2,3 m Durchgangshöhe) für Bonn auf Anfrage. 60 m² Fläche, EN-13501-1, 500 g/m² PVC-Plane, inkl. Dachspanner.",
     h1: "Party- / Eventzelt 5x12m extra hoch mieten in Bonn – Auf Anfrage bei SLT Rental",
@@ -3495,33 +2828,13 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Witterungs- und Brandschutz für Baustellen im Großraum Bonn, Königswinter, Siegburg und Troisdorf.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen sowie Stadtfeste in Bonn mit Brandschutzauflage.",
     useCasePrivat: "Familienfeiern, Geburtstage und Gartenpartys im Rhein-Sieg-Kreis mit größerem Gästekreis.",
-    primaryKeywords: "Party- / Eventzelt 5x12m mieten in Bonn, Eventzelt 5x12m leihen in Bonn, feuerfestes Festzelt 60 m² mieten Bonn",
-    is247: false,
     faqs: [
       { q: "Ist das 5x12m Eventzelt in Bonn sofort verfügbar?", a: "In Bonn stellen wir das 5x12m Zelt auf Anfrage bereit – wir disponieren es aus unserem Standortverbund. Sende uns Datum und Lieferort, wir bestätigen die Verfügbarkeit." },
       { q: "Erfüllt das Zelt die Brandschutzauflagen für öffentliche Veranstaltungen in Bonn?", a: "Ja, die PVC-Plane ist feuerfest nach EN-13501-1 und damit für genehmigungspflichtige öffentliche Veranstaltungen in Bonn geeignet." },
       { q: "Liefert SLT Rental das Zelt in den Großraum Bonn?", a: "Ja, wir liefern in den Großraum Bonn inklusive Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim und Bornheim. Lieferkosten kalkulieren wir individuell." },
     ],
   },
-  "mh-partyzelt-5x12m": {
-    excelName: "Party- / Eventzelt 5x12m extra hoch",
-    seoTitle: "Party- / Eventzelt 5x12m extra hoch mieten in Mülheim an der Ruhr",
-    metaDescription: "Feuerfestes Eventzelt 5x12m (2,3 m) für Mülheim an der Ruhr auf Anfrage. 60 m² Fläche, EN-13501-1, 500 g/m² PVC-Plane, inkl. Dachspanner.",
-    h1: "Party- / Eventzelt 5x12m extra hoch mieten in Mülheim an der Ruhr – Auf Anfrage bei SLT Rental",
-    h2s: ["Feuerfeste Konstruktion für Events im Ruhrgebiet", "Materialeigenschaften und Brandschutz", "Verfügbarkeit, Lieferung und Rückgabe in Mülheim an der Ruhr"],
-    useCaseBau: "Witterungs- und Brandschutz für Baustellen in Mülheim an der Ruhr, Duisburg, Oberhausen und Essen.",
-    useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen sowie Stadtfeste im westlichen Ruhrgebiet mit Brandschutzauflage.",
-    useCasePrivat: "Familienfeiern, Geburtstage und Gartenpartys in Mülheim an der Ruhr und Umgebung mit größerem Gästekreis.",
-    primaryKeywords: "Party- / Eventzelt 5x12m mieten in Mülheim an der Ruhr, Eventzelt 5x12m leihen Ruhrgebiet, feuerfestes Festzelt 60 m² mieten Mülheim",
-    is247: false,
-    faqs: [
-      { q: "Ist das 5x12m Eventzelt in Mülheim an der Ruhr sofort verfügbar?", a: "In Mülheim an der Ruhr stellen wir das 5x12m Zelt auf Anfrage bereit – wir disponieren es aus unserem Standortverbund. Sende uns Datum und Lieferort, wir bestätigen die Verfügbarkeit." },
-      { q: "Erfüllt das Zelt die Brandschutzauflagen für öffentliche Veranstaltungen?", a: "Ja, die PVC-Plane ist feuerfest nach EN-13501-1 und damit für genehmigungspflichtige öffentliche Veranstaltungen im Ruhrgebiet geeignet." },
-      { q: "Liefert SLT Rental das Zelt nach Mülheim an der Ruhr?", a: "Ja, wir liefern Mülheim an der Ruhr und das gesamte westliche Ruhrgebiet inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Lieferkosten kalkulieren wir individuell." },
-    ],
-  },
   "eventzelt-6x12m": {
-    excelName: "Party- / Eventzelt 6x12m extra hoch",
     seoTitle: "Party- / Eventzelt 6x12m extra hoch – 72 m² Mietzelt weiß",
     metaDescription: "Party- / Eventzelt 6x12m mit 2,6m Durchgangshöhe. 72 m² Fläche, feuerfeste 500 g/m² PVC-Plane nach EN-13501-1. Kapazität bis zu 120 Personen.",
     h1: "Party- / Eventzelt 6x12m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3529,8 +2842,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 6x12m extra hoch mieten in Krefeld, Party- / Eventzelt 6x12m extra hoch leihen in Krefeld, Party- / Eventzelt 6x12m extra hoch mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Brandschutz erfüllt das Party- / Eventzelt?", a: "Die rasterfaserverstärkte PVC-Plane des Zeltes ist feuerfest nach der Norm EN-13501-1." },
       { q: "Wie viele Personen finden in dem Zelt Platz?", a: "Das Zelt bietet stehend Platz für ca. 120 Personen und bei Bestuhlung Platz für ca. 101 Personen." },
@@ -3538,7 +2849,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "eventzelt-6x8m": {
-    excelName: "Party- / Eventzelt 6x8m extra hoch",
     seoTitle: "Party- / Eventzelt 6x8m extra hoch – 48 m² Mietzelt",
     metaDescription: "Mieten Sie ein Party- / Eventzelt (6x8m) mit 2,6m Durchgangshöhe. 500 g/m² PVC-Plane, inklusive Seitenwänden und Dachstangen. Kapazität bis zu 80 Personen.",
     h1: "Party- / Eventzelt 6x8m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3546,8 +2856,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einsetzbar für Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Geeignet für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 6x8m extra hoch mieten in Krefeld, Party- / Eventzelt 6x8m extra hoch leihen in Krefeld, Party- / Eventzelt 6x8m extra hoch mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Durchgangshöhe des Zeltes?", a: "Die Durchgangshöhe beträgt bei diesem Modell extra hohe 2,6 Meter." },
       { q: "Wie viele Personen finden im Zelt Platz?", a: "Das Zelt bietet stehend Platz für ca. 80 Personen und bei Bestuhlung Platz für ca. 68 Personen." },
@@ -3555,7 +2863,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "fliesenschneider-80cm": {
-    excelName: "Fliesenschneider 80cm",
     seoTitle: "Fliesenschneider 80cm mieten - Schnittlänge 800 mm",
     metaDescription: "Profi-Fliesenschneider für Keramikfliesen. Schnittlänge bis 800 mm, Schneidleistung bis 14 mm. Jetzt für Ihr Projekt in NRW mieten.",
     h1: "Fliesenschneider 80cm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3563,8 +2870,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät wird für den präzisen Zuschnitt von Wand- und Bodenfliesen auf Baustellen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Unterstützt Privatanwender bei Fliesenarbeiten im Rahmen einer Bad- oder Küchenrenovierung.",
-    primaryKeywords: "Fliesenschneider 80cm mieten in Krefeld, Fliesenschneider 80cm leihen in Krefeld, Fliesenschneider 80cm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Schnittlänge bietet der Fliesenschneider?", a: "Das Gerät verfügt über eine maximale Schnittlänge von 800 mm." },
       { q: "Bis zu welcher Fliesendicke kann das Gerät genutzt werden?", a: "Die maximale Schneidleistung des Fliesenschneiders liegt bei einer Materialstärke von 14 mm." },
@@ -3572,7 +2877,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "freischneider-ps162": {
-    excelName: "Freischneider",
     seoTitle: "Freischneider mieten in Krefeld | SLT Rental",
     metaDescription: "Freischneider mieten in Krefeld. Typ: PS162  Schwerdlänge: 40 cm  Leistung: 2,6 kW  Maximaler Durchmesser der Fäden: 4,4 cm. Tagesmiete, fairer Preis, Lief",
     h1: "Freischneider mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3580,8 +2884,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grünflächen auf Bauprojekten pflegen, Landschaftsbau, Böschungsmahd",
     useCaseEvent: "Außengelände vor Events herrichten, Festivalgelände vorbereiten",
     useCasePrivat: "Frühjahrs-Rasenpflege, Beete anlegen, Hecke schneiden, Laub entfernen",
-    primaryKeywords: "Freischneider mieten in Krefeld, Freischneider leihen in Krefeld, Freischneider mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Flächengröße ist das Gerät geeignet?", a: "Die Arbeitsbreite entnehmen Sie den technischen Daten. Als Richtwert: Mit einer Arbeitsbreite von 30–40 cm können ca. 500–1.000 m² pro Stunde bearbeitet werden. Bei größeren Flächen bieten wir leistungsstärkere Modelle an." },
       { q: "Ist Kraftstoff / Betriebsmittel im Mietpreis enthalten?", a: "Nein – der Kraftstoff ist nicht im Mietpreis enthalten. Bitte das Gerät mit vollem Tank zurückgeben. Beim Benzin-Modell: handelsübliches Super-Benzin ohne Ethanol-Zusatz (E5) verwenden." },
@@ -3590,7 +2892,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "fugenschneider-bs50e": {
-    excelName: "Fugenschneider 13PS",
     seoTitle: "Fugenschneider 13PS mieten in Krefeld | BS50E ab 39 €/Tag",
     metaDescription: "Fugenschneider BS50E mit 13 PS Benzinmotor, 500 mm Trennscheibe und E-Start mieten in Krefeld. Ideal für Asphalt, Beton und Frischbeton. Ab 39 €/Tag brutto inkl. 19 % USt.",
     h1: "Fugenschneider 13PS mieten in Krefeld – BS50E bei SLT Rental",
@@ -3598,8 +2899,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Fugenschneider BS50E mit 13 PS Benzinmotor und 500 mm Trennscheibe eignet sich für das professionelle Schneiden von Dehnungsfugen, Fugen und Schnitten in Asphalt, Beton und Frischbeton. Dank regulierbarer Schleiflast (80–200 kg) und 450 U/min ist das Gerät auch als Schleifmaschine einsetzbar.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Fugenschneider 13PS mieten Krefeld, Fugenschneider BS50E mieten Krefeld, Fugenschneider 13PS leihen NRW",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Welche maximale Trennscheibengröße kann verwendet werden?", a: "Das Gerät ist für Trennscheiben bis zu einer maximalen Größe von 500 mm ausgelegt." },
@@ -3609,7 +2908,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-fugenschneider-bs50e": {
-    excelName: "Fugenschneider 13PS",
     seoTitle: "Fugenschneider 13PS mieten in Bonn | BS50E ab 39 €/Tag",
     metaDescription: "Fugenschneider BS50E mit 13 PS Benzinmotor und 500 mm Trennscheibe mieten in Bonn. Für Asphalt, Beton und Frischbeton. Ab 39 €/Tag brutto inkl. 19 % USt.",
     h1: "Fugenschneider 13PS mieten in Bonn – BS50E bei SLT Rental",
@@ -3617,8 +2915,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Im Rhein-Sieg-Kreis und im Großraum Bonn nutzen Bauunternehmen den BS50E für das Fugenschneiden in Asphaltbelägen, Betonfugen und Frischbeton. Mit 13 PS, E-Start und 500 mm Trennscheibe lassen sich auch längere Schnitte in Straßenbau und Pflasterarbeiten effizient ausführen. Die regulierbare Schleiflast (80–200 kg) ermöglicht den Einsatz auch als Schleifmaschine.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Fugenschneider 13PS mieten Bonn, Fugenschneider BS50E mieten Bonn, Fugenschneider 13PS leihen Rhein-Sieg",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wo hole ich den Fugenschneider 13PS in Bonn ab?", a: "Die Abholung erfolgt am SLT Rental Standort Bonn. Das Gerät wiegt 280 kg und wird auf einem geeigneten Anhänger oder Transporter transportiert." },
@@ -3629,7 +2925,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-fugenschneider-bs50e": {
-    excelName: "Fugenschneider 13PS",
     seoTitle: "Fugenschneider 13PS mieten in Mülheim a. d. Ruhr | BS50E ab 39 €/Tag",
     metaDescription: "Fugenschneider BS50E mit 13 PS Benzinmotor und 500 mm Trennscheibe mieten in Mülheim an der Ruhr. Für Asphalt, Beton und Frischbeton. Ab 39 €/Tag brutto inkl. 19 % USt.",
     h1: "Fugenschneider 13PS mieten in Mülheim an der Ruhr – BS50E bei SLT Rental",
@@ -3637,8 +2932,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Im Ruhrgebiet rund um Mülheim, Essen, Duisburg und Oberhausen wird der BS50E für Fugen- und Schnittarbeiten in Asphalt, Beton und Frischbeton eingesetzt. Der 13 PS Benzinmotor mit E-Start und die 500 mm Trennscheibe erlauben auch längere Schnitte im Straßen- und Wegebau. Die regulierbare Schleiflast (80–200 kg) ermöglicht zusätzlich den Einsatz als Schleifmaschine.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Fugenschneider 13PS mieten Mülheim, Fugenschneider BS50E mieten Mülheim an der Ruhr, Fugenschneider 13PS mieten Ruhrgebiet",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wo kann ich den Fugenschneider 13PS in Mülheim an der Ruhr abholen?", a: "Die Abholung erfolgt am SLT Rental Standort Mülheim an der Ruhr. Von hier erreichst Du bequem auch Essen, Duisburg, Oberhausen und Bottrop." },
@@ -3649,7 +2942,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "funkmikrofon": {
-    excelName: "Sennheiser Funkmikrofon XSW 1-835",
     seoTitle: "Sennheiser Funkmikrofon XSW 1-835 mieten",
     metaDescription: "Professionelles UHF-Funkmikrofon-Set Sennheiser XSW 1-835 mit ca. 25m Reichweite. Inklusive Empfänger, Handsender, XLR-Kabel und Zubehör für Veranstaltungen.",
     h1: "Sennheiser Funkmikrofon XSW 1-835 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3657,8 +2949,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das System dient der Sprachverstärkung bei Tagungen und Reden sowie der Gesangs- und Instrumentenmikrofonierung bei Live-Auftritten. Es ist für den Einsatz bei Präsentationen, Veranstaltungen und Bühnenauftritten konzipiert.",
     useCasePrivat: "",
-    primaryKeywords: "Sennheiser Funkmikrofon XSW 1-835 mieten in Krefeld, Sennheiser Funkmikrofon XSW 1-835 leihen in Krefeld, Sennheiser Funkmikrofon XSW 1-835 mieten NRW",
-    is247: false,
     dailyPriceFrom: 15,
     faqs: [
       { q: "Welche Reichweite hat das Sennheiser Funkmikrofon?", a: "Die Reichweite beträgt ca. 25 Meter, wobei der exakte Wert von der jeweiligen Umgebung abhängig ist." },
@@ -3667,7 +2957,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "fussplatte-k1-tl": {
-    excelName: "Fußplatte K1 TL",
     seoTitle: "Fußplatte K1 TL | Mobiler Standfuß ca. 28 kg",
     metaDescription: "Fußplatte K1 TL zur sicheren Aufstellung von Verkehrsschildern, Warnbarken und Schrankenzäunen. Gewicht ca. 28 kg für stabilen Stand.",
     h1: "Fußplatte K1 TL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3675,8 +2964,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Fußplatte dient als Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze im Bereich der Baustellensicherung.",
     useCaseEvent: "",
     useCasePrivat: "Das Produkt eignet sich als Erweiterung der Heimwerker-Ausstattung für private Projekte, die eine vorübergehende Kennzeichnung erfordern.",
-    primaryKeywords: "Fußplatte K1 TL mieten in Krefeld, Fußplatte K1 TL leihen in Krefeld, Fußplatte K1 TL mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie schwer ist eine Fußplatte K1 TL?", a: "Das Gewicht der Fußplatte beträgt circa 28 kg." },
       { q: "Wofür kann die Fußplatte K1 TL verwendet werden?", a: "Sie dient der Aufstellung von Verkehrsschildern, Warnbarken oder Schrankenzäunen." },
@@ -3684,7 +2971,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "gabel-gross-deluxe-19-10er": {
-    excelName: "Gabel groß Deluxe 19, 10er Set",
     seoTitle: "Gabel groß Deluxe 19, 10er Set | Athene Poliert",
     metaDescription: "Elegante Tafelgabel aus der Serie Athene Poliert. 19 cm Edelstahl-Besteck im 10er Set für Gastronomie und Events in NRW mieten.",
     h1: "Gabel groß Deluxe 19, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3692,8 +2978,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Gabeln dienen als komplettes Besteck-Service bei Hochzeiten sowie als Catering-Besteck für Tagungen und Events.",
     useCasePrivat: "Dieses Besteck-Set eignet sich als Tafelbesteck für private Familienfeste.",
-    primaryKeywords: "Gabel groß Deluxe 19, 10er Set mieten in Krefeld, Gabel groß Deluxe 19, 10er Set leihen in Krefeld, Gabel groß Deluxe 19, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat die Gabel groß Deluxe 19?", a: "Die Tafelgabel hat eine Länge von 19 cm." },
       { q: "Aus welchem Material besteht das Besteck?", a: "Die Gabeln der Serie Athene Poliert sind aus Edelstahl gefertigt." },
@@ -3701,7 +2985,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "gabel-klein-deluxe-14-10er": {
-    excelName: "Gabel klein Deluxe 14, 10er Set",
     seoTitle: "Gabel klein Deluxe 14, 10er Set | Athene Poliert",
     metaDescription: "14 cm lange Kuchengabeln aus Edelstahl der Serie Athene Poliert. 10er Set für Desserts und Gebäck bei Veranstaltungen und privaten Feiern.",
     h1: "Gabel klein Deluxe 14, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3709,8 +2992,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als komplettes Besteck-Service bei Hochzeiten sowie als Catering-Besteck für Tagungen und Events.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für die Verpflegung bei Familienfesten.",
-    primaryKeywords: "Gabel klein Deluxe 14, 10er Set mieten in Krefeld, Gabel klein Deluxe 14, 10er Set leihen in Krefeld, Gabel klein Deluxe 14, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat die Gabel klein Deluxe 14?", a: "Die Gabel hat eine Länge von 14 cm." },
       { q: "Aus welchem Material besteht das Besteck-Set?", a: "Die Kuchengabeln sind aus Edelstahl gefertigt und gehören zur Serie Athene Poliert." },
@@ -3718,7 +2999,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "gabel-simply-19-10er": {
-    excelName: "Gabel SIMPLY 19, 10er Set",
     seoTitle: "Gabel SIMPLY 19, 10er Set aus Edelstahl",
     metaDescription: "Gabel SIMPLY 19 im 10er Set aus Edelstahl mit 19 cm Länge für Veranstaltungen und Caterings. Reinigung bei Rückgabe erforderlich.",
     h1: "Gabel SIMPLY 19, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3726,8 +3006,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als Catering-Besteck für Tagungen und Events sowie als Besteck-Service bei Hochzeiten.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für die Ausstattung von Familienfesten.",
-    primaryKeywords: "Gabel SIMPLY 19, 10er Set mieten in Krefeld, Gabel SIMPLY 19, 10er Set leihen in Krefeld, Gabel SIMPLY 19, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang sind die Gabeln aus dem SIMPLY 19 Set?", a: "Die Gabeln haben eine Länge von 19 cm." },
       { q: "In welcher Stückzahl wird das Besteck geliefert?", a: "Das Produkt wird als Set mit jeweils 10 Stück bereitgestellt." },
@@ -3736,7 +3014,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "gelenkteleskopsteiger-12m": {
     dailyPriceFrom: 90,
-    excelName: "12m Gelenkteleskopsteiger Nifty HR12L",
     seoTitle: "12m Gelenkteleskopsteiger Nifty HR12L mieten",
     metaDescription: "Elektrischer Gelenkteleskopsteiger HR12L mit 12,10 m Arbeitshöhe, 6,40 m Reichweite und Non-Marking-Reifen für den Innen- und Außeneinsatz.",
     h1: "12m Gelenkteleskopsteiger Nifty HR12L mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3744,8 +3021,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Steiger eignet sich für die Erreichbarkeit hinter Hindernissen sowie für Fassadenarbeiten mit einer Auslage über Vorbauten hinweg.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "12m Gelenkteleskopsteiger Nifty HR12L mieten in Krefeld, 12m Gelenkteleskopsteiger Nifty HR12L leihen in Krefeld, 12m Gelenkteleskopsteiger Nifty HR12L mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Plattform?", a: "Die Plattform hat eine maximale Traglast von 200 kg und bietet Platz für bis zu 2 Personen." },
       { q: "Kann die Arbeitsbühne auf empfindlichen Böden eingesetzt werden?", a: "Ja, der Nifty HR12L ist mit Non-Marking-Reifen ausgestattet, die für den Einsatz in Innenräumen geeignet sind." },
@@ -3753,7 +3028,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "getraenkekuehlschrank-236l": {
-    excelName: "Getränkekühlschrank 236l",
     seoTitle: "Getränkekühlschrank 236l mieten | Glastürkühlschrank",
     metaDescription: "Gewerblicher Glastürkühlschrank mit 236 l Fassungsvermögen und LED-Beleuchtung für Events und Catering. Maße: 54 cm × 55 cm × 144 cm.",
     h1: "Getränkekühlschrank 236l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3761,8 +3035,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Kühlschrank dient der Kühlung von Veranstaltungsräumen im Sommer sowie der Klimatisierung von Backstage- und Cateringbereichen.",
     useCasePrivat: "",
-    primaryKeywords: "Getränkekühlschrank 236l mieten in Krefeld, Getränkekühlschrank 236l leihen in Krefeld, Getränkekühlschrank 236l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist das Fassungsvermögen des Kühlschranks?", a: "Der Getränkekühlschrank verfügt über ein Fassungsvermögen von 236 Litern." },
       { q: "Welche Abmessungen hat das Gerät?", a: "Die Abmessungen betragen 54 cm in der Breite, 55 cm in der Tiefe und 144 cm in der Höhe." },
@@ -3770,7 +3042,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "grabenwalze-bmp8500": {
-    excelName: "1,5t Grabenwalze Bomag BMP 8500",
     seoTitle: "1,5t Grabenwalze Bomag BMP 8500 mieten | Ferngesteuert | SLT Rental",
     metaDescription: "Bomag BMP 8500 Grabenwalze mieten: 1,5t ferngesteuerte Walze mit Doppelerregersystem, IVC und ECOMODE. Kombifernsteuerung Kabel/Funk. Bei SLT Rental buchen.",
     h1: "1,5t Grabenwalze Bomag BMP 8500 mieten – Ferngesteuert bei SLT Rental",
@@ -3778,8 +3049,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Grabenverdichtung, Kanalbau, Leitungsgräben, Böschungsverdichtung, Hinterfüllung von Fundamenten, Straßenbau, Tiefbau",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Grabenwalze mieten, Bomag BMP 8500 mieten, ferngesteuerte Walze leihen, Grabenwalze NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird die Bomag BMP 8500 gesteuert?", a: "Die Grabenwalze verfügt über eine Kombifernsteuerung, die sowohl per Kabel als auch per Funk bedient werden kann. Die Fernbedienung enthält 2 Akkus und LED-Anzeigen für optimale Kontrolle." },
       { q: "Was bedeutet Intelligent Vibration Control (IVC)?", a: "IVC erkennt automatisch den aktuellen Verdichtungsgrad und passt die Vibrationsleistung an. So wird Überverdichtung vermieden und das Ergebnis optimiert." },
@@ -3788,7 +3057,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "haecksler-axt25tc": {
-    excelName: "Elektro-Häcksler",
     seoTitle: "Elektro-Häcksler Bosch AXT 25 TC mieten",
     metaDescription: "Mieten Sie den Bosch AXT 25 TC Elektro-Häcksler. 2.500 W Leistung, 45 mm Schneidekapazität und 53 l Fangbox für Gartenabfälle.",
     h1: "Elektro-Häcksler mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3796,8 +3064,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Verarbeitung von Schnittgut bei Landschaftspflege.",
     useCaseEvent: "",
     useCasePrivat: "Verarbeitung von Heckenschnitt und Astwerk.",
-    primaryKeywords: "Elektro-Häcksler mieten in Krefeld, Elektro-Häcksler leihen in Krefeld, Elektro-Häcksler mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Schneidekapazität des Häckslers?", a: "Der Bosch AXT 25 TC kann Astwerk mit einem Durchmesser von bis zu 45 mm verarbeiten." },
       { q: "Welche Stromversorgung wird für den Betrieb benötigt?", a: "Der Elektro-Häcksler benötigt einen standardmäßigen 230V Schuko-Anschluss." },
@@ -3805,7 +3071,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "haecksler-ls95-gx": {
-    excelName: "Benzin-Häcksler",
     seoTitle: "Benzin-Häcksler Eliet LS-95 GX mieten",
     metaDescription: "Leistungsstarker Benzin-Häcksler Eliet LS-95 GX für Äste bis 7,5 cm Durchmesser. Mit Kohler Motor und automatischem Einzug für effizientes Häckseln.",
     h1: "Benzin-Häcksler mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3813,8 +3078,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät eignet sich für die effiziente Verarbeitung von anfallendem Schnittgut im Rahmen der professionellen Landschaftspflege.",
     useCaseEvent: "",
     useCasePrivat: "Privatanwender nutzen den Häcksler zur Zerkleinerung von angefallenem Heckenschnitt und Astwerk im eigenen Garten.",
-    primaryKeywords: "Benzin-Häcksler mieten in Krefeld, Benzin-Häcksler leihen in Krefeld, Benzin-Häcksler mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Aststärke kann der LS 95 verarbeiten?", a: "Der Häcksler ist für die Zerkleinerung von Ästen mit einem Durchmesser von bis zu 7,5 cm ausgelegt." },
       { q: "Wie funktioniert der Materialeinzug bei diesem Modell?", a: "Der Einzug des Häckselguts erfolgt automatisch durch das Eigengewicht des Materials." },
@@ -3822,7 +3085,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "halteverbotsschilder-set": {
-    excelName: "Halteverbotsschilder-Set",
     seoTitle: "Halteverbotsschilder-Set zur Miete | NRW",
     metaDescription: "18-teiliges Komplett-Set für mobile Halteverbotszonen. Reflektionsklasse RA1, standfest durch 2 Fußplatten. Inklusive individuell beschriftbarer Zusatzschilder.",
     h1: "Halteverbotsschilder-Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3830,8 +3092,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Set dient der Verkehrslenkung im Baustellenbereich gemäß RSA.",
     useCaseEvent: "Das Set ermöglicht die temporäre Beschilderung bei Veranstaltungen.",
     useCasePrivat: "",
-    primaryKeywords: "Halteverbotsschilder-Set mieten in Krefeld, Halteverbotsschilder-Set leihen in Krefeld, Halteverbotsschilder-Set mieten NRW",
-    is247: false,
     dailyPriceFrom: 3.9,
     faqs: [
       { q: "Wann müssen die Halteverbotsschilder spätestens aufgestellt werden?", a: "Die Aufstellung muss mindestens 72 Stunden vor dem geplanten Nutzungsbeginn erfolgen." },
@@ -3840,7 +3100,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "hdmi-glasfaser-35m": {
-    excelName: "HDMI Glasfaser Kabel 35m",
     seoTitle: "HDMI Glasfaser Kabel 35m | Kramer",
     metaDescription: "Aktives HDMI Glasfaser Kabel der Marke Kramer mit einer Länge von 35 Metern für die Signalübertragung über weite Distanzen.",
     h1: "HDMI Glasfaser Kabel 35m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3848,8 +3107,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Kabel dient der Verbindung von Video-Equipment auf Bühnen und bei Präsentationen über eine Distanz von 35 Metern.",
     useCasePrivat: "",
-    primaryKeywords: "HDMI Glasfaser Kabel 35m mieten in Krefeld, HDMI Glasfaser Kabel 35m leihen in Krefeld, HDMI Glasfaser Kabel 35m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Von welchem Hersteller stammt das HDMI Glasfaser Kabel?", a: "Das Kabel ist ein Produkt der Marke Kramer." },
       { q: "Welche Länge weist das Kabel auf?", a: "Die Gesamtlänge des HDMI Glasfaser Kabels beträgt 35 Meter." },
@@ -3857,7 +3114,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "heizluefter-2kw": {
-    excelName: "2 kW Elektro Heizlüfter",
     seoTitle: "2 kW Elektro Heizlüfter mieten | Kompakt & Robust",
     metaDescription: "Elektro-Heizlüfter mit 2 kW Heizleistung, 230 V Anschluss und Metallgehäuse für Baustellen und Sanierungen. Jetzt im Mietkatalog für NRW informieren.",
     h1: "2 kW Elektro Heizlüfter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3865,8 +3121,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Heizlüfter dient der Beheizung von Baustellen in der kalten Jahreszeit und unterstützt Trocknungsprozesse bei Sanierungen.",
     useCaseEvent: "Der Elektro-Heizlüfter wird zur Beheizung von Festzelten in der kalten Jahreszeit eingesetzt.",
     useCasePrivat: "Das Gerät ermöglicht die temporäre Beheizung von Räumlichkeiten bei Renovierungsarbeiten.",
-    primaryKeywords: "2 kW Elektro Heizlüfter mieten in Krefeld, 2 kW Elektro Heizlüfter leihen in Krefeld, 2 kW Elektro Heizlüfter mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Heizstufen bietet der Elektro-Heizlüfter?", a: "Das Gerät verfügt über zwei umschaltbare Heizstufen mit 1 kW und 2 kW Leistung." },
       { q: "Wie hoch ist die Luftleistung des Geräts?", a: "Die Luftleistung des Heizlüfters beträgt 500 m³/h." },
@@ -3874,7 +3128,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "heizluefter-3kw": {
-    excelName: "Allegra 3 kW Elektro Heizlüfter",
     seoTitle: "Allegra 3 kW Elektro Heizlüfter mieten",
     metaDescription: "Kompakter Allegra Elektroheizlüfter mit 3 kW Heizleistung und 230 V Anschluss für mittlere Räume und Baustellen in NRW.",
     h1: "Allegra 3 kW Elektro Heizlüfter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3882,8 +3135,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Heizlüfter eignet sich zur Beheizung von Baustellen in der kalten Jahreszeit sowie zur Trocknungs-Unterstützung bei Sanierungsvorhaben.",
     useCaseEvent: "Der Elektroheizlüfter kann zur Beheizung von Festzelten in der kalten Jahreszeit eingesetzt werden.",
     useCasePrivat: "Das Gerät dient der temporären Beheizung bei Renovierungsarbeiten in Innenräumen.",
-    primaryKeywords: "Allegra 3 kW Elektro Heizlüfter mieten in Krefeld, Allegra 3 kW Elektro Heizlüfter leihen in Krefeld, Allegra 3 kW Elektro Heizlüfter mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Heizstufen bietet der Allegra Elektroheizlüfter?", a: "Das Gerät verfügt über zwei umschaltbare Heizstufen mit einer Leistung von 1,5 kW und 3 kW." },
       { q: "Welcher Stromanschluss wird für den Betrieb benötigt?", a: "Der Heizlüfter wird über eine herkömmliche 230 V Normsteckdose betrieben." },
@@ -3891,7 +3142,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "heizluefter-9kw": {
-    excelName: "Allegra 9 kW Elektro Heizlüfter",
     seoTitle: "Allegra 9 kW Elektro Heizlüfter | 400 V Drehstrom",
     metaDescription: "Leistungsstarker Allegra Industrie-Heizlüfter mit 9 kW Heizleistung und 400 V Anschluss für Baustellen und Hallen. Luftumwälzung von 845 m³/h.",
     h1: "Allegra 9 kW Elektro Heizlüfter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3899,8 +3149,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Das Gerät eignet sich zur Beheizung von Baustellen in der kalten Jahreszeit sowie zur Trocknungs-Unterstützung bei Sanierungsvorhaben.",
     useCaseEvent: "Im Bereich Event und Gastronomie wird das System zur Beheizung von Festzelten in der kalten Jahreszeit eingesetzt.",
     useCasePrivat: "Der Heizlüfter dient der temporären Beheizung bei Renovierungsarbeiten im privaten Umfeld.",
-    primaryKeywords: "Allegra 9 kW Elektro Heizlüfter mieten in Krefeld, Allegra 9 kW Elektro Heizlüfter leihen in Krefeld, Allegra 9 kW Elektro Heizlüfter mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Stromanschluss benötigt der Allegra Heizlüfter?", a: "Für den Betrieb ist ein 400 V Drehstromanschluss erforderlich." },
       { q: "Wie hoch ist das Luftumwälzvolumen?", a: "Das Gerät erreicht eine Luftumwälzung von 845 m³/h." },
@@ -3908,7 +3156,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "heizpilz-2kw": {
-    excelName: "2 kW Elektro Heizpilz",
     seoTitle: "2 kW Elektro Heizpilz mieten – Infrarot-Strahler",
     metaDescription: "Elektrischer Infrarot-Heizstrahler im Pilzdesign für Außenbereiche. 1 kW & 2 kW Heizstufen, höhenverstellbar von 194 bis 210 cm, Schutzklasse IP34.",
     h1: "2 kW Elektro Heizpilz mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3916,8 +3163,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Modell eignet sich zur Außenbereichs-Beheizung bei Gastronomie und Events sowie zur Wärmeerzeugung im Eingangs- und Raucherbereich.",
     useCasePrivat: "Der Heizpilz dient als Wärmequelle bei Garten- und Terrassenfeiern.",
-    primaryKeywords: "2 kW Elektro Heizpilz mieten in Krefeld, 2 kW Elektro Heizpilz leihen in Krefeld, 2 kW Elektro Heizpilz mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Heizleistung des Geräts?", a: "Die Heizleistung kann in zwei Stufen zwischen 1 kW und 2 kW umgeschaltet werden." },
       { q: "Welche Fläche kann mit dem Heizpilz erwärmt werden?", a: "Der Infrarot-Heizstrahler hat eine Wirkungsfläche von circa 15 m²." },
@@ -3925,7 +3170,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "hochdruckreiniger": {
-    excelName: "Hochdruckreiniger",
     seoTitle: "Hochdruckreiniger | 150 bar - 810 l/h zur Miete",
     metaDescription: "Professioneller Hochdruckreiniger mit 150 bar Arbeitsdruck und einer Durchflussrate von 810 l/h. 35 kg Gewicht und 5m Schlauchlänge für gewerbliche Zwecke.",
     h1: "Hochdruckreiniger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3933,8 +3177,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät eignet sich für die Reinigung von Maschinen und Baustellenoberflächen.",
     useCaseEvent: "",
     useCasePrivat: "Der Reiniger kann für die Instandhaltung von Hof, Pflaster und Fassade verwendet werden.",
-    primaryKeywords: "Hochdruckreiniger mieten in Krefeld, Hochdruckreiniger leihen in Krefeld, Hochdruckreiniger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Durchflussrate dieses Hochdruckreinigers?", a: "Das Gerät hat eine Durchflussrate von 810 Litern pro Stunde." },
       { q: "Wie lang ist der mitgelieferte Schlauch?", a: "Die Schlauchlänge beträgt 5 Meter." },
@@ -3942,7 +3184,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "huepfburg-clown": {
-    excelName: "Hüpfburg Clown 6,1 x 5,2m",
     seoTitle: "Hüpfburg Clown 6,1 x 5,2m mieten",
     metaDescription: "Extra große Hüpfburg Clown-Design (6,1 x 5,2m) für bis zu 6 Kinder. Inklusive 1500W Gebläse und Zubehör. Ideal für Feste und Veranstaltungen.",
     h1: "Hüpfburg Clown 6,1 x 5,2m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3950,8 +3191,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Hüpfburg ist für den Einsatz bei Stadtfesten, Gemeindeveranstaltungen sowie Schul- und Vereinsfesten konzipiert.",
     useCasePrivat: "Dieses Modell eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
-    primaryKeywords: "Hüpfburg Clown 6,1 x 5,2m mieten in Krefeld, Hüpfburg Clown 6,1 x 5,2m leihen in Krefeld, Hüpfburg Clown 6,1 x 5,2m mieten NRW",
-    is247: false,
     dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder können die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für bis zu 6 Kinder im Alter zwischen 3 und 16 Jahren ausgelegt, wobei die maximale Belastbarkeit 450 kg beträgt." },
@@ -3960,7 +3199,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "huepfburg-lamar": {
-    excelName: "HappyHop Hüpfburg Lamar 2,8 x 2,1m",
     seoTitle: "HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten",
     metaDescription: "Aufblasbare Hüpfburg Lamar (2,8 x 2,1m) mit Basketballkorb und Sicherheitsnetz. Inklusive 300W Gebläse, Plane und Heringen für 2 Personen bis 90 kg.",
     h1: "HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3968,8 +3206,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Modell kann bei Stadtfesten, Gemeindeveranstaltungen sowie Schulfesten und Vereinsfesten eingesetzt werden.",
     useCasePrivat: "Diese Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
-    primaryKeywords: "HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m leihen in Krefeld, HappyHop Hüpfburg Lamar 2,8 x 2,1m mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie lange dauert der Aufbau der Hüpfburg?", a: "Dank des mitgelieferten 300-Watt-Gebläses ist die Hüpfburg in ca. 5 Minuten aufgebaut." },
@@ -3978,7 +3214,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "huepfburg-rollercoaster-1": {
-    excelName: "Hüpfburg Rollercoaster 4,9 x 4m",
     seoTitle: "Hüpfburg Rollercoaster 4,9 x 4m mit Rutsche",
     metaDescription: "Aufblasbare Hüpfburg Rollercoaster (4,9 x 4m) im Kirmes-Design für bis zu 6 Kinder. Inklusive 1100W Gebläse, Rutsche und Zubehör für Events.",
     h1: "Hüpfburg Rollercoaster 4,9 x 4m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -3986,8 +3221,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Modell kann bei Stadtfesten, Gemeindeveranstaltungen sowie Schulfesten und Vereinsfesten eingesetzt werden.",
     useCasePrivat: "Die Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern.",
-    primaryKeywords: "Hüpfburg Rollercoaster 4,9 x 4m mieten in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m leihen in Krefeld, Hüpfburg Rollercoaster 4,9 x 4m mieten NRW",
-    is247: false,
     dailyPriceFrom: 50,
     faqs: [
       { q: "Wie viele Kinder dürfen die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 6 Kinder gleichzeitig ausgelegt, bei einer maximalen Belastbarkeit von insgesamt 450 kg." },
@@ -3996,7 +3229,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "huepfburg-wasserpark": {
-    excelName: "Hüpfburg Wasserpark 3 x 4m",
     seoTitle: "Hüpfburg Wasserpark 3 x 4m mit Pool mieten",
     metaDescription: "Hüpfburg mit Kletterturm, Wasserrutsche und Pool. Maße 3x4m, inkl. 300W Gebläse. Ideal für Kinder von 3 bis 5 Jahren. Jetzt für Sommer-Events anfragen.",
     h1: "Hüpfburg Wasserpark 3 x 4m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4004,8 +3236,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Modell kann auf Stadtfesten, Gemeindeveranstaltungen, Schulfesten und Vereinsfesten eingesetzt werden.",
     useCasePrivat: "Die Hüpfburg eignet sich für Kindergeburtstage im Privatgarten sowie für Familienfeste mit Kindern an heißen Sommertagen.",
-    primaryKeywords: "Hüpfburg Wasserpark 3 x 4m mieten in Krefeld, Hüpfburg Wasserpark 3 x 4m leihen in Krefeld, Hüpfburg Wasserpark 3 x 4m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie viele Kinder dürfen die Hüpfburg gleichzeitig nutzen?", a: "Die Hüpfburg ist für maximal 3 Kinder im Alter von 3 bis 5 Jahren ausgelegt, wobei die maximale Belastbarkeit 60 kg beträgt." },
       { q: "Wie lange dauert der Aufbau der Anlage?", a: "Dank des mitgelieferten 300W Gebläses ist die Hüpfburg in einer Zeit von etwa 5 Minuten aufgebaut." },
@@ -4013,7 +3243,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kaffeetasse-12er": {
-    excelName: "Kaffeetasse, 12er Set",
     seoTitle: "Kaffeetasse 12er Set inkl. Untertassen aus Porzellan",
     metaDescription: "Tassen-Set aus weißem Porzellan mit 200 ml Fassungsvermögen und 16 cm Untertassen für Veranstaltungen und Feiern. Zur Miete im 12er Set verfügbar.",
     h1: "Kaffeetasse, 12er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4021,8 +3250,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Geschirr eignet sich für den Kaffee-Service bei Tagungen sowie für den Heißgetränke-Service bei verschiedenen Veranstaltungen.",
     useCasePrivat: "Dieses Set findet Verwendung als Kaffee- und Teetassen bei Familienfeiern im privaten Rahmen.",
-    primaryKeywords: "Kaffeetasse, 12er Set mieten in Krefeld, Kaffeetasse, 12er Set leihen in Krefeld, Kaffeetasse, 12er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Fassungsvermögen haben die Tassen?", a: "Jede Tasse bietet ein Fassungsvermögen von ca. 200 ml." },
       { q: "In welchem Zustand müssen die Tassen zurückgegeben werden?", a: "Die Tassen müssen in gereinigtem Zustand zurückgegeben werden. Bei einer Rückgabe ohne Reinigung wird eine Pauschale von 2,50 € pro Set berechnet." },
@@ -4030,7 +3257,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kalt-funkenfontaene-2er": {
-    excelName: "Kalt-Funkenfontäne 2er Set",
     seoTitle: "Kalt-Funkenfontäne 2er Set mieten in Krefeld – Sparkular ab 69 €/Tag",
     metaDescription: "2er Set Kalt-Funkenfontänen (Sparkular) in Krefeld mieten – bis 6 m Effekthöhe, Funk-/DMX-Steuerung, inkl. Granulat. Ab 69 €/Tag bei SLT Rental.",
     h1: "Kalt-Funkenfontäne 2er Set mieten in Krefeld – ab 69 €/Tag bei SLT Rental",
@@ -4038,8 +3264,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Hochzeiten, Konzerte, Clubevents, Geburtstage, Firmenevents und Stadtfeste in Krefeld und am gesamten linken Niederrhein.",
     useCasePrivat: "Hochzeitsfeier, Geburtstagsparty, Silvesterfeier oder Jubiläum – Abholung an unserem Hauptsitz in Krefeld.",
-    primaryKeywords: "Kalt-Funkenfontäne mieten Krefeld, Sparkular 2er Set mieten Krefeld, Funkeneffekt Hochzeit Krefeld",
-    is247: false,
     dailyPriceFrom: 69,
     faqs: [
       { q: "Was kostet das 2er Set Kalt-Funkenfontänen pro Tag?", a: "Die Tagesmiete für das 2er Set startet bei 69 €. Im Preis enthalten sind zwei Geräte im Flightcase, Fernbedienung und je eine Granulat-Füllung (bis zu 10 min. Effektzeit pro Gerät)." },
@@ -4052,7 +3276,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kalt-funkenfontaene-4er": {
-    excelName: "Kalt-Funkenfontäne 4er Set",
     seoTitle: "Kalt-Funkenfontäne 4er Set mieten in Krefeld – Sparkular ab 99 €/Tag",
     metaDescription: "4er Set Kalt-Funkenfontänen (Sparkular) in Krefeld mieten – 4 Geräte im Flightcase, bis 6 m Effekthöhe, Funk-/DMX-Steuerung. Ab 99 €/Tag bei SLT Rental.",
     h1: "Kalt-Funkenfontäne 4er Set mieten in Krefeld – ab 99 €/Tag bei SLT Rental",
@@ -4060,8 +3283,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Hochzeiten, Galas, Konzerte, große Bühnenproduktionen, Firmenevents, Stadtfeste und Eröffnungen in Krefeld und Umgebung.",
     useCasePrivat: "Hochzeitsfeier mit symmetrischem Funkenvorhang (2 links / 2 rechts), Silvesterparty, runde Geburtstage oder Jubiläen.",
-    primaryKeywords: "Kalt-Funkenfontäne 4er Set mieten Krefeld, Sparkular 4er Set Hochzeit Krefeld, Funkenvorhang mieten NRW",
-    is247: false,
     dailyPriceFrom: 99,
     faqs: [
       { q: "Was kostet das 4er Set Kalt-Funkenfontänen pro Tag?", a: "Die Tagesmiete für das 4er Set startet bei 99 €. Im Preis enthalten sind vier Geräte im Flightcase, Fernbedienung und je eine Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)." },
@@ -4073,7 +3294,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-kalt-funkenfontaene-2er": {
-    excelName: "Kalt-Funkenfontäne 2er Set Bonn",
     seoTitle: "Kalt-Funkenfontäne 2er Set mieten in Bonn – Sparkular ab 69 €/Tag",
     metaDescription: "2er Set Kalt-Funkenfontänen (Sparkular) in Bonn vor Ort mieten – bis 6 m Effekthöhe, inkl. Granulat. Ab 69 €/Tag, Abholung in Bonn bei SLT Rental.",
     h1: "Kalt-Funkenfontäne 2er Set mieten in Bonn – ab 69 €/Tag bei SLT Rental",
@@ -4081,8 +3301,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Hochzeiten, Firmenevents, Galas und Stadtfeste in Bonn, Bad Godesberg, Beuel und im Raum Köln/Rhein-Sieg.",
     useCasePrivat: "Hochzeitsfeier, Geburtstagsparty oder Silvesterfeier in Bonn und Umgebung – Abholung direkt an unserem Bonner Standort.",
-    primaryKeywords: "Kalt-Funkenfontäne mieten Bonn, Sparkular 2er Set Bonn, Funkeneffekt Hochzeit Bonn",
-    is247: false,
     dailyPriceFrom: 69,
     faqs: [
       { q: "Ist das 2er Set in Bonn vor Ort verfügbar?", a: "Ja – das 2er Set Kalt-Funkenfontänen ist an unserem Standort Bonn vorrätig und kann dort direkt abgeholt oder im Stadtgebiet geliefert werden." },
@@ -4094,7 +3312,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-kalt-funkenfontaene-4er": {
-    excelName: "Kalt-Funkenfontäne 4er Set Bonn",
     seoTitle: "Kalt-Funkenfontäne 4er Set mieten in Bonn – Sparkular ab 99 €/Tag",
     metaDescription: "4er Set Kalt-Funkenfontänen (Sparkular) in Bonn vor Ort mieten – 4 Geräte im Flightcase, bis 6 m Effekthöhe. Ab 99 €/Tag bei SLT Rental Bonn.",
     h1: "Kalt-Funkenfontäne 4er Set mieten in Bonn – ab 99 €/Tag bei SLT Rental",
@@ -4102,8 +3319,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Hochzeiten, Galas, Firmenevents, Konzerte und Stadtfeste in Bonn, Bad Godesberg und im Großraum Köln.",
     useCasePrivat: "Großer Funkenvorhang für die Hochzeit, runde Geburtstage oder Silvesterfeier in Bonn und Umgebung.",
-    primaryKeywords: "Kalt-Funkenfontäne 4er Set mieten Bonn, Sparkular Set Hochzeit Bonn, Funkenvorhang Bonn",
-    is247: false,
     dailyPriceFrom: 99,
     faqs: [
       { q: "Ist das 4er Set in Bonn vor Ort verfügbar?", a: "Ja – das 4er Set Kalt-Funkenfontänen ist an unserem Standort Bonn vorrätig. Abholung oder Lieferung im Großraum Bonn/Rhein-Sieg/Köln ist kurzfristig möglich." },
@@ -4114,50 +3329,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Welche Sicherheitsabstände sind einzuhalten?", a: "Mindestens 2 m Abstand zu brennbaren Materialien. Die Fontänen dürfen nicht direkt auf Personen gerichtet werden, auch wenn die Funken kalt sind." },
     ],
   },
-  "mh-kalt-funkenfontaene-2er": {
-    excelName: "Kalt-Funkenfontäne 2er Set Mülheim an der Ruhr",
-    seoTitle: "Kalt-Funkenfontäne 2er Set mieten in Mülheim an der Ruhr – ab 69 €/Tag",
-    metaDescription: "2er Set Kalt-Funkenfontänen (Sparkular) in Mülheim an der Ruhr mieten – bis 6 m Effekthöhe, inkl. Granulat. Ab 69 €/Tag, Service-Standort Mülheim.",
-    h1: "Kalt-Funkenfontäne 2er Set mieten in Mülheim an der Ruhr – ab 69 €/Tag",
-    h2s: ["Service-Standort Mülheim an der Ruhr", "Technische Daten des 2er Sets", "Einsatz auf Hochzeiten & Events im Ruhrgebiet", "Sicherheitsabstände & Brandschutz"],
-    useCaseBau: "",
-    useCaseEvent: "Hochzeiten, Firmenevents, Galas und Stadtfeste in Mülheim an der Ruhr, Essen, Oberhausen und Duisburg.",
-    useCasePrivat: "Hochzeitsfeier, Geburtstagsparty oder Silvesterfeier in Mülheim an der Ruhr und im gesamten Ruhrgebiet.",
-    primaryKeywords: "Kalt-Funkenfontäne mieten Mülheim an der Ruhr, Sparkular 2er Set Ruhrgebiet, Funkeneffekt Hochzeit Mülheim",
-    is247: false,
-    dailyPriceFrom: 69,
-    faqs: [
-      { q: "Ist das 2er Set in Mülheim an der Ruhr verfügbar?", a: "Mülheim an der Ruhr ist unser Service-Standort. Das 2er Set Kalt-Funkenfontänen disponieren wir auf Anfrage aus Krefeld – Übergabe, Einweisung und Rückgabe finden direkt in Mülheim statt, in der Regel innerhalb von 24 Stunden." },
-      { q: "Was kostet das 2er Set pro Tag?", a: "Die Tagesmiete startet bei 69 € und enthält 2 Geräte im Flightcase, Fernbedienung sowie eine Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)." },
-      { q: "Liefert ihr auch nach Essen, Oberhausen oder Duisburg?", a: "Ja, wir liefern aus dem Service-Standort Mülheim ins gesamte Ruhrgebiet (Essen, Oberhausen, Duisburg, Bottrop). Die Lieferpauschale richtet sich nach den gefahrenen Kilometern." },
-      { q: "Sind Kalt-Funkenfontänen in Ruhrgebiet-Locations erlaubt?", a: "Da keine Pyrotechnik und kein offenes Feuer eingesetzt wird, sind die Geräte in den meisten Locations (Stadthallen, Schlösser, Industriedenkmäler) zulässig. Bei Brandmeldeanlagen muss der betroffene Bereich ggf. vorab abgekoppelt werden." },
-      { q: "Wie lange hält eine Granulat-Füllung?", a: "Eine Füllung reicht für bis zu 10 Minuten Effektzeit pro Gerät. Zusatzgranulat: 3,00 € pro weitere Minute." },
-      { q: "Welche Sicherheitsabstände sind einzuhalten?", a: "Mindestens 2 m zu brennbaren Materialien. Die Fontänen dürfen nicht direkt auf Personen gerichtet werden." },
-    ],
-  },
-  "mh-kalt-funkenfontaene-4er": {
-    excelName: "Kalt-Funkenfontäne 4er Set Mülheim an der Ruhr",
-    seoTitle: "Kalt-Funkenfontäne 4er Set mieten in Mülheim an der Ruhr – ab 99 €/Tag",
-    metaDescription: "4er Set Kalt-Funkenfontänen (Sparkular) in Mülheim an der Ruhr mieten – 4 Geräte, bis 6 m Effekthöhe. Ab 99 €/Tag, Service-Standort Mülheim.",
-    h1: "Kalt-Funkenfontäne 4er Set mieten in Mülheim an der Ruhr – ab 99 €/Tag",
-    h2s: ["Service-Standort Mülheim an der Ruhr", "Symmetrischer Funkenvorhang für Hochzeit & Bühne", "Technische Daten & DMX-Steuerung", "Einsatz im gesamten Ruhrgebiet"],
-    useCaseBau: "",
-    useCaseEvent: "Hochzeiten, Galas, Firmenevents, Konzerte und große Bühnenproduktionen in Mülheim an der Ruhr, Essen, Oberhausen und Duisburg.",
-    useCasePrivat: "Großer Funkenvorhang für die Hochzeit, runde Geburtstage oder Silvesterfeier in Mülheim an der Ruhr und Umgebung.",
-    primaryKeywords: "Kalt-Funkenfontäne 4er Set mieten Mülheim an der Ruhr, Sparkular Set Hochzeit Ruhrgebiet, Funkenvorhang Mülheim",
-    is247: false,
-    dailyPriceFrom: 99,
-    faqs: [
-      { q: "Ist das 4er Set in Mülheim an der Ruhr verfügbar?", a: "Mülheim an der Ruhr ist unser Service-Standort. Das 4er Set disponieren wir auf Anfrage aus Krefeld – Übergabe und Rückgabe finden direkt in Mülheim statt, in der Regel innerhalb von 24 Stunden." },
-      { q: "Was kostet das 4er Set pro Tag?", a: "Die Tagesmiete startet bei 99 € und enthält 4 Geräte im Flightcase, Fernbedienung sowie eine Granulat-Füllung pro Gerät (bis zu 10 min. Effektzeit)." },
-      { q: "Wann lohnt sich das 4er Set gegenüber dem 2er Set?", a: "Für breite Bühnen, symmetrische Hochzeitsaufstellungen oder größere Eventflächen im Ruhrgebiet ist das 4er Set ideal." },
-      { q: "Sind die Geräte DMX-fähig?", a: "Ja – alle Geräte lassen sich per Fernbedienung oder DMX in Ihre Lichtshow integrieren und mit unserer Beleuchtung & Nebelmaschinen synchronisieren." },
-      { q: "Liefert ihr auch nach Essen, Oberhausen oder Duisburg?", a: "Ja, wir liefern aus dem Service-Standort Mülheim ins gesamte Ruhrgebiet. Die Lieferpauschale richtet sich nach den gefahrenen Kilometern." },
-      { q: "Welche Sicherheitsabstände sind einzuhalten?", a: "Mindestens 2 m zu brennbaren Materialien. Die Fontänen dürfen nicht direkt auf Personen gerichtet werden, auch wenn die Funken kalt sind." },
-    ],
-  },
   "kalt-funkenfontaene-einzeln": {
-    excelName: "Kalt-Funkenfontäne Einzelgerät",
     seoTitle: "Kalt-Funkenfontäne mieten | SLT Rental",
     metaDescription: "Kalt-Funkenfontäne einzeln mieten – bis zu 6 m hohe, kalte Funkeneffekte. Ungefährlich, kein Rauch. Inkl. Granulat-Füllung. Tagesmiete bei SLT Rental.",
     h1: "Kalt-Funkenfontäne mieten – Jetzt verfügbar bei SLT Rental",
@@ -4165,8 +3337,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Hochzeiten, Geburtstage, kleine Bühnenproduktionen, Firmenevents",
     useCasePrivat: "Hochzeitsfeier, Geburtstagsparty, Silvesterfeier, Jubiläum",
-    primaryKeywords: "Kalt-Funkenfontäne mieten, Sparkular mieten, Funkeneffekt mieten",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Sind Kalt-Funkenfontänen gefährlich?", a: "Nein – Kalt-Funkenfontänen arbeiten mit Granulat und erzeugen kalte Funken, die weder Hitze noch Rauch oder Geruch entwickeln. Sie sind vollkommen ungefährlich und können bedenkenlos in Innenräumen eingesetzt werden." },
@@ -4177,7 +3347,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kasten-750": {
-    excelName: "750 kg Kastenanhänger",
     seoTitle: "750 kg Kastenanhänger mieten | Offener Anhänger",
     metaDescription: "Kleiner, offener Kastenanhänger für Lasten bis 630 kg. Ideal für Schüttgut und Werkzeug. Ohne BE-Führerschein fahrbar.",
     h1: "750 kg Kastenanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4185,8 +3354,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von Werkzeugen oder kleinen Mengen Schüttgut und Bauschutt direkt auf der Baustelle – unkompliziert nutzbar ohne BE-Führerschein.",
     useCaseEvent: "",
     useCasePrivat: "Anlieferung von Erde, Mulch und Pflastersteinen für die Gartenarbeit oder Entsorgung von Bauschutt am Wertstoffhof.",
-    primaryKeywords: "750 kg Kastenanhänger mieten in Krefeld, 750 kg Kastenanhänger leihen in Krefeld, 750 kg Kastenanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Lasten dürfen mit diesem Anhänger transportiert werden?", a: "Der Anhänger hat eine Nutzlast von ca. 630 kg bei einem Eigengewicht von ca. 120 kg." },
       { q: "Darf ich diesen Anhänger mit der Führerscheinklasse B fahren?", a: "Ja, da es sich um einen 750 kg Anhänger handelt, ist dieser in der Regel mit einem Standard-Pkw-Führerschein der Klasse B fahrbar." },
@@ -4194,7 +3361,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kasten-laubgitter-1300": {
-    excelName: "1300 kg Kastenanhänger & Laubgitter",
     seoTitle: "1300 kg Kastenanhänger mit Laubgitter zur Miete",
     metaDescription: "Mieten Sie den 1300 kg Kastenanhänger mit Laubgitter-Aufsatz. 900 kg Nutzlast und hohes Ladevolumen für Grünschnitt und Sperrgut in NRW.",
     h1: "1300 kg Kastenanhänger & Laubgitter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4202,8 +3368,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Effizienter Transport größerer Mengen an Verschnitt, Dämmstoffen oder leichten Abbruchmaterialien durch die Kombination aus hoher Nutzlast und Volumen-Aufsatz.",
     useCaseEvent: "",
     useCasePrivat: "Ideal für großzügige Garten-Entrümpelungen, den Transport kompletter Heckenrückschnitte oder umfangreicher Mengen an losem Grünschnitt.",
-    primaryKeywords: "1300 kg Kastenanhänger & Laubgitter mieten in Krefeld, 1300 kg Kastenanhänger & Laubgitter leihen in Krefeld, 1300 kg Kastenanhänger & Laubgitter mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung bei diesem 1300 kg Modell?", a: "Die verbleibende Nutzlast für das Ladegut beträgt bei diesem Kastenanhänger ca. 900 kg." },
@@ -4212,7 +3376,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kasten-laubgitter-750": {
-    excelName: "750 kg Kastenanhänger & Laubgitter",
     seoTitle: "750 kg Kastenanhänger mit Laubgitter mieten",
     metaDescription: "750 kg PKW-Anhänger mit Laubgitter-Aufsatz für Grünschnitt und Dämmstoffe. Ladehöhe 100 cm bei 500 kg Nutzlast. Ideal für voluminöse Güter.",
     h1: "750 kg Kastenanhänger & Laubgitter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4220,8 +3383,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Anhänger eignet sich auf Baustellen für den Abtransport von leichten, aber sperrigen Materialien wie Dämmstoffresten, Verpackungsmaterial oder Verschnitt.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich dient das Modell vor allem der Laubabfuhr sowie dem Transport von Hecken- und Grünschnitt zum lokalen Wertstoffhof.",
-    primaryKeywords: "750 kg Kastenanhänger & Laubgitter mieten in Krefeld, 750 kg Kastenanhänger & Laubgitter leihen in Krefeld, 750 kg Kastenanhänger & Laubgitter mieten NRW",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Welches Ladevolumen bietet der Laubgitter-Anhänger?", a: "Durch die Kombination der Ladefläche von 264 x 126 cm mit dem Gitteraufsatz ergibt sich eine Nutzhöhe von insgesamt 100 cm für leichtes Transportgut." },
@@ -4230,7 +3391,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kettendumper-rmd800": {
-    excelName: "Ketten-Dumper",
     seoTitle: "Ketten-Dumper RMD-800 mieten Krefeld – 800 kg, 80 cm breit",
     metaDescription: "Kettendumper RMD-800 in Krefeld mieten – ab 35 €/Tag. 800 kg Nutzlast, nur 80 cm Breite, 6,2 PS Benzin. Passt durch jedes Gartentor – Abholung Anrather Straße 291.",
     h1: "Ketten-Dumper RMD-800 mieten in Krefeld – ab 35 €/Tag",
@@ -4242,8 +3402,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Materialtransport von Kies, Sand, Mutterboden, Bauschutt und Pflastersteinen auf engen Innenstadtbaustellen in Krefeld, Meerbusch, Willich, Tönisvorst und Kempen. Mit nur 80 cm Gesamtbreite passt der RMD-800 durch Standard-Gartentore und Hauseingänge – dort, wo ein 3t-Radlader oder Radschubkarrensystem nicht mehr durchkommt.",
     useCaseEvent: "",
     useCasePrivat: "Ideal für Terrassen- und Wegebau, Verteilen von Mutterboden und Rindenmulch im Hausgarten, Transport von Bauschutt beim Umbau sowie sperrigen Gütern wie Holz oder Steinplatten dank serienmäßiger Rungen. Als Alternative zur klassischen Motorschubkarre – deutlich mehr Last, aber gleiche Zugangsbreite.",
-    primaryKeywords: "Kettendumper mieten Krefeld, Raupendumper mieten Krefeld, Ketten-Dumper RMD-800 mieten, Dumper mieten Krefeld, Minidumper mieten Niederrhein, Motorschubkarre mieten Krefeld, Kettendumper leihen Krefeld",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Was kostet der Kettendumper RMD-800 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 35 € netto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
@@ -4256,7 +3414,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-kettendumper-rmd800": {
-    excelName: "Ketten-Dumper",
     seoTitle: "Ketten-Dumper RMD-800 mieten Bonn – 800 kg, 80 cm breit",
     metaDescription: "Kettendumper RMD-800 in Bonn mieten: 800 kg Nutzlast, nur 80 cm Breite, 6,2 PS Benzin. Abholung Drachenburgstraße 8 in Bad Godesberg – Sa ohne Voranmeldung.",
     h1: "Ketten-Dumper RMD-800 mieten in Bonn",
@@ -4268,8 +3425,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Materialtransport von Kies, Sand, Mutterboden, Bauschutt und Pflastersteinen auf engen Baustellen in Bonn, Bad Godesberg, Beuel, Wachtberg, Königswinter und im Rhein-Sieg-Kreis. Nach dem Ahrtal-Hochwasser häufig eingesetzt bei Wiederaufbauarbeiten auf schmalen Ufergrundstücken, wo Radschubkarre zu klein und Radlader zu breit ist.",
     useCaseEvent: "",
     useCasePrivat: "Ideal für Hanggärten in Bad Godesberg und Königswinter, wo Radschubkarren an ihre Grenzen kommen: Materialtransport für Terrassenbau, Verteilen von Mutterboden am Hang, sowie Transport von Pflaster, Holz oder Steinplatten dank serienmäßiger Rungen. Perfekt auch für Grundstücke am Rhein mit schmaler Uferzufahrt.",
-    primaryKeywords: "Kettendumper mieten Bonn, Raupendumper mieten Bonn, Ketten-Dumper RMD-800 mieten, Dumper mieten Bonn, Minidumper mieten Rhein-Sieg-Kreis, Motorschubkarre mieten Bonn, Kettendumper leihen Bonn, Dumper mieten Ahrtal",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Wo hole ich den Kettendumper RMD-800 in Bonn ab?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr 07:00–18:00 Uhr und Sa 08:00–17:30 Uhr, samstags ohne Voranmeldung. Auf Anfrage liefern wir ins Rhein-Sieg-Kreis und ins Ahrtal." },
@@ -4281,34 +3436,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Brauche ich einen Führerschein oder Bagger-Schein?", a: "Nein. Der Kettendumper wird stehend im Nachläufer-Prinzip bedient – kein Führerschein und kein DGUV-Schein nötig. Bei Übergabe an der Drachenburgstraße weisen wir dich in Sicherheitsschaltung, Not-Aus und Beladungsgrenzen ein." },
     ],
   },
-  "mh-kettendumper-rmd800": {
-    excelName: "Ketten-Dumper",
-    seoTitle: "Ketten-Dumper RMD-800 mieten Mülheim an der Ruhr – 800 kg",
-    metaDescription: "Kettendumper RMD-800 in Mülheim an der Ruhr mieten: 800 kg Nutzlast, nur 80 cm Breite, 6,2 PS Benzin. Abholung Ruhrorter Str. 122 – Lieferung im Ruhrgebiet.",
-    h1: "Ketten-Dumper RMD-800 mieten in Mülheim an der Ruhr",
-    h2s: [
-      "80 cm schmaler Raupendumper für Ruhrgebiets-Reihenhaus & Zechenareal",
-      "800 kg Nutzlast, 400 l Muldenvolumen, 6,2 PS Benzin",
-      "Abholung Ruhrorter Str. 122 – ideal für GaLaBau in Essen, Duisburg, Oberhausen",
-    ],
-    useCaseBau: "Für Materialtransport von Kies, Sand, Mutterboden, Bauschutt und Pflastersteinen auf engen Baustellen in Mülheim an der Ruhr, Essen, Duisburg, Oberhausen und im gesamten Ruhrgebiet. Ideal für Reihenhaus-Sanierungen, wo der schmale Seiten- oder Hinterhausdurchgang mit klassischen Radschubkarren-Zügen unrentabel wird.",
-    useCaseEvent: "",
-    useCasePrivat: "Für Terrassen- und Wegebau, Verteilen von Mutterboden im Hausgarten, Transport von Bauschutt beim Umbau sowie Holz oder Steinplatten dank serienmäßiger Rungen – auch auf beengten Grundstücken im Ruhrgebiet mit typischer Reihenhaus-Bebauung.",
-    primaryKeywords: "Kettendumper mieten Mülheim an der Ruhr, Raupendumper mieten Ruhrgebiet, Ketten-Dumper RMD-800 mieten, Dumper mieten Mülheim, Minidumper mieten Ruhrgebiet, Motorschubkarre mieten Mülheim, Dumper mieten Essen, Kettendumper leihen Ruhrgebiet",
-    is247: false,
-    dailyPriceFrom: 35,
-    faqs: [
-      { q: "Wo hole ich den Kettendumper RMD-800 in Mülheim ab?", a: "An unserer Filiale Mülheim an der Ruhr, Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – Mo–Fr sowie Sa nach Terminabsprache. Auf Anfrage liefern wir ins gesamte Ruhrgebiet, insbesondere Essen, Duisburg und Oberhausen." },
-      { q: "Was kostet der RMD-800 in Mülheim pro Tag?", a: "Der Tagespreis startet bei 35 € netto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
-      { q: "Passt der Dumper durch einen typischen Reihenhaus-Seitendurchgang im Ruhrgebiet?", a: "Ja. Mit nur 80 cm Gesamtbreite (75 cm ohne Bordwände) passt der Raupendumper durch die meisten Reihenhaus-Seiten- und Hinterhausdurchgänge in Mülheim, Essen und Duisburg – dort, wo ein Minibagger oder Radlader nicht mehr durchkommt." },
-      { q: "Ist der Kettendumper für ein Zechen- oder Industrieareal geeignet?", a: "Ja. Das Raupenlaufwerk bewältigt auch unebene Flächen wie Zechenareale, Industriebrachen oder unbefestigte Werksflächen sicher – 800 kg Nutzlast und 400 l Volumen decken den typischen Materialbedarf bei Kleinsanierungen." },
-      { q: "Wie transportiere ich den RMD-800 zur Baustelle ins Ruhrgebiet?", a: "Mit 450 kg Maschinengewicht passt der Dumper auf einen Pkw-Anhänger ab 750 kg zulässiger Gesamtmasse (mit BE-Führerschein) – deutlich einfacher zu transportieren als ein 2t-Minibagger. Alternativ liefern wir direkt zur Einsatzstelle in Essen, Duisburg oder Oberhausen." },
-      { q: "Was transportiere ich mit den Rungen?", a: "Die serienmäßigen Rungen dienen zur Fixierung von sperrigen Gütern – klassisch Kanthölzer, Balken, Pflastersteine und Steinplatten. So kannst du auch längere Materialien sicher durch schmale Ruhrgebiets-Hofdurchgänge transportieren." },
-      { q: "Brauche ich einen Führerschein für den Kettendumper?", a: "Nein. Bedienung im Nachläufer-Prinzip (stehend hinter dem Gerät) – kein Führerschein und kein DGUV-Schein nötig. Bei Übergabe in Mülheim weisen wir dich in Sicherheitsschaltung und Beladungsgrenzen ein." },
-    ],
-  },
   "kleiderbuegel-20er-set": {
-    excelName: "Kleiderbügel 20er Set, black",
     seoTitle: "Kleiderbügel 20er Set, black",
     metaDescription: "Set aus 20 schwarzen Holz-Kleiderbügeln für Events, Messen und Fotostudios. Geeignet für Garderobenbereiche bei Veranstaltungen.",
     h1: "Kleiderbügel 20er Set, black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4316,8 +3444,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Kleiderbügel dienen der Einrichtung von Garderoben bei Veranstaltungen, Tagungen, Hochzeiten und Firmenfeiern zur Erhöhung des Gästekomforts.",
     useCasePrivat: "",
-    primaryKeywords: "Kleiderbügel 20er Set, black mieten in Krefeld, Kleiderbügel 20er Set, black leihen in Krefeld, Kleiderbügel 20er Set, black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus welchem Material bestehen die Kleiderbügel?", a: "Die Kleiderbügel sind aus Holz gefertigt." },
       { q: "Wie viele Kleiderbügel sind im Set enthalten?", a: "Ein Set umfasst 20 Stück." },
@@ -4325,7 +3451,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kleiderstaender-rollen": {
-    excelName: "Kleiderständer mit Rollen inkl. Bügel",
     seoTitle: "Kleiderständer mit Rollen inkl. 20 Bügel mieten",
     metaDescription: "Robuster Kleiderständer aus pulverbeschichtetem Eisen mit bis zu 90 kg Tragkraft. Inklusive 20 Holz-Kleiderbügeln, ausziehbar und klappbar für Events.",
     h1: "Kleiderständer mit Rollen inkl. Bügel mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4333,8 +3458,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Kleiderständer dient als Garderobe bei Veranstaltungen und Tagungen sowie zur Erhöhung des Gästekomforts bei Hochzeiten und Firmenfeiern.",
     useCasePrivat: "",
-    primaryKeywords: "Kleiderständer mit Rollen inkl. Bügel mieten in Krefeld, Kleiderständer mit Rollen inkl. Bügel leihen in Krefeld, Kleiderständer mit Rollen inkl. Bügel mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Belastbarkeit des Kleiderständers?", a: "Die maximale statische Belastbarkeit beträgt 90 kg." },
       { q: "Ist die Breite der Kleiderstange variabel?", a: "Ja, die Kleiderstange ist von 92 cm auf bis zu 132 cm ausziehbar." },
@@ -4342,7 +3465,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kleiderstaender-rollen-ohne-buegel": {
-    excelName: "Kleiderständer mit Rollen, black",
     seoTitle: "Kleiderständer mit Rollen, black | 90 kg Tragkraft",
     metaDescription: "Ausziehbarer Garderobenständer aus schwarzem Eisenrohr. Belastbar bis 90 kg, mit 4 Lenkrollen und Bremsen. Ideal für Events und Fotostudios.",
     h1: "Kleiderständer mit Rollen, black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4350,8 +3472,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieser Kleiderständer dient als Garderobe bei Veranstaltungen und Tagungen sowie zur Steigerung des Gästekomforts bei Hochzeiten und Firmenfeiern.",
     useCasePrivat: "",
-    primaryKeywords: "Kleiderständer mit Rollen, black mieten in Krefeld, Kleiderständer mit Rollen, black leihen in Krefeld, Kleiderständer mit Rollen, black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Tragfähigkeit des Kleiderständers?", a: "Die maximale statische Belastbarkeit der Kleiderstange beträgt 90 kg." },
       { q: "Lassen sich die Maße des Garderobenständers anpassen?", a: "Ja, die Kleiderstange ist in der Länge von 92 cm auf bis zu 132 cm ausziehbar." },
@@ -4359,7 +3479,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "km-distanzstange-21366": {
-    excelName: "K&M 21366 Distanzstange",
     seoTitle: "K&M 21366 Distanzstange mieten",
     metaDescription: "Höhenverstellbare Distanzstange K&M 21366 zur Montage von Lautsprechern auf Subwoofern mit 35-mm-Flansch.",
     h1: "K&M 21366 Distanzstange mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4367,8 +3486,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze.",
     useCaseEvent: "",
     useCasePrivat: "Erweiterung der Heimwerker-Ausstattung.",
-    primaryKeywords: "K&M 21366 Distanzstange mieten in Krefeld, K&M 21366 Distanzstange leihen in Krefeld, K&M 21366 Distanzstange mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse besitzt die K&M 21366 Distanzstange?", a: "Die Distanzstange ist sowohl oben als auch unten mit einem Anschluss für gängige 35-mm-Flansche ausgestattet." },
       { q: "Wofür wird dieses Produkt verwendet?", a: "Die Stange dient der stabilen Montage von Top-Lautsprechern direkt auf Subwoofern." },
@@ -4376,7 +3493,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "knickdumper-kde550": {
-    excelName: "Raddumper / Knickdumper 4x4 elektrisch",
     seoTitle: "Raddumper KDe550p elektrisch | 550 kg Nutzlast | 110° Kippwinkel",
     metaDescription: "Elektro-Knickdumper KDe550p mit 4x4 Allradantrieb, 550 kg Tragfähigkeit, 110° Kippwinkel und 8-10h reiner Arbeitszeit für Bau- und Gartenprojekte.",
     h1: "Raddumper / Knickdumper 4x4 elektrisch (KDe550p) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4384,8 +3500,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Raddumper eignet sich für den Materialtransport auf weitläufigen Baustellen sowie zur Bauschuttabfuhr in beengten Innenstadtbaustellen.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät unterstützt beim Transport von Mutterboden, Kies oder Schotter im Garten sowie bei der Materialbewegung bei größeren Privatprojekten.",
-    primaryKeywords: "Raddumper / Knickdumper 4x4 elektrisch mieten in Krefeld, Raddumper / Knickdumper 4x4 elektrisch leihen in Krefeld, Raddumper / Knickdumper 4x4 elektrisch mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lange hält eine Akkuladung im Betrieb?", a: "Der KDe550p verfügt über eine reine Arbeitszeit von etwa 8 bis 10 Stunden pro Akkuladung." },
       { q: "Wie wird der Elektro-Dumper aufgeladen?", a: "Das Gerät besitzt ein integriertes Ladegerät mit einem 5 Meter langen Kabel für den Anschluss an eine 230V-Steckdose. Die Ladezeit von 0 auf 100 % beträgt ca. 7-8 Stunden." },
@@ -4394,7 +3508,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "koffer-1500": {
-    excelName: "1500 kg Kofferanhänger",
     seoTitle: "1500 kg Kofferanhänger mieten | Ladefläche 300x150x180 cm",
     metaDescription: "Mieten Sie den 1500 kg Kofferanhänger mit einer Nutzlast von ca. 1.000 kg. Maße: 300 x 150 x 180 cm. Ideal für den geschützten Transport in NRW.",
     h1: "1500 kg Kofferanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4402,8 +3515,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Kofferanhänger eignet sich für den diebstahlgeschützten Werkzeugtransport sowie als mobiles Lager bei längeren Bauprojekten.",
     useCaseEvent: "Nutzen Sie den Anhänger als mobiles Equipment-Lager bei Tour-Events oder für den Transport hochwertiger Veranstaltungstechnik.",
     useCasePrivat: "Das Modell ermöglicht den sicheren Transport von Wertgegenständen beim Umzug und ist für empfindliche Gegenstände geeignet.",
-    primaryKeywords: "1500 kg Kofferanhänger mieten in Krefeld, 1500 kg Kofferanhänger leihen in Krefeld, 1500 kg Kofferanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die Nutzlast beträgt ca. 1.000 kg bei einem Eigengewicht von ca. 500 kg." },
       { q: "Welche Maße hat die Ladefläche?", a: "Die Ladefläche des Kofferanhängers misst 300 cm in der Länge, 150 cm in der Breite und 180 cm in der Höhe." },
@@ -4411,7 +3522,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "koffer-2000": {
-    excelName: "2000 kg Kofferanhänger",
     seoTitle: "2000 kg Kofferanhänger mieten - 300 x 155 x 185 cm",
     metaDescription: "Kofferanhänger mit 1.400 kg Nutzlast. Maße Ladefläche: 300 x 155 x 185 cm. Ideal für geschützten Transport und mobile Lagerung.",
     h1: "2000 kg Kofferanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4419,8 +3529,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Eignet sich für den diebstahlgeschützten Werkzeugtransport sowie als mobiles Lager für längere Bauprojekte.",
     useCaseEvent: "Wird für den Transport hochwertiger Veranstaltungstechnik und als mobiles Equipment-Lager bei Tour-Events genutzt.",
     useCasePrivat: "Dient dem sicheren Transport von Wertgegenständen beim Umzug und dem Transport empfindlicher Gegenstände.",
-    primaryKeywords: "2000 kg Kofferanhänger mieten in Krefeld, 2000 kg Kofferanhänger leihen in Krefeld, 2000 kg Kofferanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Kofferanhängers?", a: "Die Nutzlast beträgt ca. 1.400 kg bei einem Eigengewicht von ca. 600 kg." },
       { q: "Welche Innenmaße hat die Ladefläche?", a: "Die Ladefläche des Anhängers misst 300 cm in der Länge, 155 cm in der Breite und 185 cm in der Höhe." },
@@ -4428,7 +3536,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "koffer-750": {
-    excelName: "750 kg Kofferanhänger",
     seoTitle: "750 kg Kofferanhänger mieten - Ladefläche 223x147 cm",
     metaDescription: "Mieten Sie einen Kofferanhänger mit 750 kg zulässigem Gesamtgewicht, einer Nutzlast von 372 kg und einer Ladefläche von 223 x 147 x 147 cm.",
     h1: "750 kg Kofferanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4436,8 +3543,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Anhänger dient dem diebstahlgeschützten Werkzeugtransport und als mobiles Lager für längere Bauprojekte.",
     useCaseEvent: "Der Kofferanhänger wird als mobiles Equipment-Lager bei Tour-Events und für den Transport hochwertiger Veranstaltungstechnik genutzt.",
     useCasePrivat: "Das Fahrzeug ermöglicht den sicheren Transport von Wertgegenständen beim Umzug sowie den Transport empfindlicher Gegenstände.",
-    primaryKeywords: "750 kg Kofferanhänger mieten in Krefeld, 750 kg Kofferanhänger leihen in Krefeld, 750 kg Kofferanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Kofferanhängers?", a: "Die Nutzlast beträgt ca. 372 kg bei einem Eigengewicht von ca. 378 kg." },
@@ -4446,7 +3551,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kompressor-5m3": {
-    excelName: "4m³ Kompressor",
     seoTitle: "4m³ Kompressor mieten in Krefeld | SLT Rental",
     metaDescription: "4m³ Kompressor mieten in Krefeld. Kompressor inkl. Generator  Marke: Doosan  Typ: 7/45  Volumenstrom: 4m³/min   max. Druck:. Tagesmiete, fairer Preis, Lief",
     h1: "4m³ Kompressor mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4454,8 +3558,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Druckluftversorgung auf Baustellen, Betrieb von Presslufthämmern, Sandstrahlarbeiten",
     useCaseEvent: "Aufblasen großer Eventstrukturen, pneumatische Installationen",
     useCasePrivat: "Druckluft für Heimwerker, Reifenfüllen, Ausblasarbeiten",
-    primaryKeywords: "4m³ Kompressor mieten in Krefeld, 4m³ Kompressor leihen in Krefeld, 4m³ Kompressor mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welchen Druck und welche Luftmenge liefert der Kompressor?", a: "Die genauen Leistungsdaten finden Sie in den technischen Daten oben. Der Kompressor liefert ausreichend Luftmenge für den gleichzeitigen Betrieb mehrerer Druckluftwerkzeuge." },
       { q: "Kann der Kompressor mehrere Geräte gleichzeitig betreiben?", a: "Ja – über entsprechende Verteiler können mehrere Druckluftwerkzeuge gleichzeitig betrieben werden. Achten Sie darauf, dass der Gesamtluftbedarf die Förderleistung nicht übersteigt." },
@@ -4464,7 +3566,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kompressor-1-2m3-stationaer": {
-    excelName: "1,2 m³ Kompressor (stationär)",
     seoTitle: "1,2 m³ Elektro-Kompressor mieten Krefeld | 400 V, bis 13 bar",
     metaDescription: "Stationärer 1,2 m³ Elektrokompressor mit 7,5 kW Siemens-Motor mieten in Krefeld. 400 V / 32 A, Liefermenge 1,2 m³/min bei 7 bar, bis 13 bar. Auf Anfrage.",
     h1: "1,2 m³ Kompressor (stationär) mieten in Krefeld – Auf Anfrage bei SLT Rental",
@@ -4472,8 +3573,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Druckluftversorgung an Standorten mit vorhandenem 400 V Drehstromanschluss – z. B. in Werkstätten, Lagerhallen oder auf Baustellen mit Bauanschluss. Geeignet für Druckluftwerkzeuge im Druckbereich bis 13 bar.",
     useCaseEvent: "",
     useCasePrivat: "Stationäre Druckluftversorgung in privaten Werkstätten oder bei längeren Projekten mit ortsfestem Stromanschluss.",
-    primaryKeywords: "1,2 m³ Kompressor mieten Krefeld, Elektrokompressor mieten Krefeld, stationärer Kompressor mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Stromanschluss wird benötigt?", a: "Ein 400 V Drehstromanschluss mit 32 A Absicherung. Bitte vor der Anmietung prüfen, ob der Anschluss am Einsatzort verfügbar ist." },
       { q: "Welche Liefermenge bringt der Kompressor?", a: "1,2 m³/min bei 7 bar, 1,0 m³/min bei 10 bar und 0,85 m³/min bei 13 bar Betriebsüberdruck." },
@@ -4483,7 +3582,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kompressor-2m3-bobcat-pa72": {
-    excelName: "2 m³ Kompressor",
     seoTitle: "2 m³ Kompressor mieten Krefeld | Bobcat PA7.2 Diesel",
     metaDescription: "2 m³ Bau-Kompressor Bobcat PA7.2 mieten in Krefeld. 7 bar, Kubota Diesel Stage V, 17,5 kW, mobil auf Anhänger. Für Erdraketen & Presslufthammer. Auf Anfrage.",
     h1: "2 m³ Kompressor mieten in Krefeld – Bobcat PA7.2 auf Anfrage bei SLT Rental",
@@ -4491,8 +3589,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Druckluftversorgung für Erdraketen (45/65/75 mm), Presslufthämmer, Aufbruchhämmer, Stampfer und Sandstrahlgeräte – Stage V emissionsarm, ideal für Hausanschlüsse, Tiefbau und Glasfaser-Baustellen.",
     useCaseEvent: "Pneumatische Aufbauten und Druckluftbetrieb auf Außenveranstaltungen ohne Stromanschluss.",
     useCasePrivat: "Sandstrahlen, Fassadenarbeiten und Druckluftwerkzeuge im Außenbereich – auch dort, wo kein Drehstrom verfügbar ist.",
-    primaryKeywords: "2 m³ Kompressor mieten Krefeld, Bobcat PA7.2 mieten, Baukompressor Diesel mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Liefermenge bringt der Kompressor?", a: "Der Bobcat PA7.2 liefert 2,0 m³/min freie Luftmenge bei 7 bar Betriebsdruck – ausreichend für alle gängigen pneumatischen Bauwerkzeuge bis hin zur Erdrakete 75 mm." },
       { q: "Wie wird der Kompressor zur Baustelle gebracht?", a: "Der PA7.2 ist auf einem straßenzulassungsfähigen Einachs-Anhänger montiert (Betriebsgewicht ca. 445 kg). Anhängelast und Führerschein-Klasse Ihres Zugfahrzeugs bitte beachten – alternativ liefern wir direkt zum Einsatzort." },
@@ -4502,7 +3598,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kompressor-5m3-bobcat-pa75": {
-    excelName: "5 m³ Kompressor",
     seoTitle: "5 m³ Kompressor mieten Krefeld | Bobcat PA7.5 Diesel Stage V",
     metaDescription: "5 m³ Bau-Kompressor Bobcat PA7.5 mieten in Krefeld. 6,8 bar, Yanmar Diesel Stage V, 35,5 kW, mobil auf Anhänger – für mehrere Druckluftwerkzeuge. Auf Anfrage.",
     h1: "5 m³ Kompressor mieten in Krefeld – Bobcat PA7.5 auf Anfrage bei SLT Rental",
@@ -4510,8 +3605,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Druckluftversorgung für den parallelen Betrieb mehrerer Presslufthämmer, Aufbruchhämmer und Stampfer sowie für größere Erdraketen, Sandstrahl- und Spritzbetonarbeiten – Stage V emissionsarm, geeignet auch für innerstädtische Baustellen.",
     useCaseEvent: "Pneumatische Aufbauten und Druckluftbetrieb auf großen Außenveranstaltungen ohne Stromanschluss.",
     useCasePrivat: "Sandstrahlen größerer Flächen, Fassadenarbeiten und Druckluftwerkzeuge im Außenbereich – auch dort, wo kein Drehstrom verfügbar ist.",
-    primaryKeywords: "5 m³ Kompressor mieten Krefeld, Bobcat PA7.5 mieten, Baukompressor Diesel mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Liefermenge bringt der Kompressor?", a: "Der Bobcat PA7.5 liefert 5,0 m³/min freie Luftmenge (FAD) bei 6,8 bar Betriebsdruck – ausreichend, um mehrere Presslufthämmer oder eine große Erdrakete gleichzeitig zu betreiben." },
       { q: "Welcher Motor ist verbaut?", a: "Ein 4-Zylinder Yanmar 4TNV88C Dieselmotor mit 35,5 kW Leistung, wassergekühlt, Emissionsstufe EU Stage V." },
@@ -4522,7 +3615,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kramer-5045": {
-    excelName: "3t Radlader",
     seoTitle: "Kramer 5045 mieten Krefeld – 3t Radlader für Bau & Winterdienst",
     metaDescription: "3t Radlader Kramer 5045 in Krefeld mieten: 3.000 kg, Diesel, Standardschaufel inkl. Auch als Winterdienst-Set mit Adler-Schneeschild & App-Salzstreuer buchbar.",
     h1: "3t Radlader Kramer 5045 mieten in Krefeld",
@@ -4534,8 +3626,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Materialhandling von Kies, Sand, Mutterboden, Split und Recyclingschotter, Beladung von LKW und Containern, Beschickung von Silos und Mischern sowie Hof- und Wegebau in Krefeld, Meerbusch, Willich, Tönisvorst und am gesamten Niederrhein. Beliebt bei Handwerksbetrieben und GaLaBauern für Bordsteinsetzen und Baustellenlogistik.",
     useCaseEvent: "",
     useCasePrivat: "Für großflächige Hofumgestaltung, Verteilen von Mutterboden vor Rasenneuanlage, Nivellieren von Grundstücken sowie den saisonalen Winterdienst am Privatgrundstück in Krefeld und Umgebung.",
-    primaryKeywords: "Kramer 5045 mieten, 3t Radlader mieten Krefeld, Kramer Radlader mieten, Radlader mieten Krefeld, Hoflader mieten Krefeld, Kompaktlader mieten Niederrhein, Radlader leihen Krefeld, Baumaschinen mieten Krefeld",
-    is247: false,
     faqs: [
       { q: "Was ist im Grundpreis des Kramer 5045 enthalten?", a: "Der Kramer 5045 (Yanmar-Diesel Stage V, ca. 2.675–2.750 kg Betriebsgewicht) wird mit 0,45 m³ Standardschaufel und vollem Tank übergeben – gebucht wird pro Tag mit 8 Betriebsstunden. Diesel und ggf. weitere Anbaugeräte kommen separat hinzu." },
       { q: "Welche Anbaugeräte sind verfügbar?", a: "Standardschaufel ist im Grundpreis, Palettengabel auf Anfrage. Für den Winterdienst gibt es das Komplett-Set „Winterdienst-Set Kramer 5045“ mit hydraulisch schwenkbarem Adler-Schneeschild und Bluetooth-/App-gesteuertem Anbau-Salzstreuer (1.499 € brutto/Monat, ab 3 Monaten, zzgl. Maschinenbruchversicherung)." },
@@ -4547,7 +3637,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "winterdienst-set-kramer-5045": {
-    excelName: "Winterdienst-Set Kramer 5045",
     seoTitle: "Winterdienst-Set Kramer 5045 mieten Krefeld | 1.499 €/Monat",
     metaDescription: "Profi-Winterdienst-Set Kramer 5045 in Krefeld mieten: 3t Radlader, hydraulisches Adler-Schneeschild & app-gesteuerter Salzstreuer. Aktionspreis 1.499 € brutto/Monat zzgl. Maschinenbruchversicherung. Auf Anfrage.",
     h1: "Winterdienst-Set Kramer 5045 mieten in Krefeld – Räumen & Streuen in einem Zug",
@@ -4560,8 +3649,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Hausverwaltungen, Bauhöfe, Industrie- und Logistikflächen am Niederrhein räumen mit dem Set ihre Werkstore, Parkplätze und Zufahrten zuverlässig frei – inklusive Räum- und Streupflicht-Erfüllung in einem Arbeitsgang.",
     useCaseEvent: "Für Veranstaltungsflächen, Weihnachtsmärkte und Eventgelände in Krefeld und Umgebung sichert das Set Zugänge und Besucherparkplätze auch bei Dauerschneefall.",
     useCasePrivat: "Größere Privatgrundstücke, Hofanlagen und Reiterhöfe rund um Krefeld räumen Einfahrt und Hofflächen sicher und schnell – ohne Schippen und ohne mehrfaches Umrüsten.",
-    primaryKeywords: "Winterdienst mieten Krefeld, Radlader Winterdienst Krefeld, Schneeschild Salzstreuer mieten Krefeld, Kramer 5045 Winterdienst",
-    is247: false,
     faqs: [
       { q: "Was ist im Winterdienst-Set Kramer 5045 enthalten?", a: "Das Set umfasst den 3t Radlader Kramer 5045, ein hydraulisches Adler-Schneeschild (Neigungswinkel verstellbar) und einen app-gesteuerten Salzstreuer für den Heckanbau. Schneeketten sind optional zubuchbar." },
       { q: "Was kostet das Winterdienst-Set in Krefeld?", a: "Der aktuelle Aktionspreis beträgt 1.499 € brutto pro Monat (inkl. MwSt.) zzgl. Maschinenbruchversicherung. Diesel und ggf. Schneeketten kommen separat hinzu." },
@@ -4572,7 +3659,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-winterdienst-set-kramer-5045": {
-    excelName: "Winterdienst-Set Kramer 5045 (Bonn)",
     seoTitle: "Winterdienst-Set Kramer 5045 mieten Bonn | 1.499 €/Monat",
     metaDescription: "Winterdienst-Set Kramer 5045 in Bonn mieten: 3t Radlader, hydraulisches Adler-Schneeschild & app-gesteuerter Salzstreuer. 1.499 € brutto/Monat zzgl. Maschinenbruchversicherung – auf Anfrage für Bonn & Rhein-Sieg-Kreis.",
     h1: "Winterdienst-Set Kramer 5045 mieten in Bonn – Räumen & Streuen in einem Zug",
@@ -4585,8 +3671,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Hausverwaltungen, Bauhöfe und Logistikbetriebe in Bonn, Bad Godesberg und im Rhein-Sieg-Kreis räumen ihre Liegenschaften, Parkflächen und Zufahrten zuverlässig – Räum- und Streupflicht in einem Arbeitsgang erfüllt.",
     useCaseEvent: "Für Weihnachtsmärkte, Eventflächen und Veranstaltungen in Bonn und Umgebung sichert das Set Besucherwege und Parkplätze auch bei plötzlichem Schneefall.",
     useCasePrivat: "Größere Privatgrundstücke, Hofanlagen und gemeinschaftliche Stellflächen in Bonn räumen Einfahrt und Hofflächen sicher – ohne Schaufel und ohne mehrfaches Umrüsten.",
-    primaryKeywords: "Winterdienst mieten Bonn, Radlader Winterdienst Bonn, Schneeschild Salzstreuer mieten Bonn, Kramer 5045 Winterdienst Rhein-Sieg",
-    is247: false,
     faqs: [
       { q: "Was ist im Winterdienst-Set Kramer 5045 in Bonn enthalten?", a: "Das Set umfasst den 3t Radlader Kramer 5045, ein hydraulisches Adler-Schneeschild (Neigungswinkel verstellbar) und einen app-gesteuerten Salzstreuer als Heckanbau. Schneeketten sind optional zubuchbar." },
       { q: "Was kostet das Winterdienst-Set in Bonn?", a: "Der Aktionspreis beträgt 1.499 € brutto pro Monat (inkl. MwSt.) zzgl. Maschinenbruchversicherung. Diesel und ggf. Schneeketten kommen separat hinzu." },
@@ -4597,7 +3681,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-winterdienst-set-kramer-5045": {
-    excelName: "Winterdienst-Set Kramer 5045 (Mülheim an der Ruhr)",
     seoTitle: "Winterdienst-Set Kramer 5045 mieten Mülheim an der Ruhr | 1.499 €/Monat",
     metaDescription: "Winterdienst-Set Kramer 5045 in Mülheim an der Ruhr mieten: 3t Radlader, hydraulisches Adler-Schneeschild & app-gesteuerter Salzstreuer. 1.499 € brutto/Monat zzgl. Maschinenbruchversicherung – auf Anfrage fürs Ruhrgebiet.",
     h1: "Winterdienst-Set Kramer 5045 mieten in Mülheim an der Ruhr – Räumen & Streuen in einem Zug",
@@ -4610,8 +3693,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Hausverwaltungen, Bauhöfe sowie Industrie- und Logistikbetriebe in Mülheim an der Ruhr, Essen, Oberhausen und Duisburg räumen Werkstore, Parkplätze und Zufahrten zuverlässig – Räum- und Streupflicht in einem Arbeitsgang erfüllt.",
     useCaseEvent: "Für Veranstaltungen, Weihnachtsmärkte und Logistik-Hubs im Ruhrgebiet sichert das Set Zugänge, Besucherparkplätze und Anlieferzonen auch bei Dauerschneefall.",
     useCasePrivat: "Große Privatgrundstücke, Reiterhöfe und gemeinschaftliche Stellflächen in Mülheim und Umgebung räumen Einfahrt und Hof sicher und schnell – ohne Schippen und ohne Umrüstaufwand.",
-    primaryKeywords: "Winterdienst mieten Mülheim an der Ruhr, Radlader Winterdienst Ruhrgebiet, Schneeschild Salzstreuer mieten Mülheim, Kramer 5045 Winterdienst",
-    is247: false,
     faqs: [
       { q: "Was ist im Winterdienst-Set Kramer 5045 in Mülheim enthalten?", a: "Das Set umfasst den 3t Radlader Kramer 5045, ein hydraulisches Adler-Schneeschild (Neigungswinkel verstellbar) und einen app-gesteuerten Salzstreuer als Heckanbau. Schneeketten sind optional zubuchbar." },
       { q: "Was kostet das Winterdienst-Set in Mülheim an der Ruhr?", a: "Der Aktionspreis beträgt 1.499 € brutto pro Monat (inkl. MwSt.) zzgl. Maschinenbruchversicherung. Diesel und ggf. Schneeketten kommen separat hinzu." },
@@ -4622,7 +3703,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "kramer-5050": {
-    excelName: "3t Radlader",
     seoTitle: "Kramer 5050 mieten Krefeld – 3t Radlader für Winterdienst & Bau",
     metaDescription: "3t Radlader Kramer 5050 in Krefeld mieten – ab 75 €/Tag. 3.000 kg, Diesel, Standardschaufel inkl. Für Materialhandling, Winterdienst und Hofbau am Niederrhein.",
     h1: "3t Radlader Kramer 5050 mieten in Krefeld – ab 75 €/Tag",
@@ -4634,8 +3714,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Für Materialhandling von Kies, Sand, Mutterboden und Recyclingschotter, Beladung von LKW und Containern, Beschickung von Mörtelmischern sowie Hofplatz- und Wegebau in Krefeld und am Niederrhein. Deutlich wendiger als vergleichbare Standardradlader – ideal für enge Hofflächen bei Handwerks- und Landschaftsbau-Betrieben.",
     useCaseEvent: "",
     useCasePrivat: "Für großflächige Materialbewegung bei Hofumgestaltung, Verteilen von Mutterboden und Kies, Räumen und Nivellieren größerer Grundstücke sowie den saisonalen Winterdienst am Ein- oder Mehrfamilienhaus.",
-    primaryKeywords: "Kramer 5050 mieten, 3t Radlader mieten Krefeld, Kramer Radlader mieten Krefeld, Radlader mieten Niederrhein, Hoflader mieten Krefeld, Kompaktlader mieten Niederrhein, Radlader mieten in der Nähe",
-    is247: false,
     dailyPriceFrom: 75,
     faqs: [
       { q: "Was kostet der Kramer 5050 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 75 € netto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Diesel zusätzlich (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
@@ -4647,7 +3725,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-auslegerstuetze": {
-    excelName: "Krause Auslegerstütze",
     seoTitle: "Krause Auslegerstütze für STABILO Serie 10",
     metaDescription: "Zubehör für Krause STABILO Serie 10 Rollgerüste aus Aluminium. Erhöht die Standsicherheit bei einseitiger Nutzung und schützt vor Umkippen.",
     h1: "Krause Auslegerstütze mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4655,8 +3732,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerüstteil dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten, wie etwa Maler-, Putz- und Montagearbeiten in der Höhe.",
     useCaseEvent: "",
     useCasePrivat: "Die Stütze kann bei Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt werden.",
-    primaryKeywords: "Krause Auslegerstütze mieten in Krefeld, Krause Auslegerstütze leihen in Krefeld, Krause Auslegerstütze mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Gerüstmodelle ist die Auslegerstütze geeignet?", a: "Die Auslegerstütze ist passend für die Krause Rollgerüste der STABILO Serie 10." },
       { q: "Welche Funktion erfüllt die Krause Auslegerstütze?", a: "Sie erhöht die Standsicherheit bei einseitiger Nutzung des Gerüsts und schützt das System vor dem Umkippen." },
@@ -4664,7 +3739,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-belagbuehne": {
-    excelName: "Krause Belagbühne",
     seoTitle: "Krause Belagbühne für Rollgerüste STABILO Serie 10",
     metaDescription: "Original Krause Belagbühne mit Durchstiegsluke für STABILO Serie 10. Rutschfeste Holzwerkstoffplatte im Aluminiumrahmen mit Einhängehaken.",
     h1: "Krause Belagbühne mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4672,8 +3746,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Belagbühne dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Bauteil wird für Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt.",
-    primaryKeywords: "Krause Belagbühne mieten in Krefeld, Krause Belagbühne leihen in Krefeld, Krause Belagbühne mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Gerüste ist diese Belagbühne geeignet?", a: "Die Belagbühne ist passend für Krause Rollgerüste der STABILO Serie 10." },
       { q: "Wie ist die Oberfläche der Bühne beschaffen?", a: "Die Oberfläche besteht aus einer rutschfesten Holzwerkstoffplatte, die in einen Aluminiumrahmen eingefasst ist." },
@@ -4681,7 +3753,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-belagbuehne-2m": {
-    excelName: "Krause Belagbühne – 2,00 m",
     seoTitle: "Krause Belagbühne – 2,00 m | Rollgerüst-Zubehör",
     metaDescription: "Krause Belagbühne mit 2,00 m Breite als Arbeitsfläche für Krause Rollgerüste. Geeignet für Bauhandwerk und private Renovierungsarbeiten.",
     h1: "Krause Belagbühne – 2,00 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4689,8 +3760,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Belagbühne dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Sie wird für Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt.",
-    primaryKeywords: "Krause Belagbühne – 2,00 m mieten in Krefeld, Krause Belagbühne – 2,00 m leihen in Krefeld, Krause Belagbühne – 2,00 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie breit ist die Krause Belagbühne?", a: "Die Belagbühne weist eine Breite von 2,00 m auf." },
       { q: "Für welche Gerüsttypen ist die Bühne geeignet?", a: "Die Komponente dient als Arbeitsfläche für Krause Rollgerüste." },
@@ -4698,7 +3767,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-bordbrettset-150cm": {
-    excelName: "Krause Bordbrettset – 150 cm Breite",
     seoTitle: "Krause Bordbrettset – 150 cm Breite für Rollgerüste",
     metaDescription: "Bordbrettset von Krause mit 150 cm Breite. Fungiert als Seitenschutz für Krause Rollgerüste bei Bau- und Renovierungsarbeiten.",
     h1: "Krause Bordbrettset – 150 cm Breite mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4706,8 +3774,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Set dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Bordbrettset wird für Renovierungsarbeiten am Eigenheim in der Höhe eingesetzt.",
-    primaryKeywords: "Krause Bordbrettset – 150 cm Breite mieten in Krefeld, Krause Bordbrettset – 150 cm Breite leihen in Krefeld, Krause Bordbrettset – 150 cm Breite mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Breite hat das Krause Bordbrettset?", a: "Das Bordbrettset weist eine Breite von 150 cm auf." },
       { q: "Wofür wird das Bordbrettset verwendet?", a: "Es dient als Seitenschutz für Rollgerüste des Herstellers Krause." },
@@ -4715,7 +3781,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-diagonale-2m": {
-    excelName: "Krause Diagonale – Feldlänge 2,00 m",
     seoTitle: "Krause Diagonale – Feldlänge 2,00 m | Rollgerüst-Zubehör",
     metaDescription: "Diagonalstrebe aus Aluminium für Krause STABILO Serie 10 Rollgerüste mit 2,00 m Feldlänge. Erhöht die Seitensteifigkeit und Standsicherheit beim Aufbau.",
     h1: "Krause Diagonale – Feldlänge 2,00 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4723,8 +3788,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Einsatz beim Aufbau von Rollgerüsten für Maler-, Putz- und Montagearbeiten sowie für allgemeine Höhenarbeiten im Innen- und Außenbereich.",
     useCaseEvent: "",
     useCasePrivat: "Verwendung bei Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Diagonale – Feldlänge 2,00 m mieten in Krefeld, Krause Diagonale – Feldlänge 2,00 m leihen in Krefeld, Krause Diagonale – Feldlänge 2,00 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Gerüstserie ist die Diagonale geeignet?", a: "Die Diagonalstrebe ist passend für Krause Rollgerüste der STABILO Serie 10." },
       { q: "Welche Feldlänge deckt dieses Bauteil ab?", a: "Diese Diagonale ist für eine Feldlänge von 2,00 m ausgelegt." },
@@ -4732,7 +3795,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-fahrbase-150": {
-    excelName: "Krause Fahrbase 150",
     seoTitle: "Krause Fahrbase 150 - Fahrwerk-Set für Rollgerüste",
     metaDescription: "Fahrwerk-Set für Krause Rollgerüste mit einer Breite von 150 cm. Erhältlich zur Miete für Höhenarbeiten und Gerüstmontagen in NRW.",
     h1: "Krause Fahrbase 150 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4740,8 +3802,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Fahrwerk-Set dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen nutzen das Bauteil für Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Fahrbase 150 mieten in Krefeld, Krause Fahrbase 150 leihen in Krefeld, Krause Fahrbase 150 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Breite hat die Krause Fahrbase 150?", a: "Die Breite des Fahrwerk-Sets beträgt 150 cm." },
       { q: "Für welche Gerüsttypen ist das Produkt geeignet?", a: "Die Fahrbase 150 ist als Zubehörteil für Krause Rollgerüste vorgesehen." },
@@ -4749,7 +3809,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-guardmatic-system-2m": {
-    excelName: "Krause GuardMatic-System – Feldlänge 2,00 m",
     seoTitle: "Krause GuardMatic-System – Feldlänge 2,00 m",
     metaDescription: "Geländerschutzsystem für Krause Rollgerüste mit 2,00 m Feldlänge. Ermöglicht die Vorab-Montage vor dem Aufstieg für Arbeiten in der Höhe.",
     h1: "Krause GuardMatic-System – Feldlänge 2,00 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4757,8 +3816,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses System wird beim Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das System unterstützt Renovierungsarbeiten am Eigenheim in der Höhe durch eine angepasste Absturzsicherung.",
-    primaryKeywords: "Krause GuardMatic-System – Feldlänge 2,00 m mieten in Krefeld, Krause GuardMatic-System – Feldlänge 2,00 m leihen in Krefeld, Krause GuardMatic-System – Feldlänge 2,00 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Was ist die Funktion des Krause GuardMatic-Systems?", a: "Es handelt sich um ein Geländerschutzsystem für Krause Rollgerüste, das die Sicherheit bei Arbeiten in der Höhe erhöht." },
       { q: "Wann erfolgt die Montage des Systems?", a: "Die Konstruktion ermöglicht eine Vorab-Montage des Geländerschutzes bereits vor dem eigentlichen Aufstieg auf die nächste Ebene." },
@@ -4766,7 +3823,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-vertikalrahmen-1x1-5m": {
-    excelName: "Krause Vertikalrahmen – 1,00 × 1,50 m",
     seoTitle: "Krause Vertikalrahmen 1,00 × 1,50 m | Mietkatalog",
     metaDescription: "Vertikalrahmen für Krause Rollgerüste der STABILO Serie 10. Maße: 1,00 m Breite × 1,50 m Höhe. Aus Aluminium, zur Erhöhung der Gerüsthöhe.",
     h1: "Krause Vertikalrahmen – 1,00 × 1,50 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4774,8 +3830,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Eignet sich für den Aufbau von Rollgerüsten bei Innen- und Außenarbeiten sowie für Maler-, Putz- und Montagearbeiten in der Höhe.",
     useCaseEvent: "",
     useCasePrivat: "Unterstützt Renovierungsarbeiten am Eigenheim, die in der Höhe durchgeführt werden müssen.",
-    primaryKeywords: "Krause Vertikalrahmen – 1,00 × 1,50 m mieten in Krefeld, Krause Vertikalrahmen – 1,00 × 1,50 m leihen in Krefeld, Krause Vertikalrahmen – 1,00 × 1,50 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat der Krause Vertikalrahmen?", a: "Der Rahmen ist 1,00 m breit und 1,50 m hoch." },
       { q: "Für welche Gerüstsysteme ist dieses Bauteil geeignet?", a: "Der Vertikalrahmen ist passend für Krause Rollgerüste der STABILO Serie 10." },
@@ -4783,7 +3837,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-vertikalrahmen-2x1-5m": {
-    excelName: "Krause Vertikalrahmen – 2,00 × 1,50 m",
     seoTitle: "Krause Vertikalrahmen – 2,00 × 1,50 m für STABILO Serie 10",
     metaDescription: "Vertikalrahmen aus Aluminium für Krause Rollgerüste der STABILO Serie 10. Maße: 2,00 m Breite x 1,50 m Höhe. Als Aufstockelement zur Erhöhung der Gerüsthöhe.",
     h1: "Krause Vertikalrahmen – 2,00 × 1,50 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4791,8 +3844,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Vertikalrahmen dient dem Aufbau von Rollgerüsten für Innen- und Außenarbeiten sowie für Höhenarbeiten bei Maler-, Putz- und Montagearbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Das Element eignet sich für Renovierungsarbeiten am Eigenheim in der Höhe.",
-    primaryKeywords: "Krause Vertikalrahmen – 2,00 × 1,50 m mieten in Krefeld, Krause Vertikalrahmen – 2,00 × 1,50 m leihen in Krefeld, Krause Vertikalrahmen – 2,00 × 1,50 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat dieser Krause Vertikalrahmen?", a: "Der Rahmen hat eine Breite von 2,00 m und eine Höhe von 1,50 m." },
       { q: "Für welche Gerüstserie ist der Rahmen geeignet?", a: "Der Vertikalrahmen ist passend für Krause Rollgerüste der STABILO Serie 10." },
@@ -4800,7 +3851,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "led-beleuchtungsset-duo": {
-    excelName: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage",
     seoTitle: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Anlage",
     metaDescription: "Doppeltes LED Beleuchtungsset mit Moving Heads, Derby-Effekten, Stroboskopen und Scheinwerfern für größere Veranstaltungen. Sound-to-Light oder Programmbetrieb.",
     h1: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4808,8 +3858,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung in Innen- und Außenbereichen",
     useCaseEvent: "Bühnenbeleuchtung bei Konzerten und Shows sowie Akzentbeleuchtung bei Hochzeiten und Galas.",
     useCasePrivat: "Stimmungsbeleuchtung bei Gartenpartys",
-    primaryKeywords: "LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage mieten in Krefeld, LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage leihen in Krefeld, LED Beleuchtungsset duo – 2× 4in1 Multieffekt Lichtanlage mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Lichteffekte sind in dem Set enthalten?", a: "Jedes der zwei Sets verfügt über 2 LED Moving Heads, 2 RGBW Derby-Effekte, 4 weiße Stroboskope und 2 RGBW-LED Scheinwerfer." },
       { q: "Wie wird die Lichtanlage gesteuert?", a: "Die Anlage kann entweder über den integrierten Programmbetrieb oder über den Sound-to-Light-Modus betrieben werden." },
@@ -4817,7 +3865,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "led-beleuchtungsset-single": {
-    excelName: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage",
     seoTitle: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage",
     metaDescription: "Komplett-Lichtanlage mit LED Moving Heads, Derby-Effekten, Stroboskopen und Scheinwerfern. Inklusive Stativ und Taschen für Programm- oder Soundbetrieb.",
     h1: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4825,8 +3872,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baustellenbeleuchtung in Innen- und Außenbereichen",
     useCaseEvent: "Bühnenbeleuchtung bei Konzerten und Shows sowie Akzentbeleuchtung bei Hochzeiten und Galas.",
     useCasePrivat: "Stimmungsbeleuchtung bei Gartenpartys",
-    primaryKeywords: "LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage leihen in Krefeld, LED Beleuchtungsset single – 4in1 Multieffekt Lichtanlage mieten NRW",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Welche Lichteffekte sind in dem Set enthalten?", a: "Das Set umfasst zwei LED Moving Heads, zwei RGBW Derby-Effekte, vier weiße Stroboskope und zwei RGBW-LED Scheinwerfer." },
@@ -4835,7 +3880,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "led-moving-head-vector-spot": {
-    excelName: "LED Moving Head – Vector Spot Zoom 2.0",
     seoTitle: "LED Moving Head – Vector Spot Zoom 2.0 mieten",
     metaDescription: "230W LED Moving Head mit motorisiertem Zoom (11°–25°), 14 Gobos, Prisma und 7 Farben. DMX-steuerbar, 12,5 kg. Ideal für Events und DJ-Sets.",
     h1: "LED Moving Head – Vector Spot Zoom 2.0 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4843,8 +3887,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Vector Spot Zoom 2.0 ermöglicht dynamische Lichtshows bei Konzerten und dient als Effektlicht bei DJ-Sets sowie Galas.",
     useCasePrivat: "",
-    primaryKeywords: "LED Moving Head – Vector Spot Zoom 2.0 mieten in Krefeld, LED Moving Head – Vector Spot Zoom 2.0 leihen in Krefeld, LED Moving Head – Vector Spot Zoom 2.0 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Abstrahlwinkel unterstützt der Vector Spot Zoom 2.0?", a: "Das Gerät verfügt über einen motorisierten Zoom, der einen Abstrahlwinkel von 11° bis 25° abdeckt." },
       { q: "Über welche Prismen verfügt der Moving Head?", a: "Der Scheinwerfer ist mit einem 5-Facetten- und einem 6-Facetten-Prisma ausgestattet, die beide bidirektional rotieren können." },
@@ -4852,7 +3894,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "led-outdoorscheinwerfer-6er-set": {
-    excelName: "LED Outdoorscheinwerfer 6er-Set",
     seoTitle: "LED Outdoorscheinwerfer 6er-Set mieten | IP65 Outdoor LED | SLT Rental",
     metaDescription: "LED Outdoorscheinwerfer 6er-Set mieten: 6× IP65 Scheinwerfer mit 14×5W Osram RGBW-LEDs inkl. Case, Kabel & Clamps. Jetzt bei SLT Rental buchen.",
     h1: "LED Outdoorscheinwerfer 6er-Set mieten – IP65 Outdoor-Beleuchtung bei SLT Rental",
@@ -4860,8 +3901,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Open-Air-Konzerte, Outdoor-Festivals, Firmenevents im Freien, Gartenpartys, Hochzeiten, Architekturbeleuchtung",
     useCasePrivat: "Gartenbeleuchtung, Outdoor-Geburtstage, Terrassen-Illumination",
-    primaryKeywords: "LED Outdoorscheinwerfer mieten, IP65 Scheinwerfer leihen, Outdoor LED Set mieten NRW, RGBW Scheinwerfer Vermietung",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Sind die Scheinwerfer wetterfest?", a: "Ja – die Scheinwerfer verfügen über die Schutzart IP65 und sind damit gegen Strahlwasser aus allen Richtungen geschützt. Sie eignen sich perfekt für den Außeneinsatz bei jeder Witterung." },
@@ -4871,7 +3910,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "led-outdoorscheinwerfer-tourled50xcr": {
-    excelName: "LED Outdoorscheinwerfer TourLED 50 XCR",
     seoTitle: "LED Outdoorscheinwerfer TourLED 50 XCR mieten",
     metaDescription: "Professioneller LED-Outdoorscheinwerfer mit RGBW-Farbmischung und Schutzklasse IP65 für Eventbeleuchtung und Fassadenanstrahlungen.",
     h1: "LED Outdoorscheinwerfer TourLED 50 XCR mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4879,8 +3917,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der TourLED 50 XCR eignet sich für die Akzent- und Effektbeleuchtung bei Events sowie für die professionelle Bühnenbeleuchtung bei Live-Auftritten.",
     useCasePrivat: "",
-    primaryKeywords: "LED Outdoorscheinwerfer TourLED 50 XCR mieten in Krefeld, LED Outdoorscheinwerfer TourLED 50 XCR leihen in Krefeld, LED Outdoorscheinwerfer TourLED 50 XCR mieten NRW",
-    is247: false,
     faqs: [
       { q: "Ist der Scheinwerfer für den Einsatz bei Regen geeignet?", a: "Ja, der TourLED 50 XCR verfügt über die Schutzklasse IP65 und ist somit gegen Spritzwasser geschützt." },
       { q: "Welche Farbkombinationen können dargestellt werden?", a: "Das Gerät nutzt RGBW-LEDs und ermöglicht somit sowohl statische Farben als auch verschiedene Farbprogramme." },
@@ -4888,7 +3924,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "leiter-kaiserthal-l50-5-stufen": {
-    excelName: "Leiter Kaiserthal L50 – 5 Stufen",
     seoTitle: "Leiter Kaiserthal L50 – 5 Stufen Aluminium-Stehleiter",
     metaDescription: "Aluminium-Stehleiter Kaiserthal L50 mit 5 Stufen, 1,02 m Plattformhöhe und 150 kg Belastbarkeit. Kompakte Profilösung für Innenarbeiten auf mittlerer Höhe.",
     h1: "Leiter Kaiserthal L50 – 5 Stufen mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4896,8 +3931,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Die Leiter eignet sich für den Universal-Einsatz auf der Baustelle.",
     useCaseEvent: "Die Stehleiter ist für den Auf- und Abbau bei Veranstaltungen einsetzbar.",
     useCasePrivat: "Dieses Modell unterstützt bei Renovierungs- und Wartungsarbeiten am Eigenheim.",
-    primaryKeywords: "Leiter Kaiserthal L50 – 5 Stufen mieten in Krefeld, Leiter Kaiserthal L50 – 5 Stufen leihen in Krefeld, Leiter Kaiserthal L50 – 5 Stufen mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitshöhe wird mit der Plattform erreicht?", a: "Die Plattform der Leiter befindet sich auf einer Höhe von 1,02 m." },
       { q: "Wie hoch ist die maximale Tragkraft der Leiter?", a: "Die Belastbarkeit der Aluminium-Stehleiter liegt bei maximal 150 kg." },
@@ -4905,7 +3938,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "loeffel-gross-deluxe-19-10er": {
-    excelName: "Löffel groß Deluxe 19, 10er Set",
     seoTitle: "Löffel groß Deluxe 19, 10er Set | Athene Poliert",
     metaDescription: "Tafellöffel aus Edelstahl der Serie Athene Poliert. 19,5 cm Länge, im 10er Set für Hauptspeisen und Suppen bei Veranstaltungen und Caterings.",
     h1: "Löffel groß Deluxe 19, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4913,8 +3945,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als Catering-Besteck für Tagungen und Events oder als Bestandteil des kompletten Besteck-Service bei Hochzeiten.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für die Ausstattung von Familienfesten.",
-    primaryKeywords: "Löffel groß Deluxe 19, 10er Set mieten in Krefeld, Löffel groß Deluxe 19, 10er Set leihen in Krefeld, Löffel groß Deluxe 19, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang ist ein Löffel aus diesem Set?", a: "Ein Löffel der Serie Athene Poliert hat eine Länge von 19,5 cm." },
       { q: "Muss das Besteck vor der Rückgabe gereinigt werden?", a: "Ja, das Besteck muss gereinigt zurückgegeben werden. Bei einer Rückgabe ohne Reinigung wird eine Pauschale von 2,00 € erhoben." },
@@ -4922,7 +3952,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "loeffel-klein-deluxe-14-10er": {
-    excelName: "Löffel klein Deluxe 14, 10er Set",
     seoTitle: "Löffel klein Deluxe 14, 10er Set | Athene Poliert",
     metaDescription: "Teelöffel-Set (10 Stück) der Serie Athene Poliert aus Edelstahl. 14 cm Länge, ideal für Desserts und Heißgetränke bei Veranstaltungen und Caterings.",
     h1: "Löffel klein Deluxe 14, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4930,8 +3959,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Löffel dienen als Catering-Besteck für Tagungen sowie als Teil des Besteck-Service bei Hochzeiten.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für den Einsatz bei Familienfesten.",
-    primaryKeywords: "Löffel klein Deluxe 14, 10er Set mieten in Krefeld, Löffel klein Deluxe 14, 10er Set leihen in Krefeld, Löffel klein Deluxe 14, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang ist ein einzelner Löffel aus diesem Set?", a: "Ein Löffel der Serie Athene Poliert hat eine Länge von 14 cm." },
       { q: "In welcher Stückzahl wird das Besteck vermietet?", a: "Die Löffel werden in einem Set von 10 Stück bereitgestellt." },
@@ -4939,7 +3966,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "loeffel-simply-13-10er": {
-    excelName: "Löffel SIMPLY 13, 10er Set",
     seoTitle: "Löffel SIMPLY 13, 10er Set | Mieten in NRW",
     metaDescription: "Kompakte Kaffeelöffel aus Edelstahl im 10er Set. 13 cm Länge. Ideal für Heißgetränke und Desserts bei Veranstaltungen und privaten Feiern.",
     h1: "Löffel SIMPLY 13, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4947,8 +3973,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set bietet einen Besteck-Service für Hochzeiten sowie Catering-Besteck für Tagungen und Events.",
     useCasePrivat: "Dieses Besteck-Set eignet sich als Ergänzung für die Bewirtung bei Familienfesten.",
-    primaryKeywords: "Löffel SIMPLY 13, 10er Set mieten in Krefeld, Löffel SIMPLY 13, 10er Set leihen in Krefeld, Löffel SIMPLY 13, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus welchem Material besteht der Löffel SIMPLY 13?", a: "Der Kaffeelöffel ist aus Edelstahl gefertigt." },
       { q: "Wie lang ist ein Löffel aus diesem Set?", a: "Die Länge der Löffel beträgt jeweils 13 cm." },
@@ -4956,7 +3980,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "loeffel-simply-19-10er": {
-    excelName: "Löffel SIMPLY 19, 10er Set",
     seoTitle: "Löffel SIMPLY 19, 10er Set aus Edelstahl",
     metaDescription: "Der Löffel SIMPLY 19 im 10er Set aus Edelstahl ist 19 cm lang. Ideal für Veranstaltungen und Caterings. Rückgabe erfolgt in gereinigtem Zustand.",
     h1: "Löffel SIMPLY 19, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4964,8 +3987,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als Catering-Besteck für Tagungen und Events oder als komplettes Besteck-Service bei Hochzeiten.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für die Ausstattung von Familienfesten.",
-    primaryKeywords: "Löffel SIMPLY 19, 10er Set mieten in Krefeld, Löffel SIMPLY 19, 10er Set leihen in Krefeld, Löffel SIMPLY 19, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang ist ein Löffel aus dem SIMPLY 19 Set?", a: "Ein Löffel hat eine Länge von 19 cm." },
       { q: "Aus welchem Material bestehen die Löffel?", a: "Die Löffel sind aus Edelstahl gefertigt." },
@@ -4973,7 +3994,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "longdrinkglas-passionata-25er": {
-    excelName: "Longdrinkglas Passionata 460ml, 25er Set",
     seoTitle: "Longdrinkglas Passionata 460ml, 25er Set | Schott Zwiesel",
     metaDescription: "Schott Zwiesel Passionata Longdrinkgläser aus Tritan®-Kristallglas im 25er Set. 460 ml Fassungsvermögen, spülmaschinenfest und bruchsicher für Events.",
     h1: "Longdrinkglas Passionata 460ml, 25er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4981,8 +4001,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set ermöglicht eine stilvolle Bewirtung bei Hochzeiten und Galas sowie im Tagungs- und Konferenz-Service.",
     useCasePrivat: "Diese Gläser eignen sich als Wassergläser bei privaten Feiern im Garten oder im häuslichen Rahmen.",
-    primaryKeywords: "Longdrinkglas Passionata 460ml, 25er Set mieten in Krefeld, Longdrinkglas Passionata 460ml, 25er Set leihen in Krefeld, Longdrinkglas Passionata 460ml, 25er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Aus welchem Material bestehen die Passionata Longdrinkgläser?", a: "Die Gläser sind aus Tritan®-Kristallglas gefertigt, das als kratzfest und bruchsicher gilt." },
       { q: "Wie groß ist das Fassungsvermögen eines Glases?", a: "Jedes Longdrinkglas der Serie Passionata verfügt über ein Fassungsvermögen von 460 ml." },
@@ -4990,7 +4008,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "makita-abbruchhammer-hm1812": {
-    excelName: "Abbruchhammer 72,8J / 31kg",
     seoTitle: "Abbruchhammer 72,8J / 31kg mieten in Krefeld | Makita HM1812",
     metaDescription: "Makita HM1812 Abbruchhammer mieten in Krefeld – 72,8 J Schlagenergie, 2.000 W, 31 kg, AVT-Vibrationsdämpfung, HEX-28. Inkl. Spitz- & Flachmeißel.",
     h1: "Abbruchhammer 72,8J / 31kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -4998,8 +4015,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Boden- und Fundamentabbruch, Aufbrechen dicker Betonplatten und Estrichflächen, schwere Stemmarbeiten bei Sanierungen und Tiefbauarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Entfernen von Garagen-Bodenplatten, Aufbruch alter Terrassenfundamente, Rückbau von Mauerfundamenten im Garten.",
-    primaryKeywords: "Abbruchhammer 72,8J mieten in Krefeld, Makita HM1812 mieten Krefeld, Abbruchhammer 31 kg leihen NRW",
-    is247: false,
     faqs: [
       { q: "Welche Schlagenergie liefert der Makita HM1812?", a: "Der Makita HM1812 erreicht laut Hersteller 72,8 Joule Schlagenergie bei 870 Schlägen pro Minute – damit liegt er klar über klassischen 18-kg-Geräten und eignet sich für schwere Boden- und Fundamentarbeiten." },
       { q: "Wie unterscheidet sich der HM1812 vom 18-kg-Abbruchhammer?", a: "Mit 31 kg Eigengewicht und 72,8 J Schlagenergie entwickelt der HM1812 deutlich mehr Massenwirkung als ein 18-kg-Gerät (z. B. GSH 16-28 mit 41 J). Er wird vor allem für horizontalen Boden- und Fundamentabbruch eingesetzt, wo das Eigengewicht den Anpressdruck liefert." },
@@ -5010,7 +4025,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "manfrotto-autopole-032b": {
-    excelName: "Manfrotto 032B Autopole schwarz",
     seoTitle: "Manfrotto 032B Autopole schwarz mieten in Krefeld | SLT Rental",
     metaDescription: "Manfrotto 032B Autopole schwarz mieten in Krefeld. Höhe: 2,10 m - 3,70 m. Tagesmiete, fairer Preis, Lieferservice NRW.",
     h1: "Manfrotto 032B Autopole schwarz mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5018,8 +4032,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Manfrotto 032B Autopole schwarz mieten in Krefeld, Manfrotto 032B Autopole schwarz leihen in Krefeld, Manfrotto 032B Autopole schwarz mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
       { q: "Welche Kupplungen und Verbinder sind kompatibel?", a: "Das M290-Traversensystem verwendet Standardkupplungen (Conical Coupler). Passende Kupplungen, Stativadapter und Schellen sind bei uns separat erhältlich. Bei Kombination verschiedener Traversensysteme bitte Kompatibilität vorab klären." },
@@ -5028,7 +4040,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "mannesmanngitter": {
-    excelName: "Mannesmanngitter",
     seoTitle: "Mannesmanngitter 250 x 110 cm kaufen | NRW",
     metaDescription: "Stabile Mannesmanngitter (250 x 110 cm) für Veranstaltungen und Baustellen. Gewicht ca. 16 kg. Jetzt für Projekte in Nordrhein-Westfalen anfragen.",
     h1: "Mannesmanngitter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5036,8 +4047,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Diese Gitter dienen der Verkehrssicherung im Baustellenbereich.",
     useCaseEvent: "Die Mannesmanngitter werden zur Besucherführung bei Veranstaltungen sowie zur Absperrung von Festbereichen eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "Mannesmanngitter mieten in Krefeld, Mannesmanngitter leihen in Krefeld, Mannesmanngitter mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat ein Mannesmanngitter?", a: "Das Gitter hat eine Länge von 250 cm und eine Höhe von 110 cm." },
       { q: "Wie schwer ist ein einzelnes Absperrgitter?", a: "Das Gewicht eines Gitters beträgt ca. 16 kg." },
@@ -5046,7 +4055,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "mastbuehne-11m": {
     dailyPriceFrom: 75,
-    excelName: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09)",
     seoTitle: "11,2 m Teleskop-Mastarbeitsbühne elektro ZMP09",
     metaDescription: "Elektrische Mastbühne ZMP09 mit 11,20 m Arbeitshöhe, 3,23 m Reichweite und 200 kg Traglast. Kompakte Bauweise mit Non-Marking-Reifen für Innen und Außen.",
     h1: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5054,8 +4062,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Typischer Einsatz in Baumärkten, Supermärkten und Lagerhallen: Die schmale Bauweise kommt problemlos durch enge Regalgänge, während die seitliche Reichweite von bis zu 3,23 m und die Arbeitshöhe von 11,20 m ein sicheres Arbeiten an Beleuchtung, Sprinklern, Lüftung, Regalböden und Werbeflächen ermöglichen. Auch für Wartung und punktuelle Arbeiten in beengten Innenbereichen ideal.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09) mieten in Krefeld, Mastbühne Baumarkt Supermarkt mieten, Mastarbeitsbühne enge Gänge Lager NRW",
-    is247: false,
     faqs: [
       { q: "Eignet sich die ZMP09 für enge Regalgänge in Baumärkten, Supermärkten oder Lagern?", a: "Ja, genau dafür ist die Mastbühne prädestiniert. Die schmale Bauweise passt durch typische Verkaufs- und Lagergänge, gleichzeitig erreicht sie 11,20 m Arbeitshöhe und bis zu 3,23 m seitliche Reichweite – ideal für Beleuchtung, Werbeflächen, Sprinkler und obere Regalböden." },
       { q: "Welche Hindernisse können mit der ZMP09 überbrückt werden?", a: "Die Mastbühne verfügt über eine Überbrückungshöhe von 7,75 m bei einer seitlichen Reichweite von maximal 3,23 m." },
@@ -5064,7 +4070,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "mauerschlitzfraese": {
-    excelName: "Mauerschlitzfräse",
     seoTitle: "Mauerschlitzfräse mieten | 2.300 W bis 45 mm Tiefe",
     metaDescription: "Leistungsstarke Mauerschlitzfräse für Elektroinstallationen. 2.300 W, max. 45 mm Schlitztiefe & 46 mm Breite. Ideal zum Fräsen von Kabelschlitzen.",
     h1: "Mauerschlitzfräse mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5072,8 +4077,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät wird für den Materialabtrag und die Oberflächenbearbeitung eingesetzt, insbesondere zum Fräsen präziser Kabelschlitze in Mauerwerk.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Mauerschlitzfräse mieten in Krefeld, Mauerschlitzfräse leihen in Krefeld, Mauerschlitzfräse mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Schlitzgröße kann mit der Fräse erreicht werden?", a: "Die Mauerschlitzfräse ermöglicht eine maximale Schlitztiefe von 45 mm und eine maximale Schlitzbreite von 46 mm." },
       { q: "Wie hoch ist die Leistungsaufnahme und Drehzahl des Geräts?", a: "Das Gerät hat eine Leistungsaufnahme von 2.300 W bei einer Nenndrehzahl von 4.300 U/min und einer Leerlaufdrehzahl von 7.500 U/min." },
@@ -5081,7 +4084,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "mehrzweckleiter-3x12": {
-    excelName: "Mehrzweckleiter 3×12 Sprossen",
     seoTitle: "Mehrzweckleiter 3x12 Sprossen mieten",
     metaDescription: "Aluminium-Mehrzweckleiter mit 3x12 Sprossen. Als Steh-, Anlege- und Schiebeleiter einsetzbar. Maximale Länge 7,95 m. Jetzt für Ihr Projekt in NRW anfragen.",
     h1: "Mehrzweckleiter 3×12 Sprossen mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5089,8 +4091,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Vielseitiger Einsatz als Anlege-, Steh- oder Bockleiter für professionelle Anforderungen auf Baustellen.",
     useCaseEvent: "",
     useCasePrivat: "Flexible Leiter für Renovierungs- und Außenarbeiten rund um das Haus und im Garten.",
-    primaryKeywords: "Mehrzweckleiter 3×12 Sprossen mieten in Krefeld, Mehrzweckleiter 3×12 Sprossen leihen in Krefeld, Mehrzweckleiter 3×12 Sprossen mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Höhe erreicht die Leiter im ausgefahrenen Zustand?", a: "Die Leiter erreicht angelegt eine maximale Höhe von 7,95 m." },
       { q: "Wie viele Sprossen besitzt dieses Modell?", a: "Die Mehrzweckleiter ist mit insgesamt 3 x 12 Sprossen ausgestattet." },
@@ -5098,7 +4098,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "messer-deluxe-21-10er": {
-    excelName: "Messer Deluxe 21, 10er Set",
     seoTitle: "Messer Deluxe 21 - 10er Set Edelstahl Athene Poliert",
     metaDescription: "Messer Deluxe 21 im 10er Set aus der Serie Athene Poliert. 21 cm Länge, gefertigt aus Edelstahl. Ideal für Events und Catering.",
     h1: "Messer Deluxe 21, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5106,8 +4105,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als komplettes Besteck-Service bei Hochzeiten sowie als Catering-Besteck für Tagungen und Events.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für die Ausstattung von Familienfesten.",
-    primaryKeywords: "Messer Deluxe 21, 10er Set mieten in Krefeld, Messer Deluxe 21, 10er Set leihen in Krefeld, Messer Deluxe 21, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße haben die Messer im Set?", a: "Jedes Messer aus der Serie Athene Poliert hat eine Länge von 21 cm." },
       { q: "Wie viele Messer sind in einer Bestelleinheit enthalten?", a: "Das Messer Deluxe 21 wird in einem Set von 10 Stück geliefert." },
@@ -5115,7 +4112,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "messer-simply-20-10er": {
-    excelName: "Messer SIMPLY 20, 10er Set",
     seoTitle: "Messer SIMPLY 20, 10er Set aus Edelstahl",
     metaDescription: "Messer SIMPLY 20 im 10er Set. Tafelmesser aus Edelstahl mit 20 cm Länge für Events und Feiern. Reinigungspauschale bei Rückgabe ohne Reinigung.",
     h1: "Messer SIMPLY 20, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5123,8 +4119,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set dient als komplettes Besteck-Service bei Hochzeiten sowie als Catering-Besteck für Tagungen und Events.",
     useCasePrivat: "Dieses Besteck-Set eignet sich für Familienfeste.",
-    primaryKeywords: "Messer SIMPLY 20, 10er Set mieten in Krefeld, Messer SIMPLY 20, 10er Set leihen in Krefeld, Messer SIMPLY 20, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge haben die Messer?", a: "Ein Messer aus dem SIMPLY 20 Set hat eine Länge von 20 cm." },
       { q: "Wie viele Messer sind in einem Set enthalten?", a: "Pro Set werden 10 Messer geliefert." },
@@ -5132,7 +4126,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "midas-dl16-stagebox": {
-    excelName: "Midas DL16 Digital Stagebox",
     seoTitle: "Midas DL16 Digital Stagebox - 16 Kanäle",
     metaDescription: "Digitale Stagebox Midas DL16 mit 16 XLR-Eingängen, 8 XLR-Ausgängen und AES50-Schnittstellen für die Signalübertragung.",
     h1: "Midas DL16 Digital Stagebox mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5140,8 +4133,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Midas DL16 dient der effizienten Signalverteilung zwischen Bühne und Mischpult bei Live-Events.",
     useCasePrivat: "",
-    primaryKeywords: "Midas DL16 Digital Stagebox mieten in Krefeld, Midas DL16 Digital Stagebox leihen in Krefeld, Midas DL16 Digital Stagebox mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über wie viele Eingänge verfügt die Midas DL16?", a: "Das Gerät ist mit 16 XLR-Eingängen ausgestattet." },
       { q: "Welche Schnittstellen stehen für die digitale Übertragung zur Verfügung?", a: "Die Stagebox verfügt über AES50-Schnittstellen für die Verbindung." },
@@ -5149,7 +4140,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-multicube-black": {
-    excelName: "Milos M290 Multicube black",
     seoTitle: "Milos M290 Multicube black mieten in Krefeld | SLT Rental",
     metaDescription: "Milos M290 Multicube black mieten in Krefeld. Boxcorner QCHB1 geschweißt schwarz  Halb- Konusverbinder können Sie im nächsten Schritt op. Tagesmiete, faire",
     h1: "Milos M290 Multicube black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5157,8 +4147,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 Multicube black mieten in Krefeld, Milos M290 Multicube black leihen in Krefeld, Milos M290 Multicube black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
       { q: "Welche Kupplungen und Verbinder sind kompatibel?", a: "Das M290-Traversensystem verwendet Standardkupplungen (Conical Coupler). Passende Kupplungen, Stativadapter und Schellen sind bei uns separat erhältlich. Bei Kombination verschiedener Traversensysteme bitte Kompatibilität vorab klären." },
@@ -5167,7 +4155,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-qtu-1000-black": {
-    excelName: "Milos M290 P4 QTU 1000 black",
     seoTitle: "Milos M290 P4 QTU 1000 black Mietkatalog",
     metaDescription: "Milos M290 P4 QTU 1000 black: 4-Punkt Traverse in Schwarz mit einer Länge von 1 Meter. Erhältlich für Event- und Gastronomieprojekte.",
     h1: "Milos M290 P4 QTU 1000 black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5175,8 +4162,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Diese 1m lange 4-Punkt Traverse eignet sich für die Aufhängung von Beleuchtung und Lautsprechern bei Festivals und Open-Air-Events. Zudem können hiermit Eingangs- und Werbeportale für Veranstaltungen realisiert werden.",
     useCasePrivat: "",
-    primaryKeywords: "Milos M290 P4 QTU 1000 black mieten in Krefeld, Milos M290 P4 QTU 1000 black leihen in Krefeld, Milos M290 P4 QTU 1000 black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Um welches Traversensystem handelt es sich?", a: "Es handelt sich um das 4-Punkt-System Milos M290 P4 QTU 1000." },
       { q: "Welche Länge hat die Traverse?", a: "Die Länge dieses Elements beträgt 1 Meter." },
@@ -5184,7 +4169,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-qtu-1500-black": {
-    excelName: "Milos M290 P4 QTU 1500 black",
     seoTitle: "Milos M290 P4 QTU 1500 black – 4-Punkt Traverse",
     metaDescription: "Milos M290 P4 QTU 1500 black: 4-Punkt Traverse mit einer Länge von 1,5 Metern in schwarzer Ausführung für Event-Konstruktionen.",
     h1: "Milos M290 P4 QTU 1500 black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5192,8 +4176,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Diese Traverse dient der Aufhängung von Beleuchtung und Lautsprechern sowie der Errichtung von Truss-Konstruktionen für Festivals. Zudem kann sie für den Bau von Eingangs- und Werbeportalen eingesetzt werden.",
     useCasePrivat: "",
-    primaryKeywords: "Milos M290 P4 QTU 1500 black mieten in Krefeld, Milos M290 P4 QTU 1500 black leihen in Krefeld, Milos M290 P4 QTU 1500 black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat die Milos M290 P4 QTU 1500 black?", a: "Dieses Traversenelement hat eine Länge von 1,5 Metern." },
       { q: "Um welchen Traversentyp handelt es sich?", a: "Es handelt sich um eine 4-Punkt Traverse." },
@@ -5201,7 +4183,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-qtu-2000-black": {
-    excelName: "Milos M290 P4 QTU 2000 black",
     seoTitle: "Milos M290 P4 QTU 2000 black - 4-Punkt Traverse 2m",
     metaDescription: "Milos M290 P4 QTU 2000 black. 4-Punkt Traverse mit einer Länge von 2 Metern in schwarzer Ausführung für Veranstaltungstechnik.",
     h1: "Milos M290 P4 QTU 2000 black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5209,8 +4190,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Traverse dient der Aufhängung von Beleuchtung und Lautsprechern sowie dem Aufbau von Truss-Konstruktionen für Festivals. Zudem kann sie für die Errichtung von Eingangs- und Werbeportalen genutzt werden.",
     useCasePrivat: "",
-    primaryKeywords: "Milos M290 P4 QTU 2000 black mieten in Krefeld, Milos M290 P4 QTU 2000 black leihen in Krefeld, Milos M290 P4 QTU 2000 black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang ist die Milos M290 P4 QTU 2000 black?", a: "Die Länge dieser Traverse beträgt 2 Meter." },
       { q: "Welche Bauform hat die Traverse?", a: "Es handelt sich um eine 4-Punkt Traverse." },
@@ -5218,7 +4197,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-qtu-500-black": {
-    excelName: "Milos M290 P4 QTU 500 black",
     seoTitle: "Milos M290 P4 QTU 500 black | 4-Punkt Traverse 0,5m",
     metaDescription: "Milos M290 P4 QTU 500 black – Eine schwarze 4-Punkt Traverse mit einer Länge von 0,5 Metern für verschiedene Konstruktionsanforderungen.",
     h1: "Milos M290 P4 QTU 500 black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5226,8 +4204,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Diese Traverse dient der Aufhängung von Beleuchtung und Lautsprechern sowie der Errichtung von Truss-Konstruktionen für Festivals. Zudem kann sie für den Bau von Eingangs- und Werbeportalen genutzt werden.",
     useCasePrivat: "",
-    primaryKeywords: "Milos M290 P4 QTU 500 black mieten in Krefeld, Milos M290 P4 QTU 500 black leihen in Krefeld, Milos M290 P4 QTU 500 black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Element Milos M290 P4 QTU 500?", a: "Dieses Traversenelement hat eine Länge von 0,5 Metern." },
       { q: "In welcher Farbe ist die Traverse ausgeführt?", a: "Das Modell Milos M290 P4 QTU 500 black ist in Schwarz gehalten." },
@@ -5235,7 +4211,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "milos-m290-ubpqc-base-black": {
-    excelName: "Milos M290 P4 UBPQC Base black",
     seoTitle: "Milos M290 P4 UBPQC Base black mieten in Krefeld | SLT Rental",
     metaDescription: "Milos M290 P4 UBPQC Base black mieten in Krefeld. 4 Punkt Traversenbodenplatte schwarz  Aluminium (30 cm x 30 cm x 0,05 cm). Tagesmiete, fairer Preis, Lief",
     h1: "Milos M290 P4 UBPQC Base black mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5243,8 +4218,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Temporäre Tragkonstruktionen, Hallenmontage",
     useCaseEvent: "Konzert-Rigging, Messen, Theaterproduktionen, Firmenfeiern in Hallen",
     useCasePrivat: "Hochzeits-Dekoration, Garten-Event mit großer Installation",
-    primaryKeywords: "Milos M290 P4 UBPQC Base black mieten in Krefeld, Milos M290 P4 UBPQC Base black leihen in Krefeld, Milos M290 P4 UBPQC Base black mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Traglast hat dieses Traversenelement?", a: "Die Traglast entnehmen Sie den technischen Daten. Bitte beachten: Die angegebene Traglast gilt für gleichmäßig verteilte Last. Bei Punktlasten (z. B. Motoren, Lichtequipment) muss die Traglast entsprechend berechnet werden." },
       { q: "Welche Kupplungen und Verbinder sind kompatibel?", a: "Das M290-Traversensystem verwendet Standardkupplungen (Conical Coupler). Passende Kupplungen, Stativadapter und Schellen sind bei uns separat erhältlich. Bei Kombination verschiedener Traversensysteme bitte Kompatibilität vorab klären." },
@@ -5253,7 +4226,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "motorrad-1500": {
-    excelName: "1500 kg Motorradanhänger",
     seoTitle: "1500 kg Motorradanhänger mieten | Ladefläche 301x165 cm",
     metaDescription: "Motorradanhänger mit 1.140 kg Nutzlast für den Transport von bis zu drei Maschinen. Ladefläche: 301 x 165 x 17 cm. Eigengewicht ca. 360 kg.",
     h1: "1500 kg Motorradanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5261,8 +4233,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Modell kann für den Transport von Show-Bikes zu verschiedenen Veranstaltungen eingesetzt werden.",
     useCasePrivat: "Der Anhänger eignet sich für die Überführung von einer bis zu drei Maschinen mit Auflahrrampen, etwa für Werkstatttermine oder den Transport zu Touren.",
-    primaryKeywords: "1500 kg Motorradanhänger mieten in Krefeld, 1500 kg Motorradanhänger leihen in Krefeld, 1500 kg Motorradanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die maximale Nutzlast beträgt etwa 1.140 kg bei einem Eigengewicht von circa 360 kg." },
       { q: "Welche Abmessungen hat die Ladefläche?", a: "Die Ladefläche des 1500 kg Anhängers misst 301 x 165 x 17 cm." },
@@ -5270,7 +4240,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "motorrad-3fach-750": {
-    excelName: "750 kg Motorradanhänger 3-fach",
     seoTitle: "750 kg Motorradanhänger 3-fach - 220 x 131 cm",
     metaDescription: "Motorradanhänger für bis zu 3 Maschinen. Ladefläche 220 x 131 cm, 602 kg Nutzlast. Ideal für Überführungen und Transporte zur Werkstatt oder Events.",
     h1: "750 kg Motorradanhänger 3-fach mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5278,8 +4247,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Fahrzeug wird für den Transport von Show-Bikes zu verschiedenen Veranstaltungen eingesetzt.",
     useCasePrivat: "Dieser Anhänger dient dem Transport von Motorrädern zu Touren oder Werkstattterminen. Er ermöglicht die Überführung von ein bis drei Maschinen unter Verwendung von Auflahrrampen.",
-    primaryKeywords: "750 kg Motorradanhänger 3-fach mieten in Krefeld, 750 kg Motorradanhänger 3-fach leihen in Krefeld, 750 kg Motorradanhänger 3-fach mieten NRW",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Anhängers?", a: "Die zulässige Nutzlast beträgt circa 602 kg." },
@@ -5288,7 +4255,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-grabenraeumloeffel-100cm-symlock": {
-    excelName: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
     seoTitle: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock",
     metaDescription: "Hydraulisch schwenkbarer MS01 Grabenräumlöffel mit 1000 mm Arbeitsbreite und 80 l Volumen. Ideal für die Profilierung von Gräben und Böschungen.",
     h1: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5296,8 +4262,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Anbaugerät eignet sich für die Profilierung von Gräben und Böschungen sowie für die Räumung von Mutterboden und das Planieren von Flächen vor Pflasterarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Der Löffel unterstützt bei der Geländemodellierung und Profilierung im privaten Garten.",
-    primaryKeywords: "MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten in Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock leihen in Krefeld, MS01 Grabenräumlöffel hydr. 100cm/80l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Aufnahme besitzt dieser Grabenräumlöffel?", a: "Der Löffel ist mit einer MS01-Aufnahme ausgestattet und unterstützt das Symlock-Schnellwechselsystem." },
       { q: "Wie groß ist das Fassungsvolumen?", a: "Das Volumen des Grabenräumlöffels beträgt 80 Liter." },
@@ -5305,7 +4269,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-grabenraeumloeffel-80cm": {
-    excelName: "MS01 Grabenräumlöffel starr 80cm/45l",
     seoTitle: "MS01 Grabenräumlöffel starr 80cm/45l",
     metaDescription: "Starrer MS01 Grabenräumlöffel mit 800 mm Arbeitsbreite und 45 l Volumen für Minibagger der 1–2 t Klasse. Ideal zum Planieren und Profilieren.",
     h1: "MS01 Grabenräumlöffel starr 80cm/45l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5313,8 +4276,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Löffel dient der Profilierung von Gräben und Böschungen sowie dem Planieren von Flächen vor Pflasterarbeiten. Zudem eignet er sich zur Räumung von Mutterboden und Aushubmaterial.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich wird das Anbaugerät für die Geländemodellierung und Profilierung im Garten eingesetzt.",
-    primaryKeywords: "MS01 Grabenräumlöffel starr 80cm/45l mieten in Krefeld, MS01 Grabenräumlöffel starr 80cm/45l leihen in Krefeld, MS01 Grabenräumlöffel starr 80cm/45l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Trägergeräte ist der Grabenräumlöffel geeignet?", a: "Der Löffel ist für Minibagger in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Welches Fassungsvermögen und welche Breite hat der Löffel?", a: "Die Arbeitsbreite beträgt 800 mm und das Volumen umfasst 45 Liter." },
@@ -5322,7 +4283,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-grabenraeumloeffel-80cm-65l": {
-    excelName: "MS01 Grabenräumlöffel starr 80cm/65l",
     seoTitle: "MS01 Grabenräumlöffel starr 80cm/65l für Minibagger",
     metaDescription: "Starrer Grabenräumlöffel mit MS01 Aufnahme, 65 Liter Volumen und 800 mm Arbeitsbreite. Ideal für Planierarbeiten und Böschungsprofilierung.",
     h1: "MS01 Grabenräumlöffel starr 80cm/65l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5330,8 +4290,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Löffel eignet sich für die Profilierung von Gräben und Böschungen sowie für die Räumung von Mutterboden und Aushubmaterial. Zudem unterstützt er beim Planieren von Flächen vor Pflasterarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Dieses Anbaugerät wird zur Geländemodellierung und Profilierung im Garten eingesetzt.",
-    primaryKeywords: "MS01 Grabenräumlöffel starr 80cm/65l mieten in Krefeld, MS01 Grabenräumlöffel starr 80cm/65l leihen in Krefeld, MS01 Grabenräumlöffel starr 80cm/65l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist das Fassungsvermögen des Grabenräumlöffels?", a: "Der Grabenräumlöffel verfügt über ein Volumen von 65 Litern bei einer Arbeitsbreite von 800 mm." },
       { q: "Welche Aufnahme wird für diesen Löffel benötigt?", a: "Der Löffel ist mit einer MS01-Aufnahme für entsprechende Minibagger ausgestattet." },
@@ -5339,7 +4297,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-grabenraeumloeffel-hydr-80cm": {
-    excelName: "MS01 Grabenräumlöffel hydr. 80cm/52l",
     seoTitle: "MS01 Grabenräumlöffel hydr. 80cm/52l | Mietkatalog",
     metaDescription: "Hydraulisch schwenkbarer MS01 Grabenräumlöffel mit 800 mm Arbeitsbreite und 63 l Volumen für präzise Planier- und Räumarbeiten an Böschungen.",
     h1: "MS01 Grabenräumlöffel hydr. 80cm/52l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5347,8 +4304,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Anbauteil eignet sich für die Profilierung von Gräben und Böschungen sowie für das Planieren von Flächen vor Pflasterarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich unterstützt der Löffel bei der Geländemodellierung und Profilierung im Garten.",
-    primaryKeywords: "MS01 Grabenräumlöffel hydr. 80cm/52l mieten in Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l leihen in Krefeld, MS01 Grabenräumlöffel hydr. 80cm/52l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Volumen bietet der Grabenräumlöffel?", a: "Der Löffel verfügt über ein Fassungsvermögen von 63 Litern." },
       { q: "Über welches Aufnahmesystem verfügt das Gerät?", a: "Der Grabenräumlöffel ist mit einer MS01-Aufnahme ausgestattet." },
@@ -5356,7 +4311,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-hydraulikhammer-shb40": {
-    excelName: "MS01 Hydraulikhammer SHB40",
     seoTitle: "MS01 Hydraulikhammer SHB40 für Minibagger 1–2,5 t",
     metaDescription: "Hydraulikhammer SHB40 mit MS01 Aufnahme für Minibagger der 1- bis 2,5-Tonnen-Klasse. Schlagkraft 280 Joule, 105 kg Gewicht für Beton- und Asphaltabbruch.",
     h1: "MS01 Hydraulikhammer SHB40 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5364,8 +4318,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der SHB40 dient dem Abbruch von Beton- und Mauerwerk sowie dem Aufbrechen von Asphalt- und Pflasterflächen. Zudem kann das Gerät für den Felsabbruch bei Tiefbauarbeiten eingesetzt werden.",
     useCaseEvent: "",
     useCasePrivat: "Dieses Anbaugerät eignet sich für den Abbruch alter Fundamente oder Pflasterflächen im privaten Bereich.",
-    primaryKeywords: "MS01 Hydraulikhammer SHB40 mieten in Krefeld, MS01 Hydraulikhammer SHB40 leihen in Krefeld, MS01 Hydraulikhammer SHB40 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Trägergeräte ist der Hydraulikhammer SHB40 geeignet?", a: "Der Hammer ist für Minibagger in der Gewichtsklasse von 1 bis 2,5 Tonnen konzipiert, die über ein MS01 Schnellwechselsystem verfügen." },
       { q: "Wie hoch ist die Schlagkraft und Schlagfrequenz?", a: "Das Gerät erreicht eine Schlagkraft von 280 Joule bei einer Schlaganzahl von 800 bis 1.400 Schlägen pro Minute." },
@@ -5373,7 +4325,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-kabelloeffel-15cm-symlock": {
-    excelName: "MS01 Kabellöffel 15cm Symlock",
     seoTitle: "MS01 Kabellöffel 15cm Symlock für Minibagger",
     metaDescription: "Schmaler Kabellöffel 150 mm mit MS01 Symlock Aufnahme für Minibagger von 1 bis 2 t. Ideal zum präzisen Freilegen von Leitungen ohne Zähne.",
     h1: "MS01 Kabellöffel 15cm Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5381,8 +4332,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Löffel eignet sich für Tiefbau-Arbeiten bei Strom- und Datenleitungen sowie zum Erstellen schmaler Gräben für die Kabelverlegung.",
     useCaseEvent: "",
     useCasePrivat: "Privatanwender nutzen das Anbaugerät für die Verlegung von Strom- oder Wasserleitungen im eigenen Garten.",
-    primaryKeywords: "MS01 Kabellöffel 15cm Symlock mieten in Krefeld, MS01 Kabellöffel 15cm Symlock leihen in Krefeld, MS01 Kabellöffel 15cm Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Trägergeräte ist der Kabellöffel geeignet?", a: "Der Löffel ist für Minibagger in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Welche Arbeitsbreite hat dieser Löffel?", a: "Die Arbeitsbreite beträgt 150 mm, was ein präzises Arbeiten bei minimalem Aushub ermöglicht." },
@@ -5390,7 +4339,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-ms03-hydraulikhammer-shb45": {
-    excelName: "MS01/MS03 Hydraulikhammer SHB45",
     seoTitle: "MS01/MS03 Hydraulikhammer SHB45 mieten",
     metaDescription: "Hydraulikhammer SHB45 für MS01/MS03 Schnellwechsler. 126 kg Gewicht, 350 J Schlagkraft, passend für Bagger von 1 bis 3,5 t.",
     h1: "MS01/MS03 Hydraulikhammer SHB45 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5398,8 +4346,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Hydraulikhammer eignet sich für den Abbruch von Beton- und Mauerwerk, das Aufbrechen von Asphalt- und Pflasterflächen sowie für den Felsabbruch bei Tiefbauarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich wird das Gerät für den Abbruch alter Fundamente oder Pflasterflächen eingesetzt.",
-    primaryKeywords: "MS01/MS03 Hydraulikhammer SHB45 mieten in Krefeld, MS01/MS03 Hydraulikhammer SHB45 leihen in Krefeld, MS01/MS03 Hydraulikhammer SHB45 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggergrößen ist der SHB45 Hydraulikhammer geeignet?", a: "Das Gerät ist für Bagger in der Gewichtsklasse von 1 bis 3,5 t ausgelegt." },
       { q: "Wie hoch ist die Schlagfrequenz des Hydraulikhammers?", a: "Die Schlaganzahl liegt zwischen 800 und 1400 bpm bei einer Schlagkraft von 350 Joule." },
@@ -5407,7 +4353,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-ms03-sortiergreifer-ssg150": {
-    excelName: "MS01/MS03 Sortiergreifer SSG 150",
     seoTitle: "MS01/MS03 Sortiergreifer SSG 150 für 2–3 t Bagger",
     metaDescription: "Kompakter Sortiergreifer SSG 150 mit 6,75 kN Schließkraft und 920 mm Öffnungsweite für Trägergeräte von 2–3 Tonnen. 150 kg Eigengewicht.",
     h1: "MS01/MS03 Sortiergreifer SSG 150 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5415,8 +4360,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Greifer eignet sich für das Sortieren und Verladen von Bauschutt sowie für das Handling von Steinen, Wurzeln oder Baumstämmen.",
     useCaseEvent: "",
     useCasePrivat: "Dieses Anbaugerät unterstützt beim Räumen und Verladen von Garten-Aushub.",
-    primaryKeywords: "MS01/MS03 Sortiergreifer SSG 150 mieten in Krefeld, MS01/MS03 Sortiergreifer SSG 150 leihen in Krefeld, MS01/MS03 Sortiergreifer SSG 150 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Schließkraft des SSG 150?", a: "Der Sortiergreifer erzielt eine maximale Schließkraft von 6,75 kN bei einem Eigengewicht von 150 kg." },
       { q: "Verfügt der Greifer über eine Rotationsfunktion?", a: "Ja, der SSG 150 ist mit einer 360° endlos Rotation ausgestattet, die einen Öldurchfluss von 20 l/min erfordert." },
@@ -5424,7 +4367,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-roderechen-symlock": {
-    excelName: "MS01 Roderechen Symlock",
     seoTitle: "MS01 Roderechen Symlock | 800 mm Arbeitsbreite",
     metaDescription: "MS01 Roderechen für Minibagger (1–2 t). 800 mm Arbeitsbreite, 9 Zähne, Gewicht 36 kg. Ideal zum Roden und Sortieren von Wurzeln und Steinen.",
     h1: "MS01 Roderechen Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5432,8 +4374,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Anbaugerät unterstützt Bauprofis bei Räumarbeiten im Rahmen des Garten- und Landschaftsbaus.",
     useCaseEvent: "",
     useCasePrivat: "Privatpersonen nutzen das Gerät zum effektiven Räumen von Schnittgut und Pflanzenresten auf dem Grundstück.",
-    primaryKeywords: "MS01 Roderechen Symlock mieten in Krefeld, MS01 Roderechen Symlock leihen in Krefeld, MS01 Roderechen Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Trägergeräte ist der Roderechen geeignet?", a: "Der Roderechen ist für Minibagger in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Welche Aufnahme besitzt der Roderechen?", a: "Das Gerät ist mit einer MS01 Symlock-Aufnahme ausgestattet, die einen schnellen Anbau ermöglicht." },
@@ -5441,7 +4381,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-tiefloeffel-20cm": {
-    excelName: "MS01 Tieflöffel 20cm/14l",
     seoTitle: "MS01 Tieflöffel 20cm/14l für Minibagger",
     metaDescription: "Tieflöffel für MS01 Schnellwechsler mit 20cm Breite, 14l Volumen und 22kg Eigengewicht. Geeignet für Bagger der Gewichtsklasse 0,5 bis 2 Tonnen.",
     h1: "MS01 Tieflöffel 20cm/14l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5449,8 +4388,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Tieflöffel wird für den Standard-Aushub bei Erdarbeiten sowie für Grabarbeiten für Fundamente und Leitungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbauteil eignet sich für den Aushub im Privatgarten mit einem gemieteten Bagger.",
-    primaryKeywords: "MS01 Tieflöffel 20cm/14l mieten in Krefeld, MS01 Tieflöffel 20cm/14l leihen in Krefeld, MS01 Tieflöffel 20cm/14l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggergrößen ist der Tieflöffel geeignet?", a: "Das Anbauteil ist für Minibagger in der Gewichtsklasse von 0,5 bis 2 Tonnen ausgelegt." },
       { q: "Welches Fassungsvermögen und welche Breite hat der Löffel?", a: "Der Tieflöffel hat ein Volumen von 14 Litern und eine Arbeitsbreite von 300 mm." },
@@ -5458,7 +4395,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-tiefloeffel-30cm": {
-    excelName: "MS01 Tieflöffel 30cm/24l",
     seoTitle: "MS01 Tieflöffel 30cm/24l für Minibagger 1–2 t",
     metaDescription: "Tieflöffel mit MS01 Aufnahme für Minibagger (1–2 t). 300 mm Arbeitsbreite, 24 l Volumen, zahnlose Ausführung für saubere Grabensohlen. Gewicht: 36 kg.",
     h1: "MS01 Tieflöffel 30cm/24l mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5466,8 +4402,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Tieflöffel wird für Standard-Aushubarbeiten bei Erdarbeiten sowie für Grabarbeiten für Fundamente und Leitungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbauteil eignet sich für den Aushub im Privatgarten mit einem gemieteten Bagger.",
-    primaryKeywords: "MS01 Tieflöffel 30cm/24l mieten in Krefeld, MS01 Tieflöffel 30cm/24l leihen in Krefeld, MS01 Tieflöffel 30cm/24l mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bagger eignet sich dieser Tieflöffel?", a: "Der Löffel ist für Minibagger in der Gewichtsklasse von 1 bis 2 Tonnen mit einer MS01 Aufnahme ausgelegt." },
       { q: "Wie breit ist die Arbeitsfläche des Löffels?", a: "Die Arbeitsbreite beträgt 300 mm bei einem Fassungsvolumen von 24 Litern." },
@@ -5475,7 +4409,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-tiefloeffel-30cm-symlock": {
-    excelName: "MS01 Tieflöffel 30cm/24l Symlock",
     seoTitle: "MS01 Tieflöffel 30cm/24l Symlock für Minibagger",
     metaDescription: "Tieflöffel mit MS01 Symlock Aufnahme für Minibagger von 1–2 t. 300 mm Arbeitsbreite, 24 l Volumen und 3 geschraubte Zähne für Grabarbeiten.",
     h1: "MS01 Tieflöffel 30cm/24l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5483,8 +4416,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Löffel wird für Standard-Aushubarbeiten bei Erdarbeiten sowie für das Ausheben von Gräben für Fundamente und Leitungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbauteil eignet sich für Aushubarbeiten im Privatgarten in Kombination mit einem gemieteten Minibagger.",
-    primaryKeywords: "MS01 Tieflöffel 30cm/24l Symlock mieten in Krefeld, MS01 Tieflöffel 30cm/24l Symlock leihen in Krefeld, MS01 Tieflöffel 30cm/24l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "An welche Bagger passt der MS01 Tieflöffel?", a: "Der Löffel ist für Trägergeräte in der Gewichtsklasse von 1 bis 2 Tonnen mit einer MS01 Symlock Aufnahme ausgelegt." },
       { q: "Wie breit ist der Grabenlöffel und wie viele Zähne sind verbaut?", a: "Die Arbeitsbreite beträgt 300 mm. Der Löffel ist mit 3 geschraubten Zähnen ausgestattet." },
@@ -5492,7 +4423,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms01-tiefloeffel-50cm-symlock": {
-    excelName: "MS01 Tieflöffel 50cm/45l Symlock",
     seoTitle: "MS01 Tieflöffel 50cm/45l Symlock für Minibagger",
     metaDescription: "Tieflöffel mit 500 mm Arbeitsbreite, 45 l Volumen und MS01 Symlock Aufnahme für Trägergeräte von 1 bis 2 t. Inklusive 4 geschraubten Zähnen.",
     h1: "MS01 Tieflöffel 50cm/45l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5500,8 +4430,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Tieflöffel wird für den Standard-Aushub bei Erdarbeiten sowie für Grabarbeiten für Fundamente und Leitungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbauteil eignet sich für den Aushub im Privatgarten mit einem gemieteten Bagger.",
-    primaryKeywords: "MS01 Tieflöffel 50cm/45l Symlock mieten in Krefeld, MS01 Tieflöffel 50cm/45l Symlock leihen in Krefeld, MS01 Tieflöffel 50cm/45l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggergrößen ist der Tieflöffel geeignet?", a: "Der Löffel ist für Trägergeräte in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Welches Volumen und welche Breite bietet das Anbauteil?", a: "Der Tieflöffel hat eine Arbeitsbreite von 500 mm und ein Fassungsvermögen von 45 Litern." },
@@ -5509,7 +4437,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms03-grabenraeumloeffel-120cm-symlock": {
-    excelName: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
     seoTitle: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock",
     metaDescription: "Hydraulischer Grabenräumlöffel mit MS03 Symlock Aufnahme. 1200 mm Arbeitsbreite, 120 l Volumen, für Bagger von 2,5 bis 4 t.",
     h1: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5517,8 +4444,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Anbaugerät eignet sich für die Profilierung von Gräben und Böschungen sowie für die Räumung von Mutterboden und Aushubmaterial. Zudem wird es zum Planieren von Flächen vor Pflasterarbeiten eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich unterstützt der Grabenräumlöffel bei der Geländemodellierung und Profilierung im Garten.",
-    primaryKeywords: "MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock leihen in Krefeld, MS03 Grabenräumlöffel hydr. 120cm/120l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggerklassen ist dieser Grabenräumlöffel geeignet?", a: "Der Löffel ist für Kompaktbagger in der Gewichtsklasse von 2,5 bis 4 Tonnen ausgelegt." },
       { q: "Welches Aufnahmesystem wird verwendet?", a: "Das Gerät verfügt über eine MS03 Symlock Aufnahme." },
@@ -5526,7 +4451,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms03-kabelloeffel-20cm-symlock": {
-    excelName: "MS03 Kabellöffel 20cm Symlock",
     seoTitle: "MS03 Kabellöffel 20cm Symlock | Mietkatalog NRW",
     metaDescription: "Schmaler Kabellöffel (200 mm) für MS03 Symlock-Systeme. Geeignet für Bagger von 2,5 bis 4 t. Ideal für präzise Grabenarbeiten und Leitungsverlegung.",
     h1: "MS03 Kabellöffel 20cm Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5534,8 +4458,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Löffel dient dem Ziehen schmaler Gräben für die Kabel- und Leitungsverlegung sowie für Tiefbau-Arbeiten bei Strom- und Datenleitungen.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbaugerät unterstützt bei der Verlegung von Strom- oder Wasserleitungen im privaten Garten.",
-    primaryKeywords: "MS03 Kabellöffel 20cm Symlock mieten in Krefeld, MS03 Kabellöffel 20cm Symlock leihen in Krefeld, MS03 Kabellöffel 20cm Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Baggerklassen ist der MS03 Kabellöffel geeignet?", a: "Der Löffel ist für Trägergeräte in der Gewichtsklasse von 2,5 bis 4 Tonnen ausgelegt." },
       { q: "Welche Arbeitsbreite hat dieser Kabellöffel?", a: "Die Arbeitsbreite des schmalen, zahnlosen Löffels beträgt 200 mm." },
@@ -5543,7 +4465,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms03-ms08-hydraulikhammer-shb75": {
-    excelName: "MS03/MS08 Hydraulikhammer SHB75",
     seoTitle: "MS03/MS08 Hydraulikhammer SHB75 mieten | 1.200 J | SLT Rental",
     metaDescription: "Hydraulikhammer SHB75 mieten: 1.200 J Schlagkraft, 75 mm Meißel, für Bagger 6–9 t mit MS03/MS08. Jetzt bei SLT Rental anfragen.",
     h1: "MS03/MS08 Hydraulikhammer SHB75 mieten – 1.200 J Schlagkraft bei SLT Rental",
@@ -5551,8 +4472,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Betonabbruch, Asphaltaufbruch, Felsbearbeitung, Abbrucharbeiten, Kanalbau, Fundamentrückbau",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Hydraulikhammer mieten, SHB75 mieten, MS08 Hydraulikhammer leihen, Abbruchhammer Bagger NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bagger ist der SHB75 geeignet?", a: "Der SHB75 ist für Bagger der 6- bis 9-Tonnen-Klasse mit MS03 oder MS08 Schnellwechsler konzipiert." },
       { q: "Welche Schlagkraft hat der SHB75?", a: "Der Hydraulikhammer liefert 1.200 Joule Schlagkraft bei 400–800 Schlägen pro Minute – ideal für Beton, Asphalt und Gestein." },
@@ -5561,7 +4480,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms03-tiefloeffel-30cm-symlock": {
-    excelName: "MS03 Tieflöffel 30cm/41l Symlock",
     seoTitle: "MS03 Tieflöffel 30cm/41l Symlock für Minibagger",
     metaDescription: "Mieten Sie den MS03 Tieflöffel (300 mm) für Bagger von 1–2 t. Volumen 41 l, Symlock-Aufnahme und 3 geschraubte Zähne für präzise Erdarbeiten.",
     h1: "MS03 Tieflöffel 30cm/41l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5569,8 +4487,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Tieflöffel eignet sich für den Standard-Aushub bei Erdarbeiten sowie für gezielte Grabarbeiten für Fundamente und Leitungen.",
     useCaseEvent: "",
     useCasePrivat: "Das Anbaugerät kann für den Aushub im Privatgarten mit einem gemieteten Bagger verwendet werden.",
-    primaryKeywords: "MS03 Tieflöffel 30cm/41l Symlock mieten in Krefeld, MS03 Tieflöffel 30cm/41l Symlock leihen in Krefeld, MS03 Tieflöffel 30cm/41l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Maschinengröße ist der Tieflöffel geeignet?", a: "Der Löffel ist für Bagger in der Gewichtsklasse von 1 bis 2 Tonnen ausgelegt." },
       { q: "Wie viele Zähne hat der Tieflöffel?", a: "Das Gerät verfügt über 3 geschraubte Zähne bei einer Arbeitsbreite von 300 mm." },
@@ -5578,7 +4494,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms03-tiefloeffel-50cm-symlock": {
-    excelName: "MS03 Tieflöffel 50cm/107l Symlock",
     seoTitle: "MS03 Tieflöffel 50cm/107l Symlock – Mietkatalog",
     metaDescription: "MS03 Tieflöffel mit 500 mm Arbeitsbreite, 107 l Volumen und 4 geschraubten Zähnen für Bagger der 2,5- bis 4-Tonnen-Klasse.",
     h1: "MS03 Tieflöffel 50cm/107l Symlock mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5586,8 +4501,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Anbauteil wird für den Standard-Aushub bei Erdarbeiten sowie für Grabarbeiten für Fundamente und Leitungen eingesetzt.",
     useCaseEvent: "",
     useCasePrivat: "Der Löffel eignet sich für den Aushub im Privatgarten mit einem gemieteten Bagger.",
-    primaryKeywords: "MS03 Tieflöffel 50cm/107l Symlock mieten in Krefeld, MS03 Tieflöffel 50cm/107l Symlock leihen in Krefeld, MS03 Tieflöffel 50cm/107l Symlock mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über welche Aufnahme verfügt dieser Tieflöffel?", a: "Der Tieflöffel ist mit einer MS03 Symlock Aufnahme ausgestattet." },
       { q: "Wie hoch ist das Fassungsvermögen und das Gewicht?", a: "Das Volumen beträgt 107 Liter bei einem Eigengewicht von 79 kg." },
@@ -5595,7 +4508,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms08-grabenraeumloeffel-hydr-160cm-symlock": {
-    excelName: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock",
     seoTitle: "MS08 Grabenräumlöffel hydr. 160cm mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten. 317 kg, hydraulisch schwenkbar, für 5–10 t Bagger. Tagesmiete bei SLT Rental.",
     h1: "MS08 Grabenräumlöffel hydr. 160cm/288l Symlock mieten in Bonn & Krefeld",
@@ -5603,8 +4515,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Großflächige Planierarbeiten, Böschungsprofilierung, Grabenräumung, Kanalbau",
     useCaseEvent: "",
     useCasePrivat: "Teichbau, große Grundstücksnivellierung",
-    primaryKeywords: "MS08 Grabenräumlöffel mieten, Grabenräumlöffel 160cm mieten, hydraulischer Planierlöffel MS08 Symlock",
-    is247: false,
     faqs: [
       { q: "Für welche Bagger passt der MS08 Grabenräumlöffel?", a: "Der Löffel passt auf Bagger der Gewichtsklasse 5–10 t mit SB08S (MS08 Symlock) Schnellwechsler." },
       { q: "Was bedeutet hydraulisch schwenkbar?", a: "Die hydraulische Schwenkfunktion erlaubt es, den Löffel seitlich zu neigen – ideal für Böschungsarbeiten und Profilierung in unebenem Gelände ohne den Bagger umsetzen zu müssen." },
@@ -5613,7 +4523,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ms10-hydraulikhammer-shb100": {
-    excelName: "MS10 Hydraulikhammer SHB100",
     seoTitle: "MS10 Hydraulikhammer SHB100 mieten | 2.100 J Schlagkraft | SLT Rental",
     metaDescription: "Hydraulikhammer SHB100 mieten: 2.100 J Schlagkraft, 100 mm Meißel, für Bagger 10–15 t mit MS10. Jetzt bei SLT Rental anfragen.",
     h1: "MS10 Hydraulikhammer SHB100 mieten – 2.100 J Schlagkraft bei SLT Rental",
@@ -5621,8 +4530,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Schwerer Betonabbruch, Felssprengung, Gebäudeabbruch, Straßenrückbau, Fundamentabbruch, Tunnelbau",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Hydraulikhammer mieten, SHB100 mieten, MS10 Hydraulikhammer leihen, schwerer Abbruchhammer NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bagger ist der SHB100 geeignet?", a: "Der SHB100 ist für Bagger der 10- bis 15-Tonnen-Klasse mit MS10 Schnellwechsler konzipiert." },
       { q: "Welche Schlagkraft hat der SHB100?", a: "Der Hydraulikhammer liefert 2.100 Joule Schlagkraft bei 400–650 Schlägen pro Minute – ideal für schwere Abbrucharbeiten an Beton und Fels." },
@@ -5631,7 +4538,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "netzwerkkabel-20m-cat5e": {
-    excelName: "Major Netzwerkkabel Cat-5e 20 m",
     seoTitle: "Major Netzwerkkabel Cat-5e 20 m",
     metaDescription: "20 m Cat-5e Netzwerkkabel der Marke Major für die Datenübertragung und technische Vernetzung.",
     h1: "Major Netzwerkkabel Cat-5e 20 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5639,8 +4545,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 20 m mieten in Krefeld, Major Netzwerkkabel Cat-5e 20 m leihen in Krefeld, Major Netzwerkkabel Cat-5e 20 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major Netzwerkkabel?", a: "Das Kabel weist eine Länge von 20 Metern auf." },
       { q: "Welcher Kategorie entspricht das Kabel?", a: "Es handelt sich um ein Netzwerkkabel der Kategorie Cat-5e." },
@@ -5648,7 +4552,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "netzwerkkabel-2m-cat5e": {
-    excelName: "Major Netzwerkkabel Cat-5e 2m",
     seoTitle: "Major Netzwerkkabel Cat-5e 2m",
     metaDescription: "Cat-5e Netzwerkkabel der Marke Major mit 2 Metern Länge für die Datenübertragung und technische Vernetzung.",
     h1: "Major Netzwerkkabel Cat-5e 2m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5656,8 +4559,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 2m mieten in Krefeld, Major Netzwerkkabel Cat-5e 2m leihen in Krefeld, Major Netzwerkkabel Cat-5e 2m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major Netzwerkkabel?", a: "Das Kabel hat eine Länge von 2 Metern." },
       { q: "Welche Spezifikation erfüllt das Kabel?", a: "Es handelt sich um ein Netzwerkkabel der Kategorie Cat-5e." },
@@ -5665,7 +4566,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "netzwerkkabel-30m-cat7": {
-    excelName: "Major Netzwerkkabel Cat-7 30m",
     seoTitle: "Major Netzwerkkabel Cat-7 30m mieten",
     metaDescription: "Mieten Sie das Major Netzwerkkabel Cat-7 mit 30 m Länge für Ihre Netzwerkanwendungen im Eventbereich.",
     h1: "Major Netzwerkkabel Cat-7 30m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5673,8 +4573,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major Netzwerkkabel Cat-7 30m mieten in Krefeld, Major Netzwerkkabel Cat-7 30m leihen in Krefeld, Major Netzwerkkabel Cat-7 30m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Netzwerkkabel?", a: "Das Major Netzwerkkabel hat eine Kabellänge von 30 m." },
       { q: "Welchem Standard entspricht das Kabel?", a: "Es handelt sich um ein Cat-7 Netzwerkkabel." },
@@ -5682,7 +4580,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "netzwerkkabel-5m-cat5e": {
-    excelName: "Major Netzwerkkabel Cat-5e 5m",
     seoTitle: "Major Netzwerkkabel Cat-5e 5m",
     metaDescription: "Mieten Sie das Major Cat-5e Netzwerkkabel mit 5 Metern Länge für die Datenübertragung im Eventbereich.",
     h1: "Major Netzwerkkabel Cat-5e 5m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5690,8 +4587,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Kabel dient der Datenübertragung zwischen Bühnen-Equipment sowie der Verbindung von Lichtsteuerungen und Mischpulten.",
     useCasePrivat: "",
-    primaryKeywords: "Major Netzwerkkabel Cat-5e 5m mieten in Krefeld, Major Netzwerkkabel Cat-5e 5m leihen in Krefeld, Major Netzwerkkabel Cat-5e 5m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Länge hat das Major Netzwerkkabel?", a: "Das Kabel hat eine Länge von 5 Metern." },
       { q: "Welchem Standard entspricht das Kabel?", a: "Es handelt sich um ein Cat-5e Netzwerkkabel." },
@@ -5699,7 +4594,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-systempodest-2x0-5m": {
-    excelName: "Nivtec 2m x 0,5m Systempodest",
     seoTitle: "Nivtec 2m x 0,5m Systempodest | Mietkatalog NRW",
     metaDescription: "Nivtec Systempodest mit den Maßen 2m x 0,5m. Geeignet als Bühnenelement für Konzerte, Reden und Präsentationsbereiche.",
     h1: "Nivtec 2m x 0,5m Systempodest mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5707,8 +4601,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Nivtec Systempodest dient als Bühnenelement für Konzerte und Reden. Zudem ermöglicht es die Erhöhung von Tisch- oder Präsentationsbereichen in der Eventgastronomie.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec 2m x 0,5m Systempodest mieten in Krefeld, Nivtec 2m x 0,5m Systempodest leihen in Krefeld, Nivtec 2m x 0,5m Systempodest mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Abmessungen hat das Nivtec Systempodest?", a: "Das Systempodest hat eine Länge von 2 Metern und eine Breite von 0,5 Metern." },
       { q: "Wofür kann das Systempodest eingesetzt werden?", a: "Es wird für Bühnenkonstruktionen bei Konzerten und Reden sowie zur Erhöhung von Präsentationsflächen genutzt." },
@@ -5716,7 +4608,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-systempodest-2x0-75m": {
-    excelName: "Nivtec 2m x 0,75m Systempodest",
     seoTitle: "Nivtec 2m x 0,75m Systempodest mieten",
     metaDescription: "Nivtec Systempodest mit den Maßen 2m x 0,75m. Geeignet für Bühnenaufbauten und Erhöhungen im Eventbereich.",
     h1: "Nivtec 2m x 0,75m Systempodest mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5724,8 +4615,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Diese Podeste dienen als Bühnenelemente für Konzerte und Reden sowie zur Erhöhung von Tisch- oder Präsentationsbereichen.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec 2m x 0,75m Systempodest mieten in Krefeld, Nivtec 2m x 0,75m Systempodest leihen in Krefeld, Nivtec 2m x 0,75m Systempodest mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat das Nivtec Systempodest?", a: "Das Bühnenelement verfügt über eine Grundfläche von 2m x 0,75m." },
       { q: "Wofür kann das Podest in der Gastronomie genutzt werden?", a: "Es kann zur Erhöhung von Präsentationsbereichen oder Tischen sowie für Rednerbühnen eingesetzt werden." },
@@ -5733,7 +4622,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-systempodest-2x1m": {
-    excelName: "Nivtec 2m x 1m Systempodest",
     seoTitle: "Nivtec 2m x 1m Systempodest mieten",
     metaDescription: "Systempodest Nivtec in der Größe 2m x 1m für den Bühnenbau. Geeignet für Konzerte, Reden und die Erhöhung von Bereichen in der Eventgastronomie.",
     h1: "Nivtec 2m x 1m Systempodest mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5741,8 +4629,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Podeste dienen als Bühnenelemente für Konzerte und Reden oder zur Erhöhung von Tisch- und Präsentationsbereichen. Sie ermöglichen einen flexiblen Aufbau im Veranstaltungsbereich.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec 2m x 1m Systempodest mieten in Krefeld, Nivtec 2m x 1m Systempodest leihen in Krefeld, Nivtec 2m x 1m Systempodest mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat das Nivtec Systempodest?", a: "Das Systempodest hat eine Abmessung von 2m x 1m." },
       { q: "In welche Kategorie wird das Produkt eingeordnet?", a: "Das Nivtec Systempodest wird in die Subkategorie Podest eingeordnet." },
@@ -5750,7 +4636,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-teleskopfuss-40cm": {
-    excelName: "Nivtec Teleskopfuß 40cm",
     seoTitle: "Nivtec Teleskopfuß 40cm | Bühnen-Zubehör mieten",
     metaDescription: "Nivtec Teleskopfuß für Bühnensysteme. Höhenverstellbar bis 40 cm. Jetzt im Mietkatalog für Event-Zubehör in NRW.",
     h1: "Nivtec Teleskopfuß 40cm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5758,8 +4643,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieser Teleskopfuß dient als Ergänzung für Bühnenkonstruktionen bei Events. Er ermöglicht eine flexible Anpassung der Gesamthöhe innerhalb des Verstellbereichs.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec Teleskopfuß 40cm mieten in Krefeld, Nivtec Teleskopfuß 40cm leihen in Krefeld, Nivtec Teleskopfuß 40cm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Höhe erreicht der Nivtec Teleskopfuß?", a: "Der Teleskopfuß ist bis zu einer Höhe von 40 cm verstellbar." },
       { q: "Wofür wird dieses Produkt verwendet?", a: "Es handelt sich um einen höhenverstellbaren Bühnenfuß zur Verwendung innerhalb von Bühnensystemen." },
@@ -5767,7 +4650,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-teleskopfuss-80cm": {
-    excelName: "Nivtec Teleskopfuß 80cm",
     seoTitle: "Nivtec Teleskopfuß 80cm - Höhenverstellbar",
     metaDescription: "Nivtec Teleskopfuß für Bühnenkonstruktionen. Stufenlos höhenverstellbar bis 80 cm. Zubehör für den Bühnenbau bei Events.",
     h1: "Nivtec Teleskopfuß 80cm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5775,8 +4657,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Zubehör dient als Ergänzung für Bühnenkonstruktionen bei Events und ermöglicht eine flexible Höhenanpassung.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec Teleskopfuß 80cm mieten in Krefeld, Nivtec Teleskopfuß 80cm leihen in Krefeld, Nivtec Teleskopfuß 80cm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Bis zu welcher Höhe lässt sich der Nivtec Teleskopfuß einstellen?", a: "Der Fuß ist bis zu einer Höhe von 80 cm verstellbar." },
       { q: "Für welches System ist dieser Fuß geeignet?", a: "Es handelt sich um einen Bühnenfuß für das Nivtec-System." },
@@ -5784,7 +4664,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "nivtec-verstellspindelfuss-60cm": {
-    excelName: "Nivtec Verstellspindelfuß 60cm",
     seoTitle: "Nivtec Verstellspindelfuß 60cm – Bühnenzubehör",
     metaDescription: "Verstellspindelfuß für Nivtec Bühnensysteme zum Niveauausgleich bis zu 60 cm. Zubehör für den Bühnenbau bei Events.",
     h1: "Nivtec Verstellspindelfuß 60cm mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5792,8 +4671,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Zubehör dient als Ergänzung für Bühnenkonstruktionen bei Events, um einen stabilen Stand zu gewährleisten.",
     useCasePrivat: "",
-    primaryKeywords: "Nivtec Verstellspindelfuß 60cm mieten in Krefeld, Nivtec Verstellspindelfuß 60cm leihen in Krefeld, Nivtec Verstellspindelfuß 60cm mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Höhe kann mit dem Nivtec Verstellspindelfuß erreicht werden?", a: "Der Verstellspindelfuß ermöglicht einen Niveauausgleich von bis zu 60 cm." },
       { q: "Wozu dient der Nivtec Verstellspindelfuß?", a: "Er dient als Spindelfuß für den Niveauausgleich innerhalb von Bühnenkonstruktionen." },
@@ -5801,7 +4678,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "office-kabelbruecke-1m": {
-    excelName: "Office Kabelbrücke black 1m",
     seoTitle: "Office Kabelbrücke black 1m - 4 Kanäle",
     metaDescription: "Schwarze Kabelbrücke mit 4 Kanälen für die Anwendung im Innenbereich. Länge: 1 Meter. Ideal zur sicheren Kabelführung.",
     h1: "Office Kabelbrücke black 1m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5809,8 +4685,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Sichere Kabelführung über Besucherwege.",
     useCasePrivat: "",
-    primaryKeywords: "Office Kabelbrücke black 1m mieten in Krefeld, Office Kabelbrücke black 1m leihen in Krefeld, Office Kabelbrücke black 1m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie viele Kanäle besitzt die Office Kabelbrücke?", a: "Die Kabelbrücke verfügt über insgesamt 4 Kanäle zur Aufnahme von Kabeln." },
       { q: "Für welchen Einsatzbereich ist das Produkt geeignet?", a: "Diese Kabelbrücke ist für die Anwendung im Innenbereich konzipiert." },
@@ -5818,7 +4692,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "office-kabelbruecke-2m": {
-    excelName: "Office Kabelbrücke black 2m",
     seoTitle: "Office Kabelbrücke black 2m kaufen | Mietkatalog",
     metaDescription: "Kabelbrücke mit Kanälen für die Innenanwendung in 2 m Länge. Schützt Kabel und sorgt für Ordnung in Innenräumen.",
     h1: "Office Kabelbrücke black 2m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5826,8 +4699,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sichere Kabelführung über befahrene Baustellenbereiche.",
     useCaseEvent: "Sichere Kabelführung über Besucherwege sowie Schutz von Kabeln bei Outdoor-Events.",
     useCasePrivat: "",
-    primaryKeywords: "Office Kabelbrücke black 2m mieten in Krefeld, Office Kabelbrücke black 2m leihen in Krefeld, Office Kabelbrücke black 2m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie lang ist die Office Kabelbrücke?", a: "Die Kabelbrücke hat eine Länge von 2 Metern." },
       { q: "Wo kann die Kabelbrücke eingesetzt werden?", a: "Dieses Modell ist für die Innenanwendung vorgesehen." },
@@ -5835,7 +4706,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "party-ton-licht-set": {
-    excelName: "Party Ton & Licht-Set",
     seoTitle: "Party Ton & Licht-Set mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Party Ton & Licht-Set mieten: 2× LED Lichtanlage + 2.1 Soundsystem 1.400W für bis zu 75 Personen. Bluetooth, einfacher Aufbau. Tagesmiete bei SLT Rental.",
     h1: "Party Ton & Licht-Set mieten in Bonn & Krefeld – Komplett-Paket bei SLT Rental",
@@ -5843,8 +4713,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Firmenfeiern, Sommerfeste, Hochzeiten, Geburtstage, Vereinsfeste, Gartenpartys, DJ-Sets",
     useCasePrivat: "Gartenparty, Geburtstagsfeier, Grillabend mit Musik und Licht, Silvesterparty",
-    primaryKeywords: "Party Set mieten, Ton und Licht mieten, Partyequipment mieten NRW, Licht und Sound Set leihen",
-    is247: false,
     faqs: [
       { q: "Für wie viele Personen reicht das Party Ton & Licht-Set?", a: "Das Set ist für Veranstaltungen mit bis zu 75 Personen ausgelegt. Das 2.1 Soundsystem liefert bis zu 126 dB Lautstärke." },
       { q: "Kann ich mein Handy per Bluetooth verbinden?", a: "Ja – das Soundsystem verfügt über einen Bluetooth-Empfänger. Zusätzlich stehen XLR-, AUX- und Klinke-Anschlüsse zur Verfügung." },
@@ -5853,7 +4721,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-3x3m": {
-    excelName: "Party- / Eventzelt 3x3m",
     seoTitle: "Party- / Eventzelt 3x3m mieten | UV-beständige PVC-Plane",
     metaDescription: "Party- / Eventzelt mit 9 m² Grundfläche, rasterfaserverstärkter 500 g/m² PVC-Plane und Dachspannern zur Vermeidung von Wassersäcken. Jetzt für Events anfragen.",
     h1: "Party- / Eventzelt 3x3m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5861,8 +4728,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einsetzbar bei Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie auf Märkten und Outdoor-Events.",
     useCasePrivat: "Ideal für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 3x3m mieten in Krefeld, Party- / Eventzelt 3x3m leihen in Krefeld, Party- / Eventzelt 3x3m mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 3x3m Zelts?", a: "Das Zelt bietet Platz für ca. 15 stehende Personen oder ca. 13 Personen bei Bestuhlung." },
@@ -5871,7 +4736,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-4x10m": {
-    excelName: "Party- / Eventzelt 4x10m",
     seoTitle: "Party- / Eventzelt 4x10m mieten | 40 m² Modularzelt weiß",
     metaDescription: "Mieten Sie ein Party- / Eventzelt 4x10m mit 40 m² Grundfläche. UV-beständige 500 g/m² PVC-Plane, inkl. Regenrinne und Dachspanner. Kapazität für bis zu 67 Personen.",
     h1: "Party- / Eventzelt 4x10m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5879,8 +4743,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einsetzbar für Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Das Zelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 4x10m mieten in Krefeld, Party- / Eventzelt 4x10m leihen in Krefeld, Party- / Eventzelt 4x10m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie setzt sich das Party- / Eventzelt 4x10m zusammen?", a: "Es handelt sich um ein Modularzelt, bestehend aus einem 4x6m und einem 4x4m Modul, die mit einer Regenrinne trocken miteinander verbunden werden." },
       { q: "Wie viele Personen finden im Zelt Platz?", a: "Das Zelt bietet stehend Platz für ca. 67 Personen (0,6 m²/Person) oder bei Bestuhlung für ca. 56 Personen (0,71 m²/Person)." },
@@ -5888,7 +4750,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-5x8m": {
-    excelName: "Party- / Eventzelt 5x8m extra hoch",
     seoTitle: "Party- / Eventzelt 5x8m extra hoch mieten | 40 m² PVC-Zelt",
     metaDescription: "Party- / Eventzelt 5x8m extra hoch (2,6 m) mit 40 m² Grundfläche und 500 g/m² PVC-Plane. Kapazität bis ca. 66 Personen, inkl. Seiten- und Stirnwände.",
     h1: "Party- / Eventzelt 5x8m extra hoch mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5896,8 +4757,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Witterungsschutz für temporäre Baustelleneinrichtungen und Materialdepots.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events mit erhöhter Durchgangshöhe.",
     useCasePrivat: "Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 5x8m extra hoch mieten in Krefeld, Party- / Eventzelt 5x8m leihen in Krefeld, Eventzelt 5x8 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die Durchgangshöhe des 5x8m Zeltes?", a: "Das Zelt verfügt über eine extra hohe Durchgangshöhe von 2,6 m und eignet sich damit ideal für Stehtische, Bühnen und größere Aufbauten im Inneren." },
       { q: "Wie viele Personen finden im 5x8m Zelt Platz?", a: "Bei 40 m² Grundfläche bietet das Zelt stehend Platz für ca. 66 Personen (0,6 m²/Person) und bei Reihenbestuhlung oder Bierzeltgarnituren ca. 56 Personen (0,71 m²/Person)." },
@@ -5905,7 +4764,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-partyzelt-5x8m": {
-    excelName: "Party- / Eventzelt 5x8m extra hoch",
     seoTitle: "Party- / Eventzelt 5x8m extra hoch mieten in Bonn | 40 m²",
     metaDescription: "Eventzelt 5x8m extra hoch (2,6 m Durchgangshöhe) für Bonn auf Anfrage. 40 m² Fläche, 500 g/m² PVC-Plane, inkl. Seiten- und Stirnwände, Dachstangen.",
     h1: "Party- / Eventzelt 5x8m extra hoch mieten in Bonn – Auf Anfrage bei SLT Rental",
@@ -5913,33 +4771,13 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Witterungsschutz für temporäre Baustellen im Großraum Bonn, Königswinter, Siegburg und Troisdorf.",
     useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen sowie Stadtfeste und Outdoor-Events in Bonn und Umgebung.",
     useCasePrivat: "Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste im Rhein-Sieg-Kreis.",
-    primaryKeywords: "Party- / Eventzelt 5x8m mieten in Bonn, Eventzelt 5x8m leihen in Bonn, Festzelt 40 m² mieten Bonn",
-    is247: false,
     faqs: [
       { q: "Ist das 5x8m Eventzelt in Bonn sofort verfügbar?", a: "Das 5x8m Zelt wird in Bonn auf Anfrage bereitgestellt – wir disponieren es bedarfsgerecht aus unserem Standortverbund. Bitte sende uns eine Anfrage mit Veranstaltungsdatum und Lieferort." },
       { q: "Wie viele Personen finden im 5x8m Zelt Platz?", a: "Bei 40 m² Grundfläche stehend ca. 66 Personen, bei Reihenbestuhlung oder Bierzeltgarnituren ca. 56 Personen – ideal für mittelgroße Feiern in Bonn." },
       { q: "Liefert SLT Rental das Zelt in den Großraum Bonn?", a: "Ja, wir liefern in den Großraum Bonn inklusive Königswinter, Sankt Augustin, Siegburg, Troisdorf, Meckenheim und Bornheim. Die Lieferkosten kalkulieren wir individuell anhand der Entfernung." },
     ],
   },
-  "mh-partyzelt-5x8m": {
-    excelName: "Party- / Eventzelt 5x8m extra hoch",
-    seoTitle: "Party- / Eventzelt 5x8m extra hoch mieten in Mülheim an der Ruhr",
-    metaDescription: "Eventzelt 5x8m extra hoch für Mülheim an der Ruhr auf Anfrage. 40 m² Fläche, 2,6 m Durchgangshöhe, 500 g/m² PVC-Plane, inkl. Seiten- und Stirnwände.",
-    h1: "Party- / Eventzelt 5x8m extra hoch mieten in Mülheim an der Ruhr – Auf Anfrage bei SLT Rental",
-    h2s: ["Extra hohe Konstruktion für Events im Ruhrgebiet", "Materialeigenschaften und Ausstattung", "Verfügbarkeit, Lieferung und Rückgabe in Mülheim an der Ruhr"],
-    useCaseBau: "Witterungsschutz für temporäre Baustellen in Mülheim an der Ruhr, Duisburg, Oberhausen und Essen.",
-    useCaseEvent: "Hochzeiten, Firmenfeiern, Tagungen sowie Stadtfeste und Outdoor-Events im westlichen Ruhrgebiet.",
-    useCasePrivat: "Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste in Mülheim an der Ruhr und Umgebung.",
-    primaryKeywords: "Party- / Eventzelt 5x8m mieten in Mülheim an der Ruhr, Eventzelt 5x8m leihen Ruhrgebiet, Festzelt 40 m² mieten Mülheim",
-    is247: false,
-    faqs: [
-      { q: "Ist das 5x8m Eventzelt in Mülheim an der Ruhr sofort verfügbar?", a: "In Mülheim an der Ruhr stellen wir das 5x8m Zelt auf Anfrage bereit – wir disponieren es aus unserem Standortverbund. Sende uns Datum und Lieferort, und wir bestätigen die Verfügbarkeit." },
-      { q: "Wie viele Personen finden im 5x8m Zelt Platz?", a: "Bei 40 m² Grundfläche stehend ca. 66 Personen, bei Reihenbestuhlung oder Bierzeltgarnituren ca. 56 Personen – ideal für mittelgroße Feiern im Ruhrgebiet." },
-      { q: "Liefert SLT Rental das Zelt nach Mülheim an der Ruhr?", a: "Ja, wir liefern Mülheim an der Ruhr und das gesamte westliche Ruhrgebiet inklusive Duisburg, Oberhausen, Essen, Bottrop und Ratingen. Lieferkosten kalkulieren wir individuell." },
-    ],
-  },
   "partyzelt-4x14m": {
-    excelName: "Party- / Eventzelt 4x14m",
     seoTitle: "Party- / Eventzelt 4x14m mieten | 56 m² PVC-Festzelt",
     metaDescription: "Modulares Party- / Eventzelt 4x14m aus 500 g/m² PVC-Plane. 56 m² Grundfläche für bis zu 93 Personen. Inklusive Regenrinne und Dachspanner gegen Wassersäcke.",
     h1: "Party- / Eventzelt 4x14m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5947,8 +4785,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Die Fläche bietet Platz für Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Das Zelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 4x14m mieten in Krefeld, Party- / Eventzelt 4x14m leihen in Krefeld, Party- / Eventzelt 4x14m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie setzt sich das Party- / Eventzelt 4x14m zusammen?", a: "Das Zelt ist modular aufgebaut und besteht aus einem 4x6m Element sowie zwei 4x4m Elementen, die durch Regenrinnen trocken miteinander verbunden werden." },
       { q: "Wie viele Personen finden in dem Zelt Platz?", a: "Die Kapazität liegt bei ca. 93 stehenden Personen oder ca. 79 Personen bei einer Bestuhlung." },
@@ -5956,7 +4792,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-4x4m": {
-    excelName: "Party- / Eventzelt 4x4m",
     seoTitle: "Party- / Eventzelt 4x4m – 16 m² Grundfläche",
     metaDescription: "Mieten Sie ein Party- / Eventzelt 4x4m mit 500 g/m² PVC-Plane und UV-Beständigkeit. Kapazität für bis zu 27 Personen. Inklusive Dachspanner.",
     h1: "Party- / Eventzelt 4x4m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5964,8 +4799,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Der Einsatz ist bei Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkten und Outdoor-Events möglich.",
     useCasePrivat: "Das Party- / Eventzelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 4x4m mieten in Krefeld, Party- / Eventzelt 4x4m leihen in Krefeld, Party- / Eventzelt 4x4m mieten NRW",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Wie hoch ist die Personenkapazität des 4x4m Zelts?", a: "Das Zelt bietet stehend Platz für ca. 27 Personen (0,6 m²/Person) oder bei Bestuhlung für ca. 23 Personen (0,71 m²/Person)." },
@@ -5974,7 +4807,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-4x6m": {
-    excelName: "Party- / Eventzelt 4x6m",
     seoTitle: "Party- / Eventzelt 4x6m mieten – 24 m² Grundfläche",
     metaDescription: "Mieten Sie ein Party- / Eventzelt 4x6m mit 500 g/m² PVC-Plane. Bietet Platz für bis zu 40 Personen. Inklusive Dachspanner gegen Wassersäcke.",
     h1: "Party- / Eventzelt 4x6m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -5982,8 +4814,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einsetzbar für Hochzeiten, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Ideal geeignet für Geburtstagsfeiern, Familienfeste, Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 4x6m mieten in Krefeld, Party- / Eventzelt 4x6m leihen in Krefeld, Party- / Eventzelt 4x6m mieten NRW",
-    is247: false,
     dailyPriceFrom: 45,
     faqs: [
       { q: "Wie viele Personen finden im Party- / Eventzelt 4x6m Platz?", a: "Die Kapazität liegt stehend bei ca. 40 Personen (0,6 m²/Person) und bei Bestuhlung bei ca. 34 Personen (0,71 m²/Person)." },
@@ -5992,7 +4822,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "partyzelt-4x8m": {
-    excelName: "Party- / Eventzelt 4x8m",
     seoTitle: "Party- / Eventzelt 4x8m mieten | 32 m² PVC-Plane weiß",
     metaDescription: "Party- / Eventzelt 4x8m mit 32 m² Grundfläche. UV-beständige 500 g/m² PVC-Plane, rasterfaserverstärkt. Kapazität für bis zu 53 Personen. Inklusive Dachspanner.",
     h1: "Party- / Eventzelt 4x8m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6000,8 +4829,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Zelt dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einatzmöglichkeiten umfassen Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie Märkte und Outdoor-Events.",
     useCasePrivat: "Das Zelt eignet sich für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Party- / Eventzelt 4x8m mieten in Krefeld, Party- / Eventzelt 4x8m leihen in Krefeld, Party- / Eventzelt 4x8m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie viele Personen finden in dem 4x8m Party- / Eventzelt Platz?", a: "Die Kapazität liegt bei ca. 53 stehenden Personen (0,6 m²/Person) oder ca. 45 Personen bei Bestuhlung (0,71 m²/Person)." },
       { q: "Welche Materialeigenschaften weist die Plane auf?", a: "Es handelt sich um eine UV-beständige, rasterfaserverstärkte PVC-Plane mit einem Gewicht von 500 g/m²." },
@@ -6009,7 +4836,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "pioneer-cdj2000-nxs": {
-    excelName: "Pioneer CDJ 2000 NXS",
     seoTitle: "Pioneer CDJ 2000 NXS Multiplayer | DJ-Equipment mieten",
     metaDescription: "Professioneller DJ-Multiplayer mit Beat-Sync, Wave-Zoom und Unterstützung für USB, SD, CD sowie Smartphones. Jetzt für Events in NRW mieten.",
     h1: "Pioneer CDJ 2000 NXS mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6017,8 +4843,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Gerät eignet sich für DJ-Sets bei Hochzeiten und Firmenfeiern sowie für Clubevents und Partys.",
     useCasePrivat: "Der Multiplayer dient der Musikbeschallung bei Privatfeiern.",
-    primaryKeywords: "Pioneer CDJ 2000 NXS mieten in Krefeld, Pioneer CDJ 2000 NXS leihen in Krefeld, Pioneer CDJ 2000 NXS mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Medien können mit dem CDJ 2000 NXS abgespielt werden?", a: "Es können Smartphones via USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVDs genutzt werden." },
       { q: "Welche Audioausgänge sind am Gerät vorhanden?", a: "Das Gerät verfügt über einen Stereo-Cinch-Ausgang sowie einen digitalen Koaxial-Ausgang." },
@@ -6026,7 +4850,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "pioneer-djm900-nxs2": {
-    excelName: "Pioneer DJM 900 NXS2",
     seoTitle: "Pioneer DJM 900 NXS2 | 4-Kanal DJ-Mixer mieten",
     metaDescription: "Der Pioneer DJM 900 NXS2 bietet als 4-Kanal-Mixer einen 64-bit Mixing Prozessor, 2 USB-Ports und unabhängige Send/Return Wege für professionelle DJ-Sets.",
     h1: "Pioneer DJM 900 NXS2 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6034,8 +4857,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Gerät ist für DJ-Sets bei Hochzeiten und Firmenfeiern sowie für Clubevents und Partys konzipiert.",
     useCasePrivat: "Dieses Mischpult eignet sich für die Musikbeschallung bei Privatfeiern.",
-    primaryKeywords: "Pioneer DJM 900 NXS2 mieten in Krefeld, Pioneer DJM 900 NXS2 leihen in Krefeld, Pioneer DJM 900 NXS2 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über wie viele Kanäle verfügt der Pioneer DJM 900 NXS2?", a: "Der Mixer ist mit 4 Audiokanälen und 2 Mikrofonkanälen ausgestattet." },
       { q: "Welche digitalen Anschlüsse stehen für die Verbindung mit Computern bereit?", a: "Das Gerät verfügt über 2 USB-B Anschlüsse und einen Link-Anschluss." },
@@ -6043,7 +4864,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-1300": {
-    excelName: "1300 kg Planenanhänger",
     seoTitle: "1300 kg Planenanhänger mieten - 850 kg Nutzlast",
     metaDescription: "Gebremster Planenanhänger mit 1300 kg zGG und 850 kg Nutzlast. Ideal für schwere Ladung bei mittlerem Volumen (300 x 150 x 190 cm).",
     h1: "1300 kg Planenanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6051,8 +4871,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherer Transport von gewichtsintensiven Materialien wie Sackware (Zement, Mörtel) oder schweren Werkzeug-Sets zur Baustelle.",
     useCaseEvent: "Witterungsgeschützter Transport von schwerer Veranstaltungstechnik, darunter Bühnenpodeste, Lautsprecheranlagen oder Stromverteiler.",
     useCasePrivat: "Durchführung von Wohnungsumzügen mit massivem Mobiliar oder Transport von schweren Gartenmaterialien wie Pflastersteinen in Säcken.",
-    primaryKeywords: "1300 kg Planenanhänger mieten in Krefeld, 1300 kg Planenanhänger leihen in Krefeld, 1300 kg Planenanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 35,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung bei diesem Modell?", a: "Dieser Anhänger hat ein zulässiges Gesamtgewicht von 1300 kg und bietet eine Nutzlast von ca. 850 kg." },
@@ -6061,7 +4879,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-3500": {
-    excelName: "3500 kg Planenanhänger",
     seoTitle: "3500 kg Planenanhänger mieten - Profi-Klasse NRW",
     metaDescription: "Gewerbe-Planenanhänger mit 2.826 kg Nutzlast und 3500 kg zGG. Ideal für schwere Baustoffe und voluminöse Güter. Jetzt technische Details einsehen.",
     h1: "3500 kg Planenanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6069,8 +4886,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von schweren Paletten mit Steinen, Estrich oder Putz sowie vorgefertigten Bauteilen zwischen Lager und Baustelle.",
     useCaseEvent: "Logistik für komplette Bühnen- und Tontechnik-Sets inklusive Case-Transport zu Festivals oder Großveranstaltungen.",
     useCasePrivat: "Durchführung großer Umzüge des kompletten Hausrats oder Transport massiver Materialien für private Bauprojekte unter Berücksichtigung der Führerscheinklasse.",
-    primaryKeywords: "3500 kg Planenanhänger mieten in Krefeld, 3500 kg Planenanhänger leihen in Krefeld, 3500 kg Planenanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Zuladung dieses Anhängers?", a: "Dieser Anhänger verfügt über eine Nutzlast von ca. 2.826 kg bei einem zulässigen Gesamtgewicht von 3500 kg." },
       { q: "Welche Innenmaße bietet die Ladefläche unter der Plane?", a: "Die Ladefläche misst 400 cm in der Länge, 200 cm in der Breite und bietet eine Innenhöhe von 210 cm." },
@@ -6078,7 +4893,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-l-750": {
-    excelName: "750 kg Planenanhänger L",
     seoTitle: "750 kg Planenanhänger L | 3,5 m³ Mietanhänger",
     metaDescription: "Großer Planenanhänger L mit 3,5 m³ Volumen und 530 kg Nutzlast. Ideal für voluminöses, leichtes Sperrgut bei Umzug oder Event.",
     h1: "750 kg Planenanhänger L mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6086,8 +4900,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von voluminösen, leichten Baumaterialien wie Dämmstoffplatten, Verschalungsmaterial oder Trockenbau-Elementen.",
     useCaseEvent: "Beförderung von Faltzelt-Sets, Stehtischen und Bestuhlungen in größerer Stückzahl für Veranstaltungen.",
     useCasePrivat: "Durchführung kleinerer Umzüge (1-Zimmer-Wohnung) oder Transport mehrerer Möbelstücke und voluminöser Gartenmaterialien.",
-    primaryKeywords: "750 kg Planenanhänger L mieten in Krefeld, 750 kg Planenanhänger L leihen in Krefeld, 750 kg Planenanhänger L mieten NRW",
-    is247: false,
     dailyPriceFrom: 24,
     faqs: [
       { q: "Wie hoch ist das maximale Ladevolumen dieses Anhängers?", a: "Dieser Anhänger in der Variante L bietet bei Innenmaßen von 200 x 108 x 160 cm ein Ladevolumen von circa 3,5 m³." },
@@ -6096,7 +4908,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-m-750": {
-    excelName: "750 kg Planenanhänger M",
     seoTitle: "750 kg Planenanhänger M | 200 x 108 cm Ladefläche",
     metaDescription: "Mittlerer Planenanhänger M mit ca. 2,5 m³ Ladevolumen. Ideal für moderate Ladung bis 550 kg Nutzlast. Wetterfester Transport für Handmaschinen und Möbel.",
     h1: "750 kg Planenanhänger M mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6104,8 +4915,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Sicherer Transport von Handmaschinen, Putzmaterial in Gebinden oder mittleren Werkzeugmengen zwischen Lager und Baustelle.",
     useCaseEvent: "Effiziente Beförderung von Cateringbedarf, Bestuhlungs-Komponenten oder Standmaterial mittlerer Größe für Veranstaltungen.",
     useCasePrivat: "Geeignet für Studentenumzüge, den Transport einzelner Möbelstücke oder die wettergeschützte Abholung von Geräten aus dem Fachmarkt.",
-    primaryKeywords: "750 kg Planenanhänger M mieten in Krefeld, 750 kg Planenanhänger M leihen in Krefeld, 750 kg Planenanhänger M mieten NRW",
-    is247: false,
     dailyPriceFrom: 19,
     faqs: [
       { q: "Welches Ladevolumen bietet der Planenanhänger M?", a: "Dieses Modell verfügt bei einer Ladefläche von 200 x 108 x 130 cm über ein Volumen von ca. 2,5 m³ für moderate Ladungsmengen." },
@@ -6114,7 +4923,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-s-750": {
-    excelName: "750 kg Planenanhänger S",
     seoTitle: "750 kg Planenanhänger S - Kompakter Mietanhänger",
     metaDescription: "Kleiner Planenanhänger mit ca. 1,5 m³ Ladevolumen für kompakte Transporte. 570 kg Nutzlast, ideal für Werkzeugkoffer und Einzelmöbel.",
     h1: "750 kg Planenanhänger S mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6122,8 +4930,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von hochwertigen Werkzeugkoffern, Elektrowerkzeugen sowie kleinen Mengen an Verbrauchsmaterial und Kleinteilen zur Baustelle.",
     useCaseEvent: "Sicherer Transport von Technikkoffern, kompaktem DJ-Equipment oder kleinerer Stand-Ausstattung für Messe- und Eventstandorte.",
     useCasePrivat: "Beförderung einzelner Pakete, kleinerer Möbelstücke, Heimwerkerbedarf oder Entsorgung von Sperrmüll am Wertstoffhof.",
-    primaryKeywords: "750 kg Planenanhänger S mieten in Krefeld, 750 kg Planenanhänger S leihen in Krefeld, 750 kg Planenanhänger S mieten NRW",
-    is247: false,
     dailyPriceFrom: 14,
     faqs: [
       { q: "Wie viel Ladevolumen bietet der Planenanhänger S?", a: "Dieser Anhänger bietet mit einer Ladefläche von 200 x 108 x 100 cm ein kompaktes Ladevolumen von circa 1,5 m³." },
@@ -6132,7 +4938,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-xl-750": {
-    excelName: "750 kg Planenanhänger XL",
     seoTitle: "750 kg Planenanhänger XL | 4,5 m³ Mietanhänger",
     metaDescription: "XL Planenanhänger mit 4,5 m³ Ladevolumen für leichtes Sperrgut. 500 kg Nutzlast, 160 cm Innenhöhe. Ideal für voluminöse Transporte in NRW.",
     h1: "750 kg Planenanhänger XL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6140,8 +4945,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von großformatigen Dämmplatten, Profilen oder leichtem Verpackungsmaterial, das zwar viel Platz einnimmt, aber die Nutzlast von 500 kg nicht überschreitet.",
     useCaseEvent: "Logistik von Messebau-Sets, Faltpavillons und leichten Thekenelementen, die geschützt im geschlossenen Aufbau transportiert werden müssen.",
     useCasePrivat: "Durchführung von Umzügen kleinerer Wohnungen mit voluminösen Möbelstücken wie Kleiderschränken, die eine Innenhöhe von 160 cm benötigen.",
-    primaryKeywords: "750 kg Planenanhänger XL mieten in Krefeld, 750 kg Planenanhänger XL leihen in Krefeld, 750 kg Planenanhänger XL mieten NRW",
-    is247: false,
     dailyPriceFrom: 26,
     faqs: [
       { q: "Wie viel Volumen bietet der XL Anhänger?", a: "Dieser Anhänger verfügt bei einer Innenhöhe von 160 cm über ein Ladevolumen von etwa 4,5 m³." },
@@ -6150,7 +4953,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-xxl-3500": {
-    excelName: "3500 kg Planenanhänger XXL",
     seoTitle: "3500 kg Planenanhänger XXL mieten | 600x250x250 cm",
     metaDescription: "Größter XXL-Planenanhänger mit 3500 kg zGG für Profi-Logistik. Maximales Volumen und ca. 2.750 kg Nutzlast für schwere Transporte.",
     h1: "3500 kg Planenanhänger XXL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6158,8 +4960,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Effiziente Logistik durch den Transport ganzer Paletten-Sets, großformatiger Bauteile oder vorgefertigter Wandelemente unter Wetterschutz.",
     useCaseEvent: "Umfassende Tournee-Logistik für den Transport kompletter Backline-Setups, großer Bühnenkomponenten und umfangreicher Veranstaltungstechnik.",
     useCasePrivat: "Realisierung eines kompletten Einfamilienhaus-Umzugs in einer einzigen Fahrt, sofern die entsprechende Fahrerlaubnis für 3500 kg Anhänger vorliegt.",
-    primaryKeywords: "3500 kg Planenanhänger XXL mieten in Krefeld, 3500 kg Planenanhänger XXL leihen in Krefeld, 3500 kg Planenanhänger XXL mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Nutzlast bietet dieser XXL-Anhänger?", a: "Der Anhänger verfügt bei einem Eigengewicht von ca. 750 kg über eine Nutzlast von ca. 2.750 kg." },
       { q: "Wie hoch ist das maximale Ladevolumen?", a: "Mit einer Ladefläche von 600 x 250 cm und einer Innenhöhe von 250 cm bietet dieses Modell das maximale Volumen in der Planenanhänger-Kategorie." },
@@ -6167,7 +4967,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "planen-xxl-750": {
-    excelName: "750 kg Planenanhänger XXL",
     seoTitle: "750 kg Planenanhänger XXL – 300 x 150 x 180 cm",
     metaDescription: "XXL Planenanhänger für leichte, sperrige Ladung. 750 kg zGG mit ca. 5,5 m³ Ladevolumen bei 470 kg Nutzlast. Ideal für Volumentransporte.",
     h1: "750 kg Planenanhänger XXL mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6175,8 +4974,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Transport von großvolumigen Leichtbauteilen, Dämmstoffen oder Verschnittmaterialien, die viel Raum bei geringem Gewicht beanspruchen.",
     useCaseEvent: "Logistik für komplette Pavillon-Aufbauten inklusive Seitenwänden und leichter Event-Möblierung bei maximaler Raumausnutzung.",
     useCasePrivat: "Durchführung von Wohnungsumzügen mit viel leichtem Hausrat sowie der Transport von mehreren Matratzen oder hohen Kleiderschränken.",
-    primaryKeywords: "750 kg Planenanhänger XXL mieten in Krefeld, 750 kg Planenanhänger XXL leihen in Krefeld, 750 kg Planenanhänger XXL mieten NRW",
-    is247: false,
     dailyPriceFrom: 29,
     faqs: [
       { q: "Wie hoch ist das maximale Ladevolumen dieses Anhängers?", a: "Dieser XXL-Anhänger bietet bei einer Ladefläche von 300 x 150 cm und einer Innenhöhe von 180 cm ein Gesamtvolumen von ca. 5,5 m³." },
@@ -6185,7 +4982,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "plattform-3500": {
-    excelName: "3500 kg Plattformanhänger",
     seoTitle: "Miete: 3500 kg Plattformanhänger (512 x 211 cm)",
     metaDescription: "3500 kg Plattformanhänger mit 512 x 211 cm Ladefläche. Nutzlast ca. 2.600 kg, Eigengewicht ca. 900 kg. Jetzt für Ihr Projekt in NRW anfragen.",
     h1: "3500 kg Plattformanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6193,8 +4989,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Plattformanhänger dient als sichere Arbeitsplattform bei Höhenarbeiten auf der Baustelle.",
     useCaseEvent: "",
     useCasePrivat: "Der Anhänger kann als stabile Arbeitsplattform für Renovierungsarbeiten am Haus oder im Garten genutzt werden.",
-    primaryKeywords: "3500 kg Plattformanhänger mieten in Krefeld, 3500 kg Plattformanhänger leihen in Krefeld, 3500 kg Plattformanhänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Plattformanhängers?", a: "Die maximale Nutzlast beträgt circa 2.600 kg." },
       { q: "Welche Abmessungen hat die Ladefläche?", a: "Die Ladefläche des Anhängers misst 512 x 211 cm." },
@@ -6202,7 +4996,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "popcornmaschine-xl-profi": {
-    excelName: "XL Profi Popcornmaschine",
     seoTitle: "XL Profi Popcornmaschine mieten in Krefeld | SLT Rental",
     metaDescription: "XL Profi Popcornmaschine mit Nostalgiewagen mieten in Krefeld. 850 W, 230 V, ca. 20 Portionen pro Durchgang – inkl. Maiseinsatz. Material zubuchbar.",
     h1: "XL Profi Popcornmaschine mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6210,8 +5003,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Kindergeburtstage, Stadt- und Schulfeste, Firmenfeiern, Hochzeiten, Kino- und Filmabende sowie Messestände – die nostalgische Popcornmaschine ist ein echter Publikumsmagnet und liefert frisches Popcorn direkt vor den Augen der Gäste.",
     useCasePrivat: "Gartenpartys, Geburtstage, Filmabende und Familienfeste – einfach in der Bedienung und sofort einsatzbereit.",
-    primaryKeywords: "Popcornmaschine mieten in Krefeld, Popcornmaschine leihen Krefeld, Popcornmaschine mit Wagen mieten NRW",
-    is247: false,
     dailyPriceFrom: 25,
     faqs: [
       { q: "Welche Stromversorgung benötigt die Popcornmaschine?", a: "Die Maschine läuft an einer normalen Haushaltssteckdose mit 230 V und hat eine Anschlussleistung von 850 W. Es ist kein Starkstrom erforderlich." },
@@ -6223,7 +5014,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "powercon-hybrid-linkkabel-3m": {
-    excelName: "PowerCon Hybrid Link Cable 3 m",
     seoTitle: "PowerCon Hybrid Link Cable 3 m | NRW Mietkatalog",
     metaDescription: "PowerCon & XLR Hybrid-Verbindungskabel mit 3 m Länge. Komponenten von Neutrik und Titanex für die Veranstaltungstechnik.",
     h1: "PowerCon Hybrid Link Cable 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6231,8 +5021,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Kabel dient der Verbindung von Bühnentechnik wie Beleuchtungselementen und Lautsprechern. Es ermöglicht die effiziente Verkettung von PowerCon-Geräten bei Konzerten und Shows.",
     useCasePrivat: "",
-    primaryKeywords: "PowerCon Hybrid Link Cable 3 m mieten in Krefeld, PowerCon Hybrid Link Cable 3 m leihen in Krefeld, PowerCon Hybrid Link Cable 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Anschlüsse besitzt das Hybridkabel?", a: "Das Kabel ist mit PowerCon- und XLR-Anschlüssen ausgestattet." },
       { q: "Welche Materialien wurden für das Kabel verwendet?", a: "Das Produkt nutzt Komponenten der Marken Neutrik und Titanex." },
@@ -6240,7 +5028,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "powercon-linkkabel-1-5m": {
-    excelName: "PowerCon Link Cable 1,5 m",
     seoTitle: "PowerCon Link Cable 1,5 m – Neutrik / Titanex",
     metaDescription: "PowerCon Link Cable 1,5 m mit Titanex H07RN-F3G2,5 Leitung. 16A Strombelastbarkeit, Gewicht ca. 0,4 kg. Ideal für die Verkettung von Event-Technik.",
     h1: "PowerCon Link Cable 1,5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6248,8 +5035,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Kabel dient der Verbindung von Bühnentechnik wie Beleuchtungselementen und Lautsprechern. Es ermöglicht zudem die Verkettung mehrerer PowerCon-Geräte bei Konzerten und Shows.",
     useCasePrivat: "",
-    primaryKeywords: "PowerCon Link Cable 1,5 m mieten in Krefeld, PowerCon Link Cable 1,5 m leihen in Krefeld, PowerCon Link Cable 1,5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Leitungstyp wird für das PowerCon Link Cable verwendet?", a: "Es wird eine Titanex H07RN-F3G2,5 Leitung verwendet." },
       { q: "Wie hoch ist die Strombelastbarkeit des Kabels?", a: "Das Kabel ist für eine Stromstärke von 16A ausgelegt." },
@@ -6257,7 +5042,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "powercon-linkkabel-5m": {
-    excelName: "PowerCon Link Cable 5 m",
     seoTitle: "PowerCon Link Cable 5 m | H07RN-F3G2,5",
     metaDescription: "PowerCon Link Cable mit 5 m Länge. Typ H07RN-F3G2,5 für 16A mit Neutrik und Titanex Komponenten. Ideal für die Verbindung von Bühnentechnik.",
     h1: "PowerCon Link Cable 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6265,8 +5049,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Kabel dient der Verbindung von Bühnentechnik wie Beleuchtung und Lautsprechern. Es ermöglicht zudem die Verkettung von PowerCon-Geräten bei Konzerten und Shows.",
     useCasePrivat: "",
-    primaryKeywords: "PowerCon Link Cable 5 m mieten in Krefeld, PowerCon Link Cable 5 m leihen in Krefeld, PowerCon Link Cable 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabeltyp wird für dieses Produkt verwendet?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F3G2,5." },
       { q: "Wie hoch ist das Gewicht des 5 m PowerCon Link Cables?", a: "Das Gewicht beträgt circa 1,2 kg." },
@@ -6274,7 +5056,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "powercon-true1-linkkabel-3m": {
-    excelName: "PowerCon TRUE1 Top Link Cable 3 m",
     seoTitle: "PowerCon TRUE1 Top Link Cable 3 m",
     metaDescription: "3 m PowerCon TRUE1 Top Link Cable mit H07RN-F3G2,5 Kabel für 16A Belastung. Steckverbinder von Neutrik, Leitung von Titanex.",
     h1: "PowerCon TRUE1 Top Link Cable 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6282,8 +5063,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses Link-Kabel dient der Verbindung von Bühnentechnik wie Beleuchtung und Lautsprechern sowie der Verkettung von PowerCon-Geräten bei Konzerten und Shows.",
     useCasePrivat: "",
-    primaryKeywords: "PowerCon TRUE1 Top Link Cable 3 m mieten in Krefeld, PowerCon TRUE1 Top Link Cable 3 m leihen in Krefeld, PowerCon TRUE1 Top Link Cable 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Spezifikationen hat das verwendete Kabel?", a: "Es handelt sich um ein Kabel des Typs H07RN-F3G2,5, das für eine Stromstärke von 16A ausgelegt ist." },
       { q: "Wie lang ist das PowerCon TRUE1 Top Link Cable?", a: "Die Gesamtlänge des Kabels beträgt 3 Meter." },
@@ -6291,7 +5070,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "powercon-true1-linkkabel-5m": {
-    excelName: "PowerCon TRUE1 Top Linkkabel 5 m",
     seoTitle: "PowerCon TRUE1 Top Linkkabel 5 m - Mieten",
     metaDescription: "PowerCon TRUE1 Top Linkkabel mit 5 m Länge. Neutrik / Titanex H07RN-F3G2,5 – 16A. Gewicht ca. 1,3 kg für Eventtechnik.",
     h1: "PowerCon TRUE1 Top Linkkabel 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6299,8 +5077,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Dieses 5 m Kabel dient der Verbindung von Bühnentechnik wie Beleuchtung und Lautsprechern. Es ermöglicht die Verkettung von PowerCon-Geräten bei Konzerten und Shows.",
     useCasePrivat: "",
-    primaryKeywords: "PowerCon TRUE1 Top Linkkabel 5 m mieten in Krefeld, PowerCon TRUE1 Top Linkkabel 5 m leihen in Krefeld, PowerCon TRUE1 Top Linkkabel 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Kabelspezifikation weist das PowerCon TRUE1 Top Linkkabel auf?", a: "Es handelt sich um ein H07RN-F3G2,5 Kabel von Titanex mit Neutrik-Komponenten." },
       { q: "Wie hoch ist die Strombelastbarkeit des Kabels?", a: "Das Kabel ist für eine Stromstärke von 16A ausgelegt." },
@@ -6308,7 +5084,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "presslufthammer-tex21pe": {
-    excelName: "Presslufthammer 21 kg",
     seoTitle: "Presslufthammer 21 kg mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Presslufthammer Atlas Copco TEX 21 PE mieten in Bonn & Krefeld. 21 kg, 56 J Schlagenergie, inkl. Spitz- & Flachmeißel. Tagesmiete, faire Preise.",
     h1: "Presslufthammer 21 kg mieten in Bonn & Krefeld – Atlas Copco TEX 21 PE bei SLT Rental",
@@ -6316,8 +5091,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Betonabbruch, Asphaltarbeiten, Fundamentrückbau, Straßensanierung, Mauerwerksabbruch",
     useCaseEvent: "",
     useCasePrivat: "Alte Terrasse abbrechen, Betonfundament entfernen, Pflasterflächen aufnehmen",
-    primaryKeywords: "Presslufthammer mieten in Bonn & Krefeld, Abbruchhammer mieten NRW, Atlas Copco TEX 21 PE leihen",
-    is247: false,
     faqs: [
       { q: "Welchen Kompressor brauche ich für den Presslufthammer?", a: "Der TEX 21 PE benötigt einen Baukompressor mit mindestens 25 l/s (ca. 1,5 m³/min) Luftleistung. Passende Baukompressoren können Sie direkt bei uns dazu mieten." },
       { q: "Was ist im Lieferumfang enthalten?", a: "Im Lieferumfang sind 1× Spitzmeißel und 1× Flachmeißel enthalten. Weitere Meißel können auf Anfrage dazu gemietet werden." },
@@ -6326,7 +5099,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "presslufthammer-tex21pe-aggregat": {
-    excelName: "Presslufthammer 21 kg",
     seoTitle: "Presslufthammer 21 kg Atlas Copco TEX 21 PE mieten",
     metaDescription: "Leistungsstarker Druckluft-Abbruchhammer TEX 21 PE von Atlas Copco mit 56 J Schlagenergie für Abbruch- und Betonarbeiten. Inklusive Meißel-Set.",
     h1: "Presslufthammer 21 kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6334,8 +5106,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Druckluftwerkzeug eignet sich für diverse Anwendungen mit pneumatischem Antrieb auf der Baustelle, insbesondere bei Abbruch-, Beton- und Asphaltarbeiten.",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Presslufthammer 21 kg mieten in Krefeld, Presslufthammer 21 kg leihen in Krefeld, Presslufthammer 21 kg mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Luftleistung wird für den Betrieb des Presslufthammers benötigt?", a: "Der Atlas Copco TEX 21 PE benötigt einen Baukompressor mit einer Luftleistung von mindestens 25 l/s (z. B. einen 2,5 m³ Baukompressor)." },
       { q: "Welches Zubehör ist im Lieferumfang enthalten?", a: "Zum Lieferumfang des 21 kg schweren Presslufthammers gehören jeweils ein Spitzmeißel und ein Flachmeißel." },
@@ -6343,7 +5113,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rasenwalze": {
-    excelName: "Rasenwalze",
     seoTitle: "Hand-Rasenwalze zum Einebnen und Verdichten",
     metaDescription: "Robuste Rasenwalze zum Andrücken von Rollrasen und Verdichten von Saatgut. Befüllbar mit Wasser oder Sand für die professionelle Rasenanlage.",
     h1: "Rasenwalze mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6351,8 +5120,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "Die Rasenwalze dient dem Andrücken von neu verlegten Rollrasen sowie der Verdichtung von Rasen-Saatflächen im privaten Garten.",
-    primaryKeywords: "Rasenwalze mieten in Krefeld, Rasenwalze leihen in Krefeld, Rasenwalze mieten NRW",
-    is247: false,
     faqs: [
       { q: "Womit kann die Rasenwalze befüllt werden?", a: "Die Hand-Rasenwalze kann wahlweise mit Wasser oder Sand befüllt werden, um das benötigte Gewicht für die Verdichtung zu erreichen." },
       { q: "Wann sollte die Rasenwalze eingesetzt werden?", a: "Der Einsatz erfolgt bei der Rasenanlage, insbesondere nach der Aussaat von Grassamen oder nach der Verlegung von Rollrasen." },
@@ -6360,7 +5127,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-3-3m": {
-    excelName: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m)",
     seoTitle: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m)",
     metaDescription: "Mieten Sie das Krause Fahrgerüst aus Aluminium. 3,3 m Arbeitshöhe, 2,00 x 1,20 m Arbeitsfläche und höhenverstellbare Rollen für unebene Untergründe.",
     h1: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6368,8 +5134,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m) mieten in Krefeld, Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m) leihen in Krefeld, Krause Rollgerüst – 3,3 m Arbeitshöhe (2,00 × 1,20 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitshöhe erreicht das Krause Rollgerüst?", a: "Das Gerüst ermöglicht eine maximale Arbeitshöhe von 3,3 m bei einer Standhöhe von 1,3 m." },
       { q: "Wie groß ist die Arbeitsfläche des Gerüsts?", a: "Die Arbeitsfläche beträgt 2,00 × 1,20 m, gefertigt aus Aluminium." },
@@ -6377,7 +5141,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-4-4m": {
-    excelName: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "TÜV-geprüftes Krause Fahrgerüst mit 4,4 m Arbeitshöhe und 1,5 m² Standfläche nach DIN EN 1004-1. Belastbarkeit 200 kg/m².",
     h1: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6385,8 +5148,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 4,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Belastbarkeit des Gerüsts?", a: "Das Fahrgerüst ist nach DIN EN 1004-1 (Gerüstgruppe 3) TÜV-geprüft und besitzt eine Belastbarkeit von 200 kg/m²." },
       { q: "Kann das Gerüst auf unebenen Flächen genutzt werden?", a: "Ja, die Fahrrollen mit einem Durchmesser von 150 mm verfügen über ein integriertes Spindelgewinde mit einem stufenlosen Verstellbereich von 220–335 mm." },
@@ -6394,7 +5155,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-5-4m": {
-    excelName: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "TÜV-geprüftes Krause Fahrgerüst für Arbeiten bis 6,4 m Höhe. Arbeitsfläche 2,00 x 0,75 m, Belastbarkeit 200 kg/m² nach DIN EN 1004-1. Höhenverstellbare Rollen.",
     h1: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6402,8 +5162,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 5,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeitshöhen erreicht das Rollgerüst?", a: "Das Gerüst erreicht eine Arbeitshöhe von 6,4 m bei einer Standhöhe von 4,4 m und einer Gesamthöhe von 5,5 m." },
       { q: "Wie hoch ist die maximale Belastbarkeit der Arbeitsfläche?", a: "Die Arbeitsfläche ist gemäß Gerüstgruppe 3 nach DIN EN 1004-1 mit 200 kg/m² belastbar." },
@@ -6411,7 +5169,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-6-4m": {
-    excelName: "Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "TÜV-geprüftes Krause Fahrgerüst für 6,4 m Arbeitshöhe. Belastbarkeit 200 kg/m², 1,5 m² Standfläche und höhenverstellbare Fahrrollen für unebenes Gelände.",
     h1: "Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6419,8 +5176,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 6,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche maximale Arbeitshöhe erreicht das Krause Rollgerüst?", a: "Das Gerüst erreicht eine Arbeitshöhe von 6,4 m bei einer Standhöhe von 4,4 m und einer Gerüsthöhe von 5,5 m." },
       { q: "Wie hoch ist die Belastbarkeit der Arbeitsplattform?", a: "Die Belastbarkeit liegt bei 200 kg/m² gemäß Gerüstgruppe 3 nach der Norm DIN EN 1004-1." },
@@ -6428,7 +5183,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-7-4m": {
-    excelName: "Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "Mieten Sie das KRAUSE Fahrgerüst mit 1,5 m² Standfläche. TÜV-geprüft nach DIN EN 1004-1, Belastbarkeit 200 kg/m² und höhenverstellbare Fahrrollen.",
     h1: "Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6436,8 +5190,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 7,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Belastbarkeit weist das Krause Rollgerüst auf?", a: "Das Gerüst entspricht der Gerüstgruppe 3 nach DIN EN 1004-1 und verfügt über eine Belastbarkeit von 200 kg/m²." },
       { q: "Wie wird die Sicherheit beim Aufbau gewährleistet?", a: "Durch die Befestigung des Geländerrahmens vor dem Einhängen der nächsthöheren Belagbühne sowie das selbstsichernde Verriegelungssystem ist eine Absturzsicherung gegeben." },
@@ -6445,7 +5197,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-8-4m": {
-    excelName: "Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "Mieten Sie das KRAUSE Fahrgerüst mit GuardMatic-System. 8,4 m Arbeitshöhe, über 1,5 m² Standfläche, TÜV-geprüft nach DIN EN 1004-1. 200 kg/m² Belastbarkeit.",
     h1: "Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6453,8 +5204,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 8,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Standfläche und Belastbarkeit des Gerüsts?", a: "Die Standfläche beträgt über 1,5 m² bei einer Arbeitsfläche von 2,00 x 0,75 m. Die Belastbarkeit liegt gemäß Gerüstgruppe 3 bei 200 kg/m²." },
       { q: "Ist das Gerüst für den Einsatz auf unebenem Gelände geeignet?", a: "Ja, das Gerüst verfügt über höhenverstellbare Fahrrollen mit einem Durchmesser von 150 mm, die über ein Spindelgewinde stufenlos im Bereich von 220 bis 335 mm eingestellt werden können." },
@@ -6462,7 +5211,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-9-4m": {
-    excelName: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m)",
     seoTitle: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m)",
     metaDescription: "TÜV-geprüftes Krause Fahrgerüst mit 9,4 m Arbeitshöhe, GuardMatic-System und 6-Punkt-Fixierung nach DIN EN 1004-1. Arbeitsfläche 2,00 × 0,75 m.",
     h1: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6470,8 +5218,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m) mieten in Krefeld, Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m) leihen in Krefeld, Krause Rollgerüst – 9,4 m Arbeitshöhe (2,00 × 0,75 m) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Belastbarkeit des Gerüstes?", a: "Das Fahrgerüst gehört zur Gerüstgruppe 3 und ist mit 200 kg/m² belastbar." },
       { q: "Wie werden Unebenheiten im Boden ausgeglichen?", a: "Das Gerüst verfügt über höhenverstellbare Fahrrollen mit 150 mm Durchmesser, die über ein integriertes Spindelgewinde einen stufenlosen Verstellbereich von 220–335 mm ermöglichen." },
@@ -6479,7 +5225,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-10-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe",
     metaDescription: "TÜV-geprüftes Krause Fahrgerüst aus Aluminium nach DIN EN 1004-1. 10,4 m Arbeitshöhe, 2,00 x 1,50 m Arbeitsfläche und selbstsichernde Verriegelung.",
     h1: "Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6487,8 +5232,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 10,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die verfügbare Arbeitsfläche auf dem Gerüst?", a: "Die Arbeitsfläche beträgt 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Ist das Rollgerüst für unebene Untergründe geeignet?", a: "Das Gerüst verfügt über höhenverstellbare Fahrrollen mit einem Durchmesser von 150 mm, die im Bereich von 220 bis 335 mm angepasst werden können." },
@@ -6496,7 +5239,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-11-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe",
     metaDescription: "KRAUSE Fahrgerüst aus Aluminium mit 2,00 × 1,50 m Arbeitsfläche und 11,4 m Arbeitshöhe. TÜV-geprüft nach DIN EN 1004-1 mit selbstsicherndem Verriegelungssystem.",
     h1: "Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6504,8 +5246,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 11,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Belastbarkeit weist das Krause Rollgerüst auf?", a: "Das Gerüst gehört der Gerüstgruppe 3 an und ist mit 200 kg/m² belastbar." },
       { q: "Wie groß ist die zur Verfügung stehende Arbeitsfläche?", a: "Das Fahrgerüst bietet eine Arbeitsfläche von 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
@@ -6513,7 +5253,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krause-rollgeruest-breitaufbau-12-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe",
     metaDescription: "KRAUSE Rollgerüst Breitaufbau aus Aluminium mieten: 2,00 × 1,50 m Arbeitsfläche, 12,4 m Arbeitshöhe, 200 kg/m² Belastbarkeit. TÜV-geprüft nach DIN EN 1004-1.",
     h1: "Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6521,8 +5260,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 12,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau 12,4 m leihen in Krefeld, KRAUSE Rollgerüst 12 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Arbeits-, Gerüst- und Standhöhe hat das Rollgerüst?", a: "Arbeitshöhe 12,4 m, Gerüsthöhe 11,5 m, Standhöhe 10,4 m." },
       { q: "Wie groß ist die Arbeitsfläche und Standfläche?", a: "Die Arbeitsfläche beträgt 2,00 × 1,50 m und damit eine Standfläche von über 3,00 m²." },
@@ -6531,7 +5268,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-4-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Rollgerüst mit 2,00 x 1,50 m Arbeitsfläche, 4,4 m Arbeitshöhe und Belastbarkeit von 200 kg/m². TÜV-geprüft nach DIN EN 1004-1.",
     h1: "Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6539,8 +5275,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 4,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße hat die Arbeitsfläche des Rollgerüsts?", a: "Die Arbeitsfläche beträgt 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Wie wird das Gerüst montiert?", a: "Der Auf- und Abbau erfolgt über das selbstsichernde KRAUSE-Verriegelungssystem." },
@@ -6548,7 +5282,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-5-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Rollgerüst mit 2,00 x 1,50 m Arbeitsfläche, 5,4 m Arbeitshöhe und TÜV-Prüfung nach DIN EN 1004-1. Belastbarkeit 200 kg/m².",
     h1: "Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6556,8 +5289,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 5,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die verfügbare Arbeitsfläche auf dem Gerüst?", a: "Die Arbeitsfläche beträgt 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Welche Normen erfüllt das Krause Rollgerüst?", a: "Das Gerüst ist TÜV-geprüft und entspricht der Norm DIN EN 1004-1 (Gerüstgruppe 3) mit einer Belastbarkeit von 200 kg/m²." },
@@ -6565,7 +5296,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-6-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Fahrgerüst mit 2,00 x 1,50 m Arbeitsfläche, 6,4 m Arbeitshöhe und TÜV-geprüft nach DIN EN 1004-1. Mit selbstsicherndem Verriegelungssystem.",
     h1: "Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6573,8 +5303,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 6,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die zur Verfügung stehende Arbeitsfläche?", a: "Das Gerüst verfügt über eine Arbeitsfläche von 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Wie wird das Gerüst montiert?", a: "Der Auf- und Abbau erfolgt über das selbstsichernde KRAUSE-Verriegelungssystem, welches eine werkzeuglose Fixierung ermöglicht." },
@@ -6582,7 +5310,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-7-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Fahrgerüst mit 2,00 × 1,50 m Arbeitsfläche und 7,4 m Arbeitshöhe. TÜV-geprüft nach DIN EN 1004-1 mit selbstsicherndem Verriegelungssystem.",
     h1: "Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6590,8 +5317,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 7,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die verfügbare Arbeitsfläche auf dem Gerüst?", a: "Das Gerüst verfügt über eine Arbeitsfläche von 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Welche Normen erfüllt das Krause Rollgerüst?", a: "Das Gerüst ist TÜV-geprüft nach DIN EN 1004-1 und entspricht der Gerüstgruppe 3 mit einer Belastbarkeit von 200 kg/m²." },
@@ -6599,7 +5324,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-8-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Fahrgerüst mit 2,00 x 1,50 m Arbeitsfläche und 8,4 m Arbeitshöhe. TÜV-geprüft nach DIN EN 1004-1 mit selbstsicherndem Verriegelungssystem.",
     h1: "Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6607,8 +5331,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 8,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die verfügbare Arbeitsfläche des Gerüsts?", a: "Die Arbeitsfläche beträgt 2,00 × 1,50 m, was einer Standfläche von insgesamt über 3,00 m² entspricht." },
       { q: "Wie wird das Krause Rollgerüst montiert?", a: "Der Auf- und Abbau erfolgt über ein selbstsicherndes KRAUSE-Verriegelungssystem, das eine werkzeuglose Fixierung ermöglicht." },
@@ -6616,7 +5338,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rollgeruest-krause-breitaufbau-9-4m": {
-    excelName: "Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe",
     seoTitle: "Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe",
     metaDescription: "Aluminium-Fahrgerüst mit 2,00 x 1,50 m Arbeitsfläche und 9,4 m Arbeitshöhe. TÜV-geprüft nach DIN EN 1004-1 mit selbstsicherndem Verriegelungssystem.",
     h1: "Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6624,8 +5345,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe mieten in Krefeld, Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe leihen in Krefeld, Krause Rollgerüst Breitaufbau – 9,4 m Arbeitshöhe mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist die zur Verfügung stehende Arbeitsfläche?", a: "Das Gerüst bietet eine Arbeitsfläche von 2,00 × 1,50 m, was einer Standfläche von über 3,00 m² entspricht." },
       { q: "Nach welcher Norm ist das Fahrgerüst geprüft?", a: "Das Gerüst ist TÜV-geprüft nach der Norm DIN EN 1004-1 und gehört zur Gerüstgruppe 3 mit einer Belastbarkeit von 200 kg/m²." },
@@ -6633,7 +5352,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rotationslaser-grl400h": {
-    excelName: "Rotationslaser",
     seoTitle: "Bosch GRL 400H Rotationslaser bis 400 m mieten",
     metaDescription: "Horizontale Nivellierung mit dem Bosch GRL 400H. Arbeitsbereich bis 400 m mit Empfänger, Selbstnivellierung ± 8 % und hohe Genauigkeit für den Außenbereich.",
     h1: "Rotationslaser mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6641,8 +5359,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Laser dient der Nivellierung und Ausrichtung auf der Baustelle sowie der Linien- und Punktübertragung im Innenausbau.",
     useCaseEvent: "",
     useCasePrivat: "Das Gerät unterstützt die Ausrichtung bei Renovierungs- und Umbauarbeiten.",
-    primaryKeywords: "Rotationslaser mieten in Krefeld, Rotationslaser leihen in Krefeld, Rotationslaser mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie groß ist der Arbeitsbereich des GRL 400H?", a: "Der Arbeitsbereich beträgt mit Empfänger bis zu 400 m im Durchmesser und ohne Empfänger bis zu 20 m im Durchmesser." },
       { q: "Wie genau arbeitet der Rotationslaser?", a: "Die Nivelliergenauigkeit liegt bei ± 2,4 mm auf eine Distanz von 30 m." },
@@ -6650,7 +5366,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rotweinglas-brunelli-9er": {
-    excelName: "Rotweinglas Brunelli, 9er Set",
     seoTitle: "Rotweinglas Brunelli Leonardo, 9er Set",
     metaDescription: "Stoßfestes Rotweinglas Brunelli von Leonardo im 9er Set. Höhe 23,8 cm, Durchmesser 11,5 cm. Spülmaschinenfestes Burgunderglas mit klarem Design.",
     h1: "Rotweinglas Brunelli, 9er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6658,8 +5373,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Modell ermöglicht eine stilvolle Bewirtung bei Hochzeiten und Galas sowie im Tagungs- und Konferenz-Service.",
     useCasePrivat: "Das Set eignet sich zur Bereitstellung von Weingläsern bei privaten Feiern.",
-    primaryKeywords: "Rotweinglas Brunelli, 9er Set mieten in Krefeld, Rotweinglas Brunelli, 9er Set leihen in Krefeld, Rotweinglas Brunelli, 9er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Abmessungen haben die Gläser?", a: "Ein Glas hat eine Höhe von 23,8 cm und einen Durchmesser von 11,5 cm." },
       { q: "Wie viele Gläser sind in einem Set enthalten?", a: "Das Brunelli-Set wird in einer Stückzahl von 9 Gläsern pro Set vermietet." },
@@ -6667,7 +5380,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rotweinglas-passionata-25er": {
-    excelName: "Rotweinglas Passionata, 20er Set",
     seoTitle: "Rotweinglas Passionata, 20er Set | Schott Zwiesel",
     metaDescription: "Schott Zwiesel Rotweingläser aus Tritan®-Kristallglas. Bruchsicher, kratzfest und spülmaschinenfest. Abmessungen ca. 94 × 94 × 238 mm. Im 20er Set erhältlich.",
     h1: "Rotweinglas Passionata, 20er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6675,8 +5387,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Stilvolle Bewirtung bei Hochzeiten und Galas sowie im Tagungs- und Konferenz-Service.",
     useCasePrivat: "Einsatz als Weingläser bei privaten Feiern.",
-    primaryKeywords: "Rotweinglas Passionata, 20er Set mieten in Krefeld, Rotweinglas Passionata, 20er Set leihen in Krefeld, Rotweinglas Passionata, 20er Set mieten NRW",
-    is247: false,
     dailyPriceFrom: 9,
     faqs: [
       { q: "Aus welchem Material bestehen die Passionata Rotweingläser?", a: "Die Gläser sind aus patentiertem Tritan®-Kristallglas gefertigt, welches als besonders bruchfest, kratzfest und spülmaschinenfest gilt." },
@@ -6686,7 +5396,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rueckwaertskipp-1500": {
-    excelName: "1300 kg Rückwärtskippanhänger & Laubgitter",
     seoTitle: "1300 kg Rückwärtskippanhänger mit Laubgitter mieten",
     metaDescription: "Rückwärtskippanhänger mit Laubgitter. Ladefläche 250 x 150 x 100 cm, ca. 890 kg Nutzlast und händische Kippfunktion per Handpumpe.",
     h1: "1300 kg Rückwärtskippanhänger & Laubgitter mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6694,8 +5403,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "1300 kg Rückwärtskippanhänger & Laubgitter mieten in Krefeld, 1300 kg Rückwärtskippanhänger & Laubgitter leihen in Krefeld, 1300 kg Rückwärtskippanhänger & Laubgitter mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird die Kippfunktion des Anhängers bedient?", a: "Der Anhänger verfügt über eine händische Kippfunktion, die mittels einer Handpumpe betätigt wird." },
       { q: "Wie hoch ist die maximale Nutzlast?", a: "Die zulässige Nutzlast beträgt circa 890 kg bei einem Eigengewicht von etwa 410 kg." },
@@ -6703,7 +5410,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "rueckwaertskipp-2700": {
-    excelName: "2700 kg Rückwärtskippanhänger",
     seoTitle: "2700 kg Rückwärtskippanhänger – 300 x 150 x 40 cm",
     metaDescription: "Mieten Sie einen Rückwärtskippanhänger mit 1.961 kg Nutzlast und 300 x 150 x 40 cm Ladefläche. Sachliche Informationen zu Maßen und Gewichten.",
     h1: "2700 kg Rückwärtskippanhänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6711,8 +5417,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "2700 kg Rückwärtskippanhänger mieten in Krefeld, 2700 kg Rückwärtskippanhänger leihen in Krefeld, 2700 kg Rückwärtskippanhänger mieten NRW",
-    is247: false,
     dailyPriceFrom: 39,
     faqs: [
       { q: "Wie hoch ist die maximale Nutzlast des Rückwärtskippers?", a: "Die maximale Nutzlast beträgt etwa 1.961 kg." },
@@ -6721,7 +5425,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-hvp30-50": {
-    excelName: "Rüttelplatte HVP 30/50 175kg reversierbar",
     seoTitle: "Rüttelplatte HVP 30/50 175kg reversierbar mieten",
     metaDescription: "Hydraulisch reversierbare Rüttelplatte HVP 30/50 mit 175 kg Eigengewicht und 30 kN Verdichtungsdruck. Effiziente Bodenverdichtung bis 30 cm Tiefe.",
     h1: "Rüttelplatte HVP 30/50 175kg reversierbar mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6729,8 +5432,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Eignet sich für die Bodenverdichtung in beengten Bereichen sowie für die Verdichtung von Pflasterbettungen mit Vor- und Rückwärtsfahrt.",
     useCaseEvent: "",
     useCasePrivat: "Ermöglicht eine komfortable Verdichtung bei verschiedenen Privatprojekten.",
-    primaryKeywords: "Rüttelplatte HVP 30/50 175kg reversierbar mieten in Krefeld, Rüttelplatte HVP 30/50 175kg reversierbar leihen in Krefeld, Rüttelplatte HVP 30/50 175kg reversierbar mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Verdichtungstiefe erreicht die Rüttelplatte?", a: "Die HVP 30/50 erreicht eine Verdichtungstiefe von circa 30 cm bei einem Verdichtungsdruck von 30 kN." },
       { q: "Wie wird die Fahrtrichtung der Maschine gesteuert?", a: "Die Umschaltung der Fahrtrichtung erfolgt stufenlos hydraulisch, was die Maschine besonders wendig macht." },
@@ -6738,7 +5439,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-hvp38-60": {
-    excelName: "Rüttelplatte HVP 38/60 247kg reversierbar",
     seoTitle: "Rüttelplatte HVP 38/60 247kg reversierbar",
     metaDescription: "Hydraulisch reversierbare Rüttelplatte HVP 38/60 mit 247 kg Gewicht und 38 kN Verdichtungsdruck. Effiziente Verdichtung bis ca. 30 cm Tiefe.",
     h1: "Rüttelplatte HVP 38/60 247kg reversierbar mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6746,8 +5446,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Einsatz zur Verdichtung von Pflasterbettungen mit Vor- und Rückwärtsfahrt sowie zur Bodenverdichtung in beengten Bereichen.",
     useCaseEvent: "",
     useCasePrivat: "Die Rüttelplatte ermöglicht eine komfortable Verdichtung bei Privatprojekten.",
-    primaryKeywords: "Rüttelplatte HVP 38/60 247kg reversierbar mieten in Krefeld, Rüttelplatte HVP 38/60 247kg reversierbar leihen in Krefeld, Rüttelplatte HVP 38/60 247kg reversierbar mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Verdichtungstiefe erreicht das Modell HVP 38/60?", a: "Die Verdichtungstiefe dieser Rüttelplatte beträgt circa 30 cm." },
       { q: "Wie wird die Fahrtrichtung der Maschine gewechselt?", a: "Die Umschaltung der Fahrtrichtung erfolgt stufenlos hydraulisch." },
@@ -6755,7 +5453,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-hvp50-60": {
-    excelName: "Rüttelplatte HVP 50/60",
     seoTitle: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld. 420 kg, 50 kN Verdichtungsdruck, reversierbar, Verdichtungstiefe 45 cm. Tagesmiete, faire Preise.",
     h1: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6763,8 +5460,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Schwere Erdarbeiten, Kanalbau, Straßenbau, Leitungsgräben verfüllen, Fundamentverdichtung",
     useCaseEvent: "Schwere Untergründe für temporäre Zufahrten und Stellflächen verdichten",
     useCasePrivat: "Einfahrt pflastern, Fundament für Garagen und Gartenhäuser, Hofbefestigung",
-    primaryKeywords: "Rüttelplatte HVP 50/60 mieten in Bonn & Krefeld, Rüttelplatte 420 kg mieten, schwere Rüttelplatte leihen NRW",
-    is247: false,
     faqs: [
       { q: "Für welche Bodenarten und Schichtdicken ist die HVP 50/60 geeignet?", a: "Mit 420 kg Gewicht und 50 kN Verdichtungsdruck eignet sich die HVP 50/60 für Sand, Kies, Schotter, Frostschutzschichten und bituminöse Schichten. Die maximale Verdichtungstiefe beträgt ca. 45 cm pro Lage – ideal für schwere Erdarbeiten und Kanalbau." },
       { q: "Wie breit ist die Verdichtungsplatte?", a: "Die Plattengröße beträgt ca. 90 × 60 cm (L × B). Bei größeren Flächen planen Sie eine Überdeckung von ca. 10–15 cm zwischen den Bahnen ein." },
@@ -6773,7 +5468,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-vp16-44": {
-    excelName: "Rüttelplatte VP 16/44 105kg",
     seoTitle: "Rüttelplatte VP 16/44 105kg mieten",
     metaDescription: "Vorwärtslaufende Rüttelplatte VP 16/44 mit 105 kg Gewicht, 20 kN Verdichtungsdruck und 4,8 kW Motorleistung. Inklusive Rollgestell für den Transport.",
     h1: "Rüttelplatte VP 16/44 105kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6781,8 +5475,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Gerät eignet sich für die Verdichtung von Pflasterbettungen sowie für die Bodenverdichtung im Wege- und Straßenbau.",
     useCaseEvent: "",
     useCasePrivat: "Die Rüttelplatte wird für Pflasterarbeiten im Privatgarten und zur Verdichtung von Schotter- und Kiesflächen eingesetzt.",
-    primaryKeywords: "Rüttelplatte VP 16/44 105kg mieten in Krefeld, Rüttelplatte VP 16/44 105kg leihen in Krefeld, Rüttelplatte VP 16/44 105kg mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie tief verdichtet die Rüttelplatte VP 16/44?", a: "Die Verdichtungstiefe dieses Modells liegt bei circa 20 cm." },
       { q: "Welcher Kraftstoff wird für den Betrieb benötigt?", a: "Das Gerät wird mit Benzin (95) betrieben und verfügt über einen Tankinhalt von 3,5 Litern." },
@@ -6790,7 +5482,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "ruettelplatte-vp25-50": {
-    excelName: "Rüttelplatte VP 25/50 130kg",
     seoTitle: "Rüttelplatte VP 25/50 130kg mieten",
     metaDescription: "Vorwärts-Rüttelplatte VP 25/50 mit 130 kg Gewicht und 25 kN Verdichtungsdruck. Inklusive Rollgestell, ca. 25 cm Verdichtungstiefe für Bau und Garten.",
     h1: "Rüttelplatte VP 25/50 130kg mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6798,8 +5489,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Modell eignet sich für die Verdichtung von Pflasterbettungen sowie für die Bodenverdichtung bei Wege- und Straßenbau.",
     useCaseEvent: "",
     useCasePrivat: "Die Rüttelplatte wird für Pflasterarbeiten im Privatgarten und die Verdichtung von Schotter- und Kiesflächen eingesetzt.",
-    primaryKeywords: "Rüttelplatte VP 25/50 130kg mieten in Krefeld, Rüttelplatte VP 25/50 130kg leihen in Krefeld, Rüttelplatte VP 25/50 130kg mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie tief kann die Rüttelplatte Bodenmaterial verdichten?", a: "Die VP 25/50 erreicht eine Verdichtungstiefe von circa 25 cm." },
       { q: "Welcher Kraftstoff wird für den Betrieb benötigt?", a: "Das Gerät wird mit Benzin (95) betrieben; der Tankinhalt beträgt 3,5 Liter." },
@@ -6808,7 +5497,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "scherenbuehne-12m": {
     dailyPriceFrom: 55,
-    excelName: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
     seoTitle: "11,8 m Scherenarbeitsbühne elektro ZS1012 mieten",
     metaDescription: "Elektrische Scherenbühne Zoomlion ZS1012AC mit 11,80 m Arbeitshöhe, 350 kg Traglast und Non-Marking-Reifen für den Inneneinsatz.",
     h1: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6816,8 +5504,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Modell eignet sich für Montagearbeiten in Hallen und Lagern sowie für die Wartung von Beleuchtungen und Decken. Zudem unterstützt sie Renovierungsarbeiten in Innenräumen.",
     useCaseEvent: "Die Bühne wird für den Aufbau von Hallenbeleuchtung und -dekoration bei Veranstaltungen eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012) mieten in Krefeld, 11,8 m Scherenarbeitsbühne elektro (Typ ZS1012) leihen in Krefeld, 11,8 m Scherenarbeitsbühne elektro (Typ ZS1012) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie viele Personen dürfen die Plattform gleichzeitig nutzen?", a: "Die Plattform ist für eine Belegung mit maximal 3 Personen zugelassen." },
       { q: "Wie hoch ist die maximale Traglast der Zoomlion ZS1012AC?", a: "Die maximale Traglast der Plattform beträgt 350 kg." },
@@ -6826,7 +5512,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "scherenbuehne-8m": {
     dailyPriceFrom: 40,
-    excelName: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
     seoTitle: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) mieten",
     metaDescription: "Elektrische Scherenarbeitsbühne Zoomlion ZS0607AC-Li mit 7,80 m Arbeitshöhe, 230 kg Traglast und Non-Marking-Reifen für den Innen- und Außeneinsatz.",
     h1: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6834,8 +5519,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Modell eignet sich für Montagearbeiten in Hallen und Lagern sowie für die Wartung von Beleuchtungsanlagen und Decken oder Renovierungsprojekte im Innenraum.",
     useCaseEvent: "Die Bühne unterstützt den Aufbau von Hallenbeleuchtung und Dekorationselementen bei Veranstaltungen.",
     useCasePrivat: "",
-    primaryKeywords: "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) mieten in Krefeld, 7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) leihen in Krefeld, 7,8 m Scherenarbeitsbühne elektro (Typ ZS0607) mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie hoch ist die maximale Traglast der Plattform?", a: "Die Plattform der ZS0607AC-Li bietet eine maximale Traglast von 230 kg und ist für bis zu zwei Personen zugelassen." },
       { q: "Ist die Bühne für niedrige Durchfahrten geeignet?", a: "Ja, bei eingeklapptem Geländer beträgt die Durchfahrtshöhe lediglich 1,79 m, was das Passieren niedriger Durchgänge ermöglicht." },
@@ -6843,7 +5526,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schmutzwasserpumpe-11m3h": {
-    excelName: "Schmutzwasserpumpe 11m³/h",
     seoTitle: "Schmutzwasserpumpe mieten in Bonn & Krefeld | SLT Rental",
     metaDescription: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld. Max. 11.000 l/h, 10 m Förderhöhe, inkl. 15m Storz C Schlauch. Tagesmiete, faire Preise.",
     h1: "Schmutzwasserpumpe 11m³/h mieten in Bonn & Krefeld – Jetzt bei SLT Rental",
@@ -6851,8 +5533,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Baugrube auspumpen, Kanalbau, Wasserhaltung auf Baustellen, Grundwasserabsenkung",
     useCaseEvent: "",
     useCasePrivat: "Keller auspumpen nach Hochwasser, Teich entleeren, Regenwassersammler leeren",
-    primaryKeywords: "Schmutzwasserpumpe mieten in Bonn & Krefeld, Tauchpumpe mieten, Baupumpe leihen NRW",
-    is247: false,
     faqs: [
       { q: "Wie viel Wasser kann die Pumpe pro Stunde fördern?", a: "Die Schmutzwasserpumpe fördert maximal 11.000 Liter pro Stunde bei einer maximalen Förderhöhe von 10 Metern." },
       { q: "Ist ein Schlauch im Lieferumfang enthalten?", a: "Ja – ein 15 m langer Storz C Schlauch ist im Lieferumfang enthalten. Weitere Schläuche können auf Anfrage dazu gemietet werden." },
@@ -6861,7 +5541,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schrankenzaun-inkl-fuss": {
-    excelName: "Schrankenzaun inkl. Fuß",
     seoTitle: "Schrankenzaun inkl. Fuß zur Miete",
     metaDescription: "Schrankenzaun in RA2 weiß/rot inklusive Fußplatte K1 TL. Optionale Warnleuchte verfügbar. Mobile Absperrung für NRW.",
     h1: "Schrankenzaun inkl. Fuß mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6869,8 +5548,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Schrankenzaun dient als mobile Absperrung im öffentlichen Raum.",
     useCaseEvent: "Der Schrankenzaun fungiert als klar erkennbare Absperrung bei Events.",
     useCasePrivat: "",
-    primaryKeywords: "Schrankenzaun inkl. Fuß mieten in Krefeld, Schrankenzaun inkl. Fuß leihen in Krefeld, Schrankenzaun inkl. Fuß mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Farbkennzeichnung hat der Schrankenzaun?", a: "Der Schrankenzaun ist in der Ausführung RA2 weiß/rot gestaltet." },
       { q: "Gehört eine Bodenbefestigung zum Lieferumfang?", a: "Ja, eine Fußplatte K1 TL ist im Lieferumfang enthalten." },
@@ -6878,7 +5555,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schrankenzaun-ra2": {
-    excelName: "Schrankenzaun RA2 weiß/rot",
     seoTitle: "Schrankenzaun RA2 weiß/rot | Mietangebot NRW",
     metaDescription: "Mieten Sie den Schrankenzaun mit RA2-Folie und Lampenadapter. Gewicht ca. 9 kg, Ausführung in weiß/rot für mobile Absperrungen.",
     h1: "Schrankenzaun RA2 weiß/rot mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6886,8 +5562,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieser Schrankenzaun dient als mobile Absperrung im öffentlichen Raum.",
     useCaseEvent: "Das Element gewährleistet eine klar erkennbare Absperrung bei Events.",
     useCasePrivat: "",
-    primaryKeywords: "Schrankenzaun RA2 weiß/rot mieten in Krefeld, Schrankenzaun RA2 weiß/rot leihen in Krefeld, Schrankenzaun RA2 weiß/rot mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über welche Art von Reflexfolie verfügt der Schrankenzaun?", a: "Der Schrankenzaun ist mit einer RA2-Folie in der Farbkombination weiß/rot ausgestattet." },
       { q: "Wie viel wiegt ein einzelnes Schrankenzaun-Element?", a: "Das Gewicht pro Element beträgt circa 9 kg." },
@@ -6895,7 +5569,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schuessel-deluxe-18-10er": {
-    excelName: "Schüssel Deluxe 18, 10er Set",
     seoTitle: "Schüssel Deluxe 18, 10er Set - Sänger Serie Darwin",
     metaDescription: "Schüssel-Set (10 Stück) der Serie Darwin von Sänger. 18 cm Durchmesser, 700 ml Füllmenge. Spülmaschinenfestes Porzellan im Vintage-Design.",
     h1: "Schüssel Deluxe 18, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6903,8 +5576,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set eignet sich für den Buffet-Service bei Veranstaltungen und bietet mit 700 ml ausreichend Volumen für Suppen oder Beilagen.",
     useCasePrivat: "Die Schüsseln dienen als Salat- und Beilagen-Schüsseln bei Privatfeiern und lassen sich in verschiedene Tischdekorationen integrieren.",
-    primaryKeywords: "Schüssel Deluxe 18, 10er Set mieten in Krefeld, Schüssel Deluxe 18, 10er Set leihen in Krefeld, Schüssel Deluxe 18, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Füllmenge und Maße haben die Schüsseln?", a: "Jede Schüssel hat einen Durchmesser von 18 cm und verfügt über eine Füllmenge von circa 700 ml." },
       { q: "Ist das Geschirr spülmaschinenfest?", a: "Ja, die Schüsseln der Serie Darwin sind spülmaschinenfest." },
@@ -6912,7 +5583,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schuessel-simply-15-10er": {
-    excelName: "Schüssel SIMPLY 15, 10er Set",
     seoTitle: "Schüssel SIMPLY 15, 10er Set aus weißem Porzellan",
     metaDescription: "Weiße Porzellanschüsseln (15 cm) im 10er Set für Desserts und Beilagen. Ideal für Events und Privatfeiern. Rückgabe erfolgt im gereinigten Zustand.",
     h1: "Schüssel SIMPLY 15, 10er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6920,8 +5590,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Set eignet sich für den Einsatz im Buffet-Service bei Veranstaltungen.",
     useCasePrivat: "Die SIMPLY 15 dient als Schüssel für Salate und Beilagen bei privaten Feiern.",
-    primaryKeywords: "Schüssel SIMPLY 15, 10er Set mieten in Krefeld, Schüssel SIMPLY 15, 10er Set leihen in Krefeld, Schüssel SIMPLY 15, 10er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Maße haben die Schüsseln?", a: "Jede Schüssel aus dem Set weist einen Durchmesser von 15 cm auf." },
       { q: "Aus welchem Material besteht das Geschirr?", a: "Die Schüsseln der Serie SIMPLY sind aus weißem Porzellan gefertigt." },
@@ -6929,7 +5597,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schuko-kabeltrommel-50m": {
-    excelName: "Schuko-Kabeltrommel 50m",
     seoTitle: "Schuko-Kabeltrommel 50m | H07RN-F3G2,5",
     metaDescription: "50 m Schuko-Kabeltrommel mit H07RN-F3G2,5 Kabel für 16A. Gewicht ca. 5,2 kg. Ausbaustufe mit Mennekes und Titanex Komponenten.",
     h1: "Schuko-Kabeltrommel 50m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6937,8 +5604,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Mobile Stromversorgung im Baustellenbereich.",
     useCaseEvent: "Flexible Verkabelung bei kleineren Events.",
     useCasePrivat: "Verlängerungs-Lösung für Garten und Hof.",
-    primaryKeywords: "Schuko-Kabeltrommel 50m mieten in Krefeld, Schuko-Kabeltrommel 50m leihen in Krefeld, Schuko-Kabeltrommel 50m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ ist auf der Trommel verbaut?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F3G2,5 für 16A." },
       { q: "Wie lang ist das Verlängerungskabel?", a: "Die Kabellänge beträgt 50 Meter." },
@@ -6946,7 +5611,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schukokabel-10m": {
-    excelName: "Schukokabel 10 m",
     seoTitle: "Schukokabel 10 m | H07RN-F3G2,5 Verlängerung",
     metaDescription: "Schukokabel 10 m mit H07RN-F3G2,5 Leitung. 16A Verlängerungskabel mit Mennekes und Titanex Komponenten. Gewicht ca. 2,9 kg. Jetzt im Mietkatalog NRW.",
     h1: "Schukokabel 10 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6954,8 +5618,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient zur Verlängerung von Standard-Stromabnahmen auf der Baustelle.",
     useCaseEvent: "Es wird für die Versorgung kleinerer Verbraucher bei Veranstaltungen eingesetzt.",
     useCasePrivat: "Das Produkt ermöglicht die Stromverlängerung bei Garten- und Heimwerker-Arbeiten.",
-    primaryKeywords: "Schukokabel 10 m mieten in Krefeld, Schukokabel 10 m leihen in Krefeld, Schukokabel 10 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabeltyp wird für die 10 m Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F3G2,5." },
       { q: "Wie hoch ist das Eigengewicht des Kabels?", a: "Das Gewicht beträgt circa 2,9 kg." },
@@ -6963,7 +5625,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schukokabel-20m": {
-    excelName: "Schukokabel 20 m",
     seoTitle: "Schukokabel 20 m – H07RN-F3G2,5 zur Miete",
     metaDescription: "Verlängerungskabel 20 m mit Mennekes/Titanex Komponenten. Typ H07RN-F3G2,5, 16A, Gewicht ca. 5,2 kg. Jetzt für Baustelle, Garten oder Event mieten.",
     h1: "Schukokabel 20 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6971,8 +5632,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Verlängerungskabel dient der Verlängerung von Standard-Stromabnahmen auf der Baustelle.",
     useCaseEvent: "In der Veranstaltungs- und Gastronomietechnik wird es zur Versorgung kleinerer Verbraucher eingesetzt.",
     useCasePrivat: "Das Kabel findet Anwendung bei der Stromverlängerung im Rahmen von Garten- und Heimwerker-Arbeiten.",
-    primaryKeywords: "Schukokabel 20 m mieten in Krefeld, Schukokabel 20 m leihen in Krefeld, Schukokabel 20 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird für diese Schukoverlängerung verwendet?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F3G2,5." },
       { q: "Wie hoch ist das Eigengewicht des 20 m Kabels?", a: "Das Gewicht beträgt circa 5,2 kg." },
@@ -6980,7 +5639,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schukokabel-3m": {
-    excelName: "Schukokabel 3 m",
     seoTitle: "Schukokabel 3 m – Verlängerungskabel H07RN-F3G2,5",
     metaDescription: "Schukokabel 3 m Verlängerung mit Stecker und Kupplung. Kabeltyp H07RN-F3G2,5 für 16A. Komponenten von Mennekes und Titanex. Jetzt für Ihr Projekt mieten.",
     h1: "Schukokabel 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -6988,8 +5646,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Dieses Kabel dient der Verlängerung von Standard-Stromabnahmen auf der Baustelle.",
     useCaseEvent: "Das Kabel wird zur Versorgung kleinerer Verbraucher bei Veranstaltungen eingesetzt.",
     useCasePrivat: "Es eignet sich als Stromverlängerung bei Garten- und Heimwerker-Arbeiten im privaten Bereich.",
-    primaryKeywords: "Schukokabel 3 m mieten in Krefeld, Schukokabel 3 m leihen in Krefeld, Schukokabel 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabel-Typ wird bei dieser Verlängerung verwendet?", a: "Es handelt sich um ein Kabel des Typs H07RN-F3G2,5 – 16A." },
       { q: "Von welchen Marken stammen die Komponenten?", a: "Das Schukokabel wird mit Komponenten der Marken Mennekes und Titanex gefertigt." },
@@ -6997,7 +5653,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "schukokabel-5m": {
-    excelName: "Schukokabel 5 m",
     seoTitle: "Schukokabel 5 m - Verlängerungskabel H07RN-F3G2,5",
     metaDescription: "Schukokabel 5 m mit Mennekes/Titanex Komponenten. Typ H07RN-F3G2,5 – 16A, Gewicht ca. 1,7 kg. Ideal für Baustellen, Gartenarbeiten und Veranstaltungen.",
     h1: "Schukokabel 5 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7005,8 +5660,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Verlängerung von Standard-Stromabnahmen auf der Baustelle.",
     useCaseEvent: "Versorgung kleinerer Verbraucher bei Veranstaltungen.",
     useCasePrivat: "Stromverlängerung bei Garten- und Heimwerker-Arbeiten.",
-    primaryKeywords: "Schukokabel 5 m mieten in Krefeld, Schukokabel 5 m leihen in Krefeld, Schukokabel 5 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welcher Kabeltyp wird für dieses Verlängerungskabel verwendet?", a: "Es handelt sich um ein Kabel vom Typ H07RN-F3G2,5 – 16A." },
       { q: "Wie schwer ist das 5 m Schukokabel?", a: "Das Gewicht des Kabels beträgt ca. 1,7 kg." },
@@ -7014,7 +5667,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "sds-plus-bohrer-meissel-set": {
-    excelName: "SDS-Plus Bohrer-/Meißel-Set",
     seoTitle: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld | SLT Rental",
     metaDescription: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld. 17-teiliges Set bestehend aus 12 Hammerbohreren und 5 Meißeln  Bohrer (ØxLänge) 5, 6, 8, 1. Tagesmiete, fair",
     h1: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7022,8 +5674,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Renovierung, Abbruch, Bohren, Sägen, Stemmen auf Baustellen",
     useCaseEvent: "Bühnen-/Messebau, Montagearbeiten, Schnittarbeiten",
     useCasePrivat: "Heimwerken, Badezimmerumbau, Fliesenarbeiten, Dachboden ausbauen",
-    primaryKeywords: "SDS-Plus Bohrer-/Meißel-Set mieten in Krefeld, SDS-Plus Bohrer-/Meißel-Set leihen in Krefeld, SDS-Plus Bohrer-/Meißel-Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welches Zubehör / welche Aufsätze sind im Mietpreis enthalten?", a: "Im Lieferumfang ist das Grundgerät enthalten. Zusätzliche Einsätze, Bohrer und Meißel sind auf Anfrage gegen Aufpreis erhältlich. Bitte fragen Sie uns bei der Buchung nach dem genauen Umfang." },
       { q: "Für welche Materialien ist das Gerät geeignet?", a: "Das Gerät ist für Beton, Mauerwerk und Naturstein geeignet. Bei speziellen Anforderungen beraten wir Sie gerne." },
@@ -7032,7 +5682,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "sektglas-passionata-36er": {
-    excelName: "Sektglas Passionata, 36er Set",
     seoTitle: "Sektglas Passionata 36er Set | Schott Zwiesel 325 ml",
     metaDescription: "Schott Zwiesel Passionata Sektgläser aus bruchfestem Tritan®-Kristallglas. 325 ml Fassungsvermögen, spülmaschinenfest. 36 Stück im Set mieten.",
     h1: "Sektglas Passionata, 36er Set mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7040,8 +5689,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Zur stilvollen Bewirtung bei Hochzeiten und Galas sowie für den Tagungs- und Konferenz-Service.",
     useCasePrivat: "Einsatz als Sektgläser bei privaten Feierlichkeiten im heimischen Garten oder Wohnbereich.",
-    primaryKeywords: "Sektglas Passionata, 36er Set mieten in Krefeld, Sektglas Passionata, 36er Set leihen in Krefeld, Sektglas Passionata, 36er Set mieten NRW",
-    is247: false,
     faqs: [
       { q: "Woraus bestehen die Sektgläser der Serie Passionata?", a: "Die Gläser sind aus bleifreiem Tritan®-Kristallglas gefertigt, das als besonders bruchsicher und kratzfest gilt." },
       { q: "Wie groß ist das Fassungsvermögen eines Sektglases?", a: "Ein Glas der Serie Passionata verfügt über ein Fassungsvermögen von 325 ml." },
@@ -7049,7 +5696,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "showtec-sunstrip-active-mkii": {
-    excelName: "Showtec Sunstrip Active MKII",
     seoTitle: "Showtec Sunstrip Active MKII Stage-Blinder",
     metaDescription: "Professionelle Stage-Blinder-Leiste mit 10x 50W GU10 Leuchtmitteln, DMX-Steuerung und Powercon-Anschluss für Bühnen- und Ambientebeleuchtung.",
     h1: "Showtec Sunstrip Active MKII mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7057,8 +5703,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Die Leiste dient zur Effektbeleuchtung bei Live-Konzerten und Shows, wobei sie sowohl als Bühnenblinder als auch zur Ambientebeleuchtung eingesetzt wird.",
     useCasePrivat: "",
-    primaryKeywords: "Showtec Sunstrip Active MKII mieten in Krefeld, Showtec Sunstrip Active MKII leihen in Krefeld, Showtec Sunstrip Active MKII mieten NRW",
-    is247: false,
     faqs: [
       { q: "Über wie viele DMX-Kanäle verfügt das Gerät?", a: "Die DMX-Steuerung ist wählbar und kann über 1, 2, 5 oder 10 Kanäle erfolgen." },
       { q: "Welche Leuchtmittel werden verwendet?", a: "Das Gerät ist mit 10 Showtec 240V / 50W GU10 Leuchtmitteln bestückt, die im Lieferumfang enthalten sind." },
@@ -7066,7 +5710,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "shure-qlxd1-taschensender": {
-    excelName: "Shure QLXD1 Taschensender",
     seoTitle: "Shure QLXD1 Taschensender | Mikrofon-Zubehör mieten",
     metaDescription: "Shure QLXD1 Taschensender für Headsets im Frequenzbereich 606-670MHz für Tagungen und Live-Auftritte mieten.",
     h1: "Shure QLXD1 Taschensender mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7074,8 +5717,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Shure QLXD1 Taschensender dient der Sprachverstärkung bei Tagungen und Reden. Er wird zudem für die Gesangs- und Instrumentenmikrofonierung bei Live-Auftritten eingesetzt.",
     useCasePrivat: "",
-    primaryKeywords: "Shure QLXD1 Taschensender mieten in Krefeld, Shure QLXD1 Taschensender leihen in Krefeld, Shure QLXD1 Taschensender mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wofür wird der Shure QLXD1 Taschensender verwendet?", a: "Der Taschensender wird für den Betrieb von Headsets sowie für die Mikrofonierung von Gesang und Instrumenten genutzt." },
       { q: "In welchem Frequenzbereich arbeitet das Gerät?", a: "Der Taschensender arbeitet im Frequenzbereich von 606 bis 670 MHz." },
@@ -7083,7 +5724,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "shure-qlxd2-beta58-handsender": {
-    excelName: "Shure QLXD2/Beta58 Handsender",
     seoTitle: "Shure QLXD2/Beta58 Handsender | Handfunkmikrofon",
     metaDescription: "Handfunkmikrofon Shure QLXD2/Beta58 mit einem Frequenzbereich von 606-670MHz für Tagungen, Reden und Live-Auftritte.",
     h1: "Shure QLXD2/Beta58 Handsender mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7091,8 +5731,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Das Gerät eignet sich zur Sprachverstärkung bei Tagungen und Reden sowie zur Gesangs- und Instrumentenmikrofonierung bei Live-Auftritten.",
     useCasePrivat: "",
-    primaryKeywords: "Shure QLXD2/Beta58 Handsender mieten in Krefeld, Shure QLXD2/Beta58 Handsender leihen in Krefeld, Shure QLXD2/Beta58 Handsender mieten NRW",
-    is247: false,
     faqs: [
       { q: "In welchem Frequenzbereich arbeitet der Shure QLXD2/Beta58 Handsender?", a: "Der Handsender arbeitet im Frequenzbereich von 606 bis 670 MHz." },
       { q: "Um welchen Mikrofontyp handelt es sich bei diesem Produkt?", a: "Es handelt sich um ein drahtloses Handfunkmikrofon." },
@@ -7100,7 +5738,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "shure-qlxd4e-empfaenger": {
-    excelName: "Shure QLXD4E Empfänger",
     seoTitle: "Shure QLXD4E Empfänger – Digitaler Funkempfänger",
     metaDescription: "Mieten Sie den Shure QLXD4E Empfänger für den Frequenzbereich 606-670MHz. Digitaler Funkempfänger für professionelle Audioanwendungen.",
     h1: "Shure QLXD4E Empfänger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7108,8 +5745,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Der Shure QLXD4E eignet sich für die Sprachverstärkung bei Tagungen und Reden. Zudem kann das Gerät für die Gesangs- und Instrumentenmikrofonierung bei Live-Auftritten eingesetzt werden.",
     useCasePrivat: "",
-    primaryKeywords: "Shure QLXD4E Empfänger mieten in Krefeld, Shure QLXD4E Empfänger leihen in Krefeld, Shure QLXD4E Empfänger mieten NRW",
-    is247: false,
     faqs: [
       { q: "In welchem Frequenzbereich arbeitet der Shure QLXD4E?", a: "Der Empfänger ist für den Frequenzbereich von 606 bis 670 MHz ausgelegt." },
       { q: "Um welche Art von Empfänger handelt es sich?", a: "Es handelt sich bei diesem Gerät um einen digitalen Funkempfänger." },
@@ -7117,7 +5752,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "slt-led-fluter-rgbwauv": {
-    excelName: "SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65",
     seoTitle: "SLT LED Fluter RGBWAUV – 44x15W IP65 Outdoor",
     metaDescription: "Professioneller LED-Flutlicht-Scheinwerfer mit 44x15W LEDs, RGBWA+UV Farbmischung und Schutzklasse IP65 für Eventbeleuchtung und Außenbereiche.",
     h1: "SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7125,8 +5759,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Eignet sich für die großflächige Baustellenbeleuchtung unter anspruchsvollen Bedingungen.",
     useCaseEvent: "Wird zur Beleuchtung von Veranstaltungsflächen sowie für Fassadenanstrahlungen eingesetzt.",
     useCasePrivat: "Dient der Beleuchtung größerer Außenflächen im privaten Bereich.",
-    primaryKeywords: "SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65 mieten in Krefeld, SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65 leihen in Krefeld, SLT LED Fluter RGBWAUV – LED Flutlicht-Scheinwerfer (44×15W) IP65 mieten NRW",
-    is247: false,
     faqs: [
       { q: "Welche Farben kann der LED-Fluter darstellen?", a: "Der Scheinwerfer nutzt 44 LEDs mit je 15 Watt in den Farben Rot, Grün, Blau, Weiß, Amber und UV (RGBWA+UV)." },
       { q: "Ist der Scheinwerfer für den Außeneinsatz geeignet?", a: "Ja, das Gerät entspricht der Schutzklasse IP65 und ist somit wetterfest und gegen Strahlwasser geschützt." },
@@ -7134,7 +5766,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "sonnenschirm": {
-    excelName: "Sonnenschirm Premium Ø 3 m",
     seoTitle: "Sonnenschirm Premium Ø 3 m mieten",
     metaDescription: "Marktschirm Premium Ø 3 m mit FSC®-Hartholzstange, UV-beständiger Bespannung und Neigungsfunktion für Events und Gartenpartys.",
     h1: "Sonnenschirm Premium Ø 3 m mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7142,8 +5773,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Der Sonnenschirm dient als Witterungsschutz für temporäre Baustelleneinrichtungen.",
     useCaseEvent: "Einsetzbar bei Hochzeiten, Großveranstaltungen, Firmenfeiern, Tagungen sowie auf Märkten und Outdoor-Events.",
     useCasePrivat: "Geeignet für Geburtstagsfeiern, Familienfeste sowie Gartenpartys und Sommerfeste.",
-    primaryKeywords: "Sonnenschirm Premium Ø 3 m mieten in Krefeld, Sonnenschirm Premium Ø 3 m leihen in Krefeld, Sonnenschirm Premium Ø 3 m mieten NRW",
-    is247: false,
     faqs: [
       { q: "Wie wird der Sonnenschirm Premium geöffnet?", a: "Der Schirm wird über ein praktisches Zugschnur-System geöffnet und geschlossen." },
       { q: "Verfügt der Schirm über einen Schutz vor Winddruck?", a: "Ja, eine integrierte Belüftungsöffnung an der Oberseite reduziert den Winddruck auf die Konstruktion." },
@@ -7151,7 +5780,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "sortiergreifer-ssg390": {
-    excelName: "MS03/MS08 Sortiergreifer SSG 390",
     seoTitle: "MS03/MS08 Sortiergreifer SSG 390 mieten | SLT Rental",
     metaDescription: "Sortiergreifer SSG 390 mieten ✓ 24 kN Schließkraft ✓ 360°-Endlosrotation ✓ Für 5–8 t Bagger ✓ MS03/MS08 Aufnahme ✓ Tiefpreisgarantie ✓ Sofort verfügbar",
     h1: "MS03/MS08 Sortiergreifer SSG 390 mieten – Jetzt verfügbar bei SLT Rental",
@@ -7159,8 +5787,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Materialsortiereung, Abbrucharbeiten, Recycling, Kanalbau",
     useCaseEvent: "",
     useCasePrivat: "",
-    primaryKeywords: "Sortiergreifer mieten, SSG 390 mieten, Sortiergreifer 5-8t mieten, Anbaugerät Bagger mieten",
-    is247: false,
     faqs: [
       { q: "Für welche Baggerklasse ist der SSG 390 geeignet?", a: "Der Sortiergreifer SSG 390 ist für Bagger der 5–8 t Klasse ausgelegt und passt auf MS03- sowie MS08-Schnellwechsler." },
       { q: "Welche Schließkraft hat der SSG 390?", a: "Der SSG 390 erreicht eine maximale Schließkraft von 24 kN bei einer Öffnungsweite von 1.280 mm und einer Arbeitsbreite von 550 mm." },
@@ -7170,7 +5796,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "soundboks-batteryboks": {
-    excelName: "Soundboks Batteryboks",
     seoTitle: "Soundboks Batteryboks – Ersatz-Akku für Gen.3 & Gen.4",
     metaDescription: "Ersatz-Akku für Soundboks Gen.3 und Gen.4. Bis zu 40 Stunden Laufzeit bei 50 % Lautstärke und 3,5 Stunden Ladezeit. Jetzt für Ihr Projekt mieten.",
     h1: "Soundboks Batteryboks mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
@@ -7178,8 +5803,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Ergänzung zu Werkzeugen und Maschinen für Spezialeinsätze.",
     useCaseEvent: "",
     useCasePrivat: "Erweiterung der Heimwerker-Ausstattung.",
-    primaryKeywords: "Soundboks Batteryboks mieten in Krefeld, Soundboks Batteryboks leihen in Krefeld, Soundboks Batteryboks mieten NRW",
-    is247: false,
     faqs: [
       { q: "Mit welchen Modellen ist die Batteryboks kompatibel?", a: "Der Akku ist mit der Soundboks Gen.3 und der Soundboks Gen.4 kompatibel." },
       { q: "Wie lange hält der Akku bei voller Lautstärke?", a: "Bei maximaler Lautstärke (100 %) beträgt die Akkulaufzeit 5 Stunden." },
@@ -7187,7 +5810,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "soundboks-gen3": {
-    excelName: "Soundboks Gen.3",
     seoTitle: "Soundboks mieten Krefeld – Gen.3 Akku-Lautsprecher (126 dB)",
     metaDescription: "Soundboks Gen.3 mieten in Krefeld: 126 dB Akku-Musikbox, bis 40 Std. Laufzeit, Bluetooth 5.0, IP65. Abholung Anrather Straße 291 oder Lieferung am Niederrhein.",
     h1: "Soundboks Gen.3 mieten in Krefeld – 126 dB Akku-Musikbox bei SLT Rental",
@@ -7199,8 +5821,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Mobile Musikbox für Straßenfeste, Vereinsjubiläen, Firmenevents, Sportturniere und Open-Air-Aktionen in Krefeld, Uerdingen und am Niederrhein – wetterfest nach IP65, netzunabhängig durch wechselbaren Akku.",
     useCasePrivat: "Kompakte Akku-Musikbox für Gartenpartys, Geburtstage, Junggesellenabschiede und Hochzeiten in Krefeld, Meerbusch, Willich, Tönisvorst und Kempen – plug-and-play per Bluetooth vom Smartphone.",
-    primaryKeywords: "Soundboks mieten Krefeld, Soundboks Gen.3 leihen Krefeld, Musikbox mieten Krefeld, Akku-Lautsprecher mieten Niederrhein, Partybox mieten Krefeld, Soundanlage mieten Krefeld",
-    is247: false,
     dailyPriceFrom: 20,
     faqs: [
       { q: "Wo kann ich die Soundboks in Krefeld abholen?", a: "Direkt am SLT-Hauptsitz, Anrather Straße 291, 47807 Krefeld – Mo–Fr 08:00–18:00 Uhr und Sa 10:00–14:30 Uhr. Auf Wunsch liefern wir auch nach Meerbusch, Willich, Tönisvorst, Kempen, Uerdingen und ins übrige Niederrhein-Gebiet." },
@@ -7213,7 +5833,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-soundboks-gen3": {
-    excelName: "Soundboks Gen.3",
     seoTitle: "Soundboks mieten Bonn – Gen.3 Musikbox für Rhein-Sieg-Kreis",
     metaDescription: "Soundboks Gen.3 in Bonn mieten: 126 dB Akku-Musikbox, bis 40 Std. Laufzeit, wetterfest IP65. Samstags spontan abholbar Drachenburgstraße 8 – Lieferung ins Ahrtal & Siebengebirge.",
     h1: "Soundboks Gen.3 mieten in Bonn – Akku-Musikbox für Rhein-Sieg-Kreis",
@@ -7225,8 +5844,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Mobile Musikbox für Firmenevents, Straßenfeste, Vereinsjubiläen und Open-Air-Aktionen in Bonn, Bad Godesberg, Beuel und im Rhein-Sieg-Kreis – wetterfest nach IP65, ideal auch für Weinfeste im Ahrtal und Wanderevents im Siebengebirge.",
     useCasePrivat: "Akku-Musikbox für Grill- und Gartenpartys am Rheinufer, Geburtstage, Junggesellenabschiede und Hochzeiten in Bonn, Wachtberg, Königswinter, Bad Honnef und Sankt Augustin – dank IP65 auch bei Nieselregen einsatzbereit.",
-    primaryKeywords: "Soundboks mieten Bonn, Soundboks Gen.3 leihen Bonn, Musikbox mieten Bonn, Musikanlage mieten Bonn, Partybox mieten Rhein-Sieg-Kreis, Akku-Lautsprecher mieten Ahrtal",
-    is247: false,
     dailyPriceFrom: 20,
     faqs: [
       { q: "Wo kann ich die Soundboks in Bonn abholen?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr 07:00–18:00 Uhr und Sa 08:00–17:30 Uhr, samstags ohne Voranmeldung. Lieferung ins gesamte Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal auf Anfrage." },
@@ -7238,34 +5855,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Liefert ihr die Soundboks auch nach Köln oder Koblenz?", a: "Nein, unser Bonner Liefergebiet umfasst Bonn, Bad Godesberg, Beuel, Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, den Rhein-Sieg-Kreis und das Ahrtal bis Bad Neuenahr-Ahrweiler. Für Köln nutzt du am besten die Anlieferung ab unserem Hauptsitz Krefeld." },
     ],
   },
-  "mh-soundboks-gen3": {
-    excelName: "Soundboks Gen.3",
-    seoTitle: "Soundboks mieten Mülheim a.d. Ruhr – Musikbox fürs Ruhrgebiet",
-    metaDescription: "Soundboks Gen.3 in Mülheim an der Ruhr mieten: 126 dB Akku-Musikbox, bis 40 Std. Laufzeit, IP65-wetterfest. Übernahme am SLT-Standort Ruhrorter Str. 122 – Lieferung ins Ruhrgebiet.",
-    h1: "Soundboks Gen.3 mieten in Mülheim an der Ruhr – Musikbox fürs Ruhrgebiet",
-    h2s: [
-      "Akku-Musikbox für Zeche, Ruhrufer & Kirmes im Revier",
-      "Übernahme am SLT × Bobcat-Standort Ruhrorter Straße",
-      "Lieferung nach Essen, Duisburg, Oberhausen & Bochum",
-    ],
-    useCaseBau: "",
-    useCaseEvent: "Mobile Musikbox für Firmenfeiern in Industrie-Locations (Zeche Zollverein, Landschaftspark Duisburg-Nord), Straßenfeste in Broich und Speldorf, Vereinsjubiläen sowie Open-Air-Aktionen im gesamten Ruhrgebiet – wetterfest nach IP65 und komplett netzunabhängig.",
-    useCasePrivat: "Akku-Musikbox für Gartenpartys, Geburtstage und Hochzeiten in Mülheim an der Ruhr, Essen, Duisburg, Oberhausen, Bochum und Gelsenkirchen – ideal auch für Grillabende am MüGa-Park oder Ruhrufer.",
-    primaryKeywords: "Soundboks mieten Mülheim, Soundboks mieten Essen, Musikbox mieten Ruhrgebiet, Akku-Lautsprecher mieten Duisburg, Partybox mieten Oberhausen, Soundanlage mieten Ruhrgebiet",
-    is247: false,
-    dailyPriceFrom: 20,
-    faqs: [
-      { q: "Wo kann ich die Soundboks in Mülheim an der Ruhr übernehmen?", a: "Nach Terminvereinbarung am SLT × Bobcat-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr (Speldorf/Broich, direkt an A40 und A52). Für spontane Abholungen und Ersatz-Akkus ist unser Hauptsitz Krefeld die zuverlässigere Adresse." },
-      { q: "Liefert ihr die Soundboks ins Ruhrgebiet?", a: "Ja – Lieferung nach Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen auf Anfrage. Disposition erfolgt aus Krefeld, in der Regel innerhalb von 24 Stunden. Für Events auf Zeche Zollverein, im Landschaftspark Duisburg-Nord oder am CentrO Oberhausen ist die netzunabhängige Akku-Box besonders praktisch." },
-      { q: "Wie laut ist die Soundboks Gen.3?", a: "Bis zu 126 dB Peak – laut genug für Straßenfeste in Speldorf, Sommerpartys am Ruhrufer oder Firmenevents in Industrie-Hallen des Reviers. Drei Class-D-Endstufen mit insgesamt 216 W RMS liefern kräftigen Sound." },
-      { q: "Wie lange hält der Akku bei einem Sommerfest im Revier?", a: "Bei moderater Lautstärke bis zu 40 Stunden, bei Party-Pegel rund 5 Stunden. Für längere Einsätze im Landschaftspark oder auf mehrtägigen Straßenfesten empfehlen wir einen Ersatz-Akku (Batteryboks) – bitte bei der Anfrage direkt mit ordern." },
-      { q: "Ist die Box für Kirmes und Straßenfeste im Ruhrgebiet geeignet?", a: "Ja. IP65-Schutz gegen Staub und Spritzwasser, robustes Kunststoffgehäuse und der stabile Tragegriff machen die Gen.3 zur richtigen Wahl für Cranger Kirmes-Vorbereitungen, Schützenfeste in Bottrop oder Vereinsjubiläen in Mülheim." },
-      { q: "Welche Anschlüsse habe ich vor Ort?", a: "Bluetooth 5.0, zwei kombinierte XLR-/6,3-mm-Klinke-Eingänge, ein 3,5-mm-AUX-In und ein 3,5-mm-AUX-Out – kompatibel mit DJ-Controllern, Funkmikrofonen (auf Anfrage ab Krefeld disponierbar) und klassischen Zuspielern." },
-      { q: "Kann ich zwei Soundboks für ein größeres Sommerfest koppeln?", a: "Ja, kabellos via TeamUP (SKAA). Für Events ab ca. 100 Personen im Ruhrgebiet lohnt sich das Stereo-Setup deutlich – frag rechtzeitig an, damit wir eine zweite Box aus Krefeld ins Revier dispositionieren können." },
-    ],
-  },
   "bonn-klappstuhl-event-black": {
-    excelName: "Klappstuhl Event black",
     seoTitle: "Klappstuhl Event black mieten in Bonn | SLT Rental",
     metaDescription: "Robuster Event-Klappstuhl (schwarz) in Bonn mieten ab 1,90 € pro Tag: Stahlrohr-Gestell, Polypropylen-Sitz, bis 120 kg belastbar, stapelbar bis 50 Stück.",
     h1: "Klappstuhl Event black mieten in Bonn – ab 1,90 € / Tag bei SLT Rental",
@@ -7275,8 +5865,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für Reihenbestuhlung bei Tagungen, Konzerten, Open-Air-Events, Hochzeiten und Firmenfeiern in Bonn und Umgebung.",
     useCasePrivat: "Geeignet für Geburtstage, Familienfeiern und Gartenpartys – schnell auf- und abgebaut, platzsparend stapelbar.",
-    primaryKeywords: "Klappstuhl mieten Bonn, Event-Klappstuhl mieten Bonn, Stühle mieten Bonn",
-    is247: false,
     faqs: [
       { q: "Wie viel wiegt der Klappstuhl?", a: "Der Stuhl wiegt 3,4 kg und lässt sich daher schnell tragen und stapeln." },
       { q: "Wie hoch ist die maximale Belastbarkeit?", a: "Die Belastbarkeit liegt bei max. 120 kg." },
@@ -7286,7 +5874,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "klappstuhl-event-black": {
-    excelName: "Klappstuhl Event black",
     seoTitle: "Klappstuhl Event black mieten in Krefeld | SLT Rental",
     metaDescription: "Event-Klappstuhl (schwarz) in Krefeld mieten ab 1,90 € pro Tag – Stahlrohr-Gestell, Polypropylen, 120 kg belastbar, stapelbar. In Mülheim an der Ruhr auf Anfrage.",
     h1: "Klappstuhl Event black mieten in Krefeld – ab 1,90 € / Tag bei SLT Rental",
@@ -7296,8 +5883,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "",
     useCaseEvent: "Einsetzbar für Reihenbestuhlung bei Konzerten, Open-Air-Events, Tagungen, Hochzeiten und Firmenfeiern – am Standort Krefeld direkt buchbar, in Mülheim an der Ruhr auf Anfrage.",
     useCasePrivat: "Passend für Geburtstage, Familienfeste und Gartenpartys. Dank geringem Gewicht von 3,4 kg schnell auf- und abgebaut und platzsparend stapelbar.",
-    primaryKeywords: "Klappstuhl mieten Krefeld, Event-Stuhl mieten Krefeld, Klappstuhl mieten Mülheim an der Ruhr",
-    is247: false,
     faqs: [
       { q: "Wie viel wiegt der Klappstuhl?", a: "Der Stuhl wiegt 3,4 kg." },
       { q: "Wie hoch ist die maximale Belastbarkeit?", a: "Die Belastbarkeit liegt bei max. 120 kg." },
@@ -7307,7 +5892,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "lichtsignalanlage-lza-500-led": {
-    excelName: "Lichtsignalanlage LZA 500 LED",
     seoTitle: "Baustellenampel LZA 500 LED mieten in Krefeld | SLT Rental",
     metaDescription: "Mobile Lichtsignalanlage LZA 500 LED mieten in Krefeld: 2 LED-Signalgeber, 12 V Akkubetrieb, Funk- oder Kabelsteuerung, klappbare Standrohre.",
     h1: "Lichtsignalanlage LZA 500 LED mieten in Krefeld – Mobile Baustellenampel bei SLT Rental",
@@ -7315,8 +5899,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Verkehrsregelung an einspurigen Baustellen, Wechselverkehr bei Sanierungen und temporäre Fahrbahnverengungen.",
     useCaseEvent: "Absicherung von Zufahrten bei Großveranstaltungen und temporäre Verkehrsführung im Umfeld von Aufbauflächen.",
     useCasePrivat: "",
-    primaryKeywords: "Baustellenampel mieten Krefeld, Lichtsignalanlage mieten Krefeld, LZA mieten Krefeld, LZA 500 LED mieten",
-    is247: false,
     dailyPriceFrom: 69,
     faqs: [
       { q: "Wie viele Signalgeber können gekoppelt werden?", a: "Im Funkbetrieb lassen sich bis zu 4 Signalgeber, im Kabelbetrieb bis zu 16 Signalgeber koppeln. Im Standardpaket sind 2 LED-Signalgeber enthalten." },
@@ -7325,7 +5907,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "krefeld-lichtsignalanlage-lza-500-led": {
-    excelName: "Lichtsignalanlage LZA 500 LED (Krefeld)",
     seoTitle: "Baustellenampel LZA 500 LED mieten in Krefeld | SLT Rental",
     metaDescription: "Baustellenampel LZA 500 LED in Krefeld mieten: 2 LED-Signalgeber, Funk- oder Kabelsteuerung, 12 V Akkubetrieb – direkt buchbar am Standort Krefeld.",
     h1: "Lichtsignalanlage LZA 500 LED mieten in Krefeld – Mobile Baustellenampel bei SLT Rental",
@@ -7333,8 +5914,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Wechselverkehr an einspurigen Baustellen in Krefeld und Umgebung, temporäre Fahrbahnverengungen und Kanalarbeiten.",
     useCaseEvent: "Temporäre Verkehrsführung im Umfeld von Veranstaltungsflächen in Krefeld.",
     useCasePrivat: "",
-    primaryKeywords: "Baustellenampel mieten Krefeld, Lichtsignalanlage mieten Krefeld, LZA 500 LED Krefeld",
-    is247: false,
     dailyPriceFrom: 69,
     faqs: [
       { q: "Ist die LZA 500 LED in Krefeld direkt buchbar?", a: "Ja, am Standort Krefeld ist die Anlage direkt online buchbar. Verfügbarkeit im Buchungsprozess prüfen." },
@@ -7343,7 +5922,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-lichtsignalanlage-lza-500-led": {
-    excelName: "Lichtsignalanlage LZA 500 LED (Bonn)",
     seoTitle: "Baustellenampel LZA 500 LED mieten in Bonn | SLT Rental",
     metaDescription: "Baustellenampel LZA 500 LED in Bonn auf Anfrage mieten: 2 LED-Signalgeber, Funk- oder Kabelsteuerung, 12 V Akkubetrieb, klappbare Standrohre.",
     h1: "Lichtsignalanlage LZA 500 LED mieten in Bonn – Mobile Baustellenampel bei SLT Rental",
@@ -7351,29 +5929,9 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCaseBau: "Wechselverkehr an einspurigen Baustellen in Bonn und Umgebung sowie temporäre Fahrbahnverengungen.",
     useCaseEvent: "Temporäre Verkehrsführung im Umfeld von Veranstaltungsflächen in Bonn.",
     useCasePrivat: "",
-    primaryKeywords: "Baustellenampel mieten Bonn, Lichtsignalanlage mieten Bonn, LZA 500 LED Bonn",
-    is247: false,
     dailyPriceFrom: 69,
     faqs: [
       { q: "Ist die LZA 500 LED in Bonn direkt buchbar?", a: "In Bonn ist die Anlage auf Anfrage verfügbar. Bitte über das Anfrageformular oder telefonisch beim Standort Bonn (bonn@slt-rental.de) reservieren." },
-      { q: "Wie viele Signalgeber können gekoppelt werden?", a: "Im Funkbetrieb bis zu 4 Signalgeber, im Kabelbetrieb bis zu 16. Standardpaket: 2 LED-Signalgeber." },
-      { q: "Wie lange hält der Akku pro Ladung?", a: "Mit 12 V / 180 Ah Batterie ca. 550 Stunden, mit 12 V / 230 Ah Batterie ca. 700 Stunden." },
-    ],
-  },
-  "mh-lichtsignalanlage-lza-500-led": {
-    excelName: "Lichtsignalanlage LZA 500 LED (Mülheim an der Ruhr)",
-    seoTitle: "Baustellenampel LZA 500 LED mieten Mülheim | SLT Rental",
-    metaDescription: "Baustellenampel LZA 500 LED in Mülheim an der Ruhr auf Anfrage: 2 LED-Signalgeber, 12 V Akkubetrieb, Funk- oder Kabelsteuerung, klappbare Standrohre.",
-    h1: "Lichtsignalanlage LZA 500 LED mieten in Mülheim an der Ruhr – Mobile Baustellenampel bei SLT Rental",
-    h2s: ["Technische Ausstattung", "Funk- und Kabelbetrieb", "Akkulaufzeit und Stromversorgung", "Verfügbarkeit in Mülheim an der Ruhr"],
-    useCaseBau: "Wechselverkehr an einspurigen Baustellen in Mülheim an der Ruhr und dem Ruhrgebiet, temporäre Fahrbahnverengungen und Leitungsarbeiten.",
-    useCaseEvent: "Temporäre Verkehrsführung im Umfeld von Veranstaltungsflächen in Mülheim an der Ruhr.",
-    useCasePrivat: "",
-    primaryKeywords: "Baustellenampel mieten Mülheim, Lichtsignalanlage mieten Mülheim an der Ruhr, LZA 500 LED Mülheim",
-    is247: false,
-    dailyPriceFrom: 69,
-    faqs: [
-      { q: "Ist die LZA 500 LED in Mülheim an der Ruhr direkt buchbar?", a: "In Mülheim an der Ruhr ist die Anlage auf Anfrage verfügbar. Bitte über das Anfrageformular oder telefonisch beim Standort Mülheim (muelheim@slt-rental.de) reservieren." },
       { q: "Wie viele Signalgeber können gekoppelt werden?", a: "Im Funkbetrieb bis zu 4 Signalgeber, im Kabelbetrieb bis zu 16. Standardpaket: 2 LED-Signalgeber." },
       { q: "Wie lange hält der Akku pro Ladung?", a: "Mit 12 V / 180 Ah Batterie ca. 550 Stunden, mit 12 V / 230 Ah Batterie ca. 700 Stunden." },
     ],
