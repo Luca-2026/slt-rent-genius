@@ -70,7 +70,14 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     driveType: row.drive_type ?? undefined,
     rentalNotes: row.rental_notes?.length ? row.rental_notes : undefined,
     seoMetaDescription: row.seo_meta_description ?? undefined,
-    seoFaqs: row.seo_faqs?.length ? row.seo_faqs : undefined,
+    seoFaqs: row.seo_faqs?.length
+      ? row.seo_faqs
+          .map((f: any) => ({
+            question: f?.question ?? f?.q ?? "",
+            answer: f?.answer ?? f?.a ?? "",
+          }))
+          .filter((f) => f.question && f.answer)
+      : undefined,
   };
 
 }

@@ -179,33 +179,28 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   useEffect(() => {
     if (!open) {
       loadedIdRef.current = null;
+      dirtyBaselineRef.current = "";
+      setDirty(false);
       return;
     }
     const nextId = initial?.id ?? "__new__";
     if (loadedIdRef.current !== nextId) {
-      setForm(initial ? fromRow(initial) : emptyForm());
+      const nextForm = initial ? fromRow(initial) : emptyForm();
+      setForm(nextForm);
       setTab("basis");
       setDirty(false);
       loadedIdRef.current = nextId;
+      dirtyBaselineRef.current = JSON.stringify(nextForm);
     }
   }, [open, initial]);
 
-  // Dirty-Tracking: erste form-Zuweisung nach dem Öffnen zählt nicht als Änderung
+  // Dirty-Tracking: vergleicht laufend gegen die beim Laden gesetzte Baseline
   const dirtyBaselineRef = useRef<string>("");
   useEffect(() => {
-    if (!open) return;
+    if (!open || !dirtyBaselineRef.current) return;
     const snap = JSON.stringify(form);
-    if (loadedIdRef.current && dirtyBaselineRef.current === "") {
-      dirtyBaselineRef.current = snap;
-      return;
-    }
-    if (dirtyBaselineRef.current && snap !== dirtyBaselineRef.current) {
-      setDirty(true);
-    }
+    setDirty(snap !== dirtyBaselineRef.current);
   }, [form, open]);
-  useEffect(() => {
-    if (!open) dirtyBaselineRef.current = "";
-  }, [open]);
 
   const requestClose = () => {
     if (dirty) {
