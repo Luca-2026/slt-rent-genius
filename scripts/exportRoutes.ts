@@ -160,8 +160,19 @@ if (managedProducts.length) {
   const routeByPath = new Map<string, SeoRoute>();
   for (const r of allRoutes) if (r.routeType === "product") routeByPath.set(r.path, r);
   let overridden = 0;
+  let metaOverridden = 0;
+  let faqOverridden = 0;
   for (const m of managedProducts) {
     const image = m.images && m.images.length ? m.images[0] : undefined;
+    // Normalize FAQ shape: DB uses {q,a}, statisch uses same — accept both.
+    const normalizedFaqs = Array.isArray(m.seo_faqs) && m.seo_faqs.length
+      ? m.seo_faqs
+          .map((f) => ({
+            q: (f.q ?? f.question ?? "").toString().trim(),
+            a: (f.a ?? f.answer ?? "").toString().trim(),
+          }))
+          .filter((f) => f.q && f.a)
+      : [];
     for (const loc of m.available_locations || []) {
       const path = `/mieten/${loc}/${m.category}/${m.slug}`;
       const route = routeByPath.get(path);
@@ -169,7 +180,14 @@ if (managedProducts.length) {
       const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
       route.title = clampTitle(`${m.name} mieten in ${locName} | SLT Rental`);
       route.h1 = `${m.name} mieten in ${locName}`;
-      if (m.description) route.description = clampDescription(m.description);
+      // Meta-Description: DB Live-Feld hat Vorrang; sonst bleibt statischer Text (bereits gesetzt).
+      if (m.seo_meta_description && m.seo_meta_description.trim()) {
+        route.description = clampDescription(m.seo_meta_description.trim());
+        metaOverridden++;
+      } else if (m.description) {
+        // Kein Meta gepflegt: bestehende statische route.description NICHT durch generisches
+        // description ersetzen — Description bleibt aus seo-routes-rental (besser als generisch).
+      }
       if (route.breadcrumbs && route.breadcrumbs.length) {
         route.breadcrumbs[route.breadcrumbs.length - 1] = {
           name: m.name,
@@ -181,12 +199,18 @@ if (managedProducts.length) {
         if (m.description) route.productData.description = m.description;
         if (image) route.productData.image = image;
         if (m.model_name) route.productData.modelName = m.model_name;
+        // FAQs: DB Live-Feld ersetzt statische FAQs vollständig (kein Mischen).
+        if (normalizedFaqs.length) {
+          route.productData.faqs = normalizedFaqs;
+          faqOverridden++;
+        }
       }
       overridden++;
     }
   }
-  console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows).`);
+  console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows). meta=${metaOverridden}, faqs=${faqOverridden}.`);
 }
+
 
 
 const enriched = allRoutes.map((route) => {
