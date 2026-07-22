@@ -109,24 +109,13 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch all active products from DB with their categories
+    // Fetch published CMS products (single source of truth for the rental catalogue).
+    // The old `products` table stays untouched until Etappe 5b clarifies its role.
     const { data: products, error: prodErr } = await supabase
-      .from('products')
-      .select('slug, category_id, available_locations, updated_at')
-      .eq('is_active', true);
+      .from('managed_products_public')
+      .select('slug, category, available_locations, updated_at');
 
-    const { data: categories, error: catErr } = await supabase
-      .from('product_categories')
-      .select('id, slug');
-
-    if (prodErr) console.error('Products fetch error:', prodErr);
-    if (catErr) console.error('Categories fetch error:', catErr);
-
-    // Build category lookup
-    const categoryMap = new Map<string, string>();
-    (categories || []).forEach((c: { id: string; slug: string }) => {
-      categoryMap.set(c.id, c.slug);
-    });
+    if (prodErr) console.error('managed_products_public fetch error:', prodErr);
 
     // Map location IDs used in available_locations to URL slugs
     const locationSlugMap: Record<string, string> = {
@@ -155,19 +144,20 @@ Deno.serve(async (req) => {
       }
     }
 
-    // 4. Individual product pages from DB
+    // 4. Individual product pages from CMS view
     const dbProductUrls = new Set<string>();
     if (products) {
       for (const product of products) {
-        const catSlug = product.category_id ? categoryMap.get(product.category_id) : null;
-        if (!catSlug) continue;
+        const catSlug = product.category;
+        if (!catSlug || !product.slug) continue;
 
         const locations = product.available_locations || [];
         for (const loc of locations) {
-          const locSlug = locationSlugMap[loc.toLowerCase()] || loc.toLowerCase();
+          const locSlug = locationSlugMap[String(loc).toLowerCase()] || String(loc).toLowerCase();
           const path = `/mieten/${locSlug}/${catSlug}/${product.slug}`;
           if (!dbProductUrls.has(path)) {
             dbProductUrls.add(path);
+
             const lastmod = product.updated_at ? product.updated_at.split('T')[0] : TODAY;
             urls.push(urlEntry(path, '0.7', 'weekly', lastmod));
           }
