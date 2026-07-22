@@ -1,239 +1,52 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// Edge Function `sitemap`
+// -----------------------
+// SINGLE SOURCE OF TRUTH: der statische Build erzeugt aus derselben Routen-
+// Liste (`dist/.prerender-routes.json` → `dist/sitemap.xml`) genau eine
+// Sitemap und deployt sie unter https://www.slt-rental.de/sitemap.xml.
+// robots.txt verweist ausschließlich auf diese Datei.
+//
+// Diese Edge Function bleibt als Fallback/Alt-Endpoint bestehen und
+// spiegelt lediglich die kanonische Datei. So können Frontend, Prerender
+// und Edge Function niemals auseinanderlaufen. Der frühere, hart kodierte
+// staticPages/locationCategories-Block ist bewusst entfernt.
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const BASE_URL = 'https://www.slt-rental.de';
-const TODAY = new Date().toISOString().split('T')[0];
-
-// Static pages with their priorities and change frequencies
-const staticPages = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/mieten', priority: '0.9', changefreq: 'weekly' },
-  { path: '/standorte', priority: '0.8', changefreq: 'monthly' },
-  { path: '/kontakt', priority: '0.7', changefreq: 'monthly' },
-  { path: '/so-funktionierts', priority: '0.7', changefreq: 'monthly' },
-  { path: '/lieferung', priority: '0.6', changefreq: 'monthly' },
-  { path: '/faq', priority: '0.6', changefreq: 'monthly' },
-  { path: '/karriere', priority: '0.5', changefreq: 'monthly' },
-  { path: '/ueber-uns', priority: '0.5', changefreq: 'monthly' },
-  { path: '/hilfe', priority: '0.6', changefreq: 'monthly' },
-  { path: '/tiefpreisgarantie', priority: '0.6', changefreq: 'monthly' },
-  { path: '/verkauf/neumaschinen', priority: '0.9', changefreq: 'weekly' },
-  { path: '/verkauf/gebrauchtmaschinen', priority: '0.8', changefreq: 'weekly' },
-  // Solutions (canonical URLs – no redirecting slugs!)
-  { path: '/loesungen', priority: '0.7', changefreq: 'monthly' },
-  { path: '/loesungen/tiefbau-erdbewegung', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/hochbau-renovierung', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/garten-landschaftsbau', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/events-veranstaltungen', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/handwerk-gewerbe', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/umzug-transport', priority: '0.6', changefreq: 'monthly' },
-  { path: '/loesungen/kindergeburtstage', priority: '0.6', changefreq: 'monthly' },
-  // Legal-Seiten (Impressum/Datenschutz/AGB) sind absichtlich noindex
-  // und werden daher NICHT in die Sitemap aufgenommen, sonst meldet
-  // GSC "Eingereichte URL als noindex markiert".
-];
-
-// Location pages
-const locationPages = [
-  { path: '/mieten/krefeld', priority: '0.9', changefreq: 'weekly' },
-  { path: '/mieten/bonn', priority: '0.9', changefreq: 'weekly' },
-  { path: '/mieten/muelheim', priority: '0.9', changefreq: 'weekly' },
-];
-
-// Local SEO area pages
-const localAreaPages = [
-  // Krefeld region
-  'krefeld', 'meerbusch', 'willich', 'toenisvorst', 'kempen', 'moers',
-  'duisburg-west', 'neuss', 'viersen', 'kaarst',
-  // Bonn region
-  'bonn', 'bad-godesberg', 'koenigswinter', 'bad-honnef', 'sankt-augustin',
-  'siegburg', 'troisdorf', 'alfter', 'bornheim', 'meckenheim', 'rheinbach',
-  'wachtberg', 'bad-neuenahr-ahrweiler', 'remagen', 'sinzig', 'grafschaft', 'swisttal',
-  // Mülheim region
-  'muelheim-an-der-ruhr', 'essen', 'oberhausen', 'duisburg-sued', 'bottrop',
-  'gelsenkirchen', 'ratingen', 'bochum-west', 'dinslaken',
-];
-
-// Categories per location
-const locationCategories: Record<string, string[]> = {
-  krefeld: [
-    'anhaenger', 'erdbewegung', 'werkzeuge', 'gartenpflege', 'aggregate',
-    'arbeitsbuehnen', 'verdichtung', 'kabel-stromverteiler', 'leitern-gerueste',
-    'heizung-trocknung', 'absperrtechnik', 'beschallung', 'kommunikation',
-    'beleuchtung', 'buehne', 'traversen-rigging', 'moebel-zelte',
-    'geschirr-glaeser-besteck', 'spezialeffekte', 'huepfburgen',
-  ],
-  bonn: [
-    'anhaenger', 'erdbewegung', 'werkzeuge', 'gartenpflege', 'aggregate',
-    'arbeitsbuehnen', 'verdichtung', 'kabel-stromverteiler', 'leitern-gerueste',
-    'heizung-trocknung', 'absperrtechnik', 'beschallung', 'kommunikation',
-    'beleuchtung', 'buehne', 'traversen-rigging', 'moebel-zelte',
-    'geschirr-glaeser-besteck', 'spezialeffekte', 'huepfburgen',
-  ],
-  muelheim: [
-    'anhaenger', 'erdbewegung', 'werkzeuge', 'gartenpflege', 'aggregate',
-    'arbeitsbuehnen', 'verdichtung', 'kabel-stromverteiler', 'leitern-gerueste',
-    'heizung-trocknung', 'absperrtechnik', 'beschallung', 'kommunikation',
-    'beleuchtung', 'buehne', 'traversen-rigging', 'moebel-zelte',
-    'geschirr-glaeser-besteck', 'spezialeffekte', 'huepfburgen',
-  ],
-};
-
-function urlEntry(path: string, priority: string, changefreq: string, lastmod: string): string {
-  // Server (Serverprofis) erzwingt Trailing-Slash via 301. Sitemap-URLs müssen
-  // deshalb mit "/" enden, sonst trigger jeder GoogleBot-Hit ein Redirect und
-  // die Seite landet als "Alternative Seite mit richtigem kanonischen Tag" im Index.
-  let normalizedPath = path;
-  if (normalizedPath !== "/" && !normalizedPath.endsWith("/") && !/\.[a-zA-Z0-9]{2,5}$/.test(normalizedPath)) {
-    normalizedPath = `${normalizedPath}/`;
-  }
-  return `  <url>
-    <loc>${BASE_URL}${normalizedPath}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-  </url>`;
-}
+const CANONICAL_SITEMAP_URL = "https://www.slt-rental.de/sitemap.xml";
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
-
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Fetch published CMS products (single source of truth for the rental catalogue).
-    // The old `products` table stays untouched until Etappe 5b clarifies its role.
-    const { data: products, error: prodErr } = await supabase
-      .from('managed_products_public')
-      .select('slug, category, available_locations, updated_at');
-
-    if (prodErr) console.error('managed_products_public fetch error:', prodErr);
-
-    // Map location IDs used in available_locations to URL slugs
-    const locationSlugMap: Record<string, string> = {
-      krefeld: 'krefeld',
-      bonn: 'bonn',
-      muelheim: 'muelheim',
-      mülheim: 'muelheim',
-    };
-
-    const urls: string[] = [];
-
-    // 1. Static pages
-    for (const page of staticPages) {
-      urls.push(urlEntry(page.path, page.priority, page.changefreq, TODAY));
+    const upstream = await fetch(CANONICAL_SITEMAP_URL, {
+      headers: { "Accept": "application/xml" },
+    });
+    if (!upstream.ok) {
+      const body = await upstream.text();
+      console.error(`sitemap upstream fetch failed [${upstream.status}]: ${body.slice(0, 200)}`);
+      return new Response(
+        JSON.stringify({ error: "Upstream sitemap unavailable", status: upstream.status }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
     }
-
-    // 2. Location pages
-    for (const page of locationPages) {
-      urls.push(urlEntry(page.path, page.priority, page.changefreq, TODAY));
-    }
-
-    // 3. Category pages per location
-    for (const [locId, cats] of Object.entries(locationCategories)) {
-      for (const cat of cats) {
-        urls.push(urlEntry(`/mieten/${locId}/${cat}`, '0.8', 'weekly', TODAY));
-      }
-    }
-
-    // 4. Individual product pages from CMS view
-    const dbProductUrls = new Set<string>();
-    if (products) {
-      for (const product of products) {
-        const catSlug = product.category;
-        if (!catSlug || !product.slug) continue;
-
-        const locations = product.available_locations || [];
-        for (const loc of locations) {
-          const locSlug = locationSlugMap[String(loc).toLowerCase()] || String(loc).toLowerCase();
-          const path = `/mieten/${locSlug}/${catSlug}/${product.slug}`;
-          if (!dbProductUrls.has(path)) {
-            dbProductUrls.add(path);
-
-            const lastmod = product.updated_at ? product.updated_at.split('T')[0] : TODAY;
-            urls.push(urlEntry(path, '0.7', 'weekly', lastmod));
-          }
-        }
-      }
-    }
-
-    // 5. Local SEO area pages
-    for (const area of localAreaPages) {
-      urls.push(urlEntry(`/mieten-in/${area}`, '0.7', 'monthly', TODAY));
-    }
-
-    // 6. Ratgeber / Blog articles
-    const ratgeberArticles = [
-      { path: '/ratgeber', priority: '0.7', changefreq: 'weekly' as const },
-      { path: '/ratgeber/minibagger-mieten-ohne-fuehrerschein', priority: '0.6', changefreq: 'monthly' as const },
-      { path: '/ratgeber/anhaenger-24-stunden-mieten-sms-code', priority: '0.6', changefreq: 'monthly' as const },
-      { path: '/ratgeber/wochenendtarif-vs-tagesmiete', priority: '0.6', changefreq: 'monthly' as const },
-      { path: '/ratgeber/baustelle-innenstadt-baumaschine-beengte-verhaeltnisse', priority: '0.6', changefreq: 'monthly' as const },
-      { path: '/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste', priority: '0.6', changefreq: 'monthly' as const },
-    ];
-    for (const article of ratgeberArticles) {
-      urls.push(urlEntry(article.path, article.priority, article.changefreq, TODAY));
-    }
-
-    // 7. Job postings (each open position has its own dedicated landing page).
-    // Keep in sync with jobListings in src/components/karriere/jobData.ts
-    const jobSlugs = [
-      'standortleiter-niederlassungsleiter-vermietung-bonn',
-      'lieferfahrer-baumaschinen-krefeld',
-      'ausbildung-kaufmann-bueromanagement-krefeld-bonn',
-      'baumaschinentechniker-servicetechniker-krefeld',
-      'vertriebsmitarbeiter-baumaschinen-zoomlion-nrw',
-      'kundenberater-disponent-miete-verkauf-krefeld-bonn',
-    ];
-    for (const slug of jobSlugs) {
-      urls.push(urlEntry(`/karriere/${slug}`, '0.8', 'weekly', TODAY));
-    }
-
-    // 8. Verkauf detail pages (Neumaschinen & Gebrauchtmaschinen)
-    const { data: newMachines } = await supabase
-      .from('new_machines')
-      .select('slug, updated_at')
-      .eq('is_active', true);
-    for (const nm of newMachines || []) {
-      const lastmod = nm.updated_at ? nm.updated_at.split('T')[0] : TODAY;
-      urls.push(urlEntry(`/verkauf/neumaschinen/${nm.slug}`, '0.7', 'weekly', lastmod));
-    }
-
-    const { data: usedMachines } = await supabase
-      .from('used_machines')
-      .select('slug, updated_at')
-      .in('status', ['available', 'reserved']);
-    for (const um of usedMachines || []) {
-      if (!um.slug) continue;
-      const lastmod = um.updated_at ? um.updated_at.split('T')[0] : TODAY;
-      urls.push(urlEntry(`/verkauf/gebrauchtmaschinen/${um.slug}`, '0.7', 'weekly', lastmod));
-    }
-
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('\n')}
-</urlset>`;
-
-    return new Response(sitemap, {
+    const xml = await upstream.text();
+    return new Response(xml, {
       headers: {
         ...corsHeaders,
-        'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=3600, s-maxage=86400",
+        "X-Sitemap-Source": CANONICAL_SITEMAP_URL,
       },
     });
-  } catch (error) {
-    console.error('Sitemap generation error:', error);
-    return new Response('Error generating sitemap', {
-      status: 500,
-      headers: corsHeaders,
-    });
+  } catch (err) {
+    console.error("sitemap edge function error:", err);
+    return new Response(
+      JSON.stringify({ error: "Sitemap fetch failed", details: (err as Error).message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
   }
 });
