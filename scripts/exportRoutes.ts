@@ -100,6 +100,8 @@ interface ManagedProductRoutePayload {
   available_locations: string[];
   images: string[] | null;
   model_name: string | null;
+  seo_meta_description: string | null;
+  seo_faqs: Array<{ q?: string; a?: string; question?: string; answer?: string }> | null;
 }
 
 async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
@@ -112,7 +114,7 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
   try {
     const endpoint =
       `${url}/rest/v1/managed_products_public` +
-      `?select=slug,name,description,category,available_locations,images,model_name`;
+      `?select=slug,name,description,category,available_locations,images,model_name,seo_meta_description,seo_faqs`;
     const res = await fetch(endpoint, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     });
@@ -126,6 +128,7 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
     return [];
   }
 }
+
 
 const LOCATION_DISPLAY_FOR_OVERRIDE: Record<string, string> = {
   krefeld: "Krefeld",
