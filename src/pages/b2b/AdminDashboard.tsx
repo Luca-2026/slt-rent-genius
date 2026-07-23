@@ -384,6 +384,7 @@ export default function AdminDashboard() {
           ? { street: delAddrMatch[1], postal_code: delAddrMatch[2], city: delAddrMatch[3] }
           : undefined;
 
+        const offerProfile = profiles.find((p) => p.id === offer.b2b_profile_id) as any;
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
@@ -393,7 +394,10 @@ export default function AdminDashboard() {
             : (offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() || undefined),
           is_proforma: proformaMode,
           delivery_address: deliveryAddress,
+          source_offer_id: offer.id,
+          payment_terms: proformaMode ? 'vorkasse' : (offerProfile?.default_payment_terms ?? 'net_14'),
         };
+
       } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals
         let targetReservations = [reservation];
