@@ -204,11 +204,10 @@ Deno.serve(async (req: Request) => {
       const { data: signed } = await serviceClient2.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
       const fileUrl = signed?.signedUrl || "";
 
-      // UPDATE draft → open (trigger recomputes due_date based on payment_terms + invoice_date)
+      // UPDATE draft → open (Trigger compute_invoice_due_date ist alleinige Quelle für due_date)
       const { error: updErr } = await serviceClient2.from("b2b_invoices").update({
         invoice_number: finalNumber,
         invoice_date: finalDate,
-        due_date: finalDueDate,
         status: 'open',
         payment_terms: effTerms,
         payment_due_days: dueDays,
@@ -405,15 +404,24 @@ Deno.serve(async (req: Request) => {
     let fileName: string | null = null;
 
     if (!save_as_draft) {
-      const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_invoice_number");
-      if (invoiceNumError) {
-        console.error("Error generating invoice number:", invoiceNumError);
-        return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (is_proforma) {
+        // Proforma verbraucht KEINE Nummer aus dem GoBD-Rechnungskreis SLT-B2B-RNT-YYYY-####.
+        // Eigene, nicht fortlaufende Kennung (Zeitstempel), rein informell.
+        const now = new Date();
+        const y = now.getFullYear();
+        const stamp = `${now.getMonth()+1}`.padStart(2,'0') + `${now.getDate()}`.padStart(2,'0') + `${now.getHours()}`.padStart(2,'0') + `${now.getMinutes()}`.padStart(2,'0');
+        invoiceNumber = `PRO-${y}-${stamp}`;
+      } else {
+        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_invoice_number");
+        if (invoiceNumError) {
+          console.error("Error generating invoice number:", invoiceNumError);
+          return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        invoiceNumber = invoiceNumData as string;
       }
-      invoiceNumber = invoiceNumData as string;
       invoiceDate = new Date().toISOString().split("T")[0];
       dueDate = new Date(Date.now() + payment_due_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-      console.log("Invoice number generated:", invoiceNumber);
+      console.log("Invoice number generated:", invoiceNumber, "isProforma:", is_proforma);
 
       // Separate items by type for PDF rendering
       const productItems = items.filter(i => (i.item_type || 'product') === 'product');
@@ -480,6 +488,19 @@ Deno.serve(async (req: Request) => {
       fileUrl = signedUrlData?.signedUrl || "";
     }
 
+    // Proforma: KEIN DB-Insert in b2b_invoices (kein Rechnungskreis-Verbrauch, GoBD)
+    if (is_proforma) {
+      return new Response(JSON.stringify({
+        success: true,
+        proforma: true,
+        invoice_number: invoiceNumber,
+        file_url: fileUrl,
+        file_name: fileName,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+
+
     // Create invoice record
     const { data: invoice, error: invoiceError } = await serviceClient
       .from("b2b_invoices")
@@ -488,7 +509,7 @@ Deno.serve(async (req: Request) => {
         reservation_id: reservation_id || null,
         invoice_number: invoiceNumber,
         invoice_date: invoiceDate,
-        due_date: dueDate,
+        // due_date wird per Trigger compute_invoice_due_date gesetzt (single source of truth)
         amount: grossAmount,
         net_amount: netAmount,
         vat_rate: vatRate,
