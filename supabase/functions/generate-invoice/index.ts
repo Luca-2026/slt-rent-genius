@@ -1122,7 +1122,7 @@ async function generateDocumentPdf(data: {
   let { pg, y } = newPage(true);
 
   // Reserve space at bottom for summary/payment/footer so we don't crash into them
-  const RESERVE_BOTTOM = MB + 90;
+  const RESERVE_BOTTOM = MB + 60;
   const need = (h: number) => {
     if (y - h < RESERVE_BOTTOM) {
       ({ pg, y } = newPage(false));
