@@ -1191,7 +1191,7 @@ async function generateDocumentPdf(data: {
 
   // Delivery cost as its own row
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
-    renderRow(22, (top) => {
+    renderRow(18, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
       dt(pg, "Anlieferung / Transport", nameColX, top - 8, bold, 9.5);
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
