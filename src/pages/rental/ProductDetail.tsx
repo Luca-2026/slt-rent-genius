@@ -1336,7 +1336,7 @@ export default function ProductDetail() {
                           : product.pricePerDay
                             ? product.pricePerDay
                             : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-                        {!product.pricePerMonth && typeof productSEO?.dailyPriceFrom === "number" && !product.pricePerDay && (
+                        {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
                           <span className="text-primary">*</span>
                         )}
                         <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
@@ -1349,11 +1349,9 @@ export default function ProductDetail() {
                       <p className="text-[11px] text-muted-foreground mt-1">
                         Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
                       </p>
-                      {!product.pricePerMonth && typeof productSEO?.dailyPriceFrom === "number" && !product.pricePerDay && (
-                        <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-                          *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Der tatsächliche Preis ist abhängig von Standort, Mietdauer, Saison und Auslastung und wird tagesaktuell im Buchungsprozess ausgewiesen.
-                        </p>
-                      )}
+                      <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+                        *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+                      </p>
                     </div>
                   )}
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
