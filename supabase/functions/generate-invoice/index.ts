@@ -1238,7 +1238,7 @@ async function generateDocumentPdf(data: {
   // ── Totals block (right aligned) ──
   if (data.totals) {
     need(120);
-    const tx = ML + CW * 0.55;
+    const tx = ML + CW * (proformaFlag ? 0.38 : 0.55);
     const vx = W - MR - 4;
     const showSubtotals = (data.serviceItems.length > 0) || (data.surchargeItems.length > 0) || ((data.totals.deliveryCost || 0) > 0);
 
