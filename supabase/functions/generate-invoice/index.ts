@@ -430,7 +430,7 @@ Deno.serve(async (req: Request) => {
 
       // Generate PDF document
       const pdfBytes = await generateDocumentPdf({
-        title: is_correction ? "RECHNUNGSKORREKTUR" : (is_proforma ? "PROFORMA-RECHNUNG" : "RECHNUNG"),
+        title: is_correction ? "Rechnungskorrektur" : (is_proforma ? "Proforma" : "Rechnung"),
         documentNumber: invoiceNumber,
         date: invoiceDate,
         profile,
