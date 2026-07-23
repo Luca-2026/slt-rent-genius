@@ -209,7 +209,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (user && isAdmin) {
       // Mark overdue invoices once per session load (server-side date compare)
-      supabase.rpc("mark_overdue_invoices").catch(() => {});
+      void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
       fetchData();
     }
   }, [user, isAdmin]);
