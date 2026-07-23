@@ -1021,25 +1021,29 @@ async function generateDocumentPdf(data: {
 
     // Empfängeradresse (DIN 5008 Fensterbereich, max ~85mm × 40mm)
     let ay = ADDR_Y_TOP;
-    dt(pg, data.profile.company_name, ADDR_X, ay, bold, 10.5); ay -= 13;
-    if (data.profile.legal_form) { dt(pg, data.profile.legal_form, ADDR_X, ay, font, 9.5, MUTED); ay -= 12; }
+    const companyLine = data.profile.legal_form
+      ? `${data.profile.company_name} ${data.profile.legal_form}`
+      : data.profile.company_name;
+    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 13;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
     if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 12; }
     dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 12;
     dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 12;
     dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
 
-    // Logo oben RECHTS (~50 mm breit = ~142 pt)
+    // Logo oben RECHTS (~40 mm breit = ~113 pt)
+    let logoBottomY = H - MT;
     if (logoImg) {
-      const targetW = 142;
+      const targetW = 113;
       const scale = targetW / logoImg.width;
       const drawH = logoImg.height * scale;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: H - MT - drawH, width: targetW, height: drawH });
+      logoBottomY = H - MT - drawH;
+      pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
     }
 
-    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz)
+    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – UNTER dem Logo
     const infoX = W - MR - 200;
-    let iy = ADDR_Y_TOP;
+    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 14);
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
@@ -1234,7 +1238,7 @@ async function generateDocumentPdf(data: {
   // ── Totals block (right aligned) ──
   if (data.totals) {
     need(120);
-    const tx = ML + CW * 0.55;
+    const tx = ML + CW * (proformaFlag ? 0.38 : 0.55);
     const vx = W - MR - 4;
     const showSubtotals = (data.serviceItems.length > 0) || (data.surchargeItems.length > 0) || ((data.totals.deliveryCost || 0) > 0);
 
@@ -1249,6 +1253,7 @@ async function generateDocumentPdf(data: {
         dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED);
         dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
+      y -= 6;
       // dezenter Hintergrund #00507d @ ~6%
       pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
       pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
@@ -1265,6 +1270,7 @@ async function generateDocumentPdf(data: {
       if (data.totals.depositTotal && data.totals.depositTotal > 0) {
         dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
+      y -= 6;
       pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
       pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
       dt(pg, "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
