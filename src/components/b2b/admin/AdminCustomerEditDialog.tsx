@@ -114,7 +114,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
         credit_limit: form.credit_limit,
         payment_due_days: form.payment_due_days,
         assigned_location: form.assigned_location || null,
+        default_payment_terms: form.default_payment_terms as any,
         status: form.status as any,
+
       } as any)
       .eq("id", profile.id);
 
