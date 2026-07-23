@@ -1047,7 +1047,7 @@ async function generateDocumentPdf(data: {
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
-      iy -= 13;
+      iy -= 11;
     };
     infoRow("Rechnungsnummer:", data.documentNumber);
     infoRow("Rechnungsdatum:", fd(data.date));
