@@ -1168,6 +1168,20 @@ export default function AdminDashboard() {
               setEditingOfferItems([]);
               setCreateOfferOpen(true);
             }}
+            onMarkAccepted={async (offer) => {
+              const ok = window.confirm(`Angebot ${offer.offer_number} als angenommen markieren?`);
+              if (!ok) return;
+              const { error } = await supabase
+                .from("b2b_offers")
+                .update({ status: "accepted" })
+                .eq("id", offer.id);
+              if (error) {
+                toast({ title: "Fehler", description: error.message, variant: "destructive" });
+              } else {
+                toast({ title: "Angebot angenommen", description: `${offer.offer_number} auf angenommen gesetzt.` });
+                fetchData();
+              }
+            }}
             resendingId={resendingId}
             onDelete={deleteOffer}
             onRefresh={fetchData}
