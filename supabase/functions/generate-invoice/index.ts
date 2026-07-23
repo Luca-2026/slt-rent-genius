@@ -487,7 +487,7 @@ Deno.serve(async (req: Request) => {
         reservation_id: reservation_id || null,
         invoice_number: invoiceNumber,
         invoice_date: invoiceDate,
-        due_date: dueDate,
+        // due_date wird per Trigger compute_invoice_due_date gesetzt (single source of truth)
         amount: grossAmount,
         net_amount: netAmount,
         vat_rate: vatRate,
