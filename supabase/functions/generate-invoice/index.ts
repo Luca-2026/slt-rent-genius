@@ -204,11 +204,10 @@ Deno.serve(async (req: Request) => {
       const { data: signed } = await serviceClient2.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
       const fileUrl = signed?.signedUrl || "";
 
-      // UPDATE draft → open (trigger recomputes due_date based on payment_terms + invoice_date)
+      // UPDATE draft → open (Trigger compute_invoice_due_date ist alleinige Quelle für due_date)
       const { error: updErr } = await serviceClient2.from("b2b_invoices").update({
         invoice_number: finalNumber,
         invoice_date: finalDate,
-        due_date: finalDueDate,
         status: 'open',
         payment_terms: effTerms,
         payment_due_days: dueDays,
