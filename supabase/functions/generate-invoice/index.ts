@@ -1188,7 +1188,7 @@ async function generateDocumentPdf(data: {
     // Linked services under a product
     const linked = data.serviceItems.filter(s => s.parentItemIndex === productIndex);
     linked.forEach(svc => {
-      const svcLines = wt(`↳ ${svc.name}`, font, 8.5, nameColW);
+      const svcLines = wt(`- ${svc.name}`, font, 8.5, nameColW);
       const h = 4 + svcLines.length * 10;
       renderRow(h, (top) => {
         svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
