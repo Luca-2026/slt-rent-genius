@@ -24,7 +24,9 @@ interface B2BProfile {
   credit_limit: number;
   payment_due_days: number;
   assigned_location: string | null;
+  default_payment_terms?: string | null;
   status: string;
+
 }
 
 interface Props {
