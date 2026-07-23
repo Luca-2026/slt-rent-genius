@@ -488,6 +488,18 @@ Deno.serve(async (req: Request) => {
       fileUrl = signedUrlData?.signedUrl || "";
     }
 
+    // Proforma: KEIN DB-Insert in b2b_invoices (kein Rechnungskreis-Verbrauch, GoBD)
+    if (is_proforma) {
+      return new Response(JSON.stringify({
+        success: true,
+        proforma: true,
+        invoice_number: invoiceNumber,
+        file_url: fileUrl,
+        file_name: fileName,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    {
+
     // Create invoice record
     const { data: invoice, error: invoiceError } = await serviceClient
       .from("b2b_invoices")
