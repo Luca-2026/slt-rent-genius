@@ -1206,10 +1206,10 @@ async function generateDocumentPdf(data: {
   const unassigned = data.serviceItems.filter(s => s.parentItemIndex == null);
   unassigned.forEach(svc => {
     const svcLines = wt(svc.name, font, 9.5, nameColW);
-    const h = 6 + svcLines.length * 12;
+    const h = 4 + svcLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(svc.amount), totalRight, top - 8, bold, 9.5);
