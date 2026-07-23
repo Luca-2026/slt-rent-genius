@@ -1534,6 +1534,9 @@ function MobileBookingCard({
               : product.pricePerDay
                 ? product.pricePerDay
                 : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+            {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
+              <span className="text-primary">*</span>
+            )}
             <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
           </div>
           {product.priceWeekend && !product.pricePerMonth && (
@@ -1544,22 +1547,31 @@ function MobileBookingCard({
           <p className="text-[11px] text-muted-foreground mt-1">
             Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
           </p>
+          {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
+            <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+              *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+            </p>
+          )}
         </div>
       )}
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col gap-2">
         <Button
           size="default"
-          className="w-full sm:flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           onClick={onBook}
         >
           {t("rental.rentNow")}
         </Button>
-        <Link to="/b2b/login" className="w-full sm:flex-1">
-          <Button size="default" variant="default" className="w-full">
+        <Link to="/b2b/login" className="w-full">
+          <Button size="default" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/5">
             {t("rental.b2bConditions")}
           </Button>
         </Link>
+        <p className="text-[11px] leading-snug text-muted-foreground">
+          B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
+        </p>
       </div>
+
       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-3">
         <MapPin className="h-3 w-3 flex-shrink-0" />
         <span className="truncate">{location.address}</span>
