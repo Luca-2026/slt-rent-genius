@@ -1024,30 +1024,35 @@ async function generateDocumentPdf(data: {
     const companyLine = data.profile.legal_form
       ? `${data.profile.company_name} ${data.profile.legal_form}`
       : data.profile.company_name;
-    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 11;
+    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 10; }
-    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 10;
-    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 10;
-    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
+    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 11;
+    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 11;
+    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5); ay -= 11;
+    // USt-IdNr NUR bei Reverse-Charge (innergemeinschaftliche Leistung) im Adressblock
+    if (data.totals?.isReverseCharge && data.profile.tax_id) {
+      ay -= 2;
+      dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
+    }
 
-    // Logo oben RECHTS (~40 mm breit = ~113 pt)
+    // Logo oben RECHTS (~60 mm breit ≈ 170 pt), mit Luft zum Seitenrand und zum Inhalt
     let logoBottomY = H - MT;
     if (logoImg) {
-      const targetW = 113;
+      const targetW = 170; // ~60 mm
       const scale = targetW / logoImg.width;
       const drawH = logoImg.height * scale;
       logoBottomY = H - MT - drawH;
       pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
     }
 
-    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – UNTER dem Logo
+    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – deutlich UNTER dem Logo
     const infoX = W - MR - 200;
-    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 14);
+    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 26);
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
-      iy -= 11;
+      iy -= 13;
     };
     infoRow("Rechnungsnummer:", data.documentNumber);
     infoRow("Rechnungsdatum:", fd(data.date));
@@ -1068,13 +1073,15 @@ async function generateDocumentPdf(data: {
     infoRow("Zahlungskondition:", termsLabel);
     infoRow("Ansprechpartner:", SLT_COMPANY.managingDirector);
 
-    // Titelblock (kein Versalienschreien)
-    let ty = ADDR_Y_TOP - 105;
-    dt(pg, data.title, ML, ty, bold, 22, BRAND);
-    ty -= 16;
-    dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10, MUTED);
+    // Titelblock (dominant in linker Spalte, spürbar Luft zwischen Adresse und Titel,
+    // sowie zwischen Titel und Nummer)
+    const contentTopY = Math.min(ay, iy) - 40;
+    let ty = contentTopY;
+    dt(pg, data.title, ML, ty, bold, 30, BRAND);
+    ty -= 26;
+    dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10.5, MUTED);
 
-    return ty - 24; // return cursor y for content below
+    return ty - 34; // deutlich mehr Abstand zum nächsten Block (Tabellenkopf)
   };
 
   const renderTableHeader = (pg: any, startY: number): number => {
