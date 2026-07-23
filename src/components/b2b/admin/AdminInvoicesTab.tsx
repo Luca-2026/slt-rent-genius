@@ -881,6 +881,37 @@ export function AdminInvoicesTab({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Finalize draft confirmation */}
+      <AlertDialog open={!!finalizeConfirmInvoice} onOpenChange={(o) => !o && setFinalizeConfirmInvoice(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Entwurf finalisieren?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Beim Finalisieren wird eine fortlaufende Rechnungsnummer vergeben und das PDF erzeugt.
+              Nach diesem Schritt ist die Rechnung <strong>GoBD-konform unveränderlich</strong> und kann nur noch storniert werden.
+              Das offene Kreditlimit des Kunden wird um den Bruttobetrag belastet.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <Button
+              variant="outline"
+              onClick={() => finalizeConfirmInvoice && finalizeDraft(finalizeConfirmInvoice, false)}
+            >
+              Nur finalisieren
+            </Button>
+            <AlertDialogAction
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+              onClick={() => finalizeConfirmInvoice && finalizeDraft(finalizeConfirmInvoice, true)}
+            >
+              <Send className="h-4 w-4 mr-1.5" />
+              Finalisieren &amp; per E-Mail senden
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+
   );
 }
