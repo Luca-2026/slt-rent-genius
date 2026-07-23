@@ -47,6 +47,17 @@ const statusConfig: Record<string, { label: string; variant: "default" | "second
   cancelled: { label: "Storniert", variant: "outline", icon: AlertCircle },
 };
 
+const paymentTermsLabel = (t?: string | null): string => {
+  switch (t) {
+    case 'vorkasse': return 'Vorkasse';
+    case 'net_7': return 'Zahlbar innerhalb 7 Tagen';
+    case 'net_14': return 'Zahlbar innerhalb 14 Tagen';
+    case 'net_30': return 'Zahlbar innerhalb 30 Tagen';
+    default: return '';
+  }
+};
+
+
 export default function B2BInvoices() {
   const { user, b2bProfile } = useAuth();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
