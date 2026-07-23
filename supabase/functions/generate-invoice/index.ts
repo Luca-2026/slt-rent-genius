@@ -1200,13 +1200,13 @@ async function generateDocumentPdf(data: {
 
   // Delivery cost as its own row
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
-    renderRow(18, (top) => {
-      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      dt(pg, "Anlieferung / Transport", nameColX, top - 8, bold, 9.5);
-      dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
-      dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
-      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 8, font, 9.5);
-      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 8, bold, 9.5);
+    renderRow(26, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
+      dt(pg, "Anlieferung / Transport", nameColX, top - 10, bold, 9.5);
+      dtr(pg, "1", qtyColRight, top - 10, font, 9.5);
+      dt(pg, "Pauschale", unitColX, top - 10, font, 9.5, MUTED);
+      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
   }
