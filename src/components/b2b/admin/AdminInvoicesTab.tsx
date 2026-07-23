@@ -83,10 +83,43 @@ export function AdminInvoicesTab({
   const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
   const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+  const [finalizingId, setFinalizingId] = useState<string | null>(null);
+  const [finalizeConfirmInvoice, setFinalizeConfirmInvoice] = useState<Invoice | null>(null);
 
   // Phase C1: Client-seitige Pagination (25 / Seite)
   const { paged: pagedInvoices, page, setPage, totalPages, pageSize, total } =
     usePagedList(invoices, 25);
+
+  const finalizeDraft = async (invoice: Invoice, sendEmail: boolean) => {
+    setFinalizingId(invoice.id);
+    setFinalizeConfirmInvoice(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-invoice", {
+        body: { finalize_invoice_id: invoice.id, send_email: sendEmail },
+      });
+      if (error) throw error;
+      toast({
+        title: "Rechnung finalisiert!",
+        description: `${data?.invoice?.invoice_number} wurde erzeugt${sendEmail ? " und per E-Mail versendet" : ""}.`,
+      });
+      onRefresh();
+    } catch (e: any) {
+      toast({ title: "Fehler beim Finalisieren", description: e.message || String(e), variant: "destructive" });
+    } finally {
+      setFinalizingId(null);
+    }
+  };
+
+  const paymentTermsLabel = (t?: string | null) => {
+    switch (t) {
+      case 'vorkasse': return 'Vorkasse';
+      case 'net_7': return '7 Tage';
+      case 'net_30': return '30 Tage';
+      case 'net_14': return '14 Tage';
+      default: return t || '–';
+    }
+  };
+
 
   const sendInvoiceEmail = async (invoice: Invoice) => {
     setSendingEmailId(invoice.id);
