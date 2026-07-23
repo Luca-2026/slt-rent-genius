@@ -87,6 +87,7 @@ export function AdminOffersTab({
   onCreateDeliveryNote,
   onCreateReturnProtocol,
   onCreateOffer,
+  onMarkAccepted,
   onDelete,
   resendingId,
   onRefresh,
