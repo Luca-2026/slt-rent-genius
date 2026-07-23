@@ -1253,6 +1253,7 @@ async function generateDocumentPdf(data: {
         dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED);
         dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
+      y -= 6;
       // dezenter Hintergrund #00507d @ ~6%
       pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
       pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
@@ -1269,6 +1270,7 @@ async function generateDocumentPdf(data: {
       if (data.totals.depositTotal && data.totals.depositTotal > 0) {
         dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
+      y -= 6;
       pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
       pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
       dt(pg, "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
