@@ -30,6 +30,8 @@ const SLT_COMPANY = {
   bic: "SPKRDE33XXX",
 };
 
+type PaymentTerms = 'vorkasse' | 'net_7' | 'net_14' | 'net_30';
+
 interface InvoiceRequest {
   reservation_id?: string;
   b2b_profile_id?: string;
@@ -47,6 +49,9 @@ interface InvoiceRequest {
   }>;
   delivery_cost?: number;
   payment_due_days?: number;
+  payment_terms?: PaymentTerms;
+  source_offer_id?: string;
+  finalize_invoice_id?: string;
   notes?: string;
   image_url?: string;
   is_correction?: boolean;
@@ -55,6 +60,16 @@ interface InvoiceRequest {
   is_proforma?: boolean;
   save_as_draft?: boolean;
   delivery_address?: { street?: string; postal_code?: string; city?: string };
+}
+
+function daysForTerms(t: PaymentTerms | null | undefined): number {
+  switch (t) {
+    case 'vorkasse': return 0;
+    case 'net_7': return 7;
+    case 'net_30': return 30;
+    case 'net_14':
+    default: return 14;
+  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -106,7 +121,129 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: InvoiceRequest = await req.json();
-    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
+    const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, payment_terms: bodyPaymentTerms, source_offer_id, finalize_invoice_id, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
+
+    // ─── FINALIZE MODE: turn an existing draft into a real invoice ───
+    if (finalize_invoice_id) {
+      const serviceClient2 = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      );
+
+      const { data: draft, error: draftErr } = await serviceClient2
+        .from("b2b_invoices").select("*").eq("id", finalize_invoice_id).single();
+      if (draftErr || !draft) {
+        return new Response(JSON.stringify({ error: "Draft not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      if (draft.status !== 'draft') {
+        return new Response(JSON.stringify({ error: "Invoice is not a draft" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      const { data: draftItems } = await serviceClient2
+        .from("b2b_invoice_items").select("*").eq("invoice_id", draft.id);
+      const { data: draftProfile } = await serviceClient2
+        .from("b2b_profiles").select("*").eq("id", draft.b2b_profile_id).single();
+
+      if (!draftProfile) {
+        return new Response(JSON.stringify({ error: "Profile not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      // Assign invoice number
+      const { data: numData, error: numErr } = await serviceClient2.rpc("generate_invoice_number");
+      if (numErr) {
+        console.error("Number gen error:", numErr);
+        return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const finalNumber = numData as string;
+      const finalDate = new Date().toISOString().split("T")[0];
+      const effTerms: PaymentTerms = (bodyPaymentTerms ?? draft.payment_terms ?? 'net_14') as PaymentTerms;
+      const dueDays = daysForTerms(effTerms);
+      const finalDueDate = new Date(Date.now() + dueDays * 86400000).toISOString().split("T")[0];
+
+      // Build PDF from stored items (all rendered as product rows – simplification)
+      const pdfBytes = await generateDocumentPdf({
+        title: "RECHNUNG",
+        documentNumber: finalNumber,
+        date: finalDate,
+        profile: draftProfile,
+        productItems: (draftItems || []).map((it: any, idx: number) => ({
+          name: it.product_name,
+          description: it.description || undefined,
+          quantity: it.quantity,
+          unitPrice: it.unit_price,
+          totalPrice: it.total_price,
+          discount: it.discount_percent,
+          rentalStart: it.rental_start,
+          rentalEnd: it.rental_end,
+          itemIndex: idx,
+        })),
+        serviceItems: [],
+        surchargeItems: [],
+        sections: notes ? [{ label: "Bemerkungen", value: notes }] : (draft.notes ? [{ label: "Bemerkungen", value: draft.notes }] : []),
+        totals: {
+          net: Number(draft.net_amount),
+          vatRate: Number(draft.vat_rate),
+          vat: Number(draft.vat_amount),
+          gross: Number(draft.gross_amount),
+          deliveryCost: Number(draft.delivery_cost || 0),
+          isReverseCharge: !!draft.is_reverse_charge,
+          paymentDueDays: dueDays,
+          dueDate: finalDueDate,
+        },
+        isProforma: false,
+      });
+
+      const safeName = draftProfile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+      const fileName = `Rechnung_SLTRental_${finalNumber}_${safeName}.pdf`;
+      const filePath = `invoices/${draftProfile.id}/${fileName}`;
+      const { error: upErr } = await serviceClient2.storage.from("b2b-invoices").upload(filePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+      if (upErr) {
+        console.error("Upload err:", upErr);
+        return new Response(JSON.stringify({ error: "Upload failed" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const { data: signed } = await serviceClient2.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      const fileUrl = signed?.signedUrl || "";
+
+      // UPDATE draft → open (trigger recomputes due_date based on payment_terms + invoice_date)
+      const { error: updErr } = await serviceClient2.from("b2b_invoices").update({
+        invoice_number: finalNumber,
+        invoice_date: finalDate,
+        due_date: finalDueDate,
+        status: 'open',
+        payment_terms: effTerms,
+        payment_due_days: dueDays,
+        file_url: fileUrl,
+        file_name: fileName,
+        notes: notes ?? draft.notes,
+      }).eq("id", draft.id);
+      if (updErr) {
+        console.error("Finalize update err:", updErr);
+        return new Response(JSON.stringify({ error: updErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      // Optionally send email via existing send-invoice-email
+      let emailSent = false;
+      if (send_email) {
+        try {
+          const invokeRes = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-invoice-email`, {
+            method: "POST",
+            headers: { Authorization: authHeader, "Content-Type": "application/json" },
+            body: JSON.stringify({ invoice_id: draft.id }),
+          });
+          emailSent = invokeRes.ok;
+          if (!invokeRes.ok) console.error("Email send failed:", await invokeRes.text());
+        } catch (e) {
+          console.error("Email send exception:", e);
+        }
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        invoice: { id: draft.id, invoice_number: finalNumber, gross_amount: Number(draft.gross_amount), file_url: fileUrl, due_date: finalDueDate },
+        email_sent: emailSent,
+      }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
 
     if (!reservation_id && !directProfileId) {
       return new Response(JSON.stringify({ error: "reservation_id or b2b_profile_id is required" }), {
@@ -260,105 +397,88 @@ Deno.serve(async (req: Request) => {
 
     // serviceClient already created above
 
-    // Generate invoice number
-    const { data: invoiceNumData, error: invoiceNumError } = await serviceClient
-      .rpc("generate_invoice_number");
+    // Generate invoice number (skip for drafts – numbers are only assigned on finalize)
+    let invoiceNumber: string | null = null;
+    let invoiceDate: string | null = null;
+    let dueDate: string | null = null;
+    let fileUrl = "";
+    let fileName: string | null = null;
 
-    if (invoiceNumError) {
-      console.error("Error generating invoice number:", invoiceNumError);
-      return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+    if (!save_as_draft) {
+      const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_invoice_number");
+      if (invoiceNumError) {
+        console.error("Error generating invoice number:", invoiceNumError);
+        return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      invoiceNumber = invoiceNumData as string;
+      invoiceDate = new Date().toISOString().split("T")[0];
+      dueDate = new Date(Date.now() + payment_due_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      console.log("Invoice number generated:", invoiceNumber);
+
+      // Separate items by type for PDF rendering
+      const productItems = items.filter(i => (i.item_type || 'product') === 'product');
+      const serviceItems = items.filter(i => i.item_type === 'service');
+      const surchargeItems = items.filter(i => i.item_type === 'surcharge');
+
+      // Generate PDF document
+      const pdfBytes = await generateDocumentPdf({
+        title: is_correction ? "RECHNUNGSKORREKTUR" : (is_proforma ? "PROFORMA-RECHNUNG" : "RECHNUNG"),
+        documentNumber: invoiceNumber,
+        date: invoiceDate,
+        profile,
+        productItems: productItems.map((item: any, idx: number) => ({
+          name: item.product_name,
+          description: item.description || undefined,
+          quantity: item.quantity,
+          unitPrice: item.unit_price,
+          totalPrice: item.total_price,
+          discount: item.discount_percent,
+          rentalStart: item.rental_start,
+          rentalEnd: item.rental_end,
+          itemIndex: idx,
+        })),
+        serviceItems: serviceItems.map((item: any) => ({
+          name: item.product_name,
+          description: item.description || undefined,
+          amount: item.total_price,
+          parentItemIndex: item.parent_item_index,
+        })),
+        surchargeItems: surchargeItems.map((item: any) => ({
+          name: item.product_name,
+          description: item.description || undefined,
+          amount: item.total_price,
+        })),
+        sections: [
+          ...(notes && !is_proforma ? [{ label: "Bemerkungen", value: notes }] : []),
+        ],
+        totals: {
+          net: netAmount,
+          vatRate,
+          vat: vatAmount,
+          gross: grossAmount,
+          deliveryCost: delivery_cost,
+          isReverseCharge,
+          paymentDueDays: payment_due_days,
+          dueDate,
+          depositTotal,
+        },
+        isProforma: is_proforma,
+        deliveryAddress: deliveryAddress,
       });
+
+      const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
+      const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+      fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${safeName}.pdf`;
+      const filePath = `invoices/${profile.id}/${fileName}`;
+
+      const { error: uploadError } = await serviceClient.storage.from("b2b-invoices").upload(filePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        return new Response(JSON.stringify({ error: "Failed to upload invoice file" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const { data: signedUrlData } = await serviceClient.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      fileUrl = signedUrlData?.signedUrl || "";
     }
-
-    const invoiceNumber = invoiceNumData as string;
-    const invoiceDate = new Date().toISOString().split("T")[0];
-    const dueDate = new Date(Date.now() + payment_due_days * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0];
-
-    console.log("Invoice number generated:", invoiceNumber);
-
-    // Separate items by type for PDF rendering
-    const productItems = items.filter(i => (i.item_type || 'product') === 'product');
-    const serviceItems = items.filter(i => i.item_type === 'service');
-    const surchargeItems = items.filter(i => i.item_type === 'surcharge');
-    const depositItemsForPdf = items.filter(i => i.item_type === 'deposit');
-
-    // Generate PDF document
-    const pdfBytes = await generateDocumentPdf({
-      title: is_correction ? "RECHNUNGSKORREKTUR" : (is_proforma ? "PROFORMA-RECHNUNG" : "RECHNUNG"),
-      documentNumber: invoiceNumber,
-      date: invoiceDate,
-      profile,
-      productItems: productItems.map((item: any, idx: number) => ({
-        name: item.product_name,
-        description: item.description || undefined,
-        quantity: item.quantity,
-        unitPrice: item.unit_price,
-        totalPrice: item.total_price,
-        discount: item.discount_percent,
-        rentalStart: item.rental_start,
-        rentalEnd: item.rental_end,
-        itemIndex: idx,
-      })),
-      serviceItems: serviceItems.map((item: any) => ({
-        name: item.product_name,
-        description: item.description || undefined,
-        amount: item.total_price,
-        parentItemIndex: item.parent_item_index,
-      })),
-      surchargeItems: surchargeItems.map((item: any) => ({
-        name: item.product_name,
-        description: item.description || undefined,
-        amount: item.total_price,
-      })),
-      sections: [
-        ...(notes && !is_proforma ? [{ label: "Bemerkungen", value: notes }] : []),
-      ],
-      totals: {
-        net: netAmount,
-        vatRate,
-        vat: vatAmount,
-        gross: grossAmount,
-        deliveryCost: delivery_cost,
-        isReverseCharge,
-        paymentDueDays: payment_due_days,
-        dueDate,
-        depositTotal,
-      },
-      isProforma: is_proforma,
-      deliveryAddress: deliveryAddress,
-    });
-
-    // Store as PDF file
-    const filePrefix = is_proforma ? "Proforma-Rechnung" : is_correction ? "Rechnungskorrektur" : "Rechnung";
-    const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
-    const fileName = `${filePrefix}_SLTRental_${invoiceNumber}_${safeName}.pdf`;
-    const filePath = `invoices/${profile.id}/${fileName}`;
-
-    const { error: uploadError } = await serviceClient.storage
-      .from("b2b-invoices")
-      .upload(filePath, pdfBytes, {
-        contentType: "application/pdf",
-        upsert: true,
-      });
-
-    if (uploadError) {
-      console.error("Upload error:", uploadError);
-      return new Response(JSON.stringify({ error: "Failed to upload invoice file" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Get signed URL (valid for 1 year)
-    const { data: signedUrlData } = await serviceClient.storage
-      .from("b2b-invoices")
-      .createSignedUrl(filePath, 60 * 60 * 24 * 365);
-
-    const fileUrl = signedUrlData?.signedUrl || "";
 
     // Create invoice record
     const { data: invoice, error: invoiceError } = await serviceClient
@@ -378,7 +498,7 @@ Deno.serve(async (req: Request) => {
         is_reverse_charge: isReverseCharge,
         vat_id_at_creation: profile.tax_id || null,
         status: save_as_draft ? "draft" : "open",
-        file_url: fileUrl,
+        file_url: fileUrl || null,
         file_name: fileName,
         notes: notes || null,
         customer_company: profile.company_name,
@@ -387,10 +507,13 @@ Deno.serve(async (req: Request) => {
         customer_city: profile.city,
         customer_country: profile.country || "Deutschland",
         payment_due_days: payment_due_days,
+        payment_terms: (bodyPaymentTerms ?? profile.default_payment_terms ?? 'net_14'),
+        source_offer_id: source_offer_id || null,
         email_sent: false,
       })
       .select()
       .single();
+
 
     if (invoiceError) {
       console.error("Invoice creation error:", invoiceError);

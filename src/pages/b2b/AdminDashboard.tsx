@@ -207,8 +207,13 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    if (user && isAdmin) fetchData();
+    if (user && isAdmin) {
+      // Mark overdue invoices once per session load (server-side date compare)
+      void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
+      fetchData();
+    }
   }, [user, isAdmin]);
+
 
   // ─── Actions ──────────────────────────────────────────
   const toggleVatVerification = async (profile: B2BProfile) => {
@@ -384,6 +389,7 @@ export default function AdminDashboard() {
           ? { street: delAddrMatch[1], postal_code: delAddrMatch[2], city: delAddrMatch[3] }
           : undefined;
 
+        const offerProfile = profiles.find((p) => p.id === offer.b2b_profile_id) as any;
         invoiceBody = {
           ...invoiceBody,
           delivery_cost: offer.delivery_cost || 0,
@@ -393,7 +399,10 @@ export default function AdminDashboard() {
             : (offerNotes.replace(/\[DELIVERY:[^\]]*\]/g, "").replace(/\[DELADDR:[^\]]*\]/g, "").trim() || undefined),
           is_proforma: proformaMode,
           delivery_address: deliveryAddress,
+          source_offer_id: offer.id,
+          payment_terms: proformaMode ? 'vorkasse' : (offerProfile?.default_payment_terms ?? 'net_14'),
         };
+
       } else if (reservation) {
         // Direct invoice without offer — build custom_items for grouped rentals
         let targetReservations = [reservation];
@@ -445,9 +454,10 @@ export default function AdminDashboard() {
       toast({
         title: asDraft ? "Entwurf gespeichert!" : (proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!"),
         description: asDraft
-          ? `Rechnungsentwurf ${data.invoice?.invoice_number} wurde gespeichert. Sie können ihn im Rechnungs-Tab einsehen und später versenden.`
+          ? "Rechnungsentwurf wurde gespeichert. Sie können ihn im Rechnungs-Tab bearbeiten und finalisieren."
           : `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
+
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
       setInvoiceFromOffer(null);
@@ -1107,6 +1117,12 @@ export default function AdminDashboard() {
             onResendOffer={handleResendOffer}
             onViewOffer={openInvoiceInNewWindow}
             onCreateInvoice={(offer) => {
+              const existing = invoices.find((inv: any) => inv.source_offer_id === offer.id && inv.status !== 'cancelled');
+              if (existing) {
+                const label = existing.status === 'draft' ? `Entwurf` : `Rechnung ${existing.invoice_number}`;
+                const proceed = window.confirm(`Für Angebot ${offer.offer_number} existiert bereits ${label}. Trotzdem eine weitere Rechnung erstellen?`);
+                if (!proceed) return;
+              }
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
@@ -1123,6 +1139,7 @@ export default function AdminDashboard() {
               setProformaMode(true);
               setInvoiceDialogOpen(true);
             }}
+
             onCreateDeliveryNote={(offer) => {
               setDeliveryNoteOffer(offer);
               setDeliveryNoteOpen(true);

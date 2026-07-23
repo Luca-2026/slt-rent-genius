@@ -24,7 +24,9 @@ interface B2BProfile {
   credit_limit: number;
   payment_due_days: number;
   assigned_location: string | null;
+  default_payment_terms?: string | null;
   status: string;
+
 }
 
 interface Props {
@@ -54,7 +56,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
     credit_limit: 0,
     payment_due_days: 14,
     assigned_location: "",
+    default_payment_terms: "net_14",
     status: "approved",
+
   });
 
   // Sync form when profile changes or dialog opens
@@ -75,7 +79,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
       credit_limit: p.credit_limit,
       payment_due_days: p.payment_due_days,
       assigned_location: p.assigned_location || "",
+      default_payment_terms: (p as any).default_payment_terms || "net_14",
       status: p.status,
+
     });
   };
 
@@ -108,7 +114,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
         credit_limit: form.credit_limit,
         payment_due_days: form.payment_due_days,
         assigned_location: form.assigned_location || null,
+        default_payment_terms: form.default_payment_terms as any,
         status: form.status as any,
+
       } as any)
       .eq("id", profile.id);
 
@@ -187,7 +195,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
             <Input type="number" min={0} step={100} value={form.credit_limit} onChange={(e) => setForm({ ...form, credit_limit: Number(e.target.value) })} />
           </div>
           <div>
-            <Label>Zahlungsziel (Tage)</Label>
+            <Label>Zahlungsziel (Tage) – Legacy</Label>
             <Select value={String(form.payment_due_days)} onValueChange={(v) => setForm({ ...form, payment_due_days: Number(v) })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -197,6 +205,20 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
               </SelectContent>
             </Select>
           </div>
+          <div>
+            <Label>Standard-Zahlungskondition (neue Rechnungen)</Label>
+            <Select value={form.default_payment_terms} onValueChange={(v) => setForm({ ...form, default_payment_terms: v })}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="vorkasse">Vorkasse (0 Tage)</SelectItem>
+                <SelectItem value="net_7">Zahlbar innerhalb 7 Tagen</SelectItem>
+                <SelectItem value="net_14">Zahlbar innerhalb 14 Tagen</SelectItem>
+                <SelectItem value="net_30">Zahlbar innerhalb 30 Tagen</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground mt-1">Wird beim Erstellen neuer Rechnungen aus Angeboten automatisch vorbelegt.</p>
+          </div>
+
 
           <div>
             <Label>Zugewiesener Standort</Label>

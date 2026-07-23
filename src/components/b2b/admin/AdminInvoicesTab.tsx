@@ -27,8 +27,8 @@ import { usePagedList, PaginationBar } from "./ClientPagination";
 
 interface Invoice {
   id: string;
-  invoice_number: string;
-  invoice_date: string;
+  invoice_number: string | null;
+  invoice_date: string | null;
   due_date: string | null;
   gross_amount: number;
   net_amount: number;
@@ -40,9 +40,12 @@ interface Invoice {
   customer_company: string | null;
   b2b_profile_id: string;
   reservation_id: string | null;
+  source_offer_id?: string | null;
+  payment_terms?: string | null;
   created_at: string;
   notes: string | null;
 }
+
 
 interface Props {
   invoices: Invoice[];
@@ -80,10 +83,43 @@ export function AdminInvoicesTab({
   const [exportMonth, setExportMonth] = useState(() => format(new Date(), "yyyy-MM"));
   const [sendEmailConfirmInvoice, setSendEmailConfirmInvoice] = useState<Invoice | null>(null);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+  const [finalizingId, setFinalizingId] = useState<string | null>(null);
+  const [finalizeConfirmInvoice, setFinalizeConfirmInvoice] = useState<Invoice | null>(null);
 
   // Phase C1: Client-seitige Pagination (25 / Seite)
   const { paged: pagedInvoices, page, setPage, totalPages, pageSize, total } =
     usePagedList(invoices, 25);
+
+  const finalizeDraft = async (invoice: Invoice, sendEmail: boolean) => {
+    setFinalizingId(invoice.id);
+    setFinalizeConfirmInvoice(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-invoice", {
+        body: { finalize_invoice_id: invoice.id, send_email: sendEmail },
+      });
+      if (error) throw error;
+      toast({
+        title: "Rechnung finalisiert!",
+        description: `${data?.invoice?.invoice_number} wurde erzeugt${sendEmail ? " und per E-Mail versendet" : ""}.`,
+      });
+      onRefresh();
+    } catch (e: any) {
+      toast({ title: "Fehler beim Finalisieren", description: e.message || String(e), variant: "destructive" });
+    } finally {
+      setFinalizingId(null);
+    }
+  };
+
+  const paymentTermsLabel = (t?: string | null) => {
+    switch (t) {
+      case 'vorkasse': return 'Vorkasse';
+      case 'net_7': return '7 Tage';
+      case 'net_30': return '30 Tage';
+      case 'net_14': return '14 Tage';
+      default: return t || '–';
+    }
+  };
+
 
   const sendInvoiceEmail = async (invoice: Invoice) => {
     setSendingEmailId(invoice.id);
@@ -355,7 +391,7 @@ export function AdminInvoicesTab({
                     <TableRow key={inv.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <p className="font-medium text-sm">{inv.invoice_number}</p>
+                          <p className="font-medium text-sm">{inv.invoice_number || <span className="italic text-muted-foreground">Entwurf</span>}</p>
                           {inv.is_reverse_charge && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                           )}
@@ -369,9 +405,10 @@ export function AdminInvoicesTab({
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
                           )}
                         </div>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{paymentTermsLabel(inv.payment_terms)}</p>
                       </TableCell>
                       <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
-                      <TableCell className="text-sm">{formatDate(inv.invoice_date)}</TableCell>
+                      <TableCell className="text-sm">{inv.invoice_date ? formatDate(inv.invoice_date) : "–"}</TableCell>
                       <TableCell className="text-sm">
                         {inv.due_date ? formatDate(inv.due_date) : "–"}
                       </TableCell>
@@ -382,6 +419,7 @@ export function AdminInvoicesTab({
                         <Select
                           value={inv.status}
                           onValueChange={(v) => onStatusChange(inv.id, v)}
+                          disabled={inv.status === 'draft'}
                         >
                           <SelectTrigger className={`w-[130px] h-8 text-xs border ${statusColor(inv.status)}`}>
                             <SelectValue />
@@ -397,16 +435,32 @@ export function AdminInvoicesTab({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
+                          {inv.status === 'draft' && (
+                            <Button
+                              size="sm"
+                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                              onClick={() => setFinalizeConfirmInvoice(inv)}
+                              disabled={finalizingId === inv.id}
+                            >
+                              {finalizingId === inv.id ? (
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin mr-1" />
+                              ) : (
+                                <CheckCircle className="h-3.5 w-3.5 mr-1" />
+                              )}
+                              <span className="text-xs">Finalisieren</span>
+                            </Button>
+                          )}
                           {inv.file_url && (
                             <Button
                               size="sm"
                               variant="ghost"
-                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number || 'Entwurf')}
                             >
                               <Eye className="h-4 w-4 mr-1" />
                               <span className="text-xs">PDF</span>
                             </Button>
                           )}
+
                           {inv.file_url && (
                             <Button
                               size="sm"
@@ -827,6 +881,37 @@ export function AdminInvoicesTab({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Finalize draft confirmation */}
+      <AlertDialog open={!!finalizeConfirmInvoice} onOpenChange={(o) => !o && setFinalizeConfirmInvoice(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Entwurf finalisieren?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Beim Finalisieren wird eine fortlaufende Rechnungsnummer vergeben und das PDF erzeugt.
+              Nach diesem Schritt ist die Rechnung <strong>GoBD-konform unveränderlich</strong> und kann nur noch storniert werden.
+              Das offene Kreditlimit des Kunden wird um den Bruttobetrag belastet.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <Button
+              variant="outline"
+              onClick={() => finalizeConfirmInvoice && finalizeDraft(finalizeConfirmInvoice, false)}
+            >
+              Nur finalisieren
+            </Button>
+            <AlertDialogAction
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+              onClick={() => finalizeConfirmInvoice && finalizeDraft(finalizeConfirmInvoice, true)}
+            >
+              <Send className="h-4 w-4 mr-1.5" />
+              Finalisieren &amp; per E-Mail senden
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+
   );
 }

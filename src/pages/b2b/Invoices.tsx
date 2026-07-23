@@ -35,7 +35,9 @@ interface Invoice {
   file_url: string | null;
   file_name: string | null;
   notes: string | null;
+  payment_terms: string | null;
   created_at: string;
+
 }
 
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: typeof Clock }> = {
@@ -44,6 +46,17 @@ const statusConfig: Record<string, { label: string; variant: "default" | "second
   overdue: { label: "Überfällig", variant: "destructive", icon: AlertCircle },
   cancelled: { label: "Storniert", variant: "outline", icon: AlertCircle },
 };
+
+const paymentTermsLabel = (t?: string | null): string => {
+  switch (t) {
+    case 'vorkasse': return 'Vorkasse';
+    case 'net_7': return 'Zahlbar innerhalb 7 Tagen';
+    case 'net_14': return 'Zahlbar innerhalb 14 Tagen';
+    case 'net_30': return 'Zahlbar innerhalb 30 Tagen';
+    default: return '';
+  }
+};
+
 
 export default function B2BInvoices() {
   const { user, b2bProfile } = useAuth();
@@ -58,7 +71,7 @@ export default function B2BInvoices() {
     
     const { data, error } = await supabase
       .from("b2b_invoices")
-      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, created_at")
+      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, payment_terms, created_at")
       .neq("status", "draft")
       .order("invoice_date", { ascending: false });
 
@@ -265,7 +278,17 @@ export default function B2BInvoices() {
                         </div>
                       </TableCell>
                       <TableCell>{formatDate(inv.invoice_date)}</TableCell>
-                      <TableCell>{inv.due_date ? formatDate(inv.due_date) : "–"}</TableCell>
+                      <TableCell>
+                        {inv.due_date ? (
+                          <div>
+                            <p>{formatDate(inv.due_date)}</p>
+                            {inv.payment_terms && (
+                              <p className="text-[10px] text-muted-foreground">{paymentTermsLabel(inv.payment_terms)}</p>
+                            )}
+                          </div>
+                        ) : "–"}
+                      </TableCell>
+
                       <TableCell className="text-right">{formatCurrency(inv.net_amount)}</TableCell>
                       <TableCell className="text-right">
                         {inv.vat_amount > 0 ? formatCurrency(inv.vat_amount) : "0,00 €"}
