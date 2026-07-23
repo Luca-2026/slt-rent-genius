@@ -477,13 +477,15 @@ export type Database = {
           file_url: string | null
           gross_amount: number
           id: string
-          invoice_date: string
-          invoice_number: string
+          invoice_date: string | null
+          invoice_number: string | null
           is_reverse_charge: boolean
           net_amount: number
           notes: string | null
           payment_due_days: number
+          payment_terms: string
           reservation_id: string | null
+          source_offer_id: string | null
           status: string
           updated_at: string
           vat_amount: number
@@ -507,13 +509,15 @@ export type Database = {
           file_url?: string | null
           gross_amount?: number
           id?: string
-          invoice_date: string
-          invoice_number: string
+          invoice_date?: string | null
+          invoice_number?: string | null
           is_reverse_charge?: boolean
           net_amount?: number
           notes?: string | null
           payment_due_days?: number
+          payment_terms?: string
           reservation_id?: string | null
+          source_offer_id?: string | null
           status?: string
           updated_at?: string
           vat_amount?: number
@@ -537,13 +541,15 @@ export type Database = {
           file_url?: string | null
           gross_amount?: number
           id?: string
-          invoice_date?: string
-          invoice_number?: string
+          invoice_date?: string | null
+          invoice_number?: string | null
           is_reverse_charge?: boolean
           net_amount?: number
           notes?: string | null
           payment_due_days?: number
+          payment_terms?: string
           reservation_id?: string | null
+          source_offer_id?: string | null
           status?: string
           updated_at?: string
           vat_amount?: number
@@ -570,6 +576,13 @@ export type Database = {
             columns: ["reservation_id"]
             isOneToOne: false
             referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_invoices_source_offer_id_fkey"
+            columns: ["source_offer_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_offers"
             referencedColumns: ["id"]
           },
         ]
@@ -1148,6 +1161,7 @@ export type Database = {
           created_at: string
           credit_limit: number
           credit_limit_requested_at: string | null
+          default_payment_terms: string
           deletion_requested_at: string | null
           document_filename: string | null
           document_url: string | null
@@ -1188,6 +1202,7 @@ export type Database = {
           created_at?: string
           credit_limit?: number
           credit_limit_requested_at?: string | null
+          default_payment_terms?: string
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
@@ -1228,6 +1243,7 @@ export type Database = {
           created_at?: string
           credit_limit?: number
           credit_limit_requested_at?: string | null
+          default_payment_terms?: string
           deletion_requested_at?: string | null
           document_filename?: string | null
           document_url?: string | null
@@ -2322,6 +2338,7 @@ export type Database = {
       }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
+      mark_overdue_invoices: { Args: never; Returns: number }
       sign_delivery_note: {
         Args: {
           _agb_accepted?: boolean
