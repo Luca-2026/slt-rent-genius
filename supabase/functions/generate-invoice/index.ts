@@ -498,7 +498,8 @@ Deno.serve(async (req: Request) => {
         file_name: fileName,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
-    {
+
+
 
     // Create invoice record
     const { data: invoice, error: invoiceError } = await serviceClient
