@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2, Undo2 } from "lucide-react";
+import { Eye, FileText, Pencil, Receipt, RefreshCw, Send, ClipboardCheck, CreditCard, Trash2, Undo2, CheckCircle2 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -69,6 +69,7 @@ interface Props {
   onCreateDeliveryNote: (offer: Offer) => void;
   onCreateReturnProtocol: (offer: Offer) => void;
   onCreateOffer: () => void;
+  onMarkAccepted: (offer: Offer) => void;
   onDelete: (offerId: string) => void;
   resendingId: string | null;
   onRefresh: () => void;
@@ -86,6 +87,7 @@ export function AdminOffersTab({
   onCreateDeliveryNote,
   onCreateReturnProtocol,
   onCreateOffer,
+  onMarkAccepted,
   onDelete,
   resendingId,
   onRefresh,
@@ -222,6 +224,17 @@ export function AdminOffersTab({
                           >
                             <Undo2 className="h-4 w-4" />
                           </Button>
+                          {(offer.status === "sent" || offer.status === "draft" || offer.status === "revised") && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onMarkAccepted(offer)}
+                              title="Als angenommen markieren"
+                              className="text-primary"
+                            >
+                              <CheckCircle2 className="h-4 w-4" />
+                            </Button>
+                          )}
                           {offer.status === "accepted" && (
                             <Button
                               size="sm"
