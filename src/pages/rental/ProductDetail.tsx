@@ -1538,7 +1538,7 @@ function MobileBookingCard({
               : product.pricePerDay
                 ? product.pricePerDay
                 : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-            {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
+            {(product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number") && (
               <span className="text-primary">*</span>
             )}
             <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
@@ -1551,11 +1551,9 @@ function MobileBookingCard({
           <p className="text-[11px] text-muted-foreground mt-1">
             Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
           </p>
-          {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
-            <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-              *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-            </p>
-          )}
+          <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+            *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+          </p>
         </div>
       )}
       <div className="flex flex-col gap-2">
