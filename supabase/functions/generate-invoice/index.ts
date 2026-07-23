@@ -1249,32 +1249,44 @@ async function generateDocumentPdf(data: {
       }
     }
 
-    page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
-    dt("Nettobetrag:", tx, y, bold, 9);
-    dtr(fm(data.totals.net), vx, y, bold, 9);
-    y -= 16;
-
-    if (data.totals.isReverseCharge) {
-      dt("USt. (Reverse Charge):", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-      dtr("0,00 \u20AC", vx, y, font, 9);
+    if (data.isProforma) {
+      // Proforma: KEIN gesonderter USt-Ausweis im Stil einer Rechnung.
+      if (data.totals.depositTotal && data.totals.depositTotal > 0) {
+        dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
+        dtr(fm(data.totals.depositTotal), vx, y, font, 9, rgb(0.3, 0.3, 0.3));
+        y -= 16;
+      }
+      page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
+      dt("Zu zahlender Betrag (inkl. gesetzl. MwSt.):", tx, y, bold, 11, rgb(0, 0.314, 0.49));
+      dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
+      y -= 25;
     } else {
-      dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-      dtr(fm(data.totals.vat), vx, y, font, 9);
-    }
-    y -= 16;
-
-    // Deposit (tax-free)
-    if (data.totals.depositTotal && data.totals.depositTotal > 0) {
       page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
-      dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
-      dtr(fm(data.totals.depositTotal), vx, y, font, 9, rgb(0.3, 0.3, 0.3));
+      dt("Nettobetrag:", tx, y, bold, 9);
+      dtr(fm(data.totals.net), vx, y, bold, 9);
       y -= 16;
-    }
 
-    page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
-    dt("Gesamtbetrag:", tx, y, bold, 12, rgb(0, 0.314, 0.49));
-    dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
-    y -= 25;
+      if (data.totals.isReverseCharge) {
+        dt("USt. (Reverse Charge):", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+        dtr("0,00 \u20AC", vx, y, font, 9);
+      } else {
+        dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9, rgb(0.4, 0.4, 0.4));
+        dtr(fm(data.totals.vat), vx, y, font, 9);
+      }
+      y -= 16;
+
+      if (data.totals.depositTotal && data.totals.depositTotal > 0) {
+        page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
+        dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
+        dtr(fm(data.totals.depositTotal), vx, y, font, 9, rgb(0.3, 0.3, 0.3));
+        y -= 16;
+      }
+
+      page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
+      dt("Gesamtbetrag:", tx, y, bold, 12, rgb(0, 0.314, 0.49));
+      dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
+      y -= 25;
+    }
 
     // Payment terms
     if (data.totals.dueDate) {
