@@ -56,7 +56,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
     credit_limit: 0,
     payment_due_days: 14,
     assigned_location: "",
+    default_payment_terms: "net_14",
     status: "approved",
+
   });
 
   // Sync form when profile changes or dialog opens
